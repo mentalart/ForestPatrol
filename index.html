@@ -114,6 +114,9 @@
   Эпилог: штаб-сосна, сказка без тетрадки, тени на стене из выборов, колыбельная Тишки, «Руками…» —
   «…а держится словом», открытка Яги, хвост концовки лубком, титры, прогулка по Лукоморью (Кощей по концовке,
   пятый Сказ можно пересказать). Застава: три испытания на время (Илья, Добрыня, Алёша), медали, доспехи.
+  Особые рядовые мороки, по одному на мир: Тать-Паутинник (1-2, грызёт пустую нить — встань на неё), Тягун (2-5,
+  под водой неуязвим — отлив гуслями), Двусветный мотылёк (3-1, раскрыт только в свете обоих), Печник (4-4, остывший
+  неуязвим — накорми горячим из клещей), Хамелей (5-1, перенимает ближайший знак — слабость меняется).
  В меню можно начать с любого уровня (стрелки / A D / крестовина).
  Стек:   один HTML + Three.js r128 с CDN. Никаких других зависимостей.
 
@@ -913,22 +916,27 @@ const FOE={
  stump:{r:0.95,emb:8,sig:['yellow','red'],sp:1.2,look:'stump',big:true,shell:true},                  // пень-ворчун в коре
  leshonok:{r:0.55,emb:3,sig:['yellow'],sp:2.6,look:'leshonok'},                                      // лешачонок в шапке из мха
  thread:{r:0.6,emb:3,sig:['yellow','blue','red'],sp:2.1,look:'ball',col:[0x55555f,0xb0b0c0,0x6e6e7c,0xd8d8e4],ranged:true}, // нитяной морок из прялки
+ tat:{r:0.5,emb:3,sig:['yellow','red'],sp:2.4,look:'tat',ranged:false},                          // тать-паутинник: грызёт нить, на которой никто не стоит
  hand:{r:0.9,emb:4,sig:['yellow'],sp:3.0,look:'hand'},                                              // рука-коряга Лешего (1-Б)
  leshyBoss:{r:1.8,emb:9,sig:['yellow','red'],sp:0.01,look:'leshyBoss',big:true,shell:true},         // Леший в коре, фаза 3
  shchuka:{r:0.62,emb:3,sig:['blue'],sp:1.9,look:'pike',col:[0x4f6f5c,0x9ab8a4,0x5e7e6a,0xc8dccc],ranged:true,selfBreak:true},   // щука-морок: пузырь-капля; вернули — «сама себя»
  rak:{r:0.62,emb:3,sig:['red','yellow'],sp:2.0,look:'crab'},                                          // рак-щипач: красная хватка, в отливе вязнет в грядках
  tinnik:{r:0.6,emb:4,sig:['yellow'],sp:1.1,look:'tina'},                                              // тинник у горла кита: медленный, запал 4
+ tyagun:{r:0.6,emb:3,sig:['red'],sp:2.0,look:'tyagun'},                                           // тягун: угорь колодца — под водой неуязвим, в отлив на мели, хватает и тянет
  puzyr:{r:0.66,emb:3,sig:['blue','yellow'],sp:1.4,look:'puff',ranged:true},                           // пузырник: надувается — рогатка прерывает
  vodyanoy:{r:2.1,emb:8,sig:['blue'],sp:0.01,look:'vod',big:true,shell:true},                        // Водяной: буйная вода, а не злодей
  ten:{r:0.55,emb:3,sig:['yellow','blue'],sp:2.3,look:'ten'},                                         // тень-морок: плоская, уязвима только в свете
  tucha:{r:0.8,emb:3,sig:['blue'],sp:1.3,look:'tucha'},                                               // грозовая тучка: молния-капля; в свете мягкая
+ motylek:{r:0.5,emb:3,sig:['yellow'],sp:2.3,look:'motylek'},                                       // двусветный мотылёк: раскрывается только в свете обоих сразу
  vorona:{r:0.55,emb:3,sig:['red','yellow'],sp:2.6,look:'vorona'},                                    // ворона-морок с чёрным ключом: красная хватка
  solovei:{r:1.5,emb:8,sig:['yellow'],sp:0.01,look:'solovei',big:true},                              // Соловей-Разбойник: свист, а не злодей
  bolvan:{r:0.75,emb:3,sig:['yellow','red'],sp:1.2,look:'bolvan'},                                    // чугунный болван в раскалённых латах: полить, сорвать клещами
  lizard:{r:0.5,emb:3,sig:['blue'],sp:0.01,look:'lizard',ranged:true},                                // жар-ящерка на свае: огонёк отбить — упадёт в огонь
+ pechnik:{r:0.6,emb:3,sig:['red','yellow'],sp:1.4,look:'pechnik'},                                 // печник: остывший неуязвим — накорми горячим из клещей
  zmeenysh:{r:0.5,emb:3,sig:['yellow','red'],sp:2.4,look:'snake'},                                    // змеёныш: в лаве сильный, на сухом ленивый
  golova:{r:1.2,emb:4,sig:['yellow'],sp:0.01,look:'golova',big:true},
  pugalo:{r:0.6,emb:3,sig:['yellow','red'],sp:1.7,look:'pugalo'},                                     // пугало-страж Кощея: соломой машет, рукавом хватает
+ hameley:{r:0.55,emb:3,sig:['yellow'],sp:2.0,look:'hameley'},                                      // хамелей: перенимает ближайший знак — слабость меняется
  dvoynik:{r:0.55,emb:3,sig:['yellow','blue','red'],sp:2.3,look:'dvoynik',ranged:true},
  cep:{r:0.6,emb:3,sig:['yellow','blue','red'],sp:0.01,look:'cep',ranged:true}};                    // цепь Кощея из земли (финал): отбив выбивает золотое звено             // тень-двойник: чёрная копия героя, перенимает любимую защиту                               // голова Горыныча: у каждой свой запал                              // Соловей-Разбойник: свист, а не злодей                         // Водяной: буйная вода, а не злодей
 function foeSignals(parent,y){const sig=new THREE.Group();sig.position.y=y;parent.add(sig);
@@ -948,6 +956,11 @@ function foeLook(kind,inner,def){
     for(let i=0;i<24;i++){const y=1-2*(i+0.5)/24,r=Math.sqrt(1-y*y),th=i*2.39996;const d=new V3(Math.cos(th)*r,y,Math.sin(th)*r);if(d.z>0.5&&Math.abs(d.x)<0.55&&d.y>-0.25&&d.y<0.6)continue;
       const m=part(inner,cg,pm,d.x*0.56,0.62+d.y*0.56,d.z*0.56);m.quaternion.setFromUnitVectors(up,d);}
     return {threads,eyeY:0.72,eyeZ:0.44,top:1.3};}
+  if(def.look==='tat'){const c=M(0x5a4a3a),c2=M(0x9a8660),dk=M(0x2a2018);const b=part(inner,new THREE.SphereGeometry(0.36,12,10),c,0,0.42,-0.05);b.scale.set(0.9,0.8,1.35);
+    for(let i=0;i<6;i++){const t=part(inner,new THREE.TorusGeometry(rand(0.3,0.38),0.025,5,20),i%2?c2:dk,0,0.42,-0.05);t.rotation.set(rand(0,Math.PI),rand(0,Math.PI),0);t.scale.z=1.3;}   // нитки морока
+    for(const sd of[-1,1])for(let i=0;i<3;i++){const l=part(inner,new THREE.CylinderGeometry(0.025,0.02,0.55,4),dk,sd*0.38,0.25,-0.3+i*0.25);l.rotation.z=sd*1.1;}   // паучьи лапки
+    const jaw=[];for(const sd of[-1,1]){const j=new THREE.Group();j.position.set(sd*0.12,0.34,0.4);inner.add(j);const cn=part(j,new THREE.ConeGeometry(0.06,0.28,5),M(0xd8c8a8),0,0,0.12);cn.rotation.x=Math.PI/2;jaw.push(j);}   // жвала
+    return {jaw,eyeY:0.5,eyeZ:0.36,top:0.9};}
   if(def.look==='kiki'){const b=M(0x4f6a36),dk=M(0x2f4a24);const cap=capsule(0.34,0.35,b);cap.position.y=0.6;inner.add(cap);
     for(let i=0;i<12;i++){const a=i/12*Math.PI*2;const h=part(inner,new THREE.ConeGeometry(0.07,0.5,4),dk,Math.cos(a)*0.33,0.35,Math.sin(a)*0.33);h.rotation.x=Math.PI;}   // космы в тине
     for(let i=0;i<5;i++)part(inner,new THREE.SphereGeometry(0.08,8,6),M(0x7ab04a),rand(-0.25,0.25),rand(0.5,1.0),0.3).scale.set(1,0.4,1);                       // ряска
@@ -980,6 +993,11 @@ function foeLook(kind,inner,def){
     part(body,new THREE.BoxGeometry(0.05,0.3,0.42),M(c[1]),0,0.36,-0.32);for(const sd of[-1,1]){const f=part(body,new THREE.BoxGeometry(0.28,0.04,0.2),M(c[1]),sd*0.36,-0.12,0.2);f.rotation.z=sd*0.4;}
     for(let i=0;i<4;i++){const t=part(body,new THREE.TorusGeometry(0.33-i*0.02,0.028,5,20),M(c[1+i%3]),0,0,-0.45+i*0.26);t.rotation.set(rand(-0.2,0.2),rand(-0.2,0.2),0);}   // нитки морока
     return {eyeY:0.72,eyeZ:0.86,top:1.15,jaw,tail,fish:body};}
+  if(def.look==='tyagun'){const sk=M(0x34485a),bl=M(0x6a8a9a),fin=M(0x6a2a3a);const fish=new THREE.Group();fish.position.y=0.4;inner.add(fish);const segs=[];
+    for(let i=0;i<7;i++){const sg=part(fish,new THREE.SphereGeometry(0.27-i*0.025,10,8),i%2?sk:bl,0,0,0.42-i*0.28);sg.scale.set(1,0.85,1.3);segs.push(sg);}
+    part(fish,new THREE.SphereGeometry(0.3,10,8),sk,0,0.06,0.68).scale.set(1,0.8,1.3);part(fish,new THREE.BoxGeometry(0.34,0.05,0.26),fin,0,-0.08,0.98);   // голова и пасть-присоска
+    for(let i=0;i<6;i++)part(fish,new THREE.BoxGeometry(0.04,0.28-i*0.03,0.26),fin,0,0.3-i*0.02,0.34-i*0.28);   // гребень
+    return {fish,segs,eyeY:0.6,eyeZ:0.9,top:1.0};}
   if(def.look==='crab'){const c=M(0xb0503a),dk=M(0x7a2a1a);const b=part(inner,new THREE.SphereGeometry(0.5,14,10),c,0,0.45,0);b.scale.set(1.12,0.5,0.85);
     for(let i=0;i<3;i++){const t=part(inner,new THREE.TorusGeometry(0.42-i*0.09,0.03,5,20),dk,0,0.62+i*0.03,-0.05-i*0.05);t.rotation.x=Math.PI/2;}
     for(const sd of[-1,1])for(let i=0;i<3;i++){const l=part(inner,new THREE.CylinderGeometry(0.04,0.03,0.55,5),dk,sd*0.56,0.25,-0.25+i*0.22);l.rotation.z=sd*1.0;}
@@ -1016,6 +1034,14 @@ function foeLook(kind,inner,def){
     for(const[dx,dy,dz,s]of[[0,0,0,0.6],[0.5,-0.05,0.1,0.45],[-0.5,-0.05,0,0.47],[0.15,0.25,-0.1,0.42],[-0.2,-0.2,0.25,0.4]])part(cloud,new THREE.SphereGeometry(s,12,10),mat,dx,dy,dz);
     const bolt=new THREE.Group();cloud.add(bolt);const bm=MB(0xcfe0ff);for(let i=0;i<4;i++){const s2=part(bolt,new THREE.BoxGeometry(0.07,0.55,0.07),bm,(i%2?0.12:-0.12),-0.55-i*0.45,0.1);s2.rotation.z=i%2?0.5:-0.5;}bolt.visible=false;
     return {mat,cloud,bolt,eyeY:2.15,eyeZ:0.55,top:2.8};}
+  if(def.look==='motylek'){const bm=M(0x3a2a4a),wm=M(0x9a8ab0,{transparent:true,opacity:0.8,side:THREE.DoubleSide});const body=new THREE.Group();body.position.y=1.0;inner.add(body);
+    part(body,new THREE.CylinderGeometry(0.1,0.06,0.6,8),bm,0,0,0).rotation.x=Math.PI/2;part(body,new THREE.SphereGeometry(0.13,10,8),bm,0,0.03,0.32);
+    for(const sd of[-1,1]){const a=part(body,new THREE.CylinderGeometry(0.01,0.01,0.36,4),bm,sd*0.07,0.2,0.42);a.rotation.x=-0.6;a.rotation.z=-sd*0.4;}   // усики
+    const wings=[],spots=[];for(const sd of[-1,1]){const wp=new THREE.Group();wp.position.set(sd*0.08,0.04,0.02);body.add(wp);
+      const wg=part(wp,new THREE.CircleGeometry(0.5,16),wm,sd*0.48,0,0);wg.rotation.x=-Math.PI/2;wg.scale.set(1,1.3,1);
+      const c=PCOL[sd<0?0:1],sm=M(c,{emissive:c,emissiveIntensity:0.12,transparent:true,opacity:0.75,side:THREE.DoubleSide});const sp=part(wp,new THREE.CircleGeometry(0.2,14),sm,sd*0.52,0.012,0.04);sp.rotation.x=-Math.PI/2;   // пятно-свет: у каждого крыла свой игрок
+      wings.push({wp,s:sd});spots.push(sm);}
+    return {wings,spots,body,eyeY:1.06,eyeZ:0.34,top:1.4};}
   if(def.look==='vorona'){const bk=M(0x1e1e26),bk2=M(0x2e2e3a),bm=M(0x4a4a50);part(inner,new THREE.SphereGeometry(0.42,12,10),bk,0,0.6,0).scale.set(0.85,0.9,1.2);
     part(inner,new THREE.SphereGeometry(0.26,12,10),bk,0,1.05,0.3);const bg=new THREE.ConeGeometry(0.08,0.34,6);bg.rotateX(Math.PI/2);part(inner,bg,bm,0,1.0,0.62);
     part(inner,new THREE.BoxGeometry(0.4,0.04,0.5),bk2,0,0.7,-0.55).rotation.x=-0.4;
@@ -1030,6 +1056,10 @@ function foeLook(kind,inner,def){
     part(inner,new THREE.SphereGeometry(0.32,10,8),sack,0,2.0,0);for(let i=0;i<5;i++)part(inner,new THREE.BoxGeometry(0.03,0.08,0.02),MAT.dark,-0.12+i*0.06,1.86,0.3);
     part(inner,new THREE.ConeGeometry(0.4,0.55,10),hatM,0,2.5,0);part(inner,new THREE.CylinderGeometry(0.56,0.56,0.04,12),hatM,0,2.25,0);for(let k=0;k<7;k++){const t=part(inner,new THREE.ConeGeometry(0.04,0.32,4),straw,rand(-0.25,0.25),0.72,rand(-0.25,0.25));t.rotation.x=Math.PI;}
     return {arm,eyeY:2.04,eyeZ:0.28,top:2.8};}
+  if(def.look==='hameley'){const bm=M(0xffd23a,{emissive:0xffd23a,emissiveIntensity:0.25});const body=new THREE.Group();inner.add(body);part(body,new THREE.SphereGeometry(0.46,14,10),bm,0,0.6,0).scale.set(1,0.9,1.1);
+    for(let i=0;i<5;i++){const c=part(body,new THREE.ConeGeometry(0.08,0.3,5),bm,0,1.02-i*0.03,0.24-i*0.16);c.rotation.x=-0.3-i*0.2;}   // гребень
+    const tail=part(body,new THREE.TorusGeometry(0.2,0.06,6,14,Math.PI*1.5),bm,0,0.32,-0.5);tail.rotation.y=Math.PI/2;for(const sd of[-1,1])part(body,new THREE.SphereGeometry(0.12,8,6),M(0x2a2a2a),sd*0.3,0.14,0.18);
+    return {bm,body,eyeY:0.72,eyeZ:0.42,top:1.2};}
   if(def.look==='cep'){const im=M(0x3a3a44),gm=M(COL.gold,{emissive:0x806010,emissiveIntensity:0.5});const ch=new THREE.Group();inner.add(ch);for(let i=0;i<7;i++){const l=part(ch,new THREE.TorusGeometry(0.2,0.07,6,12),i===6?gm:im,0,0.2+i*0.3,0);l.rotation.y=i%2?Math.PI/2:0;l.scale.set(1,1.4,1);}
     const hook=part(inner,new THREE.TorusGeometry(0.28,0.08,6,14,Math.PI*1.3),im,0,2.5,0.1);hook.rotation.z=Math.PI*0.6;part(inner,new THREE.SphereGeometry(0.34,10,8),M(0x1a1620),0,2.2,0);
     return {chain:ch,eyeY:2.25,eyeZ:0.28,top:2.7};}
@@ -1041,6 +1071,12 @@ function foeLook(kind,inner,def){
     const plateM=M(0xff6a20,{emissive:0xff3000,emissiveIntensity:0.7});const plate=new THREE.Group();inner.add(plate);part(plate,new THREE.BoxGeometry(1.2,1.1,0.2),plateM,0,1.0,0.55);for(let i=0;i<3;i++)part(plate,new THREE.BoxGeometry(1.0,0.05,0.05),M(0x2a2a30),0,0.7+i*0.3,0.67);
     part(inner,new THREE.BoxGeometry(0.9,0.12,0.9),iron,0,2.05,0);const arm=new THREE.Group();arm.position.set(0.75,1.3,0);inner.add(arm);part(arm,new THREE.CylinderGeometry(0.16,0.2,0.9,8),iron,0,-0.4,0.2).rotation.x=0.5;
     return {plate,plateM,arm,eyeY:1.85,eyeZ:0.38,top:2.3};}
+  if(def.look==='pechnik'){const wh=M(0xe8e0d0),br=M(0xb05a3a),dk=M(0x2a2420);part(inner,new THREE.BoxGeometry(0.9,0.75,0.9),wh,0,0.72,0);part(inner,new THREE.BoxGeometry(0.98,0.1,0.98),br,0,1.12,0);
+    part(inner,new THREE.CylinderGeometry(0.1,0.12,0.42,8),br,0.26,1.36,-0.26);for(const sx of[-1,1])for(const sz of[-1,1])part(inner,new THREE.CylinderGeometry(0.07,0.05,0.4,6),dk,sx*0.32,0.18,sz*0.32);   // труба и лапки
+    const doorM=M(0x3a2a20,{emissive:0xff5a10,emissiveIntensity:0.08});const door=part(inner,new THREE.BoxGeometry(0.46,0.3,0.05),doorM,0,0.6,0.46);
+    const slotM=M(0xff7a20,{emissive:0xff4a00,emissiveIntensity:0.05});const slot=part(inner,new THREE.BoxGeometry(0.42,0.06,0.3),slotM,0,1.18,-0.16);   // гнездо на спине
+    const arm=new THREE.Group();arm.position.set(0.5,0.8,0);inner.add(arm);part(arm,new THREE.BoxGeometry(0.12,0.12,0.5),br,0,0,0.2);   // заслонка-лапа
+    return {slot,slotM,door,doorM,arm,eyeY:0.9,eyeZ:0.47,top:1.6};}
   if(def.look==='lizard'){const c=M(0xd8501a,{emissive:0x802000,emissiveIntensity:0.5}),dk=M(0x7a2a10);const b=part(inner,new THREE.SphereGeometry(0.32,10,8),c,0,0.35,0);b.scale.set(0.8,0.6,1.5);
     part(inner,new THREE.SphereGeometry(0.22,10,8),c,0,0.45,0.5);for(const s of[-1,1])for(const z of[-0.2,0.25]){const l=part(inner,new THREE.CylinderGeometry(0.04,0.04,0.3,5),dk,s*0.28,0.2,z);l.rotation.z=s*0.9;}
     const tail=new THREE.Group();tail.position.set(0,0.35,-0.45);inner.add(tail);part(tail,new THREE.ConeGeometry(0.14,0.8,6),c,0,0,-0.4).rotation.x=-Math.PI/2;for(let i=0;i<4;i++)part(inner,new THREE.ConeGeometry(0.05,0.14,4),M(0xffc040,{emissive:0xff8000,emissiveIntensity:0.8}),0,0.58,0.3-i*0.2);
@@ -1225,7 +1261,9 @@ function collectSpark(s,h){G.stats.sparks++;W.sparksGot=(W.sparksGot||0)+1;SFX.s
 function damageHero(h,src){if(!src||(src.kind!=='enemy'&&src.kind!=='hazard'))return false;if(HEROES.indexOf(src.ref)>=0)return false;
   if(!h.active||h.cling)return false;const p=players[h.player];if(p.downed||h.iT>0||(h.power&&h.power.t>0&&h.kind==='potap'))return false;
   p.petals=Math.max(W.noLose?1:0,p.petals-(W.noPetals?0:1));h.iT=1.2;h.hurtT=1.2;SFX.hurt();shake(h.player,0.05,0.25);
-  if(src.ref&&src.ref.pos){const dx=h.pos.x-src.ref.pos.x,dz=h.pos.z-src.ref.pos.z,d=Math.hypot(dx,dz)||1;const kk=W.world===4&&W.lavas.length&&((h.groundRef&&h.groundRef.crust)||overLava(h))?0.15:1;h.vel.x=dx/d*6*kk;h.vel.z=dz/d*6*kk;h.vel.y=4*kk;h.grounded=kk<1&&h.grounded;h.knockT=0.3*kk;}
+  if(src.ref&&src.ref.pos){const dx=h.pos.x-src.ref.pos.x,dz=h.pos.z-src.ref.pos.z,d=Math.hypot(dx,dz)||1;const kk=W.world===4&&W.lavas.length&&((h.groundRef&&h.groundRef.crust)||overLava(h))?0.15:1;h.vel.x=dx/d*6*kk;h.vel.z=dz/d*6*kk;h.vel.y=4*kk;h.grounded=kk<1&&h.grounded;h.knockT=0.3*kk;
+    if(src.ref.kind==='tat'){h.vel.x*=0.15;h.vel.z*=0.15;h.vel.y=2;h.knockT=0.15;}   // паутинник щиплет, а не отбрасывает
+    if(src.ref.kind==='tyagun'){h.vel.x=-dx/d*4.5;h.vel.z=-dz/d*4.5;h.vel.y=2.5;h.knockT=0.28;floatText(h.pos.clone().add(new V3(0,h.d.height+1,0)),'Тянет!','#9fe6ff');}}
   floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),W.noPetals?'Ох!':'-1 лепесток','#ff9ab8');
   if(p.petals===0){p.downed=true;p.downT=10;p.revT=0;h.guard=false;tip(1-p.i,'Друг рассыпался клубком ниток! Постой рядом — подошьёшь',3);}
   return true;}
@@ -1304,6 +1342,40 @@ function releaseString(t,turned){if(t.sag||!W.threads.includes(t))return;const o
   if(!on.length){removeThread(t);return;}
   t.sag=0.001;t.sagOn=on;SFX.splash();floatText(new V3(t.sx+t.dx*t.len/2,t.y+0.6,t.sz+t.dz*t.len/2),'Плюх!','#9fd8a0');
   if(W.onSag)W.onSag(t,turned,on);}
+// Тать-Паутинник: мост дороже героя — грызёт нить, на которой никто не стоит (толстую и склеенную не трогает). Встал на нить — отступает; пока грызёт — открыт
+function tatTarget(e){let best=null,bd=6,bp=null;for(const t of W.threads){if(t.ret||t.thick||t.glued||t.gluedWith||t.sag||t.grow||t.waiting||standingOn(t))continue;
+    const u=clamp((e.pos.x-t.sx)*t.dx+(e.pos.z-t.sz)*t.dz,0,t.len),px=t.sx+t.dx*u,pz=t.sz+t.dz*u,py=thY(t,u);if(Math.abs(py-e.pos.y)>1.6)continue;
+    const d=Math.hypot(px-e.pos.x,pz-e.pos.z);if(d<bd){bd=d;best=t;bp=new V3(px,py,pz);}}
+  return best?{t:best,p:bp,d:bd}:null;}
+function tatFoe(x,z,o){const e=makeFoe('tat',x,z,Object.assign({leash:9},o||{}));e.chew=null;e.chewT=0;e.stuckT=0;e.prov=0;e.nearT=0;
+  const stop=why=>{if(e.chew)e.chew.gnaw=0;e.chew=null;e.spMul=1;if(why)floatText(e.pos.clone().add(new V3(0,1.3,0)),why,'#ffd0a0');};
+  const calm=()=>{e.cd=Math.max(e.cd,0.5);if(e.state==='ready')e.state='idle';};
+  e.tick=(e,dt)=>{if(e.state==='spawn')return;
+    // не воюет первым: дерётся, только если задели или прижали вплотную
+    if(e.flashT>0)e.prov=8;else e.prov=Math.max(0,e.prov-dt);
+    const hn=HEROES.some(h=>h.active&&!players[h.player].downed&&hd(h.pos,e.pos)<2.2&&Math.abs(h.pos.y-e.pos.y)<1.6);e.nearT=hn&&!e.chew?e.nearT+dt:0;if(e.nearT>1)e.prov=Math.max(e.prov,4);
+    if(e.chew){const t=e.chew;
+      if(!W.threads.includes(t)||t.ret||t.sag||t.glued){stop();return;}
+      if(standingOn(t)){stop('Отступил!');e.prov=0;const dx=e.pos.x-e.chewP.x,dz=e.pos.z-e.chewP.z,d=Math.hypot(dx,dz)||1;mMove(e,dx/d,dz/d,9,0.12);return;}   // стоят на нити — отскочил
+      if(e.state==='stagger'||e.state==='broken'){stop('Сорвался!');return;}
+      e.spMul=0;t.gnaw=G.time;calm();if(e.state!=='broken')e.open=Math.max(e.open,0.2);   // занят нитью: не дерётся, спину подставил
+      if(e.state==='idle')e.face=angDamp(e.face,Math.atan2(e.chewP.x-e.pos.x,e.chewP.z-e.pos.z),6,dt);
+      e.chewT-=dt;if(e.chewT<=0){const p=e.chewP.clone();stop();removeThread(t);
+        const r=W.returning.findIndex(q=>q.ball===t.ball);if(r>=0){W.group.remove(W.returning[r].ball);W.returning.splice(r,1);}   // клубок не вернулся — перегрыз
+        SFX.rip();burst(p.clone().add(new V3(0,0.2,0)),0x8a6a4a,12,3);burst(p.clone().add(new V3(0,0.2,0)),COL.gold,8,2);floatText(p.clone().add(new V3(0,0.9,0)),'Перегрыз нить!','#ffb070');
+        if(W.onTatCut)W.onTatCut(t,e);}
+      return;}
+    if(e.state!=='idle'){e.spMul=1;return;}
+    const q=tatTarget(e);
+    if(!q){e.stuckT=0;if(e.prov>0){e.spMul=1;return;}
+      e.spMul=0;calm();const dh=hd(e.pos,e.home);if(dh>0.4)mMove(e,(e.home.x-e.pos.x)/dh,(e.home.z-e.pos.z)/dh,e.def.sp*0.8,dt);return;}   // нитей нет — домой, караулить
+    e.spMul=0;calm();   // к герою не идёт — идёт к нити
+    if(q.d>1.1){const px=e.pos.x,pz=e.pos.z;mMove(e,(q.p.x-e.pos.x)/q.d,(q.p.z-e.pos.z)/q.d,e.def.sp,dt);e.face=angDamp(e.face,Math.atan2(q.p.x-e.pos.x,q.p.z-e.pos.z),6,dt);
+      e.stuckT=Math.hypot(e.pos.x-px,e.pos.z-pz)<dt*0.3?e.stuckT+dt:0;if(e.stuckT<0.4||q.d>2.4)return;}   // ближе не подойти (трясина) — грызёт с края
+    e.chew=q.t;e.chewP=q.p;e.chewT=2.0;e.stuckT=0;SFX.thread();floatText(e.pos.clone().add(new V3(0,1.3,0)),'Грызёт нить!','#ffd0a0');};
+  e.post=e=>{const g=!!e.chew;e.L.jaw.forEach((j,i)=>{j.rotation.y=(i?1:-1)*(0.1+Math.abs(Math.sin(G.time*(g?18:3)))*(g?0.6:0.15));});if(g&&e.state==='idle')e.body.rotation.x=0.35;};
+  const od=e.onDeath;e.onDeath=x=>{if(e.chew)e.chew.gnaw=0;e.chew=null;if(od)od(x);};
+  return e;}
 function updateThreads(dt){
   for(const t of W.threads.slice()){
     if(t.sag){t.sag+=dt;const k=Math.min(1,t.sag/0.35),sy=W.sagY;t.y=lerp(t.y,sy,k*0.35);t.y2=lerp(t.y2,sy,k*0.35);
@@ -1333,8 +1405,10 @@ function updateThreads(dt){
     const ang=Math.atan2(t.dx,t.dz),L=t.string?Math.hypot(t.len,t.y2-t.y):t.len;
     t.mesh.position.set(t.sx,t.y+0.08,t.sz);t.path.position.set(t.sx,t.y+0.03,t.sz);t.mesh.rotation.set(t.string?-Math.atan2(t.y2-t.y,t.len):0,ang,0,'YXZ');t.path.visible=!t.string;
     t.mesh.scale.z=Math.max(0.001,L);t.path.scale.z=Math.max(0.001,t.len);t.path.scale.x=t.glued?1.7:1.0;t.ball.position.set(bx,thY(t,t.len)+0.17,bz);
+    if(t.gnaw&&G.time-t.gnaw<0.15){const on=Math.sin(G.time*24)>0;t.mat.emissive.setHex(on?0xffffff:0xffb000);t.mat.emissiveIntensity=on?1.9:0.2;t.pmat.opacity=on?0.5:0.12;}   // Паутинник грызёт — мигает белым
+    else{if(t.gnaw){t.gnaw=0;t.mat.emissive.setHex(0xffb000);}
     if(t.string){t.mat.emissiveIntensity=W.blink?(Math.sin(G.time*20)>0?1.7:0.1):0.9+0.3*Math.sin(G.time*6);}
-    else if(t.life<3){const on=Math.sin(G.time*14)>0;t.mat.emissiveIntensity=on?1.3:0.1;t.pmat.opacity=on?0.42:0.1;}else{t.mat.emissiveIntensity=0.9;t.pmat.opacity=0.38;}}
+    else if(t.life<3){const on=Math.sin(G.time*14)>0;t.mat.emissiveIntensity=on?1.3:0.1;t.pmat.opacity=on?0.42:0.1;}else{t.mat.emissiveIntensity=0.9;t.pmat.opacity=0.38;}}}
   for(let i=W.returning.length-1;i>=0;i--){const r=W.returning[i];r.t+=dt/0.55;const to=r.h.pos.clone().add(new V3(0,0.4,0));r.ball.position.lerpVectors(r.from,to,Math.min(1,r.t));r.ball.position.y+=Math.sin(Math.min(1,r.t)*Math.PI)*0.8;
     pickByBall(r.ball.position.x,r.ball.position.y,r.ball.position.z);if(r.t>=1){W.group.remove(r.ball);W.returning.splice(i,1);}}
   // паутинка: две струны крест-накрест — упругий батут в перекрестье
@@ -2186,15 +2260,18 @@ function build12(){
   /* ---------- ряска: кто в ней — сам выбирается на ближайшую кочку ---------- */
   W.hummocks.push({x:-5.5,z:-3.5,y:0},{x:5.5,z:-3.5,y:0},{x:0,z:-27,y:0},{x:-4,z:-55,y:0},{x:4,z:-55,y:0},{x:0,z:-77,y:0},{x:-4,z:-76,y:0},{x:4,z:-76,y:0});
   W.slowZone=h=>h.pos.y<-0.3;W.wetY=-0.3;
-  let yoshaThick=false;
+  let yoshaThick=false;let tatS=null;const tatIdle=[0,0];
   W.onSag=(t,turned,on)=>{if(t.thick&&turned){F.sagged=true;later(0.6,()=>bark(HERO.potap,'potap','Как говорил Илья Муромец… э-э… кто упал, тот… мокрый.',3.2));later(3.9,()=>bark(HERO.yosha,'yosha','Я бы сам дошёл!',2));}};
   W.updates.push(dt=>{
     for(const h of HEROES){if(h.grounded&&h.pos.y<-0.3&&!h.cling){h.wetT=(h.wetT||0)+dt;h.extraY=-0.25;if(h.wetT>1.4){h.wetT=0;SFX.splash();toHummock(h);}}else{h.wetT=0;h.extraY=0;}}
+    // мини-стычка: струна ко второму колышку простояла пустой — из-за кочки выходит Тать-Паутинник (один на обе дорожки)
+    if(!tatS)for(const pi of[0,1]){const t=W.threads.find(q=>q.string&&!q.sag&&q.stake===S2[pi]);tatIdle[pi]=t&&!standingOn(t)&&players[pi].heroes.some(h=>h.pos.z>-22.5)?tatIdle[pi]+dt:0;   // пока кому-то ещё переходить
+      if(tatIdle[pi]>3){tatS=tatFoe(lanes[pi]+0.2,-28.6,{leash:5});banner('Тать-Паутинник!','#ffd0a0',2.2,'грызёт нить, на которой никто не стоит · встань на струну — отступит');break;}}
     const thick=W.threads.find(t=>t.thick&&t.string&&!t.sag);
     if(thick&&HERO.yosha.groundRef===thick)yoshaThick=true;
     if(yoshaThick&&!F.sagged&&!F.thanks&&HERO.yosha.pos.z<-74.2&&HERO.yosha.grounded){F.thanks=true;bark(HERO.yosha,'yosha','Потап, ты не оборачивался. Спасибо.',2.8);}
     if(!arena.started&&[0,1].every(pi=>active(pi).pos.z<-79)){arena.started=true;SFX.gate();
-      arena.list=[makeFoe('stump',-2.5,-88,{leash:8}),makeFoe('stump',2.5,-89,{leash:8})].concat(mounds.map(([x,z])=>makeFoe('kiki',x,z,{y:0.3,leash:3})));
+      arena.list=[makeFoe('stump',-2.5,-88,{leash:8}),makeFoe('stump',2.5,-89,{leash:8})].concat(mounds.map(([x,z],i)=>i===2?tatFoe(x,z,{y:0.3,leash:8}):makeFoe('kiki',x,z,{y:0.3,leash:3})));
       banner('Пни-ворчуны!','#e0c090',2,'в коре со всех сторон · красный зубец — кувырок');}
     if(arena.started&&!arena.cleared&&arena.list.every(e=>!e.alive)){arena.cleared=true;arena.hold=1.6;barrier.forceOpen=true;SFX.ok();banner('Отбились!','#ffffff',1.6,'Дорога через болото свободна');}
     if(arena.cleared)arena.hold-=dt;
@@ -2205,6 +2282,7 @@ function build12(){
   const T=HERO,mine=pi=>W.threads.some(t=>t.owner===pi&&!t.ret&&!t.string);
   for(const pi of[0,1]){const h=()=>active(pi);
     prompt(pi,'item',()=>headOf(h()),()=>!mine(pi)&&((h().pos.z<-3.5&&h().pos.z>-6.2&&h().pos.y>-0.1)||(h().pos.z<-14.6&&h().pos.z>-15.8&&h().pos.y>0.2)||(h().pos.y>2.8&&h().pos.z<-42)));
+    prompt(pi,'attack',()=>headOf(h()),()=>W.enemies.some(e=>e.kind==='tat'&&e.alive&&e.chew&&hd(e.pos,h().pos)<5),'пока грызёт!');
     prompt(pi,'roll',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig==='red'&&e.help));
     prompt(pi,'guard',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig!=='red'&&e.help));
     prompt(pi,'attack',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&hd(e.pos,h().pos)<6&&(e.state==='broken'||e.open>0)));}
@@ -2215,7 +2293,7 @@ function build12(){
   /* ---------- задачи ---------- */
   const lane=pi=>[
     O(()=>'Болото! Нить-тропка тонет за пять секунд. Брось клубок '+K(pi,'item')+' в колышек с ленточкой — будет струна. Она не пропадёт, пока не смотаешь',()=>active(pi).pos.z<-15.4,()=>[S1[pi].g],()=>({kind:active(pi).kind,action:'walk',from:new V3(lanes[pi],0,-5.8),to:new V3(lanes[pi]+0.4,0.75,-14)})),
-    O(()=>'Второй колышек — над трясиной. Струна до него '+K(pi,'item')+' — и по ней, как канатоходец',()=>active(pi).pos.z<-25.6,()=>[S2[pi].g])];
+    O(()=>'Второй колышек — над трясиной. Струна до него '+K(pi,'item')+' — и по ней, как канатоходец. Оставишь струну пустой — придёт Паутинник и перегрызёт: встань на неё или распутай его',()=>active(pi).pos.z<-25.6,()=>[S2[pi].g])];
   const branch=pi=>O(()=>'Высокая ветка: по пенькам наверх. С ветки брось клубок '+K(pi,'item')+' вниз, к колышку — и съезжайте по струне',()=>active(pi).pos.z<-52.6,()=>[branchMark,S3.g],()=>({kind:active(pi).kind,action:'walk',from:new V3(-5.5,0,-34),to:new V3(-5.5,3,-40)}));
   const fight=pi=>O(()=>'Пень-ворчун в коре: в лоб не пробить. <i class="sg r"></i> Красный — кувырок '+K(pi,'roll')+', окажешься сбоку. Бей сбоку — кора отлетит',()=>arena.cleared,()=>arena.list.map(e=>e.g));
   W.objectives[0]=lane(0).concat([branch(0),
@@ -2225,7 +2303,8 @@ function build12(){
   W.objectives[1]=lane(1).concat([branch(1),
     O('Толстую струну натянет Потап. Проведи по ней Пелагею и Йошу',()=>players[1].heroes.every(h=>h.pos.z<-74),()=>[ST.g,stone.g]),
     fight(1),O('Звено — и дальше, за Звенышком!',()=>false,()=>[endLink.g])]);
-  W.tipZones.push({cond:(pi,h)=>h.pos.y<-0.3,text:pi=>'Плюх! Ряска мелкая — сейчас выберешься на кочку'},
+  W.tipZones.push({cond:(pi,h)=>W.enemies.some(e=>e.kind==='tat'&&e.alive&&e.chew&&hd(e.pos,h.pos)<14),text:pi=>'Паутинник грызёт нить! Встань на струну — и он отступит. Или распутай его, пока грызёт'},
+    {cond:(pi,h)=>h.pos.y<-0.3,text:pi=>'Плюх! Ряска мелкая — сейчас выберешься на кочку'},
     {cond:(pi,h)=>h.hang,text:pi=>'Съезжаешь по струне, повиснув на лапах!'},
     {pi:1,cond:(pi,h)=>h.kind==='pelageya'&&h.pos.y>2.8,text:pi=>'Струна держится, пока не смотаешь её '+K(pi,'item')+'. Шагни на неё с ветки — и съезжай, повиснув на лапах'});
   W.spawns=[[new V3(-5.5,0,4),new V3(-7.5,0,5)],[new V3(5.5,0,4),new V3(7.5,0,5)]];W.startAct=[0,0];
@@ -3161,6 +3240,21 @@ function crab(x,z,zone,o){const e=makeFoe('rak',x,z,Object.assign({leash:5},o||{
     if(!low){e.cd=Math.max(e.cd,0.8);if(e.state==='ready')e.state='idle';}if(e.state==='wind'&&e.stuck)e.slow=Math.min(e.slow,0.7);};
   e.post=(e)=>{if(e.stuck&&(e.state==='idle'||e.state==='recover'))e.body.rotation.z=Math.sin(G.time*9)*0.12;};
   return e;}
+// тягун: угорь колодца — в приливе под гладью неуязвим и смирный; отлив — на мели: бьётся, хватает и тянет к себе, бей сбоку. Не добили за окно — зарылся в ил до новой воды
+function tyagunFoe(x,z,zone,o){const low0=zone.level<=zone.floor+0.4;const e=makeFoe('tyagun',x,z,Object.assign({y:low0?zone.floor:Math.max(zone.floor,zone.level-0.75),leash:5},o||{}));
+  e.zone=zone;e.up=false;e.silt=false;e.upT=0;e.circ=rand(0,6);
+  e.guardAll=()=>!e.up&&e.state!=='broken';e.darkGuard=()=>!e.up;e.guardText='ушёл под воду — нужен отлив!';
+  e.tick=(e,dt)=>{const zz=e.zone,low=zz.level<=zz.floor+0.4;e.guardText=e.silt?'зарылся в ил — прилив, и снова отлив!':'ушёл под воду — нужен отлив!';
+    if(low){if(!e.up&&!e.silt){e.up=true;e.upT=genPath()==='easy'?8:6;SFX.splash();burst(e.pos.clone().add(new V3(0,0.5,0)),0xcff8ff,14,3);floatText(e.pos.clone().add(new V3(0,1.6,0)),'Тягун на мели!','#9fe6ff');e.cd=Math.min(e.cd,0.6);}
+      if(e.up&&e.state!=='stagger'&&e.state!=='broken'&&e.state!=='dying'){e.upT-=dt;if(e.upT<=0){e.up=false;e.silt=true;SFX.water();burst(e.pos.clone().add(new V3(0,0.3,0)),0x6a5a3a,12,2);floatText(e.pos.clone().add(new V3(0,1.4,0)),'Зарылся в ил!','#c8b890');}}}
+    else if(e.up||e.silt){if(e.up){SFX.water();floatText(e.pos.clone().add(new V3(0,1.4,0)),'Ушёл под воду','#9fe6ff');}e.up=false;e.silt=false;}
+    e.sideOpen=e.up;e.spMul=e.up?1:0;if(e.state==='spawn'||e.state==='dying')return;
+    const ty=e.up?zz.floor:e.silt?zz.floor-0.3:Math.max(zz.floor,zz.level-0.75);e.pos.y=damp(e.pos.y,ty,6,dt);e.baseY=ty;
+    if(!e.up){e.cd=Math.max(e.cd,0.8);if(e.state==='ready')e.state='idle';
+      if(!e.silt&&e.state==='idle'){e.circ+=dt*0.8;const tx=clamp(e.home.x+Math.cos(e.circ)*1.8,zz.minx+0.6,zz.maxx-0.6),tz=clamp(e.home.z+Math.sin(e.circ)*1.8,zz.minz+0.6,zz.maxz-0.6),dx=tx-e.pos.x,dz=tz-e.pos.z;
+        e.pos.x+=dx*Math.min(1,dt*1.5);e.pos.z+=dz*Math.min(1,dt*1.5);e.face=angDamp(e.face,Math.atan2(dx,dz),4,dt);}}};
+  e.post=e=>{const L=e.L;L.segs.forEach((sg,i)=>{sg.position.x=Math.sin(G.time*(e.up?9:4)-i*0.9)*0.05*i;});L.fish.rotation.z=e.up&&(e.state==='idle'||e.state==='recover')?Math.sin(G.time*10)*0.25:0;L.fish.position.y=e.silt?0.1:0.4;};
+  return e;}
 // пузырник: надувается три секунды — рогатка Прошки прерывает; не успели — три капли подряд
 function puzyr(x,z,o){const e=makeFoe('puzyr',x,z,Object.assign({leash:5},o||{}));e.inf=0;e.infCd=rand(4,7);const mp=new V3(),mk=markMesh(0.9);mk.visible=false;W.group.add(mk);
   W.marks.push({pos:mp,active:()=>e.alive&&e.inf>0.2&&e.state!=='broken',onHit:()=>{if(!e.alive)return;e.inf=0;e.infCd=rand(6,9);tone(900,0.3,'sine',0.25,200);burst(mp.clone(),0xffe0a0,14,4);
@@ -3883,8 +3977,8 @@ function build25(){
     mL.visible=!F.b1&&L1.level<L1.floor+0.4;mD.visible=!F.dbL&&DL.level<DL.floor+0.4;
     // главный колокол: стычка
     if(!arena.started&&[0,1].some(pi=>active(pi).pos.z<-75.5&&active(pi).pos.y>5)){arena.started=true;SFX.gate();
-      arena.list=[puzyr(-7.2,-80.5,{y:6,leash:4}),puzyr(7.2,-80.5,{y:6,leash:4}),puzyr(-7,-92,{y:6,leash:4}),puzyr(7,-92,{y:6,leash:4}),pike(-3.4,-80.5,MZ,3),pike(3.4,-86,MZ,3),pike(-2,-86.4,MZ,3)];
-      banner('Пузырники и щуки!','#9fd0ff',2.4,'Потап — стена, Пелагея отбивает, Прошка сбивает надувшихся, Йоша гасит сытых');}
+      arena.list=[puzyr(-7.2,-80.5,{y:6,leash:4}),puzyr(7.2,-80.5,{y:6,leash:4}),puzyr(-7,-92,{y:6,leash:4}),puzyr(7,-92,{y:6,leash:4}),pike(-3.4,-80.5,MZ,3),pike(3.4,-86,MZ,3),tyagunFoe(-2.2,-85.6,MZ,{leash:5})];
+      banner('Пузырники, щуки и тягун!','#9fd0ff',2.4,'Потап — стена, Пелагея отбивает, Прошка сбивает надувшихся, Йоша гасит сытых');}
     if(arena.started&&!arena.cleared&&arena.list.every(e=>!e.alive)){arena.cleared=true;arena.hold=1.6;SFX.ok();banner('Отбились!','#ffffff',1.6,'а теперь — главный колокол');}
     if(arena.cleared)arena.hold-=dt;
     // язык колокола: все четверо — и на «ТРИ» прыжок вместе, качаем колокол весом
@@ -3909,6 +4003,7 @@ function build25(){
     prompt(pi,'item',()=>headOf(h()),()=>F.voice==='sunk'&&!linkV.taken&&inZone(GW,h(),0.3)&&GW.state==='high'&&h().pos.y>-1,'отлив — на дно');
     prompt(pi,'item',()=>headOf(h()),()=>F.given===true&&inZone(GW,h(),0.3)&&GW.state==='low'&&h().pos.y<-7,'прилив — наверх');
     prompt(pi,'item',()=>headOf(h()),()=>F.b3&&!F.bom&&arena.cleared&&inZone(MZ,h(),1)&&MZ.state==='low','прилив');
+    prompt(pi,'item',()=>headOf(h()),()=>arena.started&&!arena.cleared&&inZone(MZ,h(),1)&&W.enemies.some(e=>e.alive&&e.kind==='tyagun'&&(MZ.state==='high'?!e.up:e.silt)),'тягун: гусли');
     prompt(pi,'jump',()=>headOf(h()),()=>spots.every(s=>s.hero)&&arena.cleared&&!F.bom&&F.cnt&&F.cnt.t>1.6,'вместе!');
     prompt(pi,'guard',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.help));
     prompt(pi,'attack',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&hd(e.pos,h().pos)<5&&(e.state==='broken'||(e.state==='stagger'&&!e.openHit)||e.flop)),'');}
@@ -3931,10 +4026,11 @@ function build25(){
   const o6=pi=>O(pi?()=>'Двойная звонница: у тебя верхний колокол — прилив '+K(1,'item')+' и удар '+K(1,'attack')+'. У друга нижний. Подряд, за пять секунд!':()=>'Двойная звонница: у тебя нижний колокол — отлив '+K(0,'item')+' и рогатка '+K(0,'skill')+'. У друга верхний. Подряд, за пять секунд!',
     ()=>!!F.b3,()=>pi?[dbR.g]:[mD]);
   const o7=pi=>O('Выше — к главному колоколу!',()=>active(pi).pos.z<-76&&active(pi).pos.y>5,()=>st2.steps.map(s=>s.m));
-  const o8=pi=>O(pi?()=>'Пузырники и щуки! Пелагея отбивает пузыри '+K(1,'guard')+', Йоша гасит сытых живой водой '+K(1,'skill'):()=>'Пузырники и щуки! Потап — широкий щит '+K(0,'guard')+': закрывает тех, кто за спиной. Прошка сбивает надувшихся рогаткой '+K(0,'skill'),()=>arena.cleared,()=>arena.list.filter(e=>e.alive).map(e=>e.g));
+  const o8=pi=>O(pi?()=>'Пузырники и щуки! Пелагея отбивает пузыри '+K(1,'guard')+', Йоша гасит сытых живой водой '+K(1,'skill')+'. Тягуна под водой не достать — отлив '+K(1,'item')+' вытащит его на мель':()=>'Пузырники и щуки! Потап — широкий щит '+K(0,'guard')+': закрывает тех, кто за спиной. Прошка сбивает надувшихся рогаткой '+K(0,'skill')+'. Тягуна под водой не достать — отлив '+K(0,'item')+' вытащит его на мель',()=>arena.cleared,()=>arena.list.filter(e=>e.alive).map(e=>e.g));
   const o9=pi=>O(()=>'Главный колокол звонит на четверых: прилив '+K(pi,'item')+', все четверо — на язык колокола ('+K(pi,'swap')+' и «Ко мне!» '+K(pi,'call')+'). На «ТРИ» — прыжок вместе '+K(pi,'jump'),()=>!!F.bom,()=>[tongue]);
   for(const pi of[0,1])W.objectives[pi]=[o1(pi),o2(pi),o3(pi),o4[pi],o5(pi),o6(pi),o7(pi),o8(pi),o9(pi),O('Китеж звонит…',()=>false,()=>[])];
-  W.tipZones.push({cond:(pi,h)=>h.grounded&&h.groundRef&&h.groundRef.water,text:pi=>'Плывёшь. Отметка колокола — волна на столбе: внизу — отлив, вверху — прилив. Гусли '+K(pi,'item')},
+  W.tipZones.push({cond:(pi,h)=>arena.started&&!arena.cleared&&W.enemies.some(e=>e.alive&&e.kind==='tyagun'&&!e.up&&hd(e.pos,h.pos)<9),text:pi=>W.enemies.some(e=>e.alive&&e.kind==='tyagun'&&e.silt)?'Тягун зарылся в ил: прилив '+K(pi,'item')+' — и снова отлив, он опять всплывёт':'Тягун прячется в воде. Сыграй гусли '+K(pi,'item')+' — отлив вытащит его на мель, бей сбоку'},
+    {cond:(pi,h)=>h.grounded&&h.groundRef&&h.groundRef.water,text:pi=>'Плывёшь. Отметка колокола — волна на столбе: внизу — отлив, вверху — прилив. Гусли '+K(pi,'item')},
     {pi:1,cond:(pi,h)=>F.voice==='ready'&&h.kind==='pelageya',text:pi=>'Над Пелагеей загорелась нотка…'});
   W.spawns=[[new V3(-3,0,5),new V3(-5,0,6)],[new V3(3,0,5),new V3(5,0,6)]];W.startAct=[0,0];
   W.pauseLine='Китеж звонит: каждый колокол звонит, только когда вода стоит на его отметке. С каждой звонницей город поднимается. Главный колокол — на четверых.';
@@ -4254,6 +4350,19 @@ function tuchaFoe(x,z,o){const e=makeFoe('tucha',x,z,Object.assign({leash:6},o||
   e.post=(e,dt)=>{const w=e.state==='wind';e.L.cloud.position.y=2.1+Math.sin(G.time*1.6+e.home.x)*0.15;e.L.mat.color.setHex(e.litNow?0xe8e4f4:w?0x3a3850:0x6a6680);
     e.L.bolt.visible=w&&Math.sin(G.time*40)>0;e.L.mat.emissive.setHex(w?0x3a6aff:0x000000);e.L.mat.emissiveIntensity=w?0.4:0;};
   return e;}
+// двусветный мотылёк: раскрывается, только когда оба героя горят пером рядом с ним; держится между двумя
+function motylekFoe(x,z,o){const e=makeFoe('motylek',x,z,Object.assign({leash:7},o||{}));e.both=false;e.lp=[false,false];e.wasOpen=false;
+  e.guardAll=()=>!e.both&&e.state!=='broken';e.darkGuard=()=>!e.both;e.guardText='нужен свет обоих сразу!';
+  e.tick=(e,dt)=>{const R=genPath()==='easy'?5:4,a=[active(0),active(1)];
+    e.lp=a.map((h,i)=>heroLight(h)&&!players[i].downed&&hd(h.pos,e.pos)<R&&Math.abs(h.pos.y-e.pos.y)<3);e.both=e.lp[0]&&e.lp[1];
+    if(e.both&&!e.wasOpen&&e.state!=='dying'){SFX.flower();floatText(e.pos.clone().add(new V3(0,1.9,0)),'Раскрылся!','#ffe08a');burst(e.pos.clone().add(new V3(0,1.1,0)),0xffe08a,10,2);}e.wasOpen=e.both;
+    if(e.both&&e.state!=='broken'&&e.state!=='dying'&&e.state!=='spawn')e.open=Math.max(e.open,0.2);   // пока оба света держатся — удары проходят
+    const nb=a.filter((h,i)=>!players[i].downed&&hd(h.pos,e.pos)<12&&Math.abs(h.pos.y-e.pos.y)<3);
+    if(nb.length===2&&e.state==='idle'){e.spMul=0;const mx=(nb[0].pos.x+nb[1].pos.x)/2+Math.sin(G.time*1.3+e.home.x)*0.8,mz=(nb[0].pos.z+nb[1].pos.z)/2+Math.cos(G.time*1.7)*0.8,d=Math.hypot(mx-e.pos.x,mz-e.pos.z);
+      if(d>0.3)mMove(e,(mx-e.pos.x)/d,(mz-e.pos.z)/d,e.def.sp*Math.min(1,d),dt);}else e.spMul=1;};   // порхает между двумя
+  e.post=e=>{const L=e.L,op=e.both;L.wings.forEach(w=>{w.wp.rotation.z=w.s*(0.25+Math.sin(G.time*(op?4:12))*(op?0.15:0.55));});
+    L.spots.forEach((m,i)=>{m.emissiveIntensity=e.lp[i]?1.3:0.12;});e.eyeMat.emissiveIntensity=op?1.4+0.4*Math.sin(G.time*10):1;};
+  return e;}
 // ворона-морок: чёрный ключ на нитке; красная хватка
 function voronaFoe(x,z,o){const e=makeFoe('vorona',x,z,Object.assign({leash:9},o||{}));e.post=(e)=>{const fl=e.state==='spawn'||e.flying;e.L.wings.forEach(w=>{w.wp.rotation.z=w.sd*(fl?Math.sin(G.time*18)*0.8:0.15);});e.L.key.rotation.z=Math.sin(G.time*4)*0.3;};return e;}
 // весточка помощника из Сказа 2 работает весь мир 3
@@ -4441,7 +4550,7 @@ function build31(){
     L3.locked=false;L3.g.visible=true;burst(L3.pos.clone(),COL.gold,16,3);if(!F.bowlBark){F.bowlBark=true;later(0.8,()=>bark(T.pelageya,'pelageya','Как выключатель!',2));}}
   // тёмные аллеи
   let arena=null;
-  function spawnAlleys(){F.fight=true;arena=[tenFoe(-6,-133),tenFoe(-8.4,-141),tenFoe(-4.6,-145.5),tenFoe(6,-133),tenFoe(8.4,-141),tenFoe(4.6,-145.5)];
+  function spawnAlleys(){F.fight=true;arena=[tenFoe(-6,-133),tenFoe(-8.4,-141),tenFoe(-4.6,-145.5),tenFoe(6,-133),tenFoe(8.4,-141),tenFoe(4.6,-145.5),motylekFoe(0,-127.4,{leash:6})];
     banner('Тени-мороки!','#c8b0ff',2.4,'в темноте удар проходит насквозь — посвети пером, и бей');
     later(1.2,()=>say('zven','Свет у одного, меч у другого!',2.4,true));}
   W.onFirstUnravel=()=>{later(0.6,()=>bark(T.proshka,'proshka','Бумажная, а кусается!',2));};
@@ -4463,6 +4572,7 @@ function build31(){
     prompt(pi,'item',()=>headOf(h()),()=>{const z=h().pos.z;if(z>-46||z<-66||h().grounded)return false;const n=Math.floor((-46-z)/(20/13));return (Math.floor(n/3)%2?'shadow':'light')!==(h().lit?'light':'shadow');},'в прыжке!');
     prompt(pi,'item',()=>headOf(h()),()=>!T1.revived&&!h().lit&&hd(h().pos,T1.pos)<4,'свет у яблони');
     prompt(pi,'item',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.kind==='ten'&&!e.litNow&&hd(e.pos,h().pos)<4)&&!h().lit,'посвети');
+    prompt(pi,'item',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.kind==='motylek'&&!e.both&&hd(e.pos,h().pos)<5)&&!h().lit,'перо — вместе!');
     prompt(pi,'guard',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.help)||W.bolts.some(b=>b.tgt===h()&&!b.refl&&b.eta<0.8));
     prompt(pi,'attack',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&hd(e.pos,h().pos)<4&&(e.state==='broken'||(e.litNow&&e.state==='stagger'&&!e.openHit))),'');}
   /* ---------- задачи ---------- */
@@ -4476,12 +4586,13 @@ function build31(){
     O(()=>'Серая яблоня: постой рядом с горящим пером три секунды — яблоки засияют',()=>T1.revived||active(pi).pos.z<-78.5,nearT(T1)),
     O(pi?()=>'Две дорожки: свет у одного, тьма у другого. На перекрёстке — по очереди. На острове две чаши: солнце — со светом, звёзды — без света':()=>'Две дорожки: золотая и лиловая. Идите бок о бок — свет у одного, тьма у другого. Встаньте в чаши вдвоём',
       ()=>F.gateOpen,()=>bowls.map(b=>b.g)),
-    O(()=>'Тёмные аллеи: тени-мороки. В темноте удар насквозь — посвети пером '+K(pi,'item')+' и бей '+K(pi,'attack')+'. Горящее перо у оставленного тянет теней к краю круга',()=>F.cleared,()=>arena?arena.filter(e=>e.alive).map(e=>e.g):[]),
+    O(()=>'Тёмные аллеи: тени-мороки. В темноте удар насквозь — посвети пером '+K(pi,'item')+' и бей '+K(pi,'attack')+'. Горящее перо у оставленного тянет теней к краю круга. Двусветный мотылёк раскроется, только если оба зажгут перо рядом с ним',()=>F.cleared,()=>arena?arena.filter(e=>e.alive).map(e=>e.g):[]),
     O('Две яблони у выхода — оживите обе: постойте с горящим пером',()=>F.garden,()=>[T2.g,T3.g]),
     O('Сад ожил! К воротам — звено',()=>false,()=>[L4.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>W.abil.pero&&h.pos.z<-46&&h.pos.z>-66&&h.pos.y>-1,text:pi=>'Чередование! Стоя переключишь — провалишься. Прыжок '+K(pi,'jump')+' и '+K(pi,'item')+' в прыжке — под лапами уже нужный мостик'},
     {cond:(pi,h)=>h.pos.z<-78&&h.pos.z>-104&&Math.abs(h.pos.x)<3,text:pi=>'Перекрёсток: свет друга гасит тенемостки рядом. Пропусти друга — и иди'},
+    {cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='motylek'&&!e.both&&hd(e.pos,h.pos)<8),text:pi=>'Мотылёк раскроется, только если оба зажгут перо '+K(pi,'item')+' рядом с ним одновременно'},
     {cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='ten'&&hd(e.pos,h.pos)<6)&&!h.lit,text:pi=>'Тень плоская — удар насквозь. Зажги перо '+K(pi,'item')+': в свете тень объёмная, её можно бить'});
   W.spawns=[[new V3(-2.6,0,4.4),new V3(-4.4,0,5.6)],[new V3(2.6,0,4.4),new V3(4.4,0,5.6)]];W.startAct=[0,0];
   W.pauseLine='Небесное царство. Перо Жар-птицы: RB зажигает и гасит. Светомостки твёрдые в свете, тенемостки — в темноте. Серые яблони оживают от света, тени-мороки уязвимы только в свете.';
@@ -5353,6 +5464,17 @@ function lizardFoe(x,z,y,o){const e=makeFoe('lizard',x,z,Object.assign({y,leash:
     for(let i=0;i<4;i++)spawnSpark(from.clone().add(new V3(0,1,0)),[COL.gold,0x6ad0ff,0xff6a8a][i%3]);burst(from.clone().add(new V3(0,0.6,0)),0xff6a20,16,4);if(W.onLizard)W.onLizard(e);
     anim(0.6,k=>{e.g.position.set(from.x+k*1.2,from.y+Math.sin(k*Math.PI)*1-k*2,from.z);});later(0.62,()=>{W.group.remove(e.g);const i=W.enemies.indexOf(e);if(i>=0)W.enemies.splice(i,1);});};
   e.post=(e)=>{e.L.tail.rotation.y=Math.sin(G.time*5+e.home.x)*0.4;};return e;}
+// печник: морок-печка — остывший неуязвим; поднеси клещами горячее (или брось вплотную) — разгорится: дверца настежь, бей, пока горит
+function pechnikFoe(x,z,o){o=o||{};const e=makeFoe('pechnik',x,z,Object.assign({leash:8},o));e.fed=0;e.signals=['yellow'];e.spMul=0.8;
+  e.guardAll=()=>e.fed<=0&&e.state!=='broken';e.darkGuard=()=>e.fed<=0;e.guardText='остыл — накорми горячим из клещей!';
+  const feed=it=>{consumeHot(it);e.fed=o.window||(genPath()==='easy'?6.5:5);e.signals=['red','yellow'];e.spMul=1.3;SFX.plate();burst(e.pos.clone().add(new V3(0,1.2,0)),0xffb040,16,3);
+    floatText(e.pos.clone().add(new V3(0,1.9,0)),'Накормили! Горит!','#ffb070');if(W.onPechnik)W.onPechnik(e);};
+  e.tick=(e,dt)=>{if(e.state==='spawn'||e.state==='dying')return;
+    if(e.fed>0){e.fed-=dt;if(e.state!=='broken')e.open=Math.max(e.open,0.2);if(e.fed<=0){e.signals=['yellow'];e.spMul=0.8;SFX.miss();floatText(e.pos.clone().add(new V3(0,1.9,0)),'Остыл!','#c8c8d0');}return;}
+    for(const h of HEROES){const it=heroCarry(h);if(it&&it.heat>0.3&&hd(h.pos,e.pos)<1.8&&Math.abs(h.pos.y-e.pos.y)<1.4){feed(it);return;}}
+    for(const it of W.hots){if(it.gone||it.carrier||it.flying||it.socket||it.heat<=0.3)continue;if(hd(it.pos,e.pos)<1.3&&Math.abs(it.pos.y-e.pos.y)<1.4){feed(it);return;}}};
+  e.post=e=>{const f=e.fed>0,L=e.L;L.slotM.emissiveIntensity=f?0.9+0.5*Math.sin(G.time*8):0.05+0.05*Math.sin(G.time*2);L.doorM.emissiveIntensity=f?1.0+0.3*Math.sin(G.time*11):0.08;};
+  return e;}
 // змеёныш: в борозде с лавой сильный и быстрый, на сухой земле ленивый
 function snakeFoe(x,z,o){const e=makeFoe('zmeenysh',x,z,Object.assign({leash:9},o||{}));
   e.tick=(e,dt)=>{const hot=!!(W.lavaCell&&W.lavaCell(e.pos.x,e.pos.z));e.hot=hot;e.spMul=hot?1.5:0.45;e.guardAll=hot?(()=>e.state!=='broken'):null;e.darkGuard=hot?(()=>true):null;e.guardText='в лаве змеёныш сильный — уведи лаву бороздой!';
@@ -5858,7 +5980,10 @@ function build44(){
   rect(-10,-8,-61,-64,k=>{TT[k]=2;KF[k]|=SRC;showFur(k,true);setLava(k,true);});const crC=crater(-9,-62.5);
   const pitK=[];rect(8,10,-60,-63,k=>{TT[k]=2;KF[k]|=PIT;showFur(k,true);pitK.push(k);});{const pm=addMesh(new THREE.CylinderGeometry(1.1,0.8,0.1,14),M(0x120a08),9,0.03,-61.5);pm.castShadow=false;}
   const pre=[];rect(-8,8,-65,-66,k=>pre.push(k));rect(7,8,-66,-76,k=>pre.push(k));rect(-8,8,-75,-76,k=>pre.push(k));rect(-8,-7,-66,-75,k=>pre.push(k));rect(-7,7,-70,-71,k=>pre.push(k));rect(-8,-7,-64,-65,k=>pre.push(k));
-  pre.forEach(k=>{TT[k]=2;showFur(k,true);setLava(k,true);});bell(0,-60.5);const n5=nutItem(0,0.6,-80),L4=linkItem(-9.2,1.1,-80.6);
+  pre.forEach(k=>{TT[k]=2;showFur(k,true);setLava(k,true);});bell(0,-60.5);
+  // жаровня между бороздами: уголь — корм для печника (в стороне от стока к яме и от лемеха плуга)
+  addMesh(new THREE.CylinderGeometry(0.55,0.35,0.4,10),M(0x3a3a40),-5,0.2,-68);addMesh(new THREE.TorusGeometry(0.52,0.05,6,16),M(0x5a5a62),-5,0.4,-68).rotation.x=Math.PI/2;W.cyls.push({x:-5,z:-68,r:0.55,miny:-1,maxy:0.4,on:true});forgeZone(-5,0.4,-68,0.8);
+  const coal=hotItem('ugol',-5,0.4,-68,{coolable:false,name:'уголь'});const n5=nutItem(0,0.6,-80),L4=linkItem(-9.2,1.1,-80.6);
   /* ---------- течение лавы: фронт растёт по бороздам; если исток соединён с ямой — лава только на пути к яме ---------- */
   const FL={t:0,drainT:0};
   function flowTick(dt){FL.t+=dt;if(FL.t<0.36)return;FL.t=0;const add=[];
@@ -5907,7 +6032,7 @@ function build44(){
   const dots=[];routes.forEach(r=>{for(let i=0;i<r.length-1;i++){const [x0,z0]=r[i],[x1,z1]=r[i+1];const n=Math.ceil(Math.hypot(x1-x0,z1-z0)/0.8);for(let j=0;j<n;j++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.12,6,4),MB(0xe7c3ff,{transparent:true,opacity:0.9}));m.position.set(lerp(x0,x1,j/n),0.35,lerp(z0,z1,j/n));m.visible=false;W.group.add(m);dots.push(m);}}});
   W.onOwl=()=>{if(!F.owlTold){F.owlTold=true;later(0.3,()=>sayP('Вижу, куда лава хочет течь!',2.2));}};
   /* ---------- мороки арены ---------- */
-  let arena=null;function spawnArena(){F.fight=true;arena=[snakeFoe(-3,-65.5),snakeFoe(3,-65.5),snakeFoe(7.5,-70),snakeFoe(-7.5,-72),snakeFoe(0,-75.5),bolvanFoe(0,-70.5,{leash:8})];
+  let arena=null;function spawnArena(){F.fight=true;arena=[snakeFoe(-3,-65.5),snakeFoe(3,-65.5),snakeFoe(7.5,-70),snakeFoe(-7.5,-72),snakeFoe(0,-75.5),bolvanFoe(0,-70.5,{leash:8}),pechnikFoe(2.5,-68,{leash:8})];
     banner('Змеёныши!','#ff9a60',2.4,'в лаве сильные: пропашите борозду от истока в яму — лава уйдёт');later(1.2,()=>sayP('Тут написано… в борозде с лавой они сильные, на сухом — ленивые.',3.4));}
   /* ---------- сюжет ---------- */
   function intro(){const pe=T.pelageya,pr=T.proshka;HEROES.forEach((h,i)=>{placeOnGround(h,-4+i*2,6,0);h.face=Math.PI;});
@@ -5942,6 +6067,7 @@ function build44(){
   for(const pi of[0,1]){const h=()=>active(pi);
     prompt(pi,'item',()=>headOf(h()),()=>!plow.by&&hd(plow.share,h().pos)<2.8&&!G.cine,'за лемех');
     prompt(pi,'item',()=>headOf(h()),()=>plow.by===h(),'отпустить плуг');
+    prompt(pi,'item',()=>headOf(h()),()=>!heroCarry(h())&&!plow.by&&coal.heat>0.3&&!coal.gone&&!coal.carrier&&hd(coal.pos,h().pos)<2.2&&W.enemies.some(e=>e.alive&&e.kind==='pechnik'&&e.fed<=0),'накорми печника');
     prompt(pi,'attack',()=>headOf(h()),()=>h()===Po&&F.doorHeat>=1&&!F.doorOpen&&hd(h().pos,{x:0,z:-57.4})<3,'плечом!');}
   prompt(1,'skill',()=>headOf(Pe),()=>Pe.active&&F.stage!=='end'&&W.owlT<=0&&!F.owlTold,'куда течёт?');
   prompt(1,'skill',()=>headOf(Y),()=>Y.active&&deadWT.active(),'мёртвая вода');
@@ -5951,10 +6077,11 @@ function build44(){
     OR(()=>'Плуг кузнецов: лемех раскалён — клещи '+K(pi,'item')+' у лемеха, и плуг поедет за тобой, оставляя борозду. Ещё раз '+K(pi,'item')+' — отпустить',()=>!!F.plowed,()=>[PL.g],null,'Тут написано… лемех горячий — значит, клещами.'),
     OR(()=>'Доведи лаву из жерла до каменной чаши: пропаши борозду от жерла к чаше. Мостки Потапа не пашутся — лава пройдёт только под каменной аркой. Пелагея '+K(1,'skill')+' — Совиный взор: куда течь',()=>!!F.bowlA,()=>[bowlA],null,'Тут написано… лаву не побеждают, а ведут.'),
     OR(()=>'Чугунная дверь в валу: доведи лаву к её порогу — раскалится. Вышибет Потап — плечом '+K(pi,'attack')+'. (Вторая чаша слева — сундук кузнецов.) Не туда пропахали — Йоша, мёртвая вода '+K(1,'skill'),()=>!!F.doorOpen,()=>[door],null,'Тут написано… чугун от жара мягчеет.'),
-    OR(()=>'Змеёныши в бороздах с лавой! Пропаши борозду от истока в яму справа — лава уйдёт, и они на сухом. Болвана — полить и сорвать латы',()=>!!F.cleared,()=>arena?[...arena.filter(e=>e.alive).map(e=>e.g),new V3(9,0,-61.5)]:[],null,'Тут написано… в борозде с лавой они сильные, на сухом — ленивые.'),
+    OR(()=>'Змеёныши в бороздах с лавой! Пропаши борозду от истока в яму справа — лава уйдёт, и они на сухом. Болвана — полить и сорвать латы. Печник остыл — поднеси ему клещами уголь из жаровни и бей, пока горит',()=>!!F.cleared,()=>arena?[...arena.filter(e=>e.alive).map(e=>e.g),new V3(9,0,-61.5)]:[],null,'Тут написано… в борозде с лавой они сильные, на сухом — ленивые.'),
     O('Светлячки Лешего…',()=>false,()=>[fire[0].m])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
-  W.tipZones.push({cond:(pi,h)=>plow.by===h,text:pi=>'Пашешь: плуг идёт за тобой. Лава потечёт по борозде от жерла. '+K(pi,'item')+' — отпустить'});
+  W.tipZones.push({cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='pechnik'&&e.fed<=0&&hd(e.pos,h.pos)<10),text:(pi,h)=>heroCarry(h)?'Неси горячее печнику — поднеси вплотную или брось рядом':'Печник остыл — удар не пройдёт. Клещи '+K(pi,'item')+' — уголь из жаровни, и поднеси ему'},
+    {cond:(pi,h)=>plow.by===h,text:pi=>'Пашешь: плуг идёт за тобой. Лава потечёт по борозде от жерла. '+K(pi,'item')+' — отпустить'});
   W.spawns=[[new V3(-2.6,0,9),new V3(-4.6,0,10)],[new V3(2.6,0,9),new V3(4.6,0,10)]];W.startAct=[0,0];
   W.pauseLine='Змиевы валы. Клещи за раскалённый лемех — плуг пашет борозду за тобой; лава течёт по бороздам. Мостки не пашутся — под аркой можно. Совиный взор — куда течь. Мёртвая вода — борозда зарастает. Дверь раскаляет лава, вышибает Потап.';
   W.onStart=()=>{later(0.4,intro);};
@@ -6385,6 +6512,20 @@ function mimicSig(e,h,s){const P=players[h.player],hard=P.path==='hard';const L=
     if(!G.flags.mimicTold){G.flags.mimicTold=true;tip(h.player,'Тень переняла твою защиту! Пять одинаковых подряд — и она '+(sig==='red'?'хватает красным: кувырок '+K(h.player,'roll'):'бьёт жёлтым: щит '+K(h.player,'guard'))+'. Чередуй приёмы',3.6);}return sig;}
   return s;}
 function dvoynikFoe(kind,x,z,o){DV_KIND=kind;const e=makeFoe('dvoynik',x,z,Object.assign({leash:9},o||{}));e.pickSig=mimicSig;e.dvKind=kind;return e;}
+// хамелей: перенимает ближайший к себе знак — у клубка обычный, у гуслей плюётся каплями, у пера — тень (нужен свет рядом), у клещей раскалён (нужна вода)
+const HAM_SIG={clew:['yellow'],gusli:['blue'],pero:['yellow'],kleshi:['yellow','red']};
+function hameleyFoe(x,z,o){const e=makeFoe('hameley',x,z,Object.assign({leash:8},o||{}));e.def=Object.assign({},e.def);e.mode='';e.modeT=3;e.wet=false;e.litNow=false;
+  const setMode=(nm,quiet)=>{e.mode=nm;e.wet=false;e.signals=HAM_SIG[nm];e.def.ranged=nm==='gusli';const c=SIGN_COL[nm];e.L.bm.color.setHex(c);e.L.bm.emissive.setHex(c);
+    if(quiet)return;SFX.swap();burst(e.pos.clone().add(new V3(0,0.8,0)),c,12,2);floatText(e.pos.clone().add(new V3(0,1.8,0)),'Хамелей: '+SIGN_NAME[nm]+'!','#'+c.toString(16).padStart(6,'0'));
+    if(!W.flags.hameleyTold){W.flags.hameleyTold=true;for(const pi of[0,1])tip(pi,'Хамелей копирует ближайший знак — его слабость меняется',3.2);}};
+  const nearest=()=>{let best=null,bd=1e9;for(const s of W.signs){if(s.on&&!s.on())continue;const d=hd(s,e.pos)+Math.abs(s.y-e.pos.y)*2;if(d<bd){bd=d;best=s;}}return best?best.item:'clew';};
+  setMode('clew',true);   // выходит обычным — через 3 с перенимает ближайший знак (это и есть подсказка)
+  const shut=()=>(e.mode==='pero'&&!e.litNow)||(e.mode==='kleshi'&&!e.wet);e.guardAll=()=>e.state!=='broken'&&shut();e.darkGuard=shut;
+  e.tick=(e,dt)=>{e.litNow=litAt(e.pos.x,e.pos.y+0.8,e.pos.z);e.guardText=e.mode==='kleshi'?'раскалён — облей водой!':'в темноте насквозь — посвети пером!';
+    if(e.state==='spawn'||e.state==='dying')return;e.modeT-=dt;if(e.modeT<=0){const busy=e.state==='wind'||e.state==='strike'||e.state==='broken';e.modeT=busy?0.5:3;if(!busy){const nm=nearest();if(nm!==e.mode)setMode(nm);}}};
+  e.post=e=>{const m=e.L.bm,dark=e.mode==='pero'&&!e.litNow;m.color.setHex(dark?0x2a2230:SIGN_COL[e.mode]);m.emissiveIntensity=dark?0.04:e.mode==='kleshi'&&!e.wet?0.6+0.3*Math.sin(G.time*7):0.25;};
+  W.waterTargets.push({pos:e.pos,pri:0,active:()=>e.alive&&e.mode==='kleshi'&&!e.wet,onWater:()=>{e.wet=true;SFX.water();burst(e.pos.clone().add(new V3(0,1,0)),0xe8f4ff,14,3);floatText(e.pos.clone().add(new V3(0,1.6,0)),'Пш-ш! Остыл','#cfe8ff');}});
+  return e;}
 /* ---------- модели Буяна ---------- */
 function makeAlatyr(x,z){const g=new THREE.Group();g.position.set(x,0,z);W.group.add(g);const st=M(0xf4f0e6,{emissive:0x302a20,emissiveIntensity:0.15});
   const b=addMesh(new THREE.DodecahedronGeometry(1.6,1),st,0,1.0,0,g);b.scale.set(1.5,0.8,1.1);const runes=[];
@@ -6482,7 +6623,9 @@ function build51(){
     const hol=new THREE.Mesh(new THREE.CircleGeometry(1.7,20),MB(0x140e0a));hol.position.set(-9.95,1.6,-14);hol.rotation.y=Math.PI/2;hol.scale.set(1,1.3,1);W.group.add(hol);}
   const toys=makeToys();toys.g.position.set(-8.6,0,-14);toys.g.rotation.y=Math.PI/2;const kid=makeKidBook();kid.g.position.set(-8.4,0.02,-12.8);kid.g.rotation.y=0.3;
   const L1=linkItem(-8.6,1.0,-15.6);
-  const meadowFoes=[pugaloFoe(-3,-9),pugaloFoe(4.5,-12)];
+  // знаки на лугу: хамелей перенимает ближайший — у пера (свети) или у гуслей (капли); дальше к корням — клубок
+  signMark(7.5,0,-7,'pero',{r:4,keep:14});signMark(-5,0,-5,'gusli',{r:4});
+  const meadowFoes=[hameleyFoe(1,-10,{leash:7}),pugaloFoe(4.5,-12)];
   /* ---------- ярус клубка: колышки крест-накрест, паутинка — наверх ---------- */
   ground(-10,10,-64,-30,3.4,mossM,barkM);wall(10,10.2,-64,-30);
   signMark(-2,0,-23,'clew');
@@ -6646,6 +6789,7 @@ function build51(){
     prompt(pi,'item',()=>headOf(h()),()=>!G.cine&&(signNear(h())||{}).item==='clew'&&h().pos.y<1&&RG.some(r=>r.pi===pi&&hd(r,h().pos)<1.2),'клубок к колышку');
     prompt(pi,'item',()=>headOf(h()),()=>!G.cine&&(signNear(h())||{}).item==='gusli'&&well.state==='low'&&inWellZone(h()),'гусли: прилив');
     prompt(pi,'item',()=>headOf(h()),()=>!G.cine&&(signNear(h())||{}).item==='pero'&&!h().lit&&pi===0&&h().pos.z>-71,'перо: свет');
+    prompt(pi,'item',()=>headOf(h()),()=>!G.cine&&pi===1&&(signNear(h())||{}).item==='pero'&&!h().lit&&h().pos.z>-30&&meadowFoes[0].alive,'перо: свет');
     prompt(pi,'item',()=>headOf(h()),()=>!G.cine&&W.hots.some(it=>!it.gone&&!it.carrier&&it.heat>0.1&&hd(it.pos,h().pos)<1.8)&&!heroCarry(h()),'взять ключ клещами');
     prompt(pi,'item',()=>headOf(h()),()=>{const it=heroCarry(h());return !G.cine&&!!it&&hd(h().pos,lk4)<2.6;},'в скважину');
     prompt(pi,'jump',()=>headOf(h()),()=>!G.cine&&W.webs.some(w=>Math.hypot(w.x-h().pos.x,w.z-h().pos.z)<2.2&&Math.abs(w.y-h().pos.y)<1),'на паутинку');
@@ -6661,7 +6805,7 @@ function build51(){
   const OR=(text,done,targets,ghost,read)=>{const o=O(text,done,targets,ghost);o.read=read;return o;};
   const mk=pi=>[
     OR('Буян…',()=>F.stage!=='intro'&&F.stage!=='introCine',()=>[alatyr.g]),
-    OR(()=>'Пугала-стражи Кощея! Распутайте их: защита — щит или отбив, погасли угольки — удар '+K(pi,'attack'),()=>F.meadowClear,()=>meadowFoes.filter(e=>e.alive).map(e=>e.g),null,'Тут написано… пугала-стражи. Распутываем, как всегда.'),
+    OR(()=>'Пугала-стражи Кощея! Распутайте их: защита — щит или отбив, погасли угольки — удар '+K(pi,'attack')+'. Хамелей перенимает ближайший знак: у пера — посвети '+K(pi,'item')+', у гуслей — отбивай капли',()=>F.meadowClear,()=>meadowFoes.filter(e=>e.alive).map(e=>e.g),null,'Тут написано… пугала-стражи. Распутываем, как всегда.'),
     OR('В дупле у корней что-то лежит…',()=>F.hollow,()=>[toys.g],null,'Тут написано… дупло. В нём — мешок.'),
     OR(()=>'Ярус клубка. Встань в своё кольцо и брось клубок '+K(pi,'item')+' к колышку: две струны крест-накрест — паутинка. Прыжок с неё — наверх',()=>HEROES.some(h=>h.active&&h.pos.y>3&&h.pos.z<-29.5),()=>[RG[pi].g],null,'Тут написано… колышки, паутинка, а медведь взлетает.'),
     OR(()=>'Замок на цепи сундука: удар '+K(pi,'attack')+' у замка',()=>lk1.open,()=>[lk1.g],null,'Тут написано… четыре цепи, на каждой замок со своим знаком.'),
@@ -6675,6 +6819,7 @@ function build51(){
     OR(()=>'В шкурах — к дубу, к подножию корня! Внутри отары Лихо не видит, идём только шагом. Лихо сбилось со счёта — перебегай ко второй отаре',()=>F.stage==='end',()=>[flockB.list[0].m.g],null,'Тут написано… Лихо считать не умеет.'),
     O('Сундук…',()=>false,()=>[])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
+  W.tipZones.push({cond:(pi,h)=>meadowFoes[0].alive&&meadowFoes[0].mode==='pero'&&!meadowFoes[0].litNow&&hd(meadowFoes[0].pos,h.pos)<8,text:pi=>'Хамелей у знака пера — стал тенью: в темноте насквозь. Встань на знак пера и зажги его '+K(pi,'item')});
   W.tipZones.push({cond:(pi,h)=>!!heroCarry(h),text:pi=>'Несёшь горячий ключ: '+K(pi,'item')+' — вставить. Остынет — снова в горн'});
   W.tipZones.push({cond:(pi,h)=>!!h.skin&&!h.inFlock,text:pi=>'Ты вне отары — Лихо увидит! Назад в стадо или жди, пока оно собьётся со счёта'});
   W.spawns=[[new V3(-2.4,0,11),new V3(-4.4,0,12)],[new V3(2.4,0,11),new V3(4.4,0,12)]];W.startAct=[0,0];
