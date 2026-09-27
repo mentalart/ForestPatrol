@@ -246,6 +246,16 @@ kbd{display:inline-block;min-width:18px;padding:0 7px;border-radius:6px;backgrou
 #skip .bar{width:70px;height:6px;border-radius:3px;background:rgba(255,255,255,.2);overflow:hidden}#skip .bar i{display:block;height:100%;width:0;background:var(--gold)}
 #stitch{position:absolute;inset:10px;border:5px dashed var(--gold);border-radius:18px;opacity:0;box-shadow:inset 0 0 40px rgba(255,201,60,.45)}
 #fade{position:absolute;inset:0;background:#0b0f16;opacity:0}
+#rtrans{position:absolute;inset:0;display:none;overflow:hidden;z-index:30}
+#rtrans .rth{position:absolute;top:-4%;bottom:-4%;width:52%;background-size:100% 100%;box-shadow:0 0 40px rgba(0,0,0,.45)}
+#rtrans .rtl{left:0}#rtrans .rtr{right:0}
+#rtrans .rtm{position:absolute;left:50%;top:50%;width:min(86vw,560px);padding:22px 26px 26px;border-radius:22px;background:#f6eed8;border:5px double #a81c12;box-shadow:0 10px 40px rgba(0,0,0,.45),inset 0 0 0 3px #e0b040;text-align:center;font-family:Georgia,serif}
+#rtrans .rtm:before,#rtrans .rtm:after{content:'';position:absolute;left:14px;right:14px;height:10px;background:repeating-linear-gradient(45deg,#a81c12 0 6px,transparent 6px 12px),repeating-linear-gradient(-45deg,#a81c12 0 6px,transparent 6px 12px)}
+#rtrans .rtm:before{top:8px}#rtrans .rtm:after{bottom:8px}
+#rtrans .rtw{font:700 16px system-ui;letter-spacing:.08em;color:#8a5a20;margin:8px 0 6px;text-transform:uppercase}
+#rtrans .rtt{position:relative;display:inline-block;font-weight:700;font-size:clamp(22px,3.6vw,34px);color:#7a1a10;line-height:1.2}
+#rtrans .rtt i{position:absolute;bottom:-6px;width:3px;height:30px;background:linear-gradient(#f4f4f8,#8a8a94);border-radius:2px;transform:rotate(28deg);box-shadow:-18px 12px 0 -1px #c02a1a}
+#rtrans .rts{position:absolute;width:7px;height:7px;border-radius:50%;background:#ffd76a;box-shadow:0 0 10px #ffd76a}
 #flash{position:absolute;inset:0;background:#fff6d8;opacity:0}
 #menu{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(8,12,18,.8);pointer-events:auto}
 #menu.hide{display:none}
@@ -1076,12 +1086,12 @@ function updateLeftBehind(p,o,dt){const h=active(p.i);if(W.gaze&&o.firefly>0)o.f
     else moveHero(o,dt,0,0,0);
     const real=o.px===undefined?9:Math.hypot(o.pos.x-o.px,o.pos.z-o.pz)/Math.max(dt,1e-3);o.px=o.pos.x;o.pz=o.pos.z;  // реальная скорость: упёрся в стену — «застрял»
     if(d>1.6&&real<0.7)o.stuck+=dt;else o.stuck=Math.max(0,o.stuck-dt);
-    if((o.stuck>2.5||d>26)&&!pathBlocked(o.pos,h.pos)){const far=d>4;teleportBehind(o,h);if(far){G.stats.carries++;floatText(o.pos.clone().add(new V3(0,o.d.height+0.6,0)),(W.world===4||W.vestPull?'Весточка подтянула!':'Звенышко подтянуло!'),'#ffd76a');}}
-    else if(o.stuck>2.5&&!o.warned){o.warned=true;tip(p.i,'Второй герой не может пройти. Открой ему дорогу!',2.2);}
+    if((o.stuck>2.5||d>26)&&!pathBlocked(o.pos,h.pos)&&!(W.pullMax&&d>W.pullMax)){const far=d>4;teleportBehind(o,h);if(far){G.stats.carries++;floatText(o.pos.clone().add(new V3(0,o.d.height+0.6,0)),(W.world===4||W.vestPull?'Весточка подтянула!':'Звенышко подтянуло!'),'#ffd76a');}}
+    else if(o.stuck>2.5&&!o.warned){o.warned=true;tip(p.i,W.leftTip?W.leftTip(p.i,o):'Второй герой не может пройти. Открой ему дорогу!',W.leftTip?3.6:2.2);}
     if(o.stuck<0.5)o.warned=false;}
   else{if(!(o.tossT>0))moveHero(o,dt,0,0,0);o.px=undefined;
     // отстал больше чем на 30 м и ничего не держит — подсказчик переносит его к управляемому
-    if(!G.cine&&!G.trans&&!o.held&&!h.cling&&h.grounded&&hd(o.pos,h.pos)>30&&!pathBlocked(o.pos,h.pos)){teleportBehind(o,h);G.stats.carries++;floatText(o.pos.clone().add(new V3(0,o.d.height+0.6,0)),(W.world===4||W.vestPull?'Весточка подтянула!':'Звенышко подтянуло!'),'#ffd76a');}}}
+    if(!G.cine&&!G.trans&&!o.held&&!h.cling&&h.grounded&&!W.pullMax&&hd(o.pos,h.pos)>30&&!pathBlocked(o.pos,h.pos)){teleportBehind(o,h);G.stats.carries++;floatText(o.pos.clone().add(new V3(0,o.d.height+0.6,0)),(W.world===4||W.vestPull?'Весточка подтянула!':'Звенышко подтянуло!'),'#ffd76a');}}}
 /* «Держись за меня»: герой цепляется за героя напарника до следующего колокольчика */
 function startCling(pi,h){const c=active(1-pi);players[pi].clingOffer=false;if(c.cling)return;h.cling=true;h.clingBell=players[pi].cpBell;G.stats.clings++;SFX.ok();
   floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Держусь!',PCSS[pi]);tip(pi,'Держишься за друга до следующего колокольчика',2.6);tip(1-pi,'Друг держится за тебя — донеси до колокольчика!',2.6);}
@@ -1874,8 +1884,8 @@ const iconEls=[];for(let i=0;i<8;i++){const d=document.createElement('div');d.cl
 const floats=[];
 function floatText(pos,text,color){const els=[0,1].map(()=>{const d=document.createElement('div');d.className='float';d.textContent=text;d.style.color=color||'#fff';$('floats').appendChild(d);return d;});floats.push({p:pos.clone(),t:0,life:1.3,els});
   if(floats.length>24){const f=floats.shift();f.els.forEach(e=>e.remove());}}
-let bannerT=0;function banner(text,color,dur,sub){const b=$('banner');b.innerHTML=text+(sub?'<small>'+sub+'</small>':'');b.style.color=color||'#fff';b.style.opacity=1;bannerT=dur||1.5;}
-function tip(pi,html,dur){players[pi].tipHTML=html;players[pi].tipT=dur||2;}
+let bannerT=0;function banner(text,color,dur,sub){const b=$('banner');b.innerHTML=text+(sub?'<small>'+sub+'</small>':'');b.style.color=color||'#fff';b.style.opacity=1;bannerT=(dur||1.5)*(W&&W.tipMul||1);}
+function tip(pi,html,dur){players[pi].tipHTML=html;players[pi].tipT=(dur||2)*(W&&W.tipMul||1);}
 // Субтитры (отключаемы). Голос — placeholder-бормотание
 const WHO={likho:['Лихо','#c8a878'],tishka:['Тишка','#f2b36a'],proshka:['Прошка','#ff9a66'],potap:['Потап','#e0b27a'],pelageya:['Пелагея','#d7a6ec'],yosha:['Йоша','#8fe0d4'],zven:['Звенышко','#ffd76a'],kot:['Кот Учёный','#d2d8e8'],yaga:['Баба Яга','#e08a8a'],kiki:['Кикимора','#a8c090'],leshy:['Леший','#b8e070'],
   kolobok:['Колобок','#f0c050'],vek:['Векша','#f0a060'],kuzma:['Кузьма','#c8c8d0'],koschei:['Кощей','#a0ffb8'],sadko:['Садко','#f0b060'],vod:['Водяной','#7ad0a0'],starik:['Старик','#e0d8c8'],rybka:['Золотая рыбка','#ffd23a'],zhar:['Жар-птица','#ffb040'],sirin:['Сирин','#a8a0f0'],alkonost:['Алконост','#ffb070'],solovei:['Соловей-Разбойник','#d8b070'],kuzst:['Кузьма-старший','#d8c8b0'],demyan:['Демьян','#e8905a'],gorL:['Левая голова','#9ad07a'],gorM:['Средняя голова','#d8e060'],gorR:['Правая голова','#e0b060'],pechka:['Печка','#f0e4d4'],yablonka:['Яблонька','#b8e070'],rechka:['Молочная речка','#f4f0ff'],all:['Все','#ffffff'],dedka:['Дедка','#e8d8b0']};
@@ -6426,7 +6436,7 @@ function makeGorynych(){const g=new THREE.Group();W.group.add(g);const sk=M(0x4a
   return {g,wings,tail,necks};}
 
 /* ============================== МИР 4 · ОГНЕННАЯ СМОРОДИНА · 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА» ============================== */
-// ввод клещей · мир без Звенышка: подсказки читает Пелагея · Прошка куёт сам: удары в такт, мехи Пелагеи, закалка Йоши — втроём
+// ввод клещей · мир без Звенышка: подсказки читает Пелагея · ковка по станциям 1-2-3-4: мехи Пелагеи → удары Прошки → клещи сами летят в корыто → закалка Йоши → стойка
 // горячее открывает двери: слиток на холодную плиту, уголь в печь подъёмника, гвоздь в щель ворот · чугунные болваны: полить, сорвать латы, бить
 function ironGate(minx,maxx,z,h){const g=new THREE.Group();g.position.set((minx+maxx)/2,0,z);W.group.add(g);const im=M(0x3a3a44);const w=maxx-minx;
   for(let i=0;i<=Math.round(w/0.5);i++)addMesh(new THREE.BoxGeometry(0.09,h,0.09),im,-w/2+i*0.5,h/2,0,g);for(const y of[0.3,h/2,h-0.3])addMesh(new THREE.BoxGeometry(w,0.1,0.12),im,0,y,0,g);
@@ -6439,7 +6449,7 @@ function build41(){
   ground(-11,11,-6,10,0,M(0x5a4a40));lavaZone(11,40,-70,20,-1.2);lavaZone(-40,-11,-70,20,-1.2);for(let z=16;z>-66;z-=rand(3,5))for(const s of[-1,1])addMesh(new THREE.DodecahedronGeometry(rand(0.8,1.6)),M(0x3a2e2a),s*rand(12,16),-0.6,z);
   wall(-11.2,-11,-66,10);wall(11,11.2,-66,10);wall(-11.2,11.2,10,10.2);const n1=nutItem(9.4,0.6,6.4);
   const Z=makeVestZ(helperOf(3));W.zven=Z;Z.pos.set(0,2.4,4);bell(-3.5,6);
-  /* ---------- Б. кузня: горн, мехи, наковальня, корыто, каменные кузнецы ---------- */
+  /* ---------- Б. кузня: горн, мехи, наковальня, корыто, стойка для клещей, каменные кузнецы ---------- */
   const km=W.group.children.length;ground(-11,11,-60,-6,0,floorM);
   box(-11,-3,0,6,-6.4,-6,wallM);box(3,11,0,6,-6.4,-6,wallM);box(-3,3,4.2,6,-6.4,-6,wallM,{solid:false});fadeable(since(km));
   const forge=makeForge(-5.2,-15.6,0);colBox(-6.3,-4.1,0,1.1,-16.4,-14.8,true);forgeZone(-5.2,1.1,-15.6,1.3);
@@ -6451,6 +6461,24 @@ function build41(){
   for(let i=0;i<6;i++){const t=addMesh(new THREE.BoxGeometry(0.08,0.9,0.3),M(0x55555e),10.9,1.8+(i%2)*0.3,-10-i*1.6);t.rotation.z=0.3;}
   const hl=new THREE.PointLight(0xff8040,0.9,18,2);hl.position.set(0,5,-15);W.group.add(hl);
   const L1=linkItem(0,1.8,-14);L1.locked=true;L1.g.visible=false;const n2=nutItem(-9.6,0.6,-8);
+  // вывески станций «что за чем»: 1 мехи → 2 наковальня → 3 корыто → 4 стойка
+  const signBoard=(x,z,txt,col,ry)=>{const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry||0;W.group.add(g);addMesh(new THREE.CylinderGeometry(0.06,0.07,2.2,6),wood,0,1.1,0,g);
+    const b=new THREE.Mesh(new THREE.PlaneGeometry(1.9,0.62),new THREE.MeshBasicMaterial({map:scratchTex(txt,420,136,'#fff4dc',col)}));b.position.set(0,2.2,0.05);g.add(b);return g;};
+  signBoard(-8.8,-12.3,'1 · МЕХИ','#8a3a1a',0.5);signBoard(-1.9,-11.9,'2 · КУЁМ','#6a4a1a',0);signBoard(6.3,-12.2,'3 · ЗАКАЛКА','#1a4a6a',-0.4);signBoard(9.0,-15.0,'4 · ГОТОВО','#3a5a2a',-0.9);
+  // стрелки на полу: мехи → горн → наковальня → корыто → стойка
+  const arrowGeo=(()=>{const s=new THREE.Shape();s.moveTo(-0.22,-0.2);s.lineTo(0.26,0);s.lineTo(-0.22,0.2);s.lineTo(-0.1,0);s.lineTo(-0.22,-0.2);return new THREE.ShapeGeometry(s);})();
+  const ARW=[[[-6.6,-14.4],[-5.8,-15.0]],[[-3.8,-15.1],[-0.9,-14.3]],[[1.1,-14.1],[3.5,-14.2]],[[5.7,-14.6],[7.6,-16.2]]].map((seg,si)=>{const out=[];const[a,b]=seg,n=si===1||si===2?3:2;
+    for(let i=0;i<n;i++){const u=(i+0.5)/n,x=lerp(a[0],b[0],u),z=lerp(a[1],b[1],u);const m=new THREE.Mesh(arrowGeo,MB(0xffc860,{transparent:true,opacity:0.5,depthWrite:false}));m.rotation.x=-Math.PI/2;m.rotation.z=Math.atan2(-(b[1]-a[1]),b[0]-a[0]);m.position.set(x,0.05,z);m.renderOrder=2;W.group.add(m);out.push(m);}return out;});
+  // стойка для готовых клещей: четыре крючка с тенями-силуэтами
+  const rack=new THREE.Group();rack.position.set(8.2,0,-16.9);rack.rotation.y=-0.9;W.group.add(rack);for(const s of[-1,1])addMesh(new THREE.BoxGeometry(0.14,2.2,0.14),wood,s*1.1,1.1,0,rack);addMesh(new THREE.BoxGeometry(2.5,0.14,0.16),wood,0,2.0,0,rack);
+  const rackSlots=[0,1,2,3].map(i=>{const g=new THREE.Group();g.position.set(-0.78+i*0.52,1.45,0.1);g.rotation.z=Math.PI/2;g.rotation.y=Math.PI/2;rack.add(g);const L=hotLook('kleshi',g);L.m.color.setHex(0x2a2a30);L.m.emissiveIntensity=0;L.m.transparent=true;L.m.opacity=0.35;return {g,m:L.m,on:false};});
+  W.cyls.push({x:8.2,z:-16.9,r:1.0,miny:-1,maxy:2.2,on:true});
+  // шкала жара над горном и счётчик ударов над наковальней
+  const bar=(x,y,z,col)=>{const g=new THREE.Group();g.position.set(x,y,z);W.group.add(g);const bg=new THREE.Mesh(new THREE.PlaneGeometry(1.7,0.24),MB(0x1a1010,{transparent:true,opacity:0.75,depthWrite:false}));g.add(bg);
+    const fl=new THREE.Mesh(new THREE.PlaneGeometry(1.6,0.16),MB(col,{depthWrite:false}));fl.position.z=0.01;g.add(fl);bg.renderOrder=5;fl.renderOrder=6;return {g,fl};};
+  const heatBar=bar(-5.2,3.9,-15.6,0xff7a20);
+  const pips=[];{const g=new THREE.Group();g.position.set(0,2.5,-14);W.group.add(g);for(let i=0;i<7;i++){const m=addMesh(new THREE.SphereGeometry(0.1,10,8),M(0x3a3028,{emissive:0xffc040,emissiveIntensity:0}),-0.6+i*0.2,0,0,g);pips.push(m);}}
+  const stepRing=new THREE.Mesh(new THREE.TorusGeometry(1.25,0.07,6,32),MB(COL.gold,{transparent:true,opacity:0.85}));stepRing.rotation.x=Math.PI/2;stepRing.position.y=0.07;W.group.add(stepRing);stepRing.visible=false;
   /* ---------- В. двери жаром: слиток на холодную плиту, уголь в печь подъёмника, гвоздь в щель ворот ---------- */
   box(-11,-1.6,0,6,-26.2,-25.8,wallM);box(1.6,11,0,6,-26.2,-25.8,wallM);const gate1=ironGate(-1.6,1.6,-26,3.2);
   const slitok=hotItem('slitok',-6.0,1.12,-15.1,{name:'slitok'});const ugol=hotItem('ugol',-5.2,1.12,-15.4,{name:'ugol'});
@@ -6472,33 +6500,109 @@ function build41(){
   W.linkTotal++;   // четвёртое отдаст Демьян
   const L3=linkItem(-9.4,1.1,-58),n4=nutItem(9.6,0.6,-58.6),n5=nutItem(-9.6,0.6,-44);bell(0,-44.5);
   const master=makeForge(0,-58.4,0,{});colBox(-1.1,1.1,0,1.1,-59.2,-57.6,true);master.coalM.emissiveIntensity=0.05;master.fire.intensity=0;
-  hotSocket(0,1.15,-57.4,{r:1.3,active:()=>F.cleared&&!F.lit,accept:it=>it.kind==='ugol'||it.kind==='slitok',onPut:(it)=>{consumeHot(it);F.lit=true;anim(1.4,k=>{master.coalM.emissiveIntensity=k*1.2;master.fire.intensity=k*1.6;});later(1.2,endScene);}});
+  hotSocket(0,1.15,-57.4,{r:1.3,active:()=>F.cleared&&!F.lit,accept:it=>it.kind==='ugol'||it.kind==='slitok',onPut:(it)=>{consumeHot(it);F.lit=true;anim(1.4,k=>{master.coalM.emissiveIntensity=k*1.2;master.fire.intensity=k*1.6;});later(1.4,startRuki);}});
   let arena=null;function spawnGolems(){F.fight=true;arena=[bolvanFoe(-4,-50),bolvanFoe(4,-51),bolvanFoe(0,-55)];banner('Чугунные болваны!','#ff9a60',2.4,'латы горячие: Йоша поливает — латы темнеют, клещами сорви нагрудник — и бей');
     later(1.4,()=>sayP('Тут написано… по горячим латам не бей. Полей — и сними, как крышку с кастрюли.',3.6));}
   W.onArmorOff=(e,h)=>{if(!F.armorTold){F.armorTold=true;later(0.4,()=>bark(h,h.kind,h.kind==='proshka'?'Как крышку с кастрюли!':'Долой!',1.8));}};
-  /* ---------- ковка: удары в такт (Игрок 1), мехи (Пелагея), закалка (Йоша) ---------- */
-  const FG={t:0,k:-1,heat:0.5,prog:0,made:0,queue:0,done:0,B:0.75,need:7,total:4};W.FG=FG;
+  /* ---------- ковка клещей: 1 мехи (Пелагея) → 2 удары в такт (Прошка) → 3 закалка (Йоша) → 4 на стойку ---------- */
+  const FG={t:0,k:-1,heat:0.5,prog:0,made:0,queue:0,done:0,B:0.75,need:7,total:4,waitT:0,autoT:0,nagT:0};W.FG=FG;
+  const TROUGH=new V3(4.6,0,-14.2);
   const ring=new THREE.Mesh(new THREE.TorusGeometry(1,0.05,6,32),MB(COL.yellow,{transparent:true,opacity:0.9}));ring.rotation.x=Math.PI/2;ring.visible=false;W.group.add(ring);
-  const ready=[];for(let i=0;i<4;i++){const g=new THREE.Group();hotLook('kleshi',g);g.position.set(4.2+i*0.3,0.9,-14.2);g.visible=false;W.group.add(g);ready.push(g);}
-  W.waterTargets.push({pos:new V3(4.6,0,-14.2),active:()=>F.stage==='forge'&&FG.queue>0,onWater:()=>{FG.queue--;FG.done++;SFX.water();burst(new V3(4.6,1,-14.2),0xe8f4ff,16,3);floatText(new V3(4.6,1.8,-14.2),'Пш-ш-ш! Клещи '+FG.done+' / '+FG.total,'#cfe8ff');}});
-  function startForge(){F.stage='forge';FG.t=-2*FG.B;FG.k=-3;ring.visible=true;banner('Куём клещи!','#ffd76a',2.6,'Прошка бьёт молотом '+K(0,'attack')+' в такт · Пелагея прыгает на рычаг мехов · Йоша закаляет '+K(1,'skill'));}
+  // готовые клещи: сначала летят с наковальни в корыто и шипят там, после закалки — на стойку
+  const inTrough=[];for(let i=0;i<4;i++){const g=new THREE.Group();const L=hotLook('kleshi',g);g.visible=false;W.group.add(g);inTrough.push({g,m:L.m});}
+  function flyToTrough(i){const q=inTrough[i];q.g.visible=true;q.m.color.setHex(0xff7a20);q.m.emissiveIntensity=1;const from=new V3(0,1.35,-14),to=new V3(4.2+(i%3)*0.35,0.66,-14.2+(i%2?0.12:-0.12));
+    SFX.swish();anim(0.8,k=>{q.g.position.lerpVectors(from,to,k);q.g.position.y+=Math.sin(k*Math.PI)*1.6;q.g.rotation.y+=0.3;if(k>=1){SFX.water();burst(to.clone().add(new V3(0,0.3,0)),0xe8f4ff,8,2);floatText(to.clone().add(new V3(0,0.9,0)),'В корыто!','#ffd9a0');}});}
+  function temper(auto){if(FG.queue<=0)return;const i=FG.done;FG.queue--;FG.done++;SFX.water();burst(new V3(4.6,1,-14.2),0xe8f4ff,22,4);for(let k=0;k<6;k++)later(k*0.12,()=>burst(new V3(4.6+rand(-0.5,0.5),0.9,-14.2),0xffffff,3,2,1.4));
+    floatText(new V3(4.6,1.9,-14.2),(auto?'Йоша сам полил! ':'Пш-ш-ш! ')+'Клещи '+FG.done+' / '+FG.total,'#cfe8ff');const q=inTrough[i],sl=rackSlots[i];q.m.color.setHex(0x3e3c44);q.m.emissiveIntensity=0;
+    const from=q.g.position.clone(),to=new V3();sl.g.getWorldPosition(to);anim(0.9,k=>{q.g.position.lerpVectors(from,to,smooth(k));q.g.position.y+=Math.sin(k*Math.PI)*1.2;if(k>=1){q.g.visible=false;sl.on=true;sl.m.color.setHex(0x55555e);sl.m.opacity=1;sl.m.transparent=false;SFX.plate();}});FG.waitT=0;FG.autoT=0;}
+  W.waterTargets.push({pos:TROUGH,pri:3,active:()=>F.stage==='forge'&&FG.queue>0,onWater:()=>temper(false)});
+  function startForge(){F.stage='forge';FG.t=-2*FG.B;FG.k=-3;ring.visible=true;stepRing.visible=true;banner('Куём клещи!','#ffd76a',3,'1 · Пелагея прыгает на рычаг мехов · 2 · Прошка бьёт молотом '+K(0,'attack')+' в такт · 3 · Йоша поливает корыто '+K(1,'skill'));}
   function strike(ok){const pr=T.proshka;pr.atkT=0.28;pr.face=Math.atan2(0-pr.pos.x,-14-pr.pos.z);const hk=FG.heat>0.3?1:0.5;FG.prog+=(ok?1.3:1)*hk;
     later(0.06,()=>{SFX.hammer();tone(ok?2600:1700,ok?0.5:0.25,'triangle',ok?0.24:0.12);burst(new V3(0,1.35,-14),ok?0xffe060:0xffa040,ok?18:6,ok?5:2);blank.material.emissiveIntensity=1.6;floatText(new V3(0,2.1,-14),ok?'Дзинь!':'тук',ok?'#ffe36b':'#e0c0a0');});
-    if(FG.heat<=0.3&&!FG.coldTold){FG.coldTold=true;sayP('Тут написано… горн остыл — мехи качай!',2.4);}
-    if(FG.prog>=FG.need){FG.prog=0;FG.made++;FG.queue++;SFX.ok();floatText(new V3(0,2.6,-14),'Клещи готовы — в закалку!','#ffd76a');ready[FG.made-1].visible=true;if(FG.made===1)later(0.6,()=>sayP('Йоша, в корыто их — пш-ш-ш!',2.2));}}
+    if(FG.heat<=0.3&&!FG.coldTold){FG.coldTold=true;sayP('Тут написано… горн остыл — Пелагея, прыгай на рычаг мехов!',2.8);}
+    if(FG.prog>=FG.need){FG.prog=0;FG.made++;FG.queue++;SFX.ok();floatText(new V3(0,2.9,-14),'Клещи готовы — летят в корыто!','#ffd76a');flyToTrough(FG.made-1);
+      if(FG.made===1)later(0.9,()=>sayP('Йоша, клещи в корыте! Полей их живой водой — пш-ш-ш!',3));}}
   function forgeTick(dt){FG.t+=dt;const k=Math.floor(FG.t/FG.B+1e-6);while(FG.k<k){FG.k++;if(FG.k<0)tone(1760,0.05,'square',0.05);else tone(880,0.04,'square',0.03);}
-    const u=((FG.t%FG.B)+FG.B)%FG.B/FG.B;ring.position.set(0,1.32,-14);ring.scale.setScalar(lerp(1.6,0.3,u));ring.material.color.setHex(u>0.8?0xffffff:COL.yellow);
+    const u=((FG.t%FG.B)+FG.B)%FG.B/FG.B;ring.position.set(0,1.32,-14);ring.scale.setScalar(lerp(1.6,0.3,u));ring.material.color.setHex(u>0.8?0xffffff:COL.yellow);ring.visible=FG.made<FG.total;
     const pr=T.proshka;if(pr.active&&tap(0,'attack')&&hd(pr.pos,{x:0,z:-14})<2.6&&FG.made<FG.total){const d=Math.min(u,1-u)*FG.B;strike(d<=0.18+(W.ladBonus||0));}
     else if(tap(0,'attack')&&!pr.active&&hd(active(0).pos,{x:0,z:-14})<2.6)tip(0,'Куёт Прошка — это его дело. Переключись на него '+K(0,'swap'),2);
     // мехи: прыжок Пелагеи на рычаг; оставленная качает сама, медленнее
     const pe=T.pelageya;const onL=pe.grounded&&hd(pe.pos,lever)<0.85;if(onL&&!FG.onL){FG.heat=Math.min(1,FG.heat+0.2);SFX.whoosh();anim(0.3,q=>{forge.lever.rotation.x=-0.4*Math.sin(q*Math.PI);});burst(new V3(-5.2,1.6,-15.6),0xff8a3a,10,3);}FG.onL=onL;
     if(!pe.active&&hd(pe.pos,lever)<6)FG.heat=Math.min(1,FG.heat+dt*0.06);FG.heat=Math.max(0,FG.heat-dt*0.085);
     forge.coalM.emissiveIntensity=0.3+FG.heat*1.2;forge.fire.intensity=0.4+FG.heat*1.6;blank.material.emissiveIntensity=damp(blank.material.emissiveIntensity,0.3+FG.heat*0.8,4,dt);
-    ready.forEach((g,i)=>{g.visible=i<FG.made&&i>=FG.done;g.rotation.y+=dt;});
+    // закалка: клещи ждут в корыте; оставленный рядом Йоша польёт сам, но не сразу
+    const Y=T.yosha;if(FG.queue>0){FG.waitT+=dt;if(!Y.active&&hd(Y.pos,TROUGH)<5){FG.autoT+=dt;if(FG.autoT>5)temper(true);}
+      FG.nagT-=dt;if(FG.waitT>6&&FG.nagT<=0){FG.nagT=9;sayP(Y.active?'Йоша, полей корыто — клещи ждут!':'Переключись на Йошу — он польёт корыто живой водой!',2.8);tip(1,Y.active?'Клещи в корыте! Подойди и полей '+K(1,'skill'):'Клещи ждут закалки. Переключись на Йошу '+K(1,'swap')+' и полей корыто '+K(1,'skill'),3.4);}}
+    for(const q of inTrough)if(q.g.visible&&q.m.emissiveIntensity>0.2){q.m.emissiveIntensity=0.7+0.3*Math.sin(G.time*8);if(Math.random()<dt*3)burst(q.g.position.clone().add(new V3(0,0.25,0)),0xffffff,1,1,1.2);}
+    // что сейчас главное: корыто, мехи или наковальня — туда светит золотое кольцо и бегут стрелки
+    const step=FG.queue>0?2:FG.heat<0.35?0:1;const P=[[lever.x,lever.z],[0,-14],[TROUGH.x,TROUGH.z]][step];stepRing.position.set(P[0],0.07,P[1]);stepRing.scale.setScalar(1+0.08*Math.sin(G.time*6));
+    ARW.forEach((seg,si)=>seg.forEach((m,i)=>{const hot=(step===0&&si===0)||(step===1&&si===1)||(step===2&&si===2)||(si===3&&FG.done>0);m.material.opacity=hot?0.35+0.5*Math.max(0,Math.sin(G.time*6-i*1.2)):0.18;}));
+    heatBar.fl.scale.x=Math.max(0.01,FG.heat);heatBar.fl.position.x=-0.8+0.8*FG.heat;heatBar.fl.material.color.setHex(FG.heat<0.35?0x8a3a2a:FG.heat<0.7?0xff7a20:0xffd23a);heatBar.g.quaternion.copy(camS.quaternion);
+    const lit=Math.floor(FG.prog/FG.need*7+1e-6);pips.forEach((m,i)=>{m.material.emissiveIntensity=i<lit?1.2:0;m.material.color.setHex(i<lit?0xffd23a:0x3a3028);});
     if(FG.done>=FG.total)forgeEnd();}
-  function forgeEnd(){F.stage='tongs';ring.visible=false;W.abil.kleshi=true;SFX.ok();L1.locked=false;L1.g.visible=true;burst(L1.pos.clone(),COL.gold,16,3);
+  function forgeEnd(){F.stage='tongs';ring.visible=false;stepRing.visible=false;heatBar.g.visible=false;pips.forEach(m=>{m.visible=false;});ARW.forEach(s=>s.forEach(m=>{m.visible=false;}));W.abil.kleshi=true;SFX.ok();L1.locked=false;L1.g.visible=true;burst(L1.pos.clone(),COL.gold,16,3);
     banner('Клещи у каждого!','#ffb070',2.8,'кнопка R или ; (на джойстике RB): взять горячее, положить, а на бегу — бросить · горячее остывает за 20 секунд');
     later(1.2,()=>bark(T.proshka,'proshka','Сам сковал. Руками.',2.2));for(const pi of[0,1])tip(pi,'Клещи '+K(pi,'item')+': рядом с горячим — взять. Ещё раз — положить. На бегу — бросить на 4 шага',4);}
+  /* ---------- Д. «В четыре руки»: большую заготовку несут вдвоём, куют вдвоём, закаляет Йоша ---------- */
+  const BIG={pos:new V3(0,1.25,-57.3),ang:0,hold:[null,null],on:false,placed:false};
+  const bigM=M(0xff7a20,{emissive:0xff4a00,emissiveIntensity:0.9});let bigMesh=null;
+  const ANV=new V3(0,0,-50.8),HOLD=new V3(-2.4,0,-50.8),STRIKE=new V3(1.2,0,-49.1);
+  const bigAnvil=new THREE.Group();bigAnvil.position.set(ANV.x,-2.4,ANV.z);W.group.add(bigAnvil);addMesh(new THREE.BoxGeometry(1.1,1.0,1.0),M(0x5a3a1a),0,0.5,0,bigAnvil);addMesh(new THREE.BoxGeometry(2.2,0.42,0.9),M(0x3a3a44),0,1.2,0,bigAnvil);
+  {const horn=new THREE.ConeGeometry(0.34,0.9,10);horn.rotateZ(Math.PI/2);addMesh(horn,M(0x3a3a44),1.55,1.2,0,bigAnvil);}
+  const plate=(p,col,txt)=>{const g=new THREE.Group();g.position.set(p.x,0.06,p.z);g.visible=false;W.group.add(g);addMesh(new THREE.CylinderGeometry(0.75,0.8,0.1,20),M(col),0,0,0,g);
+    const b=new THREE.Mesh(new THREE.PlaneGeometry(1.6,0.5),new THREE.MeshBasicMaterial({map:scratchTex(txt,360,112,'#fff4dc','#3a2418'),transparent:true}));b.position.set(0,2.6,0);g.add(b);g.userData.sign=b;return g;};
+  const holdPlate=plate(HOLD,0x4a6a8a,'ДЕРЖАТЬ'),strikePlate=plate(STRIKE,0x8a5a2a,'БИТЬ');
+  const hammer=new THREE.Group();hammer.position.set(ANV.x+0.4,3.2,ANV.z);hammer.visible=false;W.group.add(hammer);addMesh(new THREE.CylinderGeometry(0.07,0.08,1.6,8),wood,0,0.8,0,hammer);addMesh(new THREE.BoxGeometry(0.8,0.42,0.42),M(0x3a3a44),0,1.6,0,hammer);
+  const R4={phase:'off',t:0,k:-1,B:0.72,prog:0,need:24,striker:[null,null],beatDone:{},turn:0};W.R4=R4;W.BIG=BIG;
+  const ring4=new THREE.Mesh(new THREE.TorusGeometry(1,0.06,6,32),MB(COL.yellow,{transparent:true,opacity:0.9}));ring4.rotation.x=Math.PI/2;ring4.visible=false;W.group.add(ring4);
+  function bigShape(){if(bigMesh){bigMesh.parent.remove(bigMesh);bigMesh.geometry.dispose();}const u=R4.prog/R4.need;
+    const geo=u<0.02?new THREE.BoxGeometry(2.2,0.2,0.24):new THREE.TorusGeometry(lerp(0.9,0.5,u),0.12,8,28,lerp(0.9,Math.PI*2,u));bigMesh=new THREE.Mesh(geo,bigM);bigMesh.castShadow=true;
+    if(u>=0.02){bigMesh.rotation.x=Math.PI/2;bigMesh.rotation.z=-lerp(0.45,Math.PI,u)+R4.turn*Math.PI/2;}W.group.add(bigMesh);}
+  function startRuki(){F.stage='carry';BIG.on=true;bigShape();bigMesh.position.copy(BIG.pos);SFX.gate();anim(1.6,k=>{bigAnvil.position.y=lerp(-2.4,0,smooth(k));});holdPlate.visible=strikePlate.visible=true;
+    W.cyls.push({x:ANV.x,z:ANV.z,r:1.0,miny:-1,maxy:1.4,on:true});banner('В четыре руки!','#ffd76a',3.2,'большая заготовка тяжёлая — возьмите её клещами вдвоём, каждый за свой конец, и несите на большую наковальню');
+    later(1.6,()=>sayP('Тут написано… Кузьма говорил: клещи куют в четыре руки. Кольцо цепи — тоже.',3.6));}
+  const bigEnds=()=>{const c=Math.cos(BIG.ang),s=Math.sin(BIG.ang);return [new V3(BIG.pos.x-1.1*c,0,BIG.pos.z+1.1*s),new V3(BIG.pos.x+1.1*c,0,BIG.pos.z-1.1*s)];};
+  function grabBig(pi){const h=active(pi);if(BIG.hold[pi]){BIG.hold[pi]=null;SFX.latch();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Отпустил','#ffd9a0');if(!BIG.hold[1-pi]){BIG.pos.y=0.12;}return;}
+    const E=bigEnds();const used=BIG.hold[1-pi]?BIG.hold[1-pi].end:-1;let best=-1,bd=1.5;E.forEach((e,i)=>{if(i===used)return;const d=hd(e,h.pos);if(d<bd){bd=d;best=i;}});if(best<0)return;
+    BIG.hold[pi]={h,end:best};SFX.latch();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),BIG.hold[1-pi]?'Взяли! Несём':'Тяжело! Нужен второй','#ffb070');
+    if(!BIG.hold[1-pi])tip(1-pi,'Большую заготовку одному не поднять! Возьми клещами '+K(1-pi,'item')+' второй конец',3);}
+  function carryTick(dt){for(const pi of[0,1]){const H=BIG.hold[pi];if(H&&(!H.h.active||players[pi].downed))BIG.hold[pi]=null;}
+    const a=BIG.hold[0],b=BIG.hold[1];
+    if(a&&b){const pa=a.end===0?a.h.pos:b.h.pos,pb=a.end===0?b.h.pos:a.h.pos,d=hd(pa,pb);
+      if(d>3.8){BIG.hold=[null,null];BIG.pos.y=0.12;SFX.knock();floatText(BIG.pos.clone().add(new V3(0,1,0)),'Уронили! Держитесь ближе','#ffb070');return;}
+      BIG.pos.set((pa.x+pb.x)/2,1.15,(pa.z+pb.z)/2);BIG.ang=Math.atan2(-(pb.z-pa.z),pb.x-pa.x);
+      if(hd(BIG.pos,ANV)<1.4){BIG.hold=[null,null];BIG.placed=true;BIG.pos.set(ANV.x,1.55,ANV.z);BIG.ang=0;SFX.plate();burst(BIG.pos.clone(),0xffb040,16,4);banner('На наковальню!','#ffd76a',1.6,'теперь куём вдвоём');startR4();}}
+    bigMesh.position.copy(BIG.pos);bigMesh.rotation.set(0,BIG.ang,0);bigM.emissiveIntensity=0.7+0.3*Math.sin(G.time*6);}
+  // ковка вдвоём: доли 1-2-3 — удар молотом (тот, кто на плите «бить»), доля 4 — поворот клещами (тот, кто на плите «держать»); на середине меняются местами
+  function startR4(){F.stage='r4';R4.phase='play';R4.t=-2*R4.B;R4.k=-3;R4.prog=0;R4.turn=0;R4.striker=[null,null];ring4.visible=true;hammer.visible=true;bigShape();bigMesh.position.set(ANV.x,1.55,ANV.z);
+    for(const pi of[0,1])tip(pi,'Встаньте на плиты: «БИТЬ» — удар '+K(pi,'attack')+' на раз-два-три, «ДЕРЖАТЬ» — поворот клещами '+K(pi,'item')+' на четыре',4.4);}
+  const onPlate=(p,pi)=>{const h=active(pi);return hd(h.pos,p)<1.0&&!players[pi].downed;};
+  const beatOf=()=>{const k=Math.round(R4.t/R4.B);return {k,d:R4.t-k*R4.B,b:((k%4)+4)%4};};
+  function r4Act(pi,kind){if(R4.phase!=='play'||R4.t<-R4.B*0.4)return false;const h=active(pi),j=beatOf();const half=R4.prog>=R4.need/2?1:0;
+    const want=j.b===3?'turn':'strike';const top=h.pos.clone().add(new V3(0,h.d.height+0.6,0));
+    if(kind==='strike'&&!onPlate(STRIKE,pi))return false;if(kind==='turn'&&!onPlate(HOLD,pi))return false;
+    if(kind!==want){floatText(top,want==='turn'?'сейчас — поворот!':'сейчас — удар!','#dddddd');return true;}
+    if(kind==='strike'&&half===1&&R4.striker[0]===pi){floatText(top,'Теперь бьёт другой — меняйтесь!','#ffd9a0');return true;}
+    if(R4.beatDone[j.k]){return true;}
+    if(kind==='strike'&&![0,1].some(q=>q!==pi&&onPlate(HOLD,q))){floatText(top,'Некому держать — заготовка скачет!','#ffd9a0');return true;}
+    if(Math.abs(j.d)>0.22+(W.ladBonus||0)){floatText(top,j.d<0?'рано':'поздно','#dddddd');return true;}
+    R4.beatDone[j.k]=true;R4.prog++;if(kind==='strike'){R4.striker[half]=pi;h.atkT=0.3;anim(0.22,q=>{hammer.rotation.z=-Math.sin(q*Math.PI)*1.1;});later(0.1,()=>{SFX.hammer();tone(2300+R4.prog*20,0.4,'triangle',0.2);burst(new V3(ANV.x,1.7,ANV.z),0xffe060,14,4);floatText(new V3(ANV.x,2.4,ANV.z),'Дзинь!','#ffe36b');});}
+    else{R4.turn++;SFX.latch();floatText(top,'Поворот!','#bfe0ff');tone(1200,0.2,'sine',0.14,1600);}
+    bigShape();bigMesh.position.set(ANV.x,1.55,ANV.z);
+    if(R4.prog===R4.need/2){banner('Меняйтесь местами!','#ffd76a',2.2,'кто держал — теперь бьёт, кто бил — держит');SFX.ok();}
+    if(R4.prog>=R4.need){R4.phase='quench';F.stage='quench';ring4.visible=false;hammer.visible=false;SFX.ok();banner('Кольцо цепи!','#ffd76a',2.4,'Йоша, закали его живой водой '+K(1,'skill'));later(0.8,()=>sayP('Йоша, полей кольцо — пусть зазвенит!',2.6));}
+    return true;}
+  W.itemSign=pi=>{const h=active(pi);
+    if(F.stage==='carry'&&BIG.on&&!BIG.placed&&(BIG.hold[pi]||bigEnds().some(e=>hd(e,h.pos)<1.5)))return ()=>grabBig(pi);
+    if(F.stage==='r4'&&onPlate(HOLD,pi))return ()=>{r4Act(pi,'turn');};return null;};
+  W.onAttack=(pi,h)=>{if(F.stage==='r4')r4Act(pi,'strike');};
+  function r4Tick(dt){R4.t+=dt;const k=Math.floor(R4.t/R4.B+1e-6);while(R4.k<k){R4.k++;const b=((R4.k%4)+4)%4;if(R4.k<0)tone(1760,0.05,'square',0.05);else tone(b===3?1320:880,0.05,'square',b===3?0.06:0.035);}
+    const u=((R4.t%R4.B)+R4.B)%R4.B/R4.B,nb=((Math.round(R4.t/R4.B+0.5)%4)+4)%4;ring4.position.set(ANV.x,1.6,ANV.z);ring4.scale.setScalar(lerp(1.8,0.4,u));ring4.material.color.setHex(nb===3?0x7ad8ff:(u>0.8?0xffffff:COL.yellow));
+    strikePlate.userData.sign.scale.setScalar(nb!==3?1+0.12*(1-u):1);holdPlate.userData.sign.scale.setScalar(nb===3?1+0.18*(1-u):1);
+    [holdPlate,strikePlate].forEach(g=>g.userData.sign.quaternion.copy(camS.quaternion));bigM.emissiveIntensity=0.7+0.3*Math.sin(G.time*6);}
+  W.waterTargets.push({pos:new V3(ANV.x,0,ANV.z),pri:3,active:()=>F.stage==='quench',onWater:()=>quench(false)});
+  function quench(auto){if(F.stage!=='quench')return;F.stage='rung';bigM.color.setHex(COL.gold);bigM.emissive.setHex(0x806010);bigM.emissiveIntensity=0.5;SFX.water();burst(new V3(ANV.x,1.8,ANV.z),0xe8f4ff,26,4);
+    floatText(new V3(ANV.x,2.6,ANV.z),auto?'Йоша сам полил!':'Пш-ш-ш!','#cfe8ff');later(0.6,()=>{SFX.bell();[0,4,7,12].forEach((d,i)=>tone(mf(62+d),1.4,'sine',0.16,null,i*0.12));ringFx(new V3(ANV.x,0.2,ANV.z),COL.gold,5);banner('Звон!','#ffd76a',1.8,'кольцо звенит, как колокол');});later(1.8,endScene);}
   /* ---------- сюжет ---------- */
   function intro(){F.stage='intro';const pe=T.pelageya,pr=T.proshka;
     HEROES.forEach((h,i)=>{placeOnGround(h,-2.4+i*1.6,-9,0);h.face=Math.PI;});const nb=makeNotebook();nb.g.scale.setScalar(0.9);nb.g.position.set(pe.pos.x+0.1,0.95,pe.pos.z+0.3);
@@ -6511,10 +6615,10 @@ function build41(){
       events:[{t:10,fn:()=>{tone(1320,0.12,'triangle',0.08);tone(1760,0.16,'sine',0.06,null,0.06);}}],
       end:()=>{W.group.remove(nb.g);placeOnGround(pr,0.2,-11.8,0);pr.face=Math.PI;placeOnGround(pe,-6.6,-12.4,0);placeOnGround(T.yosha,3.4,-12.4,0);placeOnGround(T.potap,-2.8,-9.6,0);
         if(players[0].act!==0)doSwap(0);if(players[1].act!==0)doSwap(1);snapCams();startForge();}});}
-  function endScene(){F.stage='end';const pr=T.proshka;[[0,-52.4],[-2,-50.6],[2,-50.6],[0,-50]].forEach(([x,z],i)=>{placeOnGround(HEROES[i],x,z,0);HEROES[i].face=Math.PI;});
-    play({dur:21,fov:46,camK:2.4,shots:[shot(0,[0,3,-47],[0,1.8,-56]),shot(5.6,[4.2,2.2,-50.6],[0.8,1.4,-53.2]),shot(11,[-1.4,1.3,-54.1],[0,0.9,-52.4]),shot(14,[-5.2,2,-51.4],[-8.2,1.9,-54.5]),shot(16,[0.8,1.2,-54.2],[0,0.9,-52.4])],
-      says:[[0.3,3.6,null,'<i>Горн вспыхивает — и истуканы оживают от жара.</i>',true],[5.6,3.2,'demyan','Хорошо сковано.'],[8.8,2,'demyan','Сам?'],[11,3,null,'<i>Прошка кивает. Уши у него красные.</i>',true],
-        [14.2,1.8,'kuzst','Хм. Ученик.'],[16,4.6,'proshka','<i>(тихо, через экран)</i> Ладно. Волшебство. Но сделанное руками.']],
+  function endScene(){F.stage='end';const pr=T.proshka;[[0,-47.6],[-2,-46.6],[2,-46.6],[0,-46]].forEach(([x,z],i)=>{placeOnGround(HEROES[i],x,z,0);HEROES[i].face=Math.PI;});
+    play({dur:21,fov:46,camK:2.4,shots:[shot(0,[0,3,-45],[0,1.8,-54]),shot(5.6,[4.2,2.2,-47],[0.8,1.4,-50.2]),shot(11,[-1.4,1.3,-49.6],[0,0.9,-47.6]),shot(14,[-5.2,2,-51.4],[-8.2,1.9,-54.5]),shot(16,[0.8,1.2,-49.4],[0,0.9,-47.6])],
+      says:[[0.3,3.6,null,'<i>Кольцо звенит, как колокол, — и от этого звона истуканы оживают.</i>',true],[5.6,3.2,'demyan','Хорошо сковано.'],[8.8,2,'demyan','Вчетвером?'],[11,3,null,'<i>Прошка кивает на друзей. Уши у него красные.</i>',true],
+        [14.2,1.8,'kuzst','Хм. Ученики.'],[16,4.6,'proshka','<i>(тихо, через экран)</i> Ладно. Волшебство. Но сделанное руками.']],
       events:[{t:0.3,fn:()=>{anim(3,k=>{kz.setStone(1-k);dm.setStone(1-k);});for(let i=0;i<8;i++)later(i*0.3,()=>burst(new V3(rand(-9,9),2,-54.5),0xff9a40,6,3));}},
         {t:3.4,fn:()=>{const f=dm.g.position.clone();anim(3,k=>{dm.g.position.lerpVectors(f,new V3(pr.pos.x+1.2,0,pr.pos.z-1),smooth(k));dm.g.rotation.y=k<0.85?-1.42:-0.88;});}},
         {t:18,fn:()=>{giveLink(dm.g.position,pr,2,1.1);}}],
@@ -6522,6 +6626,9 @@ function build41(){
   W.updates.push(dt=>{
     if(F.stage==='walk'&&[0,1].some(pi=>active(pi).pos.z<-6.8))intro();
     if(F.stage==='forge'&&!G.cine)forgeTick(dt);
+    if(F.stage==='carry'&&!G.cine)carryTick(dt);
+    if(F.stage==='r4'&&!G.cine)r4Tick(dt);
+    if(F.stage==='quench'){const Y=T.yosha;F.qT=(F.qT||0)+dt;if(!Y.active&&hd(Y.pos,ANV)<5&&F.qT>6)quench(true);if(bigM)bigM.emissiveIntensity=0.7+0.3*Math.sin(G.time*6);}
     // подъёмник
     // печь горит 20 с: подъёмник едет вверх, когда на нём кто-то стоит (или уже в пути); погасла — вниз, но не на голову
     const onLift=HEROES.some(h=>h.groundRef===liftCol);if(LIFT.up>0)LIFT.up-=dt;
@@ -6529,62 +6636,99 @@ function build41(){
     else if(LIFT.up<=0&&!HEROES.some(h=>h.pos.x>4.6&&h.pos.x<7.7&&h.pos.z>-34.8&&h.pos.z<-31.2&&h.pos.y<LIFT.y-0.1&&LIFT.y-h.pos.y<h.d.height+0.6))LIFT.y=Math.max(0,LIFT.y-dt*0.9);const dy=LIFT.y-(liftCol.maxy-0.3);
     liftCol.miny=LIFT.y;liftCol.maxy=LIFT.y+0.3;liftM.position.y=LIFT.y+0.15;liftFire.emissiveIntensity=LIFT.up>0?1:0.05;for(const h of HEROES)if(h.groundRef===liftCol)h.pos.y+=dy;
     if(!F.fight&&F.g2&&[0,1].some(pi=>active(pi).pos.z<-44))spawnGolems();
-    if(F.fight&&!F.cleared&&arena.every(e=>!e.alive)){F.cleared=true;SFX.ok();banner('Цех чист!','#ffb070',2.2,'положи горячий уголь в большую печь — пусть кузнецы согреются');later(1,()=>sayP('Тут написано… кузнецов будит только жар горна.',3));}});
+    if(F.fight&&!F.cleared&&arena.every(e=>!e.alive)){F.cleared=true;SFX.ok();banner('Цех чист!','#ffb070',2.2,'положи горячий уголь в большой горн — он разогреет большую заготовку');later(1,()=>sayP('Тут написано… большой горн будит кузню.',3));}});
   /* ---------- рисунки кнопок ---------- */
   const P=T.proshka,Y=T.yosha,Pe=T.pelageya;
-  prompt(0,'attack',()=>headOf(P),()=>F.stage==='forge'&&P.active&&hd(P.pos,{x:0,z:-14})<2.6,'в такт');
+  prompt(0,'attack',()=>headOf(P),()=>F.stage==='forge'&&P.active&&hd(P.pos,{x:0,z:-14})<2.6&&FG.made<FG.total,'в такт');
+  prompt(0,'swap',()=>headOf(active(0)),()=>F.stage==='forge'&&!P.active&&FG.made<FG.total,'Прошка — куёт');
   prompt(1,'jump',()=>headOf(Pe),()=>F.stage==='forge'&&Pe.active&&hd(Pe.pos,lever)<2.4,'прыгай на рычаг');
-  prompt(1,'skill',()=>headOf(Y),()=>F.stage==='forge'&&Y.active&&FG.queue>0&&hd(Y.pos,{x:4.6,z:-14.2})<3,'закалка');
+  prompt(1,'skill',()=>headOf(Y),()=>F.stage==='forge'&&Y.active&&FG.queue>0&&hd(Y.pos,TROUGH)<5.5,'полей корыто');
   prompt(1,'swap',()=>headOf(Pe),()=>F.stage==='forge'&&Pe.active&&FG.queue>0,'Йоша — закалка');
+  for(const pi of[0,1])prompt(pi,'label',()=>new V3(4.6,2.2,-14.2),()=>F.stage==='forge'&&FG.queue>0,'клещи ждут закалки!');
+  prompt(1,'skill',()=>headOf(Y),()=>F.stage==='quench'&&Y.active,'закали кольцо');
+  prompt(1,'swap',()=>headOf(Pe),()=>F.stage==='quench'&&Pe.active,'Йоша — закалка');
   for(const pi of[0,1]){const h=()=>active(pi);
-    prompt(pi,'item',()=>headOf(h()),()=>W.abil.kleshi&&!heroCarry(h())&&W.hots.some(it=>!it.gone&&!it.carrier&&it.heat>0.1&&hd(it.pos,h().pos)<1.8),'взять клещами');
+    prompt(pi,'item',()=>headOf(h()),()=>W.abil.kleshi&&F.stage!=='carry'&&F.stage!=='r4'&&!heroCarry(h())&&W.hots.some(it=>!it.gone&&!it.carrier&&it.heat>0.1&&hd(it.pos,h().pos)<1.8),'взять клещами');
     prompt(pi,'item',()=>headOf(h()),()=>{const it=heroCarry(h());return !!it&&W.sockets.some(s=>!s.item&&(!s.active||s.active())&&s.accept(it)&&hd(s.pos,h().pos)<2);},'положить');
     prompt(pi,'item',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.armor==='cool'&&hd(e.pos,h().pos)<2.2),'сорви латы');
+    prompt(pi,'item',()=>headOf(h()),()=>F.stage==='carry'&&!BIG.hold[pi]&&bigEnds().some(e=>hd(e,h().pos)<1.5),()=>BIG.hold[1-pi]?'второй конец!':'взять конец');
+    prompt(pi,'move',()=>headOf(h()),()=>F.stage==='carry'&&!!BIG.hold[pi]&&!!BIG.hold[1-pi],'к наковальне');
+    prompt(pi,'attack',()=>headOf(h()),()=>F.stage==='r4'&&onPlate(STRIKE,pi)&&beatOf().b!==3,'бей');
+    prompt(pi,'item',()=>headOf(h()),()=>F.stage==='r4'&&onPlate(HOLD,pi)&&((Math.round(R4.t/R4.B+0.5)%4)+4)%4===3,'поворот');
     prompt(pi,'guard',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig!=='red'&&e.help));
     prompt(pi,'roll',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig==='red'&&e.help));}
   prompt(1,'skill',()=>headOf(Y),()=>Y.active&&W.enemies.some(e=>e.alive&&e.armor==='hot'&&hd(e.pos,Y.pos)<3.2),'полить латы');
   /* ---------- задачи ---------- */
   const OR=(text,done,targets,ghost,read)=>{const o=O(text,done,targets,ghost);o.read=read;return o;};
+  const forgeText=pi=>()=>{const st='Клещи '+FG.done+' / '+FG.total+'. ';
+    if(FG.queue>0)return st+(pi?'Клещи в корыте! Йоша '+K(1,'swap')+' — полей корыто живой водой '+K(1,'skill'):'Клещи в корыте — ждём, пока Йоша польёт. А ты куй следующие '+K(0,'attack'));
+    return st+(pi?'1 · Пелагея прыгает на рычаг мехов '+K(1,'jump')+' — жар растёт. 3 · Готовые клещи сами прилетят в корыто — тогда Йоша польёт':'2 · Прошка бьёт молотом '+K(0,'attack')+', когда жёлтый кружок станет маленьким. Семь огоньков над наковальней — клещи готовы');};
   const mk=pi=>[
     OR('Кузня у огненной реки. Внутрь!',()=>F.stage!=='walk',()=>[anvil],null,'Тут написано… кузня Кузьмы и Демьяна стоит у самой реки.'),
     OR('Кузнецы окаменели…',()=>F.stage!=='intro',()=>[anvil]),
-    OR(pi?()=>'Ковка втроём! Пелагея — прыжки на рычаг мехов '+K(1,'jump')+': горн жарче. Йоша '+K(1,'swap')+' — закалка готовых клещей в корыте '+K(1,'skill'):()=>'Прошка куёт сам: жёлтый кружок над заготовкой — удар '+K(0,'attack')+' в такт. Точный удар звенит громче',
-      ()=>W.abil.kleshi,()=>pi?[forge.bag,trough.g]:[anvil],null,pi?'Тут написано… мехи качают прыжками, а готовое — в воду.':'Тут написано… бить в такт, как по мороку.'),
+    OR(forgeText(pi),()=>W.abil.kleshi,()=>FG.queue>0?[trough.g]:pi?[forge.bag]:[anvil],null,pi?'Тут написано… мехи качают прыжками, а готовое — в воду.':'Тут написано… бить в такт, как по мороку.'),
     OR(()=>'Горячим открываются двери: слиток из горна клещами '+K(pi,'item')+' — на холодную плиту с огоньком',()=>F.g1,()=>[slitok.g],null,'Тут написано… холодная плита любит горячее.'),
     OR(()=>'Дальние ворота заперты засовом: горячий гвоздь из горна — в щель. На галерею — подъёмник: уголь в его печь',()=>F.g2,()=>[gvozd.g,slot],null,'Тут написано… засов плавится от горячего гвоздя.'),
     OR(()=>'Чугунные болваны в раскалённых латах! По горячему не бей: Йоша поливает '+K(1,'skill')+', клещи '+K(pi,'item')+' — сорвать нагрудник, и бейте все',()=>F.cleared,()=>arena?arena.filter(e=>e.alive).map(e=>e.g):[],null,'Тут написано… не сорвали латы за десять секунд — раскалятся снова.'),
-    OR(()=>'Горячий уголь или слиток — в большой горн: кузнецов будит жар',()=>F.lit,()=>[master.g],null,'Тут написано… кузнецов будит только жар горна.'),
+    OR(()=>'Горячий уголь или слиток — в большой горн: он разогреет большую заготовку',()=>F.lit,()=>[master.g],null,'Тут написано… большой горн будит кузню.'),
+    OR(()=>'В четыре руки! Большую заготовку поднимают только вдвоём: каждый берёт клещами '+K(pi,'item')+' свой конец. Несите её на большую наковальню',()=>BIG.placed,()=>bigMesh?[bigMesh]:[],null,'Тут написано… одному не поднять.'),
+    OR(()=>'Куём вдвоём: '+(R4.prog)+' / '+R4.need+'. Плита «БИТЬ» — удар '+K(pi,'attack')+' на раз-два-три. Плита «ДЕРЖАТЬ» — поворот клещами '+K(pi,'item')+' на четыре (голубой кружок). На середине — меняйтесь местами',()=>['quench','rung','end'].includes(F.stage),()=>[holdPlate,strikePlate],null,'Тут написано… раз-два-три — удар, четыре — поворот.'),
+    OR(()=>'Кольцо готово! Йоша '+K(1,'swap')+' — закали его живой водой '+K(1,'skill'),()=>F.stage==='rung'||F.stage==='end',()=>bigMesh?[bigMesh]:[],null,'Тут написано… закалённое кольцо звенит.'),
     O('Кузнецы…',()=>false,()=>[dm.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>W.abil.kleshi&&!!heroCarry(h),text:pi=>'Несёшь горячее. Нажми '+K(pi,'item')+' — положишь, а на бегу — бросишь. Через 20 секунд остынет — снова грей в печи'});
+  W.tipZones.push({cond:(pi,h)=>F.stage==='forge'&&hd(h.pos,TROUGH)<3.5&&FG.queue===0,text:pi=>'Корыто для закалки. Готовые клещи сами прилетят сюда с наковальни — тогда Йоша польёт их живой водой '+K(1,'skill')});
   W.spawns=[[new V3(-2.6,0,5),new V3(-4.6,0,6)],[new V3(2.6,0,5),new V3(4.6,0,6)]];W.startAct=[0,0];
-  W.pauseLine='Кузня Кузьмы и Демьяна. Звенышка нет — подсказки читает Пелагея. Клещи (RB) берут горячее: слиток, уголь, гвоздь. Горячим открываются двери. Чугунные латы — полить и сорвать.';
+  W.pauseLine='Кузня Кузьмы и Демьяна. Звенышка нет — подсказки читает Пелагея. Ковка: мехи → наковальня → корыто → стойка. Клещи (RB) берут горячее: слиток, уголь, гвоздь. Горячим открываются двери. Чугунные латы — полить и сорвать. В конце — кольцо цепи в четыре руки.';
   W.onStart=()=>{later(0.8,()=>sayP('Тут написано… Звенышка нет. Читать буду я.',2.8));};
   flushDecor();}
+
 function edgeSignFire(x,z){const g=new THREE.Group();g.position.set(x,0,z-0.9);W.group.add(g);addMesh(new THREE.CylinderGeometry(0.05,0.06,1.1,6),M(0xe8e0f0),0,0.55,0,g);
   const d=new THREE.Mesh(new THREE.CircleGeometry(0.32,20),MB(0x1a1010,{side:THREE.DoubleSide}));d.position.y=1.4;g.add(d);const f=new THREE.Mesh(new THREE.ConeGeometry(0.14,0.34,6),MB(0xff7a20));f.position.set(0,1.4,0.02);g.add(f);return g;}
 
 /* ============================== МИР 4 · 4-2 «РЕКА СМОРОДИНА» ============================== */
 // развитие клещей: живая вода по лаве — корка; клещи несут корку ступенькой; корка на струе — плот; паровые столбы; жар-ящерки на сваях
-// лавопад: «Сиди тут» — «Потап, смотри на меня. Я пойду. Если что — ловишь.» Оставленный Потап — страховка Йоши
+// лавопад в три яруса: Йоша спускается первым (Потап ловит, Прошка прикрывает рогаткой) и гасит затвор жёлоба; огненная завеса — подкидка Потапа и живая вода; запруда — рогатка и живая вода
 function build42(){
-  W.zvenAway=true;W.world=4;setTheme('smorodina');W.name='4-2 · «Река Смородина»';W.sub='Огненная Смородина · корка-плот: Йоша гасит, клещи несут';W.camX=11;const F=W.flags;F.stage='a';
+  W.zvenAway=true;W.world=4;setTheme('smorodina');W.name='4-2 · «Река Смородина»';W.sub='Огненная Смородина · у каждого своё дело: Йоша гасит, Прошка прикрывает, Потап подкидывает';W.camX=11;const F=W.flags;F.stage='a';
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.kleshi=true;W.fallY=-12;const T=HERO,LY=-0.45;
+  // никого не переносит через огонь издалека: оставленного героя переводят сами (корка, плот, подкидка); рядом — перепрыгнет
+  W.pullMax=4.5;W.leftTip=(pi,o)=>o.kind==='yosha'||o.kind==='pelageya'?'Второй герой остался на том берегу. Переключись '+K(pi,'swap')+' и переведи его: корка Йоши, плот или подкидка Потапа':'Второй герой остался на том берегу. Попроси Йошу сделать ему корку-мостик — и переключись '+K(pi,'swap');
   const bankM=M(0x5a4a40),rockM=M(0x3e3230),darkM=M(0x2a2024);
   const Z=makeVestZ(helperOf(3));W.zven=Z;Z.pos.set(0,2.4,6);
   const bubM=M(0xff7418,{emissive:0xff4a00,emissiveIntensity:0.85});bubM.userData.shared=true;
-  const fallY=i=>LY-0.72*(i+1);
-  /* ---------- лава: сначала особые участки (бурлящая струя, течение, лавопад), потом общая гладь ---------- */
+  /* ---------- лава: особые участки (бурлящая струя, течение), каскад спуска, общая гладь ---------- */
   const chan=lavaZone(-30,30,-20,-13,LY+0.02,{noCrust:true,mat:bubM});
   const spill=lavaZone(-30,30,-42,-26,LY+0.01,{flow:{x:0,z:-1.4}});
-  for(let i=0;i<8;i++){lavaZone(-30,30,-53.5-1.5*i,-52-1.5*i,fallY(i));const sh=new THREE.Mesh(new THREE.PlaneGeometry(60,0.72),LAVA_M);sh.position.set(0,fallY(i)+0.36,-52-1.5*i);W.group.add(sh);}
-  lavaZone(-60,60,-52,24,LY);lavaZone(-60,60,-120,-64,LY-6);
+  const CAS=[[-52,-53.5,-0.95],[-53.5,-55,-1.45],[-55,-56.5,-1.95]];   // три ступени огненного каскада — спуск Йоши
+  for(const[z0,z1,y]of CAS){lavaZone(-9,3.2,z1,z0,y);const sh=new THREE.Mesh(new THREE.PlaneGeometry(12.2,0.5),LAVA_M);sh.position.set(-2.9,y+0.25,z0);W.group.add(sh);}
+  lavaZone(-60,60,-52,24,LY);lavaZone(-60,60,-120,-52,LY-6.2);
   const decorRock=(x,z,y,s)=>{const r=addMesh(new THREE.DodecahedronGeometry(s),rockM,x,y,z);r.rotation.set(rand(0,3),rand(0,3),0);return r;};
   for(let z=20;z>-110;z-=rand(3,5))for(const sd of[-1,1])decorRock(sd*rand(13,20),z,LY-0.2,rand(1,2.2));
-  /* ---------- А. берег и первый ручей: живая вода по лаве — корка ---------- */
+  /* ---------- ящерки-плевуньи: плюют огнём в Йошу, когда он на лаве; Прошка сбивает их рогаткой ---------- */
+  const spitters=[];const lizM=M(0xe0602a,{emissive:0x802000,emissiveIntensity:0.4});
+  function spitter(x,z,y,cond){const g=new THREE.Group();g.position.set(x,y,z);W.group.add(g);addMesh(new THREE.CylinderGeometry(0.42,0.6,3,8),rockM,0,-1.5,0,g);
+    const liz=new THREE.Group();liz.position.y=0.05;g.add(liz);const bd=part(liz,new THREE.SphereGeometry(0.3,10,8),lizM,0,0.25,0);bd.scale.set(0.8,0.6,1.4);part(liz,new THREE.SphereGeometry(0.2,10,8),lizM,0,0.4,0.4);
+    for(const s of[-1,1])part(liz,new THREE.SphereGeometry(0.06,6,5),MB(0xfff3a0),s*0.09,0.5,0.55);const tl=new THREE.ConeGeometry(0.1,0.7,6);tl.rotateX(-Math.PI/2);part(liz,tl,lizM,0,0.2,-0.6);
+    const mk=markMesh(0.9);mk.position.set(x,y+1.3,z);W.group.add(mk);
+    const S={g,liz,x,y,z,cond,cd:rand(2.4,3.6),down:0,mk,glow:0};S.mark={pos:new V3(x,y+0.5,z),active:()=>S.down<=0&&cond(),onHit:()=>{S.down=12;SFX.splash();burst(new V3(x,y+0.4,z),0xff6a20,14,3);floatText(new V3(x,y+1.6,z),'Бултых! Сбил!','#ffb070');
+      const f0=liz.position.clone();anim(0.6,k=>{liz.position.set(k*0.8,f0.y+Math.sin(k*Math.PI)*0.8-k*1.6,0);liz.rotation.z=k*3;});if(!F.spitTold){F.spitTold=true;later(0.4,()=>bark(T.proshka,'proshka','Прикрываю, Йоша!',1.8));}}};
+    W.marks.push(S.mark);spitters.push(S);return S;}
+  const onLava=()=>{const Y=T.yosha;const L=lavaAt(Y.pos.x,Y.pos.z);return !!L&&Y.pos.y<L.y+1.2;};
+  function spitTick(dt){const Y=T.yosha;for(const S of spitters){S.mk.visible=S.down<=0&&S.cond();if(S.mk.visible){S.mk.lookAt(camS.position);S.mk.scale.setScalar(0.9+0.1*Math.sin(G.time*8));}
+      if(S.down>0){S.down-=dt;if(S.down<=0){S.liz.position.set(0,0.05,0);S.liz.rotation.z=0;burst(new V3(S.x,S.y+0.4,S.z),0xff8a30,8,2);}continue;}
+      lizM.emissiveIntensity=0.4;if(!S.cond()||!onLava()||hd(Y.pos,S)>9){S.cd=Math.max(S.cd,1.6);continue;}
+      S.liz.rotation.y=Math.atan2(Y.pos.x-S.x,Y.pos.z-S.z);S.cd-=dt;if(S.cd<0.9)S.liz.scale.setScalar(1+0.25*Math.sin(G.time*30));else S.liz.scale.setScalar(1);
+      if(S.cd<=0){S.cd=rand(3.2,4.4);const from=new V3(S.x,S.y+0.6,S.z),to=Y.pos.clone().add(new V3(0,0.6,0));const b=new THREE.Mesh(new THREE.SphereGeometry(0.2,8,6),MB(0xffa030));W.group.add(b);SFX.whoosh();
+        anim(0.9,k=>{b.position.lerpVectors(from,to,k);b.position.y+=Math.sin(k*Math.PI)*1.4;if(k>=1){W.group.remove(b);burst(to.clone(),0xff8a30,12,3);
+          if(hd(Y.pos,to)<1.2&&!G.cine){const dx=Y.pos.x-S.x,dz=Y.pos.z-S.z,dd=Math.hypot(dx,dz)||1;Y.vel.x=dx/dd*3.2;Y.vel.z=dz/dd*3.2;Y.vel.y=4;Y.grounded=false;Y.knockT=0.25;SFX.knock();floatText(Y.pos.clone().add(new V3(0,Y.d.height+0.6,0)),'Горячо!','#ffb070');
+            const c=Y.groundRef&&Y.groundRef.crust?Y.groundRef:null;if(c)c.t=Math.max(0.5,c.t-3);if(!F.spitHitTold){F.spitHitTold=true;tip(0,'Ящерки плюют в Йошу! Прикрой его: рогатка '+K(0,'skill')+' по ящерке',3.4);}}}});}}}
+  W.updates.push(dt=>{if(!G.cine)spitTick(dt);});
+  /* ---------- А. берег и первый ручей: живая вода по лаве — корка; ящерки плюют, Прошка прикрывает ---------- */
   ground(-7,7,-2,14,0,bankM);bell(0,8);const n1=nutItem(6,0.6,11);
   box(-5.7,-4.3,LY-1,0,-4.9,-3.5,rockM);const L1=linkItem(-5,1.1,-4.2);
   const spot1=new V3(0,LY,-3.6);
+  spitter(4.6,-4.4,LY+0.2,()=>F.stage==='a'||F.stage==='b');spitter(-2.6,-5.6,LY+0.2,()=>F.stage==='a'||F.stage==='b');
   /* ---------- Б. бурлящая струя: корку делают в тихой заводи и несут клещами ---------- */
   ground(-7,3,-13,-6.2,0,bankM);ground(3,7,-13,-11,0,bankM);ground(3,7,-8,-6.2,0,bankM);bell(-3,-9.5);const n2=nutItem(6.2,0.6,-12.2);
   const pool=new V3(5,LY,-9.5);{const rim=new THREE.Mesh(new THREE.TorusGeometry(1.6,0.08,6,24),MB(0x8ad8ff,{transparent:true,opacity:0.5}));rim.rotation.x=Math.PI/2;rim.position.set(5,LY+0.06,-9.5);W.group.add(rim);}
@@ -6605,81 +6749,151 @@ function build42(){
   W.onLizard=()=>{if(!F.lizTold){F.lizTold=true;later(0.6,()=>sayP('Тут написано… отбитый огонёк сбивает ящерку в огонь.',3));}};
   /* ---------- Д. берег у лавопада ---------- */
   ground(-7,7,-52,-42,0,bankM);bell(0,-45);const n4=nutItem(-6.2,0.6,-50.6);
-  box(9,12,-7,2.6,-64,-42,rockM);box(-12,-9,-7,2.6,-64,-42,rockM);
-  // лестница паровых столбов Прошки (столбы бьют высоко сами)
-  const ladder=[[-54.2,0.4,1],[-57.8,-1.9,3],[-61.3,-4.1,6]].map(([z,top,i])=>{const v=steamVent(5.2,z,fallY(i)-0.05,{top,r:1.15});v.mode='high';v.fixed=true;return v;});
-  const n5=nutItem(5.2,1.2,-54.2);
-  /* ---------- Е. низ лавопада ---------- */
-  ground(-9,9,-86,-64,-6,bankM);bell(-5,-68,-6);W.noCarry.push({minx:-9,maxx:9,miny:-10,maxy:12,minz:-64,maxz:-52.2});const L4=linkItem(-7.4,-4.9,-72);
+  box(9,12,-7,2.6,-78,-42,rockM);box(-12,-9,-7,2.6,-78,-42,rockM);
+  /* ---------- Е. спуск в три яруса: каскад Йоши и затвор → огненная завеса и подкидка Потапа → запруда: рогатка и живая вода ---------- */
+  const edge={x:0.8,z:-51.3};
+  // жёлоб справа: по нему течёт огненный ручей, пока Йоша снизу не остудит затвор
+  W.ramps=W.ramps||[];const chute={x0:5.1,z0:-52,y0:0,y1:-2.2,dx:0,dz:-1,len:4.5,w:1.9};W.ramps.push(chute);
+  {const L=Math.hypot(4.5,2.2);const rp=addMesh(new THREE.BoxGeometry(3.8,0.4,L),rockM,5.1,-1.1-0.2,-54.25);rp.rotation.x=Math.atan2(2.2,4.5);}
+  box(7,9,-7,0,-56.5,-52,rockM,{occ:false});
+  const streamM=M(0xff7418,{emissive:0xff4a00,emissiveIntensity:0.9,transparent:true,opacity:0.95});const stream=new THREE.Mesh(new THREE.PlaneGeometry(2.6,Math.hypot(4.5,2.2)),streamM);stream.rotation.x=-Math.PI/2+Math.atan2(2.2,4.5);stream.position.set(5.1,-1.1+0.03,-54.25);W.group.add(stream);
+  // ярус 1
+  ground(-9,9,-60,-56.5,-2.2,bankM);bell(-6.4,-58.2,-2.2);
+  const valve=new THREE.Group();valve.position.set(3.9,-2.2,-57.6);W.group.add(valve);addMesh(new THREE.CylinderGeometry(0.2,0.24,1.2,8),rockM,0,0.6,0,valve);
+  const wheelM=M(0xff6a20,{emissive:0xff3000,emissiveIntensity:0.8});const wheel=addMesh(new THREE.TorusGeometry(0.55,0.1,8,20),wheelM,0,1.35,0,valve);wheel.rotation.x=Math.PI/2.4;for(let i=0;i<3;i++){const sp=addMesh(new THREE.BoxGeometry(1.0,0.07,0.07),wheelM,0,1.35,0,valve);sp.rotation.set(Math.PI/2.4,0,i*Math.PI/3);}
+  W.cyls.push({x:3.9,z:-57.6,r:0.45,miny:-3,maxy:-0.6,on:true});
+  // завеса: огонь льётся со скалы между ярусами
+  const rampMid={x0:0,z0:-60,y0:-2.2,y1:-4.2,dx:0,dz:-1,len:2,w:9};W.ramps.push(rampMid);{const rp=addMesh(new THREE.BoxGeometry(18,0.4,Math.hypot(2,2)),bankM,0,-3.2-0.2,-61);rp.rotation.x=Math.atan2(2,2);}
+  const curtM=M(0xff7418,{emissive:0xff4a00,emissiveIntensity:1,transparent:true,opacity:0.9,side:THREE.DoubleSide});const curtain=new THREE.Mesh(new THREE.PlaneGeometry(18,4.0,8,4),curtM);curtain.position.set(0,-1.4,-60.95);W.group.add(curtain);
+  {const crack=addMesh(new THREE.BoxGeometry(18,0.06,0.5),MB(0xffa030),0,-3.18,-60.95);crack.castShadow=false;}
+  const curtCol=colBox(-9,9,-4.6,0.6,-61.2,-60.7,true);const CUR={frozen:0};
+  // ярус 2
+  ground(-9,9,-65.5,-62,-4.2,bankM);bell(-6.4,-63.6,-4.2);
+  // запруда: каменная плита висит на цепи над протокой; щеколда — Прошке рогаткой; горячую плиту Йоша остужает — и огонь уходит
+  lavaZone(-9,9,-70.1,-65.5,-5.6);
+  const damG=new THREE.Group();damG.position.set(-4.2,1.6,-67.8);W.group.add(damG);const damM=M(0x4a3e3a,{emissive:0xff3000,emissiveIntensity:0});addMesh(new THREE.BoxGeometry(3.4,1.4,2.2),damM,0,0,0,damG);
+  const chain=addMesh(new THREE.CylinderGeometry(0.05,0.05,3,6),M(0x8a8a90),-4.2,3.8,-67.8);const latchMk=markMesh(1.1);latchMk.position.set(-4.2,5.4,-67.4);W.group.add(latchMk);
+  addMesh(new THREE.BoxGeometry(0.6,0.4,0.6),M(0x3a3a40),-4.2,5.4,-67.8);box(-9,-6.4,-7,5.8,-69.4,-66.2,rockM,{occ:false});
+  const DAM={state:'up',t:0};const stairs=[];for(let i=0;i<4;i++){const s=addMesh(new THREE.BoxGeometry(12.6,0.3,1.1),M(0x2a2226,{emissive:0xff4a00,emissiveIntensity:0.2}),1.2,-4.4-i*0.45,-66.05-i*1.1);s.visible=false;stairs.push(s);}
+  const stairCols=[];
+  W.marks.push({pos:new V3(-4.2,5.4,-67.8),active:()=>F.stage==='dam'&&DAM.state==='up',onHit:()=>dropDam()});
+  function dropDam(){DAM.state='fall';SFX.latch();floatText(new V3(-4.2,5.8,-67.8),'Щёлк! Щеколда!','#ffd9a0');chain.visible=false;const f0=damG.position.clone(),to=new V3(-3.6,-5.2,-67.8);
+    anim(0.8,k=>{damG.position.lerpVectors(f0,to,k*k);damG.rotation.z=k*0.3;});later(0.82,()=>{DAM.state='hot';DAM.t=6;damM.emissiveIntensity=1;SFX.splash();SFX.thud();burst(to.clone().add(new V3(0,0.8,0)),0xff8a30,20,4);shakeAll(0.04,0.3);
+      banner('Плита в протоке!','#ffb070',2,'она раскалилась — Йоша, скорее остуди её живой водой!');});}
+  W.waterTargets.push({pos:new V3(-3.6,-5.2,-67.8),pri:3.5,active:()=>DAM.state==='hot',onWater:()=>{DAM.state='done';damM.emissiveIntensity=0;SFX.water();burst(new V3(-3.6,-4.2,-67.8),0xe8f4ff,26,4);banner('Запруда застыла!','#ffd76a',2.2,'огонь ушёл — вниз, по застывшим ступеням');
+      for(let i=0;i<4;i++)later(0.3+i*0.25,()=>{stairs[i].visible=true;SFX.plate();const s=stairs[i];stairCols.push(colBox(-5.1,7.5,s.position.y-0.15,s.position.y+0.15,s.position.z-0.55,s.position.z+0.55,false));});F.stage='down';}});
+  // низ лавопада
+  ground(-9,9,-88,-70.1,-6,bankM);bell(-5,-72.4,-6);const L4=linkItem(-7.4,-4.9,-76);
   for(let i=0;i<5;i++)decorRock(rand(-8,8),-84+rand(-1,1),-5.4,rand(0.8,1.4));
+  const n5=nutItem(7.4,-3.6,-63.2);
   /* ---------- сюжет ---------- */
   function intro(){F.stage='intro';const pe=T.pelageya,yo=T.yosha;
     play({dur:15,fov:48,camK:2.6,shots:[shot(0,[0,6,12],[0,0,-14],[0,7,-8],[0,-2,-40],6),shot(6.4,[-2,3,-58],[0,-3,-52],[2,-2,-70],[0,-4,-58],3.4),shot(10,[pe.pos.x+2,1.4,pe.pos.z-1.8],[pe.pos.x,0.9,pe.pos.z])],
       says:[[0.3,4,null,'<i>Река Смородина течёт огнём. Через неё не перепрыгнуть и не перелететь.</i>',true],[6.4,3.4,null,'<i>А дальше — водопад огня.</i>',true],
         [10,3.4,'pelageya','<i>(по тетрадке)</i> Тут написано: огонь боится живой воды…'],[13.2,1.8,'yosha','Проверим.']],
       events:[{t:10,fn:()=>{tone(1320,0.12,'triangle',0.08);tone(1760,0.16,'sine',0.06,null,0.06);}}],
-      end:()=>{F.stage='a';snapCams();for(const pi of[0,1])tip(pi,pi?'Переключись на Йошу '+K(1,'swap')+' и полей лаву живой водой '+K(1,'skill')+' — будет корка. На ней можно стоять 8 секунд':'Корка держит 8 секунд и мигает, перед тем как утонуть. Клещами '+K(0,'item')+' её можно взять и положить дальше',4);}});}
-  W.onCrust=c=>{if(!F.crustTold){F.crustTold=true;later(0.5,()=>bark(T.yosha,'yosha','Застыло! Держит!',1.8));}if(F.stage==='fall')F.steps=(F.steps||0)+1;};
+      end:()=>{F.stage='a';snapCams();
+        tip(1,'Переключись на Йошу '+K(1,'swap')+' и полей лаву живой водой '+K(1,'skill')+' — будет корка. На ней можно стоять 8 секунд',4);
+        tip(0,'Ящерки на камнях плюют огнём в Йошу! Прикрой его: рогатка '+K(0,'skill')+' — прицелься в ящерку с золотым колечком',4.4);}});}
+  W.onCrust=c=>{if(!F.crustTold){F.crustTold=true;later(0.5,()=>bark(T.yosha,'yosha','Застыло! Держит!',1.8));}};
   W.onNoCrust=()=>{if(!F.noCrustTold){F.noCrustTold=true;later(0.4,()=>sayP('Тут написано… на бурлящем не встанет. Сделай в тихой заводи — и перенеси.',3.4));}};
   W.onPick=(h,it)=>{if(it.kind==='korka'&&!F.carryTold){F.carryTold=true;later(0.3,()=>bark(h,h.kind,h.kind==='proshka'?'Йоша делает — я несу!':'Несу ступеньку!',1.8));}};
   W.onVentCalm=()=>{if(!F.ventTold){F.ventTold=true;later(0.3,()=>sayP('Полил — стихает. Проезжайте!',2.2));}};
   // лавопад: «Сиди тут»
-  const edge={x:0.8,z:-51.3};
   function fallScene(){F.stage='cut1';const po=T.potap,yo=T.yosha,pr=T.proshka,pe=T.pelageya;
     placeOnGround(po,0.6,-49.4,0);placeOnGround(yo,-0.6,-48.6,0);placeOnGround(pr,2.6,-48.2,0);placeOnGround(pe,-2.8,-48.4,0);HEROES.forEach(h=>h.face=Math.PI);
     play({dur:24,fov:46,camK:2.4,shots:[shot(0,[-5,3.4,-46],[0,-2.4,-60]),shot(4.6,[-1.8,1.6,-46.6],[0,1,-50]),shot(8.4,[4,2.6,-47],[0,0.8,-51]),shot(12.6,[yo.pos.x-1.6,1.3,yo.pos.z-1.6],[yo.pos.x,0.9,yo.pos.z]),shot(18.4,[po.pos.x+1.4,1.5,po.pos.z-1.8],[po.pos.x,1.1,po.pos.z])],
-      says:[[0.3,4,null,'<i>Самое красивое место реки — водопад огня.</i>',true],[4.6,3.4,'potap','<i>(загораживает Йошу)</i> Сиди тут. Я сам найду обход.'],
+      says:[[0.3,4,null,'<i>Самое красивое место реки — водопад огня. Жёлоб справа залит огнём, внизу — огненная завеса.</i>',true],[4.6,3.4,'potap','<i>(загораживает Йошу)</i> Сиди тут. Я сам найду обход.'],
         [8.4,3.8,null,'<i>Обхода нет. Потап топчется вдоль края.</i>',true],[12.6,1.8,null,'<i>Йоша не прыгает молча. Он поворачивается к Потапу.</i>',true],[14.6,3.6,'yosha','Потап, смотри на меня. Я пойду. Если что — ловишь.'],
         [18.4,3.4,null,'<i>Потап открывает рот. Закрывает.</i>',true],[21.6,2.2,'potap','…Ловлю.']],
       events:[{t:4.4,fn:()=>{const f=po.pos.clone();anim(0.8,k=>{po.pos.lerpVectors(f,new V3(-0.3,0,-49.6),k);});po.face=0.4;}},
         {t:8.4,fn:()=>{placeOnGround(po,-3,-51,0);po.face=Math.PI;anim(3.6,k=>{po.pos.x=-3+Math.sin(k*Math.PI*1.5)*4;po.face=Math.cos(k*Math.PI*1.5)>0?Math.PI/2:-Math.PI/2;});}},
         {t:12.4,fn:()=>{placeOnGround(po,edge.x+0.6,-50.2,0);po.face=-Math.PI/2;yo.face=Math.PI/2;}}],
-      end:()=>{W.anims.length=0;placeOnGround(po,edge.x,edge.z,0);po.face=Math.PI;placeOnGround(yo,-0.6,-51.4,0);yo.face=Math.PI;placeOnGround(pr,4.2,-51.2,0);pr.face=Math.PI;placeOnGround(pe,-3,-49,0);
-        if(active(0)!==pr)doSwap(0);if(active(1)!==yo)doSwap(1);F.stage='fall';F.cnt=0;F.cntT=0;W.noSwap=()=>F.stage==='fall';W.noSwapTip='Потап страхует на краю, Пелагея ждёт. Вниз идут Прошка и Йоша';snapCams();
-        tip(0,'Потап остался на краю — он страхует. Прошка спускается по столбам пара — они держат высоко',4);tip(1,'Йоша идёт сам: полей живой водой '+K(1,'skill')+' — под лапами будет корка. Оступишься — Потап поймает',4);}});}
+      end:()=>{W.anims.length=0;placeOnGround(po,edge.x-1.4,edge.z,0);po.face=Math.PI;placeOnGround(yo,-1.2,-51.4,0);yo.face=Math.PI;placeOnGround(pr,1.6,-50.6,0);pr.face=Math.PI;placeOnGround(pe,-3,-49,0);
+        if(active(0)!==pr)doSwap(0);if(active(1)!==yo)doSwap(1);F.stage='fall';F.cnt=0;F.cntT=0;W.noSwap=()=>F.stage==='fall';W.noSwapTip='Потап страхует на краю. Сейчас идёт Йоша, Прошка прикрывает его рогаткой';snapCams();
+        tip(0,'Йоша спускается по огненному каскаду. Прикрой его: ящерки плюют огнём — рогатка '+K(0,'skill')+'. Потап на краю ловит, если Йоша оступится',4.4);
+        tip(1,'Йоша идёт сам: полей живой водой '+K(1,'skill')+' — под лапами будет корка. Внизу горит затвор жёлоба — остуди его, и друзья спустятся',4.4);}});}
+  spitter(-7.4,-54.2,-0.4,()=>F.stage==='fall');spitter(2.2,-55.8,-1.2,()=>F.stage==='fall');
   const NUM=['Раз.','Два.','Три.','Четыре.','Пять.','Шесть.','Семь.','Восемь.','Девять.','Десять.','Одиннадцать.','Двенадцать.','Тринадцать.','Четырнадцать.','Пятнадцать.','Шестнадцать.','Семнадцать.','Восемнадцать.','Девятнадцать.','Двадцать.','Двадцать одна…','Двадцать две…','Двадцать три…','Двадцать четыре…'];
-  W.fallHook=h=>{if(F.stage!=='fall'||h!==T.yosha)return false;const po=T.potap;placeOnGround(h,po.pos.x-0.9,po.pos.z+0.3,po.pos.y);h.iT=1.2;h.vel.set(0,0,0);ringFx(po.pos,0xc08a48,1.6);SFX.toss();
+  W.fallHook=h=>{if(F.stage!=='fall'||h!==T.yosha)return false;const po=T.potap;placeOnGround(h,po.pos.x+0.9,po.pos.z+0.3,po.pos.y);h.iT=1.2;h.vel.set(0,0,0);ringFx(po.pos,0xc08a48,1.6);SFX.toss();
     floatText(po.pos.clone().add(new V3(0,po.d.height+0.6,0)),'Поймал!','#ffd9a0');bark(po,'potap',F.caught?'Ещё раз. Я тут.':'Поймал! Давай снова.',2);F.caught=true;return true;};
-  function bottomScene(){F.stage='cut2';const po=T.potap,yo=T.yosha,pr=T.proshka,pe=T.pelageya;placeOnGround(yo,-0.4,-66.4,-6);yo.face=Math.PI*0.9;placeOnGround(pr,3.2,-67.4,-6);pr.face=-2.4;
-    const path=[[edge.x,0,edge.z],[0.2,fallY(1)+0.13,-53.8],[-0.2,fallY(3)+0.13,-57],[0,fallY(5)+0.13,-60.2],[0.2,fallY(7)+0.13,-63.2],[0.8,-6,-66.2]];
-    play({dur:24,fov:46,camK:2.4,shots:[shot(0,[yo.pos.x-2,-4.6,yo.pos.z-2.2],[yo.pos.x,-5.4,yo.pos.z]),shot(3.6,[-4,-2.4,-66],[0,-2.6,-56],[-3,-4.4,-69],[0.6,-5.2,-64],5),shot(9,[2.6,-4.8,-69.4],[0.2,-5.3,-66.3]),shot(15.4,[po.pos.x+1.2,-4.8,-68],[0.8,-5.2,-66.2]),shot(19.6,[-2.6,-4.4,-69.6],[0.2,-5.2,-66.3])],
-      says:[[0.3,3.2,null,'<i>Внизу Йоша садится и тяжело дышит.</i>',true],[3.6,4,null,'<i>Потап спускается по его лестнице — ступенька за ступенькой.</i>',true],[9,4,null,'<i>Садится рядом. Долго молчит.</i>',true],
-        [15.4,3.6,'potap','Ладно. Не «сиди тут».'],[19.6,3.6,null,'<i>Варя (шёпотом): «Он у меня самый главный».</i>',true]],
-      events:[{t:0.2,fn:()=>{yo.body.scale.y=0.8;}},{t:3.6,fn:()=>{placeOnGround(po,edge.x,edge.z,0);const P=path.map(a=>new V3(...a));anim(5,k=>{const u=k*(P.length-1),i=Math.min(P.length-2,Math.floor(u)),q=u-i;po.pos.lerpVectors(P[i],P[i+1],q);po.pos.y+=Math.sin(q*Math.PI)*0.5;po.face=Math.PI;});}},
-        {t:9,fn:()=>{po.face=-Math.PI/2;po.body.scale.y=0.85;}},{t:14,fn:()=>{placeOnGround(pe,-2.6,-67.6,-6);pe.face=0.4;}},{t:20,fn:()=>{takeItem(L4,yo);}}],
+  // затвор остужен — ручей в жёлобе застывает, остальные спускаются
+  W.waterTargets.push({pos:new V3(3.9,-2.2,-57.6),pri:2.5,active:()=>!F.valve&&T.yosha.pos.y<-1.6&&T.yosha.pos.z<-56.3,onWater:()=>{F.valve=true;wheelM.color.setHex(0x3e3c44);wheelM.emissiveIntensity=0;SFX.water();SFX.gate();burst(new V3(3.9,-0.8,-57.6),0xe8f4ff,20,4);
+      anim(1.4,k=>{streamM.color.lerpColors(new THREE.Color(0xff7418),new THREE.Color(0x2a2226),k);streamM.emissiveIntensity=0.9*(1-k)+0.1;});banner('Затвор остыл!','#ffd76a',2.4,'огненный ручей в жёлобе застыл — спускайтесь по жёлобу справа');
+      F.stage='tier1';W.noSwap=null;later(0.6,()=>bark(T.yosha,'yosha','Спускайтесь! Я держу!',1.8));
+      tip(0,'Жёлоб застыл! Спускайся по нему справа. Потап тоже — переключись '+K(0,'swap'),3.6);}});
+  // огненная завеса: Потап подкидывает друзей через неё; Йоша с той стороны остужает завесу, чтобы прошёл Потап
+  W.waterTargets.push({pos:new V3(0,-4.2,-61.6),pri:2.5,active:()=>{const Y=T.yosha;return CUR.frozen<=0&&Y.pos.z<-61.3&&Y.pos.y<-3.4&&Math.abs(Y.pos.x)<9;},onWater:()=>{CUR.frozen=8;SFX.water();burst(new V3(T.yosha.pos.x,-2.8,-61),0xe8f4ff,22,4);floatText(new V3(T.yosha.pos.x,-1.6,-61),'Завеса застыла на 8 секунд!','#cfe8ff');
+      if(!F.curTold){F.curTold=true;later(0.3,()=>bark(T.yosha,'yosha','Потап, иди! Быстрее!',1.8));}}});
+  function bottomScene(){F.stage='cut2';const po=T.potap,yo=T.yosha,pr=T.proshka,pe=T.pelageya;placeOnGround(yo,-0.4,-73.4,-6);yo.face=Math.PI*0.9;placeOnGround(pr,3.2,-74.4,-6);pr.face=-2.4;placeOnGround(po,1.4,-73.2,-6);placeOnGround(pe,-2.6,-74.6,-6);pe.face=0.4;
+    play({dur:20,fov:46,camK:2.4,shots:[shot(0,[yo.pos.x-2,-4.6,yo.pos.z-2.2],[yo.pos.x,-5.4,yo.pos.z]),shot(4.4,[2.6,-4.8,-76.4],[0.2,-5.3,-73.3]),shot(10.4,[po.pos.x+1.2,-4.8,-75],[0.8,-5.2,-73.2]),shot(15.4,[-2.6,-4.4,-76.6],[0.2,-5.2,-73.3])],
+      says:[[0.3,4,null,'<i>Внизу Йоша садится и тяжело дышит. Потап садится рядом. Долго молчит.</i>',true],[4.4,4,null,'<i>Спускались все: Йоша — первым, Прошка его прикрывал, Потап подкидывал и ловил.</i>',true],
+        [10.4,3.6,'potap','Ладно. Не «сиди тут».'],[15.4,3.6,null,'<i>Варя (шёпотом): «Он у меня самый главный».</i>',true]],
+      events:[{t:0.2,fn:()=>{yo.body.scale.y=0.8;}},{t:4.4,fn:()=>{po.face=-Math.PI/2;po.body.scale.y=0.85;}},{t:16,fn:()=>{if(!L4.taken)takeItem(L4,yo);}}],
       end:()=>{W.anims.length=0;yo.body.scale.y=1;po.body.scale.y=1;F.out=true;banner('Река Смородина позади','#ffb070',2.4,'дальше — баржа у кузни');later(1.8,finishLevel);}});}
   W.updates.push(dt=>{const ah=[0,1].map(active);
     if(F.stage==='a'&&ah.some(h=>h.pos.z<-7&&h.pos.y>-0.2))F.stage='b';
     if(F.stage==='b'&&ah.some(h=>h.pos.z<-20.4&&h.pos.y>-0.2))F.stage='c';
     if(F.stage==='c'&&ah.some(h=>h.pos.z<-42.4&&h.pos.y>-0.2))F.stage='d';
     if(F.stage==='d'&&ah.some(h=>h.pos.z<-47.5&&h.pos.y>-0.2))fallScene();
+    // Йоша на том берегу, остальные — нет: подсказка «помоги с той стороны»
+    if((F.stage==='a'||F.stage==='b')&&!G.cine){const Y=T.yosha,other=[T.proshka,T.potap,T.pelageya].filter(h=>h.pos.z>-2.2&&h.pos.y>-0.3);
+      if(Y.active&&Y.pos.z<-6.4&&Y.pos.y>-0.2&&other.length){F.helpT=(F.helpT||0)-dt;if(F.helpT<=0){F.helpT=12;tip(1,'Ты на том берегу, а друзья — нет. Встань у края и полей лаву '+K(1,'skill')+' — корка станет мостиком для них',3.6);tip(0,'Йоша на том берегу. Жди его корку у края — и прыгай на неё '+K(0,'jump'),3.2);}}}
+    // жёлоб: пока ручей течёт — горячо, отбрасывает наверх
+    if(!F.valve)for(const h of HEROES){if(h.pos.x>3.1&&h.pos.x<7.1&&h.pos.z<-52.2&&h.pos.z>-56.4&&h.groundRef===chute){h.vel.z=5;h.vel.y=5;h.grounded=false;h.groundRef=null;h.knockT=0.35;SFX.knock();if(h.active)floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Огненный ручей! Жди, пока Йоша остудит затвор','#ffb070');}}
+    streamM.map=null;if(!F.valve){streamM.emissiveIntensity=0.8+0.2*Math.sin(G.time*7);if(Math.random()<dt*6)burst(new V3(5.1+rand(-1,1),rand(-2,0),rand(-56,-52.4)),0xffb040,2,2,0.6);}
     if(F.stage==='fall'){const yo=T.yosha;
       // Потап считает вслух, чтобы не бояться
-      if(yo.pos.z<-52&&yo.pos.y>-5.8){F.cntT+=dt;if(F.cntT>1.15&&F.cnt<NUM.length){F.cntT=0;bark(T.potap,'potap',NUM[F.cnt++],1);}}
-      if(yo.grounded&&yo.pos.y<-5.8&&yo.pos.z<-63.8)bottomScene();}});
+      if(yo.pos.z<-52&&yo.pos.y>-2){F.cntT+=dt;if(F.cntT>1.15&&F.cnt<NUM.length){F.cntT=0;bark(T.potap,'potap',NUM[F.cnt++],1);}}
+      if(yo.grounded&&yo.pos.y<-1.9&&yo.pos.z<-56.4&&!F.t1told){F.t1told=true;SFX.ok();bark(yo,'yosha','Я внизу! Сейчас затвор…',1.8);}}
+    // завеса
+    if(CUR.frozen>0){CUR.frozen-=dt;curtCol.on=false;curtM.color.setHex(0x3a3034);curtM.emissiveIntensity=CUR.frozen<2.5&&Math.sin(G.time*14)>0?0.8:0.1;if(CUR.frozen<=0){SFX.whoosh();floatText(new V3(0,-1.2,-61),'Завеса снова льётся!','#ffb070');}}
+    else{curtCol.on=true;curtM.color.setHex(0xff7418);curtM.emissiveIntensity=0.85+0.15*Math.sin(G.time*9);const pa=curtain.geometry.attributes.position;if(pa){for(let i=0;i<pa.count;i++){const x=pa.getX(i),y=pa.getY(i);pa.setZ(i,Math.sin(G.time*6+x*0.8+y*1.3)*0.08);}pa.needsUpdate=true;}}
+    // подкинутого Потапом над завесой несёт вперёд — через огонь
+    for(const h of HEROES)if(h.tossT>0&&h.pos.y>-1.2&&h.pos.z>-62&&h.pos.z<-58.6&&Math.abs(h.pos.x)<9)h.pos.z-=2.8*dt;
+    for(const h of HEROES){if(curtCol.on&&Math.abs(h.pos.z-(-60.95))<0.9&&h.pos.y<0.6&&h.pos.y>-4.6&&Math.abs(h.pos.x)<9&&!h.tossT){if(h.active&&G.time-(h.curT||-9)>2.5){h.curT=G.time;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Огненная завеса! Пусть Потап подкинет '+'через неё','#ffb070');}}}
+    if(F.stage==='tier1'&&ah.some(h=>h.pos.z<-61.4&&h.pos.y<-3.4)){F.stage='dam';banner('Запруда','#ffb070',2.6,'Прошка — рогатка '+K(0,'skill')+' по щеколде на скале · Йоша — остуди упавшую плиту '+K(1,'skill'));}
+    if(DAM.state==='hot'){DAM.t-=dt;damM.emissiveIntensity=0.8+0.2*Math.sin(G.time*10);if(DAM.t<=0){DAM.state='sink';SFX.splash();floatText(new V3(-3.6,-3.6,-67.8),'Плита расплавилась…','#ffb070');const f0=damG.position.clone();
+        anim(1.2,k=>{damG.position.y=f0.y-k*1.4;});later(2.4,()=>{damG.position.set(-4.2,1.6,-67.8);damG.rotation.z=0;chain.visible=true;damM.emissiveIntensity=0;DAM.state='up';floatText(new V3(-4.2,3,-67.8),'Цепь подняла новую плиту','#ffd9a0');});
+        tip(1,'Плита расплавилась — Йоша не успел. Прошка собьёт новую, а ты стой у протоки и сразу поливай '+K(1,'skill'),3.4);}}
+    if(F.stage==='down'&&ah.every(h=>h.pos.y<-5.5&&h.pos.z<-70.4)&&!G.cine)bottomScene();});
   /* ---------- рисунки кнопок ---------- */
-  const Y=T.yosha;
+  const Y=T.yosha,Po=T.potap,Pr=T.proshka;
   prompt(1,'skill',()=>headOf(Y),()=>Y.active&&W.waterTargets.some(w=>w.lava&&w.active()),'корка');
   prompt(1,'skill',()=>headOf(Y),()=>Y.active&&W.vents.some(v=>!v.fixed&&v.mode==='mid'&&hd(v,Y.pos)<3.2),'сейчас стихнет');
+  prompt(1,'skill',()=>headOf(Y),()=>Y.active&&!F.valve&&Y.pos.y<-1.6&&hd(Y.pos,{x:3.9,z:-57.6})<5,'остуди затвор');
+  prompt(1,'skill',()=>headOf(Y),()=>Y.active&&CUR.frozen<=0&&Y.pos.z<-61.3&&Y.pos.y<-3.4&&[Po,Pr,T.pelageya].some(h=>h.pos.z>-60.6&&h.pos.y>-2.6),'остуди завесу');
+  prompt(1,'skill',()=>headOf(Y),()=>Y.active&&DAM.state==='hot','остуди плиту!');
+  prompt(0,'skill',()=>headOf(Pr),()=>Pr.active&&spitters.some(s=>s.down<=0&&s.cond()&&onLava()),'рогатка — по ящерке');
+  prompt(0,'skill',()=>headOf(Pr),()=>Pr.active&&F.stage==='dam'&&DAM.state==='up','по щеколде');
+  prompt(0,'swap',()=>headOf(Po),()=>Po.active&&F.stage==='dam'&&DAM.state==='up','Прошка — рогатка');
+  prompt(0,'skill',()=>headOf(Po),()=>Po.active&&F.stage==='tier1'&&Po.pos.z>-60.6&&Po.pos.y>-2.6&&HEROES.some(h=>h!==Po&&hd(h.pos,Po.pos)<2.4&&h.pos.z>-60.6),'подкинь через завесу');
+  prompt(0,'swap',()=>headOf(Pr),()=>Pr.active&&F.stage==='tier1'&&Pr.pos.z>-60.6&&Pr.pos.y>-2.6,'Потап — подкидка');
   for(const pi of[0,1]){const h=()=>active(pi);
     prompt(pi,'item',()=>headOf(h()),()=>!heroCarry(h())&&!!crustNear(h()),'взять корку');
     prompt(pi,'item',()=>headOf(h()),()=>{const it=heroCarry(h());return !!it&&it.kind==='korka';},'положить');
     prompt(pi,'item',()=>headOf(h()),()=>{const it=heroCarry(h());return !!it&&it.kind==='kamen'&&W.vents.some(v=>!v.fixed&&hd(v,h().pos)<5);},'в дыру с паром');
-    prompt(pi,'guard',()=>headOf(h()),()=>W.bolts.some(b=>b.tgt===h()&&!b.refl&&b.eta<0.6));}
+    prompt(pi,'guard',()=>headOf(h()),()=>W.bolts.some(b=>b.tgt===h()&&!b.refl&&b.eta<0.6));
+    prompt(pi,'up',()=>headOf(h()),()=>h().tossT>0&&h().pos.z>-62&&h().pos.z<-58.6,'вперёд, через огонь!');
+    prompt(pi,'label',()=>headOf(h()),()=>F.stage==='tier1'&&h()!==Po&&h().pos.z>-60.6&&h().pos.y>-2.6&&h().pos.y<-1.6&&hd(h().pos,Po.pos)<3.4,'стой рядом с Потапом');}
   /* ---------- задачи ---------- */
   const OR=(text,done,targets,ghost,read)=>{const o=O(text,done,targets,ghost);o.read=read;return o;};
   const mk=pi=>[
-    OR(()=>pi?'Река огня. Йоша '+K(1,'swap')+' — живая вода '+K(1,'skill')+' по лаве: застынет корка. Идём по коркам':'Река огня. Корку делает Йоша (у Игрока 2). Стоять можно 8 секунд — мигает, потом тонет',()=>F.stage!=='a'&&F.stage!=='intro',()=>[spot1],null,'Тут написано: огонь боится живой воды…'),
-    OR(()=>'Бурлящая струя: там корка не встаёт. Йоша делает корку в тихой заводи, клещи '+K(pi,'item')+' несут её и кладут на струю. Стоишь на одной — переложи заднюю вперёд',()=>['c','d','cut1','fall','cut2'].includes(F.stage),()=>[pool],null,'Тут написано… Йоша делает, Прошка несёт.'),
-    OR(()=>'Широкий разлив: корка на струе плывёт плотом. Паровые столбы бьют — Йоша поливает их '+K(1,'skill')+', и они стихают. Плот Потапа — поливай сбоку: +5 секунд',()=>['d','cut1','fall','cut2'].includes(F.stage),()=>[vents[1].g],null,'Тут написано… горячий камень в жерло — столб выше. Полил — стихает.'),
-    OR(()=>'Лавопад…',()=>F.stage==='fall'||F.stage==='cut2',()=>[new V3(0,0,-51.5)]),
-    OR(()=>pi?'Йоша идёт сам: живая вода '+K(1,'skill')+' — корка под лапами, лестница вниз. Оступишься — Потап поймает':'Потап страхует на краю. Прошка — вниз по паровым столбам: они держат высоко, переходи со столба на столб',()=>F.stage==='cut2',()=>pi?[new V3(0,-6,-66)]:ladder.map(v=>v.g),null,pi?'Тут написано… не сиди тут.':'Тут написано… столб держит, как ладонь.'),
+    OR(()=>pi?'Река огня. Йоша '+K(1,'swap')+' — живая вода '+K(1,'skill')+' по лаве: застынет корка. Перейдёшь — сделай корку-мостик друзьям с той стороны':'Река огня. Корку делает Йоша. Ящерки плюют в него огнём — прикрой: рогатка '+K(0,'skill')+' по ящерке. Потом прыгай на корку Йоши',()=>F.stage!=='a'&&F.stage!=='intro',()=>pi?[spot1]:spitters.filter(s=>s.down<=0&&s.cond()).map(s=>s.g),null,'Тут написано: огонь боится живой воды…'),
+    OR(()=>'Бурлящая струя: там корка не встаёт. Йоша делает корку в тихой заводи, клещи '+K(pi,'item')+' несут её и кладут на струю. Стоишь на одной — переложи заднюю вперёд',()=>['c','d','cut1','fall','tier1','dam','down','cut2'].includes(F.stage),()=>[pool],null,'Тут написано… Йоша делает, Прошка несёт.'),
+    OR(()=>'Широкий разлив: корка на струе плывёт плотом. Паровые столбы бьют — Йоша поливает их '+K(1,'skill')+', и они стихают. Второй герой запрыгнет на плот, если стоит рядом',()=>['d','cut1','fall','tier1','dam','down','cut2'].includes(F.stage),()=>[vents[1].g],null,'Тут написано… горячий камень в жерло — столб выше. Полил — стихает.'),
+    OR(()=>'Лавопад…',()=>['fall','tier1','dam','down','cut2'].includes(F.stage),()=>[new V3(0,0,-51.5)]),
+    OR(()=>pi?'Йоша спускается первым: живая вода '+K(1,'skill')+' — корка на каждой ступени. Внизу — горящий затвор жёлоба: остуди его, и друзья спустятся':'Прикрой Йошу: ящерки плюют огнём — рогатка '+K(0,'skill')+' по ящеркам. Потап на краю поймает, если Йоша оступится',()=>['tier1','dam','down','cut2'].includes(F.stage),()=>pi?[valve]:spitters.filter(s=>s.down<=0&&s.cond()).map(s=>s.g),null,pi?'Тут написано… не сиди тут.':'Тут написано… кто прикрывает — тот тоже идёт.'),
+    OR(()=>'Огненная завеса! Потап '+(pi?'':K(0,'swap')+' ')+'подкидывает '+(pi?'':K(0,'skill')+' ')+'того, кто стоит рядом, — через огонь. Потом Йоша с той стороны поливает завесу '+K(1,'skill')+': она застынет на 8 секунд, и пройдёт Потап',()=>['dam','down','cut2'].includes(F.stage),()=>[curtain],null,'Тут написано… один подкидывает, другой гасит.'),
+    OR(()=>pi?'Запруда: когда Прошка собьёт плиту, стой у протоки и сразу поливай её '+K(1,'skill')+' — у тебя 6 секунд':'Запруда: собей рогаткой '+K(0,'skill')+' щеколду на скале — плита упадёт в протоку. Йоша должен её сразу остудить',()=>['down','cut2'].includes(F.stage),()=>DAM.state==='up'?[latchMk]:[damG],null,'Тут написано… вдвоём — и огонь уходит.'),
+    OR(()=>'Огонь ушёл! Вниз по застывшим ступеням — все вместе',()=>F.stage==='cut2',()=>[new V3(0,-6,-72)]),
     O('Внизу…',()=>false,()=>[T.yosha.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>!heroCarry(h)&&hd(h.pos,{x:-5.6,z:-24.2})<2.4&&F.stage!=='fall',text:pi=>'Горячий камень! Возьми клещами '+K(pi,'item')+' и брось в дыру с паром. Столб станет выше — как лифт на скалу'});
   W.tipZones.push({cond:(pi,h)=>{const it=heroCarry(h);return !!it&&it.kind==='korka';},text:pi=>'Несёшь корку. Стоя нажми '+K(pi,'item')+' — положишь на лаву перед собой, на бегу — бросишь на 4 шага. На течении она поплывёт'});
+  W.tipZones.push({cond:(pi,h)=>F.stage==='tier1'&&h.pos.z>-60.6&&h.pos.y>-2.6&&h.pos.y<-1.6,text:pi=>'Огненная завеса. Встань рядом с Потапом — он подкинет через огонь ('+K(0,'skill')+' у Потапа). Пелагея в полёте может держать прыжок и планировать'});
   W.spawns=[[new V3(-2.6,0,9),new V3(-4.6,0,10)],[new V3(2.6,0,9),new V3(4.6,0,10)]];W.startAct=[0,1];
-  W.pauseLine='Река Смородина. Йоша: живая вода по лаве — корка (8 секунд). Клещи носят корку: на бурлящую струю, как ступеньку. На течении корка — плот. Паровой столб: горячий камень — выше, вода — тише. Отбитый огонёк сбивает ящерку.';
+  W.pauseLine='Река Смородина. Йоша делает корку живой водой и помогает друзьям с того берега. Прошка прикрывает его рогаткой и носит корку клещами. Лавопад: Йоша спускается первым и гасит затвор жёлоба; Потап подкидывает через огненную завесу, Йоша её гасит; запруда — рогатка по щеколде и живая вода на плиту.';
   W.onStart=()=>{later(0.4,intro);};
   flushDecor();}
 
@@ -6688,7 +6902,7 @@ function build42(){
 // лямку держит оставленный · брёвна: кольцо у бревна пройдёт, только если его герой прыгнул · топка: три угля — 30 секунд помощи, в гору без огня не идёт
 function build43(){
   W.zvenAway=true;W.world=4;setTheme('smorodina');W.name='4-3 · «Эй, ухнем»';W.sub='Огненная Смородина · на четверых · лямка и топка';W.camX=12;const F=W.flags;F.stage='intro';
-  W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.kleshi=true;W.fallY=-12;const T=HERO,LY=-0.45;W.noLavaWater=()=>true;   // корки здесь не встают: огонь слишком силён
+  W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.kleshi=true;W.fallY=-12;const T=HERO,LY=-0.45;W.noLavaWater=()=>true;W.tipMul=3;   // корки здесь не встают: огонь слишком силён · подсказки держатся втрое дольше
   const bankM=M(0x6a5646),rockM=M(0x3e3230),logM=M(0x7a5030),stoneM=M(0x5a4c46);
   const Z=makeVestZ(helperOf(3));W.zven=Z;Z.pos.set(-2,2.4,8);
   const H0=-40,H1=-58,HT=4;const hillY=z=>z>H0?0:z<H1?HT:(H0-z)/(H0-H1)*HT;
@@ -6702,22 +6916,49 @@ function build43(){
   for(let z=20;z>-100;z-=rand(3,5))addMesh(new THREE.DodecahedronGeometry(rand(0.9,1.8)),rockM,-rand(8.5,13),hillY(z)+0.2,z).rotation.set(rand(0,3),rand(0,3),0);
   for(let z=20;z>-100;z-=rand(4,6))addMesh(new THREE.DodecahedronGeometry(rand(1,2)),rockM,rand(13,22),LY+hillY(z)-0.3,z);
   bell(-4.5,6);bell(-4.5,-24);bell(-4.5,-66,HT);
+  {const path=new THREE.Mesh(new THREE.PlaneGeometry(3.2,H0-16-0.1),M(0x8a6a4a));path.rotation.x=-Math.PI/2;path.position.set(-1.4,0.02,(16+H0)/2);path.receiveShadow=true;W.group.add(path);   // бечевник — тропа бурлаков
+    for(let z=12;z>H0;z-=rand(1.2,2.2))addMesh(new THREE.BoxGeometry(rand(0.2,0.5),0.03,rand(0.15,0.3)),M(0x6a4e36),-1.4+rand(-1.3,1.3),0.04,z).castShadow=false;
+    for(let z=10;z>-90;z-=8){const y=hillY(z);const t=new THREE.Group();t.position.set(1.05,y,z);W.group.add(t);addMesh(new THREE.CylinderGeometry(0.22,0.26,0.9,10),M(0x3a3028),0,0.45,0,t);   // тумбы с кольцами
+      const rg=addMesh(new THREE.TorusGeometry(0.16,0.04,6,12),M(0x8a8a90),0,0.62,-0.24,t);}
+    // стан бурлаков у начала: шатёр, костёр, бочки, бухты каната, лодка кверху дном
+    const camp=new THREE.Group();camp.position.set(-5,0,12.4);W.group.add(camp);addMesh(new THREE.ConeGeometry(1.4,2.2,6),M(0xb89a6a),0,1.1,0,camp);addMesh(new THREE.ConeGeometry(0.4,0.8,6),M(0x5a3a1a),0,0.4,1.0,camp);
+    const fire=new THREE.Group();fire.position.set(-3.2,0,9.2);W.group.add(fire);for(let i=0;i<5;i++){const l=addMesh(new THREE.CylinderGeometry(0.06,0.07,0.9,5),M(0x5a3a1a),0,0.1,0,fire);l.rotation.z=1.3;l.rotation.y=i*1.26;}
+    const flame=addMesh(new THREE.ConeGeometry(0.28,0.7,7),MB(0xffa030),0,0.45,0,fire);const fl=new THREE.PointLight(0xff9a40,1,8,2);fl.position.set(-3.2,1.2,9.2);W.group.add(fl);
+    for(const[x,z]of[[-6.2,7.4],[-6.3,6.6],[-5.6,7.0]])addMesh(new THREE.CylinderGeometry(0.3,0.3,0.7,10),M(0x7a5030),x,0.35,z);
+    for(const[x,z]of[[-4.4,6.2],[-6.2,3.6]]){const c=addMesh(new THREE.TorusGeometry(0.34,0.1,6,14),M(0xc8a060),x,0.1,z);c.rotation.x=Math.PI/2;}
+    {const bt=addMesh(new THREE.CylinderGeometry(0.02,0.7,3.2,4,1),M(0x6a4428),-6.1,0.35,1.2);bt.rotation.z=Math.PI/2;bt.rotation.y=Math.PI/2;bt.scale.set(1,1,0.5);}
+    // фонари вдоль тропы
+    for(let z=4;z>-90;z-=14){const y=hillY(z);addMesh(new THREE.CylinderGeometry(0.05,0.06,2.2,6),M(0x3a3028),-6.3,y+1.1,z);addMesh(new THREE.BoxGeometry(0.3,0.36,0.3),M(0xffd070,{emissive:0xffa030,emissiveIntensity:1}),-6.3,y+2.3,z);}
+    // указатель «К кузне»
+    {const g=new THREE.Group();g.position.set(-5.6,0,-37);W.group.add(g);addMesh(new THREE.CylinderGeometry(0.06,0.07,2,6),M(0x5a3a1a),0,1,0,g);const b=new THREE.Mesh(new THREE.PlaneGeometry(1.6,0.45),new THREE.MeshBasicMaterial({map:scratchTex('К КУЗНЕ ↑',360,100,'#fff4dc','#5a3a1a')}));b.position.set(0,1.9,0.05);g.add(b);}
+    // кузня на горе за воротами: сруб, красные окна, дым из трубы
+    const sm=new THREE.Group();sm.position.set(-2.75,HT,-84);W.group.add(sm);addMesh(new THREE.BoxGeometry(7,3.4,5),M(0x6a4428),0,1.7,0,sm);const rf=new THREE.ConeGeometry(5.2,2.4,4);rf.rotateY(Math.PI/4);addMesh(rf,M(0x4a2a1a),0,4.6,0,sm);
+    addMesh(new THREE.BoxGeometry(0.9,2.6,0.9),M(0x5a4a44),2,5.4,0,sm);for(const x of[-2,0,2])addMesh(new THREE.BoxGeometry(0.8,0.7,0.05),M(0xff8030,{emissive:0xff5010,emissiveIntensity:1}),x,1.8,2.52,sm);
+    W.updates.push(dt=>{flame.scale.y=1+0.25*Math.sin(G.time*11);fl.intensity=0.9+0.2*Math.sin(G.time*13);if(Math.random()<dt*3)burst(new V3(-0.75,HT+8.2,-84),0x5a5a60,2,1.2,1.4);
+      if(Math.random()<dt*10){const z=rand(-96,20);burst(new V3(rand(3,20),LY+hillY(z)+0.2,z),0xffb040,1,2.4,0.7);}});}
   // ворота кузни на горе
   const gate=new THREE.Group();gate.position.set(-2.75,HT,-74);W.group.add(gate);for(const s of[-1,1])addMesh(new THREE.BoxGeometry(0.6,4.4,0.6),M(0x4a3a30),s*4.2,2.2,0,gate);addMesh(new THREE.BoxGeometry(9,0.6,0.7),M(0x4a3a30),0,4.5,0,gate);
   const kz=makeSmith('kuzma',false);kz.g.position.set(-1.2,HT,-72.6);const hat=new THREE.Group();hat.position.y=0.3;kz.head.add(hat);addMesh(new THREE.CylinderGeometry(0.36,0.4,0.28,12),M(0x3a3028),0,0.08,0,hat);addMesh(new THREE.CylinderGeometry(0.5,0.5,0.05,14),M(0x3a3028),0,-0.04,0,hat);
   const n1=nutItem(-6.2,0.6,2),n2=nutItem(-6.3,0.6,-22),n3=nutItem(-6.3,hillY(-52)+0.6,-52);
   /* ---------- баржа, лямка, четыре кольца ---------- */
   const bg=makeBarge();const BX=6.8;const B={z:4,tz:4,y:0};
+  {const sail=new THREE.Mesh(new THREE.PlaneGeometry(3.6,2.6),new THREE.MeshLambertMaterial({map:scratchTex('☀',256,190,'#ffc840','#b83a20'),side:THREE.DoubleSide}));sail.position.set(0,3.9,-2.2);sail.rotation.y=Math.PI/2;bg.g.add(sail);
+    const flag=new THREE.Mesh(new THREE.PlaneGeometry(0.9,0.5),MB(0xffd23a,{side:THREE.DoubleSide}));flag.position.set(0,6.1,-2.0);flag.rotation.y=Math.PI/2;bg.g.add(flag);W.updates.push(()=>{flag.rotation.z=Math.sin(G.time*4)*0.2;sail.rotation.x=Math.sin(G.time*1.3)*0.04;});
+    for(let i=0;i<10;i++)addMesh(new THREE.DodecahedronGeometry(rand(0.2,0.35)),M(0xff6a20,{emissive:0xff3000,emissiveIntensity:0.7}),rand(-1.5,1.5),1.7+rand(0,0.3),rand(-3.6,1.6),bg.g);}
   const door=new THREE.Group();bg.g.add(door);door.position.set(-2.55,1.1,3.4);const doorM=M(0x3a2418,{emissive:0xff4000,emissiveIntensity:0.05});addMesh(new THREE.BoxGeometry(0.12,0.7,0.9),doorM,0,0,0,door);
-  const FIRE={t:0};const fireSock=hotSocket(BX-2.6,1.2,B.z+3.4,{r:2.5,accept:it=>it.kind==='ugol',onPut:(it)=>{consumeHot(it);FIRE.t=Math.min(30,FIRE.t+10);SFX.whoosh();burst(fireSock.pos.clone(),0xff8a30,16,3);floatText(fireSock.pos.clone().add(new V3(0,1,0)),'Топка: '+Math.round(FIRE.t)+' с','#ffb070');if(!F.fireTold){F.fireTold=true;later(0.5,()=>sayP('Горит! Баржа помогает.',2.2));}}});
+  const topka=new THREE.Group();topka.position.set(-1.7,0,-4.4);bg.g.add(topka);addMesh(new THREE.BoxGeometry(1.4,1.5,1.5),M(0x4a4a50),0,1.6,0,topka);addMesh(new THREE.CylinderGeometry(0.26,0.3,1.8,10),M(0x3a3a40),0.2,3.1,0.3,topka);
+  const topM=M(0x5a2a1a,{emissive:0xff4000,emissiveIntensity:0.05});addMesh(new THREE.BoxGeometry(0.08,0.7,0.9),topM,-0.72,1.5,0,topka);
+  const topSign=new THREE.Group();W.group.add(topSign);{const b=new THREE.Mesh(new THREE.PlaneGeometry(1.8,0.6),new THREE.MeshBasicMaterial({map:scratchTex('ТОПКА',360,120,'#fff4dc','#8a2a10'),transparent:true,depthTest:false}));b.renderOrder=6;topSign.add(b);
+    const ar=new THREE.Mesh(new THREE.ConeGeometry(0.28,0.6,4),MB(0xffb040,{depthTest:false}));ar.rotation.x=Math.PI;ar.position.y=-0.7;ar.renderOrder=6;topSign.add(ar);}topSign.visible=false;
+  const FIRE={t:0};const fireSock=hotSocket(BX-2.6,1.2,B.z-4.4,{r:2.5,accept:it=>it.kind==='ugol',onPut:(it)=>{consumeHot(it);FIRE.t=Math.min(30,FIRE.t+10);SFX.whoosh();burst(fireSock.pos.clone(),0xff8a30,16,3);floatText(fireSock.pos.clone().add(new V3(0,1,0)),'Топка: '+Math.round(FIRE.t)+' с','#ffb070');if(!F.fireTold){F.fireTold=true;later(0.5,()=>sayP('Горит! Баржа помогает.',2.2));}}});
   const RINGS=[0,1,2,3].map(i=>{const g=new THREE.Group();W.group.add(g);const rm=MB(0xffffff,{transparent:true,opacity:0.85});const ring=addMesh(new THREE.TorusGeometry(0.62,0.07,8,26),rm,0,0.12,0,g);ring.rotation.x=Math.PI/2;ring.castShadow=false;
     const dg=makeDigit(0.7,MB(0xffd23a));dg.position.set(0,2.8,0);g.add(dg);setDigit(dg,i+1);return {i,g,rm,dg,dx:i%2?-2.3:-0.5,dz:-9-i*2.1,hero:null,x:0,z:0,y:0,blocked:false,flash:0};});
   const ropeM=M(0xc8a060);const rope=[0,1,2,3].map(()=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,1,5),ropeM);W.group.add(m);return m;});
   function segTo(m,a,b){const d=b.clone().sub(a),l=d.length();m.position.copy(a).addScaledVector(d,0.5);m.scale.set(1,l,1);m.quaternion.setFromUnitVectors(new V3(0,1,0),d.normalize());}
-  function placeBarge(){B.y=LY-0.25+hillY(B.z);bg.g.position.set(BX,B.y,B.z);bg.g.rotation.x=B.z<H0+6&&B.z>H1-6?-Math.atan2(HT,H0-H1)*0.8:0;fireSock.pos.set(BX-2.6,B.y+1.2,B.z+3.4);
+  function placeBarge(){B.y=LY-0.25+hillY(B.z);bg.g.position.set(BX,B.y,B.z);bg.g.rotation.x=B.z<H0+6&&B.z>H1-6?-Math.atan2(HT,H0-H1)*0.8:0;{const tp=new V3();topka.getWorldPosition(tp);fireSock.pos.set(tp.x-0.9,tp.y+1.3,tp.z);topSign.position.set(tp.x-0.6,tp.y+3.9,tp.z);topSign.quaternion.copy(camS.quaternion);}
     for(const r of RINGS){r.x=r.dx;r.z=B.z+r.dz;r.y=hillY(r.z);r.g.position.set(r.x,r.y,r.z);}
     const bow=new V3(BX-1.2,B.y+1.3,B.z-7.4);let prev=bow;RINGS.forEach((r,k)=>{const p=new V3(r.x,r.y+0.9,r.z);segTo(rope[k],prev,p);prev=p;});}
-  placeBarge();W.RINGS=RINGS;W.BARGE=B;W.FIRE=FIRE;
+  placeBarge();W.RINGS=RINGS;W.BARGE=B;W.FIRE=FIRE;W.FIRESOCK=fireSock;
   // брёвна поперёк берега
   const LOGS=[-30,-35,-40].map(z=>{const y=hillY(z);const c=colBox(-6.8,1.5,y-1,y+0.5,z-0.35,z+0.35,false);const m=addMesh(new THREE.CylinderGeometry(0.33,0.33,8.2,10),logM,-2.65,y+0.28,z);m.rotation.z=Math.PI/2;return {z,top:y+0.5,c,m,gone:false};});W.LOGS=LOGS;
   const L2=linkItem(-6.3,1.1,-33);W.linkTotal+=2;   // ещё два: за первый рывок и от Кузьмы
@@ -6733,7 +6974,7 @@ function build43(){
     if(inWin()){if(!SG.hit[pi]){SG.hit[pi]=true;mine.forEach(r=>{r.flash=1;});floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ух-нем!','#ffd76a');h.atkT=0.3;}}
     else{SFX.miss();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Рано — жди «ух-нем»','#ffd0d0');}return true;};
   function songTick(dt){SG.t+=dt;W.song.t=SG.t;W.song.pulse=Math.max(0,(W.song.pulse||0)-dt*4);const k=Math.floor(SG.t/SG.C);const u=SG.t-k*SG.C;
-    if(k>SG.k){SG.k=k;SG.res=false;SG.hit=[false,false];const V=LINES[Math.min(LINES.length-1,SG.verse)];bark(T.potap,'potap',V[k%4],1.9);tone(mf(45),0.5,'triangle',0.16);tone(mf(57),0.3,'sine',0.05);W.song.pulse=1;}
+    if(k>SG.k){SG.k=k;SG.res=false;SG.hit=[false,false];const V=LINES[Math.min(LINES.length-1,SG.verse)];floatText(T.potap.pos.clone().add(new V3(0,T.potap.d.height+1.1,0)),'♪ '+V[k%4],'#ffe7a0');tone(mf(45),0.5,'triangle',0.16);tone(mf(57),0.3,'sine',0.05);W.song.pulse=1;}
     if(u>=1.0&&!SG.w1){SG.w1=true;tone(mf(50),0.35,'triangle',0.18);tone(mf(62),0.25,'sine',0.06);W.song.pulse=1;}
     if(u>=1.5&&!SG.w2){SG.w2=true;tone(mf(50),0.45,'triangle',0.18);W.song.pulse=1;}
     if(u<1.0){SG.w1=false;SG.w2=false;}
@@ -6757,6 +6998,7 @@ function build43(){
       r.flash=Math.max(0,r.flash-dt*2);if(dz<0)r.blocked=false;const c=r.blocked&&Math.sin(G.time*10)>0?0xff5a3a:r.flash>0?0xffd76a:best?PCOL[best.player]:0xffffff;r.rm.color.setHex(c);r.dg.visible=r.blocked||!best||(r.flash>0);}
     for(const h of HEROES)if(!h.grounded)h.airT=G.time;
     for(const L of LOGS)if(!L.gone&&RINGS.every(r=>r.z<L.z-0.9)){L.gone=true;L.c.on=false;SFX.whoosh();const m=L.m,y0=m.position.y;anim(1.4,k=>{m.position.x=-2.65+k*12;m.position.y=y0-Math.max(0,k-0.6)*2.2;m.rotation.x-=0.3;});later(0.6,()=>floatText(new V3(0,L.top+1,L.z),'Лямка столкнула бревно!','#ffd9a0'));}
+    topSign.visible=F.stage==='hill';if(topSign.visible)topSign.children[1].position.y=-0.7-0.15*Math.abs(Math.sin(G.time*5));topM.emissiveIntensity=FIRE.t>0?1+0.2*Math.sin(G.time*9):0.05;
     if(FIRE.t>0){FIRE.t-=dt;doorM.emissiveIntensity=0.9+0.2*Math.sin(G.time*9);bg.fireM.emissiveIntensity=1.2;bg.fl.intensity=1.4;if(Math.random()<dt*6)burst(new V3(BX+0.5,B.y+3.6,B.z+4.4),0x6a6a70,2,1.5,0.8);}else{doorM.emissiveIntensity=0.05;bg.fireM.emissiveIntensity=0;bg.fl.intensity=0;}}
   /* ---------- камера: общий экран на лямку и баржу ---------- */
   const cam={x:0,y:0,z:0,r:9.5,camActive:()=>!G.cine&&F.stage!=='intro'};W.camZones.push(cam);
@@ -6781,10 +7023,15 @@ function build43(){
   W.updates.push(dt=>{
     if(F.stage==='pull'||F.stage==='hill'){if(!G.cine)songTick(dt);ringTick(dt);
       const rz=(RINGS[0].z+RINGS[3].z)/2;cam.x=1.2;cam.z=rz+1.6;cam.y=hillY(rz);
-      if(F.stage==='pull'&&B.z<H0+6){F.stage='hill';SG.verse=2;banner('В гору!','#ffb070',2,'баржа едет в гору, только если горит огонь: неси уголь клещами '+K(0,'item')+' в печку');}
+      if(F.stage==='pull'&&B.z<H0+6){F.stage='hill';SG.verse=2;banner('В гору!','#ffb070',2,'баржа едет в гору, только если горит огонь: неси уголь клещами '+K(0,'item')+' в топку на носу баржи');
+        const D=2.4;let pu=0;anim(1.6,k=>{const u=smooth(k),du=u-pu;pu=u;B.z-=D*du;B.tz-=D*du;RINGS.forEach(r=>{r.dz+=D*du;});});SFX.whoosh();floatText(new V3(BX,B.y+3.4,B.z-4),'Баржа подтянулась!','#ffd9a0');}
+      if(F.stage==='hill'){const tp=fireSock.pos;cam.z=(rz+1.6+tp.z)/2;cam.x=0.6;cam.r=11.2;}
       if(F.stage==='pull'){SG.verse=B.z<-14?1:0;}
       if(F.stage==='hill'&&B.z<H0-4)SG.verse=3;
       if(B.z<=-50&&!G.cine)endScene();}});
+  const arcDots=[];for(let i=0;i<9;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.07,6,5),MB(0xffc860,{transparent:true,opacity:0.8,depthWrite:false}));m.visible=false;W.group.add(m);arcDots.push(m);}
+  W.updates.push(()=>{let hh=null;for(const pi of[0,1]){const h=active(pi),it=heroCarry(h);if(it&&it.kind==='ugol'&&hd(h.pos,fireSock.pos)<9){hh=h;break;}}
+    arcDots.forEach((m,i)=>{m.visible=!!hh&&F.stage==='hill';if(!m.visible)return;const u=(i+1)/10,a=hh.pos,b=fireSock.pos;m.position.set(lerp(a.x,b.x,u),lerp(a.y+1,b.y,u)+Math.sin(u*Math.PI)*1.6,lerp(a.z,b.z,u));m.material.opacity=0.4+0.4*Math.sin(G.time*8-i);});});
   /* ---------- рисунки кнопок ---------- */
   for(const pi of[0,1]){const h=()=>active(pi);
     prompt(pi,'skill',()=>headOf(h()),()=>SG.on&&RINGS.some(r=>r.hero&&r.hero.player===pi)&&inWin()&&!SG.hit[pi],'ух-нем!');
@@ -6795,7 +7042,7 @@ function build43(){
   const mk=pi=>[
     OR(()=>'Лямка на четверых: встаньте в кольца — оставленный держит сам. На «ух-нем» жмите '+K(pi,'skill')+' вместе: все четверо — рывок',()=>B.z<-24,()=>RINGS.filter(r=>!r.hero).map(r=>r.g),null,'Тут написано… на «ух-нем» — все вместе.'),
     OR(()=>'Брёвна на берегу: кольцо у бревна пройдёт, только если его герой прыгнет '+K(pi,'jump')+' на «ух-нем». Оставленного — смени и прыгай. Кто перепрыгнул — зови «Ко мне!» '+K(pi,'call'),()=>RINGS.every(r=>r.z<LOGS[2].z-0.5),()=>RINGS.filter(r=>r.blocked).map(r=>r.g),null,'Тут написано… бревно — прыжком, лямку не бросать.'),
-    OR(()=>'В гору! Топка: уголь из горячей кучи клещами '+K(pi,'item')+' — в дверцу на борту баржи (можно бросить на ходу). Три угля — 30 секунд. Двое держат лямку, двое бегают',()=>F.stage==='end',()=>FIRE.t>0?[bg.g]:[door],null,'Тут написано… топка горит — баржа помогает.'),
+    OR(()=>'В гору! Топка на носу баржи (над ней горит вывеска «ТОПКА»): уголь из горячей кучи клещами '+K(pi,'item')+' — туда (можно бросить на ходу). Три угля — 30 секунд. Двое держат лямку, двое бегают',()=>F.stage==='end',()=>FIRE.t>0?[bg.g]:[door],null,'Тут написано… топка горит — баржа помогает.'),
     O('Кузьма у ворот…',()=>false,()=>[kz.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>F.stage==='hill'&&!heroCarry(h)&&piles.some(p=>hd(h.pos,p)<2.2),text:pi=>'Горячий уголь: возьми клещами '+K(pi,'item')+' — и в печку баржи. На бегу можно бросить на 4 шага'});
@@ -8634,13 +8881,42 @@ function buildLukomorye(){
   const kuz=makeKuzma();kuz.g.position.set(10.2,0,-0.6);kuz.g.rotation.y=-0.6;W.cyls.push({x:10.2,z:-0.6,r:0.6,miny:-1,maxy:2,on:true});
   const anvil=new THREE.Group();anvil.position.set(8.6,0,0.6);W.group.add(anvil);addMesh(new THREE.BoxGeometry(0.5,0.6,0.5),M(0x5a3a1a),0,0.3,0,anvil);addMesh(new THREE.BoxGeometry(0.9,0.28,0.42),M(0x3a3a44),0,0.74,0,anvil);
   const blank=addMesh(new THREE.BoxGeometry(0.34,0.08,0.14),M(0xff8a3a,{emissive:0xff5010,emissiveIntensity:0.9}),0,0.92,0,anvil);W.cyls.push({x:8.6,z:0.6,r:0.5,miny:-1,maxy:0.9,on:true});
-  const rush=[];for(let i=0;i<5;i++){const g=new THREE.Group();g.position.set(-6+i*3,0.28,-21.6);W.group.add(g);const c=new THREE.CylinderGeometry(0.28,0.28,1.6,12);c.rotateZ(Math.PI/2);addMesh(c,M(0xf4ecd8),0,0,0,g);
-    for(const x of[-0.6,0,0.6]){const t=addMesh(new THREE.TorusGeometry(0.29,0.05,6,16),M(0xc0302a),x,0,0,g);t.rotation.y=Math.PI/2;}rush.push(g);W.cyls.push({x:-6+i*3,z:-21.6,r:0.4,miny:-1,maxy:0.56,on:true});}
+  // у самого моря — волшебный стан: резная арка под хохлому, жар-птица на макушке, золотое веретено с вышитым рушником; из него раскатывается карта
+  const loom=new THREE.Group();loom.position.set(0,0,-22.6);W.group.add(loom);const LM={stone:M(0xc8bea8),red:M(0xb8201a,{emissive:0x400800,emissiveIntensity:0.35}),gold:M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.7}),blk:M(0x1a1410)};
+  addMesh(new THREE.CylinderGeometry(2.3,2.5,0.3,36),LM.stone,0,0.15,0,loom);addMesh(new THREE.CylinderGeometry(1.75,1.95,0.3,36),LM.stone,0,0.45,0,loom);
+  {const rim=addMesh(new THREE.TorusGeometry(1.85,0.05,6,44),LM.gold,0,0.61,0,loom);rim.rotation.x=Math.PI/2;const rim2=addMesh(new THREE.TorusGeometry(2.4,0.04,6,44),LM.gold,0,0.31,0,loom);rim2.rotation.x=Math.PI/2;}
+  W.cyls.push({x:0,z:-22.6,r:2.35,miny:-1,maxy:0.3,on:true});W.cyls.push({x:0,z:-22.6,r:1.8,miny:-1,maxy:0.6,on:true});
+  for(const s of[-1,1]){addMesh(new THREE.CylinderGeometry(0.2,0.26,3.4,12),LM.red,s*1.55,2.3,-0.2,loom);for(let k=0;k<4;k++){const t=addMesh(new THREE.TorusGeometry(0.24,0.05,6,16),LM.gold,s*1.55,1.1+k*0.82,-0.2,loom);t.rotation.x=Math.PI/2;}
+    for(let k=0;k<3;k++)addMesh(new THREE.SphereGeometry(0.07,8,6),LM.blk,s*1.55+s*0.2,1.5+k*0.82,0.0,loom);W.cyls.push({x:s*1.55,z:-22.8,r:0.3,miny:-1,maxy:4,on:true});}
+  addMesh(new THREE.TorusGeometry(1.55,0.14,10,28,Math.PI),LM.red,0,4.0,-0.2,loom);
+  for(let i=0;i<11;i++){const a=i/10*Math.PI;const lf=addMesh(new THREE.SphereGeometry(0.12,8,6),i%2?LM.gold:LM.blk,Math.cos(a)*1.55,4.0+Math.sin(a)*1.55,-0.05,loom);lf.scale.set(1,1.9,0.5);lf.rotation.z=a;}
+  const bird=new THREE.Group();bird.position.set(0,5.75,-0.2);loom.add(bird);{const bm=M(0xffb030,{emissive:0xff6a00,emissiveIntensity:0.8});part(bird,new THREE.SphereGeometry(0.3,12,10),bm,0,0,0).scale.set(1,0.85,1.3);part(bird,new THREE.SphereGeometry(0.17,10,8),bm,0,0.28,0.3);
+    const bk=new THREE.ConeGeometry(0.05,0.18,6);bk.rotateX(Math.PI/2);part(bird,bk,LM.gold,0,0.26,0.5);for(let i=0;i<5;i++){const f=new THREE.ConeGeometry(0.08,0.9,6);f.translate(0,0.45,0);const m=part(bird,f,i%2?LM.gold:bm,0,0,-0.3);m.rotation.x=-2.2;m.rotation.z=(i-2)*0.32;}}
+  const spindle=new THREE.Group();spindle.position.set(0,2.35,-0.2);loom.add(spindle);
+  {const rod=new THREE.CylinderGeometry(0.06,0.06,3.1,8);rod.rotateZ(Math.PI/2);addMesh(rod,LM.gold,0,0,0,spindle);const roll=new THREE.CylinderGeometry(0.44,0.44,2.2,22);roll.rotateZ(Math.PI/2);addMesh(roll,M(0xf4ecd8),0,0,0,spindle);
+    for(const x of[-0.9,-0.3,0.3,0.9]){const t=addMesh(new THREE.TorusGeometry(0.45,0.05,6,18),LM.red,x,0,0,spindle);t.rotation.y=Math.PI/2;}for(const s of[-1,1]){const c=new THREE.ConeGeometry(0.12,0.5,10);c.rotateZ(-s*Math.PI/2);addMesh(c,LM.gold,s*1.75,0,0,spindle);}}
+  const flap=new THREE.Mesh(new THREE.PlaneGeometry(2.0,1.7),new THREE.MeshLambertMaterial({map:rushnikTex(0,256,220,'flap'),side:THREE.DoubleSide}));flap.position.set(0,1.45,0.26);loom.add(flap);
+  const WCOL=[0x3ac04a,0x3a8aff,0xd0a0ff,0xff6a2a,0xffd23a],gems=[];
+  for(let i=0;i<5;i++){const a=Math.PI*(0.14+i*0.18),x=Math.cos(a)*2.1,z=Math.sin(a)*2.1;const open=i===0||(i===1&&!!G.flags.voiceDone)||(i===2&&!!G.flags.w2done)||(i===3&&!!G.flags.w3done)||(i===4&&!!G.flags.w4done);
+    addMesh(new THREE.CylinderGeometry(0.11,0.15,0.34,8),LM.stone,x,0.47,z,loom);const gm=M(open?WCOL[i]:0x6a6a70,{emissive:open?WCOL[i]:0x000000,emissiveIntensity:open?0.8:0});gems.push({m:addMesh(new THREE.OctahedronGeometry(0.2),gm,x,0.95,z,loom),open,i});}
+  const motes=[];for(let i=0;i<18;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.05,6,5),MB(i%3?0xffe08a:0xfff8e0,{transparent:true,opacity:0.9}));W.group.add(m);motes.push({m,a:rand(0,6.3),r:rand(1.2,2.8),y:rand(0.8,4.6),s:rand(0.4,1)});}
+  // каменная тропка от дуба к стану, ракушки и фонари-огоньки на берегу
+  for(let z=-11.5;z>-19.8;z-=0.95)addMesh(new THREE.CylinderGeometry(rand(0.34,0.44),rand(0.36,0.46),0.06,9),M(0xb0a898),rand(-0.25,0.25),0.03,z).castShadow=false;
+  for(let i=0;i<14;i++){const x=rand(-18,18),z=rand(-23.6,-19.8);if(Math.abs(x)<3)continue;const sh=addMesh(new THREE.SphereGeometry(rand(0.1,0.17),8,6,0,Math.PI*2,0,Math.PI/2),M([0xf4d8c8,0xffc0b0,0xf0e8d8][i%3]),x,0.02,z);sh.scale.set(1,0.5,1.3);sh.rotation.y=rand(0,3);}
+  const lamps=[];for(const s of[-1,1]){addMesh(new THREE.CylinderGeometry(0.07,0.09,2.4,8),LM.red,s*3.3,1.2,-21.4);addMesh(new THREE.SphereGeometry(0.12,8,6),LM.gold,s*3.3,2.45,-21.4);const o=addMesh(new THREE.SphereGeometry(0.22,12,10),MB(0xffe08a,{transparent:true,opacity:0.95}),s*3.3,2.85,-21.4);lamps.push(o);W.cyls.push({x:s*3.3,z:-21.4,r:0.2,miny:-1,maxy:2.6,on:true});}
+  {const gl=new THREE.PointLight(0xffc860,0.9,10,2);gl.position.set(0,3,-21.6);W.group.add(gl);}
+  const rush=[loom];let loomSpin=0;
+  W.updates.push(dt=>{const unroll=map.visible&&map.scale.z<0.985;if(unroll)loomSpin=Math.max(loomSpin,5);loomSpin=damp(loomSpin,0.35,1.2,dt);spindle.rotation.x-=dt*loomSpin;
+    flap.visible=!map.visible||map.scale.z<0.2;bird.position.y=5.75+Math.sin(G.time*1.6)*0.06;bird.rotation.y=Math.sin(G.time*0.7)*0.4;
+    gems.forEach(g=>{if(g.open){g.m.material.emissiveIntensity=0.6+0.35*Math.sin(G.time*3+g.i);g.m.rotation.y+=dt*1.5;g.m.position.y=0.95+Math.sin(G.time*2+g.i)*0.06;}});
+    lamps.forEach((o,i)=>{o.scale.setScalar(1+0.08*Math.sin(G.time*4+i*2));});
+    motes.forEach(q=>{q.a+=dt*q.s*(1+loomSpin*0.4);q.m.position.set(Math.cos(q.a)*q.r,q.y+Math.sin(G.time*2+q.a)*0.2,-22.6+Math.sin(q.a)*q.r*0.6);q.m.material.opacity=0.5+0.4*Math.sin(G.time*5+q.a*3);});
+    if(unroll&&Math.random()<0.5)burst(new V3(rand(-1,1),2.3,-22.2),0xffd76a,2,2.2);});
   edgeTrees(-14,12,-20,20);
   const Z=makeZven();W.zven=Z;Z.mode='script';Z.vis=true;Z.pos.set(0,9,3);
   W.zvenFree=true;W.zvenGoal=()=>{const a=active(0),b=active(1);return new V3((a.pos.x+b.pos.x)/2,2.4,(a.pos.z+b.pos.z)/2-2.4);};
   /* ---------- карта-рушник: пять миров вышиты картинками ---------- */
-  const map=new THREE.Group();map.position.set(0,0.03,-21.0);W.group.add(map);const icons=[];
+  const map=new THREE.Group();map.position.set(0,0.03,-20.4);W.group.add(map);const icons=[];
   {const cl=new THREE.BoxGeometry(11,0.04,5);cl.translate(0,0,2.5);addMesh(cl,M(0xf4ecd8),0,0,0,map).castShadow=false;
     for(const z of[0.3,4.7]){const s=new THREE.BoxGeometry(11,0.05,0.25);s.translate(0,0,z);addMesh(s,M(0xc0302a),0,0.01,0,map);}
     const vign=(x,build,on)=>{const g=new THREE.Group();g.position.set(x,0.05,2.5);map.add(g);build(g);if(!on)g.traverse(o=>{if(o.isMesh)o.material=M(0x9a948a);});g.scale.set(1,0.08,1);icons.push(g);return g;};
@@ -8684,7 +8960,7 @@ function buildLukomorye(){
   for(const pi of[0,1]){prompt(pi,'jump',()=>headOf(active(pi)),()=>F.stage==='free'&&!G.ui&&!F.rushnik&&active(pi).pos.z<-17.2,'карта');}
   prompt(0,'attack',()=>headOf(HERO.proshka),()=>F.stage==='free'&&!G.ui&&!F.forging&&HERO.proshka.active&&hd(HERO.proshka.pos,anvil.position)<2.2&&(pendingLinks()>0||coilPending()),()=>coilPending()?'чинить цепь':'ковать звенья');
   prompt(0,'attack',()=>new V3(8.6,2.2,0.6),()=>F.forging&&G.ui==='forge','в такт');
-  const mapObj=pi=>O(()=>mode==='first'?'Лукоморье! Погуляйте. У моря лежит карта-рушник: подойди к ней и нажми '+K(pi,'jump'):'Лукоморье. Карта у моря — '+K(pi,'jump')+(pendingLinks()>0?' · Кузьма ждёт Прошку со звеньями '+K(0,'attack'):'')+' · Векша, Кот, огород и Ряба — подойди и нажми '+K(pi,'attack'),()=>F.rushnik,()=>[rush[0]]);
+  const mapObj=pi=>O(()=>mode==='first'?'Лукоморье! Погуляйте. У самого моря стоит волшебный стан с рушником: подойди к нему и нажми '+K(pi,'jump'):'Лукоморье. Волшебный стан у моря — '+K(pi,'jump')+(pendingLinks()>0?' · Кузьма ждёт Прошку со звеньями '+K(0,'attack'):'')+' · Векша, Кот, огород и Ряба — подойди и нажми '+K(pi,'attack'),()=>F.rushnik,()=>[rush[0]]);
   for(const pi of[0,1])W.objectives[pi]=[mapObj(pi),O('Рушник раскатывается…',()=>false,()=>[])];
   if(mode==='first'){W.spawns=[[new V3(-4.4,0,4.4),new V3(-2.2,0,5.4)],[new V3(2.2,0,5.4),new V3(4.4,0,4.4)]];}
   else{W.spawns=[[new V3(-2.4,0,-14.5),new V3(-4.2,0,-13.8)],[new V3(2.4,0,-14.5),new V3(4.2,0,-13.8)]];W.spawnFace=[[Math.PI,Math.PI],[Math.PI,Math.PI]];}
@@ -9252,8 +9528,14 @@ function buildLukomorye(){
         if(tap(q,'attack')){const l=list[sel];const nb=gemsAvail();if(l.boss||G.secrets[l.id]){SFX.miss();return;}if(nb<1){SFX.miss();tip(q,'Нужен самоцвет. Его дают, если собрать все звенья в каком-нибудь уровне',2.6);return;}
           G.gemsSpent++;G.secrets[l.id]=true;SFX.bell();banner('Карта тайников вышита','#ffd76a',2,l.name+': над орешками — столбы света');draw();}
         if(tap(q,'jump')){const l=list[sel];if(!open(l)){SFX.miss();tip(q,l.boss?(l.id==='5-B2'?'Финал откроется после терема':'Ворота '+bossTo(l.world)+' откроет Кузьма. Нужно выковать '+GATE(l.world)+' звеньев этого мира'):'Сначала пройдите уровень перед этим',2.4);return;}
-          SFX.ok();closeMap();F.rushnik=true;map.visible=true;anim(1.0,k=>{map.scale.z=Math.max(0.01,smooth(k));});
-          const ic=new V3(-4.2+(l.world-1)*2.1,0.3,-18.5);HEROES.forEach(h=>{const from=h.pos.clone();anim(1.2,k=>{const s2=smooth(k);h.pos.lerpVectors(from,ic,s2);h.g.scale.setScalar(Math.max(0.05,1-s2*0.95));});});later(1.0,()=>{ringFx(ic,l.world===2?0x7ad8ff:l.world===3?0xffe0f0:l.world===4?0xff8a3a:l.world===5?0x7ad8ff:COL.gold,3);goLevel(l.id);});return;}}};}
+          SFX.ok();closeMap();travelTo(l);return;}}};}
+  function travelTo(l){const w=l.world||1,ic=new V3(-4.2+(w-1)*2.1,0.3,map.position.z+2.5),col=[COL.gold,0x7ad8ff,0xffe0f0,0xff8a3a,0xffd23a][w-1];
+    F.rushnik=true;map.visible=true;loomSpin=7;anim(0.9,k=>{map.scale.z=Math.max(0.01,smooth(k));});const icg=icons[w-1];
+    later(0.6,()=>{SFX.bell();tone(mf(74),0.6,'sine',0.14);tone(mf(79),0.6,'sine',0.1,null,0.12);anim(0.9,k=>{icg.scale.set(1+k*0.6,0.08+smooth(k)*1.6,1+k*0.6);});for(let i=0;i<5;i++)later(i*0.14,()=>ringFx(ic.clone(),col,1+i*0.6));});
+    play({dur:3.0,fov:46,shots:[shot(0,[0,6.5,-11.2],[0,0,ic.z]),shot(0.8,[ic.x*0.5,3.6,ic.z+4.2],[ic.x,0.5,ic.z]),shot(1.8,[ic.x,1.4,ic.z+1.3],[ic.x,0.7,ic.z])],says:[],events:[],end:()=>{}});
+    HEROES.forEach((h,i)=>{const from=h.pos.clone();later(0.35+i*0.12,()=>{anim(1.2,k=>{const s2=smooth(k),a=k*7+i*1.6,rr=(1-s2)*1.3;h.pos.set(lerp(from.x,ic.x,s2)+Math.cos(a)*rr,from.y+Math.sin(k*Math.PI)*1.8,lerp(from.z,ic.z,s2)+Math.sin(a)*rr);h.g.scale.setScalar(Math.max(0.05,1-s2*0.95));
+      if(Math.random()<0.5)burst(h.pos.clone().add(new V3(0,0.5,0)),col,2,1.4);});});});
+    later(2.0,()=>{ringFx(ic,col,3.4);goLevel(l.id);});}
   function closeMap(){G.ui=null;G.uiTick=null;$('mapui').style.display='none';}
   W.onLeave=()=>{closeMap();$('skaz').style.display='none';};
   /* ============ ЛУКОМОРЬЕ: лавка Векши с примеркой, примерочная, огород Дедки, курятник Рябы, пляски ============ */
@@ -9647,8 +9929,36 @@ function loadLevel(i){G.levelIdx=i;applyOutfits();$('bossbar').style.display='no
   if(W.zvenAway&&W.zven){const Z=W.zven;Z.shown=true;Z.vis=true;Z.summonT=Math.max(Z.summonT||0,2.6);const a=active(0).pos,b=active(1).pos;Z.pos.set((a.x+b.x)/2,a.y+2.4,(a.z+b.z)/2-2.5);}
   if(W.onStart)W.onStart();}
 function completeLevel(){if(G.trans)return;G.trans={t:0,done:false};}
-function updateTrans(dt){const T=G.trans;if(!T)return;T.t+=dt;$('fade').style.opacity=T.t<0.8?T.t/0.8:Math.max(0,1-(T.t-0.8)/0.8);
-  if(T.t>0.8&&!T.done){T.done=true;if(G.nextLevel){const id=G.nextLevel;G.nextLevel=null;loadLevel(LV(id));}else if(G.levelIdx+1<LEVELS.length)loadLevel(G.levelIdx+1);else endGame();}if(T.t>1.6){G.trans=null;$('fade').style.opacity=0;}}
+// вышитое полотно: лён, красный крест, ромбы-обереги и «ёлочки»; у каждого мира свой второй цвет
+const RUSH_ACC=['#c89a20','#2f7a3a','#2a62c8','#8a5ad0','#d8561a','#16907e'],RUSH_TEX={};
+function rushnikTex(w,W0,H0,key){const k=key+'|'+w;if(RUSH_TEX[k])return RUSH_TEX[k];const c=document.createElement('canvas');c.width=W0;c.height=H0;const x=c.getContext('2d');const acc=RUSH_ACC[w]||RUSH_ACC[0],red='#b0201a';
+  x.fillStyle='#f2e8d2';x.fillRect(0,0,W0,H0);x.globalAlpha=0.06;x.strokeStyle='#7a6040';for(let i=0;i<W0;i+=4){x.beginPath();x.moveTo(i,0);x.lineTo(i,H0);x.stroke();}for(let j=0;j<H0;j+=4){x.beginPath();x.moveTo(0,j);x.lineTo(W0,j);x.stroke();}x.globalAlpha=1;
+  const X=(cx,cy,s,col)=>{x.strokeStyle=col;x.lineWidth=Math.max(1.4,s*0.7);x.beginPath();x.moveTo(cx-s,cy-s);x.lineTo(cx+s,cy+s);x.moveTo(cx+s,cy-s);x.lineTo(cx-s,cy+s);x.stroke();};
+  const rhomb=(cx,cy,r,g,col,col2)=>{for(let i=-r;i<=r;i++)for(let j=-r;j<=r;j++){const d=Math.abs(i)+Math.abs(j);if(d===r)X(cx+i*g,cy+j*g,g*0.38,col);else if(d===Math.max(0,r-2)||d===0)X(cx+i*g,cy+j*g,g*0.38,col2);}};
+  const tree=(cx,cy,g,col)=>{for(let j=0;j<6;j++)for(let i=-(5-j);i<=5-j;i+=2)X(cx+i*g,cy+j*g,g*0.36,col);for(let j=6;j<8;j++)X(cx,cy+j*g,g*0.36,col);};
+  if(key==='flap'){const g=8;for(let cx=g*2;cx<W0;cx+=g*9)rhomb(cx,H0*0.35,4,g,red,acc);for(let cx=g*4;cx<W0;cx+=g*12)tree(cx,H0*0.58,g*0.8,acc);
+    x.fillStyle=red;x.fillRect(0,8,W0,5);x.fillRect(0,H0-26,W0,5);for(let i=0;i<W0;i+=8){x.fillStyle=i%16?red:acc;x.fillRect(i+2,H0-20,3,18);}}
+  else{const g=11,band=W0*0.2;x.fillStyle=red;x.fillRect(W0-band-10,0,4,H0);x.fillRect(W0-14,0,4,H0);for(let cy=g*3;cy<H0;cy+=g*9)rhomb(W0-band/2-12,cy,4,g,red,acc);
+    for(let cy=g*6;cy<H0;cy+=g*22){for(let cx=g*3;cx<W0-band-g*3;cx+=g*12)tree(cx,cy,g*0.9,cy%(g*44)<g*22?acc:red);}
+    for(let cy=g*16;cy<H0;cy+=g*22)for(let cx=g*6;cx<W0-band-g*4;cx+=g*9)rhomb(cx,cy,3,g*0.8,red,acc);
+    x.fillStyle=acc;x.fillRect(0,0,W0,6);x.fillRect(0,H0-6,W0,6);}
+  const t=key==='flap'?new THREE.CanvasTexture(c):c.toDataURL();RUSH_TEX[k]=t;return t;}
+const RT={};
+function rtInit(){if(RT.el)return RT;const el=document.createElement('div');el.id='rtrans';el.innerHTML='<div class="rth rtl"></div><div class="rth rtr"></div><div class="rtm"><div class="rtw"></div><div class="rtt"><span></span><i></i></div></div>'+'<b class="rts"></b>'.repeat(10);
+  $('ui').appendChild(el);RT.el=el;RT.L=el.querySelector('.rtl');RT.R=el.querySelector('.rtr');RT.m=el.querySelector('.rtm');RT.w=el.querySelector('.rtw');RT.t=el.querySelector('.rtt span');RT.n=el.querySelector('.rtt i');RT.sp=[...el.querySelectorAll('.rts')];return RT;}
+function rtInfo(){const idx=G.nextLevel?LV(G.nextLevel):G.levelIdx+1;const L=LEVELS[idx]||{name:''};const w=L.world||0;
+  return {w,name:L.id==='luko'?'Лукоморье':L.name,line:L.id==='luko'?'у лукоморья дуб зелёный…':L.zast?'Застава богатырей':w?'Мир '+w+' · '+WORLDN[w-1]:''};}
+function rtShow(T){const R=rtInit();if(!T.info){T.info=rtInfo();const img='url('+rushnikTex(T.info.w,420,1000,'half')+')';R.L.style.backgroundImage=img;R.R.style.backgroundImage=img;R.R.style.transform='scaleX(-1)';R.w.textContent=T.info.line;R.t.textContent=T.info.name;}
+  const t=T.t,eob=q=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(q-1,3)+c1*Math.pow(q-1,2);};
+  const ci=clamp(t/0.55,0,1),co=clamp((t-1.55)/0.6,0,1),off=(1-eob(ci))*108+smooth(co)*108,wav=Math.sin(t*10)*2.4*((1-ci)+co);
+  R.L.style.transform='translateX('+(-off).toFixed(2)+'%) skewY('+wav.toFixed(2)+'deg)';R.R.style.transform='translateX('+off.toFixed(2)+'%) scaleX(-1) skewY('+wav.toFixed(2)+'deg)';
+  const mi=t<0.45?0:t<0.85?eob((t-0.45)/0.4):1,mo=clamp((t-1.45)/0.35,0,1),sc=(0.3+0.7*mi)*(1+0.25*mo);
+  R.m.style.opacity=(t<0.45?0:1-mo).toFixed(3);R.m.style.transform='translate(-50%,-50%) scale('+sc.toFixed(3)+') rotate('+((1-mi)*-6).toFixed(2)+'deg)';
+  const rv=clamp((t-0.7)/0.6,0,1);R.t.style.clipPath='inset(0 '+((1-rv)*100).toFixed(1)+'% 0 0)';R.n.style.left=(rv*100).toFixed(1)+'%';R.n.style.opacity=rv>0&&rv<1?1:0;
+  R.sp.forEach((s,i)=>{const a=i/10*Math.PI*2+t*1.6,r=150+40*Math.sin(t*3+i);s.style.left='calc(50% + '+(Math.cos(a)*r*1.6).toFixed(0)+'px)';s.style.top='calc(50% + '+(Math.sin(a)*r*0.7).toFixed(0)+'px)';s.style.opacity=(mi*(1-mo)*(0.5+0.5*Math.sin(t*8+i))).toFixed(2);});
+  R.el.style.display='block';if(t<0.05||(t>0.54&&t<0.58&&!T.snd)){if(t>0.5){T.snd=true;tone(mf(62),0.5,'triangle',0.08);tone(mf(69),0.5,'triangle',0.06,null,0.1);}else tone(mf(74),0.3,'sine',0.04,mf(62));}}
+function updateTrans(dt){const T=G.trans;if(!T)return;T.t+=dt;$('fade').style.opacity=0;rtShow(T);
+  if(T.t>0.8&&!T.done){T.done=true;if(G.nextLevel){const id=G.nextLevel;G.nextLevel=null;loadLevel(LV(id));}else if(G.levelIdx+1<LEVELS.length)loadLevel(G.levelIdx+1);else endGame();}if(T.t>2.15){G.trans=null;$('fade').style.opacity=0;if(RT.el)RT.el.style.display='none';}}
 function step(dt){G.time+=dt;G.playTime+=dt;if(G.uiTick&&!G.cine&&!G.trans)G.uiTick();
   if(G.cine){const c=G.cine;c.t+=dt;c.update(c.t,dt);
     if(c.skippable&&c.t>0.8){if(btn(0,'jump')&&btn(1,'jump'))G.skipT+=dt;else G.skipT=Math.max(0,G.skipT-dt*2);if(G.skipT>=1){G.skipT=0;c.skip();c.t=c.dur;}}
