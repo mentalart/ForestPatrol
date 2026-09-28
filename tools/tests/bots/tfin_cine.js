@@ -1,6 +1,7 @@
 //@@
 // релиз final02, кино: режиссёр камеры, наезды на говорящих, whip, slow-mo без удлинения ролика, выход, пропуск, постановка пролога, герои на земле
 window._ev={};['start','end','cut','whip','dip','iris','blendIn','blendOut','insert','say','emote','accent','impact','slowmo','hitstop','punch','dollyzoom'].forEach(n=>ZC.FIN.cine.on(n,()=>{window._ev[n]=(window._ev[n]||0)+1;}));
+ZC.FIN.boss4b.auto=false;   // final04: обучающие ролики 4-Б после вступления здесь не нужны — меряем само вступление
 window.T=t=>{for(let i=0;i<5000&&!(ZC.G.cine&&ZC.G.cine.t>=t);i++)ZC.tick(1);return ZC.G.cine?ZC.G.cine.t:-1;};
 ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;let n=0;while(!ZC.G.cine&&n<60){ZC.tick(1);n++;}const st=ZC.FIN.cine.state();['cine='+!!ZC.G.cine,'entry='+st.entry,'fovHook='+(ZC.FIN.fovNow()!==null)].join(' ')
 //@@ shot=fin_cine_4b_a.png

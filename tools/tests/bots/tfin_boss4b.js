@@ -1,0 +1,60 @@
+//@@ shot=fin_b4_intro.png wait=400
+// релиз final04, 4-Б «Змей Горыныч»: обучающие ролики по этапам (ждут нажатия, показывают сами по таймауту), восстановление голов, живые подсказки в бою
+{const st=document.createElement('style');st.textContent='#finTut,#finBossHint{transition:none!important}';document.head.appendChild(st);}   // в headless кадры редкие — CSS-переходы на снимках не успевают
+Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
+window.T4=ZC.FIN.boss4b;window.card=()=>{const c=document.getElementById('finTut');return c&&c.classList.contains('on')?c:null;};
+window.cardSt=()=>{const c=card();if(!c)return '-';const g=c.querySelector('.ft-go');return (c.querySelector('.ft-head')||{}).innerText.slice(0,40)+(g?' ['+g.innerText+']':'');};
+window.waitGo=(sec)=>{for(let i=0;i<(sec||20)*60;i++){const c=card();if(c&&c.querySelector('.ft-key.wait')&&c.querySelector('.ft-go')&&!c.classList.contains('ok'))return true;ZC.tick(1);}return false;};
+window.heads=()=>ZC.W.enemies.filter(e=>e.kind==='golova').sort((a,b)=>a.idx-b.idx);
+ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.tick(60);const r=[ZC.W.name,'intro='+!!ZC.G.cine];ZC.skip();ZC.tick(3);
+r.push('phase='+ZC.W.flags.phase,'tut='+T4.on,'cine='+!!ZC.G.cine,'card='+cardSt());r
+//@@ shot=fin_b4_s1_guard.png wait=400
+// этап 1: карточка щита ждёт Игрока 1; ролик стоит, пока не нажали
+const r=[];r.push('go='+waitGo(8),cardSt());const t0=ZC.G.cine.t;ZC.tick(120);r.push('frozen='+(Math.abs(ZC.G.cine.t-t0)<0.05),'cd='+heads().map(e=>e.cd).join('/'));r
+//@@ shot=fin_b4_s1_ok.png wait=400
+const r=[];ZC.press('KeyG');ZC.tick(2);r.push('afterG='+cardSt(),'ok='+card().classList.contains('ok'));ZC.tick(30);r
+//@@ shot=fin_b4_s1_roll.png wait=400
+// удар, кувырок Игрока 2, удар Игрока 2
+const r=[];r.push(waitGo(12),cardSt());ZC.press('KeyF');ZC.tick(2);r.push('L='+heads()[0].state);
+r.push(waitGo(12),cardSt());r
+//@@ shot=fin_b4_s1_hit.png wait=400
+const r=[];ZC.press('Slash');ZC.tick(2);r.push(cardSt());
+r.push(waitGo(12),cardSt());ZC.press('Comma');ZC.tick(2);r.push('R='+heads()[2].state,cardSt());r
+//@@
+// дальше ролик идёт сам; после конца — головы как были, подсказки готовы
+const r=[];let n=0;while(ZC.G.cine&&n<60*30){ZC.tick(1);n++;}
+r.push('end sec='+(n/60).toFixed(1),'tut='+T4.on,'heads='+heads().map(e=>e.state+':'+e.cd.toFixed(1)).join(','),'seen='+JSON.stringify(ZC.G.flags.tut4b),'props='+T4.props.length,'card='+cardSt());r
+//@@ shot=fin_b4_hint.png wait=400
+// подсказки в бою: без успехов — стрелка и карточка; правильная кнопка — «Молодец!»
+const r=[];const hint=document.getElementById('finBossHint');let n=0;while(!hint.classList.contains('on')&&n<60*20){ZC.tick(1);n++;}
+r.push('hint after '+(n/60).toFixed(1)+'s',hint.classList.contains('on'),(hint.querySelector('.ft-head')||{}).innerText,'arrows='+T4.arrows.length,'key='+(T4.h.cur&&T4.h.cur.key));r
+//@@
+const r=[];const hint=document.getElementById('finBossHint');const ex=T4.h.cur?T4.h.cur.expect:[];
+const B=[{attack:'KeyF',guard:'KeyG',roll:'ShiftLeft',skill:'KeyE',item:'KeyR',swap:'KeyQ'},{attack:'Comma',guard:'Period',roll:'Slash',skill:'KeyL',item:'Semicolon',swap:'KeyK'}];
+if(ex.length){ZC.press(B[ex[0][0]][ex[0][1]]);}ZC.tick(2);r.push('expect='+JSON.stringify(ex),'ok='+hint.classList.contains('ok'),hint.innerText.includes('Молодец'));ZC.tick(90);r.push('hidden='+!hint.classList.contains('on'));r
+//@@ shot=fin_b4_s2_acorn.png wait=400
+// этап 2 (фаза выставлена напрямую): жёлудь — ждём и жмём; дальше никто не жмёт — ролик показывает приёмы сам и заканчивается
+const W=ZC.W;W.flags.phase=2;heads().forEach(e=>{e.state='idle';e.cd=2;});ZC.tick(2);const r=['tut='+T4.on,cardSt()];r.push(waitGo(10),cardSt());r
+//@@ shot=fin_b4_s2_fire.png wait=400
+const r=[];ZC.press('KeyE');ZC.tick(30);r.push(cardSt(),'M='+heads()[1].state);r.push(waitGo(10),cardSt());r
+//@@ shot=fin_b4_s2_water.png wait=400
+const r=[];ZC.tick(560);r.push(waitGo(12),cardSt());r
+//@@
+const r=[];let n=0,seen=[];while(ZC.G.cine&&n<60*120){ZC.tick(1);n++;const s=cardSt();if(s!==seen[seen.length-1])seen.push(s);}
+r.push('auto end sec='+(n/60).toFixed(1),'autos='+seen.filter(s=>s.includes('Смотри')).length,'heads='+heads().map(e=>e.state).join(','),'seen='+JSON.stringify(ZC.G.flags.tut4b));r
+//@@ shot=fin_b4_s3_grab.png wait=400
+// этап 3: узда; «раз-два-три» — вразнобой не засчитывается, вместе — да; узда возвращается на место
+const W=ZC.W;const bp=W.grabs[0].pos().clone();window._home=[0,1].map(pi=>ZC.players[pi].heroes[ZC.players[pi].act].pos.clone());W.flags.phase=3;W.flags.stun=25;heads().forEach(e=>{e.state='broken';e.bdur=99;e._b=true;});ZC.tick(2);const r=['tut='+T4.on,cardSt()];
+r.push(waitGo(10),cardSt());r
+//@@ shot=fin_b4_s3_123.png wait=400
+const r=[];ZC.press('KeyR');ZC.tick(1);ZC.press('Semicolon');ZC.tick(2);r.push(cardSt());
+r.push(waitGo(15),cardSt());r
+//@@
+const r=[];ZC.press('KeyE');ZC.tick(70);ZC.press('KeyL');ZC.tick(2);r.push('apart ok='+card().classList.contains('ok'));ZC.tick(3);ZC.press('KeyE');ZC.press('KeyL');ZC.tick(2);r.push('together='+cardSt());
+let n=0;while(ZC.G.cine&&n<60*20){ZC.tick(1);n++;}const W=ZC.W;r.push('tut='+T4.on,'bridle='+W.grabs[0].pos().toArray().map(v=>v.toFixed(2)).join(','),'phase='+W.flags.phase,'stun='+W.flags.stun.toFixed(1),'heroesHome='+[0,1].every(pi=>ZC.players[pi].heroes[ZC.players[pi].act].pos.distanceTo(window._home[pi])<0.3),'heads='+heads().map(e=>e.state).join(','));r
+//@@
+// повторная попытка: этапы уже объясняли — короткое напоминание
+ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.G.flags.tut4b={1:true,2:true,3:true};ZC.tick(60);ZC.skip();ZC.tick(3);const r=['short='+T4.on,cardSt()];let n=0;while(ZC.G.cine&&n<60*20){ZC.tick(1);n++;}r.push('sec='+(n/60).toFixed(1),'phase='+ZC.W.flags.phase);r
+//@@
+// пропуск обучающего ролика (как у всех роликов)
+ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.G.flags.tut4b=null;ZC.tick(60);ZC.skip();ZC.tick(3);const r=['tut='+T4.on];ZC.skip();ZC.tick(3);r.push('after skip tut='+T4.on,'cine='+!!ZC.G.cine,'card='+cardSt(),'cd='+heads().map(e=>e.cd).join('/'));r

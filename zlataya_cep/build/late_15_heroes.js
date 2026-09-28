@@ -156,7 +156,7 @@ function heroPose(h,dt){const B=h.rig;if(!B||!B.hipL)return;const sp=Math.hypot(
   // руки: мах в ходьбе, в прыжке — в стороны, щит — вперёд, удар — правой, струна — вверх
   const atk=h.atkT>0?Math.sin((1-h.atkT/0.28)*Math.PI):0,up=(h._armUp||0),fw=(h._armF||0);
   for(const[n,ph,sg]of[['L',0,1],['R',Math.PI,-1]]){const s=Math.sin(h.walkT+ph);let arm=-s*(h.kind==='potap'?0.38:0.55)*f*(1-a)-0.35*a,el=-(0.2+Math.max(0,-s)*0.35*f),sh=sg*(0.1+0.9*a+up*1.9);
-    if(h.guard){arm=-1.25;el=-0.5;sh=sg*0.25;}if(n==='R'&&atk>0){arm=-0.4-2.0*atk;el=-0.2;sh=-0.25;}if(h.hang){arm=-2.95;el=-0.1;sh=sg*0.15;}if(h.cling||h.holding){arm=-1.35;el=-0.35;sh=sg*0.2;}
+    if(h.guard||h._demoGuard>G.time){arm=-1.25;el=-0.5;sh=sg*0.25;}if(n==='R'&&atk>0){arm=-0.4-2.0*atk;el=-0.2;sh=-0.25;}if(h.hang){arm=-2.95;el=-0.1;sh=sg*0.15;}if(h.cling||h.holding){arm=-1.35;el=-0.35;sh=sg*0.2;}
     if(h.rollT>0){arm=-1.1;el=-1.2;sh=sg*0.2;}arm+=-fw*1.1;
     // умение читается в позе: Прошка целится из рогатки, Потап приседает и вскидывает лапы (подкидка), Йоша поливает из ковшика
     const sk=h._skT!=null?G.time-h._skT:9;if(sk<0.6){const u=sk/0.6,w=u<0.18?u/0.18:u>0.72?(1-u)/0.28:1;let ta=arm,te=el,ts=sh;
@@ -165,7 +165,8 @@ function heroPose(h,dt){const B=h.rig;if(!B||!B.hipL)return;const sp=Math.hypot(
       else if(h.kind==='yosha'&&n==='R'){ta=-1.45;te=-0.6;ts=-0.1;}
       arm+=(ta-arm)*w;el+=(te-el)*w;sh+=(ts-sh)*w;}
     hDamp(B['shoulder'+n].rotation,'z',sh,K,dt);hDamp(B['arm'+n].rotation,'x',arm,K,dt);hDamp(B['elbow'+n].rotation,'x',el,K,dt);}}
-{const _anim=animHero;animHero=function(h,dt){_anim(h,dt);try{heroPose(h,dt);}catch(e){console.error(e);}};}
+{const _anim=animHero;animHero=function(h,dt){_anim(h,dt);try{heroPose(h,dt);}catch(e){console.error(e);}
+  if(h._demoGuard>G.time){h.shield.visible=true;h.shieldMat.opacity=0.55;}};}   // щит для обучающих роликов (final04)
 {const _ds=doSkill;doSkill=function(pi,h){const c0=h&&h.skillCd||0;_ds(pi,h);if(h&&(h.skillCd||0)>c0+0.01)h._skT=G.time;};}
 // ---------- NPC-жители: генератор вариаций (рост, одежда, шапка, борода) ----------
 function villagerGeo(v){const Rn=kRng(900+v*37),K=new KGeo(1.6,v*11+900);const shirt=[PAL.red,PAL.blue,PAL.green,PAL.yellow,PAL.cloth][v%5],pants=[PAL.night,PAL.bark,PAL.blue][v%3],skin=PAL.skin,girl=v%2===1;

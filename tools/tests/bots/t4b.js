@@ -1,5 +1,6 @@
 //@@
-Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.tick(60);const W=ZC.W,H=ZC.HERO;const r=[W.name,!!ZC.G.cine];ZC.skip();ZC.tick(5);r.push(W.flags.phase,U.st(),'foes='+W.enemies.map(e=>e.kind+':'+e.signals.join('/')+':'+e.pi).join(','),U.obj());r
+// релиз final04: обучающие ролики этапов уже «видели» — будут только короткие напоминания (их проверяет tfin_boss4b); в прототипе флаг ни на что не влияет
+Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.G.flags.tut4b={1:true,2:true,3:true};ZC.tick(60);const W=ZC.W,H=ZC.HERO;const r=[W.name,!!ZC.G.cine];ZC.skip();ZC.tick(5);r.push(W.flags.phase,U.st(),'foes='+W.enemies.map(e=>e.kind+':'+e.signals.join('/')+':'+e.pi).join(','),U.obj());r
 //@@ shot=w4ba.png
 ZC.tick(30);
 //@@
