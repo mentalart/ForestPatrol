@@ -135,3 +135,4 @@ body:not(.fin-title) #finDev{top:58px}
 .lb{transition:height .8s cubic-bezier(.22,1,.36,1)}
 body.fin-cine #finVig{background:radial-gradient(ellipse at 50% 48%,rgba(0,0,0,0) 46%,rgba(12,6,24,.52) 100%)}
 body.fin-cinegrade canvas{filter:saturate(1.1) contrast(1.05)}
+body.fin-gallery > *:not(#c){visibility:hidden!important}

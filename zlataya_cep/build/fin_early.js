@@ -1,11 +1,17 @@
 /* ============================== РЕЛИЗ · LOW-POLY: грани вместо гладкости ============================== */
 // Общий объект релизной сборки: настройки, состояние меню, музыка, сохранения
-const FIN={ver:'final02',set:{mus:0.7,sfx:0.8,subs:true,ts:1,shake:true,flash:true,quality:'high',photo:true},menu:null,title:null};
+const FIN={ver:'final03',set:{mus:0.7,sfx:0.8,subs:true,ts:1,shake:true,flash:true,quality:'high',photo:true},menu:null,title:null};
 try{const s=JSON.parse(localStorage.getItem('zlatayaCep.settings.v1')||'null');if(s)Object.assign(FIN.set,s);}catch(e){}
 // Материалы «Ламберта» рисуются с плоским затенением: каждая грань — своим тоном, без бликов
+// final03: тон по вершинам — атрибут aShade (vec3) прибавляется к цвету материала: +0.1 светлее, −0.2 темнее, по каналам — теплее/холоднее.
+// У геометрии без атрибута он равен нулю, поэтому материалы игровых объектов (перекрашивание, прозрачность, свечение) работают как раньше.
 {const Phong=THREE.MeshPhongMaterial;
- class LowPolyMat extends Phong{constructor(p){super(Object.assign({specular:0x000000,shininess:0,flatShading:true},p||{}));}}
- THREE.MeshLambertMaterial=LowPolyMat;}
+ const VS=s=>s.replace('#include <common>','#include <common>\nattribute vec3 aShade;\nvarying vec3 vShade;').replace('#include <begin_vertex>','#include <begin_vertex>\n\tvShade = aShade;');
+ const FS=s=>s.replace('#include <common>','#include <common>\nvarying vec3 vShade;').replace('vec4 diffuseColor = vec4( diffuse, opacity );','vec4 diffuseColor = vec4( diffuse * max( vec3( 0.0 ), vec3( 1.0 ) + vShade ), opacity );');
+ class LowPolyMat extends Phong{constructor(p){super(Object.assign({specular:0x000000,shininess:0,flatShading:true},p||{}));this.defaultAttributeValues={aShade:[0,0,0]};}
+   onBeforeCompile(sh){sh.vertexShader=VS(sh.vertexShader);sh.fragmentShader=FS(sh.fragmentShader);const k=this.userData.fx;if(k&&FIN.fxHook&&FIN.fxHook[k])FIN.fxHook[k](sh,this);}
+   customProgramCacheKey(){return 'lp'+(this.userData.fx||'');}}
+ THREE.MeshLambertMaterial=LowPolyMat;FIN.LowPolyMat=LowPolyMat;FIN.fxHook={};FIN.U={time:{value:0},wind:{value:1}};}
 // Сегменты круглых форм ограничены: шары, цилиндры, конусы и кольца — гранёные, как у вырезанной из дерева игрушки
 {const cap=(v,d,lo,hi)=>Math.max(lo,Math.min(v===undefined||v===null?d:v,hi));
  const rad=r=>r<0.6?8:r<2.2?12:16;

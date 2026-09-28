@@ -1,7 +1,7 @@
 // Вёрстка главного меню на разных размерах окна: логотип не должен наезжать на пункты меню, пункты не должны обрезаться снизу.
-// node layout_check.js [путь к html]   (по умолчанию — релизная сборка zlataya_cep/zlataya_cep_final02.html)
+// node layout_check.js [путь к html]   (по умолчанию — релизная сборка zlataya_cep/zlataya_cep_final03.html)
 const {chromium}=require('./pw');const path=require('path');
-const html=path.resolve(process.argv[2]||path.join(__dirname,'../../zlataya_cep/zlataya_cep_final02.html'));
+const html=path.resolve(process.argv[2]||path.join(__dirname,'../../zlataya_cep/zlataya_cep_final03.html'));
 const SIZES=[[1920,1080],[1920,900],[1680,860],[1536,730],[1440,700],[1366,768],[1366,620],[1280,720],[1280,560],[1024,640],[1024,520],[800,600],[2560,1080]];
 (async()=>{const b=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});let bad=0;
   await Promise.all([0,1].map(async part=>{const page=await b.newPage();

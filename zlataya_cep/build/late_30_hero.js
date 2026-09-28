@@ -6,7 +6,7 @@ function eyeShine(root,blinkList){root.traverse(o=>{if(!o.isMesh||o.userData.shi
   const s=new THREE.Mesh(SHINE_G,SHINE_M);s.scale.setScalar(r*0.36);s.position.set(r*0.38,r*0.42,r*0.66);s.userData.shine=true;o.add(s);
   if(blinkList){blinkList.push(o);if(o.parent)for(const sib of o.parent.children){if(sib===o||!sib.isMesh||sib.geometry.type!=='SphereGeometry')continue;const R=sib.geometry.parameters.radius;
       if(R>r&&R<0.2&&sib.position.distanceTo(o.position)<R&&sib.material.color&&sib.material.color.r>0.8)blinkList.push(sib);}}});}
-HEROES.forEach(h=>{h.eyes=[];eyeShine(h.body,h.eyes);h.blinkT=2+Math.random()*3;});
+HEROES.forEach(h=>{if(!h.eyes||!h.eyes.length){h.eyes=[];eyeShine(h.body,h.eyes);}h.blinkT=2+Math.random()*3;});   // final03: у скелетных героев глаза — готовые кости
 FIN.afterLoadHero=()=>{eyeShine(W.group,null);};
 {const _anim=animHero;animHero=function(h,dt){_anim(h,dt);const b=h.body;if(!b)return;
   // приземление — присесть и пыль; отрыв — вытянуться; пружина возвращает форму
