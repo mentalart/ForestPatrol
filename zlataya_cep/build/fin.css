@@ -75,3 +75,8 @@ body.fin-title #ui{display:none}
 #menu{background:rgba(12,8,20,.78)}
 #card{background:linear-gradient(180deg,rgba(40,26,56,.97),rgba(24,16,36,.97))!important;border:3px solid var(--gold2)!important;border-radius:22px!important;box-shadow:0 12px 40px rgba(0,0,0,.5)}
 #card h1{font-family:Georgia,serif;background:linear-gradient(180deg,var(--gold1),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#finDev{position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:50;display:flex;flex-direction:column;align-items:center;gap:2px;max-width:calc(100vw - 32px);padding:9px 18px;border-radius:12px;background:rgba(20,14,30,.88);border:2px solid var(--gold2);color:#ffe8b0;font:700 15px system-ui;text-align:center;opacity:0;pointer-events:none}
+body:not(.fin-title) #finDev{top:58px}
+#finDev small{font-weight:500;font-size:12px;opacity:.85}
+#finDev.fin-on{animation:finDev 3.6s ease forwards}#finDev.fin-hold{opacity:1}
+@keyframes finDev{0%{opacity:0}8%{opacity:1}80%{opacity:1}100%{opacity:0}}
