@@ -9,8 +9,9 @@ try{const s=JSON.parse(localStorage.getItem('zlatayaCep.settings.v1')||'null');i
  const VS=s=>s.replace('#include <common>','#include <common>\nattribute vec3 aShade;\nvarying vec3 vShade;').replace('#include <begin_vertex>','#include <begin_vertex>\n\tvShade = aShade;');
  const FS=s=>s.replace('#include <common>','#include <common>\nvarying vec3 vShade;').replace('vec4 diffuseColor = vec4( diffuse, opacity );','vec4 diffuseColor = vec4( diffuse * max( vec3( 0.0 ), vec3( 1.0 ) + vShade ), opacity );');
  class LowPolyMat extends Phong{constructor(p){super(Object.assign({specular:0x000000,shininess:0,flatShading:true},p||{}));this.defaultAttributeValues={aShade:[0,0,0]};}
-   onBeforeCompile(sh){sh.vertexShader=VS(sh.vertexShader);sh.fragmentShader=FS(sh.fragmentShader);const k=this.userData.fx;if(k&&FIN.fxHook&&FIN.fxHook[k])FIN.fxHook[k](sh,this);}
-   customProgramCacheKey(){return 'lp'+(this.userData.fx||'');}}
+   onBeforeCompile(sh){sh.vertexShader=VS(sh.vertexShader);sh.fragmentShader=FS(sh.fragmentShader);const k=this.userData.fx;if(k&&FIN.fxHook&&FIN.fxHook[k])FIN.fxHook[k](sh,this);
+     if(FIN.occHook&&!this.userData.noOcc&&!this.skinning)FIN.occHook(sh,this,false);}   // final04: вырез перед героями и затухание у камеры (late_88)
+   customProgramCacheKey(){return 'lp'+(this.userData.fx||'')+(this.userData.noOcc||this.skinning?'':'o');}}
  THREE.MeshLambertMaterial=LowPolyMat;FIN.LowPolyMat=LowPolyMat;FIN.fxHook={};FIN.U={time:{value:0},wind:{value:1}};}
 // Сегменты круглых форм ограничены: шары, цилиндры, конусы и кольца — гранёные, как у вырезанной из дерева игрушки
 {const cap=(v,d,lo,hi)=>Math.max(lo,Math.min(v===undefined||v===null?d:v,hi));

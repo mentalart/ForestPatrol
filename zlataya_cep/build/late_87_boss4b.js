@@ -151,7 +151,7 @@ function t4HintShow(key,c,targets,expect,dur){const H=T4.h;if(!H)return;if(H.cur
   const kh=t4Keys((expect||[]).map(e=>({pi:e[0],a:e[1],label:e[2]||'',wait:true})),{}).replace('class="ft-keys"','class="fh-keys"');
   T4.hint.innerHTML='<div class="fh-row"><div class="ft-ico">'+(T4I[c.icon]||'')+'</div><div class="fh-main"><div class="fh-title"><span class="ft-tag">'+c.tag+'</span>'+c.title+'</div><div class="fh-text">'+c.text+'</div></div>'+kh+'</div>';
   T4.hint.classList.add('on');T4.hint.classList.remove('ok');tone(1320,0.1,'triangle',0.12);tone(1760,0.12,'sine',0.08,null,0.08);
-  for(const a of T4.arrows)if(a.parent)a.parent.remove(a);T4.arrows=(targets||[]).map(t=>{const ar=t4Arrow(c.col||0xffd76a);ar.userData.tgt=t;t4Prop(ar);return ar;});}
+  for(const a of T4.arrows)if(a.parent)a.parent.remove(a);T4.arrows=(targets||[]).map(t=>{const ar=t4Arrow(c.col||0xffd76a);ar.userData.tgt=t;ar.position.copy(t4TgtPos(t));t4Prop(ar);return ar;});}
 function t4HintHide(ok){const H=T4.h;if(!H||!H.cur)return;if(ok){T4.hint.classList.add('ok');let k=T4.hint.querySelector('.fh-keys');if(!k){k=document.createElement('div');k.className='fh-keys';T4.hint.firstChild.appendChild(k);}k.innerHTML='<span class="fh-ok">✓ Молодец!</span>';H.until=Math.min(H.until,G.time+1.1);}
   else{T4.hint.classList.remove('on');H.cur=null;for(const a of T4.arrows)if(a.parent)a.parent.remove(a);T4.arrows=[];}}
 const t4TgtPos=t=>t&&t.isVector3?t.clone():t&&t.kind==='golova'?t4HeadTop(t).add(new V3(0,1.6,0)):t&&t.pos?(typeof t.pos==='function'?t.pos():t.pos).clone().add(new V3(0,1.8,0)):new V3();
