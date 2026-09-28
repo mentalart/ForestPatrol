@@ -80,3 +80,6 @@ body:not(.fin-title) #finDev{top:58px}
 #finDev small{font-weight:500;font-size:12px;opacity:.85}
 #finDev.fin-on{animation:finDev 3.6s ease forwards}#finDev.fin-hold{opacity:1}
 @keyframes finDev{0%{opacity:0}8%{opacity:1}80%{opacity:1}100%{opacity:0}}
+.lb{transition:height .8s cubic-bezier(.22,1,.36,1)}
+body.fin-cine #finVig{background:radial-gradient(ellipse at 50% 48%,rgba(0,0,0,0) 46%,rgba(12,6,24,.52) 100%)}
+body.fin-cinegrade canvas{filter:saturate(1.1) contrast(1.05)}

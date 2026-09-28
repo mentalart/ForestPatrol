@@ -3,13 +3,13 @@
 #   python3 zlataya_cep/build/build_final.py
 # Берёт ../../index.html (прототип, не меняется), встраивает Three.js r128, подключает модули финальной версии
 # (fin_early.js — до создания геометрии, late_*.js по порядку — перед запуском игры, fin.css, fin_body.html, rep_*.py — точечные замены)
-# и пишет zlataya_cep/zlataya_cep_final01.html. В конце — проверка синтаксиса через node --check.
+# и пишет zlataya_cep/zlataya_cep_final02.html (final01 — предыдущий релиз, лежит рядом как есть). В конце — проверка синтаксиса через node --check.
 import os,sys,re,subprocess
 B=os.path.dirname(os.path.abspath(__file__))
 ROOT=os.path.normpath(os.path.join(B,'..','..'))
 SRC=os.path.join(ROOT,'index.html')
-OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_final01.html')
-VERSION='final01'
+OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_final02.html')
+VERSION='final02'
 s=open(SRC,encoding='utf-8').read()
 def rd(n):return open(os.path.join(B,n),encoding='utf-8').read()
 def rep(old,new,cnt=1):
@@ -32,13 +32,19 @@ rep('<div id="ui">',rd('fin_body.html').rstrip()+'\n<div id="ui">')
 # 4. модули: ранний (low-poly геометрия и материалы) и поздний (всё остальное)
 rep("const V3=THREE.Vector3;","const V3=THREE.Vector3;\n"+rd('fin_early.js').rstrip()+'\n')
 late='\n'.join(rd(f).rstrip() for f in sorted(os.listdir(B)) if re.match(r'late_\d+.*\.js$',f))
+# защита: модуль не должен объявлять функцию с именем функции прототипа — в общей области видимости она молча подменит оригинал
+PF=set(re.findall(r'(?m)^function\s+([A-Za-z_$][\w$]*)\s*\(',s))
+for f in sorted(os.listdir(B)):
+    if re.match(r'(late_\d+.*|fin_early)\.js$',f):
+        clash=sorted(set(re.findall(r'(?<![\w.])function\s+([A-Za-z_$][\w$]*)\s*\(',rd(f)))&PF)
+        if clash: sys.exit('BUILD NAME CLASH in '+f+': '+', '.join(clash)+' — переименуйте функцию модуля')
 rep("hudInit();loadLevel(0);showMenu('menu');requestAnimationFrame(frame);",late+"\nhudInit();finBoot();requestAnimationFrame(frame);")
 # 5. отладочный объект для тестов — только с ?debug в адресе
 rep("window.ZC={G,players,","if(/[?&]debug/.test(location.search))window.ZC={G,players,")
 rep("skip(){if(G.cine){G.cine.skip();G.cine.t=G.cine.dur;}}};","skip(){if(G.cine){G.cine.skip();G.cine.t=G.cine.dur;}}};\nif(window.ZC)window.ZC.FIN=FIN;")
 for mod in sorted(f for f in os.listdir(B) if re.match(r'rep_\d+.*\.py$',f)):
     exec(open(os.path.join(B,mod),encoding='utf-8').read())
-open(OUT,'w',encoding='utf-8').write(s)
+open(OUT+'.tmp','w',encoding='utf-8').write(s);os.replace(OUT+'.tmp',OUT)   # атомарно: идущие тесты не прочитают файл наполовину
 m=re.findall(r'<script>([\s\S]*?)</script>',s)
 chk=os.path.join(B,'.chk.js');open(chk,'w',encoding='utf-8').write(m[-1])
 r=subprocess.run(['node','--check',chk]);os.remove(chk)
