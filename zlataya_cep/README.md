@@ -2,6 +2,8 @@
 
 **Кооперативная low-poly сказка для всей семьи** (final02: все 113 роликов получили кинематографичную режиссуру — живую камеру, эмоции героев, эффекты и звук, см. `docs/05_cinematics.md`) по мотивам А. С. Пушкина и русских народных сказок: пролог «Звенышко», пять миров («Дремучий лес», «Подводный Китеж», «Небесное царство», «Огненная Смородина», «Остров Буян») с боссами, Лукоморье, эпилог и Застава трёх богатырей. Вдвоём на одной клавиатуре и/или с двумя джойстиками — или один игрок и все четверо героев.
 
+![Заставка студии АбадзехLAB](docs/screens/00_splash.jpg)
+
 ![Титульный экран: дуб у лукоморья](docs/screens/01_title.jpg)
 
 | | |
@@ -36,6 +38,8 @@
 | `build/late_40_music.js` | процедурная народная музыка |
 | `build/late_50_save.js` | сохранения, главы, настройки |
 | `build/late_60_title.js` | титульная 3D-сцена у лукоморья |
+| `build/late_72_splash.js` | заставка студии «АбадзехLAB · Лаборатория творчества»: логотип кодом (SVG), моушн, выход «пузырём» в титул |
+| `build/fonts/` | шрифт Comfortaa для заставки (SIL OFL 1.1, `OFL.txt`), встраивается в страницу |
 | `build/late_70_menu.js` | главное меню, пауза, настройки, управление, титры |
 | `build/late_81_sfx.js` | аудиоинструменты (шум, фильтры, реверберация) и заново озвученные эффекты роликов |
 | `build/late_82_cine_cam.js` | кино-камера: движение шотов, сплайны, handheld, trauma, FOV-punch, dolly-zoom, whip, iris, вход и выход, slow-mo |
@@ -69,4 +73,6 @@ tools/tests/run_one.sh tfin_save zlataya_cep/zlataya_cep_final02.html   # сох
 tools/tests/run_one.sh tfin_menu zlataya_cep/zlataya_cep_final02.html   # заставка, титул, меню, пауза
 tools/tests/run_one.sh tfin_dev zlataya_cep/zlataya_cep_final02.html    # Ctrl+Alt+] и Ctrl+Alt+[
 tools/tests/run_one.sh tfin_cine zlataya_cep/zlataya_cep_final02.html   # кино: камера, говорящие, выход, пропуск, пролог
+tools/tests/run_one.sh tfin_splash zlataya_cep/zlataya_cep_final02.html # заставка студии: кадры, выход, пропуск
+node tools/tests/layout_check.js                                        # меню на 13 размерах окна: без наездов и обрезаний
 ```

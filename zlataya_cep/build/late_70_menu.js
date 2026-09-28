@@ -6,11 +6,14 @@ function finScreen(scr){FIN.menu=scr;scr.sel=Math.min(scr.sel||0,scr.items.lengt
 function finPush(scr){if(FIN.menu){scr.pause=FIN.menu.pause;FIN.menuStack.push(FIN.menu);}finScreen(scr);}
 function finBack(){const p=FIN.menuStack.pop();if(p)finScreen(p);else if(FIN.menu&&FIN.menu.onBack)FIN.menu.onBack();}
 function finDraw(){const scr=FIN.menu;if(!scr)return;const host=$(scr.pause?'finPanelP':'finPanel');let h=scr.head?'<div class="fin-head">'+scr.head+'</div>':'';if(scr.html)h+=scr.html();
-  const n=scr.items.length,win=scr.win||n;let a=0;if(n>win)a=Math.max(0,Math.min(n-win,scr.sel-Math.floor(win/2)));h+='<div class="fin-scroll">';
+  const n=scr.items.length,win=Math.min(scr.win||n,scr.fit||n);let a=0;if(n>win)a=Math.max(0,Math.min(n-win,scr.sel-Math.floor(win/2)));h+='<div class="fin-scroll">';
   for(let i=a;i<Math.min(n,a+win);i++){const it=scr.items[i],sub=typeof it.sub==='function'?it.sub():it.sub;
     h+='<div class="fin-item'+(i===scr.sel?' fin-sel':'')+(it.off?' fin-off':'')+'" data-i="'+i+'">'+(it.val?'<span class="fin-val">'+it.val()+'</span>':'')+it.label+(sub?'<small>'+sub+'</small>':'')+'</div>';}
   host.innerHTML=h+'</div>';
-  host.querySelectorAll('.fin-item').forEach(el=>{const i=+el.dataset.i;el.onmouseenter=()=>{if(scr.items[i].off||scr.sel===i)return;scr.sel=i;finDraw();};el.onclick=()=>{if(scr.items[i].off)return;scr.sel=i;finAct(0);};});}
+  host.querySelectorAll('.fin-item').forEach(el=>{const i=+el.dataset.i;el.onmouseenter=()=>{if(scr.items[i].off||scr.sel===i)return;scr.sel=i;finDraw();};el.onclick=()=>{if(scr.items[i].off)return;scr.sel=i;finAct(0);};});
+  // невысокое окно: показываем столько пунктов, сколько помещается под логотипом (список листается стрелками)
+  if(!scr.pause){const its=host.querySelectorAll('.fin-item'),last=its[its.length-1],P=host.getBoundingClientRect();if(last&&P.height>0&&its.length>3&&last.getBoundingClientRect().bottom>P.bottom+1){scr.fit=its.length-1;finDraw();}}}
+addEventListener('resize',()=>{if(FIN.menu&&FIN.menu.fit){FIN.menu.fit=0;finDraw();}});
 function finAct(dx){const scr=FIN.menu,it=scr&&scr.items[scr.sel];if(!it||it.off)return;
   if(dx){if(it.side){it.side(dx);SFX.swap();finDraw();}return;}if(it.act){SFX.ok();it.act();}else if(it.side){it.side(1);SFX.swap();finDraw();}}
 function finMenuInput(){const scr=FIN.menu;if(!scr)return;const a=uiNav(0),b=uiNav(1),dy=a.dy||b.dy,dx=a.dx||b.dx;
@@ -58,9 +61,9 @@ function controlsScreen(){const rows=[['move','Ходьба'],['jump','Прыж�
   return {head:'Управление',html,items:[{label:'Назад',act:finBack}]};}
 const CREDITS='<h3>Златая цепь</h3><p>кооперативная сказка для всей семьи</p>'+
   '<h3>По мотивам</h3><p>А. С. Пушкин, пролог к поэме «Руслан и Людмила» — «У лукоморья дуб зелёный…»</p><p>русские народные сказки: «Колобок», «Садко», «Гуси-лебеди», «Кощей Бессмертный», «Репка», «Курочка Ряба», «Кузьма и Демьян», былины о трёх богатырях</p>'+
-  '<h3>Студия «Лесной патруль»</h3><p>геймдизайн и кооперативные механики</p><p>дизайн уровней и low-poly арт</p><p>ролики на движке и анимация</p><p>сценарий и подсказки для детей</p><p>музыка и звук</p><p>программирование и тестирование</p>'+
+  '<h3>АбадзехLAB · Лаборатория творчества</h3><p>геймдизайн и кооперативные механики</p><p>дизайн уровней и low-poly арт</p><p>ролики на движке и анимация</p><p>сценарий и подсказки для детей</p><p>музыка и звук</p><p>программирование и тестирование</p>'+
   '<h3>Героев озвучивают</h3><p>Прошка, Потап, Пелагея и Йоша — голосами своих игроков</p>'+
-  '<h3>Технологии</h3><p>Three.js r128 · © 2010–2021 Three.js Authors · лицензия MIT</p><p>звук и музыка синтезируются в браузере (Web Audio)</p>'+
+  '<h3>Технологии</h3><p>Three.js r128 · © 2010–2021 Three.js Authors · лицензия MIT</p><p>шрифт Comfortaa · © The Comfortaa Project Authors · SIL Open Font License 1.1</p><p>звук и музыка синтезируются в браузере (Web Audio)</p>'+
   '<h3>Спасибо</h3><p>всем, кто играет вместе — с детьми, друзьями и бабушками</p><p style="margin-top:22px;font-style:italic">«Там русский дух… там Русью пахнет!»</p>';
 function creditsScreen(){return {head:'Титры',html:()=>'<div class="fin-credits"><div id="finCred">'+CREDITS+'</div></div>',items:[{label:'Назад',act:finBack}],credits:true};}
 function pauseScreen(){return {pause:true,items:[{label:'Продолжить',act:()=>hideMenu()},
@@ -75,8 +78,7 @@ FIN.openTitle=function(first){G.state='menu';FIN.titleOn=true;document.body.clas
 FIN.openPause=function(){G.state='pause';$('menu').classList.add('hide');$('finPause').classList.remove('fin-hide');$('finPauseLine').innerHTML=W&&W.pauseLine?'<b>Что мы делаем.</b> '+W.pauseLine:'';FIN.menuStack=[];finScreen(pauseScreen());};
 FIN.closeAll=function(){FIN.menu=null;FIN.menuStack=[];FIN.titleOn=false;$('finTitle').classList.add('fin-hide');$('finPause').classList.add('fin-hide');document.body.classList.remove('fin-title');
   if(FIN.splashOn){FIN.splashOn=false;$('finSplash').classList.add('fin-hide');}if(FIN.music)FIN.music.play(undefined);};
-FIN.splash=function(){const el=$('finSplash');el.classList.remove('fin-hide');el.style.opacity=1;FIN.splashOn=true;
-  FIN.splashEnd=()=>{if(!FIN.splashOn)return;FIN.splashOn=false;el.style.opacity=0;setTimeout(()=>el.classList.add('fin-hide'),800);FIN.openTitle(true);};setTimeout(FIN.splashEnd,2900);el.onclick=FIN.splashEnd;};
+// заставка студии — late_72_splash.js
 {const _hm=hideMenu;hideMenu=function(){FIN.closeAll();_hm();};}
 {const _sm=showMenu;showMenu=function(mode){if(mode==='menu'){FIN.openTitle(false);return;}if(mode==='pause'){FIN.openPause();return;}_sm(mode);};}
 {const _mi=menuInput;menuInput=function(){if(FIN.splashOn){if(pressed.size)FIN.splashEnd();return;}if(FIN.menu){finMenuInput();return;}_mi();};}

@@ -27,7 +27,12 @@ assert '</script' not in three
 rep('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>','<script>\n'+three+'\n</script>')
 rep("<title>Златая цепь</title>","<title>Златая цепь</title>\n<meta name=\"description\" content=\"Златая цепь — кооперативная low-poly сказка для всей семьи по мотивам Пушкина и русских народных сказок.\">")
 # 3. стили и разметка финальной версии
-rep('</style>',rd('fin.css').rstrip()+'\n</style>')
+# шрифт заставки студии — Comfortaa (SIL Open Font License 1.1, см. fonts/OFL.txt), встраивается в страницу, чтобы работать офлайн
+import base64
+CYR='U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116';LAT='U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+20AC,U+2122,U+2212,U+FEFF,U+FFFD'
+FONTS=[(300,'comfortaa-cyrillic-300-normal.woff2',CYR),(600,'comfortaa-cyrillic-600-normal.woff2',CYR),(600,'comfortaa-latin-600-normal.woff2',LAT)]
+fontcss=''.join("@font-face{font-family:'ZCComfortaa';font-style:normal;font-weight:%d;font-display:block;src:url(data:font/woff2;base64,%s) format('woff2');unicode-range:%s}\n"%(w,base64.b64encode(open(os.path.join(B,'fonts',f),'rb').read()).decode(),r) for w,f,r in FONTS)
+rep('</style>',fontcss+rd('fin.css').rstrip()+'\n</style>')
 rep('<div id="ui">',rd('fin_body.html').rstrip()+'\n<div id="ui">')
 # 4. модули: ранний (low-poly геометрия и материалы) и поздний (всё остальное)
 rep("const V3=THREE.Vector3;","const V3=THREE.Vector3;\n"+rd('fin_early.js').rstrip()+'\n')

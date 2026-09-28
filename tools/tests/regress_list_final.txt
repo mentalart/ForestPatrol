@@ -14,4 +14,4 @@ tallobj
 # одиночный режим
 tsolo tsolo41 tsospot tso13 tso33 tso54
 # релиз: титул, меню, пауза, сохранения, клавиши разработчика, кино (final02)
-tfin_menu tfin_save tfin_dev tfin_cine
+tfin_menu tfin_save tfin_dev tfin_cine tfin_splash
