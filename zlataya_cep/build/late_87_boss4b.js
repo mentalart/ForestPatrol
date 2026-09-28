@@ -200,3 +200,5 @@ function t4Cycle(list){const H=T4.h;if(H.cur)return;list[H.cycle%list.length]();
     if(!(n===2&&prev===3)){if(t4Seen(n))t4Short(n);else FIN.boss4bStage(n);}   // 3→2 (головы очнулись) — ролик не повторяем
     if(T4.h){T4.h.prog=G.time;T4.h.ph=n;}}
   try{t4HintTick(dt);}catch(e){console.error('boss4b hint',e);}};}
+// пауза, меню и титул — карточки не поверх них
+{const _r=render;render=function(){_r();if(T4.card){const v=G.state==='play'&&!FIN.titleOn?'':'hidden';if(T4.card.style.visibility!==v){T4.card.style.visibility=v;T4.hint.style.visibility=v;}}};}

@@ -71,7 +71,7 @@ function occNo(mt){if(mt.userData.noOcc)return mt;
   if(mt.userData.shared||mt.userData.kit||mt.userData.batch){let c=OCC_CL.get(mt);if(!c){c=mt.clone();c.userData.noOcc=true;if(mt.defaultAttributeValues)c.defaultAttributeValues=Object.assign({},mt.defaultAttributeValues);OCC_CL.set(mt,c);}return c;}
   mt.userData.noOcc=true;mt.needsUpdate=true;return mt;}
 function occExempt(){for(const r of occRoots())r.traverse(o=>{o.userData.occEx=true;const mt=o.material;if(!mt||Array.isArray(mt)||mt.userData.noOcc||mt.userData.xray)return;
-    if(o.userData.bat)return;   // заместитель в пачке не рисуется — его материал не трогаем (иначе выпадет из пачки)
+    if(o.userData.bat||o.isSkinnedMesh||mt.skinning)return;   // заместитель пачки не рисуется (иначе выпадет из пачки); у скелетных мешей героев выреза и так нет — их материал не подменяем
     if(mt instanceof FIN.LowPolyMat||mt.userData.batch)o.material=occNo(mt);});}
 {const _bb=batBuild;batBuild=function(cell){_bb(cell);if(cell.local&&cell.mesh){let o=cell.local,ex=false;while(o){if(o.userData.occEx){ex=true;break;}o=o.parent;}if(ex)cell.mesh.material=occNo(cell.mesh.material);}};}
 // ---------- что может загораживать: список коробок (обновляется после сборки уровня и раз в 5 с) ----------

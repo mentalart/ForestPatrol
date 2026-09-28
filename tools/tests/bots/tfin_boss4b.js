@@ -12,7 +12,9 @@ r.push('phase='+ZC.W.flags.phase,'tut='+T4.on,'cine='+!!ZC.G.cine,'card='+cardSt
 // этап 1: карточка щита ждёт Игрока 1; ролик стоит, пока не нажали
 const r=[];r.push('go='+waitGo(8),cardSt());const t0=ZC.G.cine.t;ZC.tick(120);r.push('frozen='+(Math.abs(ZC.G.cine.t-t0)<0.05),'cd='+heads().map(e=>e.cd).join('/'));r
 //@@ shot=fin_b4_s1_ok.png wait=400
-const r=[];ZC.press('KeyG');ZC.tick(2);r.push('afterG='+cardSt(),'ok='+card().classList.contains('ok'));ZC.tick(30);r
+// пауза посреди обучения: карточка не поверх меню
+const c0=document.getElementById('finTut');ZC.menu('pause');ZC.FIN.occ.frame();const vp=c0.style.visibility;ZC.start();ZC.G.manual=true;ZC.FIN.occ.frame();const vb=c0.style.visibility;
+const r=['pause card='+(vp||'visible')+' → '+(vb||'visible')];ZC.press('KeyG');ZC.tick(2);r.push('afterG='+cardSt(),'ok='+card().classList.contains('ok'));ZC.tick(30);r
 //@@ shot=fin_b4_s1_roll.png wait=400
 // удар, кувырок Игрока 2, удар Игрока 2
 const r=[];r.push(waitGo(12),cardSt());ZC.press('KeyF');ZC.tick(2);r.push('L='+heads()[0].state);
