@@ -60,3 +60,8 @@ W.boxes.splice(W.boxes.indexOf(bx),1);W.group.remove(m);for(let i=0;i<60;i++)ZC.
 const C=ZC.FIN.cam,P=ZC.players;hold(0,1,0,30);const y0=C.s.yaw;const h=P[0].heroes[P[0].act];h.pos.y=-40;h.vel.set(0,-5,0);let n=0;while(n<200&&!C.s.ret&&Math.abs(C.s.yaw)>0.001){ZC.tick(1);n++;}ZC.tick(50);const yf=C.s.yaw;
 ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.FIN.boss4b.auto=false;ZC.tick(30);ZC.skip();ZC.tick(20);hold(0,1,0,30);const y1=C.s.yaw;ZC.FIN.boss4bStage(1);ZC.tick(50);const inCine=!!ZC.G.cine,yc=C.s.yaw;ZC.skip();ZC.tick(5);
 ['fall: '+deg(y0)+' → '+deg(yf),'cine start: '+deg(y1)+' → '+deg(yc)+' (cine='+inCine+')','errs='+window._errs.length+(window._errs[0]?' '+window._errs[0]:'')]
+//@@
+// одиночный режим: общий экран, полный круг, стик любого джойстика
+const C=ZC.FIN.cam;ZC.setSolo(true);ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(30);if(ZC.G.cine){ZC.skip();ZC.tick(5);}ZC.tick(60);
+hold(1,1,0,90);const y=C.s.yaw;ZC.setSolo(false);
+['solo yaw='+deg(y)+' (больше 55° — полный круг)','split='+ZC.G.split,'errs='+window._errs.length]

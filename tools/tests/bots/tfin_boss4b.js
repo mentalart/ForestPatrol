@@ -60,3 +60,8 @@ ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.G.flags.tut4b={1:true,2:true,3:tr
 //@@
 // пропуск обучающего ролика (как у всех роликов)
 ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.G.flags.tut4b=null;ZC.tick(60);ZC.skip();ZC.tick(3);const r=['tut='+T4.on];ZC.skip();ZC.tick(3);r.push('after skip tut='+T4.on,'cine='+!!ZC.G.cine,'card='+cardSt(),'cd='+heads().map(e=>e.cd).join('/'));r
+//@@
+// одиночный режим: «оба игрока» — хватает одного нажатия любой половиной клавиатуры
+ZC.setSolo(true);ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.G.flags.tut4b={1:true,2:true};ZC.tick(60);ZC.skip();ZC.tick(3);if(ZC.G.cine){ZC.skip();ZC.tick(3);}
+const W=ZC.W;W.flags.phase=3;W.flags.stun=25;heads().forEach(e=>{e.state='broken';e.bdur=99;e._b=true;});ZC.tick(2);const r=['tut='+T4.on];r.push(waitGo(10),cardSt(),'who='+(document.querySelector('#finTut .ft-who')?'labels':'no labels'));
+ZC.press('Semicolon');ZC.tick(3);r.push(cardSt());ZC.skip();ZC.tick(3);ZC.setSolo(false);r
