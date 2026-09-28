@@ -9,6 +9,7 @@
 | ![Герои](docs/screens/02_heroes.jpg) | ![Подводный Китеж](docs/screens/03_kitezh.jpg) |
 | ![Небесное царство](docs/screens/04_sky.jpg) | ![Огненная Смородина](docs/screens/05_fire.jpg) |
 | ![Лукоморье](docs/screens/06_lukomorye.jpg) | ![Пауза](docs/screens/07_pause.jpg) |
+| ![Ролик: whip pan и звёзды](docs/screens/08_cine_whip.jpg) | ![Ролик: конфетти и радость](docs/screens/10_cine_confetti.jpg) |
 
 ## Как играть
 Откройте `zlataya_cep_final02.html` в Chrome, Edge или Firefox. Интернет не нужен: всё в одном файле.

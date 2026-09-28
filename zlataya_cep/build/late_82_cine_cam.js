@@ -53,8 +53,8 @@ function planCoverage(cd){const have=new Set(cd.shots.map(s=>s.size));if(have.si
   cd.shots.filter(s=>!s.p2&&s.len>=3.2).sort((a,b)=>b.len-a.len).forEach(s=>{if(have.size>=3)return;
     const want=!have.has('close')?'close':!have.has('medium')?'medium':null;if(!want)return;const dur=Math.min(2.4,s.len*0.4),t0=s.t+Math.max(0.9,(s.len-dur)*0.5);
     if(cd.evT.some(et=>et>t0-0.2&&et<t0+dur))return;out.push({t:t0,dur,want});have.add(want);});return out;}
-function coverPick(){const look=CD.pose.look;const sp=ACT&&ACT.speaker&&ACT.speaker.until>G.time?CINE.locate(ACT.speaker.who):null;if(sp&&sp.head().distanceTo(look)<9)return sp;
-  let best=null,bd=7;for(const h of HEROES){if(!h.g.visible)continue;const d=hd(h.pos,look);if(d<bd){bd=d;best=h.kind;}}
+function coverPick(){const look=CD.pose.look;const sp=ACT&&ACT.speaker&&ACT.speaker.until>G.time?CINE.locate(ACT.speaker.who):null;if(sp&&sp.head().distanceTo(look)<14)return sp;
+  let best=null,bd=12;for(const h of HEROES){if(!h.g.visible)continue;const d=hd(h.pos,look);if(d<bd){bd=d;best=h.kind;}}
   for(const n of ACT.npcs){if(!n.o.g.parent||n.o.g.visible===false||n.who==='gor')continue;const d=hd(n.o.g.getWorldPosition(CT4),look);if(d<bd){bd=d;best=n.who;}}return best?CINE.locate(best):null;}
 function shotAt(t){const sh=CD.shots;let i=0;for(let k=0;k<sh.length;k++)if(sh[k].t<=t)i=k;return i;}
 // базовая поза шота + живое движение
@@ -119,7 +119,10 @@ function cdUpdate(dt){const S=CD.S,t=S.t,pose=CD.pose;const i=Math.max(0,shotAt(
   basePose(s,t,pose);
   if(CD.sayQ&&CD.sayQ.length){const q=CD.sayQ;CD.sayQ=[];q.forEach(sayDecide);}
   if(CD.cover&&CD.coi<CD.cover.length&&t>=CD.cover[CD.coi].t){const c=CD.cover[CD.coi++];if(!CD.insert&&CD.inserts!==false&&c.t>=s.t+0.4&&c.t+c.dur<=s.t1-0.3){const L=coverPick();
-      if(L){const ip=insertPose(L,pose,(CD.nIns++%2)?1:-1,c.want==='medium');if(ip){CD.insert={who:'cover',t0:t,t1:t+c.dur,pose:ip,L};CD.lastIns=t;CINE.emit('insert',{who:'cover',size:c.want});}}}}
+      let ip=L?insertPose(L,pose,(CD.nIns++%2)?1:-1,c.want==='medium'):null,LL=L;
+      // рядом нет героя — врезка по той же оси взгляда ближе к цели (по линии взгляда ничего не мешает)
+      if(!ip){const lk=pose.look.clone();CT1.subVectors(pose.pos,lk);const d=CT1.length(),want=c.want==='close'?3:6.5;if(d>want+0.5){ip={pos:lk.clone().addScaledVector(CT1.normalize(),want),look:lk,fov:CD.fov0};LL={head:()=>lk.clone(),size:1};}}
+      if(ip){CD.insert={who:'cover',t0:t,t1:t+c.dur,pose:ip,L:LL};CD.lastIns=t;CINE.emit('insert',{who:'cover',size:c.want});}}}
   // вставка крупного плана говорящего
   if(CD.insert){const I=CD.insert;if(t>=I.t1||t<I.t0){CD.insert=null;}else{const k=CE.inOutSine(clamp((t-I.t0)/(I.t1-I.t0),0,1));pose.pos.copy(I.pose.pos);pose.look.copy(I.pose.look).lerp(I.L.head(),0.25);
       CT1.subVectors(pose.look,pose.pos);pose.pos.addScaledVector(CT1,0.1*k);pose.fov=I.pose.fov-2*k;}}
@@ -197,3 +200,4 @@ CINE.timeScale=()=>TC.hold>0?TC.s:1;
   CX.speed=Math.max(0,CX.speed-dt*2.6);FIN.cineDom.setSpeed(CX.speed*0.8,G.time*40%8);CX.blur=Math.max(0,CX.blur-dt*30);FIN.cineDom.setBlur(CX.blur);};}
 // загрузка уровня сбрасывает шторки
 {const _ll=loadLevel;loadLevel=function(i){if(CD)CINE.emit('end',{key:CD.key,chained:true,cd:CD});CD=null;CX.exit=null;CX.iris=1;CX.irisTo=1;CX.dip=0;CX.dipTo=0;TC.hold=0;TC.debt=0;CX.trauma=0;CX.dutch.to=0;CX.dutch.a=0;_ll(i);};}
+CINE.dbg={coverPick,insertPose,onScreen,clearDist};   // для тестов
