@@ -7,7 +7,7 @@ const path=require('path');
   const page=await browser.newPage({viewport:{width:1280,height:720}});
   const logs=[];page.on('console',m=>logs.push(m.type()+': '+m.text()));page.on('pageerror',e=>logs.push('PAGEERROR: '+e.message+'\n'+e.stack));
   await page.route('**/three.min.js',r=>r.fulfill({path:path.join(__dirname,'vendor/three.min.js'),contentType:'application/javascript'}));
-  await page.goto('file://'+path.resolve(html));
+  await page.goto('file://'+path.resolve(html)+'?debug=1');
   await page.waitForTimeout(1500);
   if(code){const res=await page.evaluate(code);if(res!==undefined)console.log('>',JSON.stringify(res));}
   if(waitMs)await page.waitForTimeout(+waitMs);

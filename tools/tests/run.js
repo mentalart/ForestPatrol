@@ -1,5 +1,5 @@
 // Прогон одного сценария: node run.js <index.html> <steps.json>
-// шаги: [{code:"...", wait:мс, shot:"имя.png"}]; относительные кадры пишутся в tools/tests/shots/ (или в каталог из переменной SHOTS)
+// шаги: [{code:"...", wait:мс, shot:"имя.png", reload:1}] (reload — перезагрузить страницу перед шагом, например проверить сохранения); относительные кадры пишутся в tools/tests/shots/ (или в каталог из переменной SHOTS)
 const {chromium}=require('./pw');
 const path=require('path'),fs=require('fs');
 const SHOTS=process.env.SHOTS||path.join(__dirname,'shots');
@@ -10,10 +10,12 @@ const SHOTS=process.env.SHOTS||path.join(__dirname,'shots');
   const logs=[];page.on('console',m=>{if(m.type()!=='log'||!/THREE/.test(m.text()))logs.push(m.type()+': '+m.text());});page.on('pageerror',e=>logs.push('PAGEERROR: '+e.message+'\n'+e.stack));
   // Three.js r128 берётся из vendor/, а не с CDN — тесты работают без интернета
   await page.route('**/three.min.js',r=>r.fulfill({path:path.join(__dirname,'vendor/three.min.js'),contentType:'application/javascript'}));
-  await page.goto('file://'+path.resolve(html));await page.waitForTimeout(1200);
-  for(const s of steps){if(s.code){try{const r=await page.evaluate(s.code);if(r!==undefined&&r!==null)console.log('>',typeof r==='string'?r:JSON.stringify(r));}catch(e){console.log('EVAL ERROR',e.message);}}
+  // ?debug включает отладочный объект window.ZC (в релизной сборке он есть только с этим параметром)
+  await page.goto('file://'+path.resolve(html)+'?debug=1'+(process.env.URLQ||''));   // URLQ='&hq=1' — высокая графика в релизной сборкеawait page.waitForTimeout(1200);
+  for(const s of steps){if(s.reload){await page.reload({waitUntil:'load'});await page.waitForTimeout(1200);}
+    if(s.code){try{const r=await page.evaluate(s.code);if(r!==undefined&&r!==null)console.log('>',typeof r==='string'?r:JSON.stringify(r));}catch(e){console.log('EVAL ERROR',e.message);}}
     if(s.wait)await page.waitForTimeout(s.wait);
-    if(s.shot){const p=path.isAbsolute(s.shot)?s.shot:path.join(SHOTS,s.shot);fs.mkdirSync(path.dirname(p),{recursive:true});await page.screenshot({path:p});}}
+    if(s.shot){const p=path.isAbsolute(s.shot)?s.shot:path.join(SHOTS,s.shot);fs.mkdirSync(path.dirname(p),{recursive:true});await page.screenshot({path:p,timeout:120000});}}
   if(logs.length)console.log(logs.join('\n'));
   await browser.close();
 })();

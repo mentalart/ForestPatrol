@@ -1,12 +1,14 @@
 //@@
 // меню: кнопка «Одиночный режим», O переключает, одна сложность на двоих
-ZC.menu('menu');const r=[];r.push(document.body.innerHTML.includes('Одиночный режим'));ZC.menuKey('KeyO');r.push('solo='+ZC.G.solo,document.getElementById('solob').className,!!document.getElementById('e1'));
-ZC.menuKey('KeyQ');r.push(ZC.players[0].path+'/'+ZC.players[1].path,document.getElementById('e0').textContent);r
+const r=[];if(ZC.FIN){ // релизная сборка: режим в главном меню — пункт «Режим», сложность — в настройках
+  ZC.setSolo(true);r.push(document.body.innerHTML.includes('Режим'),'solo='+ZC.G.solo,'final',false);ZC.players[0].path='hard';ZC.players[1].path='hard';r.push('hard/hard','final');}
+else{ZC.menu('menu');r.push(document.body.innerHTML.includes('Одиночный режим'));ZC.menuKey('KeyO');r.push('solo='+ZC.G.solo,document.getElementById('solob').className,!!document.getElementById('e1'));
+ZC.menuKey('KeyQ');r.push(ZC.players[0].path+'/'+ZC.players[1].path,document.getElementById('e0').textContent);}r
 //@@ shot=so_menu.png
 ZC.tick(1);
 //@@
 // Y по кругу — все четверо; обе раскладки управляют одним героем
-ZC.menuKey('KeyQ');ZC.menuKey('KeyQ');ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(30);if(ZC.G.cine)ZC.skip();ZC.tick(10);const G=ZC.G;const r=['path='+ZC.players[0].path+'/'+ZC.players[1].path,'soloPi='+G.soloPi];
+if(ZC.FIN){ZC.players[0].path=ZC.players[1].path='mid';}else{ZC.menuKey('KeyQ');ZC.menuKey('KeyQ');}ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(30);if(ZC.G.cine)ZC.skip();ZC.tick(10);const G=ZC.G;const r=['path='+ZC.players[0].path+'/'+ZC.players[1].path,'soloPi='+G.soloPi];
 const cur=()=>U.act(G.soloPi).kind;const seq=[cur()];for(let i=0;i<5;i++){ZC.press(i%2?'KeyK':'KeyQ');ZC.tick(3);seq.push(cur());}r.push(seq.join('>'));
 // стрелки ведут того же героя, что и WASD
 const h=U.act(G.soloPi),x0=h.pos.x;ZC.hold('ArrowRight',true);ZC.tick(30);ZC.hold('ArrowRight',false);ZC.tick(2);r.push('arrows dx='+(h.pos.x-x0).toFixed(2));

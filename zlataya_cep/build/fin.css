@@ -1,0 +1,77 @@
+/* ===== релиз: виньетка и мягкая цветокоррекция поверх 3D ===== */
+:root{--fts:1;--gold1:#ffe9a8;--gold2:#e8b33a;--gold3:#9a6a14;--ink:#1a1224}
+#finVig{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,rgba(0,0,0,0) 56%,rgba(12,6,24,.34) 100%)}
+#finGrade{position:fixed;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,214,168,.16),rgba(255,240,220,0) 45%,rgba(70,44,120,.16))}
+body.fin-noflash #flash{display:none}
+.fin-hide{display:none!important}
+/* ===== титул и главное меню ===== */
+#finTitle{position:fixed;inset:0;z-index:30;pointer-events:none;font-family:Georgia,'Palatino Linotype','Book Antiqua',serif;color:#fff}
+#finTitle>*{pointer-events:auto}
+#finLogo{position:absolute;left:5vw;top:6vh;width:min(560px,44vw);text-align:left}
+#finLogo h1{margin:4px 0 2px;font:700 clamp(46px,6.4vw,92px)/1.02 Georgia,'Palatino Linotype',serif;letter-spacing:.02em;background:linear-gradient(180deg,var(--gold1) 8%,var(--gold2) 52%,var(--gold3) 96%);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 3px 0 rgba(60,30,0,.55)) drop-shadow(0 8px 18px rgba(0,0,0,.45))}
+#finLogo .fin-tag{font:italic 500 clamp(14px,1.35vw,19px)/1.35 Georgia,serif;color:#ffe8c8;text-shadow:0 2px 6px rgba(0,0,0,.7);margin-top:6px}
+.fin-orn{height:12px;width:78%;margin:6px 0;background:
+  radial-gradient(circle at 6px 6px,var(--gold2) 3px,transparent 3.5px) 0 0/24px 12px repeat-x,
+  linear-gradient(90deg,transparent,var(--gold2) 12%,var(--gold2) 88%,transparent) 0 5px/100% 2px no-repeat;opacity:.9}
+#finPanel{position:absolute;left:5vw;top:clamp(200px,33vh,320px);bottom:7vh;width:min(480px,41vw);display:flex;flex-direction:column;gap:5px}
+.fin-item{position:relative;padding:8px 16px 8px 40px;border-radius:14px;cursor:pointer;background:linear-gradient(90deg,rgba(26,18,40,.72),rgba(26,18,40,.35));border:2px solid rgba(232,179,58,.18);
+  color:#f4ead8;font:700 clamp(17px,1.6vw,23px)/1.2 Georgia,serif;text-shadow:0 2px 3px rgba(0,0,0,.6);transition:transform .12s,background .12s,border-color .12s}
+.fin-item small{display:none;font:500 clamp(12px,1vw,14.5px)/1.3 system-ui,sans-serif;color:#d8c8b0;margin-top:3px;text-shadow:none}
+.fin-item .fin-val{float:right;color:var(--gold1);font-family:system-ui,sans-serif;font-weight:800}
+.fin-item .fin-val:before{content:'‹ ';opacity:.6}.fin-item .fin-val:after{content:' ›';opacity:.6}
+.fin-item.fin-sel small{display:block}
+.fin-item.fin-sel{background:linear-gradient(90deg,rgba(120,70,10,.92),rgba(60,34,8,.55));border-color:var(--gold2);transform:translateX(6px);box-shadow:0 0 18px rgba(232,179,58,.3)}
+.fin-item.fin-sel:before{content:'';position:absolute;left:14px;top:50%;width:12px;height:12px;margin-top:-6px;transform:rotate(45deg);background:var(--gold1);box-shadow:0 0 8px var(--gold2)}
+.fin-item.fin-off{opacity:.42;cursor:default}
+.fin-head{font:700 clamp(20px,2vw,28px)/1.2 Georgia,serif;color:var(--gold1);margin:0 0 4px 4px;text-shadow:0 2px 6px rgba(0,0,0,.7)}
+.fin-note{max-height:44vh;overflow:auto;font:500 14.5px/1.45 system-ui,sans-serif;color:#eadcc8;background:rgba(20,14,30,.66);border-radius:12px;padding:10px 14px;border:1px solid rgba(232,179,58,.25)}
+.fin-scroll{overflow:hidden;display:flex;flex-direction:column;gap:6px}
+#finPoem{position:absolute;right:4vw;bottom:9vh;width:min(520px,40vw);text-align:right;font:italic 500 clamp(15px,1.45vw,20px)/1.6 Georgia,serif;color:#fff4e0;text-shadow:0 2px 8px rgba(0,0,0,.8)}
+#finPoem span{display:block;opacity:0;transform:translateY(8px);transition:opacity 1.2s,transform 1.2s}#finPoem span.fin-on{opacity:.95;transform:none}
+#finFoot{position:absolute;left:5vw;right:4vw;bottom:2.6vh;display:flex;justify-content:space-between;font:600 13px system-ui,sans-serif;color:rgba(255,240,220,.75);text-shadow:0 1px 3px #000}
+.fin-ctl{width:100%;border-collapse:collapse;font:600 13px system-ui,sans-serif;color:#f0e6d6}
+.fin-ctl td{padding:2px 6px;border-bottom:1px solid rgba(255,255,255,.08)}.fin-ctl th{text-align:left;color:var(--gold1);font:800 13px system-ui;padding:4px 6px}
+.fin-ctl kbd{display:inline-block;min-width:20px;padding:1px 6px;border-radius:6px;background:#f4ead8;color:#241a10;font:800 13px system-ui;text-align:center;box-shadow:0 2px 0 #8a6a3a}
+.fin-credits{height:44vh;overflow:hidden;position:relative;mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent);-webkit-mask-image:linear-gradient(transparent,#000 12%,#000 88%,transparent)}
+.fin-credits>div{position:absolute;left:0;right:0;text-align:center;font:500 15px/1.6 Georgia,serif;color:#f4ead8}
+.fin-credits h3{font:700 19px Georgia,serif;color:var(--gold1);margin:18px 0 4px}.fin-credits p{margin:0 0 4px}
+/* ===== пауза ===== */
+#finPause{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:rgba(10,6,20,.62);font-family:Georgia,serif}
+#finPauseBox{width:min(520px,86vw);padding:22px 26px;border-radius:22px;background:linear-gradient(180deg,rgba(40,26,56,.95),rgba(24,16,36,.95));border:3px solid var(--gold2);box-shadow:0 12px 40px rgba(0,0,0,.5),inset 0 0 0 6px rgba(232,179,58,.12)}
+#finPauseBox h2{margin:0 0 6px;text-align:center;font:700 34px Georgia,serif;background:linear-gradient(180deg,var(--gold1),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+#finPauseLine{font:500 14px/1.45 system-ui,sans-serif;color:#e8dccb;margin:0 0 12px;text-align:center}
+#finPanelP{display:flex;flex-direction:column;gap:6px}
+.fin-hint{margin-top:12px;text-align:center;font:600 12.5px system-ui,sans-serif;color:rgba(255,240,220,.7)}
+/* ===== заставка, затемнение, значок сохранения ===== */
+#finSplash{position:fixed;inset:0;z-index:40;background:#0d0914;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#f4e6c8;font-family:Georgia,serif;transition:opacity .8s}
+#finSplash .fin-st{font:700 34px Georgia,serif;letter-spacing:.04em;margin-top:18px}#finSplash .fin-pr{font:italic 400 18px Georgia,serif;opacity:.75;margin-top:6px}
+#finSplash .fin-emb{position:relative;width:86px;height:86px}#finSplash .fin-emb i{position:absolute;left:50%;bottom:0;width:0;height:0;border-left:26px solid transparent;border-right:26px solid transparent;border-bottom:52px solid #4f8a3a;transform:translateX(-50%)}
+#finSplash .fin-emb i:nth-child(2){bottom:22px;border-bottom-color:#63a044;transform:translateX(-50%) scale(.8)}#finSplash .fin-emb i:nth-child(3){bottom:42px;border-bottom-color:#e8b33a;transform:translateX(-50%) scale(.45)}
+#finFade{position:fixed;inset:0;z-index:45;background:#0d0914;opacity:0;pointer-events:none;transition:opacity .45s}
+#finSave{position:fixed;right:18px;bottom:16px;z-index:35;display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:12px;background:rgba(20,14,30,.7);color:#ffe8b0;font:700 13px system-ui;opacity:0;pointer-events:none}
+#finSave i{width:14px;height:14px;border:3px solid var(--gold2);border-radius:50%;box-sizing:border-box;border-top-color:transparent}
+#finSave.fin-on{animation:finSave 2.2s ease}#finSave.fin-on i{animation:finSpin .8s linear 2}
+@keyframes finSave{0%{opacity:0}12%{opacity:1}75%{opacity:1}100%{opacity:0}}@keyframes finSpin{to{transform:rotate(360deg)}}
+body.fin-title #ui{display:none}
+/* ===== релиз: интерфейс в игре — без наложений, единый стиль, размер текста из настроек ===== */
+.hud{background:linear-gradient(180deg,rgba(34,22,48,.78),rgba(18,12,28,.7));box-shadow:0 4px 14px rgba(0,0,0,.35),inset 0 0 0 2px rgba(232,179,58,.14)}
+#links{background:linear-gradient(180deg,rgba(34,22,48,.82),rgba(18,12,28,.75));box-shadow:0 4px 14px rgba(0,0,0,.35);font-size:calc(15px*var(--fts))}
+.tip,.obj{max-width:30vw;border-radius:14px;background:linear-gradient(180deg,rgba(30,20,44,.86),rgba(18,12,28,.82));box-shadow:0 6px 18px rgba(0,0,0,.35),inset 0 0 0 1px rgba(232,179,58,.18)}
+.tip{top:92px;font-size:calc(21px*var(--fts));line-height:1.32}
+.obj{font-size:calc(18px*var(--fts));line-height:1.36;max-width:34vw}
+#tip0,#obj0{left:19%}#tip1,#obj1{left:81%}
+#obj0{left:21%}#obj1{left:79%}
+#banner{top:27%;font-family:Georgia,'Palatino Linotype',serif;font-size:calc(44px*var(--fts));letter-spacing:.01em}
+#banner small{font-family:system-ui,sans-serif;font-size:calc(22px*var(--fts));max-width:56vw}
+#level{top:40%;transform:translate(-50%,-50%);font-family:Georgia,'Palatino Linotype',serif;font-size:calc(36px*var(--fts));font-weight:700;padding:14px 46px;border-radius:18px;
+  background:linear-gradient(90deg,rgba(24,14,34,0),rgba(24,14,34,.72) 18%,rgba(24,14,34,.72) 82%,rgba(24,14,34,0));color:#ffe9b0;text-shadow:0 2px 6px rgba(0,0,0,.8)}
+#level:before,#level:after{content:'';display:block;height:10px;margin:4px auto;width:70%;background:radial-gradient(circle at 5px 5px,var(--gold2) 2.5px,transparent 3px) 0 0/20px 10px repeat-x}
+#level span{font-family:system-ui,sans-serif}
+#subs{font-size:calc(22px*var(--fts));background:linear-gradient(180deg,rgba(30,20,44,.86),rgba(18,12,28,.82));border:1px solid rgba(232,179,58,.25);border-radius:14px}
+.float{font-size:calc(21px*var(--fts))}
+#skip{background:rgba(24,16,34,.75);border:1px solid rgba(232,179,58,.25)}
+/* карточка итогов (конец мира, пролога) — в той же гамме */
+#menu{background:rgba(12,8,20,.78)}
+#card{background:linear-gradient(180deg,rgba(40,26,56,.97),rgba(24,16,36,.97))!important;border:3px solid var(--gold2)!important;border-radius:22px!important;box-shadow:0 12px 40px rgba(0,0,0,.5)}
+#card h1{font-family:Georgia,serif;background:linear-gradient(180deg,var(--gold1),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}

@@ -1,0 +1,17 @@
+# Регресс релизной сборки zlataya_cep/zlataya_cep_final01.html: все боты прототипа и боты меню и сохранений
+# пролог, мир 1, хаб
+smoke t12n t12deep t12tat tfoes t13v t15n t1b thub2 t11 thub9 thub9b thub9c
+# мир 2
+t21 t2c t25c t22d t23f t24n t21x tdodge tfade tsplit t22shot thw2
+# мир 3
+t31 t31c t32 t33n t34 t35 t3bv thw3a thw3b tmenu3
+# мир 4, Лукоморье
+t41v t42v t43 tluko t44 t45 t4b thw4
+# мир 5, эпилог, Застава
+t51 t52 t53 t54 t5b1 t5b2 tepi tzast
+# задачи всех уровней
+tallobj
+# одиночный режим
+tsolo tsolo41 tsospot tso13 tso33 tso54
+# релиз: титул, меню, пауза, сохранения
+tfin_menu tfin_save
