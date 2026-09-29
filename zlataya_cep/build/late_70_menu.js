@@ -44,6 +44,7 @@ function settingsScreen(){const S=FIN.set,pct=v=>Math.round(v*100)+'%',step=(v,d
   const cyc=(pi,d)=>{cyclePath(pi);if(d<0)cyclePath(pi);};
   const items=[{label:'Музыка',val:()=>pct(S.mus),side:d=>{S.mus=step(S.mus,d);save();}},
     {label:'Звуки',val:()=>pct(S.sfx),side:d=>{S.sfx=step(S.sfx,d);save();}},
+    {label:'Голоса',val:()=>pct(S.vox!=null?S.vox:1),sub:'озвучка реплик',side:d=>{S.vox=step(S.vox!=null?S.vox:1,d);save();}},
     {label:'Субтитры',val:()=>S.subs?'вкл':'выкл',side:()=>{S.subs=!S.subs;save();}},
     {label:'Размер текста',val:()=>Math.round(S.ts*100)+'%',side:d=>{const i=TS.indexOf(S.ts);S.ts=TS[Math.max(0,Math.min(TS.length-1,(i<0?1:i)+d))];save();}},
     {label:'Тряска камеры',val:()=>S.shake?'вкл':'слабая',side:()=>{S.shake=!S.shake;save();}},
@@ -63,6 +64,7 @@ const CREDITS='<h3>Златая цепь</h3><p>кооперативная ск�
   '<h3>По мотивам</h3><p>А. С. Пушкин, пролог к поэме «Руслан и Людмила» — «У лукоморья дуб зелёный…»</p><p>русские народные сказки: «Колобок», «Садко», «Гуси-лебеди», «Кощей Бессмертный», «Репка», «Курочка Ряба», «Кузьма и Демьян», былины о трёх богатырях</p>'+
   '<h3>АбадзехLAB · Лаборатория творчества</h3><p>геймдизайн и кооперативные механики</p><p>дизайн уровней и low-poly арт</p><p>ролики на движке и анимация</p><p>сценарий и подсказки для детей</p><p>музыка и звук</p><p>программирование и тестирование</p>'+
   '<h3>Героев озвучивают</h3><p>Прошка, Потап, Пелагея и Йоша — голосами своих игроков</p>'+
+  '<h3>Голоса пролога</h3><p>синтез речи ElevenLabs v4 (через Higgsfield)</p>'+
   '<h3>Технологии</h3><p>Three.js r128 · © 2010–2021 Three.js Authors · лицензия MIT</p><p>шрифт Comfortaa · © The Comfortaa Project Authors · SIL Open Font License 1.1</p><p>звук и музыка синтезируются в браузере (Web Audio)</p>'+
   '<h3>Спасибо</h3><p>всем, кто играет вместе — с детьми, друзьями и бабушками</p><p style="margin-top:22px;font-style:italic">«Там русский дух… там Русью пахнет!»</p>';
 function creditsScreen(){return {head:'Титры',html:()=>'<div class="fin-credits"><div id="finCred">'+CREDITS+'</div></div>',items:[{label:'Назад',act:finBack}],credits:true};}

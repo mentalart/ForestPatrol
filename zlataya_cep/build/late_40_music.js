@@ -85,7 +85,7 @@ FIN.music=(()=>{let bus=null,cur=null,want=null,t0=0,vox=[],loops=0,vol=FIN.set.
   return {start(){if(!AC||started)return;started=true;bus=AC.createGain();bus.gain.value=0;bus.connect(AC.destination);noise=nb();},
     setVol(v){vol=v;},play(n){want=n;},
     tick(){if(!AC||!started)return;const w=want!==undefined&&want!==null?want:pick();
-      const now=performance.now(),dt=Math.min(0.2,(now-(this.lt||now))/1000);this.lt=now;const duck=G.cine?0.55:G.state==='pause'?0.35:1,target=w===cur?0.16*vol*duck:0;const g=bus.gain.value;bus.gain.value=g+(target-g)*(1-Math.exp(-dt*(target<g?5:2.5)));
+      const now=performance.now(),dt=Math.min(0.2,(now-(this.lt||now))/1000);this.lt=now;const duck=(G.cine?0.55:G.state==='pause'?0.35:1)*(FIN.voxDuck||1),target=w===cur?0.16*vol*duck:0;const g=bus.gain.value;bus.gain.value=g+(target-g)*(1-Math.exp(-dt*(target<g?5:2.5)));
       if(w!==cur&&bus.gain.value<0.004){begin(w);}if(cur)schedule();},
     get cur(){return cur;}};})();
 {const _r=render;render=function(){_r();if(FIN.music)FIN.music.tick();};}

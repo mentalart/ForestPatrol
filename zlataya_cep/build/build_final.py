@@ -3,13 +3,13 @@
 #   python3 zlataya_cep/build/build_final.py
 # Берёт ../../index.html (прототип, не меняется), встраивает Three.js r128, подключает модули финальной версии
 # (fin_early.js — до создания геометрии, late_*.js по порядку — перед запуском игры, fin.css, fin_body.html, rep_*.py — точечные замены)
-# и пишет zlataya_cep/zlataya_cep_final05.html (final01–final04 — предыдущие релизы, лежат рядом как есть). В конце — проверка синтаксиса через node --check.
+# и пишет zlataya_cep/zlataya_cep_final06.html (final01–final05 — предыдущие релизы, лежат рядом как есть). В конце — проверка синтаксиса через node --check.
 import os,sys,re,subprocess
 B=os.path.dirname(os.path.abspath(__file__))
 ROOT=os.path.normpath(os.path.join(B,'..','..'))
 SRC=os.path.join(ROOT,'index.html')
-OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_final05.html')
-VERSION='final05'
+OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_final06.html')
+VERSION='final06'
 s=open(SRC,encoding='utf-8').read()
 def rd(n):return open(os.path.join(B,n),encoding='utf-8').read()
 def rep(old,new,cnt=1):
@@ -37,6 +37,14 @@ rep('<div id="ui">',rd('fin_body.html').rstrip()+'\n<div id="ui">')
 # 4. модули: ранний (low-poly геометрия и материалы) и поздний (всё остальное)
 rep("const V3=THREE.Vector3;","const V3=THREE.Vector3;\n"+rd('fin_early.js').rstrip()+'\n')
 late='\n'.join(rd(f).rstrip() for f in sorted(os.listdir(B)) if re.match(r'late_\d+.*\.js$',f))
+# озвучка реплик (final06): каталог voice/lines.json и записи voice/<id>.mp3 → VOX_LINES (MP3 в base64) перед поздними модулями
+import json
+VD=os.path.join(B,'voice');VL=json.load(open(os.path.join(VD,'lines.json'),encoding='utf-8'))['lines'];vox=[]
+for e in VL:
+    f=os.path.join(VD,e['id']+'.mp3')
+    if not (os.path.exists(f) and e.get('dur')):print('voice: нет записи',e['id']);continue
+    vox.append({'id':e['id'],'lv':e['lv'],'who':e['who'],'text':e['text'],'dur':e['dur'],'gain':e.get('gain',1),'lul':e.get('lul'),'b64':base64.b64encode(open(f,'rb').read()).decode()})
+late='const VOX_LINES='+json.dumps(vox,ensure_ascii=False)+';\n'+late
 # защита: модуль не должен объявлять функцию с именем функции прототипа — в общей области видимости она молча подменит оригинал
 PF=set(re.findall(r'(?m)^function\s+([A-Za-z_$][\w$]*)\s*\(',s))
 for f in sorted(os.listdir(B)):
@@ -49,9 +57,12 @@ rep("window.ZC={G,players,","if(/[?&]debug/.test(location.search))window.ZC={G,p
 rep("skip(){if(G.cine){G.cine.skip();G.cine.t=G.cine.dur;}}};","skip(){if(G.cine){G.cine.skip();G.cine.t=G.cine.dur;}}};\nif(window.ZC)window.ZC.FIN=FIN;")
 for mod in sorted(f for f in os.listdir(B) if re.match(r'rep_\d+.*\.py$',f)):
     exec(open(os.path.join(B,mod),encoding='utf-8').read())
+# у каждой озвученной реплики должна быть такая же строка в игре (после всех замен субтитров), иначе запись не прозвучит
+for e in VL:
+    if "'"+e['text'].replace("'","\\'")+"'" not in s: sys.exit('VOICE LINE NOT FOUND :: '+e['text'])
 open(OUT+'.tmp','w',encoding='utf-8').write(s);os.replace(OUT+'.tmp',OUT)   # атомарно: идущие тесты не прочитают файл наполовину
 m=re.findall(r'<script>([\s\S]*?)</script>',s)
 chk=os.path.join(B,'.chk.js');open(chk,'w',encoding='utf-8').write(m[-1])
 r=subprocess.run(['node','--check',chk]);os.remove(chk)
 if r.returncode: sys.exit('syntax error')
-print('final ok',OUT,len(s))
+print('final ok',OUT,len(s),'voice lines',len(vox),'/',len(VL))
