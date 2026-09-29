@@ -19,6 +19,24 @@ const PAL={
 // близкие оттенки — псевдонимы основных цветов: всего 40 уникальных цветов по 3 тона
 Object.assign(PAL,{firDk:PAL.fir,leafDk:PAL.moss,bluefl:PAL.blue,kelp:PAL.green,roofG:PAL.green,hazard:PAL.red,skin:PAL.cream,cloth:PAL.cream,sandstone:PAL.sand});
 FIN.PAL=PAL;
+// final05: палитра 256 цветов. Каждый из 40 цветов — семейство из 6 оттенков (исходный + 5 соседних: тон ±6°, светлота ±6 %, насыщенность ±12 %;
+// свет и тень сдвигаются вместе с базой, так что задуманные тона сохраняются) = 240, и ещё 16: 6 тонов кожи, 6 цветов волос, 4 акцента.
+// Каждый предмет кита по своему сиду берёт оттенок из семейства — деревья, камни, дома, цветы и жители разные; цвета в вершинах, отрисовок не прибавляется.
+const PALX=[],PALF=new Map();
+{const hsl={h:0,s:0,l:0},c=new THREE.Color(),VAR=[[0,0,0],[6,0.05,-0.06],[-6,-0.05,0.08],[10,-0.04,-0.12],[-10,0.06,0.12],[3,-0.07,0.04]];
+ const shift=(hex,dh,dl,ds)=>{c.setHex(hex).getHSL(hsl);c.setHSL((hsl.h+dh/360+1)%1,Math.max(0,Math.min(1,hsl.s*(1+ds))),Math.max(0.02,Math.min(0.98,hsl.l+dl*(hsl.l<0.5?hsl.l*1.6:1-hsl.l)*1.6)));return c.getHex();};
+ const seen=new Set();for(const k in PAL){const p=PAL[k];if(seen.has(p))continue;seen.add(p);const fam=[];
+   for(const v of VAR){fam.push(PALX.length);PALX.push(v[0]===0&&v[1]===0&&v[2]===0?p:p.map(h=>shift(h,v[0],v[1],v[2])));}PALF.set(p,fam);}
+ const ramp=(hex)=>[shift(hex,-4,0.12,-0.05),hex,shift(hex,8,-0.16,0.08)];
+ PAL.skins=[];PAL.hairs=[];   // тоны кожи и цвета волос жителей
+ [0xffe4d0,0xf6cfae,0xe8b48c,0xcf9468,0xa86e48,0x7a4a2e].forEach(h=>{PAL.skins.push(PALX.length);PALX.push(ramp(h));});
+ [0xfbeec0,0xf0c860,0xc8642c,0x8a5430,0x5a3a26,0x2c2428].forEach(h=>{PAL.hairs.push(PALX.length);PALX.push(ramp(h));});
+ [0x5ad0c0,0x9ef0b8,0xc8a8f0,0xff9a86].forEach(h=>PALX.push(ramp(h)));
+ PAL.skins=PAL.skins.map(i=>PALX[i]);PAL.hairs=PAL.hairs.map(i=>PALX[i]);}
+FIN.PAL256=PALX;
+// оттенок из семейства цвета по сиду предмета (у каждого семейства свой выбор — ствол и крона одного дерева меняются независимо)
+function palVar(p,seed){const f=PALF.get(p);if(!f)return p;const r=h3(Math.round(seed*7.13)+f[0]*3.1,f[0]*1.7,seed*0.37+11);return PALX[f[Math.min(f.length-1,Math.floor(r*f.length))]];}
+FIN.palVar=palVar;
 const K_WH=new THREE.Color(1,1,1),K_C2=new THREE.Color();
 // тон s∈[−1,1]: 0 — база, +1 — свет, −1 — тень
 function ktone(p,s,out){out=out||new THREE.Color();if(typeof p==='number'){out.setHex(p);if(s>0)out.lerp(K_WH,s*0.3);else out.multiplyScalar(1+s*0.42);return out;}
@@ -58,13 +76,14 @@ class KGeo{constructor(H,seed){this.P=[];this.C=[];this.H=H||1;this.sd=seed||0;}
   // g — геометрия части, pal — цвет палитры (или hex), m — матрица, o: noise (шум, м), s (сдвиг тона), kN (свет сверху), kG (градиент по высоте), kJ (разброс граней), flat (без шума по y у верха)
   add(g,pal,m,o){o=o||{};const pos=g.attributes.position,idx=g.index,n=idx?idx.count:pos.count,v=[new V3(),new V3(),new V3()],e1=new V3(),e2=new V3(),nn=new V3(),col=new THREE.Color();
     const amp=o.noise||0,sd=this.sd+(o.seed||0),kN=o.kN!=null?o.kN:0.45,kG=o.kG!=null?o.kG:0.3,kJ=o.kJ!=null?o.kJ:0.2,base=o.s||0,H=this.H,flip=m&&m.determinant()<0;
+    const vpal=this.vary===false||o.vary===false?pal:palVar(pal,this.sd);   // оттенок семейства по сиду предмета (герои — без вариаций)
     let top=-1e9;if(o.flat&&amp){for(let j=0;j<pos.count;j++)top=Math.max(top,pos.getY(j));}
     for(let i=0;i+2<n;i+=3){for(let k=0;k<3;k++){const j=idx?idx.getX(i+k):i+k;const vk=v[flip&&k?3-k:k];vk.fromBufferAttribute(pos,j);const lt=o.flat&&vk.y>top-1e-4;if(m)vk.applyMatrix4(m);
         if(amp){const x=q4(vk.x),y=q4(vk.y),z=q4(vk.z);vk.x+=n3(x,y,z,sd)*amp;if(!lt)vk.y+=n3(y,z,x,sd+1)*amp*0.7;vk.z+=n3(z,x,y,sd+2)*amp;}}
       e1.subVectors(v[1],v[0]);e2.subVectors(v[2],v[0]);nn.crossVectors(e1,e2);const L=nn.length();if(L<1e-12)continue;nn.divideScalar(L);
       const cx=(v[0].x+v[1].x+v[2].x)/3,cy=(v[0].y+v[1].y+v[2].y)/3,cz=(v[0].z+v[1].z+v[2].z)/3;
       const s=base+nn.y*kN+(cy/H-0.5)*kG+(h3(Math.round(cx*40),Math.round(cy*40),Math.round(cz*40)+sd)-0.5)*2*kJ;
-      if(o.col)col.copy(o.col);else ktone(pal,Math.max(-1,Math.min(1,s)),col);
+      if(o.col)col.copy(o.col);else ktone(vpal,Math.max(-1,Math.min(1,s)),col);
       for(let k=0;k<3;k++){this.P.push(v[k].x,v[k].y,v[k].z);this.C.push(col.r,col.g,col.b);}}
     return this;}
   box(w,h,d,pal,m,o){o=o||{};return this.add(sBoxGeo(w,h,d,{b:o.b!=null?o.b:Math.min(w,h,d)*0.14,cell:o.cell,amp:o.amp,seed:this.sd+(o.seed||0)}),pal,m,o);}

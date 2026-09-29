@@ -4,7 +4,7 @@
 // бедро → колено → стопа · хвост · крылья и клюв у Пелагеи · шар у Йоши. Каждая вершина жёстко привязана к своей кости.
 // Совместимость с прототипом: parts.tail · parts.legs (теперь две ноги Потапа) · parts.wings (userData.s, раскрытие по z) · parts.beak (покой rotation.x = 0.5, .visible) · parts.ball.
 const HMAT=new THREE.MeshLambertMaterial({vertexColors:true,skinning:true});HMAT.userData.shared=true;HMAT.userData.kit=true;
-class SkGeo extends KGeo{constructor(H,sd){super(H,sd);this.SI=[];}
+class SkGeo extends KGeo{constructor(H,sd){super(H,sd);this.SI=[];this.vary=false;}   // final05: цвета героев без вариаций палитры
   on(bi,g,pal,m,o){const n0=this.P.length/3;this.add(g,pal,m,o);const n1=this.P.length/3;for(let i=n0;i<n1;i++)this.SI.push(bi);return this;}
   buildSk(){const g=this.build(),n=this.SI.length,si=new Uint16Array(n*4),sw=new Float32Array(n*4);for(let i=0;i<n;i++){si[i*4]=this.SI[i];sw[i*4]=1;}
     g.setAttribute('skinIndex',new THREE.BufferAttribute(si,4));g.setAttribute('skinWeight',new THREE.BufferAttribute(sw,4));return g;}}
