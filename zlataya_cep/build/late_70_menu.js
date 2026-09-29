@@ -10,12 +10,12 @@ function finDraw(){const scr=FIN.menu;if(!scr)return;const host=$(scr.pause?'fin
   for(let i=a;i<Math.min(n,a+win);i++){const it=scr.items[i],sub=typeof it.sub==='function'?it.sub():it.sub;
     h+='<div class="fin-item'+(i===scr.sel?' fin-sel':'')+(it.off?' fin-off':'')+'" data-i="'+i+'">'+(it.val?'<span class="fin-val">'+it.val()+'</span>':'')+it.label+(sub?'<small>'+sub+'</small>':'')+'</div>';}
   host.innerHTML=h+'</div>';
-  host.querySelectorAll('.fin-item').forEach(el=>{const i=+el.dataset.i;el.onmouseenter=()=>{if(scr.items[i].off||scr.sel===i||!finMouseLive())return;scr.sel=i;finDraw();};el.onclick=()=>{if(scr.items[i].off)return;scr.sel=i;finAct(0);};});
+  host.querySelectorAll('.fin-item').forEach(el=>{const i=+el.dataset.i;el.onmouseenter=()=>{if(scr.items[i].off||scr.sel===i||!finMouseLive())return;scr.sel=i;FIN.uiSnd.move(i,scr.items.length);finDraw();};el.onclick=()=>{if(scr.items[i].off){FIN.uiSnd.deny();return;}scr.sel=i;finAct(0);};});
   // невысокое окно: показываем столько пунктов, сколько помещается под логотипом (список листается стрелками)
   if(!scr.pause){const its=host.querySelectorAll('.fin-item'),last=its[its.length-1],P=host.getBoundingClientRect();if(last&&P.height>0&&its.length>3&&last.getBoundingClientRect().bottom>P.bottom+1){scr.fit=its.length-1;finDraw();}}}
 addEventListener('resize',()=>{if(FIN.menu&&FIN.menu.fit){FIN.menu.fit=0;finDraw();}});
-function finAct(dx){const scr=FIN.menu,it=scr&&scr.items[scr.sel];if(!it||it.off)return;
-  if(dx){if(it.side){it.side(dx);SFX.swap();finDraw();}return;}if(it.act){SFX.ok();it.act();}else if(it.side){it.side(1);SFX.swap();finDraw();}}
+function finAct(dx){const scr=FIN.menu,it=scr&&scr.items[scr.sel];if(!it||it.off){if(it)FIN.uiSnd.deny();return;}
+  if(dx){if(it.side){it.side(dx);FIN.uiSnd.side(dx);finDraw();}return;}if(it.act){FIN.uiSnd.ok();it.act();}else if(it.side){it.side(1);FIN.uiSnd.side(1);finDraw();}}
 // наведение мыши выбирает пункт, только если мышь сдвинулась после нажатия джойстика/клавиш. Иначе после перерисовки меню браузер
 // «наводит» неподвижный курсор на новый пункт под ним, и выбор возвращается на место курсора — на паузе (она по центру, где обычно
 // стоит курсор) джойстик «переставал работать», пока мышь не уведут в сторону.
@@ -23,11 +23,29 @@ const MSE={x:-1e4,y:-1e4,ax:-1e4,ay:-1e4};addEventListener('mousemove',e=>{MSE.x
 function finMouseLive(){return Math.abs(MSE.x-MSE.ax)+Math.abs(MSE.y-MSE.ay)>4;}
 function finMouseAnchor(){MSE.ax=MSE.x;MSE.ay=MSE.y;}
 function finMenuInput(){const scr=FIN.menu;if(!scr)return;const a=uiNav(0),b=uiNav(1),dy=a.dy||b.dy,dx=a.dx||b.dx;
-  if(dy||dx||pressed.size)finMouseAnchor();
-  if(dy&&scr.items.length){scr.sel=(scr.sel+dy+scr.items.length)%scr.items.length;fixSel(scr,dy);SFX.swap();finDraw();}
+  const ok=pressed.has('Enter')||tap(0,'jump')||tap(1,'jump'),back=!ok&&(pressed.has('Escape')||tap(0,'guard')||tap(1,'guard'));
+  if(dy||dx||pressed.size||ok||back){finMouseAnchor();uiAudio();}
+  if(dy&&scr.items.length){scr.sel=(scr.sel+dy+scr.items.length)%scr.items.length;fixSel(scr,dy);FIN.uiSnd.move(scr.sel,scr.items.length);finDraw();}
   if(dx)finAct(dx);
-  if(pressed.has('Enter')||tap(0,'jump')||tap(1,'jump'))finAct(0);
-  else if(pressed.has('Escape')||tap(0,'guard')||tap(1,'guard')){if(FIN.menuStack.length){SFX.swap();finBack();}else if(scr.onBack)scr.onBack();}}
+  if(ok)finAct(0);
+  else if(back){if(FIN.menuStack.length){FIN.uiSnd.back();finBack();}else if(scr.onBack){FIN.uiSnd.back();scr.onBack();}}}
+// final06: звуки меню (главного и паузы) — гусли: у каждого пункта своя нота (чем выше пункт, тем выше нота), выбор — два колокольчика,
+// назад — нота вниз, ползунок и переключатель — деревянный щелчок, недоступный пункт — глухой стук. На паузе — те же ноты, но приглушённо.
+// Звук включается первым же вводом в меню — клавишей, мышью или джойстиком (раньше — только клавиатурой, и с джойстиком меню молчало).
+function uiAudio(){try{initAudio();if(AC&&AC.state==='suspended')AC.resume();}catch(e){}}
+addEventListener('pointerdown',()=>{if(FIN.menu&&!FIN.splashOn)uiAudio();},true);
+const MENUS={last:0,pent:[392,440,523.25,587.33,659.25,784,880,1046.5]};
+const uisOk=()=>{try{return AUD.ready()&&AC.state==='running';}catch(e){return false;}},uisP=()=>!!(FIN.menu&&FIN.menu.pause);
+function uisPluck(f,v,at,pan){const m=uisP();AUD.osc({type:'triangle',f0:f,d:0.3,v:v,a:0.003,lp:m?1400:3200,lp1:m?500:900,wet:0.3,at,pan});
+  AUD.osc({type:'sine',f0:f*2,d:0.14,v:v*0.3,a:0.002,wet:0.2,at,pan});AUD.nz({type:'highpass',f0:m?2600:4200,d:0.022,v:v*0.35,a:0.001,at});}
+FIN.uiSnd={
+  move(i,n){if(!uisOk())return;const now=performance.now();if(now-MENUS.last<35)return;MENUS.last=now;const L=MENUS.pent.length,k=n>1?Math.round((1-i/(n-1))*(L-1)):4;
+    uisPluck(MENUS.pent[Math.max(0,Math.min(L-1,k))],0.05,0,n>1?(i/(n-1)-0.5)*0.4:0);},
+  ok(){if(!uisOk())return;const m=uisP();AUD.bell(m?784:1046.5,{v:0.035,d:0.6,wet:0.5});AUD.bell(m?1174.7:1568,{v:0.03,d:0.75,at:0.07,wet:0.55});
+    AUD.nz({f0:700,f1:3200,d:0.28,v:0.02,a:0.06,q:0.8,wet:0.35});},
+  back(){if(!uisOk())return;uisPluck(659.25,0.045,0);uisPluck(440,0.04,0.07);},
+  side(dx){if(!uisOk())return;AUD.nz({type:'bandpass',f0:dx>0?2300:1600,q:7,d:0.05,v:0.07,a:0.001});uisPluck(dx>0?587.33:523.25,0.03,0.01);},
+  deny(){if(!uisOk())return;AUD.thump({f0:190,f1:95,d:0.12,v:0.12});AUD.nz({type:'lowpass',f0:500,d:0.08,v:0.05,a:0.002});}};
 // переход с затемнением
 function finGo(fn){const f=$('finFade');f.style.opacity=1;setTimeout(()=>{fn();setTimeout(()=>{f.style.opacity=0;},80);},470);}
 function newGame(){startFrom(0);}

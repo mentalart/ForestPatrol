@@ -240,6 +240,18 @@
  },
  "lines": [
   {
+   "id": "splash_001",
+   "lv": "splash",
+   "who": "kot",
+   "text": "Абадзех-Лаб! Лаборатория творчества.",
+   "tts": "[magical, cheerful] Абадзех-Лаб! Лаборатория творчества.",
+   "fx": "hall",
+   "max": 3.2,
+   "job": "3b8b7e5d-21de-4830-b63e-df8882f895ef",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_184424_3b8b7e5d-21de-4830-b63e-df8882f895ef.mp3",
+   "dur": 3.06
+  },
+  {
    "id": "p01_bayu",
    "lv": "p",
    "who": "tishka",
