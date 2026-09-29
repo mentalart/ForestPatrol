@@ -44,7 +44,7 @@ for e in VL:
     f=os.path.join(VD,e['id']+'.mp3')
     if not (os.path.exists(f) and e.get('dur')):print('voice: нет записи',e['id']);continue
     vox.append({'id':e['id'],'lv':e['lv'],'who':e['who'],'text':e['text'],'dur':e['dur'],'gain':e.get('gain',1),'lul':e.get('lul'),'b64':base64.b64encode(open(f,'rb').read()).decode()})
-late='const VOX_LINES='+json.dumps(vox,ensure_ascii=False)+';\n'+late
+voxjs='const VOX_LINES='+json.dumps(vox,ensure_ascii=False)+';\n';late=voxjs+late
 # защита: модуль не должен объявлять функцию с именем функции прототипа — в общей области видимости она молча подменит оригинал
 PF=set(re.findall(r'(?m)^function\s+([A-Za-z_$][\w$]*)\s*\(',s))
 for f in sorted(os.listdir(B)):
@@ -58,8 +58,11 @@ rep("skip(){if(G.cine){G.cine.skip();G.cine.t=G.cine.dur;}}};","skip(){if(G.cine
 for mod in sorted(f for f in os.listdir(B) if re.match(r'rep_\d+.*\.py$',f)):
     exec(open(os.path.join(B,mod),encoding='utf-8').read())
 # у каждой озвученной реплики должна быть такая же строка в игре (после всех замен субтитров), иначе запись не прозвучит
-for e in VL:
-    if "'"+e['text'].replace("'","\\'")+"'" not in s: sys.exit('VOICE LINE NOT FOUND :: '+e['text'])
+# (реплика, собранная в коде из кусков — например t+'…', — перечисляет эти куски в поле parts: в игре должен быть каждый)
+sg=s.replace(voxjs,'',1)   # код игры без самого каталога записей (в нём есть все тексты)
+miss=[e for e in VL if ("'"+e['text'].replace("'","\\'")+"'" not in sg) and not (e.get('parts') and all(p in sg for p in e['parts']))]
+for e in miss: print('VOICE LINE NOT FOUND ::',e['id'],e['text'])
+if miss: sys.exit('VOICE LINE NOT FOUND: '+str(len(miss)))
 open(OUT+'.tmp','w',encoding='utf-8').write(s);os.replace(OUT+'.tmp',OUT)   # атомарно: идущие тесты не прочитают файл наполовину
 m=re.findall(r'<script>([\s\S]*?)</script>',s)
 chk=os.path.join(B,'.chk.js');open(chk,'w',encoding='utf-8').write(m[-1])

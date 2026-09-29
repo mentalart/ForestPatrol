@@ -8,7 +8,8 @@ ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;let n=0;while(!ZC.G.cine&&n<60){ZC.t
 T(5.4);const a=ZC.FIN.cine.state();T(9.4);const b=ZC.FIN.cine.state();T(13.4);const c=ZC.FIN.cine.state();['focus5='+a.focus,'focus9='+b.focus,'focus13='+c.focus,'size13='+c.size].join(' ')
 //@@ shot=fin_cine_4b_b.png
 // длина ролика в тиках: акценты «в долг» не должны удлинять ролик
-let k=0;const t0=ZC.G.cine.t;while(ZC.G.cine&&k<3000){ZC.tick(1);k++;}const exp=(20-t0)*60;const e1=ZC.FIN.cine.state();['ticksToEnd='+k,'expected~'+Math.round(exp),'ok='+(Math.abs(k-exp)<45),'exit='+e1.exit,'whips='+(window._ev.whip||0)].join(' ')
+// (final06: пока договаривает голос, ролик замедляется — это время добавляется к ожидаемой длине)
+let k=0;const t0=ZC.G.cine.t,sl0=ZC.FIN.vox?ZC.FIN.vox.slowed:0;while(ZC.G.cine&&k<3000){ZC.tick(1);k++;}const exp=(20-t0)*60+((ZC.FIN.vox?ZC.FIN.vox.slowed:0)-sl0)*60;const e1=ZC.FIN.cine.state();['ticksToEnd='+k,'expected~'+Math.round(exp),'ok='+(Math.abs(k-exp)<45),'exit='+e1.exit,'whips='+(window._ev.whip||0)].join(' ')
 //@@
 ZC.tick(90);const H=ZC.HERO;['exitDone='+!ZC.FIN.cine.state().exit,'grounded='+[H.proshka,H.potap,H.pelageya,H.yosha].filter(h=>h.grounded&&h.pos.y>-1).length+'/4','fovAfter='+ZC.FIN.fovNow()].join(' ')
 //@@

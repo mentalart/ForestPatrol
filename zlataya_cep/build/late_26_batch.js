@@ -87,7 +87,7 @@ function batEject(p,noProm){const cell=p.cell;p.out=true;p.outT=BAT.t;const m=p.
 // Локальная пачка такой группы собирается сразу, без обычного ожидания (её меши относительно группы не двигаются).
 // «Прозрачные стены» (fadeRef: Китеж, терем) меняют прозрачность и потом возвращаются к прежнему виду — это не повод навсегда
 // выключать их из пачек: штрафов за такие перемены нет, и непрозрачная снова стена снова склеивается.
-function batPromote(p){const m=p.m,s=p.snap;if(!s||!s.ml||m.parent!==s.par||m.parent===W.group)return;const a=m.matrix.elements,b=s.ml;for(let i=0;i<16;i++)if(Math.abs(a[i]-b[i])>1e-5)return;
+function batPromote(p){const m=p.m,s=p.snap;if(!s||!s.ml||!m.parent||m.parent!==s.par||m.parent===W.group)return;   // меш уже снят со сцены — нечего подниматьconst a=m.matrix.elements,b=s.ml;for(let i=0;i<16;i++)if(Math.abs(a[i]-b[i])>1e-5)return;
   let top=m.parent;while(top.parent&&top.parent!==W.group)top=top.parent;if(top.parent!==W.group)return;BAT.stats.promoted=(BAT.stats.promoted||0)+1;
   top.traverse(c=>{c.userData.batchNo=true;c.userData.batProm=true;if(c.userData.bat&&c!==m)batUnglue(c);});BAT.scanT=2;m.userData.batchNo=true;m.userData.noBatch=true;p.gone=true;m.userData.bat=false;BAT.dirty.add(p.cell);}
 function batRestore(p){const cell=p.cell;if(!cell.mesh||!p.saved)return;cell.mesh.geometry.attributes.position.array.set(p.saved,p.start*3);cell.dead-=p.count;p.saved=null;p.out=false;p.m.layers.set(BAT_LAYER);BAT.upd.add(cell);BAT.stats.restored++;}
