@@ -1,5 +1,5 @@
 //@@
-ZC.startFrom(ZC.LV('2-1'));ZC.G.manual=true;ZC.tick(20);ZC.goLevel('luko');ZC.tick(120);ZC.skip&&ZC.skip();ZC.tick(60);const r=[U.walkTo(0,-2.4,-17.6,4)];U.tap('Space');ZC.tick(20);U.tap('KeyA');ZC.tick(20);r.push('ui='+ZC.G.ui,'gems='+Object.keys(ZC.G.gems).join(','));r
+ZC.startFrom(ZC.LV('2-1'));ZC.G.manual=true;ZC.tick(20);ZC.goLevel('luko');ZC.tick(120);ZC.skip&&ZC.skip();ZC.tick(60);const r=[U.walkTo(0,-2.4,-17.6-(ZC.W.shoreDZ||0),4)];U.tap('Space');ZC.tick(20);U.tap('KeyA');ZC.tick(20);r.push('ui='+ZC.G.ui,'gems='+Object.keys(ZC.G.gems).join(','));r
 //@@ shot=h9_map.png
 ZC.tick(1);
 //@@

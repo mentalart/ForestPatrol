@@ -1,7 +1,7 @@
 //@@
 ZC.startFrom(ZC.LV('4-1'));ZC.G.manual=true;ZC.tick(5);ZC.G.hub=true;ZC.loadLevel(ZC.LV('luko'));ZC.tick(30);ZC.skip();ZC.tick(60);ZC.skip();ZC.tick(30);[ZC.W.name,ZC.W.flags.mode,ZC.W.flags.stage,U.st()].join(' | ')
 //@@
-const r=[U.walkTo(0,-1.2,-17.6,6),U.walkTo(1,1.2,-17.6,6)];ZC.tick(40);r.join(' ')
+const r=[U.walkTo(0,-1.2,-17.6-(ZC.W.shoreDZ||0),6),U.walkTo(1,1.2,-17.6-(ZC.W.shoreDZ||0),6)];ZC.tick(40);r.join(' ')
 //@@ shot=wlk1.png
 ZC.tick(1);
 //@@

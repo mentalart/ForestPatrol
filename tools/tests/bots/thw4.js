@@ -1,6 +1,6 @@
 //@@
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();ZC.startFrom(ZC.LV('4-1'));ZC.G.manual=true;ZC.tick(5);const G=ZC.G;G.flags.w4intro=false;G.flags.map4=false;ZC.loadLevel(ZC.LV('luko'));ZC.tick(90);
-const r=[ZC.W.levelId,ZC.W.flags.mode,U.st()];r.push(U.walkTo(0,-2,-17.8,6));ZC.tick(2);U.tap('Space');ZC.tick(30);r.push('stage='+ZC.W.flags.stage,!!ZC.G.cine);r
+const r=[ZC.W.levelId,ZC.W.flags.mode,U.st()];r.push(U.walkTo(0,-2,-17.8-(ZC.W.shoreDZ||0),6));ZC.tick(2);U.tap('Space');ZC.tick(30);r.push('stage='+ZC.W.flags.stage,!!ZC.G.cine);r
 //@@ shot=hw4a.png
 ZC.tick(300);
 //@@ shot=hw4b.png
