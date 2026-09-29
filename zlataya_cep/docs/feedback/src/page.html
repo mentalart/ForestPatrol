@@ -1,8 +1,8 @@
 <title>@@TITLE@@</title>
 <meta name="description" content="@@DESC@@">
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<!--@@FONTS--><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Podkova:wght@600;700;800&family=Ruslan+Display&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Podkova:wght@600;700;800&family=Ruslan+Display&display=swap" rel="stylesheet"><!--FONTS@@-->
 <style>
 :root{
   --bg:#fbf5e6;--surface:#fffdf6;--surface2:#f5ecd6;--ink:#2b2118;--muted:#6b5e4f;--line:#e7d8b8;
@@ -537,7 +537,7 @@ async function submit(){if(busy)return;const st=$('#status');const p=payload();
 function showStatus(kind,p,code){const st=$('#status');if(!st)return;p=p||payload();const again=$('#againbtn');
   if(kind==='good'){st.className='status good';st.innerHTML=`<h4>✓ Ответы отправлены!</h4><p>${YOU?'Команда игры получит их вместе с остальными отзывами.':'Команда игры их уже получила. Ты молодец!'}</p><button class="linkbtn" data-act="save">Сохранить копию файлом</button>`;updChain();if(again)again.classList.remove('hidden');return;}
   if(kind==='empty'){st.className='status warn';st.innerHTML=`<h4>Пока нет ни одного ответа</h4><p>${YOU?'Вернитесь к вопросам — хотя бы несколько ответов нам очень помогут.':'Вернись к вопросам — ответь хотя бы на несколько!'}</p>`;return;}
-  const why=kind==='error'?(code==='quota_exceeded'?'Хранилище ответов переполнено.':'Не получилось сохранить ответы на сервере.'):code==='noaccess'?'У этой ссылки нет права записывать ответы.':'Эта копия опроса не подключена к хранилищу ответов.';
+  const why=kind==='error'?(code==='quota_exceeded'?'Хранилище ответов переполнено.':'Не получилось сохранить ответы на сервере.'):code==='noaccess'?'У этой ссылки нет права записывать ответы.':!window.claude?'Это копия опроса для работы без интернета — ответы не отправляются сами.':'Эта страница не подключена к хранилищу ответов.';
   st.className='status warn';st.innerHTML=`<h4>${kind==='error'?'Ответы не отправились':'Сохраните ответы, пожалуйста'}</h4>
     <p>${esc(why)} ${YOU||SV.id==='11-13'?'Скопируйте ответы или сохраните их файлом и перешлите организатору теста.':'Для взрослых: скопируйте ответы или сохраните файлом и перешлите организатору теста.'}</p>
     <div class="row"><button class="btn primary" data-act="copy">Скопировать ответы</button><button class="btn ghost" data-act="save">Сохранить файлом</button>${kind==='error'?'<button class="btn ghost" data-act="retry">Попробовать ещё раз</button>':''}</div><div id="copyout"></div>`;
