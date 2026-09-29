@@ -10,13 +10,20 @@ function finDraw(){const scr=FIN.menu;if(!scr)return;const host=$(scr.pause?'fin
   for(let i=a;i<Math.min(n,a+win);i++){const it=scr.items[i],sub=typeof it.sub==='function'?it.sub():it.sub;
     h+='<div class="fin-item'+(i===scr.sel?' fin-sel':'')+(it.off?' fin-off':'')+'" data-i="'+i+'">'+(it.val?'<span class="fin-val">'+it.val()+'</span>':'')+it.label+(sub?'<small>'+sub+'</small>':'')+'</div>';}
   host.innerHTML=h+'</div>';
-  host.querySelectorAll('.fin-item').forEach(el=>{const i=+el.dataset.i;el.onmouseenter=()=>{if(scr.items[i].off||scr.sel===i)return;scr.sel=i;finDraw();};el.onclick=()=>{if(scr.items[i].off)return;scr.sel=i;finAct(0);};});
+  host.querySelectorAll('.fin-item').forEach(el=>{const i=+el.dataset.i;el.onmouseenter=()=>{if(scr.items[i].off||scr.sel===i||!finMouseLive())return;scr.sel=i;finDraw();};el.onclick=()=>{if(scr.items[i].off)return;scr.sel=i;finAct(0);};});
   // невысокое окно: показываем столько пунктов, сколько помещается под логотипом (список листается стрелками)
   if(!scr.pause){const its=host.querySelectorAll('.fin-item'),last=its[its.length-1],P=host.getBoundingClientRect();if(last&&P.height>0&&its.length>3&&last.getBoundingClientRect().bottom>P.bottom+1){scr.fit=its.length-1;finDraw();}}}
 addEventListener('resize',()=>{if(FIN.menu&&FIN.menu.fit){FIN.menu.fit=0;finDraw();}});
 function finAct(dx){const scr=FIN.menu,it=scr&&scr.items[scr.sel];if(!it||it.off)return;
   if(dx){if(it.side){it.side(dx);SFX.swap();finDraw();}return;}if(it.act){SFX.ok();it.act();}else if(it.side){it.side(1);SFX.swap();finDraw();}}
+// наведение мыши выбирает пункт, только если мышь сдвинулась после нажатия джойстика/клавиш. Иначе после перерисовки меню браузер
+// «наводит» неподвижный курсор на новый пункт под ним, и выбор возвращается на место курсора — на паузе (она по центру, где обычно
+// стоит курсор) джойстик «переставал работать», пока мышь не уведут в сторону.
+const MSE={x:-1e4,y:-1e4,ax:-1e4,ay:-1e4};addEventListener('mousemove',e=>{MSE.x=e.clientX;MSE.y=e.clientY;},{passive:true});
+function finMouseLive(){return Math.abs(MSE.x-MSE.ax)+Math.abs(MSE.y-MSE.ay)>4;}
+function finMouseAnchor(){MSE.ax=MSE.x;MSE.ay=MSE.y;}
 function finMenuInput(){const scr=FIN.menu;if(!scr)return;const a=uiNav(0),b=uiNav(1),dy=a.dy||b.dy,dx=a.dx||b.dx;
+  if(dy||dx||pressed.size)finMouseAnchor();
   if(dy&&scr.items.length){scr.sel=(scr.sel+dy+scr.items.length)%scr.items.length;fixSel(scr,dy);SFX.swap();finDraw();}
   if(dx)finAct(dx);
   if(pressed.has('Enter')||tap(0,'jump')||tap(1,'jump'))finAct(0);

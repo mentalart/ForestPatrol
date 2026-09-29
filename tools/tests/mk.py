@@ -1,5 +1,5 @@
 # Сценарий бота -> шаги для run.js: python3 mk.py bots/t41v.js out/t41v.json
-# Шаги разделяются строками «//@@ [shot=имя.png] [wait=мс] [reload=1]»; первым шагом всегда подключается helpers.js
+# Шаги разделяются строками «//@@ [shot=имя.png] [wait=мс] [reload=1] [mouse=x,y]»; первым шагом всегда подключается helpers.js
 import json,sys,os
 src=open(sys.argv[1],encoding='utf-8').read()
 helpers=open(os.path.join(os.path.dirname(os.path.abspath(__file__)),'helpers.js'),encoding='utf-8').read()
