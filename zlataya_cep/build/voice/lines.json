@@ -308,6 +308,50 @@
    "dur": 1.74
   },
   {
+   "id": "p05a_hihi",
+   "lv": "p",
+   "who": "tishka",
+   "text": "Хи-хи-хи!",
+   "tts": "[giggles] Хи-хи-хи!",
+   "max": 2.8,
+   "job": "dc3da62a-a339-4a68-b0e5-b3f544dbac11",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_dc3da62a-a339-4a68-b0e5-b3f544dbac11.mp3",
+   "dur": 1.83
+  },
+  {
+   "id": "p05b_hoho",
+   "lv": "p",
+   "who": "potap",
+   "text": "Хо-хо-хо!",
+   "tts": "[laughs heartily] Хо-хо-хо!",
+   "max": 2.8,
+   "job": "da4a0687-4d85-4e86-b18c-8c622d047594",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_da4a0687-4d85-4e86-b18c-8c622d047594.mp3",
+   "dur": 2.71
+  },
+  {
+   "id": "p05c_haha",
+   "lv": "p",
+   "who": "pelageya",
+   "text": "Ха-ха-ха!",
+   "tts": "[laughs] Ха-ха-ха!",
+   "max": 2.8,
+   "job": "3218134f-de09-4536-ae95-93c68ca4fb40",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_3218134f-de09-4536-ae95-93c68ca4fb40.mp3",
+   "dur": 1.44
+  },
+  {
+   "id": "p05d_prokatilsya",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Ха-ха! Вот это я прокатился!",
+   "tts": "[laughs] Ха-ха! Вот это я прокатился!",
+   "max": 3,
+   "job": "de3d6162-3a5c-424c-956a-7b6601d37225",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_de3d6162-3a5c-424c-956a-7b6601d37225.mp3",
+   "dur": 3.14
+  },
+  {
    "id": "p06_bezhim",
    "lv": "p",
    "who": "zven",
