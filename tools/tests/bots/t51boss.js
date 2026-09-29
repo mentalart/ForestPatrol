@@ -50,4 +50,7 @@ ZC.tick(200);
 //@@ shot=b51g.png
 ZC.tick(300);
 //@@
-const W=ZC.W,F=W.flags;const r=[F.stage];if(ZC.G.cine)ZC.skip();ZC.tick(200);r.push(F.stage,'links='+W.links+'/'+W.linkTotal,'nuts='+W.nuts+'/'+W.nutTotal,'lv='+W.levelId);r
+// сундук: вдвоём разом — крышка поднимается
+const W=ZC.W,F=W.flags;const r=[F.stage];if(ZC.G.cine)ZC.skip();ZC.tick(5);r.push(F.stage);const C=W.dbg51.chest.g.position;
+for(const pi of[0,1]){U.walkTo(pi,C.x+(pi?1.4:-1.4),C.z+1.3,6);const h=U.act(pi);h.face=Math.atan2(C.x-h.pos.x,C.z-h.pos.z);}U.tap('KeyF');ZC.tick(8);U.tap('Comma');ZC.tick(60);r.push(F.stage);
+if(ZC.G.cine)ZC.skip();ZC.tick(300);r.push(F.stage,'links='+W.links+'/'+W.linkTotal,'nuts='+W.nuts+'/'+W.nutTotal,'lv='+W.levelId);r

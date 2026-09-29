@@ -1,5 +1,6 @@
 //@@
-// 5-1 в одиночном режиме: коршун, Голова (Потап со щитом, потом Йоша под усы), залив (оставленный светит у хрусталика), бой с Лихом (оставленный — в кольце / щекочет лапу)
+// 5-1 в одиночном режиме: коршун, Голова (Потап со щитом, потом Йоша под усы), залив (оставленный светит у хрусталика), ключи → Лихо ищет → побег в шкурах,
+// бой с Лихом (оставленный — в кольце / щекочет лапу), сундук (в одиночку крышку поднимает один)
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();ZC.setSolo(true);ZC.startFrom(ZC.LV('5-1'));ZC.G.manual=true;ZC.tick(60);const W=ZC.W,G=ZC.G;ZC.skip();ZC.tick(5);
 window.S={h(){return ZC.players[G.soloPi].heroes[ZC.players[G.soloPi].act];},pi(){return G.soloPi;},walk(x,z,m){return U.walkTo(G.soloPi,x,z,m||6);},path(p,m){return U.path(G.soloPi,p,m||6);},
   key(a){const K=[{item:'KeyR',attack:'KeyF',skill:'KeyE',swap:'KeyQ',jump:'Space',guard:'KeyG',call:'Digit1'},{item:'Semicolon',attack:'Comma',skill:'KeyL',swap:'KeyK',jump:'KeyM',guard:'Period',call:'Digit0'}];return K[G.soloPi][a];},
@@ -31,6 +32,23 @@ r.push(S.to('yosha'),S.path([[2.6,19],[2.8,17.2],[3,14],[3,12.2],[1.8,11.4]]));c
 r.push(S.path([[1.8,10],[3,9.4],[3,5],[3,2.6],[3.2,0.6]]));S.tap('item');ZC.tick(3);r.push('litC='+y.lit,S.walk(4.2,0.7,2));ZC.tick(10);
 r.push(S.to('potap'),S.path([[2.8,19],[2.8,17],[3,12.2],[3,11.9]]),S.path([[1.8,11],[2.4,9.6],[3,5],[2.8,2.2]]));ZC.tick(20);r.push(F.stage);ZC.tick(60);if(ZC.G.cine)ZC.skip();ZC.tick(5);r.push(F.stage,'lagoonDone='+F.lagoonDone);r
 //@@
+// часть III в одиночку: ключи вставлены (переход сразу к ним) → пятая цепь → Лихо ищет → шкуры
+const W=ZC.W,F=W.flags,G=ZC.G;const r=[W.warp51('keys'),F.stage];ZC.tick(30);r.push(F.stage);r
+//@@
+// побег в одиночку: помощники идут за тобой в отаре, Лихо ловит только твоего героя
+const W=ZC.W,F=W.flags,G=ZC.G,H=ZC.HERO;const r=[];for(let q=0;q<3&&F.stage!=='escape';q++){if(ZC.G.cine)ZC.skip();ZC.tick(5);}r.push('stage='+F.stage);const L=W.likhos[1];const FA=W.flocks5[0],FB=W.flocks5[1];let resets=0;
+const pos=()=>Object.values(H).map(h=>h.kind+':'+h.pos.x.toFixed(1)+','+h.pos.z.toFixed(1)+(h.active?'*':'')+(h.following?'f':'')+(h.inFlock?'F':'')).join(' ');r.push(pos());
+const K=['KeyA','KeyD','KeyW','KeyS'];const steer=(tx,tz)=>{const h=S.h(),dx=tx-h.pos.x,dz=tz-h.pos.z;ZC.hold(K[0],dx<-0.3);ZC.hold(K[1],dx>0.3);ZC.hold(K[2],dz<-0.3);ZC.hold(K[3],dz>0.3);};
+let phase='A',log=[];
+for(let i=0;i<60*80;i++){
+  if(phase==='A'){steer(FA.pos.x,FA.pos.z);if(FA.k>=FA.path.length-1&&L.counting&&L.countT%(L.countEvery+L.countDur)-L.countEvery<0.3){phase='gap';log.push('gap@'+(i/60).toFixed(1));}}
+  else if(phase==='gap'){steer(FB.pos.x,FB.pos.z);if(Math.hypot(S.h().pos.x-FB.pos.x,S.h().pos.z-FB.pos.z)<FB.r-0.8)phase='B';}
+  else if(phase==='B'){steer(FB.pos.x,FB.pos.z+0.5);if(F.stage!=='escape')break;}
+  if(i%600===0)log.push('t'+(i/60)+':'+FA.k+'/'+FB.k);
+  const hb=S.h();if(hb.pos.x>23.5&&phase!=='A'){phase='A';resets++;log.push('reset@'+(i/60).toFixed(1));}
+  ZC.tick(1);}
+K.forEach(k=>ZC.hold(k,false));r.push('phase='+phase,'resets='+resets,log.join(','),'stage='+F.stage,pos());r
+//@@
 // бой, фаза 1: Потап — в кольцо (оставлен), Пелагея с зеркальцем — на линию взгляда спиной к Лиху
 const W=ZC.W,F=W.flags,G=ZC.G,B=F.B;const r=[W.warp51('boss1'),F.stage];ZC.tick(30);const L=W.likhos[1];
 r.push(S.to('potap'),S.walk(-3.5,-125.4));r.push(S.to('pelageya'),S.walk(0.6,-125.3));S.tap('item');ZC.tick(3);r.push('holder='+W.mir51.holder);
@@ -51,4 +69,5 @@ const W=ZC.W,F=W.flags,G=ZC.G,B=F.B;const r=[];ZC.tick(120);if(ZC.G.cine){ZC.ski
 const gs=W.signs.find(s=>s.item==='gusli'&&s.on&&s.on()&&s.z<-130),ps=W.signs.find(s=>s.item==='pero'&&s.on&&s.on()&&s.z<-130);
 r.push(S.to('proshka'),S.walk(ps.x,ps.z));S.tap('item');ZC.tick(3);r.push('lit='+S.h().lit);r.push(S.to('pelageya'),S.walk(gs.x,gs.z));
 let log=[];for(let i=0;i<60*80&&F.stage!=='end'&&F.stage!=='bossEnd';i++){if(i%100===0)S.tap('item');if(i%300===0)log.push('s'+B.sleep.toFixed(2)+'c'+B.claw+(B.peek>0?'P':'')+(F.stage==='bossWake'?'W':''));ZC.tick(1);}
-r.push(log.join(' '),'stage='+F.stage,'claw='+B.claw);ZC.tick(60);if(ZC.G.cine)ZC.skip();ZC.tick(300);r.push('lv='+ZC.W.levelId);r
+r.push(log.join(' '),'stage='+F.stage,'claw='+B.claw);ZC.tick(60);if(ZC.G.cine)ZC.skip();ZC.tick(5);r.push(F.stage);
+const C=W.dbg51.chest.g.position;S.walk(C.x-1.4,C.z+1.3);const hh=S.h();hh.face=Math.atan2(C.x-hh.pos.x,C.z-hh.pos.z);S.tap('attack');ZC.tick(5);r.push(F.stage);if(ZC.G.cine)ZC.skip();ZC.tick(300);r.push('lv='+ZC.W.levelId);r

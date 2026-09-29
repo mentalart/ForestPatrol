@@ -1,5 +1,5 @@
 //@@
-// 5-1: кадры новых сцен (для глаз и для документов): заводь с коршуном, Лебедь, Голова, залив, белка, зеркальце, пятая цепь, три фазы боя, заяц.
+// 5-1: кадры новых сцен (для глаз и для документов): заводь с коршуном, Лебедь, Голова, залив, белка, зеркальце, пятая цепь, Лихо ищет и овечьи шкуры, три фазы боя, сундук и заяц.
 // Релиз в высоком качестве: URLQ='&hq=1' tools/tests/run_one.sh t51shot zlataya_cep/zlataya_cep_final06.html
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();ZC.startFrom(ZC.LV('5-1'));ZC.G.manual=true;ZC.tick(60);const W=ZC.W;ZC.skip();ZC.tick(5);
 U.path(0,[[-4,80],[-3,77]],6);ZC.tick(5);ZC.skip();ZC.tick(5);U.walkTo(0,8,71,6);U.walkTo(1,9,66,6);for(let i=0;i<60*6&&W.dbg51.KT.st!=='aim';i++)ZC.tick(1);ZC.tick(40);[W.flags.stage,W.dbg51.KT.st]
@@ -36,6 +36,26 @@ const W=ZC.W;if(ZC.G.cine)ZC.skip();ZC.tick(5);W.warp51('glade');ZC.tick(5);U.pa
 //@@ shot=s51_chain.png
 ZC.tick(2);
 //@@
+const W=ZC.W;W.warp51('keys');ZC.tick(60*9.4);[W.flags.stage]
+//@@ shot=s51_chain5.png
+ZC.tick(2);
+//@@
+const W=ZC.W;ZC.tick(60*4.4);[W.flags.stage]
+//@@ shot=s51_hunt.png
+ZC.tick(2);
+//@@
+const W=ZC.W;ZC.tick(60*3);[W.flags.stage]
+//@@ shot=s51_hunt2.png
+ZC.tick(2);
+//@@
+const W=ZC.W;ZC.tick(60*9);[W.flags.stage]
+//@@ shot=s51_skins.png
+ZC.tick(2);
+//@@
+const W=ZC.W;if(ZC.G.cine)ZC.skip();ZC.tick(60*3);U.walkTo(0,22,-137.6,3);ZC.tick(60);[W.flags.stage,W.likhos[1].mode]
+//@@ shot=s51_escape.png
+ZC.tick(2);
+//@@
 const W=ZC.W;W.warp51('boss1');ZC.tick(30);U.walkTo(0,-3.5,-125.4,6);U.walkTo(1,0.6,-125.3,6);U.tap('Semicolon');ZC.tick(3);U.path(1,[[2.4,-127],[2.4,-130.6],[-3.4,-130.6]],6);const h=U.act(1);h.face=0;ZC.tick(12);[W.flags.stage,JSON.stringify(W.mir51)]
 //@@ shot=s51_mirror_boss.png
 ZC.tick(2);
@@ -48,6 +68,18 @@ const W=ZC.W;W.warp51('boss3');ZC.tick(30);const gs=W.signs.find(s=>s.item==='gu
 //@@ shot=s51_sleep.png
 ZC.tick(2);
 //@@
-const W=ZC.W,B=W.flags.B;B.claw=2;B.clawT=0.999;ZC.tick(60);ZC.tick(620);[W.flags.stage]
+const W=ZC.W,B=W.flags.B;B.claw=2;B.clawT=0.999;ZC.tick(60);ZC.tick(470);[W.flags.stage]
+//@@ shot=s51_chestfall.png
+ZC.tick(2);
+//@@
+const W=ZC.W,F=W.flags;if(ZC.G.cine)ZC.skip();ZC.tick(5);const C=W.dbg51.chest.g.position;for(const pi of[0,1]){U.walkTo(pi,C.x+(pi?1.4:-1.4),C.z+1.3,6);const h=U.act(pi);h.face=Math.atan2(C.x-h.pos.x,C.z-h.pos.z);}ZC.tick(20);[F.stage]
+//@@ shot=s51_chest.png
+ZC.tick(2);
+//@@
+const W=ZC.W,F=W.flags;U.tap('KeyF');ZC.tick(6);U.tap('Comma');ZC.tick(150);[F.stage]
 //@@ shot=s51_hare.png
+ZC.tick(2);
+//@@
+const W=ZC.W,F=W.flags;ZC.tick(760);[F.stage]
+//@@ shot=s51_harerun.png
 ZC.tick(2);

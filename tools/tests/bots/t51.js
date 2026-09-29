@@ -104,13 +104,13 @@ ZC.tick(30);r.push('stage='+F.stage,'cine='+!!ZC.G.cine);r
 //@@ shot=w51g.png
 ZC.tick(10);
 //@@
-// ловушка: Потап поворачивается к Лиху (защищает Йошу) — Лихо на плечах, к отаре
-const W=ZC.W,H=ZC.HERO,F=W.flags;const r=[];ZC.skip();ZC.tick(3);r.push('stage='+F.stage);ZC.skip();ZC.tick(3);r.push('stage='+F.stage,'act0='+U.act(0).kind,'act1='+U.act(1).kind);
-for(let i=0;i<40;i++){ZC.hold('KeyA',true);ZC.tick(1);}ZC.hold('KeyA',false);ZC.tick(5);r.push('stage='+F.stage,'looked='+F.looked);ZC.tick(200);r.push('stage='+F.stage,'ride='+(W.likhos[1].ride&&W.likhos[1].ride.kind));
-r.push(U.walkTo(0,24,-137,12));ZC.tick(30);r.push('stage='+F.stage,'cine='+!!ZC.G.cine);r
+// пятая цепь → Лихо ищет, кто открыл замки → овечьи шкуры (без ловушки: Лихо не садится на плечи)
+const W=ZC.W,H=ZC.HERO,F=W.flags;const r=[];const L=W.likhos[1];r.push('stage='+F.stage);ZC.skip();ZC.tick(3);r.push('stage='+F.stage,'cine='+!!ZC.G.cine);
+ZC.G.cine.skip();ZC.tick(3);r.push('stage='+F.stage,'mode='+L.mode,'scale='+(L.g.scale.x/L.s).toFixed(2),'ride='+!!L.ride+',perch='+!!L.perch,'at='+L.pos.x.toFixed(1)+','+L.pos.z.toFixed(1),'skins='+Object.values(H).filter(h=>h.skin).length);
+if(Math.abs(L.g.scale.x/L.s-1)>0.01||L.ride||L.perch)throw new Error('Лихо уменьшилось или село: '+r.join(' '));r
 //@@
 // побег в шкурах к корням
-const W=ZC.W,H=ZC.HERO,F=W.flags;const r=[];ZC.skip();ZC.tick(5);r.push('stage='+F.stage,'skins='+Object.values(H).filter(h=>h.skin).length);const L=W.likhos[1];const FA=W.flocks5[0],FB=W.flocks5[1];let resets=0;
+const W=ZC.W,H=ZC.HERO,F=W.flags;const r=[];if(ZC.G.cine){ZC.skip();ZC.tick(5);}r.push('stage='+F.stage,'skins='+Object.values(H).filter(h=>h.skin).length);const L=W.likhos[1];const FA=W.flocks5[0],FB=W.flocks5[1];let resets=0;
 const K=[['KeyA','KeyD','KeyW','KeyS'],['ArrowLeft','ArrowRight','ArrowUp','ArrowDown']];
 const steer=(pi,tx,tz)=>{const h=U.act(pi),dx=tx-h.pos.x,dz=tz-h.pos.z;const B=K[pi];ZC.hold(B[0],dx<-0.3);ZC.hold(B[1],dx>0.3);ZC.hold(B[2],dz<-0.3);ZC.hold(B[3],dz>0.3);};
 const off=pi=>pi?1.1:-1.1;let phase='A',log=[];
@@ -151,8 +151,15 @@ r.push(U.walkTo(1,gs.x,gs.z,6),U.walkTo(0,ps.x,ps.z,6));U.tap('KeyR');ZC.tick(2)
 let log=[];for(let i=0;i<60*60&&F.stage!=='end'&&F.stage!=='bossEnd';i++){if(i%100===0)ZC.press('Semicolon');if(i%300===0)log.push('s'+B.sleep.toFixed(2)+'c'+B.claw+(B.peek>0?'P':'')+(F.stage==='bossWake'?'W':''));ZC.tick(1);}
 r.push(log.join(' '),'stage='+F.stage,'claw='+B.claw);r
 //@@ shot=w51k.png
-ZC.tick(700);
+ZC.tick(420);
 //@@ shot=w51l.png
 ZC.tick(10);
 //@@
-const W=ZC.W,F=W.flags;const r=['cine='+!!ZC.G.cine];ZC.skip();ZC.tick(300);r.push('stage='+F.stage,'links='+W.links+'/'+W.linkTotal,'nuts='+W.nuts+'/'+W.nutTotal,'lv='+ZC.W.levelId);r
+// сундук упал закрытым: один нажал — «тяжёлая», вдвоём разом — крышка поднимается, заяц
+const W=ZC.W,F=W.flags;const r=['cine='+!!ZC.G.cine];if(ZC.G.cine)ZC.skip();ZC.tick(5);r.push('stage='+F.stage);const C=W.dbg51.chest.g.position;r.push('chest='+C.x.toFixed(1)+','+C.y.toFixed(1)+','+C.z.toFixed(1));
+for(const pi of[0,1]){r.push(U.walkTo(pi,C.x+(pi?1.4:-1.4),C.z+1.3,6));const h=U.act(pi);h.face=Math.atan2(C.x-h.pos.x,C.z-h.pos.z);}
+U.tap('KeyF');ZC.tick(90);r.push('one='+F.stage);if(F.stage!=='chest')throw new Error('крышку поднял один: '+r.join(' '));U.tap('KeyF');ZC.tick(12);U.tap('Comma');ZC.tick(5);r.push('both='+F.stage,'lid='+W.dbg51.chest.lid.rotation.x.toFixed(2));r
+//@@ shot=w51m.png
+ZC.tick(150);
+//@@
+const W=ZC.W,F=W.flags;const r=['cine='+!!ZC.G.cine,'hare='+!!F.hare];ZC.skip();ZC.tick(300);r.push('stage='+F.stage,'links='+W.links+'/'+W.linkTotal,'nuts='+W.nuts+'/'+W.nutTotal,'lv='+ZC.W.levelId);r
