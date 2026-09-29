@@ -7598,7 +7598,7 @@ function build4B(){
   function spawnHeads(){heads=HP.map(([x,z],i)=>{const e=makeFoe('golova',x,z,{scale:1.4,leash:0.5,pi:i===0?0:i===2?1:undefined,signals:i===0?['yellow']:i===2?['red']:['blue'],face:0});e.noMove=true;e.noKill=true;e.idx=i;e.def=Object.assign({},e.def);if(i===1)e.def.ranged=true;
       e.embers=e.maxEmb=4;e.onFinisher=h=>{floatText(e.pos.clone().add(new V3(0,3,0)),'Держите Пробой — гасите соседнюю!','#ffd76a');};
       e.tick=(e,dt)=>{if(e.state==='wind'&&!e._w){e._w=true;if(e.idx===0)e.wdur*=1.6;}if(e.state!=='wind')e._w=false;
-        if(e.state==='broken'&&!e._b){e._b=true;e.bdur=F.phase===2?9:6;SFX.thud();floatText(e.pos.clone().add(new V3(0,3,0)),NAME[e.idx][0].toUpperCase()+NAME[e.idx].slice(1)+' голова — в Пробое! '+Math.round(e.bdur)+' секунд','#fff2b0');}
+        if(e.state==='broken'&&!e._b){e._b=true;e.bdur=F.phase===2?18:12;SFX.thud();floatText(e.pos.clone().add(new V3(0,3,0)),NAME[e.idx][0].toUpperCase()+NAME[e.idx].slice(1)+' голова — в Пробое! '+Math.round(e.bdur)+' секунд','#fff2b0');}
         if(e.embers>e.maxEmb+1)e.embers=e.maxEmb+1;
         if(e.state!=='broken'&&e._b){e._b=false;if(F.phase<3&&!G.cine){floatText(e.pos.clone().add(new V3(0,3,0)),'Проснулась!','#ff9a8a');bark({g:e.g},VO[e.idx],e.idx===0?'Ы-ы… кто разбудил?':e.idx===2?'Я голодная!':'Полетели!',1.6);}}
         if(e.sat>0){e.guardAll=()=>e.open<=0&&e.state!=='broken';e.darkGuard=()=>e.open<=0;e.guardText='сытая — погаси живой водой или Совиный взор: слабое место';}else{e.guardAll=null;e.darkGuard=null;}};
@@ -7674,7 +7674,7 @@ function build4B(){
   prompt(1,'skill',()=>headOf(T.yosha),()=>T.yosha.active&&heads.some(e=>e.sat>0&&hd(e.pos,T.yosha.pos)<3.2),'потуши сытую');
   prompt(1,'skill',()=>headOf(T.pelageya),()=>T.pelageya.active&&heads.some(e=>e.sat>0),'слабое место');
   const OR=(text,done,targets,ghost,read)=>{const o=O(text,done,targets,ghost);o.read=read;return o;};
-  const ph1=pi=>OR(()=>pi?'Правая голова — твоя: голодная, хватает <i class="sg r"></i> красным — кувырок '+K(1,'roll')+', потом бей в бок. Пробой держится 6 секунд — гасите левую и правую вместе':'Левая голова — твоя: сонная, бьёт медленно <i class="sg y"></i> жёлтым — отбей '+K(0,'guard')+' и бей. Пробой держится 6 секунд — гасите левую и правую вместе',
+  const ph1=pi=>OR(()=>pi?'Правая голова — твоя: голодная, хватает <i class="sg r"></i> красным — кувырок '+K(1,'roll')+', потом бей в бок. Пробой держится 12 секунд — гасите левую и правую вместе':'Левая голова — твоя: сонная, бьёт медленно <i class="sg y"></i> жёлтым — отбей '+K(0,'guard')+' и бей. Пробой держится 12 секунд — гасите левую и правую вместе',
     ()=>F.phase>1,()=>heads.length?[heads[pi?2:0].g]:[],null,'Тут написано… не погасили соседнюю — первая проснётся.');
   const ph2=pi=>OR(()=>pi?'Вдох! Сытую голову гасит Йоша '+K(1,'skill')+'; Пелагея — Совиный взор '+K(1,'skill')+': слабое место. Все три — в Пробой разом':'Вдох! На долгом вдохе средней — жёлудь: Прошка, рогатка '+K(0,'skill')+'. Средняя дует — Потап, щит '+K(0,'guard')+'. Все три — в Пробой разом',
     ()=>F.phase>2,()=>heads.filter(e=>e.state!=='broken').map(e=>e.g),null,'Тут написано… средняя подсматривает — меняйте защиту.');
@@ -7682,7 +7682,7 @@ function build4B(){
   for(const pi of[0,1])W.objectives[pi]=[O('Скала за Калиновым мостом…',()=>F.phase>=1,()=>[]),ph1(pi),ph2(pi),ph3(pi),O('Горыныч…',()=>false,()=>heads.length?[heads[1].g]:[])];
   W.tipZones.push({cond:(pi,h)=>F.phase===3&&!!BR.holders[pi]&&!BR.holders[1-pi],text:pi=>'Узда тяжёлая. Вторые клещи у друга — несите вдвоём к шее'});
   W.spawns=[[new V3(-3,0,6),new V3(-5,0,7)],[new V3(3,0,6),new V3(5,0,7)]];W.startAct=[0,0];
-  W.pauseLine='Змей Горыныч: у каждой головы свой запал. Пробой держится 6 секунд — гасите соседние вместе. Вдох: жёлудь на средней, сытую — живой водой, слабое место — Совиный взор. Узда — двумя клещами и «раз-два-три» вместе.';
+  W.pauseLine='Змей Горыныч: у каждой головы свой запал. Пробой держится 12 секунд (на вдохе — 18) — гасите соседние вместе. Вдох: жёлудь на средней, сытую — живой водой, слабое место — Совиный взор. Узда — двумя клещами и «раз-два-три» вместе.';
   W.onStart=()=>{later(0.4,intro);};
   flushDecor();}
 
@@ -12264,7 +12264,7 @@ FIN.dbgFoe=(kind,x,z,o)=>makeFoe(kind,x,z,o);FIN.dbgFoeKinds=()=>Object.keys(FOE
 // Раньше удар был плоским белым полупрозрачным сектором кольца у ног — на ярком (свет пера жар-птицы, снег, облака) его не было видно.
 // Теперь — лента-полумесяц на высоте груди: пролетает за ~0,2 с, светлая сердцевина → цвет героя → тёмный контур (читается и на светлом,
 // и на тёмном), яркая передняя кромка, хвост растворяется. Направление ударов чередуется. Почерк у каждого свой:
-//   Прошка — широкая быстрая дуга и две «линии скорости»; Потап — три «когтя» наискосок, пыль; Пелагея — широкое «крыло» с искрами;
+//   Прошка — широкая быстрая дуга и две «линии скорости»; Потап — три параллельных «когтя» (final06: пологие и крупные — видны со спины), пыль; Пелагея — широкое «крыло» с искрами;
 //   Йоша — круговой вихрь вокруг себя. По кромке сыплются звёздочки. Попал — «бах»-звезда цвета героя, кольцо, искры.
 // Детский стиль: без крови и резкости; слой рисуется без тонмаппинга и тумана, поверх прозрачного. Хитбоксы удара не меняются.
 const SL_VS='varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}';
@@ -12285,16 +12285,17 @@ function slMat(col,core,edge){return new THREE.ShaderMaterial({uniforms:{uProg:{
 // почерк героя: цвет, контур, дуга, толщина, число лент, наклон, частицы
 const SL_STYLE={
   proshka:{col:0xff9a3a,core:0xfff4c8,edge:0x8a3010,r0:0.32,r1:1.62,arc:2.7,n:3,lag:0.18,roll:0.42,off:0.0,rad:0.22,dur:0.28,lines:true,spark:0xffd27a},
-  potap:{col:0xffc84a,core:0xfff6d8,edge:0x6a3e10,r0:0.5,r1:1.2,arc:1.9,n:3,lag:0.1,roll:1.05,off:0.22,rad:0,dur:0.28,claw:true,spark:0xffe29a,dust:true},
+  potap:{col:0xffb830,core:0xfff6d8,edge:0x5a2e08,r0:0.42,r1:1.78,arc:2.55,n:3,lag:0.07,roll:0.34,off:0.0,rad:0,dur:0.3,claw:true,spark:0xffe29a,dust:true},
   pelageya:{col:0xc896ff,core:0xfff0ff,edge:0x4e267e,r0:0.34,r1:1.85,arc:3.0,n:2,lag:0.22,roll:0.38,off:0.0,rad:0.25,dur:0.28,spark:0xe8d0ff,wing:true},
   yosha:{col:0x5ee0c8,core:0xeafff8,edge:0x16625a,r0:0.35,r1:1.25,arc:6.28,n:2,lag:0.15,roll:0.12,off:0.18,rad:-0.15,dur:0.3,spin:true,spark:0xb8fff0}};
 const SL={pool:{},live:[],flip:{},stars:[]};FIN.slash=SL;
 function slGet(kind,i){const k=kind+i;let o=SL.pool[k];if(o&&!o.busy)return o;const S=SL_STYLE[kind]||SL_STYLE.proshka;
-  const line=S.lines&&i>0,r0=line?S.r1+S.rad*(i-1):S.r0+(S.claw?0:S.rad*i),r1=line?r0+0.16:(S.claw?S.r1:S.r1+S.rad*i*0.6);
+  // когти Потапа — три параллельные полосы разного радиуса (след от когтей), почти в плоскости земли: сзади-сверху видны целиком
+  const cw=(S.r1-S.r0)/S.n,line=S.lines&&i>0,r0=line?S.r1+S.rad*(i-1):S.claw?S.r0+i*cw:S.r0+S.rad*i,r1=line?r0+0.16:(S.claw?S.r0+i*cw+cw*0.7:S.r1+S.rad*i*0.6);
   const m=new THREE.Mesh(slGeo(r0,r1,-S.arc/2,S.arc/2,S.spin?48:28),slMat(line?0xffffff:S.col,S.core,line?S.col:S.edge));m.renderOrder=12;m.frustumCulled=false;m.userData.noBatch=true;m.userData.occEx=true;
   const g=new THREE.Group();g.add(m);o={g,m,busy:false};SL.pool[k]=o;return o;}
 // удар: ленты в системе координат героя — дуга перед героем (+X группы — вперёд), наклон вокруг оси взгляда — мах наискосок.
-// Наклон пологий (кроме «когтей» Потапа): игровая камера смотрит сверху-сзади, и крутая лента видна почти с ребра — тонкой чертой.
+// Наклон пологий: игровая камера смотрит сверху-сзади, и крутая лента видна почти с ребра — тонкой чертой.
 function slashFx(h){const S=SL_STYLE[h.kind];if(!S||!W||!W.group)return;const dir=(SL.flip[h.kind]=-(SL.flip[h.kind]||1));
   for(let i=0;i<S.n;i++){const o=slGet(h.kind,i);o.busy=true;const U=o.m.material.uniforms,line=S.lines&&i>0;
     U.uDir.value=S.spin?1:dir;U.uProg.value=0;U.uLen.value=S.spin?0.6:(line?0.45:0.85);U.uAlpha.value=line?0.8:1;
@@ -12329,6 +12330,79 @@ function slImpact(p,col){if(!W||!W.group)return;const g=new THREE.Group();g.posi
 {const _eh=enemyHit;enemyHit=function(e,h){const r=_eh.apply(this,arguments);try{if(h&&SL_STYLE[h.kind]&&e&&e.pos){const p=e.pos.clone().lerp(h.pos,0.35);p.y=(e.pos.y+h.pos.y)/2+Math.max(0.7,(e.r||0.6)*1.1);slImpact(p,SL_STYLE[h.kind].col);}}catch(err){}return r;};}
 {const _step=step;step=function(dt){_step(dt);try{slTick(dt);}catch(e){console.error('slash',e);}};}
 {const _ll=loadLevel;loadLevel=function(i){for(const L of SL.live){L.o.busy=false;}SL.live.length=0;SL.stars.length=0;_ll(i);};}
+/* ============================== РЕЛИЗ final06 · ЩИТ (B): у каждого героя свой барьер ============================== */
+// Раньше щит был плоским полупрозрачным кругом цвета игрока перед героем. Игровая камера смотрит сзади-сверху, и круг почти целиком
+// закрывало тело героя — щит было не разглядеть. Теперь щит — изогнутый барьер больше героя: он обнимает героя спереди и с боков,
+// и из-за спины видна его «корона». Узор — почерк героя, как у ударов (late_34_slash):
+//   Прошка — латунные шестерёнки, крутятся в разные стороны; Потап — медовые соты, самый широкий щит (закрывает и тех, кто за ним);
+//   Пелагея — перья, щит как сложенные вперёд крылья; Йоша — купол из иголок: ёжик сворачивается клубком.
+// Появляется с «пружинкой», по краю — тёмный контур и светлая кромка (читается и на ярком, и на тёмном), яркость — по запасу сил
+// (сил мало — мерцает). Блок — волна по щиту и искры; отбив в последний миг — золотая вспышка и звёзды. Механика защиты не меняется.
+const GD_VS='varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}';
+const GD_FS=`uniform float uT;uniform float uA;uniform float uHit;uniform float uPerf;uniform float uSp;uniform float uKind;uniform float uWrap;
+uniform vec3 uCol;uniform vec3 uCore;uniform vec3 uEdge;varying vec2 vUv;
+float hexD(vec2 p){p=abs(p);return max(dot(p,vec2(0.5,0.8660254)),p.x);}
+float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+void main(){vec2 uv=vUv;float fill=0.0,line=0.0;
+  if(uKind<0.5){ // Прошка: шестерёнки
+    vec2 g=vec2(uv.x*7.0,uv.y*3.2);vec2 id=floor(g);vec2 f=fract(g)-0.5;float s=mod(id.x+id.y,2.0)*2.0-1.0;
+    float a=atan(f.y,f.x)+s*uT*1.6;float r=length(f);float tooth=0.34+0.07*smoothstep(-0.2,0.2,sin(a*8.0));
+    fill=step(r,tooth)*(1.0-step(r,0.1))*0.95;line=smoothstep(0.06,0.0,abs(r-tooth))+smoothstep(0.03,0.0,abs(r-0.1))+step(r,tooth)*smoothstep(0.025,0.0,abs(sin(a*3.0))*r)*0.8;
+  }else if(uKind<1.5){ // Потап: медовые соты
+    vec2 p=vec2(uv.x*11.0,uv.y*4.4);vec2 R=vec2(1.0,1.7320508);vec2 a=mod(p,R)-R*0.5;vec2 b=mod(p-R*0.5,R)-R*0.5;vec2 gv=dot(a,a)<dot(b,b)?a:b;
+    float e=0.5-hexD(gv);vec2 id=p-gv;float h=hash(floor(id*10.0));float glow=step(0.82,h)*(0.5+0.5*sin(uT*3.0+h*20.0));
+    fill=0.35+0.45*glow;line=smoothstep(0.07,0.0,e);
+  }else if(uKind<2.5){ // Пелагея: перья
+    vec2 g=vec2(uv.x*9.0,uv.y*5.0);g.x+=mod(floor(g.y),2.0)*0.5;vec2 c=vec2(fract(g.x)-0.5,fract(g.y));float d=length(c*vec2(1.0,0.85));
+    fill=(1.0-smoothstep(0.5,0.53,d))*(0.7+0.5*c.y);line=smoothstep(0.07,0.0,abs(d-0.5))*step(0.0,c.y)+smoothstep(0.02,0.0,abs(c.x))*(1.0-step(0.5,d))*0.7;
+  }else{ // Йоша: иголки
+    vec2 g=vec2(uv.x*22.0,uv.y*5.0);g.x+=mod(floor(g.y),2.0)*0.5;vec2 c=vec2(fract(g.x)-0.5,fract(g.y));float w=0.42*(1.0-c.y);
+    float tri=step(abs(c.x),w);fill=tri*(0.45+0.35*c.y);line=smoothstep(0.05,0.0,abs(abs(c.x)-w))*step(0.02,1.0-c.y)+smoothstep(0.06,0.0,1.0-c.y)*step(abs(c.x),0.08);
+  }
+  // край барьера: светлая кромка и тёмный контур снаружи; у купола Йоши боковых краёв нет
+  float bx=uWrap>0.5?1.0:min(uv.x,1.0-uv.x)*14.0,by=min(uv.y*9.0,(1.0-uv.y)*14.0),b=min(bx,by);
+  float rim=1.0-smoothstep(0.15,0.75,b),outl=1.0-smoothstep(0.0,0.2,b);
+  vec3 c=mix(uCol,uCore,clamp(line,0.0,1.0)*(uKind>1.5&&uKind<2.5?0.55:1.0));c=mix(c,uCore,rim*0.8);c=mix(c,uEdge,outl);
+  float a=clamp(fill*0.55+line*0.95+rim*0.9,0.0,1.0);
+  // волна при блоке и вспышка при отбиве
+  float d=distance(uv,vec2(0.5,0.45));float wave=uHit*smoothstep(0.1,0.0,abs(d-(1.0-uHit)*0.85));c=mix(c,vec3(1.0),wave*0.9);a=max(a,wave);
+  c=mix(c,vec3(1.0,0.9,0.45),uPerf*0.75);a=max(a,uPerf*0.8*(0.5+fill));
+  float sp=uSp<0.25?0.6+0.4*sin(uT*28.0):1.0;a*=uA*(0.5+0.5*uSp)*sp;if(a<0.015)discard;gl_FragColor=vec4(c,a);}`;
+// форма и цвет: радиус, дуга по горизонтали (рад), высота центра, верх и низ дуги (доли π), почерк шейдера
+const GD_STYLE={
+  proshka:{kind:0,R:0.95,arc:2.4,y:0.6,th0:0.14,th1:0.72,col:0xff8a28,core:0xfff0c0,edge:0x6e2a08,spark:0xffd27a},
+  potap:{kind:1,R:1.38,arc:3.35,y:0.82,th0:0.12,th1:0.72,col:0xffb428,core:0xfff6c8,edge:0x5e3208,spark:0xffe29a},
+  pelageya:{kind:2,R:1.02,arc:2.9,y:0.58,th0:0.1,th1:0.74,col:0xa070f0,core:0xfff0ff,edge:0x40206e,spark:0xe8d0ff},
+  yosha:{kind:3,R:0.62,arc:Math.PI*2,y:0.26,th0:0.0,th1:0.64,col:0x4ad8c0,core:0xe6fff8,edge:0x0e5048,spark:0xb8fff0,wrap:true}};
+const GDV={list:new Map()};
+function gdMake(h){const S=GD_STYLE[h.kind];if(!S||!h.g)return null;
+  const geo=new THREE.SphereGeometry(S.R,S.wrap?36:28,14,S.wrap?0:Math.PI/2-S.arc/2,S.arc,Math.PI*S.th0,Math.PI*(S.th1-S.th0));
+  const mat=new THREE.ShaderMaterial({uniforms:{uT:{value:0},uA:{value:0},uHit:{value:0},uPerf:{value:0},uSp:{value:1},uKind:{value:S.kind},uWrap:{value:S.wrap?1:0},
+      uCol:{value:new THREE.Color(S.col)},uCore:{value:new THREE.Color(S.core)},uEdge:{value:new THREE.Color(S.edge)}},
+    vertexShader:GD_VS,fragmentShader:GD_FS,transparent:true,depthWrite:false,side:THREE.DoubleSide,fog:false,toneMapped:false});
+  const m=new THREE.Mesh(geo,mat);m.position.set(0,S.y,0);m.renderOrder=11;m.visible=false;m.frustumCulled=false;m.userData.noBatch=true;m.userData.occEx=true;
+  h.g.add(m);const o={h,m,S,a:0,pop:0,hit:0,perf:0,on:false};GDV.list.set(h,o);return o;}
+const gdGet=h=>GDV.list.get(h)||gdMake(h);
+function gdTick(h,dt){const o=gdGet(h);if(!o)return;if(o.m.parent!==h.g&&h.g)h.g.add(o.m);
+  const want=!!(h.guard&&h.active)||h._demoGuard>G.time;if(h.shield)h.shield.visible=false;   // старый плоский круг — выключен
+  if(want&&!o.on){o.pop=0;}o.on=want;o.a=Math.max(0,Math.min(1,o.a+(want?dt/0.08:-dt/0.12)));o.pop=Math.min(1,o.pop+dt/0.16);
+  o.hit=Math.max(0,o.hit-dt/0.35);o.perf=Math.max(0,o.perf-dt/0.45);
+  const vis=o.a>0.01||o.hit>0.01;o.m.visible=vis;if(!vis)return;
+  // «пружинка»: 0.55 → 1.08 → 1; удар по щиту чуть вдавливает его
+  const q=o.pop,ease=q<1?1+0.08*Math.sin(q*Math.PI)-(1-q)*(1-q)*0.45:1,s=(want?ease:0.9+0.1*o.a)*(1-o.hit*0.06)+o.perf*0.08;o.m.scale.setScalar(s);
+  if(o.S.wrap)o.m.rotation.y+=dt*(0.6+o.hit*6);
+  const U=o.m.material.uniforms,p=players[h.player];U.uT.value=G.time;U.uA.value=o.a;U.uHit.value=o.hit;U.uPerf.value=o.perf;U.uSp.value=p?Math.max(0,Math.min(1,p.spirit)):1;}
+function gdFront(o){const h=o.h;return new V3(Math.sin(h.face)*o.S.R*0.8,o.S.y+(h.pos.y||0),Math.cos(h.face)*o.S.R*0.8).add(new V3(h.pos.x,0,h.pos.z));}
+function gdHit(h,perfect){const o=gdGet(h);if(!o)return;o.a=Math.max(o.a,0.9);if(perfect){o.perf=1;o.hit=1;}else o.hit=1;
+  try{const p=gdFront(o);if(FX.sparks)FX.sparks(p,perfect?14:8,perfect?0xffe36b:o.S.spark);if(perfect&&FX.stars)FX.stars(p,6,0xfff2b0);}catch(e){}}
+FIN.guard={visible:h=>{const o=GDV.list.get(h);return !!(o&&o.m.visible&&o.a>0.5);},hit:gdHit,hitT:h=>{const o=GDV.list.get(h);return o?o.hit:0;},list:GDV.list};
+{const _anim=animHero;animHero=function(h,dt){_anim(h,dt);try{gdTick(h,dt||0);}catch(e){console.error('guard',e);}};}
+{const _sb=shieldBlock;shieldBlock=function(h){const r=_sb.apply(this,arguments);gdHit(h,false);return r;};}
+{const _pf=parryFoe;parryFoe=function(e,h){const r=_pf.apply(this,arguments);gdHit(h,true);return r;};}
+// отбитая в последний миг капля (без отдельной функции в прототипе) — по звуку отбива: вспыхивают поднятые щиты
+{const _sp=SFX.parry;SFX.parry=function(){const r=_sp.apply(this,arguments);try{for(const h of HEROES_ALL())if(h.guard&&h.active){const o=GDV.list.get(h);if(o&&o.perf<0.5)gdHit(h,true);}}catch(e){}return r;};}
+function HEROES_ALL(){const r=[];for(const p of players)for(const h of p.heroes)r.push(h);return r;}
+{const _ll=loadLevel;loadLevel=function(i){_ll(i);for(const o of GDV.list.values()){o.a=0;o.hit=0;o.perf=0;o.on=false;o.m.visible=false;}};}
 /* ============================== РЕЛИЗ · МУЗЫКА: народные мотивы для меню, Лукоморья, каждого мира и боссов ============================== */
 // Синтез в браузере: балалайка (щипок), гусли (перебор), жалейка (свирель с вибрато), бубен и барабан, бурдон.
 // В ритм-уровнях своя песня — фоновая музыка там молчит; в роликах чуть тише.
@@ -12538,13 +12612,20 @@ function finDraw(){const scr=FIN.menu;if(!scr)return;const host=$(scr.pause?'fin
   for(let i=a;i<Math.min(n,a+win);i++){const it=scr.items[i],sub=typeof it.sub==='function'?it.sub():it.sub;
     h+='<div class="fin-item'+(i===scr.sel?' fin-sel':'')+(it.off?' fin-off':'')+'" data-i="'+i+'">'+(it.val?'<span class="fin-val">'+it.val()+'</span>':'')+it.label+(sub?'<small>'+sub+'</small>':'')+'</div>';}
   host.innerHTML=h+'</div>';
-  host.querySelectorAll('.fin-item').forEach(el=>{const i=+el.dataset.i;el.onmouseenter=()=>{if(scr.items[i].off||scr.sel===i)return;scr.sel=i;finDraw();};el.onclick=()=>{if(scr.items[i].off)return;scr.sel=i;finAct(0);};});
+  host.querySelectorAll('.fin-item').forEach(el=>{const i=+el.dataset.i;el.onmouseenter=()=>{if(scr.items[i].off||scr.sel===i||!finMouseLive())return;scr.sel=i;finDraw();};el.onclick=()=>{if(scr.items[i].off)return;scr.sel=i;finAct(0);};});
   // невысокое окно: показываем столько пунктов, сколько помещается под логотипом (список листается стрелками)
   if(!scr.pause){const its=host.querySelectorAll('.fin-item'),last=its[its.length-1],P=host.getBoundingClientRect();if(last&&P.height>0&&its.length>3&&last.getBoundingClientRect().bottom>P.bottom+1){scr.fit=its.length-1;finDraw();}}}
 addEventListener('resize',()=>{if(FIN.menu&&FIN.menu.fit){FIN.menu.fit=0;finDraw();}});
 function finAct(dx){const scr=FIN.menu,it=scr&&scr.items[scr.sel];if(!it||it.off)return;
   if(dx){if(it.side){it.side(dx);SFX.swap();finDraw();}return;}if(it.act){SFX.ok();it.act();}else if(it.side){it.side(1);SFX.swap();finDraw();}}
+// наведение мыши выбирает пункт, только если мышь сдвинулась после нажатия джойстика/клавиш. Иначе после перерисовки меню браузер
+// «наводит» неподвижный курсор на новый пункт под ним, и выбор возвращается на место курсора — на паузе (она по центру, где обычно
+// стоит курсор) джойстик «переставал работать», пока мышь не уведут в сторону.
+const MSE={x:-1e4,y:-1e4,ax:-1e4,ay:-1e4};addEventListener('mousemove',e=>{MSE.x=e.clientX;MSE.y=e.clientY;},{passive:true});
+function finMouseLive(){return Math.abs(MSE.x-MSE.ax)+Math.abs(MSE.y-MSE.ay)>4;}
+function finMouseAnchor(){MSE.ax=MSE.x;MSE.ay=MSE.y;}
 function finMenuInput(){const scr=FIN.menu;if(!scr)return;const a=uiNav(0),b=uiNav(1),dy=a.dy||b.dy,dx=a.dx||b.dx;
+  if(dy||dx||pressed.size)finMouseAnchor();
   if(dy&&scr.items.length){scr.sel=(scr.sel+dy+scr.items.length)%scr.items.length;fixSel(scr,dy);SFX.swap();finDraw();}
   if(dx)finAct(dx);
   if(pressed.has('Enter')||tap(0,'jump')||tap(1,'jump'))finAct(0);
@@ -13402,7 +13483,7 @@ function t4Stage1(){const H=t4Heads(),L=H[0],Mi=H[1],R=H[2];if(!L||!R)return;con
        done:()=>{const h=a1();if(h.grounded)h.vel.y=5.5;FX.dust(t4P(h),10);SFX.swish();floatText(t4P(h).add(new V3(0,2,0)),'Увернулся!','#9fe0ff');if(sigR)sigR.visible=false;}}),
     t4S('R',7,{tag:'Игрок 2 · правая голова',title:'Бей сбоку!',icon:'hit',text:'Промахнулась и открыла бок — <b>бей</b>!',keys:[{pi:1,a:'attack',label:'удар',wait:true}],go:'Бей!',okText:'ПРОБОЙ!'},
       {wait:{who:1,a:'attack'},at:0.6,cut:false,done:()=>{a1().atkT=0.28;SFX.brk();const p=t4HeadTop(R);FX.stars(p,12);t4Broken(R,true);floatText(p.clone().add(new V3(0,1.8,0)),'ПРОБОЙ!','#fff2b0');}}),
-    t4S('wide',5.2,{tag:'Главное',title:'Вместе — за 6 секунд!',icon:'clock',text:'Оглушённая голова спит <b>6 секунд</b>. Одну оглушили — она проснётся. Бейте <b>левую и правую вместе</b>, чтобы обе были в Пробое сразу!'},
+    t4S('wide',5.2,{tag:'Главное',title:'Вместе — за 12 секунд!',icon:'clock',text:'Оглушённая голова спит <b>12 секунд</b>. Одну оглушили — она проснётся. Бейте <b>левую и правую вместе</b>, чтобы обе были в Пробое сразу!'},
       {enter:()=>{for(const e of[L,R]){const r=t4Prop(t4Ring(0xfff2b0,0.8));r.userData.e=e;}},update:(s,u)=>{for(const o of T4.props)if(o.userData.e){const p=t4HeadTop(o.userData.e);o.position.copy(p).add(new V3(0,1.2,0));o.lookAt(camS.position);o.scale.setScalar(Math.max(0.05,1-u/5));}}}),
     t4S('M',4.4,{tag:'А средняя?',title:'Средняя плюётся синим',icon:'blue',text:'Синие капли <b>отбивай щитом</b>. Среднюю оглушим на следующем этапе.'}),
     t4S('team',2.6,{tag:'Вперёд!',title:'Теперь — по-настоящему',icon:'go',text:'Подсказки будут рядом. Удачи, богатыри!'},{enter:()=>{FX.confettiCam(30);SFX.ok();}})],
@@ -13450,7 +13531,7 @@ function t4Stage3(){const gr=W.grabs[0];if(!gr)return;const bp=gr.pos(),saved=bp
     t4S('team',3,{tag:'Вперёд!',title:'Теперь — по-настоящему',icon:'go',text:'Пока головы без сил, у вас <b>25 секунд</b>. Вперёд!'},{enter:()=>{SFX.ok();bp.copy(saved);restore();}})],
     {end:()=>{bp.copy(saved);restore();t4SeenSet(3);}});}
 // короткое напоминание, если этап уже объясняли (повторная попытка)
-function t4Short(n){const txt={1:['Этап 1 · Три запала','heads','Жёлтый кружок — <b>щит</b>, красный зубец — <b>кувырок</b>, потом бей. Левую и правую — <b>вместе</b>, за 6 секунд!'],
+function t4Short(n){const txt={1:['Этап 1 · Три запала','heads','Жёлтый кружок — <b>щит</b>, красный зубец — <b>кувырок</b>, потом бей. Левую и правую — <b>вместе</b>, за 12 секунд!'],
   2:['Этап 2 · Вдох','heads','Жёлудь — <b>рогатка Прошки</b>, огонь — <b>щит Потапа</b>, сытая — <b>вода Йоши</b>, слабое место — <b>взор Пелагеи</b>. Все три — в Пробой!'],
   3:['Этап 3 · Узда','ring','Узду — <b>клещами вдвоём</b> к кольцу на шее, и <b>умение вместе</b>!']}[n];
   t4Run([t4S('wide',4.5,{tag:'Напоминание',title:txt[0],icon:txt[1],text:txt[2]})]);}
@@ -13474,7 +13555,7 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
   const nb=hs.filter(e=>e.state==='broken').length;if(nb>H.nb||F.phase!==H.ph){H.prog=now;if(H.cur&&nb>H.nb)t4HintHide(true);}
   if(F.phase!==H.ph){H.ph=F.phase;H.cycle=0;}
   // проснулась одна, пока вторая не в Пробое
-  for(const e of hs){if(e._t4b&&e.state!=='broken'&&F.phase<3&&!G.cine)t4Ctx('wake',()=>t4HintShow('wake',{tag:'Не успели',title:'Голова проснулась!',icon:'clock',text:'Оглушайте головы <b>вместе</b> — Пробой держится всего 6 секунд.',col:0xff9a8a},[e],null,5),9);e._t4b=e.state==='broken';}
+  for(const e of hs){if(e._t4b&&e.state!=='broken'&&F.phase<3&&!G.cine)t4Ctx('wake',()=>t4HintShow('wake',{tag:'Не успели',title:'Голова проснулась!',icon:'clock',text:'Оглушайте головы <b>вместе</b> — Пробой держится 12 секунд.',col:0xff9a8a},[e],null,5),9);e._t4b=e.state==='broken';}
   H.nb=nb;
   // стрелки следуют за целями
   for(const a of T4.arrows){const p=t4TgtPos(a.userData.tgt);a.position.copy(p).add(new V3(0,0.35*Math.abs(Math.sin(now*4)),0));a.rotation.y+=dt*2.5;}
@@ -13490,7 +13571,7 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
     else if(idle>12)t4Cycle([
       ()=>t4HintShow('g1',{tag:'Подсказка',title:'Левая голова — щит и удар',icon:'yellow',text:'Жёлтый кружок — отбей <b>щитом</b>, затем <b>бей</b>.'},[L],[[0,'guard','щит'],[0,'attack','удар']]),
       ()=>t4HintShow('g2',{tag:'Подсказка',title:'Правая голова — кувырок и удар',icon:'red',text:'Красный зубец — <b>кувырок</b>, затем <b>бей сбоку</b>.'},[R],[[1,'roll','кувырок'],[1,'attack','удар']]),
-      ()=>t4HintShow('g3',{tag:'Подсказка',title:'Вместе!',icon:'clock',text:'Левую и правую — <b>одновременно</b>: Пробой держится 6 секунд.'},[L,R],null)]);}
+      ()=>t4HintShow('g3',{tag:'Подсказка',title:'Вместе!',icon:'clock',text:'Левую и правую — <b>одновременно</b>: Пробой держится 12 секунд.'},[L,R],null)]);}
   if(F.phase===2){const Mi=hs[1];const acorn=W.marks.some(m=>m.active&&m.active()),sated=hs.find(e=>e.sat>0&&e.state!=='broken'),fire=W.bolts.some(b=>!b.refl&&b.from===Mi);
     if(acorn)t4Ctx('acorn',()=>t4HintShow('acorn',{tag:'Прошка',title:'Жёлудь! Стреляй!',icon:'acorn',text:'Средняя вдыхает — выстрели из <b>рогатки</b> в жёлудь'+(HERO.proshka.active?'':' (переключись '+K(0,'swap')+')')+'.',col:0xffd76a},[Mi],[[0,'skill','рогатка']],4),6);
     else if(fire)t4Ctx('fire',()=>t4HintShow('fire',{tag:'Потап',title:'Огонь! Щит!',icon:'shield',text:'Подними <b>широкий щит</b> — закроешь всех за спиной.',col:0x9fe0ff},[HERO.potap],[[0,'guard','щит']],3.5),6);
