@@ -3,13 +3,13 @@
 #   python3 zlataya_cep/build/build_final.py
 # Берёт ../../index.html (прототип, не меняется), встраивает Three.js r128, подключает модули финальной версии
 # (fin_early.js — до создания геометрии, late_*.js по порядку — перед запуском игры, fin.css, fin_body.html, rep_*.py — точечные замены)
-# и пишет zlataya_cep/zlataya_cep_final04.html (final01–final03 — предыдущие релизы, лежат рядом как есть). В конце — проверка синтаксиса через node --check.
+# и пишет zlataya_cep/zlataya_cep_final05.html (final01–final04 — предыдущие релизы, лежат рядом как есть). В конце — проверка синтаксиса через node --check.
 import os,sys,re,subprocess
 B=os.path.dirname(os.path.abspath(__file__))
 ROOT=os.path.normpath(os.path.join(B,'..','..'))
 SRC=os.path.join(ROOT,'index.html')
-OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_final04.html')
-VERSION='final04'
+OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_final05.html')
+VERSION='final05'
 s=open(SRC,encoding='utf-8').read()
 def rd(n):return open(os.path.join(B,n),encoding='utf-8').read()
 def rep(old,new,cnt=1):

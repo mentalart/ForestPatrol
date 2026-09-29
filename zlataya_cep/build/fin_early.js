@@ -1,6 +1,6 @@
 /* ============================== РЕЛИЗ · LOW-POLY: грани вместо гладкости ============================== */
 // Общий объект релизной сборки: настройки, состояние меню, музыка, сохранения
-const FIN={ver:'final04',set:{mus:0.7,sfx:0.8,subs:true,ts:1,shake:true,flash:true,quality:'high',photo:true},menu:null,title:null};
+const FIN={ver:'final05',set:{mus:0.7,sfx:0.8,subs:true,ts:1,shake:true,flash:true,quality:'high',photo:true},menu:null,title:null};
 try{const s=JSON.parse(localStorage.getItem('zlatayaCep.settings.v1')||'null');if(s)Object.assign(FIN.set,s);}catch(e){}
 // Материалы «Ламберта» рисуются с плоским затенением: каждая грань — своим тоном, без бликов
 // final03: тон по вершинам — атрибут aShade (vec3) прибавляется к цвету материала: +0.1 светлее, −0.2 темнее, по каналам — теплее/холоднее.

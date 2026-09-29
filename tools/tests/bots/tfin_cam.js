@@ -4,7 +4,8 @@
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(a.map(x=>x&&x.stack?x.stack.slice(0,200):String(x)).join(' '));ce(...a);};}
 const C=ZC.FIN.cam,D=ZC.FIN.occ.dbg;C.fdt=1/30;ZC.FIN.occ.fdt=0.05;window.deg=r=>Math.round(r*180/Math.PI*10)/10;
 window.hold=(pi,x,y,n)=>{C.stick[pi]={x,y};ZC.tick(n);C.stick[pi]=null;};
-window.pose=()=>{ZC.FIN.occ.frame();return {p:D.camS.position.clone(),q:D.camS.quaternion.clone()};};
+window.gsync=()=>{const gl=D.renderer.getContext(),b=new Uint8Array(4);gl.readPixels(0,0,1,1,gl.RGBA,gl.UNSIGNED_BYTE,b);return b[0];};
+window.pose=()=>{ZC.FIN.occ.frame();gsync();return {p:D.camS.position.clone(),q:D.camS.quaternion.clone()};};
 ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(30);if(ZC.G.cine){ZC.skip();ZC.tick(5);}ZC.tick(150);
 const a=pose();C.on=false;const b=pose();C.on=true;const c=pose();
 ['split='+ZC.G.split,'default same='+(a.p.distanceTo(b.p)<1e-6&&a.p.distanceTo(c.p)<1e-6),'yaw='+deg(C.s.yaw),'errs='+window._errs.length]
@@ -39,7 +40,7 @@ const r1=C.returns;ZC.tick(45);const mid=C.s.yaw;ZC.tick(30);
 hold(0,-1,0,40);ZC.tick(30);
 ['split after '+n+' ticks','returns +'+(r1-r0),'shared yaw '+deg(before)+' → '+deg(mid)+' → '+deg(C.s.yaw),'p0 yaw='+deg(C.p[0].yaw),'p1 yaw='+deg(C.p[1].yaw),'split='+G.split.toFixed(2),'eff0='+deg(C.effYaw(0)),'eff1='+deg(C.effYaw(1))]
 //@@ shot=fin_cam_split.png wait=300
-ZC.FIN.occ.frame();
+ZC.FIN.occ.frame();gsync();
 //@@
 // прерывание возврата стиком; слияние — снова возврат
 const C=ZC.FIN.cam,P=ZC.players,G=ZC.G;hold(1,1,0,30);const y1=C.p[1].yaw;ZC.FIN.camReturnAll();ZC.tick(10);hold(1,0.6,0,1);const kept=!C.p[1].ret;const y2=C.p[1].yaw;
@@ -53,7 +54,7 @@ const cp=D.camS.position.clone();const look=cp.clone().add(new THREE.Vector3(0,0
 const hp=ZC.players[0].heroes[ZC.players[0].act].pos,mid=hp.clone().lerp(cp,0.6);const m=new THREE.Mesh(new THREE.BoxGeometry(3,6,3),new THREE.MeshLambertMaterial({color:0x777777}));m.position.copy(mid);W.group.add(m);
 const bx={minx:mid.x-1.5,maxx:mid.x+1.5,miny:mid.y-3,maxy:mid.y+3,minz:mid.z-1.5,maxz:mid.z+1.5,on:true,mesh:m};W.boxes.push(bx);
 const d0=cp.distanceTo(hp);for(let i=0;i<30;i++)ZC.FIN.occ.frame();const d1=D.camS.position.distanceTo(hp);
-W.boxes.splice(W.boxes.indexOf(bx),1);W.group.remove(m);for(let i=0;i<60;i++)ZC.FIN.occ.frame();const d2=D.camS.position.distanceTo(hp);
+W.boxes.splice(W.boxes.indexOf(bx),1);W.group.remove(m);for(let i=0;i<60;i++)ZC.FIN.occ.frame();gsync();const d2=D.camS.position.distanceTo(hp);
 ['cam dist free='+d0.toFixed(1),'with wall='+d1.toFixed(1),'after='+d2.toFixed(1),'pulled in='+(d1<d0-1)]
 //@@
 // падение и ролик — к дефолту

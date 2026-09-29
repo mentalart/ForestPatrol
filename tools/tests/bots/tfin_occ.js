@@ -11,8 +11,10 @@ window.heroRect=(h,cam)=>{cam=cam||D.camS;const W2=R.domElement.width,H2=R.domEl
 // доля пикселей прямоугольника, которые меняются, если героя спрятать (= видно героя или его силуэт)
 window.vis=(h,rect)=>{O.frame();const a=px(...rect);const sk=h._xrSk;sk.visible=false;O.frame();const b=px(...rect);sk.visible=true;let n=0;for(let i=0;i<a.length;i+=4)if(Math.abs(a[i]-b[i])+Math.abs(a[i+1]-b[i+1])+Math.abs(a[i+2]-b[i+2])>24)n++;return n/(a.length/4);};
 window.frames=n=>{for(let i=0;i<n;i++)O.frame();};
+// синхронизация с видеокартой: очередь кадров разбирается внутри шага, а не перед снимком (иначе снимок под нагрузкой ждёт дольше 2 минут)
+window.gsync=()=>{const b=new Uint8Array(4);gl.readPixels(0,0,1,1,gl.RGBA,gl.UNSIGNED_BYTE,b);return b[0];};
 // кадры, пока сила выреза и силуэтов не установится (в боте кадры короче настоящих)
-window.settle=()=>{let i=0,prev=-1;for(;i<60;i++){O.frame();const V=O.views.s,s=V?V.h[0].s:0;if(Math.abs(s-prev)<1e-4&&(O.xa===0||O.xa===1)&&i>3)break;prev=s;}return i;};
+window.settle=()=>{let i=0,prev=-1;for(;i<60;i++){O.frame();const V=O.views.s,s=V?V.h[0].s:0;if(Math.abs(s-prev)<1e-4&&(O.xa===0||O.xa===1)&&i>3)break;prev=s;}gsync();return i;};
 ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(30);if(ZC.G.cine){ZC.skip();ZC.tick(5);}ZC.tick(120);frames(2);
 const H=ZC.HERO,P=ZC.players,h=P[0].heroes[P[0].act];
 ['lvl='+ZC.W.levelId,'cand='+O.stats.cand,'xray='+ZC.HERO.proshka._xr+'' .slice(0,0)+[H.proshka,H.potap,H.pelageya,H.yosha].filter(q=>q._xr&&q._xr.parent).length+'/4','errs='+window._errs.length]
