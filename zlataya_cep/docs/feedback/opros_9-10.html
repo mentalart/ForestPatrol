@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Опрос «Златая цепь» · 9–10 лет</title>
+<meta name="description" content="Интерактивный опрос с картинками для игроков 9–10 лет, прошедших «Златую цепь».">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800;900&family=Podkova:wght@600;700;800&family=Ruslan+Display&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fbf5e6;--surface:#fffdf6;--surface2:#f5ecd6;--ink:#2b2118;--muted:#6b5e4f;--line:#e7d8b8;
+  --gold:#e0a31a;--gold2:#ffd65a;--gold-ink:#3b2a00;--red:#c8412b;--linen:#f3e6c8;
+  --accent:#3f9b3a;--accent-strong:#2f7d2b;--accent2:#f2b705;--on-accent:#fff;
+  --sky1:#8fd3ff;--sky2:#e9f8ff;--hill1:#7cc35a;--hill2:#5aa84a;--hill3:#3f8f3d;--sea:#45b3d9;--sun:#ffd34d;
+  --oak1:#3f8f3d;--oak2:#2f7a34;--trunk:#7a4f2c;--stars:0;
+  --f1:#8ea6c6;--f2:#b7a2d8;--f3:#f3c843;--f4:#9dd35b;--f5:#44b85a;
+  --shadow:0 5px 0 rgba(90,60,10,.10),0 14px 30px rgba(90,60,10,.12);
+  --fs:18px;--radius:22px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121826;--surface:#1b2335;--surface2:#242e44;--ink:#f4ecdc;--muted:#b5aa95;--line:#34415e;
+  --gold:#f0b52a;--gold2:#ffd96b;--linen:#2a2f3f;--red:#e0664f;
+  --sky1:#0c1431;--sky2:#2b3a66;--hill1:#2d5a3c;--hill2:#244a33;--hill3:#1b3a2a;--sea:#1f4f78;--sun:#f5edc8;
+  --oak1:#24503a;--oak2:#1b3f2e;--trunk:#4d3421;--stars:1;
+  --shadow:0 5px 0 rgba(0,0,0,.25),0 14px 30px rgba(0,0,0,.35);color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#121826;--surface:#1b2335;--surface2:#242e44;--ink:#f4ecdc;--muted:#b5aa95;--line:#34415e;
+  --gold:#f0b52a;--gold2:#ffd96b;--linen:#2a2f3f;--red:#e0664f;
+  --sky1:#0c1431;--sky2:#2b3a66;--hill1:#2d5a3c;--hill2:#244a33;--hill3:#1b3a2a;--sea:#1f4f78;--sun:#f5edc8;
+  --oak1:#24503a;--oak2:#1b3f2e;--trunk:#4d3421;--stars:1;
+  --shadow:0 5px 0 rgba(0,0,0,.25),0 14px 30px rgba(0,0,0,.35);color-scheme:dark;}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:500 var(--fs)/1.5 Nunito,"Trebuchet MS",system-ui,sans-serif;overflow-x:hidden}
+button{font:inherit;color:inherit}
+img{max-width:100%}
+.hidden{display:none!important}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+
+/* ——— сцена-шапка ——— */
+.scene{position:relative;height:clamp(230px,36vw,350px);overflow:hidden;background:var(--sky1)}
+.scene svg.sky{position:absolute;inset:0;width:100%;height:100%;display:block}
+.scene .hero,.scene .kot,.scene .zv{cursor:pointer}
+.scene .hero image{transform-box:fill-box;transform-origin:50% 100%;animation:bob 2.8s ease-in-out infinite;animation-delay:var(--d)}
+.scene .hero:hover image,.scene .hero:focus image{filter:drop-shadow(0 0 6px var(--gold2))}
+.scene .hero.jump image{animation:jump .75s cubic-bezier(.3,1.5,.5,1)}
+.scene .hero:focus,.scene .kot:focus{outline:none}
+.scene .cloud{animation:drift linear infinite}
+.scene .c1{animation-duration:70s}.scene .c2{animation-duration:95s;animation-delay:-40s}.scene .c3{animation-duration:120s;animation-delay:-80s}
+.scene .rays{transform-box:fill-box;transform-origin:50% 50%;animation:spin 40s linear infinite}
+.scene .star{opacity:var(--stars);animation:tw 3s ease-in-out infinite}
+.scene .wave{animation:wave 5s ease-in-out infinite alternate}
+.scene .chainlink{animation:shine 3s ease-in-out infinite;animation-delay:var(--d)}
+.zv .wing{transform-box:fill-box;transform-origin:50% 100%;animation:flap .35s ease-in-out infinite alternate}
+.zv .eye{transform-box:fill-box;transform-origin:50% 50%;animation:blink 4.5s infinite}
+.tools{position:absolute;top:10px;right:12px;display:flex;gap:8px;z-index:3}
+.tbtn{width:42px;height:42px;border-radius:14px;border:0;background:rgba(255,255,255,.78);color:#2b2118;display:grid;place-items:center;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+.tbtn svg{width:22px;height:22px}
+.tbtn[aria-pressed="false"]{opacity:.6}
+.bubble{position:absolute;z-index:4;max-width:min(260px,70vw);background:#fffdf6;color:#2b2118;border:3px solid #2b2118;border-radius:18px;padding:8px 12px;font:800 .82em/1.3 Nunito,sans-serif;
+  transform:translate(-50%,-100%);pointer-events:none;animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+.bubble::after{content:"";position:absolute;left:50%;bottom:-11px;width:16px;height:16px;background:#fffdf6;border-right:3px solid #2b2118;border-bottom:3px solid #2b2118;transform:translateX(-50%) rotate(45deg)}
+
+/* ——— титул ——— */
+.wrap{max-width:780px;margin:0 auto;padding:0 16px}
+.titlecard{position:relative;margin:-28px auto 0;background:var(--surface);border:3px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);text-align:center;padding:0 16px 16px;overflow:hidden;z-index:2}
+.rushnik{height:14px;margin:0 -16px 12px;background:
+  linear-gradient(45deg,transparent 36%,var(--red) 36% 64%,transparent 64%) 0 0/14px 14px,
+  linear-gradient(-45deg,transparent 36%,var(--red) 36% 64%,transparent 64%) 0 0/14px 14px,var(--linen)}
+.logo{margin:4px 0 0;font:400 clamp(34px,7.5vw,58px)/1.05 "Ruslan Display",Podkova,serif;letter-spacing:.02em;
+  background:linear-gradient(180deg,var(--gold2),var(--gold) 55%,#b8740c);-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 0 rgba(80,45,0,.45))}
+.sub{margin:4px 0 8px;font:700 1em/1.3 Podkova,serif;color:var(--muted)}
+.badge{display:inline-flex;align-items:center;gap:6px;background:var(--accent-strong);color:var(--on-accent);border-radius:999px;padding:4px 14px;font:800 .9em Nunito,sans-serif}
+
+/* ——— цепь-прогресс ——— */
+.chainbar{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:2px solid var(--line);margin-top:14px}
+.chainbar .wrap{display:flex;flex-direction:column;align-items:center;padding-top:8px;padding-bottom:6px}
+.links{display:flex;align-items:center;justify-content:center;flex-wrap:nowrap;max-width:100%}
+.link{border:0;background:none;padding:0;margin:0 -5px;cursor:pointer;width:clamp(32px,8vw,48px);height:32px;display:grid;place-items:center;position:relative}
+.link svg{width:100%;height:100%;overflow:visible}
+.link:not(.fin):nth-child(even) svg{transform:scale(.62,1)}
+.link .ring{fill:none;stroke:var(--line);stroke-width:5}
+.link .fill{fill:none;stroke:url(#goldg);stroke-width:5;opacity:var(--p,0);transition:opacity .4s}
+.link.cur svg{animation:pulse 1.4s ease-in-out infinite}
+.link.cur .ring{stroke:var(--accent)}
+.link.done .fill{filter:drop-shadow(0 0 3px var(--gold2))}
+.link.fin{margin-left:4px}
+.link.fin .st{fill:var(--line);transition:fill .3s}.link.fin.on .st{fill:var(--gold)}
+.chainlabel{font:700 .8em/1.3 Nunito,sans-serif;color:var(--muted);margin-top:2px;text-align:center;min-height:1.3em}
+
+/* ——— экраны ——— */
+main{padding:18px 0 40px}
+.enter{animation:rise .45s cubic-bezier(.2,.9,.3,1) both}
+.card{background:var(--surface);border:3px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.intro{text-align:center}
+.intro .zvbig{width:120px;height:120px;margin:-6px auto 0;display:block}
+.intro h2,.final h2{font:800 1.6em/1.2 Podkova,serif;margin:6px 0 10px}
+.lead{font-size:1.05em;margin:0 auto 14px;max-width:36em}
+.meta{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 12px}
+.meta span{background:var(--surface2);border-radius:999px;padding:4px 12px;font-weight:800;font-size:.88em}
+.note{background:color-mix(in srgb,var(--accent2) 16%,var(--surface));border:2px dashed color-mix(in srgb,var(--accent2) 60%,var(--line));border-radius:16px;padding:10px 14px;font-size:.9em;text-align:left;margin:0 0 14px}
+.draftnote{font-size:.85em;color:var(--muted);margin-top:8px}
+
+.banner{position:relative;height:clamp(170px,30vw,240px);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);background:var(--surface2)}
+.banner .bg{position:absolute;inset:-7%;background-size:cover;background-position:center;animation:kb 24s ease-in-out infinite alternate}
+.banner .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 35%,rgba(0,0,0,.62))}
+.banner .cap{position:absolute;left:18px;bottom:14px;right:40%;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,.5)}
+.banner .chap{display:inline-block;font:800 .72em/1 Nunito,sans-serif;letter-spacing:.08em;text-transform:uppercase;background:rgba(0,0,0,.35);border-radius:999px;padding:5px 10px}
+.banner h2{margin:6px 0 0;font:800 clamp(1.35em,4.6vw,1.9em)/1.1 Podkova,serif}
+.banner .stk{position:absolute;right:8px;bottom:-6px;height:84%;display:flex;align-items:flex-end;gap:0}
+.banner .stk img{height:100%;max-width:34vw;object-fit:contain;margin-left:-14px;filter:drop-shadow(0 6px 5px rgba(0,0,0,.35));animation:popin .6s cubic-bezier(.3,1.6,.5,1) both,bob 3.2s ease-in-out infinite;animation-delay:var(--d),calc(var(--d) + .6s);transform-origin:50% 100%}
+.banner .stk img:nth-child(2){height:82%}.banner .stk img:nth-child(3){height:74%}
+.say{display:flex;align-items:flex-end;gap:10px;margin:-18px 8px 8px;position:relative;z-index:2}
+.say .ava{width:72px;height:72px;flex:none;object-fit:contain;background:var(--surface);border:3px solid var(--line);border-radius:50%;padding:4px;box-shadow:var(--shadow)}
+.say .bub{position:relative;background:var(--surface);border:3px solid var(--line);border-radius:20px 20px 20px 6px;padding:10px 14px;box-shadow:var(--shadow);font-weight:700;flex:1;display:flex;gap:8px;align-items:flex-start}
+.say .bub p{margin:0;flex:1}
+
+.q{position:relative;background:var(--surface);border:2px solid var(--line);border-radius:20px;padding:16px 16px 18px;margin:14px 0;box-shadow:0 4px 0 var(--line);animation:rise .5s cubic-bezier(.2,.9,.3,1) both;animation-delay:calc(var(--i) * 55ms)}
+.q.ok{border-color:color-mix(in srgb,var(--accent) 55%,var(--line));box-shadow:0 4px 0 color-mix(in srgb,var(--accent) 35%,var(--line))}
+.q.sub{margin-left:clamp(10px,4vw,34px);border-style:dashed}
+.q.reveal{animation:reveal .45s cubic-bezier(.2,.9,.3,1) both}
+.q header{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.q h3{margin:2px 0 0;font:800 1.02em/1.35 Nunito,sans-serif;flex:1}
+.num{flex:none;min-width:32px;height:32px;border-radius:12px;display:grid;place-items:center;background:var(--accent2);color:var(--gold-ink);font:800 .9em Podkova,serif;transform:rotate(-4deg)}
+.q.ok .num{background:var(--accent-strong);color:var(--on-accent)}
+.num.arrow{background:var(--surface2);color:var(--muted)}
+.hint{margin:-4px 0 10px;color:var(--muted);font-size:.86em}
+.spk{flex:none;width:36px;height:36px;border-radius:12px;border:2px solid var(--line);background:var(--surface2);display:grid;place-items:center;cursor:pointer}
+.spk svg{width:20px;height:20px}
+.spk.on{background:var(--accent-strong);color:var(--on-accent);border-color:transparent}
+
+.opt{cursor:pointer;transition:transform .15s,background .2s,border-color .2s,opacity .2s}
+.opt:active{transform:scale(.95)}
+.faces{display:flex;gap:8px}
+.face{flex:1 1 0;min-width:0;border:3px solid transparent;background:var(--surface2);border-radius:18px;padding:8px 4px 6px;display:flex;flex-direction:column;align-items:center;gap:2px}
+.face svg{width:min(58px,100%);height:auto;aspect-ratio:1}
+.face span{font-weight:800;font-size:.78em;text-align:center;line-height:1.15;overflow-wrap:anywhere}
+.face.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 15%,var(--surface));transform:translateY(-3px)}
+.face.sel svg{animation:boing .5s}
+.has .face:not(.sel){opacity:.5}
+.stars{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.starb{border:0;background:none;padding:2px;width:52px;height:52px}
+.starb svg{width:100%;height:100%}
+.starb .s{fill:var(--surface2);stroke:var(--line);stroke-width:2.5;transition:fill .2s}
+.starb.on .s{fill:var(--gold);stroke:#b8740c}
+.starb.on svg{animation:boing .45s both;animation-delay:var(--d)}
+.starlab{font-weight:800;margin-left:6px;color:var(--muted)}
+.scale{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:6px}
+.pill{border:2px solid var(--line);background:var(--surface2);border-radius:14px;min-height:46px;font-weight:800;padding:6px 2px}
+.pill.sel{background:var(--accent-strong);border-color:transparent;color:var(--on-accent);transform:translateY(-2px)}
+.ends{display:flex;justify-content:space-between;gap:8px;margin-top:6px;font-size:.8em;color:var(--muted);font-weight:700}
+.ends span:last-child{text-align:right}.ends span:nth-child(2):not(:last-child){text-align:center}
+.nps{grid-template-columns:repeat(11,minmax(0,1fr));gap:4px}
+.nps .pill{min-height:42px;font-size:.92em}
+.nps .pill.sel{background:var(--c)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:2px solid var(--line);background:var(--surface2);border-radius:999px;padding:8px 14px;font-weight:800;line-height:1.25;text-align:left}
+.chip.sel{background:var(--accent-strong);border-color:transparent;color:var(--on-accent)}
+.chip.sel::before{content:"✓ "}
+.counter{font-size:.8em;font-weight:800;color:var(--muted);margin-top:8px}
+.counter.shake{animation:shake .4s;color:var(--red)}
+.yn{display:flex;gap:10px;flex-wrap:wrap}
+.yn .pill{flex:1 1 90px;font-size:1.02em;min-height:52px}
+.picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:10px}
+.picks.bgk{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}
+.pick{position:relative;border:3px solid var(--line);border-radius:18px;background:radial-gradient(circle at 50% 62%,var(--surface2),var(--surface) 72%);padding:8px 6px 8px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:2px}
+.pick img{height:96px;width:100%;object-fit:contain;transition:transform .25s;filter:drop-shadow(0 4px 3px rgba(0,0,0,.2))}
+.pick.bg img{height:auto;aspect-ratio:16/9;object-fit:cover;border-radius:12px;filter:none}
+.pick:hover img{transform:translateY(-4px) rotate(-3deg)}
+.pick.bg:hover img{transform:scale(1.04)}
+.pick .l{font-weight:800;line-height:1.2;font-size:.9em}
+.pick .s{font-size:.74em;color:var(--muted);line-height:1.2}
+.pick.sel{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 28%,transparent);background:radial-gradient(circle at 50% 62%,color-mix(in srgb,var(--accent) 18%,var(--surface)),var(--surface) 75%)}
+.pick.sel img{animation:wiggle .6s}
+.pick.sel::after{content:"✓";position:absolute;top:6px;right:6px;width:26px;height:26px;border-radius:50%;background:var(--accent-strong);color:var(--on-accent);display:grid;place-items:center;font-weight:900;font-size:.85em;animation:pop .3s}
+.pick.none{justify-content:center;min-height:120px;font-weight:800}
+.pick.none .big{font-size:2em;line-height:1}
+.has .pick:not(.sel){opacity:.72}
+textarea,.tin{width:100%;border:2px solid var(--line);border-radius:14px;background:var(--surface2);color:var(--ink);font:600 1em/1.45 Nunito,sans-serif;padding:10px 12px;resize:vertical}
+textarea{min-height:92px}
+textarea:focus,.tin:focus{outline:3px solid color-mix(in srgb,var(--accent) 45%,transparent);border-color:var(--accent)}
+.other{margin-top:10px}
+.mx-legend{display:flex;justify-content:flex-end;gap:10px;font-size:.78em;color:var(--muted);font-weight:700;margin:-2px 0 4px;flex-wrap:wrap}
+.mx-row{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:9px 0;border-top:2px dashed var(--line)}
+.mx-row .rl{display:flex;align-items:center;gap:10px;font-weight:800;font-size:.92em;line-height:1.25}
+.mx-row .rl img{width:46px;height:46px;object-fit:contain;flex:none}
+.mx-row .rl .em{width:46px;height:46px;flex:none;display:grid;place-items:center;font-size:1.7em;background:var(--surface2);border-radius:14px}
+.mx-row .rl .bgi{width:66px;height:40px;object-fit:cover;border-radius:10px;flex:none}
+.mx-opts{display:flex;gap:4px;align-items:center;flex-wrap:nowrap}
+.mx-opts .pill{width:42px;min-height:42px;padding:0}
+.mx-opts .face{flex:none;width:44px;padding:3px;border-radius:12px}
+.mx-opts .face svg{width:34px}
+.mx-opts .na{width:auto;padding:0 10px;font-size:.74em;line-height:1.1;max-width:84px}
+.mx-row.ok .rl::after{content:"✓";color:var(--accent);font-weight:900;margin-left:2px}
+.d5 .pill.sel{background:var(--c)}
+.draw{border:3px solid var(--line);border-radius:18px;overflow:hidden;background:#fffdf6;touch-action:none;position:relative}
+.draw canvas{display:block;width:100%;height:auto;aspect-ratio:16/10;cursor:crosshair}
+.dtools{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;align-items:center}
+.sw{width:34px;height:34px;border-radius:50%;border:3px solid var(--surface);box-shadow:0 0 0 2px var(--line);cursor:pointer;padding:0}
+.sw.sel{box-shadow:0 0 0 3px var(--ink);transform:scale(1.1)}
+.dbtn{border:2px solid var(--line);background:var(--surface2);border-radius:12px;padding:5px 10px;font-weight:800;font-size:.85em;cursor:pointer}
+.dbtn.sel{background:var(--accent-strong);color:var(--on-accent);border-color:transparent}
+
+.nav{display:flex;justify-content:space-between;gap:12px;margin:22px 0 8px;flex-wrap:wrap}
+.nav.center{justify-content:center}
+.btn{border:0;border-radius:16px;padding:13px 22px;font:800 1.02em/1.2 Nunito,sans-serif;cursor:pointer;box-shadow:0 5px 0 rgba(0,0,0,.2);transition:transform .1s,box-shadow .1s}
+.btn:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.2)}
+.btn.primary{background:var(--accent-strong);color:var(--on-accent)}
+.btn.ghost{background:var(--surface2);color:var(--ink);box-shadow:0 5px 0 var(--line)}
+.btn.gold{background:linear-gradient(180deg,var(--gold2),var(--gold));color:var(--gold-ink)}
+.btn.big{font-size:1.2em;padding:16px 34px}
+.btn.pulse{animation:pulse 1.6s ease-in-out infinite}
+.btn:disabled{opacity:.5;cursor:default}
+.progress-note{font-size:.84em;color:var(--muted);text-align:center;margin-top:10px}
+
+.final{text-align:center}
+.party{display:flex;justify-content:center;align-items:flex-end;gap:4px;height:130px;margin-top:-6px}
+.party img{height:100%;max-width:23%;object-fit:contain;filter:drop-shadow(0 6px 4px rgba(0,0,0,.25));animation:cheer .9s ease-in-out infinite;animation-delay:var(--d);transform-origin:50% 100%}
+.stat{font-weight:800;color:var(--muted)}
+.status{margin:14px auto 0;max-width:36em;border-radius:18px;padding:14px 16px;text-align:left;font-size:.95em}
+.status.wait{background:var(--surface2)}
+.status.good{background:color-mix(in srgb,var(--accent) 16%,var(--surface));border:2px solid color-mix(in srgb,var(--accent) 50%,var(--line))}
+.status.warn{background:color-mix(in srgb,var(--accent2) 18%,var(--surface));border:2px dashed color-mix(in srgb,var(--accent2) 65%,var(--line))}
+.status h4{margin:0 0 6px;font:800 1.05em Podkova,serif}
+.status p{margin:0 0 8px}
+.status .row{display:flex;gap:8px;flex-wrap:wrap}
+.status .btn{font-size:.9em;padding:10px 14px}
+.status textarea{margin-top:10px;min-height:140px;font-size:.8em;font-family:ui-monospace,Menlo,monospace}
+.spin{display:inline-block;width:18px;height:18px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;vertical-align:-3px;margin-right:8px}
+.linkbtn{border:0;background:none;color:var(--accent-strong);font-weight:800;text-decoration:underline;cursor:pointer;padding:0}
+.gaps{margin:10px auto 0;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+.gaps .chip{font-size:.8em;padding:5px 10px}
+footer{text-align:center;color:var(--muted);font-size:.78em;padding:10px 16px 28px}
+
+.spark{position:fixed;width:9px;height:9px;border-radius:2px;pointer-events:none;z-index:60;animation:spark .7s ease-out forwards}
+canvas.confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:55}
+
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5%)}}
+@keyframes jump{0%{transform:translateY(0) scale(1,1)}20%{transform:translateY(0) scale(1.12,.86)}55%{transform:translateY(-32%) scale(.92,1.1)}80%{transform:translateY(0) scale(1.08,.92)}100%{transform:none}}
+@keyframes drift{from{transform:translateX(-420px)}to{transform:translateX(1500px)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes tw{0%,100%{opacity:calc(var(--stars)*.35)}50%{opacity:var(--stars)}}
+@keyframes wave{from{transform:translateX(-18px)}to{transform:translateX(18px)}}
+@keyframes shine{0%,100%{stroke:var(--gold)}50%{stroke:var(--gold2)}}
+@keyframes flap{from{transform:scaleY(1)}to{transform:scaleY(.35)}}
+@keyframes blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes pop{from{transform:translate(-50%,-100%) scale(.4);opacity:0}}
+@keyframes popin{from{transform:translateY(40%) scale(.3);opacity:0}}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+@keyframes reveal{from{opacity:0;transform:translateY(-8px) scale(.98)}}
+@keyframes kb{from{transform:scale(1.02) translate(0,0)}to{transform:scale(1.14) translate(-3%,-2%)}}
+@keyframes boing{0%{transform:scale(1)}30%{transform:scale(1.25) rotate(-6deg)}60%{transform:scale(.92) rotate(3deg)}100%{transform:scale(1)}}
+@keyframes wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg) translateY(-6px)}75%{transform:rotate(7deg) translateY(-3px)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+@keyframes spark{to{transform:translate(var(--dx),var(--dy)) rotate(200deg) scale(.2);opacity:0}}
+@keyframes cheer{0%,100%{transform:translateY(0) rotate(0)}30%{transform:translateY(-22%) rotate(-5deg)}60%{transform:translateY(0) rotate(4deg)}}
+@media (max-width:560px){
+  .mx-row{grid-template-columns:1fr}
+  .mx-opts{justify-content:flex-start;flex-wrap:wrap}
+  .banner .cap{right:30%}
+  .banner .stk{height:66%}
+  .banner .stk img{max-width:26vw}
+  .say .ava{width:58px;height:58px}
+  .pick img{height:78px}
+  .picks{grid-template-columns:repeat(auto-fill,minmax(96px,1fr))}
+  .picks.bgk{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .face span{font-size:.7em}
+  .starb{width:46px;height:46px}
+  .nps{grid-template-columns:repeat(6,minmax(0,1fr))}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<style>:root{--fs:18px;--accent:#1d7fb8;--accent-strong:#17689a;--accent2:#ff8a5c;--sky1:#6fc8f0;--sky2:#dcf4ff;--hill1:#5cbfa4;--hill2:#3fa28f;--hill3:#2e8580;--sea:#2f8fcf;--sun:#ffe066;}@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--accent:#56b8ef;--accent-strong:#1f78ad;--accent2:#ff9c75;--hill1:#1f4f4a;--hill2:#1a423f;--hill3:#143533;--sea:#153f66;}}:root[data-theme="dark"]{--accent:#56b8ef;--accent-strong:#1f78ad;--accent2:#ff9c75;--hill1:#1f4f4a;--hill2:#1a423f;--hill3:#143533;--sea:#153f66;}@media (max-width:560px){:root{--fs:17px}}</style>
+</head>
+<body>
+
+<div class="scene" id="scene"></div>
+<div class="wrap"><div class="titlecard" id="titlecard"></div></div>
+<div class="chainbar hidden" id="chainbar"><div class="wrap"><div class="links" id="links"></div><div class="chainlabel" id="chainlabel"></div></div></div>
+<main class="wrap" id="screen" aria-live="polite"></main>
+<footer id="foot"></footer>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <linearGradient id="goldg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe27a"/><stop offset=".55" stop-color="#e8a91c"/><stop offset="1" stop-color="#b8740c"/></linearGradient>
+</defs></svg>
+<script>window.SURVEY={"id":"9-10","age":"9–10 лет","file":"opros_9-10","faces":5,"fs":18,"read":true,"sound":true,"voice":"ты","title":"Опрос «Златая цепь» · 9–10 лет","desc":"Интерактивный опрос с картинками для игроков 9–10 лет, прошедших «Златую цепь».","time":"15 минут","intro":{"head":"Привет, герой Лукоморья!","text":"Я — Звенышко. Ты собрал Златую цепь и прошёл сказку до конца! Нам очень важно знать, что тебе понравилось, что было трудно, а что стоит переделать. Отвечай честно — так игра станет лучше для всех.","note":"Для взрослых: опрос займёт около 15 минут. Любой вопрос можно пропустить, ответы на письменные вопросы можно записать за ребёнка."},"outro":"Спасибо! Твои ответы помогут нам поправить сказку. Кот Учёный уже записывает их на свиток!","sections":[{"id":"me","title":"Знакомство","bg":"bg_pine","stk":["st_tishka","st_yosha"],"who":"st_yosha","say":"Я Йоша! Начнём с простого: как и с кем ты играл?","q":[{"id":"age","t":"chips","q":"Сколько тебе лет?","o":["8 или меньше","9","10","11 или больше"]},{"id":"with","t":"chips","multi":true,"q":"С кем ты играл?","h":"Можно выбрать несколько.","o":["С мамой или папой","С братом или сестрой","С другом или подругой","Один (одна)"]},{"id":"mode","t":"chips","multi":true,"q":"Как ты играл?","o":["Вдвоём на общем экране","Вдвоём, экран делился пополам","Один (одиночный режим)"]},{"id":"input","t":"chips","multi":true,"q":"Чем ты управлял героем?","o":["Клавиатура","Джойстик (геймпад)","Не помню"]},{"id":"done","t":"chips","q":"Сколько ты прошёл?","o":["Всё до конца","Почти всё","Половину","Меньше половины"]},{"id":"path","t":"chips","q":"Какой путь сложности ты выбирал?","o":["Лёгкий","Средний","Богатырский","Не выбирал / не знаю"]}]},{"id":"story","title":"Сказка и герои","bg":"bg_terem","stk":["st_kot","st_koschei"],"who":"st_kot","say":"Мур-р. Сказку я сочинял долго. Скажи, получилось?","q":[{"id":"story_like","t":"faces","q":"Как тебе сказка в целом?"},{"id":"story_clear","t":"chips","q":"Было понятно, что происходит?","o":["Всё понятно","Почти всё","Многое непонятно"]},{"id":"story_what","t":"text","q":"Что было непонятно?","showIf":{"q":"story_clear","in":["Почти всё","Многое непонятно"]}},{"id":"hero","t":"pick","q":"Кто твой любимый герой?","o":[{"v":"Прошка","img":"st_proshka","s":"лисёнок с рогаткой"},{"v":"Потап","img":"st_potap","s":"медвежонок-силач"},{"v":"Пелагея","img":"st_pelageya","s":"совушка-умница"},{"v":"Йоша","img":"st_yosha","s":"ёжик с ковшиком"}]},{"id":"hero_why","t":"text","q":"Почему именно он?","showIf":{"q":"hero"}},{"id":"friends","t":"pick","multi":true,"max":3,"q":"Любимые жители сказки — выбери до трёх.","o":[{"v":"Кот Учёный","img":"st_kot"},{"v":"Баба-Яга","img":"st_yaga"},{"v":"Кикимора","img":"st_kiki"},{"v":"Колобок","img":"st_kolobok"},{"v":"Леший","img":"st_leshy"},{"v":"Садко","img":"st_sadko"},{"v":"Золотая рыбка","img":"st_rybka"},{"v":"Жар-птица","img":"st_zhar"},{"v":"Сирин","img":"st_sirin"},{"v":"Алконост","img":"st_alkonost"},{"v":"Змей Горыныч","img":"st_gor"},{"v":"Кузьма-кузнец","img":"st_kuzma"},{"v":"Тишка","img":"st_tishka"},{"v":"Лихо Одноглазое","img":"st_likho"},{"v":"Три богатыря","img":"st_bogI"},{"v":"Кощей","img":"st_koschei"}]},{"id":"skazy","t":"faces","q":"В Сказах вы сами выбирали, как пойдёт история. Понравилось выбирать?"},{"id":"koschei","t":"faces","q":"Понравилось, чем закончилась история Кощея?"},{"id":"funny","t":"text","q":"Какой момент был самым смешным?"}]},{"id":"worlds","title":"Миры и уровни","bg":"bg_forest","stk":["st_leshy","st_rybka"],"who":"st_leshy","say":"Ау-у! Лес, вода, небо, огонь и остров Буян… Оцени каждое место!","q":[{"id":"worlds","t":"matrix","q":"Как тебе каждый мир?","rows":[{"v":"Дремучий лес","img":"bg_forest"},{"v":"Подводный Китеж","img":"bg_kitezh"},{"v":"Небесное царство","img":"bg_sky"},{"v":"Огненная Смородина","img":"bg_fire"},{"v":"Остров Буян","img":"bg_buyan"},{"v":"Лукоморье","img":"bg_luko"}],"na":"Не был"},{"id":"levels_best","t":"chips","multi":true,"max":3,"q":"Самые классные уровни — выбери до трёх.","o":["Избушка, повернись","Кикиморино болото","Колобок","Леший водит","Кикиморина прялка","Гусли Садко","Рыба-кит","Невод","В брюхе у кита","Китеж звонит","Сад молодильных яблок","Облачные пастбища","Сирин и Алконост","Летучий корабль","Гуси-лебеди","Кузня Кузьмы и Демьяна","Река Смородина","Эй, ухнем!","Змиевы валы","Калинов мост","Сундук на дубе","Заяц","Утка (полёт на Горыныче)","Яйцо («Калинка»)","Кощей в тереме","Застава трёх богатырей"]},{"id":"level_hard","t":"text","q":"Какой уровень был самым трудным? Почему?"},{"id":"bosses","t":"matrix","q":"Как тебе битвы с боссами?","rows":[{"v":"Леший-Путаник","img":"st_f_leshyBoss","s":"Дремучий лес"},{"v":"Водяной","img":"st_f_vodyanoy","s":"Подводный Китеж"},{"v":"Соловей-Разбойник","img":"st_solovei","s":"Небесное царство"},{"v":"Змей Горыныч","img":"st_gor","s":"Огненная Смородина"},{"v":"Кощей Бессмертный","img":"st_koschei","s":"Остров Буян"}],"na":"Не помню"}]},{"id":"play","title":"Как играть","bg":"bg_kolobok","stk":["st_potap","st_f_morok"],"who":"st_potap","say":"Потап на связи! Теперь про драки, прыжки и чудо-вещи.","q":[{"id":"hard","t":"scale","n":5,"q":"Насколько трудно было играть?","lo":"Очень легко","mid":"В самый раз","hi":"Очень трудно","neutral":true},{"id":"signals","t":"chips","q":"Над мороками загорались знаки: жёлтый кружок, красный зубец, синяя капля. Было понятно, что они значат?","o":["Да, сразу понял","Понял не сразу","Так и не понял"]},{"id":"ability","t":"chips","q":"Какая способность или чудо-вещь самая классная?","o":["Рогатка Прошки","Подкидка Потапа","Ковшик Йоши","Совиный взор Пелагеи","Клубок-путеводитель","Гусли Садко","Перо Жар-птицы","Кузнечные клещи"]},{"id":"stuck","t":"yesno","q":"Ты застревал так, что не знал, что делать?"},{"id":"stuck_where","t":"text","q":"Где это было?","showIf":{"q":"stuck","in":["Да"]}},{"id":"hints","t":"faces","q":"Подсказки были понятные?"},{"id":"fight","t":"faces","q":"Нравилось драться с мороками?"},{"id":"slash","t":"faces","q":"Нравятся яркие удары героев?"},{"id":"coop","t":"faces","q":"Весело было играть вдвоём?","showIf":{"q":"mode","in":["Вдвоём на общем экране","Вдвоём, экран делился пополам"]}},{"id":"split","t":"faces","q":"Удобно, когда экран делился пополам?","showIf":{"q":"mode","in":["Вдвоём, экран делился пополам"]}},{"id":"downed","t":"faces","q":"Когда один герой падал без сил, можно было играть другим. Это удобно?"}]},{"id":"luko","title":"Лукоморье","bg":"bg_luko","stk":["st_kuzma","st_kot"],"who":"st_kuzma","say":"Кузьма-кузнец тут. Между походами герои отдыхали на Лукоморье. Чем ты там занимался?","q":[{"id":"luko","t":"matrix","q":"Как тебе занятия на Лукоморье?","rows":[{"v":"Кузня Кузьмы: ковать звенья в такт","img":"st_kuzma"},{"v":"Лавка Векши и примерочная: наряды","emoji":"👒"},{"v":"Огород Дедки","emoji":"🥕"},{"v":"Курочка Ряба","emoji":"🐔"},{"v":"Сказки-лубки и пляски Кота","img":"st_kot"},{"v":"Застава трёх богатырей","img":"st_bogD"}],"na":"Не пробовал"},{"id":"luko_add","t":"text","q":"Чего не хватает на Лукоморье?"}]},{"id":"look","title":"Красота и звуки","bg":"bg_sky","stk":["st_zhar","st_sirin"],"who":"st_sirin","say":"Я птица Сирин, я люблю песни! Как тебе картинка и музыка?","q":[{"id":"pretty","t":"faces","q":"Насколько игра красивая?"},{"id":"looks","t":"faces","q":"Нравится, как выглядят и двигаются жители сказки и мороки?"},{"id":"movies","t":"faces","q":"Нравятся мультики-ролики между уровнями?"},{"id":"subs","t":"chips","q":"Слова героев внизу экрана (субтитры) было легко читать и понимать?","o":["Да, всё понятно","Иногда не успевал","Были непонятные слова","Не читал"]},{"id":"music","t":"faces","q":"Нравятся музыка и песни?"},{"id":"sounds","t":"faces","q":"Нравятся звуки?"},{"id":"place","t":"pick","kind":"bg","q":"Какое место самое красивое?","o":[{"v":"Бег с Колобком","img":"bg_kolobok"},{"v":"Рыба-кит","img":"bg_whale"},{"v":"Сад молодильных яблок","img":"bg_garden"},{"v":"Летучий корабль","img":"bg_ship"},{"v":"Кузня Кузьмы и Демьяна","img":"bg_forge"},{"v":"Терем Кощея","img":"bg_terem"},{"v":"Лукоморье","img":"bg_luko"},{"v":"Застава богатырей","img":"bg_zastava"},{"v":"Штаб-сосна","img":"bg_pine"}]},{"id":"drawing","t":"draw","q":"Нарисуй то, что ты бы добавил в игру!","h":"Необязательно — можно пропустить."}]},{"id":"end","title":"Напоследок","bg":"bg_zastava","stk":["st_bogA","st_bogI","st_bogD"],"who":"st_bogD","say":"Добрыня говорит: осталось последнее испытание — самые важные вопросы!","q":[{"id":"stars","t":"stars","q":"Сколько звёзд ты поставишь игре?"},{"id":"recommend","t":"chips","q":"Посоветуешь игру друзьям?","o":["Точно посоветую","Может быть","Нет"]},{"id":"best","t":"text","q":"Что в игре самое-самое лучшее?"},{"id":"fix","t":"text","q":"Что обязательно нужно исправить?"},{"id":"add","t":"text","q":"Что бы ты добавил: героя, мир, игру, наряд?"}]}]};</script>
+<script>
+(()=>{
+'use strict';
+const SV=window.SURVEY,SECS=SV.sections,N=SECS.length,KEY='zc-opros-'+SV.id+'-v1',SKEY='zc-opros-sound';
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const YOU=SV.voice==='вы';
+const QMAP={};SECS.forEach((s,si)=>s.q.forEach(q=>{q.si=si;QMAP[q.id]=q;}));
+const $=s=>document.querySelector(s);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const A_=n=>'assets/'+n+'.webp';
+const ls={get(k){try{return JSON.parse(localStorage.getItem(k)||'null');}catch(e){return null;}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}},del(k){try{localStorage.removeItem(k);}catch(e){}}};
+
+let S=null;
+const fresh=()=>({sec:-1,A:{},t0:Date.now(),sent:null,sentSig:null,visited:{}});
+
+// ——— звук: колокольчик на WebAudio ———
+let soundOn=ls.get(SKEY);if(soundOn==null)soundOn=!!SV.sound;
+let AC=null;const ac=()=>{if(!AC){try{AC=new(window.AudioContext||window.webkitAudioContext)();}catch(e){AC=null;}}if(AC&&AC.state==='suspended')AC.resume().catch(()=>{});return AC;};
+function bell(f,dur,vol){if(!soundOn)return;const c=ac();if(!c)return;const t=c.currentTime;dur=dur||.6;vol=vol||.1;
+  [[1,1],[2.01,.45],[3.17,.22],[4.2,.1]].forEach(([m,a],i)=>{const o=c.createOscillator(),g=c.createGain();o.type='sine';o.frequency.value=f*m;
+    g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol*a,t+.008);g.gain.exponentialRampToValueAtTime(.0001,t+dur/(1+i*.6));o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur);});}
+const PENTA=[523.25,587.33,659.25,783.99,880,1046.5,1174.66,1318.51,1567.98];
+const chime=()=>bell(PENTA[answeredTotal()%PENTA.length],.55,.09);
+function fanfare(){[523.25,659.25,783.99,1046.5,1318.51].forEach((f,i)=>setTimeout(()=>bell(f,.9,.1),i*120));}
+
+// ——— чтение вслух ———
+const TTS=!!SV.read&&'speechSynthesis' in window&&typeof SpeechSynthesisUtterance!=='undefined';
+let ruVoice=null,speakingBtn=null;
+if(TTS){const pv=()=>{try{const vs=speechSynthesis.getVoices();ruVoice=vs.find(v=>/^ru/i.test(v.lang))||null;}catch(e){}};pv();try{speechSynthesis.onvoiceschanged=pv;}catch(e){}}
+function speak(text,btn){if(!TTS)return;try{speechSynthesis.cancel();if(speakingBtn){speakingBtn.classList.remove('on');}
+  if(speakingBtn===btn){speakingBtn=null;return;}const u=new SpeechSynthesisUtterance(text);u.lang='ru-RU';if(ruVoice)u.voice=ruVoice;u.rate=SV.id==='7-8'?.9:.97;u.pitch=1.08;
+  speakingBtn=btn||null;if(btn)btn.classList.add('on');u.onend=u.onerror=()=>{if(btn)btn.classList.remove('on');if(speakingBtn===btn)speakingBtn=null;};speechSynthesis.speak(u);}catch(e){}}
+const ICON={
+  spk:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z" fill="currentColor"/><path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg>',
+  bell:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2z" fill="currentColor"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>',
+  star:'<svg viewBox="0 0 48 48"><path class="s" d="M24 3.5l6.2 12.9 14.1 1.9-10.3 9.8 2.6 14-12.6-6.8-12.6 6.8 2.6-14L3.7 18.3l14.1-1.9z" stroke-linejoin="round"/></svg>',
+};
+
+// ——— Звенышко (SVG) ———
+function zvSVG(){return '<g class="zvb"><ellipse class="wing" cx="-26" cy="-14" rx="15" ry="9" fill="#fff" opacity=".75" transform="rotate(-20 -26 -14)"/><ellipse class="wing" cx="26" cy="-14" rx="15" ry="9" fill="#fff" opacity=".75" transform="rotate(20 26 -14)"/>'+
+  '<ellipse rx="21" ry="27" fill="#fff3c2" opacity=".92"/><ellipse rx="21" ry="27" fill="none" stroke="url(#zvgold)" stroke-width="11"/>'+
+  '<ellipse rx="21" ry="27" fill="none" stroke="#fffbe0" stroke-width="2.4" stroke-dasharray="18 150" stroke-dashoffset="-6" opacity=".85"/>'+
+  '<g class="eye"><ellipse cx="-7.5" cy="-5" rx="5" ry="6.2" fill="#fff" stroke="#3b2a00" stroke-width="1.4"/><circle cx="-6.5" cy="-4" r="3" fill="#2b2118"/><circle cx="-5.5" cy="-5.5" r="1.1" fill="#fff"/></g>'+
+  '<g class="eye"><ellipse cx="7.5" cy="-5" rx="5" ry="6.2" fill="#fff" stroke="#3b2a00" stroke-width="1.4"/><circle cx="8.5" cy="-4" r="3" fill="#2b2118"/><circle cx="9.5" cy="-5.5" r="1.1" fill="#fff"/></g>'+
+  '<circle cx="-12" cy="6" r="3.2" fill="#ff9a8a" opacity=".7"/><circle cx="12" cy="6" r="3.2" fill="#ff9a8a" opacity=".7"/>'+
+  '<path d="M-6 7 Q0 13 6 7" fill="none" stroke="#3b2a00" stroke-width="2.2" stroke-linecap="round"/></g>';}
+const ZVDEF='<linearGradient id="zvgold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff0a0"/><stop offset=".45" stop-color="#f2b705"/><stop offset="1" stop-color="#b8740c"/></linearGradient>';
+
+// ——— сцена ———
+const NAMES={proshka:'Прошка',potap:'Потап',pelageya:'Пелагея',yosha:'Йоша'};
+const CAST=[{k:'proshka',x:470},{k:'potap',x:575},{k:'pelageya',x:680},{k:'yosha',x:785}];
+const LINES={
+  proshka:YOU?['Спасибо, что прошли с нами всю сказку!','Каждый ответ — как найденное звено.']:['Ура! Ты с нами!','Спасибо, что прошёл сказку!','Отвечай — это как собирать звенья!'],
+  potap:YOU?['Критику выдержим — у меня щит.','Пишите как есть, мы крепкие.']:['Отвечай смело — я держу щит!','Я тоже иногда застревал. Расскажи где!'],
+  pelageya:YOU?['Всё запишу в тетрадку.','Конкретные примеры — самое ценное.']:['Всё запишу в тетрадку!','Хочешь, прочитаю вопрос вслух? Нажми на динамик.'],
+  yosha:YOU?['Полью ваши ответы живой водой — пусть растут в правки.']:['Полью твои ответы живой водой — пусть растут!','Фр-р! Ёжики тоже любят опросы.'],
+  kot:['Мур-р… Сказка любит честные ответы.','Иду направо — песнь заводит, налево — опрос проводит.'],
+  zv:['Дзынь!','Я Звенышко! Собери цепь — ответь на все главы!','Дзынь-дзынь! Я тут, рядом.'],
+};
+function sceneSVG(){
+  const stars=Array.from({length:26},(_,i)=>{const x=(i*97)%1200,y=12+((i*53)%150),r=1+(i%3)*.6;return `<circle class="star" cx="${x}" cy="${y}" r="${r}" fill="#fff" style="animation-delay:${(i%7)*.4}s"/>`;}).join('');
+  const cloud=(cls,y,s)=>`<g class="cloud ${cls}"><g transform="translate(0 ${y}) scale(${s})" fill="#fff" opacity=".9"><ellipse cx="60" cy="30" rx="60" ry="22"/><ellipse cx="30" cy="22" rx="28" ry="20"/><ellipse cx="82" cy="14" rx="34" ry="24"/><ellipse cx="118" cy="30" rx="30" ry="16"/></g></g>`;
+  // низкополигональные холмы: треугольные грани двух оттенков
+  const hill=(pts,base,dark)=>{let s=`<polygon points="${pts.map(p=>p.join(',')).join(' ')} 1200,360 0,360" fill="${base}"/>`;for(let i=0;i<pts.length-1;i++){const a=pts[i],b=pts[i+1];s+=`<polygon points="${a[0]},${a[1]} ${b[0]},${b[1]} ${(a[0]+b[0])/2},360" fill="${i%2?'#000':'#fff'}" opacity="${dark?.08:.07}"/>`;}return s;};
+  const far=[[0,210],[120,180],[260,205],[380,170],[520,200],[660,165],[800,195],[940,172],[1080,200],[1200,185]];
+  const mid=[[0,255],[150,232],[300,250],[430,228],[600,252],[760,236],[900,256],[1050,238],[1200,250]];
+  const near=[[0,300],[180,290],[360,302],[540,292],[720,300],[900,290],[1080,300],[1200,294]];
+  // дуб с золотой цепью
+  const oak=`<g transform="translate(360 0)"><polygon points="-14,300 -9,160 9,160 14,300" fill="var(--trunk)"/><polygon points="-9,200 -46,150 -40,146 -4,186" fill="var(--trunk)"/><polygon points="9,190 52,140 58,146 6,206" fill="var(--trunk)"/>
+    <polygon points="-90,150 -40,70 10,40 70,72 104,140 60,178 -20,182" fill="var(--oak1)"/><polygon points="-40,70 10,40 30,120 -30,130" fill="#fff" opacity=".08"/><polygon points="30,120 70,72 104,140 60,178" fill="#000" opacity=".1"/><polygon points="-90,150 -30,130 -20,182" fill="#000" opacity=".08"/>
+    <polygon points="-60,110 -20,60 20,90 -10,130" fill="var(--oak2)" opacity=".6"/>`;
+  let chain='';for(let i=0;i<16;i++){const t=i/15,x=-62+124*t,y=150+34*Math.sin(Math.PI*t);chain+=i%2?`<ellipse class="chainlink" cx="${x}" cy="${y}" rx="3.2" ry="5.5" fill="none" stroke="var(--gold)" stroke-width="2.6" style="--d:${i*.12}s"/>`:`<ellipse class="chainlink" cx="${x}" cy="${y}" rx="6.5" ry="4" fill="none" stroke="var(--gold)" stroke-width="2.6" style="--d:${i*.12}s"/>`;}
+  const kot=`<g class="kot" tabindex="0" role="button" aria-label="Кот Учёный" data-talk="kot"><image href="${A_('st_kot')}" x="-30" y="118" width="62" height="70"/></g>`;
+  const heroes=CAST.map((c,i)=>`<g class="hero" tabindex="0" role="button" aria-label="${NAMES[c.k]}" data-talk="${c.k}" style="--d:${i*.35}s"><image href="${A_('st_'+c.k)}" x="${c.x-52}" y="192" width="104" height="112"/></g>`).join('');
+  const zvPath='M 560 120 C 700 40, 900 60, 880 140 S 640 190, 560 120 C 480 60, 300 70, 330 130 S 470 170, 560 120 Z';
+  return `<svg class="sky" viewBox="0 0 1200 360" preserveAspectRatio="xMidYMax slice" aria-hidden="false"><defs>
+      <linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--sky1)"/><stop offset="1" style="stop-color:var(--sky2)"/></linearGradient>
+      <radialGradient id="sung"><stop offset="0" style="stop-color:var(--sun)" stop-opacity=".55"/><stop offset="1" style="stop-color:var(--sun)" stop-opacity="0"/></radialGradient>${ZVDEF}</defs>
+    <rect width="1200" height="360" fill="url(#skyg)"/>${stars}
+    <circle cx="840" cy="86" r="96" fill="url(#sung)"/><g class="rays" style="opacity:calc(1 - var(--stars))">${Array.from({length:12},(_,i)=>`<polygon points="840,86 ${840+118*Math.cos(i*Math.PI/6-.06)},${86+118*Math.sin(i*Math.PI/6-.06)} ${840+118*Math.cos(i*Math.PI/6+.06)},${86+118*Math.sin(i*Math.PI/6+.06)}" fill="var(--sun)" opacity=".35"/>`).join('')}</g>
+    <circle cx="840" cy="86" r="40" fill="var(--sun)"/>
+    ${cloud('c1',40,1)}${cloud('c2',90,.7)}${cloud('c3',20,.55)}
+    ${hill(far,'var(--hill3)',1)}
+    <g><rect x="860" y="215" width="340" height="80" fill="var(--sea)"/><path class="wave" d="M840 236 q20 -8 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="3"/><path class="wave" style="animation-delay:-2.5s" d="M850 262 q20 -8 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="3"/></g>
+    ${hill(mid,'var(--hill2)',0)}
+    ${oak}${chain}${kot}</g>
+    ${hill(near,'var(--hill1)',0)}
+    ${heroes}
+    <g class="zv" tabindex="0" role="button" aria-label="Звенышко" data-talk="zv"><g transform="scale(.9)">${zvSVG()}</g>${RM?'':`<animateMotion dur="16s" repeatCount="indefinite" path="${zvPath}"/>`}</g>
+  </svg>
+  <div class="tools"><button class="tbtn" id="sndbtn" aria-label="Звук" aria-pressed="${soundOn}">${ICON.bell}</button></div>`;
+}
+function initScene(){
+  const sc=$('#scene');sc.innerHTML=sceneSVG();
+  if(RM){const z=sc.querySelector('.zv');z.setAttribute('transform','translate(600 110)');}
+  let bub=null,bt=0;const idx={};
+  const talk=g=>{const k=g.dataset.talk,L=LINES[k];idx[k]=((idx[k]==null?-1:idx[k])+1)%L.length;const r=g.getBoundingClientRect(),R=sc.getBoundingClientRect();
+    if(bub)bub.remove();bub=document.createElement('div');bub.className='bubble';bub.textContent=L[idx[k]];
+    bub.style.left=Math.max(90,Math.min(R.width-90,r.left-R.left+r.width/2))+'px';bub.style.top=Math.max(52,r.top-R.top+(k==='zv'?0:8))+'px';sc.appendChild(bub);
+    clearTimeout(bt);bt=setTimeout(()=>{if(bub){bub.remove();bub=null;}},2600);
+    if(g.classList.contains('hero')){g.classList.remove('jump');void g.getBoundingClientRect();g.classList.add('jump');}
+    bell(k==='zv'?1318.51:k==='kot'?392:[587.33,440,783.99,659.25][CAST.findIndex(c=>c.k===k)]||660,.7,.1);};
+  sc.addEventListener('click',e=>{const g=e.target.closest('[data-talk]');if(g)talk(g);});
+  sc.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.closest('[data-talk]')){e.preventDefault();talk(e.target.closest('[data-talk]'));}});
+  $('#sndbtn').addEventListener('click',e=>{soundOn=!soundOn;ls.set(SKEY,soundOn);e.currentTarget.setAttribute('aria-pressed',soundOn);if(soundOn)bell(880,.5,.1);});
+  $('#titlecard').innerHTML=`<div class="rushnik"></div><h1 class="logo">Златая цепь</h1><p class="sub">${YOU?'Опрос для тех, кто прошёл игру':'Опрос для тех, кто прошёл сказку'}</p><span class="badge">${esc(SV.age)}</span>`;
+  $('#foot').textContent='«Златая цепь» · опрос тестеров · версия игры final05';
+}
+
+// ——— рожицы ———
+const FACECOL=['var(--f1)','var(--f2)','var(--f3)','var(--f4)','var(--f5)'];
+const FACELAB={3:['Не очень','Нормально','Здорово!'],5:['Совсем нет','Не очень','Средне','Хорошо','Супер!']};
+function faceSVG(l,n){const t=n===3?[0,.5,1][l-1]:(l-1)/4,ci=Math.round(t*4),c=(t-.5)*2;const my=44,cy=my+13*c;
+  let eyes;if(t===1)eyes='<path d="M19 28 q4 -6 8 0 M37 28 q4 -6 8 0" fill="none" stroke="#2b2118" stroke-width="3" stroke-linecap="round"/>';
+  else eyes='<ellipse cx="23" cy="27" rx="3.6" ry="4.4" fill="#2b2118"/><ellipse cx="41" cy="27" rx="3.6" ry="4.4" fill="#2b2118"/><circle cx="24.2" cy="25.6" r="1.2" fill="#fff"/><circle cx="42.2" cy="25.6" r="1.2" fill="#fff"/>';
+  const brows=t===0?'<path d="M17 20 l9 3 M47 20 l-9 3" stroke="#2b2118" stroke-width="2.6" stroke-linecap="round"/>':'';
+  const cheeks=t>=.75?'<circle cx="16" cy="38" r="4" fill="#ff8f80" opacity=".55"/><circle cx="48" cy="38" r="4" fill="#ff8f80" opacity=".55"/>':'';
+  const mouth=t===1?`<path d="M20 40 Q32 56 44 40 Z" fill="#7a2a1a" stroke="#2b2118" stroke-width="2.4" stroke-linejoin="round"/><path d="M26 47 Q32 51 38 47" fill="#ff8f80"/>`:t===.5?'<path d="M22 44 H42" stroke="#2b2118" stroke-width="3" stroke-linecap="round"/>':`<path d="M20 ${my} Q32 ${cy} 44 ${my}" fill="none" stroke="#2b2118" stroke-width="3" stroke-linecap="round"/>`;
+  return `<svg viewBox="0 0 64 64" aria-hidden="true"><polygon points="32,3 55,12 61,34 52,55 32,61 12,55 3,34 9,12" fill="${FACECOL[ci]}" stroke="rgba(0,0,0,.2)" stroke-width="2" stroke-linejoin="round"/><polygon points="32,3 55,12 32,30" fill="#fff" opacity=".18"/><polygon points="3,34 12,55 32,30" fill="#000" opacity=".07"/><polygon points="61,34 52,55 32,30" fill="#000" opacity=".1"/>${brows}${eyes}${cheeks}${mouth}</svg>`;}
+
+// ——— видимость и ответы ———
+const has=v=>!(v==null||v===''||(Array.isArray(v)&&!v.length)||(typeof v==='object'&&!Array.isArray(v)&&!Object.keys(v).length));
+function visible(q){const c=q.showIf;if(!c)return true;if(!visible(QMAP[c.q]))return false;const v=S.A[c.q];if(!has(v))return false;const arr=Array.isArray(v)?v:[v];
+  if(c.in)return arr.some(x=>c.in.includes(x));if(c.not)return arr.some(x=>!c.not.includes(x));if(c.lte!=null)return +v<=c.lte;if(c.gte!=null)return +v>=c.gte;return true;}
+const answered=q=>has(S.A[q.id]);
+function secStat(si){let a=0,n=0;for(const q of SECS[si].q){if(!visible(q))continue;n++;if(answered(q))a++;}return {a,n};}
+function answeredTotal(){let a=0;for(const q in QMAP)if(visible(QMAP[q])&&answered(QMAP[q]))a++;return a;}
+function visibleTotal(){let n=0;for(const q in QMAP)if(visible(QMAP[q]))n++;return n;}
+let saveT=0;function save(now){clearTimeout(saveT);const f=()=>ls.set(KEY,S);if(now)f();else saveT=setTimeout(f,250);}
+
+// ——— отрисовка вопросов ———
+const optsOf=q=>(q.o||[]).map(o=>typeof o==='string'?{v:o}:o);
+function body(q){const v=S.A[q.id],n=q.n||(q.t==='faces'?SV.faces:5);
+  switch(q.t){
+  case 'faces':return `<div class="faces${has(v)?' has':''}" role="radiogroup">${Array.from({length:n},(_,i)=>i+1).map(l=>`<button class="face opt${v===l?' sel':''}" data-v="${l}" role="radio" aria-checked="${v===l}">${faceSVG(l,n)}<span>${FACELAB[n][l-1]}</span></button>`).join('')}</div>`;
+  case 'stars':{const lab=['Плохо','Так себе','Нормально','Хорошо','Отлично!'];return `<div class="stars" role="radiogroup">${[1,2,3,4,5].map(l=>`<button class="starb opt${v>=l?' on':''}" style="--d:${(l-1)*60}ms" data-v="${l}" role="radio" aria-checked="${v===l}" aria-label="${l}">${ICON.star}</button>`).join('')}<span class="starlab">${has(v)?lab[v-1]:''}</span></div>`;}
+  case 'scale':return `<div class="scale" style="--n:${n}" role="radiogroup">${Array.from({length:n},(_,i)=>i+1).map(l=>`<button class="pill opt${v===l?' sel':''}" data-v="${l}" role="radio" aria-checked="${v===l}">${l}</button>`).join('')}</div><div class="ends"><span>${esc(q.lo||'')}</span>${q.mid?`<span>${esc(q.mid)}</span>`:''}<span>${esc(q.hi||'')}</span></div>`;
+  case 'nps':return `<div class="scale nps" role="radiogroup">${Array.from({length:11},(_,i)=>i).map(l=>`<button class="pill opt${v===l?' sel':''}" style="--c:${l<=6?'#d0573f':l<=8?'#d9a520':'#3f9b3a'}" data-v="${l}" role="radio" aria-checked="${v===l}">${l}</button>`).join('')}</div><div class="ends"><span>0 — ${esc(q.lo||'')}</span><span>10 — ${esc(q.hi||'')}</span></div>`;
+  case 'yesno':{const o=q.o||['Да','Нет','Не знаю'];return `<div class="yn" role="radiogroup">${o.map((x,i)=>`<button class="pill opt${v===x?' sel':''}" data-v="${i}" role="radio" aria-checked="${v===x}">${['👍 ','👎 ','🤔 '][i]||''}${esc(x)}</button>`).join('')}</div>`;}
+  case 'chips':{const o=optsOf(q),sel=q.multi?(v||[]):[v];let s=`<div class="chips">${o.map((x,i)=>`<button class="chip opt${sel.includes(x.v)?' sel':''}" data-v="${i}" aria-pressed="${sel.includes(x.v)}">${esc(x.v)}</button>`).join('')}${q.other?`<button class="chip opt${sel.includes('Своё')?' sel':''}" data-v="other">Своё…</button>`:''}</div>`;
+    if(q.multi)s+=`<div class="counter">${q.max?`Выбрано ${sel.length} из ${q.max}`:(sel.length?`Выбрано: ${sel.length}`:'Можно выбрать несколько')}</div>`;
+    if(q.other&&sel.includes('Своё'))s+=`<input class="tin other" data-other="${q.id}" value="${esc(S.A[q.id+'_other']||'')}" placeholder="Напиши своё">`;return s;}
+  case 'pick':{const o=optsOf(q),sel=q.multi?(v||[]):[v],bg=q.kind==='bg';
+    return `<div class="picks${bg?' bgk':''}${has(v)?' has':''}">${o.map((x,i)=>`<button class="pick opt${bg?' bg':''}${sel.includes(x.v)?' sel':''}" data-v="${i}" aria-pressed="${sel.includes(x.v)}"><img src="${A_(x.img)}" alt="" loading="lazy"><span class="l">${esc(x.v)}</span>${x.s?`<span class="s">${esc(x.s)}</span>`:''}</button>`).join('')}${q.none?`<button class="pick opt none${sel.includes(q.none)?' sel':''}" data-v="none"><span class="big">✨</span><span class="l">${esc(q.none)}</span></button>`:''}</div>${q.multi&&q.max?`<div class="counter">Выбрано ${sel.length} из ${q.max}</div>`:''}`;}
+  case 'text':return q.short?`<input class="tin" data-text="${q.id}" value="${esc(v||'')}" placeholder="${esc(q.ph||'')}">`:`<textarea data-text="${q.id}" placeholder="${esc(q.ph||(YOU?'Ваш ответ':'Напиши здесь…'))}">${esc(v||'')}</textarea>`;
+  case 'matrix':return matrix(q);
+  case 'draw':return `<div class="draw"><canvas width="800" height="500" data-draw="${q.id}"></canvas></div><div class="dtools" data-dtools="${q.id}"></div>`;
+  }return '';}
+function matrix(q){const v=S.A[q.id]||{},sc=q.scale||'faces',n=sc==='faces'?SV.faces:5;
+  const leg=sc==='faces'?'':`<div class="mx-legend"><span>1 — ${esc(q.lo||'')}</span><span>5 — ${esc(q.hi||'')}</span></div>`;
+  const D5=['#4f9fd6','#79c0a0','#4fb35a','#e2a13a','#d0573f'];
+  return leg+q.rows.map((r,ri)=>{const cur=v[r.v];const img=r.img?(r.img.startsWith('bg_')?`<img class="bgi" src="${A_(r.img)}" alt="">`:`<img src="${A_(r.img)}" alt="">`):(r.emoji?`<span class="em">${r.emoji}</span>`:'');
+    const btns=Array.from({length:n},(_,i)=>i+1).map(l=>sc==='faces'?`<button class="face opt${cur===l?' sel':''}" data-row="${ri}" data-v="${l}" aria-label="${FACELAB[n][l-1]}" title="${FACELAB[n][l-1]}">${faceSVG(l,n)}</button>`:`<button class="pill opt${cur===l?' sel':''}" ${sc==='d5'?`style="--c:${D5[l-1]}"`:''} data-row="${ri}" data-v="${l}">${l}</button>`).join('');
+    return `<div class="mx-row${has(cur)?' ok':''}${sc==='d5'?' d5':''}"><div class="rl">${img}<span>${esc(r.v)}</span></div><div class="mx-opts${has(cur)&&sc==='faces'?' has':''}">${btns}${q.na?`<button class="pill opt na${cur==='na'?' sel':''}" data-row="${ri}" data-v="na">${esc(q.na)}</button>`:''}</div></div>`;}).join('');}
+function qHTML(q,num,i){const sub=!!q.showIf;const spk=TTS?`<button class="spk" data-say="q:${q.id}" aria-label="Прочитать вслух">${ICON.spk}</button>`:'';
+  return `<article class="q${sub?' sub':''}${answered(q)?' ok':''}${visible(q)?'':' hidden'}" id="q-${q.id}" data-qid="${q.id}" style="--i:${i}"><header><span class="num${sub?' arrow':''}">${sub?'↳':num}</span><h3>${esc(q.q)}</h3>${spk}</header>${q.h?`<p class="hint">${esc(q.h)}</p>`:''}<div class="qb">${body(q)}</div></article>`;}
+function sayText(q){let t=q.q;if(q.t==='chips'||q.t==='pick'){const o=optsOf(q).map(x=>x.v);if(q.none)o.push(q.none);t+='. Варианты: '+o.join(', ')+'.';}
+  else if(q.t==='yesno')t+='. Да, нет или не знаю.';else if(q.t==='faces')t+='. Выбери рожицу.';else if(q.t==='stars')t+='. Выбери от одной до пяти звёзд.';return t;}
+
+// ——— экраны ———
+function chainHTML(){let s='';for(let i=0;i<N;i++){const st=secStat(i),p=st.n?st.a/st.n:0,vis=S.visited[i];
+  s+=`<button class="link${i===S.sec?' cur':''}${p>=1?' done':''}" data-go="${i}" style="--p:${Math.max(p,vis&&st.a?.25:0)}" aria-label="Глава ${i+1}: ${esc(SECS[i].title)}"><svg viewBox="0 0 48 32"><ellipse class="ring" cx="24" cy="16" rx="19" ry="11"/><ellipse class="fill" cx="24" cy="16" rx="19" ry="11"/></svg></button>`;}
+  s+=`<button class="link fin${S.sec===N?' cur':''}${S.sent?' on':''}" data-go="${S.sent?N:N-1}" aria-label="Финиш"><svg viewBox="0 0 48 48"><path class="st" d="M24 5l5.6 11.6 12.7 1.7-9.3 8.8 2.4 12.6L24 33.6l-11.4 6.1 2.4-12.6-9.3-8.8 12.7-1.7z"/></svg></button>`;return s;}
+function updChain(){if(S.sec<0){$('#chainbar').classList.add('hidden');return;}$('#chainbar').classList.remove('hidden');$('#links').innerHTML=chainHTML();
+  $('#chainlabel').textContent=S.sec<N?`Глава ${S.sec+1}/${N} · ${SECS[S.sec].title} · ${secStat(S.sec).a} из ${secStat(S.sec).n}`:`Готово! Ответов: ${answeredTotal()} из ${visibleTotal()}`;}
+function introHTML(){const st=answeredTotal(),I=SV.intro,cont=Math.min(Math.max(S.last||0,0),N-1);
+  return `<section class="card intro enter"><svg class="zvbig" viewBox="-48 -44 96 88" aria-hidden="true"><defs>${ZVDEF}</defs><g>${zvSVG()}</g></svg>
+    <h2>${esc(I.head)}</h2><p class="lead">${esc(I.text)}</p>
+    <div class="meta"><span>⏱ ${esc(SV.time)}</span><span>📜 ${N} глав</span><span>✋ ${YOU?'Любой вопрос можно пропустить':'Можно пропускать вопросы'}</span></div>
+    ${I.note?`<p class="note">${esc(I.note)}</p>`:''}
+    ${TTS?`<p><button class="btn ghost" data-say="intro">${'🔊'} Прочитать вслух</button></p>`:''}
+    <div class="nav center">${st>0?`<button class="btn primary big pulse" data-go="${cont}">Продолжить →</button><button class="btn ghost" data-act="reset">Начать заново</button>`:`<button class="btn primary big pulse" data-go="0">${YOU?'Начать опрос':'Начать!'}</button>`}</div>
+    ${st>0?`<p class="draftnote">Мы сохранили ${YOU?'ваши':'твои'} ответы в этом браузере: ${st} из ${visibleTotal()}.</p>`:''}</section>`;}
+function secHTML(si){const s=SECS[si];let num=0;const qs=s.q.map((q,i)=>qHTML(q,q.showIf?0:++num,i)).join('');const last=si===N-1;
+  return `<section class="enter"><div class="banner"><div class="bg" style="background-image:url(${A_(s.bg)})"></div><div class="shade"></div>
+    <div class="stk">${(s.stk||[]).map((x,i)=>`<img src="${A_(x)}" alt="" style="--d:${150+i*140}ms">`).join('')}</div>
+    <div class="cap"><span class="chap">Глава ${si+1} из ${N}</span><h2>${esc(s.title)}</h2></div></div>
+    <div class="say"><img class="ava" src="${A_(s.who)}" alt=""><div class="bub"><p>${esc(s.say)}</p>${TTS?`<button class="spk" data-say="sec" aria-label="Прочитать вслух">${ICON.spk}</button>`:''}</div></div>
+    <div class="qs">${qs}</div>
+    <div class="nav"><button class="btn ghost" data-go="${si-1}">← Назад</button>${last?`<button class="btn gold big" data-act="finish">Отправить ответы ✨</button>`:`<button class="btn primary" data-go="${si+1}">Дальше →</button>`}</div>
+    ${last?`<p class="progress-note">Ответов: ${answeredTotal()} из ${visibleTotal()}. ${YOU?'Можно вернуться к любой главе по звеньям цепи вверху.':'Можно вернуться к любой главе — жми на звенья цепи вверху.'}</p>`:''}</section>`;}
+function finalHTML(){const a=answeredTotal(),n=visibleTotal();const gaps=SECS.map((s,i)=>({i,s,st:secStat(i)})).filter(x=>x.st.a<x.st.n);
+  return `<section class="final enter"><div class="party">${CAST.map((c,i)=>`<img src="${A_('st_'+c.k)}" alt="" style="--d:${i*.15}s">`).join('')}</div>
+    <h2>${YOU?'Спасибо!':'Спасибо, друг!'}</h2><p class="lead">${esc(SV.outro)}</p><p class="stat">Ответов: ${a} из ${n}</p>
+    ${gaps.length&&!S.sent?`<div class="gaps">${gaps.map(g=>`<button class="chip" data-go="${g.i}">${esc(g.s.title)}: ${g.st.a}/${g.st.n}</button>`).join('')}</div>`:''}
+    <div class="status wait" id="status"><span class="spin"></span>Отправляем ответы…</div>
+    <div class="nav center"><button class="btn ghost" data-go="${N-1}">← К ответам</button><button class="btn primary hidden" id="againbtn" data-act="again">${YOU?'Заполнить ещё раз':'Заполнить для другого игрока'}</button></div></section>`;}
+function go(si,noScroll){if(si<-1)si=-1;if(si>N)si=N;try{if(TTS)speechSynthesis.cancel();}catch(e){}speakingBtn=null;
+  S.sec=si;if(si>=0&&si<N){S.visited[si]=1;S.last=si;}save();
+  const sc=$('#screen');sc.innerHTML=si<0?introHTML():si<N?secHTML(si):finalHTML();updChain();
+  if(si>=0&&si<N)initDraws(sc);if(si===N)submit();
+  if(!noScroll){const top=si<0?0:sc.getBoundingClientRect().top+scrollY-70;scrollTo({top:Math.max(0,top),behavior:RM?'auto':'smooth'});}
+  if(si>=0)bell(PENTA[(si*2)%PENTA.length]*.75,.6,.07);}
+
+// ——— выбор ———
+function sparkle(x,y){if(RM)return;const cols=['var(--gold)','var(--accent)','var(--accent2)','#fff','var(--red)'];for(let i=0;i<12;i++){const s=document.createElement('i');s.className='spark';const a=Math.random()*Math.PI*2,d=26+Math.random()*46;
+  s.style.left=x+'px';s.style.top=y+'px';s.style.setProperty('--dx',Math.cos(a)*d+'px');s.style.setProperty('--dy',Math.sin(a)*d+'px');s.style.background=cols[i%cols.length];document.body.appendChild(s);setTimeout(()=>s.remove(),720);}}
+function refreshCard(q){const el=document.getElementById('q-'+q.id);if(!el)return;el.querySelector('.qb').innerHTML=body(q);el.classList.toggle('ok',answered(q));
+  if(q.t==='draw')initDraws(el);}
+function refreshDeps(id){for(const q of SECS[QMAP[id].si].q){if(!q.showIf)continue;const el=document.getElementById('q-'+q.id);if(!el)continue;const vis=visible(q),was=!el.classList.contains('hidden');
+  if(vis!==was){el.classList.toggle('hidden',!vis);if(vis){el.classList.remove('reveal');void el.offsetWidth;el.classList.add('reveal');}}}}
+function afterChange(q,e,b){save();refreshCard(q);refreshDeps(q.id);updChain();const r=b.getBoundingClientRect();sparkle(e&&e.clientX?e.clientX:r.left+r.width/2,e&&e.clientY?e.clientY:r.top+r.height/2);chime();
+  if(S.sent)S.sentSig=null;}
+function choose(q,b,e){const A=S.A,raw=b.dataset.v;
+  if(q.t==='matrix'){const row=q.rows[+b.dataset.row].v,m=Object.assign({},A[q.id]||{}),val=raw==='na'?'na':+raw;if(m[row]===val)delete m[row];else m[row]=val;A[q.id]=m;return afterChange(q,e,b);}
+  if(['faces','stars','scale','nps'].includes(q.t)){const val=+raw;A[q.id]=A[q.id]===val?null:val;return afterChange(q,e,b);}
+  if(q.t==='yesno'){const o=q.o||['Да','Нет','Не знаю'],val=o[+raw];A[q.id]=A[q.id]===val?null:val;return afterChange(q,e,b);}
+  if(q.t==='chips'||q.t==='pick'){const o=optsOf(q);const val=raw==='none'?q.none:raw==='other'?'Своё':o[+raw].v;
+    if(!q.multi){A[q.id]=A[q.id]===val?null:val;return afterChange(q,e,b);}
+    let arr=(A[q.id]||[]).slice();if(arr.includes(val))arr=arr.filter(x=>x!==val);else{if(val===q.none)arr=[val];else{arr=arr.filter(x=>x!==q.none);
+      if(q.max&&arr.length>=q.max){const c=document.querySelector('#q-'+q.id+' .counter');if(c){c.classList.remove('shake');void c.offsetWidth;c.classList.add('shake');}bell(220,.3,.06);return;}arr.push(val);}}
+    A[q.id]=arr;return afterChange(q,e,b);}}
+
+// ——— рисунок ———
+const PAL=['#2b2118','#c8412b','#f28c28','#f2c705','#3f9b3a','#1d7fb8','#7b5cd6','#ff8fb3','#8a5a2b','#ffffff'];
+function initDraws(root){root.querySelectorAll('canvas[data-draw]').forEach(cv=>{if(cv._init)return;cv._init=1;const id=cv.dataset.draw,ctx=cv.getContext('2d');
+  const paint=()=>{ctx.fillStyle='#fffdf6';ctx.fillRect(0,0,cv.width,cv.height);};paint();
+  if(S.A[id]){const im=new Image();im.onload=()=>ctx.drawImage(im,0,0,cv.width,cv.height);im.src=S.A[id];}
+  let col=PAL[1],size=10,erase=false,down=false,last=null,dirty=false;
+  const tools=root.querySelector(`[data-dtools="${id}"]`);
+  const drawTools=()=>{tools.innerHTML=PAL.map(c=>`<button class="sw${!erase&&c===col?' sel':''}" style="background:${c}" data-col="${c}" aria-label="цвет"></button>`).join('')+
+    `<button class="dbtn${size===5?' sel':''}" data-size="5">тонко</button><button class="dbtn${size===10?' sel':''}" data-size="10">средне</button><button class="dbtn${size===22?' sel':''}" data-size="22">толсто</button><button class="dbtn${erase?' sel':''}" data-erase>ластик</button><button class="dbtn" data-clear>стереть всё</button>`;};
+  drawTools();
+  tools.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.col){col=b.dataset.col;erase=false;}else if(b.dataset.size)size=+b.dataset.size;else if('erase' in b.dataset)erase=!erase;else if('clear' in b.dataset){paint();S.A[id]=null;save();refreshDeps(id);updChain();const el=document.getElementById('q-'+id);if(el)el.classList.remove('ok');}drawTools();});
+  const pos=e=>{const r=cv.getBoundingClientRect();return [(e.clientX-r.left)*cv.width/r.width,(e.clientY-r.top)*cv.height/r.height];};
+  const line=(a,b2)=>{ctx.strokeStyle=erase?'#fffdf6':col;ctx.lineWidth=erase?size*2.2:size;ctx.lineCap='round';ctx.lineJoin='round';ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b2[0],b2[1]);ctx.stroke();};
+  cv.addEventListener('pointerdown',e=>{down=true;last=pos(e);line(last,[last[0]+.1,last[1]+.1]);dirty=true;try{cv.setPointerCapture(e.pointerId);}catch(_){}});
+  cv.addEventListener('pointermove',e=>{if(!down)return;const p=pos(e);line(last,p);last=p;});
+  const up=()=>{if(!down)return;down=false;if(dirty){const t=document.createElement('canvas');t.width=400;t.height=250;t.getContext('2d').drawImage(cv,0,0,400,250);S.A[id]=t.toDataURL('image/jpeg',.72);save();updChain();const el=document.getElementById('q-'+id);if(el)el.classList.add('ok');}};
+  cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);cv.addEventListener('pointerleave',up);});}
+
+// ——— отправка ———
+function answerText(q,v){if(!has(v))return '';if(q.t==='draw')return '[рисунок]';if(q.t==='matrix')return Object.entries(v).map(([k,x])=>`${k}: ${x==='na'?q.na:x}`).join('; ');
+  if(Array.isArray(v))return v.map(x=>x==='Своё'?'Своё: '+(S.A[q.id+'_other']||''):x).join('; ');if(q.t==='faces')return v+' — '+FACELAB[q.n||SV.faces][v-1];return String(v);}
+function payload(){const answers={},qa=[];for(const s of SECS)for(const q of s.q){if(!visible(q)||!answered(q))continue;answers[q.id]=S.A[q.id];if(q.other&&S.A[q.id+'_other'])answers[q.id+'_other']=S.A[q.id+'_other'];qa.push([s.title,q.q,answerText(q,S.A[q.id])]);}
+  return {form:'zc-opros-v1',age:SV.id,game:'final05',submittedAt:new Date().toISOString(),durationSec:Math.round((Date.now()-S.t0)/1000),answered:qa.length,total:visibleTotal(),answers,qa};}
+const plain=p=>[`«Златая цепь» — опрос ${SV.age}`,`Отправлено: ${p.submittedAt}`,`Ответов: ${p.answered} из ${p.total}`,''].concat(p.qa.map(([s,q,a])=>`[${s}] ${q}\n→ ${a}`)).join('\n');
+const sig=p=>JSON.stringify(p.answers);
+let busy=false;
+async function submit(){if(busy)return;const st=$('#status');const p=payload();
+  if(S.sent&&S.sentSig===sig(p))return showStatus('good');
+  if(!p.answered)return showStatus('empty');
+  busy=true;let db=null,user=null,uid=null;
+  try{if(window.claude&&window.claude.use){[db,user]=await Promise.all([window.claude.use('db').catch(()=>null),window.claude.use('user').catch(()=>null)]);}}catch(e){}
+  try{if(user)uid=await user.id();}catch(e){uid=null;}
+  if(!db||!uid){busy=false;return showStatus('local',p);}
+  try{const c=user.can?await user.can('data.write'):null;if(c===false){busy=false;return showStatus('local',p,'noaccess');}}catch(e){}
+  const add=()=>db.collection('responses/'+uid+'/entries').add(Object.assign({},p,S.sent?{revises:S.sent}:{}));
+  try{let ref;try{ref=await add();}catch(err){if(err&&err.code==='unavailable'){await new Promise(r=>setTimeout(r,600+Math.random()*900));ref=await add();}else throw err;}
+    S.sent=ref.id;S.sentSig=sig(p);save(true);
+    db.doc('responses/'+uid).set({lastAt:p.submittedAt,lastAge:SV.id,lastEntry:ref.id}).catch(()=>{});
+    busy=false;showStatus('good');fanfare();confetti();}
+  catch(err){busy=false;showStatus('error',p,err&&err.code);}}
+function showStatus(kind,p,code){const st=$('#status');if(!st)return;p=p||payload();const again=$('#againbtn');
+  if(kind==='good'){st.className='status good';st.innerHTML=`<h4>✓ Ответы отправлены!</h4><p>${YOU?'Команда игры получит их вместе с остальными отзывами.':'Команда игры их уже получила. Ты молодец!'}</p><button class="linkbtn" data-act="save">Сохранить копию файлом</button>`;updChain();if(again)again.classList.remove('hidden');return;}
+  if(kind==='empty'){st.className='status warn';st.innerHTML=`<h4>Пока нет ни одного ответа</h4><p>${YOU?'Вернитесь к вопросам — хотя бы несколько ответов нам очень помогут.':'Вернись к вопросам — ответь хотя бы на несколько!'}</p>`;return;}
+  const why=kind==='error'?(code==='quota_exceeded'?'Хранилище ответов переполнено.':'Не получилось сохранить ответы на сервере.'):code==='noaccess'?'У этой ссылки нет права записывать ответы.':'Эта копия опроса не подключена к хранилищу ответов.';
+  st.className='status warn';st.innerHTML=`<h4>${kind==='error'?'Ответы не отправились':'Сохраните ответы, пожалуйста'}</h4>
+    <p>${esc(why)} ${YOU||SV.id==='11-13'?'Скопируйте ответы или сохраните их файлом и перешлите организатору теста.':'Для взрослых: скопируйте ответы или сохраните файлом и перешлите организатору теста.'}</p>
+    <div class="row"><button class="btn primary" data-act="copy">Скопировать ответы</button><button class="btn ghost" data-act="save">Сохранить файлом</button>${kind==='error'?'<button class="btn ghost" data-act="retry">Попробовать ещё раз</button>':''}</div><div id="copyout"></div>`;
+  if(again)again.classList.remove('hidden');fanfare();confetti();}
+async function copyAnswers(){const t=plain(payload());let ok=false;try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(t);ok=true;}}catch(e){ok=false;}
+  const out=$('#copyout');if(!out)return;if(ok){out.innerHTML='<p style="margin-top:10px;font-weight:800">✓ Скопировано — вставьте в письмо или сообщение.</p>';}
+  else{out.innerHTML='<p style="margin-top:10px">Выделите текст ниже и скопируйте его:</p><textarea readonly></textarea>';const ta=out.querySelector('textarea');ta.value=t;ta.focus();ta.select();}}
+async function saveFile(){const p=payload(),name=`zlataya-cep_opros_${SV.id}_${p.submittedAt.slice(0,10)}.json`,data=JSON.stringify(p,null,1);
+  let dl=null;try{if(window.claude&&window.claude.use)dl=await window.claude.use('downloads');}catch(e){dl=null;}
+  if(dl){try{await dl.save({filename:name,data});return;}catch(e){if(e&&e.code==='declined')return;}}
+  try{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([data],{type:'application/json'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},1500);}catch(e){copyAnswers();}}
+function confetti(){if(RM)return;const cv=document.createElement('canvas');cv.className='confetti';document.body.appendChild(cv);const c=cv.getContext('2d');const W=cv.width=innerWidth,H=cv.height=innerHeight;
+  const cols=['#f2b705','#e0a31a','#c8412b','#3f9b3a','#1d7fb8','#7b5cd6','#ff8fb3','#ffffff'];const P=Array.from({length:170},()=>({x:Math.random()*W,y:-20-Math.random()*H*.6,vx:(Math.random()-.5)*2.4,vy:2+Math.random()*3.5,r:Math.random()*6.3,vr:(Math.random()-.5)*.3,w:6+Math.random()*7,h:4+Math.random()*6,c:cols[(Math.random()*cols.length)|0],ring:Math.random()<.18}));
+  const t0=performance.now();(function fr(t){c.clearRect(0,0,W,H);for(const p of P){p.x+=p.vx;p.y+=p.vy;p.vy+=.03;p.r+=p.vr;c.save();c.translate(p.x,p.y);c.rotate(p.r);
+    if(p.ring){c.strokeStyle='#e0a31a';c.lineWidth=2.5;c.beginPath();c.ellipse(0,0,6,4,0,0,Math.PI*2);c.stroke();}else{c.fillStyle=p.c;c.fillRect(-p.w/2,-p.h/2,p.w,p.h);}c.restore();}
+    if(t-t0<4800)requestAnimationFrame(fr);else cv.remove();})(t0);}
+
+// ——— события ———
+function wire(){const sc=$('#screen');
+  document.addEventListener('click',e=>{
+    const g=e.target.closest('[data-go]');if(g&&(g.closest('#screen')||g.closest('#links'))){go(+g.dataset.go);return;}
+    const b=e.target.closest('#screen button[data-v]');if(b){const q=QMAP[b.closest('.q').dataset.qid];choose(q,b,e);return;}
+    const sp=e.target.closest('[data-say]');if(sp){const k=sp.dataset.say;let t='';if(k==='intro')t=SV.intro.head+'. '+SV.intro.text;else if(k==='sec')t=SECS[S.sec].say;else if(k.startsWith('q:'))t=sayText(QMAP[k.slice(2)]);speak(t,sp);return;}
+    const a=e.target.closest('[data-act]');if(!a)return;const act=a.dataset.act;
+    if(act==='finish')go(N);else if(act==='copy')copyAnswers();else if(act==='save')saveFile();else if(act==='retry'){$('#status').className='status wait';$('#status').innerHTML='<span class="spin"></span>Отправляем ответы…';submit();}
+    else if(act==='again'||act==='reset'){S=fresh();ls.set(KEY,S);go(-1);}
+  });
+  sc.addEventListener('input',e=>{const t=e.target;if(t.dataset.text){const q=QMAP[t.dataset.text],was=answered(q);S.A[q.id]=t.value;save();if(was!==answered(q)){t.closest('.q').classList.toggle('ok',answered(q));refreshDeps(q.id);updChain();}if(S.sent)S.sentSig=null;}
+    else if(t.dataset.other){S.A[t.dataset.other+'_other']=t.value;save();}});
+}
+function start(data){S=(data&&data.A)?data:(ls.get(KEY)||fresh());if(!S.visited)S.visited={};if(!S.A)S.A={};if(!S.t0)S.t0=Date.now();
+  initScene();wire();go(S.sec>=0&&S.sec<N&&data&&data.A?S.sec:-1,true);
+  try{window.claude&&window.claude.hot&&window.claude.hot.snapshot&&window.claude.hot.snapshot(()=>S);}catch(e){}}
+window.claude&&window.claude.hot&&window.claude.hot.ready?window.claude.hot.ready(start):start(window.claude&&window.claude.hot&&window.claude.hot.data||{});
+})();
+</script>
+</body>
+</html>
