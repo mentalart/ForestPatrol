@@ -6901,6 +6901,326 @@
    "max": 3.6,
    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_164935_7e9c823e-b778-471b-b74e-2d68d24be99d.mp3",
    "dur": 0.69
+  },
+  {
+   "id": "5-B2_k01",
+   "lv": "5-B2",
+   "who": "pelageya",
+   "text": "Смотрите: купол держат чёрные свечи! Погасите все четыре!",
+   "tts": "[urgent, clever] Смотрите: купол держат чёрные свечи! Погасите все четыре!",
+   "job": "b96bb4f6-e1b4-4409-9926-f66fec4177e3",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_b96bb4f6-e1b4-4409-9926-f66fec4177e3.mp3",
+   "dur": 4.43
+  },
+  {
+   "id": "5-B2_k02",
+   "lv": "5-B2",
+   "who": "yosha",
+   "text": "Я их водичкой! Пш-ш-ш!",
+   "tts": "[excited] Я их водичкой! Пш-ш-ш!",
+   "job": "01f2fbd3-db32-4b18-acb9-3a972566311f",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_01f2fbd3-db32-4b18-acb9-3a972566311f.mp3",
+   "dur": 2.4
+  },
+  {
+   "id": "5-B2_k03",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Горите!",
+   "tts": "[cold, commanding] Горите!",
+   "job": "b7fa3724-7b9f-4bbf-9ab9-9460208eb085",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_b7fa3724-7b9f-4bbf-9ab9-9460208eb085.mp3",
+   "dur": 0.97
+  },
+  {
+   "id": "5-B2_k04",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Мои свечи… Вы задули мои свечи?",
+   "tts": "[surprised, quiet, cold] Мои свечи… Вы задули мои свечи?",
+   "job": "9a13036d-893e-41d5-b8a3-c9fc312614df",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_9a13036d-893e-41d5-b8a3-c9fc312614df.mp3",
+   "dur": 3.28
+  },
+  {
+   "id": "5-B2_k05",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Тогда я запру вас. Каждого — своим ключом.",
+   "tts": "[menacing, slow] Тогда я запру вас. Каждого — своим ключом.",
+   "job": "0e8a2be4-872a-4d10-8bec-71bc4a27001d",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_0e8a2be4-872a-4d10-8bec-71bc4a27001d.mp3",
+   "dur": 4.51
+  },
+  {
+   "id": "5-B2_k06",
+   "lv": "5-B2",
+   "who": "potap",
+   "text": "Не запрёшь. Мы друг друга откроем!",
+   "tts": "[firm, brave] Не запрёшь. Мы друг друга откроем!",
+   "job": "e4d263ae-d803-489b-b3f6-cd65f52a7b79",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_e4d263ae-d803-489b-b3f6-cd65f52a7b79.mp3",
+   "dur": 2.59
+  },
+  {
+   "id": "5-B2_k07",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Друга заперли — бей по замку, открывай!",
+   "tts": "[bright, urgent] Друга заперли — бей по замку, открывай!",
+   "job": "fe8e0c6f-e16f-49f6-8204-238af4588c02",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_fe8e0c6f-e16f-49f6-8204-238af4588c02.mp3",
+   "dur": 3.01
+  },
+  {
+   "id": "5-B2_k08",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Отбил — искорка летит к другу! Отбивайте по очереди!",
+   "tts": "[bright, cheerful] Отбил — искорка летит к другу! Отбивайте по очереди!",
+   "job": "784729cc-79eb-4ae5-b44e-416b3b41b5dc",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_784729cc-79eb-4ae5-b44e-416b3b41b5dc.mp3",
+   "dur": 4.2
+  },
+  {
+   "id": "5-B2_k09",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Заприте их!",
+   "tts": "[commanding, cold] Заприте их!",
+   "job": "bb28513e-33c2-4e3c-8334-b29b98b9a292",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_bb28513e-33c2-4e3c-8334-b29b98b9a292.mp3",
+   "dur": 1.34
+  },
+  {
+   "id": "5-B2_k10",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Ключи вам не страшны… А буря?",
+   "tts": "[cold, amused] Ключи вам не страшны… А буря?",
+   "job": "f9245f86-7702-496a-a0c8-08315d20d4ca",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_f9245f86-7702-496a-a0c8-08315d20d4ca.mp3",
+   "dur": 2.94
+  },
+  {
+   "id": "5-B2_k11",
+   "lv": "5-B2",
+   "who": "proshka",
+   "text": "Он взлетел! Как его оттуда достать?",
+   "tts": "[alarmed] Он взлетел! Как его оттуда достать?",
+   "job": "10240607-1a24-4465-b8cb-42642b802708",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211346_10240607-1a24-4465-b8cb-42642b802708.mp3",
+   "dur": 2.76
+  },
+  {
+   "id": "5-B2_k12",
+   "lv": "5-B2",
+   "who": "pelageya",
+   "text": "Шар отбей другу — а друг отбивает его в небо!",
+   "tts": "[thinking quickly] Шар отбей другу — а друг отбивает его в небо!",
+   "job": "c751b1cc-c0ee-46f3-acfe-b3c3ce3e265d",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_c751b1cc-c0ee-46f3-acfe-b3c3ce3e265d.mp3",
+   "dur": 3.24
+  },
+  {
+   "id": "5-B2_k13",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Вороны, ко мне!",
+   "tts": "[shouting, cold] Вороны, ко мне!",
+   "job": "f8ba2e11-d5e7-4245-b3b5-192516b14ada",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211346_f8ba2e11-d5e7-4245-b3b5-192516b14ada.mp3",
+   "dur": 1.68
+  },
+  {
+   "id": "5-B2_k14",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Попробуйте, достаньте!",
+   "tts": "[mocking, cold] Попробуйте, достаньте!",
+   "job": "65ea1295-9a89-47bb-8525-9b489fabb3f9",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_65ea1295-9a89-47bb-8525-9b489fabb3f9.mp3",
+   "dur": 2.13
+  },
+  {
+   "id": "5-B2_k15",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Хватит сказок. Теперь — меч.",
+   "tts": "[cold, determined] Хватит сказок. Теперь — меч.",
+   "job": "a4f0c9f8-d89b-4eeb-b0ba-cb3963723a7b",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_a4f0c9f8-d89b-4eeb-b0ba-cb3963723a7b.mp3",
+   "dur": 2.93
+  },
+  {
+   "id": "5-B2_k16",
+   "lv": "5-B2",
+   "who": "proshka",
+   "text": "У него меч! Настоящий!",
+   "tts": "[scared, amazed] У него меч! Настоящий!",
+   "job": "8cc68948-1789-43ab-adb5-4beacc459d90",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_8cc68948-1789-43ab-adb5-4beacc459d90.mp3",
+   "dur": 2.47
+  },
+  {
+   "id": "5-B2_k17",
+   "lv": "5-B2",
+   "who": "potap",
+   "text": "Все за меня! Я держу!",
+   "tts": "[brave, shouting] Все за меня! Я держу!",
+   "job": "e894b031-6988-4aaa-b1c1-b1f8d4ddcc7e",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211346_e894b031-6988-4aaa-b1c1-b1f8d4ddcc7e.mp3",
+   "dur": 2.14
+  },
+  {
+   "id": "5-B2_k18",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Кого он выбрал — тот держит щит. А второй — заходи со спины!",
+   "tts": "[bright, urgent] Кого он выбрал — тот держит щит. А второй — заходи со спины!",
+   "job": "384746dd-a6b3-4d76-804e-ace2e6825f14",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211346_384746dd-a6b3-4d76-804e-ace2e6825f14.mp3",
+   "dur": 4.32
+  },
+  {
+   "id": "5-B2_k19",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Кости, встаньте!",
+   "tts": "[commanding, echoing] Кости, встаньте!",
+   "job": "9a3e5b43-d743-477e-a432-ebaa2faa0843",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_9a3e5b43-d743-477e-a432-ebaa2faa0843.mp3",
+   "dur": 1.64
+  },
+  {
+   "id": "5-B2_k20",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Бессмертного не победить!",
+   "tts": "[furious, shouting] Бессмертного не победить!",
+   "job": "8370cb88-75e8-413f-a8c2-47de8d218c04",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_8370cb88-75e8-413f-a8c2-47de8d218c04.mp3",
+   "dur": 2.04
+  },
+  {
+   "id": "5-B2_k21",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Не победить — так расковать! Прошка, из иглы — застёжку!",
+   "tts": "[bright, determined] Не победить — так расковать! Прошка, из иглы — застёжку!",
+   "job": "a4efe53e-af46-42f6-8a94-37bd47a47b08",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211346_a4efe53e-af46-42f6-8a94-37bd47a47b08.mp3",
+   "dur": 4.72
+  },
+  {
+   "id": "5-B2_k22",
+   "lv": "5-B2",
+   "who": "proshka",
+   "text": "Несите мне иглу! Я к наковальне!",
+   "tts": "[determined] Несите мне иглу! Я к наковальне!",
+   "job": "50f09e94-73f6-4874-b29a-257876de45bc",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_50f09e94-73f6-4874-b29a-257876de45bc.mp3",
+   "dur": 2.65
+  },
+  {
+   "id": "5-B2_k23",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Отдай иглу!",
+   "tts": "[angry] Отдай иглу!",
+   "job": "c231d348-f9b1-4dd3-b2b7-c32e647d2431",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_c231d348-f9b1-4dd3-b2b7-c32e647d2431.mp3",
+   "dur": 1.38
+  },
+  {
+   "id": "5-B2_k24",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Меня никто не слушал. Никто!",
+   "tts": "[bitter, pained] Меня никто не слушал. Никто!",
+   "job": "ecc974ed-0c25-45d3-aa40-b3b7ea93a24b",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_ecc974ed-0c25-45d3-aa40-b3b7ea93a24b.mp3",
+   "dur": 3.02
+  },
+  {
+   "id": "5-B2_k25",
+   "lv": "5-B2",
+   "who": "yosha",
+   "text": "Мы слушаем! Мы тут!",
+   "tts": "[shouting, sincere] Мы слушаем! Мы тут!",
+   "job": "1b880bcf-838b-4276-b659-48c5335b48b1",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_1b880bcf-838b-4276-b659-48c5335b48b1.mp3",
+   "dur": 2.23
+  },
+  {
+   "id": "5-B2_k26",
+   "lv": "5-B2",
+   "who": "pelageya",
+   "text": "Держись, Прошка, ещё чуть-чуть!",
+   "tts": "[encouraging] Держись, Прошка, ещё чуть-чуть!",
+   "job": "d0d4d542-a168-4136-ac7a-41794f80f155",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_d0d4d542-a168-4136-ac7a-41794f80f155.mp3",
+   "dur": 2.65
+  },
+  {
+   "id": "5-B2_k27",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Все цепи острова — ко мне!",
+   "tts": "[booming, commanding] Все цепи острова — ко мне!",
+   "job": "41b941d6-01d0-441f-94d6-b4638c994888",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_41b941d6-01d0-441f-94d6-b4638c994888.mp3",
+   "dur": 2.74
+  },
+  {
+   "id": "5-B2_k28",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Кольцо! Щиты — вместе, в такт!",
+   "tts": "[urgent] Кольцо! Щиты — вместе, в такт!",
+   "job": "ad7348ce-f212-4714-8150-c64317e477bd",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_ad7348ce-f212-4714-8150-c64317e477bd.mp3",
+   "dur": 3.39
+  },
+  {
+   "id": "5-B2_k29",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "…Почему вы не бьёте?",
+   "tts": "[quiet, confused, tired] …Почему вы не бьёте?",
+   "job": "2547239c-2ec5-45e9-ab0a-2eee9f225ca8",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_2547239c-2ec5-45e9-ab0a-2eee9f225ca8.mp3",
+   "dur": 1.54
+  },
+  {
+   "id": "5-B2_k30",
+   "lv": "5-B2",
+   "who": "pelageya",
+   "text": "Потому что это сказка. А в сказке можно по-другому.",
+   "tts": "[gentle, warm] Потому что это сказка. А в сказке можно по-другому.",
+   "job": "de98b1d3-6dd1-40dc-8cf3-23b67cc955ee",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_de98b1d3-6dd1-40dc-8cf3-23b67cc955ee.mp3",
+   "dur": 4.18
+  },
+  {
+   "id": "5-B2_k31",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Сказ сбился… Начнём этот кусочек заново!",
+   "tts": "[gentle] Сказ сбился… Начнём этот кусочек заново!",
+   "job": "a9adc41b-5e57-4a7e-941c-8e3c01dc73f6",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_a9adc41b-5e57-4a7e-941c-8e3c01dc73f6.mp3",
+   "dur": 3.56
+  },
+  {
+   "id": "5-B2_k32",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Он без сил! Вместе — золотой нитью!",
+   "tts": "[excited] Он без сил! Вместе — золотой нитью!",
+   "job": "bf8328fe-a582-4a76-8c59-ace2f7c3e227",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_bf8328fe-a582-4a76-8c59-ace2f7c3e227.mp3",
+   "dur": 3.59
   }
  ]
 }
