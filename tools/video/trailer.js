@@ -5,7 +5,7 @@
 // В headless кадр рисуется программно (SwiftShader) ~2–3 с: трейлер снимается пару часов. --preview — 3 кадра в секунду, для проверки шотов.
 const {chromium}=require('../tests/pw');const path=require('path'),fs=require('fs');
 const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1];};const has=k=>process.argv.includes(k);
-const ROOT=path.join(__dirname,'..','..');const HTML=path.resolve(arg('--html',path.join(ROOT,'zlataya_cep','zlataya_cep_final05.html')));
+const ROOT=path.join(__dirname,'..','..');const HTML=path.resolve(arg('--html',path.join(ROOT,'zlataya_cep','zlataya_cep_final06.html')));
 const OUT=path.resolve(arg('--out',path.join(ROOT,'tools','video','out')));const PREVIEW=has('--preview');const FPS=PREVIEW?3:+arg('--fps',24);const ONLY=(arg('--only','')||'').split(',').filter(Boolean);
 const SHOTS=require('./shots.js');
 const SEG=[{id:'splash',dur:5.3,kind:'splash',music:'title'},{id:'title',dur:6.4,kind:'title',music:'title'}].concat(SHOTS.map(s=>Object.assign({kind:'shot'},s))).concat([{id:'end',dur:4.3,kind:'end',music:'title'}]);

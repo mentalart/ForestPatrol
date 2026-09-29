@@ -1,6 +1,6 @@
-# Златая цепь · релизная сборка final05
+# Златая цепь · релизная сборка final06
 
-**Кооперативная low-poly сказка для всей семьи** (final05: все жители сказки и мороки на уровне героев — скелетные модели, живые лица и мимика; враги больше не пропадают; палитра 256 цветов и бюджет отрисовок; эффектный удар героев; играть вторым героем, пока первый без сил; джойстики в меню; субтитры понятнее для 7-летних; трейлер, см. `docs/08_final05.md`; final04: интерактивное обучение боя с Горынычем и живые подсказки, герои видны за препятствиями — вырез «в горошек» и силуэты, камера правым стиком, см. `docs/07_visibility_camera.md`; final03: арт в духе Synty Studios — новые герои-скелеты, процедурный кит окружения, планы глубины и атмосфера миров, свет и производительность, см. `docs/06_art_synty.md`; final02: кинематографичная режиссура всех 113 роликов, `docs/05_cinematics.md`) по мотивам А. С. Пушкина и русских народных сказок: пролог «Звенышко», пять миров («Дремучий лес», «Подводный Китеж», «Небесное царство», «Огненная Смородина», «Остров Буян») с боссами, Лукоморье, эпилог и Застава трёх богатырей. Вдвоём на одной клавиатуре и/или с двумя джойстиками — или один игрок и все четверо героев.
+**Кооперативная low-poly сказка для всей семьи** (final06: пролог «Звенышко» озвучен — у Тишки, Прошки, Потапа, Йоши и Звенышка свои голоса (ElevenLabs v4), громкость «Голоса» в настройках, см. `docs/09_final06.md`; final05: все жители сказки и мороки на уровне героев — скелетные модели, живые лица и мимика; враги больше не пропадают; палитра 256 цветов и бюджет отрисовок; эффектный удар героев; играть вторым героем, пока первый без сил; джойстики в меню; субтитры понятнее для 7-летних; трейлер, см. `docs/08_final05.md`; final04: интерактивное обучение боя с Горынычем и живые подсказки, герои видны за препятствиями — вырез «в горошек» и силуэты, камера правым стиком, см. `docs/07_visibility_camera.md`; final03: арт в духе Synty Studios — новые герои-скелеты, процедурный кит окружения, планы глубины и атмосфера миров, свет и производительность, см. `docs/06_art_synty.md`; final02: кинематографичная режиссура всех 113 роликов, `docs/05_cinematics.md`) по мотивам А. С. Пушкина и русских народных сказок: пролог «Звенышко», пять миров («Дремучий лес», «Подводный Китеж», «Небесное царство», «Огненная Смородина», «Остров Буян») с боссами, Лукоморье, эпилог и Застава трёх богатырей. Вдвоём на одной клавиатуре и/или с двумя джойстиками — или один игрок и все четверо героев.
 
 ![Заставка студии АбадзехLAB](docs/screens/00_splash.jpg)
 
@@ -29,7 +29,7 @@
 | ![Мороки и боссы](docs/screens/26_foes.jpg) | ![Удар героев](docs/screens/27_slash.jpg) |
 
 ## Как играть
-Откройте `zlataya_cep_final05.html` в Chrome, Edge или Firefox. Интернет не нужен: всё в одном файле.
+Откройте `zlataya_cep_final06.html` в Chrome, Edge или Firefox. Интернет не нужен: всё в одном файле.
 - Меню: ↑ ↓ — выбрать, ← → — изменить, Enter / Пробел / A — выбрать, Esc / B — назад.
 - В игре: Esc или Start — пауза (настройки, управление, выход в меню). P — фото-режим.
 - Герой без сил не держит игрока: переключитесь на второго своего героя (в одиночном режиме — на любого живого), друзья поднимут упавшего или его вернёт таймер.
@@ -44,9 +44,9 @@
 ## Что в папке
 | Путь | Что это |
 |---|---|
-| `zlataya_cep_final05.html` | релизная сборка игры: персонажи и враги на уровне героев, видимые враги, палитра 256, удар героев, обучение Горыныча, видимость героев, камера правым стиком, арт в духе Synty, режиссура роликов (собирается скриптом, вручную не править) |
-| `zlataya_cep_final04.html`, `zlataya_cep_final03.html`, `zlataya_cep_final02.html`, `zlataya_cep_final01.html` | предыдущие релизы, оставлены как есть и больше не пересобираются |
-| `build/build_final.py` | сборка: прототип `../index.html` + модули → `zlataya_cep_final05.html` |
+| `zlataya_cep_final06.html` | релизная сборка игры: озвученный пролог; персонажи и враги на уровне героев, видимые враги, палитра 256, удар героев, обучение Горыныча, видимость героев, камера правым стиком, арт в духе Synty, режиссура роликов (собирается скриптом, вручную не править) |
+| `zlataya_cep_final05.html`, `zlataya_cep_final04.html`, `zlataya_cep_final03.html`, `zlataya_cep_final02.html`, `zlataya_cep_final01.html` | предыдущие релизы, оставлены как есть и больше не пересобираются |
+| `build/build_final.py` | сборка: прототип `../index.html` + модули и записи голосов → `zlataya_cep_final06.html` |
 | `build/fin_early.js` | low-poly геометрия и материалы: плоское затенение, тон по вершинам (`aShade`), хуки шейдеров, точка подключения выреза (подключается до создания мира) |
 | `build/late_05_gallery.js` | витрина кита и героев для разработки, `FIN.stats()` — отрисовки за кадр |
 | `build/late_10_render.js` | свет (солнце 45°, полусфера), филмик-тонмаппинг, цветокоррекция по миру, градиентное небо, силуэты горизонта, качество графики |
@@ -84,6 +84,8 @@
 | `build/late_90_boot.js` | запуск: заставка → титул |
 | `build/late_95_dev.js` | клавиши разработчика: открыть все уровни, стереть все данные |
 | `build/fin.css`, `build/fin_body.html`, `build/header.txt` | стили и разметка релиза, шапка файла |
+| `build/late_91_voice.js` | final06: озвучка реплик — запись вместо «бормотания», субтитр до конца фразы, музыка тише, громкость «Голоса» |
+| `build/voice/` | final06: каталог озвученных реплик `lines.json` (голоса, тон, обработка) и записи `<id>.mp3` |
 | `build/rep_10_cine.py`, `build/rep_20_subs.py` | точечные замены в прототипе при сборке: реплики роликов; final05 — субтитры, понятные 7-летнему |
 | `build/three.r128.min.js` | Three.js r128 (MIT), встраивается в страницу |
 | `docs/01_audit.md` | аудит прототипа глазами лидов и решения для релиза |
@@ -94,6 +96,7 @@
 | `docs/06_art_synty.md` | аудит сцены, арт-направление в духе Synty, итоги final03: модули, герои, мир, производительность, проверки |
 | `docs/07_visibility_camera.md` | final04: исследование подходов к видимости героев, аудит камеры и материалов, детекция, визуал и замеры; камера правым стиком |
 | `docs/08_final05.md` | final05: персонажи и враги, причина пропадания врагов, палитра и бюджет отрисовок, удар, джойстики, субтитры, трейлер |
+| `docs/09_final06.md` | final06: озвучка пролога — подбор голосов, обработка, как озвучить новые реплики |
 | `docs/CHANGELOG.md` | изменения по версиям |
 | `docs/screens/` | скриншоты релизной сборки |
 
@@ -106,20 +109,21 @@ python3 zlataya_cep/build/build_final.py
 ## Тесты
 Боты из `tools/tests/` работают и с релизной сборкой (отладочный объект включается параметром `?debug`, запускалка передаёт его сама):
 ```sh
-LIST=tools/tests/regress_list_final.txt tools/tests/regress.sh zlataya_cep/zlataya_cep_final05.html
-tools/tests/run_one.sh tfin_save zlataya_cep/zlataya_cep_final05.html   # сохранения, «Продолжить», главы, настройки
-tools/tests/run_one.sh tfin_menu zlataya_cep/zlataya_cep_final05.html   # заставка, титул, меню, пауза
-tools/tests/run_one.sh tfin_dev zlataya_cep/zlataya_cep_final05.html    # Ctrl+Alt+] и Ctrl+Alt+[
-tools/tests/run_one.sh tfin_cine zlataya_cep/zlataya_cep_final05.html   # кино: камера, говорящие, выход, пропуск, пролог
-tools/tests/run_one.sh tfin_splash zlataya_cep/zlataya_cep_final05.html # заставка студии: кадры, выход, пропуск
-tools/tests/run_one.sh tfin_boss4b zlataya_cep/zlataya_cep_final05.html # 4-Б: обучающие ролики этапов, подсказки в бою
-tools/tests/run_one.sh tfin_occ zlataya_cep/zlataya_cep_final05.html    # видимость героев за препятствиями (замер по пикселям)
-tools/tests/run_one.sh tfin_cam zlataya_cep/zlataya_cep_final05.html    # камера правым стиком
-tools/tests/run_one.sh tfin_foekinds zlataya_cep/zlataya_cep_final05.html # final05: виды врагов 1–10 видны в драке (11–20 — tfin_foekinds2, 21–28 — tfin_foekinds3)
-tools/tests/run_one.sh tfin_downswap zlataya_cep/zlataya_cep_final05.html # final05: играть вторым героем, пока первый без сил
-tools/tests/run_one.sh tfin_pads zlataya_cep/zlataya_cep_final05.html   # final05: два джойстика в меню
-URLQ='&hq=1' tools/tests/run_one.sh tfin_budget zlataya_cep/zlataya_cep_final05.html # final05: бюджет отрисовок по всем уровням
-URLQ='&hq=1' tools/tests/run_one.sh tfin_cast zlataya_cep/zlataya_cep_final05.html   # final05: витрина персонажей (кадры)
+LIST=tools/tests/regress_list_final.txt tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html
+tools/tests/run_one.sh tfin_save zlataya_cep/zlataya_cep_final06.html   # сохранения, «Продолжить», главы, настройки
+tools/tests/run_one.sh tfin_menu zlataya_cep/zlataya_cep_final06.html   # заставка, титул, меню, пауза
+tools/tests/run_one.sh tfin_dev zlataya_cep/zlataya_cep_final06.html    # Ctrl+Alt+] и Ctrl+Alt+[
+tools/tests/run_one.sh tfin_cine zlataya_cep/zlataya_cep_final06.html   # кино: камера, говорящие, выход, пропуск, пролог
+tools/tests/run_one.sh tfin_splash zlataya_cep/zlataya_cep_final06.html # заставка студии: кадры, выход, пропуск
+tools/tests/run_one.sh tfin_boss4b zlataya_cep/zlataya_cep_final06.html # 4-Б: обучающие ролики этапов, подсказки в бою
+tools/tests/run_one.sh tfin_occ zlataya_cep/zlataya_cep_final06.html    # видимость героев за препятствиями (замер по пикселям)
+tools/tests/run_one.sh tfin_cam zlataya_cep/zlataya_cep_final06.html    # камера правым стиком
+tools/tests/run_one.sh tfin_foekinds zlataya_cep/zlataya_cep_final06.html # final05: виды врагов 1–10 видны в драке (11–20 — tfin_foekinds2, 21–28 — tfin_foekinds3)
+tools/tests/run_one.sh tfin_downswap zlataya_cep/zlataya_cep_final06.html # final05: играть вторым героем, пока первый без сил
+tools/tests/run_one.sh tfin_voice zlataya_cep/zlataya_cep_final06.html  # final06: озвучка пролога — записи по порядку, без бормотания, громкость, пропуск
+tools/tests/run_one.sh tfin_pads zlataya_cep/zlataya_cep_final06.html   # final05: два джойстика в меню
+URLQ='&hq=1' tools/tests/run_one.sh tfin_budget zlataya_cep/zlataya_cep_final06.html # final05: бюджет отрисовок по всем уровням
+URLQ='&hq=1' tools/tests/run_one.sh tfin_cast zlataya_cep/zlataya_cep_final06.html   # final05: витрина персонажей (кадры)
 node tools/tests/layout_check.js                                        # меню на 13 размерах окна: без наездов и обрезаний
 ```
 

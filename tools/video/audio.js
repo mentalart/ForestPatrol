@@ -4,7 +4,7 @@
 // все вызовы синтеза, записанные при съёмке кадров (snd.json, время от начала сегмента), проигрываются в тот же миг — звук совпадает с картинкой.
 const {chromium}=require('../tests/pw');const path=require('path'),fs=require('fs');
 const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1];};
-const ROOT=path.join(__dirname,'..','..');const HTML=path.join(ROOT,'zlataya_cep','zlataya_cep_final05.html');const OUT=path.resolve(arg('--out',path.join(__dirname,'out')));
+const ROOT=path.join(__dirname,'..','..');const HTML=path.join(ROOT,'zlataya_cep','zlataya_cep_final06.html');const OUT=path.resolve(arg('--out',path.join(__dirname,'out')));
 const segs=fs.readdirSync(OUT).filter(d=>/^\d\d_/.test(d)&&fs.existsSync(path.join(OUT,d,'meta.json'))).sort();
 let T=0;const plan={music:[],snd:[]};
 for(const d of segs){const m=JSON.parse(fs.readFileSync(path.join(OUT,d,'meta.json'),'utf8')),s=JSON.parse(fs.readFileSync(path.join(OUT,d,'snd.json'),'utf8'));const dur=m.frames/m.fps;

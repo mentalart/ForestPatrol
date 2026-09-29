@@ -2,23 +2,170 @@
  "about": "Озвучка реплик (final06). text — реплика точно как в игре (по ней ищется запись; сборка останавливается, если такой строки в игре нет), tts — что произносит голос (в квадратных скобках — подсказки интонации ElevenLabs, не произносятся), voice — чей голос (по умолчанию who), fx — обработка (far — издалека), lul — синтез-мелодия колыбельной, которую запись приглушает, max — предел длины в секундах (успеть до следующей реплики), gain — громкость в игре. Файлы <id>.mp3 рядом делает tools/voice/fetch.js из результатов генерации (job).",
  "model": "elevenlabs_v4 (Eleven v4 через Higgsfield)",
  "cast": {
-  "tishka":  {"name": "Тишка",   "about": "самый маленький в штабе-сосне: тихий, сонный, ласковый", "voice_id": null, "pitch": 0},
-  "proshka": {"name": "Прошка",  "about": "лисёнок: бойкий, чуть хвастливый, добрый", "voice_id": null, "pitch": 0},
-  "potap":   {"name": "Потап",   "about": "медвежонок-силач: тёплый, неторопливый, надёжный", "voice_id": null, "pitch": 0},
-  "yosha":   {"name": "Йоша",    "about": "ёжик: маленький, звонкий, упрямый «я сам»", "voice_id": null, "pitch": 0},
-  "zven":    {"name": "Звенышко","about": "волшебное звено цепи: крошечный звонкий голосок с переливом", "voice_id": null, "pitch": 0}
+  "tishka": {
+   "name": "Тишка",
+   "about": "самый маленький в штабе-сосне: тихий, сонный, ласковый",
+   "voice_id": "375a3398-e3b4-4f91-845d-42181e352899",
+   "pitch": 3.5,
+   "voice": "Luna"
+  },
+  "proshka": {
+   "name": "Прошка",
+   "about": "лисёнок: бойкий, чуть хвастливый, добрый",
+   "voice_id": "1fb253b8-928b-4d29-a349-f242a71eaddf",
+   "pitch": 1.5,
+   "voice": "Skye"
+  },
+  "potap": {
+   "name": "Потап",
+   "about": "медвежонок-силач: тёплый, неторопливый, надёжный",
+   "voice_id": "5c615d8a-5135-539d-8ab0-497b7ceabbae",
+   "pitch": 2.5,
+   "voice": "Kayla"
+  },
+  "yosha": {
+   "name": "Йоша",
+   "about": "ёжик: маленький, звонкий, упрямый «я сам»",
+   "voice_id": "e9cfbbf0-4476-46be-b396-596eb774b165",
+   "pitch": 1,
+   "voice": "Chloe"
+  },
+  "zven": {
+   "name": "Звенышко",
+   "about": "волшебное звено цепи: крошечный звонкий голосок с переливом",
+   "voice_id": "09878754-f20b-5330-9790-58a8027ab5b2",
+   "pitch": 2,
+   "voice": "Gracie"
+  }
  },
  "lines": [
-  {"id": "p01_bayu",    "lv": "p", "who": "tishka",  "text": "Баю-баю, за рекою…",              "tts": "[sings softly] Баю-баю, за рекою…", "lul": "LUL1", "max": 4.4},
-  {"id": "p02_zabyl",   "lv": "p", "who": "tishka",  "text": "Я забыл, как дальше.",              "tts": "[sadly] Я забыл, как дальше.", "max": 3.2},
-  {"id": "p03_malyshi", "lv": "p", "who": "proshka", "text": "Колыбельные — для малышей.",        "tts": "Колыбельные — для малышей.", "max": 2.4},
-  {"id": "p04_samokat", "lv": "p", "who": "proshka", "text": "Хочешь, я тебе самокат дам?",       "tts": "Хочешь, я тебе самокат дам?", "max": 2.5},
-  {"id": "p05_haha",    "lv": "p", "who": "yosha",   "text": "Ха-ха-ха!",                         "tts": "[laughs] Ха-ха-ха!", "max": 2.2},
-  {"id": "p06_bezhim",  "lv": "p", "who": "zven",    "text": "Дзинь! Бежим!",                     "tts": "[excited] Дзинь! Бежим!", "max": 2.6},
-  {"id": "p07_volk",    "lv": "p", "who": null, "voice": "tishka", "text": "♪ …серый волк живёт… ♪", "tts": "[sings softly] …серый волк живёт…", "fx": "far", "gain": 0.6, "lul": "LUL2", "max": 3.4},
-  {"id": "p08_akh",     "lv": "p", "who": "tishka",  "text": "<i>(издалека)</i> Ах!",             "tts": "[gasps] Ах!", "fx": "far", "gain": 0.7, "max": 1.8},
-  {"id": "p09_lesenka", "lv": "p", "who": "proshka", "text": "Щас подкручу — держи лесенку!",     "tts": "Щас подкручу — держи лесенку!", "max": 2.4},
-  {"id": "p10_podnimu", "lv": "p", "who": "potap",   "text": "Стой там, я тебя подниму!",         "tts": "Стой там, я тебя подниму!", "max": 2.05},
-  {"id": "p11_sam",     "lv": "p", "who": "yosha",   "text": "Я сам!",                            "tts": "[proudly] Я сам!", "max": 1.6}
+  {
+   "id": "p01_bayu",
+   "lv": "p",
+   "who": "tishka",
+   "text": "Баю-баю, за рекою…",
+   "tts": "[sings softly] Баю-баю, за рекою…",
+   "lul": "LUL1",
+   "max": 4.4,
+   "job": "16408ac7-9029-4fee-bb2b-f8e5ed2ac144",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124747_16408ac7-9029-4fee-bb2b-f8e5ed2ac144.mp3",
+   "dur": 2.8
+  },
+  {
+   "id": "p02_zabyl",
+   "lv": "p",
+   "who": "tishka",
+   "text": "Я забыл, как дальше.",
+   "tts": "[sadly] Я забыл, как дальше.",
+   "max": 3.2,
+   "job": "f59cf951-e913-46ad-9ce6-aa6b3be1333f",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124749_f59cf951-e913-46ad-9ce6-aa6b3be1333f.mp3",
+   "dur": 1.97
+  },
+  {
+   "id": "p03_malyshi",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Колыбельные — для малышей.",
+   "tts": "Колыбельные — для малышей.",
+   "max": 2.4,
+   "job": "e9bfb82d-95f9-4740-b9f3-19fd9db4930f",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124751_e9bfb82d-95f9-4740-b9f3-19fd9db4930f.mp3",
+   "dur": 2.07
+  },
+  {
+   "id": "p04_samokat",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Хочешь, я тебе самокат дам?",
+   "tts": "Хочешь, я тебе самокат дам?",
+   "max": 2.5,
+   "job": "4073db1e-eb74-4e43-b5f5-93e3a551d9f5",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124747_4073db1e-eb74-4e43-b5f5-93e3a551d9f5.mp3",
+   "dur": 1.86
+  },
+  {
+   "id": "p05_haha",
+   "lv": "p",
+   "who": "yosha",
+   "text": "Ха-ха-ха!",
+   "tts": "[laughs] Ха-ха-ха!",
+   "max": 2.2,
+   "job": "991a9bba-da83-4d33-8aed-4dbafa7f4795",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124747_991a9bba-da83-4d33-8aed-4dbafa7f4795.mp3",
+   "dur": 1.74
+  },
+  {
+   "id": "p06_bezhim",
+   "lv": "p",
+   "who": "zven",
+   "text": "Дзинь! Бежим!",
+   "tts": "[excited] Дзинь! Бежим!",
+   "max": 2.6,
+   "job": "1a2e6cc9-3053-4a8e-acf6-734e161c343f",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124748_1a2e6cc9-3053-4a8e-acf6-734e161c343f.mp3",
+   "dur": 1.67
+  },
+  {
+   "id": "p07_volk",
+   "lv": "p",
+   "who": null,
+   "voice": "tishka",
+   "text": "♪ …серый волк живёт… ♪",
+   "tts": "[sings softly] …серый волк живёт…",
+   "fx": "far",
+   "gain": 0.6,
+   "lul": "LUL2",
+   "max": 3.4,
+   "job": "d2924489-e0fe-43aa-a6ee-4a9809330d90",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124807_d2924489-e0fe-43aa-a6ee-4a9809330d90.mp3",
+   "dur": 2.04
+  },
+  {
+   "id": "p08_akh",
+   "lv": "p",
+   "who": "tishka",
+   "text": "<i>(издалека)</i> Ах!",
+   "tts": "[gasps] Ах!",
+   "fx": "far",
+   "gain": 0.7,
+   "max": 1.8,
+   "job": "5b217786-9ba8-410b-a9a8-6170c2162d48",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124804_5b217786-9ba8-410b-a9a8-6170c2162d48.mp3",
+   "dur": 1.36
+  },
+  {
+   "id": "p09_lesenka",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Щас подкручу — держи лесенку!",
+   "tts": "Щас подкручу — держи лесенку!",
+   "max": 2.4,
+   "job": "76512966-90c9-4a90-b9f2-cf4c1e1bcefc",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124804_76512966-90c9-4a90-b9f2-cf4c1e1bcefc.mp3",
+   "dur": 2.39
+  },
+  {
+   "id": "p10_podnimu",
+   "lv": "p",
+   "who": "potap",
+   "text": "Стой там, я тебя подниму!",
+   "tts": "Стой там, я тебя подниму!",
+   "max": 2.05,
+   "job": "958c2c1c-efd2-43e9-86dd-dbf2d630151a",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124804_958c2c1c-efd2-43e9-86dd-dbf2d630151a.mp3",
+   "dur": 2.05
+  },
+  {
+   "id": "p11_sam",
+   "lv": "p",
+   "who": "yosha",
+   "text": "Я сам!",
+   "tts": "[proudly] Я сам!",
+   "max": 1.6,
+   "job": "ee9e7459-a0f4-4ab7-b335-f4ab52a348fd",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124804_ee9e7459-a0f4-4ab7-b335-f4ab52a348fd.mp3",
+   "dur": 1.04
+  }
  ]
 }
