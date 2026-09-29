@@ -45,7 +45,11 @@ function batScanLocal(){const now=BAT.t,byPar=new Map();W.group.traverse(m=>{if(
     for(const [k,arr] of groups){if(arr.length<2)continue;const cell={key:'L'+par.uuid+'|'+k,items:[],mesh:null,dead:0,local:par};BAT.cells.set(cell.key,cell);for(const m of arr){const p={m};p.cell=cell;cell.items.push(p);BAT.prox.push(p);BAT.stats.local++;}BAT.dirty.add(cell);}}
   BAT.pendL=keep;}
 // живое — вне пачек (помечается на уровень)
-function batBlacklist(){const mark=o=>{if(o&&o.traverse)o.traverse(c=>{c.userData.batchNo=true;});};const pick=o=>o&&(o.g||o.mesh||o.m||o.group||o.box||null);
+// final05: живое, появившееся позже (волны врагов на аренах, выпавшие предметы), раньше не попадало под метку — стоящий 1,5 с враг
+// склеивался в статическую ячейку мира, а потом, сдвинувшись, пропадал (пачка рисовала его на старом месте). Теперь метка ставится при каждом
+// сканировании, а уже склеенное живое выбрасывается из статики и рисуется само.
+function batUnglue(c){const p=c.userData.batP;if(!p||!p.cell||p.cell.local||p.gone)return;if(!p.out)batEject(p);p.gone=true;c.userData.bat=false;c.userData.noBatch=true;c.layers.set(0);BAT.dirty.add(p.cell);}
+function batBlacklist(){const mark=o=>{if(o&&o.traverse)o.traverse(c=>{c.userData.batchNo=true;if(c.userData.bat)batUnglue(c);});};const pick=o=>o&&(o.g||o.mesh||o.m||o.group||o.box||null);
   for(const k of['enemies','items','bells','gates','plates','movers','lifts','likhos','baits','shots','debris','fx','clouds','tiles','surfs','flocks','geese','trees','returning','sparks','flocks5','grabs'])
     for(const o of (W[k]||[])){mark(pick(o));if(o&&o.isObject3D)mark(o);}
   if(W.zven&&W.zven.g)mark(W.zven.g);if(FIN.actors)for(const n of FIN.actors.npcs)mark(n.o&&n.o.g);for(const z of (W.waters||[])){mark(z.box);mark(z.top);for(const f of (z.floaters||[]))mark(pick(f)||f);}}
@@ -77,10 +81,10 @@ function batWhy(p){const m=p.m;if(m.parent!==p.par)return 'parent';if(m.geometry
 function batEject(p){const cell=p.cell;p.out=true;p.outT=BAT.t;const m=p.m;m.layers.set(0);BAT.stats.ejected++;if(BAT.log&&BAT.log.length<40)BAT.log.push(batWhy(p.snap)+' '+(m.name||m.geometry.type));
   if(cell.mesh&&p.count){const A=cell.mesh.geometry.attributes.position.array,s=p.start*3,e=(p.start+p.count)*3;p.saved=A.slice(s,e);const x=A[s],y=A[s+1],z=A[s+2];for(let i=s;i<e;i+=3){A[i]=x;A[i+1]=y;A[i+2]=z;}cell.dead+=p.count;BAT.upd.add(cell);}}
 function batRestore(p){const cell=p.cell;if(!cell.mesh||!p.saved)return;cell.mesh.geometry.attributes.position.array.set(p.saved,p.start*3);cell.dead-=p.count;p.saved=null;p.out=false;p.m.layers.set(BAT_LAYER);BAT.upd.add(cell);BAT.stats.restored++;}
-function batAdd(p){const key=batKey(p.m);let cell=BAT.cells.get(key);if(!cell){cell={key,items:[],mesh:null,dead:0};BAT.cells.set(key,cell);}p.cell=cell;p.out=false;cell.items.push(p);BAT.dirty.add(cell);}
+function batAdd(p){const key=batKey(p.m);let cell=BAT.cells.get(key);if(!cell){cell={key,items:[],mesh:null,dead:0};BAT.cells.set(key,cell);}p.cell=cell;p.out=false;cell.items.push(p);p.m.userData.batP=p;BAT.dirty.add(cell);}
 function batReset(){for(const c of BAT.cells.values())if(c.mesh)c.mesh.geometry.dispose();for(const p of BAT.prox)if(p.m.userData.bat){p.m.layers.set(0);p.m.userData.bat=false;}
   BAT.cells.clear();BAT.prox=[];BAT.pend=[];BAT.pendL=[];BAT.dirty.clear();BAT.upd.clear();BAT.st='warm';BAT.t=0;BAT.scanT=0;BAT.stats={batched:0,local:0,cells:0,ejected:0,restored:0};}
-function batScan(first){const now=BAT.t;W.group.traverse(m=>{if(!m.isMesh||m.userData.bat||m.userData.batPend||!batOk(m))return;m.userData.batPend=true;BAT.pend.push({s:batSnap(m),t:now});});
+function batScan(first){const now=BAT.t;if(!first)batBlacklist();W.group.traverse(m=>{if(!m.isMesh||m.userData.bat||m.userData.batPend||!batOk(m))return;m.userData.batPend=true;BAT.pend.push({s:batSnap(m),t:now});});
   const keep=[];for(const q of BAT.pend){const m=q.s.m;if(!m.parent){m.userData.batPend=false;continue;}if(batChanged(q.s)){m.userData.batPend=false;m.userData.batStrike=(m.userData.batStrike||0)+1;if(m.userData.batStrike>=2)m.userData.noBatch=true;continue;}
     if(now-q.t>=(first?0.7:1.5)&&batOk(m)){m.userData.batPend=false;const p={m};BAT.prox.push(p);batAdd(p);BAT.stats.batched++;}else keep.push(q);}BAT.pend=keep;}
 function batTick(dt){if(!BAT.on||!W||!W.group)return;BAT.t+=dt;
@@ -94,6 +98,8 @@ function batTick(dt){if(!BAT.on||!W||!W.group)return;BAT.t+=dt;
   if(n){BAT.prox=L.filter(p=>!p.gone);BAT.stats.cells=[...BAT.cells.values()].filter(c=>c.mesh).length;}
   BAT.scanT+=dt;if(BAT.scanT>2){BAT.scanT=0;batScan(false);batScanLocal();}}
 FIN.afterDress2=function(){batReset();};
+// final05: враг помечается живым сразу при создании — в статическую пачку мира он не попадёт даже на миг (детали врага склеиваются только локально)
+{const _mf=makeFoe;makeFoe=function(){const e=_mf.apply(this,arguments);try{if(e&&e.g)e.g.traverse(c=>{c.userData.batchNo=true;});}catch(err){}return e;};}
 {const _step=step;step=function(dt){_step(dt);try{batTick(dt);}catch(e){console.error('batch',e);BAT.on=false;}};}
 // диагностика: что рисуется отдельно и почему (для разработки)
 FIN.batchDiag=function(){const R={};const add=k=>{R[k]=(R[k]||0)+1;};W.group.traverse(m=>{if(!(m.isMesh||m.isPoints||m.isLine||m.isSprite))return;if(!batVis(m)){add('hidden');return;}
