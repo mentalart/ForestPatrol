@@ -17,5 +17,5 @@ tsolo tsolo41 tsospot tso13 tso33 tso54
 tfin_menu tfin_save tfin_dev tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b tfin_occ tfin_cam
 # final05: джойстики в меню, переключение на живого героя, враги видимы (все виды и появившиеся позже), удар героев, бюджет отрисовок, пачки прозрачных стен, персонажи и враги (витрины)
 tfin_pads tfin_downswap tfin_foekinds tfin_foekinds2 tfin_foekinds3 tfin_foeidle tfin_slash tfin_budget tfin_fadebatch tfin_cast tfin_foecast
-# final06: озвучка всей игры
-tfin_voice
+# final06: озвучка всей игры; щиты героев (B) и удар Потапа со спины
+tfin_voice tfin_guard

@@ -2,7 +2,7 @@
 // Раньше удар был плоским белым полупрозрачным сектором кольца у ног — на ярком (свет пера жар-птицы, снег, облака) его не было видно.
 // Теперь — лента-полумесяц на высоте груди: пролетает за ~0,2 с, светлая сердцевина → цвет героя → тёмный контур (читается и на светлом,
 // и на тёмном), яркая передняя кромка, хвост растворяется. Направление ударов чередуется. Почерк у каждого свой:
-//   Прошка — широкая быстрая дуга и две «линии скорости»; Потап — три «когтя» наискосок, пыль; Пелагея — широкое «крыло» с искрами;
+//   Прошка — широкая быстрая дуга и две «линии скорости»; Потап — три параллельных «когтя» (final06: пологие и крупные — видны со спины), пыль; Пелагея — широкое «крыло» с искрами;
 //   Йоша — круговой вихрь вокруг себя. По кромке сыплются звёздочки. Попал — «бах»-звезда цвета героя, кольцо, искры.
 // Детский стиль: без крови и резкости; слой рисуется без тонмаппинга и тумана, поверх прозрачного. Хитбоксы удара не меняются.
 const SL_VS='varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}';
@@ -23,16 +23,17 @@ function slMat(col,core,edge){return new THREE.ShaderMaterial({uniforms:{uProg:{
 // почерк героя: цвет, контур, дуга, толщина, число лент, наклон, частицы
 const SL_STYLE={
   proshka:{col:0xff9a3a,core:0xfff4c8,edge:0x8a3010,r0:0.32,r1:1.62,arc:2.7,n:3,lag:0.18,roll:0.42,off:0.0,rad:0.22,dur:0.28,lines:true,spark:0xffd27a},
-  potap:{col:0xffc84a,core:0xfff6d8,edge:0x6a3e10,r0:0.5,r1:1.2,arc:1.9,n:3,lag:0.1,roll:1.05,off:0.22,rad:0,dur:0.28,claw:true,spark:0xffe29a,dust:true},
+  potap:{col:0xffb830,core:0xfff6d8,edge:0x5a2e08,r0:0.42,r1:1.78,arc:2.55,n:3,lag:0.07,roll:0.34,off:0.0,rad:0,dur:0.3,claw:true,spark:0xffe29a,dust:true},
   pelageya:{col:0xc896ff,core:0xfff0ff,edge:0x4e267e,r0:0.34,r1:1.85,arc:3.0,n:2,lag:0.22,roll:0.38,off:0.0,rad:0.25,dur:0.28,spark:0xe8d0ff,wing:true},
   yosha:{col:0x5ee0c8,core:0xeafff8,edge:0x16625a,r0:0.35,r1:1.25,arc:6.28,n:2,lag:0.15,roll:0.12,off:0.18,rad:-0.15,dur:0.3,spin:true,spark:0xb8fff0}};
 const SL={pool:{},live:[],flip:{},stars:[]};FIN.slash=SL;
 function slGet(kind,i){const k=kind+i;let o=SL.pool[k];if(o&&!o.busy)return o;const S=SL_STYLE[kind]||SL_STYLE.proshka;
-  const line=S.lines&&i>0,r0=line?S.r1+S.rad*(i-1):S.r0+(S.claw?0:S.rad*i),r1=line?r0+0.16:(S.claw?S.r1:S.r1+S.rad*i*0.6);
+  // когти Потапа — три параллельные полосы разного радиуса (след от когтей), почти в плоскости земли: сзади-сверху видны целиком
+  const cw=(S.r1-S.r0)/S.n,line=S.lines&&i>0,r0=line?S.r1+S.rad*(i-1):S.claw?S.r0+i*cw:S.r0+S.rad*i,r1=line?r0+0.16:(S.claw?S.r0+i*cw+cw*0.7:S.r1+S.rad*i*0.6);
   const m=new THREE.Mesh(slGeo(r0,r1,-S.arc/2,S.arc/2,S.spin?48:28),slMat(line?0xffffff:S.col,S.core,line?S.col:S.edge));m.renderOrder=12;m.frustumCulled=false;m.userData.noBatch=true;m.userData.occEx=true;
   const g=new THREE.Group();g.add(m);o={g,m,busy:false};SL.pool[k]=o;return o;}
 // удар: ленты в системе координат героя — дуга перед героем (+X группы — вперёд), наклон вокруг оси взгляда — мах наискосок.
-// Наклон пологий (кроме «когтей» Потапа): игровая камера смотрит сверху-сзади, и крутая лента видна почти с ребра — тонкой чертой.
+// Наклон пологий: игровая камера смотрит сверху-сзади, и крутая лента видна почти с ребра — тонкой чертой.
 function slashFx(h){const S=SL_STYLE[h.kind];if(!S||!W||!W.group)return;const dir=(SL.flip[h.kind]=-(SL.flip[h.kind]||1));
   for(let i=0;i<S.n;i++){const o=slGet(h.kind,i);o.busy=true;const U=o.m.material.uniforms,line=S.lines&&i>0;
     U.uDir.value=S.spin?1:dir;U.uProg.value=0;U.uLen.value=S.spin?0.6:(line?0.45:0.85);U.uAlpha.value=line?0.8:1;
