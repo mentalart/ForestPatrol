@@ -1,11 +1,15 @@
-// Правки сценариста из документа Word: node tools/script/read_doc.js документ.docx снимок.json [правки.md] > правки.json
+// Правки сценариста из документа Word: node tools/script/read_doc.js документ.docx снимок.json [правки.md] [--proposals=предложения.json] > правки.json
 // Читает таблицы документа (make_doc.js), находит столбцы по заголовкам («№», «Кто / что», «Сейчас в игре», «Новый вариант»,
 // «Комментарий») и сравнивает каждую строку со снимком текстов (extract.js) по номеру. Учитывает режим исправлений Word
 // (вставки — да, удаления — нет) и примечания Word. Разметка в ответе — как в снимке: <i>, <b>, <br>, вставки {…}.
 // Виды правок: edit — новый текст (из «Нового варианта» или исправление прямо в «Сейчас в игре»), delete — «УДАЛИТЬ»,
 // add — новая строка без номера (после строки after), note — только комментарий, lost — строки нет в документе.
+// С --proposals (файл, из которого make_doc.js заполнил «Новый вариант», например verse_final06.json): у edit поле proposal —
+// accepted (предложение оставлено как есть), changed (сценарист его поправил) или none; declined — предложение стёрто (текст не меняется).
 const fs=require('fs'),JSZip=require('jszip');
-const [DOC,SNAP,MD]=process.argv.slice(2);if(!DOC||!SNAP){console.error('node read_doc.js документ.docx снимок.json [правки.md] > правки.json');process.exit(1);}
+const ARGS=process.argv.slice(2),FLAG=Object.fromEntries(ARGS.filter(a=>a.startsWith('--')).map(a=>a.slice(2).split('=')));
+const [DOC,SNAP,MD]=ARGS.filter(a=>!a.startsWith('--'));if(!DOC||!SNAP){console.error('node read_doc.js документ.docx снимок.json [правки.md] [--proposals=предложения.json] > правки.json');process.exit(1);}
+const PROP=FLAG.proposals?JSON.parse(fs.readFileSync(FLAG.proposals,'utf8')).rows:null;
 
 // ---------- маленький разбор XML: дерево {n, a, c} ----------
 function parseXML(x){const root={n:'#root',a:{},c:[]},st=[root];const re=/<(\/?)([\w:.-]+)((?:\s+[\w:.-]+\s*=\s*(?:"[^"]*"|'[^']*'))*)\s*(\/?)>|<\?[\s\S]*?\?>|<!--[\s\S]*?-->|<!\[CDATA\[([\s\S]*?)\]\]>|([^<]+)/g;let m;
@@ -40,7 +44,10 @@ function cellText(tc,comments){const paras=[];
     if(Bo)out+='</b>';if(I)out+='</i>';});
   return norm(out);}
 // сравнение без разницы в пробелах и пустых тегах
-function norm(s){return String(s||'').replace(/\u00a0/g,' ').replace(/(\s+)(<\/[ib]>)/g,'$2$1').replace(/(<[ib]>)(\s+)/g,'$2$1').replace(/<\/i><i>|<\/b><b>/g,'').replace(/<i>(\s*)<\/i>|<b>(\s*)<\/b>/g,'$1$2').replace(/[ \t]+/g,' ').replace(/ ?<br> ?/g,'<br>').replace(/^(<br>)+|(<br>)+$/g,'').trim();}
+// курсив и жирный, которые переходят через перенос строки, закрываются перед <br> и открываются после (как их читает cellText)
+function splitTags(s){let I=false,B=false,out='';for(const t of String(s||'').split(/(<\/?[ib]>|<br>)/)){if(t==='<i>')I=true;else if(t==='</i>')I=false;else if(t==='<b>')B=true;else if(t==='</b>')B=false;
+    if(t==='<br>'){out+=(B?'</b>':'')+(I?'</i>':'')+'<br>'+(I?'<i>':'')+(B?'<b>':'');continue;}out+=t;}return out;}
+function norm(s){return splitTags(s).replace(/\u00a0/g,' ').replace(/(\s+)(<\/[ib]>)/g,'$2$1').replace(/(<[ib]>)(\s+)/g,'$2$1').replace(/<\/i><i>|<\/b><b>/g,'').replace(/<i>(\s*)<\/i>|<b>(\s*)<\/b>/g,'$1$2').replace(/[ \t]+/g,' ').replace(/ ?<br> ?/g,'<br>').replace(/^(<br>)+|(<br>)+$/g,'').trim();}
 const plain=s=>norm(s).replace(/<[^>]+>/g,'');
 
 (async()=>{
@@ -61,16 +68,17 @@ const plain=s=>norm(s).replace(/<[^>]+>/g,'');
       last=id;seen.add(id);const e=byId.get(id);if(!e){changes.push({kind:'unknown',id,new:nw||null,comment});continue;}
       const base={id,section:e.s.title,group:e.g.title||null,type:e.r.typeName,who:e.r.whoName||null,old:e.r.text,voice:e.r.voice||null};
       if(plain(nw)){if(/^удалить\.?$/i.test(plain(nw).trim()))changes.push({kind:'delete',...base,comment});
-        else changes.push({kind:'edit',...base,new:nw,changed:norm(nw)!==norm(e.r.text),comment});}
+        else changes.push({kind:'edit',...base,new:nw,changed:norm(nw)!==norm(e.r.text),proposal:PROP?(PROP[id]?(norm(nw)===norm(PROP[id])?'accepted':'changed'):'none'):undefined,comment});}
+      else if(PROP&&PROP[id]&&norm(cur)===norm(e.r.text))changes.push({kind:'declined',...base,comment});
       else if(norm(cur)!==norm(e.r.text))changes.push({kind:'edit',...base,new:cur,inPlace:true,comment});
       else if(comment)changes.push({kind:'note',...base,comment});}}
   for(const id of byId.keys())if(!seen.has(id)){const e=byId.get(id);changes.push({kind:'lost',id,section:e.s.title,old:e.r.text});}
-  const cnt={};for(const c of changes)cnt[c.kind]=(cnt[c.kind]||0)+1;
+  const cnt={};for(const c of changes){cnt[c.kind]=(cnt[c.kind]||0)+1;if(c.proposal)cnt['edit·'+c.proposal]=(cnt['edit·'+c.proposal]||0)+1;}
   process.stdout.write(JSON.stringify({doc:DOC,snapshot:SNAP,count:cnt,changes},null,1));
   if(MD){const L=['# Правки сценариста','','Документ: `'+DOC+'` · снимок: `'+SNAP+'`','',Object.entries(cnt).map(([k,v])=>k+': '+v).join(' · '),''];
     for(const c of changes){if(c.kind==='add'){L.push('- **+ новая строка** после '+(c.after||'начала')+(c.who?' · '+c.who:'')+': '+c.new+(c.comment?'  \n  _комментарий:_ '+c.comment:''));continue;}
       if(c.kind==='lost'){L.push('- **'+c.id+'** — строки нет в документе ('+c.section+'): '+c.old);continue;}
       L.push('- **'+c.id+'** '+(c.who||c.type||'')+' · '+(c.section||'')+(c.voice?' · 🎙':'')+'  \n  было: '+(c.old||'')+
-        (c.kind==='edit'?'  \n  стало: '+c.new+(c.inPlace?' _(исправлено в «Сейчас в игре»)_':'')+(c.changed===false?' _(совпадает с текущим)_':''):c.kind==='delete'?'  \n  **удалить**':'')+(c.comment?'  \n  _комментарий:_ '+c.comment:''));}
+        (c.kind==='edit'?'  \n  стало: '+c.new+(c.inPlace?' _(исправлено в «Сейчас в игре»)_':'')+(c.changed===false?' _(совпадает с текущим)_':'')+(c.proposal==='accepted'?' _(предложение принято)_':c.proposal==='changed'?' _(предложение исправлено сценаристом)_':''):c.kind==='delete'?'  \n  **удалить**':c.kind==='declined'?'  \n  _предложение стёрто — остаётся как есть_':'')+(c.comment?'  \n  _комментарий:_ '+c.comment:''));}
     fs.writeFileSync(MD,L.join('\n')+'\n');}
 })().catch(e=>{console.error(e);process.exit(1);});

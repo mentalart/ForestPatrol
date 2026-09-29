@@ -1,12 +1,15 @@
-// Документ Word для сценариста: node tools/script/make_doc.js тексты.json документ.docx
+// Документ Word для сценариста: node tools/script/make_doc.js тексты.json документ.docx [предложения.json]
 // Берёт вывод extract.js и пишет таблицы по разделам: № (не менять) · Кто / что · Сейчас в игре · Новый вариант · Комментарий.
+// С файлом предложений ({rows:{номер: текст}}, например verse_final06.json — стихотворные варианты) столбец «Новый вариант»
+// заполнен ими: сценарист оставляет, правит или стирает предложение.
 // Разметка текста: <i> — курсив (ремарка), <b> — жирный, <br> — перенос строки, {…} — вставка игры (на сером фоне).
 // Правки обратно читает read_doc.js — по номеру строки.
 const fs=require('fs'),path=require('path');
 const {Document,Packer,Paragraph,TextRun,Table,TableRow,TableCell,WidthType,ShadingType,AlignmentType,HeadingLevel,PageOrientation,
   Header,Footer,PageNumber,BorderStyle,VerticalAlign,TableLayoutType,LevelFormat}=require('docx');
-const [IN,OUT]=process.argv.slice(2);if(!IN||!OUT){console.error('node make_doc.js тексты.json документ.docx');process.exit(1);}
+const [IN,OUT,PROP]=process.argv.slice(2);if(!IN||!OUT){console.error('node make_doc.js тексты.json документ.docx [предложения.json]');process.exit(1);}
 const D=JSON.parse(fs.readFileSync(IN,'utf8'));
+const PR=PROP?JSON.parse(fs.readFileSync(PROP,'utf8')).rows:null;   // номер строки → предложение для «Нового варианта»
 const FONT='Arial',SZ=19,SMALL=15;   // половинки пункта: 9,5 pt текст, 7,5 pt пометки
 const GREY='6B6B6B',LINE='BFBFBF',HEADBG='E7E1D3',NEWBG='FFFBEA';
 // A4 альбомная, поля 1,5 см: ширина текста 15137 DXA
@@ -56,7 +59,7 @@ function table(rows){return new Table({width:{size:TW,type:WidthType.DXA},column
   cell([P([T(r.id,{size:15,color:GREY})])],0),
   cell(whoCell(r),1),
   cell([P(runs(r.text))],2),
-  cell([P([T('')])],3,{shading:{type:ShadingType.CLEAR,color:'auto',fill:NEWBG}}),
+  cell([P(PR&&PR[r.id]?runs(PR[r.id]):[T('')])],3,{shading:{type:ShadingType.CLEAR,color:'auto',fill:NEWBG}}),
   cell([P([T('')])],4)]})))});}
 
 // ---------- вступление ----------
@@ -70,16 +73,27 @@ const all=D.sections.flatMap(s=>s.groups.flatMap(g=>g.rows));
 const nCine=D.sections.reduce((a,s)=>a+s.groups.filter(g=>g.kind==='cine').length,0),nVoice=all.filter(r=>r.voice).length;
 const intro=[
   new Paragraph({children:[new TextRun({text:'Златая цепь',font:FONT,size:56,bold:true,color:'8A1A14'})],spacing:{after:60}}),
-  new Paragraph({children:[new TextRun({text:'Все тексты игры: ролики, реплики, подсказки, задачи, надписи',font:FONT,size:30})],spacing:{after:120}}),
+  new Paragraph({children:[new TextRun({text:'Все тексты игры: ролики, реплики, подсказки, задачи, надписи',font:FONT,size:30})],spacing:{after:PR?40:120}}),
+  ...(PR?[new Paragraph({children:[new TextRun({text:'«Новый вариант» — стихотворные варианты в духе сказок А. С. Пушкина',font:FONT,size:26,italics:true,color:'8A1A14'})],spacing:{after:120}})]:[]),
   para([T('Версия игры: '+D.release.replace(/^.*\//,'').replace(/\.html$/,'')+' · снимок текста от '+D.made+' · строк: '+all.length+' · роликов: '+nCine+' · озвученных реплик: '+nVoice,{size:19,color:GREY})]),
   para([T('Меню, настройки, титры и сохранения в документ не входят. Приложения А–Г в конце — имена, названия и надписи интерфейса.',{size:19,color:GREY})]),
   H(HeadingLevel.HEADING_1,'Как работать с документом'),
   step(['Каждая строка таблицы — один текст из игры. В первом столбце — ',B('номер строки'),'. Не меняйте его: по номеру мы найдём этот текст в игре.']),
-  step(['Чтобы изменить текст, напишите новый вариант ',B('целиком'),' в столбце ',B('«Новый вариант»'),' (он подкрашен). Столбец «Сейчас в игре» не трогайте. Пустой «Новый вариант» — текст остаётся как есть.']),
+  ...(PR?[step(['В столбце ',B('«Новый вариант»'),' (он подкрашен) уже стоит предложение — ',B('стихотворный вариант'),' той же реплики. ',B('Оставьте'),' его, если нравится, ',B('поправьте'),' или ',B('сотрите'),'. Пустой «Новый вариант» — в игре остаётся текст из «Сейчас в игре». Свой вариант пишите ',B('целиком'),' вместо предложения. Столбец «Сейчас в игре» не трогайте.'])]
+    :[step(['Чтобы изменить текст, напишите новый вариант ',B('целиком'),' в столбце ',B('«Новый вариант»'),' (он подкрашен). Столбец «Сейчас в игре» не трогайте. Пустой «Новый вариант» — текст остаётся как есть.'])]),
   step(['Чтобы убрать текст из игры, напишите в «Новом варианте» слово ',B('УДАЛИТЬ'),'.']),
   step(['Чтобы добавить новую реплику, вставьте в таблицу строку (Вставка → Строку ниже) сразу после той, за которой она должна звучать. Номер оставьте пустым, в «Кто / что» напишите, кто говорит, а текст — в «Новый вариант».']),
   step(['Вопросы, пояснения и пожелания — в столбец ',B('«Комментарий»'),' или обычными примечаниями Word. Если правка затрагивает несколько строк («поменять везде Звенышко на …») — напишите это в комментарии к одной из них.']),
   step(['Режим исправлений Word включать можно — мы учтём. Строки таблицы не удаляйте и не переставляйте: чтобы убрать текст, пишите «УДАЛИТЬ».']),
+  ...(PR?[H(HeadingLevel.HEADING_1,'О стихотворных вариантах'),
+    para(['Варианты написаны в духе сказок Пушкина — «О царе Салтане», «О рыбаке и рыбке», «О золотом петушке» и пролога «У лукоморья»: где можно — ',B('хорей и парная рифма'),', сказочные слова («молвит», «тотчас», «диво»), но так, чтобы понял ребёнок 7–9 лет. Смысл реплики, кто говорит и что нужно сделать в игре — те же.']),
+    bullet([B('Перенос строки'),' в варианте — это две строчки субтитра: так стих виден на экране.']),
+    bullet(['Вставки игры ',PH('{кнопка …}'),', ',PH('{число}'),' сохранены во всех вариантах. Привычки героев тоже: у Пелагеи — «Тут написано…», у Звенышка — «Дзинь!».']),
+    bullet([B('Стих обычно длиннее'),' прозы. В роликах смотрите на «на экране … с»: если вариант заметно длиннее, его лучше сократить, иначе ролик замедлится.']),
+    bullet(['В подсказках и задачах главное — чтобы ребёнок понял, ',B('что сделать и какой кнопкой'),'. Если рифма мешает — смело упрощайте.']),
+    bullet(['Одинаковые по смыслу реплики в разных местах (Сказы, концовки, присказка Кота «Звено куют руками…») переложены ',B('одинаково'),' — если меняете одну, поменяйте и другие.']),
+    bullet([B('Пусто'),' там, где стих не нужен или уже есть: имена и названия, счётчики и куски составных строк, междометия («Хэк!», «Мяу», «Ух!»), счёт Потапа, пушкинские строки, которые шепчет Кот, колыбельная Тишки и народные песни («Эй, ухнем», «Я от бабушки ушёл…»). Приложения А–Г не заполнены.']),
+    para([T('Предложений в документе: '+Object.keys(PR).length+'.',{size:19,color:GREY})])]:[]),
   H(HeadingLevel.HEADING_1,'Обозначения'),
   bullet([I('Курсив'),' — ремарка: действие или интонация. Она показывается в субтитрах, но не произносится. Например: ',I('(шёпотом)'),', ',I('Кощей опускает руку.'),' Курсив в вашем варианте тоже станет курсивом в игре.']),
   bullet([B('Жирный'),' — выделение в подсказке (кнопка, главное слово).']),
@@ -139,7 +153,7 @@ for(const s of D.sections){
     if(g.title)body.push(new Paragraph({heading:HeadingLevel.HEADING_3,keepNext:true,children:[new TextRun({text:g.title,font:FONT})],spacing:{before:160,after:60}}));
     body.push(table(g.rows));}}
 
-const doc=new Document({creator:'Златая цепь',title:'Златая цепь — тексты игры',description:'Снимок текстов '+D.release+' от '+D.made,
+const doc=new Document({creator:'Златая цепь',title:'Златая цепь — тексты игры'+(PR?' (стихотворные варианты)':''),description:'Снимок текстов '+D.release+' от '+D.made,
   styles:{default:{document:{run:{font:FONT,size:SZ}}},paragraphStyles:[
     {id:'Heading1',name:'Heading 1',basedOn:'Normal',next:'Normal',quickFormat:true,run:{size:34,bold:true,color:'8A1A14',font:FONT},paragraph:{spacing:{before:240,after:120},outlineLevel:0}},
     {id:'Heading2',name:'Heading 2',basedOn:'Normal',next:'Normal',quickFormat:true,run:{size:28,bold:true,color:'2F3A56',font:FONT},paragraph:{spacing:{before:200,after:80},outlineLevel:1}},
