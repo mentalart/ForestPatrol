@@ -4,7 +4,7 @@
 // Теперь у Прошки, Потапа и Пелагеи — круглый волшебный щит в лапах (выпуклый, с кромкой и умбоном посередине). По кнопке он
 // РАЗВОРАЧИВАЕТСЯ: из лапы веером снизу вверх за 0,09 с (это резкий отбив удара), с поворотом и «пружинкой», по краю раскрытия —
 // светлая полоса и искры; отпустил — складывается за 0,08 с.
-// Щит держат перед собой в правой лапе, чуть сбоку и развернув наружу: со спины он виден целиком, а не прячется за героем. Узор — почерк героя, как у ударов (late_34_slash):
+// Щит — ровно перед героем посередине, на высоте груди; он шире героя, так что со спины видны его кромка и свечение. Узор — почерк героя, как у ударов (late_34_slash):
 //   Прошка — латунная шестерёнка, зубцы по кромке, спицы, внутреннее колесо крутится; Потап — медовые соты, самый большой щит;
 //   Пелагея — веер перьев. Йоша — прежний купол из иголок: ёжик сворачивается клубком.
 // По краю — тёмный контур и светлая кромка (читается и на ярком, и на тёмном), яркость — по запасу сил (сил мало — мерцает).
@@ -41,12 +41,12 @@ void main(){vec2 uv=vUv;float fill=0.0,line=0.0;
   float sp=uSp<0.25?0.6+0.4*sin(uT*28.0):1.0;a*=uA*(0.5+0.5*uSp)*sp;if(a<0.015)discard;gl_FragColor=vec4(c,a);}`;
 // купол Йоши: радиус, дуга по горизонтали (рад), высота центра, верх и низ дуги (доли π), почерк шейдера
 const GD_DOME={yosha:{kind:3,R:0.62,arc:Math.PI*2,y:0.26,th0:0.0,th1:0.64,col:0x4ad8c0,core:0xe6fff8,edge:0x0e5048,spark:0xb8fff0,wrap:true}};
-// круглые щиты: R — радиус, y — высота центра, fwd — вынос вперёд, side — к правой лапе (минус — вправо от героя), yaw — разворот
-// наружу (щит смотрит вперёд-вправо и со спины виден целиком, а не прячется за героем), tilt — наклон назад (смотрит чуть вверх)
+// круглые щиты: R — радиус, y — высота центра над землёй, fwd — вынос вперёд (чтобы щит не задевал живот и морду), tilt — наклон назад
+// (щит смотрит чуть вверх). Щит — ровно перед героем посередине; он шире героя, поэтому со спины видна его кромка и свечение вокруг.
 const GD_ROUND={
-  proshka:{kind:0,R:0.5,y:0.74,fwd:0.36,side:-0.42,yaw:-0.5,tilt:0.16,col:0xd8872c,col2:0x8a4a18,core:0xfff0c0,edge:0x4e1e06,rim:0xffc860,boss:0xff9a3a,spark:0xffd27a},
-  potap:{kind:1,R:0.72,y:1.0,fwd:0.44,side:-0.62,yaw:-0.5,tilt:0.14,col:0xffb428,col2:0xc86a10,core:0xfff6c8,edge:0x5e3208,rim:0xffd86a,boss:0xffe08a,spark:0xffe29a},
-  pelageya:{kind:2,R:0.52,y:0.7,fwd:0.36,side:-0.46,yaw:-0.5,tilt:0.16,col:0xa070f0,col2:0x5e3aa8,core:0xfff0ff,edge:0x2e1656,rim:0xe8d0ff,boss:0xffffff,spark:0xe8d0ff}};
+  proshka:{kind:0,R:0.5,y:0.74,fwd:0.5,tilt:0.16,col:0xd8872c,col2:0x8a4a18,core:0xfff0c0,edge:0x4e1e06,rim:0xffc860,boss:0xff9a3a,spark:0xffd27a},
+  potap:{kind:1,R:0.72,y:1.0,fwd:0.62,tilt:0.14,col:0xffb428,col2:0xc86a10,core:0xfff6c8,edge:0x5e3208,rim:0xffd86a,boss:0xffe08a,spark:0xffe29a},
+  pelageya:{kind:2,R:0.52,y:0.7,fwd:0.52,tilt:0.16,col:0xa070f0,col2:0x5e3aa8,core:0xfff0ff,edge:0x2e1656,rim:0xe8d0ff,boss:0xffffff,spark:0xe8d0ff}};
 const GD_STYLE=Object.assign({},GD_DOME,GD_ROUND);
 // шейдер круглого щита: всё — в плоскости щита (x вправо, y вверх, щит смотрит в +z); uOpen — насколько раскрыт веер
 const GR_VS=`uniform float uR;varying vec3 vP;varying vec3 vN;varying vec3 vV;
@@ -129,8 +129,8 @@ function grTick(o,h,want,dt){const S=o.S;if(want&&!o.on){o.burst=false;}o.on=wan
   const q=o.open,e=want?gdEase(q):q*q*(3-2*q);
   // из лапы — вперёд и в сторону, с поворотом «развёртывания»; блок чуть вдавливает щит к герою
   const k=0.45+0.55*e;o.m.scale.setScalar(k*(1-o.hit*0.05)+o.perf*0.06);
-  o.m.position.set(S.side*(0.5+0.5*e),S.y-(1-e)*0.2,S.fwd*(0.5+0.5*e)-o.hit*0.08);
-  o.m.rotation.set(-S.tilt,S.yaw*e,(1-e)*(want?1.1:-0.6),'YXZ');
+  o.m.position.set(0,S.y-(1-e)*0.2,S.fwd*(0.5+0.5*e)-o.hit*0.08);
+  o.m.rotation.set(-S.tilt,0,(1-e)*(want?1.1:-0.6),'YXZ');
   if(want&&q>0.92&&!o.burst){o.burst=true;try{if(FX.sparks)FX.sparks(gdFront(o),6,S.spark);}catch(err){}}
   const p=players[h.player],sp=p?Math.max(0,Math.min(1,p.spirit)):1;
   for(const m of o.parts){const U=m.material.uniforms;U.uT.value=G.time;U.uA.value=Math.max(o.a,o.hit*0.8);U.uOpen.value=Math.max(o.open,o.hit>0.01?1:0);U.uHit.value=o.hit;U.uPerf.value=o.perf;U.uSp.value=sp;}}
