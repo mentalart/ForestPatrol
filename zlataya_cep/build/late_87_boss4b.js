@@ -58,7 +58,7 @@ function t4Run(steps,opt){opt=opt||{};T4.on=true;t4Dom();const hs=t4Heads();hs.f
       if(s.wait&&s.okAt==null){const at=s.t0+(s.at!=null?s.at:0.8);if(t>=at){if(G.cine)G.cine.t=at;st.wt+=dt;if(st.wt<dt*1.5)t4Card(s.card,s.got,'wait');
           const need=t4Who(s.wait.who);
           for(const pi of need)if(!s.got[pi]&&t4Tap(pi,s.wait.a)){
-            if(s.wait.sync&&s.first!=null&&G.time-s.first>s.wait.sync){s.got={};s.first=null;floatText(t4P(active(pi)).add(new V3(0,2.2,0)),'Ещё раз — вместе!','#ffd9a0');SFX.miss();}
+            if(s.wait.sync&&s.first!=null&&G.time-s.first>s.wait.sync){s.got={};s.first=null;floatText(t4P(active(pi)).add(new V3(0,2.2,0)),'Ещё раз — вместе, дружно!','#ffd9a0');SFX.miss();}
             s.got[pi]=true;if(s.first==null)s.first=G.time;if(s.each)s.each(s,pi);tone(900+pi*200,0.08,'triangle',0.2);t4Card(s.card,s.got,'wait');}
           if(s.wait.sync&&s.first!=null&&G.time-s.first>s.wait.sync&&!need.every(pi=>s.got[pi])){s.got={};s.first=null;t4Card(s.card,s.got,'wait');}
           if(need.every(pi=>s.got[pi])){s.okAt=t;if(s.done)s.done(s,false);SFX.ok();t4Card(s.card,s.got,'ok');}
@@ -78,43 +78,43 @@ function t4View(tg,cands,skip){const T=new V3(tg[0],tg[1],tg[2]);for(const c of 
 // ---------- этап 1: три запала ----------
 function t4Stage1(){const H=t4Heads(),L=H[0],Mi=H[1],R=H[2];if(!L||!R)return;const a0=()=>active(0),a1=()=>active(1);let sigL=null,sigR=null;
   t4Run([
-    t4S('wide',4.2,{tag:'Как победить',title:'Этап 1 из 3 · Три запала',icon:'heads',text:'У каждой головы свой «запал». Оглушите <b>левую</b> и <b>правую</b> голову <b>одновременно</b> — и Горыныч ослабнет. Смотрите, как это делается!'},
-      {enter:()=>{sayP('Тут написано, как его одолеть! Смотрите!',2.6);}}),
-    t4S('L',9,{tag:'Игрок 1 · левая голова',title:'Сонная голова — жёлтый кружок',icon:'yellow',text:'Над головой <b>жёлтый кружок</b> — она бьёт медленно. Подними <b>щит</b> и отбей удар!',keys:[{pi:0,a:'guard',label:'щит',wait:true}],go:'Нажми щит!',okText:'Отбил!'},
+    t4S('wide',4.2,{tag:'Как победить',title:'Этап 1 из 3 · Три запала',icon:'heads',text:'У каждой головы — свой «запал». Оглушите <b>левую</b> и <b>правую</b> <b>разом</b> —<br>Горыныч ослабнет. Глядите, как это делается, — сразу!'},
+      {enter:()=>{sayP('Как его одолеть! Глядите!',2.6);}}),
+    t4S('L',9,{tag:'Игрок 1 · левая голова',title:'Сонная голова — жёлтый кружок, медленный удар',icon:'yellow',text:'Над головой <b>жёлтый кружок</b> — бьёт она медленно, как во сне.<br>Подними <b>щит</b> — и отбей удар, как по весне!',keys:[{pi:0,a:'guard',label:'щит',wait:true}],go:'Нажми щит!',okText:'Отбил!'},
       {wait:{who:0,a:'guard'},at:1.2,enter:()=>{sigL=t4Prop(t4Ring(0xffd23a,0.55));},update:(s,u)=>{if(sigL){const p=t4HeadTop(L);sigL.position.copy(p).add(new V3(0,0.95,0));sigL.lookAt(camS.position);sigL.scale.setScalar(1+0.25*Math.sin(G.time*6));}},
        done:()=>{a0()._demoGuard=G.time+0.9;SFX.parry();const p=t4HeadTop(L);FX.sparks(p.clone().add(new V3(1,0,1.4)),14);floatText(p.clone().add(new V3(0,1.6,0)),'Отбил!','#ffe08a');if(sigL)sigL.visible=false;CINE.punch(-2);}}),
-    t4S('L',7,{tag:'Игрок 1 · левая голова',title:'Теперь бей!',icon:'hit',text:'Удар отбит — голова открыта. <b>Бей</b>, пока не опомнилась!',keys:[{pi:0,a:'attack',label:'удар',wait:true}],go:'Бей!',okText:'ПРОБОЙ!'},
+    t4S('L',7,{tag:'Игрок 1 · левая голова',title:'Теперь бей!',icon:'hit',text:'Удар отбит — голова открыта. <b>Бей</b>, пока не опомнилась, скорей!',keys:[{pi:0,a:'attack',label:'удар',wait:true}],go:'Бей!',okText:'ПРОБОЙ!'},
       {wait:{who:0,a:'attack'},at:0.6,cut:false,done:()=>{a0().atkT=0.28;SFX.brk();const p=t4HeadTop(L);FX.stars(p,12);t4Broken(L,true);floatText(p.clone().add(new V3(0,1.8,0)),'ПРОБОЙ!','#fff2b0');CINE.hitstop&&CINE.hitstop(4);}}),
-    t4S('R',9,{tag:'Игрок 2 · правая голова',title:'Голодная голова — красный зубец',icon:'red',text:'<b>Красный зубец</b> — это хватка, щит не спасёт! <b>Кувыркнись</b> в сторону.',keys:[{pi:1,a:'roll',label:'кувырок',wait:true}],go:'Кувырок!',okText:'Увернулся!'},
+    t4S('R',9,{tag:'Игрок 2 · правая голова',title:'Голодная голова — красный зубец, хватка',icon:'red',text:'<b>Красный зубец</b> — это хватка, щит не спасёт! <b>Кувыркнись</b> вбок — и вперёд.',keys:[{pi:1,a:'roll',label:'кувырок',wait:true}],go:'Кувырок!',okText:'Увернулся!'},
       {wait:{who:1,a:'roll'},at:1.2,enter:()=>{sigR=t4Prop(t4Ring(0xff5a4a,0.55));},update:(s,u)=>{if(sigR){const p=t4HeadTop(R);sigR.position.copy(p).add(new V3(0,0.95,0));sigR.lookAt(camS.position);sigR.scale.setScalar(1+0.25*Math.sin(G.time*9));}},
        done:()=>{const h=a1();if(h.grounded)h.vel.y=5.5;FX.dust(t4P(h),10);SFX.swish();floatText(t4P(h).add(new V3(0,2,0)),'Увернулся!','#9fe0ff');if(sigR)sigR.visible=false;}}),
-    t4S('R',7,{tag:'Игрок 2 · правая голова',title:'Бей сбоку!',icon:'hit',text:'Промахнулась и открыла бок — <b>бей</b>!',keys:[{pi:1,a:'attack',label:'удар',wait:true}],go:'Бей!',okText:'ПРОБОЙ!'},
+    t4S('R',7,{tag:'Игрок 2 · правая голова',title:'Бей сбоку!',icon:'hit',text:'Промахнулась, бок открыла — <b>бей</b>!',keys:[{pi:1,a:'attack',label:'удар',wait:true}],go:'Бей!',okText:'ПРОБОЙ!'},
       {wait:{who:1,a:'attack'},at:0.6,cut:false,done:()=>{a1().atkT=0.28;SFX.brk();const p=t4HeadTop(R);FX.stars(p,12);t4Broken(R,true);floatText(p.clone().add(new V3(0,1.8,0)),'ПРОБОЙ!','#fff2b0');}}),
-    t4S('wide',5.2,{tag:'Главное',title:'Вместе — за 12 секунд!',icon:'clock',text:'Оглушённая голова спит <b>12 секунд</b>. Одну оглушили — она проснётся. Бейте <b>левую и правую вместе</b>, чтобы обе были в Пробое сразу!'},
+    t4S('wide',5.2,{tag:'Главное',title:'Вместе — за двенадцать секунд!',icon:'clock',text:'Оглушённая голова спит <b>двенадцать секунд</b>. Одну оглушили — проснётся опять.<br>Бейте <b>левую и правую вместе</b> — чтоб обе в Пробое разом стоять!'},
       {enter:()=>{for(const e of[L,R]){const r=t4Prop(t4Ring(0xfff2b0,0.8));r.userData.e=e;}},update:(s,u)=>{for(const o of T4.props)if(o.userData.e){const p=t4HeadTop(o.userData.e);o.position.copy(p).add(new V3(0,1.2,0));o.lookAt(camS.position);o.scale.setScalar(Math.max(0.05,1-u/5));}}}),
-    t4S('M',4.4,{tag:'А средняя?',title:'Средняя плюётся синим',icon:'blue',text:'Синие капли <b>отбивай щитом</b>. Среднюю оглушим на следующем этапе.'}),
-    t4S('team',2.6,{tag:'Вперёд!',title:'Теперь — по-настоящему',icon:'go',text:'Подсказки будут рядом. Удачи, богатыри!'},{enter:()=>{FX.confettiCam(30);SFX.ok();}})],
+    t4S('M',4.4,{tag:'А средняя?',title:'Средняя синим плюётся',icon:'blue',text:'Синие капли <b>щитом отбивай</b>. Среднюю на следующем этапе оглушим, так и знай.'}),
+    t4S('team',2.6,{tag:'Вперёд!',title:'Теперь — по-настоящему!',icon:'go',text:'Подсказки будут рядом. Удачи вам, богатыри!'},{enter:()=>{FX.confettiCam(30);SFX.ok();}})],
     {end:()=>{t4Broken(L,false);t4Broken(R,false);t4SeenSet(1);}});}
 // ---------- этап 2: вдох ----------
 function t4Stage2(){const H=t4Heads(),L=H[0],Mi=H[1],R=H[2];if(!Mi)return;const P=HERO.proshka,Po=HERO.potap,Y=HERO.yosha,Pe=HERO.pelageya;let ac=null,fb=null,glow=null;
   const who=(h,pi,sw)=>h.active?'':' (переключись '+K(pi,'swap')+')';
   t4Run([
-    t4S('wide',4,{tag:'Как победить',title:'Этап 2 из 3 · Вдох',icon:'heads',text:'Теперь нужно оглушить <b>все три</b> головы разом. У каждой — своя хитрость, и у каждого героя — своё умение.'},{enter:()=>{sayP('Каждому — своё дело!',2);}}),
-    t4S('M',9,{tag:'Прошка',title:'Долгий вдох средней',icon:'acorn',text:'Средняя надолго вдыхает — над ней загорается <b>жёлудь</b>. Прошка, стреляй в него из <b>рогатки</b>'+who(P,0)+'!',keys:[{pi:0,a:'skill',label:'рогатка',wait:true}],go:'Стреляй!',okText:'Кха-кха! ПРОБОЙ!'},
+    t4S('wide',4,{tag:'Как победить',title:'Этап 2 из 3 · Вдох',icon:'heads',text:'Теперь оглушить надо <b>все три</b> головы разом.<br>У каждой — своя хитрость, у каждого героя — своё умение, сказом.'},{enter:()=>{sayP('Каждому — своё дело, своя стезя!',2);}}),
+    t4S('M',9,{tag:'Прошка',title:'Средняя вдыхает долго',icon:'acorn',text:'Средняя долго вдыхает — над ней <b>жёлудь</b> загорается.<br>Прошка, из <b>рогатки</b>'+who(P,0)+' стреляй — пусть подавится!',keys:[{pi:0,a:'skill',label:'рогатка',wait:true}],go:'Стреляй!',okText:'Кха-кха! ПРОБОЙ!'},
       {wait:{who:0,a:'skill'},at:1.2,enter:()=>{ac=t4Prop(new THREE.Group());const a=acornMesh(2.4);ac.add(a);const r=t4Ring(0xffd76a,0.45);ac.add(r);},
        update:()=>{if(ac&&ac.visible){const p=t4HeadTop(Mi);ac.position.copy(p).add(new V3(0,0.3,1.1));ac.children[1].lookAt(camS.position);ac.scale.setScalar(1+0.15*Math.sin(G.time*10));}},
        done:()=>{P._skT=G.time;SFX.thwip&&SFX.thwip();const a=acornMesh(1.4);t4Prop(a);const from=t4P(P).add(new V3(0,1,0)),to=ac.position.clone();anim(0.35,k=>{a.position.lerpVectors(from,to,k);a.position.y+=Math.sin(k*Math.PI)*0.8;if(k>=1){a.visible=false;ac.visible=false;FX.stars(to,10);SFX.brk();t4Broken(Mi,true);floatText(to.clone().add(new V3(0,1,0)),'Кха-кха! ПРОБОЙ!','#ffe08a');}});}}),
-    t4S('team',8,{tag:'Потап',title:'Огненный выдох',icon:'shield',text:'Средняя дует огнём! Потап, подними <b>широкий щит</b>'+who(Po,0)+' — он закрывает всех, кто стоит за спиной.',keys:[{pi:0,a:'guard',label:'широкий щит',wait:true}],go:'Щит!',okText:'Отбил!'},
+    t4S('team',8,{tag:'Потап',title:'Огненный выдох',icon:'shield',text:'Средняя огнём дует! Потап, <b>широкий щит</b>'+who(Po,0)+' подними —<br>Он закрывает всех, кто за спиной, — смотри!',keys:[{pi:0,a:'guard',label:'широкий щит',wait:true}],go:'Щит!',okText:'Отбил!'},
       {wait:{who:0,a:'guard'},at:1.4,enter:()=>{fb=t4Prop(new THREE.Mesh(new FIN.orig.Icosa(0.35,1),MB(0x6ad0ff,{transparent:true,opacity:0.95})));fb.position.copy(t4HeadTop(Mi));},
        update:(s,u,dt)=>{if(fb&&fb.visible){const tg=t4P(Po).add(new V3(0,1.1,0.9)),d=tg.clone().sub(fb.position),L2=d.length();if(L2>1.6)fb.position.addScaledVector(d.normalize(),Math.min(L2-1.6,dt*9));fb.rotation.y+=dt*6;fb.scale.setScalar(1+0.2*Math.sin(G.time*12));}},
        done:()=>{Po._demoGuard=G.time+1;SFX.shield();if(fb){FX.sparks(fb.position,16,0x9fe0ff);fb.visible=false;}floatText(t4P(Po).add(new V3(0,2.4,0)),'Отбил!','#9fe0ff');}}),
-    t4S('R',8,{tag:'Йоша',title:'Сытая голова',icon:'drop',text:'Голова наелась искр и <b>светится</b> — удар её не берёт. Йоша, потуши её <b>живой водой</b>'+who(Y,1)+'!',keys:[{pi:1,a:'skill',label:'живая вода',wait:true}],go:'Полей!',okText:'Потушил!'},
+    t4S('R',8,{tag:'Йоша',title:'Сытая голова',icon:'drop',text:'Голова искр наелась и <b>светится</b> — удар её не берёт.<br>Йоша, потуши её <b>живой водой</b>'+who(Y,1)+' — вперёд!',keys:[{pi:1,a:'skill',label:'живая вода',wait:true}],go:'Полей!',okText:'Потушил!'},
       {wait:{who:1,a:'skill'},at:1.2,enter:()=>{glow=t4Prop(t4Ring(0xff9a3a,1.1));},update:()=>{if(glow&&glow.visible){const p=t4HeadTop(R);glow.position.copy(p);glow.lookAt(camS.position);glow.scale.setScalar(1+0.12*Math.sin(G.time*8));}},
        done:()=>{Y._skT=G.time;SFX.water&&SFX.water();const p=t4HeadTop(R);FX.drops(p,16);FX.dust(p,8,0xdfe8ee);if(glow)glow.visible=false;t4Broken(R,true);floatText(p.clone().add(new V3(0,1.6,0)),'Потушил! ПРОБОЙ!','#9fe0ff');}}),
-    t4S('L',7,{tag:'Пелагея',title:'Совиный взор',icon:'eye',text:'Не видно, куда бить? Пелагея, включи <b>Совиный взор</b>'+who(Pe,1)+' — слабое место засветится.',keys:[{pi:1,a:'skill',label:'Совиный взор',wait:true}],go:'Взор!',okText:'Слабое место!'},
+    t4S('L',7,{tag:'Пелагея',title:'Совиный взор',icon:'eye',text:'Не видно, куда бить? Пелагея, <b>Совиный взор</b>'+who(Pe,1)+' включи —<br>Слабое место засветится в ночи.',keys:[{pi:1,a:'skill',label:'Совиный взор',wait:true}],go:'Взор!',okText:'Слабое место!'},
       {wait:{who:1,a:'skill'},at:1,done:()=>{Pe._skT=G.time;const p=t4HeadTop(L);FX.sparkle(p,14,0xe7c3ff);t4Broken(L,true);floatText(p.clone().add(new V3(0,1.6,0)),'Слабое место!','#e7c3ff');}}),
-    t4S('wide',4,{tag:'Главное',title:'Все три — в Пробой!',icon:'hit',text:'Когда оглушены <b>все три</b> головы — Горыныч без сил. Тогда — волшебная узда!'},{enter:()=>{t4Heads().forEach(e=>FX.stars(t4HeadTop(e),8));}}),
-    t4S('team',2.4,{tag:'Вперёд!',title:'Каждый — своё дело',icon:'go',text:'Жёлудь — Прошка, щит — Потап, вода — Йоша, взор — Пелагея.'},{enter:()=>{SFX.ok();}})],
+    t4S('wide',4,{tag:'Главное',title:'Все три — в Пробой, разом!',icon:'hit',text:'Как оглушены <b>все три</b> головы — Горыныч без сил.<br>Тогда — волшебная узда, чтоб он смирен был!'},{enter:()=>{t4Heads().forEach(e=>FX.stars(t4HeadTop(e),8));}}),
+    t4S('team',2.4,{tag:'Вперёд!',title:'Каждому — своё дело',icon:'go',text:'Жёлудь — Прошка, щит — Потап, вода — Йоша, взор — Пелагея: вот и лад!'},{enter:()=>{SFX.ok();}})],
     {end:()=>{t4Heads().forEach(e=>{t4Broken(e,false);});t4SeenSet(2);}});}
 // ---------- этап 3: узда ----------
 function t4Stage3(){const gr=W.grabs[0];if(!gr)return;const bp=gr.pos(),saved=bp.clone();let ring=null;
@@ -125,22 +125,22 @@ function t4Stage3(){const gr=W.grabs[0];if(!gr)return;const bp=gr.pos(),saved=bp
   const vB=t4View([saved.x,1.7,saved.z],[[-5.6,3.3,-3.4],[-2.2,3.1,6.2],[-6.4,3,9],[-11.8,3.2,5.4],[-2.6,3.4,0.2],[-11,3.4,-0.6]]),
         vS=t4View([0,1.5,-12],[[3.4,4.4,-5.2],[-3.4,4.4,-5.2],[0,5.2,-4.6],[5,3.8,-8],[-5,3.8,-8]],1.6);
   t4Run([
-    t4S('wide',4,{tag:'Как победить',title:'Этап 3 из 3 · Узда',icon:'ring',text:'Головы без сил! Наденьте на Змея <b>волшебную узду</b>. Она горячая — только <b>клещами</b>, и только <b>вдвоём</b>.'},{enter:()=>{sayP('Кузьма сказал: клещами возьмёте!',2.4);}}),
-    t4S('bridle',9,{tag:'Оба игрока',title:'Возьмите узду',icon:'tongs',text:'Подойдите к узде с <b>двух сторон</b> и возьмите её <b>клещами</b>.',keys:[{pi:0,a:'item',label:'клещи',wait:true},{pi:1,a:'item',label:'клещи',wait:true}],go:'Берите вдвоём!',okText:'Взяли!'},
+    t4S('wide',4,{tag:'Как победить',title:'Этап 3 из 3 · Узда',icon:'ring',text:'Головы без сил! Наденьте на Змея <b>волшебную узду</b>.<br>Горяча она — лишь <b>клещами</b>, и лишь <b>вдвоём</b>, на ходу.'},{enter:()=>{sayP('Кузьма сказал: клещами возьмёте — не рукой!',2.4);}}),
+    t4S('bridle',9,{tag:'Оба игрока',title:'Возьмите узду',icon:'tongs',text:'К узде с <b>двух сторон</b> подойдите — и <b>клещами</b> её возьмите.',keys:[{pi:0,a:'item',label:'клещи',wait:true},{pi:1,a:'item',label:'клещи',wait:true}],go:'Берите вдвоём!',okText:'Взяли!'},
       {p:vB.p,l:vB.l,wait:{who:'both',a:'item'},at:1.6,enter:()=>{walk(i=>new V3(saved.x+(i?1.2:-1.1),0,saved.z+(i?0.3:-0.8)),1.4,saved);},each:(s,pi)=>{FX.sparks(bp.clone().add(new V3(0,0.5,0)),8);floatText(t4P(active(pi)).add(new V3(0,2,0)),'Взял!','#ffb070');},
        done:()=>{const f=bp.clone();anim(0.8,k=>{bp.y=f.y+smooth(k)*1.3;});}}),
-    t4S('spot',5,{tag:'Несите к шее',title:'Светящееся кольцо на шее',icon:'ring',text:'Несите узду <b>вдвоём</b> к светящемуся кольцу на шее Змея. Не расходитесь далеко — иначе уроните!'},
+    t4S('spot',5,{tag:'Несите к шее',title:'Кольцо на шее светится',icon:'ring',text:'Несите узду <b>вдвоём</b> к светящемуся кольцу на шее Змея.<br>Не расходитесь далеко — уроните, жалея!'},
       {p:vS.p,l:vS.l,enter:()=>{ring=t4Prop(t4Ring(0xffd76a,0.95));ring.position.copy(T4SPOT);const f=bp.clone(),to=new V3(T4SPOT.x,1.9,T4SPOT.z+1.8);anim(2.6,k=>{const q=smooth(k);bp.lerpVectors(f,to,q);bp.y+=Math.sin(q*Math.PI)*0.4;});
          walk(i=>new V3(T4SPOT.x+(i?0.95:-0.95),0,T4SPOT.z+1.8),2.6,T4SPOT);},update:()=>{if(ring){ring.rotation.y+=0.03;ring.scale.setScalar(1+0.12*Math.sin(G.time*6));}}}),
-    t4S('spot',10,{tag:'Оба игрока',title:'«Раз-два-три» — вместе!',icon:'n123',text:'Узда у шеи — нажмите <b>умение вместе</b>, в одну секунду!',keys:[{pi:0,a:'skill',label:'',wait:true},{pi:1,a:'skill',label:'',wait:true}],go:'Раз… два… ТРИ!',okText:'Узда на Змее!'},
+    t4S('spot',10,{tag:'Оба игрока',title:'«Раз-два-три» — вместе, дружно!',icon:'n123',text:'Узда у шеи — <b>умение вместе</b> нажмите, в одну секунду, как нужно!',keys:[{pi:0,a:'skill',label:'',wait:true},{pi:1,a:'skill',label:'',wait:true}],go:'Раз… два… ТРИ!',okText:'Узда на Змее!'},
       {p:vS.p,l:vS.l,wait:{who:'both',a:'skill',sync:0.8,timeout:10},at:1,cut:false,update:(s,u)=>{if(s.okAt==null){const k=Math.floor((G.time*1.6)%3);const el=T4.card.querySelector('.ft-go');if(el)el.textContent=['Раз…','Два…','ТРИ — жмите!'][k];}},
        done:()=>{SFX.horn&&SFX.horn();FX.confetti(T4SPOT.clone(),40);CINE.punch(-3);floatText(T4SPOT.clone().add(new V3(0,1.5,0)),'Узда на Змее!','#ffd76a');}}),
-    t4S('team',3,{tag:'Вперёд!',title:'Теперь — по-настоящему',icon:'go',text:'Пока головы без сил, у вас <b>25 секунд</b>. Вперёд!'},{enter:()=>{SFX.ok();bp.copy(saved);restore();}})],
+    t4S('team',3,{tag:'Вперёд!',title:'Теперь — по-настоящему!',icon:'go',text:'Пока головы без сил — у вас <b>двадцать пять секунд</b>. Вперёд, богатыри!'},{enter:()=>{SFX.ok();bp.copy(saved);restore();}})],
     {end:()=>{bp.copy(saved);restore();t4SeenSet(3);}});}
 // короткое напоминание, если этап уже объясняли (повторная попытка)
-function t4Short(n){const txt={1:['Этап 1 · Три запала','heads','Жёлтый кружок — <b>щит</b>, красный зубец — <b>кувырок</b>, потом бей. Левую и правую — <b>вместе</b>, за 12 секунд!'],
-  2:['Этап 2 · Вдох','heads','Жёлудь — <b>рогатка Прошки</b>, огонь — <b>щит Потапа</b>, сытая — <b>вода Йоши</b>, слабое место — <b>взор Пелагеи</b>. Все три — в Пробой!'],
-  3:['Этап 3 · Узда','ring','Узду — <b>клещами вдвоём</b> к кольцу на шее, и <b>умение вместе</b>!']}[n];
+function t4Short(n){const txt={1:['Этап 1 · Три запала','heads','Жёлтый кружок — <b>щит</b>, красный зубец — <b>кувырок</b>, потом бей.<br>Левую и правую — <b>вместе</b>, за двенадцать секунд, дружней!'],
+  2:['Этап 2 · Вдох','heads','Жёлудь — <b>рогатка Прошки</b>, огонь — <b>щит Потапа</b>, сытая — <b>вода Йоши</b>, слабое место — <b>взор Пелагеи</b>.<br>Все три — в Пробой, смелее!'],
+  3:['Этап 3 · Узда','ring','Узду — <b>клещами вдвоём</b> к кольцу на шее, и <b>умение вместе</b> — раз!']}[n];
   t4Run([t4S('wide',4.5,{tag:'Напоминание',title:txt[0],icon:txt[1],text:txt[2]})]);}
 function t4SeenSet(n){G.flags.tut4b=G.flags.tut4b||{};G.flags.tut4b[n]=true;}
 function t4Seen(n){return !!(G.flags.tut4b&&G.flags.tut4b[n]);}
@@ -162,7 +162,7 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
   const nb=hs.filter(e=>e.state==='broken').length;if(nb>H.nb||F.phase!==H.ph){H.prog=now;if(H.cur&&nb>H.nb)t4HintHide(true);}
   if(F.phase!==H.ph){H.ph=F.phase;H.cycle=0;}
   // проснулась одна, пока вторая не в Пробое
-  for(const e of hs){if(e._t4b&&e.state!=='broken'&&F.phase<3&&!G.cine)t4Ctx('wake',()=>t4HintShow('wake',{tag:'Не успели',title:'Голова проснулась!',icon:'clock',text:'Оглушайте головы <b>вместе</b> — Пробой держится 12 секунд.',col:0xff9a8a},[e],null,5),9);e._t4b=e.state==='broken';}
+  for(const e of hs){if(e._t4b&&e.state!=='broken'&&F.phase<3&&!G.cine)t4Ctx('wake',()=>t4HintShow('wake',{tag:'Не успели',title:'Голова проснулась!',icon:'clock',text:'Оглушайте головы <b>вместе</b> — Пробой двенадцать секунд держится.',col:0xff9a8a},[e],null,5),9);e._t4b=e.state==='broken';}
   H.nb=nb;
   // стрелки следуют за целями
   for(const a of T4.arrows){const p=t4TgtPos(a.userData.tgt);a.position.copy(p).add(new V3(0,0.35*Math.abs(Math.sin(now*4)),0));a.rotation.y+=dt*2.5;}
@@ -171,25 +171,25 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
   if(H.cur&&now>H.until)t4HintHide(false);
   const idle=now-Math.max(H.prog,H.last);
   if(F.phase===1){const L=hs[0],R=hs[2];
-    if(L.state==='broken'&&R.state!=='broken')t4Ctx('one',()=>t4HintShow('one',{tag:'Быстрее!',title:'Правая голова — скорее!',icon:'clock',text:'Левая в Пробое! Оглушите <b>правую</b>, пока левая не проснулась.',col:0xfff2b0},[R],[[1,'attack','удар']],5),7);
-    else if(R.state==='broken'&&L.state!=='broken')t4Ctx('one',()=>t4HintShow('one',{tag:'Быстрее!',title:'Левая голова — скорее!',icon:'clock',text:'Правая в Пробое! Оглушите <b>левую</b>, пока правая не проснулась.',col:0xfff2b0},[L],[[0,'attack','удар']],5),7);
-    else if(L.state==='wind'&&L.sig==='yellow'&&H.n.y<3)t4Ctx('yel',()=>{H.n.y++;t4HintShow('yel',{tag:'Игрок 1',title:'Жёлтый кружок — щит!',icon:'yellow',text:'Отбей щитом, потом бей.',col:0xffd23a},[L],[[0,'guard','щит']],3.5);},5);
-    else if(R.state==='wind'&&R.sig==='red'&&H.n.r<3)t4Ctx('red',()=>{H.n.r++;t4HintShow('red',{tag:'Игрок 2',title:'Красный зубец — кувырок!',icon:'red',text:'Щит не спасёт — кувыркнись, потом бей сбоку.',col:0xff5a4a},[R],[[1,'roll','кувырок']],3.5);},5);
+    if(L.state==='broken'&&R.state!=='broken')t4Ctx('one',()=>t4HintShow('one',{tag:'Быстрее!',title:'Правая голова — скорей!',icon:'clock',text:'Левая в Пробое! <b>Правую</b> оглушите, пока левая не проснулась, — живей!',col:0xfff2b0},[R],[[1,'attack','удар']],5),7);
+    else if(R.state==='broken'&&L.state!=='broken')t4Ctx('one',()=>t4HintShow('one',{tag:'Быстрее!',title:'Левая голова — скорей!',icon:'clock',text:'Правая в Пробое! <b>Левую</b> оглушите, пока правая не проснулась, — живей!',col:0xfff2b0},[L],[[0,'attack','удар']],5),7);
+    else if(L.state==='wind'&&L.sig==='yellow'&&H.n.y<3)t4Ctx('yel',()=>{H.n.y++;t4HintShow('yel',{tag:'Игрок 1',title:'Жёлтый кружок — щит, щит!',icon:'yellow',text:'Щитом отбей, потом бей.',col:0xffd23a},[L],[[0,'guard','щит']],3.5);},5);
+    else if(R.state==='wind'&&R.sig==='red'&&H.n.r<3)t4Ctx('red',()=>{H.n.r++;t4HintShow('red',{tag:'Игрок 2',title:'Красный зубец — кувырок, кувырок!',icon:'red',text:'Щит не спасёт — кувыркнись, потом сбоку бей.',col:0xff5a4a},[R],[[1,'roll','кувырок']],3.5);},5);
     else if(idle>12)t4Cycle([
-      ()=>t4HintShow('g1',{tag:'Подсказка',title:'Левая голова — щит и удар',icon:'yellow',text:'Жёлтый кружок — отбей <b>щитом</b>, затем <b>бей</b>.'},[L],[[0,'guard','щит'],[0,'attack','удар']]),
-      ()=>t4HintShow('g2',{tag:'Подсказка',title:'Правая голова — кувырок и удар',icon:'red',text:'Красный зубец — <b>кувырок</b>, затем <b>бей сбоку</b>.'},[R],[[1,'roll','кувырок'],[1,'attack','удар']]),
-      ()=>t4HintShow('g3',{tag:'Подсказка',title:'Вместе!',icon:'clock',text:'Левую и правую — <b>одновременно</b>: Пробой держится 12 секунд.'},[L,R],null)]);}
+      ()=>t4HintShow('g1',{tag:'Подсказка',title:'Левая голова — щит да удар',icon:'yellow',text:'Жёлтый кружок — <b>щитом</b> отбей, затем <b>бей</b>.'},[L],[[0,'guard','щит'],[0,'attack','удар']]),
+      ()=>t4HintShow('g2',{tag:'Подсказка',title:'Правая голова — кувырок да удар',icon:'red',text:'Красный зубец — <b>кувырок</b>, а там <b>сбоку бей</b>.'},[R],[[1,'roll','кувырок'],[1,'attack','удар']]),
+      ()=>t4HintShow('g3',{tag:'Подсказка',title:'Вместе, разом!',icon:'clock',text:'Левую и правую — <b>разом</b>: Пробой двенадцать секунд держится.'},[L,R],null)]);}
   if(F.phase===2){const Mi=hs[1];const acorn=W.marks.some(m=>m.active&&m.active()),sated=hs.find(e=>e.sat>0&&e.state!=='broken'),fire=W.bolts.some(b=>!b.refl&&b.from===Mi);
-    if(acorn)t4Ctx('acorn',()=>t4HintShow('acorn',{tag:'Прошка',title:'Жёлудь! Стреляй!',icon:'acorn',text:'Средняя вдыхает — выстрели из <b>рогатки</b> в жёлудь'+(HERO.proshka.active?'':' (переключись '+K(0,'swap')+')')+'.',col:0xffd76a},[Mi],[[0,'skill','рогатка']],4),6);
-    else if(fire)t4Ctx('fire',()=>t4HintShow('fire',{tag:'Потап',title:'Огонь! Щит!',icon:'shield',text:'Подними <b>широкий щит</b> — закроешь всех за спиной.',col:0x9fe0ff},[HERO.potap],[[0,'guard','щит']],3.5),6);
-    else if(sated)t4Ctx('sated',()=>t4HintShow('sated',{tag:'Йоша · Пелагея',title:'Голова сытая!',icon:'drop',text:'Йоша — <b>живая вода</b>, Пелагея — <b>Совиный взор</b>: так голову снова можно бить.',col:0xff9a3a},[sated],[[1,'skill','умение']],5),8);
+    if(acorn)t4Ctx('acorn',()=>t4HintShow('acorn',{tag:'Прошка',title:'Жёлудь! Стреляй!',icon:'acorn',text:'Средняя вдыхает — из <b>рогатки</b> в жёлудь стрельни'+(HERO.proshka.active?'':' (смени '+K(0,'swap')+')')+'.',col:0xffd76a},[Mi],[[0,'skill','рогатка']],4),6);
+    else if(fire)t4Ctx('fire',()=>t4HintShow('fire',{tag:'Потап',title:'Огонь! Щит!',icon:'shield',text:'<b>Широкий щит</b> подними — закроешь всех за спиной.',col:0x9fe0ff},[HERO.potap],[[0,'guard','щит']],3.5),6);
+    else if(sated)t4Ctx('sated',()=>t4HintShow('sated',{tag:'Йоша · Пелагея',title:'Голова сытая!',icon:'drop',text:'Йоша — <b>живая вода</b>, Пелагея — <b>Совиный взор</b>: так голову снова бить.',col:0xff9a3a},[sated],[[1,'skill','умение']],5),8);
     else if(idle>12)t4Cycle([
-      ()=>t4HintShow('h1',{tag:'Подсказка',title:'Все три — в Пробой',icon:'heads',text:'Оглушите <b>все три</b> головы разом. Средняя — только <b>жёлудем</b> на её долгом вдохе.'},hs.filter(e=>e.state!=='broken'),null),
-      ()=>t4HintShow('h2',{tag:'Подсказка',title:'Каждому — своё',icon:'hit',text:'Жёлудь — Прошка, огонь — щит Потапа, сытая — вода Йоши или взор Пелагеи.'},null,[[0,'swap','сменить героя'],[1,'swap','сменить героя']])]);}
+      ()=>t4HintShow('h1',{tag:'Подсказка',title:'Все три — в Пробой, разом',icon:'heads',text:'Оглушите <b>все три</b> головы разом. Среднюю — лишь <b>жёлудем</b> на её долгом вдохе.'},hs.filter(e=>e.state!=='broken'),null),
+      ()=>t4HintShow('h2',{tag:'Подсказка',title:'Каждому — своё',icon:'hit',text:'Жёлудь — Прошка, огонь — щит Потапа, сытая — вода Йоши иль взор Пелагеи.'},null,[[0,'swap','сменить героя'],[1,'swap','сменить героя']])]);}
   if(F.phase===3){const gr=W.grabs[0],bp=gr?gr.pos():null;const ha=[0,1].map(pi=>active(pi));const near=bp?bp.distanceTo(T4SPOT)<3.2:false;const lifted=bp&&bp.y>0.8;
-    if(bp&&!lifted&&idle>4)t4Ctx('grab',()=>t4HintShow('grab',{tag:'Оба игрока',title:'Узда — клещами вдвоём',icon:'tongs',text:'Подойдите к узде с двух сторон и возьмите её <b>клещами</b>.',col:0xffb070},[gr],[[0,'item','клещи'],[1,'item','клещи']],6),8);
-    else if(bp&&lifted&&!near)t4Ctx('carry',()=>t4HintShow('carry',{tag:'Оба игрока',title:'К светящемуся кольцу!',icon:'ring',text:'Несите узду <b>вдвоём</b> к кольцу на шее. Не расходитесь!',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],null,5),8);
-    else if(bp&&near)t4Ctx('123',()=>t4HintShow('123',{tag:'Оба игрока',title:'Раз-два-три — вместе!',icon:'n123',text:'Нажмите <b>умение</b> в одну секунду!',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],[[0,'skill',''],[1,'skill','']],5),6);}}
+    if(bp&&!lifted&&idle>4)t4Ctx('grab',()=>t4HintShow('grab',{tag:'Оба игрока',title:'Узда — клещами, вдвоём',icon:'tongs',text:'К узде с двух сторон подойдите — и <b>клещами</b> её возьмите.',col:0xffb070},[gr],[[0,'item','клещи'],[1,'item','клещи']],6),8);
+    else if(bp&&lifted&&!near)t4Ctx('carry',()=>t4HintShow('carry',{tag:'Оба игрока',title:'К кольцу светящемуся!',icon:'ring',text:'Несите узду <b>вдвоём</b> к кольцу на шее. Не расходитесь — держитесь рядом!',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],null,5),8);
+    else if(bp&&near)t4Ctx('123',()=>t4HintShow('123',{tag:'Оба игрока',title:'Раз-два-три — вместе, дружно!',icon:'n123',text:'<b>Умение</b> нажмите в одну секунду!',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],[[0,'skill',''],[1,'skill','']],5),6);}}
 function t4Ctx(key,fn,cd){const H=T4.h;if(H.cur&&H.until>G.time&&H.cur.key!=='g1'&&H.cur.key!=='g2'&&H.cur.key!=='g3'&&H.cur.key!=='h1'&&H.cur.key!=='h2')return;if(G.time-(H.cd[key]||-99)<(cd||6))return;fn();}
 function t4Cycle(list){const H=T4.h;if(H.cur)return;list[H.cycle%list.length]();H.cycle++;}
 // ---------- этапы: ролик сразу после смены фазы ----------
