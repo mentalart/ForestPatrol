@@ -10,9 +10,10 @@ window.nextHero=()=>{ZC.hold('KeyG',false);ZC.tick(20);ZC.press('KeyQ');ZC.tick(
 ZC.setSolo(true);ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(20);for(let q=0;q<3&&ZC.G.cine;q++){ZC.skip();ZC.tick(5);}ZC.tick(60);
 cur().face=Math.PI;const h=guardShot();const gd=ZC.FIN.guard;['hero='+h.kind,'guard='+h.guard,'fx='+(gd?gd.visible(h):'-'),'errs='+window._errs.length]
 //@@
-// щит раскрывается веером: сразу после нажатия раскрыт меньше чем наполовину (ещё не считается поднятым), через 0,3 с — целиком; отпустил — складывается
-const h=cur();ZC.hold('KeyG',false);ZC.tick(30);const gd=ZC.FIN.guard;const o0=gd.open(h);ZC.hold('KeyG',true);ZC.tick(3);O.frame();const o1=gd.open(h),v1=gd.visible(h);
-ZC.tick(17);O.frame();const o2=gd.open(h),v2=gd.visible(h);ZC.hold('KeyG',false);ZC.tick(4);const o3=gd.open(h);ZC.tick(20);const o4=gd.open(h);
+// щит раскрывается веером за 0,09 с: через кадр после нажатия раскрыт меньше чем наполовину (ещё не считается поднятым),
+// через 0,1 с — целиком; отпустил — складывается за 0,08 с
+const h=cur();ZC.hold('KeyG',false);ZC.tick(30);const gd=ZC.FIN.guard;const o0=gd.open(h);ZC.hold('KeyG',true);ZC.tick(1);O.frame();const o1=gd.open(h),v1=gd.visible(h);
+ZC.tick(5);O.frame();const o2=gd.open(h),v2=gd.visible(h);ZC.hold('KeyG',false);ZC.tick(2);const o3=gd.open(h);ZC.tick(4);const o4=gd.open(h);
 const ok=o0===0&&o1>0&&o1<0.5&&!v1&&o2===1&&v2&&o3<1&&o3>0&&o4===0;
 ['hero='+h.kind,'open '+[o0,o1,o2,o3,o4].map(v=>v.toFixed(2)).join('→'),'vis '+v1+'/'+v2,ok?'unfold ok':'FAIL unfold']
 //@@ shot=fin_guard_potap.png wait=200

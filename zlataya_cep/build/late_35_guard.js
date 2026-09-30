@@ -2,7 +2,8 @@
 // Раньше щит был плоским полупрозрачным кругом цвета игрока перед героем: игровая камера смотрит сзади-сверху, и его почти целиком
 // закрывало тело героя. Потом — изогнутым барьером больше героя, но он читался как «энергетическое поле», а не щит.
 // Теперь у Прошки, Потапа и Пелагеи — круглый волшебный щит в лапах (выпуклый, с кромкой и умбоном посередине). По кнопке он
-// РАЗВОРАЧИВАЕТСЯ: из лапы веером снизу вверх, с поворотом и «пружинкой», по краю раскрытия бегут искры; отпустил — складывается.
+// РАЗВОРАЧИВАЕТСЯ: из лапы веером снизу вверх за 0,09 с (это резкий отбив удара), с поворотом и «пружинкой», по краю раскрытия —
+// светлая полоса и искры; отпустил — складывается за 0,08 с.
 // Щит держат перед собой в правой лапе, чуть сбоку и развернув наружу: со спины он виден целиком, а не прячется за героем. Узор — почерк героя, как у ударов (late_34_slash):
 //   Прошка — латунная шестерёнка, зубцы по кромке, спицы, внутреннее колесо крутится; Потап — медовые соты, самый большой щит;
 //   Пелагея — веер перьев. Йоша — прежний купол из иголок: ёжик сворачивается клубком.
@@ -118,9 +119,11 @@ function gdMake(h){const S=GD_STYLE[h.kind];if(!S||!h.g)return null;
   const m=new THREE.Mesh(geo,mat);m.position.set(0,S.y,0);m.renderOrder=11;m.visible=false;m.frustumCulled=false;m.userData.noBatch=true;m.userData.occEx=true;
   h.g.add(m);const o={h,m,S,a:0,pop:0,hit:0,perf:0,on:false};GDV.list.set(h,o);return o;}
 const gdGet=h=>GDV.list.get(h)||gdMake(h);
+// раскрытие — за 0,09 с (щит поднимают, чтобы резко отбить удар), складывание — за 0,08 с
+const GR_OPEN=0.09,GR_CLOSE=0.08;
 const gdEase=q=>{const c=1.9;return 1+(c+1)*Math.pow(q-1,3)+c*Math.pow(q-1,2);};   // «пружинка» с перелётом
 function grTick(o,h,want,dt){const S=o.S;if(want&&!o.on){o.burst=false;}o.on=want;
-  o.a=Math.max(0,Math.min(1,o.a+(want?dt/0.06:-dt/0.16)));o.open=Math.max(0,Math.min(1,o.open+(want?dt/0.24:-dt/0.14)));
+  o.a=Math.max(0,Math.min(1,o.a+(want?dt/0.035:-dt/0.1)));o.open=Math.max(0,Math.min(1,o.open+(want?dt/GR_OPEN:-dt/GR_CLOSE)));
   o.hit=Math.max(0,o.hit-dt/0.35);o.perf=Math.max(0,o.perf-dt/0.45);
   const vis=o.open>0.01||o.hit>0.01;o.m.visible=vis;if(!vis)return;
   const q=o.open,e=want?gdEase(q):q*q*(3-2*q);
