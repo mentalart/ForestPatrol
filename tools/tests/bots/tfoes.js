@@ -1,5 +1,5 @@
 //@@
-ZC.startFrom(ZC.LV('5-1'));ZC.G.manual=true;ZC.tick(30);ZC.skip();ZC.tick(10);const W=ZC.W,H=ZC.HERO;const e=W.enemies.find(x=>x.kind==='hameley');const r=['mode0='+e.mode];
+ZC.startFrom(ZC.LV('5-1'));ZC.G.manual=true;ZC.tick(30);ZC.skip();ZC.tick(10);ZC.W.warp51('meadow');ZC.tick(60);const W=ZC.W,H=ZC.HERO;const e=W.enemies.find(x=>x.kind==='hameley');const r=['mode0='+e.mode];
 H.proshka.pos.set(5,0,-4);H.pelageya.pos.set(8,0,-4);ZC.tick(2);e.pos.set(6.5,0,-8);e.home.set(6.5,0,-8);ZC.tick(60*3.3);r.push('nearPero='+e.mode+' guard='+e.guardAll()+' ranged='+e.def.ranged);
 // свет у знака пера
 U.walkTo(0,7.2,-6.6,3);U.tap('KeyR');ZC.tick(5);r.push('lit='+U.act(0).lit+' litNow='+e.litNow+' guard='+e.guardAll());r
