@@ -297,11 +297,11 @@ build5B2=function(){
   /* ---------- ролики ---------- */
   function intro(){F.stage='introCine';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,4,0);h.face=Math.PI;});
     play({dur:35,fov:46,camK:2,shots:[shot(0,[14,9,14],[0,4,-24]),shot(6.4,[-10,3,-14],[-13,1.2,-25]),shot(11.4,[0,4,-4],[0,2.2,-28]),shot(16.6,[10,3,-8],[KP.x+4,2.4,KP.z]),shot(23,[-1,2.2,-15.4],[-3.5,0.8,-19]),shot(27.4,[0,6,2],[0,1.6,-18])],
-      says:[[0.3,4.6,null,'<i>Буян, засохший дуб, рассвет. Горыныч приносит к корням Кузьмину наковальню и ложится рядом, как большая тёплая скала.</i>',true],
-        [6.4,4.6,null,'<i>Вокруг поляны стоят все, кому помогли герои. Ближе всех — четверо помощников из Сказов. Они молчат и слушают.</i>',true],
-        [11.6,4.4,null,'<i>Кощей приходит сам, с тетрадкой Пелагеи. Кладёт её на камень: ему стыдно, но он её возвращает.</i>',true],
-        [16.8,2.8,'koschei','Я дочитал. А конца у сказки нет.'],[19.8,3.2,null,'<i>Пелагея смотрит на последнюю страницу: «Жил-был мальчишка…» — и больше ничего.</i>',true],
-        [23.4,3.8,'koschei','Всё равно сказок не будет. В них я всегда один.'],[27.6,3,null,'<i>Кощей поднимает руку — и вокруг него вспыхивают чёрные свечи и волшебный купол.</i>',true],[31,3.2,'zven','Сегодня мы не деремся. Защищайтесь — и вспоминайте сказку!']],
+      says:[[0.3,4.6,null,'<i>Буян, засохший дуб, рассвет. Горыныч к корням Кузьмину наковальню несёт —</i><br><i>И ложится рядом, как скала тёплая, ждёт.</i>',true],
+        [6.4,4.6,null,'<i>Вокруг поляны — все, кому герои помогли.</i><br><i>Ближе всех — четверо помощников из Сказов: молчат, слушают, как могли.</i>',true],
+        [11.6,4.4,null,'<i>Кощей сам приходит, с тетрадкой Пелагеи в руке.</i><br><i>Кладёт на камень: стыдно ему — но вернуть решил, налегке.</i>',true],
+        [16.8,2.8,'koschei','Я дочитал. А конца у сказки нет — пусто.'],[19.8,3.2,null,'<i>Пелагея на последнюю страницу глядит: «Жил-был мальчишка…» —</i><br><i>И больше ни строчки, ни слова, ни книжки.</i>',true],
+        [23.4,3.8,'koschei','Всё равно сказок не будет.<br>В них я всегда один — никто не полюбит.'],[27.6,3,null,'<i>Кощей поднимает руку — и вокруг него вспыхивают чёрные свечи и волшебный купол.</i>',true],[31,3.2,'zven','Сегодня мы не деремся. Защищайтесь —<br>И сказку вспоминайте, не сдавайтесь!']],
       events:[{t:11.6,fn:()=>{const f=KS.g.position.clone();KS.g.rotation.y=-Math.PI/2;anim(4.4,k=>{KS.g.position.lerpVectors(f,new V3(-2.4,0,-18),k);});book.g.visible=true;}},
         {t:15.2,fn:()=>{book.g.position.set(-3.5,1.0,-19);KS.g.rotation.y=Math.PI*0.2;}},{t:19.8,fn:()=>{const pe=T.pelageya;placeOnGround(pe,-2.6,-17.4,0);faceTo(pe,-3.5,-19);}},
         {t:23.2,fn:()=>{const f=KS.g.position.clone();anim(1.4,k=>{KS.g.position.lerpVectors(f,KP,k);});KS.g.rotation.y=0;}},
@@ -315,22 +315,22 @@ build5B2=function(){
       events:[{t:0.2,fn:()=>{k5s('barrier');shakeAll(0.06,0.5);FX.sparkle(KP.clone().add(new V3(0,2,0)),40,0xd0b0ff);anim(0.8,k=>{dome.scale.setScalar(1+k*0.4);dome.children.forEach(m=>{if(m.material)m.material.opacity*=0.9;});});later(0.8,()=>{dome.visible=false;});}},
         {t:4.2,fn:()=>{anim(1.2,k=>{KS.armR.rotation.x=-2.2*Math.sin(k*Math.PI);});if(SFX.keys)SFX.keys();}}],
       end:()=>{W.anims.length=0;dome.visible=false;skaz1();}});}
-  function skaz1(){F.stage='skaz1';skazClouds({who:1,title:'Сказ по памяти · начало',sub:'Пелагея шагает вперёд и начинает говорить. Время останавливается. Начало выбирает Игрок 2',
-      opts:['Жил-был мальчишка, который хотел сочинять сказки','Жил-был ученик у Кота Учёного','Жил-был мальчишка с деревянным молоточком']},i=>{const t=['Жил-был мальчишка, который хотел сочинять сказки','Жил-был ученик у Кота Учёного','Жил-был мальчишка с деревянным молоточком'][i];F.sk1=t;F.skaz=1;
+  function skaz1(){F.stage='skaz1';skazClouds({who:1,title:'Сказ по памяти · начало',sub:'Пелагея шагает вперёд и сказывать начинает. Время останавливается. Начало — Игрок второй выбирает.',
+      opts:['Жил-был мальчик — сказки сам сложить мечтал','Жил у Кота Учёного ученик','Жил-был мальчишка с молоточком деревянным']},i=>{const t=['Жил-был мальчик — сказки сам сложить мечтал','Жил у Кота Учёного ученик','Жил-был мальчишка с молоточком деревянным'][i];F.sk1=t;F.skaz=1;
       const pe=T.pelageya,po=T.potap;play({dur:14,fov:44,camK:2.4,shots:[shot(0,[pe.pos.x+2,1.8,pe.pos.z+2.6],[pe.pos.x,1,pe.pos.z]),shot(4.4,[3,3,-12],[KP.x,2.4,KP.z]),shot(7.4,[po.pos.x-2,1.8,po.pos.z+2.6],[po.pos.x,1.2,po.pos.z])],
-        says:[[0.3,3.8,'pelageya',t+'…'],[4.4,2.4,null,'<i>Кощей опускает руку.</i>',true],[6.8,1.8,'proshka','Рассказывай дальше!'],[8.8,4,'pelageya','…и с ним рядом стоял Потап. Он держал.']],
+        says:[[0.3,3.8,'pelageya',t+'…'],[4.4,2.4,null,'<i>Кощей руку опускает.</i>',true],[6.8,1.8,'proshka','Сказывай дальше, дальше!'],[8.8,4,'pelageya','…и рядом с ним стоял Потап. Он держал — не отпускал.']],
         events:[{t:4.4,fn:()=>{anim(1,k=>{KS.armR.rotation.x=-2.2*(1-k);});}},{t:8.8,fn:()=>{G.flags.names.potap=true;SFX.ok();floatText(po.pos.clone().add(new V3(0,2.6,0)),'Потап','#e0b27a');banner('Имя вернулось: Потап','#e0b27a',2.4);}}],
         end:()=>{W.anims.length=0;stageStart(2);}});});}
   function trans2(){F.stage='t2';liveBoss(false);const p=KS.g.position.clone();
     play({dur:7.6,fov:44,camK:2.4,shots:[shot(0,[p.x+4,2.6,p.z+5],[p.x,2.8,p.z])],says:[[0.4,3.2,'koschei','Ключи вам не страшны… А буря?'],[3.9,3.4,null,'<i>Небо темнеет. С моря ползут тучи.</i>',true]],
       events:[{t:3.4,fn:()=>{k5StormSet(1);k5s('thunder');}}],end:()=>{W.anims.length=0;skaz2();}});}
-  function skaz2(){F.stage='skaz2';const names=HM.map(h=>h.name);skazClouds({who:0,title:'Сказ по памяти · помощник',sub:'Кто помогал мальчишке? Помощник стоит у дуба. Выбирает Игрок 1',opts:names},i=>{const h=HM[i];F.sk2=h.name;F.sk2k=h.k;F.skaz=2;
+  function skaz2(){F.stage='skaz2';const names=HM.map(h=>h.name);skazClouds({who:0,title:'Сказ по памяти · помощник',sub:'Кто мальчишке помогал? Помощник у дуба стоит. Выбирает Игрок первый.',opts:names},i=>{const h=HM[i];F.sk2=h.name;F.sk2k=h.k;F.skaz=2;
       const f=h.m.g.position.clone();play({dur:15,fov:44,camK:2.2,shots:[shot(0,[f.x+3,2.4,f.z+5],[f.x,1.2,f.z]),shot(5,[-1,1.8,-14],[-3.5,0.9,-19]),shot(10,[-12,2.2,-1],[yagaM?yagaM.g.position.x:-17,1.2,yagaM?yagaM.g.position.z:-4])],
-        says:[[0.3,4,'pelageya','И помогал ему '+h.name.replace(/^./,c=>c.toLowerCase())+'.'],[4.6,4.6,null,'<i>Выбранный делает шаг вперёд. Кощей садится на камень и слушает, положив руки на колени.</i>',true],
-          [9.8,4.4,null,'<i>Яга на краю поляны утирает глаз метлой и делает вид, что это от пыли.</i>',true]],
+        says:[[0.3,4,'pelageya','И помогал ему в том '+h.name.replace(/^./,c=>c.toLowerCase())+'.'],[4.6,4.6,null,'<i>Выбранный шаг вперёд делает. Кощей на камень садится —</i><br><i>Руки на колени кладёт и слушает, не шевелится.</i>',true],
+          [9.8,4.4,null,'<i>Яга на краю поляны глаз метлой утирает —</i><br><i>Мол, от пыли это, никто не узнает.</i>',true]],
         events:[{t:0.3,fn:()=>{if(h.k!=='kit'){const to=f.clone().add(new V3(-f.x*0.2,0,2));anim(1.4,k=>{h.m.g.position.lerpVectors(f,to,smooth(k));});}else{anim(1.6,k=>{h.m.g.position.y=-1.2+Math.sin(k*Math.PI)*1.5;});}}},
           {t:4.8,fn:()=>{KS.g.position.set(-3.5,-0.4,-20.2);KS.g.rotation.y=0.4;}},{t:10,fn:()=>{if(yagaM)anim(2,k=>{yagaM.g.rotation.z=Math.sin(k*Math.PI*3)*0.12;});}},
-          {t:12.4,fn:()=>{if(!G.flags.names.yosha){G.flags.names.yosha=true;bark(T.yosha,'yosha','Я смогу! Держите!',2.2);SFX.ok();banner('Имя вернулось: Йоша','#8fe0d4',2.4);}}}],
+          {t:12.4,fn:()=>{if(!G.flags.names.yosha){G.flags.names.yosha=true;bark(T.yosha,'yosha','Я смогу! Держите, держите!',2.2);SFX.ok();banner('Имя вернулось: Йоша','#8fe0d4',2.4);}}}],
         end:()=>{W.anims.length=0;KS.g.position.copy(KP);KS.g.rotation.y=0;trans2b();}});});}
   function trans2b(){F.stage='t2b';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-8,0);h.face=Math.PI;});
     play({dur:10.6,fov:46,camK:2.2,shots:[shot(0,[4,2.4,-9],[KP.x,2.6,KP.z]),shot(3.6,[0,2,-4],[0,5,-18]),shot(7.4,[-3,1.8,-4],[T.pelageya.pos.x,1,T.pelageya.pos.z])],
@@ -350,36 +350,36 @@ build5B2=function(){
       end:()=>{W.anims.length=0;liftScene();}});}
   function liftScene(){F.stage='lift';const pr=T.proshka;k5force(0,'proshka');placeOnGround(pr,5,-16.6,0);
     play({dur:9,fov:44,camK:2.4,shots:[shot(0,[9,3,-13],[5,1,-20]),shot(4.6,[2,2,-15],[3.4,2,-23])],
-      says:[[0.3,4,null,'<i>Прошка бежит к наковальне — и его последнее изобретение впервые срабатывает: подъёмник из клещей и цепи поднимает наковальню к самым корням.</i>',true],[4.8,3.2,'proshka','Я же говорил, что моя штука работает!']],
+      says:[[0.3,4,null,'<i>Прошка к наковальне бежит — и изобретение его впервые не подвело:</i><br><i>Подъёмник из клещей да цепи наковальню к самым корням подняло.</i>',true],[4.8,3.2,'proshka','Я же говорил, что штука моя работает — вот и сработала!']],
       events:[{t:1,fn:()=>{const f=anvil.position.clone(),to=new V3(ANV.x,0.9,ANV.z);anim(3,k=>{anvil.position.lerpVectors(f,to,smooth(k));anvil.position.y+=Math.sin(k*Math.PI)*1.2;});SFX.latch();}}],
       end:()=>{W.anims.length=0;anvil.position.set(ANV.x,0.9,ANV.z);anvilCyl.x=ANV.x;anvilCyl.z=ANV.z;anvilCyl.maxy=2;stageStart(5);}});}
   function finale(){F.stage='needle';liveBoss(false);const pr=T.proshka;k5force(0,'proshka');placeOnGround(pr,ANV.x,ANV.z+1.8,0);pr.face=Math.PI;KS.g.position.set(ANV.x-2.4,0,ANV.z+0.4);KS.g.rotation.y=Math.PI*0.4;k5StormSet(0.35);
     const good=G.flags.claspQ||0.7;
     play({dur:21,fov:42,camK:2.4,shots:[shot(0,[ANV.x-5,2.4,ANV.z+5],[KS.g.position.x,2.2,KS.g.position.z]),shot(3.2,[pr.pos.x+2.4,1.8,pr.pos.z+2.4],[pr.pos.x,1,pr.pos.z]),shot(7.8,[ANV.x+2.6,1.9,ANV.z+3],[ANV.x-0.6,1.4,ANV.z]),shot(16.6,[ANV.x+1.2,2.4,ANV.z+4],[ANV.x,1,ANV.z])],
       says:[[0.3,2.4,'koschei','…Почему вы не бьёте?'],[3.2,4.4,'pelageya','Потому что это сказка. А в сказке можно по-другому.'],
-        [7.8,4.4,null,'<i>Кощей долго смотрит на молот в лапах Прошки. Потом подходит и поправляет ему руку на застёжке.</i>',true],[12.4,4,'koschei','Держи. Ровнее держи. Вот так.'],
-        [16.6,3.6,null,good>=0.8?'<i>Узор на застёжке тонкий, как у Кузьмы.</i>':'<i>Застёжка скована — руками Прошки.</i>',true]],
+        [7.8,4.4,null,'<i>Кощей долго смотрит на молот в лапах Прошки. Потом подходит и поправляет ему руку на застёжке.</i>',true],[12.4,4,'koschei','Держи. Ровней держи. Вот так, вот так.'],
+        [16.6,3.6,null,good>=0.8?'<i>Узор на застёжке тонок, как у Кузьмы.</i>':'<i>Застёжка скована — Прошкиными руками.</i>',true]],
       events:[{t:0.3,fn:()=>{anim(1.5,k=>{KS.g.rotation.x=0.25*k;});sword.visible=false;}},{t:7.8,fn:()=>{const f=KS.g.position.clone();anim(2.4,k=>{KS.g.position.lerpVectors(f,new V3(ANV.x-1.2,0,ANV.z+1),k);});KS.g.rotation.x=0;}},
         {t:12.4,fn:()=>{anim(1,k=>{KS.armR.rotation.x=-k*1.2;});pr.atkT=0.3;k5s('forge');FX.sparks(ANV.clone().add(new V3(0,1.3,0)),16,0xffe080);}},
         {t:14.6,fn:()=>{G.flags.names.proshka=true;SFX.ok();banner('Имя вернулось: Прошка','#ff9a66',2.4);ndl.g.position.set(ANV.x,1.3,ANV.z);ndl.g.rotation.set(0,0,Math.PI/2);}}],
       end:()=>{W.anims.length=0;KS.armR.rotation.x=0;KS.g.position.copy(KP);KS.g.rotation.set(0,0,0);k5StormSet(0);skaz3();}});}
-  const ENDS=['И он ушёл, и больше его не видели','И его простили, и он попросил прощения','И его позвали слушать'],ENDK=['ushel','proshen','slushat'];
-  function skaz3(){F.stage='skaz3';skazClouds({who:2,title:'Сказ по памяти · конец',sub:'Осталась последняя рамка — чем кончится сказка про мальчишку. Все три настоящие. Наводите вместе',opts:ENDS},arr=>{F.skaz=3;F.ends=arr;
+  const ENDS=['И ушёл он — и был таков','И простили его — и прощенья он просил','И позвали его слушать — сел он в круг'],ENDK=['ushel','proshen','slushat'];
+  function skaz3(){F.stage='skaz3';skazClouds({who:2,title:'Сказ по памяти · конец',sub:'Последняя рамка осталась — чем сказка про мальчишку кончится.<br>Все три — настоящие. Наводите вместе, как хочется.',opts:ENDS},arr=>{F.skaz=3;F.ends=arr;
       G.flags.ending=arr.map(i=>ENDK[i]);G.flags.skaz5=[F.sk1,F.sk2,arr.map(i=>ENDS[i]).join(' — а иные сказывают: ')];
-      if(arr.length>1){say('kot','<i>(разводит лапами)</i> А иные сказывают, что было иначе…',3.4,true);later(3.6,chainScene);}else chainScene();});}
+      if(arr.length>1){say('kot','<i>(разводит лапами)</i> А иные сказывают, что было иначе, — вот как…',3.4,true);later(3.6,chainScene);}else chainScene();});}
   function chainScene(){F.stage='chain';k5StormSet(0,true);const pe=T.pelageya,yo=T.yosha,pr=T.proshka;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*1.8,-15.5,0);faceTo(h,KP.x,KP.z);});KS.g.position.set(-0.6,0,-19.4);KS.g.rotation.y=Math.PI*0.9;
     const keys=new THREE.Group();keys.position.set(-0.3,1.9,-19);W.group.add(keys);for(let i=0;i<5;i++){const k=blackKey(1.4);k.position.x=(i-2)*0.08;keys.add(k);}
     const thread=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.8,4),MB(COL.gold));thread.visible=false;W.group.add(thread);const ya=yagaM?yagaM.g.position:new V3(-10,0,-14);const E=F.ends[0];
-    const tail=E===0?[[43,4.6,null,'<i>И он ушёл, и больше его не видели: Кощей уходит по воде, не оглядываясь. На ветке дуба остаётся его перстень.</i>',true]]
-      :E===1?[[43,4.6,null,'<i>И его простили, и он попросил прощения: Кощей становится на одно колено перед Котом, отдаёт ему перстень — и уходит жить на дальний берег.</i>',true]]
-      :[[43,4.6,null,'<i>И его позвали слушать: Кощей остаётся у дуба, с перстнем на руке, рядом с Котом.</i>',true]];
+    const tail=E===0?[[43,4.6,null,'<i>И ушёл он — и был таков: Кощей по воде уходит, не оглянувшись,</i><br><i>А на ветке дуба перстень его остался, блеснувши.</i>',true]]
+      :E===1?[[43,4.6,null,'<i>И простили его — и прощенья он просил: пред Котом на колено встал, перстень отдал</i><br><i>И на дальний берег жить ушёл — там свой дом и сыскал.</i>',true]]
+      :[[43,4.6,null,'<i>И позвали его слушать: Кощей у дуба остался, с перстнем на руке,</i><br><i>Рядом с Котом сидит — у корней, в тишине.</i>',true]];
     play({dur:49,fov:44,camK:2,shots:[shot(0,[4,3,-12],[-0.6,2,-19.4]),shot(4.6,[ya.x+4,2.4,ya.z+3],[ya.x,1.2,ya.z]),shot(8.4,[1,2,-17],[-2,1,-22.4]),shot(12.4,[-4,1.6,-18],[-2,1.2,-22.4]),shot(19,[4.2,2.6,-11.6],[-0.6,2.8,-19.4]),
         shot(23.4,[pe.pos.x+2,1.8,pe.pos.z+2.4],[pe.pos.x,1.1,pe.pos.z]),shot(28,[yo.pos.x+2,1.4,yo.pos.z+2.2],[yo.pos.x,0.7,yo.pos.z]),shot(31.6,[0,4,-12],[0,4,-28]),shot(37,[8,8,-14],[0,6,-28]),shot(42.4,[6,4,-10],[E===0?-8:E===1?-2:-1,2,E===0?-34:-22])],
-      says:[[0.3,4,null,'<i>Какой бы конец ни выбрали, сначала случается вот что.</i>',true],[4.6,2.2,null,'<i>Кощей отдаёт Яге связку чёрных ключей.</i>',true],[6.6,1.8,'koschei','Больше не приманю.'],
-        [8.4,3.8,null,'<i>Достаёт из кармана золотую ниточку и возвращает её Коту. Кот делает первый вдох — и говорит, хрипло, но словами.</i>',true],
-        [12.4,5,'kot','Прости меня. Я всегда рассказывал, что ты проиграл, — так было проще.'],[17.6,1.6,'koschei','Так расскажи по-другому.'],[19.4,3.4,'kot','<i>(качает головой, показывает лапой на Пелагею)</i> Не я. Она уже.'],
-        [23.4,2.6,'koschei','Пелагея.'],[26.2,1.6,null,'<i>Над портретом Пелагеи загорается её имя — последнее из забытых.</i>',true],[28,2.6,'yosha','Я Йоша! Мы все вспомнили!'],[30.4,1.8,'koschei','<i>(тише)</i> Пелагея… Расскажи ещё.'],
-        [32.4,4.2,null,'<i>Прошка вставляет иглу в цепь застёжкой. Цепь смыкается.</i>',true],[37,5.4,null,'<i>Кот Учёный идёт по ней кругом — направо песнь заводит, налево сказку говорит. И первая сказка у него — наша.</i>',true]].concat(tail),
+      says:[[0.3,4,null,'<i>Какой бы конец ни выбрали — сперва вот что случится.</i>',true],[4.6,2.2,null,'<i>Кощей Яге связку чёрных ключей отдаёт.</i>',true],[6.6,1.8,'koschei','Больше не приманю — ни гуся, ни ворона.'],
+        [8.4,3.8,null,'<i>Из кармана золотую ниточку достаёт — Коту возвращает.</i><br><i>Кот первый вдох делает — и говорит: хрипло, а словами отвечает.</i>',true],
+        [12.4,5,'kot','Прости меня. Я всегда сказывал, что ты проиграл, —<br>Так было проще. Прости, что не переписал.'],[17.6,1.6,'koschei','Так расскажи по-другому — по-иному.'],[19.4,3.4,'kot','<i>(качает головой, показывает лапой на Пелагею)</i> Не я. Она уж сказала.'],
+        [23.4,2.6,'koschei','Пелагея. Пелагея…'],[26.2,1.6,null,'<i>Над портретом Пелагеи имя её загорается — последнее из забытых.</i>',true],[28,2.6,'yosha','Я — Йоша! Мы все вспомнили, все!'],[30.4,1.8,'koschei','<i>(тише)</i> Пелагея… Расскажи ещё, прошу.'],
+        [32.4,4.2,null,'<i>Прошка иглу в цепь застёжкой вставляет — цепь смыкается.</i>',true],[37,5.4,null,'<i>Кот Учёный по ней кругом идёт — направо песнь заводит,</i><br><i>Налево сказку говорит. И первая сказка у него — наша, выходит.</i>',true]].concat(tail),
       events:[{t:4.6,fn:()=>{const f=keys.position.clone();anim(1.6,k=>{keys.position.lerpVectors(f,ya.clone().add(new V3(0.4,1.2,0.4)),smooth(k));keys.position.y+=Math.sin(k*Math.PI)*1.5;});SFX.keys();}},
         {t:8.6,fn:()=>{thread.visible=true;const f=new V3(-0.4,1.6,-19.2),to=kot.g.position.clone().add(new V3(0,1.3,0.3));anim(1.8,k=>{thread.position.lerpVectors(f,to,k);thread.rotation.z+=0.1;});later(1.9,()=>{thread.visible=false;burst(to,COL.gold,16,2);SFX.dzin();kot.lids.forEach(l=>{l.rotation.x=-0.5;});G.flags.kotVoice=true;});}},
         {t:12.4,fn:()=>{kot.head.rotation.x=0.2;}},{t:19.4,fn:()=>{kot.g.rotation.y=Math.atan2(pe.pos.x-kot.g.position.x,pe.pos.z-kot.g.position.z);}},
@@ -393,7 +393,7 @@ build5B2=function(){
           else{KS.g.position.set(OAK.x+2.2,0,OAK.z+3.4);KS.g.rotation.y=Math.PI*0.8;}}}],
       tick:(t)=>{if(t>12.4&&t<22)kot.head.rotation.x=0.2+Math.sin(t*6)*0.05;},
       end:()=>{W.anims.length=0;bb.style.display='none';G.flags.names={potap:true,yosha:true,proshka:true,pelageya:true};G.flags.nameless=false;G.flags.kotVoice=true;G.flags.w5done=true;G.flags.coils=5;
-        G.done['5-B2']=true;G.hub=true;banner('Златая цепь скована','#ffd76a',3,'звено сковано руками Прошки и держится словом Пелагеи');later(2.6,()=>goLevel('epi'));}});}
+        G.done['5-B2']=true;G.hub=true;banner('Златая цепь скована!','#ffd76a',3,'звено руками Прошки сковано и словом Пелагеи держится');later(2.6,()=>goLevel('epi'));}});}
   /* ---------- логика кадра ---------- */
   function freeze(){const frozen=G.cine||!K5.fight;for(const e of W.enemies){if(!e.k5||e===KB&&!K5.live)continue;if(frozen){e.cd=Math.max(e.cd,1.2);if(e.state==='ready'||e.state==='wind'){e.state='idle';e.t=0;e.tgt=null;}}}}
   W.updates.push(dt=>{freeze();k5fxTick(dt);stormTick(dt);
