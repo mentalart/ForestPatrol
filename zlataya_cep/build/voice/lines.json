@@ -236,6 +236,37 @@
    "voice": "Harrison",
    "voice_id": "573e5163-59b3-4926-aab1-951ef2985f81",
    "pitch": 0
+  },
+  "lebed": {
+   "name": "Лебедь",
+   "about": "Царевна Лебедь из «Сказки о царе Салтане»: ласковая, величавая",
+   "voice": "Elena",
+   "voice_id": "ca83ca7f-c186-493d-bd69-0d765fa861b2",
+   "pitch": 1,
+   "fx": "magic"
+  },
+  "golova": {
+   "name": "Голова",
+   "about": "богатырская Голова из «Руслана и Людмилы»: огромная, гулкая, добродушная",
+   "voice": "Orion",
+   "voice_id": "ed69c516-92d2-4b30-a967-617737a342e5",
+   "pitch": -1.5,
+   "fx": "dragon"
+  },
+  "belka": {
+   "name": "Белка",
+   "about": "белка из хрустального дома: быстрая, звонкая",
+   "voice": "Pixie",
+   "voice_id": "0178ef57-ada4-43d9-992b-8d9221045bb4",
+   "pitch": 2.5
+  },
+  "zerk": {
+   "name": "Зеркальце",
+   "about": "волшебное зеркальце Кощея: хрустальный, тихий, правдивый",
+   "voice": "Vesper",
+   "voice_id": "c3204739-4084-41a3-9dc5-c805b307ec18",
+   "pitch": 1,
+   "fx": "magic"
   }
  },
  "lines": [
@@ -306,6 +337,50 @@
    "job": "991a9bba-da83-4d33-8aed-4dbafa7f4795",
    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124747_991a9bba-da83-4d33-8aed-4dbafa7f4795.mp3",
    "dur": 1.74
+  },
+  {
+   "id": "p05a_hihi",
+   "lv": "p",
+   "who": "tishka",
+   "text": "Хи-хи-хи!",
+   "tts": "[giggles] Хи-хи-хи!",
+   "max": 2.8,
+   "job": "dc3da62a-a339-4a68-b0e5-b3f544dbac11",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_dc3da62a-a339-4a68-b0e5-b3f544dbac11.mp3",
+   "dur": 1.83
+  },
+  {
+   "id": "p05b_hoho",
+   "lv": "p",
+   "who": "potap",
+   "text": "Хо-хо-хо!",
+   "tts": "[laughs heartily] Хо-хо-хо!",
+   "max": 2.8,
+   "job": "da4a0687-4d85-4e86-b18c-8c622d047594",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_da4a0687-4d85-4e86-b18c-8c622d047594.mp3",
+   "dur": 2.71
+  },
+  {
+   "id": "p05c_haha",
+   "lv": "p",
+   "who": "pelageya",
+   "text": "Ха-ха-ха!",
+   "tts": "[laughs] Ха-ха-ха!",
+   "max": 2.8,
+   "job": "3218134f-de09-4536-ae95-93c68ca4fb40",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_3218134f-de09-4536-ae95-93c68ca4fb40.mp3",
+   "dur": 1.44
+  },
+  {
+   "id": "p05d_prokatilsya",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Ха-ха! Вот это я прокатился!",
+   "tts": "[laughs] Ха-ха! Вот это я прокатился!",
+   "max": 3,
+   "job": "de3d6162-3a5c-424c-956a-7b6601d37225",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_de3d6162-3a5c-424c-956a-7b6601d37225.mp3",
+   "dur": 3.14
   },
   {
    "id": "p06_bezhim",
@@ -3510,16 +3585,6 @@
    "dur": 1.93
   },
   {
-   "id": "5-1_006",
-   "lv": "5-1",
-   "who": "gorM",
-   "text": "И главное: Лиху в глаз не смотрите. Кто посмотрел, тому Лихо на плечи и сядет.",
-   "tts": "И главное: Лиху в глаз не смотрите. Кто посмотрел, тому Лихо на плечи и сядет.",
-   "max": 3.32,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_134056_f0efc89e-38fd-487c-b9a4-706d5102a844.mp3",
-   "dur": 4.98
-  },
-  {
    "id": "5-1_007",
    "lv": "5-1",
    "who": "proshka",
@@ -3588,96 +3653,6 @@
    "max": 2.8,
    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_134144_6274845a-c2ff-4256-b9b2-cb1045e68858.mp3",
    "dur": 1.79
-  },
-  {
-   "id": "5-1_014",
-   "lv": "5-1",
-   "who": "likho",
-   "text": "Ух-ху-у!",
-   "tts": "Ух-ху-у!",
-   "max": 2.52,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_134142_7d27f936-3a7d-41da-8455-ebdeb772601b.mp3",
-   "dur": 1.27
-  },
-  {
-   "id": "5-1_015",
-   "lv": "5-1",
-   "who": "likho",
-   "text": "УХ!",
-   "tts": "УХ!",
-   "max": 2.2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_134142_b94866ad-6ccd-4af6-aa9d-9b9dc3609994.mp3",
-   "dur": 0.75
-  },
-  {
-   "id": "5-1_016",
-   "lv": "5-1",
-   "who": "potap",
-   "text": "Ой.",
-   "tts": "Ой.",
-   "max": 2.4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_134143_ed56b039-8244-440e-8691-35a9f89bc867.mp3",
-   "dur": 0.64
-  },
-  {
-   "id": "5-1_017",
-   "lv": "5-1",
-   "who": "yosha",
-   "text": "Потап!..",
-   "tts": "Потап!..",
-   "max": 2.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_134144_0bca90d5-5ab8-4e2c-affc-7e5ebc58e4fa.mp3",
-   "dur": 0.67
-  },
-  {
-   "id": "5-1_018",
-   "lv": "5-1",
-   "who": "likho",
-   "text": "Ух! Ух! <i>(в самое ухо)</i>",
-   "tts": "Ух! Ух!",
-   "max": 3,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_164855_c40b76c0-4182-4657-a8b6-7f3436d3ac59.mp3",
-   "dur": 1.91
-  },
-  {
-   "id": "5-1_019",
-   "lv": "5-1",
-   "who": "pelageya",
-   "text": "Тут написано… кто посмотрел, тому Лихо на плечи и сядет. До отары — пешком.",
-   "tts": "Тут написано… кто посмотрел, тому Лихо на плечи и сядет. До отары — пешком.",
-   "max": 3.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_134142_2efd6b02-0b67-405e-b75f-1561ed914151.mp3",
-   "dur": 5.6
-  },
-  {
-   "id": "5-1_020",
-   "lv": "5-1",
-   "who": "yosha",
-   "text": "Уф!",
-   "tts": "Уф!",
-   "max": 2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_134143_af9c411a-d91c-4ee6-939a-11b8cf5d5de0.mp3",
-   "dur": 0.65
-  },
-  {
-   "id": "5-1_021",
-   "lv": "5-1",
-   "who": "potap",
-   "text": "Не смотрю. Иду спиной — как голова велела.",
-   "tts": "Не смотрю. Иду спиной — как голова велела.",
-   "max": 3.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_134143_f4f13876-c681-4c03-807a-87a4b2befc21.mp3",
-   "dur": 3.51
-  },
-  {
-   "id": "5-1_022",
-   "lv": "5-1",
-   "who": "yosha",
-   "text": "Спасибо, что не смотрел!",
-   "tts": "Спасибо, что не смотрел!",
-   "max": 3,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_134143_ee577784-8bf3-404c-bc1c-cc8408dbe3b6.mp3",
-   "dur": 1.61
   },
   {
    "id": "5-1_023",
@@ -6901,6 +6876,1023 @@
    "max": 3.6,
    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_164935_7e9c823e-b778-471b-b74e-2d68d24be99d.mp3",
    "dur": 0.69
+  },
+  {
+   "id": "5-1_041",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… хрусталик передаёт свет дальше.",
+   "tts": "Тут написано… хрусталик передаёт свет дальше.",
+   "max": 3.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203649_7bd3e392-aa54-40b2-8284-882df327937c.mp3",
+   "dur": 3.32
+  },
+  {
+   "id": "5-1_042",
+   "lv": "5-1",
+   "who": "yosha",
+   "text": "Коршун! Он её заклюёт!",
+   "tts": "Коршун! Он её заклюёт!",
+   "max": 2.42,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203649_e6d867fa-99ba-4d05-be5c-85813ea2b697.mp3",
+   "dur": 2.33
+  },
+  {
+   "id": "5-1_043",
+   "lv": "5-1",
+   "who": "proshka",
+   "text": "Не заклюёт. У меня рогатка!",
+   "tts": "Не заклюёт. У меня рогатка!",
+   "max": 2.42,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203649_fbad9745-a1ce-42dd-82d0-b346615277f6.mp3",
+   "dur": 2.42
+  },
+  {
+   "id": "5-1_044",
+   "lv": "5-1",
+   "who": "lebed",
+   "text": "Спасибо вам, мои спасители!",
+   "tts": "Спасибо вам, мои спасители!",
+   "max": 2.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203650_d6e8c56a-81db-42d4-b936-034b052c35ec.mp3",
+   "dur": 2.46
+  },
+  {
+   "id": "5-1_045",
+   "lv": "5-1",
+   "who": "potap",
+   "text": "Мы — Лесной патруль.",
+   "tts": "Мы — Лесной патруль.",
+   "max": 2.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203649_497d47c1-76c6-403b-a501-6a11069fb292.mp3",
+   "dur": 1.72
+  },
+  {
+   "id": "5-1_046",
+   "lv": "5-1",
+   "who": "lebed",
+   "text": "Знаю, зачем вы пришли. Сундук на дубе висит на пяти цепях.",
+   "tts": "Знаю, зачем вы пришли. Сундук на дубе висит на пяти цепях.",
+   "max": 3.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203649_afcc5719-804c-4f65-b3f5-8203ccbd7cbb.mp3",
+   "dur": 3.79
+  },
+  {
+   "id": "5-1_047",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… на четырёх.",
+   "tts": "Тут написано… на четырёх.",
+   "max": 1.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203649_448f8507-6677-44ed-8499-5b8f233211f5.mp3",
+   "dur": 2.06
+  },
+  {
+   "id": "5-1_048",
+   "lv": "5-1",
+   "who": "lebed",
+   "text": "Четыре — с замками. А пятую держит в лапе Лихо Одноглазое.",
+   "tts": "Четыре — с замками. А пятую держит в лапе Лихо Одноглазое.",
+   "max": 3.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203649_8a904821-033f-4172-976c-a4d1851372f5.mp3",
+   "dur": 4.41
+  },
+  {
+   "id": "5-1_049",
+   "lv": "5-1",
+   "who": "lebed",
+   "text": "Лихо не победить. Его можно только усыпить.",
+   "tts": "Лихо не победить. Его можно только усыпить.",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203649_0771bda1-5c52-428a-8861-e4decad6cd2e.mp3",
+   "dur": 3.23
+  },
+  {
+   "id": "5-1_050",
+   "lv": "5-1",
+   "who": "yosha",
+   "text": "А как?",
+   "tts": "А как?",
+   "max": 1.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203649_c7ca145d-2f02-4ff0-b1e0-57ade1c54384.mp3",
+   "dur": 0.63
+  },
+  {
+   "id": "5-1_051",
+   "lv": "5-1",
+   "who": "lebed",
+   "text": "Пусть сперва на себя поглядит. В дупле у дуба — зеркальце.",
+   "tts": "Пусть сперва на себя поглядит. В дупле у дуба — зеркальце.",
+   "max": 3.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203724_ee6389ab-2cef-4797-a559-674ca06380fc.mp3",
+   "dur": 3.65
+  },
+  {
+   "id": "5-1_052",
+   "lv": "5-1",
+   "who": "lebed",
+   "text": "А дорогу к дубу сторожит Голова. Спит — да дует!",
+   "tts": "А дорогу к дубу сторожит Голова. Спит — да дует!",
+   "max": 2.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203803_c0ef88f2-3f4c-48ca-887a-4ee608198e72.mp3",
+   "dur": 3.77
+  },
+  {
+   "id": "5-1_053",
+   "lv": "5-1",
+   "who": "golova",
+   "text": "Хр-р-р… Фу-у-у-у…",
+   "tts": "[sleepy] Хр-р-р… Фу-у-у-у…",
+   "max": 2.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203725_9472d01c-5f99-44ed-8c01-fb224604100f.mp3",
+   "dur": 2.41
+  },
+  {
+   "id": "5-1_054",
+   "lv": "5-1",
+   "who": "potap",
+   "text": "Я — впереди, со щитом. Прячьтесь за меня.",
+   "tts": "Я — впереди, со щитом. Прячьтесь за меня.",
+   "max": 2.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203725_9a79616a-77c0-4517-af15-91684be091f9.mp3",
+   "dur": 3.21
+  },
+  {
+   "id": "5-1_055",
+   "lv": "5-1",
+   "who": "yosha",
+   "text": "А я пролезу под усами!",
+   "tts": "А я пролезу под усами!",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203725_2a5b92e6-c2fa-40dd-b9fa-cb2603849472.mp3",
+   "dur": 1.68
+  },
+  {
+   "id": "5-1_056",
+   "lv": "5-1",
+   "who": "golova",
+   "text": "А… а… АПЧХИ-И-И!",
+   "tts": "[sneezes] А… а… АПЧХИ-И-И!",
+   "max": 3.2,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203724_1aed40bf-c96d-4439-b376-886689db1e45.mp3",
+   "dur": 3.06
+  },
+  {
+   "id": "5-1_057",
+   "lv": "5-1",
+   "who": "golova",
+   "text": "Кто тут щекочется?! Ух, как чихнулось-то славно!",
+   "tts": "[laughs] Кто тут щекочется?! Ух, как чихнулось-то славно!",
+   "max": 3.42,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203724_50feadea-ae8c-44f3-a044-896a1a2dab41.mp3",
+   "dur": 3.96
+  },
+  {
+   "id": "5-1_058",
+   "lv": "5-1",
+   "who": "proshka",
+   "text": "Пропусти нас к дубу, Голова!",
+   "tts": "Пропусти нас к дубу, Голова!",
+   "max": 2.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203725_1816f509-053a-4090-ad9a-ca9c8eddf3a3.mp3",
+   "dur": 2.02
+  },
+  {
+   "id": "5-1_059",
+   "lv": "5-1",
+   "who": "golova",
+   "text": "Ступайте, малые. Да Лиху в глаз не смотрите!",
+   "tts": "Ступайте, малые. Да Лиху в глаз не смотрите!",
+   "max": 3.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203724_dfb37298-6356-4c01-99e1-87446282e398.mp3",
+   "dur": 3.16
+  },
+  {
+   "id": "5-1_060",
+   "lv": "5-1",
+   "who": "proshka",
+   "text": "Да знаем мы, знаем!",
+   "tts": "Да знаем мы, знаем!",
+   "max": 2.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203724_68d39040-c897-4c36-af81-26dfa5b5eed3.mp3",
+   "dur": 2.06
+  },
+  {
+   "id": "5-1_061",
+   "lv": "5-1",
+   "who": "belka",
+   "text": "<i>(издалека)</i> Ой, темно-то как! Кто свет погасил?",
+   "tts": "Ой, темно-то как! Кто свет погасил?",
+   "max": 3.32,
+   "fx": "far",
+   "gain": 0.7,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203803_cc501cd7-d5b3-42c6-a07b-e7e512b4f2c2.mp3",
+   "dur": 3.39
+  },
+  {
+   "id": "5-1_062",
+   "lv": "5-1",
+   "who": "belka",
+   "text": "Светло! Спасибо! Держите орешки — скорлупки золотые!",
+   "tts": "Светло! Спасибо! Держите орешки — скорлупки золотые!",
+   "max": 3.62,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203803_664f84ab-ab53-4c06-a0df-4056173143f8.mp3",
+   "dur": 3.63
+  },
+  {
+   "id": "5-1_063",
+   "lv": "5-1",
+   "who": "belka",
+   "text": "Лихо-то одноглазое никогда не спит. Считать не умеет — вот и овечек не сосчитает.",
+   "tts": "Лихо-то одноглазое никогда не спит. Считать не умеет — вот и овечек не сосчитает.",
+   "max": 3.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203804_cd46a707-9e4d-4431-8ffc-a5a6d9faa4a3.mp3",
+   "dur": 5.01
+  },
+  {
+   "id": "5-1_064",
+   "lv": "5-1",
+   "who": "yosha",
+   "text": "Так мы ему поможем!",
+   "tts": "Так мы ему поможем!",
+   "max": 2.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203803_c89324a5-0921-43b9-ad46-3e54bfdb4a19.mp3",
+   "dur": 1.74
+  },
+  {
+   "id": "5-1_065",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… за заливом — луг, а за лугом — дуб.",
+   "tts": "Тут написано… за заливом — луг, а за лугом — дуб.",
+   "max": 3.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203803_15a45fa8-a0fd-4499-a4c4-5d959010fb0d.mp3",
+   "dur": 4.06
+  },
+  {
+   "id": "5-1_066",
+   "lv": "5-1",
+   "who": "zerk",
+   "text": "Ты силён, Кощеюшка, спору нет. Да только ты — один.",
+   "tts": "[softly] Ты силён, Кощеюшка, спору нет. Да только ты — один.",
+   "max": 3.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203803_f05273dd-b2f0-4022-8335-a5a3d01fce87.mp3",
+   "dur": 4.01
+  },
+  {
+   "id": "5-1_067",
+   "lv": "5-1",
+   "who": "yosha",
+   "text": "Оно разговаривает!",
+   "tts": "Оно разговаривает!",
+   "max": 2.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203803_448fafc3-5f0a-4ce3-b1c5-85f347ac2220.mp3",
+   "dur": 1.28
+  },
+  {
+   "id": "5-1_068",
+   "lv": "5-1",
+   "who": "proshka",
+   "text": "Берём. Пусть Лихо на себя посмотрит.",
+   "tts": "Берём. Пусть Лихо на себя посмотрит.",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204047_4896c628-5434-4967-aefd-7cf1b44c429b.mp3",
+   "dur": 2.76
+  },
+  {
+   "id": "5-1_069",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… пятая цепь. Как Лебедь говорила.",
+   "tts": "Тут написано… пятая цепь. Как Лебедь говорила.",
+   "max": 3.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203837_a263cfe5-c4d1-4712-bb50-68ae6e7e6edc.mp3",
+   "dur": 3.45
+  },
+  {
+   "id": "5-1_070",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Моё! Не отдам!",
+   "tts": "[annoyed] Моё! Не отдам!",
+   "max": 3.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203837_3d7837f8-74e9-4e1a-a472-0c10fa2b824f.mp3",
+   "dur": 2.07
+  },
+  {
+   "id": "5-1_071",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Ух-ху! Сундук — мой! Я — сторож!",
+   "tts": "Ух-ху! Сундук — мой! Я — сторож!",
+   "max": 4.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203837_212aa254-40b1-4355-be2d-c546fb21d7d2.mp3",
+   "dur": 4.11
+  },
+  {
+   "id": "5-1_072",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… Лихо не бьют. Лихо усыпляют.",
+   "tts": "Тут написано… Лихо не бьют. Лихо усыпляют.",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203837_4b11884e-ccd6-4f4b-932b-6c7f7e7b9e45.mp3",
+   "dur": 3.55
+  },
+  {
+   "id": "5-1_073",
+   "lv": "5-1",
+   "who": "proshka",
+   "text": "Зеркальце! Пусть на себя посмотрит!",
+   "tts": "Зеркальце! Пусть на себя посмотрит!",
+   "max": 2.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203838_466f93e6-48a0-430a-9176-930376afc998.mp3",
+   "dur": 2.58
+  },
+  {
+   "id": "5-1_074",
+   "lv": "5-1",
+   "who": "potap",
+   "text": "Только в глаз ему не смотрим. Спиной!",
+   "tts": "Только в глаз ему не смотрим. Спиной!",
+   "max": 2.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203837_30b04ae8-3c0f-422a-8da0-ffa06cb5af18.mp3",
+   "dur": 2.75
+  },
+  {
+   "id": "5-1_075",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Ух?! Это кто такой страшный?!",
+   "tts": "[surprised] Ух?! Это кто такой страшный?!",
+   "max": 3.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203837_a37d78ee-b228-4eee-98c1-febe2b3d4d2b.mp3",
+   "dur": 2.54
+  },
+  {
+   "id": "5-1_076",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Опять он! Одноглазый!",
+   "tts": "Опять он! Одноглазый!",
+   "max": 3.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203837_e65bf3b3-4a54-4afe-bda4-02d1c9fa335f.mp3",
+   "dur": 2.52
+  },
+  {
+   "id": "5-1_077",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "У-у-у… глаз устал…",
+   "tts": "[sleepy] У-у-у… глаз устал…",
+   "max": 3.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203908_935c1a89-0c57-4637-859b-75ec5bdb93b0.mp3",
+   "dur": 2.33
+  },
+  {
+   "id": "5-1_078",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Уа-а-ах… Спать хочу… а уснуть не могу!",
+   "tts": "[yawns] Уа-а-ах… Спать хочу… а уснуть не могу!",
+   "max": 3.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203908_461c74dd-1c63-459f-b557-80511d72bd8e.mp3",
+   "dur": 4.44
+  },
+  {
+   "id": "5-1_079",
+   "lv": "5-1",
+   "who": "proshka",
+   "text": "Овечек посчитай — сразу уснёшь!",
+   "tts": "Овечек посчитай — сразу уснёшь!",
+   "max": 2.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203908_6bfa3468-689d-42ed-9d5a-811f67b1f938.mp3",
+   "dur": 2.53
+  },
+  {
+   "id": "5-1_080",
+   "lv": "5-1",
+   "who": "yosha",
+   "text": "Чур, я — овечка!",
+   "tts": "Чур, я — овечка!",
+   "max": 1.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203908_9104cf15-207c-4dc2-94fe-ad5bd82d69c6.mp3",
+   "dur": 1.85
+  },
+  {
+   "id": "5-1_081",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Ух? Две разом? Сбилось!",
+   "tts": "Ух? Две разом? Сбилось!",
+   "max": 3,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203908_50c1f418-96ae-421d-88ef-792270ad3d87.mp3",
+   "dur": 2.77
+  },
+  {
+   "id": "5-1_082",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Одна овечка…",
+   "tts": "[sleepy] Одна овечка…",
+   "max": 2.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203908_28332a45-d6c0-4657-b6d8-90aad4a90a33.mp3",
+   "dur": 1.6
+  },
+  {
+   "id": "5-1_083",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Две овечки…",
+   "tts": "[sleepy] Две овечки…",
+   "max": 2.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203908_7c96e40c-e5ee-4475-9992-7c4796584b66.mp3",
+   "dur": 1.66
+  },
+  {
+   "id": "5-1_084",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Три…",
+   "tts": "[sleepy] Три…",
+   "max": 2.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203908_845778e6-f6c7-4e0c-b54e-896be33cc00d.mp3",
+   "dur": 1.15
+  },
+  {
+   "id": "5-1_085",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Четыре…",
+   "tts": "[sleepy] Четыре…",
+   "max": 2.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203940_f25dd637-c4fe-4abd-9223-d56c86719299.mp3",
+   "dur": 1.17
+  },
+  {
+   "id": "5-1_086",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Пять…",
+   "tts": "[sleepy] Пять…",
+   "max": 2.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203939_1239ed49-df13-427e-ad86-d10b20e0d338.mp3",
+   "dur": 0.98
+  },
+  {
+   "id": "5-1_087",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Шесть…",
+   "tts": "[sleepy] Шесть…",
+   "max": 2.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203940_9a944cdb-e448-4c44-a9e0-bc74073debbf.mp3",
+   "dur": 1.07
+  },
+  {
+   "id": "5-1_088",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Семь…",
+   "tts": "[sleepy] Семь…",
+   "max": 2.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203940_7813a1e1-e023-4bd3-af51-b2e6be316a29.mp3",
+   "dur": 1.09
+  },
+  {
+   "id": "5-1_089",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Во-о-семь…",
+   "tts": "[sleepy] Во-о-семь…",
+   "max": 2.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203940_d88c47ee-1381-4a5e-aec6-69fe26e1cea4.mp3",
+   "dur": 1.82
+  },
+  {
+   "id": "5-1_090",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Ух? Где овечки?",
+   "tts": "Ух? Где овечки?",
+   "max": 2.8,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203940_bb419724-0a29-44df-aa45-c0841de04d88.mp3",
+   "dur": 1.9
+  },
+  {
+   "id": "5-1_091",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "…хр-р-р… хр-р-р…",
+   "tts": "[snores] хр-р-р… хр-р-р…",
+   "max": 2.62,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203940_dd4916b7-c15c-4708-8f74-0af937af2a21.mp3",
+   "dur": 2.94
+  },
+  {
+   "id": "5-1_092",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… во сне лапа от щекотки разжимается.",
+   "tts": "Тут написано… во сне лапа от щекотки разжимается.",
+   "max": 3.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_203940_0babf273-30b2-4b03-b761-fd4c3bf38670.mp3",
+   "dur": 3.65
+  },
+  {
+   "id": "5-1_093",
+   "lv": "5-1",
+   "who": "yosha",
+   "text": "А я спою колыбельную на гуслях!",
+   "tts": "А я спою колыбельную на гуслях!",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204013_071ea044-fea6-4faf-a178-5ad48b78f951.mp3",
+   "dur": 2.21
+  },
+  {
+   "id": "5-1_094",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "…ладно… сплю…",
+   "tts": "[sleepy] …ладно… сплю…",
+   "max": 3,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204013_4c7db3cc-631f-4e4a-ba5c-def45c00fd71.mp3",
+   "dur": 1.94
+  },
+  {
+   "id": "5-1_095",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Ух…? Кто тут ходит?",
+   "tts": "[sleepy] Ух…? Кто тут ходит?",
+   "max": 2.8,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204014_ba5b47d5-f9fa-41d6-9c8c-3d33a106bc91.mp3",
+   "dur": 2.4
+  },
+  {
+   "id": "5-1_096",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "УХ! Кто меня будит?!",
+   "tts": "[shouting] УХ! Кто меня будит?!",
+   "max": 3.2,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204013_209c7c1d-0ba6-406b-96e7-12a64b31982e.mp3",
+   "dur": 2.1
+  },
+  {
+   "id": "5-1_097",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Хр-р… моё… хр-р…",
+   "tts": "[sleepy] Хр-р… моё… хр-р…",
+   "max": 2.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204013_4d5c90e8-27bc-4eff-83e5-bbb5b1f8a5ea.mp3",
+   "dur": 2.36
+  },
+  {
+   "id": "5-1_098",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… не буди лихо, пока оно тихо.",
+   "tts": "[softly] Тут написано… не буди лихо, пока оно тихо.",
+   "max": 3.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204013_e7b174b8-0b53-4882-a25b-59f1c259e81d.mp3",
+   "dur": 3.66
+  },
+  {
+   "id": "5-1_099",
+   "lv": "5-1",
+   "who": "potap",
+   "text": "<i>(шёпотом)</i> На цыпочках — за зайцем!",
+   "tts": "[whispers] На цыпочках — за зайцем!",
+   "max": 2.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204013_9ad4952a-1725-48ee-ae9d-139a730f204a.mp3",
+   "dur": 1.96
+  },
+  {
+   "id": "5-1_100",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… вон она, пятая цепь — чёрная. Уходит вниз, на поляну.",
+   "tts": "Тут написано… вон она, пятая цепь — чёрная. Уходит вниз, на поляну.",
+   "max": 3.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204013_bc607211-da41-4e3e-bfec-5bac25fdbd74.mp3",
+   "dur": 5.16
+  },
+  {
+   "id": "5-1_101",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… коршуна — рогаткой или волной.",
+   "tts": "Тут написано… коршуна — рогаткой или волной.",
+   "max": 4.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204047_f20c313a-5c1d-4df9-b03c-440e3e3493bc.mp3",
+   "dur": 4.4
+  },
+  {
+   "id": "5-1_102",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… за щитом ветер не страшен.",
+   "tts": "Тут написано… за щитом ветер не страшен.",
+   "max": 4.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204047_b2289cad-ddf0-446f-bc76-cdbe3d1e7bbc.mp3",
+   "dur": 3.54
+  },
+  {
+   "id": "5-1_103",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… Лихо на зеркальце не глядит. Встань у него на пути.",
+   "tts": "Тут написано… Лихо на зеркальце не глядит. Встань у него на пути.",
+   "max": 4.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204047_b9e8d3db-21f2-45c5-aae5-387ff3a6de76.mp3",
+   "dur": 4.44
+  },
+  {
+   "id": "5-1_104",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… по одной овечке.",
+   "tts": "Тут написано… по одной овечке.",
+   "max": 4.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_204047_1623ce06-eefc-4d61-8652-1928fb0c39bd.mp3",
+   "dur": 2.73
+  },
+  {
+   "id": "5-B2_k01",
+   "lv": "5-B2",
+   "who": "pelageya",
+   "text": "Смотрите: купол держат чёрные свечи! Погасите все четыре!",
+   "tts": "[urgent, clever] Смотрите: купол держат чёрные свечи! Погасите все четыре!",
+   "job": "b96bb4f6-e1b4-4409-9926-f66fec4177e3",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_b96bb4f6-e1b4-4409-9926-f66fec4177e3.mp3",
+   "dur": 4.43
+  },
+  {
+   "id": "5-B2_k02",
+   "lv": "5-B2",
+   "who": "yosha",
+   "text": "Я их водичкой! Пш-ш-ш!",
+   "tts": "[excited] Я их водичкой! Пш-ш-ш!",
+   "job": "01f2fbd3-db32-4b18-acb9-3a972566311f",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_01f2fbd3-db32-4b18-acb9-3a972566311f.mp3",
+   "dur": 2.4
+  },
+  {
+   "id": "5-B2_k03",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Горите!",
+   "tts": "[cold, commanding] Горите!",
+   "job": "b7fa3724-7b9f-4bbf-9ab9-9460208eb085",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_b7fa3724-7b9f-4bbf-9ab9-9460208eb085.mp3",
+   "dur": 0.97
+  },
+  {
+   "id": "5-B2_k04",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Мои свечи… Вы задули мои свечи?",
+   "tts": "[surprised, quiet, cold] Мои свечи… Вы задули мои свечи?",
+   "job": "9a13036d-893e-41d5-b8a3-c9fc312614df",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_9a13036d-893e-41d5-b8a3-c9fc312614df.mp3",
+   "dur": 3.28
+  },
+  {
+   "id": "5-B2_k05",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Тогда я запру вас. Каждого — своим ключом.",
+   "tts": "[menacing, slow] Тогда я запру вас. Каждого — своим ключом.",
+   "job": "0e8a2be4-872a-4d10-8bec-71bc4a27001d",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_0e8a2be4-872a-4d10-8bec-71bc4a27001d.mp3",
+   "dur": 4.51
+  },
+  {
+   "id": "5-B2_k06",
+   "lv": "5-B2",
+   "who": "potap",
+   "text": "Не запрёшь. Мы друг друга откроем!",
+   "tts": "[firm, brave] Не запрёшь. Мы друг друга откроем!",
+   "job": "e4d263ae-d803-489b-b3f6-cd65f52a7b79",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_e4d263ae-d803-489b-b3f6-cd65f52a7b79.mp3",
+   "dur": 2.59
+  },
+  {
+   "id": "5-B2_k07",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Друга заперли — бей по замку, открывай!",
+   "tts": "[bright, urgent] Друга заперли — бей по замку, открывай!",
+   "job": "fe8e0c6f-e16f-49f6-8204-238af4588c02",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_fe8e0c6f-e16f-49f6-8204-238af4588c02.mp3",
+   "dur": 3.01
+  },
+  {
+   "id": "5-B2_k08",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Отбил — искорка летит к другу! Отбивайте по очереди!",
+   "tts": "[bright, cheerful] Отбил — искорка летит к другу! Отбивайте по очереди!",
+   "job": "784729cc-79eb-4ae5-b44e-416b3b41b5dc",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_784729cc-79eb-4ae5-b44e-416b3b41b5dc.mp3",
+   "dur": 4.2
+  },
+  {
+   "id": "5-B2_k09",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Заприте их!",
+   "tts": "[commanding, cold] Заприте их!",
+   "job": "bb28513e-33c2-4e3c-8334-b29b98b9a292",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_bb28513e-33c2-4e3c-8334-b29b98b9a292.mp3",
+   "dur": 1.34
+  },
+  {
+   "id": "5-B2_k10",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Ключи вам не страшны… А буря?",
+   "tts": "[cold, amused] Ключи вам не страшны… А буря?",
+   "job": "f9245f86-7702-496a-a0c8-08315d20d4ca",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211309_f9245f86-7702-496a-a0c8-08315d20d4ca.mp3",
+   "dur": 2.94
+  },
+  {
+   "id": "5-B2_k11",
+   "lv": "5-B2",
+   "who": "proshka",
+   "text": "Он взлетел! Как его оттуда достать?",
+   "tts": "[alarmed] Он взлетел! Как его оттуда достать?",
+   "job": "10240607-1a24-4465-b8cb-42642b802708",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211346_10240607-1a24-4465-b8cb-42642b802708.mp3",
+   "dur": 2.76
+  },
+  {
+   "id": "5-B2_k12",
+   "lv": "5-B2",
+   "who": "pelageya",
+   "text": "Шар отбей другу — а друг отбивает его в небо!",
+   "tts": "[thinking quickly] Шар отбей другу — а друг отбивает его в небо!",
+   "job": "c751b1cc-c0ee-46f3-acfe-b3c3ce3e265d",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_c751b1cc-c0ee-46f3-acfe-b3c3ce3e265d.mp3",
+   "dur": 3.24
+  },
+  {
+   "id": "5-B2_k13",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Вороны, ко мне!",
+   "tts": "[shouting, cold] Вороны, ко мне!",
+   "job": "f8ba2e11-d5e7-4245-b3b5-192516b14ada",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211346_f8ba2e11-d5e7-4245-b3b5-192516b14ada.mp3",
+   "dur": 1.68
+  },
+  {
+   "id": "5-B2_k14",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Попробуйте, достаньте!",
+   "tts": "[mocking, cold] Попробуйте, достаньте!",
+   "job": "65ea1295-9a89-47bb-8525-9b489fabb3f9",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_65ea1295-9a89-47bb-8525-9b489fabb3f9.mp3",
+   "dur": 2.13
+  },
+  {
+   "id": "5-B2_k15",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Хватит сказок. Теперь — меч.",
+   "tts": "[cold, determined] Хватит сказок. Теперь — меч.",
+   "job": "a4f0c9f8-d89b-4eeb-b0ba-cb3963723a7b",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_a4f0c9f8-d89b-4eeb-b0ba-cb3963723a7b.mp3",
+   "dur": 2.93
+  },
+  {
+   "id": "5-B2_k16",
+   "lv": "5-B2",
+   "who": "proshka",
+   "text": "У него меч! Настоящий!",
+   "tts": "[scared, amazed] У него меч! Настоящий!",
+   "job": "8cc68948-1789-43ab-adb5-4beacc459d90",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_8cc68948-1789-43ab-adb5-4beacc459d90.mp3",
+   "dur": 2.47
+  },
+  {
+   "id": "5-B2_k17",
+   "lv": "5-B2",
+   "who": "potap",
+   "text": "Все за меня! Я держу!",
+   "tts": "[brave, shouting] Все за меня! Я держу!",
+   "job": "e894b031-6988-4aaa-b1c1-b1f8d4ddcc7e",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211346_e894b031-6988-4aaa-b1c1-b1f8d4ddcc7e.mp3",
+   "dur": 2.14
+  },
+  {
+   "id": "5-B2_k18",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Кого он выбрал — тот держит щит. А второй — заходи со спины!",
+   "tts": "[bright, urgent] Кого он выбрал — тот держит щит. А второй — заходи со спины!",
+   "job": "384746dd-a6b3-4d76-804e-ace2e6825f14",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211346_384746dd-a6b3-4d76-804e-ace2e6825f14.mp3",
+   "dur": 4.32
+  },
+  {
+   "id": "5-B2_k19",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Кости, встаньте!",
+   "tts": "[commanding, echoing] Кости, встаньте!",
+   "job": "9a3e5b43-d743-477e-a432-ebaa2faa0843",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_9a3e5b43-d743-477e-a432-ebaa2faa0843.mp3",
+   "dur": 1.64
+  },
+  {
+   "id": "5-B2_k20",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Бессмертного не победить!",
+   "tts": "[furious, shouting] Бессмертного не победить!",
+   "job": "8370cb88-75e8-413f-a8c2-47de8d218c04",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211345_8370cb88-75e8-413f-a8c2-47de8d218c04.mp3",
+   "dur": 2.04
+  },
+  {
+   "id": "5-B2_k21",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Не победить — так расковать! Прошка, из иглы — застёжку!",
+   "tts": "[bright, determined] Не победить — так расковать! Прошка, из иглы — застёжку!",
+   "job": "a4efe53e-af46-42f6-8a94-37bd47a47b08",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211346_a4efe53e-af46-42f6-8a94-37bd47a47b08.mp3",
+   "dur": 4.72
+  },
+  {
+   "id": "5-B2_k22",
+   "lv": "5-B2",
+   "who": "proshka",
+   "text": "Несите мне иглу! Я к наковальне!",
+   "tts": "[determined] Несите мне иглу! Я к наковальне!",
+   "job": "50f09e94-73f6-4874-b29a-257876de45bc",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_50f09e94-73f6-4874-b29a-257876de45bc.mp3",
+   "dur": 2.65
+  },
+  {
+   "id": "5-B2_k23",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Отдай иглу!",
+   "tts": "[angry] Отдай иглу!",
+   "job": "c231d348-f9b1-4dd3-b2b7-c32e647d2431",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_c231d348-f9b1-4dd3-b2b7-c32e647d2431.mp3",
+   "dur": 1.38
+  },
+  {
+   "id": "5-B2_k24",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Меня никто не слушал. Никто!",
+   "tts": "[bitter, pained] Меня никто не слушал. Никто!",
+   "job": "ecc974ed-0c25-45d3-aa40-b3b7ea93a24b",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_ecc974ed-0c25-45d3-aa40-b3b7ea93a24b.mp3",
+   "dur": 3.02
+  },
+  {
+   "id": "5-B2_k25",
+   "lv": "5-B2",
+   "who": "yosha",
+   "text": "Мы слушаем! Мы тут!",
+   "tts": "[shouting, sincere] Мы слушаем! Мы тут!",
+   "job": "1b880bcf-838b-4276-b659-48c5335b48b1",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_1b880bcf-838b-4276-b659-48c5335b48b1.mp3",
+   "dur": 2.23
+  },
+  {
+   "id": "5-B2_k26",
+   "lv": "5-B2",
+   "who": "pelageya",
+   "text": "Держись, Прошка, ещё чуть-чуть!",
+   "tts": "[encouraging] Держись, Прошка, ещё чуть-чуть!",
+   "job": "d0d4d542-a168-4136-ac7a-41794f80f155",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_d0d4d542-a168-4136-ac7a-41794f80f155.mp3",
+   "dur": 2.65
+  },
+  {
+   "id": "5-B2_k27",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Все цепи острова — ко мне!",
+   "tts": "[booming, commanding] Все цепи острова — ко мне!",
+   "job": "41b941d6-01d0-441f-94d6-b4638c994888",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_41b941d6-01d0-441f-94d6-b4638c994888.mp3",
+   "dur": 2.74
+  },
+  {
+   "id": "5-B2_k28",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Кольцо! Щиты — вместе, в такт!",
+   "tts": "[urgent] Кольцо! Щиты — вместе, в такт!",
+   "job": "ad7348ce-f212-4714-8150-c64317e477bd",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_ad7348ce-f212-4714-8150-c64317e477bd.mp3",
+   "dur": 3.39
+  },
+  {
+   "id": "5-B2_k29",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "…Почему вы не бьёте?",
+   "tts": "[quiet, confused, tired] …Почему вы не бьёте?",
+   "job": "2547239c-2ec5-45e9-ab0a-2eee9f225ca8",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_2547239c-2ec5-45e9-ab0a-2eee9f225ca8.mp3",
+   "dur": 1.54
+  },
+  {
+   "id": "5-B2_k30",
+   "lv": "5-B2",
+   "who": "pelageya",
+   "text": "Потому что это сказка. А в сказке можно по-другому.",
+   "tts": "[gentle, warm] Потому что это сказка. А в сказке можно по-другому.",
+   "job": "de98b1d3-6dd1-40dc-8cf3-23b67cc955ee",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_de98b1d3-6dd1-40dc-8cf3-23b67cc955ee.mp3",
+   "dur": 4.18
+  },
+  {
+   "id": "5-B2_k31",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Сказ сбился… Начнём этот кусочек заново!",
+   "tts": "[gentle] Сказ сбился… Начнём этот кусочек заново!",
+   "job": "a9adc41b-5e57-4a7e-941c-8e3c01dc73f6",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_a9adc41b-5e57-4a7e-941c-8e3c01dc73f6.mp3",
+   "dur": 3.56
+  },
+  {
+   "id": "5-B2_k32",
+   "lv": "5-B2",
+   "who": "zven",
+   "text": "Он без сил! Вместе — золотой нитью!",
+   "tts": "[excited] Он без сил! Вместе — золотой нитью!",
+   "job": "bf8328fe-a582-4a76-8c59-ace2f7c3e227",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_211419_bf8328fe-a582-4a76-8c59-ace2f7c3e227.mp3",
+   "dur": 3.59
+  },
+  {
+   "id": "5-1_105",
+   "lv": "5-1",
+   "who": "gorM",
+   "text": "И главное: Лиху в глаз не смотрите. Кто посмотрел — того Лихо и сцапает.",
+   "tts": "И главное: Лиху в глаз не смотрите. Кто посмотрел — того Лихо и сцапает.",
+   "max": 5,
+   "job": "1b07d646-b400-45b4-94c2-e014e6200d67",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230747_1b07d646-b400-45b4-94c2-e014e6200d67.mp3",
+   "dur": 5.08
+  },
+  {
+   "id": "5-1_106",
+   "lv": "5-1",
+   "who": "likho",
+   "text": "Ух-ху! Кто замки трогал?! Найду!",
+   "tts": "Ух-ху! Кто замки трогал?! Найду!",
+   "max": 3.12,
+   "job": "784c69e2-bbbd-4272-89d2-e0c6ed0ea0a4",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230747_784c69e2-bbbd-4272-89d2-e0c6ed0ea0a4.mp3",
+   "dur": 3.32
+  },
+  {
+   "id": "5-1_107",
+   "lv": "5-1",
+   "who": "yosha",
+   "text": "Оно нас ищет!",
+   "tts": "Оно нас ищет!",
+   "max": 2.12,
+   "job": "2662f65f-f0a1-4670-8a2f-06f13f2d5490",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230747_2662f65f-f0a1-4670-8a2f-06f13f2d5490.mp3",
+   "dur": 1.26
+  },
+  {
+   "id": "5-1_108",
+   "lv": "5-1",
+   "who": "pelageya",
+   "text": "Тут написано… крышку поднимают вдвоём. Тихо-тихо.",
+   "tts": "Тут написано… крышку поднимают вдвоём. Тихо-тихо.",
+   "max": 4.1,
+   "job": "1eaee535-0a0e-49e9-8150-5e84278785c4",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230747_1eaee535-0a0e-49e9-8150-5e84278785c4.mp3",
+   "dur": 4.11
+  },
+  {
+   "id": "5-1_109",
+   "lv": "5-1",
+   "who": "potap",
+   "text": "<i>(шёпотом)</i> Раз-два — взяли!",
+   "tts": "[whispers] Раз-два — взяли!",
+   "max": 1.62,
+   "job": "43f8a0e0-c154-4d05-bc5b-28db4043f273",
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230747_43f8a0e0-c154-4d05-bc5b-28db4043f273.mp3",
+   "dur": 1.63
   }
  ]
 }

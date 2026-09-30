@@ -13,11 +13,14 @@ const el=document.getElementById('finSplash');['play='+el.classList.contains('fs
 const el=document.getElementById('finSplash');const r=['audio='+ZC.FIN.audioState(),'gating='+el.classList.contains('fs-gating'),'play='+el.classList.contains('fs-play'),'splashOn='+ZC.FIN.splashOn];
 if(!ZC.FIN.splashOn||!el.classList.contains('fs-play'))throw new Error('нажатие на экране «Нажмите любую кнопку» пропустило заставку: '+r.join(' '));r.join(' ')
 //@@ wait=3500
-// ≈1,8 с — заставка с голосом (кадр), проверка голоса — чуть позже
-const r=['vox='+ZC.FIN.vox.cur,'sounds='+snd().length];if(ZC.FIN.vox.cur!=='splash_001')throw new Error('голос заставки не звучит: '+r.join(' '));r.join(' ')
+// ≈1,8 с — заставка с голосом (кадр); голос ждём до 2,5 с: под нагрузкой кадры заставки отстают от часов бота
+(async()=>{for(let i=0;i<50&&ZC.FIN.vox.cur!=='splash_001';i++)await new Promise(q=>setTimeout(q,50));
+const E=ZC.FIN.vox.find('kot','Абадзех-Лаб! Лаборатория творчества.');const r=['vox='+ZC.FIN.vox.cur,'sounds='+snd().length,'rec='+(E?[!!E.buf,!!E.pending,!!E.bad].join('/'):'нет'),'played='+ZC.FIN.vox.played,'audio='+ZC.FIN.audioState(),'set.vox='+ZC.FIN.set.vox,'spl='+JSON.stringify(ZC.FIN.splDbg&&ZC.FIN.splDbg())];
+if(ZC.FIN.vox.cur!=='splash_001')throw new Error('голос заставки не звучит: '+r.join(' '));return r.join(' ');})()
 //@@ wait=150
-// голос договорил, заставка ушла в титул
-const r=['vox='+ZC.FIN.vox.cur,'played='+ZC.FIN.vox.played,'splashOn='+ZC.FIN.splashOn,'title='+ZC.FIN.titleOn,'menu='+(ZC.FIN.menu&&ZC.FIN.menu.id)];if(ZC.FIN.splashOn)throw new Error('заставка не закончилась: '+r.join(' '));snd();window.MV=[];r.join(' ')
+// голос договорил, заставка ушла в титул (ждём до 3 с)
+(async()=>{for(let i=0;i<60&&ZC.FIN.splashOn;i++)await new Promise(q=>setTimeout(q,50));
+const r=['vox='+ZC.FIN.vox.cur,'played='+ZC.FIN.vox.played,'splashOn='+ZC.FIN.splashOn,'title='+ZC.FIN.titleOn,'menu='+(ZC.FIN.menu&&ZC.FIN.menu.id)];if(ZC.FIN.splashOn)throw new Error('заставка не закончилась: '+r.join(' '));snd();window.MV=[];return r.join(' ');})()
 //@@ wait=150
 // меню: вниз, вниз, вверх — у каждого пункта своя нота
 window.mv=k=>{ZC.menuKey(k);const s=snd();MV.push(ZC.FIN.menu.sel+':'+(s.filter(x=>x.k==='osc').map(x=>Math.round(x.f))[0]||''));return MV.join(' → ');};mv('ArrowDown')

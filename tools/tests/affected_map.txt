@@ -1,0 +1,105 @@
+# Какие боты проверяют изменённый файл — для tools/tests/affected.py (выборочный регресс).
+# Строка: путь (glob от корня репозитория; «#слово» — только правки под заголовком «# ---- …слово…» в rep_*.py) → что гонять:
+#   имена ботов; @level:<id> — все боты, которые загружают этот уровень (LV('id'), loadLevel(N), U.go() — пролог);
+#   @wide — широкий набор (всё, что рисует мир и персонажей на всех уровнях); @full — полный регресс; «-» — ботов не нужно.
+# Первое совпадение сверху вниз. Файла нет в таблице — полный регресс (и скрипт напомнит дописать его сюда).
+# index.html здесь не описан: скрипт сам находит изменённые функции уровней (buildXX) и уровни, которые вызывают изменённую функцию.
+
+# ---- документы, инструменты вне игры ----
+*.md                                          -
+.gitignore                                    -
+.gitattributes                                -
+zlataya_cep/docs/*                            -
+zlataya_cep/zlataya_cep_final0[1-5].html      -
+zlataya_cep/zlataya_cep_final06.html          -
+tools/video/*                                 -
+tools/script/*                                -
+tools/tests/grid.js                           -
+tools/tests/shot.js                           -
+tools/tests/pw.js                             -
+tools/tests/affected.py                       -
+tools/tests/affected_map.txt                  -
+tools/tests/layout_check.js                   -
+tools/tests/regress.sh                        -
+tools/tests/out/*                             -
+tools/tests/shots/*                           -
+# инфраструктура ботов — касается всех
+tools/tests/helpers.js                        @full
+tools/tests/run.js                            @full
+tools/tests/mk.py                             @full
+tools/tests/run_one.sh                        @full
+
+# ---- озвучка ----
+tools/voice/*                                 tfin_voice
+zlataya_cep/build/voice/*                     tfin_voice
+
+# ---- сборка релиза ----
+zlataya_cep/build/build_final.py              @wide tfin_voice tfin_menu
+zlataya_cep/build/three.r128.min.js           @full
+zlataya_cep/build/header.txt                  -
+zlataya_cep/build/fonts/*                     tfin_splash tfin_menu
+zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine
+zlataya_cep/build/fin_body.html               tfin_menu tfin_splash tfin_uisnd
+zlataya_cep/build/fin_early.js                @wide
+
+# ---- модули релиза: мир, свет, пачки, атмосфера — все уровни ----
+zlataya_cep/build/late_10_render.js           @wide
+zlataya_cep/build/late_12_kit.js              @wide
+zlataya_cep/build/late_13_kit_nature.js       @wide
+zlataya_cep/build/late_14_kit_build.js        @wide
+zlataya_cep/build/late_20_decor.js            @wide
+zlataya_cep/build/late_22_synty.js            @wide
+zlataya_cep/build/late_24_world.js            @wide
+zlataya_cep/build/late_25_scatter.js          @wide
+zlataya_cep/build/late_26_batch.js            @wide
+zlataya_cep/build/late_27_atmo.js             @wide
+zlataya_cep/build/late_90_boot.js             @wide
+
+# ---- модули релиза: герои, персонажи, враги ----
+zlataya_cep/build/late_05_gallery.js          tfin_cast tfin_foecast
+zlataya_cep/build/late_15_heroes.js           tfin_art tfin_slash tfin_guard tfin_cast tfin_cine tfin_scooter tfin_budget tfin_downswap
+zlataya_cep/build/late_16_cast.js             tfin_cast tfin_cine tfin_art tfin_budget
+zlataya_cep/build/late_17_cast2.js            tfin_cast tfin_cine tfin_art tfin_budget
+zlataya_cep/build/late_18_foes.js             tfin_foekinds tfin_foekinds2 tfin_foekinds3 tfin_foeidle tfin_foecast tfin_budget tfoes
+zlataya_cep/build/late_19_gor.js              tfin_foecast tfin_cast @level:4-B
+zlataya_cep/build/late_30_hero.js             tfin_art tfin_slash
+zlataya_cep/build/late_32_downswap.js         tfin_downswap tsolo
+zlataya_cep/build/late_34_slash.js            tfin_slash
+zlataya_cep/build/late_35_guard.js            tfin_guard
+
+# ---- модули релиза: меню, сохранения, заставка, звук ----
+zlataya_cep/build/late_40_music.js            tfin_menu tfin_save
+zlataya_cep/build/late_50_save.js             tfin_save tfin_dev tfin_menu
+zlataya_cep/build/late_60_title.js            tfin_menu tfin_splash
+zlataya_cep/build/late_70_menu.js             tfin_menu tfin_pads tfin_pads2 tfin_uisnd tfin_save tfin_dev
+zlataya_cep/build/late_71_pads.js             tfin_pads tfin_pads2 tfin_menu
+zlataya_cep/build/late_72_splash.js           tfin_splash tfin_uisnd tfin_menu
+zlataya_cep/build/late_80_ui.js               tfin_menu tfin_cine
+zlataya_cep/build/late_81_sfx.js              tfin_cine tfin_uisnd
+zlataya_cep/build/late_91_voice.js            tfin_voice tfin_cine tfin_scooter tfin_uisnd
+zlataya_cep/build/late_95_dev.js              tfin_dev
+
+# ---- модули релиза: ролики, камера, видимость ----
+zlataya_cep/build/late_82_cine_cam.js         tfin_cine tfin_cam tfin_boss4b tfin_scooter
+zlataya_cep/build/late_83_cine_actors.js      tfin_cine tfin_cast tfin_scooter
+zlataya_cep/build/late_84_cine_fx.js          tfin_cine tfin_scooter
+zlataya_cep/build/late_85_cine_audio.js       tfin_cine
+zlataya_cep/build/late_86_cine_direction.js   tfin_cine tfin_scooter
+zlataya_cep/build/late_88_occ.js              tfin_occ tfin_luko tfin_fadebatch
+zlataya_cep/build/late_89_camorbit.js         tfin_cam
+
+# ---- модули релиза: уровни ----
+zlataya_cep/build/late_87_boss4b.js           @level:4-B
+zlataya_cep/build/late_92_koschei.js          @level:5-B2 tfin_foekinds3 tfoes
+zlataya_cep/build/late_93_koschei_level.js    @level:5-B2
+zlataya_cep/build/late_94_koschei_tut.js      @level:5-B2
+zlataya_cep/build/late_96_prolog_scooter.js   @level:p
+zlataya_cep/build/late_97_buyan51.js          @level:5-1
+
+# ---- замены в прототипе при сборке ----
+zlataya_cep/build/rep_10_cine.py              tfin_cine tfin_voice
+zlataya_cep/build/rep_20_subs.py              tfin_voice tfin_cine
+zlataya_cep/build/rep_30_gameplay.py#Горыныч  @level:4-B
+zlataya_cep/build/rep_30_gameplay.py#Лукоморье @level:luko tfin_col
+zlataya_cep/build/rep_30_gameplay.py#Пролог   @level:p
+zlataya_cep/build/rep_30_gameplay.py          @full

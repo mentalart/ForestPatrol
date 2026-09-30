@@ -18,8 +18,9 @@ ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;T(2);const d0=window._ev.dip||0;ZC.s
 //@@
 // пролог: колыбельная под авторской режиссурой
 ZC.startFrom(ZC.LV('p'));ZC.G.manual=true;ZC.tick(20);const P=ZC.players;P[0].heroes[P[0].act].pos.set(-2,0,1.4);P[1].heroes[P[1].act].pos.set(2.2,0,1.4);ZC.tick(80);
-const e0=Object.assign({},window._ev);T(21.5);const s21=ZC.FIN.cine.state();['prologue directed='+ZC.FIN.cine.CD().directed,'dollyFov='+s21.fov,'dz='+((window._ev.dollyzoom||0)>(e0.dollyzoom||0)),'impact='+((window._ev.impact||0)>(e0.impact||0)),'emotes='+((window._ev.emote||0)-(e0.emote||0))].join(' ')
+const e0=Object.assign({},window._ev);T(25.9);   // final06: сценка с самокатом удлинила ролик на 4,4 с
+const s21=ZC.FIN.cine.state();['prologue directed='+ZC.FIN.cine.CD().directed,'dollyFov='+s21.fov,'dz='+((window._ev.dollyzoom||0)>(e0.dollyzoom||0)),'impact='+((window._ev.impact||0)>(e0.impact||0)),'emotes='+((window._ev.emote||0)-(e0.emote||0))].join(' ')
 //@@ shot=fin_cine_prologue.png
-T(33);['confetti accent='+((window._ev.accent||0)>(0)),'slowmo='+(window._ev.slowmo||0),'focus='+ZC.FIN.cine.state().focus,'particles='+ZC.FIN.fx.list.length].join(' ')
+T(37.4);['confetti accent='+((window._ev.accent||0)>(0)),'slowmo='+(window._ev.slowmo||0),'focus='+ZC.FIN.cine.state().focus,'particles='+ZC.FIN.fx.list.length].join(' ')
 //@@
 Object.keys(window._ev).sort().map(k=>k+':'+window._ev[k]).join(' ')
