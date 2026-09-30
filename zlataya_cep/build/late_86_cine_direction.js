@@ -17,10 +17,12 @@ const dPunch=d=>()=>CINE.punch(d);
 const WARM='#ffb870',GOLD='#ffd27a',COLD='#6f86ff',NIGHT='#8a7cff';
 const DIR=[
   // Пролог «Колыбельная»: тёплый вечер → смешной крах самоката → тень за окном → чудо рождения Звенышка
-  {lv:'p',dur:39,mood:[WARM,0.14],cues:[[1.8,dEmo('potap','nod')],[3.0,dEmo('yosha','tilt')],[6.0,dAll('tilt',0.12)],[8.7,dEmo('pelageya','droop')],[11.9,dEmo('proshka','pride')],
-    [16.25,dSlow(0.4,0.35)],[16.3,dDutch(0.09,0.9)],[16.4,dEmo('proshka','surprise')],[16.9,dEmo('potap','laugh')],[17.2,dEmo('pelageya','laugh')],
-    [18.9,dMood(COLD,0.2)],[19.2,dAll('fear',0.1)],[19.6,dDZ(0.24,1.3,1.6)],[24.0,dMood(WARM,0.16)],[26.25,dSlow(0.45,0.5)],[27.5,dSpark(6)],[28.6,dSpark(6,0xffd23a)],
-    [32.4,dConf(44)],[32.45,dSlow(0.5,0.45)],[32.6,dAll('joy',0.08)],[35.7,dSpeed(1)],[36.4,dAll('cheer',0.06)]]},
+  // (final06: сценка с самокатом — Прошка несёт его Тишке, спотыкается о шишку, все смеются; late_96 удлиняет ролик на 4,4 с,
+  //  смех и позы Прошки ставит сам модуль, здесь — замедление падения и голландский угол; дальше метки сдвинуты на 4,4 с)
+  {lv:'p',dur:43.4,mood:[WARM,0.14],cues:[[1.8,dEmo('potap','nod')],[3.0,dEmo('yosha','tilt')],[6.0,dAll('tilt',0.12)],[8.7,dEmo('pelageya','droop')],[11.9,dEmo('proshka','pride')],
+    [17.0,dSlow(0.4,0.45)],[17.05,dDutch(0.09,1.1)],
+    [23.3,dMood(COLD,0.2)],[23.6,dAll('fear',0.1)],[24.0,dDZ(0.24,1.3,1.6)],[28.4,dMood(WARM,0.16)],[30.65,dSlow(0.45,0.5)],[31.9,dSpark(6)],[33.0,dSpark(6,0xffd23a)],
+    [36.8,dConf(44)],[36.85,dSlow(0.5,0.45)],[37.0,dAll('joy',0.08)],[40.1,dSpeed(1)],[40.8,dAll('cheer',0.06)]]},
   // 1-1: Яга ставит задачу — Прошка хорохорится
   {lv:'1-1',dur:13.5,cues:[[5.0,dEmo('proshka','pride')],[7.4,dAll('tilt',0.1)],[9.9,dAll('surprise',0.06)]]},
   {lv:'1-1',dur:12.5,mood:[WARM,0.12],cues:[[3.3,dEmo('potap','nod')],[5.5,dEmo('pelageya','nod')],[7.5,dEmo('yosha','hop')]]},

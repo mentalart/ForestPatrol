@@ -13,11 +13,12 @@ window._dec=()=>L.filter(e=>e.buf).length;'lines='+L.length+' минут='+(L.re
 const lv=L.filter(e=>e.lv==='p'||e.lv==='g');if(lv.some(e=>!e.buf))throw new Error('не раскодированы: '+lv.filter(e=>!e.buf).map(e=>e.id).join(','));
 'decoded='+_dec()+'/'+L.length+' (уровень и общие: '+lv.length+') bad='+L.filter(e=>e.bad).map(e=>e.id).join(',')
 //@@
-// «Колыбельная»: оба героя на жёлтых пятнах
+// «Колыбельная»: оба героя на жёлтых пятнах (final06: после падения с самокатом Прошка смеётся над собой — p05d; смех Тишки, Потапа
+// и Пелагеи звучит поверх и текущей записью не становится)
 const P=ZC.players;P[0].heroes[P[0].act].pos.set(-2,0,1.4);P[1].heroes[P[1].act].pos.set(2.2,0,1.4);window._seq=[];window._b0=V.babbled;let last=null,n=0;
 while(!ZC.G.cine&&n<200){ZC.tick(1);n++;}
 for(let i=0;i<60*40&&ZC.G.cine;i++){ZC.tick(1);const c=V.cur;if(c&&c!==last){window._seq.push(c+'@'+ZC.G.cine.t.toFixed(1));}last=c;}
-const want=['p01_bayu','p02_zabyl','p03_malyshi','p04_samokat','p05_haha','p06_bezhim'];const got=window._seq.map(s=>s.split('@')[0]);
+const want=['p01_bayu','p02_zabyl','p03_malyshi','p04_samokat','p05_haha','p05d_prokatilsya','p06_bezhim'];const got=window._seq.map(s=>s.split('@')[0]);
 if(want.join()!==got.join())throw new Error('в ролике прозвучали '+window._seq.join(' ')+' вместо '+want.join(' '));
 if(V.babbled!==window._b0)throw new Error('бормотание при озвученных репликах: '+(V.babbled-window._b0));
 'cine voices: '+window._seq.join(' ')+' babble=0'
