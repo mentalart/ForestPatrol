@@ -12,7 +12,7 @@ const LG={on:false,c:null,s:null};
 // смех «хором»: запись звучит поверх текущего голоса и не обрывает его (субтитр — только у реплики Йоши)
 function lgLaugh(who,text,gain){try{const e=VOX.map.get(voxKey(who,text));if(!e||e.bad||!voxOn())return;
   voxDecode(e).then(b=>{if(!b||!G.cine||!AC)return;const s=AC.createBufferSource();s.buffer=b;const g=AC.createGain();g.gain.value=(e.gain||1)*(gain||0.8);
-    s.connect(g);g.connect(voxBus());s.start();LG.layers=(LG.layers||0)+1;});}catch(err){}
+    s.connect(g);g.connect(voxBus());s.start();LG.layers=(LG.layers||0)+1;if(FIN.voxEv)try{FIN.voxEv(e.id,'layer',gain||0.8);}catch(err){}});}catch(err){}
   const h=HERO[who];if(h)h._talk=Math.max(h._talk||0,1.3);else{const n=npcByWho(who);if(n)n.talk=Math.max(n.talk||0,1.3);}}
 function lgNpcLaugh(who,d){const n=npcByWho(who);if(n)n.em={type:'laugh',t:0,d:d||1.2};}
 {const _st=step;step=function(dt){if(LG.c)aRestore(LG.c);_st(dt);if(LG.c&&LG.on)aApply(LG.c);};}

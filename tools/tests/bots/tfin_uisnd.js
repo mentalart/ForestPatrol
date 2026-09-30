@@ -3,6 +3,7 @@
 // звуки меню (гусли: у пункта своя нота; выбор — колокольчики; назад — нота вниз; на паузе приглушённо). Нажатия — настоящие (key=), как у игрока.
 window.SND=[];{const A=ZC.FIN.aud;for(const k of['osc','nz','bell','thump']){const f=A[k];A[k]=function(o,p){SND.push({k,f:k==='bell'?o:o&&o.f0,lp:o&&o.lp});return f.apply(this,arguments);};}}
 window.snd=()=>{const s=SND.slice();SND.length=0;return s;};
+window.VX=[];ZC.FIN.voxEv=(id,k)=>{if(k==='main')VX.push(id);};   // какие записи прозвучали (проверка не зависит от того, успел ли кадр до конца фразы)
 ZC.FIN.splash({gate:true});const el=document.getElementById('finSplash'),g=el.querySelector('.fs-gate');
 ['splashOn='+ZC.FIN.splashOn,'gating='+el.classList.contains('fs-gating'),'gate='+(g&&getComputedStyle(g).display),'text='+(g&&g.innerText.replace(/\n/g,' | ')),'audio='+ZC.FIN.audioState()].join(' ')
 //@@ shot=fin_gate.png wait=300
@@ -14,9 +15,9 @@ const el=document.getElementById('finSplash');const r=['audio='+ZC.FIN.audioStat
 if(!ZC.FIN.splashOn||!el.classList.contains('fs-play'))throw new Error('нажатие на экране «Нажмите любую кнопку» пропустило заставку: '+r.join(' '));r.join(' ')
 //@@ wait=3500
 // ≈1,8 с — заставка с голосом (кадр); голос ждём до 2,5 с: под нагрузкой кадры заставки отстают от часов бота
-(async()=>{for(let i=0;i<50&&ZC.FIN.vox.cur!=='splash_001';i++)await new Promise(q=>setTimeout(q,50));
+(async()=>{for(let i=0;i<50&&!VX.includes('splash_001');i++)await new Promise(q=>setTimeout(q,50));
 const E=ZC.FIN.vox.find('kot','Абадзех-Лаб! Лаборатория творчества.');const r=['vox='+ZC.FIN.vox.cur,'sounds='+snd().length,'rec='+(E?[!!E.buf,!!E.pending,!!E.bad].join('/'):'нет'),'played='+ZC.FIN.vox.played,'audio='+ZC.FIN.audioState(),'set.vox='+ZC.FIN.set.vox,'spl='+JSON.stringify(ZC.FIN.splDbg&&ZC.FIN.splDbg())];
-if(ZC.FIN.vox.cur!=='splash_001')throw new Error('голос заставки не звучит: '+r.join(' '));return r.join(' ');})()
+r.push('прозвучали='+VX.join(','));if(!VX.includes('splash_001'))throw new Error('голос заставки не звучит: '+r.join(' '));return r.join(' ');})()
 //@@ wait=150
 // голос договорил, заставка ушла в титул (ждём до 3 с)
 (async()=>{for(let i=0;i<60&&ZC.FIN.splashOn;i++)await new Promise(q=>setTimeout(q,50));
