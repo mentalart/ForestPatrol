@@ -13,10 +13,11 @@ function voxDecode(e){if(e.buf)return Promise.resolve(e.buf);if(e.pending)return
   const bin=atob(e.b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
   e.pending=new Promise(res=>{try{AC.decodeAudioData(u.buffer,b=>{e.buf=b;res(b);},()=>{e.bad=true;res(null);});}catch(err){e.bad=true;res(null);}});return e.pending;}
 function voxBus(){if(!VOX.bus){VOX.bus=AC.createGain();VOX.bus.connect(AC.destination);}VOX.bus.gain.value=0.9*(FIN.set.vox!=null?FIN.set.vox:1);return VOX.bus;}
-function voxStop(fade){const c=VOX.cur;if(!c||!AC)return;VOX.cur=null;const t=AC.currentTime,f=fade||0.08;
+function voxStop(fade){const c=VOX.cur;if(!c||!AC)return;VOX.cur=null;if(FIN.voxEv)try{FIN.voxEv(c.e.id,'stop',fade||0.08);}catch(err){}const t=AC.currentTime,f=fade||0.08;
   try{c.g.gain.cancelScheduledValues(t);c.g.gain.setValueAtTime(c.g.gain.value,t);c.g.gain.linearRampToValueAtTime(0,t+f);c.s.stop(t+f+0.02);}catch(err){}}
 function voxStart(e,b){if(!b)return;voxStop(0.06);const s=AC.createBufferSource();s.buffer=b;const g=AC.createGain();g.gain.value=e.gain||1;s.connect(g);g.connect(voxBus());
-  s.start();const c={s,g,e,end:AC.currentTime+b.duration,g0:G.time};VOX.cur=c;VOX.played=(VOX.played||0)+1;s.onended=()=>{if(VOX.cur===c)VOX.cur=null;};}
+  s.start();const c={s,g,e,end:AC.currentTime+b.duration,g0:G.time};VOX.cur=c;VOX.played=(VOX.played||0)+1;s.onended=()=>{if(VOX.cur===c)VOX.cur=null;};
+  if(FIN.voxEv)try{FIN.voxEv(e.id,'main',1);}catch(err){}}   // FIN.voxEv — для съёмки трейлера: какая запись и когда зазвучала
 function voxPlay(e){if(!voxOn())return false;if(e.buf){voxStart(e,e.buf);return true;}const t0=performance.now();
   voxDecode(e).then(b=>{if(performance.now()-t0<450)voxStart(e,b);});return true;}   // не успела раскодироваться — не догоняем реплику
 // записи уровня (и общие, lv 'g') раскодируются заранее, при загрузке уровня — чтобы голос звучал без задержки;

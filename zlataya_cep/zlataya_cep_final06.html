@@ -13279,7 +13279,9 @@ function splVoice(retry){SPL.voxTry=performance.now()+600;const e=splVoxLine();i
 function splGate(done){const el=SPL.el;let g=el.querySelector('.fs-gate');
   if(!g){g=document.createElement('div');g.className='fs-gate';g.innerHTML='<i class="fs-gate-bub"></i><b>Нажмите любую кнопку</b><small>клавиша, мышь или джойстик</small>';el.appendChild(g);}
   el.classList.add('fs-gating');SPL.gating=true;let fin=false,pi=0;
-  const on=()=>{if(fin)return;fin=true;removeEventListener('keydown',on,true);removeEventListener('pointerdown',on,true);clearInterval(pi);
+  const on=(ev)=>{if(fin)return;fin=true;removeEventListener('keydown',on,true);removeEventListener('pointerdown',on,true);clearInterval(pi);
+    // мышь или касание: за pointerdown придёт click того же нажатия — он не должен пропустить только что начатую заставку
+    if(ev&&ev.type==='pointerdown'){SPL.eatClick=true;clearTimeout(SPL.eatT);SPL.eatT=setTimeout(()=>{SPL.eatClick=false;},1500);}
     try{initAudio();if(AC&&AC.state!=='running')AC.resume();}catch(err){}SPL.gating=false;SPL.quietT=performance.now()+450;SPL.eat=true;el.classList.remove('fs-gating');done();};
   addEventListener('keydown',on,true);addEventListener('pointerdown',on,true);
   pi=setInterval(()=>{let ps=[];try{ps=(FIN.padSrc?FIN.padSrc():navigator.getGamepads&&navigator.getGamepads())||[];}catch(err){}
@@ -13304,7 +13306,7 @@ FIN.splash=function(opt){const el=SPL.el;if(!el)return FIN.openTitle(true);splRe
     clearTimeout(SPL.stopT);SPL.stopT=setTimeout(()=>{if(SPL.live&&SPL.exitK==null)splStop();},1000);   // страховка: вкладка в фоне или медленный кадр — заставка всё равно уйдёт
     if(!SPL.live){SPL.el.classList.add('fs-still');SPL.live=true;SPL.t0=performance.now()-9000;SPL.raf=requestAnimationFrame(splTick);}
     if(SPL.voxOn&&FIN.vox.cur==='splash_001')voxStop(0.35);splSound(()=>AUD.osc({f0:300,f1:900,d:0.3,v:0.05,glide:0.25}));FIN.openTitle(true);};
-  el.onclick=()=>FIN.splashEnd&&FIN.splashEnd();};
+  el.onclick=()=>{if(SPL.eatClick){SPL.eatClick=false;return;}if(FIN.splashEnd)FIN.splashEnd();};};
 // для тестов и снимков: остановить заставку на секунде t (CSS-анимации и частицы)
 FIN.splashSeek=function(t,exitK){if(!SPL.live)return false;if(exitK!=null){SPL.exitK=exitK;if(FIN.splashOn)FIN.splashEnd();return true;}clearTimeout(SPL.tm);SPL.freeze=t;try{SPL.el.getAnimations({subtree:true}).forEach(a=>{a.pause();a.currentTime=t*1000;});}catch(e){}
   SPL.spawnT=99;return true;};
@@ -14402,10 +14404,11 @@ function voxDecode(e){if(e.buf)return Promise.resolve(e.buf);if(e.pending)return
   const bin=atob(e.b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
   e.pending=new Promise(res=>{try{AC.decodeAudioData(u.buffer,b=>{e.buf=b;res(b);},()=>{e.bad=true;res(null);});}catch(err){e.bad=true;res(null);}});return e.pending;}
 function voxBus(){if(!VOX.bus){VOX.bus=AC.createGain();VOX.bus.connect(AC.destination);}VOX.bus.gain.value=0.9*(FIN.set.vox!=null?FIN.set.vox:1);return VOX.bus;}
-function voxStop(fade){const c=VOX.cur;if(!c||!AC)return;VOX.cur=null;const t=AC.currentTime,f=fade||0.08;
+function voxStop(fade){const c=VOX.cur;if(!c||!AC)return;VOX.cur=null;if(FIN.voxEv)try{FIN.voxEv(c.e.id,'stop',fade||0.08);}catch(err){}const t=AC.currentTime,f=fade||0.08;
   try{c.g.gain.cancelScheduledValues(t);c.g.gain.setValueAtTime(c.g.gain.value,t);c.g.gain.linearRampToValueAtTime(0,t+f);c.s.stop(t+f+0.02);}catch(err){}}
 function voxStart(e,b){if(!b)return;voxStop(0.06);const s=AC.createBufferSource();s.buffer=b;const g=AC.createGain();g.gain.value=e.gain||1;s.connect(g);g.connect(voxBus());
-  s.start();const c={s,g,e,end:AC.currentTime+b.duration,g0:G.time};VOX.cur=c;VOX.played=(VOX.played||0)+1;s.onended=()=>{if(VOX.cur===c)VOX.cur=null;};}
+  s.start();const c={s,g,e,end:AC.currentTime+b.duration,g0:G.time};VOX.cur=c;VOX.played=(VOX.played||0)+1;s.onended=()=>{if(VOX.cur===c)VOX.cur=null;};
+  if(FIN.voxEv)try{FIN.voxEv(e.id,'main',1);}catch(err){}}   // FIN.voxEv — для съёмки трейлера: какая запись и когда зазвучала
 function voxPlay(e){if(!voxOn())return false;if(e.buf){voxStart(e,e.buf);return true;}const t0=performance.now();
   voxDecode(e).then(b=>{if(performance.now()-t0<450)voxStart(e,b);});return true;}   // не успела раскодироваться — не догоняем реплику
 // записи уровня (и общие, lv 'g') раскодируются заранее, при загрузке уровня — чтобы голос звучал без задержки;
@@ -15158,6 +15161,8 @@ FIN.devWipe=function(){FIN.wiped=true;
 addEventListener('keydown',e=>{if(!e.ctrlKey||!e.altKey||e.repeat)return;
   const c=e.code==='BracketRight'||e.key===']'||e.key==='ъ'||e.key==='Ъ'?1:e.code==='BracketLeft'||e.key==='['||e.key==='х'||e.key==='Х'?-1:0;if(!c)return;
   e.preventDefault();e.stopImmediatePropagation();if(c>0)FIN.devUnlockAll();else FIN.devWipe();},true);
+// для съёмки трейлера (tools/video): интерфейс (субтитры, цели, баннеры, поля кадра) по времени видео — игровой цикл при съёмке выключен
+FIN.ui=dt=>updateUI(dt);   // (window.ZC появляется позже модулей — съёмка берёт ZC.FIN.ui)
 /* ============================== РЕЛИЗ final06 · ПРОЛОГ: ПРОШКА НЕСЁТ САМОКАТ ТИШКЕ ============================== */
 // В ролике «Колыбельная» Прошка предлагал бельчонку самокат, а самокат сам подъезжал к Тишке и рассыпался. Теперь это сценка:
 // Прошка подходит к самокату, поднимает его и гордо несёт Тишке через всю комнату, из-за самоката не видит пола, наступает
@@ -15172,7 +15177,7 @@ const LG={on:false,c:null,s:null};
 // смех «хором»: запись звучит поверх текущего голоса и не обрывает его (субтитр — только у реплики Йоши)
 function lgLaugh(who,text,gain){try{const e=VOX.map.get(voxKey(who,text));if(!e||e.bad||!voxOn())return;
   voxDecode(e).then(b=>{if(!b||!G.cine||!AC)return;const s=AC.createBufferSource();s.buffer=b;const g=AC.createGain();g.gain.value=(e.gain||1)*(gain||0.8);
-    s.connect(g);g.connect(voxBus());s.start();LG.layers=(LG.layers||0)+1;});}catch(err){}
+    s.connect(g);g.connect(voxBus());s.start();LG.layers=(LG.layers||0)+1;if(FIN.voxEv)try{FIN.voxEv(e.id,'layer',gain||0.8);}catch(err){}});}catch(err){}
   const h=HERO[who];if(h)h._talk=Math.max(h._talk||0,1.3);else{const n=npcByWho(who);if(n)n.talk=Math.max(n.talk||0,1.3);}}
 function lgNpcLaugh(who,d){const n=npcByWho(who);if(n)n.em={type:'laugh',t:0,d:d||1.2};}
 {const _st=step;step=function(dt){if(LG.c)aRestore(LG.c);_st(dt);if(LG.c&&LG.on)aApply(LG.c);};}
