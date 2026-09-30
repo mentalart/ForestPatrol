@@ -61,7 +61,9 @@ function splVoice(retry){SPL.voxTry=performance.now()+600;const e=splVoxLine();i
 function splGate(done){const el=SPL.el;let g=el.querySelector('.fs-gate');
   if(!g){g=document.createElement('div');g.className='fs-gate';g.innerHTML='<i class="fs-gate-bub"></i><b>Нажмите любую кнопку</b><small>клавиша, мышь или джойстик</small>';el.appendChild(g);}
   el.classList.add('fs-gating');SPL.gating=true;let fin=false,pi=0;
-  const on=()=>{if(fin)return;fin=true;removeEventListener('keydown',on,true);removeEventListener('pointerdown',on,true);clearInterval(pi);
+  const on=(ev)=>{if(fin)return;fin=true;removeEventListener('keydown',on,true);removeEventListener('pointerdown',on,true);clearInterval(pi);
+    // мышь или касание: за pointerdown придёт click того же нажатия — он не должен пропустить только что начатую заставку
+    if(ev&&ev.type==='pointerdown'){SPL.eatClick=true;clearTimeout(SPL.eatT);SPL.eatT=setTimeout(()=>{SPL.eatClick=false;},1500);}
     try{initAudio();if(AC&&AC.state!=='running')AC.resume();}catch(err){}SPL.gating=false;SPL.quietT=performance.now()+450;SPL.eat=true;el.classList.remove('fs-gating');done();};
   addEventListener('keydown',on,true);addEventListener('pointerdown',on,true);
   pi=setInterval(()=>{let ps=[];try{ps=(FIN.padSrc?FIN.padSrc():navigator.getGamepads&&navigator.getGamepads())||[];}catch(err){}
@@ -86,7 +88,7 @@ FIN.splash=function(opt){const el=SPL.el;if(!el)return FIN.openTitle(true);splRe
     clearTimeout(SPL.stopT);SPL.stopT=setTimeout(()=>{if(SPL.live&&SPL.exitK==null)splStop();},1000);   // страховка: вкладка в фоне или медленный кадр — заставка всё равно уйдёт
     if(!SPL.live){SPL.el.classList.add('fs-still');SPL.live=true;SPL.t0=performance.now()-9000;SPL.raf=requestAnimationFrame(splTick);}
     if(SPL.voxOn&&FIN.vox.cur==='splash_001')voxStop(0.35);splSound(()=>AUD.osc({f0:300,f1:900,d:0.3,v:0.05,glide:0.25}));FIN.openTitle(true);};
-  el.onclick=()=>FIN.splashEnd&&FIN.splashEnd();};
+  el.onclick=()=>{if(SPL.eatClick){SPL.eatClick=false;return;}if(FIN.splashEnd)FIN.splashEnd();};};
 // для тестов и снимков: остановить заставку на секунде t (CSS-анимации и частицы)
 FIN.splashSeek=function(t,exitK){if(!SPL.live)return false;if(exitK!=null){SPL.exitK=exitK;if(FIN.splashOn)FIN.splashEnd();return true;}clearTimeout(SPL.tm);SPL.freeze=t;try{SPL.el.getAnimations({subtree:true}).forEach(a=>{a.pause();a.currentTime=t*1000;});}catch(e){}
   SPL.spawnT=99;return true;};
