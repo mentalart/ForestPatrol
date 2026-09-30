@@ -29,9 +29,11 @@ jobs:
         with:
           node-version: 20
       - name: Playwright + Chromium
+        # глобально, а не в node_modules репозитория: иначе affected.py считает node_modules изменёнными файлами
+        # и требует полный регресс (tools/tests/pw.js находит глобальную установку сам)
         run: |
-          npm i --no-save playwright
-          npx playwright install --with-deps chromium
+          npm i -g playwright
+          playwright install --with-deps chromium
 
       - name: Выборочные боты (affected.py)
         id: aff
