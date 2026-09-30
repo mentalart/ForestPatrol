@@ -14150,15 +14150,19 @@ function t4Cycle(list){const H=T4.h;if(H.cur)return;list[H.cycle%list.length]();
 //    стена, виден его светящийся контур; у каждого героя свой цвет, мягкая пульсация. В роликах силуэты гаснут.
 // 4) То, что вплотную к камере (ближе ~2 м), растворяется тем же узором независимо от героев (пол и крыши под камерой — нет).
 // 5) Старые «прозрачные стены» уровней (fadeable) больше не меняют прозрачность материала — растворяются тем же узором целиком;
-//    группа шире 4 м (забор, ряд стен) — кусками: растворяется только кусок под лучом к герою и соседний, если луч прошёл у самого края.
+//    группа шире 4 м (забор, ряд стен) — кусками: растворяется только кусок под лучом к герою и соседний, если луч прошёл у самого края;
+//    и в любом случае только в круге вокруг героя (радиус ~2,7 м на глубине героя): длинная стена из одного меша не уходит в узор вся.
 // Для ботов: FIN.occ (состояние, статистика), FIN.occ.frame() — отрисовать кадр (детекция идёт при отрисовке), FIN.occ.fdt — шаг времени кадра
 // (в headless кадры в JS мгновенные, растеризация отложена — без фиксированного шага сглаживание шло бы сотни кадров).
 const OCC={on:true,xray:true,hz:15,cand:[],colN:0,nextCol:0,nextEx:0,views:{},xa:0,near:[2.1,0.75],
   col:{proshka:0xff9a4a,potap:0xffd25a,pelageya:0xd8a8ff,yosha:0x72e6cc},stats:{rays:0,tests:0,precise:0,cand:0,ms:0,frames:0}};FIN.occ=OCC;
+const OCC_FR=1.5;   // радиус круга «прозрачной стены» вокруг героя: OCC_FR + 0,8·рост, м на глубине героя
 if(FIN.set.occ===undefined)FIN.set.occ=2;   // 2 — вырез и силуэт, 1 — только силуэт, 0 — выкл
-const OU={H:{value:[new THREE.Vector4(),new THREE.Vector4()]},R:{value:[new THREE.Vector4(),new THREE.Vector4()]},P:{value:new THREE.Vector4(-1,-2,8,0)},Z:{value:0}};
+const OU={H:{value:[new THREE.Vector4(),new THREE.Vector4()]},R:{value:[new THREE.Vector4(),new THREE.Vector4()]},P:{value:new THREE.Vector4(-1,-2,8,0)},Z:{value:0},
+  F:{value:[new THREE.Vector4(),new THREE.Vector4(),new THREE.Vector4()]}};
 // ---------- шейдер ----------
-const OCC_FP='uniform vec4 uOccH[ 2 ];\nuniform vec4 uOccR[ 2 ];\nuniform vec4 uOccP;\nuniform float uOccWhole;\nvarying vec3 vOccW;\nvarying vec3 vOccV;\nfloat occRim = 0.0;';
+const OCC_FP='uniform vec4 uOccH[ 2 ];\nuniform vec4 uOccR[ 2 ];\nuniform vec4 uOccF[ 3 ];\nuniform vec4 uOccP;\nuniform float uOccWhole;\nvarying vec3 vOccW;\nvarying vec3 vOccV;\nfloat occRim = 0.0;';
+// F: «прозрачные стены» — центр героя (или цели лучей уровня) в координатах камеры + радиус круга в м на его глубине (0 — нет);
 // H: центр героя в координатах камеры + сила выреза; R: полуоси эллипса (м на глубине героя), высота ног, запас по глубине; P: ближнее затухание (начало, полное), шаг узора в px, время
 const OCC_FM=`{
 	float fz = - vOccV.z;
@@ -14167,6 +14171,18 @@ const OCC_FM=`{
 	up = step( 0.8, abs( normalize( cross( dFdx( vOccW ), dFdy( vOccW ) ) ).y ) );
 	#endif
 	float cut = uOccWhole * ( 1.0 - up );
+	if ( cut > 0.0 ) {
+		float wl = 0.0;
+		for ( int i = 0; i < 3; i ++ ) {
+			vec4 F = uOccF[ i ];
+			if ( F.w <= 0.0 ) continue;
+			float fh = - F.z;
+			if ( fz > fh + 0.5 ) continue;
+			vec2 q = vOccV.xy * ( fh / max( fz, 0.05 ) );
+			wl = max( wl, 1.0 - smoothstep( 0.75, 1.0, length( q - F.xy ) / F.w ) );
+		}
+		cut *= wl;
+	}
 	for ( int i = 0; i < 2; i ++ ) {
 		vec4 H = uOccH[ i ]; vec4 R = uOccR[ i ];
 		if ( H.w < 0.003 ) continue;
@@ -14189,7 +14205,7 @@ const OCC_FM=`{
 	}
 }`;
 const OCC_FE='\tgl_FragColor.rgb = mix( gl_FragColor.rgb, vec3( 1.0, 0.8, 0.45 ), occRim * 0.6 );';
-FIN.occHook=function(sh,mat){sh.uniforms.uOccH=OU.H;sh.uniforms.uOccR=OU.R;sh.uniforms.uOccP=OU.P;sh.uniforms.uOccWhole=mat.userData._occW||OU.Z;
+FIN.occHook=function(sh,mat){sh.uniforms.uOccH=OU.H;sh.uniforms.uOccR=OU.R;sh.uniforms.uOccF=OU.F;sh.uniforms.uOccP=OU.P;sh.uniforms.uOccWhole=mat.userData._occW||OU.Z;
   sh.vertexShader=sh.vertexShader.replace('#include <common>','#include <common>\nvarying vec3 vOccW;\nvarying vec3 vOccV;')
     .replace('#include <project_vertex>','#include <project_vertex>\n\t{ vec4 ow = vec4( transformed, 1.0 );\n\t#ifdef USE_INSTANCING\n\tow = instanceMatrix * ow;\n\t#endif\n\tow = modelMatrix * ow; vOccW = ow.xyz; vOccV = mvPosition.xyz; }');
   sh.fragmentShader=sh.fragmentShader.replace('#include <common>','#include <common>\n'+OCC_FP).replace('#include <clipping_planes_fragment>','#include <clipping_planes_fragment>\n'+OCC_FM)
@@ -14242,11 +14258,15 @@ function occRays(o,h){const hh=heroHeight(h);OCC.stats.rays+=3;
 const occView=cam=>cam===camS?'s':cam===cams[0]?0:cam===cams[1]?1:null;
 function occPre(sc,cam){const t0=performance.now(),P=OU.P.value,hv=renderer.domElement.height||720;P.z=Math.max(5,Math.round(8*hv/1080));P.w=G.time;
   const v=OCC.on&&W&&sc===scene&&!FIN.titleOn&&!FIN.gallery?occView(cam):null;
-  if(v===null){OU.H.value[0].w=0;OU.H.value[1].w=0;P.x=-1;P.y=-2;return;}
+  if(v===null){OU.H.value[0].w=0;OU.H.value[1].w=0;for(const F of OU.F.value)F.w=0;P.x=-1;P.y=-2;return;}
   P.x=OCC.near[0];P.y=OCC.near[1];
   const V=OCC.views[v]||(OCC.views[v]={t:t0,det:-1e9,h:[{occ:false,last:-1e9,s:0},{occ:false,last:-1e9,s:0}]});
   const dt=OCC.fdt||Math.min(0.1,Math.max(0,(t0-V.t)/1000));V.t=t0;const det=!!OCC.fdt||t0-V.det>=1000/OCC.hz-1;if(det)V.det=t0;
   OMI.copy(cam.matrixWorld).invert();const tanH=Math.tan(THREE.MathUtils.degToRad(cam.fov)/2),cut=FIN.set.occ>=2;
+  // «прозрачные стены»: круги вокруг обоих героев и цели лучей уровня (W.fadeTargets) — стена растворяется только в них
+  if(W.fades&&W.fades.length){const ex=W.fadeTargets?W.fadeTargets():[],tg=[active(0),active(1),ex[0]];
+    for(let i=0;i<3;i++){const h=tg[i],F=OU.F.value[i];F.w=0;if(!h||!h.pos)continue;const hh=heroHeight(h);OS.set(h.pos.x,h.pos.y+hh*0.55,h.pos.z).applyMatrix4(OMI);if(-OS.z<0.6)continue;F.set(OS.x,OS.y,OS.z,OCC_FR+hh*0.8);}}
+  else for(const F of OU.F.value)F.w=0;
   for(let i=0;i<2;i++){const h=active(i),S=V.h[i],U=OU.H.value[i],R=OU.R.value[i];let want=0;
     if(cut&&h&&h.g&&h.g.visible&&!G.cine){if(det){if(occRays(cam.position,h)){S.occ=true;S.last=t0;}else if(t0-S.last>300)S.occ=false;}want=S.occ?1:0;}else S.occ=false;
     S.s=want>S.s?Math.min(want,S.s+dt/0.2):Math.max(want,S.s-dt/0.5);
