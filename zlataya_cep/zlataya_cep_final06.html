@@ -12777,8 +12777,9 @@ function splReset(){SPL.freeze=null;SPL.exitK=null;const g=SPL.q('.fs-bub');whil
 function splSurface(t){const up=sEase.oc(clamp((t-1.0)/0.8,0,1)),lvl=452-134*up,amp=16*(1-up)+4.5+1.5*Math.sin(t*2.1),ph=t*5.2,s=sEase.io(clamp((t-1.55)/0.9,0,1));const pts=[];
   for(let x=36;x<=324;x+=12){const w=amp*(Math.sin(x*0.045+ph)+0.45*Math.sin(x*0.09-ph*1.6)),tt=(x-40)/280,sw=20*Math.sin(Math.PI*(tt*1.5-0.25))-2;pts.push([x,lvl+(1-s)*w+s*(sw+0.3*w)]);}
   const line='M'+pts.map(p=>p[0]+','+p[1].toFixed(1)).join(' L');return {line,fill:line+' L324,470 L36,470 Z',vis:t>1.0};}
-function splTick(now){if(!SPL.live)return;SPL.raf=requestAnimationFrame(splTick);const t=SPL.freeze!=null?SPL.freeze:(now-SPL.t0)/1000;
-  if(!SPL.voiced&&SPL.freeze==null&&!SPL.still&&FIN.splashOn&&t>=SPL_VOX_T){SPL.voiced=true;splVoice();}
+function splTick(now){if(!SPL.live)return;SPL.raf=requestAnimationFrame(splTick);SPL.ticks=(SPL.ticks||0)+1;const t=SPL.freeze!=null?SPL.freeze:(now-SPL.t0)/1000;
+  // голос: запускает таймер на 1,8 с (кадры бывают редкими — фоновая вкладка, браузер ботов); не зазвучал — новая попытка из кадра через 0,6 с
+  if(SPL.voiced&&!SPL.voxOn&&SPL.freeze==null&&!SPL.still&&FIN.splashOn&&t<SPL_VOX_T+2.8&&now>=(SPL.voxTry||0))splVoice(true);
   const sf=splSurface(SPL.still?9:t);SPL.q('.fs-liq').setAttribute('d',sf.vis||SPL.still?sf.fill:'M30,470 Z');const o=sf.vis||SPL.still?1:0;
   SPL.q('.fs-surf').setAttribute('d',sf.line);SPL.q('.fs-cut').setAttribute('d',sf.line);SPL.q('.fs-surf').style.opacity=o;SPL.q('.fs-cut').style.opacity=o;
   // пузырьки логотипа: вылет из жидкости по дуге с перелётом, «плюх» на месте и лёгкое покачивание
@@ -12799,35 +12800,39 @@ function splTick(now){if(!SPL.live)return;SPL.raf=requestAnimationFrame(splTick)
   if(SPL.exitT>=0){const k=SPL.exitK!=null?SPL.exitK:clamp((now-SPL.exitT)/700,0,1),e=k*k*(3-2*k),R=e*Math.hypot(innerWidth,innerHeight)*1.05;
     const m='radial-gradient(circle at '+SPL.cx.toFixed(0)+'px '+SPL.cy.toFixed(0)+'px,transparent '+R.toFixed(1)+'px,#000 '+(R+2).toFixed(1)+'px)';SPL.el.style.webkitMaskImage=m;SPL.el.style.maskImage=m;
     if(k>=1)splStop();}}
-function splStop(){clearTimeout(SPL.stopT);SPL.live=false;cancelAnimationFrame(SPL.raf);SPL.el.classList.add('fin-hide');SPL.el.classList.remove('fs-play','fs-still');splReset();}
+function splStop(){clearTimeout(SPL.stopT);clearTimeout(SPL.vt);SPL.live=false;cancelAnimationFrame(SPL.raf);SPL.el.classList.add('fin-hide');SPL.el.classList.remove('fs-play','fs-still');splReset();}
 // голос заставки: строка — как в каталоге озвучки (сборка проверяет, что она есть в игре)
 const SPL_VOX_T=1.8,SPL_VOX_TEXT='Абадзех-Лаб! Лаборатория творчества.';
 const splVoxLine=()=>{try{const e=FIN.vox&&FIN.vox.find('kot',SPL_VOX_TEXT);return e&&!e.bad&&voxOn()?e:null;}catch(err){return null;}};
 FIN.audioState=()=>AC?AC.state:null;   // для ботов: разрешён ли звук
-function splVoice(){const e=splVoxLine();if(!e)return;voxDecode(e).then(b=>{if(b&&FIN.splashOn){voxStart(e,b);SPL.voxOn=true;}});}
+FIN.splDbg=()=>({live:SPL.live,ticks:SPL.ticks||0,t:+((performance.now()-(SPL.t0||0))/1000).toFixed(2),voiced:!!SPL.voiced,voxOn:!!SPL.voxOn,gating:!!SPL.gating,still:!!SPL.still,freeze:SPL.freeze});
+function splVoice(retry){SPL.voxTry=performance.now()+600;const e=splVoxLine();if(!e)return;if(retry&&!e.buf)e.pending=null;   // повтор: раскодировать заново
+  voxDecode(e).then(b=>{if(b&&FIN.splashOn&&!SPL.voxOn){voxStart(e,b);SPL.voxOn=true;}});}
 // «Нажмите любую кнопку»: ждём первое нажатие, включаем звук и только тогда начинаем заставку
 function splGate(done){const el=SPL.el;let g=el.querySelector('.fs-gate');
   if(!g){g=document.createElement('div');g.className='fs-gate';g.innerHTML='<i class="fs-gate-bub"></i><b>Нажмите любую кнопку</b><small>клавиша, мышь или джойстик</small>';el.appendChild(g);}
   el.classList.add('fs-gating');SPL.gating=true;let fin=false,pi=0;
   const on=()=>{if(fin)return;fin=true;removeEventListener('keydown',on,true);removeEventListener('pointerdown',on,true);clearInterval(pi);
-    try{initAudio();if(AC&&AC.state!=='running')AC.resume();}catch(err){}SPL.gating=false;SPL.quietT=performance.now()+450;el.classList.remove('fs-gating');done();};
+    try{initAudio();if(AC&&AC.state!=='running')AC.resume();}catch(err){}SPL.gating=false;SPL.quietT=performance.now()+450;SPL.eat=true;el.classList.remove('fs-gating');done();};
   addEventListener('keydown',on,true);addEventListener('pointerdown',on,true);
   pi=setInterval(()=>{let ps=[];try{ps=(FIN.padSrc?FIN.padSrc():navigator.getGamepads&&navigator.getGamepads())||[];}catch(err){}
     for(const p of ps)if(p&&p.buttons&&p.buttons.some(b=>b&&(b.pressed||b.value>0.5))){on();break;}},40);}
-// пока ждём нажатия (и миг после него) клавиши не пропускают заставку
-{const _mi=menuInput;menuInput=function(){if(FIN.splashOn&&(SPL.gating||performance.now()<(SPL.quietT||0)))return;_mi();};}
+// пока ждём нажатия (и миг после него) клавиши не пропускают заставку; само нажатие, открывшее заставку, съедает первый же кадр —
+// даже если он пришёл позже 450 мс (подвисание при включении звука, редкие кадры): иначе оно пропускало заставку вместе с голосом
+{const _mi=menuInput;menuInput=function(){if(FIN.splashOn&&SPL.eat){SPL.eat=false;pressed.clear();return;}if(FIN.splashOn&&(SPL.gating||performance.now()<(SPL.quietT||0)))return;_mi();};}
 FIN.splash=function(opt){const el=SPL.el;if(!el)return FIN.openTitle(true);splReset();el.classList.remove('fin-hide','fs-play','fs-still');el.style.opacity=1;FIN.splashOn=true;
   SPL.still=!!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches);
   const go=()=>{if(!FIN.splashOn||SPL.live)return;void el.offsetWidth;el.classList.add(SPL.still?'fs-still':'fs-play');SPL.live=true;SPL.t0=performance.now();SPL.last=0;SPL.raf=requestAnimationFrame(splTick);
     splSound(()=>{AUD.nz({f0:300,f1:2400,d:0.9,v:0.03,a:0.4,q:0.8,wet:0.4});AUD.osc({f0:420,f1:980,d:0.3,v:0.05,glide:0.25,at:1.42});[1046,1318,1568,2093].forEach((f,i)=>AUD.bell(f,{v:0.03,d:0.9,at:1.9+i*0.08,wet:0.6}));});
-    SPL.voiced=false;SPL.voxOn=false;const e=splVoxLine();if(e)voxDecode(e);   // запись раскодируется заранее — к 1,8 с готова
+    SPL.voiced=false;SPL.voxOn=false;SPL.voxTry=0;const e=splVoxLine();if(e)voxDecode(e);   // запись раскодируется заранее — к 1,8 с готова
+    clearTimeout(SPL.vt);SPL.vt=setTimeout(()=>{if(SPL.live&&FIN.splashOn&&SPL.freeze==null&&!SPL.still&&!SPL.voxOn){SPL.voiced=true;splVoice(false);}},SPL_VOX_T*1000);
     clearTimeout(SPL.tm);SPL.tm=setTimeout(FIN.splashEnd,SPL.still?2400:e?5400:4400);};
   // ждём встроенный шрифт (обычно мгновенно), но не дольше 300 мс
   const fonts=()=>{try{Promise.race([Promise.all([document.fonts.load("600 40px ZCComfortaa"),document.fonts.load("300 40px ZCComfortaa")]),new Promise(r=>setTimeout(r,300))]).then(go,go);}catch(e){go();}};
   // звук ещё не разрешён браузером — сначала «Нажмите любую кнопку» (боты с ?debug — только если попросили: FIN.splash({gate:true}))
   const needGate=opt&&opt.gate!=null?!!opt.gate:!/[?&]debug/.test(location.search)&&!(AC&&AC.state==='running');
   if(needGate)splGate(fonts);else fonts();
-  FIN.splashEnd=()=>{if(!FIN.splashOn)return;FIN.splashOn=false;clearTimeout(SPL.tm);const r=SPL.q('.fs-flask').getBoundingClientRect();SPL.cx=r.left+r.width/2;SPL.cy=r.top+r.height*(324/494);
+  FIN.splashEnd=()=>{if(!FIN.splashOn)return;FIN.splashOn=false;clearTimeout(SPL.tm);clearTimeout(SPL.vt);const r=SPL.q('.fs-flask').getBoundingClientRect();SPL.cx=r.left+r.width/2;SPL.cy=r.top+r.height*(324/494);
     SPL.q('.fs-lock').style.transform='scale(1.1)';SPL.q('.fs-lock').style.opacity='0';SPL.exitT=performance.now();
     clearTimeout(SPL.stopT);SPL.stopT=setTimeout(()=>{if(SPL.live&&SPL.exitK==null)splStop();},1000);   // страховка: вкладка в фоне или медленный кадр — заставка всё равно уйдёт
     if(!SPL.live){SPL.el.classList.add('fs-still');SPL.live=true;SPL.t0=performance.now()-9000;SPL.raf=requestAnimationFrame(splTick);}
