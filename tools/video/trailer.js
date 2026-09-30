@@ -47,16 +47,17 @@ window.PLAY=(id,o)=>{o=o||{};if(o.solo){ZC.setSolo(true);}L(id);if(o.solo)ZC.set
     let info=await page.evaluate(({S,fps})=>{window.__snd.length=0;window.__vt=0;ZC.FIN.occ.fdt=1/fps;if(ZC.FIN.cam)ZC.FIN.cam.fdt=1/fps;AP.i=0;AP.clear();
       if(S.kind==='splash'){ZC.FIN.splash();return 'splash';}
       if(S.kind==='title'||S.kind==='end'){ZC.FIN.openTitle(S.kind==='title');return 'title';}
-      AP.mode=S.mode;AP.arg=S.arg||null;window.__pre=null;let r;try{r=eval(S.setup);}catch(e){r='SETUP ERROR '+e.message;}return r;},{S,fps:FPS});
+      AP.mode=S.mode;AP.arg=S.arg||null;window.__pre=null;window.__g0=ZC.G.time;let r;try{r=eval(S.setup);}catch(e){r='SETUP ERROR '+e.message;}return r;},{S,fps:FPS});
     if(S.kind==='splash')await page.waitForTimeout(500);
     if(await page.evaluate(()=>!!window.__pre)){await page.waitForTimeout(1500);info+=' · '+await page.evaluate(()=>{const f=window.__pre;window.__pre=null;try{return f();}catch(e){return 'PRE ERROR '+e.message;}});}
-    await page.evaluate(()=>{if(window.__preClean)__preClean();});
+    // звуки перемотки — прочь; интерфейс догоняет время перемотки (субтитры и баннеры — как в игре к началу шота)
+    await page.evaluate(()=>{if(window.__preClean)__preClean();if(ZC.ui&&window.__g0!=null)ZC.ui(Math.max(0,Math.min(60,ZC.G.time-__g0)));});
     console.log('seg',si,S.id,info);
     for(let f=0;f<N;f++){const t=f/FPS;
       await page.evaluate(({S,t,fps,f,dtMs})=>{window.__vt=t;
         if(S.kind==='splash'){if(t<4.4)ZC.FIN.splashSeek(t);else ZC.FIN.splashSeek(4.3,Math.min(1,(t-4.4)/0.7));}
         else if(S.kind==='title'){if(Math.abs(t-2.6)<0.5/fps||Math.abs(t-3.6)<0.5/fps)ZC.menuKey('ArrowDown');if(Math.abs(t-5.0)<0.5/fps){ZC.menuKey('ArrowUp');ZC.menuKey('ArrowUp');}}
-        else if(S.kind==='shot'){const k=Math.round(60/fps);for(let q=0;q<k;q++){AP.step();ZC.tick(1);}}
+        else if(S.kind==='shot'){const k=Math.round(60/fps);for(let q=0;q<k;q++){AP.step();ZC.tick(1);}if(ZC.ui)ZC.ui(k/60);}   // интерфейс (субтитры, цели, поля кадра) — по времени видео
         if(S.kind!=='splash')__animStep(f===0?0:dtMs);ZC.FIN.occ.frame();__gsync();},{S,t,fps:FPS,f,dtMs});
       await page.screenshot({path:path.join(dir,String(f).padStart(5,'0')+'.jpg'),type:'jpeg',quality:90,timeout:180000});}
     const snd=await page.evaluate(()=>window.__snd.slice());
