@@ -14,6 +14,7 @@ const rel=f=>path.relative(ROOT,f).split(path.sep).join('/');
 const html=fs.readFileSync(REL,'utf8');const src=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]).pop();
 const ast=acorn.parse(src,{ecmaVersion:'latest',locations:true});
 const CY=/[А-Яа-яЁё]/;
+const colAt=(text,pos)=>pos-text.lastIndexOf('\n',pos-1)-1;
 const lineAt=(text,pos)=>{let n=1;for(let i=text.indexOf('\n');i>=0&&i<pos;i=text.indexOf('\n',i+1))n++;return n;};
 
 // ---------- откуда кусок: прототип, модуль или замена сборки ----------
@@ -23,11 +24,17 @@ const REPS=fs.readdirSync(BD).filter(f=>/^rep_\d+.*\.py$/.test(f)).map(f=>({f,t:
 const VOXA=src.indexOf('const VOX_LINES='),VOXB=VOXA<0?-1:src.indexOf('\n',VOXA);
 const modAt=pos=>MODS.find(m=>m.a>=0&&pos>=m.a&&pos<m.b)||null;
 function commonSuffix(a,b){let n=0;while(n<a.length&&n<b.length&&a[a.length-1-n]===b[b.length-1-n])n++;return n;}
+function commonPrefix(a,b){let n=0;while(n<a.length&&n<b.length&&a[n]===b[n])n++;return n;}
 function origin(start,end,value){const raw=src.slice(start,end),m=modAt(start);
-  if(m){const q=m.t.indexOf(raw);return {file:rel(path.join(BD,m.f)),line:q<0?null:lineAt(m.t,q)};}
+  if(m){let q=start-m.a;if(m.t.substr(q,raw.length)!==raw)q=m.t.indexOf(raw);return {file:rel(path.join(BD,m.f)),line:q<0?null:lineAt(m.t,q),col:q<0?null:colAt(m.t,q)};}
   const occ=[];for(let q=PROTO.indexOf(raw);q>=0;q=PROTO.indexOf(raw,q+1))occ.push(q);
-  if(occ.length){const ctx=src.slice(Math.max(0,start-120),start);let best=occ[0],bs=-1;for(const q of occ){const s=commonSuffix(PROTO.slice(Math.max(0,q-120),q),ctx);if(s>bs){bs=s;best=q;}}
-    return {file:'index.html',line:lineAt(PROTO,best)};}
+  if(occ.length){let best=occ[0];
+    // одинаковые строки (копии функций): i-я в релизе вне модулей — i-я в прототипе, если их столько же; иначе — по соседнему коду до и после
+    const rel_=[];for(let q=src.indexOf(raw);q>=0;q=src.indexOf(raw,q+1))if(!modAt(q)&&!(q>=VOXA&&q<VOXB))rel_.push(q);
+    if(occ.length>1&&rel_.length===occ.length&&rel_.indexOf(start)>=0)best=occ[rel_.indexOf(start)];
+    else if(occ.length>1){const pre=src.slice(Math.max(0,start-300),start),post=src.slice(end,end+300);let bs=-1;
+      for(const q of occ){const s=commonSuffix(PROTO.slice(Math.max(0,q-300),q),pre)+commonPrefix(PROTO.slice(q+raw.length,q+raw.length+300),post);if(s>bs){bs=s;best=q;}}}
+    return {file:'index.html',line:lineAt(PROTO,best),col:colAt(PROTO,best)};}
   // строка пришла заменой сборки: ищем её (или самый длинный её кусок) среди строк rep_*.py
   let bestR=null;for(const r of REPS){for(const mm of r.t.matchAll(/"((?:[^"\\\n]|\\.)*)"|'((?:[^'\\\n]|\\.)*)'/g)){const v=(mm[1]!=null?mm[1]:mm[2]).replace(/\\(.)/g,'$1').replace(/^'|'$/g,'');
     if(v.length>=4&&value.includes(v)&&(!bestR||v.length>bestR.len))bestR={file:rel(path.join(BD,r.f)),line:lineAt(r.t,mm.index),len:v.length};}}
@@ -47,6 +54,11 @@ LV.buildZast='zast';
 const SKIP_MODS=/^late_(50_save|35_guard|70_menu|71_pads|88_occ|89_camorbit|95_dev)\.js$/;
 const SKIP_TOP=new Set(['menuHTML','padStatus','pollPads','startFrom','KEYNAME','PATHS,PATHNAME','HERO_DEF','VOX_LINES','SPL_VOX_T,SPL_VOX_TEXT__','GD_FS','finBoot']);
 const SKIP_TEXT=[/^Джойстик/, /Не удалось загрузить Three\.js/, /Нажмите любую кнопку/];
+// модули, у которых свой раздел документа (остальные — по функции уровня, в которой стоит текст)
+const MODLV={late_72_splash:'splash',late_87_boss4b:'4-B',late_92_koschei:'5-B2',late_93_koschei_level:'5-B2',late_94_koschei_tut:'5-B2',late_96_prolog_scooter:'p',late_97_buyan51:'5-1'};
+// функции прототипа, которые модуль заменяет целиком (name=function… без сохранения прежней) — в релизе не работают, их тексты не в игре
+const DEAD=new Set();{const PF=new Set([...PROTO.matchAll(/^function\s+([A-Za-z_$][\w$]*)\s*\(/gm)].map(x=>x[1]));
+  for(const md of MODS)for(const x of md.t.matchAll(/(?<![\w.$])([A-Za-z_$][\w$]*)\s*=\s*function\b/g))if(PF.has(x[1])&&!new RegExp('=\\s*'+x[1].replace(/\$/g,'\\$')+'\\s*[;,]').test(md.t))DEAD.add(x[1]);}
 
 // ---------- обёртки say/bark: function f(text){say('kot',text)} ----------
 const WRAP={};   // имя → {who: строка|null|{arg:j}, text: k}
@@ -189,12 +201,12 @@ function viaData(name,top,depth){if(depth>2)return null;for(const u of USES.get(
 const raw=[];
 for(const [pos,r] of [...roots].sort((a,b)=>a[0]-b[0])){
   if(pos>=VOXA&&pos<VOXB)continue;const m=modAt(pos);if(m&&SKIP_MODS.test(m.f))continue;
-  const top=topOf(pos),tn=topName(top);if(SKIP_TOP.has(tn)||tn==='DIR')continue;
+  const top=topOf(pos),tn=topName(top);if(SKIP_TOP.has(tn)||tn==='DIR')continue;if(!m&&top&&top.type==='FunctionDeclaration'&&DEAD.has(tn))continue;
   const c=consumer(r.node,r.anc);let type=typeOf(c);if(!type)continue;let dataWho=null;
   if(type==='screen'&&c.kind==='var'&&top){const u=viaData(c.name,top,0);if(u){type=u.type;dataWho=u.who;}}
   // пара [кто, текст]: REFUSE={proshka:['proshka','Я не голодный.'],…}
   {const el=r.anc[r.anc.length-1];if(el&&el.type==='ArrayExpression'&&el.elements.length===2&&el.elements[1]===r.node&&el.elements[0]&&el.elements[0].type==='Literal'&&(el.elements[0].value===null||WHONAME[el.elements[0].value])){dataWho={who:el.elements[0].value};if(type==='screen')type=el.elements[0].value===null?'say':'bark';}}
-  let lv=LV[tn]||null;if(m&&/late_87_boss4b/.test(m.f))lv='4-B';if(m&&/late_72_splash/.test(m.f))lv='splash';
+  let lv=LV[tn]||null;if(m&&MODLV[m.f.replace(/\.js$/,'')])lv=MODLV[m.f.replace(/\.js$/,'')];
   if(/^(lukoScene|TAILS|LUBOK|skazClouds)$/.test(tn))lv='luko';
   if(tn==='LEVELS'&&c.kind==='prop'&&c.name==='name'&&c.obj){const idp=c.obj.properties.find(p=>p.key&&p.key.name==='id');if(idp)lv=/^z-/.test(idp.value.value)?'zast':idp.value.value;type='chapter';}
   const cine=cineOf(r.anc);let who=null,t=null,d=null,noVoice=false;
@@ -215,23 +227,12 @@ for(const [pos,r] of [...roots].sort((a,b)=>a[0]-b[0])){
     raw.push({pos,lv,top:tn,fn,sec,part:!!v.part,cine:cine&&{pos:cine.node.start,dur:cine.dur,fn:cfn},t:se?t:cine?cine.t:null,d,type,
       who:who?who.who:undefined,noVoice,cond:v.cond,text,
       pieces:v.segs.filter(s=>s.lit!=null).map(s=>({raw:src.slice(s.start,s.end),...origin(s.start,s.end,s.lit)})),
+      order:(()=>{let k=0;return v.segs.map(s=>s.lit!=null?k++:s.ph);})(),
       phs:v.segs.filter(s=>s.ph).map(s=>s.code)});});
 }
 
-// ---------- видимый текст: <i>, <b>, <br> и вставки {…}; остальная разметка убирается ----------
-const ICON={r:'{значок: красный зубец}',y:'{значок: жёлтый кружок}',b:'{значок: синяя капля}',o:'{значок: золотой кружок}',e:'{значок}'};
-const ENT={'&nbsp;':' ','&amp;':'&','&lt;':'<','&gt;':'>','&quot;':'"','&#39;':"'",'&laquo;':'«','&raquo;':'»','&mdash;':'—','&hellip;':'…','&times;':'×'};
-function visible(h){let s=String(h);
-  s=s.replace(/<i class="sg (\w)"><\/i>/g,(_,k)=>ICON[k]||'{значок}').replace(/<svg[\s\S]*?<\/svg>/g,'{значок}');
-  s=s.replace(/<kbd>([^<]*)<\/kbd>/g,'[$1]');
-  s=s.replace(/<(br|\/?(div|p|h\d|li|tr|table|small))\b[^>]*>/gi,'<br>');
-  s=s.replace(/<b\b[^>]*>/gi,'<b>').replace(/<i\b[^>]*>/gi,'<i>');
-  s=s.replace(/<(?!\/?[bi]>|br>)[^>]*>/g,'');
-  s=s.replace(/&[a-z#0-9]+;/gi,e=>ENT[e]||e);
-  for(const t of ['i','b'])if((s.match(new RegExp('<'+t+'>','g'))||[]).length!==(s.match(new RegExp('</'+t+'>','g'))||[]).length)s=s.replace(new RegExp('</?'+t+'>','g'),'');   // кусок строки: тег открыт в одном куске, закрыт в другом
-  s=s.replace(/<i><\/i>|<b><\/b>/g,'').replace(/[ \t]*<br>[ \t]*/g,'<br>').replace(/(<br>)+/g,'<br>').replace(/^(<br>)+|(<br>)+$/g,'');
-  // вставки внутри атрибутов пропали вместе с тегами; вставка «{число}» — игра подставит число
-  return s.replace(/[ \t]+/g,' ').trim();}
+// ---------- видимый текст: <i>, <b>, <br> и вставки {…}; остальная разметка убирается (markup.js) ----------
+const {visible}=require('./markup.js');
 const hasWords=v=>CY.test(v.replace(/\{[^}]*\}/g,''));
 
 // ---------- озвучка: build/voice/lines.json ----------
@@ -263,7 +264,7 @@ const kept=raw.filter(r=>hasWords(r.vis));
 const byKey=new Map(),rowsOut=[];
 for(const r of kept){const sec=r.sec;if(!sec)continue;
   const dedupe=r.type!=='cine'?[sec,r.type,r.who||'',r.vis].join('|'):[sec,'cine',r.cine.pos,r.t,r.who||'',r.vis].join('|');
-  const prev=byKey.get(dedupe);const occ={file:r.pieces.map(p=>p.file),pieces:r.pieces,phs:r.phs};
+  const prev=byKey.get(dedupe);const occ={file:r.pieces.map(p=>p.file),pieces:r.pieces,phs:r.phs,order:r.order};
   if(prev){prev.n++;if(!prev.occ.some(o=>JSON.stringify(o.pieces)===JSON.stringify(occ.pieces)))prev.occ.push(occ);if(r.voice)prev.voice=[...new Set((prev.voice||[]).concat(r.voice))];continue;}
   const o={sec,part:r.part,pos:r.pos,lv:r.lv,top:r.top,fn:r.fn,type:r.type,who:r.who===undefined?null:r.who,cond:(r.part?['часть составной строки']:[]).concat(r.cond).join(', ')||null,voiceWho:r.voiceWho||null,text:r.vis,n:1,voice:r.voice||null,
     cine:r.cine,t:r.t,d:r.d,noVoice:r.noVoice||undefined,occ:[occ]};
@@ -292,7 +293,7 @@ for(const S of SECTIONS){const rs=rowsOut.filter(r=>r.sec===S.id);if(!rs.length)
       const says=g.rows.filter(r=>r.type==='cine'&&r.t!=null);says.forEach((r,i)=>{const nx=says.slice(i+1).find(x=>x.t>r.t);r.gap=+((nx?nx.t:g.dur)-r.t).toFixed(2);});}
     g.rows=g.rows.map(r=>({id:nextId(),type:r.type,typeName:T[r.type]||r.type,who:r.who,whoName:r.who==null?null:r.who.split('/').map(w=>WHONAME[w]||(w==='*'?'герой':w)).join(' / '),
       voiceWho:r.voiceWho,cond:r.cond,var:r.var||null,text:r.text,n:r.n,voice:r.voice,t:r.t,d:r.d,gap:r.gap,cineDur:r.cine?r.cine.dur:undefined,lv:r.lv,fn:r.fn,
-      occ:r.occ.map(o=>({pieces:o.pieces.map(p=>({raw:p.raw,file:p.file,line:p.line})),phs:o.phs}))}));}
+      occ:r.occ.map(o=>({pieces:o.pieces.map(p=>({raw:p.raw,file:p.file,line:p.line,col:p.col})),phs:o.phs,order:o.order}))}));}
   out.push({id:S.id,h1:S.h1,title:S.title,groups:gs.map(g=>({kind:g.kind,title:g.title,dur:g.dur||null,rows:g.rows}))});}
 
 const cast=JSON.parse(fs.readFileSync(path.join(BD,'voice','lines.json'),'utf8')).cast;
