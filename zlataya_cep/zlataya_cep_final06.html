@@ -14149,7 +14149,8 @@ function t4Cycle(list){const H=T4.h;if(H.cur)return;list[H.cycle%list.length]();
 // 3) Силуэт-«рентген»: второй проход скелетного меша героя (depthFunc GreaterDepth, рисуется после мира и до героев) — где героя закрывает
 //    стена, виден его светящийся контур; у каждого героя свой цвет, мягкая пульсация. В роликах силуэты гаснут.
 // 4) То, что вплотную к камере (ближе ~2 м), растворяется тем же узором независимо от героев (пол и крыши под камерой — нет).
-// 5) Старые «прозрачные стены» уровней (fadeable) больше не меняют прозрачность материала — растворяются тем же узором целиком.
+// 5) Старые «прозрачные стены» уровней (fadeable) больше не меняют прозрачность материала — растворяются тем же узором целиком;
+//    группа шире 4 м (забор, ряд стен) — кусками: растворяется только кусок под лучом к герою и соседний, если луч прошёл у самого края.
 // Для ботов: FIN.occ (состояние, статистика), FIN.occ.frame() — отрисовать кадр (детекция идёт при отрисовке), FIN.occ.fdt — шаг времени кадра
 // (в headless кадры в JS мгновенные, растеризация отложена — без фиксированного шага сглаживание шло бы сотни кадров).
 const OCC={on:true,xray:true,hz:15,cand:[],colN:0,nextCol:0,nextEx:0,views:{},xa:0,near:[2.1,0.75],
@@ -14282,14 +14283,38 @@ function occFrame(){const now=performance.now();OCC.stats.frames++;if(!W||!W.gro
   HEROES.forEach((h,i)=>{const x=occXray(h);if(x){x.material.opacity=OCC.xa*(0.6+0.14*Math.sin(G.time*3.6+i*1.7));x.visible=OCC.xa>0.01;}});}
 {const _render=render;render=function(){try{occFrame();}catch(e){console.error('occ',e);}_render();};}
 OCC.frame=()=>render();OCC.dbg={renderer,camS,cams,U:OU,collect:()=>occCollect(),exempt:()=>occExempt(),seg:(o,t)=>occSeg(o,t)};
+// ---------- большие «прозрачные стены» — кусками ----------
+// Уровень объявляет «прозрачной стеной» целую группу: забор у калитки, ряд стен, срубы. Раньше под лучом к герою растворялась вся
+// группа, и забор в десятке метров от героя, никого не заслоняющий, тоже шёл узором. Теперь группа шире OCC_PART метров делится
+// на куски не шире OCC_PART (по коробкам мешей, жадно): у каждого куска свои копии материалов и свой вес растворения.
+// Растворяется кусок под лучом и соседние куски той же группы, до которых от точки попадания ближе OCC_NEAR м.
+const OCC_PART=4,OCC_NEAR=1.2;
+function occMatCopy(mt){const c=mt.clone();if(mt.defaultAttributeValues)c.defaultAttributeValues=Object.assign({},mt.defaultAttributeValues);delete c.userData._occW;return c;}
+function occSplitFades(){OCC.fadeParts=0;if(!W||!W.fades||!W.fadeMeshes||!W.fadeMeshes.length)return;W.group.updateMatrixWorld(true);
+  const by=new Map();for(const m of W.fadeMeshes){const f=m.userData.fadeRef;if(!f)continue;if(!by.has(f))by.set(f,[]);by.get(f).push(m);}
+  const add=[];
+  for(const [f,ms] of by){if(ms.length<2)continue;const bs=ms.map(m=>new THREE.Box3().setFromObject(m)),u=new THREE.Box3();bs.forEach(b=>{if(!b.isEmpty())u.union(b);});
+    if(u.isEmpty()||(u.max.x-u.min.x<=OCC_PART&&u.max.z-u.min.z<=OCC_PART))continue;
+    const cl=[];ms.forEach((m,i)=>{const b=bs[i];let to=null;if(!b.isEmpty())for(const c of cl){OB.copy(c.b).union(b);if(OB.max.x-OB.min.x<=OCC_PART&&OB.max.z-OB.min.z<=OCC_PART){to=c;break;}}
+      if(to){to.b.union(b);to.ms.push(m);}else cl.push({b:b.isEmpty()?u.clone():b.clone(),ms:[m]});});
+    if(cl.length<2)continue;
+    const parts=cl.map((c,k)=>k===0?f:{mats:[],k:1,hit:false});f.mats=[];
+    cl.forEach((c,k)=>{const p=parts[k],cp=new Map();p.box=c.b;p.sibs=parts;
+      for(const m of c.ms){let mt=m.material;if(k>0&&mt&&!Array.isArray(mt)){let c2=cp.get(mt);if(!c2){c2=occMatCopy(mt);cp.set(mt,c2);}m.material=c2;mt=c2;}
+        if(mt&&p.mats.indexOf(mt)<0)p.mats.push(mt);m.userData.fadeRef=p;}});
+    for(let k=1;k<parts.length;k++)add.push(parts[k]);}
+  for(const p of add)W.fades.push(p);OCC.fadeParts=add.length;}
+FIN.occSplitFades=occSplitFades;
 // ---------- уровень: сброс, «прозрачные стены» уровня — вне пачек ----------
 {const _ll=loadLevel;loadLevel=function(i){_ll(i);OCC.views={};OCC.cand=[];OCC.colN=0;OCC.nextCol=performance.now()+400;OCC.nextEx=0;
+  try{occSplitFades();}catch(e){console.error('occ split',e);}
   for(const m of (W.fadeMeshes||[])){m.userData.noBatch=true;const mt=m.material;if(mt&&!mt.userData._occW){mt.userData._occW={value:0};mt.needsUpdate=true;}}};}
-// старые «прозрачные стены»: тот же луч, что в прототипе, но стена растворяется узором целиком, материал не становится полупрозрачным
+// старые «прозрачные стены»: тот же луч, что в прототипе, но стена растворяется узором целиком (большая группа — кусок под лучом), материал не становится полупрозрачным
 updateFade=function(dt){if(!W.fades.length)return;for(const f of W.fades)f.hit=false;
   if(!G.cine){const ex=W.fadeTargets?W.fadeTargets():[];const views=G.split>0.5?[[rigs[0].pos,[active(0)].concat(ex)],[rigs[1].pos,[active(1)].concat(ex)]]:[[shared.pos,[active(0),active(1)].concat(ex)]];
     for(const[cp,hs]of views)for(const h of hs){const tgt=new V3(h.pos.x,h.pos.y+heroHeight(h)*0.6,h.pos.z),dir=tgt.clone().sub(cp),d=dir.length();if(d<0.6)continue;dir.divideScalar(d);
-      RAY.set(cp,dir);RAY.near=0.05;RAY.far=d-0.45;for(const x of RAY.intersectObjects(W.fadeMeshes,false)){const f=x.object.userData.fadeRef;if(f)f.hit=true;}}}
+      RAY.set(cp,dir);RAY.near=0.05;RAY.far=d-0.45;for(const x of RAY.intersectObjects(W.fadeMeshes,false)){const f=x.object.userData.fadeRef;if(!f)continue;f.hit=true;
+        if(f.sibs)for(const q of f.sibs)if(!q.hit&&q.box&&q.box.distanceToPoint(x.point)<OCC_NEAR)q.hit=true;}}}
   const now=G.time;for(const f of W.fades){if(f.hit)f.lastHit=now;const on=f.hit||now-(f.lastHit===undefined?-9:f.lastHit)<0.3;f.w=f.w||0;
     f.w=on?Math.min(1,f.w+dt/0.2):Math.max(0,f.w-dt/0.5);f.k=1-f.w*0.78;const k=f.w*f.w*(3-2*f.w)*0.92;
     for(const m of f.mats){if(!m.userData._occW){m.userData._occW={value:0};m.needsUpdate=true;}m.userData._occW.value=k;
