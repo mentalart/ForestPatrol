@@ -85,7 +85,7 @@ zlataya_cep/build/late_83_cine_actors.js      tfin_cine tfin_cast tfin_scooter
 zlataya_cep/build/late_84_cine_fx.js          tfin_cine tfin_scooter
 zlataya_cep/build/late_85_cine_audio.js       tfin_cine
 zlataya_cep/build/late_86_cine_direction.js   tfin_cine tfin_scooter
-zlataya_cep/build/late_88_occ.js              tfin_occ tfin_luko tfin_fadebatch
+zlataya_cep/build/late_88_occ.js              tfin_occ tfin_luko tfin_fadebatch tfin_fadelocal
 zlataya_cep/build/late_89_camorbit.js         tfin_cam
 
 # ---- модули релиза: уровни ----
