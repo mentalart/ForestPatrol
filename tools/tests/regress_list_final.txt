@@ -12,7 +12,7 @@ t51 t52 t53 t54 t5b1 tepi tzast
 # задачи всех уровней
 tallobj
 # одиночный режим
-tsolo tsolo41 tsospot tso13 tso33 tso54
+tsolo tsolo41 tsospot tso13 tso33 tso54 tso51
 # релиз: титул, меню, пауза, сохранения, клавиши разработчика, кино (final02), коллизии и арт (final03), обучение Горыныча, видимость героев, камера (final04)
 tfin_menu tfin_save tfin_dev tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b tfin_occ tfin_cam
 # final05: джойстики в меню, переключение на живого героя, враги видимы (все виды и появившиеся позже), удар героев, бюджет отрисовок, пачки прозрачных стен, персонажи и враги (витрины)
