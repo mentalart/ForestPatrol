@@ -42,4 +42,4 @@ addEventListener('keydown',e=>{if(!e.ctrlKey||!e.altKey||e.repeat)return;
   const c=e.code==='BracketRight'||e.key===']'||e.key==='ъ'||e.key==='Ъ'?1:e.code==='BracketLeft'||e.key==='['||e.key==='х'||e.key==='Х'?-1:0;if(!c)return;
   e.preventDefault();e.stopImmediatePropagation();if(c>0)FIN.devUnlockAll();else FIN.devWipe();},true);
 // для съёмки трейлера (tools/video): интерфейс (субтитры, цели, баннеры, поля кадра) по времени видео — игровой цикл при съёмке выключен
-if(window.ZC)ZC.ui=dt=>updateUI(dt);
+FIN.ui=dt=>updateUI(dt);   // (window.ZC появляется позже модулей — съёмка берёт ZC.FIN.ui)

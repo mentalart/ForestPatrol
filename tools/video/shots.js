@@ -32,18 +32,18 @@ module.exports=[
   {id:'w4_bridge',dur:4,music:'w4',setup:"CINE('4-5',2.5)",mode:'none'},
   {id:'w4_boss',dur:5,music:'boss',setup:"PLAY('4-B',{settle:3})",mode:'brawl'},
   // ---------- Мир 5 · Остров Буян ----------
-  {id:'w5_island',dur:5,music:'w5',setup:"CINE('5-1',4)",mode:'none'},
-  {id:'w5_likho',dur:5,music:'boss',setup:"W51('boss1',2)",mode:'none'},
+  {id:'w5_island',dur:5,music:'w5',setup:"CINE('5-1',1.5)",mode:'none'},
+  {id:'w5_likho',dur:4,music:'boss',setup:"W51('boss1',3)",mode:'none'},
   {id:'w5_duck',dur:4,music:'w5',setup:"CINE('5-3',2)",mode:'none'},
   {id:'w5_kalinka',dur:5,music:null,setup:"PLAY('5-4',{settle:2.5})",mode:'s54'},
   {id:'w5_terem',dur:4,music:'boss',setup:"PLAY('5-B1',{settle:2})",mode:'brawl'},
   // ---------- 5-Б2 · Кощей Бессмертный: пять этапов ----------
   {id:'k1_candles',dur:5,music:'boss',setup:"K5S(1,3)",mode:'k5'},
   {id:'k3_storm',dur:5,music:'boss',setup:"K5S(3,3)",mode:'k5'},
-  {id:'k3_sword_cine',dur:4,music:'boss',setup:"K5W(3,2)",mode:'none'},
+  {id:'k3_sword',dur:3.8,music:'boss',setup:"K5W(3,0.2)",mode:'none'},
+  {id:'k3_potap',dur:3.2,music:'boss',setup:"K5W(3,6.9)",mode:'none'},
   {id:'k4_sword',dur:5,music:'boss',setup:"K5S(4,3)",mode:'k5'},
   {id:'k5_anvil',dur:5,music:'boss',setup:"K5S(5,4)",mode:'k5'},
-  {id:'k_chain',dur:5,music:'epi',setup:"K5W(5,20)",mode:'none'},
   // ---------- Лукоморье, Застава, эпилог ----------
   {id:'hub_kot',dur:4,music:'hub',setup:"PLAY('luko',{settle:1.5})",mode:'forward'},
   {id:'zastava',dur:4,music:'hub',setup:"PLAY('z-i',{settle:2})",mode:'brawl'},
