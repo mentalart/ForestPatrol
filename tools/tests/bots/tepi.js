@@ -3,7 +3,10 @@ Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/214
 //@@ shot=ep1.png
 ZC.tick(1);
 //@@
-const W=ZC.W,F=W.flags;const r=[];ZC.skip();ZC.tick(10);r.push('stage='+F.stage);for(let i=0;i<5;i++){U.tap('KeyM');ZC.tick(40);}r.push('shI?');r
+const W=ZC.W,F=W.flags;const r=[];ZC.skip();ZC.tick(10);r.push('stage='+F.stage);
+// релиз (late_39): вместо теней по кнопке — «Театр теней»; сценки засчитываем по времени (их проходят tfin_epitheatre / tfin_episolo)
+const E=ZC.FIN&&ZC.FIN.epiTh;if(E&&E.on){ZC.skip();ZC.tick(5);let n=0;while(E.on&&n<40){E.dbg.force();ZC.tick(60*3);n++;}r.push('theatre='+E.stats.rounds.join(','),'stage='+F.stage);}
+else{for(let i=0;i<5;i++){U.tap('KeyM');ZC.tick(40);}}r.push('shI?');r
 //@@ shot=ep2.png
 ZC.tick(1);
 //@@

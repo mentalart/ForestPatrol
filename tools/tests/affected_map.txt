@@ -71,6 +71,7 @@ zlataya_cep/build/late_35_guard.js            tfin_guard
 zlataya_cep/build/late_36_potap_fire.js       tfin_potap tfin_slash tfin_guard
 zlataya_cep/build/late_37_gor_uzda.js         @level:4-B tfin_uzda tfin_boss4b tfin_gorsolo
 zlataya_cep/build/late_38_gor_friend.js       @level:4-B tfin_gorend tfin_gorsolo
+zlataya_cep/build/late_39_epi_shadows.js      @level:epi tfin_epitheatre tfin_episolo tepi
 
 # ---- модули релиза: меню, сохранения, заставка, звук ----
 zlataya_cep/build/late_40_music.js            tfin_menu tfin_save
@@ -110,4 +111,5 @@ zlataya_cep/build/rep_30_gameplay.py#Горыныч  @level:4-B
 zlataya_cep/build/rep_30_gameplay.py#Лукоморье @level:luko tfin_col
 zlataya_cep/build/rep_30_gameplay.py#Пролог   @level:p
 zlataya_cep/build/rep_30_gameplay.py#Колобок  @level:1-3
+zlataya_cep/build/rep_30_gameplay.py#Эпилог   @level:epi tfin_epitheatre tfin_episolo
 zlataya_cep/build/rep_30_gameplay.py          @full

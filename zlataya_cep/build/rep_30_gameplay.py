@@ -120,3 +120,10 @@ rep("banner('За Звенышком!','#ffd76a',2,'По веткам — впе
 # четыре кадра камеры и передачу звена; Колобок и гусли передаются из build13.
 rep("play({dur:7.5,fov:48,shots:[shot(0,[kp.x+3,2.4,kp.z+4.5],[kp.x,1,kp.z+1])],","play(FIN.kolDance({dur:7.5,fov:48,shots:[shot(0,[kp.x+3,2.4,kp.z+4.5],[kp.x,1,kp.z+1])],")
 rep("later(1.4,()=>{F.out=true;finishLevel();});}});}","later(1.4,()=>{F.out=true;finishLevel();});}},{kol,gus}));}")
+
+# ---- Эпилог: «Театр теней» (late_39_epi_shadows.js) — после ролика e1 мини-игра с живыми тенями вместо теней-картинок по кнопке ----
+# Модулю — части эпилога (W.epiL); конец ролика e1 зовёт FIN.epiTh.start, конец театра — e2 (колыбельная Тишки). Без модуля — прежние тени.
+rep("W.spawns=[[new V3(1.6,0,-0.4),new V3(-3.2,0,-0.6)],[new V3(-0.4,0,-2),new V3(0.4,0,0.9)]];W.startAct=[0,0];",
+    "W.epiL={e2,SH,room,tish,kot,nb,blanket,place,F};W.spawns=[[new V3(1.6,0,-0.4),new V3(-3.2,0,-0.6)],[new V3(-0.4,0,-2),new V3(0.4,0,0.9)]];W.startAct=[0,0];")
+rep("end:()=>{W.anims.length=0;F.stage='shadows';F.shT=0;banner('Тени на стене пляшут'",
+    "end:()=>{W.anims.length=0;if(FIN.epiTh&&FIN.epiTh.start(W.epiL))return;F.stage='shadows';F.shT=0;banner('Тени на стене пляшут'")
