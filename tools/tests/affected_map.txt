@@ -95,6 +95,7 @@ zlataya_cep/build/late_93_koschei_level.js    @level:5-B2
 zlataya_cep/build/late_94_koschei_tut.js      @level:5-B2
 zlataya_cep/build/late_96_prolog_scooter.js   @level:p
 zlataya_cep/build/late_97_buyan51.js          @level:5-1
+zlataya_cep/build/late_98_gor_lava.js         @level:4-B tfin_gorsolo
 
 # ---- замены в прототипе при сборке ----
 zlataya_cep/build/rep_10_cine.py              tfin_cine tfin_voice
