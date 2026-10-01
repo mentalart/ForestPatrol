@@ -131,18 +131,21 @@ function t4Stage3(){const gr=W.grabs[0];if(!gr)return;const bp=gr.pos(),saved=bp
     t4S('bridle',9,{tag:'Оба игрока',title:'Возьмите узду',icon:'tongs',text:'К узде с <b>двух сторон</b> подойдите — и <b>клещами</b> её возьмите.',keys:[{pi:0,a:'item',label:'клещи',wait:true},{pi:1,a:'item',label:'клещи',wait:true}],go:'Берите вдвоём!',okText:'Взяли!'},
       {p:vB.p,l:vB.l,wait:{who:'both',a:'item'},at:1.6,enter:()=>{walk(i=>new V3(saved.x+(i?1.2:-1.1),0,saved.z+(i?0.3:-0.8)),1.4,saved);},each:(s,pi)=>{FX.sparks(bp.clone().add(new V3(0,0.5,0)),8);floatText(t4P(active(pi)).add(new V3(0,2,0)),'Взял!','#ffb070');},
        done:()=>{const f=bp.clone();anim(0.8,k=>{bp.y=f.y+smooth(k)*1.3;});}}),
-    t4S('spot',5,{tag:'Несите к шее',title:'Кольцо на шее светится',icon:'ring',text:'Несите узду <b>вдвоём</b> к светящемуся кольцу на шее Змея.<br>Не расходитесь далеко — уроните, жалея!'},
-      {p:vS.p,l:vS.l,enter:()=>{ring=t4Prop(t4Ring(0xffd76a,0.95));ring.position.copy(T4SPOT);const f=bp.clone(),to=new V3(T4SPOT.x,1.9,T4SPOT.z+1.8);anim(2.6,k=>{const q=smooth(k);bp.lerpVectors(f,to,q);bp.y+=Math.sin(q*Math.PI)*0.4;});
+    t4S('spot',5,{tag:'Несите к шее',title:'Кольцо на шее светится',icon:'ring',text:'Несите узду <b>вдвоём</b> к золотому ореолу на шее Змея — к кругу на полу.<br>Не расходитесь далеко — уроните, жалея!'},
+      {p:vS.p,l:vS.l,enter:()=>{if(!FIN.uzda){ring=t4Prop(t4Ring(0xffd76a,0.95));ring.position.copy(T4SPOT);}   // с late_37 место показывает золотой ореол
+         const f=bp.clone(),to=new V3(T4SPOT.x,1.9,T4SPOT.z+1.8);anim(2.6,k=>{const q=smooth(k);bp.lerpVectors(f,to,q);bp.y+=Math.sin(q*Math.PI)*0.4;});
          walk(i=>new V3(T4SPOT.x+(i?0.95:-0.95),0,T4SPOT.z+1.8),2.6,T4SPOT);},update:()=>{if(ring){ring.rotation.y+=0.03;ring.scale.setScalar(1+0.12*Math.sin(G.time*6));}}}),
-    t4S('spot',10,{tag:'Оба игрока',title:'«Раз-два-три» — вместе, дружно!',icon:'n123',text:'Узда у шеи — <b>умение вместе</b> нажмите, в одну секунду, как нужно!',keys:[{pi:0,a:'skill',label:'',wait:true},{pi:1,a:'skill',label:'',wait:true}],go:'Раз… два… ТРИ!',okText:'Узда на Змее!'},
-      {p:vS.p,l:vS.l,wait:{who:'both',a:'skill',sync:0.8,timeout:10},at:1,cut:false,update:(s,u)=>{if(s.okAt==null){const k=Math.floor((G.time*1.6)%3);const el=T4.card.querySelector('.ft-go');if(el)el.textContent=['Раз…','Два…','ТРИ — жмите!'][k];}},
-       done:()=>{SFX.horn&&SFX.horn();FX.confetti(T4SPOT.clone(),40);CINE.punch(-3);floatText(T4SPOT.clone().add(new V3(0,1.5,0)),'Узда на Змее!','#ffd76a');}}),
-    t4S('team',3,{tag:'Вперёд!',title:'Теперь — по-настоящему!',icon:'go',text:'Пока головы без сил — у вас <b>двадцать пять секунд</b>. Вперёд, богатыри!'},{enter:()=>{SFX.ok();bp.copy(saved);restore();}})],
-    {end:()=>{bp.copy(saved);restore();t4SeenSet(3);}});}
+    // «раз-два-три» (late_37): три счёта, на каждый — умение обоих; огоньки над ореолом зажигаются, узда поднимается к шее
+    ...[0,1,2].map(k=>t4S('spot',k<2?4.5:7,{tag:'Оба игрока',title:'«Раз-два-три»: '+['раз…','два…','ТРИ!'][k],icon:'n123',text:'Узда у шеи — <b>умение</b> нажмите <b>трижды</b>, <b>оба</b> — на каждый счёт: на «раз», на «два», на «три»!',keys:[{pi:0,a:'skill',label:'',wait:true},{pi:1,a:'skill',label:'',wait:true}],go:['Раз!','Два!','Три!'][k],okText:['Раз!','Два!','Узда на Змее!'][k]},
+      {p:vS.p,l:vS.l,wait:{who:'both',a:'skill',timeout:k?6:10},at:k?0.3:1,cut:false,enter:()=>{if(k===0&&FIN.uzda)FIN.uzda.demoBeat(0);},
+       done:()=>{const f=bp.clone(),to=T4SPOT.clone().lerp(f,1-(k+1)/3);anim(0.35,q=>{bp.lerpVectors(f,to,smooth(q));});tone([523,659,784][k],0.22,'triangle',0.25);if(FIN.uzda)FIN.uzda.demoBeat(k+1);
+         floatText(T4SPOT.clone().add(new V3(0,2.2,0)),['Раз!','Два!','ТРИ!'][k],'#ffe27a');if(k===2){SFX.horn&&SFX.horn();FX.confetti(T4SPOT.clone(),40);CINE.punch(-3);floatText(T4SPOT.clone().add(new V3(0,1.5,0)),'Узда на Змее!','#ffd76a');}}})),
+    t4S('team',3,{tag:'Вперёд!',title:'Теперь — по-настоящему!',icon:'go',text:'Пока головы без сил — у вас <b>пятьдесят секунд</b>. Вперёд, богатыри!'},{enter:()=>{SFX.ok();bp.copy(saved);restore();if(FIN.uzda)FIN.uzda.demoBeat(-1);}})],
+    {end:()=>{bp.copy(saved);restore();if(FIN.uzda)FIN.uzda.demoBeat(-1);t4SeenSet(3);}});}
 // короткое напоминание, если этап уже объясняли (повторная попытка)
 function t4Short(n){const txt={1:['Этап 1 · Три запала','heads','Жёлтый кружок — <b>щит</b>, красный зубец — <b>кувырок</b>, потом бей.<br>Левую и правую — <b>вместе</b>, за двенадцать секунд, дружней!'],
   2:['Этап 2 · Вдох','heads','Тянет к пасти — держи <b>щит</b>. Жёлудь — <b>рогатка Прошки</b>, огонь — <b>щит Потапа</b>, сытая — <b>вода Йоши</b>.<br><b>Взор Пелагеи</b> — слабое место: один удар, и Пробой!'],
-  3:['Этап 3 · Узда','ring','Узду — <b>клещами вдвоём</b> к кольцу на шее, и <b>умение вместе</b> — раз!']}[n];
+  3:['Этап 3 · Узда','ring','Узду — <b>клещами вдвоём</b> к золотому ореолу на шее, и <b>умение трижды</b>, оба: раз, два, три!']}[n];
   t4Run([t4S('wide',4.5,{tag:'Напоминание',title:txt[0],icon:txt[1],text:txt[2]})]);}
 function t4SeenSet(n){G.flags.tut4b=G.flags.tut4b||{};G.flags.tut4b[n]=true;}
 function t4Seen(n){return !!(G.flags.tut4b&&G.flags.tut4b[n]);}
@@ -195,7 +198,7 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
   if(F.phase===3){const gr=W.grabs[0],bp=gr?gr.pos():null;const ha=[0,1].map(pi=>active(pi));const near=bp?bp.distanceTo(T4SPOT)<3.2:false;const lifted=bp&&bp.y>0.8;
     if(bp&&!lifted&&idle>4)t4Ctx('grab',()=>t4HintShow('grab',{tag:'Оба игрока',title:'Узда — клещами, вдвоём',icon:'tongs',text:'К узде с двух сторон подойдите — и <b>клещами</b> её возьмите.',col:0xffb070},[gr],[[0,'item','клещи'],[1,'item','клещи']],6),8);
     else if(bp&&lifted&&!near)t4Ctx('carry',()=>t4HintShow('carry',{tag:'Оба игрока',title:'К кольцу светящемуся!',icon:'ring',text:'Несите узду <b>вдвоём</b> к кольцу на шее. Не расходитесь — держитесь рядом!',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],null,5),8);
-    else if(bp&&near)t4Ctx('123',()=>t4HintShow('123',{tag:'Оба игрока',title:'Раз-два-три — вместе, дружно!',icon:'n123',text:'<b>Умение</b> нажмите в одну секунду!',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],[[0,'skill',''],[1,'skill','']],5),6);}}
+    else if(bp&&near)t4Ctx('123',()=>t4HintShow('123',{tag:'Оба игрока',title:'Раз-два-три — вместе, дружно!',icon:'n123',text:'<b>Умение</b> — трижды, <b>оба</b>: на «раз», на «два», на «три»!',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],[[0,'skill',''],[1,'skill','']],5),6);}}
 function t4Ctx(key,fn,cd){const H=T4.h;if(H.cur&&H.until>G.time&&H.cur.key!=='g1'&&H.cur.key!=='g2'&&H.cur.key!=='g3'&&H.cur.key!=='h1'&&H.cur.key!=='h2')return;if(G.time-(H.cd[key]||-99)<(cd||6))return;fn();}
 function t4Cycle(list){const H=T4.h;if(H.cur)return;list[H.cycle%list.length]();H.cycle++;}
 // ---------- этапы: ролик сразу после смены фазы ----------
