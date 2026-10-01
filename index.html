@@ -46,7 +46,8 @@
       карусель: Богатырский щит, богатырский выход, Богатырский мах вдвоём. Ворота — 12 звеньев мира,
       кузня Кузьмы («Не лупи. Слушай металл.»).
   Лукоморье-хаб: волшебный стан у моря — из веретена раскатывается карта-рушник (выбор уровня: вышивка оживает,
-      героев закручивает золотой нитью, затем занавес из двух вышитых полотен с именем уровня); звенья, орешки, самоцветы, кузня
+      героев закручивает золотой нитью, затем занавес из двух вышитых полотен с именем уровня; в списке Буяна последним —
+      Эпилог, открыт после финала); звенья, орешки, самоцветы, кузня
   (сдать звенья — три удара в такт с Кузьмой), дуб-градусник (зеленеет от скованных звеньев, Кот сидит
   на цепи), лавка Векши с примеркой на подиуме и примерочная (шапки, на шею, за спину, наряды, пляски,
   украшения Лукоморья, фоторежим «Лубок»; куплено — навсегда), огород Дедки (посадить, полить, подрастёт
@@ -10505,24 +10506,26 @@ function buildLukomorye(){
   /* ---------- карта-рушник: выбор уровня ---------- */
   function openMap(pi){G.ui='map';let wsel=curWorld(),list=[],sel=0;const el=$('mapui');el.style.display='flex';
     const wOpen=w=>w===1||(w===2&&!!G.flags.voiceDone)||(w===3&&!!G.flags.w2done)||(w===4&&!!G.flags.w3done)||(w===5&&!!G.flags.w4done);
-    const setW=w=>{wsel=w;list=LEVELS.filter(l=>l.world===w);sel=list.findIndex(l=>!G.done[l.id]);if(sel<0)sel=0;};setW(wsel);
+    // эпилог — в списке Острова Буяна последним, после финала (у него нет своего мира); открыт, как одолели Кощея
+    const isEpi=l=>l.id==='epi',doneL=l=>!!G.done[l.id]||(isEpi(l)&&!!G.flags.epiDone);
+    const setW=w=>{wsel=w;list=LEVELS.filter(l=>l.world===w||(w===5&&isEpi(l)));sel=list.findIndex(l=>!doneL(l));if(sel<0)sel=0;};setW(wsel);
     const gateOK=l=>l.world===1?G.flags.forged:l.world===2?G.flags.forged2:l.world===3?G.flags.forged3:l.world===4?G.flags.forged4:l.id==='5-B2'?(!!G.done['5-B1']&&!!G.flags.bezImen):G.flags.forged5;const bossTo=w=>w===1?'к Лешему':w===2?'к Водяному':w===3?'к Соловью':w===4?'к Горынычу':'в терем';
-    const open=l=>l.boss?gateOK(l):(l===list[0]?wOpen(l.world):(G.done[LEVELS[LEVELS.indexOf(l)-1].id]||G.done[l.id]));
+    const open=l=>isEpi(l)?(!!G.done['5-B2']||doneL(l)):l.boss?gateOK(l):(l===list[0]?wOpen(l.world):(G.done[LEVELS[LEVELS.indexOf(l)-1].id]||G.done[l.id]));
     const TAGS={'1-3':'♪ гусельный · ','2-3':'на четверых · ','2-4':'экран разделён · ','3-3':'♪ гусельный · ','3-4':'летучий корабль · ','3-5':'погоня · ','4-2':'лавопад · ','4-3':'на четверых · ','4-5':'путь Потапа · ','5-1':'Лихо · ','5-2':'на четверых · ','5-3':'полёт · ','5-4':'♪ гусельный · '};
     const draw=()=>{el.innerHTML='<div class="rush"><h2>Карта-рушник</h2><div class="worlds">'+WORLDN.map((w,i)=>'<span class="'+(i+1===wsel?'on':wOpen(i+1)?'':'off')+'">'+(i+1)+' · '+w+(wOpen(i+1)?'':' <small>скоро</small>')+'</span>').join('')+'</div>'+
       list.map((l,i)=>{const ok=open(l),got=G.got[l.id]||0,nut=(G.nutsGot&&G.nutsGot[l.id])||0;
-        const tag=l.boss?(gateOK(l)?(l.id==='5-B2'?'финал':'ворота открыты'):l.id==='5-B2'?'сначала — терем':'🔗 '+(G.forgedW[l.world]||0)+' / '+GATE(l.world)+' — кузня Кузьмы'):(TAGS[l.id]||'')+'звенья '+got+' / '+l.links+(G.gems[l.id]?' '+ICO_GEM:'')+(l.nuts?' · '+ICO_NUT+' '+nut+' / '+l.nuts:'')+(G.secrets[l.id]?' · карта тайников':'');
-        return '<div class="lv'+(i===sel?' sel':'')+(ok?'':' lock')+'">'+(G.done[l.id]?'✓ ':ok?'• ':'🔒 ')+l.name+'<small>'+tag+(l.boss&&G.gems[l.id]?' '+ICO_GEM:'')+'</small></div>';}).join('')+
+        const tag=isEpi(l)?(ok?'вечер в штабе-сосне · театр теней · колыбельная · титры':'откроется после финала'):l.boss?(gateOK(l)?(l.id==='5-B2'?'финал':'ворота открыты'):l.id==='5-B2'?'сначала — терем':'🔗 '+(G.forgedW[l.world]||0)+' / '+GATE(l.world)+' — кузня Кузьмы'):(TAGS[l.id]||'')+'звенья '+got+' / '+l.links+(G.gems[l.id]?' '+ICO_GEM:'')+(l.nuts?' · '+ICO_NUT+' '+nut+' / '+l.nuts:'')+(G.secrets[l.id]?' · карта тайников':'');
+        return '<div class="lv'+(i===sel?' sel':'')+(ok?'':' lock')+'">'+(doneL(l)?'✓ ':ok?'• ':'🔒 ')+l.name+'<small>'+tag+(l.boss&&G.gems[l.id]?' '+ICO_GEM:'')+'</small></div>';}).join('')+
       '<div class="hint">'+K(pi,'left')+K(pi,'right')+' мир · '+K(pi,'up')+K(pi,'down')+' уровень · '+K(pi,'jump')+' в путь · '+K(pi,'attack')+' вышить карту тайников (1 самоцвет) · '+K(pi,'guard')+' свернуть</div></div>';};
     draw();
     G.uiTick=()=>{for(const q of[0,1]){const n=uiNav(q);if(n.dy){sel=(sel+n.dy+list.length)%list.length;SFX.swap();draw();}
         if(n.dx){const nw=wsel+n.dx;if(nw>=1&&nw<=5&&wOpen(nw)){setW(nw);SFX.swap();draw();}else SFX.miss();}
         if(tap(q,'guard')||pressed.has('Escape')){closeMap();return;}
-        if(tap(q,'attack')){const l=list[sel];const nb=gemsAvail();if(l.boss||G.secrets[l.id]){SFX.miss();return;}if(nb<1){SFX.miss();tip(q,'Нужен самоцвет. А самоцвет дают тому,<br>Кто все звенья в уровне собрал — по одному.',2.6);return;}
+        if(tap(q,'attack')){const l=list[sel];const nb=gemsAvail();if(l.boss||isEpi(l)||G.secrets[l.id]){SFX.miss();return;}if(nb<1){SFX.miss();tip(q,'Нужен самоцвет. А самоцвет дают тому,<br>Кто все звенья в уровне собрал — по одному.',2.6);return;}
           G.gemsSpent++;G.secrets[l.id]=true;SFX.bell();banner('Карта тайников на рушнике расшита!','#ffd76a',2,l.name+': над орешками — света столбы до небес');draw();}
-        if(tap(q,'jump')){const l=list[sel];if(!open(l)){SFX.miss();tip(q,l.boss?(l.id==='5-B2'?'Финал откроется, как терем пройдёте.':'Ворота '+bossTo(l.world)+' Кузьма откроет, как скуёте<br>'+GATE(l.world)+' звеньев этого мира — тогда и пойдёте.'):'Сперва пройдите тот уровень, что прежде.',2.4);return;}
+        if(tap(q,'jump')){const l=list[sel];if(!open(l)){SFX.miss();tip(q,isEpi(l)?'Эпилог откроется, как Кощея одолеете.':l.boss?(l.id==='5-B2'?'Финал откроется, как терем пройдёте.':'Ворота '+bossTo(l.world)+' Кузьма откроет, как скуёте<br>'+GATE(l.world)+' звеньев этого мира — тогда и пойдёте.'):'Сперва пройдите тот уровень, что прежде.',2.4);return;}
           SFX.ok();closeMap();travelTo(l);return;}}};}
-  function travelTo(l){const w=l.world||1,ic=new V3(-4.2+(w-1)*2.1,0.3,map.position.z+2.5),col=[COL.gold,0x7ad8ff,0xffe0f0,0xff8a3a,0xffd23a][w-1];
+  function travelTo(l){const w=l.world||(l.id==='epi'?5:1),ic=new V3(-4.2+(w-1)*2.1,0.3,map.position.z+2.5),col=[COL.gold,0x7ad8ff,0xffe0f0,0xff8a3a,0xffd23a][w-1];
     F.rushnik=true;map.visible=true;loomSpin=7;anim(0.9,k=>{map.scale.z=Math.max(0.01,smooth(k));});const icg=icons[w-1];
     later(0.6,()=>{SFX.bell();tone(mf(74),0.6,'sine',0.14);tone(mf(79),0.6,'sine',0.1,null,0.12);anim(0.9,k=>{icg.scale.set(1+k*0.6,0.08+smooth(k)*1.6,1+k*0.6);});for(let i=0;i<5;i++)later(i*0.14,()=>ringFx(ic.clone(),col,1+i*0.6));});
     play({dur:3.0,fov:46,shots:[shot(0,[0,6.5,-11.2],[0,0,ic.z]),shot(0.8,[ic.x*0.5,3.6,ic.z+4.2],[ic.x,0.5,ic.z]),shot(1.8,[ic.x,1.4,ic.z+1.3],[ic.x,0.7,ic.z])],says:[],events:[],end:()=>{}});
