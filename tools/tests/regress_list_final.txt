@@ -18,6 +18,6 @@ tfin_menu tfin_save tfin_dev tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b
 # final05: джойстики в меню, переключение на живого героя, враги видимы (все виды и появившиеся позже), удар героев, бюджет отрисовок, пачки прозрачных стен, персонажи и враги (витрины)
 tfin_pads tfin_downswap tfin_foekinds tfin_foekinds2 tfin_foekinds3 tfin_foeidle tfin_slash tfin_budget tfin_fadebatch tfin_cast tfin_foecast
 # final06: озвучка всей игры; щиты героев (B) и удар Потапа со спины; пауза с джойстика на живом пути (курсор над меню); Лукоморье — стан и берег дальше от дуба; звук с первого нажатия, голос заставки, звуки меню; пролог — Прошка несёт самокат, падает, все смеются; большие «прозрачные стены» — кусками
-tfin_voice tfin_guard tfin_pads2 tfin_luko tfin_uisnd tfin_scooter tfin_splashclick tfin_fadesplit tfin_fadelocal
+tfin_voice tfin_guard tfin_pads2 tfin_luko tfin_uisnd tfin_scooter tfin_splashclick tfin_fadesplit tfin_fadelocal tfin_potap
 # final06: финальный бой 5-Б2 заново (прежний t5b2 — только для прототипа): все этапы и ролики, вдвоём и в одиночку настоящими нажатиями
 tfin_kosh tfin_koshcoop tfin_koshsolo
