@@ -10,7 +10,7 @@
 // - у шеи ореол закрывает средняя голова — поэтому счёт «Раз · Два · Три» и кто уже нажал крупно дублируются на экране;
 // - в полоске босса — сколько ещё головы без сил. Само время — в rep_30 (вдвое дольше: 50 с вместо 25).
 // Логика узды прототипа (клещи, переноска, падение) не меняется; облик прототипа (тонкий тор) спрятан.
-const UZ={gy:0,hud:null,beat:0,got:[false,false],lift:0,vis:null,flash:0,hot:0,ember:0,demo:-1,stats:{beats:0,resets:0,wins:0}};FIN.uzda=UZ;
+const UZ={gy:0,hud:null,tame:0,beat:0,got:[false,false],lift:0,vis:null,flash:0,hot:0,ember:0,demo:-1,stats:{beats:0,resets:0,wins:0}};FIN.uzda=UZ;
 const UZ_GOLD=0xffd76a;
 const uzOn=()=>W&&W.levelId==='4-B'&&W.gor4L&&W.flags;
 // ---------- текстуры: пояс узды с узором, мягкое пятно, вертикальный градиент столба ----------
@@ -33,7 +33,7 @@ const UZ_PATH=(()=>{const c=document.createElement('canvas');c.width=64;c.height
 function uzMat(col,o){return new THREE.MeshBasicMaterial(Object.assign({color:col,transparent:true,depthWrite:false,fog:false,toneMapped:false},o||{}));}
 function uzTag(o){o.traverse(q=>{q.userData.noBatch=true;q.userData.occEx=true;q.castShadow=false;q.frustumCulled=false;});return o;}
 function uzBeam(col,r,h){const m=new THREE.Mesh(new THREE.CylinderGeometry(r,r*1.25,h,20,1,true),uzMat(col,{map:UZ_BEAM,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,opacity:0.7}));m.position.y=h/2;m.renderOrder=6;return m;}
-function uzGlow(col,s){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:UZ_GLOW,color:col,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false,toneMapped:false}));sp.scale.setScalar(s);sp.renderOrder=7;return sp;}
+function uzGlow(col,s){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:UZ_GLOW,color:col,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false,toneMapped:false}));sp.scale.setScalar(s);sp.renderOrder=7;sp.raycast=()=>{};return sp;}   // лучи камеры и земли спрайты не трогают (без камеры three.js ругается)
 function uzDisc(col,r){const m=new THREE.Mesh(new THREE.CircleGeometry(r,40),uzMat(col,{map:UZ_GLOW,blending:THREE.AdditiveBlending,opacity:0.6}));m.rotation.x=-Math.PI/2;m.renderOrder=5;return m;}
 // ---------- облик: узда, ореол с кругом на полу, стрелки дорожки ----------
 function uzBuild(){const L=W.gor4L,g=W.group;
@@ -93,10 +93,14 @@ function uzTick(dt){const L=W.gor4L,F=W.flags,BR=L.BR,V=UZ.vis;if(!V)return;cons
   if(!ph3||BR.on){if(!BR.on&&(UZ.beat||UZ.got[0]||UZ.got[1]))uzReset();}else if(!uzNear()&&(UZ.beat||UZ.got[0]||UZ.got[1]))uzReset('Из круга вышли — снова: раз!');
   const held=BR.holders.filter(Boolean).length,dSpot=hd(BR.pos,L.neckSpot),near=ph3&&uzNear();
   // узда: следует за логикой прототипа, на счёт — поднимается к ореолу; после «три» — на шее
-  const top=L.neckSpot.clone();const want=won||BR.on?1:near?UZ.beat/3*0.7:0;UZ.lift+=(want-UZ.lift)*(1-Math.exp(-(won?10:7)*dt));
+  // после победы узда сидит на шее средней головы (у затылка), поперёк шеи; огонь стихает, свечение — золотое
+  const seg=won&&L.necks&&L.necks[1]&&L.necks[1].length>7?L.necks[1]:null;const top=seg?seg[6].position.clone():L.neckSpot.clone();
+  const want=won||BR.on?1:near?UZ.beat/3*0.7:0;UZ.lift+=(want-UZ.lift)*(1-Math.exp(-(won?10:7)*dt));UZ.tame=won?Math.min(1,(UZ.tame||0)+dt/1.5):0;
   const base=BR.pos.clone().add(new V3(0,0.3,0));V.br.position.lerpVectors(base,top,UZ.lift);
-  V.ring.rotation.y+=dt*(held?2.2:0.6);const s=won?1+0.5*Math.min(1,UZ.lift):1;V.ring.scale.setScalar(s);
-  V.tongues.forEach((m,i)=>{const f=0.75+0.35*Math.sin(t*13+i*1.7)+0.15*Math.sin(t*29+i);m.scale.set(1,f,1);});
+  if(seg&&UZ.lift>0.5){const tg=seg[7].position.clone().sub(seg[5].position).normalize();V.br.quaternion.setFromUnitVectors(new V3(0,1,0),tg);}else V.br.quaternion.identity();
+  V.ring.rotation.y+=dt*(held?2.2:won?0.35:0.6);const s=won?1+0.3*Math.min(1,UZ.lift):1;V.ring.scale.setScalar(s);
+  V.tongues.forEach((m,i)=>{const f=(0.75+0.35*Math.sin(t*13+i*1.7)+0.15*Math.sin(t*29+i))*(1-0.8*UZ.tame);m.scale.set(1,Math.max(0.05,f),1);});
+  V.glow.material.color.setHex(UZ.tame>0.5?0xffc04a:0xff7a20);
   V.band.material.map.offset.x=(t*0.05)%1;V.core.material.opacity=0.4+0.15*Math.sin(t*9);
   V.glow.material.opacity=0.85+0.15*Math.sin(t*7);V.glow.scale.setScalar(2.6+0.3*Math.sin(t*5)+UZ.flash*1.5);V.glow2.scale.setScalar(1.1+0.15*Math.sin(t*11));
   // лежит — столб огненного света и пятно на полу (видно издалека); несут — гаснет

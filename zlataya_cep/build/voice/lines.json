@@ -8849,6 +8849,61 @@
    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155049_f1820f9d-f1e4-4605-908d-794b06640d85.mp3",
    "job": "f1820f9d-f1e4-4605-908d-794b06640d85",
    "dur": 3.19
+  },
+  {
+   "id": "4-B_026",
+   "lv": "4-B",
+   "who": "gorL",
+   "text": "Дружить — так дружить… Только чур, не будить.",
+   "tts": "[sleepy] Дружить — так дружить… Только чур, не будить.",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155506_55b29a92-e10c-447c-824a-a9366b654af7.mp3",
+   "job": "55b29a92-e10c-447c-824a-a9366b654af7",
+   "dur": 3.98
+  },
+  {
+   "id": "4-B_027",
+   "lv": "4-B",
+   "who": "gorR",
+   "text": "А с пирожками дружба — вдвое вкусней!",
+   "tts": "[happy] А с пирожками дружба — вдвое вкусней!",
+   "max": 3.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155506_e35189da-884c-4f49-a2c6-858398f7863a.mp3",
+   "job": "e35189da-884c-4f49-a2c6-858398f7863a",
+   "dur": 3.01
+  },
+  {
+   "id": "4-B_028",
+   "lv": "4-B",
+   "who": "proshka",
+   "text": "Ура! Был Змеем — стал нам другом!",
+   "tts": "[happy] Ура! Был Змеем — стал нам другом!",
+   "max": 2.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155506_78fa4641-0959-4726-a5c1-fe98e982b16d.mp3",
+   "job": "78fa4641-0959-4726-a5c1-fe98e982b16d",
+   "dur": 2.69
+  },
+  {
+   "id": "4-B_029",
+   "lv": "4-B",
+   "who": "gorM",
+   "text": "Садитесь, друзья, — прокачу над лугом!",
+   "tts": "[happy] Садитесь, друзья, — прокачу над лугом!",
+   "max": 2.82,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155506_cb0b6c8f-aac1-4696-bf9a-7c4983242411.mp3",
+   "job": "cb0b6c8f-aac1-4696-bf9a-7c4983242411",
+   "dur": 2.42
+  },
+  {
+   "id": "4-B_030",
+   "lv": "4-B",
+   "who": "pelageya",
+   "text": "Три головы — а сердце одно. Вот и славно!",
+   "tts": "[happy] Три головы — а сердце одно. Вот и славно!",
+   "max": 3.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155506_3a00a5d4-f5b2-4518-8f93-2571a5851327.mp3",
+   "job": "3a00a5d4-f5b2-4518-8f93-2571a5851327",
+   "dur": 3.33
   }
  ]
 }
