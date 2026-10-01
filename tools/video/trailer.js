@@ -26,6 +26,9 @@ window.K5S=(n,s)=>{L('5-B2');const K5=ZC.FIN.k5;K5.auto=false;window.__pre=()=>{
 // 5-1: перенос к части уровня (warp51: head, lagoon, meadow, glade, keys, boss1…3) и s секунд
 window.W51=(to,s)=>{L('5-1');window.__pre=()=>{ZC.tick(30);for(let q=0;q<4&&ZC.G.cine;q++){ZC.skip();ZC.tick(5);}const r=ZC.W.warp51(to);ZC.tick(Math.round((s||1)*60));return 'warp '+r+' cine='+!!ZC.G.cine;};return 'L 5-1';};
 window.K5W=(n,t)=>{L('5-B2');const K5=ZC.FIN.k5;K5.auto=false;window.__pre=()=>{for(let q=0;q<10;q++){if(ZC.G.cine)ZC.skip();ZC.tick(10);}K5.stageStart(n);ZC.tick(30);K5.stageWin(n);ZC.tick(Math.round(t*60));return 'k5 win '+n+' cine='+!!ZC.G.cine;};return 'L 5-B2';};
+// 4-Б: две головы в Пробое → ролик рыка (лавовые трещины, гейзеры) на секунде t; обучающие карточки выключены
+window.GOR=(t)=>{L('4-B');ZC.G.flags.tut4b={1:true,2:true,3:true};ZC.FIN.boss4b.auto=false;window.__pre=()=>{for(let q=0;q<12;q++){if(ZC.G.cine)ZC.skip();ZC.tick(10);}SETTLE(0.8);
+  const hs=ZC.W.enemies.filter(e=>e.kind==='golova').sort((a,b)=>a.idx-b.idx);for(const e of[hs[0],hs[2]]){e.state='broken';e.t=0;e._b=false;}ZC.tick(2);ZC.tick(Math.round(t*60));return 'roar cine='+!!ZC.G.cine+' t='+(ZC.G.cine?ZC.G.cine.t.toFixed(1):'-');};return 'L 4-B';};
 window.PLAY=(id,o)=>{o=o||{};if(o.solo){ZC.setSolo(true);}L(id);if(o.solo)ZC.setSolo(true);ZC.tick(20);for(let q=0;q<6&&ZC.G.cine;q++){ZC.skip();ZC.tick(8);}
   SETTLE(o.settle!=null?o.settle:1.5);const P=ZC.players,W=ZC.W;
   if(o.at){for(const pi of[0,1]){const h=AP.act(pi);h.pos.set(o.at[0]+(pi?1:-1),h.pos.y,o.at[1]);h.vel.set(0,0,0);}}

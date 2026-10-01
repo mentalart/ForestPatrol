@@ -32,14 +32,16 @@ plan.total=T;console.log('segments',segs.length,'total',T.toFixed(2)+'s','sounds
     const vplay=(v,at)=>{const b=BUF[v.id];if(!b||v.off>=b.duration)return;const s=ctx.createBufferSource();s.buffer=b;const g=ctx.createGain();g.gain.value=(LN[v.id].gain||1)*(v.kind==='layer'?(v.g||0.8):1);
       s.connect(g);g.connect(vbus);s.start(at,v.off||0);if(v.kind==='main'){cur={s,g};mainEnd=at+b.duration-(v.off||0);}};
     rec.start(250);const t0=ctx.currentTime+0.6;let si=0,mi=0;
-    FIN.music.setVol(mus0);FIN.music.play(plan.music[0].track);
+    // треки сами по себе разной громкости (замер: title и w3 ≈ −32 дБ, boss, hub, w1, w5 — на 10–20 дБ тише) — выравниваем
+    const TRK={title:1,w3:1,epi:1.3,w2:1.4,w4:2,w1:2.6,hub:3,boss:3,w5:3};let trk=TRK[plan.music[0].track]||1;
+    FIN.music.setVol(mus0*trk);FIN.music.play(plan.music[0].track);
     await new Promise(res=>{const iv=setInterval(()=>{const now=ctx.currentTime,vt=now-t0;FIN.music.tick();
-        while(mi<plan.music.length&&plan.music[mi].t-0.8<=vt){FIN.music.play(plan.music[mi].track);mi++;}
+        while(mi<plan.music.length&&plan.music[mi].t-0.8<=vt){const tr=plan.music[mi].track;if(tr){trk=TRK[tr]||1;FIN.music.setVol(mus0*trk*(ducked?0.4:1));}FIN.music.play(tr);mi++;}
         // голоса и стыки сегментов (на стыке реплика затихает)
         while(vi<plan.vox.length&&plan.vox[vi].t<vt+1.0){const v=plan.vox[vi++],at=t0+v.t;while(gi<plan.seg.length&&plan.seg[gi]<=v.t){vstop(t0+plan.seg[gi],0.12);gi++;}
           if(v.kind==='stop')vstop(at,v.g||0.08);else{if(v.kind==='main')vstop(at,0.06);vplay(v,Math.max(at,now));}}
         while(gi<plan.seg.length&&plan.seg[gi]<vt+1.0){vstop(t0+plan.seg[gi],0.12);gi++;}
-        const dk=now<mainEnd;if(dk!==ducked){ducked=dk;FIN.music.setVol(mus0*(dk?0.4:1));}
+        const dk=now<mainEnd;if(dk!==ducked){ducked=dk;FIN.music.setVol(mus0*trk*(dk?0.4:1));}
         while(si<plan.snd.length&&plan.snd[si].t<vt+1.0){const e=plan.snd[si++],off=Math.max(0,t0+e.t-now);
           try{if(e.k==='tone'){const a=e.a.slice();while(a.length<6)a.push(undefined);a[5]=(a[5]||0)+off;_tone.apply(window,a);}
             else{const o=Object.assign({},e.a[0]);o.at=(o.at||0)+off;(e.k==='osc'?_osc:_nz)(o);}}catch(err){}}
