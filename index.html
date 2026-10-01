@@ -2785,10 +2785,14 @@ function build12(){
 
   /* ====================== VI. «Царевна-лягушка»: стрела Ивана-царевича и кувшинки в лад ====================== */
   // Стрелу Ивана-царевича ветер закинул на сухую ольху. Прошка сбивает её из рогатки — Лягушка ловит стрелу и квакает в лад: кувшинки
-  // всплывают по очереди (одни — на «Ква!», другие — на «Ква-ква!»). Посередине кувшинка завяла — Йоша оживляет её живой водой. Мимо — в мелкую воду, назад на берег.
-  ground(-11,11,-240,-223.8);bell(-1.2,-225.8);
+  // всплывают по очереди (одни — на «Ква!», другие — на «Ква-ква!»). Посередине кувшинка завяла (видна, но не держит) — Йоша оживляет её живой водой. Пруд глубокий: мимо кувшинки — плюх, и снова у колокольчика.
+  ground(-11,11,-240,-223.8);const pondBell=bell(-1.2,-225.8);
+  // колокольчик у пруда звенит для каждого, кто вышел на берег пруда (даже мимо него): утонул в пруду — сюда, а не назад в туман
+  W.updates.push(()=>{const b=pondBell;for(const pi of[0,1]){if(b.act[pi])continue;const h=active(pi);if(!(h.grounded&&h.pos.z<-227.5&&h.pos.z>-240&&h.pos.y>-0.2))continue;
+    b.act[pi]=true;const p=players[pi];p.cp.set(b.x,0,b.z+1.2);p.cpBell=b;p.petals=3;SFX.bell();b.swing=1.2;b.bm.emissiveIntensity=0.5;b.bm.color.setHex(0xffd060);
+    tip(pi,'Колокольчик! Коль упадёшь — сюда вернёшься, не пропадёшь.',2.4);}});
   const pondW=new THREE.Mesh(new THREE.PlaneGeometry(22,37),M(0x2a4636));pondW.rotation.x=-Math.PI/2;pondW.position.set(0,-0.44,-258.5);pondW.receiveShadow=true;W.group.add(pondW);
-  colBox(-11,11,-2.5,-0.55,-277,-240);W.hummocks.push({x:0,z:-238.8,y:0});
+  W.hummocks.push({x:0,z:-238.8,y:0});   // дна у пруда нет: по воде не пропрыгать
   {const ts=W.threadStop;W.threadStop=(t,tx,tz)=>{if(!t.thick&&tz<-240&&tz>-277&&Math.abs(tx)<11.2){const at=new V3(tx,-0.3,tz);SFX.splash();burst(at,0x6a9a6a,8,2.5);
       floatText(at.clone().add(new V3(0,1,0)),'Буль! В пруду у Лягушки нить тонет','#bfe0a0');return true;}return ts(t,tx,tz);};}
   // сухая ольха со стрелой
@@ -2808,24 +2812,32 @@ function build12(){
     const throat=part(body,new THREE.SphereGeometry(0.16,10,8),bl,0,0.24,0.32);dyn(g);return {g,body,throat,pos:g.position,d:{height:1.0},ph:0};})();
   const PADS=[[-1.5],[0.8],[2.8],[0.8],[-1.4],[-3.6],[-1.0],[2.0],[3.4],[1.2],[-0.6]].map(([x],i)=>{const z=-243.2-3.2*i,wil=i===6,g=lilyMesh(wil?1.0:1.1,wil?0x7a6a3a:0x5a9a40);
     if(!wil&&i%3===1)part(g,new THREE.ConeGeometry(0.18,0.3,6),M(0xf4f0f8),0.3,0.12,0.2);   // цветок кувшинки
-    g.position.set(x,-0.8,z);W.group.add(g);dyn(g);const col={x,z,r:wil?1.0:1.1,miny:-3,maxy:-0.8,on:true};W.cyls.push(col);return {g,col,i,grp:i%2,wil,cur:-0.8};});
+    let dead=null;if(wil){dead=new THREE.Group();g.add(dead);const dm=M(0x6a5228);   // завяла: бурая, края загнулись, цветок поник — видна на воде, но не держит
+      for(let k=0;k<7;k++){const a=k/7*Math.PI*2+0.3,c=part(dead,new THREE.ConeGeometry(0.16,0.42,4),dm,Math.sin(a)*0.86,0.06,Math.cos(a)*0.86);c.rotation.set(Math.cos(a)*1.2,0,-Math.sin(a)*1.2);}
+      const st=part(dead,new THREE.CylinderGeometry(0.025,0.03,0.5,5),M(0x5a4a22),0.1,0.2,0.05);st.rotation.z=0.9;part(dead,new THREE.ConeGeometry(0.14,0.22,6),M(0x8a6a3a),0.32,0.3,0.05).rotation.z=2.2;
+      g.rotation.set(0.07,0,-0.05);}
+    const y0=wil?-0.4:-0.8;g.position.set(x,y0,z);W.group.add(g);dyn(g);const col={x,z,r:wil?1.0:1.1,miny:-3,maxy:y0,on:!wil};W.cyls.push(col);return {g,col,i,grp:i%2,wil,cur:y0,dead};});
   const FG={sing:false,t:0,beat:-1,lily:false,told:false};F.frog=FG;
   W.marks.push({pos:arrow.position,active:()=>!FG.sing&&!FG.drop,onHit:()=>{FG.drop=true;SFX.latch();const p0=arrow.position.clone(),p1=new V3(5.6,1.2,-253.0);
     anim(1.1,k=>{arrow.position.lerpVectors(p0,p1,k);arrow.position.y+=Math.sin(k*Math.PI)*3.2;arrow.rotation.z=-0.35-k*6;if(k>=1){arrow.visible=false;FG.sing=true;FG.t=0;
       SFX.ok();burst(p1,COL.gold,16,3);bark(FR,'lyagushka','Ква! Стрела Ивана-царевича! Ну, держитесь — запою, а кувшинки в лад запляшут!',3.6);
       banner('Кувшинки в лад!','#b8f0a0',2.4,'на «Ква!» всплывают одни, на «Ква-ква!» — другие');}});}});
   W.waterTargets.push({pos:new V3(PADS[6].col.x,0,PADS[6].col.z),pri:1.5,active:()=>FG.sing&&!FG.lily,onWater:()=>{FG.lily=true;const P=PADS[6];P.wil=false;P.col.r=1.35;
+    if(P.dead)P.dead.visible=false;P.g.rotation.set(0,0,0);part(P.g,new THREE.ConeGeometry(0.18,0.3,6),M(0xf4f0f8),0.3,0.12,0.2);
     P.g.scale.set(1.35,1,1.35);P.g.children[0].material=M(0x4f8a3a);SFX.grow();burst(new V3(P.col.x,0.3,P.col.z),0x9fe6ff,16,4);floatText(new V3(P.col.x,1.2,P.col.z),'Кувшинка ожила — и не тонет!','#9fe6ff');
     later(0.6,()=>bark(FR,'lyagushka','Ква-а! Живая водица — моей кувшинке водица!',2.4));}});
   W.updates.push(dt=>{FR.ph+=dt;
-    for(const h of HEROES){if(h.pos.z<-240&&h.pos.z>-277&&h.grounded&&h.pos.y<-0.3&&!h.cling){h.pondT=(h.pondT||0)+dt;if(h.pondT>0.6){h.pondT=0;SFX.splash();toHummock(h);}}else h.pondT=0;}   // мимо кувшинки — плюх и назад
+    // мимо кувшинки (или кувшинка ушла под воду) — плюх: пруд глубокий, сразу назад к колокольчику; по воде не пропрыгать
+    for(const h of HEROES){if(h.pos.z<-240&&h.pos.z>-277&&Math.abs(h.pos.x)<11.2&&h.pos.y<-0.3&&!h.cling){const at=new V3(h.pos.x,-0.3,h.pos.z);SFX.splash();burst(at,0x6a9a6a,12,3);
+      const W6=PADS[6];floatText(at.clone().add(new V3(0,1.2,0)),W6.wil&&hd(h.pos,W6.col)<1.4?'Завяла — не держит! Полей живой водой':'Плюх!','#9fd8a0');onFall(h);}}
     if(!FG.told&&HEROES.some(h=>h.active&&h.pos.z<-230)){FG.told=true;bark(FR,'lyagushka','Ква-а… Стрелу Ивана-царевича ветер на сухую ольху закинул. Без неё не поётся!',3.6);}
     const T=3.0;let beat=-1;if(FG.sing){FG.t+=dt;const s=Math.sin(FG.t*Math.PI*2/T);beat=s>0?0:1;
       if(beat!==FG.beat){FG.beat=beat;tone(beat?150:190,0.12,'square',0.1,beat?100:130);if(beat)tone(150,0.1,'square',0.09,100,0.18);FR.body.scale.set(1.1,0.85,1.1);FR.throat.scale.setScalar(1.8);
         floatText(FR.pos.clone().add(new V3(0,1.3,0)),beat?'Ква-ква!':'Ква!','#b8f0a0');}}
     FR.body.scale.lerp(new V3(1,1,1),1-Math.exp(-6*dt));FR.throat.scale.lerp(new V3(1,1,1),1-Math.exp(-5*dt));
     for(const P of PADS){let up=false;if(FG.sing){const s=Math.sin(FG.t*Math.PI*2/T);up=P.wil?false:P.i===6?true:(P.grp===0?s>-0.4:s<0.4);}
-      const want=up?0.05:-0.8;P.cur=lerp(P.cur,want,1-Math.exp(-9*dt));P.g.position.y=P.cur;P.col.maxy=P.cur;}});
+      if(P.wil){P.g.position.y=-0.4+Math.sin(G.time*1.3+P.i)*0.015;P.col.on=false;continue;}   // завядшая лежит на воде и не держит
+      const want=up?0.05:-0.8;P.cur=lerp(P.cur,want,1-Math.exp(-9*dt));P.g.position.y=P.cur;P.col.maxy=P.cur;P.col.on=P.cur>-0.35;}});   // ушла под воду — не держит
   nutItem(6.2,1.1,-252.2);
 
   /* ====================== VII. «Сказка о попе и о работнике его Балде» (Пушкин): бесёнок, бег вокруг омута и кобыла ====================== */
@@ -2889,6 +2901,18 @@ function build12(){
     else if(RC.lift==='try'||RC.lift==='done'){BS.arms.forEach(a=>{a.rotation.x=lerp(a.rotation.x,0,0.1);});}
     if(RC.st!=='run'&&RC.st!=='count')BS.body.position.y=Math.sin(BS.ph*2)*0.04;
     {const P=HERO.potap;logPt.set(clamp(P.pos.x,-9.5,9.5),0,-316.9);}});
+  // Звенышко ведёт Журавля: парит над ним и чуть впереди — показывает дорогу по струнам; на свадьбе плавно перелетает туда,
+  // где ляжет звено, и ждёт над ним, пока звено не возьмут (раньше подсказка ставила его Журавлю в ноги, а потом оно улетало за экран)
+  const zvLead={on:false,told:false};
+  W.updates.push(dt=>{const Z=W.zven;if(!Z||G.cine)return;
+    const guide=WD.stage==='walk'||WD.stage==='wed'||(WD.stage==='done'&&!wedLink.taken&&HEROES.some(h=>h.active&&hd(h.pos,wedLink.pos)<25));
+    if(guide){if(!zvLead.on){zvLead.on=true;zvLead.prev=Z.mode;Z.mode='script';}
+      Z.vis=Z.shown=true;let tgt,rate;
+      if(WD.stage==='walk'){const a=CR.g.rotation.y;tgt=new V3(CR.pos.x+Math.sin(a)*1.7,CR.pos.y+3.2,CR.pos.z+Math.cos(a)*1.7);rate=3.0;}
+      else{tgt=new V3(wedLink.pos.x,2.9,wedLink.pos.z);rate=1.3;}   // туда, где ляжет звено
+      Z.target.copy(tgt);Z.pos.lerp(tgt,1-Math.exp(-rate*dt));
+      if(WD.stage!=='walk'&&!zvLead.told&&Z.pos.distanceTo(tgt)<0.5){zvLead.told=true;floatText(Z.pos.clone().add(new V3(0,0.8,0)),'Дзинь! Звено — тут!','#ffe08a');}}
+    else if(zvLead.on){zvLead.on=false;Z.mode=zvLead.prev&&zvLead.prev!=='script'?zvLead.prev:'lead';}});
   W.sw12={GS,forks,PADS,CR,CA,BS,FR,raceMat,flag,finStake,logPt,logCol,reedCol,wedLink,BN,arrow};   // для ботов
   /* ---------- стычка: пни-ворчуны и кикиморки на кочках ---------- */
   const arena={x:0,z:-336,r:9.5,started:false,cleared:false,hold:0,list:[]};arena.camActive=()=>arena.started&&(!arena.cleared||arena.hold>0);W.camZones.push(arena);
@@ -2952,7 +2976,7 @@ function build12(){
       ()=>active(pi).pos.z<-223.4,()=>{const fk=forks.find(f=>!f.open);if(fk)return fk.wisps.filter(w=>!w.gone).map(w=>w.g);const d=forks.find(f=>f.dry&&f.dry.dry);return d?[d.dry.g]:[];}),
     O(pi?()=>'Завядшую кувшинку посередине полей живой водой Йоши '+K(1,'skill')+' —<br>оживёт и не утонет. А потом — прыг по кувшинкам, в лад!':()=>'Стрела Ивана-царевича на сухой ольхе! Сбей её из рогатки Прошки '+K(0,'skill')+' —<br>Лягушка запоёт, и кувшинки в лад всплывут.',
       ()=>active(pi).pos.z<-277.5||(pi?FG.lily:FG.sing),()=>pi?[PADS[6].g]:[arrow]),
-    O(()=>'Прыгай по кувшинкам в лад: на «Ква!» всплывают одни, на «Ква-ква!» — другие.<br>Промахнулся — плюх, и назад к бережку или к Лягушке.',()=>active(pi).pos.z<-277.5,()=>PADS.filter(P=>P.cur>-0.3).map(P=>P.g)),
+    O(()=>'Прыгай по кувшинкам в лад: на «Ква!» всплывают одни, на «Ква-ква!» — другие.<br>Пруд глубокий: промахнулся — плюх, и снова у колокольчика.',()=>active(pi).pos.z<-277.5,()=>PADS.filter(P=>P.cur>-0.3).map(P=>P.g)),
     O(()=>F.raceHint?'Ногами бесёнка не обогнать! Как Балда с двумя зайцами: перекинь струну '+K(pi,'item')+' через омут к флажку<br>(или пусть друг заранее у флажка встанет) — и снова на кружок!':'Бесёнок зовёт наперегонки вокруг омута!<br>Встань на кружок у омута — и беги к флажку на том берегу.',
       ()=>RC.won,()=>[raceMat,flag,finStake.g]),
     O(pi?()=>'Бесёнок хвастает «кобылой»-колодой. Силач у нас есть —<br>пусть Потап её поднимет!':()=>'Подними-ка «кобылу»-колоду! Смени на Потапа '+K(0,'swap')+',<br>подойди к колоде и жми '+K(0,'skill')+' — Потап её и закинет!',()=>RC.lift==='done',()=>[LG])];
@@ -3021,7 +3045,7 @@ function build12(){
   const CHU_HID=-3.6,CHU_TOP=-0.8,CHU_PEEK=-2.0,CHU_R=2.9;   // глубина, высота над трясиной целиком и «одни глаза»; докуда достаёт
   const chuStart=(x,z,peek)=>{const C=CHU;C.st='warn';C.t=0;C.hit=[];C.x=x;C.z=z;C.peek=peek;C.g.position.set(x,CHU_HID,z);C.g.visible=false;C.ring.position.x=C.rim.position.x=C.wave.position.x=x;C.ring.position.z=C.rim.position.z=C.wave.position.z=z;
     const h=HEROES.filter(q=>q.active).sort((p,q)=>hd(p.pos,C)-hd(q.pos,C))[0];C.face=h?Math.atan2(h.pos.x-x,h.pos.z-z):0;C.g.rotation.y=C.face;
-    if(!peek){tone(70,0.5,'sine',0.18,45);floatText(new V3(x,0.6,z),'Буль-буль…','#bfe0a0');if(!C.told){C.told=true;for(const pi of[0,1])tip(pi,'Пузыри у струны! Из трясины лезет болотное чудо — со струны столкнёт.<br>Отойди подальше или закройся щитом '+K(pi,'guard')+'.',3.4);}}};
+    if(!peek){tone(70,0.5,'sine',0.18,45);floatText(new V3(x,0.6,z),'Буль-буль…','#bfe0a0');if(!C.told){C.told=true;for(const pi of[0,1])tip(pi,'Пузыри у струны! Из трясины лезет болотное чудо — столкнёт в трясину, и назад к колокольчику.<br>Отойди подальше или закройся щитом '+K(pi,'guard')+'.',3.4);}}};
   const chuPick=()=>{if(F.noChudo)return;
     const on=HEROES.filter(h=>h.active&&h.grounded&&h.groundRef&&h.groundRef.string&&!h.groundRef.thick&&!h.groundRef.sag&&chuZone(h.pos.z));
     if(on.length){const h=on[Math.floor(rand(0,on.length))],t=h.groundRef,ax=t.dx,az=t.dz;for(const sd of(Math.random()<0.5?[1,-1]:[-1,1])){
@@ -3034,8 +3058,9 @@ function build12(){
       C.hit.push(h);h.chuT=G.time;h.groundRef=null;h.grounded=false;h.hang=false;h.vel.set(dx/d*7.5,6.2,dz/d*7.5);h.knockT=0.55;C.pushed++;SFX.splash();shake(pi,0.05,0.2);
       floatText(h.pos.clone().add(new V3(0,h.d.height+0.9,0)),'Шлёп! Со струны!','#bfe0a0');}};
   W.updates.push(dt=>{const C=CHU;
-    // столкнутый не уходит на дно (к колокольчику) — выкарабкивается на ближайшую кочку
-    for(const h of HEROES)if(h.chuT&&G.time-h.chuT<2.5&&!h.grounded&&h.pos.y<-1.0){h.chuT=0;SFX.splash();toHummock(h);floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Бр-р! Выкарабкался на кочку','#bfe0a0');}
+    // столкнутый падает в трясину и тонет — обычное падение: назад к колокольчику своего игрока
+    for(const h of HEROES)if(h.chuT&&G.time-h.chuT<2.5&&!h.grounded&&h.pos.y<-0.45){h.chuT=0;SFX.splash();burst(new V3(h.pos.x,-0.3,h.pos.z),0x4a6a3a,16,4);
+      for(let k=0;k<6;k++)BUB.spawn(h.pos.x+rand(-0.7,0.7),h.pos.z+rand(-0.7,0.7));floatText(new V3(h.pos.x,0.9,h.pos.z),'Буль! Утянуло в трясину','#bfe0a0');}
     // пузыри у героев
     if(Math.random()<dt*7){const h=HEROES[Math.floor(rand(0,4))];for(let k=0;k<3;k++){const x=h.pos.x+rand(-9,9),z=h.pos.z+rand(-12,6);if(z<-6&&bogAt(x,z)){BUB.spawn(x,z);break;}}}
     if(C.st==='warn'&&!C.peek&&Math.random()<dt*30)BUB.spawn(C.x+rand(-1.2,1.2),C.z+rand(-1.2,1.2));
@@ -3084,7 +3109,7 @@ function build12(){
     prompt(pi,'attack',()=>headOf(h()),()=>GT.some(e=>e.alive&&hd(e.pos,h().pos)<3.4&&Math.abs(e.pos.y-h().pos.y)<1.6),'бей Паутинника!');
     prompt(pi,'guard',()=>headOf(h()),()=>!CHU.peek&&(CHU.st==='warn'||CHU.st==='up'||(CHU.st==='hold'&&CHU.t<1.3))&&hd(CHU,h().pos)<3.4,'щит!');}
   W.tipZones.unshift(
-    {cond:(pi,h)=>!CHU.peek&&CHU.st!=='off'&&CHU.st!=='down'&&hd(CHU,h.pos)<6,text:pi=>'Болотное чудо лезет из трясины — со струны столкнёт!<br>Отойди от пузырей или закройся щитом '+K(pi,'guard')+'.'},
+    {cond:(pi,h)=>!CHU.peek&&CHU.st!=='off'&&CHU.st!=='down'&&hd(CHU,h.pos)<6,text:pi=>'Болотное чудо лезет из трясины — столкнёт в трясину!<br>Отойди от пузырей или закройся щитом '+K(pi,'guard')+'.'},
     {cond:(pi,h)=>GT.some(e=>e.alive&&hd(e.pos,h.pos)<10),text:pi=>'Паутинник на кочке! Пока он на гати — Журавль не пойдёт.<br>Бей его '+K(pi,'attack')+': оранжевые искры над ним — сколько ударов осталось.'});
   W.onStart=()=>{later(0.8,()=>say('zven','Болото чёрное. Тут — только струной. Дзинь!',2.6,true));};
   flushDecor();}
