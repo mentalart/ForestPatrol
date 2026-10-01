@@ -43,3 +43,7 @@ addEventListener('keydown',e=>{if(!e.ctrlKey||!e.altKey||e.repeat)return;
   e.preventDefault();e.stopImmediatePropagation();if(c>0)FIN.devUnlockAll();else FIN.devWipe();},true);
 // для съёмки трейлера (tools/video): интерфейс (субтитры, цели, баннеры, поля кадра) по времени видео — игровой цикл при съёмке выключен
 FIN.ui=dt=>updateUI(dt);   // (window.ZC появляется позже модулей — съёмка берёт ZC.FIN.ui)
+// звуки прототипа tone() — для съёмки трейлера: FIN.toneEv сообщает о каждом, FIN.tone проигрывает (tone в релизе не виден снаружи)
+{const _t=tone;tone=function(){if(FIN.toneEv)try{FIN.toneEv([...arguments]);}catch(e){}return _t.apply(this,arguments);};}
+FIN.tone=(...a)=>tone(...a);
+FIN.ac=()=>AC;   // аудиоконтекст игры — для записи звуковой дорожки трейлера (tools/video/audio.js)

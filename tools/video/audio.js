@@ -18,10 +18,10 @@ plan.total=T;console.log('segments',segs.length,'total',T.toFixed(2)+'s','sounds
     // всё, что уходит в динамики, дублируется в запись
     const C=AudioNode.prototype.connect;AudioNode.prototype.connect=function(dst){const r=C.apply(this,arguments);try{const ctx=this.context;if(dst===ctx.destination){if(!ctx.__rec)ctx.__rec=ctx.createMediaStreamDestination();C.call(this,ctx.__rec);}}catch(e){}return r;};});
   await page.goto('file://'+HTML+'?debug=1');await page.waitForTimeout(1500);
-  const b64=await page.evaluate(async(plan)=>{initAudio();FIN.aud.ready();FIN.music.start();FIN.music.setVol(FIN.set.mus!=null?FIN.set.mus:1);
-    const ctx=AC;if(ctx.state!=='running')await ctx.resume();if(!ctx.__rec)ctx.__rec=ctx.createMediaStreamDestination();
+  const b64=await page.evaluate(async(plan)=>{const FIN=ZC.FIN;FIN.vox.audio();FIN.aud.ready();FIN.music.start();FIN.music.setVol(FIN.set.mus!=null?FIN.set.mus:1);
+    const ctx=FIN.ac();if(ctx.state!=='running')await ctx.resume();if(!ctx.__rec)ctx.__rec=ctx.createMediaStreamDestination();
     const rec=new MediaRecorder(ctx.__rec.stream,{mimeType:'audio/webm;codecs=opus',audioBitsPerSecond:192000});const chunks=[];rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};
-    const _tone=window.tone,A=FIN.aud,_osc=A.osc,_nz=A.nz;
+    const _tone=FIN.tone||window.tone,A=FIN.aud,_osc=A.osc,_nz=A.nz;
     // голоса: раскодировать заранее все нужные записи
     const LN={};for(const e of FIN.vox.lines)LN[e.id]=e;const BUF={};
     for(const id of [...new Set(plan.vox.filter(v=>v.kind!=='stop').map(v=>v.id))]){const e=LN[id];if(!e||!e.b64)continue;
