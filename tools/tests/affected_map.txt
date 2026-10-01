@@ -23,6 +23,8 @@ tools/tests/layout_check.js                   -
 tools/tests/regress.sh                        -
 tools/tests/out/*                             -
 tools/tests/shots/*                           -
+# CI: правка workflow проверяется одним быстрым ботом
+.github/workflows/*                           smoke
 # инфраструктура ботов — касается всех
 tools/tests/helpers.js                        @full
 tools/tests/run.js                            @full
