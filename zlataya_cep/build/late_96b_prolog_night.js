@@ -272,10 +272,16 @@ function pnPortal(c){const C=c.winPos.clone(),f=new V3(C.x,0,C.z).normalize(),rt
   if(PN.disc){PN.discOld=PN.disc.material;PN.discMat=new THREE.ShaderMaterial({uniforms:{tex:{value:null},res:{value:new THREE.Vector2(1,1)},frost:{value:0}},vertexShader:PN_DISC_VS,fragmentShader:PN_DISC_FS});pnNoBatch(PN.disc);}
   PN.ps=K;return K;}
 function pnPortalMode(on){if(!PN.disc||PN.portal===on)return;PN.portal=on;PN.disc.material=on?PN.discMat:PN.discOld;PN.painted.forEach(o=>{o.visible=!on;});if(PN.ctx&&PN.ctx.shadow)PN.ctx.shadow.visible=false;}
-const PN_FR=new THREE.Frustum(),PN_PM=new THREE.Matrix4(),PN_SPH=new THREE.Sphere(),PN_V2=new THREE.Vector2();
+const PN_FR=new THREE.Frustum(),PN_PM=new THREE.Matrix4(),PN_SPH=new THREE.Sphere(),PN_V2=new THREE.Vector2(),PN_P=new THREE.Vector3(),PN_UP=new THREE.Vector3(0,1,0);
+// прямоугольник окна на экране (пиксели буфера): рисуется только он — ночь за стеклом не стоит целого кадра; окно позади камеры — весь кадр
+function pnWinRect(cam,K,w,h){let x0=1,y0=1,x1=-1,y1=-1;for(const a of[-1.2,1.2])for(const b of[-1.2,1.2]){PN_P.copy(K.C).addScaledVector(K.rt,a).addScaledVector(PN_UP,b).applyMatrix4(cam.matrixWorldInverse);
+    if(PN_P.z>-0.05)return [0,0,w,h];PN_P.applyMatrix4(cam.projectionMatrix);x0=Math.min(x0,PN_P.x);x1=Math.max(x1,PN_P.x);y0=Math.min(y0,PN_P.y);y1=Math.max(y1,PN_P.y);}
+  const X0=Math.max(0,Math.floor((x0*0.5+0.5)*w)-4),Y0=Math.max(0,Math.floor((y0*0.5+0.5)*h)-4),X1=Math.min(w,Math.ceil((x1*0.5+0.5)*w)+4),Y1=Math.min(h,Math.ceil((y1*0.5+0.5)*h)+4);
+  return [X0,Y0,Math.max(1,X1-X0),Math.max(1,Y1-Y0)];}
 function pnPortalRender(cam,rr){const K=PN.ps;if(!K||!PN.disc)return;PN_PM.multiplyMatrices(cam.projectionMatrix,cam.matrixWorldInverse);PN_FR.setFromProjectionMatrix(PN_PM);PN_SPH.set(K.C,1.2);if(!PN_FR.intersectsSphere(PN_SPH))return;
-  renderer.getDrawingBufferSize(PN_V2);const w=Math.max(64,Math.round(PN_V2.x*0.5)),h=Math.max(64,Math.round(PN_V2.y*0.5));
+  renderer.getDrawingBufferSize(PN_V2);const w=Math.max(64,PN_V2.x),h=Math.max(64,PN_V2.y);   // во весь буфер: окно бывает на полкадра — в половинном разрешении «лесенка»
   if(!PN.rt)PN.rt=new THREE.WebGLRenderTarget(w,h,{depthBuffer:true});else if(PN.rt.width!==w||PN.rt.height!==h)PN.rt.setSize(w,h);
+  const r=pnWinRect(cam,K,w,h);PN.rt.scissor.set(r[0],r[1],r[2],r[3]);PN.rt.scissorTest=true;PN.rect=r;
   const prev=renderer.getRenderTarget(),sh=renderer.shadowMap.needsUpdate,ac=renderer.autoClear;renderer.autoClear=true;renderer.setRenderTarget(PN.rt);renderer.clear();rr(K.S,cam);
   renderer.setRenderTarget(prev);renderer.shadowMap.needsUpdate=sh;renderer.autoClear=ac;PN.discMat.uniforms.tex.value=PN.rt.texture;PN.discMat.uniforms.res.value.copy(PN_V2);}
 {const _rr=renderer.render.bind(renderer);renderer.render=function(sc,cam){if(PN.portal&&sc===scene&&cam===camS)try{pnPortalRender(cam,_rr);}catch(e){console.error(e);}return _rr(sc,cam);};}
@@ -427,8 +433,10 @@ function pnLullaby(def,c){const near=(a,b)=>Math.abs(a-b)<0.02,C=c.winPos;
   def.shots.push(shot(23.0,[2.2,2.1,-1.5],A(C),[3.1,2.35,-2.55],null,2.9),shot(25.9,[3.75,2.32,-3.1],A(C)),shot(26.8,[0.4,3.4,4.6],[0.9,1.9,-2.4],[1.1,2.8,3.4],[1.8,1.3,-1.8],1.8),
     shot(28.0,[3.35,1.2,-2.05],[C.x-0.05,C.y+0.05,C.z]),shot(29.3,[1.3,1.55,0.9],[2.9,0.85,-2.1],[1.65,1.45,0.25],null,1.9),shot(31.2,A(L(0.27,0.66,1.36)),A(L(0.1,0.37,0)),A(L(0.3,0.57,1.08)),A(L(0.1,0.35,0)),5.6));
   def.shots.sort((a,b)=>a.t-b.t);
-  const tk=def.tick;def.tick=(t,dt)=>{tk(t,dt);const live=dt>0&&dt<0.25;PN.ct=t;try{pnRoomScene(t,dt||0,live);pnStory(PN.story,t,live,c.nb);}catch(e){console.error(e);}};
-  const end0=def.end;def.end=()=>{PN.ct=-1;PN.gust=0;PN.lampK=1;PN.frost=0;if(PN.discMat)PN.discMat.uniforms.frost.value=0;if(PN.shade)PN.shade.visible=false;if(c.win&&c.winBase)c.win.position.copy(c.winBase);
+  // кадры ролика поставлены вплотную к окну и к книжке: затухание «у камеры» (late_88, с 2,1 м) — на это время только вплотную
+  const O=FIN.occ,near0=O&&O.near?(PN.near0||(PN.near0=O.near.slice())).slice():null,nearSet=on=>{if(near0)O.near=on?[0.45,0.2]:near0.slice();};
+  const tk=def.tick;def.tick=(t,dt)=>{tk(t,dt);const live=dt>0&&dt<0.25;PN.ct=t;nearSet(t>=22.95&&t<41.6);try{pnRoomScene(t,dt||0,live);pnStory(PN.story,t,live,c.nb);}catch(e){console.error(e);}};
+  const end0=def.end;def.end=()=>{PN.ct=-1;nearSet(false);PN.gust=0;PN.lampK=1;PN.frost=0;if(PN.discMat)PN.discMat.uniforms.frost.value=0;if(PN.shade)PN.shade.visible=false;if(c.win&&c.winBase)c.win.position.copy(c.winBase);
     c.nb.g.rotation.z=0;c.Z.g.rotation.y=0;PN.zPop=0;if($('flash'))$('flash').style.opacity=0;if(PN.story)pnStory(PN.story,99,false,null);if(end0)end0();};
   return def;}
 {const _lg=FIN.lulGag;FIN.lulGag=function(def,ctx){def=_lg(def,ctx);try{if(PN.ctx)def=pnLullaby(def,PN.ctx);}catch(e){console.error(e);}return def;};}
@@ -440,10 +448,10 @@ function pnLullaby(def,c){const near=(a,b)=>Math.abs(a-b)<0.02,C=c.winPos;
 FIN.proRoom=function(c){try{Object.assign(PN,{ctx:c,anim:[],toys:[],bunting:[],herbs:[],curtains:[],candles:[],ct:-1,snd:{},portal:false,disc:null,discMat:null,discOld:null,painted:[],gust:0,lampK:1,frost:0});
   c.winBase=c.win.position.clone();pnDress(c);pnPortal(c);PN.nbPop=pnPatrolPop(c.nb);PN.story=pnStoryBuild(c.nb);PN.shade=pnShadowMesh();
   pnNoBatch(c.nb.g);if(c.lampG)pnNoBatch(c.lampG);pnNoBatch(c.win);
-  // тетрадка с книжкой-раскладушкой снимается крупно (ближе 2 м) — не растворяется «у камеры» (late_88); общие материалы не трогаем
+  // тетрадка с книжкой-раскладушкой не растворяется «у камеры» (late_88): к ней подходят вплотную; общие материалы не трогаем
   c.nb.g.traverse(o=>{const m=o.material;if(!m||Array.isArray(m)||m.userData.noOcc||m.userData.shared||m.userData.kit||m.userData.batch)return;m.userData.noOcc=true;m.needsUpdate=true;});}catch(e){console.error(e);}};
 FIN.proNight=()=>({room:!!PN.ctx,portal:PN.portal,rt:!!PN.rt,ct:PN.ct,frost:+(PN.frost||0).toFixed(2),ko:!!(PN.ps&&PN.ps.ko.g.visible),zg:!!(PN.ps&&PN.ps.zg.visible),
   story:!!(PN.story&&PN.story.root.visible),fly:PN.story&&PN.story.fly?PN.story.fly.length:0,pop:PN.nbPop?+PN.nbPop.k.toFixed(2):0,toys:PN.toys.map(y=>+y.t.toFixed(1))});   // для ботов
 {const _st=step;step=function(dt){_st(dt);if(!PN.ctx||!W||W.levelId!=='p')return;try{pnPortalMode(smooth(G.split)<0.002);pnNight(G.cine&&PN.ct>=0?PN.ct:-1,dt);pnRoomTick(dt);for(const f of PN.anim)f(G.time);}catch(e){console.error(e);}};}
-{const _ll=loadLevel;loadLevel=function(i){PN.ctx=null;PN.portal=false;PN.ps=null;PN.story=null;PN.nbPop=null;PN.shade=null;PN.disc=null;PN.ct=-1;_ll(i);};}
+{const _ll=loadLevel;loadLevel=function(i){if(PN.near0&&FIN.occ)FIN.occ.near=PN.near0.slice();PN.ctx=null;PN.portal=false;PN.ps=null;PN.story=null;PN.nbPop=null;PN.shade=null;PN.disc=null;PN.ct=-1;_ll(i);};}
 FIN.proDbg=()=>PN;   // для ботов: состояние модуля
