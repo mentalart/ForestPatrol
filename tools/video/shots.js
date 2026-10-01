@@ -2,7 +2,7 @@
 // setup — код в странице (готовит уровень, героев, режим автопилота); mode — автопилот (tools/video/autopilot.js): brawl, forward, song33, s54, k5, none.
 // Помощники в странице (задаются в trailer.js): L(id) — уровень с нуля, CINE(id,t) — вступительный ролик на секунде t, PLAY(id,o) — пропустить ролики,
 // дать уровню устояться, o.at — перенести героев, o.apart — развести (два экрана), o.solo — одиночный режим, o.foes — позвать мороков к героям;
-// PRO(t) — пролог, ролик «Колыбельная» на секунде t; W51(часть,s) — 5-1 с нужной части; K5S(n,s) — 5-Б2, этап n, s секунд боя; K5W(n,t) — ролик после этапа n.
+// PRO(t) — пролог, ролик «Колыбельная» на секунде t; GOR(t) — 4-Б, ролик рыка на секунде t; W51(часть,s) — 5-1 с нужной части; K5S(n,s) — 5-Б2, этап n, s секунд боя; K5W(n,t) — ролик после этапа n.
 // final06: голоса персонажей (реплики звучат записями), щиты героев в боях, сценка с самокатом, новый 5-1 и бой с Кощеем в пять этапов.
 module.exports=[
   // ---------- Пролог: Прошка несёт самокат Тишке ----------
@@ -30,7 +30,7 @@ module.exports=[
   {id:'w4_lava_split',dur:4,music:'w4',setup:"PLAY('4-2',{apart:true,foes:['lizard','zmeenysh'],near:true})",mode:'brawl'},
   {id:'w4_barge',dur:4,music:'w4',setup:"CINE('4-3',3)",mode:'none'},
   {id:'w4_bridge',dur:4,music:'w4',setup:"CINE('4-5',2.5)",mode:'none'},
-  {id:'w4_boss',dur:5,music:'boss',setup:"PLAY('4-B',{settle:3})",mode:'brawl'},
+  {id:'w4_boss',dur:5,music:'boss',setup:"GOR(1.0)",mode:'none'},   // рык средней головы: лавовые трещины и гейзеры
   // ---------- Мир 5 · Остров Буян ----------
   {id:'w5_island',dur:5,music:'w5',setup:"CINE('5-1',1.5)",mode:'none'},
   {id:'w5_likho',dur:4,music:'boss',setup:"W51('boss1',3)",mode:'none'},

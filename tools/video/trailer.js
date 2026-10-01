@@ -7,7 +7,9 @@
 const {chromium}=require('../tests/pw');const path=require('path'),fs=require('fs');
 const arg=(k,d)=>{const i=process.argv.indexOf(k);return i<0?d:process.argv[i+1];};const has=k=>process.argv.includes(k);
 const ROOT=path.join(__dirname,'..','..');const HTML=path.resolve(arg('--html',path.join(ROOT,'zlataya_cep','zlataya_cep_final06.html')));
-const OUT=path.resolve(arg('--out',path.join(ROOT,'tools','video','out')));const PREVIEW=has('--preview');const PART=(arg('--part','0/1')).split('/').map(Number);const FPS=PREVIEW?3:+arg('--fps',24);const ONLY=(arg('--only','')||'').split(',').filter(Boolean);
+const OUT=path.resolve(arg('--out',path.join(ROOT,'tools','video','out')));const PREVIEW=has('--preview');const PART=(arg('--part','0/1')).split('/').map(Number);
+const SOUND_ONLY=has('--sound-only');   // только звуки и голоса (snd.json) по уже снятым кадрам: без отрисовки и скриншотов
+const FPS=PREVIEW?3:+arg('--fps',24);const ONLY=(arg('--only','')||'').split(',').filter(Boolean);
 const SHOTS=require(path.resolve(arg('--shots',path.join(__dirname,'shots.js'))));   // --shots — другой список (разведка кадров)
 const SEG=[{id:'splash',dur:5.3,kind:'splash',music:'title'},{id:'title',dur:6.4,kind:'title',music:'title'}].concat(SHOTS.map(s=>Object.assign({kind:'shot'},s))).concat([{id:'end',dur:4.3,kind:'end',music:'title'}]);
 // помощники в странице
@@ -24,6 +26,9 @@ window.K5S=(n,s)=>{L('5-B2');const K5=ZC.FIN.k5;K5.auto=false;window.__pre=()=>{
 // 5-1: перенос к части уровня (warp51: head, lagoon, meadow, glade, keys, boss1…3) и s секунд
 window.W51=(to,s)=>{L('5-1');window.__pre=()=>{ZC.tick(30);for(let q=0;q<4&&ZC.G.cine;q++){ZC.skip();ZC.tick(5);}const r=ZC.W.warp51(to);ZC.tick(Math.round((s||1)*60));return 'warp '+r+' cine='+!!ZC.G.cine;};return 'L 5-1';};
 window.K5W=(n,t)=>{L('5-B2');const K5=ZC.FIN.k5;K5.auto=false;window.__pre=()=>{for(let q=0;q<10;q++){if(ZC.G.cine)ZC.skip();ZC.tick(10);}K5.stageStart(n);ZC.tick(30);K5.stageWin(n);ZC.tick(Math.round(t*60));return 'k5 win '+n+' cine='+!!ZC.G.cine;};return 'L 5-B2';};
+// 4-Б: две головы в Пробое → ролик рыка (лавовые трещины, гейзеры) на секунде t; обучающие карточки выключены
+window.GOR=(t)=>{L('4-B');ZC.G.flags.tut4b={1:true,2:true,3:true};ZC.FIN.boss4b.auto=false;window.__pre=()=>{for(let q=0;q<12;q++){if(ZC.G.cine)ZC.skip();ZC.tick(10);}SETTLE(0.8);
+  const hs=ZC.W.enemies.filter(e=>e.kind==='golova').sort((a,b)=>a.idx-b.idx);for(const e of[hs[0],hs[2]]){e.state='broken';e.t=0;e._b=false;}ZC.tick(2);ZC.tick(Math.round(t*60));return 'roar cine='+!!ZC.G.cine+' t='+(ZC.G.cine?ZC.G.cine.t.toFixed(1):'-');};return 'L 4-B';};
 window.PLAY=(id,o)=>{o=o||{};if(o.solo){ZC.setSolo(true);}L(id);if(o.solo)ZC.setSolo(true);ZC.tick(20);for(let q=0;q<6&&ZC.G.cine;q++){ZC.skip();ZC.tick(8);}
   SETTLE(o.settle!=null?o.settle:1.5);const P=ZC.players,W=ZC.W;
   if(o.at){for(const pi of[0,1]){const h=AP.act(pi);h.pos.set(o.at[0]+(pi?1:-1),h.pos.y,o.at[1]);h.vel.set(0,0,0);}}
@@ -39,12 +44,14 @@ window.PLAY=(id,o)=>{o=o||{};if(o.solo){ZC.setSolo(true);}L(id);if(o.solo)ZC.set
   await page.addInitScript(()=>{const raf=window.requestAnimationFrame.bind(window);window.__stopRaf=false;window.requestAnimationFrame=function(cb){if(window.__stopRaf&&cb&&cb.name==='frame')return 0;return raf(cb);};});
   await page.goto('file://'+HTML+'?debug=1&hq=1');await page.waitForTimeout(1500);
   await page.evaluate(fs.readFileSync(path.join(__dirname,'autopilot.js'),'utf8'));await page.evaluate(HELP);
-  await page.evaluate(()=>{window.__stopRaf=true;ZC.FIN.occ.fdt=1/24;if(ZC.FIN.cam)ZC.FIN.cam.fdt=1/24;});
+  await page.evaluate((so)=>{window.__soundOnly=so;window.__stopRaf=true;ZC.FIN.occ.fdt=1/24;if(ZC.FIN.cam)ZC.FIN.cam.fdt=1/24;},SOUND_ONLY);
   const dtMs=1000/FPS;let n0=0;
   for(let si=0;si<SEG.length;si++){const S=SEG[si];const dir=path.join(OUT,String(si).padStart(2,'0')+'_'+S.id);
-    if(ONLY.length&&!ONLY.includes(S.id))continue;if(si%PART[1]!==PART[0])continue;if(!ONLY.length&&fs.existsSync(path.join(dir,'meta.json'))){console.log('skip',S.id);continue;}
-    fs.rmSync(dir,{recursive:true,force:true});fs.mkdirSync(dir,{recursive:true});const N=Math.round(S.dur*FPS);const t0=Date.now();
-    let info=await page.evaluate(({S,fps})=>{window.__snd.length=0;window.__vt=0;ZC.FIN.occ.fdt=1/fps;if(ZC.FIN.cam)ZC.FIN.cam.fdt=1/fps;AP.i=0;AP.clear();
+    if(ONLY.length&&!ONLY.includes(S.id))continue;if(si%PART[1]!==PART[0])continue;
+    if(SOUND_ONLY){if(!fs.existsSync(path.join(dir,'meta.json')))continue;}else{if(!ONLY.length&&fs.existsSync(path.join(dir,'meta.json'))){console.log('skip',S.id);continue;}
+    fs.rmSync(dir,{recursive:true,force:true});fs.mkdirSync(dir,{recursive:true});}const N=Math.round(S.dur*FPS);const t0=Date.now();
+    let info=await page.evaluate(({S,fps})=>{let q=0;for(const c of S.id)q=(q*31+c.charCodeAt(0))%2147483647;q=q||7;Math.random=()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};   // случайные числа сегмента — от его имени
+      window.__snd.length=0;window.__vt=0;ZC.FIN.occ.fdt=1/fps;if(ZC.FIN.cam)ZC.FIN.cam.fdt=1/fps;AP.i=0;AP.clear();
       if(S.kind==='splash'){ZC.FIN.splash();return 'splash';}
       if(S.kind==='title'||S.kind==='end'){ZC.FIN.openTitle(S.kind==='title');return 'title';}
       AP.mode=S.mode;AP.arg=S.arg||null;window.__pre=null;window.__g0=ZC.G.time;let r;try{r=eval(S.setup);}catch(e){r='SETUP ERROR '+e.message;}return r;},{S,fps:FPS});
@@ -60,11 +67,15 @@ window.PLAY=(id,o)=>{o=o||{};if(o.solo){ZC.setSolo(true);}L(id);if(o.solo)ZC.set
         if(S.kind==='splash'){if(t<4.4)ZC.FIN.splashSeek(t);else ZC.FIN.splashSeek(4.3,Math.min(1,(t-4.4)/0.7));}
         else if(S.kind==='title'){if(Math.abs(t-2.6)<0.5/fps||Math.abs(t-3.6)<0.5/fps)ZC.menuKey('ArrowDown');if(Math.abs(t-5.0)<0.5/fps){ZC.menuKey('ArrowUp');ZC.menuKey('ArrowUp');}}
         else if(S.kind==='shot'){const k=Math.round(60/fps);for(let q=0;q<k;q++){AP.step();ZC.tick(1);}if(ZC.FIN.ui)ZC.FIN.ui(k/60);}   // интерфейс (субтитры, цели, поля кадра) — по времени видео
-        if(S.kind!=='splash')__animStep(f===0?0:dtMs);ZC.FIN.occ.frame();__gsync();},{S,t,fps:FPS,f,dtMs});
-      await page.screenshot({path:path.join(dir,String(f).padStart(5,'0')+'.jpg'),type:'jpeg',quality:90,timeout:180000});}
+        if(S.kind!=='splash')__animStep(f===0?0:dtMs);if(!window.__soundOnly){ZC.FIN.occ.frame();__gsync();}},{S,t,fps:FPS,f,dtMs});
+      if(!SOUND_ONLY)await page.screenshot({path:path.join(dir,String(f).padStart(5,'0')+'.jpg'),type:'jpeg',quality:90,timeout:180000});}
     const snd=await page.evaluate(()=>window.__snd.slice());
     if(S.kind==='splash')snd.push({t:1.8,k:'vox',id:'splash_001',kind:'main',g:1});   // в игре голос заставки запускает таймер; при съёмке заставка идёт по кадрам
-    fs.writeFileSync(path.join(dir,'snd.json'),JSON.stringify(snd));
-    fs.writeFileSync(path.join(dir,'meta.json'),JSON.stringify({id:S.id,dur:S.dur,fps:FPS,frames:N,music:S.music===undefined?null:S.music,kind:S.kind,info}));
+    // --sound-only: кадры уже сняты — бои без закреплённых случайных чисел не повторяются, поэтому в них остаются голоса (а удары — нет)
+    const seeded=!SOUND_ONLY||!!JSON.parse(fs.readFileSync(path.join(dir,'meta.json'),'utf8')).seeded;
+    const out=!seeded&&['brawl','k5','forward'].includes(S.mode)?snd.filter(e=>e.k==='vox'):snd;
+    fs.writeFileSync(path.join(dir,'snd.json'),JSON.stringify(out));
+    if(SOUND_ONLY){console.log('  snd',S.id,out.length+'/'+snd.length);continue;}
+    fs.writeFileSync(path.join(dir,'meta.json'),JSON.stringify({id:S.id,dur:S.dur,fps:FPS,frames:N,music:S.music===undefined?null:S.music,kind:S.kind,info,seeded:true}));
     console.log('  done',S.id,N,'frames',((Date.now()-t0)/1000).toFixed(0)+'s','snd',snd.length);n0+=N;}
   await browser.close();console.log('ALL',n0);})();

@@ -104,6 +104,8 @@ function t4Stage2(){const H=t4Heads(),L=H[0],Mi=H[1],R=H[2];if(!Mi)return;const 
       {wait:{who:0,a:'skill'},at:1.2,enter:()=>{ac=t4Prop(new THREE.Group());const a=acornMesh(2.4);ac.add(a);const r=t4Ring(0xffd76a,0.45);ac.add(r);},
        update:()=>{if(ac&&ac.visible){const p=t4HeadTop(Mi);ac.position.copy(p).add(new V3(0,0.3,1.1));ac.children[1].lookAt(camS.position);ac.scale.setScalar(1+0.15*Math.sin(G.time*10));}},
        done:()=>{P._skT=G.time;SFX.thwip&&SFX.thwip();const a=acornMesh(1.4);t4Prop(a);const from=t4P(P).add(new V3(0,1,0)),to=ac.position.clone();anim(0.35,k=>{a.position.lerpVectors(from,to,k);a.position.y+=Math.sin(k*Math.PI)*0.8;if(k>=1){a.visible=false;ac.visible=false;FX.stars(to,10);SFX.brk();t4Broken(Mi,true);floatText(to.clone().add(new V3(0,1,0)),'Кха-кха! ПРОБОЙ!','#ffe08a');}});}}),
+    t4S('M',8,{tag:'Все',title:'Большой вдох — тянет к пасти!',icon:'shield',text:'Средняя кричит «Вдо-о-ох!» — все головы втягивают воздух и тянут вас <b>к пасти</b>.<br>Держите <b>щит</b> — потянет в два-три раза слабее. Дотянет до пасти — «Ам!»',keys:[{pi:0,a:'guard',label:'щит',wait:true},{pi:1,a:'guard',label:'щит',wait:true}],go:'Щит!',okText:'Устояли!'},
+      {wait:{who:'both',a:'guard'},at:1.6,enter:()=>{if(FIN.gor4)FIN.gor4.demoT=8;},done:()=>{for(const pi of[0,1]){const h=active(pi);h._demoGuard=G.time+1.2;}SFX.shield();if(FIN.gor4)FIN.gor4.demoT=1.6;}}),
     t4S('team',8,{tag:'Потап',title:'Огненный выдох',icon:'shield',text:'Средняя огнём дует! Потап, <b>широкий щит</b>'+who(Po,0)+' подними —<br>Он закрывает всех, кто за спиной, — смотри!',keys:[{pi:0,a:'guard',label:'широкий щит',wait:true}],go:'Щит!',okText:'Отбил!'},
       {wait:{who:0,a:'guard'},at:1.4,enter:()=>{fb=t4Prop(new THREE.Mesh(new FIN.orig.Icosa(0.35,1),MB(0x6ad0ff,{transparent:true,opacity:0.95})));fb.position.copy(t4HeadTop(Mi));},
        update:(s,u,dt)=>{if(fb&&fb.visible){const tg=t4P(Po).add(new V3(0,1.1,0.9)),d=tg.clone().sub(fb.position),L2=d.length();if(L2>1.6)fb.position.addScaledVector(d.normalize(),Math.min(L2-1.6,dt*9));fb.rotation.y+=dt*6;fb.scale.setScalar(1+0.2*Math.sin(G.time*12));}},
@@ -111,8 +113,8 @@ function t4Stage2(){const H=t4Heads(),L=H[0],Mi=H[1],R=H[2];if(!Mi)return;const 
     t4S('R',8,{tag:'Йоша',title:'Сытая голова',icon:'drop',text:'Голова искр наелась и <b>светится</b> — удар её не берёт.<br>Йоша, потуши её <b>живой водой</b>'+who(Y,1)+' — вперёд!',keys:[{pi:1,a:'skill',label:'живая вода',wait:true}],go:'Полей!',okText:'Потушил!'},
       {wait:{who:1,a:'skill'},at:1.2,enter:()=>{glow=t4Prop(t4Ring(0xff9a3a,1.1));},update:()=>{if(glow&&glow.visible){const p=t4HeadTop(R);glow.position.copy(p);glow.lookAt(camS.position);glow.scale.setScalar(1+0.12*Math.sin(G.time*8));}},
        done:()=>{Y._skT=G.time;SFX.water&&SFX.water();const p=t4HeadTop(R);FX.drops(p,16);FX.dust(p,8,0xdfe8ee);if(glow)glow.visible=false;t4Broken(R,true);floatText(p.clone().add(new V3(0,1.6,0)),'Потушил! ПРОБОЙ!','#9fe0ff');}}),
-    t4S('L',7,{tag:'Пелагея',title:'Совиный взор',icon:'eye',text:'Не видно, куда бить? Пелагея, <b>Совиный взор</b>'+who(Pe,1)+' включи —<br>Слабое место засветится в ночи.',keys:[{pi:1,a:'skill',label:'Совиный взор',wait:true}],go:'Взор!',okText:'Слабое место!'},
-      {wait:{who:1,a:'skill'},at:1,done:()=>{Pe._skT=G.time;const p=t4HeadTop(L);FX.sparkle(p,14,0xe7c3ff);t4Broken(L,true);floatText(p.clone().add(new V3(0,1.6,0)),'Слабое место!','#e7c3ff');}}),
+    t4S('L',8,{tag:'Пелагея',title:'Совиный взор — слабое место',icon:'eye',text:'Пелагея, <b>Совиный взор</b>'+who(Pe,1)+' — и на голове засветится <b>чешуйка</b>.<br><b>Один удар</b> по ней — голова сразу в Пробое, даже сытая!',keys:[{pi:1,a:'skill',label:'Совиный взор',wait:true}],go:'Взор!',okText:'Слабое место — бей!'},
+      {wait:{who:1,a:'skill'},at:1,done:()=>{Pe._skT=G.time;if(FIN.gor4&&FIN.gor4.weakDemo)FIN.gor4.weakDemo(L,Pe);else{const p=t4HeadTop(L);FX.sparkle(p,14,0xe7c3ff);t4Broken(L,true);}}}),
     t4S('wide',4,{tag:'Главное',title:'Все три — в Пробой, разом!',icon:'hit',text:'Как оглушены <b>все три</b> головы — Горыныч без сил.<br>Тогда — волшебная узда, чтоб он смирен был!'},{enter:()=>{t4Heads().forEach(e=>FX.stars(t4HeadTop(e),8));}}),
     t4S('team',2.4,{tag:'Вперёд!',title:'Каждому — своё дело',icon:'go',text:'Жёлудь — Прошка, щит — Потап, вода — Йоша, взор — Пелагея: вот и лад!'},{enter:()=>{SFX.ok();}})],
     {end:()=>{t4Heads().forEach(e=>{t4Broken(e,false);});t4SeenSet(2);}});}
@@ -139,7 +141,7 @@ function t4Stage3(){const gr=W.grabs[0];if(!gr)return;const bp=gr.pos(),saved=bp
     {end:()=>{bp.copy(saved);restore();t4SeenSet(3);}});}
 // короткое напоминание, если этап уже объясняли (повторная попытка)
 function t4Short(n){const txt={1:['Этап 1 · Три запала','heads','Жёлтый кружок — <b>щит</b>, красный зубец — <b>кувырок</b>, потом бей.<br>Левую и правую — <b>вместе</b>, за двенадцать секунд, дружней!'],
-  2:['Этап 2 · Вдох','heads','Жёлудь — <b>рогатка Прошки</b>, огонь — <b>щит Потапа</b>, сытая — <b>вода Йоши</b>, слабое место — <b>взор Пелагеи</b>.<br>Все три — в Пробой, смелее!'],
+  2:['Этап 2 · Вдох','heads','Тянет к пасти — держи <b>щит</b>. Жёлудь — <b>рогатка Прошки</b>, огонь — <b>щит Потапа</b>, сытая — <b>вода Йоши</b>.<br><b>Взор Пелагеи</b> — слабое место: один удар, и Пробой!'],
   3:['Этап 3 · Узда','ring','Узду — <b>клещами вдвоём</b> к кольцу на шее, и <b>умение вместе</b> — раз!']}[n];
   t4Run([t4S('wide',4.5,{tag:'Напоминание',title:txt[0],icon:txt[1],text:txt[2]})]);}
 function t4SeenSet(n){G.flags.tut4b=G.flags.tut4b||{};G.flags.tut4b[n]=true;}
@@ -178,14 +180,18 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
     else if(idle>12)t4Cycle([
       ()=>t4HintShow('g1',{tag:'Подсказка',title:'Левая голова — щит да удар',icon:'yellow',text:'Жёлтый кружок — <b>щитом</b> отбей, затем <b>бей</b>.'},[L],[[0,'guard','щит'],[0,'attack','удар']]),
       ()=>t4HintShow('g2',{tag:'Подсказка',title:'Правая голова — кувырок да удар',icon:'red',text:'Красный зубец — <b>кувырок</b>, а там <b>сбоку бей</b>.'},[R],[[1,'roll','кувырок'],[1,'attack','удар']]),
-      ()=>t4HintShow('g3',{tag:'Подсказка',title:'Вместе, разом!',icon:'clock',text:'Левую и правую — <b>разом</b>: Пробой двенадцать секунд держится.'},[L,R],null)]);}
+      ()=>t4HintShow('g3',{tag:'Подсказка',title:'Вместе, разом!',icon:'clock',text:'Левую и правую — <b>разом</b>: Пробой двенадцать секунд держится.'},[L,R],null),
+      ()=>t4HintShow('g4',{tag:'Пелагея',title:'Совиный взор — слабое место',icon:'eye',text:'Взор '+K(1,'skill')+' — на голове засветится чешуйка. <b>Один удар</b> по ней — и Пробой!'},[L,R].filter(e=>e.state!=='broken'),[[1,'skill','взор']])]);}
+  const G4h=FIN.gor4,weakOn=G4h&&G4h.weak.length?G4h.weak[0].e:null;
+  if(weakOn&&F.phase<3&&!G4h.weak[0].demo)t4Ctx('weak',()=>t4HintShow('weak',{tag:'Все',title:'Слабое место светится — бей!',icon:'eye',text:'Подбегите и <b>ударьте</b> по светящейся чешуйке — голова сразу в Пробое!',col:0xd9a8ff},[weakOn],[[0,'attack','удар'],[1,'attack','удар']],4),7);
   if(F.phase===2){const Mi=hs[1];const acorn=W.marks.some(m=>m.active&&m.active()),sated=hs.find(e=>e.sat>0&&e.state!=='broken'),fire=W.bolts.some(b=>!b.refl&&b.from===Mi);
-    if(acorn)t4Ctx('acorn',()=>t4HintShow('acorn',{tag:'Прошка',title:'Жёлудь! Стреляй!',icon:'acorn',text:'Средняя вдыхает — из <b>рогатки</b> в жёлудь стрельни'+(HERO.proshka.active?'':' (смени '+K(0,'swap')+')')+'.',col:0xffd76a},[Mi],[[0,'skill','рогатка']],4),6);
+    if(G4h&&G4h.pull>0)t4Ctx('inhale',()=>t4HintShow('inhale',{tag:'Все',title:'Тянет к пасти — щит!',icon:'shield',text:'Держите <b>щит</b> — потянет в два-три раза слабее. За широким щитом Потапа — тоже.',col:0xffd0a0},[Mi],[[0,'guard','щит'],[1,'guard','щит']],3.6),8);
+    else if(acorn)t4Ctx('acorn',()=>t4HintShow('acorn',{tag:'Прошка',title:'Жёлудь! Стреляй!',icon:'acorn',text:'Средняя вдыхает — из <b>рогатки</b> в жёлудь стрельни'+(HERO.proshka.active?'':' (смени '+K(0,'swap')+')')+'.',col:0xffd76a},[Mi],[[0,'skill','рогатка']],4),6);
     else if(fire)t4Ctx('fire',()=>t4HintShow('fire',{tag:'Потап',title:'Огонь! Щит!',icon:'shield',text:'<b>Широкий щит</b> подними — закроешь всех за спиной.',col:0x9fe0ff},[HERO.potap],[[0,'guard','щит']],3.5),6);
-    else if(sated)t4Ctx('sated',()=>t4HintShow('sated',{tag:'Йоша · Пелагея',title:'Голова сытая!',icon:'drop',text:'Йоша — <b>живая вода</b>, Пелагея — <b>Совиный взор</b>: так голову снова бить.',col:0xff9a3a},[sated],[[1,'skill','умение']],5),8);
+    else if(sated)t4Ctx('sated',()=>t4HintShow('sated',{tag:'Йоша · Пелагея',title:'Голова сытая!',icon:'drop',text:'Йоша — <b>живая вода</b>; Пелагея — <b>Совиный взор</b>: по слабому месту — один удар, и Пробой.',col:0xff9a3a},[sated],[[1,'skill','умение']],5),8);
     else if(idle>12)t4Cycle([
       ()=>t4HintShow('h1',{tag:'Подсказка',title:'Все три — в Пробой, разом',icon:'heads',text:'Оглушите <b>все три</b> головы разом. Среднюю — лишь <b>жёлудем</b> на её долгом вдохе.'},hs.filter(e=>e.state!=='broken'),null),
-      ()=>t4HintShow('h2',{tag:'Подсказка',title:'Каждому — своё',icon:'hit',text:'Жёлудь — Прошка, огонь — щит Потапа, сытая — вода Йоши иль взор Пелагеи.'},null,[[0,'swap','сменить героя'],[1,'swap','сменить героя']])]);}
+      ()=>t4HintShow('h2',{tag:'Подсказка',title:'Каждому — своё',icon:'hit',text:'Жёлудь — Прошка, огонь — щит Потапа, сытая — вода Йоши, слабое место — взор Пелагеи: один удар, и Пробой.'},null,[[0,'swap','сменить героя'],[1,'swap','сменить героя']])]);}
   if(F.phase===3){const gr=W.grabs[0],bp=gr?gr.pos():null;const ha=[0,1].map(pi=>active(pi));const near=bp?bp.distanceTo(T4SPOT)<3.2:false;const lifted=bp&&bp.y>0.8;
     if(bp&&!lifted&&idle>4)t4Ctx('grab',()=>t4HintShow('grab',{tag:'Оба игрока',title:'Узда — клещами, вдвоём',icon:'tongs',text:'К узде с двух сторон подойдите — и <b>клещами</b> её возьмите.',col:0xffb070},[gr],[[0,'item','клещи'],[1,'item','клещи']],6),8);
     else if(bp&&lifted&&!near)t4Ctx('carry',()=>t4HintShow('carry',{tag:'Оба игрока',title:'К кольцу светящемуся!',icon:'ring',text:'Несите узду <b>вдвоём</b> к кольцу на шее. Не расходитесь — держитесь рядом!',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],null,5),8);
