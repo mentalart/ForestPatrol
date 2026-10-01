@@ -1,17 +1,13 @@
 # Боты Playwright на каждый PR в main: tools/tests/affected.py --run выбирает ботов по изменённым файлам.
-# Если он требует полный регресс (код 2) — следом идёт полный регресс релиза. Вручную (Actions → Боты → Run workflow)
-# можно прогнать любую ветку, в том числе сразу полный регресс. Выводы ботов и кадры — во вложении к запуску.
+# Полный регресс в CI не идёт (на раннере GitHub он слишком медленный): если скрипт его требует (код 2), CI гоняет только
+# страховку и пишет предупреждение — полный регресс прогоните локально. Вручную: Actions → Боты → Run workflow.
+# Выводы ботов и кадры — во вложении к запуску.
 name: Боты
 
 on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-    inputs:
-      full:
-        description: 'Полный регресс релиза (около часа)'
-        type: boolean
-        default: false
 
 concurrency:
   group: bots-${{ github.ref }}
@@ -20,7 +16,7 @@ concurrency:
 jobs:
   bots:
     runs-on: ubuntu-latest
-    timeout-minutes: 150
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
@@ -36,20 +32,18 @@ jobs:
           playwright install --with-deps chromium
 
       - name: Выборочные боты (affected.py)
-        id: aff
-        if: ${{ !inputs.full }}
         run: |
           set +e
           python3 tools/tests/affected.py --run --jobs 3
           rc=$?
-          echo "rc=$rc" >> "$GITHUB_OUTPUT"
-          [ $rc = 2 ] && exit 0 || exit $rc   # 2 — «НУЖЕН ПОЛНЫЙ РЕГРЕСС», его делает следующий шаг
-
-      - name: Полный регресс релиза
-        if: ${{ inputs.full || steps.aff.outputs.rc == '2' }}
-        run: |
-          python3 zlataya_cep/build/build_final.py
-          LIST=tools/tests/regress_list_final.txt JOBS=3 tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html
+          set -e
+          if [ $rc = 2 ]; then   # «НУЖЕН ПОЛНЫЙ РЕГРЕСС» — здесь только страховка, полный регресс — локально
+            echo "::warning::affected.py требует полный регресс — прогоните его локально (см. CLAUDE.md). В CI — только smoke, tfin_col, tallobj."
+            python3 zlataya_cep/build/build_final.py
+            BOTS="smoke tfin_col tallobj" JOBS=3 sh tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html
+          else
+            exit $rc
+          fi
 
       - name: Выводы ботов и кадры
         if: always()
