@@ -63,7 +63,8 @@ window.PLAY=(id,o)=>{o=o||{};if(o.solo){ZC.setSolo(true);}L(id);if(o.solo)ZC.set
         if(S.kind!=='splash')__animStep(f===0?0:dtMs);ZC.FIN.occ.frame();__gsync();},{S,t,fps:FPS,f,dtMs});
       await page.screenshot({path:path.join(dir,String(f).padStart(5,'0')+'.jpg'),type:'jpeg',quality:90,timeout:180000});}
     const snd=await page.evaluate(()=>window.__snd.slice());
-    if(S.kind==='splash')snd.push({t:1.8,k:'vox',id:'splash_001',kind:'main',g:1});   // в игре голос заставки запускает таймер; при съёмке заставка идёт по кадрамfs.writeFileSync(path.join(dir,'snd.json'),JSON.stringify(snd));
+    if(S.kind==='splash')snd.push({t:1.8,k:'vox',id:'splash_001',kind:'main',g:1});   // в игре голос заставки запускает таймер; при съёмке заставка идёт по кадрам
+    fs.writeFileSync(path.join(dir,'snd.json'),JSON.stringify(snd));
     fs.writeFileSync(path.join(dir,'meta.json'),JSON.stringify({id:S.id,dur:S.dur,fps:FPS,frames:N,music:S.music===undefined?null:S.music,kind:S.kind,info}));
     console.log('  done',S.id,N,'frames',((Date.now()-t0)/1000).toFixed(0)+'s','snd',snd.length);n0+=N;}
   await browser.close();console.log('ALL',n0);})();
