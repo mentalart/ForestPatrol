@@ -13,5 +13,5 @@ const out=[];for(const L of ZC.LEVELS){try{ZC.startFrom(ZC.LV(L.id));ZC.G.manual
 //@@
 const EXPECT='p=zgkzxx:52 luko=1rhy7t9:15 1-1=1sdpwwj:17 1-2=12ik6nh:36 1-3=px09lv:13 1-4=19ufykh:26 1-5=d0hkb3:9 1-B=1xh2e44:5 2-1=lpk7my:113 2-2=y4v344:34 2-3=1a3gbre:30 2-4=1eno768:36 2-5=1vgao0v:95 2-B=1umikcv:9 3-1=1t9galn:17 3-2=z6xee8:15 3-3=kxauf4:4 3-4=17n1y6u:11 3-5=1kkv1hb:12 3-B=3mebjh:2 4-1=vnz5hc:18 4-2=c7w640:19 4-3=13e8vqc:61 4-4=10d9kyc:17 4-5=1u9g1d0:17 4-B=17boi6a:2 5-1=80cw16:42 5-2=1jsrz12:5 5-3=l0qgut:0 5-4=1ay90r8:5 5-B1=1obr8vq:5 5-B2=1j8ua5y:5 epi=1orfreu:10 z-i=1bu9p1e:4 z-d=31yxzp:1 z-a=uecslv:3';// намеренные отличия релиза от прототипа (правки геймплея в rep_30_gameplay.py) — у них свой эталон:
 // final06: Лукоморье — стан и берег отодвинуты от дуба на W.shoreDZ; 5-Б2 — новый финальный бой (свечи, Кощей в бою, late_93)
-const RELEASE={luko:'145umx4:15','5-B2':'1k9i2yb:5'};
+const RELEASE={luko:'145umx4:15','5-B2':'skngqn:5'};   // 5-Б2: восемь свечей (final06, правки по отзыву)
 const got=__col;if(EXPECT==='EXPECT'+'_TABLE')'эталон не задан';else{const E=EXPECT.split(' ').map(e=>{const id=e.split('=')[0];return RELEASE[id]?id+'='+RELEASE[id]:e;});const bad=got.filter((g,i)=>g!==E[i]);'col '+(bad.length?'DIFF '+bad.join(' '):'same='+got.length);}

@@ -1,7 +1,7 @@
 //@@
 // релиз final06: 5-Б2 в одиночном режиме — бой целиком настоящими нажатиями одного игрока (клавиши Игрока 1), без отладочных побед:
 // гасит свечи ударами, отбивает удары, ключи, капли и шары щитом в последний миг, от красного — кувырок, из красных кругов — уходит,
-// в Пробое — «золотая нить», на пятом этапе переключается на Прошку и куёт в такт. Проверка: этот босс проходится одним героем.
+// в Пробое — «золотая нить», на пятом этапе переключается на Прошку и куёт в такт; скованного (путы держат до спасения) — сменить героя и сбить замок. Проверка: этот босс проходится одним героем.
 ZC.setSolo(true);window.K5=ZC.FIN.k5;window.KY={u:'KeyW',d:'KeyS',l:'KeyA',r:'KeyD',j:'Space',a:'KeyF',g:'KeyG',sw:'KeyQ',ro:'ShiftLeft'};
 window.me=()=>{const p=ZC.players[ZC.G.soloPi];return p.heroes[p.act];};
 window.hdist=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
@@ -23,7 +23,10 @@ window.flee=()=>{const h=me();for(const z of (K5.zones||[])){const d=hdist(h.pos
 window.stepAI=()=>{const G=ZC.G,W=ZC.W,st=K5.st,h=me(),kb=K5.KB;
   if(G.cine){stopMove();ZC.skip();return;}if(G.ui==='skaz'){ZC.press('Space');ZC.press('KeyM');return;}if(!K5.fight){stopMove();return;}
   const down=ZC.players[0].downed&&ZC.players[1].downed;if(down&&!S.prevDown)S.deaths++;S.prevDown=down;
+  // скован — сам не вырвешься: смени героя (Q); скован кто-то другой — пять ударов по замку
+  if(K5.k5Locked&&K5.k5Locked(h)){stopMove();if(G.time>(S.swL||0)){S.swL=G.time+0.5;ZC.press(KY.sw);S.log.push('swapL');}return;}
   defend();if(flee())return;
+  const Lk=Object.values(K5.locks).find(L=>L.h!==h);if(Lk){const d=moveTo(Lk.h.pos.x,Lk.h.pos.z,1.2);if(d<2.0)hitAt(Lk.h.pos);return;}
   if(st===1){const c=K5.candles.filter(c=>c.lit).sort((a,b)=>hdist(a.pos,h.pos)-hdist(b.pos,h.pos))[0];if(c){const d=moveTo(c.pos.x,c.pos.z,1.25);if(d<1.8)hitAt(c.pos);}else stopMove();return;}
   if(st===2||st===4){if(kb.state==='broken'||kb.dazeT>0||(kb.state==='stagger'&&!kb.openHit)){const d=moveTo(kb.pos.x,kb.pos.z,1.6);if(d<2.6)hitAt(kb.pos);return;}
     const bone=W.enemies.find(e=>e.kind==='k5bone'&&e.alive&&(e.state==='broken'||e.dazeT>0)&&hdist(e.pos,h.pos)<3);if(bone){moveTo(bone.pos.x,bone.pos.z,1.2);hitAt(bone.pos);return;}

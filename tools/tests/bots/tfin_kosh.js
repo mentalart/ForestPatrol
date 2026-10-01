@@ -11,20 +11,21 @@ ZC.startFrom(ZC.LV('5-B2'));ZC.G.manual=true;ZC.tick(20);['lvl='+ZC.W.levelId,'s
 ZC.skip();ZC.tick(5);const a=['after intro st='+K5.st+' cine='+!!ZC.G.cine+' tut='+ZC.FIN.boss4b.on];skipAll();ZC.tick(5);a.push('fight='+K5.fight,'lit='+K5.candles.filter(c=>c.lit).length,'dome='+K5.dome.visible);a
 //@@ shot=kosh_s1.png
 // этап 1: цепи выходят, бьют, уходят под землю; ни одна «ушедшая» не атакует
+for(const pi of[0,1])ZC.players[pi].petals=99;   // свечей и цепей вдвое больше — отладочный проход не должен падать, пока бот стоит
 const bad=[];for(let i=0;i<30;i++){ZC.tick(20);for(const e of ZC.W.enemies){if(e.kind!=='cep')continue;const hidden=!vis(e.g);if(hidden&&['ready','wind','strike'].includes(e.state))bad.push(e.state);}}
 ZC.FIN.occ.frame();const ch=ZC.W.enemies.filter(e=>e.kind==='cep');const r=['chains='+ch.length+' states='+ch.map(e=>e.state).join(','),'hiddenAttacks='+bad.length,'bolts='+ZC.W.bolts.length,'zones='+(K5.zones||[]).length];
 if(bad.length)throw new Error('невидимая цепь атакует: '+bad.join(','));r
 //@@
-// гасим свечи: одну — отражённой каплей (onReflect), одну — водой (onWater), две — ударами
-const c=K5.candles;c[0].onReflect();const wt=ZC.W.waterTargets.find(w=>w.pos===c[1].pos);wt.onWater();for(const x of[c[2],c[3]])for(let i=0;i<6&&x.lit;i++)x.k5hit(x,A(0));ZC.tick(40);
+// гасим свечи (их восемь): одну — отражённой каплей (onReflect), одну — водой (onWater), остальные — ударами
+const c=K5.candles;c[0].onReflect();const wt=ZC.W.waterTargets.find(w=>w.pos===c[1].pos);wt.onWater();for(const x of c.slice(2))for(let i=0;i<6&&x.lit;i++)x.k5hit(x,A(0));ZC.tick(40);
 ['lit='+c.filter(x=>x.lit).length,'fight='+K5.fight,'stage='+ZC.W.flags.stage,'cine='+!!ZC.G.cine].join(' ')
 //@@
 // ролик «свечи задули» → Сказ 1 (выбирает Игрок 2) → ролик → карточки этапа 2
 skipAll();ZC.tick(5);const r=['ui='+ZC.G.ui];U.tap('KeyM');ZC.tick(5);skipAll();ZC.tick(5);r.push('names.potap='+!!ZC.G.flags.names.potap,'st='+K5.st);skipAll();ZC.tick(5);r.push('fight='+K5.fight,'live='+K5.live,'emb='+K5.KB.embers+'/'+K5.KB.maxEmb);r
 //@@ shot=kosh_s2.png
 // этап 2: ключ летит и запирает, друг отпирает ударами; искорка
-ZC.tick(60);const kb=K5.KB;const key=K5.keyMake(A(1));ZC.tick(30);const r=['key state='+key.state];K5.lockHero(A(1));ZC.tick(5);r.push('locked='+!!K5.locks[1]);
-for(let i=0;i<3;i++){const L=K5.locks[1];if(!L)break;A(0).pos.set(L.h.pos.x+1,0,L.h.pos.z);ZC.W.onAttack(0,A(0));}ZC.tick(5);r.push('afterHits locked='+!!K5.locks[1]);
+ZC.tick(60);const kb=K5.KB;const key=K5.keyMake(A(1));ZC.tick(30);const r=['key state='+key.state];const lk=A(1).kind;K5.lockHero(A(1));ZC.tick(5);r.push('locked='+!!K5.locks[lk]);
+for(let i=0;i<5;i++){const L=K5.locks[lk];if(!L)break;A(0).pos.set(L.h.pos.x+1,0,L.h.pos.z);ZC.W.onAttack(0,A(0));}ZC.tick(5);r.push('afterHits locked='+!!K5.locks[lk]);
 K5.sparkTo(1,A(0).pos);ZC.tick(20);r.push('spark='+(K5.spark&&K5.spark.pi));ZC.FIN.occ.frame();r
 //@@
 // спесь сбита → золотая нить вдвоём → ролик → Сказ 2 (выбирает Игрок 1) → буря → карточки этапа 3

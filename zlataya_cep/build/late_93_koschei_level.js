@@ -1,5 +1,5 @@
 /* ============================== РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними ============================== */
-// Этапы: 1 «Чёрные свечи» (купол держат четыре свечи — погасить все вместе; цепи из земли, перст-молния),
+// Этапы: 1 «Чёрные свечи» (купол держат восемь свечей — погасить все вместе; цепи из земли, перст-молния),
 // 2 «Ключ и искорка» (Кощей сам в бою; отбив зажигает искорку над другом — отбил с искоркой — угольков гаснет вдвое больше; летучие ключи
 // запирают героя — друг отпирает ударами), 3 «Буря» (Кощей летает; тёмный шар отбить другу, друг отбивает в небо; вороны,
 // иглы с неба, воронка), 4 «Меч Бессмертного» (серии, задержанный замах, прыжок с волной, «око» — кого выбрал; костяные щитники),
@@ -45,11 +45,13 @@ build5B2=function(){
   KB.k5hit=(e,h)=>bossHit(e,h);KB.k5parryPost=(e,h)=>bossParried(e,h);KB.k5hitHero=(e,h)=>bossHitHero(e,h);
   KB.k5swoop=(e,h)=>{G.stats.mahs++;SFX.mah();G.hitstop=0.25;shake(h.player,0.05,0.3);ringFx(e.pos,COL.gold,3);floatText(h.pos.clone().add(new V3(0,h.d.height+0.7,0)),'Одним махом!','#ffd76a');e.state='stagger';e.t=0;e.openHit=false;emberOut(e,2,'Одним махом!');bossParried(e,h);};
   KB.pickSig=(e,h,s)=>pickSig(e,h,s);
+  // сигнал замаха — на груди Кощея и чуть впереди: над головой (5,4 м) игровая камера его не видела
+  if(KB.S&&KB.S.sig)KB.S.sig.position.set(0,2.8,1.05);
   const kosTop=()=>KS.g.position.clone().add(new V3(0,4.3,0));
   /* ---------- общие ---------- */
   const inArena=(p,m)=>{const dx=p.x-C.x,dz=p.z-C.z,d=Math.hypot(dx,dz),r=R-(m||1.2);if(d>r){p.x=C.x+dx/d*r;p.z=C.z+dz/d*r;}return p;};
   function k5force(pi,kind){const p=players[pi];const i=p.heroes.findIndex(h=>h.kind===kind);if(i<0||p.act===i)return;p.act=i;p.heroes.forEach((h,k)=>{h.active=k===i;h.following=false;});}
-  function k5Kill(e){if(!e)return;e.alive=false;k5Del(e.g);const i=W.enemies.indexOf(e);if(i>=0)W.enemies.splice(i,1);const j=K5.adds.indexOf(e);if(j>=0)K5.adds.splice(j,1);}
+  function k5Kill(e){if(!e)return;e.alive=false;k5Del(e.g);if(e.k5ring)k5Del(e.k5ring);const i=W.enemies.indexOf(e);if(i>=0)W.enemies.splice(i,1);const j=K5.adds.indexOf(e);if(j>=0)K5.adds.splice(j,1);}
   function clearAdds(all){for(const e of K5.adds.slice())k5Kill(e);K5.adds.length=0;for(const o of K5.orbs)k5Del(o.g);K5.orbs.length=0;for(const z of (K5.zones||[]))z.userData.dead=true;
     for(const pi in K5.locks)unlock(K5.locks[pi],null,true);K5.locks={};if(K5.spark){k5Del(K5.spark.m);K5.spark=null;}RG.on=false;ringM.forEach(m=>{m.visible=false;});if(all){for(const c of candles)c.state='k5out';}}
   function heroesHome(n){const P=[[-2.6,-5.2],[2.6,-5.2]];HEROES.forEach(h=>{const pi=h.player,[x,z]=P[pi];const off=h.active?0:1.4;placeOnGround(h,x+(pi?off:-off),z+(h.active?0:0.8),0);h.face=Math.PI;h.vel.set(0,0,0);});
@@ -67,9 +69,15 @@ build5B2=function(){
   function chainTick(e,dt){if(e.state==='k5sink'){e.k5k+=dt;e.g.position.y=-e.k5k*2.8;if(e.k5k>0.6){e.state='k5hide';e.g.visible=false;e.k5wait=rand(2.2,3.6);}return;}
     if(e.state==='k5hide'){if(!K5.fight||K5.st!==1)return;e.k5wait-=dt;if(e.k5wait<=0){const p=chainPos(e.pi);e.pos.set(p.x,0,p.z);e.home.set(p.x,0,p.z);e.g.visible=true;e.state='spawn';e.t=0;e.life=0;e.embers=e.maxEmb;burst(new V3(p.x,0.4,p.z),0x6a5a4a,12,3);SFX.crash();}return;}
     if(e.state==='idle'||e.state==='recover'){e.life+=dt;if(e.life>9||(!K5.fight&&e.state==='idle'))chainSink(e);}}
+  // показ для карточки «Цепи и красный круг» (late_94): три цепи вылезают перед героями и стоят, не бьют; off — уходят
+  function chainDemo(on){if(K5.demo){for(const e of K5.demo){burst(e.pos.clone().add(new V3(0,0.3,0)),0x6a5a4a,8,2);k5Kill(e);}K5.demo=null;}if(!on)return;
+    const P=[[1.3,-6.9],[-1.7,-8.1],[3.4,-8.9]];K5.demo=P.map(([x,z],i)=>{const e=makeFoe('cep',x,z,{leash:1});e.k5=true;e.k5demo=true;e.noMove=true;e.noKill=true;e.harmless=true;e.cd=99;e.state='k5demo';e.pos.y=-1.7;K5.adds.push(e);
+      e.tick=(e,dt)=>{e.cd=99;if(e.state!=='k5demo'){e.state='k5demo';e.t=0;}};
+      later(i*0.3,()=>{if(!e.alive)return;burst(new V3(x,0.4,z),0x6a5a4a,12,3);if(SFX.crash)SFX.crash();anim(0.7,k=>{e.pos.y=-1.7*(1-smooth(k))+Math.sin(k*Math.PI)*0.25;});});return e;});}
   /* ---------- этап 1: чёрные свечи и купол ---------- */
-  const CAND=[[-7.6,-7.4],[7.6,-7.4],[-7.2,-18.2],[7.2,-18.2]];const candles=[];
-  const relight=()=>(G.solo?24:12)+3*K5.fails[1];   // одному герою — время обежать все четыре
+  // восемь свечей (по отзыву: четырёх было мало — гасли слишком легко): прежние четыре и ещё четыре — спереди, по бокам, сзади
+  const CAND=[[-7.6,-7.4],[7.6,-7.4],[-7.2,-18.2],[7.2,-18.2],[0,-4.0],[-9.6,-12.8],[9.6,-12.8],[0,-16.6]];const candles=[];
+  const relight=()=>(G.solo?30:12)+3*K5.fails[1];   // одному герою — время обежать все восемь
   function candleMake(i){const [x,z]=CAND[i];const e=makeFoe('k5candle',x,z,{leash:0.4});e.k5=true;e.noMove=true;e.noKill=true;e.lit=true;e.idx=i;e.state='idle';e.pos.y=0;e.embers=3;
     e.k5hit=(e,h)=>{if(!e.lit||K5.st!==1||!K5.fight)return;e.embers--;e.flashT=0.15;FX.sparks(e.pos.clone().add(new V3(0,1.6,0)),8,0xc090ff);SFX.clink();if(e.embers<=0)candleOff(e,'погасла!');else floatText(e.pos.clone().add(new V3(0,2.4,0)),'ещё '+e.embers,'#e0c8ff');};
     e.onReflect=()=>{if(e.lit&&K5.st===1)candleOff(e,'капля вернулась!');};
@@ -82,34 +90,86 @@ build5B2=function(){
   function candleOn(e){candleSet(e,true);k5s('candleOn');FX.sparkle(e.pos.clone().add(new V3(0,1.8,0)),10,0xb070ff);if(G.time>(K5.gorT||0)){K5.gorT=G.time+14;bark(KS,'koschei','Горите!',1.4);}}
   candles.forEach(c=>candleSet(c,false));   // до начала боя свечи не горят (зажигает Кощей в конце вступления)
   function stage1Tick(dt){for(const c of candles){if(c.lit){c.L.flame.scale.set(1+0.12*Math.sin(G.time*13+c.idx),1+0.2*Math.sin(G.time*9+c.idx*2),1);}else{c.relT-=dt;if(c.relT<=0)candleOn(c);}}
-    // цепи: у каждого игрока своя (в одиночном — одна)
-    const want=G.solo?[G.soloPi]:[0,1];for(const pi of want){const mine=K5.adds.filter(e=>e.k5chain&&e.pi===pi);if(!mine.length){K5['cs'+pi]=(K5['cs'+pi]||1.5)-dt;if(K5['cs'+pi]<=0){K5['cs'+pi]=3;chainMake(pi);}}}
+    // цепи: у каждого игрока по две (в одиночном — две); вдвое больше прежнего
+    const want=G.solo?[G.soloPi]:[0,1];for(const pi of want){const mine=K5.adds.filter(e=>e.k5chain&&!e.k5demo&&e.pi===pi);if(mine.length<2){K5['cs'+pi]=(K5['cs'+pi]||1.5)-dt;if(K5['cs'+pi]<=0){K5['cs'+pi]=3;chainMake(pi);}}}
     // перст Кощея: молния в красный круг
     K5.castT=(K5.castT==null?4:K5.castT)-dt;if(K5.castT<=0){K5.castT=(G.solo?8:6.5)+K5.fails[1];const hs=k5Heroes();if(hs.length){const h=hs[Math.floor(rand(0,hs.length))];const p=inArena(h.pos.clone(),0.8);
-      anim(0.5,k=>{KS.armR.rotation.x=-2.4*Math.sin(k*Math.PI);});k5s('cast');k5Zone(p,1.6,G.solo?1.6:1.35,0xff4a5a,q=>{if(!K5.fight)return;k5Beam(q,0xd8b0ff);k5s('strike');shakeAll(0.05,0.25);FX.dust(q.clone(),12,0x6a5a7a);for(const x of k5Heroes())if(hd(x.pos,q)<1.7)k5Hurt(x,q);});}}
+      anim(0.5,k=>{KS.armR.rotation.x=-2.4*Math.sin(k*Math.PI);});k5s('cast');k5Zone(p,1.6,G.solo?1.6:1.35,0xff4a5a,q=>{if(!K5.fight)return;k5Bolt(q,0xd8b0ff);k5s('strike');shakeAll(0.05,0.25);FX.dust(q.clone(),12,0x6a5a7a);for(const x of k5Heroes())if(hd(x.pos,q)<1.7)k5Hurt(x,q);});}}
     dome.children[0].material.opacity=0.18+0.06*Math.sin(G.time*3);dome.rotation.y+=dt*0.2;}
   /* ---------- этап 2: ключи, замки, искорка ---------- */
-  function keyMake(h){const p=KS.g.position.clone();const e=makeFoe('k5key',p.x,p.z,{pi:h.player,leash:60});e.k5=true;e.noMove=true;e.state='k5fly';e.pos.y=3;e.k5tries=0;K5.adds.push(e);k5s('keyFly');
-    e.k5parry=(e,h)=>{keyBreak(e,h);return true;};e.k5hitHero=(e,h)=>{lockHero(h);k5Kill(e);return true;};e.tick=(e,dt)=>keyTick(e,dt);return e;}
-  function keyBreak(e,h){G.stats.parries++;SFX.parry();k5s('keyBreak');FX.sparks(e.pos.clone().add(new V3(0,1.2,0)),14,0xd0b0ff);floatText(e.pos.clone().add(new V3(0,2,0)),'Ключ рассыпался!','#e0c8ff');K5.log.push('keybreak');if(h&&FIN.guard)FIN.guard.hit(h,true);k5Kill(e);}
-  function keyTick(e,dt){const h=active(e.pi);if(!h||players[e.pi].downed||K5.locks[e.pi]){e.state='k5fly';e.pi=1-e.pi;if(G.solo)e.pi=G.soloPi;}
-    const L=e.L;L.body.rotation.y+=dt*3;L.body.children.forEach(()=>{});L.gem.scale.setScalar(1+0.25*Math.sin(G.time*12));
-    const tg=active(e.pi);if(!tg)return;const dx=tg.pos.x-e.pos.x,dz=tg.pos.z-e.pos.z,d=Math.hypot(dx,dz)||1;
-    if(e.state==='k5fly'){const sp=4.4*dt;e.pos.x+=dx/d*Math.min(sp,Math.max(0,d-1.3));e.pos.z+=dz/d*Math.min(sp,Math.max(0,d-1.3));e.pos.y=damp(e.pos.y,0.2,3,dt);if(d<1.8){e.state='idle';e.cd=0.2;e.t=0;}}
-    else if(e.state==='k5back'){e.pos.x-=dx/d*3.5*dt;e.pos.z-=dz/d*3.5*dt;e.pos.y=damp(e.pos.y,1.4,3,dt);e.k5k-=dt;if(e.k5k<=0){e.state='k5fly';e.k5tries++;if(e.k5tries>=3){keyBreak(e,null);}}}
-    else{if(d>1.6){e.pos.x+=dx/d*2.5*dt;e.pos.z+=dz/d*2.5*dt;}e.pos.y=damp(e.pos.y,0.2,4,dt);if(e.state==='recover'&&e.t>0.1){e.state='k5back';e.k5k=0.8;}}
-    e.face=Math.atan2(dx,dz);}
-  function lockHero(h){const pi=h.player;if(K5.locks[pi])return;const g=k5Prop(new THREE.Group());
-    fk(g,K=>{K.box(0.5,0.42,0.18,hp(0x3a3640),tm(0,0,0),{b:0.04});K.add(new FIN.orig.Torus(0.17,0.05,5,12,Math.PI),hp(0x5a5660),tm(0,0.2,0));});const kh=new THREE.Mesh(new THREE.SphereGeometry(0.07,8,6),MB(0xc080ff));kh.position.set(0,-0.02,0.1);g.add(kh);
-    const rings=[];for(let i=0;i<3;i++){const r=new THREE.Mesh(new THREE.TorusGeometry(0.7,0.05,5,18),MB(0x6a5a8a,{transparent:true,opacity:0.9}));r.rotation.x=Math.PI/2;g.add(r);rings.push(r);}
-    K5.locks[pi]={h,pi,hp:G.solo?2:3,t:0,g,rings};k5s('lock');floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'Заперт!','#c8a8ff');K5.log.push('lock'+pi);h.guard=false;
+  // ключ (по отзыву): появляется над головой Кощея (не пролетает сквозь него), летит к герою поверху, зависает над ним остриём вниз
+  // (жёлтый кружок — щит), падает и разворачивается в путы: цепь спиралью вокруг героя и большой замок. Скован, пока друг
+  // не собьёт замок — пять ударов, над замком пять шариков, как у свечей. Скованы все четверо — этап заново (у колокольчика).
+  const LOCK_HP=5;const k5Locked=h=>!!(h&&K5.locks[h.kind]);
+  function keyTarget(e){const ok=h=>h&&h.active&&!players[h.player].downed&&!k5Locked(h);if(G.solo){const h=active(G.soloPi);return ok(h)?h:null;}
+    for(const pi of[e.pi,1-e.pi]){const h=active(pi);if(ok(h)){e.pi=pi;return h;}}return null;}
+  function keyMake(h){const top=KS.g.position.clone().add(new V3(0,5.9,0));const e=makeFoe('k5key',top.x,top.z,{pi:h.player,leash:60});e.k5=true;e.noMove=true;e.state='k5fly';e.pos.y=top.y;e.k5tries=0;K5.adds.push(e);k5s('keyFly');
+    FX.sparkle(top.clone(),14,0xc080ff);FX.sparks(top.clone(),10,0xd0b0ff);
+    const ring=k5Prop(new THREE.Mesh(new THREE.RingGeometry(0.75,0.9,32),MB(0xc080ff,{transparent:true,opacity:0,side:THREE.DoubleSide,depthWrite:false})));ring.rotation.x=-Math.PI/2;e.k5ring=ring;
+    e.k5parry=(e,h)=>{keyBreak(e,h);return true;};e.k5hitHero=(e,h)=>{keyLand(e,h);return true;};e.tick=(e,dt)=>keyTick(e,dt);return e;}
+  const keyBodyPos=e=>{const p=new V3();(e.L&&e.L.body?e.L.body:e.g).getWorldPosition(p);return p;};
+  function keyBreak(e,h){G.stats.parries++;SFX.parry();k5s('keyBreak');const p=keyBodyPos(e);FX.sparks(p,22,0xd0b0ff);FX.sparkle(p,10,0xffffff);FX.dust(p.clone(),8,0x6a5a8a);
+    floatText(p.clone().add(new V3(0,0.6,0)),'Ключ рассыпался!','#e0c8ff');K5.log.push('keybreak');if(h&&FIN.guard)FIN.guard.hit(h,true);if(e.k5ring)k5Del(e.k5ring);k5Kill(e);}
+  function keyLand(e,h){const p=h.pos.clone();if(e.k5ring)k5Del(e.k5ring);k5Kill(e);
+    // удар о землю: вспышка, кольцо по земле, искры; затем ключ разворачивается в путы
+    const fl=k5Prop(k5Glow(0xb070ff,4));fl.position.set(p.x,h.d.height*0.6,p.z);const sw=k5Prop(new THREE.Mesh(new THREE.RingGeometry(0.8,1,40),MB(0xc080ff,{transparent:true,opacity:0.9,side:THREE.DoubleSide,depthWrite:false})));sw.rotation.x=-Math.PI/2;sw.position.set(p.x,0.06,p.z);
+    k5fx(0.6,k=>{fl.material.opacity=1-k;fl.scale.setScalar(4+k*3);sw.scale.setScalar(1+k*3.5);sw.material.opacity=0.9*(1-k);},()=>{k5Del(fl);k5Del(sw);});
+    FX.sparks(p.clone().add(new V3(0,1,0)),18,0xc080ff);shake(h.player,0.06,0.3);lockHero(h);}
+  function keyTick(e,dt){const L=e.L;L.gem.scale.setScalar(1+0.25*Math.sin(G.time*12));const tg=keyTarget(e);
+    if(!tg){keyBreak(e,null);return;}
+    const dx=tg.pos.x-e.pos.x,dz=tg.pos.z-e.pos.z,d=Math.hypot(dx,dz)||1;e.face=Math.atan2(dx,dz);e.tgt=tg;
+    if(e.state==='k5fly'){// поверху: над Кощеем и над головами, к герою
+      const sp=5.2*dt;e.pos.x+=dx/d*Math.min(sp,Math.max(0,d-1.0));e.pos.z+=dz/d*Math.min(sp,Math.max(0,d-1.0));e.pos.y=damp(e.pos.y,4.4,2.2,dt);
+      L.body.position.lerp(new V3(0,0,0),1-Math.exp(-8*dt));L.body.rotation.x=damp(L.body.rotation.x,0,6,dt);L.body.rotation.y+=dt*4;if(d<1.5){e.state='idle';e.cd=0.25;e.t=0;}}
+    else if(e.state==='k5back'){e.pos.x-=dx/d*2.5*dt;e.pos.z-=dz/d*2.5*dt;e.pos.y=damp(e.pos.y,3.2,3,dt);L.body.position.lerp(new V3(0,0,0),1-Math.exp(-5*dt));e.k5k-=dt;if(e.k5k<=0){e.state='k5fly';e.k5tries++;if(e.k5tries>=3){keyBreak(e,null);return;}}}
+    else{// над героем остриём вниз; на ударе — падает
+      if(d>1.3){e.pos.x+=dx/d*2.5*dt;e.pos.z+=dz/d*2.5*dt;}e.pos.y=damp(e.pos.y,0,5,dt);
+      const st=e.state,strike=st==='strike',w=st==='wind'?clamp(e.t/Math.max(0.1,e.wdur||0.8),0,1):0;
+      let hy=3.1+0.15*Math.sin(G.time*6)-0.5*w;if(strike)hy=lerp(2.6,0.6,clamp(e.t/0.16,0,1));
+      L.body.position.lerp(new V3(0,hy-e.pos.y,d),1-Math.exp(-(strike?30:9)*dt));L.body.rotation.x=damp(L.body.rotation.x,Math.PI,8,dt);L.body.rotation.y+=dt*(4+10*w);
+      if(st==='recover'&&e.t>0.1){const bp=keyBodyPos(e);e.pos.set(bp.x,bp.y,bp.z);L.body.position.set(0,0,0);e.state='k5back';e.k5k=0.8;}}
+    // кружок под целью: где упадёт ключ
+    const r=e.k5ring;if(r){const near=e.state!=='k5fly'&&e.state!=='k5back';r.position.set(tg.pos.x,0.07,tg.pos.z);r.material.opacity=near?0.55+0.4*Math.abs(Math.sin(G.time*10)):0;
+      r.scale.setScalar(near&&e.state==='wind'?lerp(1.6,0.7,clamp(e.t/Math.max(0.1,e.wdur||0.8),0,1)):1);}}
+  function lockHero(h){if(!h||k5Locked(h))return;const pi=h.player,H=h.d.height,R=Math.max(0.55,(h.d.radius||0.45)+0.28);const g=k5Prop(new THREE.Group());g.position.copy(h.pos);
+    // цепь спиралью вокруг героя: звенья поочерёдно повёрнуты, тёмное железо с фиолетовым отсветом
+    const lm=M(0x2e2a38,{emissive:0x5a2a9a,emissiveIntensity:0.55}),LG=new THREE.TorusGeometry(0.1,0.032,5,10);const links=[],N=24,coil=new THREE.Group();g.add(coil);
+    for(let i=0;i<N;i++){const a=i*0.62,y=0.18+i*(H*0.9/N);const m=new THREE.Mesh(LG,lm);m.position.set(Math.cos(a)*R,y,Math.sin(a)*R);
+      const tg=new V3(-Math.sin(a)*R*0.62,H*0.9/N,Math.cos(a)*R*0.62).normalize();m.quaternion.setFromUnitVectors(new V3(0,1,0),tg);if(i%2)m.rotateY(Math.PI/2);m.scale.set(1,1.55,1);m.scale.multiplyScalar(0.01);coil.add(m);links.push(m);}
+    // большой замок с фиолетовой скважиной и пять шариков над ним
+    const pad=new THREE.Group();g.add(pad);fk(pad,K=>{K.box(0.56,0.46,0.2,hp(0x3a3640),tm(0,0,0),{b:0.05});K.box(0.6,0.07,0.22,hp(0xd8a830),tm(0,0.2,0),{b:0.02});K.box(0.6,0.07,0.22,hp(0xd8a830),tm(0,-0.2,0),{b:0.02});});
+    const sh=new THREE.Mesh(new FIN.orig.Torus(0.19,0.055,6,14,Math.PI),M(0x5a5660,{emissive:0x2a2440,emissiveIntensity:0.4}));sh.position.y=0.23;pad.add(sh);
+    const kh=new THREE.Mesh(new THREE.SphereGeometry(0.075,8,6),MB(0xc080ff));kh.position.set(0,-0.02,0.11);pad.add(kh);
+    const pips=[];for(let i=0;i<LOCK_HP;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.075,10,8),M(0xff7a1a,{emissive:0xff5a00,emissiveIntensity:1.1}));m.position.set((i-(LOCK_HP-1)/2)*0.19,0.52,0);pad.add(m);pips.push(m);}
+    const aura=k5Glow(0x9a60ff,H*1.9);aura.position.y=H*0.5;g.add(aura);
+    K5.locks[h.kind]={h,kind:h.kind,pi,hp:LOCK_HP,t:0,g,links,coil,pad,sh,kh,pips,aura,pin:h.pos.clone(),shk:0};
+    k5s('lock');floatText(h.pos.clone().add(new V3(0,H+0.8,0)),'Скован!','#c8a8ff');K5.log.push('lock'+pi);h.guard=false;
     if(!K5.said.lock){K5.said.lock=true;say('zven','Друга заперли — бей по замку, открывай!',3,true);}}
-  function unlock(L,by,quiet){if(!L)return;k5Del(L.g);delete K5.locks[L.pi];if(quiet)return;k5s('unlock');FX.sparks(L.h.pos.clone().add(new V3(0,1.2,0)),12,0xffe08a);floatText(L.h.pos.clone().add(new V3(0,L.h.d.height+0.8,0)),by?'Открыли!':'Вырвался!','#ffe08a');L.h.iT=Math.max(L.h.iT,1);K5.log.push('unlock'+L.pi);}
-  function locksTick(dt){for(const k in K5.locks){const L=K5.locks[k],h=L.h;if(!h.active||players[L.pi].downed){unlock(L,null,true);continue;}
-      h.vel.x=0;h.vel.z=0;h.knockT=Math.max(h.knockT,0.12);h.iT=Math.max(h.iT,0.15);h.guard=false;L.t+=dt;L.g.position.set(h.pos.x,h.pos.y+h.d.height*0.55,h.pos.z);L.g.children[0].rotation.y=Math.sin(G.time*2)*0.3;
-      L.rings.forEach((r,i)=>{r.position.y=-h.d.height*0.4+i*0.35;r.rotation.z+=dt*(i%2?2:-2);});
-      if(L.t>(G.solo?3.5:7))unlock(L,null);}
-    if(Object.keys(K5.locks).length&&K5.live&&KB.state!=='broken'){K5.regen=(K5.regen||0)+dt;if(K5.regen>2.5){K5.regen=0;if(KB.embers<KB.maxEmb){KB.embers++;floatText(kosTop(),'Кощей копит силы','#c8a8ff');}}}}
+  function unlock(L,by,quiet){if(!L)return;delete K5.locks[L.kind];if(quiet){k5Del(L.g);return;}
+    k5s('unlock');const c=L.h.pos.clone().add(new V3(0,L.h.d.height*0.55,0));FX.sparks(c,22,0xffe08a);FX.sparkle(c,12,0xffffff);
+    // путы разлетаются: звенья — в стороны и вниз, замок — вверх и раскрывается
+    const v=L.links.map(m=>new V3(m.position.x*3,rand(1,3),m.position.z*3));
+    k5fx(0.8,(k,dt)=>{L.links.forEach((m,i)=>{m.position.addScaledVector(v[i],dt);v[i].y-=9*dt;m.rotation.x+=dt*8;const s=Math.max(0.01,1-k);m.scale.set(s,1.55*s,s);});
+      L.pad.position.y+=dt*2.2;L.sh.rotation.z=-1.2*Math.min(1,k*3);L.pad.scale.setScalar(Math.max(0.01,1-Math.max(0,k-0.5)*2));L.aura.material.opacity=1-k;},()=>k5Del(L.g));
+    floatText(L.h.pos.clone().add(new V3(0,L.h.d.height+0.8,0)),by?'Свободен!':'Вырвался!','#ffe08a');L.h.iT=Math.max(L.h.iT,1);K5.log.push('unlock'+L.pi);}
+  function lockHitBy(L,h){L.hp--;L.shk=1;const p=L.pad.getWorldPosition(new V3());FX.sparks(p,10,0xffe08a);SFX.clink();k5s('forge');floatText(p.clone().add(new V3(0,0.8,0)),L.hp>0?'ещё '+L.hp:'!','#ffe08a');K5.log.push('lockhit');if(L.hp<=0)unlock(L,h);}
+  const camNow=()=>G.split>0.5?cams[0]:camS;
+  function locksTick(dt){for(const k in K5.locks){const L=K5.locks[k],h=L.h;if(players[L.pi].downed){unlock(L,null,true);continue;}
+      // скован: стоит на месте (и когда игрок сменил героя), щита нет, урона нет
+      h.pos.x=L.pin.x;h.pos.z=L.pin.z;h.vel.x=0;h.vel.z=0;h.knockT=Math.max(h.knockT,0.12);h.iT=Math.max(h.iT,0.15);h.guard=false;if(!h.active)h.following=false;
+      L.t+=dt;L.g.position.set(h.pos.x,h.pos.y,h.pos.z);const H=h.d.height;
+      L.links.forEach((m,i)=>{const at=(L.links.length-1-i)*0.022,q=clamp((L.t-at)/0.12,0,1);const s=q<1?q*1.25:1;m.scale.set(s,1.55*s,s);});
+      L.coil.rotation.y+=dt*0.6;L.aura.material.opacity=0.35+0.15*Math.sin(G.time*4);
+      // замок — на груди, к камере; трясётся от ударов; шарики — сколько ещё ударить
+      const cam=camNow();const fwd=cam?new V3(cam.position.x-h.pos.x,0,cam.position.z-h.pos.z).normalize():new V3(0,0,1);L.shk=Math.max(0,L.shk-dt*5);
+      L.pad.position.set(fwd.x*(0.62+0.1*L.shk),H*0.55+0.04*Math.sin(G.time*3),fwd.z*(0.62+0.1*L.shk));if(cam){const lp=cam.position.clone();lp.y=L.g.position.y+L.pad.position.y;L.pad.lookAt(lp);}
+      L.pad.rotation.z=Math.sin(G.time*40)*0.25*L.shk;L.kh.scale.setScalar(1+0.3*Math.sin(G.time*8));
+      L.pips.forEach((m,i)=>{const on=i<L.hp;m.material.color.setHex(on?0xff7a1a:0x3a3a3a);m.material.emissive.setHex(on?0xff5a00:0x000000);m.material.emissiveIntensity=on?1+0.3*Math.sin(G.time*8+i):0;});}
+    const n=Object.keys(K5.locks).length;
+    if(n&&K5.live&&KB.state!=='broken'){K5.regen=(K5.regen||0)+dt;if(K5.regen>2.5){K5.regen=0;if(KB.embers<KB.maxEmb){KB.embers++;floatText(kosTop(),'Кощей копит силы','#c8a8ff');}}}
+    // скованы все четверо — «пали» и снова у колокольчика: этап заново
+    if(K5.fight&&HEROES.length&&HEROES.every(x=>k5Locked(x))){K5.log.push('allLocked');banner('Скованы все четверо!','#c8a8ff',2.6,'сказ сбился — снова у колокольчика');for(const x of HEROES)FX.dust(x.pos.clone(),10,0x4a3a5a);stageLose();}}
+  const nearLock=pi=>{const me=active(pi);if(!me||k5Locked(me))return null;let best=null,bd=8;for(const k in K5.locks){const L=K5.locks[k];if(L.h===me)continue;const d=hd(L.h.pos,me.pos);if(d<bd){bd=d;best=L;}}return best;};
   function sparkTo(pi,from){const h=active(pi);if(!h)return;if(K5.spark)k5Del(K5.spark.m);const m=k5Prop(new THREE.Group());const s=new THREE.Mesh(new THREE.OctahedronGeometry(0.22),MB(0xfff2a0));m.add(s);
     m.add(new THREE.Mesh(new THREE.SphereGeometry(0.45,10,8),MB(0xffd76a,{transparent:true,opacity:0.3,depthWrite:false})));m.position.copy(from||h.pos).add(new V3(0,1.4,0));K5.spark={pi,t:4.5,m,fly:0};
     if(!K5.said.spark){K5.said.spark=true;say('zven','Отбил — искорка летит к другу! Отбивайте по очереди!',4.2,true);}}
@@ -207,12 +267,12 @@ build5B2=function(){
         if(K5.forge)K5.forge.n=Math.max(0,K5.forge.n-1);banner('Не вместе — ещё раз','#ffd0d0',1.8,'щиты — оба, когда кружок сожмётся');later(2.2,()=>{if(K5.fight&&K5.st===5)ringStart();});}}}
   function needleHold(h){const N=K5.needle;N.holder=h;N.ground=null;N.t=0;if(ndl.g.parent!==W.group){const w=ndl.g.getWorldPosition(new V3());W.group.add(ndl.g);ndl.g.position.copy(w);}ndl.g.scale.setScalar(1);}
   function needleDrop(h){const N=K5.needle;if(!N||N.holder!==h)return;N.holder=null;N.ground=inArena(h.pos.clone().add(new V3(rand(-1,1),0,rand(-1,1))),1);N.t=0;floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'Игла упала!','#ffe08a');SFX.clink();K5.log.push('drop');}
-  function needlePass(pi){const N=K5.needle,h=active(pi),o=active(1-pi);if(!N||N.holder!==h||!o||players[1-pi].downed||hd(h.pos,o.pos)>13||K5.locks[1-pi]){SFX.miss();return;}
+  function needlePass(pi){const N=K5.needle,h=active(pi),o=active(1-pi);if(!N||N.holder!==h||!o||players[1-pi].downed||hd(h.pos,o.pos)>13||k5Locked(o)){SFX.miss();return;}
     N.holder=null;N.fly=true;const f=ndl.g.position.clone();SFX.whoosh();anim(0.5,k=>{const t=headOf(o);ndl.g.position.lerpVectors(f,t,k);ndl.g.position.y+=Math.sin(k*Math.PI)*1.6;ndl.g.rotation.z+=0.4;if(k>=1){N.fly=false;needleHold(o);floatText(t,'Поймал!','#ffe08a');}});K5.log.push('pass');}
   function needleTick(dt){const N=K5.needle;if(!N)return;if(G.solo&&N.holder&&N.holder!==active(G.soloPi)&&!players[G.soloPi].downed)needleHold(active(G.soloPi));
     if(N.holder){const h=N.holder;if(players[h.player].downed||!h.active){needleDrop(h);return;}ndl.g.position.copy(headOf(h)).add(new V3(0,0.4+0.08*Math.sin(G.time*4),0));ndl.g.rotation.set(0,G.time*2,Math.PI/2);}
     else if(N.ground){N.t+=dt;ndl.g.position.set(N.ground.x,0.3+0.1*Math.sin(G.time*4),N.ground.z);ndl.g.rotation.set(0,G.time*2,Math.PI/2);if(N.t>0.6)for(const h of k5Heroes())if(hd(h.pos,N.ground)<1.2){needleHold(h);floatText(headOf(h),'Подобрал иглу!','#ffe08a');break;}}}
-  const forging=()=>{const N=K5.needle,h=N&&N.holder;return !!(h&&h.kind==='proshka'&&hd(h.pos,ANV)<2.1&&!K5.locks[h.player]&&!RG.on&&!players[h.player].downed);};
+  const forging=()=>{const N=K5.needle,h=N&&N.holder;return !!(h&&h.kind==='proshka'&&hd(h.pos,ANV)<2.1&&!k5Locked(h)&&!RG.on&&!players[h.player].downed);};
   function forgeTick(dt){const Fg=K5.forge;if(!Fg)return;const on=forging();fring.visible=on;if(!on)return;Fg.c+=dt;const FB=0.75,u=Fg.c%FB,k=clamp(1-u/FB,0,1);fring.position.set(ANV.x,1.35,ANV.z);fring.scale.setScalar(lerp(0.3,1.6,k));fring.material.color.setHex((k<0.16||k>0.92)?0xffffff:COL.gold);
     if(Math.floor(Fg.c/FB)!==Fg.b){Fg.b=Math.floor(Fg.c/FB);tone(1760,0.04,'square',0.04);}}
   function forgeHit(h){const Fg=K5.forge;if(!Fg||!forging()||h!==K5.needle.holder)return false;const FB=0.75,u=Fg.c%FB,off=Math.min(u,FB-u);Fg.tries++;const ok=off<=0.2+(W.ladBonus||0);h.atkT=0.3;
@@ -233,7 +293,7 @@ build5B2=function(){
     if(KB.state==='broken'&&KB.pos.y>0.3&&!K5.crash){K5.crash=true;KB.state='k5crash';}
     if(KB.state==='k5crash'){KB.pos.y=Math.max(0,KB.pos.y-dt*9);if(KB.pos.y<=0){k5s('land');shakeAll(0.07,0.35);FX.dust(KB.pos.clone(),16,0x8a7a6a);KB.state='broken';KB.t=0;KB._b=false;K5.crash=false;}}
     // помощники: ключи (на того, кто без иглы), вороны, иглы у наковальни
-    K5.keyT=(K5.keyT==null?7:K5.keyT)-dt;if(K5.keyT<=0){K5.keyT=G.solo?16:12;const t2=G.solo?null:(hold?active(1-hold.player):active(1));if(t2&&!players[t2.player].downed&&!K5.adds.some(e=>e.kind==='k5key'))keyMake(t2);}
+    K5.keyT=(K5.keyT==null?7:K5.keyT)-dt;if(K5.keyT<=0){K5.keyT=G.solo?16:12;const t2=G.solo?null:(hold?active(1-hold.player):active(1));if(t2&&!players[t2.player].downed&&!k5Locked(t2)&&!K5.adds.some(e=>e.kind==='k5key'))keyMake(t2);}
     if(K5.adds.filter(e=>e.kind==='k5raven').length<(G.solo?1:2)){K5.rvT=(K5.rvT==null?4:K5.rvT)-dt;if(K5.rvT<=0){K5.rvT=9;ravenMake();}}
     K5.rainT=(K5.rainT==null?8:K5.rainT)-dt;if(K5.rainT<=0){K5.rainT=11;needleRain(G.solo?3:4,forging()?ANV:null);}}
   /* ---------- Кощей: попадания, отбивы, «золотая нить» ---------- */
@@ -259,7 +319,7 @@ build5B2=function(){
         if(!K5.said['b'+K5.st]){K5.said['b'+K5.st]=true;say('zven','Он без сил! Вместе — золотой нитью!',3.6,true);}}else banner('Кощей без сил!','#ffd76a',2,'куй, Прошка!');}
     if(KB.state!=='broken'&&KB._b){KB._b=false;if(K5.fight){KB.embers=K5.st===5?KB.maxEmb:Math.max(2,Math.ceil(KB.maxEmb/2));if(K5.st!==3)floatText(kosTop(),'Спесь вернулась!','#c8a8ff');}}
     if(K5.st===2){if(G.solo)KB.pi=G.soloPi;else if(K5.spark)KB.pi=K5.spark.pi;else if(KB.state==='recover'&&!KB._sw){KB._sw=true;KB.pi=1-(KB.pi||0);}if(KB.state!=='recover'&&K5.st===2)KB._sw=false;if(KB.pi!=null&&players[KB.pi].downed)KB.pi=1-KB.pi;
-      K5.keyT=(K5.keyT==null?5:K5.keyT)-dt;const nk=K5.adds.filter(e=>e.kind==='k5key').length;if(K5.keyT<=0&&nk<(G.solo?1:2)&&KB.state!=='broken'){K5.keyT=rand(8,11)+(G.solo?3:0);const tgp=G.solo?G.soloPi:1-(KB.pi||0);const th=active(tgp);if(th&&!players[tgp].downed&&!K5.locks[tgp]){keyMake(th);if(!K5.said.k9){K5.said.k9=true;bark(KS,'koschei','Заприте их!',1.4);}anim(0.6,k=>{KS.armR.rotation.x=-2.2*Math.sin(k*Math.PI);});}}}
+      K5.keyT=(K5.keyT==null?5:K5.keyT)-dt;const nk=K5.adds.filter(e=>e.kind==='k5key').length;if(K5.keyT<=0&&nk<(G.solo?1:2)&&KB.state!=='broken'){K5.keyT=rand(8,11)+(G.solo?3:0);const tgp=G.solo?G.soloPi:1-(KB.pi||0);const th=active(tgp);if(th&&!players[tgp].downed&&!k5Locked(th)){keyMake(th);if(!K5.said.k9){K5.said.k9=true;bark(KS,'koschei','Заприте их!',1.4);}anim(0.6,k=>{KS.armR.rotation.x=-2.2*Math.sin(k*Math.PI);});}}}
     if(K5.st===3)stage3Tick(dt);if(K5.st===4)stage4Tick(dt);if(K5.st===5)stage5Tick(dt);}
   // поза и меч: замах, удар, полёт
   function kosAnim(dt){if(!K5.live)return;const s=KB.state;if(s!==K5.prevS){if(s==='strike'){k5s('swing');KS.armR.rotation.x=0.9;}if(s==='wind')k5s('warn');K5.prevS=s;}
@@ -267,8 +327,8 @@ build5B2=function(){
     else if(s==='strike'){}else if(s==='k5cast'||s==='k5rise'){KS.armR.rotation.x=damp(KS.armR.rotation.x,-1.1+0.3*Math.sin(G.time*2),3,dt);}else if(s!=='k5leap')KS.armR.rotation.x=damp(KS.armR.rotation.x,0,5,dt);
     KS.g.rotation.x=damp(KS.g.rotation.x,s==='broken'?0.25:s==='k5dive'?0.4:0,5,dt);if(sword.visible&&s!=='wind')sword.userData.edge.material.opacity=0.55+0.25*Math.sin(G.time*5);}
   /* ---------- этапы: начало, проигрыш, победа ---------- */
-  const PAUSE={1:'Этап 1 «Чёрные свечи». Купол держат четыре свечи: погасите все — отбей синюю каплю обратно в свечу, полей водой Йоши или ударь пять раз. Погасшая через 12 секунд (одному — через 24) горит снова. Красный круг — сюда ударит молния.',
-    2:'Этап 2 «Ключ и искорка». Отбивайте удары Кощея в последний миг: над другом загорается искорка — отбил с искоркой, спесь гаснет вдвое. Ключ отбей щитом; запертого друга отпирай ударами по замку. Спесь сбита — оба ударьте рядом с ним.',
+  const PAUSE={1:'Этап 1 «Чёрные свечи». Купол держат восемь свечей: погасите все — отбей синюю каплю обратно в свечу, полей водой Йоши или ударь пять раз. Погасшая через 12 секунд (одному — через 30) горит снова. Красный круг — сюда ударит молния.',
+    2:'Этап 2 «Ключ и искорка». Отбивайте удары Кощея в последний миг: над другом загорается искорка — отбил с искоркой, спесь гаснет вдвое. Ключ падает сверху — отбей его щитом. Скованного сам замок не отпустит: друг сбивает его пятью ударами (одному — переключись на другого героя). Скуют всех четверых — этап заново. Спесь сбита — оба ударьте рядом с ним.',
     3:'Этап 3 «Буря». Тёмный шар отбей в последний миг — он полетит к другу; друг отбивает его в небо, в Кощея. Ворон пикирует — кувырок, застрял — бей. Красные круги — иглы, воронка тянет — выбегай.',
     4:'Этап 4 «Меч Бессмертного». Над кем горит око — того Кощей выбрал: держи щит и отбивай серию. Второй заходит со спины и бьёт. Волна по земле — прыгай. После прыжка Кощей открыт.',
     5:'Этап 5 «Игла». Иглу несёт герой со свечением — передай другу '+K(0,'item')+'. Прошка с иглой у наковальни — бей в такт. Второй встаёт рядом с Прошкой и держит щит. Кольцо цепей — щиты оба в такт.'};
@@ -283,7 +343,7 @@ build5B2=function(){
     if(n===5){KS.g.position.set(C.x,3.2,C.z-6);liveBoss(true,true);bossCfg(6-f,['yellow','red'],3.0);sword.visible=true;KB.pos.y=3.2;k5StormSet(1);anvil.position.set(ANV.x,0.9,ANV.z);anvilCyl.x=ANV.x;anvilCyl.z=ANV.z;anvilCyl.maxy=2;
       K5.needle={holder:null,ground:null,t:0};needleHold(G.solo?active(G.soloPi):active(1));K5.forge={n:0,need:12-2*Math.min(2,f),c:0,b:-1,good:0,tries:0,rings:{}};}
     K5.wake=K5.live?KB.state:null;if(K5.live)KB.state='k5wait';   // пока идут карточки — Кощей ждёт
-    setBar();const go=()=>{K5.fight=true;K5.t0=G.time;K5.hint0=G.time;if(K5.live&&KB.state==='k5wait')KB.state=K5.wake;setBar();if(n===1&&!K5.said.k01){K5.said.k01=true;later(0.4,()=>say('pelageya','Смотрите: купол держат чёрные свечи! Погасите все четыре!',4.4));}
+    setBar();const go=()=>{K5.fight=true;K5.t0=G.time;K5.hint0=G.time;if(K5.live&&KB.state==='k5wait')KB.state=K5.wake;setBar();if(n===1&&!K5.said.k01){K5.said.k01=true;later(0.4,()=>say('pelageya','Смотрите: купол держат чёрные свечи! Погасите все восемь!',4.4));}
       if(n===4&&!G.solo&&!K5.said.k18){K5.said.k18=true;later(0.6,()=>say('zven','Кого он выбрал — тот держит щит. А второй — заходи со спины!',4.4,true));}};
     if(!K5.auto)go();else if(K5.seen[n]||retry)k5Short(n,go);else{K5.seen[n]=true;G.flags.tut5b=Object.assign({},K5.seen);k5Tut(n,go);}}
   function stageLose(){if(!K5.fight)return;K5.fight=false;K5.fails[K5.st]++;K5.log.push('lose'+K5.st);const f=$('flash');if(f){f.style.transition='opacity .6s';f.style.opacity=1;}
@@ -406,18 +466,19 @@ build5B2=function(){
     if(Math.floor(G.time*4)!==K5.bt){K5.bt=Math.floor(G.time*4);setBar();}});
   // щит: отбив шара, кольцо цепей; удар: замок, наковальня; предмет: передать иглу
   W.onGuardTap=(pi,h)=>{for(const o of K5.orbs)if(o.tgt===h&&o.st!=='up'&&o.left===null)o.left=o.eta;if(RG.on&&RG.t>=0&&RG.press[pi]===null)RG.press[pi]=RG.t;};
-  W.onAttack=(pi,h)=>{if(!K5.fight)return;if(K5.locks[pi]&&K5.locks[pi].h===h){floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'заперт!','#c8a8ff');return;}
-    for(const k in K5.locks){const L=K5.locks[k];if(L.h!==h&&hd(L.h.pos,h.pos)<2.3){L.hp--;FX.sparks(L.g.position.clone(),8,0xffe08a);SFX.clink();floatText(L.g.position.clone().add(new V3(0,0.6,0)),L.hp>0?'ещё '+L.hp:'!','#ffe08a');if(L.hp<=0)unlock(L,h);}}
+  W.onAttack=(pi,h)=>{if(!K5.fight)return;if(k5Locked(h)){floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'скован! смени героя','#c8a8ff');return;}
+    for(const k in K5.locks){const L=K5.locks[k];if(L&&L.h!==h&&hd(L.h.pos,h.pos)<2.4)lockHitBy(L,h);}
     if(K5.st===5)forgeHit(h);};
   W.itemSign=pi=>K5.fight&&K5.st===5?(K5.needle&&K5.needle.holder===active(pi)?p=>needlePass(p):()=>{}):null;
   // кнопки над героями
   for(const pi of[0,1]){prompt(pi,'attack',()=>kosTop(),()=>K5.fight&&K5.live&&KB.state==='broken'&&K5.st!==5&&hd(active(pi).pos,KB.pos)<5,'золотая нить');
-    prompt(pi,'attack',()=>{const L=K5.locks[1-pi];return L?L.g.position.clone().add(new V3(0,0.9,0)):new V3();},()=>K5.fight&&!!K5.locks[1-pi]&&!G.solo,'открой замок');
+    prompt(pi,'attack',()=>{const L=nearLock(pi);return L?L.pad.getWorldPosition(new V3()).add(new V3(0,0.95,0)):new V3();},()=>K5.fight&&!!nearLock(pi)&&(!G.solo||pi===G.soloPi),'бей по замку');
+    prompt(pi,'swap',()=>headOf(active(pi)),()=>K5.fight&&k5Locked(active(pi))&&(!G.solo||pi===G.soloPi),'смени героя');
     prompt(pi,'item',()=>headOf(active(pi)),()=>K5.fight&&K5.st===5&&K5.needle&&K5.needle.holder===active(pi)&&!forging()&&!G.solo,'передать иглу');}
   prompt(0,'attack',()=>ANV.clone().add(new V3(0,2.2,0)),()=>K5.fight&&K5.st===5&&forging(),'в такт');
   const objText=pi=>{const st=K5.st;if(!st)return 'Финал…';if(!K5.fight)return 'Этап '+st+' · '+K5N[st];
-    if(st===1)return 'Этап 1 · Погасите все четыре свечи: синюю каплю отбей щитом '+K(pi,'guard')+' в последний миг обратно в свечу, Йоша — водой '+K(1,'skill')+', или пять ударов '+K(pi,'attack');
-    if(st===2)return 'Этап 2 · Отбивайте удары Кощея '+K(pi,'guard')+' в последний миг — искорка летит к другу. Ключ — отбей. Друга заперли — бей по замку '+K(pi,'attack');
+    if(st===1)return 'Этап 1 · Погасите все восемь свечей: синюю каплю отбей щитом '+K(pi,'guard')+' в последний миг обратно в свечу, Йоша — водой '+K(1,'skill')+', или пять ударов '+K(pi,'attack');
+    if(st===2)return 'Этап 2 · Отбивайте удары Кощея '+K(pi,'guard')+' в последний миг — искорка летит к другу. Ключ — отбей щитом. Друга сковали — пять ударов по замку '+K(pi,'attack')+'; сковали тебя — смени героя '+K(pi,'swap');
     if(st===3)return 'Этап 3 · Тёмный шар отбей '+K(pi,'guard')+' в последний миг — к другу; друг отбивает в небо. Ворон — кувырок '+K(pi,'roll');
     if(st===4)return 'Этап 4 · Око над тобой — держи щит '+K(pi,'guard')+'. Око над другом — заходи Кощею за спину и бей '+K(pi,'attack')+'. Волна — прыжок '+K(pi,'jump');
     return 'Этап 5 · Застёжку куёт Прошка у наковальни — в такт '+K(0,'attack')+'. Передать иглу — '+K(pi,'item')+'. Кольцо — щиты вместе';};
@@ -426,6 +487,6 @@ build5B2=function(){
   W.spawns=[[new V3(-3,0,4),new V3(-1,0,4)],[new V3(1,0,4),new V3(3,0,4)]];W.startAct=[0,0];
   W.pauseLine='Финал. Кощея не победить силой — сбейте с него спесь и свяжите золотой нитью сказа. Пять этапов; подсказки — на экране.';
   // для ботов и отладки
-  Object.assign(K5,{KB,KS,candles,C,ANV,RG,stageStart,stageWin,stageLose,orbThrow,keyMake,lockHero,ravenMake,needlePass,leap,ringStart,sparkTo,setBar,forging,sword,dome});
+  Object.assign(K5,{KB,KS,candles,C,ANV,RG,stageStart,stageWin,stageLose,orbThrow,keyMake,lockHero,unlock,k5Locked,nearLock,LOCK_HP,chainDemo,ravenMake,needlePass,leap,ringStart,sparkTo,setBar,forging,sword,dome});
   W.onStart=()=>{intro();};
   flushDecor();};

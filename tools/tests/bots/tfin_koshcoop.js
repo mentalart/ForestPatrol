@@ -18,7 +18,7 @@ window.defend=pi=>{const h=me(pi),T=ZC.G.time,k=KY[pi];
 window.flee=pi=>{const h=me(pi);for(const z of (K5.zones||[])){const d=hdist(h.pos,z.position);if(d<2.2){const dx=h.pos.x-z.position.x,dz=h.pos.z-z.position.z,l=Math.hypot(dx,dz)||1;moveTo(pi,h.pos.x+dx/l*3,h.pos.z+dz/l*3,0.2);return true;}}return false;};
 window.ai=pi=>{const G=ZC.G,W=ZC.W,st=K5.st,h=me(pi),kb=K5.KB,o=me(1-pi);if(ZC.players[pi].downed){stopMove(pi);return;}if(!(pi===0&&st===5&&K5.forging()))defend(pi);if(flee(pi))return;   // Прошка у наковальни занят ковкой — его заслоняет друг
   // запертого друга — отпереть
-  const L=K5.locks[1-pi];if(L){const d=moveTo(pi,L.h.pos.x+1,L.h.pos.z,0.6);if(d<1.8)hitAt(pi,L.h.pos);return;}
+  const L=K5.locks[me(1-pi).kind];if(L&&!K5.locks[h.kind]){const d=moveTo(pi,L.h.pos.x+1,L.h.pos.z,0.6);if(d<1.8)hitAt(pi,L.h.pos);return;}
   if(st===1){const mine=K5.candles.filter(c=>c.lit&&(pi?c.pos.x>0:c.pos.x<0));const all=K5.candles.filter(c=>c.lit);const c=(mine.length?mine:all).sort((a,b)=>hdist(a.pos,h.pos)-hdist(b.pos,h.pos))[0];if(c){const d=moveTo(pi,c.pos.x,c.pos.z,1.25);if(d<1.8)hitAt(pi,c.pos);}else stopMove(pi);return;}
   if(st===2){if(kb.state==='broken'||kb.dazeT>0||(kb.state==='stagger'&&!kb.openHit)){const d=moveTo(pi,kb.pos.x,kb.pos.z,1.6);if(d<2.6)hitAt(pi,kb.pos);return;}moveTo(pi,kb.pos.x+(pi?1.8:-1.8),kb.pos.z+1.2,0.8);return;}
   if(st===4){if(kb.state==='broken'||kb.dazeT>0||(kb.state==='stagger'&&!kb.openHit)){const d=moveTo(pi,kb.pos.x,kb.pos.z,1.6);if(d<2.6)hitAt(pi,kb.pos);return;}
