@@ -1,5 +1,5 @@
 //@@ shot=fin_b4_intro.png wait=400
-// релиз final04, 4-Б «Змей Горыныч»: обучающие ролики по этапам (ждут нажатия, показывают сами по таймауту), восстановление голов, живые подсказки в бою
+// релиз final04 (final06 — карточка «Большой вдох» и «Совиный взор — слабое место»), 4-Б «Змей Горыныч»: обучающие ролики по этапам (ждут нажатия, показывают сами по таймауту), восстановление голов, живые подсказки в бою
 {const st=document.createElement('style');st.textContent='#finTut,#finBossHint{transition:none!important}';document.head.appendChild(st);}   // в headless кадры редкие — CSS-переходы на снимках не успевают
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
 window.T4=ZC.FIN.boss4b;window.card=()=>{const c=document.getElementById('finTut');return c&&c.classList.contains('on')?c:null;};
@@ -39,6 +39,9 @@ if(ex.length){ZC.press(B[ex[0][0]][ex[0][1]]);}ZC.tick(2);r.push('expect='+JSON.
 const W=ZC.W;W.flags.phase=2;heads().forEach(e=>{e.state='idle';e.cd=2;});ZC.tick(2);const r=['tut='+T4.on,cardSt()];r.push(waitGo(10),cardSt());r
 //@@ shot=fin_b4_s2_fire.png wait=400
 const r=[];ZC.press('KeyE');ZC.tick(30);r.push(cardSt(),'M='+heads()[1].state);r.push(waitGo(10),cardSt());r
+//@@ shot=fin_b4_s2_inhale.png wait=400
+// final06: большой вдох — оба держат щит (тянет к пасти слабее), в ролике видны струи воздуха к пастям
+const r=['streaks='+(ZC.FIN.gor4.demoT>0)];ZC.press('KeyG');ZC.press('Period');ZC.tick(2);r.push(cardSt());r.push(waitGo(10),cardSt());r
 //@@ shot=fin_b4_s2_water.png wait=400
 const r=[];ZC.tick(560);r.push(waitGo(12),cardSt());r
 //@@

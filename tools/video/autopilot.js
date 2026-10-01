@@ -59,7 +59,7 @@ window.AP={i:0,mode:null,arg:null,
   step(){AP.i++;const f=AP[AP.mode||'none'];if(f)f();}};
 // звук при съёмке: каждый вызов синтеза записывается со временем видео (при записи звука он проигрывается в тот же миг)
 window.__snd=[];window.__vt=0;
-if(!window.__sndHooked){window.__sndHooked=true;const _t=window.tone;window.tone=function(){__snd.push({t:__vt,k:'tone',a:[...arguments]});return _t.apply(this,arguments);};
+if(!window.__sndHooked){window.__sndHooked=true;ZC.FIN.toneEv=a=>{__snd.push({t:__vt,k:'tone',a});};   // tone() прототипа — через хук модуля (в релизе tone не виден снаружи)
   const A=ZC.FIN.aud;for(const k of['osc','nz']){const f=A[k];A[k]=function(o){__snd.push({t:__vt,k,a:[Object.assign({},o)]});return f.apply(this,arguments);};}}
 // голоса: какая запись и когда зазвучала (FIN.voxEv — хук модуля озвучки); main — реплика (новая обрывает прежнюю), layer — поверх, stop — затихла
 ZC.FIN.voxEv=(id,kind,g)=>{__snd.push({t:__vt,gt:ZC.G.time,k:'vox',id,kind,g});};

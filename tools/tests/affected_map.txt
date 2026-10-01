@@ -68,6 +68,7 @@ zlataya_cep/build/late_30_hero.js             tfin_art tfin_slash
 zlataya_cep/build/late_32_downswap.js         tfin_downswap tsolo
 zlataya_cep/build/late_34_slash.js            tfin_slash
 zlataya_cep/build/late_35_guard.js            tfin_guard
+zlataya_cep/build/late_36_potap_fire.js       tfin_potap tfin_slash tfin_guard
 
 # ---- модули релиза: меню, сохранения, заставка, звук ----
 zlataya_cep/build/late_40_music.js            tfin_menu tfin_save
@@ -87,7 +88,7 @@ zlataya_cep/build/late_83_cine_actors.js      tfin_cine tfin_cast tfin_scooter
 zlataya_cep/build/late_84_cine_fx.js          tfin_cine tfin_scooter
 zlataya_cep/build/late_85_cine_audio.js       tfin_cine
 zlataya_cep/build/late_86_cine_direction.js   tfin_cine tfin_scooter
-zlataya_cep/build/late_88_occ.js              tfin_occ tfin_luko tfin_fadebatch
+zlataya_cep/build/late_88_occ.js              tfin_occ tfin_luko tfin_fadebatch tfin_fadelocal
 zlataya_cep/build/late_89_camorbit.js         tfin_cam
 
 # ---- модули релиза: уровни ----
@@ -97,6 +98,7 @@ zlataya_cep/build/late_93_koschei_level.js    @level:5-B2
 zlataya_cep/build/late_94_koschei_tut.js      @level:5-B2
 zlataya_cep/build/late_96_prolog_scooter.js   @level:p
 zlataya_cep/build/late_97_buyan51.js          @level:5-1
+zlataya_cep/build/late_98_gor_lava.js         @level:4-B tfin_gorsolo
 
 # ---- замены в прототипе при сборке ----
 zlataya_cep/build/rep_10_cine.py              tfin_cine tfin_voice
