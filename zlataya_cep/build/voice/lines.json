@@ -8466,6 +8466,83 @@
    "dur": 3.59
   },
   {
+   "id": "5-B2_k33",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Больше не приманю — ни гуся, ни ворона.",
+   "tts": "Больше не приманю — ни гуся, ни ворона.",
+   "max": 6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_185120_358ac90c-0c78-47d9-9951-6971e46b0c18.mp3",
+   "job": "358ac90c-0c78-47d9-9951-6971e46b0c18",
+   "dur": 3.55
+  },
+  {
+   "id": "5-B2_k34",
+   "lv": "5-B2",
+   "who": "kot",
+   "text": "Прости меня. Я всегда сказывал, что ты проиграл, —<br>Так было проще. Прости, что не переписал.",
+   "tts": "Прости меня. Я всегда сказывал, что ты проиграл, — Так было проще. Прости, что не переписал.",
+   "max": 6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_185120_4474bcc3-87e5-4f2a-b50d-3a4e62e312ec.mp3",
+   "job": "4474bcc3-87e5-4f2a-b50d-3a4e62e312ec",
+   "dur": 6.02
+  },
+  {
+   "id": "5-B2_k35",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Так расскажи по-другому — по-иному.",
+   "tts": "Так расскажи по-другому — по-иному.",
+   "max": 6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_185120_e808ba8c-bf24-4732-b4e8-d9b25f2588e8.mp3",
+   "job": "e808ba8c-bf24-4732-b4e8-d9b25f2588e8",
+   "dur": 2.76
+  },
+  {
+   "id": "5-B2_k36",
+   "lv": "5-B2",
+   "who": "kot",
+   "text": "<i>(качает головой, показывает лапой на Пелагею)</i> Не я. Она уж сказала.",
+   "tts": "Не я. Она уж сказала.",
+   "max": 6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_185120_efbbe286-e60d-42cc-99a2-4ee32730384c.mp3",
+   "job": "efbbe286-e60d-42cc-99a2-4ee32730384c",
+   "dur": 2.16
+  },
+  {
+   "id": "5-B2_k37",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "Пелагея. Пелагея…",
+   "tts": "Пелагея. Пелагея…",
+   "max": 6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_185121_0b9287b4-5eac-4d01-8878-3bbea98bf55e.mp3",
+   "job": "0b9287b4-5eac-4d01-8878-3bbea98bf55e",
+   "dur": 2.59
+  },
+  {
+   "id": "5-B2_k38",
+   "lv": "5-B2",
+   "who": "yosha",
+   "text": "Я — Йоша! Мы все вспомнили, все!",
+   "tts": "Я — Йоша! Мы все вспомнили, все!",
+   "max": 6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_185120_36b1a5ff-0346-439d-8c18-f245d0eb56ca.mp3",
+   "job": "36b1a5ff-0346-439d-8c18-f245d0eb56ca",
+   "dur": 3.58
+  },
+  {
+   "id": "5-B2_k39",
+   "lv": "5-B2",
+   "who": "koschei",
+   "text": "<i>(тише)</i> Пелагея… Расскажи ещё, прошу.",
+   "tts": "[softly] Пелагея… Расскажи ещё, прошу.",
+   "max": 6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_185121_c41b4ab6-0b60-4a72-b919-f33d086e6cd0.mp3",
+   "job": "c41b4ab6-0b60-4a72-b919-f33d086e6cd0",
+   "dur": 2.97
+  },
+  {
    "id": "5-1_105",
    "lv": "5-1",
    "who": "gorM",
