@@ -93,8 +93,33 @@ function k5Zone(p,r,dur,col,fire){const g=k5Prop(new THREE.Group());g.position.s
   const fill=new THREE.Mesh(new THREE.CircleGeometry(r,36),MB(col,{transparent:true,opacity:0.32,side:THREE.DoubleSide,depthWrite:false}));fill.rotation.x=-Math.PI/2;fill.position.y=0.01;g.add(fill);
   K5.zones=(K5.zones||[]);K5.zones.push(g);
   k5fx(dur,k=>{fill.scale.setScalar(Math.max(0.02,k));ring.material.opacity=0.45+0.55*Math.abs(Math.sin(G.time*(5+k*16)));},()=>{k5Del(g);const i=K5.zones.indexOf(g);if(i>=0)K5.zones.splice(i,1);if(g.userData.dead)return;if(fire)fire(new V3(p.x,0,p.z));});return g;}
-function k5Beam(p,col,h){const m=k5Prop(new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.34,h||16,8),MB(col||0xd8b0ff,{transparent:true,opacity:0.95})));m.position.set(p.x,(h||16)/2,p.z);
-  k5fx(0.35,k=>{m.material.opacity=0.95*(1-k);m.scale.set(1-k*0.6,1,1-k*0.6);},()=>k5Del(m));}
+// мягкое пятно для свечений (молния, путы)
+const K5GLOW=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');const g=x.createRadialGradient(32,32,0,32,32,32);
+  g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(0.3,'rgba(255,255,255,0.55)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);})();
+function k5Glow(col,s){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:K5GLOW,color:col,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false,toneMapped:false}));sp.scale.setScalar(s);sp.raycast=()=>{};return sp;}
+// удар в красный круг — молния (по отзыву: был «столб света»): ломаный разряд из туч в точку, две ветки, белая сердцевина
+// в фиолетовом ореоле, два повторных проблеска, вспышка и свет на земле, искры, выжженное пятно гаснет за 2,5 с
+const K5BOLT={geo:new THREE.CylinderGeometry(1,1,1,6,1,true),up:new V3(0,1,0)};
+function k5Bolt(p,col){col=col||0xd8b0ff;const g=k5Prop(new THREE.Group());g.position.set(p.x,0,p.z);
+  const core=MB(0xffffff,{transparent:true,opacity:1,depthWrite:false,fog:false}),glow=MB(col,{transparent:true,opacity:0.55,depthWrite:false,blending:THREE.AdditiveBlending,fog:false});
+  const seg=(a,b,r,mat)=>{const d=b.clone().sub(a),L=d.length()||0.01;const m=new THREE.Mesh(K5BOLT.geo,mat);m.position.copy(a).addScaledVector(d,0.5);m.scale.set(r,L,r);m.quaternion.setFromUnitVectors(K5BOLT.up,d.normalize());m.userData.seg=true;m.renderOrder=14;g.add(m);};
+  const build=()=>{for(const c of g.children.slice())if(c.userData.seg)g.remove(c);const n=11,top=16,x0=rand(-1.4,1.4),z0=rand(-1.4,1.4),pts=[];
+    for(let i=0;i<=n;i++){const k=i/n,j=i&&i<n?1:0;pts.push(new V3(x0*(1-k)+rand(-0.55,0.55)*j*(1-k*0.5),top*(1-k)+rand(-0.3,0.3)*j,z0*(1-k)+rand(-0.55,0.55)*j*(1-k*0.5)));}
+    for(let i=0;i<n;i++){seg(pts[i],pts[i+1],0.06,core);seg(pts[i],pts[i+1],0.24,glow);}
+    for(const bi of[3,6,8]){let a=pts[bi].clone();for(let j=0;j<3;j++){const b=a.clone().add(new V3(rand(-1.2,1.2),-rand(0.8,1.5),rand(-1.2,1.2)));if(b.y<0.2)break;seg(a,b,0.035,core);seg(a,b,0.13,glow);a=b;}}};
+  build();
+  const fl=k5Glow(col,6);fl.position.y=0.6;g.add(fl);const top=k5Glow(0xffffff,3.2);top.position.y=0.25;g.add(top);
+  const scorch=new THREE.Mesh(new THREE.CircleGeometry(1.25,24),MB(0x231a2c,{transparent:true,opacity:0.6,depthWrite:false}));scorch.rotation.x=-Math.PI/2;scorch.position.y=0.04;g.add(scorch);
+  const ring=new THREE.Mesh(new THREE.RingGeometry(0.85,1,40),MB(col,{transparent:true,opacity:0.9,side:THREE.DoubleSide,depthWrite:false,blending:THREE.AdditiveBlending}));ring.rotation.x=-Math.PI/2;ring.position.y=0.07;g.add(ring);
+  const light=new THREE.PointLight(col,0,16,1.6);light.position.y=2;g.add(light);
+  if(FX.sparks)FX.sparks(new V3(p.x,0.3,p.z),26,0xe8d0ff);if(FX.sparkle)FX.sparkle(new V3(p.x,0.6,p.z),10,0xffffff);if(FX.dust)FX.dust(new V3(p.x,0,p.z),12,0x5a4a6a);
+  let re=0;k5fx(2.5,(k,dt)=>{const t=k*2.5;if((t>0.12&&re===0)||(t>0.24&&re===1)){re++;build();}
+    const on=t<0.42,fade=on?(t<0.3?1:1-(t-0.3)/0.12):0;g.children.forEach(c=>{if(c.userData.seg)c.visible=on&&(Math.sin(t*90)>-0.6||t<0.06);});
+    core.opacity=fade;glow.opacity=0.55*fade;fl.material.opacity=Math.max(0,1-t/0.5);fl.scale.setScalar(6+t*6);top.material.opacity=Math.max(0,1-t/0.3);
+    light.intensity=Math.max(0,4*(1-t/0.45))*(Math.sin(t*70)>-0.3?1:0.4);ring.scale.setScalar(1+t*5);ring.material.opacity=Math.max(0,0.9*(1-t/0.5));
+    scorch.material.opacity=0.6*Math.max(0,1-Math.max(0,t-0.8)/1.7);},()=>k5Del(g));}
+function k5Beam(p,col){k5Bolt(p,col);}   // прежнее имя — тоже молния
+FIN.k5bolt=(p,col)=>k5Bolt(p,col);   // для ботов
 function k5Thread(from,to){const m=k5Prop(new THREE.Mesh(new THREE.CylinderGeometry(0.035,0.035,1,5),MB(COL.gold,{transparent:true,opacity:1})));
   k5fx(1.3,k=>{const a=from(),b=to(),d=b.clone().sub(a),L=d.length();m.position.copy(a).addScaledVector(d,0.5);m.scale.set(1,L,1);m.quaternion.setFromUnitVectors(new V3(0,1,0),d.normalize());m.material.opacity=k<0.7?1:1-(k-0.7)/0.3;},()=>k5Del(m));}
 function k5OrbMesh(r){const g=new THREE.Group();g.add(new THREE.Mesh(new THREE.IcosahedronGeometry(r,1),MB(0x6a2ad0)));g.add(new THREE.Mesh(new THREE.SphereGeometry(r*1.7,12,10),MB(0xb070ff,{transparent:true,opacity:0.28,depthWrite:false})));

@@ -23,8 +23,8 @@ const c=K5.candles;c[0].onReflect();const wt=ZC.W.waterTargets.find(w=>w.pos===c
 skipAll();ZC.tick(5);const r=['ui='+ZC.G.ui];U.tap('KeyM');ZC.tick(5);skipAll();ZC.tick(5);r.push('names.potap='+!!ZC.G.flags.names.potap,'st='+K5.st);skipAll();ZC.tick(5);r.push('fight='+K5.fight,'live='+K5.live,'emb='+K5.KB.embers+'/'+K5.KB.maxEmb);r
 //@@ shot=kosh_s2.png
 // этап 2: ключ летит и запирает, друг отпирает ударами; искорка
-ZC.tick(60);const kb=K5.KB;const key=K5.keyMake(A(1));ZC.tick(30);const r=['key state='+key.state];K5.lockHero(A(1));ZC.tick(5);r.push('locked='+!!K5.locks[1]);
-for(let i=0;i<3;i++){const L=K5.locks[1];if(!L)break;A(0).pos.set(L.h.pos.x+1,0,L.h.pos.z);ZC.W.onAttack(0,A(0));}ZC.tick(5);r.push('afterHits locked='+!!K5.locks[1]);
+ZC.tick(60);const kb=K5.KB;const key=K5.keyMake(A(1));ZC.tick(30);const r=['key state='+key.state];const lk=A(1).kind;K5.lockHero(A(1));ZC.tick(5);r.push('locked='+!!K5.locks[lk]);
+for(let i=0;i<5;i++){const L=K5.locks[lk];if(!L)break;A(0).pos.set(L.h.pos.x+1,0,L.h.pos.z);ZC.W.onAttack(0,A(0));}ZC.tick(5);r.push('afterHits locked='+!!K5.locks[lk]);
 K5.sparkTo(1,A(0).pos);ZC.tick(20);r.push('spark='+(K5.spark&&K5.spark.pi));ZC.FIN.occ.frame();r
 //@@
 // спесь сбита → золотая нить вдвоём → ролик → Сказ 2 (выбирает Игрок 1) → буря → карточки этапа 3
