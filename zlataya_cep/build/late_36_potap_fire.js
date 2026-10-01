@@ -1,13 +1,14 @@
-/* ============================== РЕЛИЗ final06 · ПОТАП: ОГНЕННЫЕ КУЛАКИ, МАХ ИЗ-ЗА ГОЛОВЫ, ОГНЕННЫЙ СЕРП ============================== */
+/* ============================== РЕЛИЗ final06 · ПОТАП: ОГНЕННЫЕ КУЛАКИ, МАХ ИЗ-ЗА ГОЛОВЫ, ОГНЕННЫЕ КОГТИ ============================== */
 // По видео-референсу (Потап против Горыныча на лаве):
 // - кулаки Потапа горят золотым огнём: белая сердцевина, живое пламя вокруг лапы, мягкое свечение;
 // - удар — широкий мах лапой из-за головы через верх вперёд-вниз: замах с разворотом корпуса от врага, затем выпад вперёд,
 //   корпус доворачивается в удар, вторая лапа прижата к груди; лапы чередуются (правая, левая, правая…);
-// - за лапой — один толстый огненный серп (сердцевина → жёлтый → оранжевый → тёмно-красная рваная кромка), он проходит
-//   дугой перед Потапом и смотрит на камеру сзади-сверху, поэтому виден со спины; с передней кромки сыплются искры;
+// - удар — огненное зарево и толстый серп, расходящийся на три когтя (сердцевина → жёлтый → оранжевый → тёмно-красная рваная кромка) сектором
+//   перед Потапом на высоте груди, длиной как лента Прошки (по отзыву: прежний серп был коротким и читался только от правой
+//   лапы); правая и левая лапы машут зеркально, с головы внешнего когтя сыплются искры;
 // - попал — вспышка огня, искры и клубы серого дыма (белая звезда «бах» из late_34 у Потапа выключена).
 // Кулаки разгораются, когда рядом враги или Потап только что бил, и гаснут в мирной обстановке и в роликах без боя.
-// Механика удара (время, дальность, урон, отбрасывание) не меняется — только поза и эффекты. Прежние три «когтя» у Потапа выключены.
+// Механика удара (время, дальность, урон, отбрасывание) не меняется — только поза и эффекты. Прежние ленты late_34 у Потапа выключены.
 const PF={fists:new Map(),live:[],smoke:[],pool:[],spool:[]};FIN.potap=PF;
 // мягкое пятно (свечение) и клочковатое облачко (дым) — текстуры из канваса
 const PF_TEX=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');const g=x.createRadialGradient(32,32,0,32,32,32);
@@ -59,42 +60,54 @@ function pfPose(h){const B=h.rig;if(!B||!B.armL||!B.chest||!B.hips)return;if(h._
   B.hips.position.z=h._pfZ0+K[6]*w;h._pfLunge=1;
   // бьющий кулак вспыхивает в миг удара
   const F=PF.fists.get(h);if(F){const f=F[sg>0?0:1];if(f&&u>0.4&&u<0.6)f.flare=1;}}
-// ---------- огненный серп ----------
+// ---------- огненный удар когтями ----------
+// Сектор кольца перед Потапом на высоте груди — как лента Прошки (late_34) и такой же длины: толстый огненный серп и зарево
+// накрывают всё перед героем до 1,9 м; к голове серп расходится на три когтя (внешний длиннее и ведёт). Мах наискосок: дуга начинается
+// со стороны бьющей лапы и выше, уходит на другую сторону ниже; правая и левая лапы — зеркально (правой — справа налево).
+// Плоскость пологая: игровая камера смотрит сзади-сверху, крутую ленту видно почти с ребра.
 const PF_CR_VS='varying vec2 vUv;void main(){vUv=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}';
-const PF_CR_FS=`uniform float uProg;uniform float uLen;uniform float uAlpha;uniform float uT;uniform float uGlow;varying vec2 vUv;`+PF_NOISE+`
-void main(){float u=vUv.x,v=vUv.y;float head=uProg,tail=uProg-uLen;
-  float mid=clamp((u-tail)/max(head-tail,1e-3),0.0,1.0);float w=0.05+0.95*pow(sin(clamp(pow(mid,1.6)*0.92+0.04,0.0,1.0)*3.14159),1.2);   // серп: острые концы, толстый ближе к голове
-  float n=pfN(vec3(u*14.0-uT*9.0,v*4.0,uT*2.0));float d=(1.0-v)/w;   // 0 — наружная (острая) кромка, 1 — внутренняя (рваная)
-  float body=1.0-smoothstep(0.62+0.3*n,0.95+0.3*n,d);float band=smoothstep(tail,tail+0.08,u)*(1.0-smoothstep(head,head+0.025,u));
-  float a=band*body*uAlpha;if(uGlow>0.5){a=band*(1.0-smoothstep(0.1,1.6,d))*0.3*uAlpha;}if(a<0.015)discard;
+const PF_CR_FS=`uniform float uProg;uniform float uLen;uniform float uAlpha;uniform float uT;uniform float uHaze;varying vec2 vUv;`+PF_NOISE+`
+void main(){float u=vUv.x,v=vUv.y;float head=uProg,tail=uProg-uLen;float n=pfN(vec3(u*16.0-uT*9.0,v*5.0,uT*2.0));
+  if(uHaze>0.5){   // зарево: мягкое по краям, рваное, отстаёт от когтей
+    float bh=smoothstep(tail,tail+uLen*0.55,u)*(1.0-smoothstep(head-0.05,head+0.03,u));
+    float a=bh*pow(sin(v*3.14159),0.7)*(0.24+0.22*n)*uAlpha;if(a<0.01)discard;
+    gl_FragColor=vec4(mix(vec3(1.0,0.42,0.05),vec3(1.0,0.7,0.18),n),a);return;}
+  // серп: острый хвост, толще к голове; d: 0 — внешняя режущая кромка, 1 — внутренняя рваная.
+  // К голове серп расходится на три параллельных когтя (по радиусу): внешний длиннее и ведёт, внутренние короче и чуть отстают.
+  float mid=clamp((u-tail)/max(head-tail,1e-3),0.0,1.0);float w=0.07+0.93*pow(sin(clamp(pow(mid,1.5)*0.92+0.04,0.0,1.0)*3.14159),1.1);
+  float d=(1.0-v)/w;float body=1.0-smoothstep(0.8+0.2*n,1.0+0.2*n,d);
+  float t=v*2.999,k=floor(t),f=fract(t);float cf=smoothstep(0.22,0.7,mid);   // k: 2 — внешний коготь, 0 — внутренний
+  float tine=k>1.5?1.0-smoothstep(0.72,0.96,1.0-f):smoothstep(0.04,0.28,f)*(1.0-smoothstep(0.72,0.96,f));
+  float hk=head-(2.0-k)*0.045;float band=smoothstep(tail,tail+0.08,u)*(1.0-smoothstep(hk,hk+0.025,u));
+  float a=band*body*mix(1.0,tine,cf)*uAlpha;if(a<0.015)discard;
   vec3 c=mix(vec3(1.0,0.99,0.9),vec3(1.0,0.88,0.38),smoothstep(0.05,0.4,d));c=mix(c,vec3(1.0,0.52,0.1),smoothstep(0.42,0.75,d));c=mix(c,vec3(0.75,0.14,0.03),smoothstep(0.8,1.0,d));
-  if(uGlow>0.5)c=vec3(1.0,0.48,0.08);
-  c=mix(c,vec3(1.0,0.98,0.86),smoothstep(head-0.14,head,u)*(1.0-smoothstep(0.0,0.6,d))*0.7);gl_FragColor=vec4(c,a);}`;
-// сектор кольца в плоскости XY (перед героем, лицом к камере сзади-сверху); u — вдоль дуги по ходу маха
-function pfArcGeo(r0,r1,a0,a1,n){const P=[],U=[],I=[];for(let i=0;i<=n;i++){const t=i/n,a=a0+(a1-a0)*t,c=Math.cos(a),s=Math.sin(a);P.push(c*r0,s*r0,0,c*r1,s*r1,0);U.push(t,0,t,1);
+  float tc=1.0-abs(f-0.5)*2.0;c=mix(c,mix(vec3(1.0,0.45,0.06),vec3(1.0,0.95,0.72),smoothstep(0.25,0.85,tc)),cf*0.8);   // у когтя светлая середина, оранжевые края
+  c=mix(c,vec3(1.0,0.98,0.86),smoothstep(hk-0.12,hk,u)*0.6*cf);gl_FragColor=vec4(c,a);}`;
+// сектор кольца в плоскости земли героя: a=0 — вперёд (+Z), a>0 — влево (+X); u — вдоль дуги по ходу маха, v — от внутреннего края к внешнему
+function pfArcGeo(r0,r1,a0,a1,n){const P=[],U=[],I=[];for(let i=0;i<=n;i++){const t=i/n,a=a0+(a1-a0)*t,c=Math.cos(a),s=Math.sin(a);P.push(s*r0,0,c*r0,s*r1,0,c*r1);U.push(t,0,t,1);
     if(i<n){const k=i*2;I.push(k,k+1,k+2,k+1,k+3,k+2);}}const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(P,3));g.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));g.setIndex(I);return g;}
-// дуга короче полукруга: от плеча бьющей лапы через макушку вниз на другую сторону (как коготь в референсе), центр — на груди
-const PF_A={L:[Math.PI*0.2,Math.PI*1.08],R:[Math.PI*0.8,-Math.PI*0.08],r0:0.62,r1:1.04,rm:0.9,y:0.58,z:0.58,tilt:0.42};
-const PF_ARC={R:pfArcGeo(PF_A.r0,PF_A.r1,PF_A.R[0],PF_A.R[1],40),L:pfArcGeo(PF_A.r0,PF_A.r1,PF_A.L[0],PF_A.L[1],40),
-  RG:pfArcGeo(PF_A.r0-0.1,PF_A.r1+0.1,PF_A.R[0],PF_A.R[1],40),LG:pfArcGeo(PF_A.r0-0.1,PF_A.r1+0.1,PF_A.L[0],PF_A.L[1],40)};
-function pfCrMat(glow){return new THREE.ShaderMaterial({uniforms:{uProg:{value:0},uLen:{value:0.8},uAlpha:{value:1},uT:{value:0},uGlow:{value:glow?1:0}},vertexShader:PF_CR_VS,fragmentShader:PF_CR_FS,
-  transparent:true,depthWrite:false,side:THREE.DoubleSide,fog:false,toneMapped:false,blending:THREE.NormalBlending});}
-function pfCrescent(){let o=PF.pool.find(p=>!p.busy);if(o)return o;const g=new THREE.Group(),m=new THREE.Mesh(PF_ARC.R,pfCrMat(false)),gl=new THREE.Mesh(PF_ARC.RG,pfCrMat(true));
-  m.renderOrder=13;gl.renderOrder=12;for(const x of[g,m,gl]){x.userData.noBatch=true;x.userData.occEx=true;x.frustumCulled=false;}g.add(gl);g.add(m);o={g,m,gl,busy:false};PF.pool.push(o);return o;}
+// полосы: [внутр. радиус, внешн. радиус, отставание по дуге]: зарево и серп с когтями
+const PF_A={arc:2.8,y:0.52,roll:0.36,dur:0.22,bands:[[0.3,2.0,0.06],[0.4,1.9,0]],len:[0.95,0.8]};
+const PF_ARC={L:PF_A.bands.map(b=>pfArcGeo(b[0],b[1],PF_A.arc/2,-PF_A.arc/2,48)),R:PF_A.bands.map(b=>pfArcGeo(b[0],b[1],-PF_A.arc/2,PF_A.arc/2,48))};
+function pfCrMat(haze){return new THREE.ShaderMaterial({uniforms:{uProg:{value:0},uLen:{value:0.7},uAlpha:{value:1},uT:{value:0},uHaze:{value:haze?1:0}},vertexShader:PF_CR_VS,fragmentShader:PF_CR_FS,
+  transparent:true,depthWrite:false,side:THREE.DoubleSide,fog:false,toneMapped:false});}
+function pfCrescent(){let o=PF.pool.find(p=>!p.busy);if(o)return o;const g=new THREE.Group(),ms=PF_A.bands.map((b,i)=>{const m=new THREE.Mesh(PF_ARC.R[i],pfCrMat(i===0));m.renderOrder=i?13+i:11;return m;});
+  for(const x of[g,...ms]){x.userData.noBatch=true;x.userData.occEx=true;x.frustumCulled=false;}for(const m of ms)g.add(m);o={g,ms,busy:false};PF.pool.push(o);return o;}
 function potapSlash(h){if(!W||!W.group)return;const sg=h._pfSide=-(h._pfSide||1);h._pfAtk=G.time;
-  const o=pfCrescent();o.busy=true;o.m.geometry=PF_ARC[sg>0?'L':'R'];o.gl.geometry=PF_ARC[sg>0?'LG':'RG'];
-  // плоскость серпа перед героем: наклон вперёд — лицом к камере сзади-сверху; чуть развёрнута к бьющей лапе
-  o.g.position.set(h.pos.x,h.pos.y+PF_A.y,h.pos.z);o.g.rotation.set(0,h.face,0);
-  for(const x of[o.m,o.gl]){x.position.set(0,0,PF_A.z);x.rotation.set(PF_A.tilt,sg*0.18,0,'YXZ');const U=x.material.uniforms;U.uProg.value=0;U.uAlpha.value=0;}
-  if(!o.g.parent)W.group.add(o.g);PF.live.push({o,h,t:-0.05,dur:0.17,sp:0,sg});
+  const o=pfCrescent();o.busy=true;const H=(h.d&&h.d.height)||1.7;
+  o.g.position.set(h.pos.x,h.pos.y+H*PF_A.y,h.pos.z);o.g.rotation.set(0,h.face,0);
+  // наклон вокруг оси взгляда: сторона бьющей лапы выше — мах сверху наискосок
+  o.ms.forEach((m,i)=>{m.geometry=PF_ARC[sg>0?'L':'R'][i];m.position.set(0,0,0.1);m.rotation.set(0,0,sg*PF_A.roll);const U=m.material.uniforms;U.uProg.value=0;U.uAlpha.value=0;U.uLen.value=PF_A.len[i];});
+  if(!o.g.parent)W.group.add(o.g);PF.live.push({o,h,t:-0.04,dur:PF_A.dur,sp:0,sg});
   if(FX.dust)FX.dust(h.pos.clone(),6,0xd8c8a8,0.7);}
 function pfCrTick(dt){for(let k=PF.live.length-1;k>=0;k--){const L=PF.live[k];L.t+=dt;const q=L.t/L.dur;
-    for(const x of[L.o.m,L.o.gl]){const U=x.material.uniforms;U.uT.value=G.time;U.uLen.value=0.68;U.uProg.value=Math.max(0,Math.min(1.8,q*1.25));U.uAlpha.value=L.t<0?0:Math.max(0,1-Math.max(0,q-1)*1.4);}
-    const h=L.h;if(h){L.o.g.position.x+=(h.pos.x-L.o.g.position.x)*0.5;L.o.g.position.z+=(h.pos.z-L.o.g.position.z)*0.5;}   // серп держится за Потапом
-    // искры с передней кромки серпа
-    L.sp-=dt;if(q>0&&q<1&&L.sp<=0&&FX.sparkle){L.sp=0.025;const A=PF_A[L.sg>0?'L':'R'],a=A[0]+(A[1]-A[0])*Math.min(1,q*1.25),r=PF_A.rm;
-      const p=new V3(Math.cos(a)*r,Math.sin(a)*r,0).applyEuler(L.o.m.rotation).add(L.o.m.position).applyEuler(L.o.g.rotation).add(L.o.g.position);FX.sparkle(p,2,Math.random()<0.5?0xffc040:0xff7a20);}
-    if(q>1.9){L.o.busy=false;if(L.o.g.parent)L.o.g.parent.remove(L.o.g);PF.live.splice(k,1);}}}
+    L.o.ms.forEach((m,i)=>{const U=m.material.uniforms,lag=PF_A.bands[i][2];U.uT.value=G.time;U.uProg.value=Math.max(0,Math.min(2,(q-lag)*(1+U.uLen.value)));
+      U.uAlpha.value=L.t<0?0:Math.max(0,1-Math.max(0,q-1-lag)*1.6);});
+    const h=L.h;if(h){L.o.g.position.x+=(h.pos.x-L.o.g.position.x)*0.5;L.o.g.position.z+=(h.pos.z-L.o.g.position.z)*0.5;}   // удар держится за Потапом
+    // искры с головы внешнего когтя
+    L.sp-=dt;if(q>0&&q<1&&L.sp<=0&&FX.sparkle){L.sp=0.025;const a=L.sg*PF_A.arc*(0.5-Math.min(1,q)),r=PF_A.bands[1][1]-0.12,m=L.o.ms[1];
+      const p=new V3(Math.sin(a)*r,0,Math.cos(a)*r).applyEuler(m.rotation).add(m.position).applyEuler(L.o.g.rotation).add(L.o.g.position);FX.sparkle(p,2,Math.random()<0.5?0xffc040:0xff7a20);}
+    if(q>2){L.o.busy=false;if(L.o.g.parent)L.o.g.parent.remove(L.o.g);PF.live.splice(k,1);}}}
 // ---------- дым при попадании ----------
 function pfPuff(){let s=PF.spool.find(x=>!x.busy);
   if(!s){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:PF_SMOKE_TEX,color:0x9a948e,transparent:true,depthWrite:false,fog:false}));sp.userData.noBatch=true;sp.userData.occEx=true;sp.renderOrder=11;s={sp,busy:false};PF.spool.push(s);}
@@ -118,6 +131,7 @@ function pfSmokeTick(dt){for(let k=PF.smoke.length-1;k>=0;k--){const s=PF.smoke[
 {const _si=slImpact;slImpact=function(p,col){if(PF.hit)return;return _si.apply(this,arguments);};}
 {const _eh=enemyHit;enemyHit=function(e,h){PF.hit=!!(h&&h.kind==='potap');let r;try{r=_eh.apply(this,arguments);}finally{PF.hit=false;}try{if(h&&h.kind==='potap'&&e&&e.pos){const p=e.pos.clone().lerp(h.pos,0.3);p.y=(e.pos.y+h.pos.y)/2+Math.max(0.6,(e.r||0.6)*0.9);pfSmoke(p);}}catch(err){}return r;};}
 {const _step=step;step=function(dt){_step(dt);try{pfCrTick(dt);pfSmokeTick(dt);}catch(e){console.error('potap fire',e);}};}
-{const _ll=loadLevel;loadLevel=function(i){for(const L of PF.live)L.o.busy=false;PF.live.length=0;for(const s of PF.smoke)s.busy=false;PF.smoke.length=0;_ll(i);};}
-// для ботов: сила огня кулаков [левый, правый], какой лапой был последний удар (1 — левой, −1 — правой)
-PF.fistK=h=>{const F=PF.fists.get(h);return F?F.map(f=>f?+f.k.toFixed(2):null):null;};PF.side=h=>h._pfSide||0;
+{const _ll=loadLevel;loadLevel=function(i){for(const L of PF.live){L.o.busy=false;if(L.o.g.parent)L.o.g.parent.remove(L.o.g);}PF.live.length=0;
+  for(const s of PF.smoke){s.busy=false;if(s.sp.parent)s.sp.parent.remove(s.sp);}PF.smoke.length=0;_ll(i);};}
+// для ботов: дальность удара (м), сила огня кулаков [левый, правый], какой лапой был последний удар (1 — левой, −1 — правой)
+PF.reach=()=>Math.max(...PF_A.bands.map(b=>b[1]));PF.fistK=h=>{const F=PF.fists.get(h);return F?F.map(f=>f?+f.k.toFixed(2):null):null;};PF.side=h=>h._pfSide||0;
