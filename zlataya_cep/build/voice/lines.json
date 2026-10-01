@@ -8904,6 +8904,171 @@
    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155506_3a00a5d4-f5b2-4518-8f93-2571a5851327.mp3",
    "job": "3a00a5d4-f5b2-4518-8f93-2571a5851327",
    "dur": 3.33
+  },
+  {
+   "id": "epi_015",
+   "lv": "epi",
+   "who": "pelageya",
+   "text": "А давайте сказку тенями покажем! Я фонарик поставлю.",
+   "tts": "[happy] А давайте сказку тенями покажем! Я фонарик поставлю.",
+   "max": 5,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211624_594c8578-6adf-4fd1-848c-aa7e0ceec7ec.mp3",
+   "job": "594c8578-6adf-4fd1-848c-aa7e0ceec7ec",
+   "dur": 3.71
+  },
+  {
+   "id": "epi_016",
+   "lv": "epi",
+   "who": "tishka",
+   "text": "Ой! Тени! Ваши тени на стене!",
+   "tts": "[surprised] Ой! Тени! Ваши тени на стене!",
+   "max": 3.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211623_8c1e4c1d-e4e1-40e4-95ab-3071c799276f.mp3",
+   "job": "8c1e4c1d-e4e1-40e4-95ab-3071c799276f",
+   "dur": 3.29
+  },
+  {
+   "id": "epi_017",
+   "lv": "epi",
+   "who": "pelageya",
+   "text": "Ближе к фонарю — тень больше. Достаньте до звёздочек!",
+   "tts": "Ближе к фонарю — тень больше. Достаньте до звёздочек!",
+   "max": 4.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211624_82066c7c-534c-49ea-9338-88dda50969f6.mp3",
+   "job": "82066c7c-534c-49ea-9338-88dda50969f6",
+   "dur": 4.38
+  },
+  {
+   "id": "epi_018",
+   "lv": "epi",
+   "who": "tishka",
+   "text": "Ой, великан!",
+   "tts": "[laughs] Ой, великан!",
+   "max": 3,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211624_72696c17-5094-4782-82f3-b46061ca5b1f.mp3",
+   "job": "72696c17-5094-4782-82f3-b46061ca5b1f",
+   "dur": 2.72
+  },
+  {
+   "id": "epi_019",
+   "lv": "epi",
+   "who": "tishka",
+   "text": "До звёздочек достали!",
+   "tts": "[happy] До звёздочек достали!",
+   "max": 3.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211624_35680f68-0846-4568-b396-c8e92c8064c0.mp3",
+   "job": "35680f68-0846-4568-b396-c8e92c8064c0",
+   "dur": 1.59
+  },
+  {
+   "id": "epi_020",
+   "lv": "epi",
+   "who": "pelageya",
+   "text": "Змей о трёх головах! Трое — в золотые круги, тени будут головами.",
+   "tts": "Змей о трёх головах! Трое — в золотые круги, тени будут головами.",
+   "max": 5,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211623_9621a33f-ebf5-4c13-bcd6-4f9c7edbf860.mp3",
+   "job": "9621a33f-ebf5-4c13-bcd6-4f9c7edbf860",
+   "dur": 5.14
+  },
+  {
+   "id": "epi_021",
+   "lv": "epi",
+   "who": "tishka",
+   "text": "Змей! Пусть огнём дохнёт!",
+   "tts": "[excited] Змей! Пусть огнём дохнёт!",
+   "max": 3.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211624_e97f4ae6-051a-4ac3-bcd6-8eda70d80995.mp3",
+   "job": "e97f4ae6-051a-4ac3-bcd6-8eda70d80995",
+   "dur": 2.61
+  },
+  {
+   "id": "epi_022",
+   "lv": "epi",
+   "who": "tishka",
+   "text": "Улетел Змей — хи-хи!",
+   "tts": "[laughs] Улетел Змей — хи-хи!",
+   "max": 3.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211623_dc915a65-b954-4663-856e-d2d52269275e.mp3",
+   "job": "dc915a65-b954-4663-856e-d2d52269275e",
+   "dur": 2.66
+  },
+  {
+   "id": "epi_023",
+   "lv": "epi",
+   "who": "pelageya",
+   "text": "Жар-птицу в ладошки ловят: тень с одной стороны, тень с другой!",
+   "tts": "Жар-птицу в ладошки ловят: тень с одной стороны, тень с другой!",
+   "max": 5,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211642_591691dc-81cf-4404-96fc-4d960db74a49.mp3",
+   "job": "591691dc-81cf-4404-96fc-4d960db74a49",
+   "dur": 4.68
+  },
+  {
+   "id": "epi_024",
+   "lv": "epi",
+   "who": "tishka",
+   "text": "Упорхнула! Хи-хи!",
+   "tts": "[laughs] Упорхнула! Хи-хи!",
+   "max": 3,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211641_82d82d6a-72c5-4b68-a043-54d8c5641a58.mp3",
+   "job": "82d82d6a-72c5-4b68-a043-54d8c5641a58",
+   "dur": 2.53
+  },
+  {
+   "id": "epi_025",
+   "lv": "epi",
+   "who": "tishka",
+   "text": "Три пера! Жар-птица!",
+   "tts": "[happy] Три пера! Жар-птица!",
+   "max": 3.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211641_895c3f47-3c34-4b61-8417-226a82d946e0.mp3",
+   "job": "895c3f47-3c34-4b61-8417-226a82d946e0",
+   "dur": 2.15
+  },
+  {
+   "id": "epi_026",
+   "lv": "epi",
+   "who": "pelageya",
+   "text": "А теперь — хоровод вокруг Кощея. Все четверо — в круги!",
+   "tts": "А теперь — хоровод вокруг Кощея. Все четверо — в круги!",
+   "max": 4.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211643_17c7a04f-d310-4f92-bb19-85452cce4ffc.mp3",
+   "job": "17c7a04f-d310-4f92-bb19-85452cce4ffc",
+   "dur": 4.61
+  },
+  {
+   "id": "epi_027",
+   "lv": "epi",
+   "who": "pelageya",
+   "text": "Раз-два-три — прыгаем вместе!",
+   "tts": "[happy] Раз-два-три — прыгаем вместе!",
+   "max": 3.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211641_e61e2904-3072-4ce7-91af-62fe9a93471d.mp3",
+   "job": "e61e2904-3072-4ce7-91af-62fe9a93471d",
+   "dur": 2.52
+  },
+  {
+   "id": "epi_028",
+   "lv": "epi",
+   "who": "tishka",
+   "text": "Кощей… мальчишкой стал!",
+   "tts": "[surprised] Кощей… мальчишкой стал!",
+   "max": 3.8,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211641_297a4718-2308-409f-89f8-c3b09f39dea6.mp3",
+   "job": "297a4718-2308-409f-89f8-c3b09f39dea6",
+   "dur": 2.45
+  },
+  {
+   "id": "epi_029",
+   "lv": "epi",
+   "who": "pelageya",
+   "text": "Вот и сказке конец. А теперь — спать.",
+   "tts": "[softly] Вот и сказке конец. А теперь — спать.",
+   "max": 4.2,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211641_629cb186-a9e6-43e1-b4d3-3bbfea10db88.mp3",
+   "job": "629cb186-a9e6-43e1-b4d3-3bbfea10db88",
+   "dur": 3.45
   }
  ]
 }
