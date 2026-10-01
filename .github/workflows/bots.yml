@@ -1,0 +1,57 @@
+# Боты Playwright на каждый PR в main: tools/tests/affected.py --run выбирает ботов по изменённым файлам.
+# Полный регресс в CI не идёт (на раннере GitHub он слишком медленный): если скрипт его требует (код 2), CI гоняет только
+# страховку и пишет предупреждение — полный регресс прогоните локально. Вручную: Actions → Боты → Run workflow.
+# Выводы ботов и кадры — во вложении к запуску.
+name: Боты
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: bots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # affected.py ищет merge-base с origin/main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Playwright + Chromium
+        # глобально, а не в node_modules репозитория: иначе affected.py считает node_modules изменёнными файлами
+        # и требует полный регресс (tools/tests/pw.js находит глобальную установку сам)
+        run: |
+          npm i -g playwright
+          playwright install --with-deps chromium
+
+      - name: Выборочные боты (affected.py)
+        run: |
+          set +e
+          python3 tools/tests/affected.py --run --jobs 3
+          rc=$?
+          set -e
+          if [ $rc = 2 ]; then   # «НУЖЕН ПОЛНЫЙ РЕГРЕСС» — здесь только страховка, полный регресс — локально
+            echo "::warning::affected.py требует полный регресс — прогоните его локально (см. CLAUDE.md). В CI — только smoke, tfin_col, tallobj."
+            python3 zlataya_cep/build/build_final.py
+            BOTS="smoke tfin_col tallobj" JOBS=3 sh tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html
+          else
+            exit $rc
+          fi
+
+      - name: Выводы ботов и кадры
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bots-out
+          path: |
+            tools/tests/out/
+            tools/tests/shots/
+          retention-days: 7
+          if-no-files-found: ignore

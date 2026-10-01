@@ -30,4 +30,5 @@ if(ZC.players[0].act!==1)U.tap('KeyQ');const r=[U.walkTo(0,0,-58.6,8)];ZC.tick(2
 const th=ZC.W.threads.filter(t=>t.thick).map(t=>(t.string?'S':'')+t.len.toFixed(1)).join(' ');U.tap('KeyQ');r.push(U.walkTo(0,0,-75,10));r.push(U.walkTo(1,0.3,-58,8),U.walkTo(1,0,-75,10));U.tap('KeyK');r.push(U.walkTo(1,0.3,-58,8),U.walkTo(1,0,-75.5,10));
 U.tap('Digit1');ZC.tick(240);'thick='+th+' '+r.join(',')+' | '+U.st()+' thanks='+!!ZC.W.flags.thanks+' sag='+!!ZC.W.flags.sagged
 //@@
-const r=[U.walkTo(0,-1,-80,5),U.walkTo(1,1,-80,5)];ZC.tick(90);const b=U.brawl(90);const r2=[U.walkTo(0,0,-99.5,8),U.walkTo(0,0,-103,4)];ZC.tick(60);b+' '+r2.join(',')+' got='+JSON.stringify(ZC.G.got)+' lvl='+ZC.W.levelId
+// за толстой струной — берег Журавля (дальше уровень проверяет t12long: Журавль и Цапля, огоньки, Царевна-лягушка, бесёнок, стычка и выход)
+const r=[U.walkTo(0,-1,-84,5),U.walkTo(1,1,-84,5)];ZC.tick(90);r.join(',')+' wed='+ZC.W.flags.wed.stage+' told='+ZC.W.flags.wed.told+' links='+ZC.W.links+'/'+ZC.W.linkTotal+' | '+U.obj()

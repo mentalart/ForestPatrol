@@ -1,6 +1,6 @@
 # Боты полного регресса (по одному имени через пробел или с новой строки; # — комментарий)
 # пролог, мир 1, хаб
-smoke t12n t12deep t12tat tfoes t13v t15n t1b thub2 t11 thub9 thub9b thub9c
+smoke tpjump t12n t12deep t12tat t12long tfoes t13v t15n t1b thub2 t11 thub9 thub9b thub9c
 # мир 2
 t21 t2c t25c t22d t23f t24n t21x tdodge tfade tsplit t22shot thw2
 # мир 3
@@ -12,4 +12,4 @@ t51 t52 t53 t54 t5b1 t5b2 tepi tzast
 # задачи всех уровней
 tallobj
 # одиночный режим
-tsolo tsolo41 tsospot tso13 tso33 tso54 tso51
+tsolo tsolo41 tsospot tso12long tso13 tso33 tso54 tso51

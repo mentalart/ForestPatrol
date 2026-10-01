@@ -23,6 +23,8 @@ tools/tests/layout_check.js                   -
 tools/tests/regress.sh                        -
 tools/tests/out/*                             -
 tools/tests/shots/*                           -
+# CI: правка workflow проверяется одним быстрым ботом
+.github/workflows/*                           smoke
 # инфраструктура ботов — касается всех
 tools/tests/helpers.js                        @full
 tools/tests/run.js                            @full
@@ -67,6 +69,7 @@ zlataya_cep/build/late_32_downswap.js         tfin_downswap tsolo
 zlataya_cep/build/late_34_slash.js            tfin_slash
 zlataya_cep/build/late_35_guard.js            tfin_guard
 zlataya_cep/build/late_36_potap_fire.js       tfin_potap tfin_slash tfin_guard
+zlataya_cep/build/late_37_gor_uzda.js         @level:4-B tfin_uzda tfin_boss4b tfin_gorsolo
 
 # ---- модули релиза: меню, сохранения, заставка, звук ----
 zlataya_cep/build/late_40_music.js            tfin_menu tfin_save

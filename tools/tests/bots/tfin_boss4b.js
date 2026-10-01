@@ -48,14 +48,14 @@ const r=[];ZC.tick(560);r.push(waitGo(12),cardSt());r
 const r=[];let n=0,seen=[];while(ZC.G.cine&&n<60*120){ZC.tick(1);n++;const s=cardSt();if(s!==seen[seen.length-1])seen.push(s);}
 r.push('auto end sec='+(n/60).toFixed(1),'autos='+seen.filter(s=>s.includes('Смотри')).length,'heads='+heads().map(e=>e.state).join(','),'seen='+JSON.stringify(ZC.G.flags.tut4b));r
 //@@ shot=fin_b4_s3_grab.png wait=400
-// этап 3: узда; «раз-два-три» — вразнобой не засчитывается, вместе — да; узда возвращается на место
-const W=ZC.W;const bp=W.grabs[0].pos().clone();window._home=[0,1].map(pi=>ZC.players[pi].heroes[ZC.players[pi].act].pos.clone());W.flags.phase=3;W.flags.stun=25;heads().forEach(e=>{e.state='broken';e.bdur=99;e._b=true;});ZC.tick(2);const r=['tut='+T4.on,cardSt()];
+// этап 3: узда; «раз-два-три» (late_37) — три счёта, на каждый — умение обоих (порядок и промежуток любые); узда возвращается на место
+const W=ZC.W;const bp=W.grabs[0].pos().clone();window._home=[0,1].map(pi=>ZC.players[pi].heroes[ZC.players[pi].act].pos.clone());W.flags.phase=3;W.flags.stun=50;heads().forEach(e=>{e.state='broken';e.bdur=99;e._b=true;});ZC.tick(2);const r=['tut='+T4.on,cardSt()];
 r.push(waitGo(10),cardSt());r
 //@@ shot=fin_b4_s3_123.png wait=400
 const r=[];ZC.press('KeyR');ZC.tick(1);ZC.press('Semicolon');ZC.tick(2);r.push(cardSt());
 r.push(waitGo(15),cardSt());r
 //@@
-const r=[];ZC.press('KeyE');ZC.tick(70);ZC.press('KeyL');ZC.tick(2);r.push('apart ok='+card().classList.contains('ok'));ZC.tick(3);ZC.press('KeyE');ZC.press('KeyL');ZC.tick(2);r.push('together='+cardSt());
+const r=[];for(let k=0;k<3;k++){if(k)r.push('go'+k+'='+waitGo(10));ZC.press('KeyE');ZC.tick(40);r.push('one'+(k+1)+' ok='+card().classList.contains('ok'));ZC.press('KeyL');ZC.tick(2);r.push('beat'+(k+1)+'='+cardSt()+' lamps='+(ZC.FIN.uzda?ZC.FIN.uzda.demo:'-'));ZC.tick(10);}
 let n=0;while(ZC.G.cine&&n<60*20){ZC.tick(1);n++;}const W=ZC.W;r.push('tut='+T4.on,'bridle='+W.grabs[0].pos().toArray().map(v=>v.toFixed(2)).join(','),'phase='+W.flags.phase,'stun='+W.flags.stun.toFixed(1),'heroesHome='+[0,1].every(pi=>ZC.players[pi].heroes[ZC.players[pi].act].pos.distanceTo(window._home[pi])<0.3),'heads='+heads().map(e=>e.state).join(','));r
 //@@
 // повторная попытка: этапы уже объясняли — короткое напоминание
@@ -66,5 +66,5 @@ ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.G.flags.tut4b=null;ZC.tick(60);ZC
 //@@
 // одиночный режим: «оба игрока» — хватает одного нажатия любой половиной клавиатуры
 ZC.setSolo(true);ZC.startFrom(ZC.LV('4-B'));ZC.G.manual=true;ZC.G.flags.tut4b={1:true,2:true};ZC.tick(60);ZC.skip();ZC.tick(3);if(ZC.G.cine){ZC.skip();ZC.tick(3);}
-const W=ZC.W;W.flags.phase=3;W.flags.stun=25;heads().forEach(e=>{e.state='broken';e.bdur=99;e._b=true;});ZC.tick(2);const r=['tut='+T4.on];r.push(waitGo(10),cardSt(),'who='+(document.querySelector('#finTut .ft-who')?'labels':'no labels'));
+const W=ZC.W;W.flags.phase=3;W.flags.stun=50;heads().forEach(e=>{e.state='broken';e.bdur=99;e._b=true;});ZC.tick(2);const r=['tut='+T4.on];r.push(waitGo(10),cardSt(),'who='+(document.querySelector('#finTut .ft-who')?'labels':'no labels'));
 ZC.press('Semicolon');ZC.tick(3);r.push(cardSt());ZC.skip();ZC.tick(3);ZC.setSolo(false);r
