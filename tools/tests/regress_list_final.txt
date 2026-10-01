@@ -23,5 +23,6 @@ tfin_voice tfin_guard tfin_pads2 tfin_luko tfin_uisnd tfin_scooter tfin_splashcl
 tfin_kosh tfin_koshcoop tfin_koshsolo
 tfin_gor4
 tfin_gorsolo
+tfin_uzda
 # final06: 1-3 «Колобок» — последний ролик поставлен как пляска: четыре кадра, хоровод, звено Прошке, поза в камеру
 tfin_kolobok
