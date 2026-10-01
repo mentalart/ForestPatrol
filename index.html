@@ -2075,7 +2075,7 @@ function buildPrologue(){
    fl.add(new THREE.Mesh(new THREE.PlaneGeometry(1.1,1.5),M(0x3f7a44,{side:THREE.DoubleSide})));const pw=pawIcon();pw.scale.setScalar(1.1);pw.position.set(0,0.1,0.02);fl.add(pw);
    const b2=new THREE.Mesh(new THREE.PlaneGeometry(1.1,0.12),MB(COL.gold));b2.position.set(0,-0.8,0.01);fl.add(b2);}
   fadeable(walls);   // стена штаба с дверью, окном и знаменем: заслонит героев — станет полупрозрачной
-  for(let i=0;i<22;i++){const a=rand(Math.PI*0.45,Math.PI*1.55),r=rand(6.4,8.6);needle(Math.sin(a)*r,rand(4.3,6.5),Math.cos(a)*r,-a+Math.PI/2,rand(1.1,1.8));}
+  for(let i=0;i<22;i++){const a=rand(Math.PI*0.45,Math.PI*1.55),r=rand(6.4,8.6),nx=Math.sin(a)*r,nz=Math.cos(a)*r,ny=rand(4.3,6.5),ns=rand(1.1,1.8);if(Math.abs(nx)<3.6&&nz<0)continue;needle(nx,ny,nz,-a+Math.PI/2,ns);}   // над выходом хвои нет — дорога к трещине видна
   const spots=[[-2.0,1.4],[2.2,1.4]].map(([x,z])=>{const g=new THREE.Group();g.position.set(x,0,z);W.group.add(g);const m=M(COL.yellow,{emissive:COL.yellow,emissiveIntensity:0.5});
     const disc=addMesh(new THREE.CylinderGeometry(0.85,0.85,0.04,28),m,0,0.03,0,g);disc.castShadow=false;const r=addMesh(new THREE.TorusGeometry(0.95,0.05,6,28),MB(0xffffff,{transparent:true,opacity:0.8}),0,0.07,0,g);r.rotation.x=Math.PI/2;return {x,z,g,m,r};});
   const tish=makeTishka();tish.g.position.set(-4.6,0.64,-4.3);tish.g.rotation.y=0.5;
@@ -2085,8 +2085,20 @@ function buildPrologue(){
   const Z=makeZven();W.zven=Z;Z.mode='script';Z.vis=false;Z.pos.set(2.9,9,-2.1);
 
   /* ---------- Б. Ветки: трещина, развилка, уступ (Прошка) / овраг (Пелагея) и лаз в корне (Йоша) ---------- */
-  branch(-2.4,2.4,-12.2,-6.5);branch(-2.4,2.4,-18,-13.8);branch(-8.6,8.6,-21,-18);
-  const crackMark=box(-2.4,2.4,-0.05,0.03,-12.3,-12.2,M(COL.gold,{emissive:COL.gold,emissiveIntensity:0.25}),{solid:false}).mesh;
+  const CRK0=-15.4,CRK1=-17.0;   // первая трещина (первый прыжок игры): ближний край CRK0, дальний CRK1 — в 8,7 м от двери, чтобы у края ничего не заслоняло вид
+  branch(-2.4,2.4,CRK0,-6.5);branch(-2.4,2.4,-18,CRK1);branch(-8.6,8.6,-21,-18);
+  const crackMark=box(-2.4,2.4,-0.05,0.03,CRK0-0.1,CRK0,M(COL.gold,{emissive:COL.gold,emissiveIntensity:0.25}),{solid:false}).mesh;
+  // трещина видна сразу: тёмная пропасть внизу, щепки по краям, золотая кромка на обоих краях
+  {const pit=addMesh(new THREE.BoxGeometry(4.8,0.1,CRK0-CRK1),M(0x140c08),0,-2.4,(CRK0+CRK1)/2);pit.castShadow=false;pit.receiveShadow=false;
+   const far=addMesh(new THREE.BoxGeometry(4.8,0.08,0.1),M(COL.gold,{emissive:COL.gold,emissiveIntensity:0.25}),0,-0.01,CRK1+0.05);far.castShadow=false;
+   const sp=M(0xb98a52);for(const[z0,dir]of[[CRK0,-1],[CRK1,1]])for(let i=0;i<7;i++){const c=addMesh(new THREE.ConeGeometry(0.07,0.42,4),sp,-2.1+i*0.7+rand(-0.15,0.15),-0.12,z0+dir*0.1);c.rotation.x=dir*Math.PI/2*0.85;c.rotation.z=rand(-0.4,0.4);c.castShadow=false;}}
+  // подсказка первого прыжка: над трещиной — светящаяся дуга-стрелка (по ней бегут огоньки), на том краю — кольцо «сюда!»
+  const jArc=new THREE.Group();jArc.position.set(0,0,(CRK0+CRK1)/2);W.group.add(jArc);
+  {const am=MB(0xfff2b0,{transparent:true,opacity:0.85,depthWrite:false}),pt=u=>new V3(0,0.4+Math.sin(u*Math.PI)*1.4,(0.5-u)*3.0);
+   for(let i=0;i<10;i++){const seg=new THREE.TubeGeometry(new THREE.LineCurve3(pt(i/10),pt((i+0.82)/10)),2,0.07,6,false);jArc.add(new THREE.Mesh(seg,am.clone()));}
+   const tp=new THREE.Mesh(new THREE.ConeGeometry(0.3,0.6,8),am.clone());tp.position.copy(pt(1));tp.position.y+=0.15;tp.rotation.x=-Math.PI*0.68;jArc.add(tp);}
+  const jRing=new THREE.Mesh(new THREE.TorusGeometry(0.8,0.07,8,32),MB(0xfff2b0,{transparent:true,opacity:0.9}));jRing.rotation.x=Math.PI/2;jRing.position.set(0,0.06,CRK1-0.9);W.group.add(jRing);
+  const JH={done:[false,false],told:[false,false],fell:[false,false],brake:[0,0]};F.jump1=JH;
   branch(-8.6,-1.4,-25.02,-21);
   const ledge=box(-8.6,-1.4,-3,1.92,-36,-25,MAT.bark,{occ:false}).mesh;addMesh(new THREE.BoxGeometry(7.08,0.1,10.94),MAT.moss,-5,1.88,-30.5);
   branch(1.4,8.6,-23,-21);branch(1.4,8.6,-36,-28.2);colBox(6.4,7.8,-1.2,0,-28.2,-23);
@@ -2108,7 +2120,7 @@ function buildPrologue(){
   fadeable(addMesh(new THREE.CylinderGeometry(0.8,1.2,26,10),MAT.bark,0,-0.5,-29.5));W.cyls.push({x:0,z:-29.5,r:1.1,miny:-13,maxy:13,on:true,occ:true});
   for(let z=-7.5;z>-18;z-=1.1){needle(-2.9,-0.25,z,0,rand(0.9,1.3));needle(2.9,-0.25,z,Math.PI,rand(0.9,1.3));}
   for(let z=-18.5;z>-36;z-=1.2){needle(-9.1,-0.25,z,0,rand(1,1.5));needle(9.1,-0.25,z,Math.PI,rand(1,1.5));if(z<-21.5){needle(-1.0,z<-25?1.6:-0.25,z,Math.PI,0.8);needle(1.0,-0.25,z,0,0.8);}}
-  for(const[x,z,y]of[[-2.1,-8.2],[2.1,-8.2],[-2.1,-16.4],[2.1,-16.4],[-8.2,-19.2],[8.2,-19.2],[-8.2,-33.5,1.92],[8.2,-34.5],[-9.1,-38.2],[9.1,-38.2]])lantern(x,z,y);
+  for(const[x,z,y]of[[-2.1,-8.2],[2.1,-8.2],[-2.1,CRK0+2.8],[2.1,CRK0+2.8],[-8.2,-19.2],[8.2,-19.2],[-8.2,-33.5,1.92],[8.2,-34.5],[-9.1,-38.2],[9.1,-38.2]])lantern(x,z,y);
   for(let i=0;i<80;i++){const s=Math.random()<0.5?-1:1;decorFir(s*rand(11.5,36),rand(-70,14),rand(3.6,6),true,-13);}
   for(let i=0;i<12;i++)decorFir(rand(-9,9),rand(-34,-8),rand(2.2,3.1),true,-13);
   bell(0,-9.2);bell(-5,-19.4);bell(5,-19.4);
@@ -2241,6 +2253,20 @@ function buildPrologue(){
     // «Стой там, я тебя подниму!» — «Я сам!»
     if(!barkDone&&HERO.yosha.active&&hd(HERO.yosha.pos,{x:7.1,z:-22.3})<3.2){barkDone=true;bark(HERO.potap,'potap','Стой, не бойся ничего —<br>Подниму тебя легко!',2.2);later(2.1,()=>bark(HERO.yosha,'yosha','Сам управлюсь — я не мал!',1.6));}
     markRing.scale.setScalar(1+0.12*Math.sin(G.time*6));
+    // первый прыжок: подсказка у края; пока игрок ни разу не перепрыгнул, его герой у края не соскользнёт — только прыжком
+    if(F.stage==='chase'){const all=JH.done[0]&&JH.done[1];jArc.visible=jRing.visible=!all;
+      if(!all){jRing.scale.setScalar(1+0.15*Math.sin(G.time*5));jArc.children.forEach((d,i)=>{d.material.opacity=0.4+0.55*Math.max(0,Math.sin(G.time*7-i*0.7));});}
+      for(const pi of[0,1]){const h=active(pi);if(players[pi].downed||JH.done[pi])continue;
+        if(h.pos.z<CRK1-0.2&&h.grounded&&h.pos.y>-0.3){JH.done[pi]=true;SFX.ok();burst(h.pos.clone().add(new V3(0,1,0)),COL.gold,12,3);floatText(h.pos.clone().add(new V3(0,h.d.height+0.7,0)),'Прыжок! Молодец!','#ffe08a');continue;}
+        if(!ctrl(h))continue;const onNear=Math.abs(h.pos.x)<2.45&&h.pos.z>CRK0-0.4&&h.pos.z<CRK0+2.6&&h.pos.y>-0.2;
+        if(onNear&&!JH.told[pi]){JH.told[pi]=true;tip(pi,'Трещина! Подойди к самому краю и прыгни '+K(pi,'jump')+' —<br>Дуга покажет, куда лететь, кольцо — где встать.',4);}
+        if(onNear&&h.grounded&&h.pos.z<CRK0+0.3){h.pos.z=CRK0+0.3;if(h.vel.z<0)h.vel.z=0;
+          if(JH.brake[pi]===0){JH.brake[pi]=1;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Стоп, край! Прыгай!','#fff2b0');}}
+        if(h.pos.y<-1.5&&Math.abs(h.pos.z-(CRK0+CRK1)/2)<2.5&&!JH.fell[pi]){JH.fell[pi]=true;tip(pi,'Упал — не беда, колокольчик вернёт!<br>Прыгай '+K(pi,'jump')+' у самого края — и долетишь.',3.5);}}}
+    // камера у первой трещины: герои вышли за дверь — она поднимается над кроной и смотрит вперёд, трещина видна целиком
+    {const a=G.solo?active(G.soloPi):active(0),b=G.solo?a:active(1),mz=(a.pos.z+b.pos.z)/2,mx=(a.pos.x+b.pos.x)/2;
+     const on=F.stage==='chase'&&!G.cine&&mz<-8.6&&mz>CRK1-1.6&&Math.abs(mx)<3&&hd(a.pos,b.pos)<8;
+     if(on&&!W.camFn)W.camFn=jumpCam;else if(!on&&W.camFn===jumpCam)W.camFn=null;}
     // светлячок ведёт Пелагею и Йошу направо
     if(F.rootGrown&&!F.ffDone){ff.visible=true;ffL.intensity=0.8;const h=active(1);const tz=clamp(Math.min(h.pos.z-3.5,-49.5),-62,-49.5);ff.position.lerp(new V3(6.6+Math.sin(G.time*2)*0.4,1.3+Math.sin(G.time*3)*0.2,tz),1-Math.exp(-2.5*dt));
       if(h.pos.z<-61.5){F.ffDone=true;anim(0.6,k=>{ff.scale.setScalar(Math.max(0.01,1-k));ffL.intensity=0.8*(1-k);});}}
@@ -2251,11 +2277,13 @@ function buildPrologue(){
     ht.hole.material.color.setHSL(0.13,1,0.78+0.08*Math.sin(G.time*3));
     if(F.stage==='hollow'&&!F.inHollow&&[0,1].every(pi=>hd(active(pi).pos,{x:0,z:-102})<3.4)){F.inHollow=true;SFX.whoosh();completeLevel();}});
 
+  const jumpCam=()=>{const a=G.solo?active(G.soloPi):active(0),b=G.solo?a:active(1),mz=(a.pos.z+b.pos.z)/2,mx=(a.pos.x+b.pos.x)/2;
+    return {pos:new V3(mx*0.5,8.6,Math.min(mz+5.2,-7.8)),look:new V3(mx*0.6,0.2,Math.min(mz-1.8,(mz+CRK0)/2-0.8)),k:3};};
   /* ---------- рисунки кнопок над героями ---------- */
   const T=HERO;
   for(const pi of[0,1]){
     prompt(pi,'move',()=>headOf(active(pi)),()=>F.stage==='room'&&!F.spot[pi]);
-    prompt(pi,'jump',()=>headOf(active(pi)),()=>F.stage==='chase'&&active(pi).pos.z<-9.4&&active(pi).pos.z>-12.4&&active(pi).grounded&&Math.abs(active(pi).pos.x)<2.5);
+    prompt(pi,'jump',()=>headOf(active(pi)),()=>F.stage==='chase'&&active(pi).pos.z<CRK0+2.8&&active(pi).pos.z>CRK0-0.4&&active(pi).grounded&&Math.abs(active(pi).pos.x)<2.5,()=>F.jump1.done[pi]?'':'прыжок!');
     prompt(pi,'jump',()=>headOf(active(pi)),()=>players[pi].clingOffer&&active(pi).grounded,'за друга');
     prompt(pi,'guard',()=>headOf(active(pi)),()=>W.enemies.some(e=>e.alive&&e.pi===pi&&e.state==='wind'&&(e.slow<1||players[pi].path==='easy')));
     prompt(pi,'attack',()=>headOf(active(pi)),()=>W.enemies.some(e=>e.alive&&((e.state==='broken'&&hd(e.pos,active(pi).pos)<6)||(e.pi===pi&&e.state==='stagger'&&!e.openHit&&players[pi].staggerSeen<=3))));}
@@ -2278,7 +2306,7 @@ function buildPrologue(){
 
   /* ---------- задачи (внизу экрана) ---------- */
   const inRoom=pi=>F.stage==='room';
-  const crack=pi=>O(()=>'За Звенышком беги скорей,<br>Трещину прыжком '+K(pi,'jump')+' одолей!',()=>active(pi).pos.z<-14.2,()=>[crackMark],()=>({kind:active(pi).kind,action:'jump',from:new V3(pi?0.9:-0.9,0,-11.4),to:new V3(pi?0.9:-0.9,0,-14.8)}));
+  const crack=pi=>O(()=>'За Звенышком беги скорей,<br>Трещину прыжком '+K(pi,'jump')+' одолей!',()=>active(pi).pos.z<CRK1-0.4,()=>[crackMark],()=>({kind:active(pi).kind,action:'jump',from:new V3(pi?0.9:-0.9,0,CRK0+0.8),to:new V3(pi?0.9:-0.9,0,CRK1-1.0)}));
   const plates=(pi,pa,pb,g,xs)=>[
     O(()=>'Жёлтая плита с лапкой — встань на неё,<br>И ворота откроются — вот и всё!',()=>pa.pressed||pb.pressed||g.latched||players[pi].heroes.some(h=>h.pos.z<-68.9),()=>[pa.g],()=>({kind:active(pi).kind,action:'walk',from:new V3(xs,0,-62.8),to:new V3(xs,0,-65.2)})),
     O(()=>'Смени героя '+K(pi,'swap')+' — ступай в ворота смело:<br>Первый на плите стоит — ворота не закроются.',()=>g.latched||players[pi].heroes.some(h=>h.pos.z<-68.9),()=>[g.g],()=>({kind:other(pi).kind,action:'walk',from:new V3(xs+(xs<0?-1.6:1.6),0,-66),to:new V3(xs+(xs<0?-1.6:1.6),0,-70)})),
