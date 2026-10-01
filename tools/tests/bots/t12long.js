@@ -1,6 +1,6 @@
 //@@
 // 1-2 «Кикиморино болото», новые участки после толстой струны (уровень в 3,2 раза длиннее) — настоящими нажатиями двух игроков:
-// «Журавль и Цапля» — гать из четырёх струн, Цапля зовёт, Журавль идёт по струнам, Паутинники грызут пустые струны (стоим на них), свадьба, звено, камыши;
+// «Журавль и Цапля» — гать из четырёх струн, на кочках Паутинники (бьём всех — иначе Журавль не идёт), Цапля зовёт, Журавль идёт по струнам, свадьба, звено, камыши;
 // огоньки-обманщики — рогатка Прошки по ложному и настоящему огоньку, тропа всплывает, засохшую кочку поливает Йоша; «Царевна-лягушка» — стрела с ольхи,
 // кувшинки в лад, завядшая — живой водой; бесёнок Балды — бегом проигрыш, струна через омут и «братишка» у флажка — победа, колоду поднимает Потап; стычка, выход.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
@@ -28,29 +28,39 @@ window.st=()=>U.st()+' falls='+ZC.G.stats.falls+' errs='+_errs.length+(_errs[0]?
 ['proshka','potap'].forEach((k,i)=>put(H[k],-2.6-i*1.2,-87.5));['pelageya','yosha'].forEach((k,i)=>put(H[k],-1.2+i*1.2,-87.0));ZC.tick(60);
 const S=SW();['cp='+ZC.players.map(p=>p.cp.z.toFixed(0)).join(','),'stage='+F().wed.stage,'stakes='+S.GS.length,'links='+ZC.W.linkTotal+' nuts='+ZC.W.nutTotal,st()]
 //@@
-// гать: Прошка кидает три струны (с берега — к первой кочке, дальше — от кочки к кочке), четвёртую — Пелагея; все переходят по струнам
-const S=SW(),G=S.GS,r=[];const P=U.act(0);
-r.push(U.walkTo(0,-1.6,-89.4,4));faceTo(0,G[0].x,G[0].z);ZC.press('KeyR');ZC.tick(40);r.push('s1='+!!G[0].used);
-r.push(U.walkTo(0,G[0].x-0.2,G[0].z+0.2,8));faceTo(0,G[1].x,G[1].z);ZC.press('KeyR');ZC.tick(40);r.push('s2='+!!G[1].used);
-r.push(U.walkTo(0,G[1].x-0.3,G[1].z+0.1,8));faceTo(0,G[2].x,G[2].z);ZC.press('KeyR');ZC.tick(40);r.push('s3='+!!G[2].used);
-// Пелагея идёт следом по струнам и кидает четвёртую
-r.push(U.walkTo(1,-1.6,-89.6,4),U.walkTo(1,G[0].x-0.1,G[0].z+0.3,8),U.walkTo(1,G[1].x-0.2,G[1].z+0.3,8),U.walkTo(0,G[2].x,G[2].z+0.4,8),U.walkTo(1,G[2].x+0.3,G[2].z+0.5,8));
-faceTo(1,G[3].x,G[3].z);ZC.press('Semicolon');ZC.tick(40);r.push('s4='+!!G[3].used);
+// гать: на каждой кочке засел Паутинник (пока хоть один там — Журавль не пойдёт). Прошка кидает струну к кочке, переходит и бьёт Паутинника:
+// отбив щитом, удары, пока он открыт или грызёт. Пелагея стоит на только что пройденной струне — пустую перегрызли бы. Четвёртую струну кидает Пелагея
+F().noChudo=true;   // чудо болотное (сталкивает со струн гати) проверяет t12chudo
+window.KF=[{g:'KeyG',a:'KeyF',B:['KeyA','KeyD','KeyW','KeyS']},{g:'Period',a:'Comma',B:['ArrowLeft','ArrowRight','ArrowUp','ArrowDown']}];
+window.beat=(e,pis,max)=>{const n=Math.round((max||30)*60);let k=0;
+  for(let i=0;i<n;i++){if(!e.alive){pis.forEach(pi=>KF[pi].B.forEach(b=>ZC.hold(b,false)));ZC.tick(2);return 't='+(i/60).toFixed(1);}
+    for(const pi of pis){const h=U.act(pi),K=KF[pi],dx=e.pos.x-h.pos.x,dz=e.pos.z-h.pos.z,d=Math.hypot(dx,dz);const far=d>1.5+e.r&&!(e.state==='wind'&&e.tgt===h);
+      K.B.forEach(b=>ZC.hold(b,false));if(far){ZC.hold(K.B[0],dx<-0.3);ZC.hold(K.B[1],dx>0.3);ZC.hold(K.B[2],dz<-0.3);ZC.hold(K.B[3],dz>0.3);}
+      if(e.state==='wind'&&e.tgt===h){const left=e.wdur-e.t;if(left<0.16&&e.left===null)ZC.press(K.g);}
+      if(!far&&((e.state==='stagger'&&!e.openHit)||e.state==='broken'||e.open>0||e.dazeT>0)){h.face=Math.atan2(dx,dz);if(((++k)>>1)%9===pi*4)ZC.press(K.a);}}
+    ZC.tick(1);if(U.act(pis[0]).pos.y<-1.2)break;}
+  pis.forEach(pi=>KF[pi].B.forEach(b=>ZC.hold(b,false)));return 'TIMEOUT '+e.state+':'+e.embers+' y='+U.act(pis[0]).pos.y.toFixed(1);};
+window.at=(s,k)=>[s.sx+s.dx*s.len*k,s.sz+s.dz*s.len*k];window.trav=(pi,pts)=>{const o=[];for(const[x,z]of pts){const q=go8(pi,x,z,8);o.push(q);if(q==='fell')break;}return o.join(',');};
+window.alive4=()=>SW().GS.map(g=>!!(g.used&&g.used.string&&!g.used.sag&&ZC.W.threads.includes(g.used)));
+const S=SW(),G=S.GS,GT=S.GT,r=['tats='+GT.filter(e=>e.alive).length+' stage='+F().wed.stage];
+r.push(U.walkTo(0,-1.6,-89.4,4));
+for(let k=0;k<3;k++){const hk=[G[k].x-0.3,G[k].z+0.7];   // середина кочки (колышек — с краю)
+  faceTo(0,G[k].x,G[k].z);ZC.press('KeyR');ZC.tick(40);const s=G[k].used;r.push('s'+(k+1)+'='+!!s);if(!s)break;
+  r.push('P1 '+trav(0,[at(s,0.6)]),'P2 '+trav(1,[[s.sx,s.sz],at(s,0.3)]),'P1 '+trav(0,[[hk[0],hk[1]]]),'P2 '+trav(1,[at(s,0.75)]));
+  r.push('beat'+(k+1)+' '+beat(GT[k],[0],40)+' left='+F().wed.left);
+  r.push('P2 '+trav(1,[[hk[0]+0.5,hk[1]+0.3]]),'P1 '+trav(0,[[hk[0]-0.3,hk[1]]]));}
+// Пелагея — в середину кочки: колышек в метре от неё бросок «перехватил» бы (целится в ближний колышек в створе)
+r.push('P1 '+trav(0,[[G[2].x-0.9,G[2].z+1.3]]),'P2 '+trav(1,[[G[2].x-0.3,G[2].z+0.7]]));faceTo(1,G[3].x,G[3].z);ZC.press('Semicolon');ZC.tick(40);r.push('s4='+!!G[3].used,'strings='+alive4().join(','),'stage='+F().wed.stage);
 r.join(' ')+' | '+st()
 //@@
-// на берег Цапли — Цапля зовёт, Журавль идёт; Пелагея — по четвёртой струне к засаде второго Паутинника, Прошка — по струнам назад на вторую
-const S=SW(),G=S.GS;const r=[U.walkTo(0,G[3].x-0.6,G[3].z-1.2,8),U.walkTo(1,G[3].x+0.6,G[3].z-1.4,8)];ZC.tick(60);r.push('stage='+F().wed.stage);
-U.until(()=>F().wed.stage==='walk',6);r.push('stage='+F().wed.stage);
-const s2=G[1].used,s3=G[2].used,s4=G[3].used,at=(s,k)=>[s.sx+s.dx*s.len*k,s.sz+s.dz*s.len*k];window.trav=(pi,pts)=>{const o=[];for(const[x,z]of pts){const q=go8(pi,x,z,8);o.push(q);if(q==='fell')break;}return o.join(',');};
-r.push('P2 '+trav(1,[[G[3].x,G[3].z+0.5],at(s4,0.85),at(s4,0.55)]));
-r.push('P1 '+trav(0,[[G[3].x,G[3].z+0.5],at(s4,0.6),at(s4,0.1),[s4.sx,s4.sz],[G[2].x,G[2].z+0.4],at(s3,0.9),at(s3,0.1),[s3.sx,s3.sz],[G[1].x,G[1].z+0.4],at(s2,0.9),at(s2,0.55)]));
+// гать чиста — на берег Цапли: Цапля зовёт, Журавль сразу идёт по струнам
+const S=SW(),G=S.GS,s4=G[3].used;const r=['P1 '+trav(0,[[s4.sx,s4.sz],at(s4,0.5),[G[3].x-0.6,G[3].z-1.2]]),'P2 '+trav(1,[[s4.sx+0.3,s4.sz],at(s4,0.6),[G[3].x+0.6,G[3].z-1.4]])];
+ZC.tick(30);r.push('stage='+F().wed.stage);r.push(U.until(()=>F().wed.stage==='walk',8)+' stage='+F().wed.stage+' left='+F().wed.left);
 r.join(' ')+' | seg='+F().wed.seg+' '+st()
 //@@
 // ждём: Журавль доходит по струнам, свадьба, звено, камыши расступаются
-const S=SW(),W=ZC.W,G=S.GS;let tats=0;const u=U.until(()=>{tats=Math.max(tats,ZC.W.enemies.filter(e=>e.kind==='tat'&&e.alive&&e.pos.z<-100&&e.pos.z>-140).length);return F().wed.stage==='done';},90);const r=['until='+u,'tats seen='+tats,'stage='+F().wed.stage,'cut='+F().wed.cut,'reeds='+!S.reedCol.on,'link locked='+S.wedLink.locked];
-const s2=G[1].used,s3=G[2].used,s4=G[3].used,at=(s,k)=>[s.sx+s.dx*s.len*k,s.sz+s.dz*s.len*k];
-r.push('P1 '+trav(0,[at(s2,0.95),[G[1].x,G[1].z+0.3],[s3.sx,s3.sz],at(s3,0.5),at(s3,0.95),[G[2].x,G[2].z+0.3],[s4.sx,s4.sz],at(s4,0.5),at(s4,0.97),[G[3].x,G[3].z-1.0],[S.wedLink.pos.x,S.wedLink.pos.z]]));
-r.push('P2 '+trav(1,[at(s4,0.97),[G[3].x+0.5,G[3].z-1.2]]));ZC.tick(30);r.push('links='+W.links);r.join(' ')+' | '+st()
+const S=SW(),W=ZC.W,G=S.GS;const u=U.until(()=>F().wed.stage==='done',90);const r=['until='+u,'stage='+F().wed.stage,'cut='+F().wed.cut,'reeds='+!S.reedCol.on,'link locked='+S.wedLink.locked];
+r.push('P1 '+trav(0,[[S.wedLink.pos.x,S.wedLink.pos.z]]));ZC.tick(30);r.push('links='+W.links);r.join(' ')+' | '+st()
 //@@ shot=t12l_fog.png
 // туман: Прошка на берегу против ложного огонька — щёлк (ложный лопается), потом против настоящего — тропа всплывает
 const S=SW(),fk=S.forks;const r=[];const P=U.act(0);if(P.kind!=='proshka'){ZC.press('KeyQ');ZC.tick(5);}

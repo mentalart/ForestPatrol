@@ -23,9 +23,10 @@
   1-2 «Кикиморино болото»: струна на колышке (висит, пока не смотаешь RB там, откуда бросил), высокая
       струна (съезжают, повиснув), толстая струна Потапа (ловушка: обернулся — струна в ряску), кувырок, пни;
       перед толстой струной глубокая трясина: тонкая нить тонет в 3,5 м от берега, над трясиной туман — не спланировать.
-      Уровень удлинён в 3,2 раза (в сценарии короче): «Журавль и Цапля» — гать из струн, Журавль идёт свататься, Паутинники грызут струны;
+      Уровень удлинён в 3,2 раза (в сценарии короче): «Журавль и Цапля» — гать из струн, Журавль идёт свататься, когда побеждены Паутинники на кочках;
       огоньки-обманщики в тумане (рогатка, живая вода); «Царевна-лягушка» — стрела и кувшинки в лад; бесёнок Балды — бег вокруг омута
       (струна через омут) и «кобыла»-колода для Потапа; стычка у ворот перенесена в конец. Колышки гати ниже обычных; на ровной струне героя держит на середине.
+      Нет в сценарии: чудо болотное у гати (сталкивает со струны, щит держит), лягушки, камыш, осока, кувшинки и коряги.
   1-3 «Колобок»: гусельный раннер в пяти частях — «Солнечная опушка» (96 ударов, подкова-магнит, гриб-прыгун),
       «Через речку» (104, мост с дырами, бочки навстречу, перо — полёт на гусе-лебеде, обвал моста только струной),
       «Лисья тропа» (112, вечер, лиса сзади: три спотыкания — стащит искры; в конце три струны подряд); у каждого
@@ -2677,7 +2678,6 @@ function build12(){
   const GK=[[-1.6,-102],[1.6,-114.5],[-1.6,-127]],GS=[];   // кочки гати; четвёртый колышек — на берегу Цапли
   for(const[x,z]of GK){hummock(x,z,1.5,0.3);GS.push(stake(x+0.3,z-0.7,0.3,{h:0.42}));}   // колышки пониже: на конец струны можно шагнуть с кочки
   GS.push(stake(0.5,-140.6,0,{h:0.4}));nutItem(3.4,1.0,-114);
-  const TH=[[2.6,-108],[-3.4,-134]];for(const[x,z]of TH)hummock(x,z,1.0,0.3);   // кочки-засады Паутинников: с них грызут струну с края
   const gStr=i=>{const s=GS[i].used;return s&&s.string&&!s.sag&&!s.ret&&W.threads.includes(s)?s:null;};
   const wedLink=linkItem(3.0,1.2,-147.6);wedLink.locked=true;wedLink.g.visible=false;
   // камыши у избушки Цапли: расступаются после свадьбы
@@ -2685,21 +2685,37 @@ function build12(){
     part(r,new THREE.CylinderGeometry(0.05,0.08,h,5),M(0x8a8a3a),0,h/2,0);if(Math.random()<0.6)part(r,new THREE.CylinderGeometry(0.09,0.09,0.42,6),M(0x6a4024),0,h-0.3,0);
     r.rotation.z=rand(-0.08,0.08);dyn(r);reeds.push(r);}
   const reedCol=colBox(-11,11,0,4.6,-155.8,-155.0,false);
-  const WD={stage:'ask',seg:0,leg:'go',u:0,told:false,nag:0,cut:0};F.wed=WD;const WTATS=[];   // во флагах — только простые значения
+  const WD={stage:'ask',seg:0,leg:'go',u:0,told:false,nag:0,cut:0,left:3};F.wed=WD;   // во флагах — только простые значения
+  // Тать-Паутинник на болоте — заметный: крупнее, тёмно-фиолетовый с серебряными нитями, красные глаза, светящийся круг под ним и красный ромб над
+  // головой (виден издалека); оранжевые искры над ним — сколько ударов осталось
+  const tatKit=e=>{e.inner.traverse(o=>{if(!o.isMesh)return;const c=o.material.color.getHex();
+      if(c===0x5a4a3a)o.material=M(0x6a2a86,{emissive:0x3a0a50,emissiveIntensity:0.55});else if(c===0x9a8660)o.material=M(0xe8e8ff,{emissive:0x9090c0,emissiveIntensity:0.7});else if(c===0x2a2018)o.material=M(0x1a1020);});
+    e.eyeMat.color.setHex(0xff3030);e.eyeMat.emissive.setHex(0xff2020);
+    const ring=new THREE.Mesh(new THREE.TorusGeometry(e.r*1.9,0.07,6,32),MB(0xff5a2a,{transparent:true,opacity:0.8,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.y=0.08;e.g.add(ring);
+    const mk=new THREE.Mesh(new THREE.OctahedronGeometry(0.22),M(0xff3a2a,{emissive:0xff2a1a,emissiveIntensity:1.2}));mk.position.y=e.L.top*e.s+1.25;mk.scale.y=1.5;e.g.add(mk);
+    ring.castShadow=mk.castShadow=false;e.kit={ring,mk,y:mk.position.y};e.g.traverse(o=>{o.userData.noBatch=true;});return e;};
+  W.updates.push(dt=>{for(const e of W.enemies){if(!e.kit)continue;const K=e.kit;if(!e.alive){K.ring.visible=K.mk.visible=false;continue;}
+    const f=e.chew?14:4;K.ring.material.opacity=0.45+0.4*Math.abs(Math.sin(G.time*f));K.ring.scale.setScalar(e.chew?1+0.12*Math.sin(G.time*f):1);
+    K.mk.rotation.y+=dt*3;K.mk.position.y=K.y+Math.sin(G.time*4)*0.12;}});
+  // Паутинники засели на кочках гати: грызут струны, на которых никто не стоит, и бьют подошедших. Пока хоть один на гати — Журавль не пойдёт.
+  // Бьют только «жёлтым» (щит и отбив): на тесной кочке кувырок сбросил бы героя в трясину
+  const GT=[],angry=e=>{const tk=e.tick;e.tick=(q,dt)=>{if(HEROES.some(h=>h.active&&hd(h.pos,q.pos)<4.5&&Math.abs(h.pos.y-q.pos.y)<1.4))q.prov=Math.max(q.prov,2.5);tk(q,dt);};return e;};
+  const spawnGat=()=>{GK.forEach(([x,z])=>{GT.push(tatKit(angry(tatFoe(x-0.3,z+0.3,{y:0.3,leash:0.9,scale:1.45,signals:['yellow']}))));burst(new V3(x,0.6,z),0x9a6ad0,14,3);});SFX.splash();
+    banner('Паутинники на гати!','#e0b0ff',2.8,'засели на кочках · грызут струны · победи всех — тогда Журавль пойдёт');};
+  let gatHiss=0;
   const crTo=(x,z,dt,sp)=>{const dx=x-CR.pos.x,dz=z-CR.pos.z,d=Math.hypot(dx,dz);if(d<0.05)return true;const st=Math.min(d,(sp||1.7)*dt);CR.pos.x+=dx/d*st;CR.pos.z+=dz/d*st;
     CR.g.rotation.y=angDamp(CR.g.rotation.y,Math.atan2(dx,dz),8,dt);const gy=groundAt(CR.pos.x,CR.pos.z,CR.pos.y+1.2,0.1).y;
     if(gy<-1){CR.flap=0.2;CR.pos.y=lerp(CR.pos.y,0.9,1-Math.exp(-6*dt));}else CR.pos.y=lerp(CR.pos.y,gy,1-Math.exp(-10*dt));CR.walk=0.15;return false;};
-  const slowChew=e=>{const tk=e.tick;e.tick=(q,dt)=>{const was=q.chew;tk(q,dt);if(q.chew&&!was)q.chewT+=1.4;};return e;};   // у гати Паутинник грызёт подольше — успеть прогнать
   W.updates.push(dt=>{birdAnim(CR,dt);birdAnim(CA,dt);
-    if(WD.stage==='ask'){if(!WD.told&&HEROES.some(h=>h.active&&h.pos.z<-80)){WD.told=true;bark(CR,'zhuravl','Ох, болото широкое — семь вёрст! Отнесите Цапле моё сватовство!',3.2);}
+    {const n=GT.filter(e=>e.alive).length;if(GT.length&&n<WD.left){WD.left=n;SFX.ok();banner(n?'Паутинник побеждён!':'Гать чиста!','#e0b0ff',2.0,n?'осталось '+n:'все Паутинники побеждены');}
+      gatHiss-=dt;if(n&&gatHiss<=0){const e=GT.find(q=>q.alive&&!q.chew&&HEROES.some(h=>h.active&&hd(h.pos,q.pos)<10));if(e){gatHiss=rand(3,5);floatText(e.pos.clone().add(new V3(0,2.4,0)),['Ш-ш-ш! Не пущу!','Моя гать!','Ш-ш! Перегрызу!'][Math.floor(rand(0,3))],'#e0b0ff');}}}
+    if(WD.stage==='ask'){if(!WD.told&&HEROES.some(h=>h.active&&h.pos.z<-80)){WD.told=true;bark(CR,'zhuravl','Ох, болото широкое — семь вёрст! Отнесите Цапле моё сватовство!',3.2);later(1.0,spawnGat);}
       if(HEROES.some(h=>h.active&&h.grounded&&h.pos.z<-140.2&&h.pos.z>-156)){WD.stage='carry';
         bark(CA,'caplya','Сватается? А пусть сам ко мне придёт — по струночке, ножек не замочив!',3.4);
-        later(4.6,()=>{say('zhuravl','Иду-иду! Только струны держите — да Паутинников гоните!',3.0);WD.stage='walk';SFX.gate();
-          banner('Журавль идёт свататься!','#e8eef8',2.4,'проводите его по гати · Паутинники грызут пустые струны');});}}
+        later(4.6,()=>{if(WD.left>0){WD.stage='blocked';say('zhuravl','Паутинники на гати — ноги мне запутают! Прогоните их всех — тогда пойду.',4.6);}
+          else{WD.stage='walk';SFX.gate();say('zhuravl','Гать чиста! Иду-иду — свататься!',3.2);banner('Журавль идёт свататься!','#e8eef8',2.4,'держите струны — не сматывайте, пока не дойдёт');}});}}
+    else if(WD.stage==='blocked'){if(WD.left===0){WD.stage='walk';SFX.gate();say('zhuravl','Гать чиста! Иду-иду — свататься!',3.2);banner('Журавль идёт свататься!','#e8eef8',2.4,'держите струны — не сматывайте, пока не дойдёт');}}
     else if(WD.stage==='walk'){
-      // Паутинник выходит из-за кочки, когда Журавль подходит к «его» пролёту (вторая и четвёртая струна): стой на струне — или бей
-      for(let i=0;i<TH.length;i++)if(!WTATS[i]&&WD.seg>=(i?3:1)){const[x,z]=TH[i];WTATS[i]=slowChew(tatFoe(x,z,{y:0.3,leash:4}));SFX.splash();burst(new V3(x,0.4,z),0x6a8a4a,12,3);
-        banner('Тать-Паутинник!','#ffd0a0',2.0,'грызёт струну перед Журавлём · встань на неё или бей, пока грызёт');}
       if(WD.seg>=GS.length){if(crTo(3.0,-145.0,dt)){WD.stage='wed';WD.t=0;}}
       else{const s=gStr(WD.seg);
         if(WD.leg==='go'){if(!s){WD.nag-=dt;if(WD.nag<=0&&HEROES.some(h=>h.active&&hd(h.pos,CR.pos)<30)){WD.nag=9;bark(CR,'zhuravl',WD.seg===0?'Где же струна? С моего бережка до первой кочки перекиньте!':'Дальше пусто… Перекиньте струну — я подожду.',2.8);}return;}
@@ -2717,11 +2733,11 @@ function build12(){
       if(k>3.4&&wedLink.locked){wedLink.locked=false;wedLink.g.visible=true;const p0=new V3(3.6,2.6,-145.2),p1=new V3(3.0,1.2,-147.6);anim(0.8,q=>{wedLink.pos.lerpVectors(p0,p1,q);wedLink.pos.y+=Math.sin(q*Math.PI)*1.4;});
         wedLink.base=1.2;}
       if(k>5.0){WD.stage='done';SFX.gate();reedCol.on=false;reeds.forEach((r,i)=>{const s=r.position.x<0?1:-1;anim(1.0,q=>{r.rotation.z=s*q*1.3;r.position.y=-q*0.6;});});
-        floatText(new V3(0,2.6,-155.4),'Камыши расступились!','#d8f0a0');WTATS.forEach(e=>{if(e&&e.alive){e.alive=false;e.g.visible=false;}});}}});
+        floatText(new V3(0,2.6,-155.4),'Камыши расступились!','#d8f0a0');}}});
   // по струне — как по канату: на ровной струне героя мягко держит на середине (клавиатура ходит лишь в восемь сторон, а гать идёт вкось)
   W.updates.push(dt=>{for(const h of HEROES){const t=h.grounded&&h.groundRef&&h.groundRef.string&&!h.groundRef.sag?h.groundRef:null;if(!t||h.hang||Math.abs(t.y2-t.y)/Math.max(t.len,0.1)>0.14)continue;
     const lat=(h.pos.x-t.sx)*t.dz-(h.pos.z-t.sz)*t.dx,k=Math.min(1,10*dt);h.pos.x-=t.dz*lat*k;h.pos.z+=t.dx*lat*k;}});
-  W.onTatCut=(t,e)=>{if(WD.stage==='walk')floatText(e.pos.clone().add(new V3(0,1.6,0)),'Струну — заново!','#ffd0a0');};
+  W.onTatCut=(t,e)=>{floatText(e.pos.clone().add(new V3(0,1.6,0)),'Перегрыз! Струну — заново, а его — бей!','#ffd0a0');};
   W.onString=t=>{const mine=W.threads.filter(q=>q.owner===t.owner&&q.string&&!q.ret);if(WD.stage!=='done'&&t.stake&&GS.includes(t.stake)&&mine.length>=3)
     tip(t.owner,'Это твоя третья струна — больше не удержать: четвёртая смотает самую старую.<br>Пусть следующую друг кинет — или смени героя.',3);};
 
@@ -2871,7 +2887,7 @@ function build12(){
     else if(RC.lift==='try'||RC.lift==='done'){BS.arms.forEach(a=>{a.rotation.x=lerp(a.rotation.x,0,0.1);});}
     if(RC.st!=='run'&&RC.st!=='count')BS.body.position.y=Math.sin(BS.ph*2)*0.04;
     {const P=HERO.potap;logPt.set(clamp(P.pos.x,-9.5,9.5),0,-316.9);}});
-  W.sw12={GS,TH,forks,PADS,CR,CA,BS,FR,raceMat,flag,finStake,logPt,logCol,reedCol,wedLink,BN,arrow};   // для ботов
+  W.sw12={GS,forks,PADS,CR,CA,BS,FR,raceMat,flag,finStake,logPt,logCol,reedCol,wedLink,BN,arrow};   // для ботов
   /* ---------- стычка: пни-ворчуны и кикиморки на кочках ---------- */
   const arena={x:0,z:-336,r:9.5,started:false,cleared:false,hold:0,list:[]};arena.camActive=()=>arena.started&&(!arena.cleared||arena.hold>0);W.camZones.push(arena);
   const mounds=[[-6.5,-332],[6.5,-333],[-5,-341],[5.5,-340.5]];for(const[x,z]of mounds){addMesh(new THREE.CylinderGeometry(1.1,1.3,0.6,10),M(0x5d6b34),x,0.0,z);W.cyls.push({x,z,r:1.2,miny:-1,maxy:0.3,on:true});}
@@ -2886,12 +2902,12 @@ function build12(){
     for(const h of HEROES){if(h.grounded&&h.pos.y<-0.3&&!h.cling){h.wetT=(h.wetT||0)+dt;h.extraY=-0.25;if(h.wetT>1.4){h.wetT=0;SFX.splash();toHummock(h);}}else{h.wetT=0;h.extraY=0;}}
     // мини-стычка: струна ко второму колышку простояла пустой — из-за кочки выходит Тать-Паутинник (один на обе дорожки)
     if(!tatS)for(const pi of[0,1]){const t=W.threads.find(q=>q.string&&!q.sag&&q.stake===S2[pi]);tatIdle[pi]=t&&!standingOn(t)&&players[pi].heroes.some(h=>h.pos.z>-22.5)?tatIdle[pi]+dt:0;   // пока кому-то ещё переходить
-      if(tatIdle[pi]>3){tatS=tatFoe(lanes[pi]+0.2,-28.6,{leash:5});banner('Тать-Паутинник!','#ffd0a0',2.2,'грызёт пустую нить · встань на струну — он и сбежит');break;}}
+      if(tatIdle[pi]>3){tatS=tatKit(tatFoe(lanes[pi]+0.2,-28.6,{leash:5,scale:1.3}));banner('Тать-Паутинник!','#ffd0a0',2.2,'грызёт пустую нить · встань на струну — он и сбежит');break;}}
     const thick=W.threads.find(t=>t.thick&&t.string&&!t.sag);
     if(thick&&HERO.yosha.groundRef===thick)yoshaThick=true;
     if(yoshaThick&&!F.sagged&&!F.thanks&&HERO.yosha.pos.z<-74.2&&HERO.yosha.grounded){F.thanks=true;bark(HERO.yosha,'yosha','Потап, ты не обернулся ни разу. Спасибо, друг.',2.8);}
     if(!arena.started&&[0,1].every(pi=>active(pi).pos.z<-328)){arena.started=true;SFX.gate();
-      arena.list=[makeFoe('stump',-2.5,-337,{leash:8}),makeFoe('stump',2.5,-338,{leash:8})].concat(mounds.map(([x,z],i)=>i===2?tatFoe(x,z,{y:0.3,leash:8}):makeFoe('kiki',x,z,{y:0.3,leash:3})));
+      arena.list=[makeFoe('stump',-2.5,-337,{leash:8}),makeFoe('stump',2.5,-338,{leash:8})].concat(mounds.map(([x,z],i)=>i===2?tatKit(tatFoe(x,z,{y:0.3,leash:8,scale:1.3})):makeFoe('kiki',x,z,{y:0.3,leash:3})));
       banner('Пни-ворчуны!','#e0c090',2,'у них кора со всех сторон · красный зубец — кувырком вбок');}
     if(arena.started&&!arena.cleared&&arena.list.every(e=>!e.alive)){arena.cleared=true;arena.hold=1.6;barrier.forceOpen=true;SFX.ok();banner('Отбились!','#ffffff',1.6,'Путь через болото свободен');}
     if(arena.cleared)arena.hold-=dt;
@@ -2926,8 +2942,10 @@ function build12(){
   const branch=pi=>O(()=>'По пенькам на высокую ветку взберись,<br>Брось клубок '+K(pi,'item')+' к колышку — и по струне вниз катись.',()=>active(pi).pos.z<-52.6,()=>[branchMark,S3.g],()=>({kind:active(pi).kind,action:'walk',from:new V3(-5.5,0,-34),to:new V3(-5.5,3,-40)}));
   const fight=pi=>O(()=>'Пень-ворчун в коре — спереди не пробить.<br>Красный зубец <i class="sg r"></i> — кувырком '+K(pi,'roll')+' вбок, и сбоку бить!',()=>arena.cleared,()=>arena.list.map(e=>e.g));
   const NEW=pi=>[
-    O(()=>'Журавль сватается к Цапле — отнесите ей сватовство!<br>Струны по кочкам до её избушки перекинь '+K(pi,'item')+' — у каждого их не больше трёх.',()=>WD.stage!=='ask',()=>GS.filter(s=>!s.used).map(s=>s.g).concat([CA.g])),
-    O(()=>'Журавль идёт по струнам свататься! Паутинник грызёт пустую струну —<br>встань на неё или бей его '+K(pi,'attack')+', пока грызёт. Порвали — перекинь заново.',()=>WD.stage==='wed'||WD.stage==='done',()=>[CR.g].concat(WTATS.filter(e=>e&&e.alive).map(e=>e.g))),
+    O(()=>GT.length&&WD.left>0?'Паутинники засели на кочках гати — грызут струны и не пускают! Бей их '+K(pi,'attack')+': осталось '+WD.left+'.<br>Струны по кочкам кидай '+K(pi,'item')+' и стой на струне — пустую перегрызут.'
+        :'Журавль сватается к Цапле — отнесите ей сватовство!<br>Струны по кочкам до её избушки перекинь '+K(pi,'item')+' — у каждого их не больше трёх.',
+      ()=>WD.stage!=='ask'&&WD.left===0,()=>GT.filter(e=>e.alive).map(e=>e.g).concat(GS.filter(s=>!s.used).map(s=>s.g),[CA.g])),
+    O(()=>'Журавль идёт по струнам свататься! Держите струны — не сматывайте, пока не дойдёт.<br>Пузыри у струны — болотное чудо: отойди или щит '+K(pi,'guard')+'!',()=>WD.stage==='wed'||WD.stage==='done',()=>[CR.g]),
     O(pi?()=>'Туман! Огоньки манят в трясину. Прошка щёлкнет настоящий —<br>а засохшую кочку полей живой водой Йоши '+K(1,'skill')+': оживёт и удержит!':()=>'Туман! Огоньки манят в трясину — который настоящий?<br>Щёлкни огонёк из рогатки Прошки '+K(0,'skill')+': ложный лопнет, настоящий тропку поднимет.',
       ()=>active(pi).pos.z<-223.4,()=>{const fk=forks.find(f=>!f.open);if(fk)return fk.wisps.filter(w=>!w.gone).map(w=>w.g);const d=forks.find(f=>f.dry&&f.dry.dry);return d?[d.dry.g]:[];}),
     O(pi?()=>'Завядшую кувшинку посередине полей живой водой Йоши '+K(1,'skill')+' —<br>оживёт и не утонет. А потом — прыг по кувшинкам, в лад!':()=>'Стрела Ивана-царевича на сухой ольхе! Сбей её из рогатки Прошки '+K(0,'skill')+' —<br>Лягушка запоёт, и кувшинки в лад всплывут.',
@@ -2956,6 +2974,116 @@ function build12(){
     {cond:(pi,h)=>h.pos.z<-286&&h.pos.z>-318&&!RC.won&&F.raceHint,text:pi=>'Бесёнок быстрее! Но Балда хитрее был: «братишка» ждал у финиша.<br>Перекинь струну '+K(pi,'item')+' через омут к колышку у флажка — и по ней!'});
   W.spawns=[[new V3(-5.5,0,4),new V3(-7.5,0,5)],[new V3(5.5,0,4),new V3(7.5,0,5)]];W.startAct=[0,0];
   W.pauseLine='Кикиморино болото: нить-тропка тонет, струна на колышке — нет.<br>Журавля к Цапле проводи, настоящий огонёк найди, Лягушке стрелу верни, бесёнка перехитри.';
+  /* ====================== Живое болото: чудо болотное, камыш и кувшинки, лягушки, пузыри ====================== */
+  // в трясине (без земли, кочек и струн)? — по коробкам и цилиндрам: струны не в счёт
+  const bogAt=(x,z)=>{for(const b of W.boxes)if(b.on&&b.maxy>-1.2&&x>b.minx-0.3&&x<b.maxx+0.3&&z>b.minz-0.3&&z<b.maxz+0.3)return false;
+    for(const c of W.cyls)if(c.on&&c.maxy>-1.2&&Math.hypot(x-c.x,z-c.z)<c.r+0.3)return false;return Math.abs(x)<10.8;};
+  // где растениям не место: дорожки колышков, ветка и съезд, толстая струна, гать, тропы тумана, кувшинки, омут
+  const busy=(x,z)=>(z<-5&&z>-26&&(Math.abs(x-5.6)<2.6||Math.abs(x+5.6)<2.6))||(z<-33&&z>-55&&x<2)||(z<-58&&z>-76&&Math.abs(x)<2.6)
+    ||(z<-89&&z>-142&&Math.abs(x)<3.4)||(z<-155&&z>-225&&(Math.abs(x)<2||Math.abs(x-6)<2||Math.abs(x+6)<2))||(z<-239&&z>-278&&Math.abs(x)<4.8)||(z<-297&&z>-311&&Math.abs(x)<7.2);
+  const inst=(geo,mat,list)=>{const m=new THREE.InstancedMesh(geo,mat,Math.max(1,list.length));const q=new THREE.Quaternion(),eu=new THREE.Euler(),mt=new THREE.Matrix4();
+    list.forEach((p,i)=>{eu.set(p.rx||0,p.ry||0,p.rz||0);q.setFromEuler(eu);mt.compose(new V3(p.x,p.y,p.z),q,new V3(p.s,p.sy||p.s,p.s));m.setMatrixAt(i,mt);});
+    if(!list.length)m.count=0;m.castShadow=false;m.receiveShadow=true;m.frustumCulled=false;W.group.add(m);return m;};
+  {const stalk=[],head=[],sedge=[],leaf=[],flower=[];
+    for(let i=0;i<900&&stalk.length<420;i++){const x=rand(-10.6,10.6),z=rand(ZE+3,-6);if(busy(x,z)||!bogAt(x,z))continue;
+      const n=Math.floor(rand(2,5));for(let k=0;k<n;k++){const px=x+rand(-0.5,0.5),pz=z+rand(-0.5,0.5),h=rand(1.3,2.3),rz=rand(-0.12,0.12),rx=rand(-0.12,0.12);
+        stalk.push({x:px,y:-0.45+h/2,z:pz,s:1,sy:h,rx,rz});if(Math.random()<0.7)head.push({x:px+rz*-h*0.5,y:-0.45+h*0.92,z:pz+rx*h*0.5,s:1,rx,rz});}}   // рогоз: стебель и бархатная шишка
+    for(let i=0;i<1400&&sedge.length<360;i++){const x=rand(-10.8,10.8),z=rand(ZE+2,-4);if(busy(x,z))continue;const bog=bogAt(x,z);if(!bog&&Math.random()<0.75)continue;
+      sedge.push({x,y:bog?-0.45:0,z,s:rand(0.7,1.3),sy:rand(0.8,1.5),ry:rand(0,6.3),rz:rand(-0.3,0.3)});}   // осока пучками
+    for(let i=0;i<900&&leaf.length<170;i++){const x=rand(-10.5,10.5),z=rand(ZE+2,-6);if(busy(x,z)||!bogAt(x,z))continue;leaf.push({x,y:-0.42,z,s:rand(0.5,1.0),ry:rand(0,6.3)});
+      if(Math.random()<0.16)flower.push({x:x+0.1,y:-0.36,z:z+0.05,s:rand(0.8,1.2),ry:rand(0,6.3)});}   // кувшинки на воде и белые цветы
+    const cg=new THREE.CylinderGeometry(0.025,0.035,1,4);cg.translate(0,0,0);inst(cg,M(0x6a7a30),stalk);inst(new THREE.CylinderGeometry(0.065,0.065,0.3,6),M(0x5a3420),head);
+    const sg=new THREE.ConeGeometry(0.16,0.7,4,1,true);sg.translate(0,0.35,0);inst(sg,M(0x5a7a2a,{side:THREE.DoubleSide}),sedge);
+    const lg=new THREE.CircleGeometry(0.45,10,0.4,Math.PI*2-0.4);lg.rotateX(-Math.PI/2);inst(lg,M(0x3f7a30),leaf);
+    const fg=new THREE.ConeGeometry(0.12,0.16,6);inst(fg,M(0xf4f0f8,{emissive:0x404040,emissiveIntensity:0.3}),flower);
+    // коряги: сухие стволы торчат из трясины
+    for(let i=0,n=0;i<300&&n<16;i++){const x=rand(-10,10),z=rand(ZE+4,-8);if(busy(x,z)||!bogAt(x,z))continue;n++;const g=new THREE.Group();g.position.set(x,-0.5,z);g.rotation.set(rand(-0.5,0.5),rand(0,6.3),rand(0.3,1.1));W.group.add(g);
+      part(g,new THREE.CylinderGeometry(0.12,0.2,rand(1.6,2.8),6),M(0x4a3a2a),0,0.9,0);const br=part(g,new THREE.CylinderGeometry(0.05,0.08,0.9,5),M(0x4a3a2a),0.18,1.4,0);br.rotation.z=-1.0;}}
+  // пузыри: болото дышит
+  const BUB=(()=>{const N=40,m=new THREE.InstancedMesh(new THREE.SphereGeometry(0.09,8,6),MB(0x9ab07a,{transparent:true,opacity:0.7,depthWrite:false}),N);m.castShadow=false;m.frustumCulled=false;W.group.add(m);
+    const L=[];for(let i=0;i<N;i++)L.push({t:9,x:0,z:0,d:0.6});return {m,L,i:0,mt:new THREE.Matrix4(),q:new THREE.Quaternion(),spawn(x,z){const b=L[this.i++%N];b.t=0;b.x=x;b.z=z;b.d=rand(0.5,0.9);}};})();
+  /* ---------- чудо болотное: высовывается из трясины у гати и сталкивает со струны; пузыри и тёмный круг — знак: отойди или закройся щитом ---------- */
+  const CHU=(()=>{const g=new THREE.Group();W.group.add(g);const body=new THREE.Group();g.add(body);const skin=M(0x4f8a3a,{emissive:0x10280a,emissiveIntensity:0.6}),dk=M(0x2a4a1c),moss=M(0xb0d040,{emissive:0x304010,emissiveIntensity:0.5});
+    part(body,new THREE.SphereGeometry(0.85,14,10),skin,0,1.0,0).scale.set(1.15,0.85,1.0);part(body,new THREE.SphereGeometry(0.62,12,8),M(0x9ab86a),0,0.85,0.35).scale.set(1.1,0.6,0.7);
+    const eyes=[];for(const s of[-1,1]){eyes.push(part(body,new THREE.SphereGeometry(0.25,10,8),M(0xfff060,{emissive:0xd0b020,emissiveIntensity:1.0}),s*0.4,1.5,0.6));part(body,new THREE.SphereGeometry(0.11,8,6),MAT.dark,s*0.4,1.52,0.82);}
+    part(body,new THREE.BoxGeometry(0.95,0.16,0.12),M(0x7a1a1a),0,0.86,0.86);for(const s of[-1,1])part(body,new THREE.ConeGeometry(0.05,0.16,4),M(0xe8e0c0),s*0.3,0.8,0.88).rotation.x=Math.PI;   // рот и клыки
+    for(let i=0;i<11;i++){const a=(i/10-0.5)*2.6;const w=part(body,new THREE.ConeGeometry(0.09,rand(0.7,1.1),4),moss,Math.sin(a)*0.85,1.45,Math.cos(a)*0.3-0.15);w.rotation.x=Math.PI;w.rotation.z=a*0.25;}   // космы тины
+    const arms=[];for(const s of[-1,1]){const a=new THREE.Group();a.position.set(s*0.95,0.55,0.25);body.add(a);part(a,new THREE.CylinderGeometry(0.13,0.17,1.3,7),skin,0,0.6,0);
+      part(a,new THREE.SphereGeometry(0.27,8,6),dk,0,1.3,0).scale.set(1.4,0.5,1.1);a.rotation.z=s*0.5;arms.push(a);}
+    const ring=new THREE.Mesh(new THREE.RingGeometry(0.3,2.9,32),MB(0x0a1408,{transparent:true,opacity:0,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.y=-0.41;W.group.add(ring);
+    const rim=new THREE.Mesh(new THREE.TorusGeometry(2.9,0.08,6,44),MB(0xd8ff70,{transparent:true,opacity:0,depthWrite:false}));rim.rotation.x=-Math.PI/2;rim.position.y=-0.38;W.group.add(rim);   // светлая кромка — докуда достанет
+    const wave=new THREE.Mesh(new THREE.TorusGeometry(1.4,0.06,6,30),MB(0xb8d0a0,{transparent:true,opacity:0,depthWrite:false}));wave.rotation.x=-Math.PI/2;wave.position.y=-0.4;W.group.add(wave);
+    g.visible=false;g.scale.setScalar(1.45);[g,ring,rim,wave].forEach(o=>o.traverse(q=>{q.userData.noBatch=true;q.castShadow=false;}));
+    return {g,body,arms,eyes,ring,rim,wave,st:'off',t:0,cd:5,x:0,z:0,y:-3.6,peek:false,face:0,pushed:0,peeks:0,ups:0,told:false};})();F.chudo={get st(){return CHU.st;},get ups(){return CHU.ups;},get pushed(){return CHU.pushed;},get peeks(){return CHU.peeks;}};
+  const chuZone=z=>z<-89&&z>-142;   // гать: тут сталкивает со струны; в остальной трясине — только выглядывает
+  const CHU_HID=-3.6,CHU_TOP=-0.8,CHU_PEEK=-2.0,CHU_R=2.9;   // глубина, высота над трясиной целиком и «одни глаза»; докуда достаёт
+  const chuStart=(x,z,peek)=>{const C=CHU;C.st='warn';C.t=0;C.hit=[];C.x=x;C.z=z;C.peek=peek;C.g.position.set(x,CHU_HID,z);C.g.visible=false;C.ring.position.x=C.rim.position.x=C.wave.position.x=x;C.ring.position.z=C.rim.position.z=C.wave.position.z=z;
+    const h=HEROES.filter(q=>q.active).sort((p,q)=>hd(p.pos,C)-hd(q.pos,C))[0];C.face=h?Math.atan2(h.pos.x-x,h.pos.z-z):0;C.g.rotation.y=C.face;
+    if(!peek){tone(70,0.5,'sine',0.18,45);floatText(new V3(x,0.6,z),'Буль-буль…','#bfe0a0');if(!C.told){C.told=true;for(const pi of[0,1])tip(pi,'Пузыри у струны! Из трясины лезет болотное чудо — со струны столкнёт.<br>Отойди подальше или закройся щитом '+K(pi,'guard')+'.',3.4);}}};
+  const chuPick=()=>{if(F.noChudo)return;
+    const on=HEROES.filter(h=>h.active&&h.grounded&&h.groundRef&&h.groundRef.string&&!h.groundRef.thick&&!h.groundRef.sag&&chuZone(h.pos.z));
+    if(on.length){const h=on[Math.floor(rand(0,on.length))],t=h.groundRef,ax=t.dx,az=t.dz;for(const sd of(Math.random()<0.5?[1,-1]:[-1,1])){
+      const x=h.pos.x+az*2.1*sd+ax*1.4,z=h.pos.z-ax*2.1*sd+az*1.4;if(bogAt(x,z)){chuStart(x,z,false);return;}}}
+    const near=HEROES.filter(q=>q.active);if(!near.length)return;const h=near[Math.floor(rand(0,near.length))];   // выглянуть подальше от героев — болото живое
+    for(let k=0;k<8;k++){const a=rand(0,6.3),r=rand(7,13),x=h.pos.x+Math.sin(a)*r,z=h.pos.z+Math.cos(a)*r;if(z<-6&&bogAt(x,z)&&!busy(x,z)&&HEROES.every(q=>hd(q.pos,{x,z})>5)){chuStart(x,z,true);return;}}};
+  const chuPush=()=>{const C=CHU;for(const pi of[0,1]){const h=active(pi);if(h.cling||players[pi].downed||C.hit.includes(h))continue;const dx=h.pos.x-C.x,dz=h.pos.z-C.z,d=Math.hypot(dx,dz)||1;
+      if(d>CHU_R||h.pos.y<-0.6||h.pos.y>3.2)continue;
+      if(h.guard){C.hit.push(h);h.vel.x=dx/d*2.2;h.vel.z=dz/d*2.2;h.knockT=0.15;floatText(h.pos.clone().add(new V3(0,h.d.height+0.9,0)),'Устоял за щитом!','#9fe0ff');SFX.shield();continue;}
+      C.hit.push(h);h.chuT=G.time;h.groundRef=null;h.grounded=false;h.hang=false;h.vel.set(dx/d*7.5,6.2,dz/d*7.5);h.knockT=0.55;C.pushed++;SFX.splash();shake(pi,0.05,0.2);
+      floatText(h.pos.clone().add(new V3(0,h.d.height+0.9,0)),'Шлёп! Со струны!','#bfe0a0');}};
+  W.updates.push(dt=>{const C=CHU;
+    // столкнутый не уходит на дно (к колокольчику) — выкарабкивается на ближайшую кочку
+    for(const h of HEROES)if(h.chuT&&G.time-h.chuT<2.5&&!h.grounded&&h.pos.y<-1.0){h.chuT=0;SFX.splash();toHummock(h);floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Бр-р! Выкарабкался на кочку','#bfe0a0');}
+    // пузыри у героев
+    if(Math.random()<dt*7){const h=HEROES[Math.floor(rand(0,4))];for(let k=0;k<3;k++){const x=h.pos.x+rand(-9,9),z=h.pos.z+rand(-12,6);if(z<-6&&bogAt(x,z)){BUB.spawn(x,z);break;}}}
+    if(C.st==='warn'&&!C.peek&&Math.random()<dt*30)BUB.spawn(C.x+rand(-1.2,1.2),C.z+rand(-1.2,1.2));
+    BUB.L.forEach((b,i)=>{b.t+=dt;const k=b.t/b.d,s=k<1?0.4+k*0.9:0;BUB.mt.compose(new V3(b.x,-0.44+k*0.06,b.z),BUB.q,new V3(s,s*0.8,s));BUB.m.setMatrixAt(i,BUB.mt);});BUB.m.instanceMatrix.needsUpdate=true;
+    // чудо
+    if(C.st==='off'){C.cd-=dt;if(C.cd<=0){C.cd=rand(1.5,3);chuPick();}return;}
+    C.t+=dt;const wn=C.peek?0.6:1.5;
+    if(C.st==='warn'){C.ring.material.opacity=Math.min(0.75,C.t/wn*0.8)*(C.peek?0.4:1);C.ring.scale.setScalar(0.6+0.4*C.t/wn);
+      C.rim.material.opacity=C.peek?0:(0.45+0.4*Math.sin(G.time*12))*Math.min(1,C.t/0.3);if(C.t>=wn){C.st='up';C.t=0;C.g.visible=true;SFX.splash();burst(new V3(C.x,-0.2,C.z),0x4a6a3a,18,4);C.wave.material.opacity=0.6;if(C.peek)C.peeks++;else C.ups++;}}
+    else if(C.st==='up'){const k=Math.min(1,C.t/0.35),top=C.peek?CHU_PEEK:CHU_TOP;C.g.position.y=lerp(CHU_HID,top,k);C.arms.forEach((a,i)=>{a.visible=!C.peek;a.rotation.x=0;});
+      if(k>=1){C.st='hold';C.t=0;if(!C.peek)tone(110,0.6,'sawtooth',0.12,60);}}
+    else if(C.st==='hold'){const dur=C.peek?1.4:1.7;C.eyes.forEach(e=>e.scale.setScalar(1+0.15*Math.sin(G.time*10)));C.body.rotation.z=Math.sin(G.time*3)*0.08;
+      if(!C.peek){const sw=Math.min(1,Math.max(0,(C.t-0.25)/0.3));C.arms.forEach((a,i)=>{a.rotation.x=-sw*1.4;a.rotation.z=(i?-1:1)*(0.5+sw*0.4);});if(C.t>0.4&&C.t<1.3)chuPush();}
+      if(!C.peek)C.rim.material.opacity=C.t<1.3?0.5+0.4*Math.sin(G.time*12):Math.max(0,C.rim.material.opacity-dt*3);
+      if(C.t>=dur){C.st='down';C.t=0;}}
+    else if(C.st==='down'){const k=Math.min(1,C.t/0.5);C.g.position.y=lerp(C.peek?CHU_PEEK:CHU_TOP,CHU_HID,k);C.ring.material.opacity=0.75*(1-k)*(C.peek?0.4:1);C.rim.material.opacity=0;if(k>=1){C.st='off';C.g.visible=false;C.cd=C.peek?rand(3,6):rand(4,7);}}
+    if(C.wave.material.opacity>0){C.wave.material.opacity=Math.max(0,C.wave.material.opacity-dt*0.6);C.wave.scale.setScalar(1+(0.6-C.wave.material.opacity)*3);}});
+  /* ---------- лягушки: не нападают, просто живут на болоте — квакают, прыгают, плюхаются в воду, если подойти ---------- */
+  const FROG=(()=>{const spots=[];for(const k of W.hummocks)spots.push({x:k.x,z:k.z,y:k.y});
+    for(let i=0;i<500&&spots.length<70;i++){const x=rand(-10,10),z=rand(ZE+3,-6);if(!busy(x,z)&&bogAt(x,z))spots.push({x,z,y:-0.4,water:true});}
+    const N=24,L=[];for(let i=0;i<N;i++){const s=spots[Math.floor(rand(0,spots.length))];L.push({x:s.x+rand(-0.5,0.5),y:s.y,z:s.z+rand(-0.5,0.5),ry:rand(0,6.3),hop:null,t:rand(0,6),next:rand(2,8),sac:0,croak:rand(2,9),water:!!s.water,sc:rand(1.3,1.9),col:i%3});}
+    const mk=(geo,mat,n)=>{const m=new THREE.InstancedMesh(geo,mat,n);m.castShadow=false;m.frustumCulled=false;W.group.add(m);return m;};
+    const bg=new THREE.SphereGeometry(0.17,10,8);const body=[mk(bg,M(0x5aa040),N),mk(bg,M(0x7a8a3a),N),mk(bg,M(0x4a7a5a),N)];
+    const eye=mk(new THREE.SphereGeometry(0.06,8,6),M(0xf8f0b0,{emissive:0x605820,emissiveIntensity:0.4}),N*2),pup=mk(new THREE.SphereGeometry(0.032,6,5),MAT.dark,N*2),thr=mk(new THREE.SphereGeometry(0.08,8,6),M(0xe8e0a0),N);
+    return {L,body,eye,pup,thr,mt:new THREE.Matrix4(),q:new THREE.Quaternion(),e:new THREE.Euler(),spots,hops:0,flee:0};})();
+  const frogSet=(m,i,x,y,z,ry,sx,sy,sz)=>{FROG.e.set(0,ry,0);FROG.q.setFromEuler(FROG.e);FROG.mt.compose(new V3(x,y,z),FROG.q,new V3(sx,sy,sz));m.setMatrixAt(i,FROG.mt);};
+  const frogHop=(f,tx,tz,water)=>{f.hop={fx:f.x,fy:f.y,fz:f.z,tx,tz,ty:water?-0.4:groundAt(tx,tz,1,0.1).y,t:0,d:rand(0.45,0.6),water};f.ry=Math.atan2(tx-f.x,tz-f.z);FROG.hops++;};
+  W.updates.push(dt=>{const cnt=[0,0,0];
+    for(let i=0;i<FROG.L.length;i++){const f=FROG.L[i];f.t+=dt;
+      if(f.hop){const H=f.hop;H.t+=dt;const k=Math.min(1,H.t/H.d);f.x=lerp(H.fx,H.tx,k);f.z=lerp(H.fz,H.tz,k);f.y=lerp(H.fy,H.ty,k)+Math.sin(k*Math.PI)*0.7;
+        if(k>=1){f.hop=null;f.water=H.water;f.y=H.ty;if(H.water){BUB.spawn(f.x,f.z);burst(new V3(f.x,-0.35,f.z),0x9ab07a,5,1.5,0.5);}}}
+      else{const h=HEROES.find(q=>q.active&&hd(q.pos,f)<2.1);
+        if(h){const a=Math.atan2(f.x-h.pos.x,f.z-h.pos.z)+rand(-0.6,0.6);for(let k=0;k<6;k++){const r=rand(1.6,2.8),tx=f.x+Math.sin(a)*r,tz=f.z+Math.cos(a)*r;const w=bogAt(tx,tz);
+            if(Math.abs(tx)<10.6&&(w||groundAt(tx,tz,1,0.1).y>-0.5)){frogHop(f,tx,tz,w);FROG.flee++;if(Math.random()<0.4)floatText(new V3(f.x,0.5,f.z),'Ква!','#b8f0a0');break;}}}
+        else{f.next-=dt;if(f.next<=0){f.next=rand(3,9);const a=rand(0,6.3),r=rand(0.8,2.2),tx=f.x+Math.sin(a)*r,tz=f.z+Math.cos(a)*r;const w=bogAt(tx,tz);if(Math.abs(tx)<10.6&&(w||groundAt(tx,tz,1,0.1).y>-0.5))frogHop(f,tx,tz,w);}
+          f.croak-=dt;if(f.croak<=0){f.croak=rand(4,11);f.sac=1;if(HEROES.some(q=>q.active&&hd(q.pos,f)<11))tone(rand(150,210),0.09,'square',0.05,110);}}}
+      f.sac=Math.max(0,f.sac-dt*2.5);const s=f.sc,br=1+Math.sin(f.t*3)*0.04,sy=f.y+(f.water&&!f.hop?-0.05:0),ry=f.ry,cs=Math.cos(ry),sn=Math.sin(ry);
+      const j=cnt[f.col]++;frogSet(FROG.body[f.col],j,f.x,sy+0.1*s,f.z,ry,1.25*s,0.75*s*br,1.35*s);
+      for(const sd of[-1,1]){const ox=sd*0.08*s,oz=0.1*s,ex=f.x+ox*cs+oz*sn,ez=f.z-ox*sn+oz*cs,k=i*2+(sd>0?1:0);frogSet(FROG.eye,k,ex,sy+0.2*s,ez,ry,s,s,s);
+        frogSet(FROG.pup,k,ex+sn*0.04*s,sy+0.21*s,ez+cs*0.04*s,ry,s,s,s);}
+      const ts=(0.6+f.sac*1.2)*s;frogSet(FROG.thr,i,f.x+sn*0.15*s,sy+0.06*s,f.z+cs*0.15*s,ry,ts,ts,ts);}
+    FROG.body.forEach((m,c)=>{m.count=cnt[c];m.instanceMatrix.needsUpdate=true;});[FROG.eye,FROG.pup,FROG.thr].forEach(m=>{m.instanceMatrix.needsUpdate=true;});});
+  W.sw12.CHU=CHU;W.sw12.FROG=FROG;W.sw12.GT=GT;W.sw12.bogAt=bogAt;
+  // кнопки над героем: «бей Паутинника!» у кочки и «щит!», когда чудо лезет рядом
+  for(const pi of[0,1]){const h=()=>active(pi);
+    prompt(pi,'attack',()=>headOf(h()),()=>GT.some(e=>e.alive&&hd(e.pos,h().pos)<3.4&&Math.abs(e.pos.y-h().pos.y)<1.6),'бей Паутинника!');
+    prompt(pi,'guard',()=>headOf(h()),()=>!CHU.peek&&(CHU.st==='warn'||CHU.st==='up'||(CHU.st==='hold'&&CHU.t<1.3))&&hd(CHU,h().pos)<3.4,'щит!');}
+  W.tipZones.unshift(
+    {cond:(pi,h)=>!CHU.peek&&CHU.st!=='off'&&CHU.st!=='down'&&hd(CHU,h.pos)<6,text:pi=>'Болотное чудо лезет из трясины — со струны столкнёт!<br>Отойди от пузырей или закройся щитом '+K(pi,'guard')+'.'},
+    {cond:(pi,h)=>GT.some(e=>e.alive&&hd(e.pos,h.pos)<10),text:pi=>'Паутинник на кочке! Пока он на гати — Журавль не пойдёт.<br>Бей его '+K(pi,'attack')+': оранжевые искры над ним — сколько ударов осталось.'});
   W.onStart=()=>{later(0.8,()=>say('zven','Болото чёрное. Тут — только струной. Дзинь!',2.6,true));};
   flushDecor();}
 
