@@ -1,6 +1,6 @@
 # Боты полного регресса (по одному имени через пробел или с новой строки; # — комментарий)
 # пролог, мир 1, хаб
-smoke tpjump t12n t12deep t12tat t12long t12chudo tfoes t13v t15n t1b thub2 t11 thub9 thub9b thub9c
+smoke tpjump t12n t12deep t12tat t12long t12chudo t12pond tfoes t13v t15n t1b thub2 t11 thub9 thub9b thub9c
 # мир 2
 t21 t2c t25c t22d t23f t24n t21x tdodge tfade tsplit t22shot thw2
 # мир 3

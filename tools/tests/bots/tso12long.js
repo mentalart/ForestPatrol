@@ -75,10 +75,13 @@ r.join(' ')+' | '+st()
 //@@
 // пруд: Прошкой — стрела; Йошей — по кувшинкам до пятой, полить шестую, дальше на берег
 const S=SW(),PD=S.PADS,r=[];toKind('proshka');r.push(go8s(-5.5,-238.2,10));faceS(S.arrow.position.x,S.arrow.position.z);ZC.press('KeyE');ZC.tick(150);r.push('sing='+F().frog.sing);
-callAll();toKind('yosha');r.push(go8s(0,-238.6,8));const ph=()=>Math.sin(F().frog.t*Math.PI*2/3.0),upFor=P=>P.i===6?F().frog.lily:(P.grp===0?ph()>0.1:ph()<-0.1),pad=P=>({x:P.col.x,z:P.col.z,r:P.col.r});
-let a={jw:h=>h.pos.z<-239.5};const o=[];for(let i=0;i<=10;i++){const P=PD[i];if(i===6){faceS(P.col.x,P.col.z);ZC.press('KeyE');ZC.tick(40);o.push('lily='+F().frog.lily);}
-  let w=0;while(!upFor(P)&&w<400){ZC.tick(1);w++;}const q=hopS(a,pad(P));o.push(i+':'+q);if(q!=='ok')break;a=pad(P);}
-o.push('b:'+hopS(a,{x:0,z:-280,r:2.5}));r.push(o.join(','));callAll();r.join(' ')+' | '+st()
+// пруд глубокий: прыгаем, только когда своя кувшинка побудет наверху, пока отталкиваемся, а нужная уже всплыла и не уйдёт под воду до приземления
+callAll();toKind('yosha');r.push(go8s(0,-238.6,8));const pad=P=>({x:P.col.x,z:P.col.z,r:P.col.r});
+const upAt=(P,t)=>P.i===6?F().frog.lily:(P.grp===0?Math.sin(t*Math.PI*2/3)>-0.3:Math.sin(t*Math.PI*2/3)<0.3);
+const safe=(A,B)=>{const t=F().frog.t;for(let d=0;d<=1.4;d+=0.05){if(A&&d<=0.4&&!upAt(A,t+d))return false;if(B&&d>=0.45&&!upAt(B,t+d))return false;}return true;};
+let a={jw:h=>h.pos.z<-239.5},A=null;const o=[],f0=ZC.G.stats.falls;for(let i=0;i<=10;i++){const P=PD[i];if(i===6){faceS(P.col.x,P.col.z);ZC.press('KeyE');ZC.tick(20);o.push('lily='+F().frog.lily);}
+  let w=0;while(!safe(A,P)&&w<400){ZC.tick(1);w++;}const q=hopS(a,pad(P));o.push(i+':'+q);if(q!=='ok')break;a=pad(P);A=P;}
+{let w=0;while(!safe(A,null)&&w<400){ZC.tick(1);w++;}}o.push('b:'+hopS(a,{x:0,z:-280,r:2.5}),'falls+='+(ZC.G.stats.falls-f0));r.push(o.join(','));callAll();r.join(' ')+' | '+st()
 //@@
 // бесёнок: Йошей перекинуть струну через омут, вернуться на кружок, «ТРИ» — и по струне к флажку быстрее бесёнка
 const S=SW(),RC=F().race,r=[];r.push(go8s(0,-297.6,8));faceS(S.finStake.x,S.finStake.z);ZC.press('KeyR');ZC.tick(40);r.push('string='+!!S.finStake.used);

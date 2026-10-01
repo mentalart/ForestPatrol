@@ -58,9 +58,14 @@ const S=SW(),G=S.GS,s4=G[3].used;const r=['P1 '+trav(0,[[s4.sx,s4.sz],at(s4,0.5)
 ZC.tick(30);r.push('stage='+F().wed.stage);r.push(U.until(()=>F().wed.stage==='walk',8)+' stage='+F().wed.stage+' left='+F().wed.left);
 r.join(' ')+' | seg='+F().wed.seg+' '+st()
 //@@
-// ждём: Журавль доходит по струнам, свадьба, звено, камыши расступаются
-const S=SW(),W=ZC.W,G=S.GS;const u=U.until(()=>F().wed.stage==='done',90);const r=['until='+u,'stage='+F().wed.stage,'cut='+F().wed.cut,'reeds='+!S.reedCol.on,'link locked='+S.wedLink.locked];
-r.push('P1 '+trav(0,[[S.wedLink.pos.x,S.wedLink.pos.z]]));ZC.tick(30);r.push('links='+W.links);r.join(' ')+' | '+st()
+// ждём: Журавль доходит по струнам, свадьба, звено, камыши расступаются. Звенышко ведёт Журавля — над ним и впереди (не в ногах),
+// на свадьбе перелетает к звену и ждёт над ним; звено взяли — снова как обычно
+const S=SW(),W=ZC.W,G=S.GS,Z=W.zven,CR=S.CR,L=S.wedLink;let zs=0,zok=0;
+const u=U.until(()=>{if(F().wed.stage==='walk'&&F().wed.leg==='str'){const a=CR.g.rotation.y,dy=Z.pos.y-CR.pos.y,fw=(Z.pos.x-CR.pos.x)*Math.sin(a)+(Z.pos.z-CR.pos.z)*Math.cos(a);zs++;
+  if(Z.vis&&dy>2.6&&fw>0.6&&Math.hypot(Z.pos.x-CR.pos.x,Z.pos.z-CR.pos.z)<3)zok++;}return F().wed.stage==='done';},90);
+const r=['until='+u,'stage='+F().wed.stage,'cut='+F().wed.cut,'reeds='+!S.reedCol.on,'link locked='+L.locked,'zven lead '+zok+'/'+zs];ZC.tick(120);
+const zl=Math.hypot(Z.pos.x-L.pos.x,Z.pos.z-L.pos.z);r.push('zven@link d='+zl.toFixed(2)+' y='+Z.pos.y.toFixed(1)+' vis='+Z.vis);window.ZV={lead:zs>60&&zok/zs>0.9,link:zl<0.8&&Z.pos.y>2.4&&Z.vis};
+r.push('P1 '+trav(0,[[L.pos.x,L.pos.z]]));ZC.tick(30);r.push('links='+W.links+' zven mode='+Z.mode);ZV.free=Z.mode!=='script';r.push('ZV='+JSON.stringify(ZV));r.join(' ')+' | '+st()
 //@@ shot=t12l_fog.png
 // туман: Прошка на берегу против ложного огонька — щёлк (ложный лопается), потом против настоящего — тропа всплывает
 const S=SW(),fk=S.forks;const r=[];const P=U.act(0);if(P.kind!=='proshka'){ZC.press('KeyQ');ZC.tick(5);}
@@ -90,16 +95,19 @@ r.join(' ')+' | '+st()
 const S=SW();const r=[U.walkTo(0,-5.5,-238.2,10),U.walkTo(1,0.5,-238.4,10)];faceTo(0,S.arrow.position.x,S.arrow.position.z);ZC.press('KeyE');ZC.tick(120);
 r.push('sing='+F().frog.sing);ZC.tick(60);r.push('pads up='+S.PADS.filter(P=>P.cur>-0.2).length+'/'+S.PADS.length);r.join(' ')+' | '+st()
 //@@
-// по кувшинкам в лад: прыгаем, когда нужная кувшинка наверху и ещё побудет там; Йоша с пятой поливает завядшую шестую
-const S=SW(),PD=S.PADS,r=[];const T=3.0;const ph=()=>Math.sin(F().frog.t*Math.PI*2/T);
-const upFor=P=>P.i===6?F().frog.lily:(P.grp===0?ph()>0.1:ph()<-0.1);   // наверху и не на исходе
-const pad=P=>({x:P.col.x,z:P.col.z,r:P.col.r});
-const cross=(pi,from,i0,i1)=>{let a=from;const out=[];
-  for(let i=i0;i<=i1;i++){const P=PD[i];let w=0;while(!upFor(P)&&w<400){ZC.tick(1);w++;}const res=hop(pi,a,pad(P));out.push(i+':'+res);if(res!=='ok')break;a=pad(P);}
+// по кувшинкам в лад: пруд глубокий (в воде — сразу к колокольчику), поэтому прыгаем, только когда своя кувшинка ещё побудет наверху,
+// пока отталкиваемся, а нужная уже всплыла и не уйдёт под воду до приземления; Йоша с пятой поливает завядшую шестую
+const S=SW(),PD=S.PADS,r=[];const T=3.0;
+window.upAt=(P,t)=>P.i===6?F().frog.lily:(P.grp===0?Math.sin(t*Math.PI*2/T)>-0.3:Math.sin(t*Math.PI*2/T)<0.3);
+window.safe=(A,B)=>{const t=F().frog.t;for(let d=0;d<=1.4;d+=0.05){if(A&&d<=0.4&&!upAt(A,t+d))return false;if(B&&d>=0.45&&!upAt(B,t+d))return false;}return true;};
+window.pad=P=>({x:P.col.x,z:P.col.z,r:P.col.r});
+const cross=(pi,from,A0,i0,i1)=>{let a=from,A=A0;const out=[];
+  for(let i=i0;i<=i1;i++){const P=PD[i];let w=0;while(!safe(A,P)&&w<400){ZC.tick(1);w++;}const res=hop(pi,a,pad(P));out.push(i+':'+res);if(res!=='ok')break;a=pad(P);A=P;}
   return out.join(',');};
-const bankA={jw:h=>h.pos.z<-239.5};
-r.push('Y:'+cross(1,bankA,0,5));faceTo(1,PD[6].col.x,PD[6].col.z);ZC.press('KeyL');ZC.tick(40);r.push('lily='+F().frog.lily);
-const bank={x:0,z:-280,r:2.5};r.push('Y2:'+cross(1,pad(PD[5]),6,10),'Yb:'+hop(1,pad(PD[10]),bank));r.push('P:'+cross(0,bankA,0,10),'Pb:'+hop(0,pad(PD[10]),bank));
+const bankA={jw:h=>h.pos.z<-239.5},f0=ZC.G.stats.falls;
+r.push('Y:'+cross(1,bankA,null,0,5));faceTo(1,PD[6].col.x,PD[6].col.z);ZC.press('KeyL');ZC.tick(20);r.push('lily='+F().frog.lily);
+const bank={x:0,z:-280,r:2.5},off=(pi,A)=>{let w=0;while(!safe(A,null)&&w<400){ZC.tick(1);w++;}return hop(pi,pad(A),bank);};
+r.push('Y2:'+cross(1,pad(PD[5]),PD[5],6,10),'Yb:'+off(1,PD[10]));r.push('P:'+cross(0,bankA,null,0,10),'Pb:'+off(0,PD[10]),'falls+='+(ZC.G.stats.falls-f0));
 r.join(' ')+' | '+st()
 //@@
 // бесёнок: на кружок — и бегом кругом омута (проигрыш); потом Пелагея перекидывает струну через омут к флажку и ждёт там, Прошка снова на кружок — победа
@@ -122,4 +130,4 @@ r.push('nuts +'+(ZC.W.nuts-n0));r.join(' ')+' | '+st()
 //@@
 // стычка у ворот (в конце уровня) и выход
 const r=[U.walkTo(0,-1,-329,8),U.walkTo(1,1,-329,10)];ZC.tick(90);const b=U.brawl(120);const r2=[U.walkTo(0,0,-348.5,8),U.walkTo(0,0,-352.5,4)];ZC.tick(60);
-b+' '+r.join(',')+' '+r2.join(',')+' links='+(ZC.G.got['1-2']||0)+' lvl='+ZC.W.levelId+' done='+!!ZC.G.done['1-2']+' errs='+_errs.length+(_errs[0]?' '+_errs[0]:'')
+b+' '+r.join(',')+' '+r2.join(',')+' links='+(ZC.G.got['1-2']||0)+' lvl='+ZC.W.levelId+' done='+!!ZC.G.done['1-2']+' zven='+(ZV.lead&&ZV.link&&ZV.free)+' errs='+_errs.length+(_errs[0]?' '+_errs[0]:'')
