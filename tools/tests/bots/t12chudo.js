@@ -1,6 +1,6 @@
 //@@
 // 1-2 «Кикиморино болото», живое болото: Паутинники на кочках гати (заметные: фиолетовые, красный ромб и круг), Журавль ждёт, пока гать не очистят;
-// чудо болотное — пузыри и тёмный круг, высовывается у струны и сталкивает героя, щит держит; в остальной трясине только выглядывает;
+// чудо болотное — пузыри и тёмный круг, высовывается у струны и сталкивает героя в трясину (тонет — назад к колокольчику), щит держит; в остальной трясине только выглядывает;
 // лягушки прыгают и плюхаются в воду, если подойти; камыш, осока, кувшинки и коряги — инстансами
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 U.go();ZC.loadLevel(3);ZC.tick(30);ZC.skip();ZC.tick(20);
@@ -22,7 +22,7 @@ const S=SW(),G=S.GS,P=H.proshka;faceTo(0,G[0].x,G[0].z);ZC.press('KeyR');ZC.tick
 const r=['s1='+!!s1];r.push(U.walkTo(0,s1.sx+s1.dx*s1.len*0.45,s1.sz+s1.dz*s1.len*0.45,6));ZC.tick(20);
 r.push('onStr='+!!(P.groundRef&&P.groundRef.string)+' z='+P.pos.z.toFixed(1));
 // чудо включено: выбирает героя на струне гати — пузыри и тёмный круг сбоку
-F().noChudo=false;const C=S.CHU;C.cd=0;r.push(U.until(()=>C.st==='warn'&&C.t>0.9,4)+' st='+C.st+' peek='+C.peek+' d='+Math.hypot(C.x-P.pos.x,C.z-P.pos.z).toFixed(2));
+window.F0=ZC.G.stats.falls;F().noChudo=false;const C=S.CHU;C.cd=0;r.push(U.until(()=>C.st==='warn'&&C.t>0.9,4)+' st='+C.st+' peek='+C.peek+' d='+Math.hypot(C.x-P.pos.x,C.z-P.pos.z).toFixed(2));
 r.join(' ')+' | '+st()
 //@@ shot=t12c_warn.png
 ZC.tick(1);
@@ -34,15 +34,15 @@ ZC.tick(1);
 //@@
 const S=SW(),C=S.CHU,P=H.proshka;const r=[];ZC.tick(60);r.push('pushed='+C.pushed+' ups='+C.ups+' offStr='+!(P.groundRef&&P.groundRef.string));
 U.until(()=>C.st==='off'&&P.grounded,8);r.push('back y='+P.pos.y.toFixed(2)+' z='+P.pos.z.toFixed(1)+' falls='+ZC.G.stats.falls);
-// столкнутый выкарабкивается на ближайшую кочку гати, а не к колокольчику; за одно появление — один толчок
-const pushOne=C.pushed===1,onHum=P.pos.z<-89&&P.pos.z>-142&&P.pos.y>0.2;
+// столкнутый падает в трясину и тонет — снова у колокольчика (падение засчитано); за одно появление — один толчок
+const cp=ZC.players[0].cp,pushOne=C.pushed===1,atBell=ZC.G.stats.falls===F0+1&&Math.hypot(P.pos.x-cp.x,P.pos.z-cp.z)<3;r.push('bell='+cp.z.toFixed(1)+' atBell='+atBell);
 // со щитом: снова на струну, держим щит — чудо не сталкивает
 const s1=S.GS[0].used;F().noChudo=true;r.push('s1 alive='+!!(s1&&ZC.W.threads.includes(s1)));
 if(!(s1&&ZC.W.threads.includes(s1))){const G=S.GS;r.push(U.walkTo(0,-1.6,-89.4,8));faceTo(0,G[0].x,G[0].z);ZC.press('KeyR');ZC.tick(40);}
 const t=S.GS[0].used;put(P,t.sx+t.dx*t.len*0.4,t.sz+t.dz*t.len*0.4,0.2);ZC.tick(20);r.push('onStr='+!!(P.groundRef&&P.groundRef.string));
 const p0=C.pushed;ZC.hold('KeyG',true);F().noChudo=false;C.cd=0;r.push(U.until(()=>C.st==='down',6));ZC.hold('KeyG',false);ZC.tick(5);
 r.push('guard: pushed+='+(C.pushed-p0)+' still onStr='+!!(P.groundRef&&P.groundRef.string)+' peek='+C.peek);
-window.R1={push:pushOne,hummock:onHum,guard:C.pushed-p0===0};r.join(' ')+' | '+st()
+window.R1={push:pushOne,bell:atBell,guard:C.pushed-p0===0};r.join(' ')+' | '+st()
 //@@
 // все на берегу — чудо только выглядывает подальше от героев; лягушки прыгают сами и плюхаются, если подойти
 const S=SW(),C=S.CHU,FR=S.FROG,r=[];['proshka','potap','pelageya','yosha'].forEach((k,i)=>put(H[k],-3+i*1.6,-86.5));ZC.tick(10);
@@ -71,5 +71,5 @@ r.push('fights '+res.join(','),'left='+F().wed.left+' falls='+ZC.G.stats.falls);
 window.R3={blocked:r.join(' ').includes('then=blocked')&&r.join(' ').includes('after 4s=blocked'),walk:F().wed.stage==='walk'&&F().wed.left===0};r.join(' ')+' | '+st()
 //@@
 const S=SW();let inst=0;ZC.W.group.traverse(o=>{if(o.isInstancedMesh)inst++;});
-const ok=R1.push&&R1.hummock&&R1.guard&&R2.peek&&R2.hops&&R2.flee&&R3.blocked&&R3.walk&&_errs.length===0;
+const ok=R1.push&&R1.bell&&R1.guard&&R2.peek&&R2.hops&&R2.flee&&R3.blocked&&R3.walk&&_errs.length===0;
 [JSON.stringify(R1),JSON.stringify(R2),JSON.stringify(R3),'chudo='+JSON.stringify({ups:F().chudo.ups,pushed:F().chudo.pushed,peeks:F().chudo.peeks}),'errs='+_errs.length,ok?'ok':'FAIL']
