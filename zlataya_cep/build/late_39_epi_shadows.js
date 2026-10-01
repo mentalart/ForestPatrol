@@ -328,9 +328,11 @@ ETH.tick=function(dt){if(!ETH.on)return;ETH.t+=dt;const A=ETH.uni.uA.value;
 // конец: тени гаснут, свет как был, герои — по местам, дальше колыбельная Тишки (e2)
 ETH.finish=function(){if(ETH.st==='end')return;ETH.st='end';bannerT=0;$('banner').style.opacity=0;ETH.rd=null;ETH.stats.done=true;ETH.log.push('finish');const EL=ETH.EL;
   ethLights(false);{const lg=EL&&EL.room.lampG,z=W.zven,y0=lg?lg.position.y:0,zp=z?z.pos.clone():null;anim(1.0,k=>{ETH.uni.uA.value=1-k;if(ETH.pool)ETH.pool.material.opacity=0.6*(1-k);if(lg&&ETH.save.lampY!=null)lg.position.y=lerp(y0,ETH.save.lampY,k);if(z&&ETH.save.zp)z.pos.lerpVectors(zp,ETH.save.zp,k);});}
-  later(1.1,()=>{for(const d of ETH.dec)d.visible=false;for(const m of ETH.marks)m.visible=false;for(const p of ETH.px)p.visible=false;for(const g of ETH.ghosts)g.visible=false;
+  later(1.1,()=>{for(const d of ETH.dec)d.visible=false;for(const m of ETH.marks)m.visible=false;ethUncast();for(const g of ETH.ghosts)g.visible=false;
     W.camFn=null;W.custom=ETH.save.custom;ETH.on=false;if(!EL)return;EL.place();const yo=HERO.yosha;yo.body.rotation.z=1.3;EL.F.stage='e2pre';EL.e2();});};
 // для ботов: тень героя, где встать, принудительно закончить сценку
 ETH.dbg={lights:()=>({amb,sun}),shadow:k=>ethShadow(HERO[k]),ideal:(k,u,y)=>ethIdeal(heroHeight(HERO[k]),u,y,new V3()),proj:p=>ethProj(p,{}),force:()=>{const R=ETH.rd;if(R&&R.fin<0){R.t=R.def.limit+1;}},rd:()=>ETH.rd,RD:ETH_RD};
 {const _step=step;step=function(dt){_step(dt);if(!W||W.levelId!=='epi'||!ETH.on)return;try{ETH.tick(dt);}catch(e){console.error(e);}};}
-{const _ll=loadLevel;loadLevel=function(i){ETH.on=false;ETH.rd=null;ETH.st='';ETH.EL=null;ETH.px.length=0;ETH.dec.length=0;ETH.marks.length=0;ETH.ghosts.length=0;_ll(i);};}
+// тени-двойники висят на мешах героев, а герои живут между уровнями — снимаем их при конце театра и при любой смене уровня
+function ethUncast(){for(const p of ETH.px)if(p.parent)p.parent.remove(p);ETH.px.length=0;ETH.uni.uA.value=0;}
+{const _ll=loadLevel;loadLevel=function(i){ethUncast();ETH.on=false;ETH.rd=null;ETH.st='';ETH.EL=null;ETH.dec.length=0;ETH.marks.length=0;ETH.ghosts.length=0;_ll(i);};}

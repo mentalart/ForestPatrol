@@ -66,8 +66,9 @@ ZC.tick(150);snap();const k=R().K;pk.boyScale=k.g.scale.y;['tr='+(R().tr||0).toF
 //@@ shot=fin_epi_e2.png wait=300
 // конец театра — колыбельная Тишки
 till(()=>ZC.W.flags.stage==='e2c',900);ZC.tick(40);snap();pk.e2=ZC.W.flags.stage;pk.on=E.on;
+let px=0;for(const k of['proshka','potap','pelageya','yosha'])H[k].g.traverse(o=>{if(o.userData.ethP)px++;});pk.pxLeft=px;
 ['stage='+pk.e2,'on='+E.on,'camFn='+!!ZC.W.camFn,'custom='+!!ZC.W.custom,'forced='+E.stats.forced.join(','),'stats='+JSON.stringify(E.stats)]
 //@@
 const vn=[];for(let i=15;i<=29;i++)vn.push('epi_0'+i);pk.voxMiss=vn.filter(v=>!_vox.includes(v)).join(',');
-const ok=pk.voxMiss===''&&pk.giantSay===1&&pk.intro==='intro'&&pk.introA>0.9&&pk.star1===1&&pk.giant===2&&pk.formed&&pk.fire1[0]===2&&pk.fire1[1]===1&&pk.fly>=0&&pk.n0===0&&pk.flee>=1&&pk.fleeNear<pk.fleeW+0.8&&pk.catches===3&&pk.big&&pk.solo1===0&&pk.miss1===1&&pk.boyScale<0.5&&pk.e2==='e2c'&&!pk.on&&!E.stats.forced.length&&E.stats.rounds.length===4;
+const ok=pk.pxLeft===0&&pk.voxMiss===''&&pk.giantSay===1&&pk.intro==='intro'&&pk.introA>0.9&&pk.star1===1&&pk.giant===2&&pk.formed&&pk.fire1[0]===2&&pk.fire1[1]===1&&pk.fly>=0&&pk.n0===0&&pk.flee>=1&&pk.fleeNear<pk.fleeW+0.8&&pk.catches===3&&pk.big&&pk.solo1===0&&pk.miss1===1&&pk.boyScale<0.5&&pk.e2==='e2c'&&!pk.on&&!E.stats.forced.length&&E.stats.rounds.length===4;
 [JSON.stringify(pk),'errs='+_errs.length+(_errs[0]?' '+_errs[0]:''),ok&&!_errs.length?'epitheatre ok':'FAIL epitheatre']

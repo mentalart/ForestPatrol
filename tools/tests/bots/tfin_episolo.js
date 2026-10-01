@@ -31,6 +31,9 @@ const R4=R();const ev=()=>R4.n+R4.miss;let jumped=0;
 for(let b=0;b<3;b++){const e0=ev();till(()=>ZC.G.time>=R4.next-0.05,200);ZC.press('Space');till(()=>ev()>e0,90);if(b===0){ZC.tick(4);jumped=ks.filter(k=>!H[k].grounded).length;snap();}}
 pk.beats=R4.n;pk.jumped=jumped;['beats='+R4.n,'miss='+R4.miss,'airborne after beat='+jumped]
 //@@
-till(()=>ZC.W.flags.stage==='e2c',900);pk.e2=ZC.W.flags.stage;
-const ok=pk.giant===2&&pk.swapped&&pk.stay&&pk.formed&&pk.fire===4&&pk.fly>=0&&pk.forced==='bird'&&pk.beats===3&&pk.jumped>=3&&pk.e2==='e2c'&&E.stats.rounds.length===4;
+till(()=>ZC.W.flags.stage==='e2c',900);pk.e2=ZC.W.flags.stage;pk.rounds=E.stats.rounds.length;
+// выход посреди театра: тени-двойники снимаются с героев (герои общие для всех уровней)
+const cnt=()=>{let n=0;for(const k of['proshka','potap','pelageya','yosha'])H[k].g.traverse(o=>{if(o.userData.ethP)n++;});return n;};
+ZC.startFrom(ZC.LV('epi'));ZC.tick(30);ZC.skip();ZC.tick(10);ZC.skip();ZC.tick(60);pk.pxIn=cnt();pk.stIn=E.st;ZC.startFrom(ZC.LV('luko'));ZC.tick(30);pk.pxOut=cnt();pk.onOut=E.on;
+const ok=pk.pxIn>0&&pk.stIn==='giant'&&pk.pxOut===0&&!pk.onOut&&pk.giant===2&&pk.swapped&&pk.stay&&pk.formed&&pk.fire===4&&pk.fly>=0&&pk.forced==='bird'&&pk.beats===3&&pk.jumped>=3&&pk.e2==='e2c'&&pk.rounds===4;
 [JSON.stringify(pk),'errs='+_errs.length+(_errs[0]?' '+_errs[0]:''),ok&&!_errs.length?'episolo ok':'FAIL episolo']
