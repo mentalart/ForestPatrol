@@ -111,14 +111,16 @@ FIN.k14Kid=function(def,c){try{const near=(a,b)=>Math.abs(a-b)<0.02,RC=c.RC,S=K1
     {t:21.55,fn:()=>{c.pr._hatGag=G.time;tone(330,0.18,'triangle',0.05,220);later(0.75,()=>tone(440,0.1,'triangle',0.05,660));}});
   def.events.sort((a,b)=>a.t-b.t);
   // кадры
-  def.shots=def.shots.filter(s=>!(s.t<13.1));
+  // у пня — с севера, навстречу Прошке: видно лицо, когда шапка съезжает на глаза (с юга кадр закрывал идущий следом Потап)
+  def.shots=def.shots.filter(s=>!(s.t<13.1||near(s.t,17.6)));
   def.shots.push(shot(0,A(S.clone().addScaledVector(dir,2.4).addScaledVector(side,0.5).setY(1.3)),P(S,0,0.95,0),A(S.clone().addScaledVector(dir,1.9).addScaledVector(side,0.35).setY(1.15)),P(S,0,1.0,0),3),
     shot(3.0,P(PRo,1.3,1.5,1.4),P(PRo,0,1.1,0),P(PRo,0.9,1.4,1.1),P(PRo,0,1.1,0),1.8),
     shot(4.8,A(S.clone().addScaledVector(dir,1.75).setY(0.55)),A(S.clone().addScaledVector(bk,2.6).setY(1.3)),A(S.clone().addScaledVector(dir,1.45).setY(0.5)),A(S.clone().addScaledVector(bk,2.6).setY(1.35)),1.5),
     shot(6.3,A(S.clone().addScaledVector(side,6.6).setY(1.5)),P(S,0,1.1,0),A(S.clone().addScaledVector(side,5.9).setY(1.75)),P(S,0,1.2,0),1.6),
     shot(7.9,P(S,0.25,6.2,0.4),P(S,0,0.3,0),P(S,0.35,9.2,0.6),P(S,0,0.3,0),1.6),
     shot(9.5,[-4.4,4.6,-23.0],[S.x+0.7,1.8,S.z-0.8],[-3.0,5.2,-28.0],[RC.x-0.7,1.4,RC.z+0.8],2.5),
-    shot(12.0,P(RC,-1.6,5.6,2.2),P(RC,0,0.4,0),P(RC,-1.3,4.8,1.8),P(RC,0,0.6,0),1.2));
+    shot(12.0,P(RC,-1.6,5.6,2.2),P(RC,0,0.4,0),P(RC,-1.3,4.8,1.8),P(RC,0,0.6,0),1.2),
+    shot(17.6,[2.6,2.1,-3.6],[0.4,0.9,-0.4],[2.0,1.75,-2.7],[0.5,1.05,-0.1],4));
   def.shots.sort((a,b)=>a.t-b.t);
   // кадры сквозь хоровод: вырез «в горошек» и затухание у камеры (late_88) на время ролика выключены — иначе ёлки переднего плана уходят в узор
   const O=FIN.occ,occSet=on=>{if(!O||on===!!K14.occOff)return;if(on){K14.occWas=O.on;O.on=false;}else O.on=K14.occWas!==false;K14.occOff=on;};
