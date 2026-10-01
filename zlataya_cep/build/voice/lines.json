@@ -8598,17 +8598,6 @@
    "dur": 4.41
   },
   {
-   "id": "1-2_007",
-   "lv": "1-2",
-   "who": "zhuravl",
-   "text": "Иду-иду! Только струны держите — да Паутинников гоните!",
-   "tts": "Иду-иду! Только струны держите — да Паутинников гоните!",
-   "max": 4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143025_1c933e75-bedd-4df5-a30c-5bef78cf9ff0.mp3",
-   "job": "1c933e75-bedd-4df5-a30c-5bef78cf9ff0",
-   "dur": 4.01
-  },
-  {
    "id": "1-2_008",
    "lv": "1-2",
    "who": "zhuravl",
@@ -8838,6 +8827,28 @@
    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145855_ff68e919-1e5d-449a-b2ac-7efb34d2bf49.mp3",
    "job": "ff68e919-1e5d-449a-b2ac-7efb34d2bf49",
    "dur": 3.81
+  },
+  {
+   "id": "1-2_029",
+   "lv": "1-2",
+   "who": "zhuravl",
+   "text": "Паутинники на гати — ноги мне запутают! Прогоните их всех — тогда пойду.",
+   "tts": "Паутинники на гати — ноги мне запутают! Прогоните их всех — тогда пойду.",
+   "max": 4.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155049_75122508-db8c-4e2a-b614-b90a59752e8c.mp3",
+   "job": "75122508-db8c-4e2a-b614-b90a59752e8c",
+   "dur": 4.64
+  },
+  {
+   "id": "1-2_030",
+   "lv": "1-2",
+   "who": "zhuravl",
+   "text": "Гать чиста! Иду-иду — свататься!",
+   "tts": "Гать чиста! Иду-иду — свататься!",
+   "max": 3.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155049_f1820f9d-f1e4-4605-908d-794b06640d85.mp3",
+   "job": "f1820f9d-f1e4-4605-908d-794b06640d85",
+   "dur": 3.19
   },
   {
    "id": "4-B_026",
