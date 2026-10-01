@@ -2,7 +2,8 @@
 // релиз final06: пролог, комната штаба и ролик «Колыбельная» (late_96b_prolog_night.js) — ночь за окном, пролёт Кощея, Звенышко
 // влетает в окно и прячется в тетрадку, иней и Кощей заглядывает, книжка-раскладушка с историей цепи, обставленная комната.
 // Проверки: еловые лапы снаружи стен штаба; комната обставлена; окно — своя сцена (портал); раскладушка встаёт у героя и играет
-// на прыжок/удар; игрушки откликаются; по ходу ролика — Кощей, искра Звенышка, погоня по комнате, иней, книжка, рывок цепи; без ошибок.
+// на прыжок/удар; игрушки откликаются; по ходу ролика — Кощей, искра Звенышка, погоня по комнате, иней, книжка, рывок цепи; затухание
+// «у камеры» (late_88) в ролике ослаблено и после него возвращено; без ошибок.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 window.SNAP=()=>{ZC.FIN.occ.frame();const gl=ZC.FIN.occ.dbg.renderer.getContext(),b=new Uint8Array(4);gl.readPixels(0,0,1,1,gl.RGBA,gl.UNSIGNED_BYTE,b);};
 ZC.startFrom(ZC.LV('p'));ZC.G.manual=true;ZC.tick(60);const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}
@@ -38,7 +39,8 @@ window.LOG=[];window.T=t=>{for(let i=0;i<6000&&ZC.G.cine&&ZC.G.cine.t<t;i++){ZC.
 //@@ shot=pn_k1_ko_far.png
 const s=T(24.4);if(!s.ko)throw new Error('24,4: Кощея нет за окном');JSON.stringify(s)
 //@@ shot=pn_k2_zven_out.png
-const s=T(26.2);if(!s.ko||!s.zg)throw new Error('26,2: нет Кощея или искры Звенышка за окном: '+JSON.stringify(s));JSON.stringify(s)
+const s=T(26.2);if(!s.ko||!s.zg)throw new Error('26,2: нет Кощея или искры Звенышка за окном: '+JSON.stringify(s));
+if(!(ZC.FIN.occ.near[0]<1))throw new Error('в ролике затухание у камеры не ослаблено: '+ZC.FIN.occ.near.join());JSON.stringify(s)
 //@@ shot=pn_k3_chase.png
 const s=T(27.6);if(s.zg||!s.zv||s.zr>ZC.FIN.proDbg().ctx.R)throw new Error('27,6: Звенышко не в комнате: '+JSON.stringify(s));JSON.stringify(s)
 //@@ shot=pn_k4_frost.png
@@ -52,6 +54,6 @@ const s=T(37.2);if(s.story||s.ko||s.frost>0)throw new Error('37,2: книжка/
 //@@ shot=pn_k7_door.png
 const s=T(40.6);const Z=ZC.W.zven;if(Z.pos.z>-5)throw new Error('40,6: Звенышко не у двери: '+Z.pos.z.toFixed(2));JSON.stringify(s)
 //@@
-T(99);const s=ZC.FIN.proNight();if(ZC.G.cine)throw new Error('ролик не закончился');if(s.ct!==-1||s.frost!==0)throw new Error('состояние ролика не сброшено: '+JSON.stringify(s));
+T(99);const s=ZC.FIN.proNight();if(ZC.G.cine)throw new Error('ролик не закончился');if(s.ct!==-1||s.frost!==0)throw new Error('состояние ролика не сброшено: '+JSON.stringify(s));if(!(ZC.FIN.occ.near[0]>2))throw new Error('затухание у камеры не возвращено: '+ZC.FIN.occ.near.join());
 if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));
 ['stage='+ZC.W.flags.stage,'fly='+s.fly,'errs='+_errs.length].join(' · ')
