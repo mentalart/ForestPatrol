@@ -10,7 +10,7 @@ build5B2=function(){
   W.zvenAway=false;W.world=5;setTheme('dawn');sky('dawn');W.name='5-Б2 · Кощей Бессмертный и Златая цепь';W.sub='Остров Буян · финал · пять этапов';W.camX=18;const F=W.flags;F.stage='intro';
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.noLose=false;W.noPetals=false;W.fallY=-12;const T=HERO;const C=new V3(0,0,-13),R=11;
   if(!G.flags.names)G.flags.names={};
-  Object.assign(K5,{st:0,fight:false,live:false,spark:null,locks:{},orbs:[],adds:[],needle:null,forge:null,zones:[],mark:0,log:[],said:{},bones:false,storm:0,stormTo:0});K5FX.length=0;
+  Object.assign(K5,{st:0,fight:false,live:false,spark:null,locks:{},orbs:[],adds:[],needle:null,forge:null,zones:[],mark:0,log:[],said:{},bones:false,storm:0,stormTo:0});K5FX.length=0;K5TR.length=0;
   if(G.flags.tut5b)K5.seen=Object.assign({},G.flags.tut5b);
   /* ---------- арена (как в прежнем финале) ---------- */
   const sea=new THREE.Mesh(new THREE.PlaneGeometry(700,700),M(0x6a8ab8,{emissive:0x302030,emissiveIntensity:0.2}));sea.rotation.x=-Math.PI/2;sea.position.set(0,-0.7,0);W.group.add(sea);
@@ -31,6 +31,7 @@ build5B2=function(){
   const kot=makeKot();kot.g.position.set(-2,0,-22.4);kot.g.rotation.y=0.3;W.cyls.push({x:-2,z:-22.4,r:0.7,miny:-1,maxy:2,on:true});
   const KS=makeKoschei();KS.g.scale.setScalar(1.15);KS.g.position.set(20,0,-12);const KP=new V3(-1.6,0,-23.2);
   const book=makeNotebook();book.g.scale.setScalar(0.9);book.g.visible=false;const ndl=makeNeedle(1.3);KS.hand.add(ndl.g);ndl.g.position.set(0,-0.1,0.1);ndl.g.scale.setScalar(0.45);
+  const KA=k5Actor(KS);K5.KA=KA;   // Кощей-актёр: позы в роликах (late_92)
   const sword=k5Sword();KS.hand.add(sword);sword.position.set(0,-0.05,0.05);sword.rotation.set(-0.35,0,0);sword.visible=false;
   const Z=makeZven();W.zven=Z;Z.pos.set(0,3,6);
   const bb=$('bossbar');W.onLeave=()=>{bb.style.display='none';try{k5HintHide(false);}catch(e){}k5StormSet(0,true);const v=document.getElementById('k5storm');if(v)v.style.opacity=0;};
@@ -175,24 +176,36 @@ build5B2=function(){
     if(!K5.said.spark){K5.said.spark=true;say('zven','Отбил — искорка летит к другу! Отбивайте по очереди!',4.2,true);}}
   function sparkTick(dt){const S=K5.spark;if(!S)return;S.t-=dt;const h=active(S.pi);if(!h||S.t<=0){k5Del(S.m);K5.spark=null;return;}const to=headOf(h).add(new V3(0,0.2+0.1*Math.sin(G.time*6),0));S.m.position.lerp(to,1-Math.exp(-10*dt));S.m.rotation.y+=dt*5;S.m.scale.setScalar(S.t<1?S.t:1);}
   /* ---------- этап 3: шары, вороны, иглы, воронка, гроза ---------- */
-  function orbThrow(h){const o={g:k5OrbMesh(0.42),tgt:h,v:(G.solo?4.6:5.3)-0.3*K5.fails[3],st:'in',left:null,t:0,eta:9};o.p=o.g.position;o.p.copy(KB.pos).add(new V3(0,3.6,0));K5.orbs.push(o);k5s('orb');
-    anim(0.6,k=>{KS.armR.rotation.x=-2.6*Math.sin(k*Math.PI);});return o;}
+  // шар (по отзыву 2: ярче): сначала копится в поднятой руке Кощея (искры стягиваются — замах), потом срывается с вспышкой и тянет светящийся шлейф
+  const kHand=()=>KS.hand.getWorldPosition(new V3());
+  function orbThrow(h){const o={g:k5OrbMesh(0.42),tgt:h,v:(G.solo?4.6:5.3)-0.3*K5.fails[3],st:'in',left:null,t:0,eta:9,hold:0.5};o.p=o.g.position;o.p.copy(kHand());o.g.scale.setScalar(0.01);K5.orbs.push(o);k5s('orb');
+    k5Gather(()=>o.p,0xc090ff,0.5,16,2.2);anim(0.6,k=>{KS.armR.rotation.x=-2.6*Math.sin(k*Math.PI);});
+    o.trail=k5Trail(o.g,()=>o.st==='in'?0xa060ff:0xffc040,{size:0.75,life:0.42,every:0.025});return o;}
   function orbTick(dt){const T0=timingOf;for(let i=K5.orbs.length-1;i>=0;i--){const o=K5.orbs[i];o.t+=dt;
+    if(o.hold>0){o.hold-=dt;o.p.copy(kHand());o.g.scale.setScalar(Math.max(0.01,CE.outBack(clamp(1-o.hold/0.5,0,1))));k5OrbAnim(o.g,dt,false);o.eta=o.p.distanceTo(o.tgt.pos)/o.v+Math.max(0,o.hold);
+      if(o.hold<=0){o.g.scale.setScalar(1);k5Flash(o.p.clone(),0xd0a0ff,3.2,0.3);k5Ring(o.p.clone(),0xc090ff,0.3,2.2,0.4,0.18,new THREE.Euler(0,0,0));if(SFX.whoosh)SFX.whoosh();}continue;}
     const to=o.st==='up'?KB.pos.clone().add(new V3(0,3.4,0)):o.tgt.pos.clone().add(new V3(0,heroHeight(o.tgt)*0.6,0));const dv=to.clone().sub(o.p),d=dv.length();o.eta=d/o.v;
-    o.p.addScaledVector(dv.normalize(),Math.min(d,o.v*dt));o.g.rotation.y+=dt*4;o.g.children[1].scale.setScalar(1+0.12*Math.sin(G.time*14));if(Math.random()<0.25)FX.sparkle(o.p.clone(),1,o.st==='in'?0xb070ff:0xffe08a);
-    if(o.st!=='in')o.g.children[0].material.color.setHex(0xd0a030);
+    o.p.addScaledVector(dv.normalize(),Math.min(d,o.v*dt));o.g.rotation.y+=dt*4;o.g.children[1].scale.setScalar(0.42*4.2*(1+0.14*Math.sin(G.time*14)));k5OrbAnim(o.g,dt,o.st!=='in');
+    if(Math.random()<0.35)FX.sparkle(o.p.clone(),1,o.st==='in'?0xc090ff:0xffe08a);
     if(o.t>9){k5Del(o.g);K5.orbs.splice(i,1);continue;}
     if(d>0.7)continue;
-    if(o.st==='up'){k5Del(o.g);K5.orbs.splice(i,1);if(K5.live&&KB.state!=='broken'){emberOut(KB,G.solo?1:2,'Шар вернулся!');k5s('orbHit');FX.stars(KB.pos.clone().add(new V3(0,3.4,0)),12,0xffe08a);K5.dip=1.6;K5.log.push('orbhit');}continue;}
+    if(o.st==='up'){k5Del(o.g);K5.orbs.splice(i,1);if(K5.live&&KB.state!=='broken'){emberOut(KB,G.solo?1:2,'Шар вернулся!');k5s('orbHit');const hp=KB.pos.clone().add(new V3(0,3.4,0));
+        FX.stars(hp,16,0xffe08a);FX.sparks(hp,24,0xffd060);k5Flash(hp,0xfff0c0,5.5,0.45);k5Ring(hp,0xffd060,0.4,4.2,0.55,0.12,new THREE.Euler(Math.PI/2,0,0));k5Ring(hp,0xffffff,0.2,2.6,0.35,0.2,new THREE.Euler(0.3,0.6,0));G.hitstop=Math.max(G.hitstop||0,0.08);shakeAll(0.05,0.3);K5.dip=1.6;K5.log.push('orbhit');}continue;}
     const h=o.tgt,pi=h.player,T=T0(pi);if(players[pi].downed||!h.active){k5Del(o.g);K5.orbs.splice(i,1);continue;}
     if(o.left!==null&&o.left<=T.parry+0.08){SFX.parry();G.stats.parries++;if(FIN.guard)FIN.guard.hit(h,true);const part=active(1-pi);
+      k5Flash(o.p.clone(),0xffe8a0,3.6,0.3);k5Ring(o.p.clone(),0xffd060,0.3,2.4,0.35,0.16,new THREE.Euler(0,h.face,0));FX.sparks(o.p.clone(),16,0xffd060);G.hitstop=Math.max(G.hitstop||0,0.05);
       if(o.st==='in'&&!G.solo&&part&&part.active&&!players[1-pi].downed){o.st='pass';o.tgt=part;o.v=6.2;o.left=null;o.t=0;k5s('orbPass');floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Другу!','#ffe08a');K5.log.push('orbpass');}
       else{o.st='up';o.v=13;o.t=0;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'В небо!','#ffe08a');K5.log.push('orbup');}continue;}
-    k5Del(o.g);K5.orbs.splice(i,1);FX.sparkle(o.p.clone(),8,0xb070ff);
+    k5Del(o.g);K5.orbs.splice(i,1);FX.sparkle(o.p.clone(),8,0xb070ff);FX.sparks(o.p.clone(),14,0xb070ff);k5Flash(o.p.clone(),0xa060ff,2.6,0.3);
     if(h.guard){shieldBlock(h);floatText(h.pos.clone().add(new V3(0,h.d.height+1,0)),'в последний миг — отобьёшь!','#e0c8ff');continue;}
     damageHero(h,{kind:'enemy',ref:{pos:o.p.clone()}});if(!K5.said.orbTip){K5.said.orbTip=true;tip(pi,'Тёмный шар — нажми щит '+K(pi,'guard')+' в самый последний миг: он полетит к другу!',3);}}}
   function ravenMake(){const hs=k5Heroes();if(!hs.length)return null;const a=rand(0,6.28);const x=C.x+Math.cos(a)*9,z=C.z+Math.sin(a)*9;const pi=G.solo?G.soloPi:hs[Math.floor(rand(0,hs.length))].player;
-    const e=makeFoe('k5raven',x,z,{pi,leash:60});e.k5=true;e.noMove=true;e.state='idle';e.pos.y=4;e.cd=rand(2.5,4.5);e.k5a=a;e.home=C.clone();e.tick=(e,dt)=>ravenTick(e,dt);K5.adds.push(e);k5s('raven');return e;}
+    const e=makeFoe('k5raven',x,z,{pi,leash:60});e.k5=true;e.noMove=true;e.state='idle';e.pos.y=4;e.cd=rand(2.5,4.5);e.k5a=a;e.home=C.clone();e.tick=(e,dt)=>ravenTick(e,dt);K5.adds.push(e);k5s('raven');
+    // появляется из лиловой дымки; глаза — красные огоньки (видно, куда смотрит); пикирует — красная линия на землю и шлейф
+    const sp=new V3(x,4,z);k5Flash(sp,0x8a50ff,3,0.4);k5Feathers(sp,8,0.8);
+    e.k5eyes=[-1,1].map(sd=>{const g=k5Glow(0xff3050,0.32);g.position.set(sd*0.09,1.2,0.6);e.L.body.add(g);return g;});
+    const ln=k5Prop(new THREE.Mesh(new THREE.PlaneGeometry(0.16,1),k5Add(0xff3050,{opacity:0})));ln.raycast=()=>{};e.k5line=ln;
+    e.k5trail=k5Trail(()=>e.alive&&e.g.parent?e.g.position.clone().add(new V3(0,0.9,0)):null,0xff3858,{size:0.38,life:0.3,every:0.04});e.k5trail.on=true;return e;}
   function ravenTick(e,dt){const L=e.L;const fl=e.state==='recover'&&e.dazeT>0||e.state==='broken'?0.1:1;L.wings.forEach(w=>{w.g.rotation.z=w.s*Math.sin(G.time*(e.pos.y>2?9:16))*0.7*fl;});
     if(players[e.pi].downed)e.pi=1-e.pi;if(G.solo)e.pi=G.soloPi;const h=active(e.pi);if(!h)return;const dx=h.pos.x-e.pos.x,dz=h.pos.z-e.pos.z,d=Math.hypot(dx,dz)||1;
     if(e.state==='idle'){if(e.cd>1.0||!K5.fight){e.k5a+=dt*0.7;const tx=C.x+Math.cos(e.k5a)*7,tz=C.z+Math.sin(e.k5a)*6;e.pos.x=damp(e.pos.x,tx,2,dt);e.pos.z=damp(e.pos.z,tz,2,dt);e.pos.y=damp(e.pos.y,3.8,2,dt);e.face=Math.atan2(tx-e.pos.x,tz-e.pos.z);return;}
@@ -200,15 +213,43 @@ build5B2=function(){
     else if(e.state==='ready'||e.state==='wind'||e.state==='strike'){e.pos.y=damp(e.pos.y,0.9,5,dt);}
     else if(e.state==='recover'||e.state==='stagger'){if(e.dazeT>0)e.pos.y=damp(e.pos.y,0.25,8,dt);else{e.pos.y=damp(e.pos.y,4,2,dt);if(e.pos.y>3.2&&e.state==='recover'){e.state='idle';e.cd=rand(2.5,4.5);e.k5cw=false;}}}
     else if(e.state==='broken')e.pos.y=damp(e.pos.y,0.25,8,dt);
-    if(e.state!=='idle'||e.cd<=1)e.face=Math.atan2(dx,dz);}
+    if(e.state!=='idle'||e.cd<=1)e.face=Math.atan2(dx,dz);
+    ravenFx(e,h,dt);}
+  // эффекты ворона: глаза горят ярче перед пике, красная линия-прицел к герою, промах — удар о землю, пыль и звёздочки над головой
+  function ravenFx(e,h,dt){const dive=e.state==='ready'||e.state==='wind'||(e.state==='idle'&&e.cd<=1&&K5.fight);const st=e.state;
+    if(e.k5eyes)e.k5eyes.forEach(g=>{g.scale.setScalar(dive?0.55+0.15*Math.sin(G.time*20):0.3);});
+    const ln=e.k5line;if(ln){const on=(st==='wind'||st==='ready')&&h;ln.material.opacity=damp(ln.material.opacity,on?0.55+0.35*Math.abs(Math.sin(G.time*12)):0,14,dt);
+      if(h){const a=e.g.position.clone().add(new V3(0,0.9,0)),b=new V3(h.pos.x,0.15,h.pos.z),d=b.clone().sub(a),L=d.length()||0.01;ln.position.copy(a).addScaledVector(d,0.5);ln.scale.set(1,L,1);
+        ln.quaternion.setFromUnitVectors(new V3(0,1,0),d.normalize());}}
+    if(e.k5trail)e.k5trail.every=st==='strike'||dive?0.025:0.5;
+    if(st==='strike'&&e.k5ps!=='strike'){k5Feathers(e.g.position.clone().add(new V3(0,0.9,0)),5,0.6);}
+    if((st==='recover'||st==='stagger')&&e.dazeT>0&&!e.k5crash){e.k5crash=true;const p=new V3(e.pos.x,0.1,e.pos.z);FX.dust(p,12,0x8a7a6a,1.1);k5Ring(p,0xffffff,0.3,2.2,0.45,0.12);k5Feathers(p.clone().add(new V3(0,0.5,0)),10,1.1);
+      const ring=k5Prop(new THREE.Group());for(let i=0;i<3;i++){const st2=new THREE.Mesh(FX.geo.star,k5Add(0xffe27a));st2.scale.setScalar(0.16);ring.add(st2);}e.k5stars=ring;}
+    if(e.dazeT<=0)e.k5crash=false;
+    if(e.k5stars){const R0=e.k5stars;if(e.dazeT>0&&e.alive){R0.position.set(e.pos.x,e.pos.y+1.45,e.pos.z);R0.rotation.y+=dt*6;R0.children.forEach((m,i)=>{const a=i/3*Math.PI*2;m.position.set(Math.cos(a)*0.42,0.06*Math.sin(G.time*8+i),Math.sin(a)*0.42);m.lookAt(camS.position);});}
+      else{k5Del(R0);e.k5stars=null;}}
+    e.k5ps=st;}
   function needleRain(n,around){k5s('needles');const hs=k5Heroes();for(let i=0;i<n;i++){const h=around?null:hs[i%Math.max(1,hs.length)];const base=around||(h?h.pos:C);const p=inArena(base.clone().add(new V3(rand(-2.4,2.4),0,rand(-2.4,2.4))),0.8);
-    later(i*0.16,()=>{if(!K5.fight)return;k5Zone(p,1.3,1.55,0xff4a5a,q=>{if(!K5.fight)return;needleFall(q);for(const x of k5Heroes())if(hd(x.pos,q)<1.45)k5Hurt(x,q);});});}}
-  function needleFall(q){for(let j=0;j<4;j++){const m=k5Prop(new THREE.Mesh(new THREE.ConeGeometry(0.06,0.9,5),MB(0xd8d0f0)));m.rotation.x=Math.PI;const o=new V3(q.x+rand(-0.8,0.8),10,q.z+rand(-0.8,0.8));m.position.copy(o);
-    k5fx(0.28+j*0.04,k=>{m.position.y=lerp(10,0.4,k*k);},()=>{FX.sparks(new V3(o.x,0.3,o.z),4,0xd8d0f0);later(0.6,()=>k5Del(m));});}k5s('strike');}
+    later(i*0.16,()=>{if(!K5.fight)return;needlePortal(p,1.55);k5Zone(p,1.3,1.55,0xff4a5a,q=>{if(!K5.fight)return;needleFall(q);for(const x of k5Heroes())if(hd(x.pos,q)<1.45)k5Hurt(x,q);});});}}
+  // над красным кругом в небе раскрывается лиловый знак — оттуда и падают иглы
+  function needlePortal(p,dur){const g=k5Decal(K5TEX.rune,0xc080ff,1.5,new V3(p.x,9.5,p.z),0);g.rotation.x=Math.PI/2;const gl=k5Prop(k5Glow(0x9a60ff,3.2));gl.position.set(p.x,9.5,p.z);
+    k5fx(dur+0.5,k=>{const u=k*(dur+0.5),a=u<0.3?u/0.3:u>dur?Math.max(0,1-(u-dur)/0.5):1;g.material.opacity=0.9*a;g.scale.setScalar(0.4+0.6*CE.outBack(Math.min(1,u/0.35)));g.rotation.z+=0.06;gl.material.opacity=0.7*a;},()=>{k5Del(g);k5Del(gl);});}
+  function needleFall(q){for(let j=0;j<4;j++){const m=k5Prop(new THREE.Mesh(new THREE.ConeGeometry(0.07,0.95,5),MB(0xf0e8ff)));m.rotation.x=Math.PI;const o=new V3(q.x+rand(-0.8,0.8),10,q.z+rand(-0.8,0.8));m.position.copy(o);
+    const str=new THREE.Mesh(new THREE.PlaneGeometry(0.22,2.6),k5Add(0xd8c0ff,{map:K5TEX.beam,opacity:0.9}));str.position.y=-1.5;m.add(str);   // светящийся след за иглой
+    k5fx(0.28+j*0.04,k=>{m.position.y=lerp(10,0.4,k*k);str.lookAt(camS.position.x,m.position.y-1.5,camS.position.z);},()=>{const c=new V3(o.x,0.1,o.z);FX.sparks(c.clone().add(new V3(0,0.2,0)),7,0xe8d8ff);k5Ring(c,0xe0c8ff,0.15,1.3,0.32,0.18);
+      if(j===0){const cr=k5Decal(K5TEX.crack,0x9a60ff,1.4,c,0.9);k5fx(1.4,kk=>{cr.material.opacity=0.9*(1-kk);},()=>k5Del(cr));k5Flash(c.clone().add(new V3(0,0.4,0)),0xd0b0ff,2.2,0.25);}
+      m.remove(str);later(0.6,()=>k5Del(m));});}k5s('strike');}
   function vortex(){const hs=k5Heroes();if(!hs.length)return;const c=inArena(hs[Math.floor(rand(0,hs.length))].pos.clone().add(new V3(rand(-2,2),0,rand(-2,2))),2);k5s('vortex');K5.log.push('vortex');
-    const g=k5Prop(new THREE.Group());g.position.set(c.x,0.05,c.z);for(let i=0;i<3;i++){const m=new THREE.Mesh(new THREE.TorusGeometry(1.2+i*1.3,0.09,5,28),MB(0x7a4ad0,{transparent:true,opacity:0.65}));m.rotation.x=-Math.PI/2;m.position.y=0.1+i*0.25;g.add(m);}
-    for(let i=0;i<6;i++){const m=new THREE.Mesh(new THREE.TorusGeometry(0.35+i*0.28,0.05,4,20),MB(0x4a3a80,{transparent:true,opacity:0.55,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=0.6+i*0.55;g.add(m);}   // вихрь из колец
-    k5fx(3.4,(k,dt)=>{g.rotation.y+=dt*4;g.children.forEach((m,i)=>{if(i<3)m.scale.setScalar(1-0.35*((G.time*1.4+i*0.33)%1));else{m.position.x=Math.sin(G.time*5+i)*0.25*(i-2);m.material.opacity=0.55*Math.sin(k*Math.PI);}});if(!K5.fight)return;
+    // по отзыву 2: светящаяся спираль на земле, тёмное «око» в центре, крутящаяся воронка-конус и искры, что по спирали уходят внутрь
+    const g=k5Prop(new THREE.Group());g.position.set(c.x,0.05,c.z);const sp=new THREE.Mesh(new THREE.PlaneGeometry(11,11),k5Add(0x9a60ff,{map:K5TEX.spiral,opacity:0}));sp.rotation.x=-Math.PI/2;sp.position.y=0.06;g.add(sp);
+    const eyeD=new THREE.Mesh(new THREE.CircleGeometry(0.9,24),MB(0x140a24,{transparent:true,opacity:0,depthWrite:false}));eyeD.rotation.x=-Math.PI/2;eyeD.position.y=0.08;g.add(eyeD);
+    const fun=new THREE.Mesh(new THREE.CylinderGeometry(2.4,0.35,4.2,24,1,true),k5Add(0x7a4ad0,{map:K5TEX.beam,opacity:0}));fun.position.y=2.1;g.add(fun);
+    const rings=[];for(let i=0;i<3;i++){const m=new THREE.Mesh(new THREE.TorusGeometry(1.2+i*1.3,0.07,5,40),k5Add(0xb080ff,{opacity:0}));m.rotation.x=-Math.PI/2;m.position.y=0.12+i*0.2;g.add(m);rings.push(m);}
+    const motes=[];for(let i=0;i<18;i++){const m=k5Glow(0xd0b0ff,0.35);g.add(m);motes.push({m,a:rand(0,6.28),r:rand(1,5.2),y:rand(0,0.4)});}
+    k5fx(3.4,(k,dt)=>{const a=k<0.12?CE.outBack(k/0.12):k>0.85?1-(k-0.85)/0.15:1;g.rotation.y+=dt*4;sp.material.opacity=0.85*a;sp.scale.setScalar(Math.max(0.05,a));eyeD.material.opacity=0.8*a;fun.material.opacity=0.45*a;fun.rotation.y-=dt*7;
+      rings.forEach((m,i)=>{m.scale.setScalar(1-0.35*((G.time*1.4+i*0.33)%1));m.material.opacity=0.7*a;});
+      motes.forEach(q=>{q.a+=dt*(3+6/(q.r+0.5));q.r-=dt*2.2;q.y+=dt*0.9;if(q.r<0.25){q.r=rand(4,5.4);q.y=0;}q.m.position.set(Math.cos(q.a)*q.r,q.y,Math.sin(q.a)*q.r);q.m.material.opacity=a*Math.min(1,q.r/1.5);});
+      if(!K5.fight)return;
       for(const h of k5Heroes()){const dx=c.x-h.pos.x,dz=c.z-h.pos.z,d=Math.hypot(dx,dz);if(d<5.5&&d>0.25&&h.rollT<=0){const f=(1-d/5.5)*4.8*dt;h.pos.x+=dx/d*f;h.pos.z+=dz/d*f;}if(d<0.9&&G.time>(h._vxT||0)){h._vxT=G.time+1.2;k5Hurt(h,c);}}},()=>k5Del(g));}
   function stage3Tick(dt){// полёт по кругу над поляной
     if(KB.state==='k5cast'||KB.state==='k5rise'){K5.ang=(K5.ang||0)+dt*0.28;const tx=C.x+Math.sin(K5.ang)*6,tz=C.z+Math.cos(K5.ang)*4.5;KB.pos.x=damp(KB.pos.x,tx,1.6,dt);KB.pos.z=damp(KB.pos.z,tz,1.6,dt);
@@ -219,7 +260,7 @@ build5B2=function(){
       K5.vxT=(K5.vxT==null?12:K5.vxT)-dt;if(K5.vxT<=0){K5.vxT=16;vortex();}}
     // спесь сбита в воздухе — падает на землю
     if(KB.state==='broken'&&KB.pos.y>0.3&&!K5.crash){K5.crash=true;KB.state='k5crash';KB.k5k=0;k5s('flyUp');}
-    if(KB.state==='k5crash'){KB.k5k+=dt;KB.pos.y=Math.max(0,KB.pos.y-dt*9);if(KB.pos.y<=0){KB.pos.y=0;k5s('land');shakeAll(0.08,0.4);FX.dust(KB.pos.clone(),18,0x8a7a6a);KB.state='broken';KB.t=0;KB._b=false;K5.crash=false;}}
+    if(KB.state==='k5crash'){KB.k5k+=dt;KB.pos.y=Math.max(0,KB.pos.y-dt*9);if(KB.pos.y<=0){KB.pos.y=0;k5s('land');shakeAll(0.08,0.4);FX.dust(KB.pos.clone(),18,0x8a7a6a);kosCrash();KB.state='broken';KB.t=0;KB._b=false;K5.crash=false;}}
     if(KB.state==='idle'&&K5.live){KB.state='k5rise';KB.embers=Math.max(2,Math.ceil(KB.maxEmb/2));floatText(kosTop(),'Спесь вернулась!','#c8a8ff');k5s('flyUp');}
     const want=(G.solo?2:3);if(K5.adds.filter(e=>e.kind==='k5raven').length<want){K5.rvT=(K5.rvT==null?1:K5.rvT)-dt;if(K5.rvT<=0){K5.rvT=5;ravenMake();if(!K5.said.rav){K5.said.rav=true;bark(KS,'koschei','Вороны, ко мне!',1.7);}}}}
   // гроза: небо, туман и свет темнеют плавно (релизный рендер берёт небо из фона и тумана)
@@ -229,7 +270,26 @@ build5B2=function(){
   function stormTick(dt){K5.storm=damp(K5.storm,K5.stormTo,0.8,dt);const k=K5.storm;vig.style.opacity=(G.state==='play'&&!FIN.titleOn?k:0).toFixed(3);clouds.visible=k>0.05;clouds.rotation.y+=dt*0.03;clouds.children.forEach(c=>{c.material.opacity=0.85*k;});
     const dark=new THREE.Color(0x2a2440);if(scene.background&&scene.background.isColor)scene.background.copy(STORM.bg).lerp(dark,k*0.8);if(scene.fog&&STORM.fog)scene.fog.color.copy(STORM.fog).lerp(dark,k*0.75);
     amb.intensity=STORM.amb*(1-0.45*k);sun.intensity=STORM.sun*(1-0.65*k);sun.color.copy(STORM.sunC).lerp(new THREE.Color(0xb8a8ff),k*0.5);
-    if(k>0.5&&!G.cine){K5.thT=(K5.thT==null?5:K5.thT)-dt;if(K5.thT<=0){K5.thT=rand(6,11);const f=$('flash');if(f){f.style.transition='opacity .08s';f.style.opacity=0.35;setTimeout(()=>{f.style.transition='opacity .5s';f.style.opacity=0;},90);}k5s('thunder');}}}
+    if(k>0.5&&!G.cine){K5.thT=(K5.thT==null?5:K5.thT)-dt;if(K5.thT<=0){K5.thT=rand(5,9);const f=$('flash');if(f){f.style.transition='opacity .08s';f.style.opacity=0.3;setTimeout(()=>{f.style.transition='opacity .5s';f.style.opacity=0;},90);}k5s('thunder');
+        // молния бьёт за краем поляны (в море) — красиво и не опасно; туча над ней вспыхивает
+        const a=rand(0,6.28),bp=new V3(C.x+Math.cos(a)*rand(17,24),0,C.z+Math.sin(a)*rand(17,24));k5Bolt(bp,0xd8b0ff);const cl=clouds.children[Math.floor(rand(0,clouds.children.length))];if(cl){cl.material.color.setHex(0xb8a0ff);later(0.25,()=>cl.material.color.setHex(0x2a2438));}}}
+    // тучи мерцают изнутри
+    if(k>0.3&&Math.random()<dt*1.5){const cl=clouds.children[Math.floor(rand(0,clouds.children.length))];if(cl&&cl.material.color.getHex()===0x2a2438){cl.material.color.setHex(0x4a3a70);later(0.12,()=>cl.material.color.setHex(0x2a2438));}}}
+  // дождь: тонкие косые струи вокруг поляны (инстансы); сила — по грозе
+  const RAIN=(()=>{const N=260,m=new THREE.InstancedMesh(new THREE.BoxGeometry(0.025,0.9,0.025),k5Add(0xb8c8ff,{opacity:0.32,side:THREE.FrontSide}),N);m.frustumCulled=false;m.userData.noBatch=true;m.raycast=()=>{};
+    const L=[];for(let i=0;i<N;i++)L.push(new V3(C.x+rand(-17,17),rand(0,14),C.z+rand(-17,17)));m.count=0;W.group.add(m);return {m,L,mt:new THREE.Matrix4(),q:new THREE.Quaternion().setFromEuler(new THREE.Euler(0.18,0,0.12)),s:new V3(1,1,1)};})();
+  function rainTick(dt){const k=K5.storm||0,n=Math.round(RAIN.L.length*clamp((k-0.35)/0.65,0,1));RAIN.m.count=n;if(!n)return;
+    for(let i=0;i<n;i++){const p=RAIN.L[i];p.y-=dt*16;p.z+=dt*2.8;p.x+=dt*1.6;if(p.y<0){p.y+=14;p.x=C.x+rand(-17,17);p.z=C.z+rand(-17,17);}RAIN.mt.compose(p,RAIN.q,RAIN.s);RAIN.m.setMatrixAt(i,RAIN.mt);}RAIN.m.instanceMatrix.needsUpdate=true;}
+  function kosCrash(){const p=new V3(KB.pos.x,0.1,KB.pos.z);k5Ring(p,0xffffff,0.5,6,0.6,0.08);k5Ring(p,0xb080ff,0.3,4,0.8,0.18);k5Flash(p.clone().add(new V3(0,1,0)),0xd0b0ff,6,0.4);
+    const cr=k5Decal(K5TEX.crack,0x9a60ff,3,p,1);k5fx(2.2,k=>{cr.material.opacity=1-k;},()=>k5Del(cr));FX.stars(p.clone().add(new V3(0,3.6,0)),12);G.hitstop=Math.max(G.hitstop||0,0.1);}
+  // полёт: под Кощеем — светящаяся руна (видно, где он), у груди — лиловое сияние, в движении — шлейф искр
+  const flyRune=k5Decal(K5TEX.rune,0xb070ff,2.4,new V3(0,0.07,0),0);const flyAura=k5Prop(k5Glow(0x9a50ff,4));flyAura.material.opacity=0;
+  const kChest=()=>KS.rig.chest.getWorldPosition(new V3());let flyTrail=null;
+  function flyFx(dt){const fly=K5.live&&KB.pos.y>0.6&&(K5.st===3||K5.st===5)&&!G.cine;const h=KB.pos.y;
+    flyRune.material.opacity=damp(flyRune.material.opacity,fly?clamp(0.95-h*0.06,0.45,0.95):0,6,dt);flyRune.position.set(KB.pos.x,0.07,KB.pos.z);flyRune.rotation.z+=dt*0.8;flyRune.scale.setScalar(1+0.04*Math.sin(G.time*3));
+    flyAura.material.opacity=damp(flyAura.material.opacity,fly?0.75+0.2*Math.sin(G.time*5):0,6,dt);if(fly)flyAura.position.copy(kChest());
+    if(fly&&!flyTrail){flyTrail=k5Trail(()=>K5.live&&KB.pos.y>0.6&&(K5.st===3||K5.st===5)?kChest().add(new V3(0,-1.2,0)):null,0x8a40ff,{size:1.1,life:0.6,every:0.05});}
+    if(flyTrail&&!flyTrail.on)flyTrail=null;}
   /* ---------- этап 4: меч, серии, прыжок с волной, око, костяные щитники ---------- */
   const COMBOS=[['yellow','yellow','red'],['yellow','delay'],['red','yellow'],['yellow','red','yellow'],['delay','red']];
   function pickSig(e,h,s){if(K5.st===4||K5.st===5){if(!K5.combo||!K5.combo.length){K5.combo=COMBOS[Math.floor(rand(0,K5.st===5?3:COMBOS.length))].slice();}const x=K5.combo.shift();if(x==='delay'){K5.delayNext=true;return 'yellow';}return x;}return s;}
@@ -242,7 +302,25 @@ build5B2=function(){
       floatText(kosTop(),'Открыт!','#ffe36b');}}
   function shockwave(c){const m=k5Prop(new THREE.Mesh(new THREE.RingGeometry(0.8,1,48),MB(0xc090ff,{transparent:true,opacity:0.9,side:THREE.DoubleSide,depthWrite:false})));m.rotation.x=-Math.PI/2;m.position.set(c.x,0.12,c.z);const hitSet=new Set();
     k5fx(1.1,k=>{const r=0.6+k*7.5;m.scale.setScalar(r);m.material.opacity=0.9*(1-k*0.7);if(!K5.fight)return;for(const h of k5Heroes()){const d=hd(h.pos,c);if(Math.abs(d-r)<0.55&&h.pos.y<0.35&&!hitSet.has(h)){hitSet.add(h);if(h.rollT>0){floatText(h.pos.clone().add(new V3(0,2,0)),'Увернулся!','#9fe0ff');}else k5Hurt(h,c);}}},()=>k5Del(m));}
-  function boneMake(x,z){const e=makeFoe('k5bone',x,z,{leash:30});e.k5=true;e.sideOpen=true;e.state='spawn';K5.adds.push(e);burst(new V3(x,0.4,z),0xe8e0c8,14,3);SFX.crash();return e;}
+  function boneMake(x,z){const e=makeFoe('k5bone',x,z,{leash:30});e.k5=true;e.sideOpen=true;e.state='spawn';K5.adds.push(e);burst(new V3(x,0.4,z),0xe8e0c8,14,3);SFX.crash();
+    if(G.solo){e.embers=e.maxEmb=2;}e.cd=rand(1.6,4.2);   // одному — щитники слабее и нападают вразнобой
+    // встаёт из треснувшей земли в столбе лилового света; в стороны — обломки костей и пыль
+    const p=new V3(x,0.08,z);const cr=k5Decal(K5TEX.crack,0xa070ff,1.9,p,1);k5fx(2.6,k=>{cr.material.opacity=1-k*k;cr.rotation.z+=0.002;},()=>k5Del(cr));
+    k5Pillar(p,0x9a60ff,7,0.75,1.1);k5Ring(p,0xd0b0ff,0.3,2.6,0.6,0.16);FX.dust(p,12,0x8a7a6a,1.1);
+    for(let i=0;i<8;i++){const a=rand(0,6.28);fxAdd('tetra',0xe8e0c8,p.clone().add(new V3(0,0.3,0)),new V3(Math.cos(a)*rand(1.5,3.5),rand(3,6),Math.sin(a)*rand(1.5,3.5)),{s:rand(0.06,0.11),life:rand(0.6,0.9),g:13,spin:10});}
+    return e;}
+  // «Кости, встаньте!» — пятеро щитников кольцом вокруг героев (по отзыву 2: был один-два); короткий ролик: Кощей вскидывает меч, земля трескается, кости встают по очереди
+  function bonesRise(){K5.bones=true;const hs=k5Heroes(),cen=hs.length?hs.reduce((a,h)=>a.add(h.pos),new V3()).multiplyScalar(1/hs.length):C.clone();const pts=[];
+    for(let i=0;i<5;i++){let best=null;for(let t=0;t<14;t++){const a=i/5*Math.PI*2+rand(-0.35,0.35)+0.3,r=rand(5.2,6.6);const q=inArena(new V3(cen.x+Math.cos(a)*r,0,cen.z+Math.sin(a)*r),1.4);
+        if(HEROES.every(h=>hd(h.pos,q)>3)&&hd(q,KB.pos)>2.4&&pts.every(o=>hd(o,q)>2.6)){best=q;break;}if(!best)best=q;}pts.push(best);}
+    const kp=KB.pos.clone(),face=KB.face,head=kp.clone().add(new V3(0,4.15,0)),pr=active(0),po=active(G.solo?G.soloPi:1)||pr;
+    const F1=k5Face(head,face,0.5,5.2,-0.9),mid=pts.reduce((a,q)=>a.add(q),new V3()).multiplyScalar(0.2);
+    play({dur:4.6,fov:48,camK:3,skip:true,k5:{mood:['#7a5cff',0.16],cues:[[0.05,()=>{KA.pose('sword',{antic:0.18,snap:true});k5s('cast');}],[0.5,()=>{CINE.punch(-4);CINE.trauma(0.25);}],
+        ...pts.map((q,i)=>[1.15+i*0.28,()=>{boneMake(q.x,q.z);CINE.trauma(0.18);}]),[1.3,()=>ACT.emoteAll('fear',null,0.08)],[2.3,()=>CINE.dutch(0.06)],[3.4,()=>{CINE.dutch(0);ACT.emoteAll('pride',null,0.1);}],[4.1,()=>KA.pose('guard')]]},
+      shots:[Object.assign(shot(0,F1.p,F1.l),{x:{fov:44,fov2:40,move:'push',amp:1}}),
+        Object.assign(shot(1.0,[mid.x+Math.sin(face)*1+9,8.5,mid.z+9],[mid.x,0.8,mid.z],[mid.x+6,6.5,mid.z+10],[mid.x,1,mid.z],2.3),{x:{tr:'whip',ease:'inOutSine',fov:52,move:'none'}}),
+        Object.assign(shot(3.3,[cen.x+3.2,1.4,cen.z+3.6],[cen.x,1.1,cen.z],[cen.x+2.6,1.6,cen.z+4.2],[cen.x,1.2,cen.z],1.3),{x:{tr:'cut',fov:46,move:'none'}})],
+      says:[[0.15,1.7,'koschei','Кости, встаньте!']],end:()=>{KA.reset();}});}
   function stage4Tick(dt){if(KB.state==='k5leap'){leapTick(dt);return;}
     if(!G.solo&&players[K5.mark].downed)K5.mark=1-K5.mark;KB.pi=G.solo?G.soloPi:K5.mark;
     const mh=active(KB.pi);if(mh){eye.visible=true;eye.position.copy(headOf(mh)).add(new V3(0,0.35+0.08*Math.sin(G.time*5),0));eye.lookAt(camS.position);}
@@ -251,7 +329,7 @@ build5B2=function(){
     else if(KB.state==='recover'&&KB.t>0.1&&(!K5.combo||!K5.combo.length)&&!KB._sw){KB._sw=true;if(!G.solo)K5.mark=1-K5.mark;}
     if(KB.state!=='recover')KB._sw=false;
     K5.leapT=(K5.leapT==null?9:K5.leapT)-dt;if(K5.leapT<=0&&KB.state==='idle'){K5.leapT=rand(10,13)+K5.fails[4];leap();}
-    if(!K5.bones&&KB.embers<=Math.ceil(KB.maxEmb/2)){K5.bones=true;bark(KS,'koschei','Кости, встаньте!',1.6);k5s('cast');boneMake(C.x-6.5,C.z+1.5);if(!G.solo)boneMake(C.x+6.5,C.z+1.5);}}
+    if(!K5.bones&&KB.embers<=Math.ceil(KB.maxEmb/2)&&KB.state!=='k5leap'&&KB.state!=='broken'){bonesRise();}}
   /* ---------- этап 5: игла, наковальня, кольцо цепей ---------- */
   const ANV=new V3(3.6,0,-22.2);
   const ringM=[0,1].map(pi=>{const m=new THREE.Mesh(new THREE.TorusGeometry(1,0.08,6,32),MB(COL.gold,{transparent:true,opacity:0.95}));m.rotation.x=Math.PI/2;m.visible=false;W.group.add(m);return m;});
@@ -291,7 +369,7 @@ build5B2=function(){
       if(d<2.4&&KB.pos.y<0.3){KB.pos.y=0;KB.state='ready';KB.t=0;KB.tgt=tg;KB.pi=tg.player;}}
     if(KB.state==='idle'&&K5.live){KB.state='k5rise';k5s('flyUp');}
     if(KB.state==='broken'&&KB.pos.y>0.3&&!K5.crash){K5.crash=true;KB.state='k5crash';}
-    if(KB.state==='k5crash'){KB.pos.y=Math.max(0,KB.pos.y-dt*9);if(KB.pos.y<=0){k5s('land');shakeAll(0.07,0.35);FX.dust(KB.pos.clone(),16,0x8a7a6a);KB.state='broken';KB.t=0;KB._b=false;K5.crash=false;}}
+    if(KB.state==='k5crash'){KB.pos.y=Math.max(0,KB.pos.y-dt*9);if(KB.pos.y<=0){k5s('land');shakeAll(0.07,0.35);FX.dust(KB.pos.clone(),16,0x8a7a6a);kosCrash();KB.state='broken';KB.t=0;KB._b=false;K5.crash=false;}}
     // помощники: ключи (на того, кто без иглы), вороны, иглы у наковальни
     K5.keyT=(K5.keyT==null?7:K5.keyT)-dt;if(K5.keyT<=0){K5.keyT=G.solo?16:12;const t2=G.solo?null:(hold?active(1-hold.player):active(1));if(t2&&!players[t2.player].downed&&!k5Locked(t2)&&!K5.adds.some(e=>e.kind==='k5key'))keyMake(t2);}
     if(K5.adds.filter(e=>e.kind==='k5raven').length<(G.solo?1:2)){K5.rvT=(K5.rvT==null?4:K5.rvT)-dt;if(K5.rvT<=0){K5.rvT=9;ravenMake();}}
@@ -322,7 +400,7 @@ build5B2=function(){
       K5.keyT=(K5.keyT==null?5:K5.keyT)-dt;const nk=K5.adds.filter(e=>e.kind==='k5key').length;if(K5.keyT<=0&&nk<(G.solo?1:2)&&KB.state!=='broken'){K5.keyT=rand(8,11)+(G.solo?3:0);const tgp=G.solo?G.soloPi:1-(KB.pi||0);const th=active(tgp);if(th&&!players[tgp].downed&&!k5Locked(th)){keyMake(th);if(!K5.said.k9){K5.said.k9=true;bark(KS,'koschei','Заприте их!',1.4);}anim(0.6,k=>{KS.armR.rotation.x=-2.2*Math.sin(k*Math.PI);});}}}
     if(K5.st===3)stage3Tick(dt);if(K5.st===4)stage4Tick(dt);if(K5.st===5)stage5Tick(dt);}
   // поза и меч: замах, удар, полёт
-  function kosAnim(dt){if(!K5.live)return;const s=KB.state;if(s!==K5.prevS){if(s==='strike'){k5s('swing');KS.armR.rotation.x=0.9;}if(s==='wind')k5s('warn');K5.prevS=s;}
+  function kosAnim(dt){if(!K5.live||KA.on)return;const s=KB.state;if(s!==K5.prevS){if(s==='strike'){k5s('swing');KS.armR.rotation.x=0.9;}if(s==='wind')k5s('warn');K5.prevS=s;}
     if(s==='wind'){const k=clamp(KB.t/Math.max(0.1,KB.wdur),0,1);KS.armR.rotation.x=damp(KS.armR.rotation.x,-2.6,10,dt);if(sword.visible)sword.userData.edge.material.opacity=0.5+0.5*k;}
     else if(s==='strike'){}else if(s==='k5cast'||s==='k5rise'){KS.armR.rotation.x=damp(KS.armR.rotation.x,-1.1+0.3*Math.sin(G.time*2),3,dt);}else if(s!=='k5leap')KS.armR.rotation.x=damp(KS.armR.rotation.x,0,5,dt);
     KS.g.rotation.x=damp(KS.g.rotation.x,s==='broken'?0.25:s==='k5dive'?0.4:0,5,dt);if(sword.visible&&s!=='wind')sword.userData.edge.material.opacity=0.55+0.25*Math.sin(G.time*5);}
@@ -354,111 +432,321 @@ build5B2=function(){
     let note='';if(st===1)note='свечи '+candles.map(c=>c.lit?'🕯':'·').join('');else if(st===2)note=K5.spark?'искорка у '+(G.solo?'тебя':'Игрока '+(K5.spark.pi+1)):'отбей — искорка другу';else if(st===3)note='шар — другу, друг — в небо';
     else if(st===4)note=G.solo?'око на тебе':'око на Игроке '+(K5.mark+1);else if(st===5&&K5.forge)note='застёжка '+K5.forge.n+' / '+K5.forge.need;
     const html='<b style="color:#d8b8ff">Кощей Бессмертный</b> · этап '+st+' из 5 — '+K5N[st]+pips+(note?' <small style="opacity:.85">· '+note+'</small>':'');if(bb.innerHTML!==html)bb.innerHTML=html;}
-  /* ---------- ролики ---------- */
-  function intro(){F.stage='introCine';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,4,0);h.face=Math.PI;});
-    play({dur:35,fov:46,camK:2,shots:[shot(0,[14,9,14],[0,4,-24]),shot(6.4,[-10,3,-14],[-13,1.2,-25]),shot(11.4,[0,4,-4],[0,2.2,-28]),shot(16.6,[10,3,-8],[KP.x+4,2.4,KP.z]),shot(23,[-1,2.2,-15.4],[-3.5,0.8,-19]),shot(27.4,[0,6,2],[0,1.6,-18])],
+  /* ---------- ролики (по отзыву 2 — режиссура заново) ----------
+     Каждый ролик — мини-история из 4–8 шотов разной крупности (общий, средний, крупный, деталь); камера движется по сплайнам
+     с easing (наезд, отъезд, проезд, кран, облёт, слежение), говорящего видно в лицо; правило 180° — камеры по одну сторону
+     линии «герои — Кощей». Кощей играет позами на пружинах (замах → действие → доводка, K5POSE в late_92), герои — эмоциями
+     (late_83); акценты — hit-stop, slow-mo, FOV-punch, dolly-zoom, голландский угол, вспышки, кольца, столбы света, настроение. */
+  const hH=h=>new V3(h.pos.x,h.pos.y+h.d.height*0.82,h.pos.z);
+  const kH=()=>KS.head.getWorldPosition(new V3());
+  const SH=(t,p,l,x)=>Object.assign(shot(t,p,l),{x:x||{}});
+  const MV=(t,p,l,p2,l2,dur,x)=>Object.assign(shot(t,p,l,p2,l2,dur),{x:x||{}});
+  const em=(h,type)=>()=>{if(h&&h.g.visible)ACT.emote(h,type);};
+  const emAll=(type,st)=>()=>ACT.emoteAll(type,null,st==null?0.09:st);
+  const npcEm=(o,type)=>()=>{const n=ACT.npcs.find(q=>q.o===o);if(n)n.em={type,t:0,d:0.7};};
+  const pose=(n,o)=>()=>KA.pose(n,o);
+  const COLD='#6f86ff',WARM='#ffb870',GOLD='#ffd27a',STORY='#a8b0ff',DARK='#7a5cff';
+  const KC=new V3(0,0,-17.5);   // где Кощей стоит в роликах между этапами (лицом к героям)
+  const heroLine=(z,face)=>HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,z,0);h.face=face==null?Math.PI:face;h.vel.set(0,0,0);});
+  const hWalk=(h,x,z,dur,face)=>{const f=h.pos.clone();h.face=Math.atan2(x-f.x,z-f.z);anim(dur,k=>{const e=CE.inOutSine(k);h.pos.x=lerp(f.x,x,e);h.pos.z=lerp(f.z,z,e);h.vel.set(0,0,0);if(k>=1&&face!=null)h.face=face;});};
+  const kTurn=(face,dur)=>{const f=KS.g.rotation.y;let d=face-f;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;anim(dur||0.45,k=>{KS.g.rotation.y=f+d*CE.outBack(k);});};
+  const kWalk=(x,z,dur,face)=>{const f=KS.g.position.clone();KS.g.rotation.y=Math.atan2(x-f.x,z-f.z);let st=0;anim(dur,k=>{const e=CE.inOutSine(k);KS.g.position.x=lerp(f.x,x,e);KS.g.position.z=lerp(f.z,z,e);const n=Math.floor(k*dur*5.2/Math.PI);if(n>st&&k<1){st=n;k5s('step');}
+      KS.g.position.y=f.y+Math.abs(Math.sin(k*dur*5.2))*0.07;if(k>=1){KS.g.position.y=f.y;if(face!=null)kTurn(face,0.45);}});};
+  const kFly=(to,dur,ease)=>{const f=KS.g.position.clone();anim(dur,k=>{KS.g.position.lerpVectors(f,to,(CE[ease]||CE.inOutCubic)(k));});};
+  const lHand=new THREE.Object3D();lHand.position.set(0,-1.25,0.12);KS.rig.armL2.add(lHand);
+  const zvenTo=(p,dur)=>{Z.mode='script';Z.vis=true;Z.shown=true;const f=Z.pos.clone();anim(dur||0.8,k=>{const e=CE.inOutCubic(k);Z.pos.lerpVectors(f,p,e);Z.pos.y+=Math.sin(Math.PI*e)*0.8;});};
+  // золотые искорки сказа поднимаются вокруг рассказчика
+  function storyMotes(c,dur,n,col){const parts=[];for(let i=0;i<(n||16);i++){const s=k5Prop(k5Glow(col||0xffe08a,rand(0.16,0.3)));parts.push({s,a:rand(0,6.28),r:rand(0.45,1.5),y:rand(0,2.4),v:rand(0.35,0.8),w:rand(-1.4,1.4)});}
+    k5fx(dur,(k,dt)=>{const C0=typeof c==='function'?c():c;const fa=k<0.1?k/0.1:k>0.85?(1-k)/0.15:1;for(const q of parts){q.a+=q.w*dt;q.y+=q.v*dt;if(q.y>2.6){q.y=0;q.r=rand(0.45,1.5);}
+      q.s.position.set(C0.x+Math.cos(q.a)*q.r,C0.y+q.y,C0.z+Math.sin(q.a)*q.r);q.s.material.opacity=Math.sin(Math.min(1,q.y/2.6)*Math.PI)*fa;}},()=>parts.forEach(q=>k5Del(q.s)));}
+  // имя вернулось: столб света за героем (от камеры), кольцо, звёзды
+  function nameBurst(h,col){const p=h.pos.clone(),bk=new V3(p.x-shared.pos.x,0,p.z-shared.pos.z).normalize();k5Pillar(new V3(p.x+bk.x*0.9,0,p.z+bk.z*0.9),col,6,0.32,1.1);k5Ring(new V3(p.x,0.1,p.z),col,0.3,3,0.9,0.12);k5Flash(hH(h).add(new V3(0,0.9,0)),col,1.6,0.4);FX.stars(hH(h),12,col);FX.sparkle(hH(h),12,0xffffff);}
+  // золотая нить сказа обвивает Кощея: нити от героев, кольца сжимаются, вспышка
+  function bindBeat(){const c=KS.g.position.clone().add(new V3(0,2.4,0));for(const h of HEROES){if(!h.g.visible)continue;k5Thread(()=>hH(h),()=>KS.g.position.clone().add(new V3(0,2.4,0)));}k5s('bind');
+    k5Flash(c,0xffe08a,5,0.5);k5Ring(c,0xffd060,0.4,3.4,0.6,0.1,new THREE.Euler(Math.PI/2,0,0));FX.sparks(c,20,0xffd060);
+    for(let i=0;i<3;i++)later(0.08+i*0.12,()=>{const r=k5Prop(new THREE.Mesh(new THREE.TorusGeometry(1,0.05,5,32),k5Add(0xffd060)));r.rotation.x=Math.PI/2;r.position.copy(KS.g.position).add(new V3(0,1.2+i*1.1,0));
+      k5fx(0.7,k=>{r.scale.setScalar(lerp(2.2,0.55,CE.outCubic(k)));r.material.opacity=1-k*k;},()=>k5Del(r));});}
+  function intro(){F.stage='introCine';heroLine(6.5);KS.g.position.set(10,0,-16.5);KS.g.rotation.y=-Math.PI/2;KS.g.visible=false;book.g.visible=false;gor.g.position.y=0.5;
+    const ksA=new V3(-2.4,0,-18),PE=new V3(-4.4,0,-17.4),BK=new V3(-3.5,1.0,-19),pe=T.pelageya,pr=T.proshka,po=T.potap,yo=T.yosha;
+    const cen=()=>HEROES.reduce((a,h)=>a.add(h.pos),new V3()).multiplyScalar(0.25);
+    const O=new V3(0,1.8,-27.5),orb=a=>[O.x+Math.sin(a)*10.5,3.2,O.z+Math.cos(a)*10.5];
+    const F8=k5Face(new V3(ksA.x,4.15,ksA.z),Math.PI*0.2,-0.3,3.4,-0.45),F8b=k5Face(new V3(ksA.x,4.15,ksA.z),Math.PI*0.2,-0.3,2.8,-0.35);
+    const pd=new V3(BK.x-PE.x,0,BK.z-PE.z).normalize(),peF=Math.atan2(pd.x,pd.z),F10=k5Face(new V3(PE.x,1.1,PE.z),peF,0.5,1.9,0.08);
+    const KH=new V3(KP.x,4.15,KP.z);
+    play({dur:40.2,fov:46,camK:2,k5:{mood:[WARM,0.1],cues:[[3.4,()=>CINE.trauma(0.12)],[11.7,()=>CINE.mood(COLD,0.12)],[17.0,()=>CINE.mood(COLD,0.16)],[18.9,()=>{KA.shake=1.3;}],[19.3,()=>CINE.dollyZoom(0.16,1.2,0.8)],
+        [26.1,()=>CINE.dutch(0.04)],[30.6,()=>CINE.dutch(0)],[31.15,()=>{CINE.hitstop(4);CINE.punch(-6);CINE.trauma(0.35);CINE.flashDip('#c8a0ff',0.35);}],[33.0,emAll('fear',0.08)],
+        [36.0,()=>{CINE.mood(WARM,0.14);CINE.rimPulse(0.7);}],[36.3,emAll('pride',0.12)],[38.0,emAll('nod',0.1)]]},
+      shots:[MV(0,[30,26,34],[0,10,-28],[16,11,12],[0,4,-22],3.4,{pts:[[24,19,25]],ease:'inOutSine',fov:52,fov2:46,move:'none'}),
+        MV(3.4,[-3.2,4.6,-14.8],[-13,3.4,-25],[-5.0,3.6,-16.8],[-13,2.6,-25.2],3.2,{ease:'outCubic',fov:46,move:'none'}),
+        MV(6.6,orb(-0.95),[O.x,1.6,O.z],orb(0.25),[O.x,1.8,O.z],2.8,{pts:[orb(-0.35)],ease:'inOutSine',fov:46,move:'none'}),
+        SH(9.4,[1,1.3,-0.5],[0,0.9,4],{pf:()=>cen().add(new V3(1.0,1.3,-4.4)),lf:()=>cen().add(new V3(0,0.95,0)),lk:6,fov:42,move:'none'}),
+        SH(11.6,[3.6,2.1,0.6],[10,2.4,-16.5],{lf:()=>KS.g.position.clone().add(new V3(0,2.4,0)),lk:4,fov:46,move:'push',amp:0.6}),
+        SH(13.8,[6,3.4,-14],[6,3,-16],{pf:()=>KS.g.position.clone().add(new V3(-3.4,3.2,3.6)),lf:()=>lHand.getWorldPosition(new V3()).lerp(kH(),0.72),lk:5,fov:44,move:'none'}),
+        SH(15.4,[-5.6,2.0,-16.6],[BK.x+0.2,1.3,BK.z],{fov:40,move:'push',amp:1}),
+        MV(17.0,F8.p,F8.l,F8b.p,F8b.l,3.6,{ease:'inOutSine',fov:40,fov2:37,move:'none'}),
+        SH(20.6,[PE.x-pd.x*1.2+0.39,1.45,PE.z-pd.z*1.2+0.22],[BK.x,1.05,BK.z],{fov:38,move:'push',amp:0.8}),
+        SH(22.4,F10.p,F10.l,{fov:40,move:'push',amp:0.7}),
+        MV(24.2,[4.2,2.6,-17.6],[-2.2,2.6,-19.6],[3.8,3.0,-21.0],[-1.8,2.8,-22.6],1.9,{lf:()=>KS.g.position.clone().add(new V3(0,2.6,0)),lk:6,fov:46,move:'none'}),
+        MV(26.0,[KP.x+1.5,2.3,KP.z+4.8],[KH.x,3.85,KH.z],[KP.x+1.05,2.7,KP.z+3.9],[KH.x,3.95,KH.z],4.6,{ease:'inOutSine',fov:42,fov2:38,move:'none'}),
+        MV(30.8,[KP.x+5.5,1.0,KP.z+6.5],[KP.x,2.6,KP.z],[KP.x+6.8,3.6,KP.z+8.2],[KP.x,2.8,KP.z],1.8,{ease:'outCubic',fov:50,move:'none'}),
+        MV(32.6,[13,12,5],[0,0.6,-12],[5,13.5,8.5],[0,0.6,-13],2.0,{pts:[[9.5,13,7.4]],ease:'inOutSine',fov:54,move:'none',tr:'whip'}),
+        SH(34.6,[1.4,1.7,0.8],[0.6,2.0,-3.4],{fov:44,move:'push',amp:0.8})],
       says:[[0.3,4.6,null,'<i>Буян, засохший дуб, рассвет. Горыныч к корням Кузьмину наковальню несёт —</i><br><i>И ложится рядом, как скала тёплая, ждёт.</i>',true],
-        [6.4,4.6,null,'<i>Вокруг поляны — все, кому герои помогли.</i><br><i>Ближе всех — четверо помощников из Сказов: молчат, слушают, как могли.</i>',true],
-        [11.6,4.4,null,'<i>Кощей сам приходит, с тетрадкой Пелагеи в руке.</i><br><i>Кладёт на камень: стыдно ему — но вернуть решил, налегке.</i>',true],
-        [16.8,2.8,'koschei','Я дочитал. А конца у сказки нет — пусто.'],[19.8,3.2,null,'<i>Пелагея на последнюю страницу глядит: «Жил-был мальчишка…» —</i><br><i>И больше ни строчки, ни слова, ни книжки.</i>',true],
-        [23.4,3.8,'koschei','Всё равно сказок не будет.<br>В них я всегда один — никто не полюбит.'],[27.6,3,null,'<i>Кощей поднимает руку — и вокруг него вспыхивают чёрные свечи и волшебный купол.</i>',true],[31,3.2,'zven','Сегодня мы не деремся. Защищайтесь —<br>И сказку вспоминайте, не сдавайтесь!']],
-      events:[{t:11.6,fn:()=>{const f=KS.g.position.clone();KS.g.rotation.y=-Math.PI/2;anim(4.4,k=>{KS.g.position.lerpVectors(f,new V3(-2.4,0,-18),k);});book.g.visible=true;}},
-        {t:15.2,fn:()=>{book.g.position.set(-3.5,1.0,-19);KS.g.rotation.y=Math.PI*0.2;}},{t:19.8,fn:()=>{const pe=T.pelageya;placeOnGround(pe,-2.6,-17.4,0);faceTo(pe,-3.5,-19);}},
-        {t:23.2,fn:()=>{const f=KS.g.position.clone();anim(1.4,k=>{KS.g.position.lerpVectors(f,KP,k);});KS.g.rotation.y=0;}},
-        {t:27.6,fn:()=>{anim(1,k=>{KS.armR.rotation.x=-k*2.2;});k5s('cast');dome.visible=true;dome.scale.setScalar(0.01);anim(1.2,k=>dome.scale.setScalar(Math.max(0.01,smooth(k))));candles.forEach((c,i)=>later(0.5+i*0.35,()=>{candleSet(c,true);k5s('candleOn');FX.sparkle(c.pos.clone().add(new V3(0,1.8,0)),10,0xb070ff);}));}}],
-      tick:(t)=>{if(t<6)gor.g.position.y=-0.6;},
-      end:()=>{W.anims.length=0;KS.g.position.copy(KP);KS.g.rotation.y=0;KS.armR.rotation.x=0;book.g.visible=true;book.g.position.set(-3.5,1.0,-19);dome.scale.setScalar(1);
-        W.clampR={x:C.x,z:C.z,r:R};Z.mode='lead';stageStart(1);}});}
-  function trans1(){F.stage='t1';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-11,0);h.face=Math.PI;});const po=T.potap;
-    play({dur:12.6,fov:44,camK:2.4,shots:[shot(0,[KP.x+5,3,KP.z+7],[KP.x,2.2,KP.z]),shot(4,[KP.x-3.4,2.2,KP.z+4.6],[KP.x,2.8,KP.z]),shot(8.6,[1,2.4,-7.4],[po.pos.x,1.2,po.pos.z])],
-      says:[[0.4,3.4,'koschei','Мои свечи… Вы задули мои свечи?'],[4,4.6,'koschei','Тогда я запру вас. Каждого — своим ключом.'],[8.8,2.8,'potap','Не запрёшь. Мы друг друга откроем!']],
-      events:[{t:0.2,fn:()=>{k5s('barrier');shakeAll(0.06,0.5);FX.sparkle(KP.clone().add(new V3(0,2,0)),40,0xd0b0ff);anim(0.8,k=>{dome.scale.setScalar(1+k*0.4);dome.children.forEach(m=>{if(m.material)m.material.opacity*=0.9;});});later(0.8,()=>{dome.visible=false;});}},
-        {t:4.2,fn:()=>{anim(1.2,k=>{KS.armR.rotation.x=-2.2*Math.sin(k*Math.PI);});if(SFX.keys)SFX.keys();}}],
-      end:()=>{W.anims.length=0;dome.visible=false;skaz1();}});}
+        [6.6,4.6,null,'<i>Вокруг поляны — все, кому герои помогли.</i><br><i>Ближе всех — четверо помощников из Сказов: молчат, слушают, как могли.</i>',true],
+        [11.7,4.4,null,'<i>Кощей сам приходит, с тетрадкой Пелагеи в руке.</i><br><i>Кладёт на камень: стыдно ему — но вернуть решил, налегке.</i>',true],
+        [17.2,3.4,'koschei','Я дочитал. А конца у сказки нет — пусто.'],[20.7,3.4,null,'<i>Пелагея на последнюю страницу глядит: «Жил-был мальчишка…» —</i><br><i>И больше ни строчки, ни слова, ни книжки.</i>',true],
+        [26.3,4.4,'koschei','Всё равно сказок не будет.<br>В них я всегда один — никто не полюбит.'],[30.8,3.4,null,'<i>Кощей поднимает руку — и вокруг него вспыхивают чёрные свечи и волшебный купол.</i>',true],
+        [34.8,4.9,'zven','Сегодня мы не деремся. Защищайтесь —<br>И сказку вспоминайте, не сдавайтесь!']],
+      events:[{t:0.2,fn:()=>k5s('dawn')},{t:3.4,fn:()=>{const y0=gor.g.position.y;anim(1.6,k=>{gor.g.position.y=lerp(y0,-0.6,CE.outBack(k));gor.g.scale.y=0.75*(1-0.06*Math.sin(Math.PI*Math.min(1,k*1.6)));});later(1.0,()=>{FX.dust(new V3(-13,0,-23.5),14,0x9a8a6a,1.4);if(SFX.thud)SFX.thud();});}},
+        {t:6.8,fn:()=>HM.forEach((h,i)=>later(i*0.35,()=>{const n=ACT.npcs.find(q=>q.o===h.m);if(n)n.em={type:'nod',t:0,d:0.7};}))},
+        {t:8.6,fn:()=>HEROES.forEach((h,i)=>hWalk(h,-3+i*2,-2.6,4.0,Math.PI))},{t:10.2,fn:em(pr,'hop')},{t:10.6,fn:em(yo,'tilt')},{t:11.0,fn:em(po,'nod')},
+        {t:11.6,fn:()=>{KS.g.visible=true;book.g.visible=true;kWalk(ksA.x,ksA.z,3.8);k5s('reveal');}},{t:12.0,fn:emAll('fear',0.1)},{t:12.6,fn:()=>hWalk(yo,po.pos.x+0.4,po.pos.z+1.0,0.7,Math.PI)},
+        {t:15.4,fn:()=>{kTurn(Math.atan2(BK.x-ksA.x,BK.z-ksA.z),0.4);KA.pose('offer',{antic:0.2});}},
+        {t:15.9,fn:()=>{const f=book.g.position.clone();book.g.userData.free=true;anim(0.6,k=>{book.g.position.lerpVectors(f,BK,CE.inOutSine(k));book.g.position.y+=Math.sin(k*Math.PI)*0.4;});later(0.62,()=>{k5s('book');FX.dust(BK.clone(),6,0xd8c8a8,0.6);k5Flash(BK.clone().add(new V3(0,0.2,0)),0xffe0a0,1.4,0.4);});}},
+        {t:16.7,fn:()=>{kTurn(Math.PI*0.2,0.5);KA.pose('slump');}},{t:20.6,fn:()=>{placeOnGround(pe,PE.x,PE.z,0);pe.face=peF;}},{t:21.0,fn:()=>FX.sparkle(BK.clone().add(new V3(0,0.3,0)),8,0xffe08a)},
+        {t:22.6,fn:em(pe,'surprise')},{t:23.6,fn:em(pe,'droop')},{t:24.2,fn:()=>{KA.pose('idle');kWalk(KP.x,KP.z,1.8,0);}},{t:26.1,fn:pose('proud')},{t:28.6,fn:pose('slump')},
+        {t:30.8,fn:()=>{KA.pose('cast',{antic:0.32,anticK:0.45,snap:true});k5s('cast');k5Gather(()=>KS.hand.getWorldPosition(new V3()),0xc090ff,0.35,14,2);}},
+        {t:31.15,fn:()=>{dome.visible=true;dome.scale.setScalar(0.01);anim(0.9,k=>dome.scale.setScalar(Math.max(0.01,CE.outBack(k))));const p=KP.clone();p.y=0.08;const rn=k5Decal(K5TEX.rune,0xb070ff,3.6,p,1);k5fx(1.6,k=>{rn.material.opacity=1-k;rn.rotation.z+=0.04;rn.scale.setScalar(1+k*0.6);},()=>k5Del(rn));
+          k5Pillar(KP.clone(),0x9a60ff,9,1.2,1.2);k5Ring(new V3(KP.x,0.1,KP.z),0xd0b0ff,0.5,6,0.7,0.1);k5s('barrier');}},
+        {t:32.7,fn:()=>candles.forEach((c,i)=>later(i*0.16,()=>{candleSet(c,true);k5s('candleOn');const p=c.pos.clone().add(new V3(0,1.8,0));FX.sparkle(p,10,0xb070ff);k5Flash(p,0xb070ff,2.2,0.35);k5Ring(new V3(c.pos.x,0.1,c.pos.z),0xb070ff,0.2,1.6,0.5,0.15);}))},
+        {t:34.2,fn:()=>{zvenTo(new V3(0.8,2.2,-3.4),0.9);k5s('zven');}}],
+      tick:(t)=>{if(book.g.visible&&!book.g.userData.free){lHand.getWorldPosition(book.g.position);book.g.rotation.set(0,KS.g.rotation.y,0.2);}},
+      end:()=>{W.anims.length=0;KA.reset();KS.g.visible=true;KS.g.position.copy(KP);KS.g.rotation.y=0;KS.armR.rotation.x=0;book.g.visible=true;book.g.userData.free=true;book.g.position.set(-3.5,1.0,-19);book.g.rotation.set(0,0,0);
+        dome.visible=true;dome.scale.setScalar(1);gor.g.position.y=-0.6;gor.g.scale.y=0.75;W.clampR={x:C.x,z:C.z,r:R};Z.mode='lead';stageStart(1);}});}
+  function trans1(){F.stage='t1';heroLine(-11);const po=T.potap,pr=T.proshka,yo=T.yosha,pe=T.pelageya;KS.g.position.copy(KP);KS.g.rotation.y=0;
+    const KH=new V3(KP.x,4.15,KP.z),F2=k5Face(KH,0,0.35,3.3,-0.4),F2b=k5Face(KH,0,0.35,2.8,-0.35),POs=new V3(-1,0,-12.3),F5=k5Face(new V3(POs.x,1.3,POs.z),Math.PI,0.4,3.0,-0.25);
+    const keys=new THREE.Group();keys.visible=false;W.group.add(keys);for(let i=0;i<4;i++){const k=blackKey(1.0);keys.add(k);}
+    play({dur:15,fov:44,camK:2.4,k5:{iris:true,mood:[COLD,0.12],cues:[[0.2,()=>{CINE.hitstop(4);CINE.slowmo(0.35,0.5);CINE.trauma(0.4);CINE.punch(-5);}],[3.7,()=>CINE.dollyZoom(0.15,0.9,0.6)],
+        [6.6,()=>CINE.mood(DARK,0.16)],[7.7,()=>CINE.punch(-3)],[11.5,()=>{CINE.punch(-4);CINE.trauma(0.15);}],[12.2,()=>{CINE.mood(WARM,0.14);CINE.rimPulse(0.8);}]]},
+      shots:[MV(0,[KP.x+2.6,1.8,KP.z+3.8],[KP.x,2.6,KP.z],[KP.x+6.0,7.5,KP.z+9.0],[KP.x,2.0,KP.z],1.5,{ease:'outCubic',fov:44,fov2:52,move:'none'}),
+        MV(1.5,F2.p,F2.l,F2b.p,F2b.l,3.6,{ease:'inOutSine',fov:42,fov2:38,move:'none'}),
+        SH(5.1,[1.6,1.5,-14.8],[0,1.05,-11],{fov:44,move:'push',amp:0.8}),
+        MV(6.6,[KP.x+2.2,1.6,KP.z+5.4],[KP.x,3.5,KP.z],[KP.x+1.5,1.9,KP.z+4.4],[KP.x,3.7,KP.z],4.8,{ease:'inOutSine',fov:42,fov2:37,roll:0,roll2:0.07,move:'none'}),
+        MV(11.4,F5.p,F5.l,[F5.p[0]-1.0,F5.p[1]+0.05,F5.p[2]],[F5.l[0]-0.3,F5.l[1],F5.l[2]],3.6,{ease:'inOutSine',fov:42,move:'none'})],
+      says:[[1.7,3.4,'koschei','Мои свечи… Вы задули мои свечи?'],[6.8,4.6,'koschei','Тогда я запру вас. Каждого — своим ключом.'],[11.9,2.8,'potap','Не запрёшь. Мы друг друга откроем!']],
+      events:[{t:0.15,fn:()=>{k5s('shatter');shakeAll(0.06,0.5);KA.pose('recoil',{snap:true});const c=KP.clone().add(new V3(0,2,0));k5Flash(c,0xd0b0ff,7,0.5);k5Ring(new V3(KP.x,0.1,KP.z),0xd0b0ff,1,7,0.8,0.1);FX.sparkle(c,40,0xd0b0ff);
+          for(let i=0;i<22;i++){const a=rand(0,6.28),e=rand(0.2,1.2);fxAdd('tetra',i%2?0xb080ff:0xe8d8ff,c.clone().add(new V3(Math.cos(a)*2.4,rand(-1,1.2),Math.sin(a)*2.4)),new V3(Math.cos(a)*rand(3,7),rand(2,6)*e,Math.sin(a)*rand(3,7)),{s:rand(0.09,0.18),life:rand(0.8,1.3),g:9,spin:8});}
+          anim(0.6,k=>{dome.scale.setScalar(1+k*0.5);dome.children.forEach(m=>{if(m.material)m.material.opacity*=0.85;});});later(0.6,()=>{dome.visible=false;});}},
+        {t:1.6,fn:()=>KA.pose('shrug',{antic:0.18})},{t:2.3,fn:()=>{KA.set('hRy',0.55);k5s('pSoft');}},{t:3.0,fn:()=>{KA.set('hRy',-0.55);k5s('pSoft');}},{t:3.7,fn:()=>KA.set('hRy',0)},{t:4.3,fn:pose('point',{antic:0.2})},
+        {t:5.3,fn:()=>{pr.face=Math.atan2(po.pos.x-pr.pos.x,po.pos.z-pr.pos.z);ACT.emote(pr,'tilt');}},{t:5.6,fn:em(yo,'laugh')},{t:5.9,fn:em(pe,'pride')},{t:6.1,fn:em(po,'nod')},{t:6.4,fn:()=>{pr.face=Math.PI;}},
+        {t:6.6,fn:pose('threat',{antic:0.25})},{t:7.7,fn:()=>{keys.visible=true;keys.scale.setScalar(0.01);anim(0.5,k=>keys.scale.setScalar(Math.max(0.01,CE.outBack(k))));k5s('keyFly');if(SFX.keys)SFX.keys();FX.sparkle(KS.hand.getWorldPosition(new V3()),12,0xc080ff);}},
+        {t:9.2,fn:pose('castR',{antic:0.2})},{t:11.0,fn:()=>{const c=keys.position.clone();FX.sparkle(c,16,0xc080ff);k5Flash(c,0xb070ff,2.4,0.3);keys.visible=false;k5s('blink');}},
+        {t:11.4,fn:()=>{ACT.emote(po,'effort');hWalk(po,POs.x,POs.z,0.5,Math.PI);later(0.5,()=>{FX.dust(new V3(POs.x,0.05,POs.z),10,0xd8c8a8,1.1);k5Ring(new V3(POs.x,0.1,POs.z),0xffe0a0,0.3,2,0.4,0.15);k5s('stomp');});}},
+        {t:12.3,fn:em(po,'pride')},{t:13.3,fn:()=>[pr,pe,yo].forEach((h,i)=>ACT.emote(h,'nod',i*0.15))}],
+      tick:(t)=>{if(keys.visible){const c=KS.hand.getWorldPosition(new V3()).add(new V3(0,0.5,0));keys.position.copy(c);const sp=t>9.2?9:4;keys.children.forEach((k,i)=>{const a=G.time*sp+i*Math.PI/2;k.position.set(Math.cos(a)*0.7,Math.sin(a*1.3)*0.15,Math.sin(a)*0.7);k.rotation.y=a;});}},
+      end:()=>{W.anims.length=0;KA.reset();k5Del(keys);dome.visible=false;skaz1();}});}
   function skaz1(){F.stage='skaz1';skazClouds({who:1,title:'Сказ по памяти · начало',sub:'Пелагея шагает вперёд и сказывать начинает. Время останавливается. Начало — Игрок второй выбирает.',
       opts:['Жил-был мальчик — сказки сам сложить мечтал','Жил у Кота Учёного ученик','Жил-был мальчишка с молоточком деревянным']},i=>{const t=['Жил-был мальчик — сказки сам сложить мечтал','Жил у Кота Учёного ученик','Жил-был мальчишка с молоточком деревянным'][i];F.sk1=t;F.skaz=1;
-      const pe=T.pelageya,po=T.potap;play({dur:14,fov:44,camK:2.4,shots:[shot(0,[pe.pos.x+2,1.8,pe.pos.z+2.6],[pe.pos.x,1,pe.pos.z]),shot(4.4,[3,3,-12],[KP.x,2.4,KP.z]),shot(7.4,[po.pos.x-2,1.8,po.pos.z+2.6],[po.pos.x,1.2,po.pos.z])],
-        says:[[0.3,3.8,'pelageya',t+'…'],[4.4,2.4,null,'<i>Кощей руку опускает.</i>',true],[6.8,1.8,'proshka','Сказывай дальше, дальше!'],[8.8,4,'pelageya','…и рядом с ним стоял Потап. Он держал — не отпускал.']],
-        events:[{t:4.4,fn:()=>{anim(1,k=>{KS.armR.rotation.x=-2.2*(1-k);});}},{t:8.8,fn:()=>{G.flags.names.potap=true;SFX.ok();floatText(po.pos.clone().add(new V3(0,2.6,0)),'Потап','#e0b27a');banner('Имя вернулось: Потап','#e0b27a',2.4);}}],
-        end:()=>{W.anims.length=0;stageStart(2);}});});}
-  function trans2(){F.stage='t2';liveBoss(false);const p=KS.g.position.clone();
-    play({dur:7.6,fov:44,camK:2.4,shots:[shot(0,[p.x+4,2.6,p.z+5],[p.x,2.8,p.z])],says:[[0.4,3.2,'koschei','Ключи вам не страшны… А буря?'],[3.9,3.4,null,'<i>Небо темнеет. С моря ползут тучи.</i>',true]],
-      events:[{t:3.4,fn:()=>{k5StormSet(1);k5s('thunder');}}],end:()=>{W.anims.length=0;skaz2();}});}
+      heroLine(-11);const pe=T.pelageya,po=T.potap,pr=T.proshka,yo=T.yosha;placeOnGround(po,-1,-12.3,0);po.face=Math.PI;KS.g.position.copy(KP);KS.g.rotation.y=0;KA.pose('castR',{snap:true});
+      const PEs=new V3(1,0,-11.8),C1=new V3(PEs.x,1.15,PEs.z),orb=a=>[C1.x+Math.sin(a)*2.6,1.3,C1.z+Math.cos(a)*2.6],F3=k5Face(hH(pr),Math.PI,-0.35,1.8,0),F5=k5Face(new V3(po.pos.x,1.35,po.pos.z),Math.PI,0.3,2.0,-0.1);
+      const two=k5Two(new V3(PEs.x,1.1,PEs.z),new V3(po.pos.x,1.3,po.pos.z),Math.PI+0.1,3.4,0.25,-0.1),F1s=k5Face(new V3(PEs.x,1.15,PEs.z),Math.PI,0.4,2.0,0.05);
+      play({dur:15.2,fov:44,camK:2.4,k5:{mood:[STORY,0.16],cues:[[6.8,()=>CINE.punch(-3)],[10.6,()=>{CINE.slowmo(0.5,0.6);CINE.rimPulse(0.9);CINE.mood(GOLD,0.18);}],[13.0,emAll('cheer',0.08)]]},
+        shots:[MV(0,orb(Math.PI+0.55),[C1.x,1.1,C1.z],orb(Math.PI+0.12),[C1.x,1.15,C1.z],4.2,{pts:[orb(Math.PI+0.33)],ease:'inOutSine',fov:40,move:'none'}),
+          MV(4.2,[KP.x+1.4,3.0,KP.z+6.2],[KP.x,3.2,KP.z],[KP.x+1.1,3.3,KP.z+5.2],[KP.x,3.4,KP.z],2.4,{ease:'inOutSine',fov:42,move:'none'}),
+          SH(6.6,F3.p,F3.l,{fov:40,move:'push',amp:1}),
+          SH(8.8,F1s.p,F1s.l,{fov:40,move:'push',amp:0.8}),
+          MV(10.6,two.p,two.l,[two.p[0]+0.5,two.p[1]+0.1,two.p[2]-0.3],two.l,2.0,{fov:42,move:'none'}),
+          MV(12.6,[3.5,2.4,-15.2],[0,1.2,-11.6],[7,7,-20.5],[0,1,-11],2.6,{ease:'inOutSine',fov:48,move:'none'})],
+        says:[[0.4,3.8,'pelageya',t+'…'],[4.3,2.4,null,'<i>Кощей руку опускает.</i>',true],[6.8,1.9,'proshka','Сказывай дальше, дальше!'],[8.9,4.2,'pelageya','…и рядом с ним стоял Потап. Он держал — не отпускал.']],
+        events:[{t:0,fn:()=>{hWalk(pe,PEs.x,PEs.z,0.8,Math.PI);k5s('story');storyMotes(()=>pe.pos.clone().add(new V3(0,0.2,0)),4.4,18);}},{t:4.3,fn:()=>{KA.pose('listen',{k:60,c:11});}},
+          {t:10.5,fn:()=>{G.flags.names.potap=true;k5s('name');nameBurst(po,0xe0b27a);floatText(po.pos.clone().add(new V3(0,2.6,0)),'Потап','#e0b27a');banner('Имя вернулось: Потап','#e0b27a',2.4);}},{t:10.8,fn:em(po,'joy')}],
+        end:()=>{W.anims.length=0;KA.reset();stageStart(2);}});});}
+  function trans2(){F.stage='t2';liveBoss(false);KS.g.position.copy(KC);KS.g.rotation.y=0;heroLine(-9);const pr=T.proshka,po=T.potap,yo=T.yosha,pe=T.pelageya;
+    const KH=new V3(KC.x,4.15,KC.z),F2=k5Face(KH,0,0.3,3.3,-0.4),F2b=k5Face(KH,0,0.3,2.8,-0.35);
+    play({dur:9.4,fov:44,camK:2.4,k5:{iris:true,mood:[COLD,0.12],cues:[[0.15,()=>{CINE.hitstop(3);CINE.punch(-4);CINE.flashDip('#ffe8a0',0.35);}],[4.9,()=>{CINE.flashDip('#e8e0ff',0.4);CINE.trauma(0.3);CINE.mood(DARK,0.18);}],[5.8,()=>CINE.trauma(0.2)]]},
+      shots:[MV(0,[KC.x+3.2,2.6,KC.z+4.6],[KC.x,2.8,KC.z],[KC.x+3.8,2.9,KC.z+5.6],[KC.x,2.9,KC.z],1.6,{fov:44,move:'none'}),
+        MV(1.6,F2.p,F2.l,F2b.p,F2b.l,2.8,{ease:'inOutSine',fov:42,fov2:38,move:'none'}),
+        MV(4.4,[KC.x+4,1.0,KC.z+7],[KC.x,4,KC.z],[KC.x+4.4,1.2,KC.z+7.6],[C.x,13,C.z-6],2.2,{ease:'outCubic',fov:56,move:'none'}),
+        MV(6.6,[0.8,0.9,-12.4],[0,1.35,-9],[-0.6,0.95,-12.5],[-0.3,1.35,-9],2.8,{ease:'inOutSine',fov:44,move:'none'})],
+      says:[[1.8,3.0,'koschei','Ключи вам не страшны… А буря?'],[4.6,3.6,null,'<i>Небо темнеет. С моря ползут тучи.</i>',true]],
+      events:[{t:0.1,fn:()=>{bindBeat();KA.pose('recoil',{snap:true});}},{t:1.7,fn:pose('proud',{antic:0.15})},{t:3.6,fn:pose('castR',{antic:0.25})},
+        {t:4.4,fn:()=>{k5StormSet(1);K5.storm=Math.max(K5.storm,0.55);k5s('thunder');}},{t:4.9,fn:()=>{k5Bolt(new V3(C.x+14,0,C.z-10),0xd8b0ff);k5s('bolt');}},{t:5.8,fn:()=>{k5Bolt(new V3(C.x-15,0,C.z-6),0xd8b0ff);k5s('bolt');}},
+        {t:6.8,fn:emAll('fear',0.1)},{t:7.4,fn:()=>{hWalk(po,po.pos.x+0.8,po.pos.z-0.8,0.5,Math.PI);ACT.emote(po,'effort',0.1);later(0.5,()=>k5s('stomp'));}},{t:7.6,fn:()=>hWalk(yo,po.pos.x+1.2,po.pos.z+0.6,0.6,Math.PI)}],
+      end:()=>{W.anims.length=0;KA.reset();skaz2();}});}
   function skaz2(){F.stage='skaz2';const names=HM.map(h=>h.name);skazClouds({who:0,title:'Сказ по памяти · помощник',sub:'Кто мальчишке помогал? Помощник у дуба стоит. Выбирает Игрок первый.',opts:names},i=>{const h=HM[i];F.sk2=h.name;F.sk2k=h.k;F.skaz=2;
-      const f=h.m.g.position.clone();play({dur:15,fov:44,camK:2.2,shots:[shot(0,[f.x+3,2.4,f.z+5],[f.x,1.2,f.z]),shot(5,[-1,1.8,-14],[-3.5,0.9,-19]),shot(10,[-12,2.2,-1],[yagaM?yagaM.g.position.x:-17,1.2,yagaM?yagaM.g.position.z:-4])],
-        says:[[0.3,4,'pelageya','И помогал ему в том '+h.name.replace(/^./,c=>c.toLowerCase())+'.'],[4.6,4.6,null,'<i>Выбранный шаг вперёд делает. Кощей на камень садится —</i><br><i>Руки на колени кладёт и слушает, не шевелится.</i>',true],
-          [9.8,4.4,null,'<i>Яга на краю поляны глаз метлой утирает —</i><br><i>Мол, от пыли это, никто не узнает.</i>',true]],
-        events:[{t:0.3,fn:()=>{if(h.k!=='kit'){const to=f.clone().add(new V3(-f.x*0.2,0,2));anim(1.4,k=>{h.m.g.position.lerpVectors(f,to,smooth(k));});}else{anim(1.6,k=>{h.m.g.position.y=-1.2+Math.sin(k*Math.PI)*1.5;});}}},
-          {t:4.8,fn:()=>{KS.g.position.set(-3.5,-0.4,-20.2);KS.g.rotation.y=0.4;}},{t:10,fn:()=>{if(yagaM)anim(2,k=>{yagaM.g.rotation.z=Math.sin(k*Math.PI*3)*0.12;});}},
-          {t:12.4,fn:()=>{if(!G.flags.names.yosha){G.flags.names.yosha=true;bark(T.yosha,'yosha','Я смогу! Держите, держите!',2.2);SFX.ok();banner('Имя вернулось: Йоша','#8fe0d4',2.4);}}}],
-        end:()=>{W.anims.length=0;KS.g.position.copy(KP);KS.g.rotation.y=0;trans2b();}});});}
-  function trans2b(){F.stage='t2b';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-8,0);h.face=Math.PI;});
-    play({dur:10.6,fov:46,camK:2.2,shots:[shot(0,[4,2.4,-9],[KP.x,2.6,KP.z]),shot(3.6,[0,2,-4],[0,5,-18]),shot(7.4,[-3,1.8,-4],[T.pelageya.pos.x,1,T.pelageya.pos.z])],
-      says:[[0.3,2.9,'proshka','Он взлетел! Как его оттуда достать?'],[3.6,3.4,'pelageya','Шар отбей другу — а друг отбивает его в небо!'],[7.4,2.4,'koschei','Попробуйте, достаньте!']],
-      events:[{t:0.3,fn:()=>{k5s('flyUp');const f=KS.g.position.clone();anim(2.4,k=>{KS.g.position.set(lerp(f.x,C.x,k),smooth(k)*5.4,lerp(f.z,C.z-4,k));});}}],
-      end:()=>{W.anims.length=0;stageStart(3);}});}
-  function trans3(){F.stage='t3';liveBoss(false);KS.g.position.y=0;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-6,0);h.face=Math.PI;});const p=KS.g.position.clone(),po=T.potap,pr=T.proshka;
-    play({dur:11,fov:44,camK:2.4,shots:[shot(0,[p.x+3.4,2.2,p.z+4.6],[p.x,2.4,p.z]),shot(4,[pr.pos.x+1.8,1.5,pr.pos.z+2.2],[pr.pos.x,1,pr.pos.z]),shot(7,[po.pos.x-2,1.8,po.pos.z+2.6],[po.pos.x,1.2,po.pos.z])],
-      says:[[0.4,3,'koschei','Хватит сказок. Теперь — меч.'],[4.2,2.6,'proshka','У него меч! Настоящий!'],[7.2,2.3,'potap','Все за меня! Я держу!']],
-      events:[{t:0.9,fn:()=>{sword.visible=true;k5s('draw');FX.sparkle(KS.g.position.clone().add(new V3(0.6,2,0.4)),16,0xd0b0ff);anim(1.4,k=>{KS.armR.rotation.x=-2.4*Math.sin(k*Math.PI*0.5);});}},{t:7.2,fn:()=>{T.potap._demoGuard=G.time+2;}}],
-      end:()=>{W.anims.length=0;KS.armR.rotation.x=0;stageStart(4);}});}
-  function trans4(){F.stage='t4';liveBoss(false);HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-9,0);h.face=Math.PI;});const p=KS.g.position.clone(),pr=T.proshka,pe=T.pelageya;
-    play({dur:13,fov:44,camK:2.4,shots:[shot(0,[p.x+4,2.2,p.z+5],[p.x,2.8,p.z]),shot(3.2,[1,2.6,-4],[p.x,2,p.z]),shot(8.4,[pr.pos.x+1.8,1.5,pr.pos.z+2.2],[pr.pos.x,1,pr.pos.z])],
-      says:[[0.4,2.4,'koschei','Бессмертного не победить!'],[3.2,4.9,'zven','Не победить — так расковать! Прошка, из иглы — застёжку!'],[8.4,2.9,'proshka','Несите мне иглу! Я к наковальне!']],
-      events:[{t:0.4,fn:()=>{k5s('ult');shakeAll(0.05,0.8);anim(1.4,k=>{KS.g.position.y=smooth(k)*1.2;KS.armR.rotation.x=-2.8*k;});}},
-        {t:3.4,fn:()=>{const w=ndl.g.getWorldPosition(new V3());W.group.add(ndl.g);ndl.g.position.copy(w);ndl.g.scale.setScalar(1);const to=headOf(active(1)).add(new V3(0,0.4,0));SFX.dzin&&SFX.dzin();anim(1.2,k=>{ndl.g.position.lerpVectors(w,to,smooth(k));ndl.g.position.y+=Math.sin(k*Math.PI)*2;ndl.g.rotation.z+=0.3;});}}],
-      end:()=>{W.anims.length=0;liftScene();}});}
-  function liftScene(){F.stage='lift';const pr=T.proshka;k5force(0,'proshka');placeOnGround(pr,5,-16.6,0);
-    play({dur:9,fov:44,camK:2.4,shots:[shot(0,[9,3,-13],[5,1,-20]),shot(4.6,[2,2,-15],[3.4,2,-23])],
-      says:[[0.3,4,null,'<i>Прошка к наковальне бежит — и изобретение его впервые не подвело:</i><br><i>Подъёмник из клещей да цепи наковальню к самым корням подняло.</i>',true],[4.8,3.2,'proshka','Я же говорил, что штука моя работает — вот и сработала!']],
-      events:[{t:1,fn:()=>{const f=anvil.position.clone(),to=new V3(ANV.x,0.9,ANV.z);anim(3,k=>{anvil.position.lerpVectors(f,to,smooth(k));anvil.position.y+=Math.sin(k*Math.PI)*1.2;});SFX.latch();}}],
-      end:()=>{W.anims.length=0;anvil.position.set(ANV.x,0.9,ANV.z);anvilCyl.x=ANV.x;anvilCyl.z=ANV.z;anvilCyl.maxy=2;stageStart(5);}});}
-  function finale(){F.stage='needle';liveBoss(false);const pr=T.proshka;k5force(0,'proshka');placeOnGround(pr,ANV.x,ANV.z+1.8,0);pr.face=Math.PI;KS.g.position.set(ANV.x-2.4,0,ANV.z+0.4);KS.g.rotation.y=Math.PI*0.4;k5StormSet(0.35);
+      heroLine(-8);const pe=T.pelageya,yo=T.yosha,f=h.m.g.position.clone(),hf=Math.atan2(C.x-f.x,C.z-f.z),to=f.clone().add(new V3(Math.sin(hf)*2,0,Math.cos(hf)*2));
+      const hbb=new THREE.Box3().setFromObject(h.m.g),hy=h.k==='kit'?0.2:Math.max(1.0,hbb.max.y-0.6),FH=k5Face(new V3(to.x,hy,to.z),hf,f.x<0?-0.5:0.5,h.k==='kit'?6:clamp(hy*1.1+1.8,3.2,7),h.k==='kit'?0.4:-0.2),F1=k5Face(hH(pe),Math.PI,0.4,2.0,0.05),F6=k5Face(hH(yo),Math.PI,-0.3,1.6,0.05);
+      const ST=new V3(-3.5,0,-20.1),KSH=new V3(ST.x,3.0,ST.z),F4=k5Face(KSH,0.4,0.45,2.6,-0.25);
+      const ya=yagaM?yagaM.g.position.clone():null,yf=yagaM?yagaM.g.rotation.y:0,FY=ya?k5Face(ya.clone().add(new V3(0,1.3,0)),yf,0.35,2.6,0.1):null;
+      play({dur:16.8,fov:44,camK:2.2,k5:{mood:[STORY,0.14],cues:[[6.0,()=>CINE.mood(WARM,0.14)],[13.6,()=>{CINE.slowmo(0.5,0.55);CINE.rimPulse(0.9);CINE.mood(GOLD,0.16);}],[15.2,emAll('cheer',0.08)]]},
+        shots:[SH(0,F1.p,F1.l,{fov:40,move:'orbit',amp:1}),
+          MV(3.6,FH.p,FH.l,[FH.p[0]*0.92+to.x*0.08,FH.p[1],FH.p[2]*0.92+to.z*0.08],FH.l,2.2,{fov:44,move:'none'}),
+          MV(5.8,[-0.6,2.6,-16.4],[ST.x,2.2,ST.z],[-1.1,2.8,-17.2],[ST.x,2.4,ST.z],2.2,{fov:44,move:'none'}),
+          SH(8.0,F4.p,F4.l,{fov:40,move:'push',amp:1}),
+          ya?SH(10.2,FY.p,FY.l,{fov:42,move:'orbit',amp:0.8}):SH(10.2,[-1.4,2,-15.6],[ST.x,2.6,ST.z],{fov:42,move:'push'}),
+          SH(13.2,F6.p,F6.l,{fov:40,move:'push',amp:1}),
+          MV(15.0,[3.4,2.4,-11.8],[0,1.1,-8.4],[7,7.5,-16.5],[0,1,-8],1.8,{ease:'inOutSine',fov:48,move:'none'})],
+        says:[[0.3,3.3,'pelageya','И помогал ему в том '+h.name.replace(/^./,c=>c.toLowerCase())+'.'],[5.9,4.6,null,'<i>Выбранный шаг вперёд делает. Кощей на камень садится —</i><br><i>Руки на колени кладёт и слушает, не шевелится.</i>',true],
+          [10.4,4.4,null,'<i>Яга на краю поляны глаз метлой утирает —</i><br><i>Мол, от пыли это, никто не узнает.</i>',true],[13.4,3.0,'yosha','Я смогу! Держите, держите!']],
+        events:[{t:0,fn:()=>{k5s('story');storyMotes(()=>pe.pos.clone().add(new V3(0,0.2,0)),3.6,16);}},
+          {t:3.6,fn:()=>{if(h.k!=='kit'){anim(1.4,k=>{const e=CE.inOutSine(k);h.m.g.position.lerpVectors(f,to,e);h.m.g.position.y=Math.abs(Math.sin(k*Math.PI*3))*0.12;});later(1.5,npcEm(h.m,'hop'));}else{anim(1.6,k=>{h.m.g.position.y=-1.2+Math.sin(k*Math.PI)*1.5;});}
+            HM.forEach(o=>{if(o!==h)later(0.4,npcEm(o.m,'nod'));});}},
+          {t:5.8,fn:()=>{KS.g.position.copy(ST);KS.g.position.y=-0.45;KS.g.rotation.y=0.4;KA.pose('sit',{antic:0.2,k:70,c:12});}},
+          {t:10.4,fn:()=>{if(yagaM){anim(2.2,k=>{yagaM.g.rotation.z=Math.sin(k*Math.PI*3)*0.12;});later(0.6,npcEm(yagaM,'nod'));}}},
+          {t:13.3,fn:()=>{k5s('name');if(!G.flags.names.yosha){G.flags.names.yosha=true;banner('Имя вернулось: Йоша','#8fe0d4',2.4);}nameBurst(yo,0x8fe0d4);ACT.emote(yo,'joy');}}],
+        end:()=>{W.anims.length=0;KA.reset();if(yagaM)yagaM.g.rotation.z=0;KS.g.position.copy(KP);KS.g.rotation.y=0;trans2b();}});});}
+  function trans2b(){F.stage='t2b';heroLine(-8);KS.g.position.copy(KP);KS.g.rotation.y=0;const pr=T.proshka,pe=T.pelageya;
+    const FLY=new V3(C.x,5.4,C.z-4),FH=FLY.clone().add(new V3(0,4.15,0)),F2=k5Face(hH(pr),Math.PI,-0.35,1.7,-0.35),two=k5Two(hH(pr),hH(pe),Math.PI+0.2,3.4,0.15,-0.1);
+    const ghost=k5Prop(new THREE.Group());ghost.add(k5Glow(0xffd060,1.1));ghost.add(new THREE.Mesh(new THREE.SphereGeometry(0.16,10,8),MB(0xfff4c0)));ghost.visible=false;
+    play({dur:11.8,fov:46,camK:2.2,k5:{mood:[DARK,0.14],cues:[[0.45,()=>{CINE.punch(-4);CINE.trauma(0.2);FX.speed(0.6);}],[2.8,()=>CINE.dollyZoom(0.14,0.8,0.5)],[9.4,()=>CINE.punch(-3)]]},
+      shots:[MV(0,[KP.x+4.5,1.2,KP.z+7],[KP.x,2.6,KP.z],[KP.x+5.5,1.6,KP.z+9],[FLY.x,6.5,FLY.z],2.4,{lf:()=>KS.rig.chest.getWorldPosition(new V3()),lk:5,fov:50,fov2:54,move:'none'}),
+        SH(2.5,F2.p,F2.l,{fov:40,move:'push',amp:0.8}),
+        MV(5.6,two.p,two.l,[two.p[0]-0.5,two.p[1]+0.1,two.p[2]+0.3],two.l,3.4,{fov:42,move:'none'}),
+        MV(9.1,[FLY.x+1.8,8.6,FLY.z+3.6],[FH.x,FH.y-0.1,FH.z],[FLY.x-1.4,8.8,FLY.z+3.7],[FH.x,FH.y-0.15,FH.z],2.6,{pts:[[FLY.x+0.2,8.7,FLY.z+4.1]],ease:'inOutSine',fov:42,move:'none'})],
+      says:[[2.7,2.9,'proshka','Он взлетел! Как его оттуда достать?'],[5.8,3.3,'pelageya','Шар отбей другу — а друг отбивает его в небо!'],[9.3,2.4,'koschei','Попробуйте, достаньте!']],
+      events:[{t:0.1,fn:()=>KA.pose('kneel',{snap:true})},
+        {t:0.45,fn:()=>{KA.pose('cast',{snap:true});k5s('flyUp');kFly(FLY,2.0,'outCubic');const p=new V3(KP.x,0.1,KP.z);FX.dust(p,16,0x9a8a6a,1.3);k5Ring(p,0xd0b0ff,0.5,4.5,0.6,0.12);
+          const rn=k5Decal(K5TEX.rune,0xb070ff,2.6,p,1);k5fx(1.4,k=>{rn.material.opacity=1-k;rn.rotation.z+=0.05;},()=>k5Del(rn));}},{t:2.6,fn:em(pr,'surprise')},
+        {t:6.2,fn:()=>{pe.face=Math.atan2(pr.pos.x-pe.pos.x,pr.pos.z-pe.pos.z);ACT.emote(pe,'hop');}},
+        {t:6.7,fn:()=>{ghost.visible=true;const a=hH(pe),b=hH(pr);anim(0.7,k=>{ghost.position.lerpVectors(a,b,k);ghost.position.y+=Math.sin(k*Math.PI)*1.2;});k5s('orbPass');later(0.7,()=>{k5s('orbHit');k5Flash(b,0xffe08a,1.6,0.3);ACT.emote(pr,'hop');
+          const c=b.clone();anim(0.8,k=>{ghost.position.set(c.x,c.y+k*6,c.z);});later(0.8,()=>{FX.sparkle(ghost.position.clone(),10,0xffe08a);ghost.visible=false;});});}},
+        {t:8.0,fn:()=>{pe.face=Math.PI;ACT.emote(pr,'nod');}},{t:9.3,fn:()=>{KA.pose('proud');KA.laugh=2.2;later(0.3,()=>k5s('laugh'));}}],
+      end:()=>{W.anims.length=0;KA.reset();k5Del(ghost);stageStart(3);}});}
+  function trans3(){F.stage='t3';liveBoss(false);KS.g.position.copy(KC);KS.g.rotation.y=0;heroLine(-9);const po=T.potap,pr=T.proshka,yo=T.yosha;
+    const KH=new V3(KC.x,4.15,KC.z),hand=()=>KS.hand.getWorldPosition(new V3()),POs=new V3(po.pos.x+0.6,0,po.pos.z-1.4),F3=k5Face(hH(pr),Math.PI,0.35,1.7,0),F4=k5Face(new V3(POs.x,1.3,POs.z),Math.PI,-0.5,2.8,-0.1);
+    const P2a=[KC.x+2.4,2.2,KC.z+1.6],P2b=[KC.x+1.0,3.4,KC.z+3.3],mid=new V3(0,0,(KC.z-9)/2);
+    play({dur:12.6,fov:44,camK:2.4,k5:{iris:true,mood:[DARK,0.14],cues:[[0.15,()=>{CINE.hitstop(3);CINE.punch(-4);CINE.flashDip('#ffe8a0',0.3);}],[2.2,()=>{CINE.punch(-6);CINE.hitstop(3);CINE.flashDip('#c8a0ff',0.3);}],
+        [6.0,()=>CINE.dollyZoom(0.2,0.8,0.6)],[8.7,()=>{CINE.punch(-4);CINE.rimPulse(0.9);CINE.mood(WARM,0.12);}]]},
+      shots:[MV(0,[KC.x+3.4,2.4,KC.z+4.6],[KC.x,2.6,KC.z],[KC.x+3.9,2.7,KC.z+5.4],[KC.x,2.7,KC.z],1.4,{fov:44,move:'none'}),
+        MV(1.4,P2a,[KC.x+0.3,2.0,KC.z],P2b,[KH.x,KH.y-0.1,KH.z],2.4,{lf:(t,k)=>hand().lerp(kH(),clamp(k,0,1)),lk:9,ease:'inOutCubic',fov:42,move:'none'}),
+        SH(5.6,F3.p,F3.l,{fov:40,move:'push',amp:1}),
+        MV(8.2,F4.p,F4.l,[F4.p[0],F4.p[1]-0.1,F4.p[2]-0.4],F4.l,2.4,{ease:'outCubic',fov:42,move:'none'}),
+        MV(10.6,[mid.x+10,3.2,mid.z+2],[mid.x,1.8,mid.z],[mid.x+10.4,3.8,mid.z-1.5],[mid.x,1.9,mid.z],2.0,{ease:'inOutSine',fov:46,move:'none'})],
+      says:[[2.6,2.9,'koschei','Хватит сказок. Теперь — меч.'],[5.7,2.4,'proshka','У него меч! Настоящий!'],[8.4,2.2,'potap','Все за меня! Я держу!']],
+      events:[{t:0.1,fn:()=>{bindBeat();KA.pose('recoil',{snap:true});FX.dust(new V3(KC.x,0.05,KC.z),12,0x9a8a6a,1.1);}},{t:1.5,fn:pose('guard',{antic:0.25})},
+        {t:2.1,fn:()=>{sword.visible=true;k5s('draw');KA.pose('sword',{snap:true});FX.sparkle(hand(),16,0xd0b0ff);k5Flash(hand(),0xb070ff,2.4,0.35);k5Trail(()=>sword.parent&&sword.visible&&G.cine?sword.userData.edge.getWorldPosition(new V3()):null,0xb070ff,{size:0.4,life:0.25,every:0.02,max:20});}},
+        {t:4.4,fn:pose('threat')},{t:6.6,fn:em(pr,'fear')},{t:6.4,fn:()=>hWalk(yo,po.pos.x+0.5,po.pos.z+1.0,0.6,Math.PI)},
+        {t:8.2,fn:()=>{hWalk(po,POs.x,POs.z,0.5,Math.PI);later(1.5,()=>{T.potap._demoGuard=G.time+2.4;FX.dust(new V3(POs.x,0.05,POs.z),8,0xd8c8a8,0.9);k5s('stomp');});}},{t:9.0,fn:em(po,'pride')},
+        {t:10.4,fn:()=>{hWalk(pr,POs.x-1.2,POs.z+1.2,0.6,Math.PI);hWalk(T.pelageya,POs.x+1.2,POs.z+1.1,0.6,Math.PI);}}],
+      end:()=>{W.anims.length=0;KA.reset();KS.armR.rotation.x=0;stageStart(4);}});}
+  function trans4(){F.stage='t4';liveBoss(false);KS.g.position.copy(KC);KS.g.rotation.y=0;heroLine(-9);const pr=T.proshka,pe=T.pelageya;
+    const hand=()=>KS.hand.getWorldPosition(new V3()),ZP=new V3(0.2,2.2,-11.6),F4=k5Face(hH(pr),Math.PI,-0.3,1.8,0),AF=new V3(6,1.2,-19);
+    KS.g.updateMatrixWorld(true);const NW=ndl.g.getWorldPosition(new V3()),NG=new V3(NW.x+0.4,0.3,NW.z+1.2);   // куда упадёт игла
+    play({dur:14.2,fov:44,camK:2.4,k5:{iris:true,mood:[DARK,0.18],cues:[[0.5,()=>{CINE.trauma(0.5);CINE.dutch(0.08);}],[2.4,()=>CINE.dutch(0)],[2.95,()=>CINE.slowmo(0.4,0.6)],[4.2,()=>CINE.mood(WARM,0.12)],
+        [7.0,em(pr,'pride')],[12.4,()=>{CINE.rimPulse(0.9);CINE.punch(-3);}]]},
+      shots:[MV(0,[KC.x+1.6,3.0,KC.z+4.6],[KC.x,4.4,KC.z],[KC.x+1.2,3.4,KC.z+3.8],[KC.x,5.2,KC.z],2.8,{ease:'outCubic',fov:44,fov2:40,move:'none'}),
+        SH(2.8,[NG.x+0.9,0.35,NG.z+1.1],[NG.x,0.25,NG.z],{lf:()=>ndl.g.getWorldPosition(new V3()).lerp(NG,0.5),lk:8,fov:44,move:'push',amp:0.5}),
+        MV(4.0,[1.4,1.4,-14.8],[0.1,1.6,-10.4],[1.0,1.5,-14.0],[0.1,1.6,-10.2],5.0,{ease:'inOutSine',fov:44,move:'none'}),
+        SH(9.0,F4.p,F4.l,{fov:40,move:'push',amp:1}),
+        MV(12.0,[15,6.5,-9],[AF.x,AF.y,AF.z],[13,5.5,-11.5],[AF.x,AF.y+0.1,AF.z],2.2,{tr:'whip',ease:'outCubic',fov:42,move:'none'})],
+      says:[[0.6,2.2,'koschei','Бессмертного не победить!'],[4.2,4.8,'zven','Не победить — так расковать! Прошка, из иглы — застёжку!'],[9.2,2.8,'proshka','Несите мне иглу! Я к наковальне!']],
+      events:[{t:0.2,fn:()=>KA.pose('cast',{antic:0.3,snap:true})},
+        {t:0.5,fn:()=>{k5s('ult');k5s('whooshBig');shakeAll(0.05,0.8);kFly(KC.clone().add(new V3(0,1.2,0)),1.4,'outCubic');for(let i=0;i<3;i++)later(i*0.35,()=>{const c=KS.g.position.clone().add(new V3(0,2.4,0));k5Ring(c,0x9a50ff,0.6,5,0.7,0.1,new THREE.Euler(Math.PI/2,0,0));k5Flash(c,0x8a40ff,4,0.35);});}},
+        {t:2.9,fn:()=>{const w=ndl.g.getWorldPosition(new V3());W.group.add(ndl.g);ndl.g.position.copy(w);ndl.g.scale.setScalar(1);const g0=new V3(w.x+0.4,0.15,w.z+1.2);if(SFX.dzin)SFX.dzin();
+          anim(0.7,k=>{ndl.g.position.lerpVectors(w,g0,k*k);ndl.g.rotation.z+=0.35;});later(0.72,()=>{k5s('tink');k5Flash(g0.clone().add(new V3(0,0.3,0)),0xffffff,1.6,0.3);FX.sparks(g0.clone(),8,0xfff0c0);});}},
+        {t:3.9,fn:()=>{zvenTo(ZP,0.8);k5s('zven');}},
+        {t:5.0,fn:()=>{const w=ndl.g.position.clone(),tg=()=>headOf(active(1)).add(new V3(0,0.4,0));if(SFX.dzin)SFX.dzin();anim(1.1,k=>{ndl.g.position.lerpVectors(w,tg(),CE.inOutSine(k));ndl.g.position.y+=Math.sin(k*Math.PI)*2;ndl.g.rotation.z+=0.3;});
+          k5Trail(()=>ndl.g.parent?ndl.g.position.clone():null,0xffe08a,{size:0.35,life:0.3,every:0.03,max:24});}},
+        {t:6.4,fn:em(pr,'surprise')},{t:9.6,fn:()=>{pr.face=Math.atan2(AF.x-pr.pos.x,AF.z-pr.pos.z);ACT.emote(pr,'effort');}},{t:12.4,fn:()=>{k5s('magic');k5Flash(AF.clone().add(new V3(0,0.4,0)),0xffe08a,2.8,0.5);FX.sparkle(AF.clone().add(new V3(0,0.6,0)),12,0xffe08a);}}],
+      end:()=>{W.anims.length=0;KA.reset();Z.mode='lead';liftScene();}});}
+  function liftScene(){F.stage='lift';const pr=T.proshka;k5force(0,'proshka');placeOnGround(pr,2.2,-14.4,0);KS.g.position.set(C.x,3.2,C.z-6);KS.g.rotation.y=0;
+    const AF=anvil.position.clone(),PRs=new V3(5.2,0,-17.2),F3=k5Face(new V3(PRs.x,1.05,PRs.z),0.3,-0.3,1.9,-0.1);
+    play({dur:10.2,fov:44,camK:2.4,k5:{mood:[WARM,0.12],cues:[[0.2,()=>FX.speed(0.5)],[4.85,()=>{CINE.hitstop(2);CINE.trauma(0.25);CINE.punch(-3);}],[5.6,()=>CINE.rimPulse(0.8)],[7.4,em(pr,'joy')]]},
+      shots:[SH(0,[5.0,1.3,-15.1],[2.2,1,-14.4],{pf:()=>pr.pos.clone().add(new V3(2.8,1.2,-0.7)),lf:()=>hH(pr),lk:7,fov:46,move:'none'}),
+        MV(1.6,[9.5,2.6,-14.5],[AF.x,1.4,AF.z],[8.4,4.4,-16.6],[ANV.x,1.6,ANV.z],3.4,{lf:()=>anvil.position.clone().add(new V3(0,0.6,0)),lk:6,ease:'inOutSine',fov:48,move:'none'}),
+        SH(5.0,F3.p,F3.l,{fov:40,move:'push',amp:1}),
+        MV(8.8,[8,2.4,-14],[ANV.x,1.2,ANV.z],[10,5.4,-12],[ANV.x,1.2,ANV.z],1.4,{ease:'inOutSine',fov:48,move:'none'})],
+      says:[[0.3,4.6,null,'<i>Прошка к наковальне бежит — и изобретение его впервые не подвело:</i><br><i>Подъёмник из клещей да цепи наковальню к самым корням подняло.</i>',true],[5.2,3.8,'proshka','Я же говорил, что штука моя работает — вот и сработала!']],
+      events:[{t:0,fn:()=>hWalk(pr,PRs.x,PRs.z,1.3,Math.PI*0.8)},{t:1.2,fn:()=>ACT.emote(pr,'effort')},
+        {t:1.8,fn:()=>{const f=anvil.position.clone(),to=new V3(ANV.x,0.9,ANV.z);anim(3,k=>{anvil.position.lerpVectors(f,to,CE.inOutSine(k));anvil.position.y+=Math.sin(k*Math.PI)*1.2;anvil.rotation.z=Math.sin(k*Math.PI*2)*0.06;});SFX.latch();
+          later(0.6,()=>{k5s('chain');FX.sparks(anvil.position.clone().add(new V3(0,1,0)),10);});later(1.6,()=>{k5s('chain');FX.sparks(anvil.position.clone().add(new V3(0,1,0)),10);});}},
+        {t:4.8,fn:()=>{anvil.rotation.z=0;const p=new V3(ANV.x,0.05,ANV.z);FX.dust(p,14,0x9a8a6a,1.2);k5Ring(p,0xffe0a0,0.4,2.6,0.5,0.14);k5s('land');k5s('anvil');}},
+        {t:5.0,fn:()=>{pr.face=0.3;}},{t:5.3,fn:()=>{ACT.emote(pr,'pride');FX.sparkle(hH(pr),8,0xffd23a);}}],
+      end:()=>{W.anims.length=0;anvil.position.set(ANV.x,0.9,ANV.z);anvil.rotation.z=0;anvilCyl.x=ANV.x;anvilCyl.z=ANV.z;anvilCyl.maxy=2;stageStart(5);}});}
+  function finale(){F.stage='needle';liveBoss(false);const pr=T.proshka,pe=T.pelageya;k5force(0,'proshka');placeOnGround(pr,ANV.x,ANV.z+1.8,0);pr.face=Math.PI;
+    const KS0=new V3(ANV.x-2.4,0,ANV.z+0.4);KS.g.position.copy(KS0);KS.g.rotation.y=Math.PI*0.4;k5StormSet(0.35);sword.visible=true;
+    const PEs=new V3(ANV.x+1.4,0,ANV.z+3.6),peF=Math.atan2(KS0.x-PEs.x,KS0.z-PEs.z);placeOnGround(pe,PEs.x,PEs.z,0);pe.face=peF;
+    HEROES.forEach(h=>{if(h!==pr&&h!==pe){placeOnGround(h,PEs.x+(h.kind==='potap'?1.6:-1.0),PEs.z+1.2,0);h.face=peF;}});
+    const KS1=new V3(ANV.x-1.2,0,ANV.z+1.0),kf1=Math.atan2(pr.pos.x-KS1.x,pr.pos.z-KS1.z),F1=k5Face(new V3(KS0.x,3.05,KS0.z),Math.PI*0.4,-0.3,3.0,-0.2),F2=k5Face(hH(pe),peF,0.35,2.0,0.05),F5=k5Face(hH(pr),Math.PI,0.3,1.8,0);
     const good=G.flags.claspQ||0.7;
-    play({dur:21,fov:42,camK:2.4,shots:[shot(0,[ANV.x-5,2.4,ANV.z+5],[KS.g.position.x,2.2,KS.g.position.z]),shot(3.2,[pr.pos.x+2.4,1.8,pr.pos.z+2.4],[pr.pos.x,1,pr.pos.z]),shot(7.8,[ANV.x+2.6,1.9,ANV.z+3],[ANV.x-0.6,1.4,ANV.z]),shot(16.6,[ANV.x+1.2,2.4,ANV.z+4],[ANV.x,1,ANV.z])],
-      says:[[0.3,2.4,'koschei','…Почему вы не бьёте?'],[3.2,4.4,'pelageya','Потому что это сказка. А в сказке можно по-другому.'],
-        [7.8,4.4,null,'<i>Кощей долго смотрит на молот в лапах Прошки. Потом подходит и поправляет ему руку на застёжке.</i>',true],[12.4,4,'koschei','Держи. Ровней держи. Вот так, вот так.'],
-        [16.6,3.6,null,good>=0.8?'<i>Узор на застёжке тонок, как у Кузьмы.</i>':'<i>Застёжка скована — Прошкиными руками.</i>',true]],
-      events:[{t:0.3,fn:()=>{anim(1.5,k=>{KS.g.rotation.x=0.25*k;});sword.visible=false;}},{t:7.8,fn:()=>{const f=KS.g.position.clone();anim(2.4,k=>{KS.g.position.lerpVectors(f,new V3(ANV.x-1.2,0,ANV.z+1),k);});KS.g.rotation.x=0;}},
-        {t:12.4,fn:()=>{anim(1,k=>{KS.armR.rotation.x=-k*1.2;});pr.atkT=0.3;k5s('forge');FX.sparks(ANV.clone().add(new V3(0,1.3,0)),16,0xffe080);}},
-        {t:14.6,fn:()=>{G.flags.names.proshka=true;SFX.ok();banner('Имя вернулось: Прошка','#ff9a66',2.4);ndl.g.position.set(ANV.x,1.3,ANV.z);ndl.g.rotation.set(0,0,Math.PI/2);}}],
-      end:()=>{W.anims.length=0;KS.armR.rotation.x=0;KS.g.position.copy(KP);KS.g.rotation.set(0,0,0);k5StormSet(0);skaz3();}});}
+    play({dur:22.8,fov:42,camK:2.4,k5:{calm:true,mood:[COLD,0.1],cues:[[3.4,()=>{CINE.mood(WARM,0.14);CINE.rimPulse(0.6);}],[13.0,()=>{CINE.hitstop(2);CINE.punch(-2);}],[14.4,()=>{CINE.hitstop(2);CINE.punch(-2);}],[15.4,()=>{CINE.hitstop(2);CINE.punch(-3);}],
+        [16.6,()=>{CINE.slowmo(0.45,0.6);CINE.rimPulse(1);CINE.mood(GOLD,0.18);FX.confettiCam(30);}],[19.6,()=>CINE.mood(GOLD,0.2)]]},
+      shots:[MV(0,F1.p,F1.l,[F1.p[0]-0.25,F1.p[1],F1.p[2]-0.25],F1.l,3.0,{ease:'inOutSine',fov:40,fov2:37,move:'none'}),
+        SH(3.0,F2.p,F2.l,{fov:40,move:'push',amp:0.8}),
+        MV(7.6,[ANV.x+7.2,3.8,ANV.z+1.8],[ANV.x-0.9,2.5,ANV.z+1.4],[ANV.x+6.2,3.4,ANV.z+2.4],[ANV.x-0.9,2.5,ANV.z+1.4],4.6,{ease:'inOutSine',fov:44,move:'none'}),
+        MV(12.2,[ANV.x+7.4,3.0,ANV.z+4.0],[ANV.x-0.8,2.6,ANV.z+1.2],[ANV.x+6.8,2.9,ANV.z+3.6],[ANV.x-0.8,2.6,ANV.z+1.2],4.2,{nofocus:true,ease:'inOutSine',fov:40,move:'none'}),
+        SH(16.4,F5.p,F5.l,{fov:40,move:'push',amp:1}),
+        SH(17.8,[ANV.x-2.0,3.4,ANV.z-1.0],[ANV.x,1.5,ANV.z+0.1],{fov:36,move:'push',amp:1}),
+        MV(20.0,[ANV.x+4,2.2,ANV.z+5],[ANV.x-0.6,1.4,ANV.z],[ANV.x+9,7,ANV.z+11],[ANV.x-1,1.6,ANV.z-1],2.8,{ease:'inOutSine',fov:46,move:'none'})],
+      says:[[0.6,2.2,'koschei','…Почему вы не бьёте?'],[3.2,4.4,'pelageya','Потому что это сказка. А в сказке можно по-другому.'],
+        [7.8,4.4,null,'<i>Кощей долго смотрит на молот в лапах Прошки. Потом подходит и поправляет ему руку на застёжке.</i>',true],[12.4,4.0,'koschei','Держи. Ровней держи. Вот так, вот так.'],
+        [17.9,3.6,null,good>=0.8?'<i>Узор на застёжке тонок, как у Кузьмы.</i>':'<i>Застёжка скована — Прошкиными руками.</i>',true]],
+      events:[{t:0,fn:()=>KA.pose('kneel',{k:60,c:11})},
+        {t:0.4,fn:()=>{const w=sword.getWorldPosition(new V3());W.group.add(sword);sword.position.copy(w);const g0=new V3(w.x+0.8,0.12,w.z+0.4);anim(0.5,k=>{sword.position.lerpVectors(w,g0,k*k);sword.rotation.z=k*1.45;});later(0.52,()=>{SFX.clink();FX.dust(g0.clone(),8,0x9a8a6a,0.8);});}},
+        {t:5.6,fn:()=>HEROES.forEach((h,i)=>{if(h!==pr&&h!==pe)ACT.emote(h,'nod',i*0.12);})},
+        {t:7.6,fn:()=>{KA.pose('idle',{k:70,c:12});later(0.4,()=>kWalk(KS1.x,KS1.z,2.2,kf1));}},{t:10.4,fn:pose('help',{antic:0.15})},
+        {t:13.0,fn:()=>{pr.atkT=0.3;k5s('forge');k5s('anvil');FX.sparks(ANV.clone().add(new V3(0,1.3,0)),16,0xffe080);}},{t:14.4,fn:()=>{pr.atkT=0.3;k5s('forge');k5s('anvil');FX.sparks(ANV.clone().add(new V3(0,1.3,0)),16,0xffe080);}},
+        {t:15.4,fn:()=>{pr.atkT=0.3;k5s('forge');k5s('anvil');FX.sparks(ANV.clone().add(new V3(0,1.3,0)),22,0xffe080);k5Flash(ANV.clone().add(new V3(0,1.4,0)),0xffe08a,2.4,0.4);}},
+        {t:16.5,fn:()=>{G.flags.names.proshka=true;k5s('name');banner('Имя вернулось: Прошка','#ff9a66',2.4);nameBurst(pr,0xff9a66);ACT.emote(pr,'joy');}},
+        {t:17.6,fn:()=>{k5s('magic');ndl.g.position.set(ANV.x,1.3,ANV.z);ndl.g.rotation.set(0,0,Math.PI/2);k5Flash(ANV.clone().add(new V3(0,1.4,0)),0xffd060,2,0.6);FX.sparkle(ANV.clone().add(new V3(0,1.5,0)),10,0xffe08a);}},
+        {t:19.6,fn:()=>k5StormSet(0)}],
+      tick:(t)=>{if(t>17.6)ndl.g.rotation.y=Math.sin(t*2)*0.15;},
+      end:()=>{W.anims.length=0;KA.reset();KS.armR.rotation.x=0;KS.hand.add(sword);sword.position.set(0,-0.05,0.05);sword.rotation.set(-0.35,0,0);sword.visible=false;KS.g.position.copy(KP);KS.g.rotation.set(0,0,0);k5StormSet(0);skaz3();}});}
   const ENDS=['И ушёл он — и был таков','И простили его — и прощенья он просил','И позвали его слушать — сел он в круг'],ENDK=['ushel','proshen','slushat'];
   function skaz3(){F.stage='skaz3';skazClouds({who:2,title:'Сказ по памяти · конец',sub:'Последняя рамка осталась — чем сказка про мальчишку кончится.<br>Все три — настоящие. Наводите вместе, как хочется.',opts:ENDS},arr=>{F.skaz=3;F.ends=arr;
       G.flags.ending=arr.map(i=>ENDK[i]);G.flags.skaz5=[F.sk1,F.sk2,arr.map(i=>ENDS[i]).join(' — а иные сказывают: ')];
-      if(arr.length>1){say('kot','<i>(разводит лапами)</i> А иные сказывают, что было иначе, — вот как…',3.4,true);later(3.6,chainScene);}else chainScene();});}
-  function chainScene(){F.stage='chain';k5StormSet(0,true);const pe=T.pelageya,yo=T.yosha,pr=T.proshka;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*1.8,-15.5,0);faceTo(h,KP.x,KP.z);});KS.g.position.set(-0.6,0,-19.4);KS.g.rotation.y=Math.PI*0.9;
+      if(arr.length>1){say('kot','<i>(разводит лапами)</i> А иные сказывают, что было иначе, — вот как…',3.6,true);later(3.8,chainScene);}else chainScene();});}
+  function chainScene(){F.stage='chain';k5StormSet(0,true);const pe=T.pelageya,yo=T.yosha,pr=T.proshka,po=T.potap;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*1.8,-15.5,0);faceTo(h,KP.x,KP.z);});
+    const KS0=new V3(-0.6,0,-19.4);KS.g.position.copy(KS0);KS.g.rotation.y=0.15;
     const keys=new THREE.Group();keys.position.set(-0.3,1.9,-19);W.group.add(keys);for(let i=0;i<5;i++){const k=blackKey(1.4);k.position.x=(i-2)*0.08;keys.add(k);}
-    const thread=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.8,4),MB(COL.gold));thread.visible=false;W.group.add(thread);const ya=yagaM?yagaM.g.position:new V3(-10,0,-14);const E=F.ends[0];
-    const tail=E===0?[[43,4.6,null,'<i>И ушёл он — и был таков: Кощей по воде уходит, не оглянувшись,</i><br><i>А на ветке дуба перстень его остался, блеснувши.</i>',true]]
-      :E===1?[[43,4.6,null,'<i>И простили его — и прощенья он просил: пред Котом на колено встал, перстень отдал</i><br><i>И на дальний берег жить ушёл — там свой дом и сыскал.</i>',true]]
-      :[[43,4.6,null,'<i>И позвали его слушать: Кощей у дуба остался, с перстнем на руке,</i><br><i>Рядом с Котом сидит — у корней, в тишине.</i>',true]];
-    play({dur:49,fov:44,camK:2,shots:[shot(0,[4,3,-12],[-0.6,2,-19.4]),shot(4.6,[ya.x+4,2.4,ya.z+3],[ya.x,1.2,ya.z]),shot(8.4,[1,2,-17],[-2,1,-22.4]),shot(12.4,[-4,1.6,-18],[-2,1.2,-22.4]),shot(19,[4.2,2.6,-11.6],[-0.6,2.8,-19.4]),
-        shot(23.4,[pe.pos.x+2,1.8,pe.pos.z+2.4],[pe.pos.x,1.1,pe.pos.z]),shot(28,[yo.pos.x+2,1.4,yo.pos.z+2.2],[yo.pos.x,0.7,yo.pos.z]),shot(31.6,[0,4,-12],[0,4,-28]),shot(37,[8,8,-14],[0,6,-28]),shot(42.4,[6,4,-10],[E===0?-8:E===1?-2:-1,2,E===0?-34:-22])],
-      says:[[0.3,4,null,'<i>Какой бы конец ни выбрали — сперва вот что случится.</i>',true],[4.6,2.2,null,'<i>Кощей Яге связку чёрных ключей отдаёт.</i>',true],[6.6,1.8,'koschei','Больше не приманю — ни гуся, ни ворона.'],
-        [8.4,3.8,null,'<i>Из кармана золотую ниточку достаёт — Коту возвращает.</i><br><i>Кот первый вдох делает — и говорит: хрипло, а словами отвечает.</i>',true],
-        [12.4,5,'kot','Прости меня. Я всегда сказывал, что ты проиграл, —<br>Так было проще. Прости, что не переписал.'],[17.6,1.6,'koschei','Так расскажи по-другому — по-иному.'],[19.4,3.4,'kot','<i>(качает головой, показывает лапой на Пелагею)</i> Не я. Она уж сказала.'],
-        [23.4,2.6,'koschei','Пелагея. Пелагея…'],[26.2,1.6,null,'<i>Над портретом Пелагеи имя её загорается — последнее из забытых.</i>',true],[28,2.6,'yosha','Я — Йоша! Мы все вспомнили, все!'],[30.4,1.8,'koschei','<i>(тише)</i> Пелагея… Расскажи ещё, прошу.'],
-        [32.4,4.2,null,'<i>Прошка иглу в цепь застёжкой вставляет — цепь смыкается.</i>',true],[37,5.4,null,'<i>Кот Учёный по ней кругом идёт — направо песнь заводит,</i><br><i>Налево сказку говорит. И первая сказка у него — наша, выходит.</i>',true]].concat(tail),
-      events:[{t:4.6,fn:()=>{const f=keys.position.clone();anim(1.6,k=>{keys.position.lerpVectors(f,ya.clone().add(new V3(0.4,1.2,0.4)),smooth(k));keys.position.y+=Math.sin(k*Math.PI)*1.5;});SFX.keys();}},
-        {t:8.6,fn:()=>{thread.visible=true;const f=new V3(-0.4,1.6,-19.2),to=kot.g.position.clone().add(new V3(0,1.3,0.3));anim(1.8,k=>{thread.position.lerpVectors(f,to,k);thread.rotation.z+=0.1;});later(1.9,()=>{thread.visible=false;burst(to,COL.gold,16,2);SFX.dzin();kot.lids.forEach(l=>{l.rotation.x=-0.5;});G.flags.kotVoice=true;});}},
-        {t:12.4,fn:()=>{kot.head.rotation.x=0.2;}},{t:19.4,fn:()=>{kot.g.rotation.y=Math.atan2(pe.pos.x-kot.g.position.x,pe.pos.z-kot.g.position.z);}},
-        {t:23.4,fn:()=>{KS.g.rotation.y=Math.atan2(pe.pos.x-KS.g.position.x,pe.pos.z-KS.g.position.z);}},{t:26,fn:()=>{G.flags.names.pelageya=true;SFX.ok();banner('Имя вернулось: Пелагея','#d7a6ec',2.6);}},
-        {t:28,fn:()=>{anim(0.6,k=>{yo.pos.y=Math.sin(k*Math.PI)*1.2;});G.flags.nameless=false;}},
-        {t:32.6,fn:()=>{const f=ndl.g.position.clone(),to=OAK.clone().add(new V3(0,1+coilLinks.length*0.16,3.2));anim(1.4,k=>{ndl.g.position.lerpVectors(f,to,k);});later(1.5,()=>{SFX.link();SFX.horn();for(let i=0;i<8;i++)addCoilLink();burst(to,COL.gold,30,5);ringFx(OAK.clone().add(new V3(0,2,0)),COL.gold,5);
-          leaves.forEach((l,i)=>later(i*0.08,()=>{l.visible=true;anim(0.8,k=>l.scale.setScalar(Math.max(0.01,k)));}));trunk.material.color.setHex(0x7a5a3e);});}},
-        {t:37.2,fn:()=>{anim(5,k=>{const a=k*Math.PI*2;kot.g.position.set(OAK.x+Math.sin(a)*3.4,1.2+k*3,OAK.z+Math.cos(a)*3.4);kot.g.rotation.y=a+Math.PI/2;});lullaby([67,71,74,72,71,69,67],0.42,0,0.12);}},
-        {t:43,fn:()=>{if(E===0){const f=KS.g.position.clone();KS.g.rotation.y=Math.PI;anim(5,k=>{KS.g.position.lerpVectors(f,new V3(-10,-0.3,-40),k);});addMesh(new THREE.TorusGeometry(0.1,0.03,6,12),M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.8}),OAK.x+2.4,7.2,OAK.z+1);}
-          else if(E===1){KS.g.position.set(kot.g.position.x+1,0,kot.g.position.z+1.4);anim(1,k=>{KS.body.position.y=-k*0.9;});}
-          else{KS.g.position.set(OAK.x+2.2,0,OAK.z+3.4);KS.g.rotation.y=Math.PI*0.8;}}}],
-      tick:(t)=>{if(t>12.4&&t<22)kot.head.rotation.x=0.2+Math.sin(t*6)*0.05;},
-      end:()=>{W.anims.length=0;bb.style.display='none';G.flags.names={potap:true,yosha:true,proshka:true,pelageya:true};G.flags.nameless=false;G.flags.kotVoice=true;G.flags.w5done=true;G.flags.coils=5;
+    const thread=new THREE.Mesh(new THREE.CylinderGeometry(0.02,0.02,0.8,4),MB(COL.gold));thread.visible=false;W.group.add(thread);const ya=yagaM?yagaM.g.position.clone():new V3(-10,0,-14);const E=F.ends[0];
+    const KT=kot.g.position.clone(),toKot=Math.atan2(KT.x-KS0.x,KT.z-KS0.z),toPe=Math.atan2(pe.pos.x-KS0.x,pe.pos.z-KS0.z),toYa=Math.atan2(ya.x-KS0.x,ya.z-KS0.z);
+    const KH=new V3(KS0.x,4.15,KS0.z),kotH=KT.clone().add(new V3(0,1.35,0)),kotF=kot.g.rotation.y,kotToKs=Math.atan2(KS0.x-KT.x,KS0.z-KT.z),kotToPe=Math.atan2(pe.pos.x-KT.x,pe.pos.z-KT.z);
+    const FyaK=k5Face(KH,toYa,0.35,3.4,-0.45),FKot=k5Face(kotH,kotToKs,0.35,2.4,0.05),FKs=k5Face(KH,toKot,-0.35,3.2,-0.45),FKotP=k5Face(kotH,kotToPe,-0.3,2.4,0.05),FKsP=k5Face(KH,toPe,0.3,3.2,-0.45);
+    const dY=new V3(KS0.x-ya.x,0,KS0.z-ya.z).normalize(),pY=new V3(-dY.z,0,dY.x),YA1=ya.clone().addScaledVector(dY,-2.6).addScaledVector(pY,1.1),YA2=ya.clone().addScaledVector(dY,-2.0).addScaledVector(pY,0.9),YL=ya.clone().addScaledVector(dY,6);
+    const TW=k5Two(new V3(KS0.x,2.4,KS0.z),new V3(KT.x,1.2,KT.z),Math.atan2(-0.906,0.42),7,1.0,0.6),FKsP2=k5Face(KH,toPe,0.3,3.9,-0.3);
+    const FPe=k5Face(hH(pe),Math.atan2(KS0.x-pe.pos.x,KS0.z-pe.pos.z),0.35,1.9,0.08),FYo=k5Face(hH(yo),Math.atan2(KS0.x-yo.pos.x,KS0.z-yo.pos.z),-0.3,1.6,0.05);
+    const tail=E===0?[[51.6,4.6,null,'<i>И ушёл он — и был таков: Кощей по воде уходит, не оглянувшись,</i><br><i>А на ветке дуба перстень его остался, блеснувши.</i>',true]]
+      :E===1?[[51.6,4.6,null,'<i>И простили его — и прощенья он просил: пред Котом на колено встал, перстень отдал</i><br><i>И на дальний берег жить ушёл — там свой дом и сыскал.</i>',true]]
+      :[[51.6,4.6,null,'<i>И позвали его слушать: Кощей у дуба остался, с перстнем на руке,</i><br><i>Рядом с Котом сидит — у корней, в тишине.</i>',true]];
+    const endLook=E===0?[-8,2,-34]:E===1?[KT.x,1.4,KT.z]:[OAK.x+2.2,2,OAK.z+3.4];
+    play({dur:57.6,fov:44,camK:2,k5:{calm:true,mood:[WARM,0.12],cues:[[10.2,()=>CINE.rimPulse(0.8)],[14.0,emAll('droop',0.12)],[22.6,()=>CINE.mood(STORY,0.14)],[26.2,()=>CINE.dollyZoom(0.07,1.2,1.0)],
+        [29.4,()=>{CINE.slowmo(0.5,0.6);CINE.rimPulse(1);CINE.mood(GOLD,0.16);}],[32.4,()=>{CINE.punch(-4);FX.confettiCam(50);}],[32.6,emAll('cheer',0.08)],[39.6,()=>{CINE.hitstop(3);CINE.punch(-5);CINE.mood(GOLD,0.22);}],[45.6,()=>CINE.mood(WARM,0.16)]]},
+      shots:[MV(0,[5.2,3.4,-11.4],[-0.6,2.2,-19.4],[4.4,3.0,-12.4],[-0.6,2.4,-19.4],4.6,{ease:'inOutSine',fov:46,move:'none'}),
+        MV(4.6,[YA1.x,2.0,YA1.z],[YL.x,1.6,YL.z],[YA2.x,1.9,YA2.z],[YL.x,1.5,YL.z],2.0,{ease:'inOutSine',fov:44,move:'none'}),
+        SH(6.6,FyaK.p,FyaK.l,{fov:40,move:'push',amp:0.8}),
+        MV(10.4,TW.p,TW.l,[TW.p[0]+0.5,TW.p[1]-0.2,TW.p[2]-0.6],TW.l,3.8,{lf:()=>thread.visible?thread.position.clone().lerp(new V3(TW.l[0],TW.l[1],TW.l[2]),0.6):new V3(TW.l[0],TW.l[1],TW.l[2]),lk:4,ease:'inOutSine',fov:44,move:'none'}),
+        SH(14.2,FKot.p,FKot.l,{fov:40,move:'push',amp:1}),
+        SH(20.4,FKs.p,FKs.l,{fov:40,move:'push',amp:0.8}),
+        SH(23.4,FKotP.p,FKotP.l,{fov:40,move:'orbit',amp:0.8}),
+        SH(26.0,FKsP2.p,FKsP2.l,{fov:40,move:'push',amp:0.7}),
+        SH(29.0,FPe.p,FPe.l,{fov:40,move:'push',amp:1}),
+        SH(31.6,FYo.p,FYo.l,{fov:40,move:'push',amp:1}),
+        SH(35.4,FKsP.p,FKsP.l,{fov:36,move:'push',amp:0.6}),
+        MV(38.6,[0,4,-12],[0,4,-28],[1.6,6.5,-13.2],[0,6,-28],6.0,{ease:'inOutSine',fov:46,move:'none',tr:'soft'}),
+        MV(45.4,[8,8,-14],[0,6,-28],[3,9.5,-11],[0,7,-28],5.6,{pts:[[6,9,-12]],ease:'inOutSine',fov:50,move:'none'}),
+        MV(51.4,[6,4,-10],endLook,[7.5,5.5,-8],endLook,6.0,{ease:'inOutSine',fov:46,move:'none'})],
+      says:[[0.3,4,null,'<i>Какой бы конец ни выбрали — сперва вот что случится.</i>',true],[4.6,2.2,null,'<i>Кощей Яге связку чёрных ключей отдаёт.</i>',true],[6.8,3.6,'koschei','Больше не приманю — ни гуся, ни ворона.'],
+        [10.6,3.8,null,'<i>Из кармана золотую ниточку достаёт — Коту возвращает.</i><br><i>Кот первый вдох делает — и говорит: хрипло, а словами отвечает.</i>',true],
+        [14.4,6.0,'kot','Прости меня. Я всегда сказывал, что ты проиграл, —<br>Так было проще. Прости, что не переписал.'],[20.6,2.8,'koschei','Так расскажи по-другому — по-иному.'],[23.6,2.4,'kot','<i>(качает головой, показывает лапой на Пелагею)</i> Не я. Она уж сказала.'],
+        [26.2,2.6,'koschei','Пелагея. Пелагея…'],[29.0,2.2,null,'<i>Над портретом Пелагеи имя её загорается — последнее из забытых.</i>',true],[31.8,3.6,'yosha','Я — Йоша! Мы все вспомнили, все!'],[35.6,3.0,'koschei','<i>(тише)</i> Пелагея… Расскажи ещё, прошу.'],
+        [38.8,4.2,null,'<i>Прошка иглу в цепь застёжкой вставляет — цепь смыкается.</i>',true],[45.6,5.4,null,'<i>Кот Учёный по ней кругом идёт — направо песнь заводит,</i><br><i>Налево сказку говорит. И первая сказка у него — наша, выходит.</i>',true]].concat(tail),
+      events:[{t:0.2,fn:()=>KA.pose('slump',{k:60,c:11})},{t:4.4,fn:()=>{kTurn(toYa,0.6);KA.pose('offer',{antic:0.2});}},
+        {t:4.7,fn:()=>{const f=keys.position.clone();anim(1.6,k=>{keys.position.lerpVectors(f,ya.clone().add(new V3(0.4,1.2,0.4)),CE.inOutSine(k));keys.position.y+=Math.sin(k*Math.PI)*1.5;keys.rotation.y+=0.2;});SFX.keys();later(1.7,()=>{FX.sparkle(ya.clone().add(new V3(0.4,1.4,0.4)),10,0xffe08a);if(yagaM){const n=ACT.npcs.find(q=>q.o===yagaM);if(n)n.em={type:'nod',t:0,d:0.7};}});}},
+        {t:6.7,fn:pose('slump')},{t:10.2,fn:()=>{kTurn(toKot,0.6);KA.pose('offer',{antic:0.2});}},
+        {t:10.6,fn:()=>{thread.visible=true;k5s('magic');const f=KS.hand.getWorldPosition(new V3()),to=kotH.clone();anim(1.8,k=>{thread.position.lerpVectors(f,to,CE.inOutSine(k));thread.position.y+=Math.sin(k*Math.PI)*0.6;thread.rotation.z+=0.1;});
+          k5Trail(()=>thread.visible?thread.position.clone():null,0xffd060,{size:0.3,life:0.35,every:0.03,max:24});
+          later(1.9,()=>{thread.visible=false;burst(to,COL.gold,16,2);k5Flash(to,0xffd060,2.4,0.5);SFX.dzin();kot.lids.forEach(l=>{l.rotation.x=-0.5;});G.flags.kotVoice=true;const n=ACT.npcs.find(q=>q.o===kot);if(n)n.em={type:'surprise',t:0,d:0.8};});}},
+        {t:12.6,fn:pose('listen',{k:60,c:11})},{t:14.2,fn:()=>{kot.head.rotation.x=0.2;}},{t:20.4,fn:pose('help',{antic:0.15})},
+        {t:23.4,fn:()=>{kot.g.rotation.y=kotToPe;const n=ACT.npcs.find(q=>q.o===kot);if(n)n.em={type:'nod',t:0,d:0.8};}},
+        {t:26.0,fn:()=>{kTurn(toPe,0.6);KA.pose('listen');}},{t:28.8,fn:()=>{G.flags.names.pelageya=true;k5s('name');banner('Имя вернулось: Пелагея','#d7a6ec',2.6);nameBurst(pe,0xd7a6ec);ACT.emote(pe,'pride');}},
+        {t:31.8,fn:()=>{anim(0.6,k=>{yo.pos.y=Math.sin(k*Math.PI)*1.2;});ACT.emote(yo,'joy');G.flags.nameless=false;}},{t:35.4,fn:()=>{KA.pose('slump',{k:50,c:10});KA.set('hRz',0.15);}},
+        {t:39.0,fn:()=>{const f=ndl.g.position.clone(),to=OAK.clone().add(new V3(0,1+coilLinks.length*0.16,3.2));anim(1.4,k=>{ndl.g.position.lerpVectors(f,to,CE.inOutSine(k));});k5Trail(()=>ndl.g.parent?ndl.g.position.clone():null,0xffe08a,{size:0.4,life:0.4,every:0.03,max:30});
+          later(1.5,()=>{SFX.link();SFX.horn();k5s('chainClose');for(let i=0;i<8;i++)addCoilLink();burst(to,COL.gold,30,5);ringFx(OAK.clone().add(new V3(0,2,0)),COL.gold,5);k5Flash(to,0xffe08a,6,0.7);k5Ring(OAK.clone().add(new V3(0,0.1,0)),0xffd060,1,12,1.2,0.08);k5Pillar(OAK.clone(),0xffd060,22,3.4,2.0);
+            leaves.forEach((l,i)=>later(i*0.08,()=>{l.visible=true;anim(0.8,k=>l.scale.setScalar(Math.max(0.01,CE.outBack(k))));}));trunk.material.color.setHex(0x7a5a3e);later(0.3,()=>{FX.leaves(OAK.clone().add(new V3(0,6,2)),20);k5s('leaves');});});}},
+        {t:45.8,fn:()=>{anim(5,k=>{const a=k*Math.PI*2;kot.g.position.set(OAK.x+Math.sin(a)*3.4,1.2+k*3,OAK.z+Math.cos(a)*3.4);kot.g.rotation.y=a+Math.PI/2;});lullaby([67,71,74,72,71,69,67],0.42,0,0.12);}},
+        {t:51.6,fn:()=>{KA.pose('idle',{k:60,c:11});if(E===0){const f=KS.g.position.clone();KS.g.rotation.y=Math.PI;anim(5.6,k=>{KS.g.position.lerpVectors(f,new V3(-10,-0.3,-40),k);});addMesh(new THREE.TorusGeometry(0.1,0.03,6,12),M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.8}),OAK.x+2.4,7.2,OAK.z+1);}
+          else if(E===1){KS.g.position.set(KT.x+1,0,KT.z+1.4);KS.g.rotation.y=Math.atan2(-1,-1.4);KA.pose('kneel',{k:60,c:11});}
+          else{KS.g.position.set(OAK.x+2.2,0,OAK.z+3.4);KS.g.rotation.y=Math.PI*0.8;KA.pose('sit',{k:60,c:11});}}}],
+      tick:(t)=>{if(t>14.2&&t<23.4)kot.head.rotation.x=0.2+Math.sin(t*6)*0.05;},
+      end:()=>{W.anims.length=0;KA.reset();bb.style.display='none';G.flags.names={potap:true,yosha:true,proshka:true,pelageya:true};G.flags.nameless=false;G.flags.kotVoice=true;G.flags.w5done=true;G.flags.coils=5;
         G.done['5-B2']=true;G.hub=true;banner('Златая цепь скована!','#ffd76a',3,'звено руками Прошки сковано и словом Пелагеи держится');later(2.6,()=>goLevel('epi'));}});}
   /* ---------- логика кадра ---------- */
   function freeze(){const frozen=G.cine||!K5.fight;for(const e of W.enemies){if(!e.k5||e===KB&&!K5.live)continue;if(frozen){e.cd=Math.max(e.cd,1.2);if(e.state==='ready'||e.state==='wind'){e.state='idle';e.t=0;e.tgt=null;}}}}
-  W.updates.push(dt=>{freeze();k5fxTick(dt);stormTick(dt);
+  W.updates.push(dt=>{freeze();k5fxTick(dt);stormTick(dt);flyFx(dt);rainTick(dt);
+    if(G.cine)for(const c of candles)if(!c.lit&&c.embersM)c.embersM.forEach(m=>{m.m.visible=false;});   // в роликах над погасшими свечами — без пустых угольков
     if(K5.live){KS.g.position.copy(KB.pos);KS.g.rotation.y=KB.face;}else KB.pos.copy(KS.g.position);
-    aura.position.copy(KS.g.position).add(new V3(0,2.6,0));aura.intensity=K5.st>=2&&K5.st<=5?0.9+0.3*Math.sin(G.time*3):K5.st===1?0.5:0;kosAnim(dt);
+    aura.position.copy(KS.g.position).add(new V3(0,2.6,0));aura.intensity=K5.st>=2&&K5.st<=5?0.9+0.3*Math.sin(G.time*3):K5.st===1?0.5:0;kosAnim(dt);KA.tick(dt*CINE.timeScale());if(!G.cine&&KA.on)KA.reset();
     if(G.cine)return;if(!K5.fight){if(Math.floor(G.time*4)!==K5.bt){K5.bt=Math.floor(G.time*4);if(K5.st)setBar();}return;}
     if(K5.st===1)stage1Tick(dt);locksTick(dt);sparkTick(dt);orbTick(dt);bossTick(dt);
     try{k5HintTick(dt);}catch(e){console.error('k5 hint',e);}

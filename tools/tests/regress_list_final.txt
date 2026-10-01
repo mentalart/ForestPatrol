@@ -20,7 +20,7 @@ tfin_pads tfin_downswap tfin_foekinds tfin_foekinds2 tfin_foekinds3 tfin_foeidle
 # final06: озвучка всей игры; щиты героев (B) и удар Потапа со спины; пауза с джойстика на живом пути (курсор над меню); Лукоморье — стан и берег дальше от дуба; звук с первого нажатия, голос заставки, звуки меню; пролог — Прошка несёт самокат, падает, все смеются; большие «прозрачные стены» — кусками
 tfin_voice tfin_guard tfin_pads2 tfin_luko tfin_uisnd tfin_scooter tfin_splashclick tfin_fadesplit tfin_fadelocal tfin_potap
 # final06: финальный бой 5-Б2 заново (прежний t5b2 — только для прототипа): все этапы и ролики, вдвоём и в одиночку настоящими нажатиями
-tfin_kosh tfin_koshcoop tfin_koshsolo tfin_koshfx
+tfin_kosh tfin_koshcoop tfin_koshsolo tfin_koshfx tfin_koshvfx tfin_koshcine
 tfin_gor4
 tfin_gorsolo
 tfin_uzda

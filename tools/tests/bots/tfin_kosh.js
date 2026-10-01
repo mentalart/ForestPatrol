@@ -42,7 +42,9 @@ kb=K5.KB;kb.k5hit(kb,A(0));ZC.tick(2);kb.k5hit(kb,A(1));ZC.tick(10);const r=['st
 //@@ shot=kosh_s4.png
 // этап 4: серия и око; прыжок с волной; костяные щитники при половине спеси
 ZC.tick(120);const kb=K5.KB;const r=['mark='+K5.mark+' pi='+kb.pi+' state='+kb.state];K5.leap();for(let i=0;i<120;i++)ZC.tick(1);r.push('after leap state='+kb.state+' daze='+kb.dazeT.toFixed(1)+' y='+kb.pos.y.toFixed(2));
-kb.embers=Math.ceil(kb.maxEmb/2);ZC.tick(10);r.push('bones='+ZC.W.enemies.filter(e=>e.kind==='k5bone'&&e.alive).length);ZC.FIN.occ.frame();r
+// «Кости, встаньте!» — короткий ролик, из земли встают пятеро щитников (по отзыву 2: был один-два)
+kb.embers=Math.ceil(kb.maxEmb/2);ZC.tick(10);const bc=!!ZC.G.cine;for(let i=0;i<400&&ZC.G.cine;i++)ZC.tick(1);ZC.tick(60);const nb=ZC.W.enemies.filter(e=>e.kind==='k5bone'&&e.alive).length;r.push('bones cine='+bc+' bones='+nb);
+if(nb!==5)throw new Error('щитников не пять: '+nb);ZC.FIN.occ.frame();r
 //@@
 const kb=K5.KB;kb.embers=0;kb.state='broken';kb.t=0;ZC.tick(3);kb.k5hit(kb,A(0));ZC.tick(2);kb.k5hit(kb,A(1));ZC.tick(10);const r=['st='+K5.st+' stage='+ZC.W.flags.stage];skipAll(8);ZC.tick(5);skipAll();ZC.tick(5);
 r.push('st='+K5.st+' fight='+K5.fight+' holder='+(K5.needle&&K5.needle.holder&&K5.needle.holder.kind));r
