@@ -3810,6 +3810,39 @@
    "dur": 2.46
   },
   {
+   "id": "4-B_023",
+   "lv": "4-B",
+   "who": "gorM",
+   "text": "Р-Р-Р-РА-А-А-АХ!",
+   "tts": "[roars angrily] Р-р-р-р-РА-А-А-А-АХ!",
+   "max": 2.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_085458_23689edf-11be-42a5-a59b-29eabe6c8ddc.mp3",
+   "job": "23689edf-11be-42a5-a59b-29eabe6c8ddc",
+   "dur": 2.21
+  },
+  {
+   "id": "4-B_024",
+   "lv": "4-B",
+   "who": "potap",
+   "text": "Тянет! Щит держите — устоим!",
+   "tts": "[urgent] Тянет! Щит держите — устоим!",
+   "max": 2.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_085459_bb001cb1-6ce6-4dcc-b427-be40f3d615e5.mp3",
+   "job": "bb001cb1-6ce6-4dcc-b427-be40f3d615e5",
+   "dur": 2.56
+  },
+  {
+   "id": "4-B_025",
+   "lv": "4-B",
+   "who": "pelageya",
+   "text": "Вот оно, слабое место! Бейте — с одного удара!",
+   "tts": "[excited] Вот оно, слабое место! Бейте — с одного удара!",
+   "max": 3.2,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_085459_c3b4ba58-17c7-4f8c-b0bb-11a6f6642e1e.mp3",
+   "job": "c3b4ba58-17c7-4f8c-b0bb-11a6f6642e1e",
+   "dur": 3.69
+  },
+  {
    "id": "5-1_001",
    "lv": "5-1",
    "who": "pelageya",
