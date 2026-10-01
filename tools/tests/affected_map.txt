@@ -23,6 +23,8 @@ tools/tests/layout_check.js                   -
 tools/tests/regress.sh                        -
 tools/tests/out/*                             -
 tools/tests/shots/*                           -
+# CI: правка workflow проверяется одним быстрым ботом
+.github/workflows/*                           smoke
 # инфраструктура ботов — касается всех
 tools/tests/helpers.js                        @full
 tools/tests/run.js                            @full
@@ -97,6 +99,7 @@ zlataya_cep/build/late_94_koschei_tut.js      @level:5-B2
 zlataya_cep/build/late_96_prolog_scooter.js   @level:p
 zlataya_cep/build/late_97_buyan51.js          @level:5-1
 zlataya_cep/build/late_98_gor_lava.js         @level:4-B tfin_gorsolo
+zlataya_cep/build/late_99_kolobok_dance.js    @level:1-3
 
 # ---- замены в прототипе при сборке ----
 zlataya_cep/build/rep_10_cine.py              tfin_cine tfin_voice
@@ -104,4 +107,5 @@ zlataya_cep/build/rep_20_subs.py              tfin_voice tfin_cine
 zlataya_cep/build/rep_30_gameplay.py#Горыныч  @level:4-B
 zlataya_cep/build/rep_30_gameplay.py#Лукоморье @level:luko tfin_col
 zlataya_cep/build/rep_30_gameplay.py#Пролог   @level:p
+zlataya_cep/build/rep_30_gameplay.py#Колобок  @level:1-3
 zlataya_cep/build/rep_30_gameplay.py          @full

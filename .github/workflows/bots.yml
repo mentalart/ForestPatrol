@@ -1,0 +1,63 @@
+# Боты Playwright на каждый PR в main: tools/tests/affected.py --run выбирает ботов по изменённым файлам.
+# Если он требует полный регресс (код 2) — следом идёт полный регресс релиза. Вручную (Actions → Боты → Run workflow)
+# можно прогнать любую ветку, в том числе сразу полный регресс. Выводы ботов и кадры — во вложении к запуску.
+name: Боты
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      full:
+        description: 'Полный регресс релиза (около часа)'
+        type: boolean
+        default: false
+
+concurrency:
+  group: bots-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  bots:
+    runs-on: ubuntu-latest
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # affected.py ищет merge-base с origin/main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Playwright + Chromium
+        # глобально, а не в node_modules репозитория: иначе affected.py считает node_modules изменёнными файлами
+        # и требует полный регресс (tools/tests/pw.js находит глобальную установку сам)
+        run: |
+          npm i -g playwright
+          playwright install --with-deps chromium
+
+      - name: Выборочные боты (affected.py)
+        id: aff
+        if: ${{ !inputs.full }}
+        run: |
+          set +e
+          python3 tools/tests/affected.py --run --jobs 3
+          rc=$?
+          echo "rc=$rc" >> "$GITHUB_OUTPUT"
+          [ $rc = 2 ] && exit 0 || exit $rc   # 2 — «НУЖЕН ПОЛНЫЙ РЕГРЕСС», его делает следующий шаг
+
+      - name: Полный регресс релиза
+        if: ${{ inputs.full || steps.aff.outputs.rc == '2' }}
+        run: |
+          python3 zlataya_cep/build/build_final.py
+          LIST=tools/tests/regress_list_final.txt JOBS=3 tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html
+
+      - name: Выводы ботов и кадры
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bots-out
+          path: |
+            tools/tests/out/
+            tools/tests/shots/
+          retention-days: 7
+          if-no-files-found: ignore
