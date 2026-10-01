@@ -66,6 +66,7 @@ zlataya_cep/build/late_30_hero.js             tfin_art tfin_slash
 zlataya_cep/build/late_32_downswap.js         tfin_downswap tsolo
 zlataya_cep/build/late_34_slash.js            tfin_slash
 zlataya_cep/build/late_35_guard.js            tfin_guard
+zlataya_cep/build/late_36_potap_fire.js       tfin_potap tfin_slash tfin_guard
 
 # ---- модули релиза: меню, сохранения, заставка, звук ----
 zlataya_cep/build/late_40_music.js            tfin_menu tfin_save
