@@ -2694,7 +2694,7 @@ function build12(){
     if(WD.stage==='ask'){if(!WD.told&&HEROES.some(h=>h.active&&h.pos.z<-80)){WD.told=true;bark(CR,'zhuravl','Ох, болото широкое — семь вёрст! Отнесите Цапле моё сватовство!',3.2);}
       if(HEROES.some(h=>h.active&&h.grounded&&h.pos.z<-140.2&&h.pos.z>-156)){WD.stage='carry';
         bark(CA,'caplya','Сватается? А пусть сам ко мне придёт — по струночке, ножек не замочив!',3.4);
-        later(3.6,()=>{say('zhuravl','Иду-иду! Только струны держите — да Паутинников гоните!',3.0);WD.stage='walk';SFX.gate();
+        later(4.6,()=>{say('zhuravl','Иду-иду! Только струны держите — да Паутинников гоните!',3.0);WD.stage='walk';SFX.gate();
           banner('Журавль идёт свататься!','#e8eef8',2.4,'проводите его по гати · Паутинники грызут пустые струны');});}}
     else if(WD.stage==='walk'){
       // Паутинник выходит из-за кочки, когда Журавль подходит к «его» пролёту (вторая и четвёртая струна): стой на струне — или бей
@@ -2712,11 +2712,11 @@ function build12(){
       if(k<1.2){CA.pos.x=lerp(CA.pos.x,4.3,dt*2);CA.pos.z=lerp(CA.pos.z,-145.2,dt*2);}
       const a=k*2.2;CR.g.rotation.y=Math.atan2(CA.pos.x-CR.pos.x,CA.pos.z-CR.pos.z)+Math.sin(a)*0.6;CA.g.rotation.y=Math.atan2(CR.pos.x-CA.pos.x,CR.pos.z-CA.pos.z)-Math.sin(a)*0.6;
       CR.flap=CA.flap=0.1;CR.body.position.y=CA.body.position.y=Math.abs(Math.sin(a*1.5))*0.35;
-      if(!WD.sang){WD.sang=true;SFX.ok();bark(CA,'caplya','Ну, раз пешком пришёл — пойду за тебя, долговязый!',3.0);later(3.1,()=>bark(CR,'zhuravl','Курлы-курлы! Спасибо, ребятки, — вот вам звено на счастье!',3.0));
+      if(!WD.sang){WD.sang=true;SFX.ok();bark(CA,'caplya','Ну, раз пешком пришёл — пойду за тебя, долговязый!',3.0);later(4.2,()=>bark(CR,'zhuravl','Курлы-курлы! Спасибо, ребятки, — вот вам звено на счастье!',3.0));
         banner('Свадьба на болоте!','#ffe0f0',2.6,'Журавль и Цапля больше не ссорятся');for(let i=0;i<5;i++)later(i*0.5,()=>burst(new V3(3.6,2.2,-145.2),[0xff9ab8,0xffffff,0xffd76a][i%3],14,3));}
       if(k>3.4&&wedLink.locked){wedLink.locked=false;wedLink.g.visible=true;const p0=new V3(3.6,2.6,-145.2),p1=new V3(3.0,1.2,-147.6);anim(0.8,q=>{wedLink.pos.lerpVectors(p0,p1,q);wedLink.pos.y+=Math.sin(q*Math.PI)*1.4;});
         wedLink.base=1.2;}
-      if(k>4.2){WD.stage='done';SFX.gate();reedCol.on=false;reeds.forEach((r,i)=>{const s=r.position.x<0?1:-1;anim(1.0,q=>{r.rotation.z=s*q*1.3;r.position.y=-q*0.6;});});
+      if(k>5.0){WD.stage='done';SFX.gate();reedCol.on=false;reeds.forEach((r,i)=>{const s=r.position.x<0?1:-1;anim(1.0,q=>{r.rotation.z=s*q*1.3;r.position.y=-q*0.6;});});
         floatText(new V3(0,2.6,-155.4),'Камыши расступились!','#d8f0a0');WTATS.forEach(e=>{if(e&&e.alive){e.alive=false;e.g.visible=false;}});}}});
   // по струне — как по канату: на ровной струне героя мягко держит на середине (клавиатура ходит лишь в восемь сторон, а гать идёт вкось)
   W.updates.push(dt=>{for(const h of HEROES){const t=h.grounded&&h.groundRef&&h.groundRef.string&&!h.groundRef.sag?h.groundRef:null;if(!t||h.hang||Math.abs(t.y2-t.y)/Math.max(t.len,0.1)>0.14)continue;
@@ -2844,7 +2844,7 @@ function build12(){
     const p0=LG.position.clone();anim(1.6,k=>{if(k<0.45){const q=k/0.45;LG.position.set(lerp(p0.x,h.pos.x*0.3,q),q*2.4,lerp(p0.z,-317.0,q));LG.rotation.x=q*0.2;}
       else{const q=(k-0.45)/0.55;LG.position.set(lerp(h.pos.x*0.3,13.5,q),2.4+Math.sin(q*Math.PI)*1.6-q*3.4,lerp(-317.0,-322,q));LG.rotation.z=q*1.2;}
       if(k>=1){RC.lift='done';logCol.on=false;SFX.crash();burst(new V3(10,0.4,-321),0x8a6a4a,20,4);RC.nutsOut=true;
-        bark(BS,'bes','Сдаюсь, сдаюсь! Вот вам оброк — орешки за три года вперёд!',3.0);BN.forEach((n,i)=>{n.locked=false;n.g.visible=true;const a=n.pos.clone();anim(0.7,q=>{n.pos.set(lerp(BS.pos.x,a.x,q),1.0+Math.sin(q*Math.PI)*1.6,lerp(BS.pos.z,a.z,q));});});}});}});
+        later(2.1,()=>bark(BS,'bes','Сдаюсь, сдаюсь! Вот вам оброк — орешки за три года вперёд!',3.0));BN.forEach((n,i)=>{n.locked=false;n.g.visible=true;const a=n.pos.clone();anim(0.7,q=>{n.pos.set(lerp(BS.pos.x,a.x,q),1.0+Math.sin(q*Math.PI)*1.6,lerp(BS.pos.z,a.z,q));});});}});}});
   const BN=[nutItem(-2.0,0.9,-314.6),nutItem(2.0,0.9,-314.6)];BN.forEach(n=>{n.locked=true;n.g.visible=false;n.base=0.9;});
   W.camZones.push({x:1.5,z:-303,r:10.5,camActive:()=>RC.st==='count'||RC.st==='run'});
   const atFinish=()=>HEROES.some(h=>!(h.active&&players[h.player].downed)&&hd(h.pos,flag.position)<2.4&&h.pos.y>-0.4&&h.pos.z<-310.2);
@@ -2863,9 +2863,9 @@ function build12(){
         if(RC.tries>=1){F.raceHint=true;}}}
     else if(RC.st==='lost'){RC.t+=dt;if(RC.t>2.4){RC.st='idle';raceHome();}}
     if(RC.st==='won'&&!RC.saidWon){RC.saidWon=true;SFX.ok();BS.legs.forEach(l=>{l.rotation.x=0;});
-      bark(BS,'bes','Как?! Ты уже тут?! Ох, у вас, видать, братишка есть — как у того Балды…',3.4);later(3.6,()=>{BS.pos.set(-3,0,-316.3);BS.g.rotation.y=Math.PI;RC.lift='bes';
+      bark(BS,'bes','Как?! Ты уже тут?! Ох, у вас, видать, братишка есть — как у того Балды…',3.4);later(4.8,()=>{BS.pos.set(-3,0,-316.3);BS.g.rotation.y=Math.PI;RC.lift='bes';
         bark(BS,'bes','Ладно! А мою кобылку-колоду поднимешь? Я вот — у-у-ух!..',3.0);});
-      later(7.0,()=>{RC.lift='try';bark(BS,'bes','Не-е… тяжела. Ну-ка вы попробуйте — силач у вас есть?',2.8);});
+      later(9.2,()=>{RC.lift='try';bark(BS,'bes','Не-е… тяжела. Ну-ка вы попробуйте — силач у вас есть?',2.8);});
       banner('Обогнали бесёнка!','#ffd9a0',2.4,'как Балда — с братишкой');}
     if(RC.lift==='bes'){BS.arms.forEach(a=>{a.rotation.x=-2.6;});BS.body.position.y=Math.abs(Math.sin(BS.ph*30))*0.05;LG.rotation.x=Math.sin(BS.ph*30)*0.01;}
     else if(RC.lift==='try'||RC.lift==='done'){BS.arms.forEach(a=>{a.rotation.x=lerp(a.rotation.x,0,0.1);});}
