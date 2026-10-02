@@ -38,7 +38,7 @@ function dressScatter(){const G0=W.finG||[];if(!G0.length)return;const q=FIN.set
   const put=(name,v,x,z,y,s,o)=>{cnt[name]=(cnt[name]||0)+1;if(cnt[name]>caps[name.replace(/^pebble$/,'peb').replace(/^(amanita|boletus|glowStems|glowCaps)$/,'mush').replace(/^(starfish)$/,'shell')]*dens)return;items.push(Object.assign({name,v,x,y,z,s,ry:R()*6.283},o||{}));};
   for(const g of G0){const k=surfKind(g.mat,W.theme);const w=g.maxx-g.minx,d=g.maxz-g.minz,area=w*d;if(area<1)continue;
     const spec=k==='grass'?[['tuft',0.9,0.34],['flower',0.07,0.8],['pebble',0.03,0.9],[forest?'mush':'pebble',forest?0.012:0.01,2]]:k==='sand'?[['pebble',0.07,0.7],['shell',0.03,1.2],['tuft',0.06,0.8]]:
-      k==='stone'?[['pebble',0.05,0.8],['tuft',0.14,0.5]]:k==='sea'?[['tuft',0.2,0.5],['shell',0.03,1.2],['pebble',0.04,0.9]]:k==='ash'?[['pebble',0.12,0.6],['ember',0.015,2.5]]:[];
+      k==='stone'?[['pebble',0.05,0.8],['tuft',0.14,0.5]]:k==='sea'?[['shell',0.045,1.0],['pebble',0.06,0.8],['coralBit',0.012,1.8]]:k==='ash'?[['pebble',0.12,0.6],['ember',0.015,2.5]]:[];
     for(const [name,per,md] of spec){const n=Math.min(2600,area*per*dens);for(let i=0;i<n;i++){const x=g.minx+0.25+R()*(w-0.5),z=g.minz+0.25+R()*(d-0.5);
         if(P&&name!=='tuft'&&pathDist(P,x,z)<1.1)continue;if(P&&name==='tuft'&&pathDist(P,x,z)<0.75&&R()<0.85)continue;
         if(!far(x,z,md)||!scatterFree(BL,x,z,g.top))continue;mark(x,z,md);const y=g.top;
@@ -47,6 +47,7 @@ function dressScatter(){const G0=W.finG||[];if(!G0.length)return;const q=FIN.set
         else if(name==='pebble')put('pebble',0,x,z,y,0.6+R()*1.1,{tint:k==='ash'?0.45:0.85+R()*0.3});
         else if(name==='mush'){put(R()<0.5?'amanita':'boletus',0,x,z,y,0.8+R()*0.6);}
         else if(name==='shell')put(R()<0.6?'shell':'starfish',0,x,z,y,0.8+R()*0.6);
+        else if(name==='coralBit')put('coral',Math.floor(R()*4),x,z,y,0.32+R()*0.22);   // final06: дно Китежа — не трава, а ракушки, камешки и кораллы
         else if(name==='ember'){const v=R()<0.5?0:1,s=0.5+R()*0.4;put('ember',v,x,z,y,s);put('emberGlow',v,x,z,y,s,{ry:items[items.length-1]?items[items.length-1].ry:0,mat:'glow'});}}}
     // кромка: мелкие кусты-папоротники и камешки вдоль внешних краёв (где за краем — обрыв)
     if(k==='grass'||k==='sand'||k==='stone'){const per=2*(w+d),n=Math.floor(per/1.3*dens);for(let i=0;i<n;i++){const u=R()*per,ins=0.25+R()*0.35;let x,z,ox,oz;
@@ -56,6 +57,6 @@ function dressScatter(){const G0=W.finG||[];if(!G0.length)return;const q=FIN.set
   // «хлебные крошки» по краю тропинки
   if(P){let acc=0;for(let i=0;i<P.length-1;i++){const a=P[i],b=P[i+1],L=Math.hypot(b.x-a.x,b.z-a.z);if(L<1e-3)continue;const nx=-(b.z-a.z)/L,nz=(b.x-a.x)/L;
       for(let t=0;t<L;t+=1.7){acc++;for(const sd of[-1,1]){if(R()<0.35)continue;const off=1.25+R()*0.3,x=a.x+(b.x-a.x)*t/L+nx*off*sd,z=a.z+(b.z-a.z)*t/L+nz*off*sd;const g=inRects(G0,x,z,-0.2);if(!g||!scatterFree(BL,x,z,g.top))continue;
-          const k=surfKind(g.mat,W.theme);if(k==='cloud'||k==='ash')continue;put(R()<0.7?'pebble':'flower',0,x,z,g.top,R()<0.7?1.1+R()*0.6:0.9,{tint:1.05});}}}
+          const k=surfKind(g.mat,W.theme);if(k==='cloud'||k==='ash')continue;put(R()<0.7||k==='sea'?'pebble':'flower',0,x,z,g.top,R()<0.7?1.1+R()*0.6:0.9,{tint:1.05});}}}
     paintPath(P);}
   instKit(items);DRESS.scatterN=items.length;}

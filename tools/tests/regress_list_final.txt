@@ -1,8 +1,8 @@
 # Регресс релизной сборки zlataya_cep/zlataya_cep_final06.html: все боты прототипа и боты меню и сохранений
 # пролог, мир 1, хаб
 smoke tpjump t12n t12deep t12tat t12long t12chudo t12pond tfoes t13v t15n t1b thub2 t11 thub9 thub9b thub9c
-# мир 2
-t21 t2c t25c t22d t23f t24n t21x tdodge tfade tsplit t22shot thw2
+# мир 2 (прежние t21 t2c t25c t22d t23f t24n t21x t22shot — только для прототипа: в релизе уровни мира 2 другие, их проверяют tfin_k2*)
+tdodge tfade tsplit thw2
 # мир 3
 t31 t31c t32 t33n t34 t35 t3bv thw3a thw3b tmenu3
 # мир 4, Лукоморье
@@ -33,3 +33,8 @@ tfin_kolobok
 tfin_prolog_night
 # final06: 1-4 «Леший водит» — шапки на голове, ёлки хороводом и вихрем уносят Пелагею в кольцо
 tfin_kidnap14
+# final06: мир 2 «Подводный Китеж» — под водой как под водой (каустика, лучи, рыбы, дно без травы); перелив, течение, звон, оставленный
+# держит напев; уровни 2-1…2-Б вдвое длиннее — вдвоём и в одиночку
+tfin_kitezh_sea tfin_kitezh_water
+tfin_k21 tfin_k21solo tfin_k22 tfin_k22solo tfin_k23 tfin_k23solo
+tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo
