@@ -123,18 +123,24 @@ FIN.kwGhost=kwGhost;FIN.kwGhostStairs=kwGhostStairs;
 function kwKelp(x,y,z,hgt,o){o=o||{};const g=new THREE.Group();g.position.set(x,y,z);W.group.add(g);const sm=M(0x7aff9a,{emissive:0x30c060,emissiveIntensity:0.8});
   const sprout=new THREE.Group();g.add(sprout);for(let i=0;i<3;i++){const c=addMesh(new THREE.ConeGeometry(0.08,0.45,4),sm,Math.cos(i*2.1)*0.08,0.2,Math.sin(i*2.1)*0.08,sprout);c.rotation.z=Math.cos(i*2.1)*0.3;}
   const ring=addMesh(new THREE.TorusGeometry(0.45,0.04,6,20),MB(0x9affb0,{transparent:true,opacity:0.6}),0,0.05,0,g);ring.rotation.x=Math.PI/2;
-  const S={x,y,z,g,sprout,ring,hgt,grown:false,leaves:[],step:o.step||0.95,side:o.side!=null?o.side:0,name:o.name||'',onGrow:o.onGrow||null};KW.seeds.push(S);
+  // винтовая лесенка: широкие листья по кругу радиуса R на черешках, каждый на step выше (0,5 м — запрыгнет любой, даже тяжёлый Потап),
+  // соседние — на dA по кругу (между краями хватает места, голова о лист выше не бьётся: виток выше роста любого героя);
+  // last — куда смотрит верхний лист (к террасе): от него назад по кругу считаются остальные
+  const step=o.step||0.5,dA=o.dA||0.85,R=o.R||1.45,n=Math.max(2,Math.round(hgt/step)),side=o.last!=null?o.last-(n-1)*dA:(o.side!=null?o.side:0);
+  const S={x,y,z,g,sprout,ring,hgt,grown:false,leaves:[],step,dA,R,n,padR:o.padR||0.55,side,name:o.name||'',onGrow:o.onGrow||null};
+  S.padAt=i=>{const a=S.side+i*S.dA;return new V3(x+Math.cos(a)*S.R,y+S.step*(i+1),z+Math.sin(a)*S.R);};KW.seeds.push(S);
   W.waterTargets.push({pos:new V3(x,y,z),active:()=>!S.grown&&(!o.active||o.active())&&Math.abs(HERO.yosha.pos.y-y)<2.2,onWater:()=>kwGrowKelp(S)});return S;}
-function kwGrowKelp(S,quiet){if(S.grown)return;S.grown=true;S.sprout.visible=false;S.ring.visible=false;const km=M(0x3f9a4a),lm=M(0x5ab84a,{side:THREE.DoubleSide});
-  const n=Math.max(2,Math.round(S.hgt/S.step));const stalk=new THREE.Group();S.g.add(stalk);
-  for(let i=0;i<n;i++){const top=S.step*(i+1),a=S.side+i*2.2,lx=Math.cos(a)*0.55,lz=Math.sin(a)*0.55;
-    const seg=addMesh(new THREE.CylinderGeometry(0.09,0.12,S.step,6),km,Math.sin(i*1.3)*0.05,S.step*(i+0.5),0,stalk);seg.castShadow=false;
-    const lf=new THREE.Mesh(new THREE.CircleGeometry(0.62,8),lm);lf.rotation.x=-Math.PI/2;lf.position.set(lx,top,lz);lf.scale.setScalar(0.05);stalk.add(lf);
-    const col={x:S.x+lx,z:S.z+lz,r:0.6,miny:S.y+top-0.25,maxy:S.y+top,on:false};W.cyls.push(col);S.leaves.push({lf,col});
-    later(quiet?0:0.15*i,()=>{col.on=true;if(quiet){lf.scale.setScalar(1);return;}anim(0.35,k=>{lf.scale.setScalar(Math.max(0.05,k));});SFX.flower();});}
+function kwGrowKelp(S,quiet){if(S.grown)return;S.grown=true;S.sprout.visible=false;S.ring.visible=false;const km=M(0x3f9a4a),lm=M(0x5ab84a,{side:THREE.DoubleSide}),vm=M(0x4a8a3e);
+  const n=S.n,stalk=new THREE.Group();S.g.add(stalk);
+  const ns=Math.ceil(S.hgt/0.9),sh=S.hgt/ns;for(let i=0;i<ns;i++){const seg=addMesh(new THREE.CylinderGeometry(0.11,0.15,sh,6),km,Math.sin(i*1.3)*0.05,sh*(i+0.5),0,stalk);seg.castShadow=false;}
+  for(let i=0;i<n;i++){const top=S.step*(i+1),a=S.side+i*S.dA,lx=Math.cos(a)*S.R,lz=Math.sin(a)*S.R;
+    const pg=new THREE.Group();pg.position.set(0,top-0.12,0);pg.rotation.y=-a;stalk.add(pg);const pet=addMesh(new THREE.CylinderGeometry(0.045,0.07,S.R,5),vm,S.R/2,0,0,pg);pet.rotation.z=Math.PI/2;pet.castShadow=false;
+    const lf=new THREE.Mesh(new THREE.CircleGeometry(S.padR+0.1,10),lm);lf.rotation.x=-Math.PI/2;lf.position.set(lx,top,lz);lf.scale.setScalar(0.05);stalk.add(lf);pg.scale.setScalar(0.05);
+    const col={x:S.x+lx,z:S.z+lz,r:S.padR,miny:S.y+top-0.25,maxy:S.y+top,on:false};W.cyls.push(col);S.leaves.push({lf,col});
+    later(quiet?0:0.1*i,()=>{col.on=true;if(quiet){lf.scale.setScalar(1);pg.scale.setScalar(1);return;}anim(0.35,k=>{const q=Math.max(0.05,k);lf.scale.setScalar(q);pg.scale.setScalar(q);});SFX.flower();});}
   if(!quiet){SFX.grow();burst(new V3(S.x,S.y+0.5,S.z),0x9affb0,16,3);floatText(new V3(S.x,S.y+S.hgt+0.6,S.z),'Водоросль-лесенка!','#9affb0');
     if(!G.flags.kwKelpTold){G.flags.kwKelpTold=true;for(const p of[0,1])tip(p,'Живая вода Йоши растит водоросли-лесенки: с листа на лист — и наверх!',3.2);}}
-  W.updates.push(()=>{stalk.rotation.z=Math.sin(G.time*0.9+S.x)*0.04;});if(S.onGrow)S.onGrow(S);}
+  W.updates.push(()=>{stalk.rotation.y=Math.sin(G.time*0.7+S.x)*0.012;});if(S.onGrow)S.onGrow(S);}   // чуть колышется, листья не уходят из-под ног
 FIN.kwKelp=kwKelp;FIN.kwGrowKelp=kwGrowKelp;
 // ---------- гусли: раковина течения или звона рядом — играет она ----------
 function kwPlay(pi,h,S){gusliFx(h,'high');h.kwLast={kind:S.kind,ref:S.ref,shell:S,t:G.time,x:h.pos.x,z:h.pos.z};

@@ -75,7 +75,7 @@ build21=function(){
   const SD=[];
   for(const s of[-1,1]){const pi=s<0?0:1,X=x=>s*x,BX=(a,b)=>s>0?[a,b]:[-b,-a];
     const gnd=(a,b,c,d,top,mat)=>{const q=BX(a,b);return ground(q[0],q[1],c,d,top,mat);},bx=(a,b,y0,y1,c,d,mat,o)=>{const q=BX(a,b);return box(q[0],q[1],y0,y1,c,d,mat,o);};
-    // участок А — причал: лодки у стены домов, подвал с орешком и щукой
+    // участок А — причал: лодки у стены домов, подвал с орешком и Жемчужницей (щука плавает у дома-колодца)
     gnd(1.2,11,-46.5,-44,0,pave);gnd(1.2,11,-56,-51.5,0,pave);gnd(1.2,5,-51.5,-46.5,0,pave);gnd(9.6,11,-51.5,-46.5,0,pave);gnd(5,9.6,-51.5,-46.5,-2.2,M(0x4a6660));
     for(let i=0;i<6;i++)bx(5+i*0.6,5.6+i*0.6,-2.2,-0.314-i*0.314,-51.5,-50.4,stone,{occ:false});
     const nutPit=nutItem(X(9.0),-1.7,-48);
@@ -95,7 +95,7 @@ build21=function(){
     const zB=waterZone(...BX(1.2,5.95),-76,-60,0,2.8,{shell:{x:X(1.9),z:-60.7,y:0}});
     const lift=waterZone(...BX(5.95,9.6),-68.6,-63.4,-3,2.8,{start:'high',floor:-3,shell:{x:X(9.15),z:-63.9,y:-3},curb:false});
     const ch=chest(X(8.5),-3,-67.7,{ry:s>0?-Math.PI/2:Math.PI/2});
-    const pk=[pike(X(7.2),-48.8,zA,-2.2,{pi}),pike(X(7.8),-65.6,lift,-3,{pi})];
+    const pk=[FIN.pearlClam(X(7.2),-48.8,zA,-2.2,{pi}),pike(X(7.8),-65.6,lift,-3,{pi})];
     bell(X(3.2),-45.2);bell(X(2.6),-61.6);
     SD.push({pi,s,X,zA,zB,lift,ch,boat2,door,pk,nutPit,nutRoof,inShaft:h=>h.pos.x*s>5.95&&h.pos.x*s<9.6&&h.pos.z<-63.4&&h.pos.z>-68.6});}
   const basinM=M(0x3e5e5a),stepM=M(0xd2c8ae),goldM=M(COL.gold,{emissive:0x806010,emissiveIntensity:0.4}),canM=M(0x3e5250);
@@ -147,7 +147,7 @@ build21=function(){
   const LIFT=waterZone(-3,3,-116+D,-110+D,0,7.8,{start:'high',floor:0,shell:{x:3.7,z:-109.4+D,y:7.8},curb:false});
   {const ag=W.group.children.length;for(const sd of[-1,1])box(sd*3.3-0.3,sd*3.3+0.3,7.8,11.2,-110.6+D,-110+D,stepM,{occ:false});addMesh(new THREE.BoxGeometry(7.2,0.6,0.7),stepM,0,11.4,-110.3+D);kdome(0,-110.3+D,0.35,11.7);fadeable(since(ag));}
   bell(-6,-107+D,7.8);
-  /* ---------- Ж. торговые ряды: раки и щука в пруду; отлив сажает щуку на мель ---------- */
+  /* ---------- Ж. торговые ряды: раки и Жемчужница на дне пруда; отлив — она ахает и раскрывается ---------- */
   ground(-11,-3.5,-140+D,-116+D,0,pave);ground(3.5,11,-140+D,-116+D,0,pave);ground(-3.5,3.5,-123+D,-116+D,0,pave);ground(-3.5,3.5,-140+D,-131+D,0,pave);ground(-3.5,3.5,-131+D,-123+D,0,basinM);
   const MP=waterZone(-3.5,3.5,-131+D,-123+D,0,1.0,{floor:0,start:'high',shell:{x:-4.3,z:-122.4+D,y:0}});
   const AWN=[0xc0302a,0x3a7ac0,0xe0a020,0x3f8a45];
@@ -198,13 +198,13 @@ build21=function(){
   GARD.lock=(pi,h,want)=>h.pos.y>-3.2?'Ракушка сада — на дне, у родника. Дотянись до неё!':null;
   {const sp=new THREE.Group();sp.position.set(0,-4,-249.4);W.group.add(sp);addMesh(new THREE.CylinderGeometry(0.9,1.2,0.6,10),stone,0,0.3,0,sp);addMesh(new THREE.SphereGeometry(0.35,10,8),M(0x9fefff,{emissive:0x3ab0c0,emissiveIntensity:0.7}),0,0.65,0,sp);W.cyls.push({x:0,z:-249.4,r:1.1,miny:-5,maxy:-3.4,on:true});}
   {let sd=4242;const rr=(a,b)=>{sd=(sd*16807)%2147483647;return a+(b-a)*sd/2147483647;};   // деревца с ветками-коллизиями — места одни и те же при каждой загрузке
-    for(let i=0;i<10;i++){const x=rr(-8,8),z=rr(-257,-239);if(Math.abs(x)<2&&z<-245)continue;appleSea21(x,-4,z);}}
-  const KS=[FIN.kwKelp(-4,-4,-258.3,8.6,{side:-0.32}),FIN.kwKelp(4,-4,-258.3,8.6,{side:-0.32,active:()=>!!F.anchor})];   // верхний лист — к террасе
-  const anchor=new THREE.Group();anchor.position.set(4,-4,-258.3);W.group.add(anchor);{const im=M(0x5a6068);addMesh(new THREE.BoxGeometry(0.16,1.6,0.16),im,0,0.8,0,anchor).rotation.z=0.5;const t=addMesh(new THREE.TorusGeometry(0.55,0.08,6,12,Math.PI),im,0.2,0.4,0,anchor);t.rotation.z=Math.PI+0.5;
+    for(let i=0;i<10;i++){const x=rr(-8,8),z=rr(-257,-239);if(Math.abs(x)<2&&z<-245)continue;if(Math.hypot(Math.abs(x)-4,z+256.9)<2.4)continue;appleSea21(x,-4,z);}}   // у лесенок — пусто
+  const KS=[FIN.kwKelp(-4,-4,-256.9,8.5,{last:-Math.PI/2}),FIN.kwKelp(4,-4,-256.9,8.5,{last:-Math.PI/2,active:()=>!!F.anchor})];   // винтовые лесенки: верхний лист — вровень с террасой
+  const anchor=new THREE.Group();anchor.position.set(4,-4,-256.9);W.group.add(anchor);{const im=M(0x5a6068);addMesh(new THREE.BoxGeometry(0.16,1.6,0.16),im,0,0.8,0,anchor).rotation.z=0.5;const t=addMesh(new THREE.TorusGeometry(0.55,0.08,6,12,Math.PI),im,0.2,0.4,0,anchor);t.rotation.z=Math.PI+0.5;
     addMesh(new THREE.TorusGeometry(0.16,0.05,6,12),im,-0.38,1.5,0,anchor);}
-  W.lifts.push({pos:new V3(4,-4,-258.3),active:()=>!F.anchor,onLift:h=>{F.anchor=true;SFX.toss();anim(1.0,k=>{anchor.position.set(4+k*2.4,-4+Math.sin(k*Math.PI)*1.6,-258.3+k*1.2);anchor.rotation.z=k*1.4;});
+  W.lifts.push({pos:new V3(4,-4,-256.9),active:()=>!F.anchor,onLift:h=>{F.anchor=true;SFX.toss();anim(1.0,k=>{anchor.position.set(4+k*2.4,-4+Math.sin(k*Math.PI)*1.6,-256.9+k*1.2);anchor.rotation.z=k*1.4;});
     later(0.5,()=>bark(h,'potap','Якорь… как пёрышко! Ну, почти.',2,true));}});
-  const nutGarden=nutItem(5.4,1.9,-257.4);
+  const nutGarden=(p=>nutItem(p.x,p.y+0.6,p.z))(KS[1].padAt(11));   // орешек над листом лесенки — по пути наверх
   /* ---------- И. ворота Китежа (дальше на 110 м) ---------- */
   const D3=-110;
   ground(-11,11,-172+D3,-156+D3,0,pave);
@@ -213,8 +213,8 @@ build21=function(){
   FIN.kwPrompts();
   W.updates.push(dt=>{
     if(!mkt.started&&[0,1].some(pi=>active(pi).pos.z<-118.5+D&&active(pi).pos.y<3)){mkt.started=true;SFX.gate();
-      mkt.list=[crab(-6.5,-126+D,null,{leash:6}),crab(6.5,-126+D,null,{leash:6}),pike(0,-127+D,MP,0,{leash:2.6})];
-      banner('Торговые ряды!','#9fd0ff',2.2,'раки щиплют красным — кувырком · щуку в пруду отливом посади на мель');}
+      mkt.list=[crab(-6.5,-126+D,null,{leash:6}),crab(6.5,-126+D,null,{leash:6}),FIN.pearlClam(0,-127+D,MP,0,{})];
+      banner('Торговые ряды!','#9fd0ff',2.2,'раки щиплют красным — кувырком · Жемчужница в пруду: отлив — ахнет и раскроется');}
     if(mkt.started&&!mkt.done&&mkt.list.every(e=>!e.alive)){mkt.done=true;mktGate.forceOpen=true;SFX.ok();banner('Отбились!','#ffffff',1.8,'дальше — палаты Морского царя');}
     if(!F.grate){const ok=LZ.state==='high'&&LZ.t>=1&&RZ.state==='low'&&RZ.t>=1;
       if(ok){F.grate=true;grateCol.on=false;SFX.gate();SFX.ok();anim(1.6,k=>{grate.position.y=3.8*smooth(k);});banner('Решётка поднялась!','#ffffff',2,'вместе получилось');}}
@@ -239,7 +239,7 @@ build21=function(){
     if(!F.out&&[0,1].every(pi=>active(pi).pos.z<-158+D3)&&[0,1].some(pi=>active(pi).pos.z<-168+D3)){F.out=true;finishLevel();}});
   W.tipZones.push({cond:(pi,h)=>[L1,L2,L3].some(z=>inZone(z,h,0)&&z.state==='low'&&h.pos.y<z.floor+0.4),text:pi=>'Стенка высока — не допрыгнуть никак.<br>Сыграй прилив '+K(pi,'item')+' — вода подымет на ступеньку, вот так.'},
     {cond:(pi,h)=>inZone(LIFT,h,0)&&h.pos.y>6,text:pi=>'Колодец-лифт: сыграй отлив '+K(pi,'item')+' — вода опустит вниз.'},
-    {cond:(pi,h)=>mkt.started&&!mkt.done&&MP.state==='high'&&hd(h.pos,{x:0,z:-127+D})<7,text:pi=>'Щука в пруду. Сыграй отлив '+K(pi,'item')+' — на мели окажется,<br>Тут её и бей — пусть не кажется!'},
+    {cond:(pi,h)=>mkt.started&&!mkt.done&&MP.state==='high'&&hd(h.pos,{x:0,z:-127+D})<7,text:pi=>'Жемчужница на дне пруда — створки не пробить.<br>Сыграй отлив '+K(pi,'item')+' — ахнет и раскроется. Или жемчужину её отбей назад!'},
     {cond:(pi,h)=>!F.grate&&h.pos.z<-141+D2&&h.pos.z>-157+D2,text:pi=>'Левой воде — прилив, правой — отлив. На таблички гляди!'},
     {cond:(pi,h)=>h.pos.z<-80&&h.pos.z>-108&&!SLU.held(),text:pi=>'Вода в каналах одна на двоих — через заслонку на дне левого канала.<br>Поставь на неё Потапа '+K(0,'swap')+': он тяжёлый, в воде не всплывёт — и держит, даже оставленный.'},
     {cond:(pi,h)=>h.pos.z<-80&&h.pos.z>-108&&SLU.held(),text:pi=>'Заслонку держат! Прилив у тебя '+K(pi,'item')+' — отлив у друга.<br>Лодка в прилив подвезёт к террасе, а верёвка там откроет ворота ДРУГА.'},
@@ -249,7 +249,7 @@ build21=function(){
   for(const pi of[0,1]){const h=()=>active(pi);
     prompt(pi,'item',()=>headOf(h()),()=>[L1,L2,L3].some(z=>inZone(z,h(),0.2)&&z.state==='low'&&h().pos.y<z.floor+0.5),'прилив — наверх');
     prompt(pi,'item',()=>headOf(h()),()=>inZone(LIFT,h(),0.2)&&LIFT.state==='high'&&h().pos.y>6,'отлив — вниз');
-    prompt(pi,'item',()=>headOf(h()),()=>mkt.started&&!mkt.done&&inZone(MP,h(),1.2)&&MP.state==='high','отлив — щуку на мель');
+    prompt(pi,'item',()=>headOf(h()),()=>mkt.started&&!mkt.done&&inZone(MP,h(),1.2)&&MP.state==='high','отлив — Жемчужница ахнет');
     prompt(pi,'item',()=>headOf(h()),()=>!F.grate&&inZone(LZ,h(),0.2)&&LZ.state==='low','прилив!');
     prompt(pi,'item',()=>headOf(h()),()=>!F.grate&&inZone(RZ,h(),0.2)&&RZ.state==='high','отлив!');
     prompt(pi,'item',()=>headOf(h()),()=>SLU.held()&&hd(h().pos,pi?CR.shell.g.position:CL.shell.g.position)<2&&(pi?CR:CL).state==='low','прилив — лодку к террасе');
@@ -322,7 +322,8 @@ build21=function(){
     if(F.kingOpen)for(const q of HD){q.k=1;q.col.on=false;q.g.position.y=4.5;}
     if(F.stage==='walk'&&[0,1].some(pi=>active(pi).pos.z<-10.5))sadkoIntro();
     if(F.stage==='gusli'&&!F.book&&!G.cine&&[0,1].some(pi=>active(pi).pos.z<-31.5))bookScene();
-    if(!F.pikeTold&&W.enemies.some(e=>e.kind==='shchuka'&&e.state==='wind')){F.pikeTold=true;banner('Щука-морок!','#9fd0ff',2,'синяя капля: щитом закройся, а в последний миг — отбей ей обратно в пасть');}
+    if(!F.pikeTold&&W.enemies.some(e=>e.kind==='shchuka'&&e.state==='wind')){F.pikeTold=true;banner('Щука-морок!','#9fd0ff',2,'плавает где хочет; синяя капля: щитом закройся, а в последний миг — отбей ей обратно в пасть');}
+    if(!F.clamTold&&W.enemies.some(e=>e.kind==='zhemchug'&&e.state==='wind')){F.clamTold=true;banner('Жемчужница-морок!','#c8b8f0',2.4,'створки не пробить: жемчужину отбей обратно '+K(0,'guard')+' / '+K(1,'guard')+' в последний миг — или отлив сыграй, ахнет');}
     sadko.body.rotation.z=Math.sin(G.time*0.8)*0.02;});
   /* ---------- рисунки кнопок ---------- */
   const T=HERO,inFountain=h=>hd(h.pos,{x:0,z:-18})<4.4;
@@ -353,7 +354,7 @@ build21=function(){
       ()=>active(pi).pos.z<-113,()=>{const r=[];if(!SLU.held())r.push(SLU.g);if(!ropes[pi].pulled)r.push(ropes[pi].fl);if(!PG[pi].open)r.push(PG[pi].g);return r;}),
     O(()=>'Шлюзы! Встань в воду и прилив '+K(pi,'item')+' сыграй — вода подымет на ступеньку.<br>Три ступеньки — и наверх, помаленьку.',()=>active(pi).pos.z<-104.2+D,()=>[L1,L2,L3].filter(z=>inZone(z,active(pi),6)).map(z=>z.shell.g)),
     O(()=>'Колодец-лифт. Встань в воду, отлив '+K(pi,'item')+' сыграй —<br>Спустишься вниз, как на лифте, так и знай.',()=>active(pi).pos.z<-116.5+D&&active(pi).pos.y<1,()=>[LIFT.shell.g]),
-    O(()=>'Торговые ряды! Раки щиплют красным — кувырком '+K(pi,'roll')+'.<br>Щуку в пруду — на мель: отлив '+K(pi,'item')+' сыграй — и бегом.',()=>mkt.done,()=>mkt.list.filter(e=>e.alive).map(e=>e.g)),
+    O(()=>'Торговые ряды! Раки щиплют красным — кувырком '+K(pi,'roll')+'.<br>Жемчужница в пруду: отлив '+K(pi,'item')+' — ахнет и раскроется, тут и бей.',()=>mkt.done,()=>mkt.list.filter(e=>e.alive).map(e=>e.g)),
     O(()=>'Палаты Морского царя! Сыграй '+K(pi,'item')+' у стула гусляра — царь запляшет, двери откроются.<br>Сменишь героя '+K(pi,'swap')+' — оставленный доиграет 15 с. Через волны прыгай '+K(pi,'jump')+'. У трона — второй стул: сыграй — пройдёт и друг.',
       ()=>!!F.kingDone,()=>KING.hum>0?HD.map(q=>q.g):seats.map(s=>s.g)),
     O(()=>'Две раковины. На таблички гляди: левой — прилив, правой — отлив.<br>Сыграйте '+K(pi,'item')+' — каждый у своей, вот и весь мотив.',()=>!!F.grate,()=>[LZ.shell.g,RZ.shell.g]),
