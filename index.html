@@ -46,8 +46,8 @@
       карусель: Богатырский щит, богатырский выход, Богатырский мах вдвоём. Ворота — 12 звеньев мира,
       кузня Кузьмы («Не лупи. Слушай металл.»).
   Лукоморье-хаб: волшебный стан у моря — из веретена раскатывается карта-рушник (выбор уровня: вышивка оживает,
-      героев закручивает золотой нитью, затем занавес из двух вышитых полотен с именем уровня; в списке Буяна последним —
-      Эпилог, открыт после финала); звенья, орешки, самоцветы, кузня
+      героев закручивает золотой нитью, затем занавес из двух вышитых полотен с именем уровня; в списке Дремучего леса
+      первым — Пролог, открыт всегда; в списке Буяна последним — Эпилог, открыт после финала); звенья, орешки, самоцветы, кузня
   (сдать звенья — три удара в такт с Кузьмой), дуб-градусник (зеленеет от скованных звеньев, Кот сидит
   на цепи), лавка Векши с примеркой на подиуме и примерочная (шапки, на шею, за спину, наряды, пляски,
   украшения Лукоморья, фоторежим «Лубок»; куплено — навсегда), огород Дедки (посадить, полить, подрастёт
@@ -2282,7 +2282,7 @@ function buildPrologue(){
     if(arena.started&&!arena.cleared&&arena.list.every(e=>!e.alive)){arena.cleared=true;arena.hold=2.4;barrier.forceOpen=true;F.stage='hollow';SFX.ok();banner('Распутали!','#ffffff',1.8,'Звенышко в дупло зовёт —<br>Там нас новый путь ждёт!');}
     if(arena.cleared)arena.hold-=dt;
     ht.hole.material.color.setHSL(0.13,1,0.78+0.08*Math.sin(G.time*3));
-    if(F.stage==='hollow'&&!F.inHollow&&[0,1].every(pi=>hd(active(pi).pos,{x:0,z:-102})<3.4)){F.inHollow=true;SFX.whoosh();completeLevel();}});
+    if(F.stage==='hollow'&&!F.inHollow&&[0,1].every(pi=>hd(active(pi).pos,{x:0,z:-102})<3.4)){F.inHollow=true;SFX.whoosh();G.flags.proDone=true;completeLevel();}});
 
   const jumpCam=()=>{const a=G.solo?active(G.soloPi):active(0),b=G.solo?a:active(1),mz=(a.pos.z+b.pos.z)/2,mx=(a.pos.x+b.pos.x)/2;
     return {pos:new V3(mx*0.5,8.6,Math.min(mz+5.2,-7.8)),look:new V3(mx*0.6,0.2,Math.min(mz-1.8,(mz+CRK0)/2-0.8)),k:3};};
@@ -10507,21 +10507,22 @@ function buildLukomorye(){
   function openMap(pi){G.ui='map';let wsel=curWorld(),list=[],sel=0;const el=$('mapui');el.style.display='flex';
     const wOpen=w=>w===1||(w===2&&!!G.flags.voiceDone)||(w===3&&!!G.flags.w2done)||(w===4&&!!G.flags.w3done)||(w===5&&!!G.flags.w4done);
     // эпилог — в списке Острова Буяна последним, после финала (у него нет своего мира); открыт, как одолели Кощея
-    const isEpi=l=>l.id==='epi',doneL=l=>!!G.done[l.id]||(isEpi(l)&&!!G.flags.epiDone);
-    const setW=w=>{wsel=w;list=LEVELS.filter(l=>l.world===w||(w===5&&isEpi(l)));sel=list.findIndex(l=>!doneL(l));if(sel<0)sel=0;};setW(wsel);
+    // пролог — в списке Дремучего леса первым: открыт всегда, проходится заново, после него — снова в Лукоморье
+    const isEpi=l=>l.id==='epi',isPro=l=>l.id==='p',doneL=l=>!!G.done[l.id]||(isEpi(l)&&!!G.flags.epiDone)||(isPro(l)&&!!G.flags.proDone);
+    const setW=w=>{wsel=w;list=LEVELS.filter(l=>l.world===w||(w===5&&isEpi(l))||(w===1&&isPro(l)));sel=list.findIndex(l=>!isPro(l)&&!doneL(l));if(sel<0)sel=list.findIndex(l=>!isPro(l));};setW(wsel);
     const gateOK=l=>l.world===1?G.flags.forged:l.world===2?G.flags.forged2:l.world===3?G.flags.forged3:l.world===4?G.flags.forged4:l.id==='5-B2'?(!!G.done['5-B1']&&!!G.flags.bezImen):G.flags.forged5;const bossTo=w=>w===1?'к Лешему':w===2?'к Водяному':w===3?'к Соловью':w===4?'к Горынычу':'в терем';
-    const open=l=>isEpi(l)?(!!G.done['5-B2']||doneL(l)):l.boss?gateOK(l):(l===list[0]?wOpen(l.world):(G.done[LEVELS[LEVELS.indexOf(l)-1].id]||G.done[l.id]));
+    const open=l=>isPro(l)?true:isEpi(l)?(!!G.done['5-B2']||doneL(l)):l.boss?gateOK(l):(l===list.find(x=>!isPro(x))?wOpen(l.world):(G.done[LEVELS[LEVELS.indexOf(l)-1].id]||G.done[l.id]));
     const TAGS={'1-3':'♪ гусельный · ','2-3':'на четверых · ','2-4':'экран разделён · ','3-3':'♪ гусельный · ','3-4':'летучий корабль · ','3-5':'погоня · ','4-2':'лавопад · ','4-3':'на четверых · ','4-5':'путь Потапа · ','5-1':'Лихо · ','5-2':'на четверых · ','5-3':'полёт · ','5-4':'♪ гусельный · '};
     const draw=()=>{el.innerHTML='<div class="rush"><h2>Карта-рушник</h2><div class="worlds">'+WORLDN.map((w,i)=>'<span class="'+(i+1===wsel?'on':wOpen(i+1)?'':'off')+'">'+(i+1)+' · '+w+(wOpen(i+1)?'':' <small>скоро</small>')+'</span>').join('')+'</div>'+
       list.map((l,i)=>{const ok=open(l),got=G.got[l.id]||0,nut=(G.nutsGot&&G.nutsGot[l.id])||0;
-        const tag=isEpi(l)?(ok?'вечер в штабе-сосне · театр теней · колыбельная · титры':'откроется после финала'):l.boss?(gateOK(l)?(l.id==='5-B2'?'финал':'ворота открыты'):l.id==='5-B2'?'сначала — терем':'🔗 '+(G.forgedW[l.world]||0)+' / '+GATE(l.world)+' — кузня Кузьмы'):(TAGS[l.id]||'')+'звенья '+got+' / '+l.links+(G.gems[l.id]?' '+ICO_GEM:'')+(l.nuts?' · '+ICO_NUT+' '+nut+' / '+l.nuts:'')+(G.secrets[l.id]?' · карта тайников':'');
+        const tag=isPro(l)?'начало сказки · Звенышко и тетрадка Пелагеи':isEpi(l)?(ok?'вечер в штабе-сосне · театр теней · колыбельная · титры':'откроется после финала'):l.boss?(gateOK(l)?(l.id==='5-B2'?'финал':'ворота открыты'):l.id==='5-B2'?'сначала — терем':'🔗 '+(G.forgedW[l.world]||0)+' / '+GATE(l.world)+' — кузня Кузьмы'):(TAGS[l.id]||'')+'звенья '+got+' / '+l.links+(G.gems[l.id]?' '+ICO_GEM:'')+(l.nuts?' · '+ICO_NUT+' '+nut+' / '+l.nuts:'')+(G.secrets[l.id]?' · карта тайников':'');
         return '<div class="lv'+(i===sel?' sel':'')+(ok?'':' lock')+'">'+(doneL(l)?'✓ ':ok?'• ':'🔒 ')+l.name+'<small>'+tag+(l.boss&&G.gems[l.id]?' '+ICO_GEM:'')+'</small></div>';}).join('')+
       '<div class="hint">'+K(pi,'left')+K(pi,'right')+' мир · '+K(pi,'up')+K(pi,'down')+' уровень · '+K(pi,'jump')+' в путь · '+K(pi,'attack')+' вышить карту тайников (1 самоцвет) · '+K(pi,'guard')+' свернуть</div></div>';};
     draw();
     G.uiTick=()=>{for(const q of[0,1]){const n=uiNav(q);if(n.dy){sel=(sel+n.dy+list.length)%list.length;SFX.swap();draw();}
         if(n.dx){const nw=wsel+n.dx;if(nw>=1&&nw<=5&&wOpen(nw)){setW(nw);SFX.swap();draw();}else SFX.miss();}
         if(tap(q,'guard')||pressed.has('Escape')){closeMap();return;}
-        if(tap(q,'attack')){const l=list[sel];const nb=gemsAvail();if(l.boss||isEpi(l)||G.secrets[l.id]){SFX.miss();return;}if(nb<1){SFX.miss();tip(q,'Нужен самоцвет. А самоцвет дают тому,<br>Кто все звенья в уровне собрал — по одному.',2.6);return;}
+        if(tap(q,'attack')){const l=list[sel];const nb=gemsAvail();if(l.boss||isEpi(l)||isPro(l)||G.secrets[l.id]){SFX.miss();return;}if(nb<1){SFX.miss();tip(q,'Нужен самоцвет. А самоцвет дают тому,<br>Кто все звенья в уровне собрал — по одному.',2.6);return;}
           G.gemsSpent++;G.secrets[l.id]=true;SFX.bell();banner('Карта тайников на рушнике расшита!','#ffd76a',2,l.name+': над орешками — света столбы до небес');draw();}
         if(tap(q,'jump')){const l=list[sel];if(!open(l)){SFX.miss();tip(q,isEpi(l)?'Эпилог откроется, как Кощея одолеете.':l.boss?(l.id==='5-B2'?'Финал откроется, как терем пройдёте.':'Ворота '+bossTo(l.world)+' Кузьма откроет, как скуёте<br>'+GATE(l.world)+' звеньев этого мира — тогда и пойдёте.'):'Сперва пройдите тот уровень, что прежде.',2.4);return;}
           SFX.ok();closeMap();travelTo(l);return;}}};}
