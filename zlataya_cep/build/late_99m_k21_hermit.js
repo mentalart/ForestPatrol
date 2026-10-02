@@ -65,13 +65,14 @@ FIN.hermitBoss=function(o){const F=W.flags,z0=o.z0,z1=o.z1,X0=-10,X1=10,mid=(z0+
   const weedCol=colBox(-11,11,0,6,z1+0.4,z1+1.4,false);
   // ракушка-музыкалка: сыграешь — рак заслушается
   const LURE={hum:0,ring(h){const was=LURE.hum;LURE.hum=6;if(was<=0){[72,76,79,84].forEach((m,i)=>gusli(m,i*0.1,0.12));}}};
-  const LP={x:0,z:z0-7};const lureShell=kwShell('dance',LP.x,LP.z,0,LURE,{say:'Послушай, рак!'});
+  bell(-8.6,z0-1.6);   // отметка у входа на арену: выбыл — вернёшься сюда, а не к саду
+  const LP={x:-6,z:z0-7};/* ракушка-музыкалка — сбоку, путь к раку свободен */const lureShell=kwShell('dance',LP.x,LP.z,0,LURE,{say:'Послушай, рак!'});
   box(LP.x-0.55,LP.x+0.55,0,0.5,LP.z-0.55,LP.z+0.55,M(0x8a5a2e),{occ:false});
   const HB={phase:0,e:null,lure:LURE,dome,weed,weedCol,LP,friend:null,danceT:0,digT:0,stunCd:0};
   // ---- этап 1 ----
   function spawn1(){const e=makeFoe('otshel',0,mid,{leash:14});HB.e=e;e.noKill=true;e.dance=false;e.dazeT=0;
     e.guardAll=()=>!e.dance&&e.state!=='broken'&&e.state!=='dying';e.darkGuard=()=>!e.dance;e.guardText='В раковине — не пробить! Сыграй на гуслях у ракушки-музыкалки — заслушается, выглянет';
-    e.onFinisher=h=>{if(h.kind!=='potap'){floatText(e.pos.clone().add(new V3(0,3.2,0)),'Потап — тяни его за клешню!','#ffd9a0');if(!F.hbPullTold){F.hbPullTold=true;for(const p of[0,1])tip(p,'Пробой! Вытянуть рака из раковины может только Потап — подойди им и бей '+K(p,'attack')+'.<br>В одиночку смени героя '+K(p,'swap')+'.',3.6);}return;}pullOut(h);};
+    e.onFinisher=h=>{if(h.kind!=='potap'){floatText(e.pos.clone().add(new V3(0,3.2,0)),'Потап — тяни его за клешню!','#ffd9a0');if(!F.hbPullTold){F.hbPullTold=true;for(const p of[0,1])tip(p,'Пробой! Вытянуть рака из раковины может только Потап — подойди им и бей '+K(p,'attack')+'.<br>Смени героя '+K(p,'swap')+'; далеко Потап — позови «Ко мне!» '+K(p,'call')+'.',3.8);}return;}pullOut(h);};
     e.tick=(e,dt)=>{const near=hd(e.pos,LP)<22,ok=e.state!=='broken'&&e.state!=='dying'&&e.state!=='spawn';
       if(LURE.hum>0&&near&&ok){if(!e.dance){e.dance=true;SFX.ok();floatText(e.pos.clone().add(new V3(0,3.4,0)),'Ой, музыка! Пляшу!','#ffe08a');if(!F.hbDanceTold){F.hbDanceTold=true;for(const p of[0,1])tip(p,'Заслушался! Пока играют гусли — рак выглянул и пляшет: бей '+K(p,'attack')+'!',3);}}
         e.dazeT=Math.max(e.dazeT,0.3);e.cd=Math.max(e.cd,1.0);e.face=angDamp(e.face,Math.atan2(LP.x-e.pos.x,LP.z-e.pos.z),3,dt);}
@@ -155,7 +156,8 @@ FIN.hermitBoss=function(o){const F=W.flags,z0=o.z0,z1=o.z1,X0=-10,X1=10,mid=(z0+
   function introScene(){HB.phase=0.5;const e=spawn1();
     play({dur:8.2,fov:46,shots:[shot(0,[0,3.8,z0-1],[0,1.6,mid],[0,2.6,mid+7],[0,1.6,mid],3.4),shot(4.2,[3.4,2.2,mid+4.6],[0,1.8,mid])],
       says:[[0.4,3.2,null,'<i>Перед воротами Китежа — огромная витая раковина, вся в тёмном мороке.</i>',true],[4.3,3.4,'otshel','Кто тут шумит? Это МОЙ дом! Уходите!']],
-      events:[{t:1.5,fn:()=>{SFX.thud();shakeAll(0.04,0.4);}},{t:4.2,fn:()=>{anim(1.2,k=>{e.outK=Math.sin(k*Math.PI)*0.7;});}}],
+      events:[{t:0,fn:()=>{for(const q of HEROES){const a=G.solo?active(G.soloPi):active(q.player);if(q===a||(!G.solo&&q.active)||q.cling)continue;if(hd(q.pos,a.pos)>8||Math.abs(q.pos.y-a.pos.y)>1.5){q.kwHold=null;placeOnGround(q,clamp(a.pos.x+(q.kind==='potap'?1.4:-1.4),-9,9),a.pos.z+1.2,a.pos.y);q.following=true;}}}},   // отставшие (Потап с дна сада) — тут как тут
+        {t:1.5,fn:()=>{SFX.thud();shakeAll(0.04,0.4);}},{t:4.2,fn:()=>{anim(1.2,k=>{e.outK=Math.sin(k*Math.PI)*0.7;});}}],
       end:()=>{HB.phase=1;banner('Рак-Отшельник!','#ffb07a',2.6,'в раковине его не пробить — а музыку он любит');
         for(const p of[0,1])tip(p,'Раковину не пробить. Сыграй на гуслях '+K(p,'item')+' у ракушки-музыкалки — рак заслушается и выглянет.<br>Один играет — другой бьёт! В одиночку: сыграй и смени героя '+K(p,'swap')+' — оставленный доиграет.',4.6);}});}
   W.updates.push(dt=>{LURE.hum=Math.max(0,LURE.hum-dt);

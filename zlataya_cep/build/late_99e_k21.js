@@ -370,7 +370,7 @@ build21=function(){
     // смысловой моушн: книга сказок «дышит», щёлкает застёжка, крышка распахивается с золотым светом — сказки вот-вот встанут со страниц…
     // но страниц нет: картинки-раскладушки пустые, встают и никнут, пустая бумага рвётся и уплывает обрывками туда, где за водой звенят ключи
     const fx=new THREE.Group();W.group.add(fx);const pop=new THREE.Group();pop.position.set(0,0.07,0);book.add(pop);
-    const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:K21_GLOW_TEX,color:0xffd76a,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));glow.position.set(0,1.25,-36.5);glow.scale.setScalar(0.1);fx.add(glow);
+    const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:K21_GLOW_TEX,color:0xffd76a,transparent:true,opacity:0,depthWrite:false,blending:THREE.AdditiveBlending}));glow.position.set(0,1.25,-36.5);glow.scale.setScalar(0.1);glow.raycast=()=>{};fx.add(glow);
     const cards=[[0,0.42,0.5,0],[-0.21,0.28,0.3,1],[0.21,0.28,0.3,2]].map(([x,w,hh,kind],i)=>{const c=new THREE.Group();c.position.set(x,0,-0.08+i*0.07);pop.add(c);
       const m=new THREE.Mesh(new THREE.PlaneGeometry(w,hh),new THREE.MeshBasicMaterial({map:K21_CARD_TEX[kind],transparent:true,side:THREE.DoubleSide}));m.position.y=hh/2;c.add(m);c.rotation.x=-Math.PI/2;return {c,m,w,hh};});
     const scraps=[];
@@ -449,8 +449,8 @@ build21=function(){
     const fr=TUNE.filter(T=>T.fresh).map(T=>T.i);
     if(TS.step===0){if(fr.includes(0)){ok(0);TS.step=1;TS.t=0;}else if(fr.length)fail();}
     else if(TS.step===1){if(fr.includes(1)){ok(1);TS.step=2;TS.t=0;}else if(fr.includes(2)||fr.includes(3))fail();}
-    else if(TS.step===2){if(TUNE[2].on&&TUNE[3].on){ok(2);ok(3);tuneDone();}else if(fr.includes(0)||fr.includes(1))fail();
-      else if(fr.length){const T=TUNE[fr[0]];gusli(T.n,0,0.12);T.lit=0.8;floatText(new V3(T.x,2.9,T.z),'дон-дон — ВМЕСТЕ!','#ffd9a0');}}}
+    else if(TS.step===2){if(TUNE[2].on&&TUNE[3].on){ok(2);ok(3);tuneDone();}
+      else if(fr.includes(2)||fr.includes(3)){const T=TUNE[fr.find(i=>i>=2)];gusli(T.n,0,0.12);T.lit=0.8;floatText(new V3(T.x,2.9,T.z),'дон-дон — ВМЕСТЕ!','#ffd9a0');}}}
   // ---------- палаты Морского царя: пляска в два голоса ----------
   function spawnRing(side){const geo=new THREE.CylinderGeometry(1,1,0.9,64,1,true,side>0?0:side<0?Math.PI:0,side?Math.PI:Math.PI*2);
     const m=new THREE.Mesh(geo,MB(0xe8fbff,{transparent:true,opacity:0.75,side:THREE.DoubleSide,depthWrite:false}));m.position.set(0,0.45,TZ);m.renderOrder=6;m.userData.noBatch=true;W.group.add(m);

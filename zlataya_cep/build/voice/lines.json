@@ -334,6 +334,42 @@
    "voice": "Dylan",
    "voice_id": "b847bc29-f184-583a-8ad9-d1f1e16d1a60",
    "pitch": 2
+  },
+  "kit": {
+   "name": "Чудо-юдо Рыба-кит",
+   "about": "кит из «Конька-Горбунка»: огромный, древний, усталый и добрый; говорит медленно, с глубоким вздохом",
+   "voice": "Desmond",
+   "voice_id": "563f728c-e249-5a85-97ab-8461e8c09da6",
+   "pitch": -2.5,
+   "fx": "water"
+  },
+  "pahar": {
+   "name": "Мужичок-пахарь",
+   "about": "пашет на губе кита: простой, весёлый, певучий",
+   "voice": "Emmett",
+   "voice_id": "3c7d32be-0182-5c5e-aa6a-663409bfbb26",
+   "pitch": 0
+  },
+  "malec": {
+   "name": "Мальчишки",
+   "about": "пляшут между глаз кита: озорной звонкий мальчишка-заводила",
+   "voice": "Hallie",
+   "voice_id": "10274bf1-fb93-554f-b59f-d620a920fd36",
+   "pitch": 2
+  },
+  "devica": {
+   "name": "Девушки",
+   "about": "ищут грибы в дубраве меж усов: ласковая, певучая",
+   "voice": "Willow",
+   "voice_id": "f878bf3f-115b-5842-8934-c789c7947733",
+   "pitch": 1
+  },
+  "otshel": {
+   "name": "Рак-Отшельник",
+   "about": "мини-босс сада Китежа: ворчливый задира без домика, в конце — смущённый и счастливый",
+   "voice": "Reid",
+   "voice_id": "66469f5a-10db-586a-bab1-72f6ee66ba69",
+   "pitch": 1.5
   }
  },
  "lines": [
@@ -9662,6 +9698,316 @@
    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073608_69ca1773-837b-470b-98a3-17765f43e0f0.mp3",
    "job": "69ca1773-837b-470b-98a3-17765f43e0f0",
    "dur": 2.41
+  },
+  {
+   "id": "2-1_025",
+   "lv": "2-1",
+   "who": "proshka",
+   "text": "Вот это осётр! С терем ростом!",
+   "tts": "Вот это осётр! С терем ростом!",
+   "max": 3.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164809_38b560ce-eed5-4ed2-9460-2be5b86fb10c.mp3",
+   "dur": 3.34
+  },
+  {
+   "id": "2-1_026",
+   "lv": "2-1",
+   "who": "zven",
+   "text": "Слышали? Напев Садко! Дзинь, дилинь — по очереди, а дон-дон — вместе!",
+   "tts": "Слышали? Напев Садко! Дзинь, дилинь — по очереди, а дон-дон — вместе!",
+   "max": 5,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164735_b9859fc5-1e15-4236-b6fb-7f13e6cfc204.mp3",
+   "dur": 5.63
+  },
+  {
+   "id": "2-1_027",
+   "lv": "2-1",
+   "who": "king",
+   "text": "В два голоса, гусляры! Один — скукота!",
+   "tts": "В два голоса, гусляры! Один — скукота!",
+   "max": 3.6,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164809_53b9e9f0-861a-454b-8f1c-d9acc5d998ce.mp3",
+   "dur": 3.72
+  },
+  {
+   "id": "2-1_028",
+   "lv": "2-1",
+   "who": "king",
+   "text": "Вприсядку! Эх, раздайся, море!",
+   "tts": "Вприсядку! Эх, раздайся, море!",
+   "max": 3.2,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164735_353cb6a4-b91e-4e70-a627-5ca80cb71d9a.mp3",
+   "dur": 3.33
+  },
+  {
+   "id": "2-1_029",
+   "lv": "2-1",
+   "who": "king",
+   "text": "Шибче, гусляры, шибче!",
+   "tts": "Шибче, гусляры, шибче!",
+   "max": 3.2,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164735_c04c81fd-9b1b-4e7c-927c-4f7c6bfa34ce.mp3",
+   "dur": 2.87
+  },
+  {
+   "id": "2-1_030",
+   "lv": "2-1",
+   "who": "king",
+   "text": "Да в два голоса, у самого трона!",
+   "tts": "Да в два голоса, у самого трона!",
+   "max": 2.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164735_e5f679f6-dc26-4ea1-b36d-1713210977f8.mp3",
+   "dur": 2.84
+  },
+  {
+   "id": "2-1_031",
+   "lv": "2-1",
+   "who": "zven",
+   "text": "Вот это пляска! Дальше — в сад Китежа!",
+   "tts": "Вот это пляска! Дальше — в сад Китежа!",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164735_1c1f5769-ef25-44ab-99cc-77f2e9cd8fa9.mp3",
+   "dur": 3.36
+  },
+  {
+   "id": "2-2_014",
+   "lv": "2-2",
+   "who": "potap",
+   "text": "Эх… прости, сосенка. Мостиком послужишь!",
+   "tts": "Эх… прости, сосенка. Мостиком послужишь!",
+   "max": 3.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164735_5e5998f3-5579-49c2-a1fc-96a938d3f0cd.mp3",
+   "dur": 3.41
+  },
+  {
+   "id": "2-2_015",
+   "lv": "2-2",
+   "who": "potap",
+   "text": "Ух! Вот так занозища!",
+   "tts": "Ух! Вот так занозища!",
+   "max": 2.8,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164735_91ddf620-9dba-45dc-9a08-ffba6034c307.mp3",
+   "dur": 2.56
+  },
+  {
+   "id": "2-2_016",
+   "lv": "2-2",
+   "who": "pahar",
+   "text": "Ай да детки! Пошла соха, пошла родимая! Проходите, путь открыт!",
+   "tts": "Ай да детки! Пошла соха, пошла родимая! Проходите, путь открыт!",
+   "max": 4.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164735_910dde43-280f-480a-9014-c80f454c55df.mp3",
+   "dur": 5.49
+  },
+  {
+   "id": "2-2_017",
+   "lv": "2-2",
+   "who": "kit",
+   "text": "Ох… легче стало… Кто тут такие добрые?",
+   "tts": "[sighs] Ох… легче стало… Кто тут такие добрые?",
+   "max": 4.22,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164809_771c7a4b-db48-4af1-8666-58e1ff991522.mp3",
+   "dur": 4.32
+  },
+  {
+   "id": "2-2_018",
+   "lv": "2-2",
+   "who": "yosha",
+   "text": "Мы — Лесной патруль! Привет, Кит!",
+   "tts": "Мы — Лесной патруль! Привет, Кит!",
+   "max": 2.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164809_6a70be9e-12a1-4b2f-a3fa-90a8a462ec3a.mp3",
+   "dur": 2.73
+  },
+  {
+   "id": "2-2_019",
+   "lv": "2-2",
+   "who": "kit",
+   "text": "Десять лет частокол в боку… Спасибо, малые. Ступайте по мне — я тихонько дышать буду.",
+   "tts": "Десять лет частокол в боку… Спасибо, малые. Ступайте по мне — я тихонько дышать буду.",
+   "max": 3.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164809_48aeffe8-d560-4c64-8ce0-ce985d134a5f.mp3",
+   "dur": 5.5
+  },
+  {
+   "id": "2-2_020",
+   "lv": "2-2",
+   "who": "kit",
+   "text": "Ох, тяжко мне… Нырну-ка я на дно — там тихо…",
+   "tts": "[sighs] Ох, тяжко мне… Нырну-ка я на дно — там тихо…",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164810_f9536d9a-3e14-4d4d-9bbc-de64b017ace6.mp3",
+   "dur": 4.87
+  },
+  {
+   "id": "2-2_021",
+   "lv": "2-2",
+   "who": "zven",
+   "text": "Кит ныряет! Деревня утонет!",
+   "tts": "Кит ныряет! Деревня утонет!",
+   "max": 1.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164809_6cb1ab3f-8b78-4ab8-b08d-cef675a817dd.mp3",
+   "dur": 2.46
+  },
+  {
+   "id": "2-2_022",
+   "lv": "2-2",
+   "who": "kit",
+   "text": "Не нырну… Спели вы мне, как мама в детстве пела.",
+   "tts": "[softly] Не нырну… Спели вы мне, как мама в детстве пела.",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164810_1a571cab-41ae-4135-a801-3ed8f6218d73.mp3",
+   "dur": 3.57
+  },
+  {
+   "id": "2-2_023",
+   "lv": "2-2",
+   "who": "kit",
+   "text": "Болит внутри — проглотил я что-то звонкое, золотое…",
+   "tts": "Болит внутри — проглотил я что-то звонкое, золотое…",
+   "max": 3.22,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164842_eb87b92f-0036-4727-97b9-9eee94f2c0fc.mp3",
+   "dur": 3.89
+  },
+  {
+   "id": "2-2_024",
+   "lv": "2-2",
+   "who": "yosha",
+   "text": "Мы поможем, Кит! Честное слово!",
+   "tts": "Мы поможем, Кит! Честное слово!",
+   "max": 3.02,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164842_e04b7df2-982b-4889-bd7f-c2975c89ccf6.mp3",
+   "dur": 2.71
+  },
+  {
+   "id": "2-2_025",
+   "lv": "2-2",
+   "who": "kit",
+   "text": "Тогда держитесь крепче, малые!",
+   "tts": "Тогда держитесь крепче, малые!",
+   "max": 3.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164842_4c288ad0-40fe-4ff6-a4a7-fda69ee2c164.mp3",
+   "dur": 2.71
+  },
+  {
+   "id": "2-2_026",
+   "lv": "2-2",
+   "who": "zven",
+   "text": "До облаков! Вот это кит!",
+   "tts": "До облаков! Вот это кит!",
+   "max": 2.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164842_5854e89c-f7f4-42fe-bad5-08d87474367b.mp3",
+   "dur": 2.62
+  },
+  {
+   "id": "2-2_027",
+   "lv": "2-2",
+   "who": "malec",
+   "text": "Эй, айда с нами в пляс! Прыг — на камушек, как загорится!",
+   "tts": "Эй, айда с нами в пляс! Прыг — на камушек, как загорится!",
+   "max": 4.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164842_4d1bb55e-4c01-4ba4-863e-6db255cab7e6.mp3",
+   "dur": 4.4
+  },
+  {
+   "id": "2-2_028",
+   "lv": "2-2",
+   "who": "malec",
+   "text": "Ух, наплясались! Глядите — кит глаза открыл! Дальше — в дубраву!",
+   "tts": "Ух, наплясались! Глядите — кит глаза открыл! Дальше — в дубраву!",
+   "max": 4.2,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164842_6c6d848f-ab58-4a4f-82b6-410163d1c500.mp3",
+   "dur": 4.82
+  },
+  {
+   "id": "2-2_029",
+   "lv": "2-2",
+   "who": "devica",
+   "text": "Ой, сколько грибочков! Спасибо! Кит, пусти их — усы подними!",
+   "tts": "Ой, сколько грибочков! Спасибо! Кит, пусти их — усы подними!",
+   "max": 4.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164842_2b11d4da-38e7-48a2-b6ea-b4d16c96f99e.mp3",
+   "dur": 4.4
+  },
+  {
+   "id": "2-2_030",
+   "lv": "2-2",
+   "who": "devica",
+   "text": "Грибы прячутся — не видать! Совиным бы глазом поискать…",
+   "tts": "Грибы прячутся — не видать! Совиным бы глазом поискать…",
+   "max": 4.2,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164843_c5ada2fc-4124-48e6-bddd-97a968ea0991.mp3",
+   "dur": 4.21
+  },
+  {
+   "id": "2-1_032",
+   "lv": "2-1",
+   "who": "potap",
+   "text": "А ну-ка, вылезай! Раз-два — взяли!",
+   "tts": "А ну-ка, вылезай! Раз-два — взяли!",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164912_cc4b5796-ceb7-4c42-86e6-7e5ef3862bdc.mp3",
+   "dur": 3.11
+  },
+  {
+   "id": "2-1_033",
+   "lv": "2-1",
+   "who": "otshel",
+   "text": "Ой-ой! Без домика… стыдно-то как!",
+   "tts": "Ой-ой! Без домика… стыдно-то как!",
+   "max": 2.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164950_faba09dc-d6eb-4369-a4d8-1d299ff6c367.mp3",
+   "dur": 3.27
+  },
+  {
+   "id": "2-1_034",
+   "lv": "2-1",
+   "who": "yosha",
+   "text": "Ему просто домика нет! Вот и сердился.",
+   "tts": "Ему просто домика нет! Вот и сердился.",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164914_c7e4d44b-d183-47b7-9509-be99ec177ec9.mp3",
+   "dur": 3.12
+  },
+  {
+   "id": "2-1_035",
+   "lv": "2-1",
+   "who": "potap",
+   "text": "Вот тебе терем! Золотой, с колокольчиком!",
+   "tts": "Вот тебе терем! Золотой, с колокольчиком!",
+   "max": 3.82,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164912_d40c2d52-4437-46f7-8ade-610924634e8e.mp3",
+   "dur": 3.81
+  },
+  {
+   "id": "2-1_036",
+   "lv": "2-1",
+   "who": "otshel",
+   "text": "Ой, какой домик! Звонкий! Спасибо, малые!",
+   "tts": "Ой, какой домик! Звонкий! Спасибо, малые!",
+   "max": 3.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164949_e1888169-a03a-4876-9a14-495efdb01ab3.mp3",
+   "dur": 3.93
+  },
+  {
+   "id": "2-1_037",
+   "lv": "2-1",
+   "who": "zven",
+   "text": "Вот и подружились! А Китеж — за воротами!",
+   "tts": "Вот и подружились! А Китеж — за воротами!",
+   "max": 4.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164912_37261acb-1881-4278-9c10-a8a63f961598.mp3",
+   "dur": 3.39
+  },
+  {
+   "id": "2-1_038",
+   "lv": "2-1",
+   "who": "otshel",
+   "text": "Кто тут шумит? Это МОЙ дом! Уходите!",
+   "tts": "[annoyed] Кто тут шумит? Это МОЙ дом! Уходите!",
+   "max": 3.82,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_164949_1d405054-14b2-4c98-8b78-50bccbd733c6.mp3",
+   "dur": 3.24
   }
  ]
 }

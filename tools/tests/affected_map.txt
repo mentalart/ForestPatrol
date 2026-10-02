@@ -62,7 +62,7 @@ zlataya_cep/build/late_05_gallery.js          tfin_cast tfin_foecast
 zlataya_cep/build/late_15_heroes.js           tfin_art tfin_slash tfin_guard tfin_cast tfin_cine tfin_scooter tfin_budget tfin_downswap
 zlataya_cep/build/late_16_cast.js             tfin_cast tfin_cine tfin_art tfin_budget
 zlataya_cep/build/late_17_cast2.js            tfin_cast tfin_cine tfin_art tfin_budget
-zlataya_cep/build/late_18_foes.js             tfin_foekinds tfin_foekinds2 tfin_foekinds3 tfin_foeidle tfin_foecast tfin_budget tfoes
+zlataya_cep/build/late_18_foes.js             tfin_foekinds tfin_foekinds2 tfin_foekinds3 tfin_foekinds4 tfin_foeidle tfin_foecast tfin_budget tfoes
 zlataya_cep/build/late_19_gor.js              tfin_foecast tfin_cast @level:4-B
 zlataya_cep/build/late_30_hero.js             tfin_art tfin_slash
 zlataya_cep/build/late_32_downswap.js         tfin_downswap tsolo
@@ -96,7 +96,7 @@ zlataya_cep/build/late_89_camorbit.js         tfin_cam
 
 # ---- модули релиза: уровни ----
 zlataya_cep/build/late_87_boss4b.js           @level:4-B
-zlataya_cep/build/late_92_koschei.js          @level:5-B2 tfin_foekinds3 tfoes
+zlataya_cep/build/late_92_koschei.js          @level:5-B2 tfin_foekinds3 tfin_foekinds4 tfoes
 zlataya_cep/build/late_93_koschei_level.js    @level:5-B2
 zlataya_cep/build/late_94_koschei_tut.js      @level:5-B2
 zlataya_cep/build/late_96_prolog_scooter.js   @level:p
@@ -108,14 +108,14 @@ zlataya_cep/build/late_99b_kidnap14.js        @level:1-4 @level:1-B
 zlataya_cep/build/late_99c_kitezh_sea.js       @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_sea
 zlataya_cep/build/late_99d_kitezh_water.js     @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_water
 zlataya_cep/build/late_99e_k21.js              @level:2-1 tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes
-zlataya_cep/build/late_99f_k22.js              @level:2-2 tfin_k22 tfin_k22solo
+zlataya_cep/build/late_99f_k22.js              @level:2-2 tfin_k22 tfin_k22solo tfin_foekinds4
 zlataya_cep/build/late_99g_k23.js              @level:2-3 tfin_k23 tfin_k23solo
 zlataya_cep/build/late_99h_k24.js              @level:2-4 tfin_k24 tfin_k24solo
 zlataya_cep/build/late_99i_k25.js              @level:2-5 tfin_k25 tfin_k25solo
 zlataya_cep/build/late_99j_k2b.js              @level:2-B tfin_k2b tfin_k2bsolo
-zlataya_cep/build/late_99k_kitezh_foes.js      @level:2-1 @level:2-5 tfin_k21foes tfin_foekinds3
+zlataya_cep/build/late_99k_kitezh_foes.js      @level:2-1 @level:2-5 tfin_k21foes tfin_foekinds4
 zlataya_cep/build/late_99l_kitezh_magic_water.js @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_water
-zlataya_cep/build/late_99m_k21_hermit.js        @level:2-1 tfin_k21 tfin_k21solo tfin_k21boss
+zlataya_cep/build/late_99m_k21_hermit.js        @level:2-1 tfin_k21 tfin_k21solo tfin_foekinds4
 
 # ---- замены в прототипе при сборке ----
 zlataya_cep/build/rep_10_cine.py              tfin_cine tfin_voice
