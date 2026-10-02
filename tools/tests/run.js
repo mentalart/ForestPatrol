@@ -5,13 +5,18 @@ const path=require('path'),fs=require('fs');
 const SHOTS=process.env.SHOTS||path.join(__dirname,'shots');
 (async()=>{
   const [,,html,stepsFile]=process.argv;const steps=JSON.parse(fs.readFileSync(stepsFile,'utf8'));
-  const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
+  // final07 рисует через WebGPU: в headless — программный адаптер SwiftShader (Vulkan); ?webgl в URLQ — запасной путь WebGL2
+  const gpu=/final0[7-9]|final[1-9]\d/.test(html)||process.env.WEBGPU==='1';
+  const browser=await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader'].concat(gpu?['--enable-unsafe-webgpu','--enable-features=Vulkan','--use-webgpu-adapter=swiftshader']:[])});
   const page=await browser.newPage({viewport:{width:1280,height:720}});
   const logs=[];page.on('console',m=>{if(m.type()!=='log'||!/THREE/.test(m.text()))logs.push(m.type()+': '+m.text());});page.on('pageerror',e=>logs.push('PAGEERROR: '+e.message+'\n'+e.stack));
   // Three.js r128 берётся из vendor/, а не с CDN — тесты работают без интернета
   await page.route('**/three.min.js',r=>r.fulfill({path:path.join(__dirname,'vendor/three.min.js'),contentType:'application/javascript'}));
   // ?debug включает отладочный объект window.ZC (в релизной сборке он есть только с этим параметром)
-  await page.goto('file://'+path.resolve(html)+'?debug=1'+(process.env.URLQ||''));   // URLQ='&hq=1' — высокая графика в релизной сборкеawait page.waitForTimeout(1200);
+  // final07 в headless: вывод WebGPU на холст здесь не работает (SwiftShader теряет устройство при показе кадра), поэтому боты
+  // гоняют тот же WebGPURenderer через его WebGL2 (?webgl); сам WebGPU проверяет tfin_gpu — рисует уровни в текстуру и читает пиксели.
+  const gq=gpu&&process.env.WEBGPU!=='1'?'&webgl':'';
+  await page.goto('file://'+path.resolve(html)+'?debug=1'+gq+(process.env.URLQ||''));   // URLQ='&hq=1' — высокая графика в релизной сборкеawait page.waitForTimeout(1200);
   for(const s of steps){if(s.reload){await page.reload({waitUntil:'load'});await page.waitForTimeout(1200);}
     if(s.mouse){const [mx,my]=String(s.mouse).split(',').map(Number);await page.mouse.move(mx,my);}   // mouse=x,y — курсор в точку перед шагом (наведение мыши)
     if(s.key){await page.keyboard.press(String(s.key));}   // key=Код — настоящее нажатие клавиши перед шагом (жест пользователя: браузер разрешает звук)
