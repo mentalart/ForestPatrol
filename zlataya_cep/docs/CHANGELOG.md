@@ -29,6 +29,8 @@ final06 остаётся на WebGL и не меняется. Собираетс
   - `tfin_gpu` — все 36 уровней на WebGPU;
   - `tfin_post` — постобработка (оба бота в `regress_list_final07.txt`);
   - `tools/tests/gpu_parity.py` — пары кадров final06/final07.
+- **Виды врагов — по 5 на бота**: `tfin_foekinds` и `tfin_foekinds2` разделены, добавлены `tfin_foekinds1b` и `tfin_foekinds2b`.
+  Боты по 10 видов не укладывались в 15 минут ни на раннере CI, ни на запасном WebGL2.
 - **Инструменты**: `affected.py` гоняет ботов файлов final07 (`@final07` в `affected_map.txt`) на final07. `regress.sh` принимает
   несколько списков. В `run.js` вернулось ожидание 1,2 с после загрузки страницы: раньше оно было закомментировано по ошибке.
 
