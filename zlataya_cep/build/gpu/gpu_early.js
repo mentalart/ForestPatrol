@@ -22,8 +22,12 @@ FIN.ver='final07';FIN.gpu=window.FIN_GPU;
  const FX=FIN.fxNode={};
  FX.wind={};
  // ветер: качание по высоте (локальная y), фаза — по положению объекта (или экземпляра)
- FX.wind.pos=(m,b)=>{const ph=b.object.isInstancedMesh?L.vec2(L.instancedBufferAttribute(b.object.instanceMatrix,'mat4').element(3).x,L.instancedBufferAttribute(b.object.instanceMatrix,'mat4').element(3).z)
-     :L.vec2(L.modelWorldMatrix.element(3).x,L.modelWorldMatrix.element(3).z);
+ // место экземпляра — 4-й столбец его матрицы: отдельный буфер с шагом «на экземпляр» (матрица mat4 вершинным атрибутом в WGSL
+ // не передаётся); копия тех же чисел, обновляется вместе с матрицами
+ const IMB=new WeakMap();
+ const instOrigin=im=>{const A=im.instanceMatrix;let ib=IMB.get(A);if(!ib){ib=new T.InstancedInterleavedBuffer(A.array,16,1);IMB.set(A,ib);}
+   L.OnObjectUpdate(()=>{if(ib.version!==A.version)ib.version=A.version;});return L.instancedBufferAttribute(ib,'vec4',16,12);};
+ FX.wind.pos=(m,b)=>{const ph=b.object.isInstancedMesh?instOrigin(b.object).xz:L.vec2(L.modelWorldMatrix.element(3).x,L.modelWorldMatrix.element(3).z);
    const t=uT(),k=perMat(mm=>mm.userData.wind,0.02),g=uGust(),p=L.positionLocal,h=L.max(0,p.y);
    const s=L.sin(t.mul(1.6).add(ph.x.mul(0.31)).add(ph.y.mul(0.23))).add(L.sin(t.mul(3.1).add(ph.x.mul(0.9)).add(ph.y.mul(0.7))).mul(0.4));
    const a=s.mul(h).mul(h).mul(k).mul(g);L.positionLocal.assign(L.vec3(p.x.add(a),p.y,p.z.add(a.mul(0.55))));};

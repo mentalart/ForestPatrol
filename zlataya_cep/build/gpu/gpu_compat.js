@@ -96,11 +96,24 @@ G.instAttr=a=>{if(!a.isInstancedBufferAttribute){a.isInstancedBufferAttribute=tr
 // ---------- 6. рендерер ----------
 const V2=new T.Vector2(),V4=new T.Vector4();
 // кадр из текстуры ?offscreen — на холст-подложку поверх холста игры (под интерфейсом): так его видят снимки ботов
-G.blit=async function(){const r=G.renderer,R=G.offRT;if(!G.offscreen||!r||!R)return 0;const w=R.width,h=R.height;let px=await r.readRenderTargetPixelsAsync(R,0,0,w,h);
+G.blit=async function(){if(!G.offscreen||!G.renderer)return 0;await G.fresh();const r=G.renderer,R=G.offRT;if(!R)return 0;const w=R.width,h=R.height;let px=await r.readRenderTargetPixelsAsync(R,0,0,w,h);
   px=new Uint8Array(px.buffer,px.byteOffset,px.byteLength);const row=px.length/h;if(row!==w*4){const o=new Uint8Array(w*h*4);for(let y=0;y<h;y++)o.set(px.subarray(y*row,y*row+w*4),y*w*4);px=o;}   // строки WebGPU выровнены по 256 байт
   let c=G.blitCanvas;const gc=r.domElement;if(!c){c=G.blitCanvas=document.createElement('canvas');c.id='gpuBlit';c.style.cssText='position:absolute;pointer-events:none;';gc.parentNode.insertBefore(c,gc.nextSibling);}
   const b=gc.getBoundingClientRect();Object.assign(c.style,{left:b.left+'px',top:b.top+'px',width:b.width+'px',height:b.height+'px'});c.width=w;c.height=h;
   const d=new Uint8ClampedArray(px.length);for(let i=0;i<px.length;i+=4){d[i]=px[i];d[i+1]=px[i+1];d[i+2]=px[i+2];d[i+3]=255;}c.getContext('2d').putImageData(new ImageData(d,w,h),0,0);return w*h;};
+// Под автоматизацией (боты, navigator.webdriver) кадры не сдерживает показ на экране: программный GPU (SwiftShader) копит очередь
+// на десятки секунд, и любое чтение кадра (снимок, readPixels) ждёт её всю. Поэтому кадр игры рисуется, только когда GPU закончил
+// предыдущий; в пропущенных кадрах логика идёт как обычно, на экране — прежняя картинка. Рисование из кода бота (вне кадра) — всегда.
+G.throttle=!!navigator.webdriver;G.inFrame=false;G.skip=false;G.drew=false;G.busy=false;G.freshQ=[];
+G.gpuIdle=function(){const b=G.renderer&&G.renderer.backend;if(!b)return Promise.resolve();
+  if(b.device)return b.device.queue.onSubmittedWorkDone();
+  const gl=b.gl;if(!gl||!gl.fenceSync)return Promise.resolve();const f=gl.fenceSync(gl.SYNC_GPU_COMMANDS_COMPLETE,0);gl.flush();
+  return new Promise(res=>{const poll=()=>{const st=gl.clientWaitSync(f,0,0);if(st===gl.TIMEOUT_EXPIRED)setTimeout(poll,4);else{gl.deleteSync(f);res();}};poll();});};
+// свежий кадр: обещание выполнится, когда GPU дорисует первый кадр, начатый после вызова (не дольше 20 с)
+G.fresh=()=>new Promise(res=>{const t=setTimeout(res,20000);G.freshQ.push(()=>{clearTimeout(t);res();});});
+if(G.throttle){const raf=window.requestAnimationFrame.bind(window);
+  window.requestAnimationFrame=f=>raf(t=>{G.skip=G.busy;G.inFrame=true;G.drew=false;try{f(t);}finally{G.inFrame=false;
+    if(G.drew){G.busy=true;const q=G.freshQ;G.freshQ=[];G.gpuIdle().then(()=>{G.busy=false;q.forEach(r=>r());});}}});}
 T.WebGLRenderer=function(p){p=Object.assign({},p||{});const r=new T.WebGPURenderer(Object.assign(p,{forceWebGL:G.forceGL}));G.renderer=r;
   r.outputColorSpace=T.LinearSRGBColorSpace;
   // тонмаппинг — в материалах (gpu_early.js, кривая late_10); рендереру — «без тонмаппинга», а запрошенный режим запоминаем
@@ -108,13 +121,28 @@ T.WebGLRenderer=function(p){p=Object.assign({},p||{});const r=new T.WebGPURender
   const lib=r.library;for(const C of G.PointLightClasses)lib.lightNodes.set(C,LegacyPointLightNode);
   // ?offscreen (для ботов на настоящем WebGPU в headless, где показ на холст не работает): всё, что шло на холст, — в текстуру того же размера
   G.offscreen=/[?&]offscreen\b/.test(location.search);
-  const _render=r.render.bind(r);r.render=function(s,c){if(!G.ready)return;
-    if(G.offscreen&&this.getRenderTarget()===null){const sz=this.getDrawingBufferSize(V2),pr=this.getPixelRatio(),rt=G.offRT&&G.offRT.width===sz.x&&G.offRT.height===sz.y?G.offRT:null;
+  const _render=r.render.bind(r);
+  // сплит-экран: в WebGPU очистка кадра (loadOp clear) стирает всю цель, а не прямоугольник ножниц, как в WebGL, — вторая половина
+  // стирала первую. Поэтому при ножницах не на весь холст половина очищается квадратом цвета фона на дальней глубине
+  // (только в своих ножницах), а сам кадр рисуется без очистки.
+  const CQ={};
+  const clearPane=s=>{if(!CQ.scene){CQ.col=L.uniform(new T.Color());const m=new T.MeshBasicNodeMaterial();m.depthTest=false;m.depthWrite=true;m.fog=false;m.toneMapped=false;m._finNoTM=true;
+      m.vertexNode=L.vec4(L.positionGeometry.xy,1,1);m.colorNode=L.vec4(CQ.col,1);const q=new T.Mesh(new T.PlaneGeometry(2,2),m);q.frustumCulled=false;
+      CQ.scene=new T.Scene();CQ.scene.add(q);CQ.cam=new T.OrthographicCamera();}
+    if(s&&s.background&&s.background.isColor)CQ.col.value.copy(s.background);else r.getClearColor(CQ.col.value);_render(CQ.scene,CQ.cam);};
+  const draw=(s,c)=>{const sc=r.getScissor(V4),sz=r.getSize(V2);
+    const part=r.getScissorTest()&&(sc.x>0||sc.y>0||sc.z<sz.x||sc.w<sz.y)&&(r.autoClear||s&&s.background&&s.background.isColor);
+    if(!part)return _render(s,c);
+    const ac=[r.autoClearColor,r.autoClearDepth,r.autoClearStencil];r.autoClearColor=r.autoClearDepth=r.autoClearStencil=false;
+    try{clearPane(s);return _render(s,c);}finally{r.autoClearColor=ac[0];r.autoClearDepth=ac[1];r.autoClearStencil=ac[2];}};
+  r.render=function(s,c){if(!G.ready)return;if(G.inFrame){if(G.skip)return;G.drew=true;}
+    if(r.getRenderTarget()!==null)return _render(s,c);
+    if(G.offscreen){const sz=r.getDrawingBufferSize(V2),pr=r.getPixelRatio(),rt=G.offRT&&G.offRT.width===sz.x&&G.offRT.height===sz.y?G.offRT:null;
       if(!rt){if(G.offRT)G.offRT.dispose();G.offRT=new T.RenderTarget(sz.x,sz.y,{samples:4});}
-      const R=G.offRT;R.viewport.copy(this.getViewport(V4)).multiplyScalar(pr).round();R.scissor.copy(this.getScissor(V4)).multiplyScalar(pr).round();R.scissorTest=this.getScissorTest();   // половины сплита — как на холсте
-      this.setRenderTarget(R);try{return _render(s,c);}finally{this.setRenderTarget(null);}}
-    return _render(s,c);};
-  G.rawRender=r.render;   // без обёрток модулей (постобработка рисует ими свои проходы)
+      const R=G.offRT;R.viewport.copy(r.getViewport(V4)).multiplyScalar(pr).round();R.scissor.copy(r.getScissor(V4)).multiplyScalar(pr).round();R.scissorTest=r.getScissorTest();   // половины сплита — как на холсте
+      r.setRenderTarget(R);try{return draw(s,c);}finally{r.setRenderTarget(null);}}
+    return draw(s,c);};
+  G.rawRender=r.render.bind(r);   // без обёрток модулей (постобработка рисует ими свои проходы)
   r.init().then(()=>{G.ready=true;G.backend=r.backend&&r.backend.isWebGPUBackend?'webgpu':'webgl2';document.documentElement.dataset.gpu=G.backend;})
     .catch(e=>{console.error('final07: рендерер не запустился',e);});
   return r;};
