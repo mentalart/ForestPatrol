@@ -12,6 +12,10 @@
 zlataya_cep/docs/*                            -
 zlataya_cep/zlataya_cep_final0[1-5].html      -
 zlataya_cep/zlataya_cep_final06.html          -
+zlataya_cep/zlataya_cep_final07.html          -
+tools/three/*                                 -
+tools/tests/gpu_parity.py                     -
+tools/tests/regress_list_final07.txt          -
 tools/video/*                                 -
 tools/script/*                                -
 tools/tests/grid.js                           -
@@ -38,6 +42,12 @@ zlataya_cep/build/voice/*                     tfin_voice
 # ---- сборка релиза ----
 zlataya_cep/build/build_final.py              @wide tfin_voice tfin_menu
 zlataya_cep/build/three.r128.min.js           @full
+# ---- final07 (WebGPU, Three r186): «@final07» — боты гоняются на zlataya_cep_final07.html (сборка build_final.py --gpu) ----
+zlataya_cep/build/three.r186.webgpu.min.js    @final07 @full07
+zlataya_cep/build/gpu/gpu_compat.js           @final07 tfin_gpu tfin_post tfin_art tfin_occ tfin_fadebatch tfin_fadesplit tfin_slash tfin_guard tfin_potap tfin_kitezh_water tfin_kitezh_sea tfin_prolog_night tfin_cine tfin_menu tfin_episolo
+zlataya_cep/build/gpu/gpu_early.js            @final07 tfin_gpu tfin_post tfin_art tfin_occ tfin_fadebatch tfin_fadelocal tfin_kitezh_water tfin_kitezh_sea tfin_gorend tfin_cast
+zlataya_cep/build/gpu/gpu_shaders.js          @final07 tfin_gpu tfin_art tfin_slash tfin_guard tfin_potap tfin_kitezh_water tfin_kitezh_sea tfin_prolog_night tfin_koshfx tfin_uzda
+zlataya_cep/build/gpu/gpu_late_*.js           @final07 tfin_gpu tfin_post
 zlataya_cep/build/header.txt                  -
 zlataya_cep/build/fonts/*                     tfin_splash tfin_menu
 zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine tfin_hints

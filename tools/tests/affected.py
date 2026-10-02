@@ -11,6 +11,8 @@
 #   · index.html — по изменённым строкам: внутри функции уровня (buildXX из таблицы LEVELS) — боты этого уровня; общая функция —
 #     уровни, где её вызывают; если её вызывает общий код (или правка вне функций) — полный регресс; комментарий в начале файла — ничего;
 #   · любая правка кода игры добавляет страховку: smoke (все уровни грузятся и играются, ~25 с), tfin_col (коллизии всех уровней), tallobj.
+#   · final07 (WebGPU): файлы только final07 (zlataya_cep/build/gpu/*, Three r186) помечены в таблице @final07 — их боты гоняются на
+#     zlataya_cep_final07.html (сборка build_final.py --gpu) со страховкой и tfin_gpu; @full07 — полный регресс final07.
 # Полный регресс нужен, только когда скрипт так скажет, перед выпуском новой версии релиза и один раз в main после слияния нескольких веток.
 import fnmatch, os, re, subprocess, sys
 
@@ -53,7 +55,9 @@ for lid, fn in LEVELS:
     LV_OF_FN.setdefault(fn, []).append(lid)
 
 REL, PROTO = listed('regress_list_final.txt'), listed('regress_list.txt')
-ALLBOTS = list(dict.fromkeys(REL + PROTO))
+REL07 = listed('regress_list_final07.txt') if os.path.exists(os.path.join(T, 'regress_list_final07.txt')) else []   # боты только final07
+GUARD07 = ['tfin_gpu', 'smoke', 'tfin_col', 'tallobj']
+ALLBOTS = list(dict.fromkeys(REL + PROTO + REL07))
 
 
 def bot_levels(b):
@@ -155,6 +159,7 @@ def callers_levels(fn):
 
 def analyse(files, base):
     bots, why, full, wide, code = [], [], [], False, False
+    g07, full07 = [], []   # final07: боты на zlataya_cep_final07.html; причины полного регресса final07
 
     def add(bs, reason):
         for b in bs:
@@ -165,6 +170,13 @@ def analyse(files, base):
     def expand(what, reason):
         nonlocal wide
         out = []
+        if what and what[0] == '@final07':   # только final07: боты — на его сборке
+            for w in what[1:]:
+                if w == '@full07':
+                    full07.append(reason)
+                elif w not in g07:
+                    g07.append(w)
+            return out
         for w in what:
             if w == '-':
                 continue
@@ -225,13 +237,20 @@ def analyse(files, base):
             continue
         m = re.match(r'tools/tests/bots/(\w+)\.js$', f)
         if m:
-            add([m.group(1)], '%s — изменён сам бот' % f)
+            if m.group(1) in REL07 and m.group(1) not in REL:
+                g07.append(m.group(1)) if m.group(1) not in g07 else None
+                why.append('%s — изменён сам бот (final07)' % f)
+            else:
+                add([m.group(1)], '%s — изменён сам бот' % f)
             continue
-        if re.match(r'tools/tests/regress_list(_final)?\.txt$', f):
+        if re.match(r'tools/tests/regress_list(_final|_final07)?\.txt$', f):
             dd = sh('git', 'diff', '-U0', base, *([TO] if TO else []), '--', f)
             old = {b for l in re.findall(r'^-(?!-)(.*)$', dd, re.M) if not l.startswith('#') for b in l.split()}
             nb = [b for l in re.findall(r'^\+(?!\+)(.*)$', dd, re.M) if not l.startswith('#') for b in l.split() if b in ALLBOTS and b not in old]
-            if nb:
+            if nb and f.endswith('_final07.txt'):
+                g07.extend(b for b in nb if b not in g07)
+                why.append('%s — добавлены в список: %s' % (f, ' '.join(nb)))
+            elif nb:
                 add(nb, '%s — добавлены в список' % f)
             continue
         if f.startswith('zlataya_cep/build/rep_') and f.endswith('.py'):
@@ -257,11 +276,18 @@ def analyse(files, base):
             code = True
             continue
         if what != ['-']:
+            if what[0] == '@final07':
+                expand(what, f)
+                why.append('%s → final07: %s' % (f, ' '.join(what[1:])))
+                continue
             code = code or f.startswith('zlataya_cep/build/')
             add(expand(what, f), '%s → %s' % (f, ' '.join(what)))
     if code or bots:
         add(GUARD, 'страховка при любой правке кода: ' + ' '.join(GUARD))
-    return bots, why, full, wide
+    if g07:
+        g07 += [b for b in GUARD07 if b not in g07]
+        why.append('final07: страховка ' + ' '.join(GUARD07))
+    return bots, why, full, wide, g07, full07
 
 
 _LC = {}
@@ -292,23 +318,30 @@ def main():
             base = 'HEAD'
     if files is None:
         files = changed_files(base)
-    bots, why, full, wide = analyse(files, base)
+    bots, why, full, wide, g07, full07 = analyse(files, base)
     print('База сравнения: %s · изменено файлов: %d' % (base[:12], len(files)))
     for w in why:
         print('  · ' + w)
-    if full:
+    if full or full07:
         print('\nНУЖЕН ПОЛНЫЙ РЕГРЕСС:')
-        for w in full:
+        for w in full + ['final07: ' + x for x in full07]:
             print('  ! ' + w)
-        print('  LIST=tools/tests/regress_list_final.txt tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html')
+        if full:
+            print('  LIST=tools/tests/regress_list_final.txt tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html')
+        if full07 or g07:
+            print('  LIST="tools/tests/regress_list_final.txt tools/tests/regress_list_final07.txt" tools/tests/regress.sh zlataya_cep/zlataya_cep_final07.html'
+                  '   # final07: python3 zlataya_cep/build/build_final.py --gpu')
         return 2
     rel = [b for b in bots if b in REL or b not in PROTO]
     pro = [b for b in bots if b in PROTO and b not in REL]
-    if not bots:
+    if not bots and not g07:
         print('\nБоты не нужны (документы, инструменты вне игры).')
         return 0
-    print('\n%s: %d из %d ботов' % ('Широкая проверка' if wide else 'Выборочная проверка', len(bots), len(set(REL + PROTO))))
-    print('  релиз (zlataya_cep_final06.html): ' + ' '.join(rel))
+    print('\n%s: %d из %d ботов' % ('Широкая проверка' if wide else 'Выборочная проверка', len(bots) + len(g07), len(set(REL + PROTO + REL07))))
+    if rel:
+        print('  релиз (zlataya_cep_final06.html): ' + ' '.join(rel))
+    if g07:
+        print('  final07 (zlataya_cep_final07.html, WebGPU): ' + ' '.join(g07))
     if pro:
         print('  прототип (index.html): ' + ' '.join(pro))
     if not run:
@@ -321,7 +354,12 @@ def main():
         if subprocess.run([sys.executable, os.path.join(ROOT, 'zlataya_cep', 'build', 'build_final.py')], cwd=ROOT).returncode:
             print('Сборка остановилась — боты не запускались.')
             return 1
-    for group, html in ((rel, 'zlataya_cep/zlataya_cep_final06.html'), (pro, 'index.html')):
+    if g07 and '--no-build' not in a:   # final07 — та же сборка с Three r186 и WebGPU
+        print('\nСборка final07…', flush=True)
+        if subprocess.run([sys.executable, os.path.join(ROOT, 'zlataya_cep', 'build', 'build_final.py'), '--gpu'], cwd=ROOT).returncode:
+            print('Сборка final07 остановилась — боты не запускались.')
+            return 1
+    for group, html in ((rel, 'zlataya_cep/zlataya_cep_final06.html'), (g07, 'zlataya_cep/zlataya_cep_final07.html'), (pro, 'index.html')):
         if not group:
             continue
         lst = os.path.join(T, 'out', 'affected_list.txt')

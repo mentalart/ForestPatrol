@@ -14,7 +14,8 @@
 {const T=THREE,L=T.TSL,FX=T.FX,GP=FIN.gpu;   // G — состояние игры (ролик: G.cine)
  const P=GP.post={panes:[],inPipe:false,frames:0,stats:{panes:0,lvl:0},
    force:(m=>m?+m[1]:null)(/[?&]post=(\d)/.exec(location.search))};
- P.level=()=>{if(/[?&]nopost/.test(location.search)||!GP.ready||FIN.titleOn)return 0;if(P.force!==null)return P.force;const q=FIN.set.quality;return q==='high'?2:q==='mid'?1:0;};
+ P.level=()=>{if(/[?&]nopost/.test(location.search)||!GP.ready||FIN.titleOn)return 0;if(P.force!==null)return P.force;const q=FIN.set.quality;return Math.min(q==='high'?2:q==='mid'?1:0,P.cap);};
+ P.cap=2;   // потолок по скорости кадров (ниже)
  // свечение: излучение материала + материалы, прибавляющие свет (ореолы, искры) — в отдельный канал прохода
  {const so=T.NodeMaterial.prototype.setupOutput;
   T.NodeMaterial.prototype.setupOutput=function(b,out){out=so.call(this,b,out);const M=b.renderer.getMRT(),glow=this.blending===T.AdditiveBlending||this.userData.bloom;
@@ -52,9 +53,18 @@
   renderer.render=function(sc,cam){
     if(P.inPipe)return GP.rawRender(sc,cam);   // квадраты постобработки (тени в углах, свечение, вывод) — мимо обёрток модулей
     const lvl=sc===scene?P.level():0;if(!lvl||renderer.getRenderTarget()!==null)return _rr(sc,cam);
-    const p=paneFor(cam,lvl);p.near.value=cam.near;p.far.value=cam.far;
+    const p=paneFor(cam,lvl);p.near.value=cam.near;p.far.value=cam.far;p.used=P.frames;
+    if(P.frames%240===0)for(const q of P.panes.slice())if(P.frames-q.used>240){q.pp.dispose();q.rt.dispose();P.panes.splice(P.panes.indexOf(q),1);}   // панели, которыми давно не рисовали (другой уровень, качество, размер), — освободить
     renderer.setRenderTarget(p.rt);try{_rr(sc,cam);}finally{renderer.setRenderTarget(null);}   // сцена — в текстуру панели, с обёртками модулей
     P.inPipe=true;try{p.pp.render();}finally{P.inPipe=false;}P.frames++;P.stats.lvl=lvl;};}
  // в роликах резкость плавно уходит на передний план; вне роликов — нет
- {const _render=render;render=function(){const want=G.cine&&!FIN.titleOn?1:0;P.dofK.value+=(want-P.dofK.value)*0.08;if(P.dofK.value<0.002)P.dofK.value=0;_render();};}
+ // Слабый компьютер: если с постобработкой кадр в среднем дольше 24 мс (меньше ~40 кадров/с) три секунды подряд — постобработка
+ // на ступень ниже («высокое» → «среднее» → без неё) до конца игры; тени и трава остаются по настройке. Не для ботов и не при ?post=.
+ const AUTO={t:0,acc:0,n:0};
+ {const _render=render;render=function(){const want=G.cine&&!FIN.titleOn?1:0;P.dofK.value+=(want-P.dofK.value)*0.08;if(P.dofK.value<0.002)P.dofK.value=0;
+   const now=performance.now(),lvl=P.level();
+   if(AUTO.t&&lvl>0&&!navigator.webdriver&&P.force===null&&!document.hidden){const dt=now-AUTO.t;if(dt<250){AUTO.acc+=dt;AUTO.n++;}
+     if(AUTO.n>=120){const avg=AUTO.acc/AUTO.n;AUTO.acc=AUTO.n=0;if(avg>24){P.cap=lvl-1;console.info('final07: постобработка ниже — кадр '+avg.toFixed(1)+' мс');}}}
+   else AUTO.acc=AUTO.n=0;
+   AUTO.t=now;_render();};}
  FIN.post=P;}
