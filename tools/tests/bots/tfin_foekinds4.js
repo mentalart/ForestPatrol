@@ -1,5 +1,5 @@
 //@@
-// релиз final06: каждый вид врага виден (часть 4 из 4: виды с 30-го — мир 2: жемчужница, чайка, прилипала, Рак-Отшельник; первая часть — tfin_foekinds). Враг создаётся перед героями на ровном месте 1-1, 6 с драки; раз в секунду — кадр с врагом и без
+// релиз final06: каждый вид врага виден (часть 4 из 6: виды 26–29 — хамелеон, двойник, цепь, коса Кощея; первая часть — tfin_foekinds). Враг создаётся перед героями на ровном месте 1-1, 6 с драки; раз в секунду — кадр с врагом и без
 // него (разница в пикселях), плюс учёт треугольников (видимые части рисуются своими мешами или локальными пачками).
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 const O=ZC.FIN.occ,D=O.dbg,R=D.renderer,gl=R.getContext();O.fdt=0.05;
@@ -24,4 +24,4 @@ window.one=k=>{const P=ZC.players;for(const s of H0){P[s.q].downed=false;s.h.pos
   e.alive=false;e.g.visible=false;ZC.tick(30);return k+': checks='+res.checks+' minDiff='+(res.min===1e9?'-':res.min)+' zero='+res.zero+' trisBad='+res.tr+(res.notes.length?' ['+res.notes.join('; ')+']':'');};
 window.KINDS=ZC.FIN.dbgFoeKinds();KINDS.join(',')
 //@@
-lvl();KINDS.slice(29).map(one).concat(['errs='+window._errs.length+(window._errs[0]?' '+window._errs[0]:'')])
+lvl();KINDS.slice(25,29).map(one).concat(['errs='+window._errs.length+(window._errs[0]?' '+window._errs[0]:'')])

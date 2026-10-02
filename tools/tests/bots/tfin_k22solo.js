@@ -55,8 +55,10 @@ ZC.hold('KeyG',false);if(D.STV.state!=='done')throw new Error('не доехал
 //@@ shot=k22s_ride.png
 // бока: Потап выдёргивает кол, Йоша (её очередь) догоняет по рёбрам и лечит рану; так — три частокола
 const D=ZC.W.warp22('ribs');ZC.tick(20);NOCINE();const r=[];
-for(const P of D.PALS){const i=P.R.i;toKind('potap');r.push('p'+i+':'+RIBSEQs(i,2.6,20));for(let k=0;k<120&&!P.pulled;k++){me().face=Math.PI;if(me().prilip&&k%30===15)ZC.press('ShiftLeft');if(k%50===0)U.tap('KeyE');ZC.tick(1);}
-  toKind('yosha');r.push('y'+i+':'+RIBSEQs(i,0,25));for(let k=0;k<160&&!P.healed;k++){me().face=Math.PI;if(me().prilip&&k%30===15)ZC.press('ShiftLeft');if(k%50===0)U.tap('KeyE');ZC.tick(1);}
+// сбросило с ребра (выдох, прилипала) — вернуться на ребро у частокола и продолжить
+const BACK=(P,x)=>{const h=me();if(h.grounded&&h.groundRef!==P.R.col)r.push('back:'+RIBSEQs(P.R.i,x,12));};
+for(const P of D.PALS){const i=P.R.i;toKind('potap');r.push('p'+i+':'+RIBSEQs(i,2.6,20));for(let k=0;k<300&&!P.pulled;k++){me().face=Math.PI;if(k%40===39)BACK(P,2.6);if(me().prilip&&k%30===15)ZC.press('ShiftLeft');if(k%50===0)U.tap('KeyE');ZC.tick(1);}
+  toKind('yosha');r.push('y'+i+':'+RIBSEQs(i,0,25));for(let k=0;k<320&&!P.healed;k++){me().face=Math.PI;if(k%40===39)BACK(P,0);if(me().prilip&&k%30===15)ZC.press('ShiftLeft');if(k%50===0)U.tap('KeyE');ZC.tick(1);}
   if(!P.pulled||!P.healed)throw new Error('частокол '+i+': pulled='+P.pulled+' healed='+P.healed+' '+r.join()+' '+st());}
 let t=0;while(!ZC.G.cine&&t<240){ZC.tick(1);t++;}const eye=!!ZC.G.cine;NOCINE();r.push(RIBSEQs(5,0,14),HOPs(0,-190,10),callAll(8));
 if(!(me().pos.z<-186))throw new Error('бока не пройдены: '+r.join()+' '+st());'ribs solo eye='+eye+' '+r.join()
