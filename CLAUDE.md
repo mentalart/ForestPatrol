@@ -15,7 +15,7 @@
 - В начале сессии: `git fetch origin main && git merge origin/main`. Перед PR — снова влить свежую `main`, пересобрать релиз, `python3 tools/tests/affected.py --run`; в описании PR — что проверено. Чужую ветку перед слиянием можно оценить: `python3 tools/tests/affected.py --base origin/main --to origin/<ветка>`.
 - Одновременно не править один уровень (одну функцию `buildXX` в `index.html`) или один модуль — разные уровни сливаются сами. Кто над чем работает — в PR/issue.
 - Разрешение конфликтов:
-  - `zlataya_cep/zlataya_cep_final06.html` — вручную не сливать: `.gitattributes` оставляет вашу версию и помечает конфликт; после слияния исходников — `python3 zlataya_cep/build/build_final.py` и `git add` этого файла.
+  - `zlataya_cep/zlataya_cep_final06.html` и `zlataya_cep_final07.html` — вручную не сливать: `.gitattributes` оставляет вашу версию и помечает конфликт; после слияния исходников — `python3 zlataya_cep/build/build_final.py` (для final07 — с `--gpu`) и `git add` этого файла.
   - `zlataya_cep/build/voice/lines.json` — объединить записи обеих сторон (id уникальны по уровню: `5-1_091`, `5-B2_k01`, `p05a_hihi`); совпавший id — по смыслу. Сборка проверит, что каждая озвученная строка есть в игре. Файлы `.mp3` не конфликтуют.
   - `tools/tests/bots/tfin_col.js` (эталон коллизий `RELEASE`) — взять обе стороны и пересчитать для изменённых уровней; `regress_list*.txt` — объединить списки.
   - `CHANGELOG.md`, `README.md`, документы — оставить записи обеих сторон; крупная задача — свой документ в `zlataya_cep/docs/`.

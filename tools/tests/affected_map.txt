@@ -72,7 +72,7 @@ zlataya_cep/build/late_05_gallery.js          tfin_cast tfin_foecast
 zlataya_cep/build/late_15_heroes.js           tfin_art tfin_slash tfin_guard tfin_cast tfin_cine tfin_scooter tfin_budget tfin_downswap
 zlataya_cep/build/late_16_cast.js             tfin_cast tfin_cine tfin_art tfin_budget
 zlataya_cep/build/late_17_cast2.js            tfin_cast tfin_cine tfin_art tfin_budget
-zlataya_cep/build/late_18_foes.js             tfin_foekinds tfin_foekinds2 tfin_foekinds3 tfin_foekinds4 tfin_foekinds5 tfin_foekinds6 tfin_foeidle tfin_foecast tfin_budget tfoes
+zlataya_cep/build/late_18_foes.js             tfin_foekinds tfin_foekinds1b tfin_foekinds2 tfin_foekinds2b tfin_foekinds3 tfin_foekinds4 tfin_foekinds5 tfin_foekinds6 tfin_foeidle tfin_foecast tfin_budget tfoes
 zlataya_cep/build/late_19_gor.js              tfin_foecast tfin_cast @level:4-B
 zlataya_cep/build/late_30_hero.js             tfin_art tfin_slash
 zlataya_cep/build/late_32_downswap.js         tfin_downswap tsolo
