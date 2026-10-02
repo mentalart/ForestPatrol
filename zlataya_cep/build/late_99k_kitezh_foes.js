@@ -1,6 +1,6 @@
 /* ============================== РЕЛИЗ final06 · МИР 2: ЖЕМЧУЖНИЦА И ЩУКИ, ЧТО ПЛАВАЮТ ============================== */
-// Под водой рыба не лежит на дне. Щука мира 2 теперь плавает свободно: кружит над дном, а заметив героя, подплывает на его глубину,
-// держится в 4–5 м и пускает синюю каплю (отбей — «сама себя», Пробой: оглушённая, опускается к дну — бей). От воды на участке не зависит.
+// Под водой рыба не лежит на дне. Щука мира 2 теперь плавает свободно: кружит над дном, а заметив героя у своей воды, подплывает на его
+// глубину, держится в 4–5 м и пускает синюю каплю (отбей — «сама себя», Пробой: оглушённая, опускается к дну — бей). От воды на участке не зависит.
 // А на дне живёт новый морок — Жемчужница (pearlClam): огромная ракушка. Створки закрыты — не пробить. Приоткрывается, жемчужина
 // разгорается синим — и летит в героя: отбей её обратно в раскрытые створки — Пробой. Вода ушла (отлив гуслями) — Жемчужница
 // ахает и раскрывается настежь — тоже Пробой. Стоит на месте — ей и положено лежать на дне.
@@ -43,9 +43,12 @@ FIN.pearlClam=pearlClam;
 {const _pk=pike;pike=function(x,z,zone,bed,o){if(!W||W.world!==2)return _pk(x,z,zone,bed,o);
   const g0=groundAt(x,z,(bed||0)+4).y,fl0=g0>-1e8?g0:(bed||0);
   const e=makeFoe('shchuka',x,z,Object.assign({y:fl0+1.3,leash:7},o||{}));e.zone=zone;e.bed=bed;e.swim=true;e.flop=false;e.sideOpen=false;e.noMove=true;e.ph=rand(0,6);e.circ=rand(0,6);
+  // своя вода — участок с запасом 1,5 м: за стенку соседнего канала щука не стреляет
+  const atWater=h=>!zone||(h.pos.x>zone.minx-1.5&&h.pos.x<zone.maxx+1.5&&h.pos.z>zone.minz-1.5&&h.pos.z<zone.maxz+1.5);
   const swimTo=(e,dx,dz,sp,dt)=>{const nx=e.pos.x+dx*sp*dt,nz=e.pos.z+dz*sp*dt;if(hd(new V3(nx,0,nz),e.home)>e.leash)return;const r=collideXZ(nx,nz,e.r,e.pos.y,e.pos.y+0.9,true);e.pos.x=r.x;e.pos.z=r.z;};
   e.tick=(e,dt)=>{e.spMul=1;e.flop=false;if(e.state==='spawn'||e.state==='dying')return;
-    const gy=groundAt(e.pos.x,e.pos.z,e.pos.y+1.2).y,floor=gy>-1e8?gy:fl0;const h=foeTarget(e),near=h&&hd(h.pos,e.pos)<11;
+    const gy=groundAt(e.pos.x,e.pos.z,e.pos.y+1.2).y,floor=gy>-1e8?gy:fl0;const h=foeTarget(e),own=h&&atWater(h),near=own&&hd(h.pos,e.pos)<11;
+    if(h&&!own&&(e.state==='idle'||e.state==='recover'))e.cd=Math.max(e.cd,0.6);   // герой не у её воды (за стеной, на берегу) — не стреляет
     let ty=floor+1.3;if(e.state==='broken')ty=floor+0.45;else if(near)ty=Math.max(floor+0.5,h.pos.y+0.55);ty+=Math.sin(G.time*1.6+e.ph)*0.15;
     e.pos.y=damp(e.pos.y,ty,e.state==='broken'?3:2.2,dt);e.baseY=e.pos.y;
     if(e.state==='idle'||e.state==='recover'){

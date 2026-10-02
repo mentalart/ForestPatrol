@@ -17,10 +17,12 @@ window.callAll=()=>{U.tap('Digit1');for(let i=0;i<60*10;i++){ZC.tick(1);if(i>60&
 window.st=()=>U.st()+' errs='+_errs.length;
 'solo='+ZC.G.solo
 //@@
-// Переливная улица: Потап — на заслонку; Пелагея (справа прилив) — к террасе, верёвка; Прошка — прилив слева, к террасе, верёвка
+// Переливная улица: Потап — на заслонку; Пелагея (справа прилив) — по мостовой к правому каналу, к террасе, верёвка (каплю щуки — щитом);
+// Прошка — прилив слева, к террасе, верёвка
+window.SH=h=>{if(ZC.W.bolts.some(b=>b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2))ZC.press('KeyG');};
 const D=ZC.W.warp21('perel');ZC.tick(20);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}
 toKind('potap');const r=[go(-10.2,-80.2,5),go(-10.2,-86,6),go(-2.8,-95,8)];ZC.tick(20);if(!D.SLU.held())throw new Error('Потап не на заслонке: '+r.join()+' '+st());
-toKind('pelageya');r.push(go(8.3,-100,10),go(8.3,-104.5,4,h=>{if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');}),go(8.3,-109.2,4,h=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}),go(5.9,-110.4,3));
+toKind('pelageya');r.push(go(3,-78.4,8,SH),go(8.3,-100,10,SH),go(8.3,-104.5,4,h=>{SH(h);if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');}),go(8.3,-109.2,4,h=>{SH(h);if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}),go(5.9,-110.4,3,SH));
 me().face=-Math.PI/2;U.tap('KeyF');ZC.tick(20);if(!D.ropes[1].pulled)throw new Error('Пелагея не дёрнула: '+r.join()+' '+st());
 toKind('proshka');r.push(go(-9.8,-79.4,10));U.tap('KeyR');ZC.tick(160);if(D.CL.state!=='high')throw new Error('левый прилив не пошёл: '+D.CL.state+' '+st());
 r.push(go(-8.3,-100,8),go(-8.3,-104.5,4,h=>{if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');}),go(-8.3,-109.2,4,h=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}),go(-5.9,-110.4,3));

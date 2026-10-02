@@ -35,10 +35,12 @@ r.push(U.walkTo(0,-8.3,-109.2,4,(h)=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space
 ZC.HERO.proshka.face=Math.PI/2;U.tap('KeyF');ZC.tick(30);if(!D.ropes[0].pulled)throw new Error('левая верёвка не дёрнута: '+r.join()+' '+U.act(0).pos.toArray().map(v=>v.toFixed(2)));
 if(!D.PG[1].open)throw new Error('ворота Пелагеи не открылись');'left rope ok '+r.join()
 //@@
-// Пелагея: прилив справа (Потап на заслонке держит — левый уходит в отлив), на лодку, на террасу, верёвка — ворота Прошки
+// Пелагея: прилив справа (Потап на заслонке держит — левый уходит в отлив), на лодку, на террасу, верёвка — ворота Прошки;
+// в канале плавает щука — её каплю Пелагея отбивает щитом (SH)
+window.SH=pi=>h=>{if(ZC.W.bolts.some(b=>b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2))ZC.press(pi?'Period':'KeyG');};
 const D=ZC.W.dbg21();ACT(1,'pelageya');const r=[U.walkTo(1,9.8,-79.4,8)];U.tap('Semicolon');ZC.tick(160);if(D.CR.state!=='high'||D.CL.state!=='low')throw new Error('правый прилив не пошёл: '+D.CR.state);
-r.push(U.walkTo(1,8.3,-100,8),U.walkTo(1,8.3,-104.5,4,(h)=>{if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('KeyM');}));ZC.tick(30);
-r.push(U.walkTo(1,8.3,-109.2,4,(h)=>{if(h.grounded&&h.pos.y<3.1)ZC.press('KeyM');}));ZC.tick(20);r.push(U.walkTo(1,5.9,-110.4,3));ZC.tick(5);ZC.HERO.pelageya.face=-Math.PI/2;U.tap('Comma');ZC.tick(30);
+r.push(U.walkTo(1,8.3,-100,8,SH(1)),U.walkTo(1,8.3,-104.5,4,(h,i)=>{SH(1)(h);if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('KeyM');}));ZC.tick(30);
+r.push(U.walkTo(1,8.3,-109.2,4,(h)=>{SH(1)(h);if(h.grounded&&h.pos.y<3.1)ZC.press('KeyM');}));ZC.tick(20);r.push(U.walkTo(1,5.9,-110.4,3,SH(1)));ZC.tick(5);ZC.HERO.pelageya.face=-Math.PI/2;U.tap('Comma');ZC.tick(30);
 if(!D.ropes[1].pulled||!D.PG[0].open)throw new Error('правая верёвка/левые ворота: '+r.join()+' '+U.act(1).pos.toArray().map(v=>v.toFixed(2)));
 r.push(U.walkTo(0,-6,-114,5),U.walkTo(1,6,-114,5),U.walkTo(0,-6,-117.5,4),U.walkTo(1,6,-117.5,4));if(!(U.act(0).pos.z<-113&&U.act(1).pos.z<-113))throw new Error('не прошли ворота: '+r.join());'perelivnaya ok'
 //@@ shot=k21_perel_done.png
