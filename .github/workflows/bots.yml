@@ -16,7 +16,7 @@ concurrency:
 jobs:
   bots:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 120         # широкая выборка (правка целого мира — 45+ ботов) на раннере идёт дольше часа
     steps:
       - uses: actions/checkout@v4
         with:
