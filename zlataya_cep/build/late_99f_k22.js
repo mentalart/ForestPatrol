@@ -6,6 +6,7 @@
 //      дыхание кита гонит волну через хребет — щит или прыжок, иначе смоет назад, догоняй.
 //   «Голова кита»: кит икает — «Ик!» — из дыры в голове бьёт струйка, а в ней золото: кит что-то проглотил (это язык колокола — в 2-4).
 // В фонтане дыхания тоже мелькает золото. Звеньев столько же (4), орешков больше.
+{const L=LEVELS.find(l=>l.id==='2-2');if(L)L.nuts=7;}   // орешков на уровне стало больше — для списка уровней
 WHO.shchuka=['Щука','#9ad0a0'];VOICE.shchuka={f:300,w:'triangle',sp:0.09};
 function pikeMesh22(){const g=new THREE.Group();W.group.add(g);const m=M(0x6a8a5a),bl=M(0xd8e0c0),gold=M(COL.gold,{emissive:0xffb000,emissiveIntensity:0.7});
   const b=new THREE.Mesh(new THREE.SphereGeometry(0.4,12,8),m);b.scale.set(0.55,0.6,2.2);g.add(b);const be=new THREE.Mesh(new THREE.SphereGeometry(0.36,10,6),bl);be.scale.set(0.5,0.4,2.0);be.position.y=-0.08;g.add(be);

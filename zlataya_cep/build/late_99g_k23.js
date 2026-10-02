@@ -6,6 +6,7 @@
 //      Тайное течение видно только Совиным взором Пелагеи — сыграй его с уступа, и водоворот распадётся.
 //   «Ёрш Ершович»: озорник в озере. Невод поперёк озера держат двое на камнях; двое у раковин пускают течения навстречу —
 //      одно течение ёрш проскочит, два — зажмут посредине, и невод возьмёт. Потом рыбий суд: Сом, Лещ и Ёрш (по сказке «Ёрш Ершович»).
+{const L=LEVELS.find(l=>l.id==='2-3');if(L)L.nuts=5;}   // орешков на уровне стало больше — для списка уровней
 WHO.som=['Сом-судья','#a8b0c8'];WHO.leshch=['Лещ','#d8d0b0'];WHO.yorsh=['Ёрш','#e0a060'];VOICE.som={f:90,w:'triangle',sp:0.14};VOICE.leshch={f:260,w:'sine',sp:0.1};VOICE.yorsh={f:620,w:'square',sp:0.06};
 function yorshMesh23(){const g=new THREE.Group();W.group.add(g);const m=M(0xb8904a),dk=M(0x6a5030);const b=new THREE.Mesh(new THREE.SphereGeometry(0.3,10,8),m);b.scale.set(0.7,0.8,1.4);g.add(b);
   for(let i=0;i<7;i++){const c=part(g,new THREE.ConeGeometry(0.04,0.3,4),dk,0,0.22+Math.sin(i*0.45)*0.03,-0.3+i*0.1);c.rotation.x=-0.3;}

@@ -27,8 +27,10 @@ r.push('fed '+t0+' fed='+p.fed.toFixed(1)+' guard='+p.guardAll()+' sig='+p.signa
 ZC.tick(1);
 //@@
 ZC.startFrom(ZC.LV('2-5'));ZC.G.manual=true;ZC.tick(30);const F=ZC.W.flags;const H=ZC.HERO;F.voice='sunk';F.given=true;F.b1=F.b2=F.b3=true;
-H.proshka.pos.set(-3,6,-76.8);H.pelageya.pos.set(3,6,-76.8);H.potap.pos.set(-4,6,-76.6);H.yosha.pos.set(4,6,-76.6);ZC.tick(40);const t=ZC.W.enemies.find(e=>e.kind==='tyagun');const MZ=ZC.W.waters.find(z=>z.minx===-6&&z.maxx===6&&z.minz===-88);
-ZC.W.enemies.filter(e=>e.kind!=='tyagun').forEach(e=>{e.alive=false;ZC.W.group.remove(e.g);});const r=['high: guard='+t.guardAll()+' up='+t.up+' y='+t.pos.y.toFixed(2)];U.walkTo(0,-4,-79.5,3);U.tap('KeyR');ZC.tick(150);r.push('low: state='+MZ.state+' up='+t.up+' guard='+t.guardAll()+' y='+t.pos.y.toFixed(2)+' side='+t.sideOpen);r
+// релиз final06: в 2-5 главный колокол дальше по городу на 68 м (late_99i_k25.js) — туда переносит warp25('bell')
+const REL=!!ZC.W.warp25;if(REL){ZC.W.warp25('bell');ZC.tick(5);}const DZ=REL?-68:0;
+H.proshka.pos.set(-3,6,-76.8+DZ);H.pelageya.pos.set(3,6,-76.8+DZ);H.potap.pos.set(-4,6,-76.6+DZ);H.yosha.pos.set(4,6,-76.6+DZ);ZC.tick(40);const t=ZC.W.enemies.find(e=>e.kind==='tyagun');const MZ=ZC.W.waters.find(z=>z.minx===-6&&z.maxx===6&&z.minz===-88+DZ);
+ZC.W.enemies.filter(e=>e.kind!=='tyagun').forEach(e=>{e.alive=false;ZC.W.group.remove(e.g);});const r=['high: guard='+t.guardAll()+' up='+t.up+' y='+t.pos.y.toFixed(2)];U.walkTo(0,-4,-79.5+DZ,3);U.tap('KeyR');ZC.tick(150);r.push('low: state='+MZ.state+' up='+t.up+' guard='+t.guardAll()+' y='+t.pos.y.toFixed(2)+' side='+t.sideOpen);r
 //@@ shot=nf_tyag.png
 ZC.tick(1);
 //@@
