@@ -31,7 +31,7 @@ function pfFist(h,n){const B=h.rig,hb=B&&B['hand'+n];if(!hb)return null;const g=
   const flame=new THREE.Mesh(new THREE.SphereGeometry(0.22,14,10),new THREE.ShaderMaterial({uniforms:{uT:{value:0},uK:{value:0}},vertexShader:PF_FL_VS,fragmentShader:PF_FL_FS,
     transparent:true,depthWrite:false,fog:false,toneMapped:false}));flame.scale.set(1,1.25,1);flame.position.y=0.03;
   const core=new THREE.Mesh(new THREE.SphereGeometry(0.075,10,8),new THREE.MeshBasicMaterial({color:0xffe08a,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false,toneMapped:false}));
-  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:PF_TEX,color:0xff7418,transparent:true,depthWrite:false,fog:false,toneMapped:false}));glow.scale.setScalar(0.7);
+  const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:PF_TEX,color:0xff7418,transparent:true,depthWrite:false,fog:false,toneMapped:false}));glow.scale.setScalar(0.7);glow.raycast=()=>{};   // спрайт лучом не задевается (камера ролика проверяет сцену лучами)
   for(const o of[g,flame,core,glow]){o.userData.noBatch=true;o.userData.occEx=true;o.renderOrder=12;o.frustumCulled=false;}
   g.add(glow);g.add(flame);g.add(core);hb.add(g);g.visible=false;return {g,flame,core,glow,hb,n,k:0,flare:0,emb:0};}
 function pfFists(h){let F=PF.fists.get(h);if(F&&F.every(f=>f&&f.hb===h.rig['hand'+f.n]&&f.g.parent===f.hb))return F;
@@ -110,7 +110,7 @@ function pfCrTick(dt){for(let k=PF.live.length-1;k>=0;k--){const L=PF.live[k];L.
     if(q>2){L.o.busy=false;if(L.o.g.parent)L.o.g.parent.remove(L.o.g);PF.live.splice(k,1);}}}
 // ---------- дым при попадании ----------
 function pfPuff(){let s=PF.spool.find(x=>!x.busy);
-  if(!s){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:PF_SMOKE_TEX,color:0x9a948e,transparent:true,depthWrite:false,fog:false}));sp.userData.noBatch=true;sp.userData.occEx=true;sp.renderOrder=11;s={sp,busy:false};PF.spool.push(s);}
+  if(!s){const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:PF_SMOKE_TEX,color:0x9a948e,transparent:true,depthWrite:false,fog:false}));sp.userData.noBatch=true;sp.userData.occEx=true;sp.renderOrder=11;sp.raycast=()=>{};s={sp,busy:false};PF.spool.push(s);}
   s.busy=true;return s;}
 function pfSmoke(p){if(!W||!W.group)return;const n=Math.round(4*(FXQ?FXQ():1))+1;
   // вспышка огня в точке удара (вместо белой звезды «бах», которой в референсе нет)

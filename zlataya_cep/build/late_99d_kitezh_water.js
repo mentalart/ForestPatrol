@@ -30,7 +30,7 @@ function kwShellMesh(x,z,y,kind,ry){const g=new THREE.Group();g.position.set(x,y
   else if(kind==='dance'){const cm=M(COL.gold,{emissive:0xffb000,emissiveIntensity:0.6});addMesh(new THREE.CylinderGeometry(0.16,0.14,0.08,8),cm,0,0,0,ico);for(let i=0;i<5;i++){const a=i/5*Math.PI*2;addMesh(new THREE.ConeGeometry(0.04,0.16,4),cm,Math.cos(a)*0.13,0.1,Math.sin(a)*0.13,ico);}}
   else{const fm=M(0xffc930,{emissive:0xc08000,emissiveIntensity:0.6});const b=addMesh(new THREE.SphereGeometry(0.12,8,6),fm,0,0,0,ico);b.scale.set(0.55,0.8,1.5);const t=addMesh(new THREE.ConeGeometry(0.1,0.16,4),fm,0,0,-0.22,ico);t.rotation.x=-Math.PI/2;}
   return {g,fan,ico,gm,sm,kind};}
-function kwShell(kind,x,z,y,ref,o){o=o||{};const m=kwShellMesh(x,z,y||0,kind,o.ry);const S=Object.assign(m,{kind,x,z,y:y||0,ref,r:o.r||2.2,label:o.label||null,dirDef:o.dirDef||0});KW.shells.push(S);return S;}
+function kwShell(kind,x,z,y,ref,o){o=o||{};const m=kwShellMesh(x,z,y||0,kind,o.ry);const S=Object.assign(m,{kind,x,z,y:y||0,ref,r:o.r||2.2,label:o.label||null,say:o.say||null,dirDef:o.dirDef||0});KW.shells.push(S);return S;}
 function kwShellAt(h){let best=null,bd=1e9;for(const s of KW.shells){const d=Math.hypot(h.pos.x-s.x,h.pos.z-s.z);if(d<s.r&&Math.abs(h.pos.y-s.y)<2.6&&d<bd&&!(s.ref&&s.ref.off)){bd=d;best=s;}}return best;}
 FIN.kwShellAt=kwShellAt;
 // ---------- течение ----------
@@ -150,7 +150,7 @@ function kwPlay(pi,h,S){gusliFx(h,'high');h.kwLast={kind:S.kind,ref:S.ref,shell:
     kwSetCurrent(C,dir,pi);C.by=h;h.kwLast.dir=dir;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Течение!','#9fe6ff');
     if(!G.flags.kwCurTold){G.flags.kwCurTold=true;tip(pi,'Раковина с рыбкой — течение: вода побежит туда, куда смотришь.<br>Сменишь героя сразу — оставленный доиграет напев, 15 секунд держит.',4);}}
   else if(S.kind==='ring'||S.kind==='dance'){const K=S.ref;if(K.lock){const why=K.lock(pi,h);if(why){floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),why,'#ffe08a');SFX.miss();return;}}
-    K.ring(h);floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),S.kind==='dance'?'Пляши, царь!':'Звон!','#ffe08a');if(S.kind==='dance')return;
+    K.ring(h);floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),S.say||(S.kind==='dance'?'Пляши, царь!':'Звон!'),'#ffe08a');if(S.kind==='dance')return;
     if(!G.flags.kwRingTold){G.flags.kwRingTold=true;tip(pi,'Раковина с колокольчиком — звон: пока колокол гудит, невидимый Китеж виден и твёрд.<br>Сменишь героя сразу — оставленный доиграет, 15 секунд звенит.',4.2);}}}
 {const _pg=playGusli;playGusli=function(pi){const p=players[pi],h=active(pi);
   if(W&&W.world===2&&W.abil.gusli&&!p.downed&&!h.hang&&!h.cling&&!((p.gusCd||0)>0)){const S=kwShellAt(h);if(S){p.gusCd=0.7;kwPlay(pi,h,S);return;}}

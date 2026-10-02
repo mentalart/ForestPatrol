@@ -11,7 +11,7 @@ window.CLIMB=(S,from)=>{let n=0,jumps=0;for(const L of S.leaves.slice(from||0)){
     ZC.hold(B0[0],dx<-0.12);ZC.hold(B0[1],dx>0.12);ZC.hold(B0[2],dz<-0.12);ZC.hold(B0[3],dz>0.12);if(h.grounded&&h.groundRef===c&&d<0.4){ok=true;break;}
     if(h.grounded&&c.maxy>h.pos.y+0.2&&d<1.8){ZC.press('Space');jumps++;}ZC.tick(1);}
   rel();ZC.tick(2);if(!ok)return 'stuck@'+n+' y='+me().pos.y.toFixed(2);n++;}return 'ok jumps='+jumps;};
-window.TERRACE=()=>{for(let i=0;i<120;i++){const h=me();ZC.hold(B0[2],true);ZC.tick(1);if(h.pos.z<-259.6&&h.pos.y>4.3)break;}rel();ZC.tick(5);return me().pos.y>4.3&&me().pos.z<-259.4;};
+window.TERRACE=()=>{const G=ZC.W.dbg21().DG;for(let i=0;i<120;i++){const h=me();ZC.hold(B0[2],true);ZC.tick(1);if(h.pos.z<-259.6+G&&h.pos.y>4.3)break;}rel();ZC.tick(5);return me().pos.y>4.3&&me().pos.z<-259.4+G;};   // терраса сада сдвинута вместе с садом (DG)
 const D=ZC.W.warp21('garden');ZC.tick(20);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}ZC.W.flags.anchor=true;D.KS.forEach(S=>ZC.FIN.kwGrowKelp(S,true));ZC.tick(5);
 'leaves='+D.KS.map(S=>S.leaves.length+' top='+S.leaves[S.leaves.length-1].col.maxy.toFixed(2)).join(' | ')
 //@@
