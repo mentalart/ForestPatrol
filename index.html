@@ -2080,7 +2080,9 @@ function buildPrologue(){
    fl.add(new THREE.Mesh(new THREE.PlaneGeometry(1.1,1.5),M(0x3f7a44,{side:THREE.DoubleSide})));const pw=pawIcon();pw.scale.setScalar(1.1);pw.position.set(0,0.1,0.02);fl.add(pw);
    const b2=new THREE.Mesh(new THREE.PlaneGeometry(1.1,0.12),MB(COL.gold));b2.position.set(0,-0.8,0.01);fl.add(b2);}
   fadeable(walls);   // стена штаба с дверью, окном и знаменем: заслонит героев — станет полупрозрачной
-  for(let i=0;i<22;i++){const a=rand(Math.PI*0.45,Math.PI*1.55),r=rand(6.4,8.6),nx=Math.sin(a)*r,nz=Math.cos(a)*r,ny=rand(4.3,6.5),ns=rand(1.1,1.8);if(Math.abs(nx)<3.6&&nz<0)continue;needle(nx,ny,nz,-a+Math.PI/2,ns);}   // над выходом хвои нет — дорога к трещине видна
+  // еловые лапы растут из ствола наружу (верхушка конуса — от ствола; основание — у коры, выше стен штаба): внутрь комнаты не лезут;
+  // над выходом хвои нет — дорога к трещине видна
+  for(let i=0;i<22;i++){const a=rand(Math.PI*0.45,Math.PI*1.55),s=rand(1.1,1.8),r=R+0.3+0.9*s,nx=Math.sin(a)*r,nz=Math.cos(a)*r,ny=rand(4.9,6.6);if(Math.abs(nx)<3.6&&nz<0)continue;needle(nx,ny,nz,a+Math.PI/2,s);}
   const spots=[[-2.0,1.4],[2.2,1.4]].map(([x,z])=>{const g=new THREE.Group();g.position.set(x,0,z);W.group.add(g);const m=M(COL.yellow,{emissive:COL.yellow,emissiveIntensity:0.5});
     const disc=addMesh(new THREE.CylinderGeometry(0.85,0.85,0.04,28),m,0,0.03,0,g);disc.castShadow=false;const r=addMesh(new THREE.TorusGeometry(0.95,0.05,6,28),MB(0xffffff,{transparent:true,opacity:0.8}),0,0.07,0,g);r.rotation.x=Math.PI/2;return {x,z,g,m,r};});
   const tish=makeTishka();tish.g.position.set(-4.6,0.64,-4.3);tish.g.rotation.y=0.5;

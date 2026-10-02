@@ -100,6 +100,7 @@ zlataya_cep/build/late_92_koschei.js          @level:5-B2 tfin_foekinds3 tfoes
 zlataya_cep/build/late_93_koschei_level.js    @level:5-B2
 zlataya_cep/build/late_94_koschei_tut.js      @level:5-B2
 zlataya_cep/build/late_96_prolog_scooter.js   @level:p
+zlataya_cep/build/late_96b_prolog_night.js    @level:p
 zlataya_cep/build/late_97_buyan51.js          @level:5-1
 zlataya_cep/build/late_98_gor_lava.js         @level:4-B tfin_gorsolo
 zlataya_cep/build/late_99_kolobok_dance.js    @level:1-3
