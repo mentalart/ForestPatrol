@@ -32,7 +32,7 @@ build5B2=function(){
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.noLose=false;W.noPetals=false;W.fallY=-12;const T=HERO;const C=new V3(0,0,-13),R=11;
   if(!G.flags.names)G.flags.names={};
   Object.assign(K5,{st:0,fight:false,live:false,spark:null,locks:{},orbs:[],adds:[],needle:null,forge:null,zones:[],mark:0,log:[],said:{},bones:false,storm:0,stormTo:0});K5FX.length=0;K5TR.length=0;
-  if(G.flags.tut5b)K5.seen=Object.assign({},G.flags.tut5b);
+  K5.seen={};   // карточки «как победить» — перед каждым этапом при каждой игре уровня (отзыв 4); после «Сбился сказ» — короткая карточка
   /* ---------- арена (как в прежнем финале) ---------- */
   const sea=new THREE.Mesh(new THREE.PlaneGeometry(700,700),M(0x6a8ab8,{emissive:0x302030,emissiveIntensity:0.2}));sea.rotation.x=-Math.PI/2;sea.position.set(0,-0.7,0);W.group.add(sea);
   ground(-22,22,-42,16,0,M(0x6a8a58));wall(-22.2,-22,-42,16);wall(22,22.2,-42,16);wall(-22,22,-42.2,-42);wall(-22,22,16,16.2);
@@ -283,7 +283,8 @@ build5B2=function(){
     if(KB.state==='broken'&&KB.pos.y>0.3&&!K5.crash){K5.crash=true;KB.state='k5crash';KB.k5k=0;k5s('flyUp');}
     if(KB.state==='k5crash'){KB.k5k+=dt;KB.pos.y=Math.max(0,KB.pos.y-dt*9);if(KB.pos.y<=0){KB.pos.y=0;k5s('land');shakeAll(0.08,0.4);FX.dust(KB.pos.clone(),18,0x8a7a6a);kosCrash();KB.state='broken';KB.t=0;KB._b=false;K5.crash=false;}}
     if(KB.state==='idle'&&K5.live){KB.state='k5rise';KB.embers=Math.max(2,Math.ceil(KB.maxEmb/2));floatText(kosTop(),'Спесь вернулась!','#c8a8ff');k5s('flyUp');}
-    const want=(G.solo?2:3);if(K5.adds.filter(e=>e.kind==='k5raven').length<want){K5.rvT=(K5.rvT==null?1:K5.rvT)-dt;if(K5.rvT<=0){K5.rvT=5;ravenMake();if(!K5.said.rav){K5.said.rav=true;bark(KS,'koschei','Слетайтесь, вороны, ко мне!',1.7);}}}}
+    if(!K5.bones&&KB.embers<=Math.ceil(KB.maxEmb/2)&&KB.state==='k5cast'&&KB.pos.y>3&&K5.live)bonesRise(3);   // отзыв 4: и на этапе 3 встают щитники — трое
+    const want=(G.solo?3:4);if(K5.adds.filter(e=>e.kind==='k5raven').length<want){K5.rvT=(K5.rvT==null?1:K5.rvT)-dt;if(K5.rvT<=0){K5.rvT=5;ravenMake();if(!K5.said.rav){K5.said.rav=true;bark(KS,'koschei','Слетайтесь, вороны, ко мне!',1.7);}}}}
   // гроза: небо, туман и свет темнеют плавно (релизный рендер берёт небо из фона и тумана)
   const STORM={bg:scene.background?scene.background.clone():new THREE.Color(0x8aa0c8),fog:scene.fog?scene.fog.color.clone():null,amb:amb.intensity,sun:sun.intensity,sunC:sun.color.clone(),ambC:amb.color.clone()};
   window.k5StormSet=(v,now)=>{K5.stormTo=v;if(now)K5.storm=v;};
@@ -291,9 +292,9 @@ build5B2=function(){
   function stormTick(dt){K5.storm=damp(K5.storm,K5.stormTo,0.8,dt);const k=K5.storm;vig.style.opacity=(G.state==='play'&&!FIN.titleOn?k:0).toFixed(3);clouds.visible=k>0.05;clouds.rotation.y+=dt*0.03;clouds.children.forEach(c=>{c.material.opacity=0.85*k;});
     const dark=new THREE.Color(0x2a2440);if(scene.background&&scene.background.isColor)scene.background.copy(STORM.bg).lerp(dark,k*0.8);if(scene.fog&&STORM.fog)scene.fog.color.copy(STORM.fog).lerp(dark,k*0.75);
     amb.intensity=STORM.amb*(1-0.45*k);sun.intensity=STORM.sun*(1-0.65*k);sun.color.copy(STORM.sunC).lerp(new THREE.Color(0xb8a8ff),k*0.5);
-    if(k>0.5&&!G.cine){K5.thT=(K5.thT==null?5:K5.thT)-dt;if(K5.thT<=0){K5.thT=rand(5,9);const f=$('flash');if(f){f.style.transition='opacity .08s';f.style.opacity=0.3;setTimeout(()=>{f.style.transition='opacity .5s';f.style.opacity=0;},90);}k5s('thunder');
-        // молния бьёт за краем поляны (в море) — красиво и не опасно; туча над ней вспыхивает
-        const a=rand(0,6.28),bp=new V3(C.x+Math.cos(a)*rand(17,24),0,C.z+Math.sin(a)*rand(17,24));k5Bolt(bp,0xd8b0ff);const cl=clouds.children[Math.floor(rand(0,clouds.children.length))];if(cl){cl.material.color.setHex(0xb8a0ff);later(0.25,()=>cl.material.color.setHex(0x2a2438));}}}
+    if(k>0.5&&!G.cine){const s4=K5.st===4;K5.thT=(K5.thT==null?(s4?1.5:5):K5.thT)-dt;if(K5.thT<=0){K5.thT=s4?rand(1.7,3):rand(5,9);const f=$('flash');if(f&&FIN.set.flash!==false){f.style.transition='opacity .08s';f.style.opacity=s4?0.16:0.3;setTimeout(()=>{f.style.transition='opacity .5s';f.style.opacity=0;},90);}k5s('thunder');
+        // молния бьёт за краем поляны — красиво и не опасно; туча над ней вспыхивает; на этапе 4 — втрое чаще и ближе (отзыв 4)
+        const a=rand(0,6.28),rr=s4?rand(13,19):rand(17,24),bp=new V3(C.x+Math.cos(a)*rr,0,C.z+Math.sin(a)*rr);k5Bolt(bp,0xd8b0ff);const cl=clouds.children[Math.floor(rand(0,clouds.children.length))];if(cl){cl.material.color.setHex(0xb8a0ff);later(0.25,()=>cl.material.color.setHex(0x2a2438));}}}
     // тучи мерцают изнутри
     if(k>0.3&&Math.random()<dt*1.5){const cl=clouds.children[Math.floor(rand(0,clouds.children.length))];if(cl&&cl.material.color.getHex()===0x2a2438){cl.material.color.setHex(0x4a3a70);later(0.12,()=>cl.material.color.setHex(0x2a2438));}}}
   // дождь: тонкие косые струи вокруг поляны (инстансы); сила — по грозе
@@ -330,14 +331,15 @@ build5B2=function(){
     k5Pillar(p,0x9a60ff,7,0.75,1.1);k5Ring(p,0xd0b0ff,0.3,2.6,0.6,0.16);FX.dust(p,12,0x8a7a6a,1.1);
     for(let i=0;i<8;i++){const a=rand(0,6.28);fxAdd('tetra',0xe8e0c8,p.clone().add(new V3(0,0.3,0)),new V3(Math.cos(a)*rand(1.5,3.5),rand(3,6),Math.sin(a)*rand(1.5,3.5)),{s:rand(0.06,0.11),life:rand(0.6,0.9),g:13,spin:10});}
     return e;}
-  // «Кости, встаньте!» — пятеро щитников кольцом вокруг героев (по отзыву 2: был один-два); короткий ролик: Кощей вскидывает меч, земля трескается, кости встают по очереди
-  function bonesRise(){K5.bones=true;const hs=k5Heroes(),cen=hs.length?hs.reduce((a,h)=>a.add(h.pos),new V3()).multiplyScalar(1/hs.length):C.clone();const pts=[];
-    for(let i=0;i<5;i++){let best=null;for(let t=0;t<14;t++){const a=i/5*Math.PI*2+rand(-0.35,0.35)+0.3,r=rand(5.2,6.6);const q=inArena(new V3(cen.x+Math.cos(a)*r,0,cen.z+Math.sin(a)*r),1.4);
+  // «Кости, встаньте!» — щитники кольцом вокруг героев: на этапе 4 пятеро (отзыв 2: был один-два), на этапе 3 — трое (отзыв 4); короткий ролик: Кощей вскидывает
+  // меч (в небе на этапе 3 — обе руки), земля трескается, кости встают по очереди
+  function bonesRise(n){n=n||5;K5.bones=true;const air=K5.st===3,hs=k5Heroes(),cen=hs.length?hs.reduce((a,h)=>a.add(h.pos),new V3()).multiplyScalar(1/hs.length):C.clone();const pts=[];
+    for(let i=0;i<n;i++){let best=null;for(let t=0;t<14;t++){const a=i/n*Math.PI*2+rand(-0.35,0.35)+0.3,r=rand(5.2,6.6);const q=inArena(new V3(cen.x+Math.cos(a)*r,0,cen.z+Math.sin(a)*r),1.4);
         if(HEROES.every(h=>hd(h.pos,q)>3)&&hd(q,KB.pos)>2.4&&pts.every(o=>hd(o,q)>2.6)){best=q;break;}if(!best)best=q;}pts.push(best);}
     const kp=KB.pos.clone(),face=KB.face,head=kp.clone().add(new V3(0,4.15,0)),pr=active(0),po=active(G.solo?G.soloPi:1)||pr;
-    const F1=k5Face(head,face,0.5,5.2,-0.9),mid=pts.reduce((a,q)=>a.add(q),new V3()).multiplyScalar(0.2);
-    play({dur:4.6,fov:48,camK:3,skip:true,k5:{mood:['#7a5cff',0.16],cues:[[0.05,()=>{KA.pose('sword',{antic:0.18,snap:true});k5s('cast');}],[0.5,()=>{CINE.punch(-4);CINE.trauma(0.25);}],
-        ...pts.map((q,i)=>[1.15+i*0.28,()=>{boneMake(q.x,q.z);CINE.trauma(0.18);}]),[1.3,()=>ACT.emoteAll('fear',null,0.08)],[2.3,()=>CINE.dutch(0.06)],[3.4,()=>{CINE.dutch(0);ACT.emoteAll('pride',null,0.1);}],[4.1,()=>KA.pose('guard')]]},
+    const F1=k5Face(head,face,0.5,5.2,-0.9),mid=pts.reduce((a,q)=>a.add(q),new V3()).multiplyScalar(1/n);
+    play({dur:4.6,fov:48,camK:3,skip:true,k5:{mood:['#7a5cff',0.16],cues:[[0.05,()=>{KA.pose(air?'cast':'sword',{antic:0.18,snap:true});k5s('cast');}],[0.5,()=>{CINE.punch(-4);CINE.trauma(0.25);}],
+        ...pts.map((q,i)=>[1.15+i*0.28,()=>{boneMake(q.x,q.z);CINE.trauma(0.18);}]),[1.3,()=>ACT.emoteAll('fear',null,0.08)],[2.3,()=>CINE.dutch(0.06)],[3.4,()=>{CINE.dutch(0);ACT.emoteAll('pride',null,0.1);}],[4.1,()=>KA.pose(air?'threat':'guard')]]},
       shots:[Object.assign(shot(0,F1.p,F1.l),{x:{fov:44,fov2:40,move:'push',amp:1}}),
         Object.assign(shot(1.0,[mid.x+Math.sin(face)*1+9,8.5,mid.z+9],[mid.x,0.8,mid.z],[mid.x+6,6.5,mid.z+10],[mid.x,1,mid.z],2.3),{x:{tr:'whip',ease:'inOutSine',fov:52,move:'none'}}),
         Object.assign(shot(3.3,[cen.x+3.2,1.4,cen.z+3.6],[cen.x,1.1,cen.z],[cen.x+2.6,1.6,cen.z+4.2],[cen.x,1.2,cen.z],1.3),{x:{tr:'cut',fov:46,move:'none'}})],
@@ -475,10 +477,10 @@ build5B2=function(){
   /* ---------- этапы: начало, проигрыш, победа ---------- */
   const PAUSE={1:'Этап 1 «Чёрные свечи». Купол держат восемь свечей: погасите все — отбей синюю каплю обратно в свечу, полей водой Йоши или ударь пять раз. Погасшая через 12 секунд (одному — через 30) горит снова. Красный круг — сюда ударит молния.',
     2:'Этап 2 «Ключ и искорка». Отбивайте удары Кощея в последний миг: над другом загорается искорка — отбил с искоркой, спесь гаснет вдвое. Ключ падает сверху — отбей его щитом. Скованного сам замок не отпустит: друг сбивает его пятью ударами (одному — переключись на другого героя). Скуют всех четверых — этап заново. Спесь сбита — оба ударьте рядом с ним. Кощей зовёт непогоду: ветер сдувает — держи щит, и устоишь; красный круг — молния, уходи; земля трещит — из трещины вылезет костлявая рука: уходи или кувыркнись.',
-    3:'Этап 3 «Буря». Тёмный шар отбей в последний миг — он полетит к другу; друг отбивает его в небо, в Кощея. Ворон пикирует — кувырок, застрял — бей. Красные круги — иглы, воронка тянет — выбегай.',
-    4:'Этап 4 «Меч Бессмертного». Над кем горит око — того Кощей выбрал: держи щит и отбивай серию. Второй заходит со спины и бьёт. Волна по земле — прыгай. После прыжка Кощей открыт.',
+    3:'Этап 3 «Буря». Тёмный шар отбей в последний миг — он полетит к другу; друг отбивает его в небо, в Кощея. Воронов четверо: ворон пикирует — кувырок, застрял — бей. Красные круги — иглы, воронка тянет — выбегай. Собьёте полспеси — из земли встанут три костяных щитника: спереди у них щит, бейте сбоку или сзади.',
+    4:'Этап 4 «Меч Бессмертного». Над кем горит око — того Кощей выбрал: держи щит и отбивай серию. Второй заходит со спины и бьёт. Волна по земле — прыгай. После прыжка Кощей открыт. Собьёте полспеси — встанут пятеро костяных щитников: бейте сбоку или сзади. Молнии бьют за краем поляны — они не опасны.',
     5:'Этап 5 «Игла». Иглу несёт герой со свечением — передай другу '+K(0,'item')+'. Прошка с иглой у наковальни — бей в такт. Второй встаёт рядом с Прошкой и держит щит. «Все цепи острова — ко мне!» — у наковальни встают три чёрные цепи, ветер гонит всех прочь, лезут костлявые руки: держи щит против ветра и разбейте все три цепи — тогда Кощей без сил.'};
-  function stageStart(n,retry){K5.st=n;F.stage='s'+n;K5.fight=false;clearAdds();natReset();RG.on=false;eye.visible=false;fring.visible=false;K5.combo=null;K5.delayNext=false;K5.bind=[-9,-9];K5.crash=false;RG.tries=0;
+  function stageStart(n,retry){K5.st=n;F.stage='s'+n;K5.fight=false;clearAdds();natReset();RG.on=false;eye.visible=false;fring.visible=false;K5.combo=null;K5.delayNext=false;K5.bind=[-9,-9];K5.crash=false;K5.bones=false;RG.tries=0;
     ['castT','keyT','orbT','rainT','vxT','rvT','leapT','diveT','cs0','cs1'].forEach(k=>{K5[k]=null;});heroesHome(n);W.pauseLine=PAUSE[n];dome.visible=n===1;sword.visible=n>=4;
     const f=K5.fails[n];
     if(n===1){liveBoss(false);KS.g.position.copy(KP);KS.g.rotation.y=0;candles.forEach(c=>candleSet(c,true));}
@@ -491,7 +493,9 @@ build5B2=function(){
     K5.wake=K5.live?KB.state:null;if(K5.live)KB.state='k5wait';   // пока идут карточки — Кощей ждёт
     setBar();const go=()=>{K5.fight=true;K5.t0=G.time;K5.hint0=G.time;if(K5.live&&KB.state==='k5wait')KB.state=K5.wake;setBar();if(n===1&&!K5.said.k01){K5.said.k01=true;later(0.4,()=>say('pelageya','Восемь чёрных свеч — смотрите! —<br>Купол держат. Погасите!',4.4));}
       if(n===4&&!G.solo&&!K5.said.k18){K5.said.k18=true;later(0.6,()=>say('zven','Кого око выбрало — щит держи!<br>А второй — со спины: бей, не дрожи!',4.4,true));}};
-    if(!K5.auto)go();else if(K5.seen[n]||retry)k5Short(n,go);else{K5.seen[n]=true;G.flags.tut5b=Object.assign({},K5.seen);k5Tut(n,go);}}
+    if(!K5.auto)go();else if(K5.seen[n]||retry)k5Short(n,go);else{K5.seen[n]=true;k5Tut(n,go);}}
+  // герой выбыл: клубок или рассыпался тот, кем играют; «Сбился сказ» — только когда выбыли все четверо (отзыв 4): пока цел второй герой — «Смена» и в бой
+  const k5Down=h=>!!h._down||(h.active&&players[h.player].downed);
   function stageLose(){if(!K5.fight)return;K5.fight=false;K5.fails[K5.st]++;K5.log.push('lose'+K5.st);const f=$('flash');if(f){f.style.transition='opacity .6s';f.style.opacity=1;}
     say('zven','Сбился сказ — беда невелика:<br>Начнём сначала, с этого листка!',3.6,true);later(1.4,()=>{if(f)f.style.opacity=0;stageStart(K5.st,true);});}
   function stageWin(n){if(!K5.fight||K5.st!==n)return;K5.fight=false;clearAdds();natReset();RG.on=false;eye.visible=false;fring.visible=false;K5.log.push('win'+n);SFX.horn();
@@ -835,7 +839,7 @@ build5B2=function(){
     if(G.cine)return;if(!K5.fight){if(Math.floor(G.time*4)!==K5.bt){K5.bt=Math.floor(G.time*4);if(K5.st)setBar();}return;}
     if(K5.st===1)stage1Tick(dt);locksTick(dt);sparkTick(dt);orbTick(dt);bossTick(dt);
     try{k5HintTick(dt);}catch(e){console.error('k5 hint',e);}
-    if(!G.solo?(players[0].downed&&players[1].downed):(players[0].downed&&players[1].downed))stageLose();
+    if(HEROES.length&&HEROES.every(k5Down)){banner('Все четверо — клубочки!','#ffc8d8',2.6,'сказ сбился — снова у колокольчика');stageLose();}
     if(Math.floor(G.time*4)!==K5.bt){K5.bt=Math.floor(G.time*4);setBar();}});
   // щит: отбив шара, кольцо цепей; удар: замок, наковальня; предмет: передать иглу
   W.onGuardTap=(pi,h)=>{for(const o of K5.orbs)if(o.tgt===h&&o.st!=='up'&&o.left===null)o.left=o.eta;};
@@ -858,7 +862,7 @@ build5B2=function(){
   const objTg=pi=>{const st=K5.st;if(st===1)return candles.filter(c=>c.lit).map(c=>c.g);if(st===5)return [anvil];return K5.live?[KS.g]:[];};
   for(const pi of[0,1])W.objectives[pi]=[O(()=>objText(pi),()=>F.stage==='chain',()=>objTg(pi))];
   W.spawns=[[new V3(-3,0,4),new V3(-1,0,4)],[new V3(1,0,4),new V3(3,0,4)]];W.startAct=[0,0];
-  W.pauseLine='Кощея силой не сломить —<br>С него бы спесь сначала сбить,<br>Связать бы нитью золотой<br>И досказать конец другой! Пять этапов; подсказки — на экране.';
+  W.pauseLine='Кощея силой не сломить —<br>С него бы спесь сначала сбить,<br>Связать бы нитью золотой<br>И досказать конец другой! Пять этапов; подсказки — на экране. Рассыпался клубком — «Смена»: второй герой цел. Этап заново, только если клубками стали все четверо.';
   // для ботов и отладки
   Object.assign(K5,{KB,KS,candles,C,ANV,RG,stageStart,stageWin,stageLose,orbThrow,keyMake,lockHero,unlock,k5Locked,nearLock,LOCK_HP,chainDemo,ravenMake,needlePass,leap,ringStart,sparkTo,setBar,forging,sword,dome});
   W.onStart=()=>{intro();};
