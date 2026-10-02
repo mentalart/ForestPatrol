@@ -94,12 +94,27 @@ G.instAttr=a=>{if(!a.isInstancedBufferAttribute){a.isInstancedBufferAttribute=tr
      if(s.material!==mm)s.material=mm;s.count=Math.max(0,Math.min(pa.count,g.drawRange.count)-(g.drawRange.start||0));s.visible=this.visible;}}
  T.Points=Points;}
 // ---------- 6. рендерер ----------
+const V2=new T.Vector2(),V4=new T.Vector4();
+// кадр из текстуры ?offscreen — на холст-подложку поверх холста игры (под интерфейсом): так его видят снимки ботов
+G.blit=async function(){const r=G.renderer,R=G.offRT;if(!G.offscreen||!r||!R)return 0;const w=R.width,h=R.height;let px=await r.readRenderTargetPixelsAsync(R,0,0,w,h);
+  px=new Uint8Array(px.buffer,px.byteOffset,px.byteLength);const row=px.length/h;if(row!==w*4){const o=new Uint8Array(w*h*4);for(let y=0;y<h;y++)o.set(px.subarray(y*row,y*row+w*4),y*w*4);px=o;}   // строки WebGPU выровнены по 256 байт
+  let c=G.blitCanvas;const gc=r.domElement;if(!c){c=G.blitCanvas=document.createElement('canvas');c.id='gpuBlit';c.style.cssText='position:absolute;pointer-events:none;';gc.parentNode.insertBefore(c,gc.nextSibling);}
+  const b=gc.getBoundingClientRect();Object.assign(c.style,{left:b.left+'px',top:b.top+'px',width:b.width+'px',height:b.height+'px'});c.width=w;c.height=h;
+  const d=new Uint8ClampedArray(px.length);for(let i=0;i<px.length;i+=4){d[i]=px[i];d[i+1]=px[i+1];d[i+2]=px[i+2];d[i+3]=255;}c.getContext('2d').putImageData(new ImageData(d,w,h),0,0);return w*h;};
 T.WebGLRenderer=function(p){p=Object.assign({},p||{});const r=new T.WebGPURenderer(Object.assign(p,{forceWebGL:G.forceGL}));G.renderer=r;
   r.outputColorSpace=T.LinearSRGBColorSpace;
   // тонмаппинг — в материалах (gpu_early.js, кривая late_10); рендереру — «без тонмаппинга», а запрошенный режим запоминаем
-  G.toneMapping=T.NoToneMapping;Object.defineProperty(r,'toneMapping',{get:()=>G.tmRenderer||T.NoToneMapping,set:v=>{G.toneMapping=v;},configurable:true});
+  G.toneMapping=T.NoToneMapping;Object.defineProperty(r,'toneMapping',{get:()=>G.tmRenderer||T.NoToneMapping,set:v=>{if(v!==T.NoToneMapping)G.toneMapping=v;},configurable:true});   // «без тонмаппинга» ставит и снимает постобработка — запрошенный режим не трогаем
   const lib=r.library;for(const C of G.PointLightClasses)lib.lightNodes.set(C,LegacyPointLightNode);
-  const _render=r.render.bind(r);r.render=function(s,c){if(!G.ready)return;return _render(s,c);};
+  // ?offscreen (для ботов на настоящем WebGPU в headless, где показ на холст не работает): всё, что шло на холст, — в текстуру того же размера
+  G.offscreen=/[?&]offscreen\b/.test(location.search);
+  const _render=r.render.bind(r);r.render=function(s,c){if(!G.ready)return;
+    if(G.offscreen&&this.getRenderTarget()===null){const sz=this.getDrawingBufferSize(V2),pr=this.getPixelRatio(),rt=G.offRT&&G.offRT.width===sz.x&&G.offRT.height===sz.y?G.offRT:null;
+      if(!rt){if(G.offRT)G.offRT.dispose();G.offRT=new T.RenderTarget(sz.x,sz.y,{samples:4});}
+      const R=G.offRT;R.viewport.copy(this.getViewport(V4)).multiplyScalar(pr).round();R.scissor.copy(this.getScissor(V4)).multiplyScalar(pr).round();R.scissorTest=this.getScissorTest();   // половины сплита — как на холсте
+      this.setRenderTarget(R);try{return _render(s,c);}finally{this.setRenderTarget(null);}}
+    return _render(s,c);};
+  G.rawRender=r.render;   // без обёрток модулей (постобработка рисует ими свои проходы)
   r.init().then(()=>{G.ready=true;G.backend=r.backend&&r.backend.isWebGPUBackend?'webgpu':'webgl2';document.documentElement.dataset.gpu=G.backend;})
     .catch(e=>{console.error('final07: рендерер не запустился',e);});
   return r;};

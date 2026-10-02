@@ -38,7 +38,7 @@
    const a=fr.mul(ss(0.35,0.95,r).mul(0.48).add(0.42)).mul(n.mul(0.3).add(0.85));const sp=L.step(0.985,hash2(L.floor(vUv.mul(140)))).mul(fr);
    let c=L.mix(c0,L.vec3(0.8,0.92,1),L.clamp(a,0,0.92)).add(sp.mul(0.35));c=c.add(sh.mul(fr.oneMinus()));c=c.mul(ss(0.72,1,r).mul(0.28).oneMinus());return L.vec4(c,1);}),p));
  // ---------- удар героев (late_34): лента-полумесяц ----------
- G.port('slash',has('float head=uProg,tail=uProg-uLen'),(p,U)=>keep(unlit(()=>{const uv=L.uv(),u=L.select(U.uDir.greaterThan(0),uv.x,uv.x.oneMinus());
+ G.port('slash',has('float head=uProg,tail=uProg-uLen','uniform float uDir;'),(p,U)=>keep(unlit(()=>{const uv=L.uv(),u=L.select(U.uDir.greaterThan(0),uv.x,uv.x.oneMinus());
    const head=U.uProg,tail=U.uProg.sub(U.uLen),mid=L.clamp(u.sub(tail).div(L.max(head.sub(tail),1e-3)),0,1),w=L.sin(mid.mul(3.14159)).mul(0.82).add(0.18);
    const band=ss(tail,tail.add(U.uLen.mul(0.45)),u).mul(ss(head.sub(0.01),head.add(0.03),u).oneMinus());
    const v=uv.y.div(w),body=ss(0.86,1,v).oneMinus(),a=band.mul(body).mul(U.uAlpha);L.If(a.lessThan(0.02),()=>{L.Discard();});
