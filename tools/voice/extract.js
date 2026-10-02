@@ -46,7 +46,9 @@ function stepsNear(anc,fn){for(let i=anc.length-2;i>=0;i--){const f=anc[i];if(!/
   if(st)return st.elements.map(o=>{const p=o.properties.find(q=>(q.key.name||q.key.value)==='opts');return p?arrOf(p.value,0):null;});}return null;}
 // ---------- обход ----------
 const out=[],dyn=[];
-function levelOf(anc){for(let i=anc.length-1;i>=0;i--){const a=anc[i];if(a.type==='FunctionDeclaration'&&a.id&&LV[a.id.name])return LV[a.id.name];}return null;}
+function levelOf(anc){for(let i=anc.length-1;i>=0;i--){const a=anc[i];if(a.type==='FunctionDeclaration'&&a.id&&LV[a.id.name])return LV[a.id.name];
+  // модуль релиза переопределяет уровень присваиванием: build21=function(){…}
+  if(a.type==='FunctionExpression'&&i>0&&anc[i-1].type==='AssignmentExpression'&&anc[i-1].left.type==='Identifier'&&LV[anc[i-1].left.name])return LV[anc[i-1].left.name];}return null;}
 function push(o){out.push(o);}
 function textByKind(tn){// текст вида h.kind==='x'?A:(h.kind==='y'?B:C) → {x:A, y:B, *:C}
   const m={};let n=tn;while(n&&n.type==='ConditionalExpression'&&n.test.type==='BinaryExpression'&&/kind$/.test(src.slice(n.test.left.start,n.test.left.end))){m[n.test.right.value]=strs(n.consequent);n=n.alternate;}

@@ -296,6 +296,44 @@
    "voice": "Benji",
    "voice_id": "e6f9b893-51b1-51d3-afe9-9e0482cb7ac1",
    "pitch": 3
+  },
+  "king": {
+   "name": "Морской царь",
+   "about": "владыка морской: басовитый, раскатистый, весёлый плясун",
+   "voice": "Vlad",
+   "voice_id": "e5666b9c-99a2-4fac-8b4e-abee078b186d",
+   "pitch": -1,
+   "fx": "hall"
+  },
+  "shchuka": {
+   "name": "Щука",
+   "about": "волшебная щука: хитрая, властная",
+   "voice": "Sloane",
+   "voice_id": "b57b22a0-f287-405b-bc82-6f08f5e6bb1f",
+   "pitch": 0.5,
+   "fx": "magic"
+  },
+  "som": {
+   "name": "Сом",
+   "about": "судья озера: старый, усатый, неторопливый",
+   "voice": "Bram",
+   "voice_id": "549ff70a-3ee7-4f04-a4d9-89a24fab7709",
+   "pitch": -1.5,
+   "fx": "water"
+  },
+  "leshch": {
+   "name": "Лещ",
+   "about": "дотошный, обиженный",
+   "voice": "Archie",
+   "voice_id": "bd072316-f77c-588b-b6e5-e46b9b03d008",
+   "pitch": 0.5
+  },
+  "yorsh": {
+   "name": "Ёрш Ершович",
+   "about": "озорник: быстрый, колючий, вертлявый",
+   "voice": "Dylan",
+   "voice_id": "b847bc29-f184-583a-8ad9-d1f1e16d1a60",
+   "pitch": 2
   }
  },
  "lines": [
@@ -9151,6 +9189,479 @@
    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_211641_629cb186-a9e6-43e1-b4d3-3bbfea10db88.mp3",
    "job": "629cb186-a9e6-43e1-b4d3-3bbfea10db88",
    "dur": 3.45
+  },
+  {
+   "id": "2-1_013",
+   "lv": "2-1",
+   "who": "potap",
+   "text": "Тяжёлый я — меня вода не подымет. Держу!",
+   "tts": "Тяжёлый я — меня вода не подымет. Держу!",
+   "max": 3.2,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073346_1c5a9da4-0ab4-49af-ac63-1142934b4952.mp3",
+   "job": "1c5a9da4-0ab4-49af-ac63-1142934b4952",
+   "dur": 3.2
+  },
+  {
+   "id": "2-1_014",
+   "lv": "2-1",
+   "who": "potap",
+   "text": "Якорь… как пёрышко! Ну, почти.",
+   "tts": "Якорь… как пёрышко! Ну, почти.",
+   "max": 3,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073346_711efe3e-0f67-4514-9ed5-c63319a44018.mp3",
+   "job": "711efe3e-0f67-4514-9ed5-c63319a44018",
+   "dur": 3
+  },
+  {
+   "id": "2-1_015",
+   "lv": "2-1",
+   "who": "zven",
+   "text": "Сад Китежа! Ракушка — на дне. Глубоко — только Потапу дойти!",
+   "tts": "Сад Китежа! Ракушка — на дне. Глубоко — только Потапу дойти!",
+   "max": 4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073346_57c1c315-e5cc-4b24-970e-6634876c0f11.mp3",
+   "job": "57c1c315-e5cc-4b24-970e-6634876c0f11",
+   "dur": 4.91
+  },
+  {
+   "id": "2-1_016",
+   "lv": "2-1",
+   "who": "sadko",
+   "text": "А вот вам напев мой — четыре звука. Запомните: дзинь, дилинь, дон, дон.",
+   "tts": "А вот вам напев мой — четыре звука. Запомните: дзинь, дилинь, дон, дон.",
+   "max": 3.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073346_3ebb4c55-2f7a-49ae-b9bb-74a3596e32ef.mp3",
+   "job": "3ebb4c55-2f7a-49ae-b9bb-74a3596e32ef",
+   "dur": 5.91
+  },
+  {
+   "id": "2-1_017",
+   "lv": "2-1",
+   "who": "sadko",
+   "text": "Китеж его помнит. Как будить станете — пригодится.",
+   "tts": "Китеж его помнит. Как будить станете — пригодится.",
+   "max": 4.02,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073346_4b9bf0c5-3807-4deb-8792-887b36b81afa.mp3",
+   "job": "4b9bf0c5-3807-4deb-8792-887b36b81afa",
+   "dur": 3.64
+  },
+  {
+   "id": "2-1_018",
+   "lv": "2-1",
+   "who": "zven",
+   "text": "Улица в два канала, а вода у них одна! Отольёшь у себя — у друга прибудет.",
+   "tts": "Улица в два канала, а вода у них одна! Отольёшь у себя — у друга прибудет.",
+   "max": 4.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073346_d3e1b911-f5c5-4fae-9e65-415292b820c2.mp3",
+   "job": "d3e1b911-f5c5-4fae-9e65-415292b820c2",
+   "dur": 4.82
+  },
+  {
+   "id": "2-1_019",
+   "lv": "2-1",
+   "who": "zven",
+   "text": "Да заслонка на дне закрыта. Тяжёлый нужен — чтоб не всплыл и держал!",
+   "tts": "Да заслонка на дне закрыта. Тяжёлый нужен — чтоб не всплыл и держал!",
+   "max": 4.42,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073346_460121ba-37e8-432a-aaeb-bbc0d87bc81b.mp3",
+   "job": "460121ba-37e8-432a-aaeb-bbc0d87bc81b",
+   "dur": 4.51
+  },
+  {
+   "id": "2-1_020",
+   "lv": "2-1",
+   "who": "potap",
+   "text": "Тяжёлый? Это я. Как положено.",
+   "tts": "Тяжёлый? Это я. Как положено.",
+   "max": 3,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073346_1e370de8-279c-4f9c-8ad5-faac10facbcc.mp3",
+   "job": "1e370de8-279c-4f9c-8ad5-faac10facbcc",
+   "dur": 3
+  },
+  {
+   "id": "2-1_021",
+   "lv": "2-1",
+   "who": "king",
+   "text": "Гусли слышу! Сыграйте мне — попляшу! А не спляшу — дверей не открою!",
+   "tts": "Гусли слышу! Сыграйте мне — попляшу! А не спляшу — дверей не открою!",
+   "max": 4.22,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073345_fbb986ea-5937-4845-9b72-614ce67a99f1.mp3",
+   "job": "fbb986ea-5937-4845-9b72-614ce67a99f1",
+   "dur": 5.49
+  },
+  {
+   "id": "2-1_022",
+   "lv": "2-1",
+   "who": "king",
+   "text": "Ох, уважили! Ох, наплясался!",
+   "tts": "Ох, уважили! Ох, наплясался!",
+   "max": 2.62,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073346_dc677bd4-b881-4f64-8da7-842bddc05a29.mp3",
+   "job": "dc677bd4-b881-4f64-8da7-842bddc05a29",
+   "dur": 3.36
+  },
+  {
+   "id": "2-1_023",
+   "lv": "2-1",
+   "who": "yosha",
+   "text": "Царь-батюшка, а наверху от твоей пляски корабли качаются!",
+   "tts": "Царь-батюшка, а наверху от твоей пляски корабли качаются!",
+   "max": 3.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073419_399121c8-4d13-41a7-b8d0-5662334da65f.mp3",
+   "job": "399121c8-4d13-41a7-b8d0-5662334da65f",
+   "dur": 3.47
+  },
+  {
+   "id": "2-1_024",
+   "lv": "2-1",
+   "who": "king",
+   "text": "И то правда… Заплясался я. Ступайте! Вот вам по жемчужинке — за гусли.",
+   "tts": "И то правда… Заплясался я. Ступайте! Вот вам по жемчужинке — за гусли.",
+   "max": 4.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073419_825f5104-99bd-4c3f-92a9-c71b35e7fd6d.mp3",
+   "job": "825f5104-99bd-4c3f-92a9-c71b35e7fd6d",
+   "dur": 5.44
+  },
+  {
+   "id": "2-2_007",
+   "lv": "2-2",
+   "who": "potap",
+   "text": "Окунь! Не та рыба.",
+   "tts": "Окунь! Не та рыба.",
+   "max": 3,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073419_274b9d1e-f3b6-4110-a5e0-2dd0fb909d8d.mp3",
+   "job": "274b9d1e-f3b6-4110-a5e0-2dd0fb909d8d",
+   "dur": 2
+  },
+  {
+   "id": "2-2_008",
+   "lv": "2-2",
+   "who": "potap",
+   "text": "Ёрш! Колючий, вредный.",
+   "tts": "Ёрш! Колючий, вредный.",
+   "max": 3,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073419_1d86373d-db07-4be4-bb7a-8aa69cbc5cef.mp3",
+   "job": "1d86373d-db07-4be4-bb7a-8aa69cbc5cef",
+   "dur": 2.68
+  },
+  {
+   "id": "2-2_009",
+   "lv": "2-2",
+   "who": "shchuka",
+   "text": "Отпусти меня в пруд! Слово тебе дам: скажешь «По щучьему велению, по моему хотению» — всё сделается.",
+   "tts": "Отпусти меня в пруд! Слово тебе дам: скажешь «По щучьему велению, по моему хотению» — всё сделается.",
+   "max": 4.62,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073419_533212fe-07ed-4ae9-b3ed-e376fd9d6f3d.mp3",
+   "job": "533212fe-07ed-4ae9-b3ed-e376fd9d6f3d",
+   "dur": 7.17
+  },
+  {
+   "id": "2-2_010",
+   "lv": "2-2",
+   "who": "potap",
+   "text": "По щучьему велению, по моему хотению — ступай, печка, сама к голове кита!",
+   "tts": "По щучьему велению, по моему хотению — ступай, печка, сама к голове кита!",
+   "max": 4.22,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073419_7aaffef7-ddfe-4ebf-8ca2-1b284a4f6080.mp3",
+   "job": "7aaffef7-ddfe-4ebf-8ca2-1b284a4f6080",
+   "dur": 4.51
+  },
+  {
+   "id": "2-2_011",
+   "lv": "2-2",
+   "who": "potap",
+   "text": "Икает, бедный!",
+   "tts": "Икает, бедный!",
+   "max": 1.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073419_a964cb1c-27ee-4b92-8a15-e3bd8c491d47.mp3",
+   "job": "a964cb1c-27ee-4b92-8a15-e3bd8c491d47",
+   "dur": 1.72
+  },
+  {
+   "id": "2-2_012",
+   "lv": "2-2",
+   "who": "yosha",
+   "text": "Он что-то проглотил! Золотое, блестящее!",
+   "tts": "Он что-то проглотил! Золотое, блестящее!",
+   "max": 2.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073419_6e489572-3c2e-4a01-937d-d8bb33877f4b.mp3",
+   "job": "6e489572-3c2e-4a01-937d-d8bb33877f4b",
+   "dur": 3.29
+  },
+  {
+   "id": "2-2_013",
+   "lv": "2-2",
+   "who": "zven",
+   "text": "Вот и икает. Запомним!",
+   "tts": "Вот и икает. Запомним!",
+   "max": 1.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073419_02b1921d-4b8f-422f-9d82-e938e41b76a1.mp3",
+   "job": "02b1921d-4b8f-422f-9d82-e938e41b76a1",
+   "dur": 2
+  },
+  {
+   "id": "2-3_014",
+   "lv": "2-3",
+   "who": "rybka",
+   "text": "А за свободу — вторая струна вам: напев «Течение». Ракушка с рыбкой — и вода побежит, куда скажете.",
+   "tts": "А за свободу — вторая струна вам: напев «Течение». Ракушка с рыбкой — и вода побежит, куда скажете.",
+   "max": 3.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073419_d8cc0993-2294-4681-8e73-62823a895e7f.mp3",
+   "job": "d8cc0993-2294-4681-8e73-62823a895e7f",
+   "dur": 7.03
+  },
+  {
+   "id": "2-3_015",
+   "lv": "2-3",
+   "who": "rybka",
+   "text": "А язык колокола Китежа Рыба-кит проглотил — у него в брюхе и ищите.",
+   "tts": "А язык колокола Китежа Рыба-кит проглотил — у него в брюхе и ищите.",
+   "max": 3.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073458_9f05ab10-7ef3-49c3-b5d5-184951e30ea3.mp3",
+   "job": "9f05ab10-7ef3-49c3-b5d5-184951e30ea3",
+   "dur": 4.7
+  },
+  {
+   "id": "2-3_016",
+   "lv": "2-3",
+   "who": "som",
+   "text": "Ёрш Ершович, сын Щетинников! Всех в озере обижаешь, воду мутишь!",
+   "tts": "Ёрш Ершович, сын Щетинников! Всех в озере обижаешь, воду мутишь!",
+   "max": 4.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073458_e96d53d5-92b8-4eea-898e-3ee90d9c48b4.mp3",
+   "job": "e96d53d5-92b8-4eea-898e-3ee90d9c48b4",
+   "dur": 4.75
+  },
+  {
+   "id": "2-3_017",
+   "lv": "2-3",
+   "who": "yorsh",
+   "text": "Не я это! Это Водяной воду крутит — я только рядом плаваю!",
+   "tts": "Не я это! Это Водяной воду крутит — я только рядом плаваю!",
+   "max": 4.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073608_27333e6c-29c2-4e4f-8dc1-400529b4900e.mp3",
+   "job": "27333e6c-29c2-4e4f-8dc1-400529b4900e",
+   "dur": 4.2
+  },
+  {
+   "id": "2-3_018",
+   "lv": "2-3",
+   "who": "leshch",
+   "text": "А кто у старика с невода жемчуг утащил?",
+   "tts": "А кто у старика с невода жемчуг утащил?",
+   "max": 3.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073458_f5557fc0-6069-4c6f-ba53-d01747f3695d.mp3",
+   "job": "f5557fc0-6069-4c6f-ba53-d01747f3695d",
+   "dur": 2.73
+  },
+  {
+   "id": "2-3_019",
+   "lv": "2-3",
+   "who": "yorsh",
+   "text": "Ну… я. Нате, берите! Только в невод больше не надо!",
+   "tts": "Ну… я. Нате, берите! Только в невод больше не надо!",
+   "max": 3.92,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073608_f76dcb39-69ca-419a-9c26-5f2bb02ef57b.mp3",
+   "job": "f76dcb39-69ca-419a-9c26-5f2bb02ef57b",
+   "dur": 3.93
+  },
+  {
+   "id": "2-3_020",
+   "lv": "2-3",
+   "who": "zven",
+   "text": "Водяной воду крутит… Запомним!",
+   "tts": "Водяной воду крутит… Запомним!",
+   "max": 3.4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073458_b410a5e2-6333-40df-8958-ceb11e5dae43.mp3",
+   "job": "b410a5e2-6333-40df-8958-ceb11e5dae43",
+   "dur": 2.99
+  },
+  {
+   "id": "2-3_021",
+   "lv": "2-3",
+   "who": "zven",
+   "text": "Ёрш Ершович! Озорник всех в озере обижает. Ловите — да вчетвером!",
+   "tts": "Ёрш Ершович! Озорник всех в озере обижает. Ловите — да вчетвером!",
+   "max": 4.2,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073458_ece828de-6e5f-45a4-bf5f-053ba1b21ebe.mp3",
+   "job": "ece828de-6e5f-45a4-bf5f-053ba1b21ebe",
+   "dur": 4.77
+  },
+  {
+   "id": "2-4_010",
+   "lv": "2-4",
+   "who": "potap",
+   "text": "С ребра — долой! Плыви, кораблик!",
+   "tts": "С ребра — долой! Плыви, кораблик!",
+   "max": 3,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073458_28c6b7a7-37fd-4754-9252-8fecd539311b.mp3",
+   "job": "28c6b7a7-37fd-4754-9252-8fecd539311b",
+   "dur": 2.99
+  },
+  {
+   "id": "2-4_011",
+   "lv": "2-4",
+   "who": "zven",
+   "text": "Сыграйте ему в лад — гуслями! Нотка твоего цвета к сердцу долетит — и дзинь!",
+   "tts": "Сыграйте ему в лад — гуслями! Нотка твоего цвета к сердцу долетит — и дзинь!",
+   "max": 4.42,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073458_f9f8a7a7-75c5-412e-aab6-abcdaca6171a.mp3",
+   "job": "f9f8a7a7-75c5-412e-aab6-abcdaca6171a",
+   "dur": 5.17
+  },
+  {
+   "id": "2-4_012",
+   "lv": "2-4",
+   "who": "yosha",
+   "text": "Язык от колокола! Вот что кит проглотил!",
+   "tts": "Язык от колокола! Вот что кит проглотил!",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073458_3f4b39f5-1b5c-4f01-8d2f-1691c2ef9700.mp3",
+   "job": "3f4b39f5-1b5c-4f01-8d2f-1691c2ef9700",
+   "dur": 3.13
+  },
+  {
+   "id": "2-4_013",
+   "lv": "2-4",
+   "who": "zven",
+   "text": "В Китеж его отнесём — пусть колокол заговорит!",
+   "tts": "В Китеж его отнесём — пусть колокол заговорит!",
+   "max": 2.72,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073537_1f5959b3-1538-4b32-9f75-7d9950845188.mp3",
+   "job": "1f5959b3-1538-4b32-9f75-7d9950845188",
+   "dur": 2.81
+  },
+  {
+   "id": "2-4_014",
+   "lv": "2-4",
+   "who": "zven",
+   "text": "Корабли! Целый залив — кит их проглотил, оттого и мучается.",
+   "tts": "Корабли! Целый залив — кит их проглотил, оттого и мучается.",
+   "max": 4,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073608_56c0bf3b-91dd-4622-ab20-b05aa65b977b.mp3",
+   "job": "56c0bf3b-91dd-4622-ab20-b05aa65b977b",
+   "dur": 4.33
+  },
+  {
+   "id": "2-5_004",
+   "lv": "2-5",
+   "who": "zven",
+   "text": "Дзинь, дилинь, дон, дон! Напев Садко!",
+   "tts": "Дзинь, дилинь, дон, дон! Напев Садко!",
+   "max": 3.02,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073537_21d193a1-1598-4d3c-ab16-c455c4786fa4.mp3",
+   "job": "21d193a1-1598-4d3c-ab16-c455c4786fa4",
+   "dur": 3.11
+  },
+  {
+   "id": "2-5_005",
+   "lv": "2-5",
+   "who": "yosha",
+   "text": "Сыграли, как Садко! Все вместе!",
+   "tts": "Сыграли, как Садко! Все вместе!",
+   "max": 2.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073537_e44e1e4d-46af-4514-abf4-14f81839506e.mp3",
+   "job": "e44e1e4d-46af-4514-abf4-14f81839506e",
+   "dur": 2.47
+  },
+  {
+   "id": "2-5_006",
+   "lv": "2-5",
+   "who": "zven",
+   "text": "Слышите? Колокол звякнул — и мост проступил! И снова пропал…",
+   "tts": "Слышите? Колокол звякнул — и мост проступил! И снова пропал…",
+   "max": 3.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073537_77795e0c-e839-4cd9-97e4-4d08c5c559c9.mp3",
+   "job": "77795e0c-e839-4cd9-97e4-4d08c5c559c9",
+   "dur": 4.4
+  },
+  {
+   "id": "2-5_007",
+   "lv": "2-5",
+   "who": "proshka",
+   "text": "Звон — и невидимое видно. Понял!",
+   "tts": "Звон — и невидимое видно. Понял!",
+   "max": 2.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073537_33233d2f-d72a-49b1-b723-dc2c6dc603e7.mp3",
+   "job": "33233d2f-d72a-49b1-b723-dc2c6dc603e7",
+   "dur": 2.74
+  },
+  {
+   "id": "2-5_008",
+   "lv": "2-5",
+   "who": "potap",
+   "text": "Язык колокола — тот, что кит проглотил. Донёс!",
+   "tts": "Язык колокола — тот, что кит проглотил. Донёс!",
+   "max": 3.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073537_f1b00832-4eac-4526-b556-3ef6ab8a50cf.mp3",
+   "job": "f1b00832-4eac-4526-b556-3ef6ab8a50cf",
+   "dur": 3.66
+  },
+  {
+   "id": "2-5_009",
+   "lv": "2-5",
+   "who": "yosha",
+   "text": "Вешай, Потапушка, на место!",
+   "tts": "Вешай, Потапушка, на место!",
+   "max": 2.82,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073536_05f34acd-5299-4cbb-93a3-32096ff65c4e.mp3",
+   "job": "05f34acd-5299-4cbb-93a3-32096ff65c4e",
+   "dur": 2
+  },
+  {
+   "id": "2-5_010",
+   "lv": "2-5",
+   "who": "zven",
+   "text": "Колокол тяжёлый — раскачать его только вчетвером!",
+   "tts": "Колокол тяжёлый — раскачать его только вчетвером!",
+   "max": 3.12,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073536_59b3f8db-a5b3-49d1-afdd-c618326c9f27.mp3",
+   "job": "59b3f8db-a5b3-49d1-afdd-c618326c9f27",
+   "dur": 3.27
+  },
+  {
+   "id": "2-B_008",
+   "lv": "2-B",
+   "who": "potap",
+   "text": "Эх, дубинушка, ухнем!",
+   "tts": "Эх, дубинушка, ухнем!",
+   "max": 2.8,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073537_6e49ec63-df0a-4553-9f64-e068581bca20.mp3",
+   "job": "6e49ec63-df0a-4553-9f64-e068581bca20",
+   "dur": 2.38
+  },
+  {
+   "id": "2-B_009",
+   "lv": "2-B",
+   "who": "yosha",
+   "text": "Гребешок за спину — лес стеной!",
+   "tts": "Гребешок за спину — лес стеной!",
+   "max": 2.8,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073608_a02b0712-488a-461c-b35c-362117df3ad4.mp3",
+   "job": "a02b0712-488a-461c-b35c-362117df3ad4",
+   "dur": 2.81
+  },
+  {
+   "id": "2-B_010",
+   "lv": "2-B",
+   "who": "vod",
+   "text": "Кто звенел? Кто будил? Догоню-у-у!",
+   "tts": "Кто звенел? Кто будил? Догоню-у-у!",
+   "max": 2.52,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073608_4f72974a-337a-492b-909e-15d7fe63d0b5.mp3",
+   "job": "4f72974a-337a-492b-909e-15d7fe63d0b5",
+   "dur": 3.16
+  },
+  {
+   "id": "2-B_011",
+   "lv": "2-B",
+   "who": "zven",
+   "text": "Бежим! К омуту, скорее!",
+   "tts": "Бежим! К омуту, скорее!",
+   "max": 2.32,
+   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261002_073608_69ca1773-837b-470b-98a3-17765f43e0f0.mp3",
+   "job": "69ca1773-837b-470b-98a3-17765f43e0f0",
+   "dur": 2.41
   }
  ]
 }
