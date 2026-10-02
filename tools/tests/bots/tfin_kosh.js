@@ -49,11 +49,17 @@ if(nb!==5)throw new Error('щитников не пять: '+nb);ZC.FIN.occ.fram
 const kb=K5.KB;kb.embers=0;kb.state='broken';kb.t=0;ZC.tick(3);kb.k5hit(kb,A(0));ZC.tick(2);kb.k5hit(kb,A(1));ZC.tick(10);const r=['st='+K5.st+' stage='+ZC.W.flags.stage];skipAll(8);ZC.tick(5);skipAll();ZC.tick(5);
 r.push('st='+K5.st+' fight='+K5.fight+' holder='+(K5.needle&&K5.needle.holder&&K5.needle.holder.kind));r
 //@@ shot=kosh_s5.png
-// этап 5: передать иглу, ковать в такт у наковальни, кольцо цепей
+// этап 5: передать иглу, ковать в такт у наковальни, «все цепи острова» — разбить три цепи
 ZC.tick(60);const r=[];const hold=K5.needle.holder;K5.needlePass(hold.player);ZC.tick(40);r.push('pass → '+(K5.needle.holder&&K5.needle.holder.kind));
 const pr=H.proshka;if(K5.needle.holder!==pr){ZC.players[0].act=ZC.players[0].heroes.indexOf(pr);ZC.players[0].heroes.forEach((h,k)=>{h.active=h===pr;});}pr.pos.set(K5.ANV.x,0,K5.ANV.z+1.4);K5.needle.holder=pr;ZC.tick(3);r.push('forging='+K5.forging());
-let good=0;for(let i=0;i<60*8&&K5.forge.n<3;i++){const u=K5.forge.c%0.75;if(K5.forging()&&(u<0.03||u>0.72)&&ZC.G.time>(window._lt||0)){window._lt=ZC.G.time+0.3;ZC.W.onAttack(0,pr);}ZC.tick(1);if(K5.KB.state==='wind')K5.KB.state='idle';}
-r.push('forge='+K5.forge.n+' ring='+K5.RG.on);for(let i=0;i<60*5;i++){if(K5.RG.on&&K5.RG.t>1.36&&K5.RG.press[0]===null){ZC.W.onGuardTap(0,A(0));ZC.W.onGuardTap(1,A(1));}ZC.tick(1);}r.push('after ring log='+K5.log.slice(-3).join(','));ZC.FIN.occ.frame();r
+let good=0;for(let i=0;i<60*10&&K5.forge.n<4;i++){const u=K5.forge.c%0.75;if(K5.forging()&&(u<0.03||u>0.72)&&ZC.G.time>(window._lt||0)){window._lt=ZC.G.time+0.3;ZC.W.onAttack(0,pr);}ZC.tick(1);if(K5.KB.state==='wind')K5.KB.state='idle';}
+r.push('forge='+K5.forge.n+' ring='+K5.RG.on);
+// «Все цепи острова — ко мне!» (отзыв 3): три чёрные цепи у наковальни, ветер дует от наковальни, из-под земли — руки; ковать нельзя, пока цепи целы
+for(let i=0;i<60*5&&!(K5.RG.chains&&K5.RG.chains.length);i++)ZC.tick(1);const RG=K5.RG,W5=K5.nat.wind;if(!RG.chains)throw new Error('на 4-м ударе буря не началась: forge='+K5.forge.n);r.push('chains='+RG.chains.length+' wind='+(W5&&W5.mode)+' forging='+K5.forging());
+if(RG.chains.length!==3)throw new Error('цепей не три: '+RG.chains.length);if(!W5||W5.mode!=='rad')throw new Error('нет ветра от наковальни');if(K5.forging())throw new Error('ковка идёт во время бури');
+ZC.tick(90);const hs=K5.nat.hands.length;r.push('hands='+hs);
+RG.chains.slice().forEach((e,i)=>{e.onFinisher(A(i%2));ZC.tick(30);});for(let i=0;i<60*2&&RG.on;i++)ZC.tick(1);
+r.push('after gale on='+RG.on+' state='+K5.KB.state+' wind='+!!K5.nat.wind+' log='+K5.log.slice(-4).join(','));if(!K5.log.includes('ringok'))throw new Error('буря не кончилась победой');ZC.FIN.occ.frame();r
 //@@
 // застёжка скована → финальный ролик → Сказ 3 (оба) → «Цепь» → эпилог
 K5.forge.n=9;K5.stageWin(5);ZC.tick(5);const r=['stage='+ZC.W.flags.stage];skipAll();ZC.tick(5);r.push('ui='+ZC.G.ui);U.tap('Space');U.tap('KeyM');ZC.tick(5);skipAll();ZC.tick(60);skipAll();ZC.tick(200);
