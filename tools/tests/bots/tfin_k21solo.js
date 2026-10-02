@@ -30,10 +30,13 @@ me().face=Math.PI/2;U.tap('KeyF');ZC.tick(20);if(!D.ropes[0].pulled||!D.PG[0].op
 r.push(go(-6,-117.5,6));toKind('pelageya');r.push(go(6,-117.5,6));if(!(H.proshka.pos.z<-113&&H.pelageya.pos.z<-113))throw new Error('не спустились: '+r.join());'perel solo ok'
 //@@
 // палаты: Прошка играет у входа и остаётся доигрывать; Потап через волны к трону — подыгрывает; Пелагея проходит; Потап — следом
+// (двери — когда у дверей оба активных героя; отставшего Йошу ведём сами)
 const D=ZC.W.warp21('dance');ZC.tick(20);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}
 toKind('proshka');const r=[go(-7.8,-183.2,5)];U.tap('KeyR');ZC.tick(10);toKind('potap');if(!H.proshka.kwHold)throw new Error('Прошка не доигрывает');
 r.push(go(7.8,-200,12,waves),go(7.8,-211.6,8,waves));U.tap('KeyR');ZC.tick(10);toKind('pelageya');if(!H.potap.kwHold)throw new Error('Потап у трона не доигрывает: '+r.join()+' '+st());
 r.push(go(6,-200,10,waves),go(7,-216,8,waves),go(7,-219,3));toKind('potap');U.tap('KeyR');ZC.tick(5);r.push(go(7,-216,4),go(7,-219,3));ZC.tick(10);
+// отставший Йоша (активный у второго игрока) — сам через волны к дверям
+if(!ZC.W.flags.kingDone&&H.yosha.pos.z>-217.6){toKind('yosha');r.push('yosha:'+go(7,-216,10,waves),go(7,-219,3));ZC.tick(10);}
 if(!ZC.W.flags.kingDone)throw new Error('палаты не пройдены: '+r.join()+' '+st()+' hum='+D.KING.hum.toFixed(1));let t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(30);'dance solo ok '+r.join()
 //@@
 // сад: Потап — якорь и отлив, оставлен; Йоша — оба ростка и наверх; потом Потап ещё раз отлив (если залило), Прошка наверх; «Ко мне!» и ворота
