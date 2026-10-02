@@ -40,7 +40,7 @@ zlataya_cep/build/build_final.py              @wide tfin_voice tfin_menu
 zlataya_cep/build/three.r128.min.js           @full
 zlataya_cep/build/header.txt                  -
 zlataya_cep/build/fonts/*                     tfin_splash tfin_menu
-zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine
+zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine tfin_hints
 zlataya_cep/build/fin_body.html               tfin_menu tfin_splash tfin_uisnd
 zlataya_cep/build/fin_early.js                @wide
 
@@ -80,6 +80,7 @@ zlataya_cep/build/late_60_title.js            tfin_menu tfin_splash
 zlataya_cep/build/late_70_menu.js             tfin_menu tfin_pads tfin_pads2 tfin_uisnd tfin_save tfin_dev
 zlataya_cep/build/late_71_pads.js             tfin_pads tfin_pads2 tfin_menu
 zlataya_cep/build/late_72_splash.js           tfin_splash tfin_uisnd tfin_menu tfin_splashclick
+zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tsolo smoke
 zlataya_cep/build/late_80_ui.js               tfin_menu tfin_cine
 zlataya_cep/build/late_81_sfx.js              tfin_cine tfin_uisnd
 zlataya_cep/build/late_91_voice.js            tfin_voice tfin_cine tfin_scooter tfin_uisnd
