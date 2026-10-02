@@ -9,12 +9,11 @@ window.moveTo=(x,z,stop)=>{const h=me(),dx=x-h.pos.x,dz=z-h.pos.z,d=Math.hypot(d
 window.stopMove=()=>[KY.l,KY.r,KY.u,KY.d].forEach(k=>ZC.hold(k,false));
 window.S={t:0,att:0,sw:0,land:null,wasLeap:false,log:[],deaths:0,prevDown:false};
 window.hitAt=(tp)=>{const h=me();h.face=Math.atan2(tp.x-h.pos.x,tp.z-h.pos.z);if(ZC.G.time>S.att){S.att=ZC.G.time+0.42;ZC.press(KY.a);}};
-// защита на этот кадр: удар в замахе, капля, шар, кольцо, волна от прыжка
+// защита на этот кадр: удар в замахе, капля, шар, волна от прыжка
 window.defend=()=>{const h=me(),T=ZC.G.time;let did=false;
   for(const e of ZC.W.enemies){if(!e.alive||e.state!=='wind'||e.tgt!==h)continue;const left=e.wdur-e.t;if(e.sig==='red'){if(left<0.2&&h.rollT<=0){ZC.press(KY.ro);did=true;}}else if(left<0.13&&e.left===null){ZC.press(KY.g);did=true;}}
   for(const b of ZC.W.bolts)if(b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2){ZC.press(KY.g);did=true;}
   for(const o of K5.orbs)if(o.tgt===h&&o.st!=='up'&&o.left===null&&o.eta<0.25){ZC.press(KY.g);did=true;}
-  if(K5.RG.on&&K5.RG.t>1.33&&K5.RG.press[ZC.G.soloPi]===null){ZC.press(KY.g);did=true;}
   const kb=K5.KB;if(kb.state==='k5leap')S.wasLeap=true;else if(S.wasLeap){S.wasLeap=false;S.land=T;}
   if(S.land!=null&&K5.leapTo){const d=hdist(h.pos,K5.leapTo),arr=S.land+Math.max(0,(d-0.6)/7.5*1.1);if(T>arr-0.12&&T<arr+0.1&&h.rollT<=0){ZC.press(KY.ro);did=true;}if(T>S.land+1.3)S.land=null;}
   return did;};
@@ -35,6 +34,7 @@ window.stepAI=()=>{const G=ZC.G,W=ZC.W,st=K5.st,h=me(),kb=K5.KB;
     const rv=W.enemies.find(e=>e.kind==='k5raven'&&e.alive&&(e.dazeT>0||e.state==='broken')&&e.pos.y<1&&hdist(e.pos,h.pos)<5);if(rv){const d=moveTo(rv.pos.x,rv.pos.z,1.1);if(d<1.8)hitAt(rv.pos);return;}
     moveTo(0,-11,2.5);return;}
   if(st===5){const N=K5.needle;if(N&&N.ground){moveTo(N.ground.x,N.ground.z,0.4);return;}
+    const ch=(K5.RG.on&&K5.RG.chains||[]).filter(e=>e.alive&&!e.k5done).sort((x,y)=>hdist(x.pos,h.pos)-hdist(y.pos,h.pos))[0];if(ch){const d=moveTo(ch.pos.x,ch.pos.z,1.1);if(d<1.9)hitAt(ch.pos);return;}
     if(h.kind!=='proshka'){stopMove();if(G.time>S.sw){S.sw=G.time+0.35;ZC.press(KY.sw);}return;}
     if(kb.state==='broken'&&false)return;const A=K5.ANV;const d=moveTo(A.x,A.z+1.4,0.45);
     if(K5.forging()&&K5.forge){h.face=Math.PI;const u=K5.forge.c%0.75;if((u>0.71||u<0.03)&&G.time>S.att){S.att=G.time+0.35;ZC.press(KY.a);}}return;}};

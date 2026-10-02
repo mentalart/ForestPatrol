@@ -1,7 +1,8 @@
 //@@
 // релиз final06: 5-Б2 вдвоём — бой целиком настоящими нажатиями двух игроков, без отладочных побед. Проверяются кооперативные приёмы:
 // свечи на своих сторонах, искорка по очереди, отпереть запертого друга, шар — другу и в небо, око: выбранный — щит, второй — со спины,
-// передать иглу Прошке, заслонить его у наковальни, кольцо — щиты вместе. В конце — счётчики приёмов из журнала боя.
+// передать иглу Прошке, заслонить его у наковальни, «все цепи острова» — вдвоём разбить три цепи против ветра.
+// На этапе 2 ветер, молнии и костлявые руки (отзыв 3) — бот проходит и их. В конце — счётчики приёмов из журнала боя.
 window.K5=ZC.FIN.k5;window.KY=[{u:'KeyW',d:'KeyS',l:'KeyA',r:'KeyD',j:'Space',a:'KeyF',g:'KeyG',sw:'KeyQ',ro:'ShiftLeft',it:'KeyR'},{u:'ArrowUp',d:'ArrowDown',l:'ArrowLeft',r:'ArrowRight',j:'KeyM',a:'Comma',g:'Period',sw:'KeyK',ro:'Slash',it:'Semicolon'}];
 window.me=pi=>{const p=ZC.players[pi];return p.heroes[p.act];};window.hdist=(a,b)=>Math.hypot(a.x-b.x,a.z-b.z);
 window.moveTo=(pi,x,z,stop)=>{const k=KY[pi],h=me(pi),dx=x-h.pos.x,dz=z-h.pos.z,d=Math.hypot(dx,dz),go=d>(stop||1.2);ZC.hold(k.l,go&&dx<-0.25);ZC.hold(k.r,go&&dx>0.25);ZC.hold(k.u,go&&dz<-0.25);ZC.hold(k.d,go&&dz>0.25);return d;};
@@ -12,7 +13,6 @@ window.defend=pi=>{const h=me(pi),T=ZC.G.time,k=KY[pi];
   for(const e of ZC.W.enemies){if(!e.alive||e.state!=='wind'||e.tgt!==h)continue;const left=e.wdur-e.t;if(e.sig==='red'){if(left<0.2&&h.rollT<=0)ZC.press(k.ro);}else if(left<0.13&&e.left===null)ZC.press(k.g);}
   for(const b of ZC.W.bolts)if(b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2)ZC.press(k.g);
   for(const o of K5.orbs)if(o.tgt===h&&o.st!=='up'&&o.left===null&&o.eta<0.25)ZC.press(k.g);
-  if(K5.RG.on&&K5.RG.t>1.33&&K5.RG.press[pi]===null)ZC.press(k.g);
   if(pi===0){const kb=K5.KB;if(kb.state==='k5leap')S.wasLeap=true;else if(S.wasLeap){S.wasLeap=false;S.land=T;}}
   if(S.land!=null&&K5.leapTo){const d=hdist(h.pos,K5.leapTo),arr=S.land+Math.max(0,(d-0.6)/7.5*1.1);if(T>arr-0.12&&T<arr+0.1&&h.rollT<=0)ZC.press(k.ro);if(pi===1&&T>S.land+1.3)S.land=null;}};
 window.flee=pi=>{const h=me(pi);for(const z of (K5.zones||[])){const d=hdist(h.pos,z.position);if(d<2.2){const dx=h.pos.x-z.position.x,dz=h.pos.z-z.position.z,l=Math.hypot(dx,dz)||1;moveTo(pi,h.pos.x+dx/l*3,h.pos.z+dz/l*3,0.2);return true;}}return false;};
@@ -28,6 +28,8 @@ window.ai=pi=>{const G=ZC.G,W=ZC.W,st=K5.st,h=me(pi),kb=K5.KB,o=me(1-pi);if(ZC.p
     const rv=W.enemies.find(e=>e.kind==='k5raven'&&e.alive&&(e.dazeT>0||e.state==='broken')&&e.pos.y<1&&hdist(e.pos,h.pos)<5);if(rv){const d=moveTo(pi,rv.pos.x,rv.pos.z,1.1);if(d<1.8)hitAt(pi,rv.pos);return;}
     moveTo(pi,pi?3:-3,-10,1.5);return;}
   if(st===5){const N=K5.needle,A=K5.ANV;if(N&&N.ground){moveTo(pi,N.ground.x,N.ground.z,0.4);return;}
+    // «Все цепи острова — ко мне!»: ветер от наковальни, руки из-под земли — оба идут к ближней цепи и разбивают её
+    const ch=(K5.RG.on&&K5.RG.chains||[]).filter(e=>e.alive&&!e.k5done).sort((x,y)=>hdist(x.pos,h.pos)-hdist(y.pos,h.pos))[0];if(ch){const d=moveTo(pi,ch.pos.x,ch.pos.z,1.1);if(d<1.9)hitAt(pi,ch.pos);return;}
     if(pi===0){if(h.kind!=='proshka'){stopMove(0);if(G.time>S.sw[0]){S.sw[0]=G.time+0.4;ZC.press(KY[0].sw);}return;}moveTo(0,A.x,A.z+1.4,0.45);
       if(K5.forging()&&K5.forge){h.face=Math.PI;const u=K5.forge.c%0.75;if((u>0.71||u<0.03)&&G.time>S.att[0]){S.att[0]=G.time+0.35;ZC.press(KY[0].a);}}return;}
     // второй: несёт иглу — передаёт Прошке; потом стоит рядом и держит щит, когда Кощей пикирует на Прошку
@@ -36,7 +38,7 @@ window.ai=pi=>{const G=ZC.G,W=ZC.W,st=K5.st,h=me(pi),kb=K5.KB,o=me(1-pi);if(ZC.p
 window.HERO_P=()=>ZC.HERO.proshka;
 window.run=(sec,until)=>{const n=Math.round(sec*60);for(let i=0;i<n;i++){const G=ZC.G;if(G.cine){stopMove(0);stopMove(1);ZC.skip();}else if(G.ui==='skaz'){ZC.press('Space');ZC.press('KeyM');}else if(K5.fight){ai(0);ai(1);const down=ZC.players[0].downed&&ZC.players[1].downed;if(down&&!S.prevDown)S.deaths++;S.prevDown=down;}else{stopMove(0);stopMove(1);}
     ZC.tick(1);if(until&&until())break;}stopMove(0);stopMove(1);ZC.hold(KY[1].g,false);
-  const c=k=>K5.log.filter(x=>x.startsWith(k)).length;return 'st='+K5.st+' stage='+ZC.W.flags.stage+' t='+(ZC.G.time-S.t0).toFixed(0)+'s fails='+K5.fails.slice(1).join(',')+' deaths='+S.deaths+' | парир='+c('bparry')+' искорка='+c('sparkx3')+' замок='+c('lock')+'/'+c('unlock')+' шар-другу='+c('orbpass')+' в-небо='+c('orbup')+' спиной='+c('bhit')+' заслон='+c('cover')+' пас='+c('pass')+' кольцо='+c('ringok')+(K5.forge?' ковка='+K5.forge.n:'');};
+  const c=k=>K5.log.filter(x=>x.startsWith(k)).length;return 'st='+K5.st+' stage='+ZC.W.flags.stage+' t='+(ZC.G.time-S.t0).toFixed(0)+'s fails='+K5.fails.slice(1).join(',')+' deaths='+S.deaths+' | парир='+c('bparry')+' искорка='+c('sparkx3')+' замок='+c('lock')+'/'+c('unlock')+' шар-другу='+c('orbpass')+' в-небо='+c('orbup')+' спиной='+c('bhit')+' заслон='+c('cover')+' пас='+c('pass')+' цепи='+c('ringok')+'/'+K5.log.filter(x=>x==='ring').length+' ветер='+c('wind')+' молния='+c('bolt')+' руки='+c('quake')+'/'+c('grab')+(K5.forge?' ковка='+K5.forge.n:'');};
 ZC.startFrom(ZC.LV('5-B2'));ZC.G.manual=true;ZC.tick(10);S.t0=ZC.G.time;'coop lvl='+ZC.W.levelId
 //@@ shot=koshcoop_1.png
 run(200,()=>K5.st>=2&&K5.fight)

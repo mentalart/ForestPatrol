@@ -195,21 +195,21 @@ nx()
 // дойти до эпилога и подвести итог по каждому ролику
 for(let i=0;i<20000&&ZC.W.levelId==='5-B2';i++){if(ZC.G.ui==='skaz'){U.tap('Space');U.tap('KeyM');}tk(1);}
 const R=[],bad=[];
-for(const c of LOG){const sz=new Set(),mv=new Set();let stat=0;
+for(const c of LOG){const sz=new Set(),mv=new Set(),seq=[];let stat=0;
   c.sh.forEach((s,i)=>{if(!s||s.n<3)return;const f=s.fh.slice().sort((a,b)=>a-b)[s.fh.length>>1];sz.add(f<2.8?'close':f<7?'medium':'wide');
     const d=new V().subVectors(s.p1,s.p0),fw=new V().subVectors(s.l0,s.p0).normalize(),al=d.dot(fw),vy=d.y,lat=Math.sqrt(Math.max(0,d.lengthSq()-al*al-vy*vy)),df=s.f1-s.f0;
     let m='static';const big=Math.max(Math.abs(al),Math.abs(vy),lat);
     if(s.ang3>=0.4&&s.ang3*4>d.length())m='pan';   // поворот или наклон камеры (кран вверх к небу, взгляд за падающей иглой)
     else if(big>=0.18){m=big===Math.abs(al)?(al>0?'push':'pull'):big===Math.abs(vy)?'crane':(s.ang>0.12?'orbit':'truck');}
     else if(Math.abs(df)>=1.5)m='zoom';else if(s.ang>0.05||s.l0.distanceTo(s.l1)>0.25)m='pan';
-    if(m==='static'){stat++;bad.push(c.name+' #'+i+' статичный');}mv.add(m==='pull'?'push':m);});
+    if(m==='static'){stat++;bad.push(c.name+' #'+i+' статичный');}mv.add(m==='pull'?'push':m);seq.push(m);});
   mv.delete('static');if(sz.size<3)bad.push(c.name+': крупностей '+sz.size);if(mv.size<2)bad.push(c.name+': движений '+mv.size);
   const sp=Object.entries(c.spk).map(([k,o])=>{const v=o.n?o.vis/o.n:1,f=o.fn?o.face/o.fn:1;if(v<0.7||f<0.6)bad.push(c.name+' '+k+' вид '+v.toFixed(2)+' лицо '+f.toFixed(2));return o.who[0]+Math.round(v*100)+'/'+Math.round(f*100);});
-  R.push(c.name+': шотов '+c.cd.shots.length+' крупности '+[...sz].join('+')+' движения '+[...mv].join('+')+' статичных '+stat+' | говорящие '+sp.join(' '));}
+  R.push(c.name+(c.def._ins?' (под голос +'+c.def._ins.reduce((n,q)=>n+q[1],0).toFixed(1)+' с, '+c.def.dur.toFixed(1)+' с)':'')+': шотов '+c.cd.shots.length+' крупности '+[...sz].join('+')+' движения '+[...mv].join('+')+' ['+seq.join(' ')+']'+' статичных '+stat+' | говорящие '+sp.join(' '));}
 // озвучка: у каждой реплики персонажа есть запись, и запись укладывается в своё место (до следующей реплики)
 const vx=[];for(const c of LOG){const ss=(c.def.says||[]).slice().sort((a,b)=>a[0]-b[0]);ss.forEach((q,i)=>{if(!q[2]||q[4])return;const e=ZC.FIN.vox.find(q[2],q[3]);
   if(!e){vx.push(c.name+' '+q[0]+' '+q[2]+': нет записи');return;}const nx=ss[i+1]?ss[i+1][0]:c.cd.def.dur,slot=nx-q[0];if(e.dur>slot+0.15)vx.push(c.name+' '+q[0]+' '+q[2]+': запись '+e.dur.toFixed(2)+' > места '+slot.toFixed(2));});}
-{const e=ZC.FIN.vox.find('kot','<i>(разводит лапами)</i> А иные сказывают, что было иначе, — вот как…');if(!e)vx.push('skaz3 kot: нет записи');else if(e.dur>3.8+0.15)vx.push('skaz3 kot: запись '+e.dur.toFixed(2)+' > 3.8');}
+{const e=ZC.FIN.vox.find('pelageya','А иные сказывают по-иному — что ж, пускай:<br>Две правды в сказке уживутся, так и знай!');if(!e)vx.push('skaz3 pelageya: нет записи');else if(e.dur>7.4)vx.push('skaz3 pelageya: запись '+e.dur.toFixed(2)+' > 7.4');}
 bad.push(...vx);
 const ok=bad.length===0&&ERR.length===0&&ZC.G.done['5-B2']&&LOG.length>=11;
 R.concat(['роликов '+LOG.length,'lvl='+ZC.W.levelId,'errs='+ERR.length+(ERR.length?' '+ERR.slice(0,3).join(' | '):''),'замечания: '+(bad.join('; ')||'нет'),ok?'ok':'FAIL'])

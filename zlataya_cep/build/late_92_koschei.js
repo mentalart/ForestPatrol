@@ -305,3 +305,37 @@ Object.assign(K5S,{
   whooshBig:()=>{AUD.nz({f0:250,f1:2600,f2:400,d:0.6,q:1.4,v:0.1,a:0.05,pan0:-0.7,pan1:0.7,wet:0.3});}});
 const K5POSE_SND={cast:'pCast',castR:'pCast',point:'pThreat',threat:'pThreat',recoil:'pRecoil',slump:'pSigh',kneel:'pSigh',sit:'pSit',proud:'pProud',sword:'pSoft',guard:'pSoft',offer:'pSoft',help:'pSoft',listen:'pSoft',shrug:'pShrug'};
 CINE.on('k5pose',d=>{if(!G.cine)return;const s=K5POSE_SND[d.name];if(s)k5s(s);});
+/* ---------- отзыв 3: природа, которой повелевает Кощей — ветер, землетрясение, костлявые руки ----------
+   Ветер виден струями (инстансы тонких светлых полос летят по ветру) и пылью с листьями; два вида: «вдоль» (этап 2 — слева
+   направо или справа налево) и «от точки» (этап 5 — от наковальни во все стороны). Сила ветра 0…1 (k) задаёт уровень, толкает
+   героев — сам уровень (late_93). Костлявая рука вылезает из треснувшей земли, растопырив пальцы, и сжимает их — хватает героя. */
+const K5WIND={k:0,mode:'lin',dir:new V3(1,0,0),c:new V3(),mesh:null,data:null,dustT:0,leafT:0};
+const K5W_M=new THREE.Matrix4(),K5W_Q=new THREE.Quaternion(),K5W_S=new V3(),K5W_P=new V3(),K5W_Y=new V3(0,1,0);
+function k5WindMesh(){if(K5WIND.mesh&&K5WIND.mesh.parent)return K5WIND.mesh;const N=120,m=new THREE.InstancedMesh(new THREE.BoxGeometry(1,0.04,0.04),k5Add(0xf2f6ff,{opacity:0}),N);
+  m.frustumCulled=false;m.raycast=()=>{};k5Prop(m);K5WIND.mesh=m;K5WIND.data=[];for(let i=0;i<N;i++)K5WIND.data.push({u:Math.random(),v:Math.random(),y:rand(0.2,3.4),sp:rand(0.85,1.3),len:rand(0.9,2.2),w:rand(0,6.28)});return m;}
+function k5WindTick(dt,C0){const W0=K5WIND;if(W0.k<0.01){if(W0.mesh)W0.mesh.visible=false;return;}const m=k5WindMesh();m.visible=true;m.material.opacity=0.42*Math.min(1,W0.k*1.3);
+  const d=W0.dir,px=-d.z,pz=d.x;
+  W0.data.forEach((q,i)=>{let x,z,yaw;
+    if(W0.mode==='lin'){q.u+=dt*q.sp*(0.55+0.65*W0.k)*0.9;if(q.u>1)q.u-=1;x=C0.x+d.x*(q.u-0.5)*34+px*(q.v-0.5)*30;z=C0.z+d.z*(q.u-0.5)*34+pz*(q.v-0.5)*30;yaw=-Math.atan2(d.z,d.x);}
+    else{q.u+=dt*q.sp*(0.5+0.7*W0.k)*1.1;if(q.u>1)q.u-=1;const a=q.v*Math.PI*2,r=1.2+q.u*15;x=W0.c.x+Math.cos(a)*r;z=W0.c.z+Math.sin(a)*r;yaw=-a;}
+    const fade=Math.sin(Math.PI*q.u);K5W_P.set(x,q.y+Math.sin(G.time*3+q.w)*0.15,z);K5W_Q.setFromAxisAngle(K5W_Y,yaw);K5W_S.set(q.len*(0.4+0.9*W0.k)*fade+0.01,1,1);
+    K5W_M.compose(K5W_P,K5W_Q,K5W_S);m.setMatrixAt(i,K5W_M);});m.instanceMatrix.needsUpdate=true;
+  W0.dustT-=dt;if(W0.dustT<=0&&W0.k>0.35){W0.dustT=0.16/W0.k;const p=W0.mode==='lin'?new V3(C0.x-d.x*rand(4,13)+px*rand(-10,10),0.1,C0.z-d.z*rand(4,13)+pz*rand(-10,10)):(()=>{const a=rand(0,6.28),r=rand(2,9);return new V3(W0.c.x+Math.cos(a)*r,0.1,W0.c.z+Math.sin(a)*r);})();FX.dust(p,4,0xb8a888,0.7);}
+  W0.leafT-=dt;if(W0.leafT<=0&&W0.k>0.5){W0.leafT=0.5/W0.k;const a=rand(0,6.28);FX.leaves(new V3(C0.x+Math.cos(a)*rand(2,10),rand(0.6,2.4),C0.z+Math.sin(a)*rand(2,10)),3);}}
+// костлявая рука: предплечье из двух костей, ладонь, пять пальцев по кругу; H.set(1) — растопырена вверх, H.set(0) — сжата внутрь
+function k5HandMake(p){const g=k5Prop(new THREE.Group());g.position.set(p.x,-2.2,p.z);g.rotation.y=rand(0,6.28);const bone=M(0xe6dcc0,{emissive:0x3a3020,emissiveIntensity:0.25}),dk=M(0x8a7a60);
+  for(const s of[-1,1]){const b=new THREE.Mesh(new THREE.CylinderGeometry(0.055,0.075,1.15,6),bone);b.position.set(s*0.07,0.58,0);b.rotation.z=s*0.05;g.add(b);}
+  const wr=new THREE.Mesh(new THREE.SphereGeometry(0.13,8,6),bone);wr.position.y=1.18;wr.scale.set(1.2,0.7,1);g.add(wr);
+  const palm=new THREE.Mesh(new THREE.CylinderGeometry(0.21,0.15,0.16,7),bone);palm.position.y=1.3;g.add(palm);
+  const fingers=[];for(let i=0;i<5;i++){const a=i/5*Math.PI*2+(i===0?0.25:0),f=new THREE.Group();f.position.set(Math.cos(a)*0.17,1.36,Math.sin(a)*0.17);f.rotation.y=-a;g.add(f);
+    const len=i===0?0.2:0.26;const s1=new THREE.Mesh(new THREE.CylinderGeometry(0.03,0.04,len,5),bone);s1.position.y=len/2;f.add(s1);const kn=new THREE.Mesh(new THREE.SphereGeometry(0.045,6,5),dk);kn.position.y=len;f.add(kn);
+    const f2=new THREE.Group();f2.position.y=len;f.add(f2);const s2=new THREE.Mesh(new THREE.ConeGeometry(0.035,len*0.95,5),bone);s2.position.y=len*0.47;f2.add(s2);fingers.push({f,f2});}
+  const H={g,fingers,open:1,t:0,grab:null,dead:false};H.set=k=>{for(const q of fingers){q.f.rotation.z=lerp(0.8,-0.6,k);q.f2.rotation.z=lerp(1.0,-0.25,k);}};H.set(1);return H;}
+Object.assign(K5S,{
+  wind:()=>{AUD.nz({f0:300,f1:900,f2:420,d:4.6,v:0.07,q:0.8,a:0.9,pan0:-0.9,pan1:0.9,wet:0.4});AUD.nz({type:'highpass',f0:2200,f1:3800,d:4.2,v:0.025,a:1.2,wet:0.5});},
+  gale:()=>{AUD.nz({f0:220,f1:700,f2:300,d:6,v:0.09,q:0.7,a:1.2,wet:0.5});AUD.nz({type:'lowpass',f0:500,f1:160,d:6,v:0.06,a:1.5});AUD.osc({type:'sawtooth',f0:62,f1:58,d:5,v:0.02,lp:300,trem:2,wet:0.5});},
+  quake:()=>{AUD.nz({type:'lowpass',f0:260,f1:60,d:1.6,v:0.18,a:0.08,wet:0.3});for(let i=0;i<5;i++)AUD.thump({f0:rand(60,90),f1:28,d:0.35,v:0.16,at:i*rand(0.18,0.3)});},
+  crack:()=>{AUD.nz({type:'bandpass',f0:900,f1:300,d:0.4,v:0.07,q:2,a:0.005});AUD.nz({type:'highpass',f0:3000,d:0.08,v:0.05,a:0.001,at:0.1});},
+  handUp:()=>{AUD.thump({f0:110,f1:40,d:0.35,v:0.22});AUD.nz({type:'lowpass',f0:1400,f1:200,d:0.4,v:0.1,a:0.003});for(let i=0;i<5;i++)AUD.nz({type:'bandpass',f0:rand(1600,2600),q:6,d:0.04,v:0.05,a:0.001,at:0.05+i*0.04});},
+  grab:()=>{for(let i=0;i<4;i++)AUD.nz({type:'bandpass',f0:rand(1800,3000),q:7,d:0.05,v:0.07,a:0.001,at:i*0.03});AUD.osc({type:'triangle',f0:240,f1:120,d:0.3,v:0.05});}});
+FIN.k5nat={K5WIND,k5HandMake};
