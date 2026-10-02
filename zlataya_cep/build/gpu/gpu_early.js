@@ -81,10 +81,12 @@ FIN.ver='final07';FIN.gpu=window.FIN_GPU;
    return L.vec4(out.rgb.add(L.select(C.k.greaterThan(0.001),add,L.vec3(0))),out.a);};
  G.causOn=false;   // включает late_99c (мир 2)
  // ---------- общий вывод узловых материалов: каустика → тонмаппинг (как в r128 — до тумана) → туман → кромка выреза ----------
+ // «на экран» — холст, кадр ботов (?offscreen) и проход сцены постобработки (finScreen); прочие цели (отражения, окна) — без тонмаппинга
+ G.screenRT=rt=>rt===null||!!rt.finScreen;
  const so=T.NodeMaterial.prototype.setupOutput;
  T.NodeMaterial.prototype.setupOutput=function(builder,out){
    if(this._finCaus)out=G.caustics(out);
-   if(G.tmInMaterial&&G.toneMapping===T.CustomToneMapping&&this.toneMapped!==false&&builder.renderer.getRenderTarget()===null&&!this._finNoTM)out=L.vec4(G.toneMap(out.rgb),out.a);
+   if(G.tmInMaterial&&G.toneMapping===T.CustomToneMapping&&this.toneMapped!==false&&G.screenRT(builder.renderer.getRenderTarget())&&!this._finNoTM)out=L.vec4(G.toneMap(out.rgb),out.a);
    out=so.call(this,builder,out);
    if(this._finRim)out=G.occRim(out,this._finRim);
    return out;};

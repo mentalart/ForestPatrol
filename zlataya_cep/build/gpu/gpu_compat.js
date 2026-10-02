@@ -136,9 +136,10 @@ T.WebGLRenderer=function(p){p=Object.assign({},p||{});const r=new T.WebGPURender
     const ac=[r.autoClearColor,r.autoClearDepth,r.autoClearStencil];r.autoClearColor=r.autoClearDepth=r.autoClearStencil=false;
     try{clearPane(s);return _render(s,c);}finally{r.autoClearColor=ac[0];r.autoClearDepth=ac[1];r.autoClearStencil=ac[2];}};
   r.render=function(s,c){if(!G.ready)return;if(G.inFrame){if(G.skip)return;G.drew=true;}
-    if(r.getRenderTarget()!==null)return _render(s,c);
+    const tg=r.getRenderTarget();if(tg!==null){if(!tg.finMRT)return _render(s,c);
+      const m=r.getMRT();r.setMRT(tg.finMRT);try{return _render(s,c);}finally{r.setMRT(m);}}   // текстура панели постобработки: цвет + свечение
     if(G.offscreen){const sz=r.getDrawingBufferSize(V2),pr=r.getPixelRatio(),rt=G.offRT&&G.offRT.width===sz.x&&G.offRT.height===sz.y?G.offRT:null;
-      if(!rt){if(G.offRT)G.offRT.dispose();G.offRT=new T.RenderTarget(sz.x,sz.y,{samples:4});}
+      if(!rt){if(G.offRT)G.offRT.dispose();G.offRT=new T.RenderTarget(sz.x,sz.y,{samples:4});G.offRT.finScreen=true;}
       const R=G.offRT;R.viewport.copy(r.getViewport(V4)).multiplyScalar(pr).round();R.scissor.copy(r.getScissor(V4)).multiplyScalar(pr).round();R.scissorTest=r.getScissorTest();   // половины сплита — как на холсте
       r.setRenderTarget(R);try{return draw(s,c);}finally{r.setRenderTarget(null);}}
     return draw(s,c);};
