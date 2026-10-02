@@ -83,7 +83,8 @@ rel();if(!D.GR.done)throw new Error('грибы не собраны: '+D.GR.got+
 const D=ZC.W.dbg22();const r=[callAll(8),go(0,-364,12)];let t=0;while(!ZC.G.cine&&t<300){ZC.tick(1);t++;}if(!D.FN.dive)throw new Error('кит не нырнул: '+r.join()+' '+st());NOCINE();
 const S=D.lulShells;toKind('proshka');const up=(x,z,max)=>{for(let i=0;i<(max||20)*60;i++){if(STEPs(x,z,hh=>hh.grounded&&hh.pos.y<8.3)&&Math.abs(me().pos.y-8.5)<0.6){rel();return 't='+(i/60).toFixed(1);}ZC.tick(1);}rel();return 'TIMEOUT@'+me().pos.toArray().map(v=>v.toFixed(1));};
 r.push(up(S[0].x+0.4,S[0].z+0.6),callAll(8));r.push(up(S[0].x+0.4,S[0].z+0.6,6));U.tap('KeyR');ZC.tick(10);U.tap('KeyQ');ZC.tick(6);r.push('hold='+!!ZC.HERO.proshka.kwHold+' now='+me().kind);
-r.push(up(S[1].x-0.4,S[1].z+0.6,12));for(let i=0;i<60*30&&!D.FN.done&&!ZC.G.cine;i++){if(i%200===0)ZC.press('KeyR');ZC.tick(1);}
+r.push(up(S[1].x-0.4,S[1].z+0.6,12));for(let i=0;i<60*30&&!D.FN.done&&!ZC.G.cine;i++){const tx=S[1].x-0.4,tz=S[1].z+0.6,h=me();   // сбило со ступени — назад к ракушке
+  if(Math.hypot(h.pos.x-tx,h.pos.z-tz)>1.2||Math.abs(h.pos.y-8.5)>0.6)STEPs(tx,tz,hh=>hh.grounded&&hh.pos.y<8.3);else{rel();if(i%200===0)ZC.press('KeyR');}ZC.tick(1);}rel();
 if(!D.FN.done)throw new Error('колыбельная не спета: lull='+D.FN.lull.toFixed(1)+' '+r.join()+' '+st());t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(30);r.push(go(0,-438,6));ZC.tick(120);
 'head solo '+r.join()+' link='+D.endLink.taken+' lvl='+ZC.W.levelId
 //@@ shot=k22s_cloud.png
