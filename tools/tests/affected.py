@@ -7,7 +7,9 @@
 #                                                    Прототип index.html — только исходник релиза: боты, что есть лишь в списке прототипа
 #                                                    (regress_list.txt), не гоняются — уровни проверяют их релизные боты.
 #   python3 tools/tests/affected.py --base A --to B  # что проверять для разницы двух коммитов (например, чужой ветки перед слиянием)
-#   python3 tools/tests/affected.py --run --shard 2/4 # только своя четверть выбранных ботов (CI делит их на несколько машин)
+#   python3 tools/tests/affected.py --run --shard 2/8 # только своя доля выбранных ботов (CI делит их на 8 машин)
+#   … --full-ci   # нужен полный регресс — не останавливаться с кодом 2, а прогнать весь regress_list_final.txt (CI: доля на машину)
+#   … --all       # полный регресс без разбора правок (CI: ночной прогон main и ручной запуск «полный регресс»)
 # Как решается:
 #   · файлы — по таблице tools/tests/affected_map.txt (модули релиза, озвучка, документы…); файла нет в таблице — полный регресс;
 #   · прототип (части proto/ — склеенный index.html, tools/proto.py) — по изменённым строкам склеенного текста: внутри функции уровня (buildXX из таблицы LEVELS) — боты этого уровня; общая функция —
@@ -374,6 +376,9 @@ def main():
     if files is None:
         files = changed_files(base)
     bots, why, full, wide, g07, full07 = analyse(files, base)
+    if '--all' in a:
+        why.insert(0, 'полный регресс по запросу (--all)')
+        full, full07, g07 = ['--all'], [], []
     print('База сравнения: %s · изменено файлов: %d' % (base[:12], len(files)))
     for w in why:
         print('  · ' + w)
@@ -382,11 +387,14 @@ def main():
         for w in full + ['final07: ' + x for x in full07]:
             print('  ! ' + w)
         if full:
-            print('  LIST=tools/tests/regress_list_final.txt tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html')
+            print('  его гоняет CI на PR сам (весь regress_list_final.txt по 8 машинам) — локально не запускать; итог — проверка «bots»')
         if full07 or g07:
             print('  LIST="tools/tests/regress_list_final.txt tools/tests/regress_list_final07.txt" tools/tests/regress.sh zlataya_cep/zlataya_cep_final07.html'
                   '   # final07: python3 zlataya_cep/build/build_final.py --gpu')
-        return 2
+        if not ('--full-ci' in a or '--all' in a) or not full:
+            return 2
+        bots, g07, wide = list(dict.fromkeys(REL)), [], True   # CI: полный регресс релиза — весь список, по долям на машины
+        print('\nПолный регресс в CI: %d ботов релиза' % len(bots))
     rel = [b for b in bots if b in REL or b not in PROTO]
     if '--shard' in a:   # машина I из N: каждый N-й бот (соседние в списке — часто тяжёлые боты одного уровня — расходятся по машинам)
         si, sn = (int(x) for x in a[a.index('--shard') + 1].split('/'))

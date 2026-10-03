@@ -1,29 +1,37 @@
 # Боты Playwright на каждый PR в main: tools/tests/affected.py --run выбирает ботов по изменённым файлам.
-# Выбранные боты делятся на 4 машины (--shard I/4) — проверка идёт вчетверо быстрее; итог — проверка «bots» (зелёная, только если
-# зелёные все четыре доли). На машине — по 2 бота разом (3 — тяжёлые боты с кадрами, tfin_occ и tfin_cam, не успевали). Chromium кешируется.
-# Полный регресс в CI не идёт (на раннере GitHub он слишком медленный): если скрипт его требует (код 2), CI гоняет только
-# страховку (на первой доле) и пишет предупреждение — полный регресс прогоните локально. Вручную: Actions → Боты → Run workflow.
-# Выводы ботов и кадры — во вложениях к запуску (по одному на долю).
+# Выбранные боты делятся на 8 машин (--shard I/8), на машине — по 2 разом. Если правка требует полного регресса (общий код прототипа,
+# модуль на все уровни, инфраструктура ботов) — CI гоняет весь regress_list_final.txt (--full-ci), тоже по 8 машинам (~20 мин):
+# полный регресс локально больше не нужен. Ещё — каждую ночь на main и вручную (Actions → Боты → Run workflow, «полный регресс»).
+# Упавший не из-за игры бот (таймаут, закрытый браузер) повторяется один раз (regress.sh); прошёл со второго раза — помечен «~~»
+# и попадает в сводку неустойчивых ботов (flaky.yml). Итог — проверка «bots»: в её отчёте (Summary) — таблица по всем машинам.
+# Выводы ботов, кадры и results.tsv — во вложениях к запуску (по одному на долю). Chromium кешируется.
 name: Боты
 
 on:
   pull_request:
     branches: [main]
+  schedule:
+    - cron: '17 1 * * *'       # ночной полный регресс main (01:17 UTC)
   workflow_dispatch:
+    inputs:
+      full:
+        description: 'Полный регресс (весь regress_list_final.txt), а не выборочная проверка'
+        type: boolean
+        default: true
 
 concurrency:
-  group: bots-${{ github.ref }}
+  group: bots-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
 jobs:
   shard:
-    name: bots (${{ matrix.shard }}/4)
+    name: bots (${{ matrix.shard }}/8)
     runs-on: ubuntu-latest
     timeout-minutes: 90
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4]
+        shard: [1, 2, 3, 4, 5, 6, 7, 8]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,21 +55,11 @@ jobs:
         run: |
           if [ "${{ steps.pwcache.outputs.cache-hit }}" = "true" ]; then playwright install-deps chromium; else playwright install --with-deps chromium; fi
 
-      - name: Выборочные боты (affected.py, доля ${{ matrix.shard }}/4)
+      - name: Боты (доля ${{ matrix.shard }}/8)
         run: |
-          set +e
-          python3 tools/tests/affected.py --run --jobs 2 --shard ${{ matrix.shard }}/4
-          rc=$?
-          set -e
-          if [ $rc = 2 ]; then   # «НУЖЕН ПОЛНЫЙ РЕГРЕСС» — здесь только страховка (на первой доле), полный регресс — локально
-            echo "::warning::affected.py требует полный регресс — прогоните его локально (см. CLAUDE.md). В CI — только smoke, tfin_col, tallobj."
-            if [ "${{ matrix.shard }}" = "1" ]; then
-              python3 zlataya_cep/build/build_final.py
-              BOTS="smoke tfin_col tallobj" JOBS=3 sh tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html
-            fi
-          else
-            exit $rc
-          fi
+          mode=--full-ci
+          if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" -a "${{ inputs.full }}" = "true" ]; then mode=--all; fi
+          python3 tools/tests/affected.py --run --jobs 2 --shard ${{ matrix.shard }}/8 $mode
 
       - name: Выводы ботов и кадры
         if: always()
@@ -71,7 +69,7 @@ jobs:
           path: |
             tools/tests/out/
             tools/tests/shots/
-          retention-days: 7
+          retention-days: 14
           if-no-files-found: ignore
 
   # итоговая проверка с прежним именем «bots» — её и смотреть в PR (и делать обязательной для автослияния)
@@ -80,6 +78,13 @@ jobs:
     needs: shard
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: bots-out-*
+          path: _out
+      - name: Сводка по всем машинам
+        run: python3 tools/tests/flaky.py --summary _out | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Все доли зелёные?
         run: |
           echo "доли: ${{ needs.shard.result }}"
