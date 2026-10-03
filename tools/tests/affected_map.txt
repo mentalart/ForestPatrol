@@ -126,6 +126,9 @@ zlataya_cep/build/late_99g_k23.js              @level:2-3 tfin_k23 tfin_k23solo
 zlataya_cep/build/late_99h_k24.js              @level:2-4 tfin_k24 tfin_k24solo tfin_k23
 zlataya_cep/build/late_99i_k25.js              @level:2-5 tfin_k25 tfin_k25solo
 zlataya_cep/build/late_99j_k2b.js              @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
+zlataya_cep/build/late_99q_k2b_vod.js          @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
+zlataya_cep/build/late_99r_k2b_fx.js           @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
+zlataya_cep/build/late_99s_k2b_chase.js        @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
 zlataya_cep/build/late_99k_kitezh_foes.js      @level:2-1 @level:2-5 tfin_k21foes tfin_foekinds6
 zlataya_cep/build/late_99l_kitezh_magic_water.js @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_water
 zlataya_cep/build/late_99m_k21_hermit.js        @level:2-1 tfin_k21 tfin_k21solo tfin_foekinds6
