@@ -89,8 +89,8 @@
 | `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 3 | t24n tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 5 | t25c tfin_k25 tfin_k25solo tfoes tsospot |
 | `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water | 6 | t2c tfin_k2b tfin_k2bboss tfin_k2bbosssolo tfin_k2bsolo thw2 |
-| `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | — | 9 | t31 t31c tfin_art tfin_motylek tfin_slash tfoes thw3a tmenu3 tsplit |
-| `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | — | 1 | t32 |
+| `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_99p_sky31 | 13 | t31 t31c tfin_art tfin_motylek tfin_sky31 tfin_sky31boss tfin_sky31bosssolo tfin_sky31sol… |
+| `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32 | 5 | t32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32solo |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 2 | t33n tso33 |
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | — | 2 | t34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | — | 1 | t35 |
@@ -244,6 +244,8 @@
 | `late_99l_kitezh_magic_water.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ВОДА ГУСЛЕЙ — СКАЗОЧНАЯ, ПЕРЕЛИВЧАТАЯ |
 | `late_99m_k21_hermit.js` | 2-1 | РЕЛИЗ final06 · 2-1: МИНИ-БОСС «РАК-ОТШЕЛЬНИК» |
 | `late_99n_yaga11.js` | 1-1 | РЕЛИЗ final06 · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ»: РОЛИК «ЯГА СТАВИТ ЗАДАЧУ» — НОВАЯ ПОСТАНОВКА |
+| `late_99o_sky32.js` | 3-2 | РЕЛИЗ final06 · 3-2 «ОБЛАЧНЫЕ ПАСТБИЩА» — ВТРОЕ ДЛИННЕЕ: ПУШОК, ВЕТЕР-ВЕТРИЛО, РАДУГА-ДУГА, ОВЧАРНЯ, ГРОМОВОЙ БАРАН |
+| `late_99p_sky31.js` | 3-1 | РЕЛИЗ final06 · 3-1 «САД МОЛОДИЛЬНЫХ ЯБЛОК» — ВТРОЕ БОЛЬШЕ: КТО ЯБЛОЧКО ОТКУСИТ — ТОТ ПОМОЛОДЕЕТ |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -311,10 +313,12 @@
 | `18_webgpu.md` | final07 — WebGPU и новый рендер |
 | `19_kitezh_3.md` | Мир 2, третий круг: подсказка в 2-2, колыбельная киту, путь из «Невода» к Рыбе-киту |
 | `20_yaga_vodyanoy.md` | 1-1: ролик «Яга ставит задачу» и 2-Б: бой с Водяным в три этапа |
+| `21_sky_31_32.md` | 3-1 «Сад молодильных яблок» и 3-2 «Облачные пастбища»: втрое длиннее, кооперативные механики, мини-боссы |
+| `22_vodyanoy_proposals.md` | 2-Б «Водяной»: предложения — бой, эффекты, погоня с валом |
 | `CHANGELOG.md` | Изменения |
 | `feedback/` | 7 файлов |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 146 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 154 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
