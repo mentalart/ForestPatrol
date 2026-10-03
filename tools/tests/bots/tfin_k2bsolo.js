@@ -31,9 +31,6 @@ r.push(callAll(8));toKind('yosha');r.push(go(0,33,5),go(0.6,24.6,6));me().face=0
 r.push(go(-5.2,18.2,6));me().face=Math.PI;U.tap('KeyF');ZC.tick(20);if(!D.F.gate)throw new Error('плетень: '+r.join()+' '+st());r.push(go(0,9.6,6));ZC.tick(20);if(!D.F.chaseDone)throw new Error('погоня не кончилась: '+r.join()+' '+st());
 'chase solo '+r.join()+' wave='+D.WV.z.toFixed(1)+' ck='+D.WV.ck
 //@@
-// бой одним игроком: во второй фазе — вода на половинах разная (гусли на своей половине)
-if(!CINE(200))throw new Error('нет ролика у омута');ZC.tick(30);const F=ZC.W.flags;toKind('proshka');const e=ZC.W.enemies.find(q=>q.kind==='vodyanoy');const log=[];let ph=F.phase;
-for(let k=0;k<160&&F.phase<3;k++){const hv=ZC.W.dbg2b().halves;if(F.phase===2&&hv&&hv[0].state===hv[1].state&&hv.every(z=>z.t>=1)){go(-6,-14,4);U.tap('KeyR');ZC.tick(10);}SBRAWL(1.5);if(F.phase!==ph){log.push('t='+k*1.5+' phase '+ph+'->'+F.phase);ph=F.phase;}}
-if(F.phase<3)throw new Error('не дошли до третьей фазы: '+F.phase+' '+log.join()+' '+st());ZC.tick(120);toKind('proshka');
-me().face=Math.atan2(e.pos.x-me().pos.x,e.pos.z-me().pos.z);U.tap('KeyE');ZC.tick(60);log.push('st='+e.state,go(e.pos.x-2.4,e.pos.z+1.2,4));me().face=Math.atan2(e.pos.x-me().pos.x,e.pos.z-me().pos.z);U.tap('KeyF');ZC.tick(20);
-if(!F.won)throw new Error('мах не вышел: '+log.join());ZC.tick(60*21);ZC.skip();ZC.tick(200);if(!ZC.G.done['2-B'])throw new Error('уровень не пройден');if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'2-B solo done errs=0 '+log.join()
+// у омута: ролик — новый бой начался (весь бой одним игроком — tfin_k2bbosssolo)
+if(!CINE(200))throw new Error('нет ролика у омута');ZC.tick(30);const F=ZC.W.flags,D2=ZC.W.dbg2b();if(F.phase!==1||!D2.BS.ride)throw new Error('бой не начался: '+F.phase);
+if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'2-B solo chase+start ok errs=0'

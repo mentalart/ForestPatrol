@@ -70,7 +70,7 @@
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` | late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
 | `luko` | Лукоморье | `buildLukomorye()` | late_50_save, late_95_dev | 11 | tfin_art tfin_cast tfin_episolo tfin_luko th5 th6 thw3a thw3b thw4 tluko tmenu3 |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` | — | 26 | t11 t11dbg tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekin… |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` | late_99n_yaga11 | 27 | t11 t11dbg tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekin… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` | — | 3 | th2 th3 tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` | late_99_kolobok_dance | 2 | thub thubd |
 | `1-4` | 1-4 · Леший водит | `build14()` | late_99b_kidnap14 | 1 | tfin_kidnap14 |
@@ -81,7 +81,7 @@
 | `2-3` | 2-3 · Невод | `build23()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 8 | t23 t23b t23c t23d t23e t23f tfin_k23 tfin_k23solo |
 | `2-4` | 2-4 · В брюхе у кита | `build24()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 6 | t24 t24b t24c t24n tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 8 | t25 t25b t25c t25t tfin_k25 tfin_k25solo tfoes tsospot |
-| `2-B` | 2-Б · Водяной | `build2B()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water | 5 | t2b t2c tfin_k2b tfin_k2bsolo thw2 |
+| `2-B` | 2-Б · Водяной | `build2B()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water | 7 | t2b t2c tfin_k2b tfin_k2bboss tfin_k2bbosssolo tfin_k2bsolo thw2 |
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` | — | 10 | art3 t31 t31b t31c tfin_art tfin_slash tfoes thw3a tmenu3 tsplit |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` | — | 5 | art3 t32 t32b t32c t32d |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` | — | 5 | t33 t33b t33d t33n tso33 |
@@ -177,10 +177,11 @@
 | `late_99g_k23.js` | 2-3 | РЕЛИЗ final06 · 2-3 «НЕВОД» — ВДВОЕ ДЛИННЕЕ |
 | `late_99h_k24.js` | 2-4 | РЕЛИЗ final06 · 2-4 «В БРЮХЕ У КИТА» — ВДВОЕ ДЛИННЕЕ |
 | `late_99i_k25.js` | 2-5 | РЕЛИЗ final06 · 2-5 «КИТЕЖ ЗВОНИТ» — ВДВОЕ ДЛИННЕЕ |
-| `late_99j_k2b.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ» — ВДВОЕ ДЛИННЕЕ |
+| `late_99j_k2b.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ» — ВДВОЕ ДЛИННЕЕ; БОЙ — ТРИ ЭТАПА ПО ОБРАЗЦУ КОЩЕЯ |
 | `late_99k_kitezh_foes.js` | 2-1, 2-5 | РЕЛИЗ final06 · МИР 2: ЖЕМЧУЖНИЦА И ЩУКИ, ЧТО ПЛАВАЮТ |
 | `late_99l_kitezh_magic_water.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ВОДА ГУСЛЕЙ — СКАЗОЧНАЯ, ПЕРЕЛИВЧАТАЯ |
 | `late_99m_k21_hermit.js` | 2-1 | РЕЛИЗ final06 · 2-1: МИНИ-БОСС «РАК-ОТШЕЛЬНИК» |
+| `late_99n_yaga11.js` | 1-1 | РЕЛИЗ final06 · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ»: РОЛИК «ЯГА СТАВИТ ЗАДАЧУ» — НОВАЯ ПОСТАНОВКА |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -246,10 +247,11 @@
 | `17_kitezh_2.md` | Мир 2, второй круг: сказочная вода, 2-1 «Гусли Садко» и 2-2 «Чудо-юдо Рыба-кит» |
 | `18_webgpu.md` | final07 — WebGPU и новый рендер |
 | `19_kitezh_3.md` | Мир 2, третий круг: подсказка в 2-2, колыбельная киту, путь из «Невода» к Рыбе-киту |
+| `20_yaga_vodyanoy.md` | 1-1: ролик «Яга ставит задачу» и 2-Б: бой с Водяным в три этапа |
 | `CHANGELOG.md` | Изменения |
 | `feedback/` | 7 файлов |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 226 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 229 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
