@@ -7,3 +7,6 @@ tools/three/node_modules/
 # (.github/workflows/release.yml → GitHub Pages и Releases)
 zlataya_cep/zlataya_cep_final06.html
 _site/
+# прототип — склейка частей proto/ (tools/proto.py; сборка build_final.py пишет его сама), исходник — proto/
+/index.html
+__pycache__/
