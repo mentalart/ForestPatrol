@@ -12,8 +12,11 @@ B=os.path.dirname(os.path.abspath(__file__))
 ROOT=os.path.normpath(os.path.join(B,'..','..'))
 SRC=os.path.join(ROOT,'index.html')
 GPU='--gpu' in sys.argv
+SANDBOX='--sandbox' in sys.argv   # полигон эффектов (docs/23_vfx_sfx.md): модули sandbox/, без озвучки, свой файл
+NOVOX=SANDBOX or '--novox' in sys.argv
 VERSION='final07' if GPU else 'final06'
-OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_'+VERSION+'.html')
+OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_'+('sandbox' if SANDBOX else VERSION)+'.html')
+SB=os.path.join(B,'sandbox')
 GB=os.path.join(B,'gpu')
 def rdg(n):return open(os.path.join(GB,n),encoding='utf-8').read()
 sys.path.insert(0,os.path.join(ROOT,'tools'));import proto
@@ -45,11 +48,12 @@ rep('<div id="ui">',rd('fin_body.html').rstrip()+'\n<div id="ui">')
 GPU_EARLY=['gpu_early.js','gpu_shaders.js']   # final07: материалы и переводы шейдеров на TSL — до поздних модулей
 rep("const V3=THREE.Vector3;","const V3=THREE.Vector3;\n"+rd('fin_early.js').rstrip()+'\n'+(''.join(rdg(f).rstrip()+'\n' for f in GPU_EARLY) if GPU else ''))
 late='\n'.join(rd(f).rstrip() for f in sorted(os.listdir(B)) if re.match(r'late_\d+.*\.js$',f))
+if SANDBOX:late+='\n'+'\n'.join(open(os.path.join(SB,f),encoding='utf-8').read().rstrip() for f in sorted(os.listdir(SB)) if f.endswith('.js'))   # после всех поздних модулей
 if GPU:late+='\n'+'\n'.join(rdg(f).rstrip() for f in sorted(os.listdir(GB)) if re.match(r'gpu_late_\d+.*\.js$',f))   # final07: после всех поздних модулей
 # озвучка реплик (final06): каталог voice/lines.json и записи voice/<id>.mp3 → VOX_LINES (MP3 в base64) перед поздними модулями
 import json
 VD=os.path.join(B,'voice');VL=json.load(open(os.path.join(VD,'lines.json'),encoding='utf-8'))['lines'];vox=[]
-for e in VL:
+for e in ([] if NOVOX else VL):
     f=os.path.join(VD,e['id']+'.mp3')
     if not (os.path.exists(f) and e.get('dur')):print('voice: нет записи',e['id']);continue
     vox.append({'id':e['id'],'lv':e['lv'],'who':e['who'],'text':e['text'],'dur':e['dur'],'gain':e.get('gain',1),'lul':e.get('lul'),'b64':base64.b64encode(open(f,'rb').read()).decode()})
@@ -57,6 +61,7 @@ voxjs='const VOX_LINES='+json.dumps(vox,ensure_ascii=False)+';\n';late=voxjs+lat
 # защита: модуль не должен объявлять функцию с именем функции прототипа — в общей области видимости она молча подменит оригинал
 PF=set(re.findall(r'(?m)^function\s+([A-Za-z_$][\w$]*)\s*\(',s))
 MODS=[(f,rd(f)) for f in sorted(os.listdir(B)) if re.match(r'(late_\d+.*|fin_early)\.js$',f)]
+if SANDBOX:MODS+=[('sandbox/'+f,open(os.path.join(SB,f),encoding='utf-8').read()) for f in sorted(os.listdir(SB)) if f.endswith('.js')]
 if GPU:MODS+=[('gpu/'+f,rdg(f)) for f in sorted(os.listdir(GB)) if re.match(r'gpu_(early|shaders|late_\d+.*)\.js$',f)]
 for f,src in MODS:
         clash=sorted(set(re.findall(r'(?<![\w.])function\s+([A-Za-z_$][\w$]*)\s*\(',src))&PF)
@@ -70,7 +75,7 @@ for mod in sorted(f for f in os.listdir(B) if re.match(r'rep_\d+.*\.py$',f)):
 # у каждой озвученной реплики должна быть такая же строка в игре (после всех замен субтитров), иначе запись не прозвучит
 # (реплика, собранная в коде из кусков — например t+'…', — перечисляет эти куски в поле parts: в игре должен быть каждый)
 sg=s.replace(voxjs,'',1)   # код игры без самого каталога записей (в нём есть все тексты)
-miss=[e for e in VL if ("'"+e['text'].replace("'","\\'")+"'" not in sg) and not (e.get('parts') and all(p in sg for p in e['parts']))]
+miss=[] if NOVOX else [e for e in VL if ("'"+e['text'].replace("'","\\'")+"'" not in sg) and not (e.get('parts') and all(p in sg for p in e['parts']))]
 for e in miss: print('VOICE LINE NOT FOUND ::',e['id'],e['text'])
 if miss: sys.exit('VOICE LINE NOT FOUND: '+str(len(miss)))
 open(OUT+'.tmp','w',encoding='utf-8').write(s);os.replace(OUT+'.tmp',OUT)   # атомарно: идущие тесты не прочитают файл наполовину
