@@ -7,6 +7,7 @@
 #                                                    Прототип index.html — только исходник релиза: боты, что есть лишь в списке прототипа
 #                                                    (regress_list.txt), не гоняются — уровни проверяют их релизные боты.
 #   python3 tools/tests/affected.py --base A --to B  # что проверять для разницы двух коммитов (например, чужой ветки перед слиянием)
+#   python3 tools/tests/affected.py --run --shard 2/4 # только своя четверть выбранных ботов (CI делит их на несколько машин)
 # Как решается:
 #   · файлы — по таблице tools/tests/affected_map.txt (модули релиза, озвучка, документы…); файла нет в таблице — полный регресс;
 #   · index.html — по изменённым строкам: внутри функции уровня (buildXX из таблицы LEVELS) — боты этого уровня; общая функция —
@@ -362,6 +363,13 @@ def main():
                   '   # final07: python3 zlataya_cep/build/build_final.py --gpu')
         return 2
     rel = [b for b in bots if b in REL or b not in PROTO]
+    if '--shard' in a:   # машина I из N: каждый N-й бот (соседние в списке — часто тяжёлые боты одного уровня — расходятся по машинам)
+        si, sn = (int(x) for x in a[a.index('--shard') + 1].split('/'))
+        rel = rel[si - 1::sn]
+        print('Доля %d / %d: %d ботов' % (si, sn, len(rel)))
+        if not rel:
+            print('На эту машину ботов не досталось.')
+            return 0
     pro = [b for b in bots if b in PROTO and b not in REL]
     if not rel and not g07:
         print('\nБоты не нужны (документы, инструменты вне игры).')

@@ -11,7 +11,8 @@
 Полный регресс идёт около часа, а правка обычно затрагивает один уровень или модуль. `affected.py` выбирает ботов по изменённым файлам:
 ```sh
 python3 tools/tests/affected.py          # что изменилось с ответвления от origin/main и какие боты это проверяют (ничего не запускает)
-python3 tools/tests/affected.py --run    # пересобрать релиз и прогнать выбранных ботов (JOBS — --jobs, по умолчанию 2)
+python3 tools/tests/affected.py --run    # пересобрать релиз и прогнать выбранных ботов (JOBS — --jobs, по умолчанию 2) — это делает CI на PR;
+                                        # --shard I/N — только доля I из N (CI делит набор на 4 машины, итог — проверка «bots»)
 python3 tools/tests/affected.py --base HEAD --run                    # только незакоммиченные правки
 python3 tools/tests/affected.py --base origin/main --to origin/ветка # оценить чужую ветку перед слиянием
 ```

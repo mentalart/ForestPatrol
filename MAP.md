@@ -23,7 +23,8 @@
   заморожены (`docs/18_webgpu.md` — для истории): не собирать, шейдеры для WebGPU не переводить, ботов final07 не гонять.
 - **Боты** — `tools/tests/` (`README.md` там): шаги через `//@@ [shot=имя.png] [wait=мс]`; `tools/tests/run_one.sh бот [html]`;
   набор — `BOTS="a b" JOBS=3 tools/tests/regress.sh html`; кадры с полным качеством — `URLQ='&hq=1'`. Вывод — `tools/tests/out/`,
-  кадры — `tools/tests/shots/`. Проверка перед коммитом — `python3 tools/tests/affected.py --run` (сама выбирает ботов).
+  кадры — `tools/tests/shots/`. Какие боты затронуты — `python3 tools/tests/affected.py`; весь набор гоняет CI на PR (4 машины, итог — `bots`), локально — только
+  новые и изменённые боты (`BOTS="…" tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html`).
 
 ## Движок: имена, которые ищут чаще всего (`where <имя>` покажет, где)
 - Состояние: `G` (игра: `G.cine`, `G.solo`, `G.soloPi`, `G.flags`, `G.done`, `G.time`), `W` (текущий уровень: `W.levelId`,
