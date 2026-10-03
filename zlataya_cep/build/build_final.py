@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 # Сборка релизной версии «Златой цепи» из прототипа.
 #   python3 zlataya_cep/build/build_final.py          — final06 (WebGL, Three r128)
-#   python3 zlataya_cep/build/build_final.py --gpu    — final07 (WebGPU, Three r186): те же модули + gpu/ (совместимость, материалы
-#                                                       и шейдеры на TSL, постобработка), см. docs/18_webgpu.md
 # Берёт ../../index.html (прототип, не меняется), встраивает Three.js r128, подключает модули финальной версии
 # (fin_early.js — до создания геометрии, late_*.js по порядку — перед запуском игры, fin.css, fin_body.html, rep_*.py — точечные замены)
 # и пишет zlataya_cep/zlataya_cep_final06.html (final01–final05 — предыдущие релизы, лежат рядом как есть). В конце — проверка синтаксиса через node --check.
@@ -10,11 +8,8 @@ import os,sys,re,subprocess
 B=os.path.dirname(os.path.abspath(__file__))
 ROOT=os.path.normpath(os.path.join(B,'..','..'))
 SRC=os.path.join(ROOT,'index.html')
-GPU='--gpu' in sys.argv
-VERSION='final07' if GPU else 'final06'
+VERSION='final06'
 OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_'+VERSION+'.html')
-GB=os.path.join(B,'gpu')
-def rdg(n):return open(os.path.join(GB,n),encoding='utf-8').read()
 s=open(SRC,encoding='utf-8').read()
 def rd(n):return open(os.path.join(B,n),encoding='utf-8').read()
 def rep(old,new,cnt=1):
@@ -26,8 +21,8 @@ def rep(old,new,cnt=1):
 # 1. шапка: вместо заметок разработчика — короткое описание релиза и лицензии
 a=s.find('<!--');b=s.find('-->',a)+3
 s=s[:a]+rd('header.txt').replace('%VERSION%',VERSION).rstrip()+'\n'+s[b:]
-# 2. Three.js внутри страницы — игра работает без интернета (final07 — r186 с WebGPURenderer и слоем совместимости gpu/gpu_compat.js)
-three=rd('three.r186.webgpu.min.js')+'\n'+rdg('gpu_compat.js') if GPU else rd('three.r128.min.js')
+# 2. Three.js внутри страницы — игра работает без интернета
+three=rd('three.r128.min.js')
 assert '</script' not in three
 rep('<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>','<script>\n'+three+'\n</script>')
 rep("<title>Златая цепь</title>","<title>Златая цепь</title>\n<meta name=\"description\" content=\"Златая цепь — кооперативная low-poly сказка для всей семьи по мотивам Пушкина и русских народных сказок.\">")
@@ -40,10 +35,8 @@ fontcss=''.join("@font-face{font-family:'ZCComfortaa';font-style:normal;font-wei
 rep('</style>',fontcss+rd('fin.css').rstrip()+'\n</style>')
 rep('<div id="ui">',rd('fin_body.html').rstrip()+'\n<div id="ui">')
 # 4. модули: ранний (low-poly геометрия и материалы) и поздний (всё остальное)
-GPU_EARLY=['gpu_early.js','gpu_shaders.js']   # final07: материалы и переводы шейдеров на TSL — до поздних модулей
-rep("const V3=THREE.Vector3;","const V3=THREE.Vector3;\n"+rd('fin_early.js').rstrip()+'\n'+(''.join(rdg(f).rstrip()+'\n' for f in GPU_EARLY) if GPU else ''))
+rep("const V3=THREE.Vector3;","const V3=THREE.Vector3;\n"+rd('fin_early.js').rstrip()+'\n')
 late='\n'.join(rd(f).rstrip() for f in sorted(os.listdir(B)) if re.match(r'late_\d+.*\.js$',f))
-if GPU:late+='\n'+'\n'.join(rdg(f).rstrip() for f in sorted(os.listdir(GB)) if re.match(r'gpu_late_\d+.*\.js$',f))   # final07: после всех поздних модулей
 # озвучка реплик (final06): каталог voice/lines.json и записи voice/<id>.mp3 → VOX_LINES (MP3 в base64) перед поздними модулями
 import json
 VD=os.path.join(B,'voice');VL=json.load(open(os.path.join(VD,'lines.json'),encoding='utf-8'))['lines'];vox=[]
@@ -55,7 +48,6 @@ voxjs='const VOX_LINES='+json.dumps(vox,ensure_ascii=False)+';\n';late=voxjs+lat
 # защита: модуль не должен объявлять функцию с именем функции прототипа — в общей области видимости она молча подменит оригинал
 PF=set(re.findall(r'(?m)^function\s+([A-Za-z_$][\w$]*)\s*\(',s))
 MODS=[(f,rd(f)) for f in sorted(os.listdir(B)) if re.match(r'(late_\d+.*|fin_early)\.js$',f)]
-if GPU:MODS+=[('gpu/'+f,rdg(f)) for f in sorted(os.listdir(GB)) if re.match(r'gpu_(early|shaders|late_\d+.*)\.js$',f)]
 for f,src in MODS:
         clash=sorted(set(re.findall(r'(?<![\w.])function\s+([A-Za-z_$][\w$]*)\s*\(',src))&PF)
         if clash: sys.exit('BUILD NAME CLASH in '+f+': '+', '.join(clash)+' — переименуйте функцию модуля')

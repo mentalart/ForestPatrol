@@ -19,8 +19,7 @@
   прототипом: функции прототипа оборачивают присваиванием (`step=function(dt){_step(dt);…}`, `build5B2=function(){…}`),
   но не объявляют функций с теми же именами (сборка проверяет). Части уровня, закрытые в его функции, модулю отдают через
   замену в `rep_30_gameplay.py` (`W.epiL={…}`, `W.gor4L={…}`).
-- **final07 (WebGPU) снят** — актуален final06. `build/gpu/`, `build_final.py --gpu`, `regress_list_final07.txt`, `tfin_gpu`/`tfin_post`
-  заморожены (`docs/18_webgpu.md` — для истории): не собирать, шейдеры для WebGPU не переводить, ботов final07 не гонять.
+- Версия на WebGPU (final07, PR #38) удалена — актуален final06 (WebGL, Three r128).
 - **Боты** — `tools/tests/` (`README.md` там): шаги через `//@@ [shot=имя.png] [wait=мс]`; `tools/tests/run_one.sh бот [html]`;
   набор — `BOTS="a b" JOBS=3 tools/tests/regress.sh html`; кадры с полным качеством — `URLQ='&hq=1'`. Вывод — `tools/tests/out/`,
   кадры — `tools/tests/shots/`. Проверка перед коммитом — `python3 tools/tests/affected.py --run` (сама выбирает ботов).
@@ -75,7 +74,7 @@
 | `1-3` | 1-3 · Колобок | `build13()` | late_99_kolobok_dance | 2 | thub thubd |
 | `1-4` | 1-4 · Леший водит | `build14()` | late_99b_kidnap14 | 1 | tfin_kidnap14 |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` | — | 2 | th3 thub2 |
-| `1-B` | 1-Б · Леший-Путаник | `build1B()` | late_99b_kidnap14 | 3 | tfin_post th4 tsospot |
+| `1-B` | 1-Б · Леший-Путаник | `build1B()` | late_99b_kidnap14 | 2 | th4 tsospot |
 | `2-1` | 2-1 · Гусли Садко | `build21()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 20 | art t21 t21b t21c t21x tfin_art tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tfin_k… |
 | `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99l_kitezh_magic_water | 8 | t22 t22b t22c t22d t22shot tfin_k22 tfin_k22solo tfin_occ |
 | `2-3` | 2-3 · Невод | `build23()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 8 | t23 t23b t23c t23d t23e t23f tfin_k23 tfin_k23solo |
@@ -112,7 +111,7 @@
 ## Модули релиза (`zlataya_cep/build/`, порядок подключения)
 
 `fin_early.js` — до создания геометрии; `late_*.js` — по имени (сортировка строк: `late_96b` после `late_96`), перед запуском игры;
-`gpu/` (final07) заморожен и в таблицу не входит. Уровни — из `affected_map.txt` (`@level:`), проверок `levelId===` и подмен `buildXX=function`.
+Уровни — из `affected_map.txt` (`@level:`), проверок `levelId===` и подмен `buildXX=function`.
 
 | модуль | уровни | о чём |
 |---|---|---|
@@ -244,11 +243,10 @@
 | `15_kitezh.md` | Мир 2 «Подводный Китеж»: под водой — как под водой, уровни вдвое длиннее |
 | `16_hints.md` | Подсказки: одна карточка на игрока, без повторов |
 | `17_kitezh_2.md` | Мир 2, второй круг: сказочная вода, 2-1 «Гусли Садко» и 2-2 «Чудо-юдо Рыба-кит» |
-| `18_webgpu.md` | final07 — WebGPU и новый рендер |
 | `CHANGELOG.md` | Изменения |
 | `feedback/` | 7 файлов |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 225 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 223 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

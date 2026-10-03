@@ -12,10 +12,6 @@
 zlataya_cep/docs/*                            -
 zlataya_cep/zlataya_cep_final0[1-5].html      -
 zlataya_cep/zlataya_cep_final06.html          -
-zlataya_cep/zlataya_cep_final07.html          -
-tools/three/*                                 -
-tools/tests/gpu_parity.py                     -
-tools/tests/regress_list_final07.txt          -
 tools/video/*                                 -
 tools/script/*                                -
 tools/map.py                                  -
@@ -43,12 +39,6 @@ zlataya_cep/build/voice/*                     tfin_voice
 # ---- сборка релиза ----
 zlataya_cep/build/build_final.py              @wide tfin_voice tfin_menu
 zlataya_cep/build/three.r128.min.js           @full
-# ---- final07 (WebGPU, Three r186) — СНЯТ, актуален final06; файлы заморожены, ботов не гоняем ----
-zlataya_cep/build/three.r186.webgpu.min.js    -
-zlataya_cep/build/gpu/gpu_compat.js           -
-zlataya_cep/build/gpu/gpu_early.js            -
-zlataya_cep/build/gpu/gpu_shaders.js          -
-zlataya_cep/build/gpu/gpu_late_*.js           -
 zlataya_cep/build/header.txt                  -
 zlataya_cep/build/fonts/*                     tfin_splash tfin_menu
 zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine tfin_hints

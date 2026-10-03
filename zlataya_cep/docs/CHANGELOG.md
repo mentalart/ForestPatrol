@@ -1,7 +1,7 @@
 # Изменения
 
-## final07 снят — актуален final06
-Версия на WebGPU грузилась дольше и в ряде случаев тормозила: `zlataya_cep_final07.html` удалён, игра снова — `zlataya_cep_final06.html`. Слой `build/gpu/`, сборка `build_final.py --gpu`, `regress_list_final07.txt` и боты `tfin_gpu`/`tfin_post` заморожены (в `affected_map.txt` — без ботов); правило «переводить новые шейдеры на TSL» снято.
+## final07 удалён — актуален final06
+Версия на WebGPU грузилась дольше и в ряде случаев тормозила: `zlataya_cep_final07.html` удалён, игра снова — `zlataya_cep_final06.html`. Из репозитория убраны и исходники final07: слой `build/gpu/`, Three r186 (`build/three.r186.webgpu.min.js`, `tools/three/`), сборка `build_final.py --gpu`, `docs/18_webgpu.md`, боты `tfin_gpu` и `tfin_post`, `regress_list_final07.txt`, `tools/tests/gpu_parity.py`, ветки WebGPU в `tools/tests/run.js` и `affected.py`. Всё это — в истории git (PR #38). Ниже — запись о final07 как она была.
 
 ## final07 — WebGPU и новый рендер
 Та же игра, что final06 (прототип, модули, озвучка), на Three.js r186 и `WebGPURenderer`; где WebGPU нет — запасной WebGL2.

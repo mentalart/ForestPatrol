@@ -8,7 +8,7 @@ import os,re,sys,signal
 signal.signal(signal.SIGPIPE,signal.SIG_DFL)   # `| head` — без трассировки
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 P=lambda *a:os.path.join(ROOT,*a)
-IDX=P('index.html');B=P('zlataya_cep','build');GB=os.path.join(B,'gpu');BOTS=P('tools','tests','bots');MAPF=P('MAP.md')
+IDX=P('index.html');B=P('zlataya_cep','build');BOTS=P('tools','tests','bots');MAPF=P('MAP.md')
 AMAP=P('tools','tests','affected_map.txt');DOCS=P('zlataya_cep','docs')
 A0,A1='<!-- map:auto:start -->','<!-- map:auto:end -->'
 rel=lambda f:os.path.relpath(f,ROOT)
@@ -38,7 +38,7 @@ def levels(src):
 def modules():
     fs=sorted(f for f in os.listdir(B) if re.match(r'(late_\d+.*|fin_early)\.js$',f))
     fs=['fin_early.js']+[f for f in fs if f!='fin_early.js']
-    return fs   # build/gpu/ (final07, WebGPU) заморожен — в карту не входит
+    return fs
 def mod_title(src):
     first=src.split('\n',1)[0];m=re.match(r'/\* =+ (.*?) =+ \*/',first)
     if m:return m.group(1)
@@ -83,7 +83,7 @@ def build_auto():
     o+=[' · '.join(cut(t,70) for n,t in sections(L))]
     o+=['','## Модули релиза (`zlataya_cep/build/`, порядок подключения)','',
         '`fin_early.js` — до создания геометрии; `late_*.js` — по имени (сортировка строк: `late_96b` после `late_96`), перед запуском игры;',
-        '`gpu/` (final07) заморожен и в таблицу не входит. Уровни — из `affected_map.txt` (`@level:`), проверок `levelId===` и подмен `buildXX=function`.','',
+        'Уровни — из `affected_map.txt` (`@level:`), проверок `levelId===` и подмен `buildXX=function`.','',
         '| модуль | уровни | о чём |','|---|---|---|']
     for m in mods:
         s=msrc[m];o.append('| `%s` | %s | %s |'%(m,', '.join(sorted(mlv[m])) or '—',cut(mod_title(s),120)))
