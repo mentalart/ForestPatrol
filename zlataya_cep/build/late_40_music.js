@@ -82,7 +82,8 @@ FIN.music=(()=>{let bus=null,cur=null,want=null,t0=0,vox=[],loops=0,vol=FIN.set.
   function pick(){if(FIN.titleOn)return 'title';if(!W||G.state==='menu')return cur;const L=LEVELS[G.levelIdx]||{};const S=W.song;
     if(S&&(S.state==='play'||S.state==='final'||S.state==='count'))return null;if(G.ui==='repka'||G.ui==='lubok')return cur;
     if(L.id==='luko'||L.id==='p')return 'hub';if(L.id==='epi')return 'epi';if(L.boss)return 'boss';return ['hub','w1','w2','w3','w4','w5'][L.world||0]||'hub';}
-  return {start(){if(!AC||started)return;started=true;bus=AC.createGain();bus.gain.value=0;bus.connect(AC.destination);noise=nb();},
+  return {TR,   // темы — уровни могут добавить свои (2-Б: vod1…vod4 по этапам боя)
+    start(){if(!AC||started)return;started=true;bus=AC.createGain();bus.gain.value=0;bus.connect(AC.destination);noise=nb();},
     setVol(v){vol=v;},play(n){want=n;},
     tick(){if(!AC||!started)return;const w=want!==undefined&&want!==null?want:pick();
       const now=performance.now(),dt=Math.min(0.2,(now-(this.lt||now))/1000);this.lt=now;const duck=(G.cine?0.55:G.state==='pause'?0.35:1)*(FIN.voxDuck||1),target=w===cur?0.16*vol*duck:0;const g=bus.gain.value;bus.gain.value=g+(target-g)*(1-Math.exp(-dt*(target<g?5:2.5)));

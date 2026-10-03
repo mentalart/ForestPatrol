@@ -1,289 +1,433 @@
-/* ============================== РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ» — ВДВОЕ ДЛИННЕЕ; БОЙ — ТРИ ЭТАПА ПО ОБРАЗЦУ КОЩЕЯ ============================== */
-// Перед омутом — «Погоня Водяного» (сказка «Морской царь и Василиса Премудрая»): после «Бом» в 2-5 Водяной проснулся, река встаёт валом и
-// гонит героев к омуту. Дуб поперёк тропы — Потап поднимет; ручей — прилив гуслями и вплавь; за скалами гребешок Василисы — Йоша польёт,
-// камыш встанет стеной и задержит вал; плетень у омута — две верёвки дёрнуть разом. Догнал вал — к последней отметке. Дальше — прежний бой.
-// Камера в погоне — впереди героев, лицом к ним (W.camYaw=π): видно и героев, и вал за спиной; бегут «на камеру» (вниз по экрану).
+/* ============================== РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ» — ПОГОНЯ С ВАЛОМ И БОЙ В ЧЕТЫРЕ ЭТАПА (docs/23_vodyanoy_boss.md) ============================== */
+// Погоня (≈190 м) — late_99s_k2b_chase.js; облик Водяного, сома и коней — late_99q_k2b_vod.js; вода, брызги, телеграфы, вал — late_99r_k2b_fx.js.
+// Водяной — не злодей, а «буйная вода»: колокол Китежа замолчал, его разбудили. Дедушка с лягушачьим лицом, бородой до пояса и короной
+// из кувшинок; ездит на соме. Омут всегда полон, уровень воды — механика этапов; на мелях по краю можно стоять.
+//  1 «Сом-перевозчик»: сом кружит с Водяным на спине, бросается на мель по красной дорожке (сом прижался, хвост бьёт, бульк нарастает)
+//    и бьётся на ней — окно. Прошка сбивает ус рогаткой (сом мотает головой), Потап хватает ус и тянет «раз-два-три» — сом на мели,
+//    Водяной кувырком в воду и застревает: бейте. Шары Водяного — синий круг под героем: щит в последний миг — шар летит в него.
+//  2 «Водяные кони»: табун из волн скачет кругами вокруг острова; свист Водяного (щёки, руки вверх) — кони меняют ряд. Раковина на мели:
+//    сыграл — ближний конь замер у мели; садится ДРУГОЙ (в одиночку: сыграл, сменил героя — оставленный держит напев) — конь несёт на остров:
+//    удар по короне — облетают кувшинки (окно 5 с), потом свист — и волной смывает назад.
+//  3 «Омут-зеркало»: воронка, три отражения — бьют все, настоящий один. Совиный взор Пелагеи показывает настоящего, Прошка метит его
+//    рогаткой — метка горит 6 с, по метке бьют все. Плавать к середине не даёт воронка — Йоша поливает бутон: кувшинка-плот на двоих,
+//    воронка сама несёт его к отражениям. Гейзеры читаются: пузыри, купол воды, нарастающий гул — потом столб.
+//  4 «Великий вал»: Водяной втрое выше, за ним стена воды; омут уходит к валу — на дне камни Китежа и три колокола. Ритм: вал идёт
+//    тремя волнами — средний колокол отбивает «раз-два-три», на «бом» каждый бьёт свой колокол (в одиночку оставленный у второго звонит сам).
+//    Три верных удара — вал расступается, луч солнца; Водяной на дне хлопает губами, как рыба, — общий удар двоих с замедлением.
+// Сквозное: шкала запала (отбивы шаров) — полная: оглушение; за окно не больше 3–4 ударов («очухался»); проиграл этап — с начала этапа;
+// реплики-реакции и эмоции (злость → обида → усталость → сон); музыка по этапам; всплывающих надписей — только ключевые.
+{const _ft=floatText;FIN.k2ft=_ft;floatText=function(pos,text,color){if(W&&W.k2quiet&&W.k2quiet(String(text)))return;return _ft.apply(this,arguments);};}
+const K2_DOME_G=new FIN.orig.Sphere(1.2,12,8,0,Math.PI*2,0,Math.PI/2);   // купол гейзера — одна геометрия на все
 build2B=function(){
-  W.zvenAway=true;W.world=2;W.bubbles=false;setTheme('whirl');sky('day');W.name='2-Б · «Водяной»';W.sub='Босс мира 2 · погоня и омут · три этапа: водяные кони, воронка, великий вал';W.camX=16;const F=W.flags;F.phase=0;F.fin=[-9,-9];
+  W.zvenAway=true;W.world=2;W.bubbles=false;setTheme('whirl');sky('day');W.name='2-Б · «Водяной»';W.sub='Босс мира 2 · погоня с валом и омут · сом, кони, зеркало, великий вал';W.camX=16;const F=W.flags;F.phase=0;F.fin=[-9,-9];
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.gusli=true;W.fallY=-8;W.waterCol=0x3a8aa0;W.waterOp=0.46;
-  const C={x:0,z:-14},R=11,T=HERO,bank=M(0x7a8a6a),rock=M(0x6a6a64);
-  ground(-16,16,-3,8,1,bank);ground(-16,16,-32,-25,1,bank);ground(-16,-11,-25,-3,1,bank);ground(11,16,-25,-3,1,bank);ground(-11,11,-25,-3,-2,M(0x4a5a4a));
+  const C={x:0,z:-14},R=11,T=HERO,bank=M(0x7a8a6a),rock=M(0x6a6a64),V=FIN.k2v,FX=FIN.k2fx,SOLO=()=>!!G.solo,ft=FIN.k2ft;
+  ground(-16,16,-3,8,1,bank);ground(-16,16,-32,-25,1,bank);ground(-16,-11,-25,-3,1,bank);ground(11,16,-25,-3,1,bank);ground(-11,11,-25,-3,-2,M(0x6a7a58));
   wall(-16.2,-16,-32,8);wall(16,16.2,-32,8);wall(-16.2,16.2,-32.2,-32);
   {const rw=new THREE.Mesh(new THREE.CylinderGeometry(R,R,3.2,48,1,true),M(0x5a6a5a,{side:THREE.BackSide}));rw.position.set(C.x,-0.5,C.z);W.group.add(rw);
     const rg=new THREE.Mesh(new THREE.RingGeometry(R,17,48),M(0x7a8a6a,{side:THREE.DoubleSide}));rg.rotation.x=-Math.PI/2;rg.position.set(C.x,1.01,C.z);rg.receiveShadow=true;W.group.add(rg);}
   for(let i=0;i<36;i++){const a=i/36*Math.PI*2;decorFir(C.x+Math.cos(a)*rand(19,26),C.z+Math.sin(a)*rand(19,26),rand(1.2,2),true,1);}
   const sea=new THREE.Mesh(new THREE.PlaneGeometry(500,500),M(0x2f6a80));sea.rotation.x=-Math.PI/2;sea.position.y=-3;W.group.add(sea);
-  // высокая скала за омутом — там стоит тонкая чёрная фигура
   addMesh(new THREE.CylinderGeometry(1.6,3.4,10,8),rock,-15,5,-31);const ko=makeKoschei();ko.g.position.set(-15,10,-31);ko.g.rotation.y=0.5;ko.g.scale.setScalar(0.9);ko.g.visible=false;
   const glint=new THREE.Mesh(new THREE.SphereGeometry(0.12,8,6),MB(0xffffff));glint.visible=false;W.group.add(glint);
-  const snag=addMesh(new THREE.CylinderGeometry(0.5,0.7,4,8),M(0x5a4028),0.8,-1.4,-14.6);snag.rotation.z=1.2;
-  // четыре раковины по краям омута
-  const zone=waterZone(-11,11,-25,-3,-2,0.8,{floor:-2,shell:false,curb:false});
-  zone.noGusli=true;   // гусли в омуте — только родники и колокола (этапы 2 и 3)
+  const snag=addMesh(new THREE.CylinderGeometry(0.5,0.7,4,8),M(0x5a4028),0.8,-0.4,-14.6);snag.rotation.z=1.2;
+  // омут всегда полон: гладь — свой шейдер (late_99r), механика — участок воды
+  const zone=waterZone(-11,11,-25,-3,-2,0.8,{floor:-2,shell:false,curb:false,start:'high'});zone.noGusli=true;
+  const OM=FX.omut(C,R,zone);
+  // камни Китежа на дне (видны сквозь воду, а на этапе 4 — открываются)
+  {const st=M(0xb8b0a0),st2=M(0x8a8478),gd=M(COL.gold,{emissive:0x806010,emissiveIntensity:0.3});
+    for(const[x,z,ry]of[[-7.5,-13,0.3],[7.2,-15,-0.4],[-3.5,-21,0.9],[4,-6.5,0.2],[-4.8,-6.8,-0.6],[3.4,-21.5,-0.8]]){const g=new THREE.Group();g.position.set(x,-2,z);g.rotation.y=ry;W.group.add(g);
+      addMesh(new THREE.BoxGeometry(1.6,0.6,1.1),st,0,0.3,0,g);addMesh(new THREE.CylinderGeometry(0.28,0.32,rand(1.2,2.2),8),st2,0.5,0.9,0,g).rotation.z=rand(-0.5,0.5);}
+    const dome=new THREE.Group();dome.position.set(1.5,-2,-23.5);W.group.add(dome);addMesh(new THREE.CylinderGeometry(1,1,1.4,10),st,0,0.7,0,dome);addMesh(new THREE.SphereGeometry(1.0,10,8),gd,0,1.7,0,dome).scale.set(1,1.3,1);addMesh(new THREE.ConeGeometry(0.2,0.8,6),gd,0,3.0,0,dome);}
+  // мели по краю: на них стоят; сюда бросается сом
+  const SHOAL=[Math.PI*0.25,Math.PI*0.75,Math.PI*1.25,Math.PI*1.75].map((a,i)=>{const x=C.x+Math.cos(a)*8.6,z=C.z+Math.sin(a)*8.6,g=new THREE.Group();g.position.set(x,0,z);W.group.add(g);
+    addMesh(new THREE.SphereGeometry(2.15,14,8),M(0xc8b884),0,0.25,0,g).scale.set(1,0.36,1);for(let k=0;k<5;k++)addMesh(new THREE.DodecahedronGeometry(rand(0.18,0.32)),M(0x9a9488),rand(-1.2,1.2),0.9,rand(-1.2,1.2),g);
+    for(let k=0;k<12;k++){const r=rand(1.2,1.9),b=rand(0,6.28);addMesh(new THREE.ConeGeometry(0.05,rand(0.7,1.3),3),M(0x6a8a3a),Math.cos(b)*r,1.3,Math.sin(b)*r,g).castShadow=false;}
+    const col={x,z,r:1.95,miny:-3,maxy:1.0,on:true};W.cyls.push(col);return {x,z,a,g,col,i};});
   const Z=makeZven();W.zven=Z;Z.pos.set(0,3,2);W.zvenFree=true;
-  const arena={x:C.x,z:C.z,r:R-2,camActive:()=>!G.cine&&F.phase>=1};W.camZones.push(arena);
-  bell(0,4,1);bell(-4,80,1);bell(-4,35.6,1);
-  const bb=$('bossbar');bb.style.display='none';W.onLeave=()=>{bb.style.display='none';};
+  const arena={x:C.x,z:C.z+2,r:R-1,camActive:()=>!G.cine&&F.phase>=1};W.camZones.push(arena);
+  bell(0,4,1);
+  const bb=$('bossbar');bb.style.display='none';W.onLeave=()=>{bb.style.display='none';try{FIN.music.play(null);}catch(e){}FX.roar(0);};
   let vod=null;
-  /* ---------- бой с Водяным: три этапа по образцу Кощея — «Водяные кони», «Воронка», «Великий вал» ----------
-     1 «Водяные кони»: Водяной скачет по омуту на пенной волне — не достать. Кидает водяные шары: отбей в последний миг — шар летит в него;
-       три попадания — свалился с волны, оглушён: бей. Рывок через омут — красная дорожка: кувырок или в сторону. Из воды — раки и щуки.
-     2 «Воронка»: омут крутится, пловцов тянет к середине; гейзеры — красный круг под героем, через миг бьёт столб. Четыре родника по краю:
-       сыграть два противоположных разом (оставленный держит напев) — встречное течение глушит воронку, вода уходит, Водяной закружился;
-       из воронки лезут тягуны и пузырники.
-     3 «Великий вал»: Водяной вырос и поднял весь омут стеной. Валы катятся через омут — прячься за валун. Три колокола Китежа по краю —
-       зазвонить разом: Водяной съёживается, оглушён — бей; добить — богатырский мах вдвоём (в одиночку — одним).
-     В одиночку: волна и гейзеры реже, миньонов меньше, оглушение дольше; родники и колокола — «оставленный держит напев». */
-  const BS={ang:-Math.PI/2,ride:false,hits:0,throwT:2.5,dashT:9,dash:null,minT:5,adds:[],geyT:2.5,stall:0,waveT:5,wave:null,stun:false,grow:1,lonT:0};
-  const SOLO=()=>!!G.solo,maxAdds=()=>SOLO()?2:4,PR=7.4;
-  const at=(a,r)=>new V3(C.x+Math.cos(a)*r,0,C.z+Math.sin(a)*r);
-  const live=()=>HEROES.filter(h=>h.active&&!h.cling&&!h.kwHold&&!players[h.player].downed);   // кто держит напев — не мишень (иначе одному не собрать)
+  /* ---------- общее ---------- */
+  const BS={zap:0,winHits:0,cap:4,lastEmb:0,stun:0,stage:{},quietT:0,idleT:0};F.bs=BS;
+  const live=()=>HEROES.filter(h=>h.active&&!h.cling&&!h.kwHold&&!h.k2ride&&!players[h.player].downed);
   const pick=()=>{const L=live();return L[Math.floor(Math.random()*L.length)]||active(0);};
+  const at=(a,r)=>new V3(C.x+Math.cos(a)*r,0,C.z+Math.sin(a)*r);
   const surf=()=>Math.max(zone.level,zone.floor)+0.02;
-  // ---------- водяные эффекты ----------
-  function column(x,z,h,dur,r){const m=new THREE.Mesh(new THREE.CylinderGeometry(r||0.9,(r||0.9)*1.35,1,16,1,true),MB(0xcff4ff,{transparent:true,opacity:0.6,depthWrite:false,side:THREE.DoubleSide}));
-    const y0=surf();m.position.set(x,y0,z);m.userData.noBatch=true;W.group.add(m);
-    anim(dur||1.2,k=>{const s=Math.sin(Math.min(1,k)*Math.PI);m.scale.set(1+0.2*s,Math.max(0.01,h*s),1+0.2*s);m.position.y=y0+h*s/2;m.material.opacity=0.65*s;m.rotation.y+=0.2;if(k>=1)W.group.remove(m);});
-    for(let i=0;i<12;i++)later(i*0.05,()=>burst(new V3(x+rand(-0.7,0.7),y0+rand(0.4,h),z+rand(-0.7,0.7)),[0xe8fbff,0x9ae0f0,0xffffff][i%3],3,3.4,0.5));}
-  function ripple(x,z,r1,dur,col){const m=new THREE.Mesh(new THREE.TorusGeometry(1,0.09,6,48),MB(col||0xe8fbff,{transparent:true,opacity:0.85,depthWrite:false}));m.rotation.x=-Math.PI/2;
-    m.position.set(x,surf()+0.08,z);m.userData.noBatch=true;W.group.add(m);anim(dur||1,k=>{m.scale.setScalar(0.3+r1*k);m.material.opacity=0.85*(1-k);if(k>=1)W.group.remove(m);});}
-  function warnDisc(x,z,r,dur){const m=new THREE.Mesh(new THREE.CircleGeometry(r,28),MB(0xff5a4a,{transparent:true,opacity:0.3,depthWrite:false}));m.rotation.x=-Math.PI/2;
-    m.position.set(x,surf()+0.06,z);m.userData.noBatch=true;W.group.add(m);anim(dur,k=>{m.material.opacity=0.22+0.3*Math.abs(Math.sin(k*dur*7));m.scale.setScalar(0.6+0.4*Math.min(1,k*3));if(k>=1)W.group.remove(m);});}
-  function hurtAt(p,r,label){for(const h of live()){if(Math.hypot(h.pos.x-p.x,h.pos.z-p.z)>r)continue;if(damageHero(h,{kind:'hazard',ref:{pos:p}})&&label)floatText(h.pos.clone().add(new V3(0,h.d.height+1,0)),label,'#9fe6ff');}}
-  // пенный гребень под Водяным, на котором он скачет
-  const crest=new THREE.Group();W.group.add(crest);crest.visible=false;{const fm=MB(0xf4fdff,{transparent:true,opacity:0.85,depthWrite:false});const wm=MB(0x6ad0e8,{transparent:true,opacity:0.6,depthWrite:false});
-    const w=new THREE.Mesh(new THREE.SphereGeometry(1,16,10,0,Math.PI*2,0,Math.PI/2),wm);w.scale.set(2.6,1.1,3.4);crest.add(w);
-    for(let i=0;i<9;i++){const f=new THREE.Mesh(new THREE.SphereGeometry(rand(0.35,0.6),8,6),fm);f.position.set(rand(-2,2),rand(0.6,1.2),rand(-2.8,2.8));crest.add(f);}crest.traverse(c=>{c.userData.noBatch=true;});}
-  // стена воды за Водяным (этап 3) и вал, что катится через омут
-  const wallW=new THREE.Mesh(new THREE.BoxGeometry(24,1,2.4),MB(0x2f8ab0,{transparent:true,opacity:0.78,depthWrite:false}));wallW.position.set(C.x,-2,C.z-11.5);wallW.visible=false;wallW.userData.noBatch=true;W.group.add(wallW);
-  const valG=new THREE.Group();W.group.add(valG);valG.visible=false;{const vm=MB(0x7ad0e8,{transparent:true,opacity:0.6,depthWrite:false,side:THREE.DoubleSide}),fm=MB(0xf4fdff,{transparent:true,opacity:0.9,depthWrite:false});
-    const b=new THREE.Mesh(new THREE.BoxGeometry(22,2.6,1.2),vm);b.position.y=1.3;valG.add(b);for(let i=0;i<16;i++){const f=new THREE.Mesh(new THREE.SphereGeometry(rand(0.4,0.7),8,6),fm);f.position.set(-10.5+i*1.4,2.6+rand(-0.2,0.2),rand(-0.3,0.3));valG.add(f);}valG.traverse(c=>{c.userData.noBatch=true;});}
-  // валуны-укрытия (этап 3): за ними вал не достаёт
-  const ROCKS=[[-5.6,-12.6],[0,-10.4],[5.6,-12.6]].map(([x,z])=>{const g=new THREE.Group();g.position.set(x,-2.6,z);W.group.add(g);const m=addMesh(new THREE.DodecahedronGeometry(1.25),rock,0,0,0,g);m.scale.set(1.2,1,0.9);
-    g.visible=false;const cyl={x,z,r:1.3,miny:-3,maxy:-0.6,on:false};W.cyls.push(cyl);return {x,z,g,cyl};});
-  // родники (этап 2) и колокола Китежа (этап 3): ракушки по краю омута; сыграл — звучит 3 с; оставленный герой держит напев 15 с
-  const mkRef=(dur)=>({hum:0,off:true,dur,ring(h){this.hum=Math.max(this.hum,this.dur);SFX.ok();}});
-  const SP=[[0,-23.4,0],[9.4,-14,-Math.PI/2],[0,-4.6,Math.PI],[-9.4,-14,Math.PI/2]].map(([x,z,ry],i)=>{const S=kwShell('dance',x,z,-1.0,mkRef(3),{ry,r:2.4,say:['Родник!','Течение!','Родник!','Течение!'][i]});S.g.visible=false;S.g.traverse(c=>{c.userData.noBatch=true;});return S;});
-  const BELL=[[-9.4,-17.5,Math.PI/2],[9.4,-17.5,-Math.PI/2],[0,-4.6,Math.PI]].map(([x,z,ry])=>{const S=kwShell('ring',x,z,-1.0,mkRef(4),{ry,r:2.4,say:'Дзинь!'});S.kind='dance';S.g.visible=false;S.g.traverse(c=>{c.userData.noBatch=true;});return S;});
-  const showShells=(L,on)=>{for(const S of L){S.ref.off=!on;S.ref.hum=0;if(on&&!S.g.visible){S.g.visible=true;S.g.scale.setScalar(0.01);anim(0.8,k=>{S.g.scale.setScalar(Math.max(0.01,smooth(k)));});column(S.x,S.z,2.4,0.8,0.5);}else if(!on)S.g.visible=false;}};
-  const humming=S=>S.ref.hum>0;
-  const setBar=()=>{const e=vod;const hp=e&&e.alive?Math.max(0,e.embers)/e.maxEmb:0;const nm=['','Водяные кони','Воронка','Великий вал'][Math.max(1,Math.min(3,F.phase))];
-    bb.innerHTML='<b>Водяной</b> · '+Math.max(1,Math.min(3,F.phase))+' / 3 · '+nm+' <span class="seg"><i style="width:'+Math.round((F.won?0:hp)*100)+'%"></i></span>';};
-  function addMinion(kind,near){if(BS.adds.filter(e=>e.alive).length>=maxAdds())return null;const a=near!=null?near+rand(-0.6,0.6):rand(0,Math.PI*2),p=at(a,rand(3.5,8.4));
-    const e=makeFoe(kind,p.x,p.z,{y:-2,leash:9});BS.adds.push(e);column(p.x,p.z,2.6,0.9,0.6);ripple(p.x,p.z,3,0.8);SFX.splash();return e;}
-  function clearAdds(){for(const e of BS.adds){if(!e.alive)continue;e.alive=false;column(e.pos.x,e.pos.z,2,0.7,0.5);W.group.remove(e.g);const k=W.enemies.indexOf(e);if(k>=0)W.enemies.splice(k,1);}BS.adds.length=0;}
+  const hurtAt=(p,r,why)=>{for(const h of live()){if(Math.hypot(h.pos.x-p.x,h.pos.z-p.z)>r)continue;if(h.rollT>0)continue;if(damageHero(h,{kind:'hazard',ref:{pos:p}})){h.vel.x+=(h.pos.x-p.x)*2;h.vel.z+=(h.pos.z-p.z)*2;h.vel.y=5;}}};
+  const key=(p,text,col)=>ft(p.clone?p.clone():new V3(p.x,p.y,p.z),text,col||'#ffe9a0');   // ключевая надпись (окно, оглушение, промах) — мимо фильтра
+  // всплывающих надписей в бою — только ключевые: остальное звуком и вспышкой
+  const QUIET=/Уголёк|искра|закрылся|Щит!|не достать|не пробить|мимо|Отбил|Капля|лепесток|Окатило|Ой! Не больно|Увернулся|Открыт|Сверху|Удар!|Одним махом|насквозь|Добивающий|Щёлк|Живая вода|Совиный взор|Глаза отдыхают|Держусь|Спасибо/;
+  W.k2quiet=t=>F.phase>=1&&!F.out&&QUIET.test(t);
+  const sayV=(text,dur,emo)=>{if(!vod)return;bark({g:vod.g,pos:vod.pos,d:{height:vod.L.top*vod.s}},'vod',text,dur||1.8);V.say(vod.k2,Math.min(2.2,(dur||1.8)*0.8));if(emo)V.set(vod.k2,null,emo);};
+  const LINES={tease:['Ах вы, головастики!','Буль-буль! Не поймаете!','Ха! Мокрые пятки!','Кто в омут — тот мой!'],hurt:['Ой! Борода!','Ус не трожь!','Ой, корона…','Ай-ай, кувшиночки мои!'],
+    tired:['Уф… запыхался…','Ох, годы мои водяные…'],angry:['Ну, держитесь!','Всех перекупаю!','Сейчас как плесну!']};
+  const line=k=>{const L=LINES[k];return L[Math.floor(Math.random()*L.length)];};
+  // музыка по этапам (темы — в late_40_music: FIN.music.TR)
+  const MUS=()=>{try{const TR=FIN.music.TR;if(!TR||TR.vod1)return;const B=TR.boss;
+      TR.vod1=Object.assign({},B,{bpm:116,root:43});TR.vod2=Object.assign({},B,{bpm:124,root:45,v:B.v.concat([{i:'tamb',drum:'x.x.x.x.x.x.x.x.',vol:0.02}])});
+      TR.vod3=Object.assign({},B,{bpm:108,root:41,sc:'aeo',v:B.v.filter(v=>v.i!=='kick').concat([{i:'frame',drum:'x.....x.....x...',vol:0.04}])});
+      TR.vod4=Object.assign({},B,{bpm:75,root:45,v:B.v.concat([{i:'kick',drum:'x...x...x...x...',vol:0.12},{i:'frame',drum:'x.x.x.x.x.x.x.x.',vol:0.05}])});}catch(e){}};
+  const music=n=>{MUS();try{FIN.music.play(n);}catch(e){}};
+  // полоса босса: этап, сила, запал
+  const setBar=()=>{if(bb.style.display!=='block')return;const e=vod,ph=Math.max(1,Math.min(4,Math.floor(F.phase||1)));const hp=e&&e.alive?Math.max(0,e.embers)/e.maxEmb:0;
+    const nm=['','Сом-перевозчик','Водяные кони','Омут-зеркало','Великий вал'][ph];const prog=ph===4?(BS.s4?BS.s4.ok/3:0):0;
+    bb.innerHTML='<b>Водяной</b> · '+ph+' / 4 · '+nm+' <span class="seg"><i style="width:'+Math.round((F.won?0:ph===4?1-prog:hp)*100)+'%"></i></span>'+
+      (ph<4?' <span class="seg" style="width:70px;background:#26303a"><i style="width:'+Math.round(BS.zap*100)+'%;background:linear-gradient(90deg,#9fe6ff,#fff)"></i></span>':'');};
   /* ---------- Водяной ---------- */
-  function spawnVod(){vod=makeFoe('vodyanoy',C.x,C.z,{y:-2,leash:14,scale:0.9});vod.def=Object.assign({},vod.def,{ranged:false});vod.noKill=true;vod.noMove=true;vod.embers=vod.maxEmb=8;vod.big=true;vod.slowAtk=0;
-    vod.shell=null;Object.values(vod.L.plates||{}).forEach(p=>{p.visible=false;});
-    vod.guardAll=()=>!(vod.dazeT>0)&&vod.state!=='broken';vod.guardText='не достать — сперва оглушите!';
-    vod.onReflect=b=>{const e=vod;burst(e.pos.clone().add(new V3(0,2.4,0)),0x9ae0f0,14,4);
-      if(F.phase===1&&BS.ride){BS.hits++;SFX.splash();floatText(e.pos.clone().add(new V3(0,4,0)),BS.hits<3?'Захлебнулся! '+BS.hits+' / 3':'Свалился!','#9fe6ff');if(BS.hits>=3)fall();}
-      else if(e.dazeT>0)emberOut(e,1,'Капля вернулась!');};
-    vod.onFinisher=h=>{if(F.phase===1){F.phase=1.5;later(0.4,scene2);return;}if(F.phase===2){F.phase=2.5;later(0.4,scene3);return;}
-      if(F.phase===3&&!F.won){F.fin[h.player]=G.time;if(SOLO())F.fin[1-h.player]=G.time;SFX.finisher();ringFx(vod.pos,COL.gold,3);floatText(vod.pos.clone().add(new V3(0,4,0)),'Мах!','#ffd76a');
-        if(Math.abs(F.fin[0]-F.fin[1])<0.8){win();}
-        else if(!F.finTold){F.finTold=true;for(const pi of[0,1])tip(pi,'Водяной оглушён! Ударьте '+K(pi,'attack')+' оба разом — Богатырский мах!',3);}}};
-    vod.tick=(e,dt)=>{if(G.cine)return;if(e.state!=='broken'&&!(e.dazeT>0)){e.cd=Math.max(e.cd,1);if(e.state==='ready'||e.state==='wind')e.state='idle';}};
-    vod.post=(e)=>{const hd2=e.L.head;if(BS.ride){e.body.rotation.x=0.3;e.body.position.y=Math.sin(G.time*5)*0.12;}else if(e.dazeT>0){e.body.rotation.z=Math.sin(G.time*6)*0.18;}
-      if(hd2)hd2.rotation.z=Math.sin(G.time*3)*0.05+(e.dazeT>0?Math.sin(G.time*9)*0.2:0);};}
-  // этап 1: свалился с волны — оглушён
-  function fall(){const e=vod;BS.ride=false;BS.hits=0;BS.dash=null;crest.visible=false;e.dazeT=SOLO()?10:8;e.pos.y=-2;column(e.pos.x,e.pos.z,4,1.1,1.6);ripple(e.pos.x,e.pos.z,6,1.2);shakeAll(0.06,0.5);SFX.crash();
-    banner('Свалился с волны!','#9fe6ff',2,'Водяной оглушён — бейте '+K(0,'attack')+' / '+K(1,'attack')+'!');}
-  function remount(){const e=vod;BS.ride=true;BS.throwT=1.6;BS.dashT=7;crest.visible=true;column(e.pos.x,e.pos.z,3,0.9,1.4);bark({g:e.g},'vod','Н-но, волна! Ещё прокачу!',1.8);}
-  // этап 2: встречное течение
-  function stall(){const e=vod;BS.stall=SOLO()?12:10;setWater(zone,'low');e.dazeT=BS.stall;e.pos.set(C.x,-2,C.z);SFX.crash();shakeAll(0.06,0.6);
-    for(const S of SP)column(S.x,S.z,3,1,0.7);column(C.x,C.z,5,1.3,2);ripple(C.x,C.z,10,1.4);
-    banner('Встречное течение!','#9fe6ff',2.2,'воронка встала — Водяной закружился, бейте!');addMinion('tyagun');if(!SOLO())addMinion('puzyr');}
-  // этап 3: звон Китежа
-  function bellStun(){const e=vod;BS.stun=true;BS.wave=null;valG.visible=false;SFX.bell();later(0.3,()=>SFX.bell());for(const S of BELL)column(S.x,S.z,4,1.2,0.5);
-    anim(1.4,k=>{BS.grow=1.5-0.5*smooth(k);wallW.scale.y=Math.max(0.01,9*(1-k));wallW.position.y=-2+4.5*(1-k);e.pos.z=lerp(C.z-8.5,C.z,smooth(k));});later(1.4,()=>{wallW.visible=false;});
-    for(let i=0;i<18;i++)later(i*0.08,()=>burst(new V3(rand(-10,10),rand(0,5),C.z-11+rand(-1,1)),0xe8fbff,4,4));e.dazeT=SOLO()?13:11;e.embers=e.maxEmb=6;
-    banner('Звон Китежа!','#ffd76a',2.4,'Водяной съёжился — бейте! А как оглушите — Богатырский мах вдвоём');}
-  function regrow(){const e=vod;BS.stun=false;BS.waveT=5;wallW.visible=true;showShells(BELL,true);anim(1.4,k=>{BS.grow=1+0.5*smooth(k);wallW.scale.y=Math.max(0.01,9*k);wallW.position.y=-2+4.5*k;e.pos.z=lerp(C.z,C.z-8.5,smooth(k));});
-    bark({g:e.g},'vod','Ух! Опять вырос — опять смою!',2);}
-  function win(){F.won=true;SFX.horn();banner('Богатырский мах!','#ffd76a',2,'вместе — вдвое сильней');G.stats.bogatyr++;shakeAll(0.08,0.6);clearAdds();showShells(BELL,false);valG.visible=false;wallW.visible=false;
-    ROCKS.forEach(r=>{r.g.visible=false;r.cyl.on=false;});BS.grow=1;vod.g.scale.setScalar(1);later(1.2,ending);}
-  function card(title,sub,tipFn){banner(title,'#7ad0a0',3,sub);later(0.6,()=>{for(const p of[0,1])tip(p,tipFn(p),5);});}
-  function start1(){F.phase=1;BS.ride=true;crest.visible=true;BS.ang=-Math.PI/2;BS.throwT=2.4;BS.dashT=9;BS.minT=4;try{CINE.mood('#6f9cff',0.12);}catch(e){}
-    card('Этап 1 · Водяные кони','Водяной скачет по омуту на волне',p=>'Водяной кидает водяные шары — <i class="sg b"></i> щит '+K(p,'guard')+' в последний миг: шар полетит в него.<br>Три попадания — свалится с волны, оглушён: бей '+K(p,'attack')+'! Красная дорожка — рывок: кувырок '+K(p,'roll')+'.');}
-  function scene2(){const e=vod;e.dazeT=0;e.state='idle';e.embers=e.maxEmb=8;clearAdds();
-    play({dur:8.4,fov:48,shots:[shot(0,[6,4.2,-4],[0,0,-14]),shot(3.4,[0,9,-2],[0,-1,-14],[3,11,-4],[0,-1,-14],5)],
-      says:[[0.3,2.8,'vod','Буль-буль! Ах так? Закручу омут воронкой!'],[3.6,3,null,'<i>Вода поднялась и пошла по кругу — всё быстрей, быстрей…</i>',true],[6.6,1.8,'zven','Родники по краю! Встречным течением!']],
-      events:[{t:0.4,fn:()=>{column(e.pos.x,e.pos.z,6,1.4,1.6);SFX.wave();}},{t:2.8,fn:()=>{setWater(zone,'high');ripple(C.x,C.z,10,1.6);shakeAll(0.05,1);}},{t:4,fn:()=>{showShells(SP,true);}}],
-      tick:()=>{swirlFx.visible=true;swirlFx.rotation.z+=0.06;swirlFx.position.y=surf()+0.05;},
-      end:()=>{F.phase=2;showShells(SP,true);setWater(zone,'high');BS.geyT=2.5;e.pos.set(C.x,-1.6,C.z);try{CINE.mood('#4f7cff',0.16);}catch(err){}
-        card('Этап 2 · Воронка','омут крутится — тянет к середине',p=>'Четыре родника по краю. Сыграйте '+K(p,'item')+' два противоположных — разом: встречное течение остановит воронку!<br>В одиночку: сыграй, смени героя '+K(p,'swap')+' — оставленный держит напев, а ты — к другому. Красный круг — сейчас ударит гейзер!');}});}
-  function scene3(){const e=vod;e.dazeT=0;e.state='idle';clearAdds();showShells(SP,false);BS.stall=0;setWater(zone,'low');
-    play({dur:10.4,fov:50,shots:[shot(0,[0,3,-3],[0,1.5,-14]),shot(3.6,[9,6,-2],[0,4,-22],[6,8,0],[0,4,-22],4),shot(7.6,[0,6,4],[0,2,-16])],
-      says:[[0.3,3,'vod','Ну, держитесь! Весь омут — на вас! Валом смою!'],[3.8,3.4,null,'<i>Водяной вырос выше ёлок, а за ним встала стена воды.</i>',true],[7.6,2.6,'zven','Колокола Китежа! Зазвоните разом!']],
-      events:[{t:0.6,fn:()=>{SFX.wave();shakeAll(0.07,1.4);anim(2.6,k=>{BS.grow=1+0.5*smooth(k);e.pos.z=lerp(C.z,C.z-8.5,smooth(k));});}},
-        {t:2.4,fn:()=>{wallW.visible=true;anim(2,k=>{wallW.scale.y=Math.max(0.01,9*smooth(k));wallW.position.y=-2+4.5*smooth(k);});for(let i=0;i<20;i++)later(i*0.1,()=>burst(new V3(rand(-10,10),rand(0,6),C.z-11),0xe8fbff,4,4));}},
-        {t:6,fn:()=>{ROCKS.forEach((r,i)=>{r.g.visible=true;r.cyl.on=true;anim(0.8,k=>{r.g.position.y=-2.6+1.4*smooth(k);});later(i*0.15,()=>column(r.x,r.z,2,0.7,1));});showShells(BELL,true);}}],
-      end:()=>{F.phase=3;BS.waveT=4;BS.stun=false;wallW.visible=true;ROCKS.forEach(r=>{r.g.visible=true;r.cyl.on=true;r.g.position.y=-1.2;});showShells(BELL,true);try{CINE.mood('#3a5aa8',0.2);}catch(err){}
-        card('Этап 3 · Великий вал','Водяной поднял весь омут стеной',p=>'Вал катится через омут — прячься за валун!<br>Три колокола Китежа по краю — зазвоните '+K(p,'item')+' все три разом (оставленный держит звон): Водяной съёжится — бей!');}});}
-  /* ---------- НОВОЕ «Погоня Водяного» (сказка «Морской царь и Василиса Премудрая»): вал гонится за героями к омуту ---------- */
-  // После «Бом» в 2-5 Водяной проснулся: река за спиной встаёт валом и гонит героев к омуту. На тропе — дуб поперёк (Потап поднимет:
-  // «Эх, дубинушка, ухнем!»), ручей (в отлив не выбраться — прилив гуслями, и вплавь), узкий проход в скалах и за ним гребешок
-  // Василисы — Йоша польёт его живой водой, когда все прошли, и камыш встанет стеной, вал завязнет; у омута плетень с двумя верёвками —
-  // дёрнуть разом. Догнал вал — назад к последней отметке (успехи остаются). В одиночку вал медленнее.
-  ground(-7,7,46,90,1,bank);ground(-7,7,38,46,-2.6,M(0x5a5040));ground(-7,7,8,38,1,bank);
-  wall(-7.4,-7,8,90);wall(7,7.4,8,90);wall(-7.4,7.4,90,90.4);wall(-16.2,-7,8,8.2);wall(7,16.2,8,8.2);
-  for(let z=12;z<90;z+=rand(2.6,4.2))for(const sd of[-1,1])decorFir(sd*rand(8.6,13),z,rand(1.1,1.8),true,1);
-  for(let i=0;i<22;i++){const sd=Math.random()<0.5?-1:1;addMesh(new THREE.ConeGeometry(0.05,rand(0.8,1.4),3),M(0x6a8a3a),sd*rand(5.6,6.9),1.5,rand(39,45)).castShadow=false;}   // камыш у ручья
-  const STR=waterZone(-7,7,38,46,-2.6,0.9,{start:'low',floor:-2.6,shell:{x:-6.2,z:46.7,y:1},curb:false});
-  // дуб поперёк тропы
-  const oak=new THREE.Group();oak.position.set(0,1,58);W.group.add(oak);{const om=M(0x6a4a2a),lm=M(0x4f7a3a);const tr=addMesh(new THREE.CylinderGeometry(0.85,0.95,14,10),om,0,0.9,0,oak);tr.rotation.z=Math.PI/2;
-    for(let i=0;i<6;i++){const b=addMesh(new THREE.CylinderGeometry(0.12,0.2,2.2,6),om,rand(-6,6),1.6+rand(0,0.8),rand(-0.6,0.6),oak);b.rotation.set(rand(-0.8,0.8),0,rand(-0.8,0.8));}
-    for(let i=0;i<6;i++)addMesh(new THREE.SphereGeometry(rand(0.7,1.1),7,6),lm,rand(-6,6),2.4+rand(0,0.6),rand(-0.8,0.8),oak);}
-  const oakCol=colBox(-7,7,1,3.8,57.1,58.9,true);
-  W.lifts.push({pos:new V3(0,1,59.7),active:()=>!F.oak,onLift:h=>{F.oak=true;oakCol.on=false;SFX.toss();shakeAll(0.05,0.4);anim(1.4,k=>{oak.position.x=-k*10;oak.rotation.z=k*0.5;oak.position.y=1-k*0.8;});
-    bark(h,'potap','Эх, дубинушка, ухнем!',1.8,true);}});
-  // скалы и проход; гребешок Василисы за ним
-  box(-7,-1.6,1,4.6,28,32,rock);box(1.6,7,1,4.6,28,32,rock);
-  const comb=new THREE.Group();comb.position.set(0,1.05,26.2);W.group.add(comb);{const cm=M(COL.gold,{emissive:0xffb000,emissiveIntensity:0.5});addMesh(new THREE.BoxGeometry(0.9,0.12,0.22),cm,0,0.06,0,comb);
-    for(let i=0;i<9;i++)addMesh(new THREE.BoxGeometry(0.05,0.05,0.34),cm,-0.4+i*0.1,0.06,0.26,comb);}
-  const reeds=new THREE.Group();reeds.position.set(0,1,30);reeds.visible=false;W.group.add(reeds);{const rm=M(0x6a9a3a);for(let i=0;i<34;i++){const c=addMesh(new THREE.ConeGeometry(0.08,rand(2.2,3.4),4),rm,rand(-1.5,1.5),1.4,rand(-0.9,0.9),reeds);c.rotation.z=rand(-0.15,0.15);}}
-  const reedCol=colBox(-1.6,1.6,1,3.4,29,31,true);reedCol.on=false;
-  W.waterTargets.push({pos:new V3(0,1,26.2),pri:1,active:()=>!F.reeds&&WV.on,onWater:()=>{F.reeds=true;F.reedT=7;reedCol.on=true;reeds.visible=true;reeds.scale.set(1,0.05,1);anim(0.9,k=>{reeds.scale.y=Math.max(0.05,k);});comb.visible=false;
-    SFX.grow();burst(new V3(0,2,30),0x9affb0,20,4);banner('Гребешок — и камыш стеной!','#9affb0',2,'как у Василисы Премудрой: вал в камыше завязнет');bark(HERO.yosha,'yosha','Гребешок за спину — лес стеной!',1.8,true);}});
-  // плетень у омута: две верёвки — разом
-  {const wm=M(0x8a6a40);box(-7,-2,1,4.2,15.6,16.4,wm);box(2,7,1,4.2,15.6,16.4,wm);for(let x=-6.8;x<7;x+=0.5)if(Math.abs(x)>2.1)addMesh(new THREE.CylinderGeometry(0.08,0.09,3.6,5),wm,x,2.8,16.5).castShadow=false;}
-  const gateG=[-1,1].map(sd=>{const g=new THREE.Group();g.position.set(sd*2,1,16);W.group.add(g);addMesh(new THREE.BoxGeometry(2,3,0.3),M(0x9a7a4a),-sd*1,1.5,0,g);return g;});
-  const gateCol=colBox(-2,2,1,4.2,15.7,16.3,true);
-  const RP=[-99,-99],ropes=[-1,1].map((sd,i)=>{const g=new THREE.Group();g.position.set(sd*5.2,1,17.1);W.group.add(g);addMesh(new THREE.CylinderGeometry(0.05,0.05,2.6,5),M(0xd8c090),0,2.2,0,g);
-    const b=addMesh(new THREE.ConeGeometry(0.22,0.36,10),M(COL.gold,{emissive:0x806010,emissiveIntensity:0.4}),0,0.9,0,g);return {g,b,sd};});
-  ropes.forEach((R,i)=>W.hittables.push({pos:new V3(R.sd*5.2,2,17.1),r:1.1,push:false,alive:()=>!F.gate,onHit:h=>{RP[i]=G.time;if(G.solo)RP[1-i]=G.time;SFX.latch();anim(0.4,k=>{R.g.position.y=1-Math.sin(k*Math.PI)*0.4;});
-    if(Math.abs(RP[0]-RP[1])<0.8){F.gate=true;gateCol.on=false;SFX.gate();gateG.forEach((g,j)=>anim(1,k=>{g.rotation.y=(j?-1:1)*k*1.6;}));banner('Плетень открыт!','#ffffff',1.6,'к омуту!');}
-    else floatText(new V3(R.sd*5.2,3.6,17.1),'Разом! Вместе дёргайте!','#ffd9a0');}}));
-  // вал: стена воды гонится по тропе; за ней — разлив
-  const WV={z:98,on:false,hold:0,ck:82,sp:()=>G.solo?2.2:2.8,snd:0};
-  const wave=new THREE.Group();W.group.add(wave);{const wm=M(0x4aa0b8,{transparent:true,opacity:0.78,emissive:0x0a4a5a,emissiveIntensity:0.4,depthWrite:false});const wb=addMesh(new THREE.BoxGeometry(14.4,4.6,2.6),wm,0,3.3,0.4,wave);wb.castShadow=false;wb.renderOrder=5;
-    const fm=M(0xeafcff,{emissive:0x9ae0f0,emissiveIntensity:0.5});const crest=addMesh(new THREE.CylinderGeometry(0.7,0.7,14.4,10),fm,0,5.6,-0.6,wave);crest.rotation.z=Math.PI/2;crest.castShadow=false;
-    const fl=new THREE.Mesh(new THREE.PlaneGeometry(14.4,90),M(0x3a8aa0,{transparent:true,opacity:0.6,depthWrite:false}));fl.rotation.x=-Math.PI/2;fl.position.set(0,1.5,46);fl.renderOrder=4;wave.add(fl);}
-  wave.visible=false;
-  const CKS=[82,56.4,36.4,25.4,13];
-  function waveCaught(){SFX.splash();SFX.wave();shakeAll(0.07,0.6);banner('Вал догнал!','#cff8ff',1.8,'назад, к последней отметке — и бегом!');
-    WV.z=WV.ck+13;WV.hold=1.6;HEROES.forEach((h,i)=>{placeOnGround(h,-2.4+i*1.6,WV.ck-0.6*(i%2),1);h.following=!h.active||(G.solo&&h.player!==G.soloPi);});snapCams();G.stats.falls=(G.stats.falls||0)+1;
-    if(F.reeds&&!F.reedsDown&&WV.ck>31){F.reeds=false;reedCol.on=false;reeds.visible=false;comb.visible=true;}}   // камыш вырос раньше, чем все прошли — гребешок снова
-  function chaseScene(){
-    play({dur:8.6,fov:50,shots:[shot(0,[0,4.2,72],[0,3.6,92]),shot(4.2,[5.4,3,74],[0,1.8,82])],
-      says:[[0.3,3.2,null,'<i>Река за спиной вздыбилась — встала валом до самых крон.</i>',true],[3.6,2.4,'vod','Кто звенел? Кто будил? Догоню-у-у!'],[6.2,2.2,'zven','Бежим! К омуту, скорее!']],
-      events:[{t:0.4,fn:()=>{wave.visible=true;WV.z=104;anim(3.4,k=>{WV.z=104-k*8;wave.position.z=WV.z;});SFX.wave();tone(60,2.2,'sawtooth',0.16,40);shakeAll(0.05,1.4);}}],
-      end:()=>{WV.on=true;WV.z=96;WV.hold=0.6;W.camYaw=Math.PI;snapCams();banner('Погоня!','#cff8ff',2.4,'вал за спиной — бегите вниз, к нам!');
-        for(const pi of[0,1])tip(pi,'Вал гонится! Дуб поперёк — Потап поднимет '+K(0,'skill')+'; ручей — прилив гуслями '+K(pi,'item')+', и вплавь;<br>за скалами — гребешок: Йоша польёт его '+K(1,'skill')+', когда все прошли.',4.6);}});}
-  W.updates.push(dt=>{
-    if(!WV.on||G.cine||F.chaseDone)return;
-    const ctl=G.solo?[G.soloPi]:[0,1];   // в одиночку — только тот, кем играешь (остальные догонят по «Ко мне!» или у омута)
-    for(const c of CKS)if(c<WV.ck&&ctl.every(pi=>active(pi).pos.z<c))WV.ck=c;
-    if(WV.hold>0)WV.hold-=dt;
-    else if(F.reeds&&!F.reedsDown&&WV.z<=31.6){WV.z=31.6;F.reedT-=dt;reeds.rotation.x=Math.sin(G.time*9)*0.03;if(F.reedT<=0){F.reedsDown=true;reedCol.on=false;SFX.crash();anim(0.8,k=>{reeds.scale.y=Math.max(0.15,1-k);});floatText(new V3(0,4,30),'Прорвал камыш!','#cff8ff');}}
-    else WV.z-=WV.sp()*dt;
-    WV.z=Math.max(WV.z,9);wave.position.z=WV.z;wave.children[0].scale.y=1+Math.sin(G.time*3)*0.04;
-    WV.snd-=dt;if(WV.snd<=0){WV.snd=2.2;SFX.wave();}
-    if(Math.random()<dt*10)burst(new V3(rand(-6.5,6.5),5.8,WV.z-0.4),0xeafcff,2,2.4);
-    const near=Math.min(...ctl.map(pi=>active(pi).pos.z>WV.z-14?WV.z-active(pi).pos.z:99));if(near<5&&Math.random()<dt*3)shakeAll(0.02,0.2);
-    for(const pi of ctl){const h=active(pi);if(h.pos.z>WV.z-0.6){waveCaught();break;}}
-    if(F.gate&&ctl.every(pi=>active(pi).pos.z<10.4)){F.chaseDone=true;WV.on=false;W.camYaw=0;SFX.crash();anim(1.6,k=>{wave.position.y=-k*5;wave.position.z=WV.z-k*12;});later(1.7,()=>{wave.visible=false;});later(1.2,intro);}});
-  /* ---------- сюжет ---------- */
-  function intro(){bb.style.display='block';HEROES.forEach((h,i)=>{placeOnGround(h,-4.5+i*3,4,1);h.face=Math.PI;});ko.g.visible=true;
-    play({dur:15,fov:48,camK:2.6,shots:[shot(0,[6,6,10],[-8,5,-26]),shot(4.4,[-11,8.6,-24],[-15,11.4,-31],[-12,9.4,-25.6],[-15,11.6,-31],3),shot(9.2,[4,2.2,-6],[0.8,0,-14.6])],
+  function spawnVod(){vod=V.boss(C.x,C.z,{y:-1.4,scale:1});vod.def=Object.assign({},vod.def,{ranged:false});vod.embers=vod.maxEmb=8;vod.slowAtk=0;BS.lastEmb=vod.embers;
+    vod.state='idle';vod.g.position.y=-1.4;vod.guardAll=()=>!(vod.dazeT>0)&&vod.state!=='broken';vod.guardText='не достать';
+    vod.onReflect=b=>{const e=vod;FX.splash(e.pos.clone().add(new V3(0,e.L.top*e.s*0.7,0)),1.3);SFX.splash();zapAdd(SOLO()?0.5:0.34);};
+    vod.onFinisher=h=>{if(F.phase===1){F.phase=1.5;BS.winHits=0;later(0.4,scene2);return;}if(F.phase===2){F.phase=2.5;later(0.4,scene3);return;}if(F.phase===3){F.phase=3.5;later(0.4,scene4);return;}
+      if(F.phase===4.5&&!F.won){F.fin[h.player]=G.time;if(SOLO())F.fin[1-h.player]=G.time;SFX.finisher();ringFx(vod.pos,COL.gold,3);FX.crown(vod.pos.clone().setY(-1.9),1.2);
+        if(Math.abs(F.fin[0]-F.fin[1])<0.8)win();else if(!F.finTold){F.finTold=true;for(const pi of[0,1])tip(pi,'Ударьте '+K(pi,'attack')+' ОБА РАЗОМ — Богатырский мах!',3);}}};
+    vod.tick=(e,dt)=>{if(G.cine)return;if(e.state!=='broken'&&!(e.dazeT>0)){e.cd=Math.max(e.cd,1);if(e.state==='ready'||e.state==='wind')e.state='idle';}
+      if(e.state==='broken'&&F.phase<5)e.t=Math.min(e.t,0.5);};   // пробой ждёт добивающего — не гаснет сам
+    vod.k2post=(e)=>{const R2=e.k2;const h=live()[0];if(h){const a=Math.atan2(h.pos.x-e.pos.x,h.pos.z-e.pos.z)-e.face;R2.st.look[0]=clamp(Math.sin(a),-1,1);}};}
+  // запал: отбивы — полная шкала → оглушение
+  function zapAdd(k){if(!(F.phase>=1&&F.phase<4))return;BS.zap=Math.min(1,BS.zap+k);if(BS.zap>=1&&!(vod.dazeT>0)&&vod.state!=='broken')zapStun();}
+  function zapStun(){BS.zap=0;const e=vod;SFX.crash();shakeAll(0.07,0.5);F.slow=0.3;FX.crown(e.pos.clone().setY(surf()),1.6);CINE.moodFlash&&CINE.moodFlash('#bfe6ff',0.18,0.8);
+    key(e.pos.clone().add(new V3(0,e.L.top*e.s+0.6,0)),'Запал погас — оглушён!','#bfe6ff');sayV(line('hurt'),1.6,'hurt');
+    if(F.phase===1){s1Fall(true);}else if(F.phase===2){s2Fall();}else if(F.phase===3){s3Open(SOLO()?6:4.5,true);}}
+  function winStart(dur,cap){const e=vod;BS.zoom=1;e.dazeT=dur;e.state='recover';BS.winHits=0;BS.cap=cap||(SOLO()?4:4);BS.lastEmb=e.embers;V.set(e.k2,'dazed','hurt');}
+  // попадания в окно: не больше BS.cap — «очухался»
+  function winTick(){const e=vod;if(!e)return;if(e.embers<BS.lastEmb){const n=BS.lastEmb-e.embers;BS.winHits+=n;for(let i=0;i<n;i++){FX.splash(e.pos.clone().add(new V3(rand(-1,1),e.L.top*e.s*0.6,rand(-1,1))),0.8);}
+      if(F.phase===2){const p=V.dropFlower(e.k2);if(p){for(let i=0;i<8;i++)FX.drop(p,new V3(rand(-1.5,1.5),rand(1,3),rand(-1.5,1.5)),0.12,{noRing:true});}}
+      if(e.dazeT>0&&BS.winHits>=BS.cap&&e.state!=='broken'){e.dazeT=0.01;key(e.pos.clone().add(new V3(0,e.L.top*e.s+0.4,0)),'Очухался!','#cfe8ff');sayV(line('angry'),1.6,'angry');}}
+    BS.lastEmb=e.embers;}
+  /* ================= ЭТАП 1 «СОМ-ПЕРЕВОЗЧИК» ================= */
+  const SOM=V.som();SOM.g.visible=false;SOM.g.scale.setScalar(1.05);
+  const S1={st:'off',t:0,ang:-Math.PI/2,throwT:2.6,lungeT:7,sh:null,a:null,b:null,lane:null,whisk:false,beat:-1,tw:null,dbl:false};BS.s1=S1;
+  const somAt=(p,face,y)=>{SOM.g.position.set(p.x,y!=null?y:surf()-0.18,p.z);SOM.g.rotation.y=face;};
+  const whiskTip=new V3();
+  W.marks.push({pos:whiskTip,active:()=>F.phase===1&&S1.st==='beached'&&!S1.whisk,onHit:()=>{S1.whisk=true;S1.t=0;S1.dur=SOLO()?10:8;SOM.thrash=1.6;SFX.latch();FX.splash(whiskTip.clone(),0.8);
+    key(whiskTip.clone().add(new V3(0,1,0)),'Ус сбит! Потап — хватай!','#ffd76a');sayV('Ус не трожь!',1.4,'angry');whiskMat.emissiveIntensity=1;}});
+  const whiskMat=M(COL.gold,{emissive:0xffb000,emissiveIntensity:0});const whiskGlow=new THREE.Mesh(new THREE.SphereGeometry(0.32,10,8),whiskMat);whiskGlow.visible=false;W.group.add(whiskGlow);
+  W.lifts.push({pos:whiskTip,active:()=>F.phase===1&&S1.st==='beached'&&S1.whisk,onLift:h=>{S1.st='pull';S1.t=0;S1.beat=-1;S1.puller=h;S1.anchor=h.pos.clone();SFX.latch();bark(h,'potap','Держу ус! Раз…',1.4,true);}});
+  function s1Start(){F.phase=1;S1.st='circle';S1.t=0;S1.throwT=2.4;S1.lungeT=SOLO()?8:6.5;SOM.g.visible=true;vod.embers=vod.maxEmb=8;BS.lastEmb=8;BS.zap=0;vod.setScale(1.2);V.set(vod.k2,'ride','angry');music('vod1');
+    card(1,'Этап 1 · Сом-перевозчик','Водяной верхом на соме',p=>p===0?'Сом бросится на мель — Прошка, сбей ему ус из рогатки '+K(0,'skill')+';<br>Потап хватает ус '+K(0,'skill')+' — и «раз-два-три»! Позови Потапа поближе '+K(0,'call')+'.':
+      'Синий круг под тобой — летит шар: щит '+K(1,'guard')+' в последний миг — шар полетит в Водяного.<br>Красная дорожка — сом бросается: в сторону или кувырок '+K(1,'roll')+'.');}
+  function s1Lunge(){const h=pick();let best=SHOAL[0],bd=1e9;for(const S of SHOAL){const d=Math.hypot(S.x-h.pos.x,S.z-h.pos.z);if(d<bd){bd=d;best=S;}}
+    S1.sh=best;const dir=new V3(best.x-C.x,0,best.z-C.z).normalize();S1.b=new V3(best.x-dir.x*2.1,0,best.z-dir.z*2.1);S1.a=SOM.g.position.clone();S1.st='tele';S1.t=0;S1.dur=SOLO()?1.7:1.4;
+    S1.lane=FX.lane(new V3(S1.a.x,0,S1.a.z),new V3(best.x,0,best.z),2.8,S1.dur,'red',surf());V.set(vod.k2,'grab','angry');sayV(Math.random()<0.5?'Поберегись!':'Н-но, сомушка!',1.2);
+    if(!F.lungeTold){F.lungeTold=true;for(const p of[0,1])tip(p,'Красная дорожка заполняется — сом сейчас бросится! В сторону или кувырок '+K(p,'roll')+'.<br>Бросился на мель — бьётся там: Прошка, рогатку в ус!',3.6);}}
+  function s1Fall(zap){const e=vod;S1.st='stun';S1.t=0;const p=zap?SOM.g.position.clone():new V3(S1.sh.x+(C.x-S1.sh.x)*0.2,0,S1.sh.z+(C.z-S1.sh.z)*0.2);
+    const from=e.pos.clone(),to=new V3(p.x,zap?-1.4:0.1,p.z);anim(0.9,k=>{e.pos.lerpVectors(from,to,k);e.pos.y+=Math.sin(k*Math.PI)*2.5;e.inner.rotation.x=k*Math.PI*2;});later(0.95,()=>{e.inner.rotation.x=0;});
+    winStart(SOLO()?9:6,4);V.set(e.k2,'dazed','hurt');SFX.crash();later(0.8,()=>{FX.crown(to.clone().setY(surf()),1.5);shakeAll(0.06,0.5);});key(p.clone().setY(4),zap?'Свалился с сома!':'Застрял на мели! Бейте!','#9fe6ff');
+    if(!zap)sayV('Ой-ой! Борода в песке!',1.8,'hurt');}
+  function s1Remount(){const e=vod;S1.st='remount';S1.t=0;const from=e.pos.clone();V.set(e.k2,'ride','angry');sayV(line('tease'),1.6);
+    anim(1.0,k=>{const to=SOM.saddle.getWorldPosition(new V3());e.pos.lerpVectors(from,to,k);e.pos.y+=Math.sin(k*Math.PI)*2.2;});}
+  function s1Tick(dt){const e=vod,S=S1;S.t+=dt;SOM.tick(dt);
+    const saddle=()=>{SOM.g.updateMatrixWorld(true);const p=SOM.saddle.getWorldPosition(new V3());e.pos.set(p.x,p.y-0.2,p.z);e.face=SOM.g.rotation.y;};
+    if(S.st==='circle'){S.ang+=dt*(SOLO()?0.4:0.52);const p=at(S.ang,5.6);somAt(p,S.ang+Math.PI);SOM.thrash=0;SOM.amp=1;SOM.sp=1;saddle();
+      S.throwT-=dt;if(S.throwT<=0){S.throwT=SOLO()?3.6:2.6;const h=pick();V.set(e.k2,'throw');S.tw={h,t:0,tele:FX.tele(h.pos.x,surf(),h.pos.z,1.0,0.9,'blue',{follow:()=>h.pos})};}
+      if(S.tw){S.tw.t+=dt;if(S.tw.t>0.9){spawnBolt(e,S.tw.h);S.tw=null;later(0.6,()=>{if(F.phase===1&&S1.st==='circle')V.set(e.k2,'ride');});}}
+      S.lungeT-=dt;if(S.lungeT<=0&&!S.tw){S.lungeT=SOLO()?9:(S.dbl?4:6.5);s1Lunge();}}
+    else if(S.st==='tele'){const k=S.t/S.dur;SOM.amp=0.4;SOM.thrash=0;SOM.g.position.y=surf()-0.18-k*0.35;saddle();SOM.g.rotation.y=Math.atan2(S.b.x-S.a.x,S.b.z-S.a.z);
+      if(Math.random()<dt*8){const tp=new V3(0,0,-6).applyMatrix4(SOM.g.matrixWorld);FX.splash(tp.setY(surf()),0.7);}
+      if(Math.floor(S.t*5)!==Math.floor((S.t-dt)*5))tone(90+k*260,0.12,'sine',0.18,140+k*300);   // бульк нарастает
+      if(S.t>=S.dur){S.st='lunge';S.t=0;S.hit=new Set();SFX.wave();}}
+    else if(S.st==='lunge'){const k=Math.min(1,S.t/0.75),p=new V3().lerpVectors(S.a,S.b,smooth(k));somAt(p,Math.atan2(S.b.x-S.a.x,S.b.z-S.a.z));SOM.g.position.y=surf()-0.18+Math.sin(k*Math.PI)*0.8;SOM.open=1;saddle();
+      const head=new V3(0,0,2.2).applyMatrix4(SOM.g.matrixWorld);if(Math.random()<dt*20)FX.splash(head.clone().setY(surf()),0.9);
+      for(const h of live()){if(S.hit.has(h))continue;if(Math.hypot(h.pos.x-head.x,h.pos.z-head.z)<2.0&&h.rollT<=0){S.hit.add(h);if(damageHero(h,{kind:'hazard',ref:{pos:head}})){h.vel.y=6;}}}
+      if(k>=1){S.st='beached';S.t=0;S.whisk=false;S.dur=SOLO()?4.6:3.6;SOM.open=0.4;SOM.thrash=1;SOM.g.position.y=0.25;SOM.g.rotation.x=-0.12;FX.crown(S.b.clone().setY(0.6),1.4);SFX.crash();shakeAll(0.05,0.4);
+        sayV(S.dbl?'Ах, опять мимо!':'Тпру, сомушка! Застрял!',1.6,'surprise');}}
+    else if(S.st==='beached'||S.st==='pull'){SOM.whUp=damp(SOM.whUp,1,4,dt);SOM.thrash=S.st==='pull'?0.6:(S.whisk?1.6:1);saddle();SOM.tipPos(1,whiskTip);whiskGlow.position.copy(whiskTip);whiskGlow.visible=true;whiskMat.emissiveIntensity=S.whisk?0.8+0.4*Math.sin(G.time*10):0.25;
+      if(S.st==='beached'&&S.t>S.dur){S.st='back';S.t=0;whiskGlow.visible=false;sayV('Ха! Не поймали!',1.6,'happy');}
+      if(S.st==='pull'){const h=S.puller;if(h&&!(h.active&&players[h.player].downed)){h.pos.x=S.anchor.x;h.pos.z=S.anchor.z;h.vel.set(0,0,0);h.face=Math.atan2(SOM.g.position.x-h.pos.x,SOM.g.position.z-h.pos.z);h.atkT=0.2;}
+        const b=Math.min(2,Math.floor(S.t/0.75));if(b!==S.beat){S.beat=b;SFX.beat&&SFX.beat(b);banner(['РАЗ','ДВА','ТРИ!'][b],b===2?'#ffc93c':'#ffffff',0.7,'');SOM.g.position.x+=(S.sh.x-SOM.g.position.x)*0.18;SOM.g.position.z+=(S.sh.z-SOM.g.position.z)*0.18;}
+        if(S.t>2.3){S.st='haul';S.t=0;}}}
+    else if(S.st==='haul'){const k=Math.min(1,S.t/0.9);SOM.roll=k*1.3;SOM.thrash=0.4;SOM.g.position.y=0.25+Math.sin(k*Math.PI)*0.6;whiskGlow.visible=false;
+      if(S.t<dt*1.5){SFX.toss();shakeAll(0.06,0.5);sayV('А-а-ай! Сомушка!',1.4,'surprise');}if(k>=1)s1Fall(false);}
+    else if(S.st==='stun'){if(S.som0==null)S.som0=1;SOM.thrash=S.t<3?0.8:0.3;if(!(e.dazeT>0)&&e.state!=='broken'){S.st='back';S.t=0;S.som0=null;s1Remount();}}
+    else if(S.st==='remount'){SOM.roll=Math.max(0,SOM.roll-dt*2);if(S.t>1.05){S.st='back';S.t=0;}}
+    else if(S.st==='back'){SOM.whUp=damp(SOM.whUp,0,3,dt);SOM.roll=Math.max(0,SOM.roll-dt*2);SOM.g.rotation.x=0;SOM.thrash=0;const tgt=at(S.ang,5.6);const p=SOM.g.position;p.x=damp(p.x,tgt.x,2.2,dt);p.z=damp(p.z,tgt.z,2.2,dt);p.y=damp(p.y,surf()-0.18,3,dt);
+      SOM.g.rotation.y=Math.atan2(tgt.x-p.x,tgt.z-p.z)||SOM.g.rotation.y;saddle();if(S.t>1.4){S.st='circle';S.lungeT=SOLO()?7:5;S.dbl=vod.embers<=4;V.set(e.k2,'ride','angry');}}}
+  /* ================= ЭТАП 2 «ВОДЯНЫЕ КОНИ» ================= */
+  const ISL={g:new THREE.Group(),col:{x:C.x,z:C.z,r:2.7,miny:-3,maxy:3.2,on:false},y:-4};ISL.g.position.set(C.x,-4,C.z);W.group.add(ISL.g);W.cyls.push(ISL.col);
+  {const im=M(0x6a7064),mm=M(0x4a7a3a);addMesh(new THREE.CylinderGeometry(2.6,3.3,6,10),im,0,-3,0,ISL.g);addMesh(new THREE.CylinderGeometry(2.7,2.7,0.3,12),mm,0,0.05,0,ISL.g);
+    for(let i=0;i<7;i++){const a=i/7*Math.PI*2;addMesh(new THREE.DodecahedronGeometry(rand(0.4,0.7)),im,Math.cos(a)*2.6,rand(-1,0),Math.sin(a)*2.6);}
+    for(let i=0;i<10;i++){const a=rand(0,6.28),r=rand(1.6,2.5);addMesh(new THREE.ConeGeometry(0.05,rand(0.6,1.1),3),M(0x6a8a3a),Math.cos(a)*r,0.6,Math.sin(a)*r,ISL.g).castShadow=false;}}
+  ISL.g.traverse(c=>{c.userData.noBatch=true;c.userData.noBatchL=true;});
+  const S2={st:'off',t:0,horses:[],throwT:5,whistT:9,rider:null,ride:null,ring:[3.8,5.2],washT:0};BS.s2=S2;
+  const shellRef=(i)=>({i,hum:0,dur:6,off:true,by:null,ring(h){this.hum=Math.max(this.hum,this.dur);this.by=h||null;s2Tame(this,h);}});
+  const SH2=SHOAL.map((S,i)=>{const dx=(S.x-C.x)/8.6,dz=(S.z-C.z)/8.6,ref=shellRef(i);const sh=kwShell('dance',S.x+dx*0.9,S.z+dz*0.9,1.0,ref,{ry:Math.atan2(-dx,-dz),r:2.6,say:'Тпру, конёк!'});
+    sh.g.visible=false;sh.g.traverse(c=>{c.userData.noBatch=true;});return sh;});
+  function s2Start(){F.phase=2;S2.st='run';S2.t=0;S2.throwT=5;S2.whistT=SOLO()?11:8.5;vod.embers=vod.maxEmb=6;BS.lastEmb=6;BS.zap=0;vod.setScale(1.5);V.resetFlowers(vod.k2);V.set(vod.k2,'conduct','happy');
+    vod.pos.set(C.x,3.2,C.z);vod.face=0;SH2.forEach(S=>{S.g.visible=true;S.ref.off=false;});music('vod2');FX.rain(true,{c:new V3(C.x,0,C.z)});OM.chop=0.7;
+    if(!S2.horses.length)for(let i=0;i<4;i++){const H=V.horse();H.g.scale.setScalar(1.15);H.ang=i/4*Math.PI*2;H.lane=i%2;H.r=S2.ring[H.lane];S2.horses.push(H);}
+    S2.horses.forEach(H=>{H.g.visible=true;H.frozen=0;H.state='run';});
+    card(2,'Этап 2 · Водяные кони','табун из волн скачет вокруг острова',p=>'Сыграй '+K(p,'item')+' у раковины на мели — ближний конь замрёт. Садится ДРУГОЙ: подпрыгни '+K(p,'jump')+' к коню —<br>он вынесет на остров. Там бей по короне '+K(p,'attack')+'! '+(SOLO()?'Одному: сыграл — смени героя '+K(p,'swap')+', оставленный держит коня.':'Потом — поменяйтесь.'));}
+  function s2Tame(ref,h){if(F.phase!==2)return;const S=SHOAL[ref.i];let best=null,bd=1e9;for(const H of S2.horses){if(H.state!=='run')continue;const p=H.g.position,d=Math.hypot(p.x-S.x,p.z-S.z);if(d<bd){bd=d;best=H;}}
+    if(!best){key(new V3(S.x,3,S.z),'Все кони заняты','#cfe8ff');return;}const dx=(C.x-S.x)/8.6,dz=(C.z-S.z)/8.6;best.state='come';best.ref=ref;best.to=new V3(S.x+dx*3.1,0,S.z+dz*3.1);best.t=0;best.by=h;
+    sayV('Эй! Чей это напев?!',1.6,'surprise');}
+  function s2Mount(H,h){H.state='ride';H.rider=h;h.k2ride=H;S2.rider=h;H.t=0;H.from=H.g.position.clone();SFX.toss();FX.splash(H.g.position.clone().setY(surf()),1);
+    key(h.pos.clone().add(new V3(0,h.d.height+1,0)),'Верхом!','#ffe9a0');bark(h,h.kind,'Но-о, водяной! К острову!',1.6,true);}
+  function s2Island(H){const h=H.rider;h.k2ride=null;H.state='gone';H.rider=null;placeOnGround(h,C.x+(h.pos.x-C.x>0?1.9:-1.9),C.z+1.5,3.2);h.vel.set(0,0,0);H.g.visible=false;FX.crown(H.g.position.clone(),1.6);
+    winStart(SOLO()?7:5,3);V.set(vod.k2,'dazed','surprise');sayV('Ой! Как ты сюда?!',1.6,'surprise');S2.washT=SOLO()?7.2:5.2;S2.onIsl=h;
+    later(3,()=>{H.state='run';H.g.visible=true;H.r=S2.ring[H.lane];});}
+  function s2Wash(){const h=S2.onIsl;S2.onIsl=null;V.set(vod.k2,'whistle','angry');sayV('Фью-у-ить! Смою!',1.4);FX.column(C.x,surf(),C.z,5,1.4,2.4);SFX.wave();
+    for(const q of HEROES){if(Math.hypot(q.pos.x-C.x,q.pos.z-C.z)<3&&q.pos.y>2.5){const a=Math.atan2(q.pos.z-C.z,q.pos.x-C.x);q.vel.set(Math.cos(a)*7,7,Math.sin(a)*7);q.grounded=false;}}
+    later(1.2,()=>{if(F.phase===2)V.set(vod.k2,'conduct','angry');});}
+  function s2Fall(){const e=vod;const a=rand(0,6.28),to=new V3(C.x+Math.cos(a)*3.6,-1.4,C.z+Math.sin(a)*3.6),from=e.pos.clone();anim(0.9,k=>{e.pos.lerpVectors(from,to,k);e.pos.y+=Math.sin(k*Math.PI)*2;});
+    later(0.85,()=>FX.crown(to.clone().setY(surf()),1.6));winStart(SOLO()?6:4.5,3);S2.fallen=true;}
+  function s2Tick(dt){const e=vod,S=S2;S.t+=dt;S.lightT=(S.lightT==null?6:S.lightT)-dt;if(S.lightT<=0){S.lightT=rand(8,14);FX.lightning();}
+    if(e.dazeT>0||e.state==='broken'){}else if(S.fallen){S.fallen=false;const from=e.pos.clone();anim(1,k=>{e.pos.lerpVectors(from,new V3(C.x,3.2,C.z),k);e.pos.y+=Math.sin(k*Math.PI)*2;});later(1,()=>V.set(e.k2,'conduct','angry'));}
+    else if(!S.onIsl&&!S.fallen&&Math.hypot(e.pos.x-C.x,e.pos.z-C.z)<0.5)e.pos.set(C.x,3.2,C.z);
+    if(S.onIsl&&!(e.dazeT>0)&&e.state!=='broken'){S.washT=0;s2Wash();}
+    // кони: по кругу; свист — меняют ряд
+    S.whistT-=dt;if(S.whistT<=0&&!(e.dazeT>0)){S.whistT=SOLO()?12:9;V.set(e.k2,'whistle','angry');sayV('Фью-у-ить!',1.0);S.swap=1.2;
+      for(const H of S.horses)if(H.state==='run'){const r=S.ring[1-H.lane];const t=FX.tele(C.x,surf(),C.z,r+1.1,1.2,'red');t.g.children[1].visible=false;}}
+    if(S.swap>0){S.swap-=dt;if(S.swap<=0){for(const H of S.horses)if(H.state==='run')H.lane=1-H.lane;later(0.8,()=>{if(F.phase===2&&!(e.dazeT>0))V.set(e.k2,'conduct','happy');});}}
+    for(const H of S.horses){H.frozen=H.state==='wait'?1:0;H.tick(dt);
+      if(H.state==='run'){H.ang+=dt*(SOLO()?0.42:0.55)*(H.lane?1:-1.25);H.r=damp(H.r,S.ring[H.lane],2.4,dt);const p=at(H.ang,H.r);const d=(H.lane?1:-1);
+        H.g.position.set(p.x,surf()-0.5+Math.abs(Math.sin(G.time*6+H.ang))*0.15,p.z);H.g.rotation.y=H.ang*-1+(d>0?0:Math.PI);
+        if(Math.random()<dt*6)FX.drop(H.g.position.clone().add(new V3(0,0.4,0)),new V3(rand(-1,1),rand(1.5,3),rand(-1,1)),0.1);
+        for(const h of live()){if(Math.hypot(h.pos.x-p.x,h.pos.z-p.z)<1.5&&h.pos.y<1.9&&h.rollT<=0){if(damageHero(h,{kind:'hazard',ref:{pos:p}})){h.vel.x+=(h.pos.x-p.x)*4;h.vel.z+=(h.pos.z-p.z)*4;h.vel.y=5;FX.splash(h.pos.clone(),0.8);}}}}
+      else if(H.state==='come'){H.t+=dt;const p=H.g.position;p.x=damp(p.x,H.to.x,3,dt);p.z=damp(p.z,H.to.z,3,dt);H.g.rotation.y=Math.atan2(H.to.x-p.x,H.to.z-p.z)||H.g.rotation.y;if(H.t>1.1){H.state='wait';H.t=0;SFX.ok();}}
+      else if(H.state==='wait'){H.t+=dt;H.g.rotation.y=Math.atan2(C.x-H.g.position.x,C.z-H.g.position.z);const held=H.ref&&H.ref.hum>0;
+        if(!held&&H.t>1){H.state='run';H.ref=null;}
+        for(const h of HEROES){if(!h.active||h.k2ride||players[h.player].downed)continue;const d=Math.hypot(h.pos.x-H.g.position.x,h.pos.z-H.g.position.z);
+          if(d<1.9&&!h.grounded&&h.vel.y>0.5){if(h===H.by||h.kwHold){if(!H.noTold){H.noTold=1;key(h.pos.clone().add(new V3(0,h.d.height+1,0)),'Кто играет — держит коня. Садится другой!','#ffe9a0');}continue;}s2Mount(H,h);break;}}}
+      else if(H.state==='ride'){H.t+=dt;const k=Math.min(1,H.t/2.2),to=new V3(C.x,0,C.z),p=new V3().lerpVectors(H.from,to,smooth(k));const up=k>0.7?Math.sin((k-0.7)/0.3*Math.PI*0.5)*4:0;
+        H.g.position.set(p.x,surf()-0.5+up,p.z);H.g.rotation.y=Math.atan2(to.x-H.from.x,to.z-H.from.z);const h=H.rider;h.pos.set(p.x,H.g.position.y+2.0,p.z);h.vel.set(0,0,0);h.grounded=true;h.knockT=0.1;h.face=H.g.rotation.y;
+        if(Math.random()<dt*14)FX.drop(H.g.position.clone(),new V3(rand(-1.5,1.5),rand(1,3),rand(-1.5,1.5)),0.12);if(k>=1)s2Island(H);}}
+    // шары по пловцам — реже
+    S.throwT-=dt;if(S.throwT<=0&&!(e.dazeT>0)&&e.state!=='broken'){S.throwT=SOLO()?7:5;const h=pick();if(h&&!h.k2ride){const t=FX.tele(h.pos.x,surf(),h.pos.z,1.0,0.9,'blue',{follow:()=>h.pos});V.set(e.k2,'throw');later(0.9,()=>{if(F.phase===2&&!(vod.dazeT>0)){spawnBolt(vod,h);later(0.6,()=>{if(F.phase===2&&!(vod.dazeT>0))V.set(vod.k2,'conduct');});}});}}}
+  /* ================= ЭТАП 3 «ОМУТ-ЗЕРКАЛО» ================= */
+  const S3={st:'off',t:0,ang:0,slots:[0,1,2],real:0,fakes:[],mark:null,shuffleT:8,geyT:3,throwT:4,rafts:[],buds:[],owl:0};BS.s3=S3;
+  const S3R=2.4,SPIT=6.8;
+  const markS=(()=>{const g=new THREE.Group();const m=new THREE.Mesh(new THREE.TorusGeometry(1.0,0.12,6,24),MB(0xffd76a,{transparent:true,opacity:0.95}));g.add(m);
+    const st=new THREE.Mesh(new THREE.OctahedronGeometry(0.45,0),MB(0xfff2b0));g.add(st);g.visible=false;W.group.add(g);g.traverse(c=>{c.userData.noBatch=true;c.renderOrder=9;});return {g,m,st};})();
+  function s3MkFake(i){const g=new THREE.Group();W.group.add(g);const R2=V.rig(g,{eyeMat:vod.eyeMat,seed:1});g.scale.setScalar(1.3);g.visible=false;const dummy={pos:g.position,L:{top:R2.top},s:1.1,alive:true,def:{selfBreak:false},
+      onReflect:b=>{FX.splash(g.position.clone().add(new V3(0,3,0)),1);zapAdd(0.15);}};dummy.s=1.3;return {g,R:R2,dummy,i,pop:0};}
+  const posSlot=(i)=>{const a=S3.ang+i/3*Math.PI*2;return new V3(C.x+Math.cos(a)*S3R,-0.9,C.z+Math.sin(a)*S3R);};
+  function s3Who(slot){return slot===S3.real?{real:true,g:vod.g,pos:vod.pos}:S3.fakes.find(f=>f.slot===slot);}
+  for(let i=0;i<3;i++)W.marks.push({pos:new V3(),slot:i,active(){const p=posSlot(this.slot);this.pos.set(p.x,1.8,p.z);return F.phase===3&&S3.st==='fight'&&!(vod.dazeT>0)&&vod.state!=='broken'&&!s3Popped(this.slot);},onHit(){s3Shot(this.slot);}});
+  const s3Popped=slot=>{const f=S3.fakes.find(q=>q.slot===slot);return !!(f&&f.pop>0);};
+  function s3Shot(slot){if(slot===S3.real){S3.mark=SOLO()?8:6;s3Open(S3.mark,false);markS.g.visible=true;key(vod.pos.clone().add(new V3(0,4.5,0)),'Настоящий! Метка горит — бейте!','#ffd76a');sayV('Ай! Нашли меня…',1.6,'hurt');}
+    else{const f=S3.fakes.find(q=>q.slot===slot);if(!f)return;f.pop=3;f.g.visible=false;FX.column(f.g.position.x,surf(),f.g.position.z,4,1.1,1.2);key(f.g.position.clone().add(new V3(0,3,0)),'Отражение!','#cfe8ff');sayV('Ха-ха! Мимо — отражение!',1.6,'happy');}}
+  function s3Open(dur,zap){winStart(dur,3);V.set(vod.k2,'dazed','hurt');if(zap){markS.g.visible=true;}}
+  // бутоны кувшинок: живая вода Йоши — плот на двоих; воронка несёт его к отражениям
+  const BUDS=[Math.PI*0.5,Math.PI*0.5+2.1,Math.PI*0.5-2.1].map((a,i)=>{const x=C.x+Math.cos(a)*7.6,z=C.z+Math.sin(a)*7.6,g=new THREE.Group();g.position.set(x,0.8,z);W.group.add(g);
+    addMesh(new FIN.orig.Cylinder(0.7,0.7,0.06,12,1,false,0.35,Math.PI*2-0.35),M(0x4f8a3a),0,0,0,g);const bud=addMesh(new THREE.ConeGeometry(0.22,0.55,6),M(0xf4c0d0,{emissive:0x803050,emissiveIntensity:0.3}),0,0.3,0,g);
+    g.visible=false;g.traverse(c=>{c.userData.noBatch=true;});const B={g,bud,x,z,a,cool:0,i};
+    W.waterTargets.push({pos:new V3(x,0.8,z),pri:1.5,active:()=>F.phase===3&&S3.st==='fight'&&g.visible&&B.cool<=0&&!S3.rafts.some(r=>r.bud===B),onWater:()=>s3Raft(B)});return B;});
+  function s3Raft(B){B.cool=8;B.g.visible=false;SFX.grow();const g=new THREE.Group();W.group.add(g);const pm=M(0x4f9a3e);addMesh(new FIN.orig.Cylinder(1.8,1.8,0.14,18,1,false,0.3,Math.PI*2-0.3),pm,0,0,0,g);
+    addMesh(new THREE.ConeGeometry(0.3,0.5,8),M(0xf8f0f4),1.0,0.25,0.6,g);addMesh(new THREE.ConeGeometry(0.2,0.4,8),M(0xf4b0c4),1.0,0.32,0.6,g);g.traverse(c=>{c.userData.noBatch=true;c.userData.noBatchL=true;});
+    const col={x:B.x,z:B.z,r:1.8,miny:-3,maxy:surf()+0.1,on:true};W.cyls.push(col);const Rf={g,col,bud:B,a:B.a,r:7.6,t:0,st:'wait',life:SOLO()?20:16};S3.rafts.push(Rf);g.position.set(B.x,surf(),B.z);g.scale.setScalar(0.05);
+    anim(0.8,k=>{g.scale.setScalar(Math.max(0.05,k));});FX.crown(new V3(B.x,surf(),B.z),1);key(new V3(B.x,2.5,B.z),'Кувшинка-плот! На двоих','#9affb0');bark(T.yosha,'yosha','Расти, кувшинка, — неси нас!',1.6,true);}
+  function s3Start(){F.phase=3;S3.st='fight';S3.t=0;S3.ang=0;S3.shuffleT=9;S3.geyT=SOLO()?4:3;S3.throwT=4;vod.embers=vod.maxEmb=6;BS.lastEmb=6;BS.zap=0;vod.setScale(1.3);vod.r=1.2;V.set(vod.k2,'idle','happy');
+    if(!S3.fakes.length)S3.fakes=[s3MkFake(0),s3MkFake(1)];S3.real=Math.floor(Math.random()*3);let k=0;for(let i=0;i<3;i++)if(i!==S3.real){S3.fakes[k].slot=i;S3.fakes[k].g.visible=true;S3.fakes[k].pop=0;k++;}
+    BUDS.forEach(B=>{B.g.visible=true;B.cool=0;});OM.swirl=1;OM.chop=0.4;music('vod3');FX.rain(true,{c:new V3(C.x,0,C.z)});
+    card(3,'Этап 3 · Омут-зеркало','три отражения — настоящий один',p=>p===1?'Совиный взор '+K(1,'skill')+' — отражения станут прозрачной водой, а настоящий останется.<br>К середине не доплыть — Йоша, полей бутон '+K(1,'skill')+': кувшинка-плот на двоих!':
+      'Прошка, метни рогатку '+K(0,'skill')+' в настоящего — метка горит, все бьют '+K(0,'attack')+'.<br>К середине — только на кувшинке-плоту: воронка сама понесёт.');}
+  function s3Geyser(){const h=pick();if(!h)return;const p=new V3(h.pos.x,0,h.pos.z),dur=SOLO()?1.5:1.2;FX.tele(p.x,surf(),p.z,1.5,dur,'red');
+    const dome=new THREE.Mesh(K2_DOME_G,MB(0xcff4ff,{transparent:true,opacity:0.45,depthWrite:false}));dome.position.set(p.x,surf(),p.z);dome.scale.set(1,0.05,1);dome.userData.noBatch=dome.userData.noBatchL=true;W.group.add(dome);
+    for(let i=0;i<10;i++)later(i*dur/10,()=>{FX.drop(new V3(p.x+rand(-0.9,0.9),surf()-0.3,p.z+rand(-0.9,0.9)),new V3(0,rand(1,2.4),0),0.08,{noRing:true,life:0.4});});
+    anim(dur,k=>{dome.scale.set(1,0.05+k*0.8,1);dome.material.opacity=0.25+k*0.35;});later(0,()=>tone(70,dur,'sine',0.18,240));
+    later(dur,()=>{W.group.remove(dome);if(F.phase!==3||G.cine)return;FX.column(p.x,surf(),p.z,5,1.2,1.1);SFX.splash();hurtAt(p,1.5);});}
+  function s3Tick(dt){const e=vod,S=S3;S.t+=dt;S.lightT=(S.lightT==null?7:S.lightT)-dt;if(S.lightT<=0){S.lightT=rand(9,15);FX.lightning();}S.owl=Math.max(0,S.owl-dt);const open=e.dazeT>0||e.state==='broken';
+    if(!open){S.ang+=dt*(SOLO()?0.22:0.3);markS.g.visible=false;}
+    const rp=posSlot(S.real);e.pos.x=damp(e.pos.x,rp.x,6,dt);e.pos.z=damp(e.pos.z,rp.z,6,dt);e.pos.y=damp(e.pos.y,-0.9,4,dt);e.face=Math.atan2(e.pos.x-C.x,e.pos.z-C.z);
+    if(markS.g.visible){markS.g.position.set(e.pos.x,e.pos.y+e.L.top*e.s+0.9,e.pos.z);markS.g.rotation.y+=dt*3;markS.m.material.opacity=0.6+0.4*Math.sin(G.time*10);}
+    for(const f of S.fakes){const p=posSlot(f.slot);f.g.position.set(p.x,-0.9,p.z);f.g.rotation.y=Math.atan2(p.x-C.x,p.z-C.z);V.anim(f.R,dt);f.R.st.pose=e.k2.st.pose==='dazed'?'idle':e.k2.st.pose;f.R.st.emo=e.k2.st.emo;
+      if(f.pop>0){f.pop-=dt;if(f.pop<=0){f.g.visible=true;FX.column(p.x,surf(),p.z,3,0.9,1);}}V.ghost(f.R,S.owl>0);}
+    // перетасовка: ныряют и всплывают на новых местах
+    S.shuffleT-=dt;if(S.shuffleT<=0&&!open){S.shuffleT=SOLO()?11:8.5;for(let i=0;i<3;i++){const p=posSlot(i);FX.column(p.x,surf(),p.z,3,0.8,1.2);}S.real=(S.real+1+Math.floor(Math.random()*2))%3;let k=0;for(let i=0;i<3;i++)if(i!==S.real){S.fakes[k].slot=i;k++;}
+      sayV('Буль! Угадай, где я!',1.6,'happy');}
+    // гейзеры и шары
+    if(!open){S.geyT-=dt;if(S.geyT<=0){S.geyT=SOLO()?4.2:3;s3Geyser();}S.throwT-=dt;if(S.throwT<=0){S.throwT=SOLO()?6:4.2;const who=[{e:vod},...S.fakes.filter(f=>f.pop<=0).map(f=>({e:f.dummy}))][Math.floor(Math.random()*3)]||{e:vod};const h=pick();
+        if(h&&who.e){FX.tele(h.pos.x,surf(),h.pos.z,1.0,0.9,'blue',{follow:()=>h.pos});later(0.9,()=>{if(F.phase===3&&!(vod.dazeT>0)&&who.e.alive)spawnBolt(who.e,h);});}}}
+    // воронка: пловцов кружит и к середине не пускает (выплёвывает)
+    for(const h of HEROES){if(h.cling||h.kwHold)continue;const onRaft=S.rafts.some(r=>h.groundRef===r.col);if(onRaft)continue;if(!(h.groundRef&&h.groundRef.water))continue;
+      const dx=h.pos.x-C.x,dz=h.pos.z-C.z,d=Math.hypot(dx,dz)||1;const k=(SOLO()?0.8:1.1)*dt;h.pos.x+=(-dz/d)*k*1.2+(dx/d)*k*0.15;h.pos.z+=(dx/d)*k*1.2+(dz/d)*k*0.15;
+      if(d<SPIT){h.pos.x=C.x+dx/d*SPIT;h.pos.z=C.z+dz/d*SPIT;h.vel.x=dx/d*6;h.vel.z=dz/d*6;h.vel.y=5;h.grounded=false;if(!h.k2spit||G.time-h.k2spit>2){h.k2spit=G.time;FX.splash(h.pos.clone(),0.9);
+          if(!F.spitTold){F.spitTold=true;key(h.pos.clone().add(new V3(0,h.d.height+1,0)),'Воронка не пускает! Нужен плот','#9fe6ff');}}}}
+    // плоты
+    for(const B of BUDS){B.cool=Math.max(0,B.cool-dt);if(B.cool<=0&&!S.rafts.some(r=>r.bud===B))B.g.visible=true;B.bud.rotation.y+=dt;}
+    for(let i=S.rafts.length-1;i>=0;i--){const Rf=S.rafts[i];Rf.t+=dt;const riders=HEROES.filter(h=>h.groundRef===Rf.col&&h.grounded);
+      if(Rf.st==='wait'&&riders.length&&Rf.t>0.6){Rf.st='go';Rf.t=0;SFX.wave();if(SOLO())for(const h of HEROES)if(!riders.includes(h)&&!h.kwHold&&hd(h.pos,Rf.col)<10){placeOnGround(h,Rf.col.x+rand(-0.8,0.8),Rf.col.z+rand(-0.8,0.8),surf()+0.4);h.vel.set(0,0,0);h.following=true;}}
+      // в одиночку тот, кем играешь, прыгает на плот (после смены героя он мог остаться в воде)
+      if(SOLO()&&Rf.st==='go'){const me=active(G.soloPi);if(!riders.includes(me)&&!me.kwHold&&me.groundRef&&me.groundRef.water&&hd(me.pos,C)<9.5){placeOnGround(me,Rf.col.x+rand(-0.6,0.6),Rf.col.z+rand(-0.6,0.6),surf()+0.4);me.vel.set(0,0,0);FX.splash(me.pos.clone(),0.7);riders.push(me);}}
+      // пустой плот возвращается к краю — забрать тех, кого воронка выплюнула
+      if(Rf.st==='go'){if(riders.length){Rf.empty=0;}else if((Rf.empty=(Rf.empty||0)+dt)>1.5){Rf.st='ret';}}
+      else if(Rf.st==='ret'){Rf.r=damp(Rf.r,7.3,1.4,dt);if(riders.length&&Rf.r>6.9){Rf.st='go';Rf.empty=0;}else if(Math.abs(Rf.r-7.3)<0.15){Rf.st='wait';Rf.t=0;}}
+      const ox=Rf.col.x,oz=Rf.col.z;if(Rf.st==='go'){if(open&&riders.length){const ra=Math.atan2(e.pos.z-C.z,e.pos.x-C.x);let d=ra-Rf.a;while(d>Math.PI)d-=Math.PI*2;while(d<-Math.PI)d+=Math.PI*2;Rf.a+=clamp(d,-1.6*dt,1.6*dt);Rf.r=damp(Rf.r,3.9,2,dt);}
+        else{Rf.a+=dt*0.55;Rf.r=damp(Rf.r,4.7,1.0,dt);}Rf.life-=(open?0:dt);if(Rf.life<=0){Rf.st='sink';Rf.t=0;}}
+      else if(Rf.st==='sink'){Rf.g.position.y-=dt*0.6;if(Rf.t>1.2){Rf.col.on=false;W.group.remove(Rf.g);W.cyls.splice(W.cyls.indexOf(Rf.col),1);S.rafts.splice(i,1);continue;}}
+      if(Rf.st!=='sink'){const x=C.x+Math.cos(Rf.a)*Rf.r,z=C.z+Math.sin(Rf.a)*Rf.r;Rf.col.x=x;Rf.col.z=z;Rf.col.maxy=surf()+0.1;Rf.g.position.set(x,surf()+0.03+Math.sin(G.time*2+i)*0.03,z);Rf.g.rotation.y+=dt*0.6;
+        const dx=x-ox,dz=z-oz;for(const h of riders){h.pos.x+=dx;h.pos.z+=dz;}}}}
+  W.onOwl=(h)=>{if(F.phase===3&&S3.st==='fight'){S3.owl=4;key(h.pos.clone().add(new V3(0,h.d.height+1.2,0)),'Вижу настоящего!','#e7c3ff');}};
+  /* ================= ЭТАП 4 «ВЕЛИКИЙ ВАЛ» ================= */
+  const S4={st:'off',t:0,ok:0,wave:0,beatLen:0.8,hit:[null,null],val:null,wall:null,bells:[],beat:-1};BS.s4=S4;
+  const BELL4=[[-6.4,-10.2],[6.4,-10.2],[0,-5.6]].map(([x,z],i)=>{const g=new THREE.Group();g.position.set(x,-8,z);W.group.add(g);const wd=M(0x6a4a2a),gd=M(COL.gold,{emissive:0x806010,emissiveIntensity:0.3});
+    for(const s of[-1,1])addMesh(new THREE.BoxGeometry(0.3,4.2,0.3),wd,s*1.3,2.1,0,g);addMesh(new THREE.BoxGeometry(3.0,0.35,0.4),wd,0,4.3,0,g);addMesh(new THREE.ConeGeometry(0.4,0.6,6),gd,0,4.75,0,g);
+    addMesh(new THREE.CylinderGeometry(0.05,0.05,1.2,5),M(0x4a4a50),0,3.7,0,g);const B=bigBell(0,3.1,0,1.25,{pitch:[1,1.26,0.75][i]});g.add(B.g);B.g.position.set(0,3.1,0);
+    const ringT=new THREE.Mesh(new THREE.TorusGeometry(1.6,0.08,6,32),MB(i===2?0xffffff:PCOL[i],{transparent:true,opacity:0}));ringT.rotation.x=-Math.PI/2;ringT.position.set(x,-1.95,z);W.group.add(ringT);
+    const appr=new THREE.Mesh(new THREE.TorusGeometry(1.6,0.06,6,32),MB(i===2?0xffffff:PCOL[i],{transparent:true,opacity:0}));appr.rotation.x=-Math.PI/2;appr.position.set(x,-1.94,z);W.group.add(appr);
+    [g,ringT,appr].forEach(o=>o.traverse(c=>{c.userData.noBatch=true;c.userData.noBatchL=true;}));
+    const K4={g,B,x,z,i,ringT,appr,last:-9};if(i<2)W.hittables.push({pos:new V3(x,-1.2,z),r:1.7,push:false,alive:()=>F.phase===4&&S4.st!=='off',onHit:h=>s4Ring(K4,h)});return K4;});
+  const beatHud=(()=>{const d=document.createElement('div');d.id='k2beat';d.style.cssText='position:fixed;left:50%;top:21%;transform:translateX(-50%);display:none;gap:14px;z-index:6;pointer-events:none;font:700 22px ZCComfortaa,sans-serif;color:#fff;text-shadow:0 2px 6px #000';
+    for(let i=0;i<4;i++){const s=document.createElement('span');s.textContent=['РАЗ','ДВА','ТРИ','БОМ!'][i];s.style.cssText='opacity:0.35;transition:transform .1s';d.appendChild(s);}document.body.appendChild(d);return d;})();
+  const onLeave0=W.onLeave;W.onLeave=()=>{onLeave0();beatHud.style.display='none';beatHud.remove();};
+  function s4Ring(K4,h){if(G.time-K4.last<0.25)return;K4.last=G.time;K4.B.ring();FX.ring(K4.x,-1.9,K4.z,5,0.8,0xffe08a);
+    if(S4.st==='strike'||S4.st==='come'){const dt0=G.time-S4.strikeAt;const win=(players[h.player].path==='easy'?0.45:0.35)+(SOLO()?0.08:0);
+      if(Math.abs(dt0)<=win){S4.hit[K4.i]=G.time;key(new V3(K4.x,1.6,K4.z),'Бом!','#ffd76a');}else{key(new V3(K4.x,1.6,K4.z),dt0<0?'Рано!':'Поздно!','#cfe8ff');}}}
+  function s4Start(){F.phase=4;S4.st='gap';S4.t=0;S4.ok=0;S4.wave=0;S4.beat=-1;music('vod4');FX.rain(false);beatHud.style.display='flex';
+    // герои у колоколов: Игрок 1 — у левого, Игрок 2 — у правого (в одиночку оставленный у второго звонит сам)
+    HEROES.forEach((h,i)=>{const B=BELL4[h.player];placeOnGround(h,B.x+(i%2?1.2:-1.2),B.z+1.8,-1.8);h.vel.set(0,0,0);h.following=false;});snapCams();
+    card(4,'Этап 4 · Великий вал','три волны — три удара колоколов',p=>'Средний колокол отбивает «раз — два — три». На «БОМ!» ударь свой колокол '+K(p,'attack')+' — круг сойдётся с кругом.<br>'+(SOLO()?'Одному: у второго колокола стоит оставленный — он звонит сам, в лад.':'Оба разом — и волна разобьётся о звон!')+' Три верных удара — вал расступится.');}
+  function s4NewWave(){S4.st='come';S4.t=0;S4.hit=[null,null];S4.strikeAt=G.time+S4.beatLen*4;S4.beat=-1;const VA=S4.roll||(S4.roll=FX.val(22,3.2,{alpha:0.85,debris:false}));VA.root.visible=true;VA.lip=0;
+    V.set(vod.k2,'roar','angry');sayV(['Ва-а-ал!','Ещё волна!','Весь омут — на вас, держитесь!'][S4.wave]||'Ва-а-ал!',1.6);}
+  function s4Tick(dt){const S=S4;S.t+=dt;const VA=S.roll;if(S.wall)S.wall.tick(dt);if(VA&&VA.root.visible)VA.tick(dt);
+    if(S.st==='gap'){if(S.t>(S.wave?1.6:2.2))s4NewWave();}
+    else if(S.st==='come'||S.st==='strike'){const left=S.strikeAt-G.time,k=1-left/(S.beatLen*4);
+      const z=lerp(C.z-11,BELL4[0].z+0.4,clamp(k,0,1.1));VA.set(C.x,-2,z-2.0*3.2*0.55,0);VA.groundY=-2;
+      const b=Math.floor(k*4);if(b!==S.beat&&b>=0&&b<4){S.beat=b;[...beatHud.children].forEach((s,i)=>{s.style.opacity=i===b?'1':'0.35';s.style.transform=i===b?'scale(1.35)':'scale(1)';s.style.color=i===3&&b===3?'#ffd76a':'#fff';});
+        if(b<3){BELL4[2].B.ring();FX.ring(BELL4[2].x,-1.9,BELL4[2].z,4,0.6);tone(220,0.2,'triangle',0.12);}}
+      for(const K4 of BELL4){if(K4.i===2)continue;const q=clamp(left/(S.beatLen*3),0,1);K4.appr.material.opacity=left>0?0.85:0;K4.appr.scale.setScalar(1+q*2.4);K4.ringT.material.opacity=0.85;}
+      // оставленный у колокола звонит сам, в лад (в одиночку)
+      if(SOLO()&&left<=0.02&&left>-0.1)for(const K4 of BELL4.slice(0,2)){if(S.hit[K4.i]!=null)continue;const holder=HEROES.find(h=>!(h.active&&h.player===G.soloPi)&&hd(h.pos,K4)<3.2);if(holder){S.hit[K4.i]=G.time;K4.B.ring();K4.last=G.time;key(new V3(K4.x,1.6,K4.z),'Бом!','#ffd76a');}}
+      if(left<=0.3)S.st='strike';
+      const win=0.45+(SOLO()?0.08:0);
+      if(S.hit[0]!=null&&S.hit[1]!=null){s4Good();}
+      else if(left<-win){s4Miss();}}
+    else if(S.st==='part'||S.st==='crash'){if(S.t>1.4){S.st='gap';S.t=0;BELL4.forEach(K4=>{K4.appr.material.opacity=0;});}}}
+  function s4Good(){const S=S4,VA=S.roll;S.ok++;S.wave++;S.st='part';S.t=0;SFX.horn&&SFX.horn();shakeAll(0.05,0.4);beatHud.children[3].style.transform='scale(1.6)';
+    const p=VA.root.position.clone();for(let i=0;i<14;i++)later(i*0.04,()=>FX.splash(new V3(rand(-10,10),-1,p.z+2),1.5));FX.ring(C.x,-1.9,BELL4[0].z,14,1.2,0xffe08a);anim(0.6,k=>{VA.root.scale.set(1+k*0.6,Math.max(0.01,1-k),1);},()=>{VA.root.visible=false;VA.root.scale.set(1,1,1);});
+    banner(['Раз!','Два!','Три!'][S.ok-1]||'Бом!','#ffd76a',1,S.ok<3?'волна разбилась о звон':'');sayV(S.ok<3?line('hurt'):'Ох… звон-то какой…',1.6,S.ok<3?'hurt':'tired');
+    if(S.ok>=3){S.st='done';later(1.0,sceneParting);}}
+  function s4Miss(){const S=S4,VA=S.roll;S.st='crash';S.t=0;SFX.crash();SFX.wave();shakeAll(0.08,0.6);const L=HEROES.filter(h=>h.active&&!players[h.player].downed);
+    for(const h of L){if(damageHero(h,{kind:'hazard',ref:{pos:new V3(h.pos.x,-2,h.pos.z-3)}})){h.vel.z=7;h.vel.y=4;}FX.splash(h.pos.clone(),1.2);}VA.root.visible=false;
+    key(new V3(C.x,1,BELL4[0].z),S.hit[0]==null&&S.hit[1]==null?'Не в лад! Ждите «БОМ!»':'Нужно оба колокола — разом!','#cfe8ff');sayV(line('tease'),1.6,'happy');
+    if(!F.s4Told){F.s4Told=true;for(const p of[0,1])tip(p,'Смотри на круг у своего колокола: сойдётся с кольцом — бей '+K(p,'attack')+'! На «БОМ!»',3);}}
+  /* ---------- камера арены: дальше и ниже — виден горизонт и вал; окно уязвимости — короткий наезд ---------- */
+  function arenaCam(){const a=G.solo?active(G.soloPi):active(0),b=G.solo?a:active(1),mid=new V3((a.pos.x+b.pos.x)/2,0,(a.pos.z+b.pos.z)/2);let look,off;
+    if(F.phase>=4&&F.phase<4.5){look=new V3(lerp(C.x,mid.x,0.3),4.2,C.z-7);off=new V3(0,8.5,27);}
+    else if(F.phase>=4.5&&F.phase<5){look=new V3(lerp(C.x,mid.x,0.4),-0.6,lerp(C.z-1.5,mid.z,0.35));off=new V3(0,7.5,15);}
+    else if(F.phase>=2&&F.phase<3){look=new V3(lerp(C.x,mid.x,0.3),3.2,lerp(C.z-1.5,mid.z,0.25));off=new V3(0,8.6,18.5);}
+    else{look=new V3(lerp(C.x,mid.x,0.3),1.4,lerp(C.z-1.2,mid.z,0.3));off=new V3(0,9.4,16.8);}
+    off.multiplyScalar(1-0.2*BS.zoom);return {pos:look.clone().add(off),look,k:3};}
+  BS.zoom=0;
+  /* ---------- общий шаг боя ---------- */
+  W.updates.push(dt=>{setBar();BS.zoom=Math.max(0,BS.zoom-dt*0.8);if(!vod||G.cine||F.out)return;const e=vod;e.dazeT=e.dazeT||0;
+    if(F.phase>=1&&F.phase<4)winTick();
+    if(F.phase===1)s1Tick(dt);else if(F.phase===2)s2Tick(dt);else if(F.phase===3)s3Tick(dt);else if(F.phase===4)s4Tick(dt);
+    // эмоции по силе: злость → обида → усталость
+    if(F.phase>=1&&F.phase<4&&!(e.dazeT>0)&&e.state!=='broken'){const k=e.embers/e.maxEmb;const st=e.k2.st;if(st.emo!=='surprise'&&st.emo!=='happy')st.emo=k>0.6?'angry':k>0.3?'hurt':'tired';}
+    if(e.state==='broken'&&F.phase<4){V.set(e.k2,'dazed','tired');if(!F.brTold||F.brTold!==F.phase){F.brTold=F.phase;key(e.pos.clone().add(new V3(0,e.L.top*e.s+0.8,0)),'Пробой! Добивай!','#fff2b0');}}
+    // рассыпался клубком — подсказка этапа (одна на этап); вдвоём рассыпались разом — этап сначала (сила Водяного — как в начале этапа)
+    for(const p of[0,1]){if(players[p].downed&&BS.downTold!==F.phase+':'+p&&W.k2hint){BS.downTold=F.phase+':'+p;tip(p,W.k2hint(p),5);}}
+    if(!SOLO()&&F.phase>=1&&F.phase<4&&players[0].downed&&players[1].downed&&!BS.wiped){BS.wiped=true;e.embers=e.maxEmb;BS.lastEmb=e.embers;BS.zap=0;e.dazeT=0;if(e.state==='broken')e.state='idle';
+      if(F.phase===2)V.resetFlowers(e.k2);banner('Этап сначала!','#cfe8ff',2.4,'отметка у входа — и снова в омут');sayV(line('tease'),1.8,'happy');}
+    if(BS.wiped&&!players[0].downed&&!players[1].downed)BS.wiped=false;
+    // долгая заминка — одна подсказка
+    BS.idleT+=dt;if(BS.idleT>28){BS.idleT=0;for(const p of[0,1])tip(p,W.k2hint?W.k2hint(p):'',4);}});
+  // ---------- карточка этапа: баннер + одна подсказка на игрока ----------
+  function card(n,title,sub,tipFn){banner(title,'#7ad0a0',3,sub);W.k2hint=tipFn;BS.idleT=0;later(0.8,()=>{for(const p of[0,1])tip(p,tipFn(p),5.5);});}
+  /* ---------- ролики ---------- */
+  const play2=def=>{play(def);try{const cd=CINE.CD&&CINE.CD();if(cd&&cd.S===G.cine){cd.inserts=false;cd.cover=[];}}catch(err){}};   // без авто-врезок: крупный Водяной, врезка «по оси взгляда» попадала внутрь него
+  function intro(){bb.style.display='block';OM.chop=0.25;HEROES.forEach((h,i)=>{placeOnGround(h,-4.5+i*3,4,1);h.face=Math.PI;});ko.g.visible=true;
+    play2({dur:16,fov:48,camK:2.6,shots:[shot(0,[6,6,10],[-8,5,-26]),shot(4.4,[-11,8.6,-24],[-15,11.4,-31],[-12,9.4,-25.6],[-15,11.6,-31],3),shot(9.2,[-7,4.2,-5],[0.8,2.4,-14.6]),shot(12.6,[4.5,3.4,-5],[0.8,3.2,-14.6],[6,4,-6.5],[0.8,3.4,-14.6],3)],
       says:[[0.3,4,null,'<i>Омут. На высокой скале — фигура чёрная, тонкая,</i><br><i>Смотрит сверху; на руке перстень блестит звонкий.</i>',true],[4.6,3.6,null,'<i>Подошли герои ближе — а на скале уж никого.</i>',true],
-        [9.3,3.2,null,'<i>На коряге Водяной сидит — толстый, в тине,</i><br><i>Хохочет пузырями на трясине.</i>',true],[12.4,2.4,'vod','Буль-буль-буль! Кто там звенел, кто спать мешал?']],
+        [9.3,3.2,null,'<i>На коряге Водяной сидит — дед лягушачий, борода в тине,</i><br><i>Корона из кувшинок на макушке, на соме, как на перине.</i>',true],[12.6,2.6,'vod','Буль-буль-буль! Кто там звенел, кто спать мешал?'],[14.6,1.4,'zven','Держитесь вместе!']],
       events:[{t:1.6,fn:()=>{glint.visible=true;const p=new V3();ko.hand.getWorldPosition(p);glint.position.copy(p);anim(0.8,k=>{glint.scale.setScalar(1+Math.sin(k*Math.PI)*3);});later(0.9,()=>{glint.visible=false;});tone(3200,0.3,'sine',0.12);}},
         {t:7.6,fn:()=>{anim(0.8,k=>{ko.g.scale.setScalar(0.9*(1-k)+0.001);});later(0.85,()=>{ko.g.visible=false;ko.g.scale.setScalar(0.9);});SFX.keys();}},
-        {t:9.2,fn:()=>{spawnVod();vod.state='idle';vod.g.position.set(0.8,-1.2,-14.6);}},{t:12.4,fn:()=>{for(let i=0;i<10;i++)later(i*0.12,()=>burst(vod.pos.clone().add(new V3(rand(-1,1),3.6,1)),0xcff8ff,3,2));for(let i=0;i<5;i++)tone(rand(160,260),0.14,'sine',0.2,rand(90,140),i*0.12);}}],
-      end:()=>{if(!vod)spawnVod();vod.g.position.set(C.x,-2,C.z);F.phase=1;snag.visible=false;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-5.2,-2);h.face=Math.PI;});W.clampR={x:C.x,z:C.z,r:R-0.7};snapCams();
-        start1();}});}
-  function ending(){const e=vod;
-    play({dur:20,fov:48,camK:2.4,shots:[shot(0,[5,2.6,-5],[0,1.2,-14]),shot(6.8,[0,12,6],[0,0,-16]),shot(12.4,[3.6,1.6,-6.4],[T.yosha.pos.x,0.6,T.yosha.pos.z]),shot(15.6,[-10,9,-22],[-15,11.2,-31])],
-      says:[[0.3,3,null,'<i>Водяной звено выплёвывает…</i>',true],[3.4,3.2,null,'<i>…и опять омут закрутить собирается. Но сверху колокола Китежа звенят —</i><br><i>Медленно, как колыбельная, звенят-звенят.</i>',true],
-        [8,3.4,null,'<i>Водяной зевает, на дно опускается —</i><br><i>Засыпает, пузырями пускается.</i>',true],[12.4,2.6,'yosha','<i>(шёпотом)</i> Тише. Пусть спит, не будите.'],[15.6,3.6,null,'<i>На скале перстень блеснул — и тонкая тень ушла.</i>',true]],
-      events:[{t:0.6,fn:()=>{const L=linkItem(e.pos.x,3,e.pos.z);const to=T.proshka.pos.clone();anim(1.2,k=>{L.base=3+Math.sin(k*Math.PI)*3;L.pos.x=lerp(e.pos.x,to.x,k);L.pos.z=lerp(e.pos.z,to.z,k);});later(1.3,()=>takeItem(L,T.proshka));}},
-        {t:3.4,fn:()=>{for(let i=0;i<8;i++)later(i*0.9,()=>{tone(523*[1,0.84,0.75,0.84][i%4],1.6,'sine',0.22);tone(262,1.8,'sine',0.1);});lullaby(LUL1,0.55,0.4,0.12);}},
-        {t:8,fn:()=>{anim(3,k=>{e.g.position.y=-2-k*0.6;e.body.rotation.x=-0.6*k;});for(let i=0;i<14;i++)later(1+i*0.5,()=>{burst(e.pos.clone().add(new V3(0,2.6,1)),0xcff8ff,3,1.5);if(i%4===0)floatText(e.pos.clone().add(new V3(0,3.4,0)),'З-з-з…','#cfe8ff');});}},
-        {t:15.4,fn:()=>{ko.g.visible=true;ko.g.rotation.y=Math.PI*0.8;glint.visible=true;const p=new V3();ko.hand.getWorldPosition(p);glint.position.copy(p);anim(0.8,k=>{glint.scale.setScalar(1+Math.sin(k*Math.PI)*3);});SFX.keys();
+        {t:9.2,fn:()=>{spawnVod();vod.state='idle';vod.setScale(1.2);V.set(vod.k2,'idle','neutral');SOM.g.visible=true;somAt(new V3(C.x+0.8,0,C.z-0.6),0.6);SOM.g.updateMatrixWorld(true);const p=SOM.saddle.getWorldPosition(new V3());vod.pos.set(p.x,p.y-0.2,p.z);vod.face=0.6;
+          FX.crown(new V3(C.x,surf(),C.z),2);snag.visible=false;}},
+        {t:12.6,fn:()=>{V.set(vod.k2,'roar','angry');for(let i=0;i<10;i++)later(i*0.12,()=>FX.drop(vod.pos.clone().add(new V3(rand(-1,1),3.6,1)),new V3(rand(-1,1),rand(2,4),rand(0,2)),0.14));SOM.thrash=1;}}],
+      tick:(t,dt)=>{if(vod&&SOM.g.visible){SOM.tick(dt);SOM.g.updateMatrixWorld(true);const p=SOM.saddle.getWorldPosition(new V3());vod.pos.set(p.x,p.y-0.2,p.z);vod.face=SOM.g.rotation.y;}},
+      end:()=>{if(!vod)spawnVod();F.phase=1;snag.visible=false;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-5.4,1);h.face=Math.PI;h.following=false;});W.clampR={x:C.x,z:C.z,r:R-0.7};W.camFn=arenaCam;snapCams();s1Start();}});}
+  function scene2(){const e=vod;e.dazeT=0;e.state='idle';S1.st='off';whiskGlow.visible=false;
+    play2({dur:9,fov:48,shots:[shot(0,[7,4,-4],[0,1,-14]),shot(3.6,[0,9,-1],[0,1,-14],[3,10,-3],[0,1,-14],5)],
+      says:[[0.3,3,'vod','Ах так?! Сом устал — кони не устанут!'],[3.8,3,null,'<i>Из омута поднялся остров, а вокруг поскакал табун — гривы из пены.</i>',true],[7,1.8,'zven','Раковины на мелях! Сыграйте — конь замрёт!']],
+      events:[{t:0.4,fn:()=>{V.set(e.k2,'roar','angry');FX.column(SOM.g.position.x,surf(),SOM.g.position.z,4,1,2);later(0.4,()=>{SOM.g.visible=false;});}},
+        {t:1.6,fn:()=>{ISL.col.on=true;anim(2,k=>{ISL.g.position.y=-4+4*smooth(k);});FX.column(C.x,surf(),C.z,6,1.6,2.6);shakeAll(0.05,1.2);const from=e.pos.clone();anim(1.6,k=>{e.pos.lerpVectors(from,new V3(C.x,3.2,C.z),smooth(k));e.pos.y+=Math.sin(k*Math.PI)*2;});}},
+        {t:3.6,fn:()=>{K2FX.lightning();s2Start();V.set(e.k2,'conduct','happy');}},{t:6.5,fn:()=>K2FX.lightning()}],
+      tick:(t,dt)=>{for(const H of S2.horses){H.tick(dt);}},end:()=>{if(F.phase!==2)s2Start();}});}
+  function scene3(){const e=vod;e.dazeT=0;e.state='idle';S2.st='off';S2.horses.forEach(H=>{H.g.visible=false;if(H.rider){H.rider.k2ride=null;H.rider=null;}});SH2.forEach(S=>{S.g.visible=false;S.ref.off=true;S.ref.hum=0;});
+    play2({dur:9.5,fov:50,shots:[shot(0,[0,4,-3],[0,2,-14]),shot(4,[8,7,-5],[0,0,-14],[6,9,-2],[0,-1,-14],5)],
+      says:[[0.3,2.8,'vod','Буль-буль… А ну-ка, угадайте, где я!'],[3.6,3.4,null,'<i>Омут закрутился воронкой — и Водяных стало трое.</i>',true],[7.2,2,'zven','Пелагея, Совиный взор! Прошка — рогатку!']],
+      events:[{t:0.6,fn:()=>{OM.swirl=1;SFX.wave();anim(2,k=>{ISL.g.position.y=-4*smooth(k);});later(2,()=>{ISL.col.on=false;});const from=e.pos.clone();anim(1.4,k=>{e.pos.lerpVectors(from,new V3(C.x,-0.9,C.z),k);});}},
+        {t:4,fn:()=>{s3Start();}},{t:5.5,fn:()=>K2FX.lightning()}],
+      end:()=>{if(F.phase!==3)s3Start();}});}
+  function scene4(){const e=vod;e.dazeT=0;e.state='idle';S3.st='off';S3.fakes.forEach(f=>{f.g.visible=false;});BUDS.forEach(B=>{B.g.visible=false;});S3.rafts.forEach(Rf=>{Rf.col.on=false;W.group.remove(Rf.g);W.cyls.splice(W.cyls.indexOf(Rf.col),1);});S3.rafts.length=0;markS.g.visible=false;
+    vod.r=FOE.vodyanoy.r*1.3;
+    play2({dur:12,fov:52,shots:[shot(0,[0,2.5,-2],[0,3,-16]),shot(3.8,[10,5,0],[0,6,-22],[8,6,2],[0,7,-22],4),shot(8.2,[5.5,2.2,0.5],[-2,0,-12])],
+      says:[[0.3,3,'vod','Ну, держитесь! Весь омут — на вас! Валом смою!'],[3.8,3.6,null,'<i>Водяной вырос выше ёлок, за ним встала стена воды — а омут ушёл к ней, до дна.</i>',true],
+        [7.6,2.2,null,'<i>А на дне — камни Китежа и три колокола.</i>',true],[10,1.8,'zven','В лад! На «бом» — бейте!']],
+      events:[{t:0.5,fn:()=>{OM.swirl=0;SFX.wave();shakeAll(0.07,1.6);V.set(e.k2,'roar','angry');const from=e.pos.clone();anim(2.6,k=>{e.setScale(lerp(1.3,3.0,smooth(k)));e.pos.lerpVectors(from,new V3(C.x,-2,C.z-8.6),smooth(k));e.face=0;});}},
+        {t:2.2,fn:()=>{S4.wall=FX.val(30,13,{alpha:0.9,depth:0.2});S4.wall.set(C.x,-2,C.z-15.5,0);S4.wall.groundY=-2;S4.wall.root.scale.set(1,0.01,1);anim(2.2,k=>{S4.wall.root.scale.y=Math.max(0.01,smooth(k));});
+          setWater(zone,'low');for(let i=0;i<16;i++)later(i*0.1,()=>FX.splash(new V3(rand(-10,10),0,C.z-10),1.6));}},
+        {t:6,fn:()=>{BELL4.forEach((K4,i)=>{anim(1.2,k=>{K4.g.position.y=-8+6*smooth(k);});later(i*0.2,()=>FX.column(K4.x,-2,K4.z,3,0.9,1.4));});}}],
+      tick:(t,dt)=>{if(S4.wall)S4.wall.tick(dt);},
+      end:()=>{BELL4.forEach(K4=>{K4.g.position.y=-2;});e.setScale(3.0);e.pos.set(C.x,-2,C.z-8.6);e.face=0;s4Start();}});}
+  function sceneParting(){const e=vod;beatHud.style.display='none';FIN.music.play('');
+    play2({dur:7,fov:50,shots:[shot(0,[3.4,1.1,-2.6],[-0.5,6,-20]),shot(3.4,[5.5,3,-4],[0,-0.6,-13.5],[4.5,2.6,-5],[0,-0.8,-13.5],3)],
+      says:[[0.4,2.6,null,'<i>Звон Китежа — и вал расступился.</i>',true],[3.6,2.2,'vod','Ой-ой… вода ушла… буль… буль…'],[5.8,1.2,'zven','Вместе — разом!']],
+      events:[{t:0.3,fn:()=>{const Wl=S4.wall;if(Wl){const L=Wl.root;anim(2.4,k=>{L.scale.x=1+k*0.9;L.scale.y=Math.max(0.01,1-k);L.position.y=-2-k*3;},()=>{L.visible=false;});}FX.beam(new V3(C.x,-2,C.z-4),true);
+          SFX.horn&&SFX.horn();for(let i=0;i<20;i++)later(i*0.08,()=>FX.splash(new V3(rand(-12,12),2,C.z-12+rand(-1,1)),1.8));}},
+        {t:1.2,fn:()=>{const from=e.pos.clone();anim(2.2,k=>{e.setScale(lerp(3.0,1.4,smooth(k)));e.pos.lerpVectors(from,new V3(C.x,-2,C.z-1.5),smooth(k));});V.set(e.k2,'fish','surprise');}}],
+      end:()=>{F.phase=4.5;e.state='broken';e.t=0;e.bdur=999;e.embers=0;e.setScale(1.4);e.pos.set(C.x,-2,C.z-1.5);V.set(e.k2,'fish','surprise');banner('Общий удар!','#ffd76a',2.6,'ударьте '+K(0,'attack')+' и '+K(1,'attack')+' разом — Богатырский мах');
+        for(const p of[0,1])tip(p,'Водяной на дне хлопает губами! Подбегите и ударьте '+K(p,'attack')+' ОБА РАЗОМ.',4);}});}
+  function win(){F.won=true;F.phase=5;SFX.horn();banner('Богатырский мах!','#ffd76a',2,'вместе — вдвое сильней');G.stats.bogatyr++;F.slow=0.9;shakeAll(0.09,0.8);K2FX.flash(1);try{CINE.moodFlash('#ffe08a',0.3,1.4);}catch(err){}
+    for(let i=0;i<12;i++){const a=i/12*Math.PI*2;later(i*0.04,()=>FX.crown(new V3(C.x+Math.cos(a)*rand(2,8),-1.9,C.z+Math.sin(a)*rand(2,8)),1.4));}FX.beam(null,false);
+    BELL4.forEach(K4=>K4.B.ring());later(1.4,ending);}
+  function ending(){const e=vod;bb.style.display='none';beatHud.style.display='none';FIN.music.play(null);
+    // Китеж поднимается куполами вдали
+    const kz=new THREE.Group();kz.position.set(0,-14,-62);W.group.add(kz);{const wl=M(0xf0e8d8),gd=M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.5});
+      for(const[x,h,s]of[[-14,8,1],[-7,11,1.2],[0,14,1.5],[7,10,1.1],[14,7,0.9]]){addMesh(new THREE.CylinderGeometry(1.6*s,1.8*s,h,10),wl,x,h/2,0,kz);addMesh(new THREE.SphereGeometry(1.5*s,12,9),gd,x,h+1.2*s,0,kz).scale.set(1,1.35,1);addMesh(new THREE.ConeGeometry(0.25*s,1.4*s,6),gd,x,h+3.2*s,0,kz);}}
+    play2({dur:24,fov:48,camK:2.4,shots:[shot(0,[5,1.2,-3],[0,-0.6,-13.5]),shot(6.6,[0,10,8],[0,0,-20]),shot(11.4,[0,4,-6],[0,6,-60],[0,6,-8],[0,8,-60],4),shot(16.2,[T.yosha.pos.x-2.6,T.yosha.pos.y+1.5,T.yosha.pos.z+2.8],[T.yosha.pos.x,T.yosha.pos.y+0.4,T.yosha.pos.z]),shot(19.6,[-10,9,-22],[-15,11.2,-31])],
+      says:[[0.3,3,null,'<i>Водяной звено выплёвывает…</i>',true],[3.4,3.2,'vod','Ладно уж… Не буду буянить, коль звонить будете.'],[6.8,3.6,null,'<i>Колокола Китежа звенят медленно, как колыбельная;</i><br><i>Вода светлеет, омут полнится — тихий, хрустальный.</i>',true],
+        [11.6,3.6,null,'<i>А вдали над морем — золотые купола: Китеж-град слушает свой звон.</i>',true],[16.2,2.8,'yosha','<i>(шёпотом)</i> Тише. Пусть спит, не будите.'],[19.6,3.6,null,'<i>На скале перстень блеснул — и тонкая тень ушла.</i>',true]],
+      events:[{t:0.6,fn:()=>{V.set(e.k2,'idle','tired');e.state='idle';const L=linkItem(e.pos.x,1,e.pos.z);const to=T.proshka.pos.clone();anim(1.2,k=>{L.base=1+Math.sin(k*Math.PI)*3;L.pos.x=lerp(e.pos.x,to.x,k);L.pos.z=lerp(e.pos.z,to.z,k);});later(1.3,()=>takeItem(L,T.proshka));}},
+        {t:3.4,fn:()=>{V.set(e.k2,'yawn','tired');}},
+        {t:6.8,fn:()=>{for(let i=0;i<8;i++)later(i*0.9,()=>{tone(523*[1,0.84,0.75,0.84][i%4],1.6,'sine',0.22);tone(262,1.8,'sine',0.1);BELL4[i%3].B.ring();});lullaby(LUL1,0.55,0.4,0.12);
+          setWater(zone,'high');OM.chop=0.05;OM.U.uDeep.value.set(0x2a7a8e);OM.U.uShal.value.set(0x7ad6d8);V.set(e.k2,'sleep','sleep');SOM.g.visible=true;somAt(new V3(C.x+4,0,C.z+2),2.2);SOM.roll=0;SOM.amp=0.5;
+          anim(3,k=>{SOM.roll=Math.sin(k*Math.PI*2)*1.6;});}},
+        {t:7,fn:()=>{for(let i=0;i<14;i++)later(1+i*0.6,()=>{FX.drop(e.pos.clone().add(new V3(0,3.4,0.8)),new V3(0,1.2,0.4),0.14,{noRing:true});if(i%4===0)ft(e.pos.clone().add(new V3(0,4.6,0)),'З-з-з…','#cfe8ff');});}},
+        {t:11.4,fn:()=>{anim(4,k=>{kz.position.y=-14+14*smooth(k);});SFX.horn&&SFX.horn();BELL4.forEach(K4=>{const y0=K4.g.position.y;anim(3.5,k=>{K4.g.position.y=y0-7*smooth(k);});});}},   // колокола уходят на дно, звеня
+        {t:16.2,fn:()=>{if(F.kitten&&CH.kit){const kp=CH.kit.g.position;ft(kp.clone().add(new V3(0,0.9,0)),'Мур-р…','#ffd0a0');tone(220,0.6,'sine',0.08,180);}}},
+        {t:19.4,fn:()=>{ko.g.visible=true;ko.g.rotation.y=Math.PI*0.8;glint.visible=true;const p=new V3();ko.hand.getWorldPosition(p);glint.position.copy(p);anim(0.8,k=>{glint.scale.setScalar(1+Math.sin(k*Math.PI)*3);});SFX.keys();
           later(2.6,()=>{anim(0.8,k=>{ko.g.scale.setScalar(0.9*(1-k)+0.001);});glint.visible=false;});}}],
-      end:()=>{F.out=true;banner('Водяной спит','#ffd76a',2.4,'колокола Китежа буйную воду убаюкали');later(2.2,finishLevel);}});}
-  W.updates.push(dt=>{setBar();if(!vod||G.cine)return;const e=vod;
-    vod.g.scale.setScalar(BS.grow);for(const S of SP.concat(BELL)){S.ref.hum=Math.max(0,S.ref.hum-dt);if(S.g.visible){S.gm.emissiveIntensity=S.ref.hum>0?0.6+0.4*Math.sin(G.time*10):0.25;S.ico.rotation.z=S.ref.hum>0?Math.sin(G.time*9)*0.4:0;}}
-    /* ---------- этап 1: Водяные кони ---------- */
-    if(F.phase===1){
-      if(BS.ride){const D=BS.dash;
-        if(D){D.t+=dt;if(D.t>D.warn){const k=Math.min(1,(D.t-D.warn)/D.go);e.pos.x=lerp(D.a.x,D.b.x,k);e.pos.z=lerp(D.a.z,D.b.z,k);
-            if(Math.random()<dt*20)burst(new V3(e.pos.x,surf()+0.5,e.pos.z),0xe8fbff,3,3,0.5);
-            for(const h of live()){if(D.hit.has(h))continue;if(Math.hypot(h.pos.x-e.pos.x,h.pos.z-e.pos.z)<1.7){D.hit.add(h);if(damageHero(h,{kind:'hazard',ref:e}))floatText(h.pos.clone().add(new V3(0,h.d.height+1,0)),'Окатило!','#9fe6ff');}}
-            if(k>=1){BS.dash=null;BS.ang=Math.atan2(D.b.z-C.z,D.b.x-C.x);ripple(e.pos.x,e.pos.z,5,1);BS.dashT=SOLO()?11:8;}}}
-        else{BS.ang+=dt*(SOLO()?0.45:0.58);const p=at(BS.ang,PR);e.pos.x=p.x;e.pos.z=p.z;
-          BS.throwT-=dt;if(BS.throwT<=0){BS.throwT=SOLO()?3.4:2.4;const h=pick();spawnBolt(e,h);floatText(e.pos.clone().add(new V3(0,3.6,0)),'Лови!','#9fe6ff');}
-          BS.dashT-=dt;if(BS.dashT<=0){const a=e.pos.clone(),b=at(BS.ang+Math.PI,PR);BS.dash={a,b,t:0,warn:1.3,go:1.0,hit:new Set()};
-            const mid=a.clone().add(b).multiplyScalar(0.5),len=a.distanceTo(b);const s=new THREE.Mesh(new THREE.PlaneGeometry(2.6,len),MB(0xff5a4a,{transparent:true,opacity:0.35,depthWrite:false}));
-            s.rotation.x=-Math.PI/2;s.rotation.z=-Math.atan2(b.x-a.x,b.z-a.z);s.position.set(mid.x,surf()+0.06,mid.z);s.userData.noBatch=true;W.group.add(s);
-            anim(2.3,k=>{s.material.opacity=0.2+0.3*Math.abs(Math.sin(k*14));if(k>=1)W.group.remove(s);});bark({g:e.g},'vod','Поберегись!',1.2);
-            if(!F.dashTold){F.dashTold=true;for(const p of[0,1])tip(p,'Красная дорожка — Водяной сейчас промчится! Уйди в сторону или кувырок '+K(p,'roll')+'.',3);}}}
-        e.pos.y=damp(e.pos.y,-1.4+Math.sin(G.time*4)*0.15,6,dt);e.face=BS.dash?Math.atan2(BS.dash.b.x-BS.dash.a.x,BS.dash.b.z-BS.dash.a.z):BS.ang+Math.PI;
-        crest.position.set(e.pos.x,surf(),e.pos.z);crest.rotation.y=e.face;crest.scale.y=1+0.12*Math.sin(G.time*6);
-        if(Math.random()<dt*6)burst(new V3(e.pos.x+rand(-1.5,1.5),surf()+0.6,e.pos.z+rand(-1.5,1.5)),0xf4fdff,2,2,0.5);
-        BS.minT-=dt;if(BS.minT<=0){BS.minT=SOLO()?12:8;addMinion(Math.random()<0.5?'rak':'shchuka',BS.ang);if(!SOLO())addMinion('rak');}}
-      else if(!(e.dazeT>0)&&e.state!=='broken')remount();}
-    /* ---------- этап 2: Воронка ---------- */
-    else if(F.phase===2){const st=BS.stall>0;swirlFx.visible=true;swirlFx.position.y=surf()+0.05;swirlFx.rotation.z+=dt*(st?0.3:2.2);swirlFx.material.opacity=st?0.12:0.35;
-      if(!st){e.pos.set(C.x,damp(e.pos.y,zone.level-1.3,3,dt),C.z);e.face+=dt*2;
-        // воронка: пловцов тянет к середине (кто держит напев — стоит)
-        for(const h of HEROES){if(h.cling||h.kwHold||(h.active&&players[h.player].downed))continue;if(h.pos.y<zone.level-1.4)continue;const dx=C.x-h.pos.x,dz=C.z-h.pos.z,d=Math.hypot(dx,dz)||1;if(d<2.4)continue;
-          const k=(SOLO()?0.9:1.2)*dt;h.pos.x+=(dx/d*0.45+dz/d)*k;h.pos.z+=(dz/d*0.45-dx/d)*k;}
-        // гейзеры: красный круг под героем — через 1,3 с столб
-        BS.geyT-=dt;if(BS.geyT<=0){BS.geyT=SOLO()?3:2.1;const h=pick(),p=new V3(h.pos.x,0,h.pos.z);warnDisc(p.x,p.z,1.5,1.3);later(1.3,()=>{if(F.phase!==2||G.cine)return;column(p.x,p.z,4.5,1.2,1.1);ripple(p.x,p.z,3,0.8);SFX.splash();hurtAt(p,1.5,'Гейзер!');});
-          if(!F.geyTold){F.geyTold=true;for(const q of[0,1])tip(q,'Красный круг под тобой — сейчас ударит гейзер! Отплыви в сторону.',2.6);}}
-        if((humming(SP[0])&&humming(SP[2]))||(humming(SP[1])&&humming(SP[3])))stall();
-        else if(SP.some(humming)){BS.lonT-=dt;if(BS.lonT<=0){BS.lonT=3.5;const i=SP.findIndex(humming),j=(i+2)%4;floatText(new V3(SP[j].x,2.4,SP[j].z),'И этот родник — разом!','#9fe6ff');}}}
-      else{BS.stall-=dt;e.pos.y=damp(e.pos.y,-2,4,dt);if(BS.stall<=0&&e.state!=='broken'){setWater(zone,'high');for(const S of SP)S.ref.hum=0;e.dazeT=0;banner('Воронка снова!','#9fe6ff',1.8,'родники — опять встречным течением');bark({g:e.g},'vod','Ха! Кружу-верчу!',1.6);}}}
-    /* ---------- этап 3: Великий вал ---------- */
-    else if(F.phase===3&&!F.won){
-      if(!BS.stun){e.pos.set(C.x,-1.6,C.z-8.5);e.face=0;
-        const V=BS.wave;if(!V){BS.waveT-=dt;if(BS.waveT<1.6&&!BS.waveWarn){BS.waveWarn=true;bark({g:e.g},'vod','Ва-а-ал!',1.4);tone(70,1.4,'sine',0.25,45);shakeAll(0.03,1.4);
-              if(!F.valTold){F.valTold=true;for(const p of[0,1])tip(p,'Вал идёт! Спрячься за валун — с южной стороны. У колокола Китежа вал тоже расступается.',3);}}
-            if(BS.waveT<=0){BS.waveWarn=false;BS.wave={z:C.z-10,hit:new Set()};valG.visible=true;SFX.wave();}}
-          else{V.z+=dt*(SOLO()?6:7.5);valG.position.set(C.x,-2,V.z);if(Math.random()<dt*14)burst(new V3(rand(-10,10),2,V.z),0xf4fdff,3,3,0.5);
-            for(const h of live()){if(V.hit.has(h)||Math.abs(h.pos.z-V.z)>0.8)continue;V.hit.add(h);const safe=ROCKS.some(r=>Math.abs(h.pos.x-r.x)<1.5&&h.pos.z>r.z&&h.pos.z-r.z<3.2);
-              const bell=BELL.some(S=>Math.hypot(h.pos.x-S.x,h.pos.z-S.z)<2);   // у колокола Китежа вал расступается
-              if(safe||bell){floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),bell?'Колокол укрыл!':'Укрылся!','#cfe8ff');continue;}
-              if(damageHero(h,{kind:'hazard',ref:{pos:new V3(h.pos.x,0,V.z-2)}})){h.vel.z=9;h.vel.y=4;floatText(h.pos.clone().add(new V3(0,h.d.height+1,0)),'Смыло!','#9fe6ff');}}
-            if(V.z>C.z+11){BS.wave=null;valG.visible=false;BS.waveT=SOLO()?13:10;if(Math.random()<0.7)addMinion('shchuka');}}
-        if(BELL.every(humming))bellStun();
-        else if(BELL.some(humming)){BS.lonT-=dt;if(BS.lonT<=0){BS.lonT=3.5;floatText(new V3(0,3,C.z),'Звонят '+BELL.filter(humming).length+' из 3 — нужно все три разом!','#ffd76a');}}}
-      else{if(!(e.dazeT>0)&&e.state!=='broken')regrow();}}
-    else{swirlFx.visible=false;}
-    if(wallW.visible&&Math.random()<dt*18)burst(new V3(rand(-11,11),wallW.position.y+wallW.scale.y/2,wallW.position.z+rand(-0.6,0.6)),[0xf4fdff,0xcff4ff][Math.floor(rand(0,2))],3,2.4,0.6);   // пена по гребню стены
-    if(F.phase!==2)swirlFx.visible=false;});
-  const swirlFx=new THREE.Mesh(new THREE.RingGeometry(1.5,10,40,1,0,Math.PI*1.6),MB(0xcff8ff,{transparent:true,opacity:0.3,side:THREE.DoubleSide,depthWrite:false}));swirlFx.rotation.x=-Math.PI/2;swirlFx.position.set(C.x,0.9,C.z);swirlFx.visible=false;W.group.add(swirlFx);
-  /* ---------- рисунки кнопок и задачи ---------- */
-  const myShell=h=>{const S=FIN.kwShellAt(h);return S&&(SP.includes(S)||BELL.includes(S))?S:null;};
+      tick:(t,dt)=>{SOM.tick(dt);if(S4.wall)S4.wall.tick(dt);},
+      end:()=>{F.out=true;W.camFn=null;banner('Водяной спит','#ffd76a',2.4,'колокола Китежа буйную воду убаюкали');later(2.2,finishLevel);}});}
+  /* ---------- погоня (late_99s) ---------- */
+  const CH=FIN.k2chase({bank,rock,intro});
+  /* ---------- рисунки кнопок и задачи боя ---------- */
   for(const pi of[0,1]){const h=()=>active(pi);
-    prompt(pi,'item',()=>headOf(h()),()=>{const S=myShell(h());return !!S&&!S.ref.off&&S.ref.hum<1;},'сыграй!');
-    prompt(pi,'swap',()=>headOf(h()),()=>{const L=h().kwLast;return !!L&&G.time-L.t<3.5&&(SP.some(S=>S.ref===L.ref)||BELL.some(S=>S.ref===L.ref))&&Math.hypot(h().pos.x-L.x,h().pos.z-L.z)<1.2;},'оставь — держит напев');
-    prompt(pi,'guard',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig!=='red'&&e.help)||W.bolts.some(b=>b.tgt===h()&&!b.refl&&b.eta<0.8),'отбей!');
-    prompt(pi,'roll',()=>headOf(h()),()=>(W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig==='red'&&e.help))||(BS.dash&&BS.dash.t<BS.dash.warn));
-    prompt(pi,'attack',()=>headOf(h()),()=>vod&&(vod.state==='broken'||vod.dazeT>0)&&hd(vod.pos,h().pos)<5,'бей!');}
-  const ph1=pi=>O(()=>BS.ride?'Этап 1 · Водяные кони. Водяной скачет на волне — не достать. Водяной шар <i class="sg b"></i> — щит '+K(pi,'guard')+' в последний миг: шар — в него! '+BS.hits+' / 3.<br>Красная дорожка — рывок: в сторону или кувырок '+K(pi,'roll')+'. Раки и щуки — бей.'
-      :'Свалился с волны — оглушён! Бей '+K(pi,'attack')+', пока не очухался!',()=>F.phase>1,()=>vod?[vod.g]:[]);
-  const ph2=pi=>O(()=>BS.stall>0?'Воронка встала — Водяной закружился! Бей '+K(pi,'attack')+'! Тягуны тянут — кувырок '+K(pi,'roll')+'.'
-      :'Этап 2 · Воронка тянет к середине. Родники по краю: два противоположных — сыграйте '+K(pi,'item')+' разом!<br>Сыграл — смени героя '+K(pi,'swap')+': оставленный держит напев. Красный круг — гейзер, отплыви!',()=>F.phase>2,()=>BS.stall>0?[vod.g]:SP.filter(S=>!humming(S)).map(S=>S.g));
-  const ph3=pi=>O(()=>BS.stun?'Звон Китежа! Водяной съёжился — бей '+K(pi,'attack')+'! Оглушён — Богатырский мах: оба разом!'
-      :'Этап 3 · Великий вал. Вал идёт — за валун! Колокола Китежа по краю: все три — разом '+K(pi,'item')+' ('+BELL.filter(humming).length+' / 3).<br>Сыграл — смени героя '+K(pi,'swap')+': оставленный держит звон.',()=>!!F.won,()=>BS.stun?[vod.g]:BELL.filter(S=>!humming(S)).map(S=>S.g));
-  const oc1=pi=>O(pi?()=>'Вал по пятам! Дуб поперёк тропы — Потап его поднимет. Беги следом!':()=>'Вал по пятам! Дуб поперёк тропы — Потап его поднимет '+K(0,'skill')+' (смени героя '+K(0,'swap')+').',()=>!!F.oak,()=>[oak]);
-  const oc2=pi=>O(()=>'Ручей: в отлив из него не выбраться. Прилив гуслями '+K(pi,'item')+' у ракушки — и вплавь!',()=>active(pi).pos.z<37.6&&active(pi).pos.y>0.6,()=>[STR.shell.g]);
-  const oc3=pi=>O(pi?()=>'За скалами — гребешок Василисы. Все прошли — Йоша, полей его живой водой '+K(1,'skill')+': камыш встанет стеной!':()=>'За скалами — гребешок Василисы: Йоша польёт — и камыш встанет стеной. Проходи скорей!',()=>!!F.reeds||active(pi).pos.z<20,()=>F.reeds?[]:[comb]);
-  const oc4=pi=>O(()=>'Плетень на запоре: две верёвки — дёрните разом '+K(pi,'attack')+'!',()=>!!F.gate,()=>ropes.map(R=>R.g));
-  for(const pi of[0,1])W.objectives[pi]=[oc1(pi),oc2(pi),oc3(pi),oc4(pi),O('К омуту!',()=>!!F.chaseDone,()=>[]),O('Омут…',()=>F.phase>=1,()=>[]),ph1(pi),ph2(pi),ph3(pi),O('Колокола Китежа…',()=>false,()=>[])];
-  prompt(0,'skill',()=>headOf(T.potap),()=>!F.oak&&T.potap.active&&hd(T.potap.pos,{x:0,z:59.7})<2.3,'ухнем!');
-  for(const pi of[0,1]){const h=()=>active(pi);prompt(pi,'item',()=>headOf(h()),()=>WV.on&&inZone(STR,h(),1.2)&&STR.state==='low','прилив');prompt(pi,'attack',()=>headOf(h()),()=>!F.gate&&ropes.some(R=>hd(h().pos,{x:R.sd*5.2,z:17.1})<1.8),'разом!');}
-  prompt(1,'skill',()=>headOf(T.yosha),()=>!F.reeds&&WV.on&&T.yosha.active&&hd(T.yosha.pos,{x:0,z:26.2})<3,'гребешок!');
-  W.tipZones.push({cond:(pi,h)=>WV.on&&h.pos.z>37.6&&h.pos.z<46.2&&h.pos.y<0.4,text:pi=>'Из ручья в отлив не выбраться. Прилив '+K(pi,'item')+' — и вверх!'});
-  W.spawns=[[new V3(-1.5,1,80),new V3(-3,1,82)],[new V3(1.5,1,80),new V3(3,1,82)]];W.startAct=[0,0];
-  W.pauseLine='Погоня: вал по пятам — дуб поднять, ручей переплыть, гребешок за спину, плетень дёрнуть разом.<br>Водяной, три этапа. Водяные кони: шары отбивай щитом в последний миг — три попадания, и свалится с волны; красная дорожка — рывок.<br>Воронка: два противоположных родника — разом, оставленный держит напев; красный круг — гейзер. Великий вал: прячься за валун; три колокола Китежа — разом; добить — вдвоём.';
-  W.onStart=()=>{later(0.4,chaseScene);};
-  W.dbg2b=()=>({F,WV,STR,oakCol,reedCol,gateCol,ropes,RP,vod,CKS,wave,zone,BS,SP,BELL,ROCKS,scene2,scene3,valG});
-  W.warp2b=(where)=>{if(where==='boss'){F.oak=F.reeds=F.reedsDown=F.gate=true;oakCol.on=reedCol.on=gateCol.on=false;F.chaseDone=true;WV.on=false;wave.visible=false;W.camYaw=0;intro();}
-    else{const z={oak:62,stream:52,pass:34,gate:22}[where];F.oak=true;oakCol.on=false;oak.visible=false;if(z<40)setWater(STR,'high');if(where==='gate'){F.reeds=F.reedsDown=true;}WV.ck=z;WV.z=z+14;WV.on=true;wave.visible=true;W.camYaw=Math.PI;
-      HEROES.forEach((h,i)=>{placeOnGround(h,-2.4+i*1.6,z,1);h.following=false;});snapCams();}return W.dbg2b();};
-  flushDecor();}
+    prompt(pi,'guard',()=>headOf(h()),()=>W.bolts.some(b=>b.tgt===h()&&!b.refl&&b.eta<0.8),'отбей!');
+    prompt(pi,'roll',()=>headOf(h()),()=>F.phase===1&&S1.st==='tele'&&Math.hypot(h().pos.x-S1.sh.x,h().pos.z-S1.sh.z)<5);
+    prompt(pi,'attack',()=>headOf(h()),()=>vod&&(vod.state==='broken'||vod.dazeT>0)&&hd(vod.pos,h().pos)<4+vod.r,()=>F.phase===4.5?'разом!':'бей!');
+    prompt(pi,'jump',()=>headOf(h()),()=>F.phase===2&&S2.horses.some(H=>H.state==='wait'&&H.by!==h()&&!h().kwHold&&Math.hypot(h().pos.x-H.g.position.x,h().pos.z-H.g.position.z)<3),'верхом!');
+    prompt(pi,'item',()=>headOf(h()),()=>{if(F.phase!==2)return false;const S=FIN.kwShellAt(h());return !!S&&SH2.includes(S)&&S.ref.hum<1;},'сыграй!');
+    prompt(pi,'swap',()=>headOf(h()),()=>SOLO()&&F.phase===2&&SH2.some(S=>S.ref.by===h()&&S.ref.hum>0)&&!h().kwHold,'оставь — держит коня');
+    prompt(pi,'attack',()=>headOf(h()),()=>F.phase===4&&(S4.st==='come'||S4.st==='strike')&&BELL4.slice(0,2).some(K4=>hd(K4,h().pos)<3.2),'на «БОМ!»');}
+  prompt(0,'skill',()=>headOf(T.proshka),()=>T.proshka.active&&((F.phase===1&&S1.st==='beached'&&!S1.whisk)||(F.phase===3&&!(vod&&vod.dazeT>0))),()=>F.phase===3?'в настоящего!':'в ус!');
+  prompt(0,'skill',()=>headOf(T.potap),()=>T.potap.active&&F.phase===1&&S1.st==='beached'&&S1.whisk&&hd(T.potap.pos,whiskTip)<2.6,'хватай ус!');
+  prompt(0,'swap',()=>headOf(active(0)),()=>F.phase===1&&S1.st==='beached'&&((!S1.whisk&&!T.proshka.active)||(S1.whisk&&!T.potap.active)),()=>S1.whisk?'Потап!':'Прошка!');
+  prompt(1,'skill',()=>headOf(T.pelageya),()=>T.pelageya.active&&F.phase===3&&S3.owl<=0&&!(vod&&vod.dazeT>0),'взор!');
+  prompt(1,'skill',()=>headOf(T.yosha),()=>T.yosha.active&&F.phase===3&&BUDS.some(B=>B.g.visible&&hd(T.yosha.pos,B)<3.2),'полей бутон!');
+  const ph=(n,fn,done,tg)=>pi=>O(()=>fn(pi),done,tg);
+  const OF=[ph(1,pi=>S1.st==='stun'?'Водяной застрял на мели — бей '+K(pi,'attack')+'!':S1.st==='beached'||S1.st==='pull'?(S1.whisk?'Потап, хватай ус '+K(0,'skill')+' — раз, два, три!':'Сом на мели! Прошка — рогатку в ус '+K(0,'skill')+'!'):
+        'Этап 1 · Сом-перевозчик. Синий круг — щит '+K(pi,'guard')+' в последний миг; красная дорожка — в сторону.<br>Сом бросится на мель — сбей ему ус и тяни! Запал: '+Math.round(BS.zap*100)+'%',()=>F.phase>1,()=>vod?[vod.g]:[]),
+    ph(2,pi=>S2.onIsl?'На острове! Бей по короне '+K(pi,'attack')+' — кувшинки облетают!':'Этап 2 · Водяные кони. Сыграй у раковины '+K(pi,'item')+' — конь замрёт; садится другой '+K(pi,'jump')+'.<br>Красный круг на воде — кони меняют ряд.',()=>F.phase>2,()=>F.phase===2?SH2.map(S=>S.g):[]),
+    ph(3,pi=>vod&&vod.dazeT>0?'Метка горит — бей настоящего '+K(pi,'attack')+'!':'Этап 3 · Омут-зеркало. Совиный взор — настоящий; рогатка — метка; плот-кувшинка — к середине.',()=>F.phase>3,()=>F.phase===3?[vod.g]:[]),
+    ph(4,pi=>F.phase===4.5?'Водяной на дне! Ударьте '+K(pi,'attack')+' ОБА РАЗОМ!':'Этап 4 · Великий вал. На «БОМ!» — бей свой колокол '+K(pi,'attack')+'. Волн разбито: '+S4.ok+' / 3',()=>!!F.won,()=>F.phase>=4?BELL4.slice(0,2).map(K4=>K4.g):[])];
+  for(const pi of[0,1])W.objectives[pi]=[...CH.objectives.map(f=>f(pi)),O('Омут…',()=>F.phase>=1,()=>[]),...OF.map(f=>f(pi)),O('Колокола Китежа…',()=>false,()=>[])];
+  W.spawns=[[new V3(-1.5,1,196),new V3(-3,1,198)],[new V3(1.5,1,196),new V3(3,1,198)]];W.startAct=[0,0];
+  W.pauseLine='Погоня: вал по пятам — дуб, мельница (Потап держит колесо), кувшинки по напеву, ручей, развилка со шлюзом, камыш, лодка Садко, плетень.<br>'+
+    'Водяной, четыре этапа. Сом: шары отбивай щитом в последний миг, сом на мели — рогатку в ус, Потап тянет. Кони: сыграй у раковины — садится другой.<br>'+
+    'Зеркало: Совиный взор, рогатка в настоящего, кувшинка-плот. Вал: на «БОМ!» — каждый свой колокол; потом общий удар.';
+  W.onStart=()=>{later(0.4,CH.chaseScene);};
+  W.dbg2b=()=>({F,WV:CH.WV,CH,STR:CH.STR,oakCol:CH.oakCol,reedCol:CH.reedCol,gateCol:CH.gateCol,ropes:CH.ropes,RP:CH.RP,vod,CKS:CH.CKS,wave:CH.VAL.root,zone,BS,S1,S2,S3,S4,SOM,SHOAL,SH2,BUDS,BELL4,ISL,OM,whiskTip,
+    scene2,scene3,scene4,sceneParting,ending,posSlot,s1Start,s2Start,s3Start,s4Start});
+  // для ботов: 'boss' — сразу к омуту; 'boss2'…'boss4' — к этапу; участки погони — CH.warp
+  W.warp2b=(where)=>{if(where==='boss'){CH.skip();intro();return W.dbg2b();}
+    const m=/^boss([1-4])$/.exec(where);if(m){CH.skip();const n=+m[1];W.camFn=arenaCam;snag.visible=false;bb.style.display='block';if(!vod)spawnVod();SOM.g.visible=n===1;W.clampR={x:C.x,z:C.z,r:R-0.7};HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-5.4,1);h.following=false;});snapCams();
+      if(n===1)s1Start();else if(n===2){ISL.col.on=true;ISL.g.position.y=0;s2Start();}else if(n===3)s3Start();else{setWater(zone,'low');zone.level=zone.floor;zone.t=1;S4.wall=FX.val(30,13,{alpha:0.9,depth:0.2});S4.wall.set(C.x,-2,C.z-15.5,0);S4.wall.groundY=-2;
+        BELL4.forEach(K4=>{K4.g.position.y=-2;});vod.setScale(3.0);vod.pos.set(C.x,-2,C.z-8.6);s4Start();}return W.dbg2b();}
+    CH.warp(where);return W.dbg2b();};
+  flushDecor();};
