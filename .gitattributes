@@ -1,7 +1,4 @@
-# Сгенерированный релиз не сливается построчно (18 МБ, записи голосов в base64). При конфликте git оставляет вашу версию
-# и помечает файл конфликтным; разрешение одно — пересобрать из слитых исходников и добавить:
-#   python3 zlataya_cep/build/build_final.py && git add zlataya_cep/zlataya_cep_final06.html
-zlataya_cep/zlataya_cep_final06.html  merge=binary -diff linguist-generated=true
+# Собранный релиз final06 в git не хранится (.gitignore): собирается build_final.py, выкладывается .github/workflows/release.yml.
 # final07 (WebGPU) — так же: python3 zlataya_cep/build/build_final.py --gpu && git add zlataya_cep/zlataya_cep_final07.html
 zlataya_cep/zlataya_cep_final07.html  merge=binary -diff linguist-generated=true
 # прежние релизы, сторонняя библиотека и снимки текстов — без построчных сравнений

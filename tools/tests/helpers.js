@@ -41,3 +41,34 @@ U.brawl=function(max,modes){modes=modes||['parry','parry'];const n=Math.round((m
 U.path=function(pi,pts,max){let r=[];const h0=U.act(pi);let px=h0.pos.x,pz=h0.pos.z;for(const [x,z] of pts){const L=Math.hypot(x-px,z-pz),n=Math.max(1,Math.ceil(L/0.7));
   for(let i=1;i<=n;i++){const q=U.walkTo(pi,px+(x-px)*i/n,pz+(z-pz)*i/n,max||3);if(q==='TIMEOUT'){return 'TIMEOUT@'+U.act(pi).pos.x.toFixed(1)+','+U.act(pi).pos.z.toFixed(1);}}px=x;pz=z;}return 'ok';};
 'path ok'
+/* ---------- общие помощники ботов (раньше каждый бот писал их заново) ----------
+   Клавиши: U.K[pi] — {B:[влево,вправо,вверх,вниз], j прыжок, a удар, g щит, r кувырок, i предмет (гусли/перо), s смена, e умение}.
+   В одиночке (ZC.setSolo(true)) героем управляют клавиши Игрока 1; U.me() — тот, кем играешь, U.toKind('potap') — Q по кругу до нужного. */
+U.K=[{B:['KeyA','KeyD','KeyW','KeyS'],j:'Space',a:'KeyF',g:'KeyG',r:'ShiftLeft',i:'KeyR',s:'KeyQ',e:'KeyE'},
+     {B:['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'],j:'KeyM',a:'Comma',g:'Period',r:'Slash',i:'Semicolon',s:'KeyK',e:'KeyL'}];
+U.solo=()=>!!(ZC.G&&ZC.G.solo);
+U.pk=pi=>U.solo()?0:pi;                                   // чьими клавишами вести героя pi (в одиночке — всегда Игрока 1)
+U.me=()=>U.act(ZC.G.soloPi);
+U.hero=pi=>U.solo()?U.me():U.act(pi);
+U.rel=pi=>U.K[U.pk(pi||0)].B.forEach(k=>ZC.hold(k,false));
+// шаг к точке (держит клавиши один кадр — вызывать в цикле); true — уже на месте. jumpIf(h) — прыгнуть, если пора
+U.step=(pi,x,z,tol,jumpIf)=>{const h=U.hero(pi),K=U.K[U.pk(pi)],dx=x-h.pos.x,dz=z-h.pos.z,far=Math.hypot(dx,dz)>(tol||0.5);
+  ZC.hold(K.B[0],far&&dx<-0.25);ZC.hold(K.B[1],far&&dx>0.25);ZC.hold(K.B[2],far&&dz<-0.25);ZC.hold(K.B[3],far&&dz>0.25);if(jumpIf&&jumpIf(h))ZC.press(K.j);return !far;};
+U.goto=(pi,x,z,max,tol)=>{for(let i=0;i<(max||8)*60;i++){if(U.step(pi,x,z,tol)){U.rel(pi);return 't='+(i/60).toFixed(2);}ZC.tick(1);}U.rel(pi);return 'TIMEOUT';};
+// смена героя: вдвоём — своя пара (Q/K), в одиночке — Q по кругу Прошка → Потап → Пелагея → Йоша
+U.toKind=(kind,pi)=>{if(U.solo()){for(let i=0;i<4&&U.me().kind!==kind;i++){ZC.press('KeyQ');ZC.tick(6);}return U.me().kind;}
+  for(let i=0;i<3&&U.act(pi||0).kind!==kind;i++){U.tap(U.K[pi||0].s);ZC.tick(6);}return U.act(pi||0).kind;};
+// ролики: дождаться начала (до max кадров) и конца; U.nocine() — пропустить все подряд
+U.cine=max=>{let t=0;while(!ZC.G.cine&&t<(max||300)){ZC.tick(1);t++;}const was=!!ZC.G.cine;while(ZC.G.cine&&t<4000){ZC.tick(1);t++;}return was;};
+U.nocine=()=>{for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}};
+// защита за кадр: синяя капля — щит в последний миг (отбить), замах — щит или кувырок (красный), миньон рядом — удар; true — занят защитой
+U.def=(pi,i)=>{const h=U.hero(pi),K=U.K[U.pk(pi)];const bo=ZC.W.bolts.find(b=>b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2);if(bo){ZC.press(K.g);return true;}
+  const w=ZC.W.enemies.find(e=>e.alive&&e.tgt===h&&e.state==='wind');if(w){const left=w.wdur-w.t;if(w.sig==='red'){if(left<0.2)ZC.press(K.r);}else if(left<0.16&&w.left===null)ZC.press(K.g);return true;}
+  const m=ZC.W.enemies.find(e=>e.alive&&!e.big&&Math.hypot(e.pos.x-h.pos.x,e.pos.z-h.pos.z)<2.2);if(m&&i%10===pi*5){h.face=Math.atan2(m.pos.x-h.pos.x,m.pos.z-h.pos.z);ZC.press(K.a);}return false;};
+// подойти к врагу e сбоку и бить раз в 9 кадров
+U.hit=(pi,e,i)=>{const h=U.hero(pi);if(U.step(pi,e.pos.x+(pi?1.6:-1.6),e.pos.z+1.6,0.7)){h.face=Math.atan2(e.pos.x-h.pos.x,e.pos.z-h.pos.z);if(i%9===(pi?4:0))ZC.press(U.K[U.pk(pi)].a);}};
+U.swim=(pi,i)=>{const h=U.hero(pi);if(h.groundRef&&h.groundRef.water&&i%30===0)ZC.press(U.K[U.pk(pi)].j);};
+// мир 2: ракушка S держит напев? сыграть на ней и уступить (оставленный держит напев 15 с); пауза — гусли раз в 0,7 с на игрока
+U.held=S=>Object.values(ZC.HERO).some(h=>h.kwHold&&h.kwHold.ref===S.ref);
+U.playHold=(pi,S,spot,max)=>{ZC.tick(45);const [x,z]=spot||[S.x,S.z];for(let k=0;k<(max||20)*60;k++){if(U.def(pi,k))continue;if(U.step(pi,x,z,0.9))break;U.swim(pi,k);ZC.tick(1);}
+  U.rel(pi);const K=U.K[U.pk(pi)];ZC.press(K.i);ZC.tick(3);ZC.press(K.s);ZC.tick(8);return U.held(S);};

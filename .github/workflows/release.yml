@@ -1,0 +1,63 @@
+# Выкладка игры после каждого слияния в main: собрать релиз (build_final.py) и
+#   1) GitHub Pages — открыть и поиграть: https://mentalart.github.io/ForestPatrol/ (всегда свежая main);
+#   2) GitHub Releases — скачать файл и хранить версии: выпуск game-ГГГГ-ММ-ДД-ЧЧММ-<коммит> с файлом zlataya_cep_final06.html;
+#      хранятся последние 50 выпусков, старые удаляются вместе с тегами.
+# Сам релизный файл в git не хранится (26 МБ на каждый коммит) — его собирают здесь и локально командой build_final.py.
+# Один раз в настройках репозитория: Settings → Pages → Build and deployment → Source: «GitHub Actions».
+name: Выкладка игры
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: release-main
+  cancel-in-progress: false
+
+permissions:
+  contents: write     # выпуски и теги
+  pages: write        # выкладка на Pages
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Сборка релиза
+        run: |
+          python3 zlataya_cep/build/build_final.py
+          mkdir -p _site
+          cp zlataya_cep/zlataya_cep_final06.html _site/index.html
+          cp zlataya_cep/zlataya_cep_final06.html _site/zlataya_cep_final06.html
+          touch _site/.nojekyll
+      - name: Файл для Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Выпуск в Releases (хранятся последние 50)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MSG: ${{ github.event.head_commit.message }}
+        run: |
+          tag="game-$(date -u +%Y-%m-%d-%H%M)-${GITHUB_SHA::7}"
+          title="Златая цепь · $(date -u +'%d.%m.%Y %H:%M') UTC · ${GITHUB_SHA::7}"
+          printf '%s\n\nСобрано из main, коммит %s. Открыть и поиграть онлайн: https://%s.github.io/%s/\n' \
+            "${MSG:-сборка вручную}" "${GITHUB_SHA::7}" "${GITHUB_REPOSITORY_OWNER}" "${GITHUB_REPOSITORY#*/}" > notes.md
+          gh release create "$tag" zlataya_cep/zlataya_cep_final06.html --title "$title" --notes-file notes.md --target "$GITHUB_SHA" --latest
+          # старше 50 последних выпусков игры — удалить вместе с тегами
+          gh release list --limit 1000 --json tagName,createdAt --jq '[.[] | select(.tagName|startswith("game-"))] | sort_by(.createdAt) | reverse | .[50:] | .[].tagName' |
+            while read -r old; do [ -n "$old" ] && gh release delete "$old" --cleanup-tag --yes; done
+
+  pages:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Выкладка на GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4

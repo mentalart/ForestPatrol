@@ -7,7 +7,8 @@
 2. Найти место: `python3 tools/map.py where <уровень|имя|текст>` — например `where 2-1`, `where openMap`, `where 'Жар-птица'`.
    Печатает файл:строку, для функций `index.html` — диапазон тела, для уровня — его модули, замены и ботов.
 3. Читать только этот диапазон: `sed -n 'A,Bp' файл | cut -c1-400` (в коде много строк по 300–1000 символов) или Read с offset/limit.
-4. Релизный `zlataya_cep_final06.html` не читать никогда — это сборка (25 МБ, внутри озвучка в base64).
+4. Релизный `zlataya_cep_final06.html` не читать никогда — это сборка (25 МБ, внутри озвучка в base64). В git его нет: в новой сессии
+   сначала `python3 zlataya_cep/build/build_final.py`; после слияния в `main` его выкладывает `release.yml` (Pages + Releases, 50 версий).
 5. После добавления уровня, модуля, раздела `rep_*.py` или документа — `python3 tools/map.py` (обновит таблицы ниже).
 
 ## Как устроено
@@ -51,7 +52,8 @@
 - **Новая озвученная реплика** — текст в игре строкой `'…'`; запись в `zlataya_cep/build/voice/lines.json`
   (`{id:'<уровень>_NNN',lv,who,text,tts,max}`, голос — `cast[who].voice_id`), генерация Eleven v4 через Higgsfield, ссылка в `url`,
   `node tools/voice/fetch.js --only id,…`, пересборка (проверит, что текст есть в игре). Подробно — `docs/09_final06.md`.
-- **Бот** — копировать похожий (`where tfin_…` / таблица ниже): `ZC.startFrom(ZC.LV('id'))`, `ZC.G.manual=true`,
+- **Бот** — на общих помощниках `U.*` (`helpers.js`: шаг, щит, бой, ролики, смена героя, ракушки), к месту — `ZC.FIN.warp(n|'имя')`, кадры ролика —
+  `node tools/tests/cine_frames.js <уровень>`; иначе копировать похожий (`where tfin_…` / таблица ниже): `ZC.startFrom(ZC.LV('id'))`, `ZC.G.manual=true`,
   `ZC.tick(n)`, `ZC.skip()`, `ZC.press('KeyF')`, `ZC.hold(k,on)`, помощники `U.walkTo/until/tap/act`; в конце строка
   `'… ok'` / `'FAIL …'`. Записи озвучки декодируются между шагами — ролик с голосом начинать в следующем шаге.
 
@@ -70,38 +72,38 @@
 | id | уровень | функция в index.html | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` | late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
-| `luko` | Лукоморье | `buildLukomorye()` | late_50_save, late_95_dev | 11 | tfin_art tfin_cast tfin_episolo tfin_luko th5 th6 thw3a thw3b thw4 tluko tmenu3 |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` | late_99n_yaga11 | 27 | t11 t11dbg tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekin… |
-| `1-2` | 1-2 · Кикиморино болото | `build12()` | — | 3 | th2 th3 tsospot |
-| `1-3` | 1-3 · Колобок | `build13()` | late_99_kolobok_dance | 2 | thub thubd |
+| `luko` | Лукоморье | `buildLukomorye()` | late_50_save, late_95_dev | 9 | tfin_art tfin_cast tfin_episolo tfin_luko thw3a thw3b thw4 tluko tmenu3 |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` | late_99n_yaga11 | 25 | t11 tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekinds1b tf… |
+| `1-2` | 1-2 · Кикиморино болото | `build12()` | — | 1 | tsospot |
+| `1-3` | 1-3 · Колобок | `build13()` | late_99_kolobok_dance | 0 |  |
 | `1-4` | 1-4 · Леший водит | `build14()` | late_99b_kidnap14 | 1 | tfin_kidnap14 |
-| `1-5` | 1-5 · Кикиморина прялка | `build15()` | — | 2 | th3 thub2 |
-| `1-B` | 1-Б · Леший-Путаник | `build1B()` | late_99b_kidnap14 | 3 | tfin_post th4 tsospot |
-| `2-1` | 2-1 · Гусли Садко | `build21()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 20 | art t21 t21b t21c t21x tfin_art tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tfin_k… |
-| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99l_kitezh_magic_water | 9 | t22 t22b t22c t22d t22shot tfin_k22 tfin_k22hint tfin_k22solo tfin_occ |
-| `2-3` | 2-3 · Невод | `build23()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 8 | t23 t23b t23c t23d t23e t23f tfin_k23 tfin_k23solo |
-| `2-4` | 2-4 · В брюхе у кита | `build24()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 6 | t24 t24b t24c t24n tfin_k24 tfin_k24solo |
-| `2-5` | 2-5 · Китеж звонит | `build25()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 8 | t25 t25b t25c t25t tfin_k25 tfin_k25solo tfoes tsospot |
-| `2-B` | 2-Б · Водяной | `build2B()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water | 7 | t2b t2c tfin_k2b tfin_k2bboss tfin_k2bbosssolo tfin_k2bsolo thw2 |
-| `3-1` | 3-1 · Сад молодильных яблок | `build31()` | — | 11 | art3 t31 t31b t31c tfin_art tfin_motylek tfin_slash tfoes thw3a tmenu3 tsplit |
-| `3-2` | 3-2 · Облачные пастбища | `build32()` | — | 5 | art3 t32 t32b t32c t32d |
-| `3-3` | 3-3 · Сирин и Алконост | `build33()` | — | 5 | t33 t33b t33d t33n tso33 |
-| `3-4` | 3-4 · Летучий корабль | `build34()` | — | 4 | art3 t34 t34b tmenu3 |
-| `3-5` | 3-5 · Гуси-лебеди | `build35()` | — | 2 | art3 t35 |
-| `3-B` | 3-Б · Соловей-Разбойник | `build3B()` | — | 7 | art3 t3b t3bc t3bd t3bd2 t3bv thw3b |
-| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` | — | 9 | t41 t41v tfin_fadelocal tfin_luko thw4 tluko tsolo tsolo41 tsolo41d |
-| `4-2` | 4-2 · Река Смородина | `build42()` | — | 3 | t42 t42v tfin_art |
-| `4-3` | 4-3 · Эй, ухнем | `build43()` | — | 2 | t43 t43d |
+| `1-5` | 1-5 · Кикиморина прялка | `build15()` | — | 1 | thub2 |
+| `1-B` | 1-Б · Леший-Путаник | `build1B()` | late_99b_kidnap14 | 2 | tfin_post tsospot |
+| `2-1` | 2-1 · Гусли Садко | `build21()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 13 | t21 t21x tfin_art tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tfin_k21kelp tfin_k2… |
+| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99l_kitezh_magic_water | 7 | t22d t22shot tfin_k22 tfin_k22hint tfin_k22solo tfin_occ tfin_warp |
+| `2-3` | 2-3 · Невод | `build23()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 3 | t23f tfin_k23 tfin_k23solo |
+| `2-4` | 2-4 · В брюхе у кита | `build24()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 3 | t24n tfin_k24 tfin_k24solo |
+| `2-5` | 2-5 · Китеж звонит | `build25()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 5 | t25c tfin_k25 tfin_k25solo tfoes tsospot |
+| `2-B` | 2-Б · Водяной | `build2B()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water | 6 | t2c tfin_k2b tfin_k2bboss tfin_k2bbosssolo tfin_k2bsolo thw2 |
+| `3-1` | 3-1 · Сад молодильных яблок | `build31()` | — | 9 | t31 t31c tfin_art tfin_motylek tfin_slash tfoes thw3a tmenu3 tsplit |
+| `3-2` | 3-2 · Облачные пастбища | `build32()` | — | 1 | t32 |
+| `3-3` | 3-3 · Сирин и Алконост | `build33()` | — | 2 | t33n tso33 |
+| `3-4` | 3-4 · Летучий корабль | `build34()` | — | 2 | t34 tmenu3 |
+| `3-5` | 3-5 · Гуси-лебеди | `build35()` | — | 1 | t35 |
+| `3-B` | 3-Б · Соловей-Разбойник | `build3B()` | — | 2 | t3bv thw3b |
+| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` | — | 7 | t41v tfin_fadelocal tfin_luko thw4 tluko tsolo tsolo41 |
+| `4-2` | 4-2 · Река Смородина | `build42()` | — | 2 | t42v tfin_art |
+| `4-3` | 4-3 · Эй, ухнем | `build43()` | — | 1 | t43 |
 | `4-4` | 4-4 · Змиевы валы | `build44()` | — | 2 | t44 tfoes |
 | `4-5` | 4-5 · Калинов мост | `build45()` | — | 2 | t45 tsospot |
-| `4-B` | 4-Б · Змей Горыныч | `build4B()` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 9 | t4b tfin_boss4b tfin_cam tfin_cine tfin_gor4 tfin_gorart tfin_gorend tfin_gorsolo tfin_uz… |
-| `5-1` | 5-1 · Сундук на дубе | `build51()` | late_97_buyan51 | 10 | t51 t51b t51boss t51dbg t51dbg2 t51shot tbud51 tfoes thw5 tso51 |
-| `5-2` | 5-2 · Заяц | `build52()` | — | 2 | t52 t52d |
+| `4-B` | 4-Б · Змей Горыныч | `build4B()` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 8 | t4b tfin_boss4b tfin_cam tfin_cine tfin_gor4 tfin_gorend tfin_gorsolo tfin_uzda |
+| `5-1` | 5-1 · Сундук на дубе | `build51()` | late_97_buyan51 | 3 | t51 tfoes tso51 |
+| `5-2` | 5-2 · Заяц | `build52()` | — | 1 | t52 |
 | `5-3` | 5-3 · Утка | `build53()` | — | 1 | t53 |
 | `5-4` | 5-4 · Яйцо | `build54()` | — | 2 | t54 tso54 |
 | `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` | — | 1 | t5b1 |
-| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` | late_92_koschei, late_93_koschei_level, late_94_koschei_tut | 12 | t5b2 tbez tfin_kosh tfin_koshart tfin_koshcine tfin_koshcoop tfin_koshfx tfin_koshnat tfi… |
-| `epi` | Эпилог | `buildEpi()` | late_39_epi_shadows | 4 | tepi tfin_episolo tfin_epitheatre thw5b |
+| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` | late_92_koschei, late_93_koschei_level, late_94_koschei_tut | 10 | t5b2 tfin_kosh tfin_koshcine tfin_koshcoop tfin_koshfx tfin_koshnat tfin_koshrule tfin_ko… |
+| `epi` | Эпилог | `buildEpi()` | late_39_epi_shadows | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` | — | 1 | tzast |
 | `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` | — | 1 | tzast |
 | `z-a` | Застава · Алёша Попович: колокольная перекличка | `buildZast('a')` | — | 1 | tzast |
@@ -165,6 +167,7 @@
 | `late_93_koschei_level.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними |
 | `late_94_koschei_tut.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: ОБУЧАЮЩИЕ КАРТОЧКИ ПЕРЕД ЭТАПАМИ И ЖИВЫЕ ПОДСКАЗКИ В БОЮ |
 | `late_95_dev.js` | luko | РЕЛИЗ · КЛАВИШИ РАЗРАБОТЧИКА |
+| `late_95b_warp.js` | — | РЕЛИЗ · ДЛЯ БОТОВ И РАЗРАБОТКИ: ЕДИНАЯ ТЕЛЕПОРТАЦИЯ FIN.warp, ПОСЛЕДНИЙ РОЛИК FIN.lastCine |
 | `late_96_prolog_scooter.js` | p | РЕЛИЗ final06 · ПРОЛОГ: ПРОШКА НЕСЁТ САМОКАТ ТИШКЕ |
 | `late_96b_prolog_night.js` | p | РЕЛИЗ final06 · ПРОЛОГ: КОМНАТА ШТАБА, ОКНО В НОЧЬ, ПОГОНЯ КОЩЕЯ, ОЖИВШАЯ ТЕТРАДКА |
 | `late_97_buyan51.js` | 5-1 | РЕЛИЗ final06 · 5-1 «СУНДУК НА ДУБЕ»: НОВЫЕ ЖИТЕЛИ ОСТРОВА В РОЛИКАХ |
@@ -254,5 +257,5 @@
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 230 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 145 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
