@@ -309,7 +309,7 @@ build31=function(){
       banner('Ступени помолодели!','#ffe08a',2.2,'наверх — в сад, где тени яблоки прячут');}});
   /* ---------- К. спящая стража ---------- */
   function guardSpawn(){F.guards=true;for(const[x,z]of[[-3.4,-310],[3.4,-322],[-3.4,-334],[3.4,-346]]){const e=pugaloFoe(x,z,{leash:5});e.sleep=true;e.noMove=true;e.cd=99;e.alert=0;e.sx=x;e.face=x<0?Math.PI/2:-Math.PI/2;e.zT=rand(0,2);
-      const t0=e.tick;e.tick=(e,dt)=>{if(t0)t0(e,dt);if(!e.sleep)return;e.cd=99;e.face=e.sx<0?Math.PI/2:-Math.PI/2;
+      const t0=e.tick;e.noCam=true;e.tick=(e,dt)=>{if(t0)t0(e,dt);e.noCam=!!e.sleep;if(!e.sleep)return;e.cd=99;e.face=e.sx<0?Math.PI/2:-Math.PI/2;
         const lit=HEROES.some(h=>heroLight(h)&&hd(h.pos,e.pos)<5&&Math.abs(h.pos.y-e.pos.y)<2);if(lit){e.alert+=dt;if(e.alert>0.15&&!e.alertSaid){e.alertSaid=true;floatText(e.pos.clone().add(new V3(0,2.4,0)),'М-м?.. Кто светит?','#ffe0a0');}if(e.alert>1.0)wakeGuard(e,'light');}
         else{if(e.alert>0.2&&e.alertSaid){floatText(e.pos.clone().add(new V3(0,2.4,0)),'Показалось… Хр-р…','#cfd8dc');}e.alert=Math.max(0,e.alert-dt*2);e.alertSaid=e.alert>0.15&&e.alertSaid;}
         e.zT-=dt;if(e.zT<=0&&HEROES.some(h=>h.active&&hd(h.pos,e.pos)<14)){e.zT=rand(2.5,4);floatText(e.pos.clone().add(new V3(0.3,2.3,0)),'Хр-р… З-з-з…','#c8c8e8');}};
