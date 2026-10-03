@@ -79,7 +79,7 @@ FIN.ver='final07';FIN.gpu=window.FIN_GPU;
    const v=csPat(L.mod(w.xz.mul(0.42).add(L.vec2(w.y.mul(0.11),w.y.mul(-0.07))),6.2831853).sub(250),uT().mul(0.5).add(23));
    const add=L.diffuseColor.rgb.mul(L.vec3(0.6,1,0.92)).mul(L.min(v.mul(1.3),1.5)).mul(up).mul(dd).mul(C.k);
    return L.vec4(out.rgb.add(L.select(C.k.greaterThan(0.001),add,L.vec3(0))),out.a);};
- G.causOn=false;   // включает late_99c (мир 2)
+ G.causOn=false;   // включает gpu_late_10_render.js, если в сборке есть late_99c (мир 2)
  // ---------- общий вывод узловых материалов: каустика → тонмаппинг (как в r128 — до тумана) → туман → кромка выреза ----------
  // «на экран» — холст, кадр ботов (?offscreen) и проход сцены постобработки (finScreen); прочие цели (отражения, окна) — без тонмаппинга
  G.screenRT=rt=>rt===null||!!rt.finScreen;
