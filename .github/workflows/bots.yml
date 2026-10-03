@@ -4,7 +4,8 @@
 # полный регресс локально больше не нужен. Ещё — каждую ночь на main и вручную (Actions → Боты → Run workflow, «полный регресс»).
 # Упавший не из-за игры бот (таймаут, закрытый браузер) повторяется один раз (regress.sh); прошёл со второго раза — помечен «~~»
 # и попадает в сводку неустойчивых ботов (flaky.yml). Итог — проверка «bots»: в её отчёте (Summary) — таблица по всем машинам.
-# Выводы ботов, кадры и results.tsv — во вложениях к запуску (по одному на долю). Chromium кешируется.
+# Снимки кадров в CI не делаются (NOSHOTS=1: каждый стоит 20–45 с, а проверки на них не опираются) — кадры смотрят локально.
+# Выводы ботов и results.tsv — во вложениях к запуску (по одному на долю). Chromium кешируется.
 name: Боты
 
 on:
@@ -56,6 +57,8 @@ jobs:
           if [ "${{ steps.pwcache.outputs.cache-hit }}" = "true" ]; then playwright install-deps chromium; else playwright install --with-deps chromium; fi
 
       - name: Боты (доля ${{ matrix.shard }}/8)
+        env:
+          NOSHOTS: '1'   # без снимков кадров: снимок в программной графике стоит 20–45 с, проверки на нём не держатся (кадры — локально)
         run: |
           mode=--full-ci
           if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" -a "${{ inputs.full }}" = "true" ]; then mode=--all; fi

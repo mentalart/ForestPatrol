@@ -20,16 +20,20 @@ const SHOTS=process.env.SHOTS||path.join(__dirname,'shots');
   const gq=gpu?(wantGL?'&webgl':'&offscreen'):'';
   await page.goto('file://'+path.resolve(html)+'?debug=1'+gq+(process.env.URLQ||''));   // URLQ='&hq=1' — высокая графика в релизной сборке
   await page.waitForTimeout(1200);
-  for(const s of steps){if(s.reload){await page.reload({waitUntil:'load'});await page.waitForTimeout(1200);}
+  // STEP_TIMES=1 — время каждого шага: код, ожидание, снимок (что ускорять в долгом боте)
+  const ST=process.env.STEP_TIMES==='1';let si=0;
+  for(const s of steps){si++;const t0=Date.now();let t1=t0,t2=t0;if(s.reload){await page.reload({waitUntil:'load'});await page.waitForTimeout(1200);}
     if(s.mouse){const [mx,my]=String(s.mouse).split(',').map(Number);await page.mouse.move(mx,my);}   // mouse=x,y — курсор в точку перед шагом (наведение мыши)
     if(s.key){await page.keyboard.press(String(s.key));}   // key=Код — настоящее нажатие клавиши перед шагом (жест пользователя: браузер разрешает звук)
     if(s.code){try{const r=await page.evaluate(s.code);if(r!==undefined&&r!==null)console.log('>',typeof r==='string'?r:JSON.stringify(r));}catch(e){console.log('EVAL ERROR',e.message);}}
-    if(s.wait)await page.waitForTimeout(s.wait);
+    t1=Date.now();if(s.wait)await page.waitForTimeout(s.wait);t2=Date.now();
     // final07: перед снимком — свежий кадр (под автоматизацией кадры рисуются, только когда GPU закончил предыдущий); в &offscreen — ещё и перенос на холст-подложку
-    if(s.shot&&gq){try{await page.evaluate(()=>!window.FIN_GPU||!FIN_GPU.fresh?0:FIN_GPU.offscreen?FIN_GPU.blit():FIN_GPU.fresh());}catch(e){console.log('BLIT ERROR',e.message);}}
-    if(s.shot){const p=path.isAbsolute(s.shot)?s.shot:path.join(SHOTS,s.shot);fs.mkdirSync(path.dirname(p),{recursive:true});
+    if(s.shot&&gq&&process.env.NOSHOTS!=='1'){try{await page.evaluate(()=>!window.FIN_GPU||!FIN_GPU.fresh?0:FIN_GPU.offscreen?FIN_GPU.blit():FIN_GPU.fresh());}catch(e){console.log('BLIT ERROR',e.message);}}
+    // NOSHOTS=1 — без снимков (CI): снимок — материал для разбора, не проверка, а в программной графике он стоит 20–45 с
+    if(s.shot&&process.env.NOSHOTS!=='1'){const p=path.isAbsolute(s.shot)?s.shot:path.join(SHOTS,s.shot);fs.mkdirSync(path.dirname(p),{recursive:true});
       // снимок — материал для разбора, не проверка: на медленной машине (CI, программная графика) не успел — предупреждение, бот идёт дальше
-      try{await page.screenshot({path:p,timeout:+(process.env.SHOT_TIMEOUT||45000)});}catch(e){console.log('SHOT SKIPPED '+s.shot+': '+String(e.message).split('\n')[0]);}}}
+      try{await page.screenshot({path:p,timeout:+(process.env.SHOT_TIMEOUT||45000)});}catch(e){console.log('SHOT SKIPPED '+s.shot+': '+String(e.message).split('\n')[0]);}}
+    if(ST)console.log('@step '+si+' code='+((t1-t0)/1000).toFixed(1)+'s wait='+((t2-t1)/1000).toFixed(1)+'s shot='+((Date.now()-t2)/1000).toFixed(1)+'s');}
   if(logs.length)console.log(logs.join('\n'));
   await browser.close();
 })();
