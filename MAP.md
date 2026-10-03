@@ -76,7 +76,7 @@
 | id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
-| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko.js` | late_50_save, late_95_dev | 9 | tfin_art tfin_cast tfin_episolo tfin_luko thw3a thw3b thw4 tluko tmenu3 |
+| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko.js` | late_50_save, late_95_dev | 10 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_luko thw3a thw3b thw4 tluko tmenu3 |
 | `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_99n_yaga11 | 25 | t11 tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekinds1b tf… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | — | 1 | tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_99_kolobok_dance | 0 |  |
@@ -284,6 +284,7 @@
 | `rep_30_kolobok13.py` | 1-3 «Колобок»: последний ролик — пляска; Колобок отдаёт звено Прошке |
 | `rep_30_leshy14.py` | 1-4 «Леший водит»: ролик «Пелагею увели» — ёлки кружат Пелагею хороводом и вихрем уносят в кольцо |
 | `rep_30_luko.py` | Лукоморье: волшебный стан, карта-рушник и берег — на 6 шагов дальше от дуба |
+| `rep_30_luko.py` | Лукоморье: после «Все уровни открыты» (Ctrl+Alt+], флаг devAll) Кот не встречает «Садитесь — начну рассказ!» |
 | `rep_30_prolog.py` | Пролог «Колыбельная»: сценка с самокатом — Прошка несёт его Тишке, спотыкается о шишку, самокат разваливается, все смею… |
 
 ## Документы (`zlataya_cep/docs/`)
@@ -315,5 +316,5 @@
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 145 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 146 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
