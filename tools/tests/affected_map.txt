@@ -141,3 +141,4 @@ zlataya_cep/build/rep_30_gameplay.py#Эпилог   @level:epi tfin_epitheatre t
 zlataya_cep/build/rep_30_gameplay.py          @full
 zlataya_cep/build/late_99n_yaga11.js             @level:1-1 tfin_yaga11
 zlataya_cep/build/rep_31_yaga11.py              @level:1-1 tfin_yaga11
+zlataya_cep/build/rep_32_motylek.py             @level:3-1 tfin_motylek
