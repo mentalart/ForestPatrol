@@ -1,7 +1,9 @@
-/* ============================== ПОЛИГОН · ЗАХОД 1: ОЩУЩЕНИЕ БОЯ, ТЕЛЕГРАФЫ, УРОН, ШАГИ (docs/23_vfx_sfx.md) ============================== */
+/* ============================== ПОЛИГОН · ЗАХОД 1: ОЩУЩЕНИЕ БОЯ, ТЕЛЕГРАФЫ, УРОН (docs/23_vfx_sfx.md) ==============================
+// Итоги захода 1: всё принято, кроме шагов по поверхностям (шумно от четырёх героев) — шаги убраны; приземление осталось.
+// Панель общая для заходов: заход 2 (sb_30_juice2.js) добавляет свои предложения в JU.feats (группа 2) и разделы в JU.ext. */
 // Только для сборки --sandbox. Каждое предложение — свой флажок (JU.f), всё вместе — JU.all (клавиша Ё / `).
 // Выключено — игра звучит и выглядит как в релизе: обёртки зовут исходные функции.
-const JU={all:true,f:{},s:{hs:1,vol:1,fx:1},r:{},parts:[],combo:[{n:0,t:-9},{n:0,t:-9}],pick:{n:0,t:-9},ctxH:null,inHit:false,muteTone:false,duckT:0,
+const JU={all:true,f:{},s:{hs:1,vol:1,fx:1},r:{},parts:[],ext:[],round:1,combo:[{n:0,t:-9},{n:0,t:-9}],pick:{n:0,t:-9},ctxH:null,inHit:false,muteTone:false,duckT:0,
   feats:[
     ['hitstop','2.1','Hit-stop на каждом попадании','обычное попадание — 50 мс, кора отлетела — 90 мс, отбив — 70 мс'],
     ['hitsnd','2.2','Слоистый звук удара','взмах + контакт + хвост; у каждого героя свой «вес», разброс высоты'],
@@ -13,11 +15,10 @@ const JU={all:true,f:{},s:{hs:1,vol:1,fx:1},r:{},parts:[],combo:[{n:0,t:-9},{n:0
     ['moves','доп.','Звуки движений','прыжок, приземление, кувырок, щит, отбив — слоями, у героев разные'],
     ['hurt','4.1','Удар по герою','кромка экрана, лепесток слетает, мягкое «ой», музыка приседает'],
     ['lowpetal','4.2','Последний лепесток','тихое сердцебиение, лепесток в HUD вздрагивает'],
-    ['clew','4.3','Клубок распускается и сшивается','нить, искры, глиссандо гуслей вниз и вверх'],
-    ['steps','6','Шаги по поверхностям','трава, дерево, камень, вода, облако, песок; Потап тяжёлый, Йоша лёгкий']]};
-FIN.ju=JU;JU.feats.forEach(([k])=>JU.f[k]=true);
-try{const o=JSON.parse(localStorage.getItem('zc_sandbox_v1')||'null');if(o){Object.assign(JU.f,o.f||{});Object.assign(JU.s,o.s||{});Object.assign(JU.r,o.r||{});if(o.all===false)JU.all=false;}}catch(e){}
-JU.save=()=>{try{localStorage.setItem('zc_sandbox_v1',JSON.stringify({f:JU.f,s:JU.s,r:JU.r,all:JU.all}));}catch(e){}};
+    ['clew','4.3','Клубок распускается и сшивается','нить, искры, глиссандо гуслей вниз и вверх']]};
+FIN.ju=JU;JU.feats.forEach(f=>{JU.f[f[0]]=true;f[4]=1;});   // f[4] — номер захода
+JU.load=()=>{try{const o=JSON.parse(localStorage.getItem('zc_sandbox_v2')||'null');if(o){Object.assign(JU.f,o.f||{});Object.assign(JU.s,o.s||{});Object.assign(JU.r,o.r||{});if(o.all===false)JU.all=false;}}catch(e){}};
+JU.save=()=>{try{localStorage.setItem('zc_sandbox_v2',JSON.stringify({f:JU.f,s:JU.s,r:JU.r,all:JU.all}));}catch(e){}};
 const juOn=k=>JU.all&&!!JU.f[k];
 const juV=v=>v*JU.s.vol;
 const JKIND={potap:0.72,proshka:1,pelageya:1.12,yosha:1.32};
@@ -131,8 +132,8 @@ const JV={};{const css='position:fixed;top:0;bottom:0;pointer-events:none;opacit
 {const _dh=damageHero;damageHero=function(h,src){JU.ctxH=h;let ok;try{ok=_dh.apply(this,arguments);}finally{JU.ctxH=null;}
   if(ok&&juOn('hurt')){try{const split=PANES.length>1,v=split?(h.player===1?JV.r:JV.l):JV.full;v.a=0.9*JU.s.fx;juPetal(h);JU.duckT=0.35;}catch(e){console.error(e);}}
   return ok;};}
-// музыка приседает на миг (через множитель голоса в FIN.music.tick)
-if(FIN.music){const M=FIN.music,_t=M.tick;M.tick=function(){if(JU.duckT>0){const was=FIN.voxDuck;FIN.voxDuck=(was||1)*0.45;try{return _t.apply(this,arguments);}finally{FIN.voxDuck=was;}}return _t.apply(this,arguments);};}
+// музыка приседает на миг: JU.duckT читает микшер (sb_30_juice2.js, шина музыки). Прежняя подмена FIN.voxDuck не действовала —
+// это свойство только для чтения (late_91_voice.js).
 
 /* ---------- телеграфы: блик перед ударом, нить и кольцо цели ---------- */
 const JTGT_G={ring:new THREE.RingGeometry(0.55,0.74,32),line:new THREE.BoxGeometry(0.07,0.03,1)};JTGT_G.ring.rotateX(-Math.PI/2);
@@ -152,16 +153,12 @@ function juFoe(e,dt){const w=e.alive&&e.state==='wind'&&e.tgt;
   t.ring.material.color.setHex(col);t.line.material.color.setHex(col);t.ring.position.set(h.pos.x,h.pos.y+0.07,h.pos.z);t.ring.scale.setScalar(1.25-0.35*k+0.06*Math.sin(G.time*20));t.ring.material.opacity=0.55+0.4*k;
   const a=new V3(e.pos.x,e.pos.y+0.12,e.pos.z),b=new V3(h.pos.x,h.pos.y+0.12,h.pos.z),d=a.distanceTo(b);t.line.position.copy(a).lerp(b,0.5);t.line.lookAt(b);t.line.scale.set(1,1,Math.max(0.01,d-0.7));t.line.material.opacity=0.35+0.45*k;}
 
-/* ---------- герои: шаги, приземление ---------- */
-const JSTRIDE={potap:1.25,proshka:0.95,pelageya:0.9,yosha:0.7};
+/* ---------- герои: приземление (с поверхностью) ---------- */
 JU.surf=h=>{if(W.sbSurf){const s=W.sbSurf(h.pos.x,h.pos.z);if(s)return s;}if(h.groundRef)return 'wood';return ({1:'grass',2:'sand',3:'cloud',4:'stone',5:'grass'})[W.world]||'grass';};
 {const _a=animHero;animHero=function(h,dt){_a(h,dt);try{juHero(h,dt||0);}catch(e){console.error('sandbox hero',e);}};}
 function juHero(h,dt){const play=G.state==='play'&&!G.cine&&h.body&&h.body.visible!==false;
   if(play&&juOn('moves')&&h._jG===false&&h.grounded&&(h._jVy||0)<-4)JSND.land(h,clamp(-(h._jVy)/12,0.35,1.2),JU.surf(h));
-  h._jG=h.grounded;h._jVy=h.vel.y;
-  if(!play||!juOn('steps')||!h.grounded){h._jD=0;return;}
-  const sp=Math.hypot(h.vel.x,h.vel.z);if(sp<1){h._jD=Math.max(0,(h._jD||0)-dt);return;}
-  h._jD=(h._jD||0)+sp*dt;const L=(JSTRIDE[h.kind]||1)*(sp>5?1.15:1);if(h._jD>=L){h._jD-=L;JSND.step(JU.surf(h),h,h.active?1:0.55);}}
+  h._jG=h.grounded;h._jVy=h.vel.y;}
 
 /* ---------- кадр: частицы, кромка, сердцебиение, клубок ---------- */
 {const _st=step;step=function(dt){_st(dt);try{juTick(dt);}catch(e){console.error('sandbox tick',e);}};}
@@ -198,42 +195,48 @@ function juPanel(){const st=document.createElement('style');st.textContent=`
   const b=document.createElement('div');b.id='juBadge';document.body.appendChild(b);b.onclick=()=>juToggleAll();JP.badge=b;
   const P=document.createElement('div');P.id='juPanel';document.body.appendChild(P);JP.panel=P;
   const RT=[['y','Да'],['m','Доработать'],['n','Нет']];
-  let html='<h3>Полигон эффектов · заход 1</h3><div class="help">Tab — панель · Ё (`) — всё новое вкл/выкл · Esc — пауза.<br>Флажок — включить предложение; справа — ваша оценка. Номера — разделы документа 23_vfx_sfx.md.</div>';
-  html+='<h4>Предложения</h4>'+JU.feats.map(([k,n,t,d])=>'<div class="row"><input type="checkbox" data-f="'+k+'"'+(JU.f[k]?' checked':'')+'><div><b>'+n+' · '+t+'</b><small>'+d+'</small></div><div class="rt">'+RT.map(([c,l])=>'<button data-r="'+k+'" data-v="'+c+'" class="'+c+(JU.r[k]===c?' sel':'')+'">'+l+'</button>').join('')+'</div></div>').join('');
-  html+='<h4>Сила</h4>'+[['hs','Hit-stop',0,2],['vol','Громкость новых звуков',0,2],['fx','Яркость вспышек',0,2]].map(([k,l,a,z])=>'<div class="sl"><span>'+l+'</span><input type="range" min="'+a+'" max="'+z+'" step="0.05" value="'+JU.s[k]+'" data-s="'+k+'"><span data-sv="'+k+'">'+Math.round(JU.s[k]*100)+'%</span></div>').join('');
+  let html='<h3>Полигон эффектов · заход '+JU.round+'</h3><div class="help">Tab — панель · Ё (`) — всё новое вкл/выкл · Esc — пауза.<br>Флажок — включить предложение; справа — ваша оценка. Номера — разделы документа 23_vfx_sfx.md.</div>';
+  const row=([k,n,t,d])=>'<div class="row"><input type="checkbox" data-f="'+k+'"'+(JU.f[k]?' checked':'')+'><div><b>'+n+' · '+t+'</b><small>'+d+'</small></div><div class="rt">'+RT.map(([c,l])=>'<button data-r="'+k+'" data-v="'+c+'" class="'+c+(JU.r[k]===c?' sel':'')+'">'+l+'</button>').join('')+'</div></div>';
+  for(let r=JU.round;r>=1;r--){const fs=JU.feats.filter(f=>f[4]===r);if(fs.length)html+='<h4>'+(r===JU.round?'Заход '+r+' — новое':'Заход '+r+' — принято (для сравнения)')+'</h4>'+fs.map(row).join('');}
+  for(const x of JU.ext)if(x.html)html+=x.html();
+  html+='<h4>Сила (заход 1)</h4>'+[['hs','Hit-stop',0,2],['vol','Громкость новых звуков',0,2],['fx','Яркость вспышек',0,2]].map(([k,l,a,z])=>'<div class="sl"><span>'+l+'</span><input type="range" min="'+a+'" max="'+z+'" step="0.05" value="'+JU.s[k]+'" data-s="'+k+'"><span data-sv="'+k+'">'+Math.round(JU.s[k]*100)+'%</span></div>').join('');
   const AB=[['Взмах','swish'],['Удар (Прошка)','hitP'],['Удар (Потап)','hitT'],['Удар (Пелагея)','hitL'],['Удар (Йоша)','hitY'],['Закрылся (кланк)','clink'],['Прыжок','jump'],['Кувырок','roll'],['Щит','shield'],['Отбив','parry'],['Ой! (урон)','hurt'],['Жёлтый сигнал','yellow'],['Красный сигнал','red'],['Синий сигнал','blue'],['Блик','glint'],['Звено','link'],['Лесенка ×8','ladder'],['Сердцебиение','heart'],['Клубок распустился','unravel'],['Подшили','revive']];
+  for(const x of JU.ext)if(x.ab)AB.push(...x.ab);
   html+='<h4>Послушать: было / стало</h4>'+AB.map(([l,k])=>'<div class="ab"><span>'+l+'</span><button data-ab="'+k+'" data-w="0">▶ было</button><button data-ab="'+k+'" data-w="1">▶ стало</button></div>').join('');
-  html+='<h4>Шаги по поверхностям</h4><div class="act">'+['grass','wood','stone','water','cloud','sand'].map(s=>'<button data-step="'+s+'">'+({grass:'трава',wood:'дерево',stone:'камень',water:'вода',cloud:'облако',sand:'песок'})[s]+'</button>').join('')+'</div>';
   html+='<h4>Отчёт</h4><div class="help">Заметки своими словами — попадут в отчёт. Кнопка копирует оценки и настройки: пришлите их в чат.</div><textarea data-note>'+(JU.r._note||'')+'</textarea><div class="act"><button data-copy>Скопировать отчёт</button><button data-reset>Сбросить оценки</button></div><textarea data-out readonly style="display:none"></textarea>';
   P.innerHTML=html;
   P.addEventListener('change',ev=>{const t=ev.target;if(t.dataset.f){JU.f[t.dataset.f]=t.checked;JU.save();juBadge();}});
-  P.addEventListener('input',ev=>{const t=ev.target;if(t.dataset.s){JU.s[t.dataset.s]=+t.value;P.querySelector('[data-sv="'+t.dataset.s+'"]').textContent=Math.round(t.value*100)+'%';JU.save();}if(t.dataset.note!==undefined){JU.r._note=t.value;JU.save();}});
+  P.addEventListener('input',ev=>{const t=ev.target;for(const x of JU.ext)if(x.input)x.input(t);if(t.dataset.s){JU.s[t.dataset.s]=+t.value;P.querySelector('[data-sv="'+t.dataset.s+'"]').textContent=Math.round(t.value*100)+'%';JU.save();}if(t.dataset.note!==undefined){JU.r._note=t.value;JU.save();}});
   P.addEventListener('click',ev=>{const t=ev.target;uiAudio();
     if(t.dataset.r){JU.r[t.dataset.r]=JU.r[t.dataset.r]===t.dataset.v?undefined:t.dataset.v;P.querySelectorAll('[data-r="'+t.dataset.r+'"]').forEach(x=>x.classList.toggle('sel',JU.r[t.dataset.r]===x.dataset.v));JU.save();}
     if(t.dataset.ab)juAB(t.dataset.ab,t.dataset.w==='1');
-    if(t.dataset.step){[0,320,640,960].forEach((d,i)=>setTimeout(()=>JSND.step(t.dataset.step,i%2?HERO.yosha:HERO.potap,1),d));}
+    for(const x of JU.ext)if(x.click)x.click(t);
     if(t.dataset.copy!==undefined){const txt=juReport(),o=P.querySelector('[data-out]');o.style.display='block';o.value=txt;o.select();try{navigator.clipboard.writeText(txt);t.textContent='Скопировано ✓';setTimeout(()=>t.textContent='Скопировать отчёт',1600);}catch(e){document.execCommand&&document.execCommand('copy');}}
     if(t.dataset.reset!==undefined){for(const k in JU.r)if(k!=='_note')delete JU.r[k];P.querySelectorAll('.rt button').forEach(x=>x.classList.remove('sel'));JU.save();}});
   P.addEventListener('keydown',ev=>ev.stopPropagation());
   addEventListener('keydown',ev=>{if(ev.code==='Tab'){ev.preventDefault();juShowPanel(P.style.display!=='block');}if(ev.code==='Backquote'){ev.preventDefault();juToggleAll();}},true);
   juBadge();}
 function juShowPanel(on){JP.panel.style.display=on?'block':'none';}
-function juToggleAll(){JU.all=!JU.all;JU.save();juBadge();if(!JU.all){for(const k in JV)JV[k].a=0;for(const e of W.enemies)if(e._jt){e._jt.ring.visible=false;e._jt.line.visible=false;}}}
+function juToggleAll(){JU.all=!JU.all;JU.save();juBadge();if(!JU.all){for(const k in JV)JV[k].a=0;for(const e of W.enemies)if(e._jt){e._jt.ring.visible=false;e._jt.line.visible=false;}}for(const x of JU.ext)if(x.toggle)x.toggle(JU.all);}
 function juBadge(){const b=JP.badge;if(!b)return;b.className=JU.all?'on':'off';b.textContent=JU.all?'● НОВОЕ ('+JU.feats.filter(([k])=>JU.f[k]).length+'/'+JU.feats.length+') · Ё — сравнить':'○ КАК В РЕЛИЗЕ · Ё — включить новое';}
-function juReport(){const L={y:'да',m:'доработать',n:'нет'};let s='Полигон эффектов, заход 1 — отчёт\n';
-  for(const [k,n,t] of JU.feats)s+='- '+n+' '+t+': '+(JU.r[k]?L[JU.r[k]]:'без оценки')+(JU.f[k]?'':' (выключено)')+'\n';
+function juReport(){const L={y:'да',m:'доработать',n:'нет'};let s='Полигон эффектов, заход '+JU.round+' — отчёт\n';
+  for(let r=JU.round;r>=1;r--){s+=(r===JU.round?'Новое (заход '+r+'):':'Принятое заходом '+r+':')+'\n';
+    for(const [k,n,t,,rr] of JU.feats)if(rr===r)s+='- '+n+' '+t+': '+(JU.r[k]?L[JU.r[k]]:'без оценки')+(JU.f[k]?'':' (выключено)')+'\n';}
+  for(const x of JU.ext)if(x.report)s+=x.report();
   s+='Сила: hit-stop '+Math.round(JU.s.hs*100)+'%, громкость новых звуков '+Math.round(JU.s.vol*100)+'%, вспышки '+Math.round(JU.s.fx*100)+'%\n';
   if(JU.r._note)s+='Заметки: '+JU.r._note+'\n';return s;}
 // «было / стало» для одного звука: было — исходная функция релиза, стало — новый звук (независимо от флажков)
 function juAB(k,fresh){if(!AUD.ready())return;const H={hitP:HERO.proshka,hitT:HERO.potap,hitL:HERO.pelageya,hitY:HERO.yosha};
-  if(!fresh){const o=JU.orig;const m={swish:'swish',clink:'clink',jump:'jump',roll:'roll',shield:'shield',parry:'parry',hurt:'hurt',yellow:'yellow',red:'red',blue:'blue',link:'link'}[k];
+  if(!fresh){for(const x of JU.ext)if(x.play&&x.play(k,false))return;const o=JU.orig;const m={swish:'swish',clink:'clink',jump:'jump',roll:'roll',shield:'shield',parry:'parry',hurt:'hurt',yellow:'yellow',red:'red',blue:'blue',link:'link'}[k];
     if(m&&o[m]){o[m]();return;}
     if(H[k]){o.swish&&o.swish();setTimeout(()=>JU.orig.ember&&JU.orig.ember(),120);return;}
     if(k==='unravel'||k==='glint'||k==='heart'){floatText(active(0).pos.clone().add(new V3(0,2.4,0)),'в релизе звука нет','#dddddd');return;}
     if(k==='revive'){SFX.ok();return;}if(k==='ladder'){for(let i=0;i<8;i++)setTimeout(()=>JU.orig.link&&JU.orig.link(),i*180);return;}return;}
+  for(const x of JU.ext)if(x.play&&x.play(k,fresh))return;
   if(H[k]){JSND.swish(H[k]);setTimeout(()=>{JSND.hit(H[k],false);JSND.note(0,0);},90);return;}
   if(k==='ladder'){for(let i=0;i<8;i++)setTimeout(()=>JSND.note(i,0,true),i*180);return;}
   if(k==='link'){JSND.note(0,0,true);return;}if(k==='heart'){JSND.heart(0);return;}if(k==='unravel'){JSND.unravel(0);return;}if(k==='revive'){JSND.revive(0);return;}
   if(k==='yellow'||k==='red'||k==='blue'||k==='glint'){JSND[k](0);return;}
   JSND[k](HERO.proshka);}
-juPanel();
+// панель строится после всех модулей полигона (заход 2 добавляет предложения и разделы)
+setTimeout(()=>{JU.load();juPanel();for(const x of JU.ext)if(x.ready)x.ready();},0);

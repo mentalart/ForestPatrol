@@ -1,6 +1,6 @@
 //@@ wait=1500
-// полигон эффектов (сборка --sandbox, docs/23_vfx_sfx.md): уровень грузится, удар даёт hit-stop/вспышку/лесенку, колючки — урон с лепестком
-// и кромкой, шаги по поверхностям, телеграф с нитью цели и бликом, клубок распускается; Ё (JU.all=false) — всё как в релизе.
+// полигон эффектов (сборка --sandbox, docs/23_vfx_sfx.md), заход 1: удар даёт hit-stop/вспышку/лесенку, колючки — урон с лепестком
+// и кромкой (шаги по поверхностям сняты после захода 1), телеграф с нитью цели и бликом, клубок распускается; Ё (JU.all=false) — всё как в релизе.
 // Запуск: python3 zlataya_cep/build/build_final.py --sandbox && tools/tests/run_one.sh tsb_juice zlataya_cep/zlataya_cep_sandbox.html
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 window.addEventListener('error',e=>window._errs.push(String(e.message).slice(0,200)));
@@ -22,10 +22,10 @@ JSON.stringify(R1)
   window.R2={petals:pet+'→'+p.petals,petal:parts,edge:op,hurt:CNT.hurt||0};PUT(h,20,-4);ZC.tick(10);R2.healed=p.petals;}
 JSON.stringify(R2)
 //@@
-// дорожка: идём слева направо по шести поверхностям
-{const h=U.act(0);PUT(h,-23,6);ZC.hold('KeyD',true);ZC.tick(60*7);ZC.hold('KeyD',false);window.R3={x:+h.pos.x.toFixed(1),steps:CNT.step||0,by:Object.keys(CNT).filter(k=>k.startsWith('s_')).map(k=>k.slice(2)+':'+CNT[k]).join(' ')};}
+// шаги сняты: идём по полю — ни одного шага
+{const h=U.act(0);PUT(h,-23,14);ZC.hold('KeyD',true);ZC.tick(60*2);ZC.hold('KeyD',false);window.R3={x:+h.pos.x.toFixed(1),steps:CNT.step||0};}
 JSON.stringify(R3)
-//@@ shot=tsb_steps.png
+//@@
 // сигналы: стоим у жёлтого морока, ждём замах — нить цели и блик
 {const h=U.act(0),e=ZC.W.enemies.find(e=>!e.sbDummy&&e.signals[0]==='yellow'&&e.pos.x<0);PUT(h,e.pos.x,e.pos.z+2,Math.PI);let ring=false,gl=0;
   for(let i=0;i<60*6;i++){ZC.tick(1);if(e._jt&&e._jt.ring.visible)ring=true;if(e._gl)gl++;if(ring&&gl)break;}window.R4={ring,glint:CNT.glint||0,state:e.state};}
@@ -39,7 +39,7 @@ JSON.stringify(R5)
 {JU.all=false;const h=U.act(0),e=ZC.W.enemies.find(e=>e.sbDummy&&e.alive);ZC.G.hitstop=0;const hit0=CNT.hit||0;PUT(h,e.pos.x,e.pos.z+1.6,Math.PI);let hs=0;
   for(let i=0;i<3;i++){ZC.tick(25);ZC.press(ZC.players[0].act===U.act(0)?'KeyF':'KeyF');for(let j=0;j<20;j++){ZC.tick(1);hs=Math.max(hs,ZC.G.hitstop);}}
   window.R6={hs,newHits:(CNT.hit||0)-hit0};JU.all=true;}
-const ok=R1.hs>0.04&&R1.sq>0&&R1.combo>=1&&R2.petal>=1&&R2.edge>0.3&&R3.steps>20&&R3.by.split(' ').length>=6&&R4.ring&&R4.glint>=1&&R5.unravel>=1&&R6.hs===0&&R6.newHits===0&&_errs.length===0;
+const ok=R1.hs>0.04&&R1.sq>0&&R1.combo>=1&&R2.petal>=1&&R2.edge>0.3&&R3.steps===0&&R3.x>-20&&R4.ring&&R4.glint>=1&&R5.unravel>=1&&R6.hs===0&&R6.newHits===0&&_errs.length===0;
 (ok?'tsb_juice ok ':'FAIL tsb_juice ')+JSON.stringify({R1,R2,R3,R4,R5,R6,errs:_errs.slice(0,3)})
 //@@ shot=tsb_panel.png
 // панель (Tab) открывается поверх игры
