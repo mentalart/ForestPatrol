@@ -76,15 +76,15 @@
 | id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
-| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko.js` | late_50_save, late_95_dev | 10 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_luko thw3a thw3b thw4 tluko tmenu3 |
+| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_95_dev | 10 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_luko thw3a thw3b thw4 tluko tmenu3 |
 | `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_99n_yaga11 | 25 | t11 tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekinds1b tf… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | — | 1 | tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_99_kolobok_dance | 0 |  |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_99b_kidnap14 | 1 | tfin_kidnap14 |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | — | 1 | thub2 |
 | `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_99b_kidnap14 | 2 | tfin_post tsospot |
-| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 13 | t21 t21x tfin_art tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tfin_k21kelp tfin_k2… |
-| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99l_kitezh_magic_water | 7 | t22d t22shot tfin_k22 tfin_k22hint tfin_k22solo tfin_occ tfin_warp |
+| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 13 | t21 t21x tfin_art tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tfin_k21kelp tfin_k2… |
+| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99l_kitezh_magic_water | 7 | t22d t22shot tfin_k22 tfin_k22hint tfin_k22solo tfin_occ tfin_warp |
 | `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 3 | t23f tfin_k23 tfin_k23solo |
 | `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 3 | t24n tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 5 | t25c tfin_k25 tfin_k25solo tfoes tsospot |
@@ -106,7 +106,7 @@
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 1 | t53 |
 | `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | — | 2 | t54 tso54 |
 | `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | — | 1 | t5b1 |
-| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_93_koschei_level, late_94_koschei_tut | 10 | t5b2 tfin_kosh tfin_koshcine tfin_koshcoop tfin_koshfx tfin_koshnat tfin_koshrule tfin_ko… |
+| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_94_koschei_tut | 10 | t5b2 tfin_kosh tfin_koshcine tfin_koshcoop tfin_koshfx tfin_koshnat tfin_koshrule tfin_ko… |
 | `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
 | `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 1 | tzast |
@@ -166,7 +166,12 @@
 | `levels/5-B2.js` | 175 | МИР 5 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ» — финал без … |
 | `levels/epi.js` | 83 | ЭПИЛОГ — штаб-сосна, вечер: сказка без тетрадки |
 | `levels/zastava.js` | 90 | ЗАСТАВА ТРЁХ БОГАТЫРЕЙ — испытания на время для старших |
-| `levels/luko.js` | 1070 | ЛУКОМОРЬЕ: пустой дуб, Кот Учёный, карта-рушник |
+| `levels/luko_1_scene.js` | 176 | ЛУКОМОРЬЕ: пустой дуб, Кот Учёный, карта-рушник |
+| `levels/luko_2_worlds123.js` | 167 | — |
+| `levels/luko_3_worlds45.js` | 237 | — |
+| `levels/luko_4_zastava_forge_map.js` | 198 | — |
+| `levels/luko_5_dress_garden.js` | 224 | — |
+| `levels/luko_6_festival_end.js` | 68 | — |
 | `engine/10_levels_flow_menu.js` | 214 | ПОТОК ИГРЫ |
 | `tail.html` | 3 | — |
 
@@ -187,7 +192,7 @@
 | `late_16_cast.js` | — | РЕЛИЗ final05 · ПЕРСОНАЖИ НА УРОВНЕ ГЕРОЕВ: скелетные low-poly модели, лица, живая анимация |
 | `late_17_cast2.js` | — | РЕЛИЗ final05 · ПЕРСОНАЖИ НА УРОВНЕ ГЕРОЕВ (2): Садко, Старик, Рыбка, Жар-птица, Сирин и Алконост, Соловей, Лихо, кузне… |
 | `late_18_foes.js` | — | РЕЛИЗ final05 · ВРАГИ НА УРОВНЕ ГЕРОЕВ: low-poly модели мороков, выразительные глаза, живая мимика |
-| `late_19_gor.js` | 4-B | РЕЛИЗ final05 · ГОРЫНЫЧ И ЗВЕНЫШКО НА УРОВНЕ ГЕРОЕВ |
+| `levels/4-B/late_19_gor.js` | 4-B | РЕЛИЗ final05 · ГОРЫНЫЧ И ЗВЕНЫШКО НА УРОВНЕ ГЕРОЕВ |
 | `late_20_decor.js` | — | РЕЛИЗ · ОКРУЖЕНИЕ: учёт земли для декора |
 | `late_22_synty.js` | — | РЕЛИЗ final03 · SYNTY-ПРОХОД ПО УРОВНЮ: фаски, шум, тон по вершинам, слои, кромки |
 | `late_24_world.js` | — | РЕЛИЗ final03 · МИР: деревья кита, подножия-обрывы, долина, средний план, ориентиры |
@@ -199,9 +204,9 @@
 | `late_34_slash.js` | — | РЕЛИЗ final05 · УДАР ГЕРОЕВ: лента-полумесяц, почерк героя, «бах» при попадании |
 | `late_35_guard.js` | — | РЕЛИЗ final06 · ЩИТ (B): у каждого героя свой щит |
 | `late_36_potap_fire.js` | — | РЕЛИЗ final06 · ПОТАП: ОГНЕННЫЕ КУЛАКИ, МАХ ИЗ-ЗА ГОЛОВЫ, ОГНЕННЫЕ КОГТИ |
-| `late_37_gor_uzda.js` | 4-B | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ», ФАЗА 3: ОГНЕННАЯ УЗДА, ЗОЛОТОЙ ОРЕОЛ, «РАЗ-ДВА-ТРИ» |
-| `late_38_gor_friend.js` | 4-B | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: РОЛИК ПОСЛЕ ПОБЕДЫ — ГОРЫНЫЧ СТАЛ ДРУГОМ |
-| `late_39_epi_shadows.js` | epi | РЕЛИЗ final06 · ЭПИЛОГ: «ТЕАТР ТЕНЕЙ» — КООПЕРАТИВНАЯ МИНИ-ИГРА |
+| `levels/4-B/late_37_gor_uzda.js` | 4-B | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ», ФАЗА 3: ОГНЕННАЯ УЗДА, ЗОЛОТОЙ ОРЕОЛ, «РАЗ-ДВА-ТРИ» |
+| `levels/4-B/late_38_gor_friend.js` | 4-B | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: РОЛИК ПОСЛЕ ПОБЕДЫ — ГОРЫНЫЧ СТАЛ ДРУГОМ |
+| `levels/epi/late_39_epi_shadows.js` | epi | РЕЛИЗ final06 · ЭПИЛОГ: «ТЕАТР ТЕНЕЙ» — КООПЕРАТИВНАЯ МИНИ-ИГРА |
 | `late_40_music.js` | — | РЕЛИЗ · МУЗЫКА: народные мотивы для меню, Лукоморья, каждого мира и боссов |
 | `late_50_save.js` | luko | РЕЛИЗ · СОХРАНЕНИЯ И НАСТРОЙКИ |
 | `late_60_title.js` | — | РЕЛИЗ · ТИТУЛ: «У лукоморья дуб зелёный» |
@@ -216,39 +221,49 @@
 | `late_84_cine_fx.js` | — | РЕЛИЗ · КИНО 3: ЭФФЕКТЫ, СВЕТ, НАСТРОЕНИЕ, АКЦЕНТЫ |
 | `late_85_cine_audio.js` | — | РЕЛИЗ · КИНО 4: ЗВУК РОЛИКОВ |
 | `late_86_cine_direction.js` | — | РЕЛИЗ · КИНО 5: АВТОРСКАЯ РЕЖИССУРА КЛЮЧЕВЫХ РОЛИКОВ |
-| `late_87_boss4b.js` | 4-B | РЕЛИЗ final04 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: обучающие ролики по этапам и живые подсказки |
+| `levels/4-B/late_87_boss4b.js` | 4-B | РЕЛИЗ final04 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: обучающие ролики по этапам и живые подсказки |
 | `late_88_occ.js` | — | РЕЛИЗ final04 · ВИДИМОСТЬ ГЕРОЕВ: вырез «в горошек», силуэты за стенами, затухание у камеры |
 | `late_89_camorbit.js` | — | РЕЛИЗ final04 · КАМЕРА ПРАВЫМ СТИКОМ: орбита вокруг героя, наклон, автовозврат, столкновения |
 | `late_90_boot.js` | — | РЕЛИЗ · ЗАПУСК |
 | `late_91_voice.js` | — | РЕЛИЗ · ОЗВУЧКА РЕПЛИК (final06) |
-| `late_92_koschei.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ»: ФИНАЛЬНЫЙ БОЙ В ПЯТЬ ЭТАПОВ |
-| `late_93_koschei_level.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними |
-| `late_94_koschei_tut.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: ОБУЧАЮЩИЕ КАРТОЧКИ ПЕРЕД ЭТАПАМИ И ЖИВЫЕ ПОДСКАЗКИ В БОЮ |
+| `levels/5-B2/late_92_koschei.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ»: ФИНАЛЬНЫЙ БОЙ В ПЯТЬ ЭТАПОВ |
+| `levels/5-B2/late_93_koschei_level.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними |
+| `levels/5-B2/late_93_koschei_level_p2_storm.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 2 из 5): ворон, гроза, буря, игла, этапы боя — части … |
+| `levels/5-B2/late_93_koschei_level_p3_wind.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 3 из 5): ветер, анимация Кощея, помощники героев — ча… |
+| `levels/5-B2/late_93_koschei_level_p4_skaz.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 4 из 5): сказы и переходы между этапами — части склеи… |
+| `levels/5-B2/late_93_koschei_level_p5_finale.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 5 из 5): последний сказ, цепь, кнопки, отладка — част… |
+| `levels/5-B2/late_94_koschei_tut.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: ОБУЧАЮЩИЕ КАРТОЧКИ ПЕРЕД ЭТАПАМИ И ЖИВЫЕ ПОДСКАЗКИ В БОЮ |
 | `late_95_dev.js` | luko | РЕЛИЗ · КЛАВИШИ РАЗРАБОТЧИКА |
 | `late_95b_warp.js` | — | РЕЛИЗ · ДЛЯ БОТОВ И РАЗРАБОТКИ: ЕДИНАЯ ТЕЛЕПОРТАЦИЯ FIN.warp, ПОСЛЕДНИЙ РОЛИК FIN.lastCine |
-| `late_96_prolog_scooter.js` | p | РЕЛИЗ final06 · ПРОЛОГ: ПРОШКА НЕСЁТ САМОКАТ ТИШКЕ |
-| `late_96b_prolog_night.js` | p | РЕЛИЗ final06 · ПРОЛОГ: КОМНАТА ШТАБА, ОКНО В НОЧЬ, ПОГОНЯ КОЩЕЯ, ОЖИВШАЯ ТЕТРАДКА |
-| `late_97_buyan51.js` | 5-1 | РЕЛИЗ final06 · 5-1 «СУНДУК НА ДУБЕ»: НОВЫЕ ЖИТЕЛИ ОСТРОВА В РОЛИКАХ |
-| `late_98_gor_lava.js` | 4-B | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: АРЕНА ПО РЕФЕРЕНСУ, РЫК И ЛАВА, БОЛЬШОЙ ВДОХ, СЛАБОЕ МЕСТО |
-| `late_99_kolobok_dance.js` | 1-3 | РЕЛИЗ final06 · 1-3 «КОЛОБОК»: ФИНАЛЬНАЯ ПЛЯСКА |
-| `late_99b_kidnap14.js` | 1-4, 1-B | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: ШАПКИ НА ГОЛОВАХ, ЁЛКИ УТАСКИВАЮТ ПЕЛАГЕЮ |
-| `late_99c_kitezh_sea.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ПОД ВОДОЙ — КАК ПОД ВОДОЙ |
-| `late_99d_kitezh_water.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ГУСЛИ РАСТУТ — ПЕРЕЛИВ, ТЕЧЕНИЕ, ЗВОН · ОСТАВЛЕННЫЙ ДЕРЖИТ НАПЕВ · РОЛИ ПОД ВОДОЙ |
-| `late_99e_k21.js` | 2-1 | РЕЛИЗ final06 · 2-1 «ГУСЛИ САДКО» — ВДВОЕ ДЛИННЕЕ |
-| `late_99f_k22.js` | 2-2 | РЕЛИЗ final06 · 2-2 «ЧУДО-ЮДО РЫБА-КИТ» — ВТРОЕ ДЛИННЕЕ, ПО «КОНЬКУ-ГОРБУНКУ» |
-| `late_99g_k23.js` | 2-3 | РЕЛИЗ final06 · 2-3 «НЕВОД» — ВДВОЕ ДЛИННЕЕ |
-| `late_99h_k24.js` | 2-4 | РЕЛИЗ final06 · 2-4 «В БРЮХЕ У КИТА» — ВДВОЕ ДЛИННЕЕ |
-| `late_99i_k25.js` | 2-5 | РЕЛИЗ final06 · 2-5 «КИТЕЖ ЗВОНИТ» — ВДВОЕ ДЛИННЕЕ |
-| `late_99j_k2b.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ» — ПОГОНЯ С ВАЛОМ И БОЙ В ЧЕТЫРЕ ЭТАПА (docs/23_vodyanoy_boss.md) |
-| `late_99k_kitezh_foes.js` | 2-1, 2-5 | РЕЛИЗ final06 · МИР 2: ЖЕМЧУЖНИЦА И ЩУКИ, ЧТО ПЛАВАЮТ |
-| `late_99l_kitezh_magic_water.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ВОДА ГУСЛЕЙ — СКАЗОЧНАЯ, ПЕРЕЛИВЧАТАЯ |
-| `late_99m_k21_hermit.js` | 2-1 | РЕЛИЗ final06 · 2-1: МИНИ-БОСС «РАК-ОТШЕЛЬНИК» |
-| `late_99n_yaga11.js` | 1-1 | РЕЛИЗ final06 · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ»: РОЛИК «ЯГА СТАВИТ ЗАДАЧУ» — НОВАЯ ПОСТАНОВКА |
-| `late_99o_sky32.js` | 3-2 | РЕЛИЗ final06 · 3-2 «ОБЛАЧНЫЕ ПАСТБИЩА» — ВТРОЕ ДЛИННЕЕ: ПУШОК, ВЕТЕР-ВЕТРИЛО, РАДУГА-ДУГА, ОВЧАРНЯ, ГРОМОВОЙ БАРАН |
-| `late_99p_sky31.js` | 3-1 | РЕЛИЗ final06 · 3-1 «САД МОЛОДИЛЬНЫХ ЯБЛОК» — ВТРОЕ БОЛЬШЕ: КТО ЯБЛОЧКО ОТКУСИТ — ТОТ ПОМОЛОДЕЕТ |
-| `late_99q_k2b_vod.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ»: ДЕДУШКА ВОДЯНОЙ, СОМ И ВОДЯНЫЕ КОНИ — МОДЕЛИ И МИМИКА |
-| `late_99r_k2b_fx.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ»: ЭФФЕКТЫ ВОДЫ — ОМУТ, БРЫЗГИ, КОЛЬЦА, ТЕЛЕГРАФЫ, ГРОЗА, ВАЛ-«ТРУБА» |
-| `late_99s_k2b_chase.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ»: ПОГОНЯ С ВАЛОМ — ВДВОЕ ДЛИННЕЕ (≈190 м) |
+| `levels/p/late_96_prolog_scooter.js` | p | РЕЛИЗ final06 · ПРОЛОГ: ПРОШКА НЕСЁТ САМОКАТ ТИШКЕ |
+| `levels/p/late_96b_prolog_night.js` | p | РЕЛИЗ final06 · ПРОЛОГ: КОМНАТА ШТАБА, ОКНО В НОЧЬ, ПОГОНЯ КОЩЕЯ, ОЖИВШАЯ ТЕТРАДКА |
+| `levels/5-1/late_97_buyan51.js` | 5-1 | РЕЛИЗ final06 · 5-1 «СУНДУК НА ДУБЕ»: НОВЫЕ ЖИТЕЛИ ОСТРОВА В РОЛИКАХ |
+| `levels/4-B/late_98_gor_lava.js` | 4-B | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: АРЕНА ПО РЕФЕРЕНСУ, РЫК И ЛАВА, БОЛЬШОЙ ВДОХ, СЛАБОЕ МЕСТО |
+| `levels/1-3/late_99_kolobok_dance.js` | 1-3 | РЕЛИЗ final06 · 1-3 «КОЛОБОК»: ФИНАЛЬНАЯ ПЛЯСКА |
+| `levels/1-4/late_99b_kidnap14.js` | 1-4, 1-B | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: ШАПКИ НА ГОЛОВАХ, ЁЛКИ УТАСКИВАЮТ ПЕЛАГЕЮ |
+| `levels/w2/late_99c_kitezh_sea.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ПОД ВОДОЙ — КАК ПОД ВОДОЙ |
+| `levels/w2/late_99d_kitezh_water.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ГУСЛИ РАСТУТ — ПЕРЕЛИВ, ТЕЧЕНИЕ, ЗВОН · ОСТАВЛЕННЫЙ ДЕРЖИТ НАПЕВ · РОЛИ ПОД ВОДОЙ |
+| `levels/2-1/late_99e_k21.js` | 2-1 | РЕЛИЗ final06 · 2-1 «ГУСЛИ САДКО» — ВДВОЕ ДЛИННЕЕ |
+| `levels/2-1/late_99e_k21_p2_market.js` | 2-1 | ---- продолжение late_99e_k21.js (внутри build21, часть 2 из 4): торг, мостовая, палаты, переливная улица — части склеи… |
+| `levels/2-1/late_99e_k21_p3_scenes.js` | 2-1 | ---- продолжение late_99e_k21.js (внутри build21, часть 3 из 4): ролики и сцены уровня — части склеиваются сборкой по и… |
+| `levels/2-1/late_99e_k21_p4_hall.js` | 2-1 | ---- продолжение late_99e_k21.js (внутри build21, часть 4 из 4): палаты Морского царя: пляска, жемчуг, финал, задачи — … |
+| `levels/2-2/late_99f_k22.js` | 2-2 | РЕЛИЗ final06 · 2-2 «ЧУДО-ЮДО РЫБА-КИТ» — ВТРОЕ ДЛИННЕЕ, ПО «КОНЬКУ-ГОРБУНКУ» |
+| `levels/2-2/late_99f_k22_p2_stove.js` | 2-2 | ---- продолжение late_99f_k22.js (внутри build22, часть 2 из 4): печка по хребту, бока и колья, пахари, пляска, роща — … |
+| `levels/2-2/late_99f_k22_p3_lullaby.js` | 2-2 | ---- продолжение late_99f_k22.js (внутри build22, часть 3 из 4): колыбельная: куплеты, звёздочки, дыхание — части склеи… |
+| `levels/2-2/late_99f_k22_p4_tasks.js` | 2-2 | ---- продолжение late_99f_k22.js (внутри build22, часть 4 из 4): задачи и подсказки, отладка — части склеиваются сборко… |
+| `levels/2-3/late_99g_k23.js` | 2-3 | РЕЛИЗ final06 · 2-3 «НЕВОД» — ВДВОЕ ДЛИННЕЕ |
+| `levels/2-4/late_99h_k24.js` | 2-4 | РЕЛИЗ final06 · 2-4 «В БРЮХЕ У КИТА» — ВДВОЕ ДЛИННЕЕ |
+| `levels/2-5/late_99i_k25.js` | 2-5 | РЕЛИЗ final06 · 2-5 «КИТЕЖ ЗВОНИТ» — ВДВОЕ ДЛИННЕЕ |
+| `levels/2-B/late_99j_k2b.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ» — ПОГОНЯ С ВАЛОМ И БОЙ В ЧЕТЫРЕ ЭТАПА (docs/23_vodyanoy_boss.md) |
+| `levels/w2/late_99k_kitezh_foes.js` | 2-1, 2-5 | РЕЛИЗ final06 · МИР 2: ЖЕМЧУЖНИЦА И ЩУКИ, ЧТО ПЛАВАЮТ |
+| `levels/w2/late_99l_kitezh_magic_water.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ВОДА ГУСЛЕЙ — СКАЗОЧНАЯ, ПЕРЕЛИВЧАТАЯ |
+| `levels/2-1/late_99m_k21_hermit.js` | 2-1 | РЕЛИЗ final06 · 2-1: МИНИ-БОСС «РАК-ОТШЕЛЬНИК» |
+| `levels/1-1/late_99n_yaga11.js` | 1-1 | РЕЛИЗ final06 · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ»: РОЛИК «ЯГА СТАВИТ ЗАДАЧУ» — НОВАЯ ПОСТАНОВКА |
+| `levels/3-2/late_99o_sky32.js` | 3-2 | РЕЛИЗ final06 · 3-2 «ОБЛАЧНЫЕ ПАСТБИЩА» — ВТРОЕ ДЛИННЕЕ: ПУШОК, ВЕТЕР-ВЕТРИЛО, РАДУГА-ДУГА, ОВЧАРНЯ, ГРОМОВОЙ БАРАН |
+| `levels/3-1/late_99p_sky31.js` | 3-1 | РЕЛИЗ final06 · 3-1 «САД МОЛОДИЛЬНЫХ ЯБЛОК» — ВТРОЕ БОЛЬШЕ: КТО ЯБЛОЧКО ОТКУСИТ — ТОТ ПОМОЛОДЕЕТ |
+| `levels/2-B/late_99q_k2b_vod.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ»: ДЕДУШКА ВОДЯНОЙ, СОМ И ВОДЯНЫЕ КОНИ — МОДЕЛИ И МИМИКА |
+| `levels/2-B/late_99r_k2b_fx.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ»: ЭФФЕКТЫ ВОДЫ — ОМУТ, БРЫЗГИ, КОЛЬЦА, ТЕЛЕГРАФЫ, ГРОЗА, ВАЛ-«ТРУБА» |
+| `levels/2-B/late_99s_k2b_chase.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ»: ПОГОНЯ С ВАЛОМ — ВДВОЕ ДЛИННЕЕ (≈190 м) |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -283,14 +298,14 @@
 | `rep_20_subs.py` | 5-Б2 финал |
 | `rep_20_subs.py` | эпилог |
 | `rep_20_subs.py` | Лукоморье |
-| `rep_30_epi.py` | Эпилог: «Театр теней» (late_39_epi_shadows.js) — после ролика e1 мини-игра с живыми тенями вместо теней-картинок по кно… |
-| `rep_30_gor4b.py` | 4-Б «Змей Горыныч»: Пробой любой головы держится вдвое дольше — 12 секунд (на вдохе — 18) |
-| `rep_30_gor4b.py` | 4-Б «Змей Горыныч», фаза 3 (late_37_gor_uzda.js): после оглушения всех трёх голов — 50 секунд (было 25); «раз-два-три» … |
-| `rep_30_kolobok13.py` | 1-3 «Колобок»: последний ролик — пляска; Колобок отдаёт звено Прошке |
-| `rep_30_leshy14.py` | 1-4 «Леший водит»: ролик «Пелагею увели» — ёлки кружат Пелагею хороводом и вихрем уносят в кольцо |
-| `rep_30_luko.py` | Лукоморье: волшебный стан, карта-рушник и берег — на 6 шагов дальше от дуба |
-| `rep_30_luko.py` | Лукоморье: после «Все уровни открыты» (Ctrl+Alt+], флаг devAll) Кот не встречает «Садитесь — начну рассказ!» |
-| `rep_30_prolog.py` | Пролог «Колыбельная»: сценка с самокатом — Прошка несёт его Тишке, спотыкается о шишку, самокат разваливается, все смею… |
+| `levels/epi/rep_30_epi.py` | Эпилог: «Театр теней» (late_39_epi_shadows.js) — после ролика e1 мини-игра с живыми тенями вместо теней-картинок по кно… |
+| `levels/4-B/rep_30_gor4b.py` | 4-Б «Змей Горыныч»: Пробой любой головы держится вдвое дольше — 12 секунд (на вдохе — 18) |
+| `levels/4-B/rep_30_gor4b.py` | 4-Б «Змей Горыныч», фаза 3 (late_37_gor_uzda.js): после оглушения всех трёх голов — 50 секунд (было 25); «раз-два-три» … |
+| `levels/1-3/rep_30_kolobok13.py` | 1-3 «Колобок»: последний ролик — пляска; Колобок отдаёт звено Прошке |
+| `levels/1-4/rep_30_leshy14.py` | 1-4 «Леший водит»: ролик «Пелагею увели» — ёлки кружат Пелагею хороводом и вихрем уносят в кольцо |
+| `levels/luko/rep_30_luko.py` | Лукоморье: волшебный стан, карта-рушник и берег — на 6 шагов дальше от дуба |
+| `levels/luko/rep_30_luko.py` | Лукоморье: после «Все уровни открыты» (Ctrl+Alt+], флаг devAll) Кот не встречает «Садитесь — начну рассказ!» |
+| `levels/p/rep_30_prolog.py` | Пролог «Колыбельная»: сценка с самокатом — Прошка несёт его Тишке, спотыкается о шишку, самокат разваливается, все смею… |
 
 ## Документы (`zlataya_cep/docs/`)
 
@@ -320,7 +335,9 @@
 | `22_vodyanoy_proposals.md` | 2-Б «Водяной»: предложения — бой, эффекты, погоня с валом |
 | `23_vodyanoy_boss.md` | 2-Б «Водяной»: бой в четыре этапа, вода и вал, погоня вдвое длиннее |
 | `CHANGELOG.md` | Изменения |
+| `changes/` | 2 файлов |
 | `feedback/` | 7 файлов |
+| `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 

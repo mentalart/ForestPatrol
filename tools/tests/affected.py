@@ -105,6 +105,15 @@ def rule_for(path, section=None):
         if (fnmatch.fnmatch(path, pat) or path.startswith(pat.rstrip('*'))) and (sec is None or (section and sec.lower() in section.lower())):
             if sec is None or section:
                 return what, pat + ('#' + sec if sec else '')
+    # файла нет в таблице, но он в папке уровня (build/levels/2-2/…) — боты этого уровня; папка мира (levels/w2/) — всех его уровней
+    m = re.match(r'zlataya_cep/build/levels/([^/]+)/', path)
+    if m:
+        lid = m.group(1)
+        if re.match(r'w\d$', lid):
+            ids = [x for x, _ in LEVELS if x[:1] == lid[1:] and '-' in x]
+            return ['@level:' + x for x in ids], 'папка мира ' + lid
+        if any(lid == x for x, _ in LEVELS):
+            return ['@level:' + lid], 'папка уровня ' + lid
     return None, None
 
 
@@ -112,17 +121,38 @@ def rule_for(path, section=None):
 _MOVED = {}
 def MOVED(base):
     if base not in _MOVED:
-        gone = [f for f in sh('git', 'diff', '--name-only', '--diff-filter=D', base, *( [TO] if TO else [] )).split('\n') if re.match(r'zlataya_cep/build/rep_\d+.*\.py$', f)]
+        gone = [f for f in sh('git', 'diff', '--name-only', '--diff-filter=D', base, *( [TO] if TO else [] )).split('\n') if re.match(r'zlataya_cep/build/(?:levels/[^/]+/)?rep_\d+.*\.py$', f)]
         _MOVED[base] = {l for f in gone for l in sh('git', 'show', base + ':' + f).splitlines() if l.strip() and not l.lstrip().startswith('#')}
     return _MOVED[base]
 
 
 # ---------- что изменилось ----------
+MOVED_FILES = []   # модули и замены, перенесённые в другую папку без правок (сборка берёт их по имени, папка порядок не меняет)
+BUILD_RE = r'zlataya_cep/build/(?:levels/[^/]+/)?(?:late_\d+.*\.js|rep_\d+.*\.py|fin_early\.js)$'
+
+
 def changed_files(base):
-    if TO:
-        return [f for f in sh('git', 'diff', '--name-only', base, TO).split('\n') if f]
-    out = sh('git', 'diff', '--name-only', base) + sh('git', 'ls-files', '--others', '--exclude-standard')
-    return [f for f in dict.fromkeys(out.split('\n')) if f]
+    out = []
+    for l in sh('git', 'diff', '--name-status', '-M', base, *([TO] if TO else [])).split('\n'):
+        p = l.split('\t')
+        if len(p) == 3 and p[0] == 'R100' and re.match(BUILD_RE, p[1]) and re.match(BUILD_RE, p[2]) and p[1].split('/')[-1] == p[2].split('/')[-1]:
+            MOVED_FILES.append(p[2])
+            continue
+        if len(p) >= 2:
+            out.append(p[-1])
+    if not TO:
+        out += sh('git', 'ls-files', '--others', '--exclude-standard').split('\n')
+    return [f for f in dict.fromkeys(out) if f]
+
+
+def build_files(pat):
+    """Файлы сборки по шаблону имени — в build/ и build/levels/<уровень>/ (как их берёт build_final.py), пути от корня."""
+    B = os.path.join(ROOT, 'zlataya_cep', 'build')
+    out = []
+    for d, ds, fs in os.walk(B):
+        ds[:] = [x for x in ds if x not in ('gpu', 'voice', 'fonts')]
+        out += [os.path.relpath(os.path.join(d, f), ROOT).replace(os.sep, '/') for f in fs if re.match(pat, f)]
+    return sorted(out, key=lambda x: x.split('/')[-1])
 
 
 def proto_lines(base):
@@ -291,12 +321,11 @@ def analyse(files, base):
             elif nb:
                 add(nb, '%s — добавлены в список' % f)
             continue
-        if f.startswith('zlataya_cep/build/rep_') and f.endswith('.py') and not os.path.exists(os.path.join(ROOT, f)):
+        if re.match(r'zlataya_cep/build/(?:levels/[^/]+/)?rep_', f) and f.endswith('.py') and not os.path.exists(os.path.join(ROOT, f)):
             # файл замен удалён: если все его строки перенесены в другие rep_*.py (разбили по уровням) — проверять нечего,
             # проверяют новые файлы; иначе замены пропали — полный регресс
             old = sh('git', 'show', base + ':' + f)
-            B = os.path.join(ROOT, 'zlataya_cep', 'build')
-            now = ''.join(read('zlataya_cep/build/' + n, True) for n in sorted(os.listdir(B)) if re.match(r'rep_\d+.*\.py$', n))
+            now = ''.join(read(n, True) for n in build_files(r'rep_\d+.*\.py$'))
             lost = [l for l in old.splitlines() if l.strip() and not l.lstrip().startswith('#') and l not in now]
             if lost:
                 code = True
@@ -304,7 +333,7 @@ def analyse(files, base):
             else:
                 why.append('%s удалён — все замены перенесены в другие rep_*.py' % f)
             continue
-        if f.startswith('zlataya_cep/build/rep_') and f.endswith('.py'):
+        if re.match(r'zlataya_cep/build/(?:levels/[^/]+/)?rep_', f) and f.endswith('.py'):
             code = True
             secs, lines = set(), LINES_OF(f)
             for ln in changed_lines(base, f):
@@ -380,6 +409,8 @@ def main():
         why.insert(0, 'полный регресс по запросу (--all)')
         full, full07, g07 = ['--all'], [], []
     print('База сравнения: %s · изменено файлов: %d' % (base[:12], len(files)))
+    if MOVED_FILES:
+        print('  · перенесены в другую папку без правок (сборка не меняется): %d — %s' % (len(MOVED_FILES), ', '.join(f.split('/')[-1] for f in MOVED_FILES[:6]) + (' …' if len(MOVED_FILES) > 6 else '')))
     for w in why:
         print('  · ' + w)
     if full or full07:
