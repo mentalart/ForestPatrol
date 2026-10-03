@@ -1,8 +1,8 @@
 tools/video/out/
 tools/voice/raw/
-tools/voice/node_modules/
-tools/script/node_modules/
-tools/three/node_modules/
+tools/voice/node_modules
+tools/script/node_modules
+tools/three/node_modules
 # собранный релиз — не в git: собирается командой python3 zlataya_cep/build/build_final.py, выкладывается после слияния в main
 # (.github/workflows/release.yml → GitHub Pages и Releases)
 zlataya_cep/zlataya_cep_final06.html
