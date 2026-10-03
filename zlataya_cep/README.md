@@ -29,7 +29,9 @@
 | ![Мороки и боссы](docs/screens/26_foes.jpg) | ![Удар героев](docs/screens/27_slash.jpg) |
 
 ## Как играть
-Откройте `zlataya_cep_final06.html` в Chrome, Edge или Firefox. Интернет не нужен: всё в одном файле.
+Поиграть онлайн — https://mentalart.github.io/ForestPatrol/; скачать файл — [Releases](https://github.com/mentalart/ForestPatrol/releases)
+(последние 50 версий, по одной на каждое слияние в `main`). Файл `zlataya_cep_final06.html` откройте в Chrome, Edge или Firefox —
+интернет не нужен: всё в одном файле. В репозитории его нет: собрать самому — `python3 zlataya_cep/build/build_final.py`.
 - Меню: ↑ ↓ — выбрать, ← → — изменить, Enter / Пробел / A — выбрать, Esc / B — назад.
 - В игре: Esc или Start — пауза (настройки, управление, выход в меню). P — фото-режим.
 - Герой без сил не держит игрока: переключитесь на второго своего героя (в одиночном режиме — на любого живого), друзья поднимут упавшего или его вернёт таймер.
