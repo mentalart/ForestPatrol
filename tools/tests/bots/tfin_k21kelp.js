@@ -5,7 +5,7 @@
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(true);ZC.startFrom(ZC.LV('2-1'));ZC.G.manual=true;ZC.tick(30);ZC.skip();ZC.tick(60);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}
 window.H=ZC.HERO;window.B0=['KeyA','KeyD','KeyW','KeyS'];window.rel=()=>B0.forEach(k=>ZC.hold(k,false));
-window.me=()=>U.act(ZC.G.soloPi);window.toKind=k=>{for(let i=0;i<4&&me().kind!==k;i++){ZC.press('KeyQ');ZC.tick(4);}return me().kind;};
+window.me=()=>U.act(ZC.G.soloPi);window.toKind=k=>{for(let i=0;i<16&&me().kind!==k;i++){ZC.press('KeyQ');ZC.tick(i<4?4:12);}return me().kind;};
 // с листа на лист: идти к следующему листу и прыгать, пока не встанешь на него
 window.CLIMB=(S,from)=>{let n=0,jumps=0;for(const L of S.leaves.slice(from||0)){const c=L.col;let ok=false;for(let i=0;i<300;i++){const h=me(),dx=c.x-h.pos.x,dz=c.z-h.pos.z,d=Math.hypot(dx,dz);
     ZC.hold(B0[0],dx<-0.12);ZC.hold(B0[1],dx>0.12);ZC.hold(B0[2],dz<-0.12);ZC.hold(B0[3],dz>0.12);if(h.grounded&&h.groundRef===c&&d<0.4){ok=true;break;}

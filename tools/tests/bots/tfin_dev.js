@@ -38,6 +38,8 @@ ZC.G.hub=true;ZC.FIN.saveGame();ZC.FIN.saveSettings();localStorage.setItem('zlat
 //@@ wait=7000
 'waiting for reload'
 //@@ shot=fin_dev_clean.png
+// перезагрузка после стирания — ждём, пока игра снова загрузится и покажет меню (раньше это время давал снимок кадра; в CI снимков нет)
+(async()=>{const t0=Date.now();while(!(window.ZC&&ZC.FIN&&document.querySelector('#finPanel .fin-item'))&&Date.now()-t0<60000)await new Promise(r=>setTimeout(r,100));
 const it=[...document.querySelectorAll('#finPanel .fin-item')];
-['keys='+Object.keys(localStorage).filter(k=>k.startsWith('zlatayaCep.')).join(','),'save='+ZC.FIN.readSave(),'continue='+(it[0].className.includes('fin-off')?'off':'on'),
- 'mus='+ZC.FIN.set.mus,'open='+ZC.FIN.chapterList().filter(c=>c.open).map(c=>c.id).join(','),'title='+ZC.FIN.titleOn].join(' | ')
+return ['keys='+Object.keys(localStorage).filter(k=>k.startsWith('zlatayaCep.')).join(','),'save='+ZC.FIN.readSave(),'continue='+(it[0].className.includes('fin-off')?'off':'on'),
+ 'mus='+ZC.FIN.set.mus,'open='+ZC.FIN.chapterList().filter(c=>c.open).map(c=>c.id).join(','),'title='+ZC.FIN.titleOn].join(' | ');})()

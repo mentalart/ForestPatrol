@@ -22,7 +22,7 @@ window.go8=(pi,x,z,max)=>{const h=U.act(pi),B=KK[pi].B,n=Math.round((max||8)*60)
   rel(pi);return 'TIMEOUT';};
 window.st=()=>U.st()+' falls='+ZC.G.stats.falls+' errs='+_errs.length+(_errs[0]?' '+_errs[0]:'');
 // к берегу у избушки Журавля (начало уровня проходят t12n, t12deep)
-window.me=()=>U.act(ZC.G.soloPi);window.toKind=k=>{for(let i=0;i<4&&me().kind!==k;i++){ZC.press('KeyQ');ZC.tick(4);}return me().kind;};
+window.me=()=>U.act(ZC.G.soloPi);window.toKind=k=>{for(let i=0;i<16&&me().kind!==k;i++){ZC.press('KeyQ');ZC.tick(i<4?4:12);}return me().kind;};
 window.callAll=()=>{U.tap('Digit1');const L=()=>U.act(ZC.G.soloPi);for(let i=0;i<60*12;i++){ZC.tick(1);if(i>60&&['proshka','potap','pelageya','yosha'].every(k=>Math.hypot(H[k].pos.x-L().pos.x,H[k].pos.z-L().pos.z)<6))break;if(i%240===239)U.tap('Digit1');}};   // «Ко мне!»: кто не перепрыгнет, через 2,5 с подтянется — ждём всех
 // в одиночке ведёт тот, кем управляем: индекс игрока — G.soloPi; ходим клавишами Игрока 1
 window.go8s=(x,z,max)=>{const h=me(),B=KK[0].B,n=Math.round((max||8)*60);for(let i=0;i<n;i++){const dx=x-h.pos.x,dz=z-h.pos.z,d=Math.hypot(dx,dz);if(d<0.4){rel(0);ZC.tick(1);return 't='+(i/60).toFixed(2);}
