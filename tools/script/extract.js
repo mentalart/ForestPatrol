@@ -18,7 +18,8 @@ const colAt=(text,pos)=>pos-text.lastIndexOf('\n',pos-1)-1;
 const lineAt=(text,pos)=>{let n=1;for(let i=text.indexOf('\n');i>=0&&i<pos;i=text.indexOf('\n',i+1))n++;return n;};
 
 // ---------- откуда кусок: прототип, модуль или замена сборки ----------
-const PROTO=fs.readFileSync(path.join(ROOT,'index.html'),'utf8');
+// прототип — склейка частей proto/ (tools/proto.py); место куска пишется как index.html:строка склейки (apply_edits.js понимает)
+const PROTO=require('child_process').execFileSync('python3',[path.join(ROOT,'tools','proto.py'),'cat'],{maxBuffer:1<<28}).toString();
 const MODS=fs.readdirSync(BD).filter(f=>/^(late_\d+.*|fin_early)\.js$/.test(f)).map(f=>{const t=fs.readFileSync(path.join(BD,f),'utf8');const a=src.indexOf(t.trimEnd().slice(0,400));return {f,t,a,b:a<0?-1:a+t.trimEnd().length};});
 const REPS=fs.readdirSync(BD).filter(f=>/^rep_\d+.*\.py$/.test(f)).map(f=>({f,t:fs.readFileSync(path.join(BD,f),'utf8')}));
 const VOXA=src.indexOf('const VOX_LINES='),VOXB=VOXA<0?-1:src.indexOf('\n',VOXA);

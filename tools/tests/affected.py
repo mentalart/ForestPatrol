@@ -2,7 +2,7 @@
 # Выборочный регресс: какие боты проверяют то, что изменилось в ветке, — вместо полного регресса после каждой правки.
 #   python3 tools/tests/affected.py                 # что изменилось с ответвления от origin/main (коммиты ветки + незакоммиченное)
 #   python3 tools/tests/affected.py --base HEAD     # только незакоммиченные правки
-#   python3 tools/tests/affected.py --files index.html zlataya_cep/build/late_87_boss4b.js
+#   python3 tools/tests/affected.py --files proto/levels/2-2.js zlataya_cep/build/late_87_boss4b.js
 #   python3 tools/tests/affected.py --run [--jobs 2] # пересобрать релиз и прогнать ботов на релизной сборке (--no-build — без пересборки).
 #                                                    Прототип index.html — только исходник релиза: боты, что есть лишь в списке прототипа
 #                                                    (regress_list.txt), не гоняются — уровни проверяют их релизные боты.
@@ -10,15 +10,17 @@
 #   python3 tools/tests/affected.py --run --shard 2/4 # только своя четверть выбранных ботов (CI делит их на несколько машин)
 # Как решается:
 #   · файлы — по таблице tools/tests/affected_map.txt (модули релиза, озвучка, документы…); файла нет в таблице — полный регресс;
-#   · index.html — по изменённым строкам: внутри функции уровня (buildXX из таблицы LEVELS) — боты этого уровня; общая функция —
+#   · прототип (части proto/ — склеенный index.html, tools/proto.py) — по изменённым строкам склеенного текста: внутри функции уровня (buildXX из таблицы LEVELS) — боты этого уровня; общая функция —
 #     уровни, где её вызывают; если её вызывает общий код (или правка вне функций) — полный регресс; комментарий в начале файла — ничего;
 #   · любая правка кода игры добавляет страховку: smoke (все уровни грузятся и играются, ~25 с), tfin_col (коллизии всех уровней), tallobj.
 #   · final07 (WebGPU): файлы только final07 (zlataya_cep/build/gpu/*, Three r186) помечены в таблице @final07 — их боты гоняются на
 #     zlataya_cep_final07.html (сборка build_final.py --gpu) со страховкой и tfin_gpu; @full07 — полный регресс final07.
 # Полный регресс нужен, только когда скрипт так скажет, перед выпуском новой версии релиза и один раз в main после слияния нескольких веток.
-import fnmatch, os, re, subprocess, sys
+import fnmatch, os, re, subprocess, sys, tempfile
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
+sys.path.insert(0, os.path.join(ROOT, 'tools'))
+import proto   # noqa: E402  прототип по частям (proto/)
 T = os.path.join(ROOT, 'tools', 'tests')
 GUARD = ['smoke', 'tfin_col', 'tallobj']
 WIDE = ['smoke', 'tfin_col', 'tallobj', 'tfin_art', 'tfin_budget', 'tfin_occ', 'tfin_fadebatch', 'tfin_foeidle', 'tfin_foekinds', 'tfin_foekinds1b',
@@ -45,7 +47,7 @@ def listed(name):
 
 
 # ---------- уровни и боты ----------
-SRC = read('index.html')
+SRC = proto.join(TO)   # склеенный прототип (в коммите до разбивки — его index.html)
 LINES = SRC.split('\n')
 LEVELS = []   # (id, функция-строитель)
 blk = SRC[SRC.index('const LEVELS=['):]
@@ -119,6 +121,25 @@ def changed_files(base):
         return [f for f in sh('git', 'diff', '--name-only', base, TO).split('\n') if f]
     out = sh('git', 'diff', '--name-only', base) + sh('git', 'ls-files', '--others', '--exclude-standard')
     return [f for f in dict.fromkeys(out.split('\n')) if f]
+
+
+def proto_lines(base):
+    """Изменённые строки склеенного прототипа (нумерация index.html): части proto/ склеиваются в base и в текущей версии."""
+    with tempfile.TemporaryDirectory() as d:
+        a, b = os.path.join(d, 'a'), os.path.join(d, 'b')
+        open(a, 'w', encoding='utf-8', newline='').write(proto.join(sh('git', 'rev-parse', base).strip() or base))
+        open(b, 'w', encoding='utf-8', newline='').write(SRC)
+        r = subprocess.run(['git', 'diff', '--no-index', '-U0', a, b], stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
+    res = []
+    for m in re.finditer(r'^@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@', r.stdout, re.M):
+        a, n = int(m.group(1)), int(m.group(2) or 1)
+        res.extend(range(a, a + max(n, 1)))
+    return res
+
+
+def where(ln):
+    p, n = proto.locate(ln, TO)
+    return '%s:%d' % (p, n) if p else 'index.html:%d' % ln
 
 
 def changed_lines(base, path):
@@ -202,10 +223,14 @@ def analyse(files, base):
                 out.append(w)
         return out
 
+    proto_done = False
     for f in files:
-        if f == 'index.html':
+        if f == 'index.html' or f.startswith('proto/'):
+            if proto_done:
+                continue
+            proto_done = True
             code = True
-            ls = changed_lines(base, f)
+            ls = proto_lines(base)
             fns, lvs, eng, top, head = set(), set(), set(), 0, 0
             for ln in ls:
                 if ln < SCRIPT0:
@@ -224,7 +249,7 @@ def analyse(files, base):
                     continue
                 fn = func_at(ln)
                 if fn is None:
-                    eng.add('(вне функций: строка %d: %s)' % (ln, txt[:50]))
+                    eng.add('(вне функций: %s: %s)' % (where(ln), txt[:50]))
                     continue
                 fns.add(fn)
             for fn in sorted(fns):
@@ -236,15 +261,15 @@ def analyse(files, base):
                         eng.add(fn)
                     else:
                         lvs.update(c)
-                        why.append('index.html: %s — вызывается только на уровнях %s' % (fn, ', '.join(sorted(c)) or '— (нигде)'))
+                        why.append('прототип: %s — вызывается только на уровнях %s' % (fn, ', '.join(sorted(c)) or '— (нигде)'))
             if eng:
-                full.append('index.html: общий код прототипа — ' + ', '.join(sorted(eng)[:6]) + (' …' if len(eng) > 6 else ''))
+                full.append('прототип: общий код — ' + ', '.join(sorted(eng)[:6]) + (' …' if len(eng) > 6 else ''))
             for lid in sorted(lvs):
-                add(level_bots(lid), 'index.html: уровень %s' % lid)
+                add(level_bots(lid), 'прототип: уровень %s' % lid)
             if top:
-                add(['tfin_menu', 'tfin_cine', 'tfin_splash'], 'index.html: разметка и стили прототипа (%d стр.)' % top)
+                add(['tfin_menu', 'tfin_cine', 'tfin_splash'], 'прототип: разметка и стили, proto/head.html (%d стр.)' % top)
             if head and not (fns or eng or top):
-                why.append('index.html: только комментарий в начале файла')
+                why.append('прототип: только комментарий в начале (proto/head.html)')
             continue
         m = re.match(r'tools/tests/bots/(\w+)\.js$', f)
         if m:

@@ -6,6 +6,7 @@
 # свои боты — BOTS="бот бот …". Какие боты нужны для текущих правок — tools/tests/affected.py (полный регресс — только когда он скажет).
 # Время каждого бота — out/times.txt (секунды).
 D=$(cd "$(dirname "$0")" && pwd)
+[ -n "$1" ] || python3 "$D/../proto.py" >/dev/null   # прототип — склейка частей proto/
 HTML=$(cd "$(dirname "${1:-$D/../../index.html}")" && pwd)/$(basename "${1:-index.html}")
 J=${JOBS:-3}
 mkdir -p "$D/out"; rm -f "$D/out/regress_progress.txt" "$D/out/times.txt"

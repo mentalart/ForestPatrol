@@ -3,7 +3,8 @@
 #   python3 zlataya_cep/build/build_final.py          — final06 (WebGL, Three r128)
 #   python3 zlataya_cep/build/build_final.py --gpu    — final07 (WebGPU, Three r186): те же модули + gpu/ (совместимость, материалы
 #                                                       и шейдеры на TSL, постобработка), см. docs/18_webgpu.md
-# Берёт ../../index.html (прототип, не меняется), встраивает Three.js r128, подключает модули финальной версии
+# Берёт прототип — части proto/ по списку proto/parts.txt, склеенные в index.html (tools/proto.py; index.html в git не хранится,
+# сборка пишет его заново — открыть прототип в браузере), встраивает Three.js r128, встраивает Three.js r128, подключает модули финальной версии
 # (fin_early.js — до создания геометрии, late_*.js по порядку — перед запуском игры, fin.css, fin_body.html, rep_*.py — точечные замены)
 # и пишет zlataya_cep/zlataya_cep_final06.html (final01–final05 — предыдущие релизы, лежат рядом как есть). В конце — проверка синтаксиса через node --check.
 import os,sys,re,subprocess
@@ -15,7 +16,8 @@ VERSION='final07' if GPU else 'final06'
 OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_'+VERSION+'.html')
 GB=os.path.join(B,'gpu')
 def rdg(n):return open(os.path.join(GB,n),encoding='utf-8').read()
-s=open(SRC,encoding='utf-8').read()
+sys.path.insert(0,os.path.join(ROOT,'tools'));import proto
+s=proto.write_index()   # прототип из частей proto/ → index.html
 def rd(n):return open(os.path.join(B,n),encoding='utf-8').read()
 def rep(old,new,cnt=1):
     global s

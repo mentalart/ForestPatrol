@@ -3,7 +3,7 @@
 // order и col: порядок кусков и вставок, точное место куска); --rev — коммит этой версии (по нему кусок узнаётся в
 // нынешнем файле, даже если файл с тех пор менялся: по соседнему коду до и после).
 // Для каждой правки edit: новый текст делится по вставкам игры {…} и раскладывается по кускам-строкам кода; каждый кусок
-// заменяется на своём месте: index.html и late_*.js — строка JS в тех же кавычках, rep_*.py — правая строка замены
+// заменяется на своём месте: прототип (index.html — склейка proto/, запись режется обратно по частям) и late_*.js — строка JS в тех же кавычках, rep_*.py — правая строка замены
 // (питоновская строка). Значки и атрибуты тегов возвращаются из старой строки (markup.js). Одно место кода, на которое
 // претендуют разные правки с разным текстом, — конфликт; место, которое делят с непоменявшейся строкой, — в отчёт.
 // Без --write только пишет отчёт: applied (что заменится), problems (что сделать руками) и br (новый текст с переносом
@@ -15,8 +15,10 @@ const ARGS=process.argv.slice(2),FLAG=Object.fromEntries(ARGS.filter(a=>a.starts
 const [EDITS,SNAP]=ARGS.filter(a=>!a.startsWith('--'));if(!EDITS||!SNAP||!FLAG.rev){console.error('node apply_edits.js правки.json снимок.json --rev=<коммит> [--write]');process.exit(1);}
 const E=JSON.parse(fs.readFileSync(EDITS,'utf8')).changes.filter(c=>c.kind==='edit'&&c.changed!==false);
 const S=JSON.parse(fs.readFileSync(SNAP,'utf8'));const ROWS=new Map();for(const s of S.sections)for(const g of s.groups)for(const r of g.rows)ROWS.set(r.id,r);
-const OLD={},NOW={};const old=f=>OLD[f]!=null?OLD[f]:(OLD[f]=execFileSync('git',['show',FLAG.rev+':'+f],{cwd:ROOT,maxBuffer:1<<28}).toString());
-const now=f=>NOW[f]!=null?NOW[f]:(NOW[f]=fs.readFileSync(path.join(ROOT,f),'utf8'));
+// index.html — склейка частей прототипа proto/ (tools/proto.py): читается склейкой, после записи режется обратно по частям
+const PROTO_PY=path.join(ROOT,'tools','proto.py'),protoCat=rev=>execFileSync('python3',[PROTO_PY,'cat',...(rev?[rev]:[])],{cwd:ROOT,maxBuffer:1<<28}).toString();
+const OLD={},NOW={};const old=f=>OLD[f]!=null?OLD[f]:(OLD[f]=f==='index.html'?protoCat(FLAG.rev):execFileSync('git',['show',FLAG.rev+':'+f],{cwd:ROOT,maxBuffer:1<<28}).toString());
+const now=f=>NOW[f]!=null?NOW[f]:(NOW[f]=f==='index.html'?protoCat():fs.readFileSync(path.join(ROOT,f),'utf8'));
 const lineStart=(t,line)=>{let p=0;for(let i=1;i<line;i++){p=t.indexOf('\n',p)+1;if(!p)return -1;}return p;};
 const jsValue=raw=>raw[0]==='`'?null:Function('"use strict";return ('+raw+')')();
 const jsRaw=(v,q)=>q+v.replace(/\\/g,'\\\\').replace(new RegExp(q,'g'),'\\'+q).replace(/\n/g,'\\n')+q;
@@ -106,6 +108,6 @@ for(const [key,pl] of places){const vals=[...new Set(pl.claims.map(x=>x.value))]
   (reps[pl.file]=reps[pl.file]||[]).push({pos:best,len:rawOld.length,rawNew,key});
   applied.push({ids:pl.claims.map(x=>x.id),file:pl.file,from:pl.value,to:nvalue,shared:sharers.get(key)||undefined});}
 for(const f in reps){const L=reps[f].sort((a,b)=>b.pos-a.pos);for(let i=1;i<L.length;i++)if(L[i].pos+L[i].len>L[i-1].pos)problems.push({why:'замены пересекаются',file:f,keys:[L[i].key,L[i-1].key]});
-  if(FLAG.write){let t=now(f);for(const x of L)t=t.slice(0,x.pos)+x.rawNew+t.slice(x.pos+x.len);fs.writeFileSync(path.join(ROOT,f),t);}}
+  if(FLAG.write){let t=now(f);for(const x of L)t=t.slice(0,x.pos)+x.rawNew+t.slice(x.pos+x.len);fs.writeFileSync(path.join(ROOT,f),t);if(f==='index.html')execFileSync('python3',[PROTO_PY,'split'],{cwd:ROOT,stdio:'ignore'});}}
 const byWhy={};for(const p of problems)byWhy[p.why]=(byWhy[p.why]||0)+1;
 process.stdout.write(JSON.stringify({edits:E.length,places:places.size,appliedCount:applied.length,written:!!FLAG.write,problemsByWhy:byWhy,problems,br:brWarn,applied},null,1));

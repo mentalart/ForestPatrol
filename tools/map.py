@@ -1,21 +1,30 @@
 #!/usr/bin/env python3
-# Карта проекта для новых сессий (экономия: не читать index.html и модули целиком).
+# Карта проекта для новых сессий (экономия: не читать прототип и модули целиком).
 #   python3 tools/map.py                  — пересобрать автоматическую часть MAP.md (уровни, разделы, модули, замены, боты, документы)
 #   python3 tools/map.py where <запрос>   — где это сейчас: уровень ('2-1', 'epi'), имя функции/переменной ('openMap', 'K5')
-#                                           или любой текст; печатает файл:строки, а для функций index.html — диапазон тела
+#                                           или любой текст; печатает файл:строки, а для функций прототипа — часть proto/ и диапазон тела в ней
 #   python3 tools/map.py check            — код 1, если автоматическая часть MAP.md устарела
 import os,re,sys,signal
 signal.signal(signal.SIGPIPE,signal.SIG_DFL)   # `| head` — без трассировки
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 P=lambda *a:os.path.join(ROOT,*a)
-IDX=P('index.html');B=P('zlataya_cep','build');GB=os.path.join(B,'gpu');BOTS=P('tools','tests','bots');MAPF=P('MAP.md')
+sys.path.insert(0,P('tools'));import proto   # прототип по частям: proto/*, склейка — index.html
+B=P('zlataya_cep','build');GB=os.path.join(B,'gpu');BOTS=P('tools','tests','bots');MAPF=P('MAP.md')
 AMAP=P('tools','tests','affected_map.txt');DOCS=P('zlataya_cep','docs')
 A0,A1='<!-- map:auto:start -->','<!-- map:auto:end -->'
 rel=lambda f:os.path.relpath(f,ROOT)
 def rd(f):return open(f,encoding='utf-8').read()
 def cut(s,n=110):s=re.sub(r'\s+',' ',s).strip();return s if len(s)<=n else s[:n-1]+'…'
 
-# ---------- index.html: верхнеуровневые функции, разделы, уровни ----------
+# ---------- прототип (склейка частей proto/): верхнеуровневые функции, разделы, уровни ----------
+OFFS=proto.offsets()
+def loc(n):
+    """строка склейки → 'proto/часть', строка в части"""
+    for f,a,b in OFFS:
+        if a<=n<=b:return f,n-a+1
+    return 'index.html',n
+def span(r):
+    f,a=loc(r[0]);return '%s:%d–%d'%(f,a,a+r[1]-r[0])
 def top_blocks(L):
     """Границы верхнеуровневых объявлений (строка с нулевым отступом): {имя функции: (первая, последняя) строка, с 1}."""
     st=[i for i,l in enumerate(L) if re.match(r'(async\s+)?function\s|const\s|let\s|var\s|class\s|/\* =+',l)]
@@ -67,20 +76,23 @@ def bots_by_level():
 
 # ---------- автоматическая часть MAP.md ----------
 def build_auto():
-    src=rd(IDX);L=src.split('\n');tb=top_blocks(L);lv=levels(src);bl=bots_by_level();am=amap_levels()
+    src=proto.join();L=src.split('\n');tb=top_blocks(L);lv=levels(src);bl=bots_by_level();am=amap_levels()
     fn2lv={}
     for x in lv:fn2lv.setdefault(x['fn'],set()).add(x['id'])
     o=[A0,'<!-- Эта часть пишется командой `python3 tools/map.py` — руками не править. Номеров строк здесь нет нарочно (менялись бы',
        '     с каждой правкой и давали конфликты при слиянии веток): строки — `python3 tools/map.py where <уровень|имя|раздел>`. -->','',
-       '## Уровни (`LEVELS` в index.html)','',
-       '| id | уровень | функция в index.html | модули релиза | ботов | боты |','|---|---|---|---|---|---|']
+       '## Уровни (`LEVELS` в proto/engine/10_levels_flow_menu.js)','',
+       '| id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |','|---|---|---|---|---|---|']
     mods=modules();msrc={m:rd(os.path.join(B,m)) for m in mods}
     mlv={m:mod_levels(m,msrc[m],fn2lv,am) for m in mods}
     for x in lv:
         ms=[re.sub(r'\.js$','',m.split('/')[-1]) for m in mods if x['id'] in mlv[m]];b=bl.get(x['id'],[])
-        o.append('| `%s` | %s | `%s(%s)` | %s | %d | %s |'%(x['id'],cut(x['name'],52),x['fn'],x['arg'],', '.join(ms) or '—',len(b),cut(' '.join(b),90)))
-    o+=['','## Разделы index.html по порядку (заголовки `/* ==== … ==== */`; строка — `where <начало названия>`)','']
-    o+=[' · '.join(cut(t,70) for n,t in sections(L))]
+        r=tb.get(x['fn']);pf=loc(r[0])[0][6:] if r else '?'
+        o.append('| `%s` | %s | `%s(%s)` · `%s` | %s | %d | %s |'%(x['id'],cut(x['name'],52),x['fn'],x['arg'],pf,', '.join(ms) or '—',len(b),cut(' '.join(b),90)))
+    o+=['','## Части прототипа (`proto/`, порядок — `proto/parts.txt`; склейка — `index.html`, `python3 tools/proto.py`)','',
+        'Разделы — заголовки `/* ==== … ==== */` внутри части.','','| часть | строк | разделы |','|---|---|---|']
+    sec=sections(L)
+    for f,a,b in OFFS:o.append('| `%s` | %d | %s |'%(f[6:],b-a+1,cut(' · '.join(cut(t,60) for n,t in sec if a<=n<=b) or '—',200)))
     o+=['','## Модули релиза (`zlataya_cep/build/`, порядок подключения)','',
         '`fin_early.js` — до создания геометрии; `late_*.js` — по имени (сортировка строк: `late_96b` после `late_96`), перед запуском игры;',
         '`gpu/` (final07) заморожен и в таблицу не входит. Уровни — из `affected_map.txt` (`@level:`), проверок `levelId===` и подмен `buildXX=function`.','',
@@ -114,10 +126,11 @@ def write_map(check=False):
 
 # ---------- where ----------
 def files_for_search():
-    fs=[IDX]+[os.path.join(B,m) for m in modules()]+[os.path.join(B,f) for f in sorted(os.listdir(B)) if re.match(r'rep_\d+.*\.py$',f)]
+    fs=[P(f) for f,a,b in OFFS]+[os.path.join(B,m) for m in modules()]+[os.path.join(B,f) for f in sorted(os.listdir(B)) if re.match(r'rep_\d+.*\.py$',f)]
     return [f for f in fs if os.path.exists(f)]
 def where(q):
-    src=rd(IDX);L=src.split('\n');tb=top_blocks(L);lv=levels(src);found=False
+    src=proto.join();L=src.split('\n');tb=top_blocks(L);lv=levels(src);found=False
+    off={P(f):a-1 for f,a,b in OFFS}
     def enclosing(n):
         best=None
         for name,(a,b) in tb.items():
@@ -126,7 +139,7 @@ def where(q):
     for x in lv:
         if x['id']!=q:continue
         found=True;r=tb.get(x['fn'])
-        print('уровень %s «%s»: index.html %s(%s) — строки %s'%(x['id'],x['name'],x['fn'],x['arg'],'%d–%d'%r if r else '?'))
+        print('уровень %s «%s»: %s(%s) — %s'%(x['id'],x['name'],x['fn'],x['arg'],span(r) if r else '?'))
         fn2lv={};[fn2lv.setdefault(y['fn'],set()).add(y['id']) for y in lv];am=amap_levels()
         for m in modules():
             s=rd(os.path.join(B,m))
@@ -141,11 +154,12 @@ def where(q):
         for i,l in enumerate(rd(f).split('\n')):
             if pat.search(l):
                 found=True;extra=''
-                if f==IDX:
-                    if q in tb and tb[q][0]==i+1:extra='  (тело: строки %d–%d)'%tb[q]
+                if f in off:
+                    g=off[f]+i+1
+                    if q in tb and tb[q][0]==g:extra='  (тело: строки %d–%d)'%(i+1,i+1+tb[q][1]-tb[q][0])
                     else:
-                        e=enclosing(i+1)
-                        if e:extra='  (внутри %s, строки %d–%d)'%(e[0],e[1][0],e[1][1])
+                        e=enclosing(g)
+                        if e:extra='  (внутри %s, %s)'%(e[0],span(e[1]))
                 print('%s:%d%s  %s'%(rel(f),i+1,extra,cut(l,100)))
     if found:return
     n=0
@@ -155,7 +169,7 @@ def where(q):
             if k<0:continue
             n+=1
             if n<=40:
-                e=enclosing(i+1) if f==IDX else None
+                e=enclosing(off[f]+i+1) if f in off else None
                 print('%s:%d%s  …%s…'%(rel(f),i+1,'  [%s]'%e[0] if e else '',cut(l[max(0,k-50):k+70],120)))
     print('совпадений: %d'%n if n else 'не найдено: '+q)
 
