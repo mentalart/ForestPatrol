@@ -18,6 +18,7 @@ tools/tests/gpu_parity.py                     -
 tools/tests/regress_list_final07.txt          -
 tools/video/*                                 -
 tools/script/*                                -
+tools/map.py                                  -
 tools/tests/grid.js                           -
 tools/tests/shot.js                           -
 tools/tests/pw.js                             -

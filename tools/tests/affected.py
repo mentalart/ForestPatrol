@@ -301,6 +301,10 @@ def LINES_OF(p):
 
 def main():
     a = sys.argv[1:]
+    # карта проекта для новых сессий (MAP.md, tools/map.py): напомнить, если устарела — на проверку не влияет
+    mp = os.path.join(ROOT, 'tools', 'map.py')
+    if os.path.exists(mp) and subprocess.run([sys.executable, mp, 'check'], cwd=ROOT, capture_output=True).returncode:
+        print('ВНИМАНИЕ: MAP.md устарела (новый уровень, модуль, раздел, бот или документ) — python3 tools/map.py и закоммитить\n')
     base, files, run, jobs = None, None, '--run' in a, '2'
     if '--base' in a:
         base = a[a.index('--base') + 1]
