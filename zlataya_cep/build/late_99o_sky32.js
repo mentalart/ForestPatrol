@@ -514,3 +514,12 @@ build32=function(){
     FIN.warpTo(P[0],P[1],P[2]);for(const pi of[0,1])players[pi].cp.set(P[0],P[2],P[1]);if(LB.mode!=='caught')putLamb(P[0]+1.5,P[2],P[1]+1);};
   W.onStart=say1;
   flushDecor();flushPuffs();};
+// авторская режиссура новых роликов (late_86): настроение, эмоции героев, акценты
+if(typeof DIR!=='undefined'){
+  DIR.push({lv:'3-2',dur:12.4,mood:[COLD,0.1],cues:[[3.3,dEmo('pelageya','tilt')],[4.7,dEmo('pelageya','joy')],[10.7,dEmo('proshka','pride')]]},
+    {lv:'3-2',dur:8.6,cues:[[3.9,dTrauma(0.3)],[6.9,dEmo('potap','pride')]]},
+    {lv:'3-2',dur:13,mood:[WARM,0.12],cues:[[9.8,dEmo('pelageya','joy')]]},
+    {lv:'3-2',dur:12.6,mood:[COLD,0.16],cues:[[3.6,dTrauma(0.4)],[7.9,dEmo('yosha','flinch')]]},
+    {lv:'3-2',dur:7.2,mood:[COLD,0.18],cues:[[0.7,dTrauma(0.3)]]},
+    {lv:'3-2',dur:9.4,mood:[COLD,0.12],cues:[[1.9,dTrauma(0.35)],[7.7,dEmo('pelageya','droop')]]},
+    {lv:'3-2',dur:20,mood:[GOLD,0.16],cues:[[2.3,dSlow(0.5,0.8)],[5.4,dAll('joy',0.1)],[13.3,dConf(40)]]});}

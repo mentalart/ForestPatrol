@@ -144,6 +144,7 @@ zlataya_cep/build/late_99n_yaga11.js             @level:1-1 tfin_yaga11
 zlataya_cep/build/rep_31_yaga11.py              @level:1-1 tfin_yaga11
 zlataya_cep/build/rep_32_motylek.py             @level:3-1 tfin_motylek
 zlataya_cep/build/late_99o_sky32.js             @level:3-2 tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo
+zlataya_cep/build/late_99p_sky31.js             @level:3-1 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo
 zlataya_cep/build/late_95b_warp.js              smoke tfin_warp
 tools/tests/cine_frames.js                    -
 tools/tests/bots/archive/*                    -
