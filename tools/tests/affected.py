@@ -103,6 +103,15 @@ def rule_for(path, section=None):
     return None, None
 
 
+# строки удалённых в ветке файлов замен (rep_*.py) — если они без изменений лежат в новых файлах, это перенос, а не правка
+_MOVED = {}
+def MOVED(base):
+    if base not in _MOVED:
+        gone = [f for f in sh('git', 'diff', '--name-only', '--diff-filter=D', base, *( [TO] if TO else [] )).split('\n') if re.match(r'zlataya_cep/build/rep_\d+.*\.py$', f)]
+        _MOVED[base] = {l for f in gone for l in sh('git', 'show', base + ':' + f).splitlines() if l.strip() and not l.lstrip().startswith('#')}
+    return _MOVED[base]
+
+
 # ---------- что изменилось ----------
 def changed_files(base):
     if TO:
@@ -254,11 +263,26 @@ def analyse(files, base):
             elif nb:
                 add(nb, '%s — добавлены в список' % f)
             continue
+        if f.startswith('zlataya_cep/build/rep_') and f.endswith('.py') and not os.path.exists(os.path.join(ROOT, f)):
+            # файл замен удалён: если все его строки перенесены в другие rep_*.py (разбили по уровням) — проверять нечего,
+            # проверяют новые файлы; иначе замены пропали — полный регресс
+            old = sh('git', 'show', base + ':' + f)
+            B = os.path.join(ROOT, 'zlataya_cep', 'build')
+            now = ''.join(read('zlataya_cep/build/' + n, True) for n in sorted(os.listdir(B)) if re.match(r'rep_\d+.*\.py$', n))
+            lost = [l for l in old.splitlines() if l.strip() and not l.lstrip().startswith('#') and l not in now]
+            if lost:
+                code = True
+                full.append('%s удалён, %d строк замен пропали' % (f, len(lost)))
+            else:
+                why.append('%s удалён — все замены перенесены в другие rep_*.py' % f)
+            continue
         if f.startswith('zlataya_cep/build/rep_') and f.endswith('.py'):
             code = True
             secs, lines = set(), LINES_OF(f)
             for ln in changed_lines(base, f):
                 if ln > len(lines) or not lines[ln - 1].strip() or lines[ln - 1].lstrip().startswith('#'):
+                    continue
+                if lines[ln - 1] in MOVED(base):   # строка перенесена без изменений из удалённого rep_*.py
                     continue
                 hdr = next((lines[i] for i in range(min(ln, len(lines)) - 1, -1, -1) if lines[i].startswith('# ----')), '')
                 secs.add(hdr)
