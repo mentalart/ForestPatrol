@@ -55,7 +55,9 @@ const SKIP_MODS=/^late_(50_save|35_guard|70_menu|71_pads|88_occ|89_camorbit|95_d
 const SKIP_TOP=new Set(['menuHTML','padStatus','pollPads','startFrom','KEYNAME','PATHS,PATHNAME','HERO_DEF','VOX_LINES','SPL_VOX_T,SPL_VOX_TEXT__','GD_FS','finBoot']);
 const SKIP_TEXT=[/^Джойстик/, /Не удалось загрузить Three\.js/, /Нажмите любую кнопку/];
 // модули, у которых свой раздел документа (остальные — по функции уровня, в которой стоит текст)
-const MODLV={late_72_splash:'splash',late_87_boss4b:'4-B',late_92_koschei:'5-B2',late_93_koschei_level:'5-B2',late_94_koschei_tut:'5-B2',late_96_prolog_scooter:'p',late_97_buyan51:'5-1'};
+const MODLV={late_72_splash:'splash',late_87_boss4b:'4-B',late_92_koschei:'5-B2',late_93_koschei_level:'5-B2',late_94_koschei_tut:'5-B2',late_96_prolog_scooter:'p',late_97_buyan51:'5-1',
+  late_96b_prolog_night:'p',late_37_gor_uzda:'4-B',late_38_gor_friend:'4-B',late_98_gor_lava:'4-B',late_39_epi_shadows:'epi',
+  late_99e_k21:'2-1',late_99m_k21_hermit:'2-1',late_99f_k22:'2-2',late_99g_k23:'2-3'};
 // функции прототипа, которые модуль заменяет целиком (name=function… без сохранения прежней) — в релизе не работают, их тексты не в игре
 const DEAD=new Set();{const PF=new Set([...PROTO.matchAll(/^function\s+([A-Za-z_$][\w$]*)\s*\(/gm)].map(x=>x[1]));
   for(const md of MODS)for(const x of md.t.matchAll(/(?<![\w.$])([A-Za-z_$][\w$]*)\s*=\s*function\b/g))if(PF.has(x[1])&&!new RegExp('=\\s*'+x[1].replace(/\$/g,'\\$')+'\\s*[;,]').test(md.t))DEAD.add(x[1]);}
