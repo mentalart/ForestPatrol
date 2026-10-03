@@ -114,6 +114,10 @@ zlataya_cep/build/late_89_camorbit.js         tfin_cam
 zlataya_cep/build/levels/4-B/late_87_boss4b.js @level:4-B
 zlataya_cep/build/levels/5-B2/late_92_koschei.js @level:5-B2 tfin_foekinds4 tfin_foekinds5 tfoes
 zlataya_cep/build/levels/5-B2/late_93_koschei_level.js @level:5-B2
+zlataya_cep/build/levels/5-B2/late_93_koschei_level_p5_finale.js @level:5-B2
+zlataya_cep/build/levels/5-B2/late_93_koschei_level_p4_skaz.js @level:5-B2
+zlataya_cep/build/levels/5-B2/late_93_koschei_level_p3_wind.js @level:5-B2
+zlataya_cep/build/levels/5-B2/late_93_koschei_level_p2_storm.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_94_koschei_tut.js @level:5-B2
 zlataya_cep/build/levels/p/late_96_prolog_scooter.js @level:p
 zlataya_cep/build/levels/p/late_96b_prolog_night.js @level:p
@@ -124,7 +128,13 @@ zlataya_cep/build/levels/1-4/late_99b_kidnap14.js @level:1-4 @level:1-B
 zlataya_cep/build/levels/w2/late_99c_kitezh_sea.js @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_sea
 zlataya_cep/build/levels/w2/late_99d_kitezh_water.js @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_water
 zlataya_cep/build/levels/2-1/late_99e_k21.js  @level:2-1 tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes
+zlataya_cep/build/levels/2-1/late_99e_k21_p4_hall.js @level:2-1 tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes
+zlataya_cep/build/levels/2-1/late_99e_k21_p3_scenes.js @level:2-1 tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes
+zlataya_cep/build/levels/2-1/late_99e_k21_p2_market.js @level:2-1 tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes
 zlataya_cep/build/levels/2-2/late_99f_k22.js  @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
+zlataya_cep/build/levels/2-2/late_99f_k22_p4_tasks.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
+zlataya_cep/build/levels/2-2/late_99f_k22_p3_lullaby.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
+zlataya_cep/build/levels/2-2/late_99f_k22_p2_stove.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
 zlataya_cep/build/levels/2-3/late_99g_k23.js  @level:2-3 tfin_k23 tfin_k23solo
 zlataya_cep/build/levels/2-4/late_99h_k24.js  @level:2-4 tfin_k24 tfin_k24solo tfin_k23
 zlataya_cep/build/levels/2-5/late_99i_k25.js  @level:2-5 tfin_k25 tfin_k25solo
