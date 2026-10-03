@@ -47,6 +47,11 @@ levels/5-B1.js
 levels/5-B2.js
 levels/epi.js
 levels/zastava.js
-levels/luko.js
+levels/luko_1_scene.js
+levels/luko_2_worlds123.js
+levels/luko_3_worlds45.js
+levels/luko_4_zastava_forge_map.js
+levels/luko_5_dress_garden.js
+levels/luko_6_festival_end.js
 engine/10_levels_flow_menu.js
 tail.html

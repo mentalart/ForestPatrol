@@ -20,8 +20,11 @@ const lineAt=(text,pos)=>{let n=1;for(let i=text.indexOf('\n');i>=0&&i<pos;i=tex
 // ---------- откуда кусок: прототип, модуль или замена сборки ----------
 // прототип — склейка частей proto/ (tools/proto.py); место куска пишется как index.html:строка склейки (apply_edits.js понимает)
 const PROTO=require('child_process').execFileSync('python3',[path.join(ROOT,'tools','proto.py'),'cat'],{maxBuffer:1<<28}).toString();
-const MODS=fs.readdirSync(BD).filter(f=>/^(late_\d+.*|fin_early)\.js$/.test(f)).map(f=>{const t=fs.readFileSync(path.join(BD,f),'utf8');const a=src.indexOf(t.trimEnd().slice(0,400));return {f,t,a,b:a<0?-1:a+t.trimEnd().length};});
-const REPS=fs.readdirSync(BD).filter(f=>/^rep_\d+.*\.py$/.test(f)).map(f=>({f,t:fs.readFileSync(path.join(BD,f),'utf8')}));
+// модули и замены — в build/ и build/levels/<уровень>/ (как их берёт build_final.py); f — путь от build/
+const bfiles=re=>{const out=[];const walk=d=>{for(const e of fs.readdirSync(path.join(BD,d),{withFileTypes:true})){const r=d?d+'/'+e.name:e.name;
+  if(e.isDirectory()){if(!['gpu','voice','fonts','node_modules'].includes(e.name))walk(r);}else if(re.test(e.name))out.push(r);}};walk('');return out.sort((x,y)=>x.split('/').pop()<y.split('/').pop()?-1:1);};
+const MODS=bfiles(/^(late_\d+.*|fin_early)\.js$/).map(f=>{const t=fs.readFileSync(path.join(BD,f),'utf8');const a=src.indexOf(t.trimEnd().slice(0,400));return {f,t,a,b:a<0?-1:a+t.trimEnd().length};});
+const REPS=bfiles(/^rep_\d+.*\.py$/).map(f=>({f,t:fs.readFileSync(path.join(BD,f),'utf8')}));
 const VOXA=src.indexOf('const VOX_LINES='),VOXB=VOXA<0?-1:src.indexOf('\n',VOXA);
 const modAt=pos=>MODS.find(m=>m.a>=0&&pos>=m.a&&pos<m.b)||null;
 function commonSuffix(a,b){let n=0;while(n<a.length&&n<b.length&&a[a.length-1-n]===b[b.length-1-n])n++;return n;}
