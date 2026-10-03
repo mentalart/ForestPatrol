@@ -20,7 +20,7 @@
 //  · в конце Звенышко зовёт за собой не в окно (там Кощей), а к двери.
 // Ролик прототипа оборачивает late_96 (FIN.lulGag), здесь — вторая обёртка поверх неё (FIN.lulGag заменена); длина ролика та же,
 // метки режиссуры late_86 для пролога поправлены под новые события. Комната и окно строятся из buildPrologue (FIN.proRoom,
-// вызов вставляет rep_30_gameplay.py).
+// вызов вставляет rep_30_prolog.py).
 const PN={ctx:null,ps:null,rt:null,disc:null,discMat:null,discOld:null,painted:[],portal:false,want:false,t:-1,anim:[],toys:[],nbPop:null,bunting:[],bulbs:[],herbs:[],clock:null,curtains:[],candles:[],beam:null,frost:0,pop:null,scene:null};
 const PNV=(x,y,z)=>new V3(x,y,z);
 function pnNoBatch(o){o.traverse(c=>{c.userData.batchNo=true;c.userData.noBatchL=true;});return o;}

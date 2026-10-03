@@ -18,12 +18,13 @@
   в коде прототипа: не нашлась строка — сборка падает) + озвучка `voice/` (base64). Модули — в одной области видимости с
   прототипом: функции прототипа оборачивают присваиванием (`step=function(dt){_step(dt);…}`, `build5B2=function(){…}`),
   но не объявляют функций с теми же именами (сборка проверяет). Части уровня, закрытые в его функции, модулю отдают через
-  замену в `rep_30_gameplay.py` (`W.epiL={…}`, `W.gor4L={…}`).
+  замену в `rep_30_<уровень>.py` (`W.epiL={…}` — `rep_30_epi.py`, `W.gor4L={…}` — `rep_30_gor4b.py`).
 - **final07 (WebGPU) снят** — актуален final06. `build/gpu/`, `build_final.py --gpu`, `regress_list_final07.txt`, `tfin_gpu`/`tfin_post`
   заморожены (`docs/18_webgpu.md` — для истории): не собирать, шейдеры для WebGPU не переводить, ботов final07 не гонять.
 - **Боты** — `tools/tests/` (`README.md` там): шаги через `//@@ [shot=имя.png] [wait=мс]`; `tools/tests/run_one.sh бот [html]`;
   набор — `BOTS="a b" JOBS=3 tools/tests/regress.sh html`; кадры с полным качеством — `URLQ='&hq=1'`. Вывод — `tools/tests/out/`,
-  кадры — `tools/tests/shots/`. Проверка перед коммитом — `python3 tools/tests/affected.py --run` (сама выбирает ботов).
+  кадры — `tools/tests/shots/`. Какие боты затронуты — `python3 tools/tests/affected.py`; весь набор гоняет CI на PR (4 машины, итог — `bots`), локально — только
+  новые и изменённые боты (`BOTS="…" tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html`).
 
 ## Движок: имена, которые ищут чаще всего (`where <имя>` покажет, где)
 - Состояние: `G` (игра: `G.cine`, `G.solo`, `G.soloPi`, `G.flags`, `G.done`, `G.time`), `W` (текущий уровень: `W.levelId`,
@@ -44,9 +45,9 @@
 
 ## Типовые задачи
 - **Правка уровня в релизе** — свой модуль `late_NN_*.js` (свободный номер — проверить `main` и чужие ветки) или замена в
-  `rep_30_gameplay.py` (раздел `# ---- Уровень: … ----`); строка в `tools/tests/affected_map.txt` (`модуль  @level:ID боты`);
+  свой файл замен `rep_NN_<уровень>.py` (по файлу на уровень, иначе правка потянет лишние проверки); строка в `tools/tests/affected_map.txt` (`модуль  @level:ID боты`);
   бот в `tools/tests/bots/` (бот уровня находится сам по `LV('ID')`). Прототип меняют только для общей логики (карта-рушник,
-  движок) — тогда `affected.py` гоняет ботов и на нём.
+  движок); боты всё равно гоняются на релизе — прототип только исходник релиза, отдельно его не проверяют.
 - **Новая озвученная реплика** — текст в игре строкой `'…'`; запись в `zlataya_cep/build/voice/lines.json`
   (`{id:'<уровень>_NNN',lv,who,text,tts,max}`, голос — `cast[who].voice_id`), генерация Eleven v4 через Higgsfield, ссылка в `url`,
   `node tools/voice/fetch.js --only id,…`, пересборка (проверит, что текст есть в игре). Подробно — `docs/09_final06.md`.
@@ -70,7 +71,7 @@
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` | late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
 | `luko` | Лукоморье | `buildLukomorye()` | late_50_save, late_95_dev | 11 | tfin_art tfin_cast tfin_episolo tfin_luko th5 th6 thw3a thw3b thw4 tluko tmenu3 |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` | — | 26 | t11 t11dbg tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekin… |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` | late_99n_yaga11 | 27 | t11 t11dbg tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekin… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` | — | 3 | th2 th3 tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` | late_99_kolobok_dance | 2 | thub thubd |
 | `1-4` | 1-4 · Леший водит | `build14()` | late_99b_kidnap14 | 1 | tfin_kidnap14 |
@@ -81,8 +82,8 @@
 | `2-3` | 2-3 · Невод | `build23()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 8 | t23 t23b t23c t23d t23e t23f tfin_k23 tfin_k23solo |
 | `2-4` | 2-4 · В брюхе у кита | `build24()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 6 | t24 t24b t24c t24n tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 8 | t25 t25b t25c t25t tfin_k25 tfin_k25solo tfoes tsospot |
-| `2-B` | 2-Б · Водяной | `build2B()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water | 5 | t2b t2c tfin_k2b tfin_k2bsolo thw2 |
-| `3-1` | 3-1 · Сад молодильных яблок | `build31()` | — | 10 | art3 t31 t31b t31c tfin_art tfin_slash tfoes thw3a tmenu3 tsplit |
+| `2-B` | 2-Б · Водяной | `build2B()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water | 7 | t2b t2c tfin_k2b tfin_k2bboss tfin_k2bbosssolo tfin_k2bsolo thw2 |
+| `3-1` | 3-1 · Сад молодильных яблок | `build31()` | — | 11 | art3 t31 t31b t31c tfin_art tfin_motylek tfin_slash tfoes thw3a tmenu3 tsplit |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` | — | 5 | art3 t32 t32b t32c t32d |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` | — | 5 | t33 t33b t33d t33n tso33 |
 | `3-4` | 3-4 · Летучий корабль | `build34()` | — | 4 | art3 t34 t34b tmenu3 |
@@ -177,10 +178,11 @@
 | `late_99g_k23.js` | 2-3 | РЕЛИЗ final06 · 2-3 «НЕВОД» — ВДВОЕ ДЛИННЕЕ |
 | `late_99h_k24.js` | 2-4 | РЕЛИЗ final06 · 2-4 «В БРЮХЕ У КИТА» — ВДВОЕ ДЛИННЕЕ |
 | `late_99i_k25.js` | 2-5 | РЕЛИЗ final06 · 2-5 «КИТЕЖ ЗВОНИТ» — ВДВОЕ ДЛИННЕЕ |
-| `late_99j_k2b.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ» — ВДВОЕ ДЛИННЕЕ |
+| `late_99j_k2b.js` | 2-B | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ» — ВДВОЕ ДЛИННЕЕ; БОЙ — ТРИ ЭТАПА ПО ОБРАЗЦУ КОЩЕЯ |
 | `late_99k_kitezh_foes.js` | 2-1, 2-5 | РЕЛИЗ final06 · МИР 2: ЖЕМЧУЖНИЦА И ЩУКИ, ЧТО ПЛАВАЮТ |
 | `late_99l_kitezh_magic_water.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ВОДА ГУСЛЕЙ — СКАЗОЧНАЯ, ПЕРЕЛИВЧАТАЯ |
 | `late_99m_k21_hermit.js` | 2-1 | РЕЛИЗ final06 · 2-1: МИНИ-БОСС «РАК-ОТШЕЛЬНИК» |
+| `late_99n_yaga11.js` | 1-1 | РЕЛИЗ final06 · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ»: РОЛИК «ЯГА СТАВИТ ЗАДАЧУ» — НОВАЯ ПОСТАНОВКА |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -215,13 +217,13 @@
 | `rep_20_subs.py` | 5-Б2 финал |
 | `rep_20_subs.py` | эпилог |
 | `rep_20_subs.py` | Лукоморье |
-| `rep_30_gameplay.py` | 4-Б «Змей Горыныч»: Пробой любой головы держится вдвое дольше — 12 секунд (на вдохе — 18) |
-| `rep_30_gameplay.py` | 4-Б «Змей Горыныч», фаза 3 (late_37_gor_uzda.js): после оглушения всех трёх голов — 50 секунд (было 25); «раз-два-три» … |
-| `rep_30_gameplay.py` | Лукоморье: волшебный стан, карта-рушник и берег — на 6 шагов дальше от дуба |
-| `rep_30_gameplay.py` | Пролог «Колыбельная»: сценка с самокатом — Прошка несёт его Тишке, спотыкается о шишку, самокат разваливается, все смею… |
-| `rep_30_gameplay.py` | 1-3 «Колобок»: последний ролик — пляска; Колобок отдаёт звено Прошке |
-| `rep_30_gameplay.py` | 1-4 «Леший водит»: ролик «Пелагею увели» — ёлки кружат Пелагею хороводом и вихрем уносят в кольцо |
-| `rep_30_gameplay.py` | Эпилог: «Театр теней» (late_39_epi_shadows.js) — после ролика e1 мини-игра с живыми тенями вместо теней-картинок по кно… |
+| `rep_30_epi.py` | Эпилог: «Театр теней» (late_39_epi_shadows.js) — после ролика e1 мини-игра с живыми тенями вместо теней-картинок по кно… |
+| `rep_30_gor4b.py` | 4-Б «Змей Горыныч»: Пробой любой головы держится вдвое дольше — 12 секунд (на вдохе — 18) |
+| `rep_30_gor4b.py` | 4-Б «Змей Горыныч», фаза 3 (late_37_gor_uzda.js): после оглушения всех трёх голов — 50 секунд (было 25); «раз-два-три» … |
+| `rep_30_kolobok13.py` | 1-3 «Колобок»: последний ролик — пляска; Колобок отдаёт звено Прошке |
+| `rep_30_leshy14.py` | 1-4 «Леший водит»: ролик «Пелагею увели» — ёлки кружат Пелагею хороводом и вихрем уносят в кольцо |
+| `rep_30_luko.py` | Лукоморье: волшебный стан, карта-рушник и берег — на 6 шагов дальше от дуба |
+| `rep_30_prolog.py` | Пролог «Колыбельная»: сценка с самокатом — Прошка несёт его Тишке, спотыкается о шишку, самокат разваливается, все смею… |
 
 ## Документы (`zlataya_cep/docs/`)
 
@@ -246,10 +248,11 @@
 | `17_kitezh_2.md` | Мир 2, второй круг: сказочная вода, 2-1 «Гусли Садко» и 2-2 «Чудо-юдо Рыба-кит» |
 | `18_webgpu.md` | final07 — WebGPU и новый рендер |
 | `19_kitezh_3.md` | Мир 2, третий круг: подсказка в 2-2, колыбельная киту, путь из «Невода» к Рыбе-киту |
+| `20_yaga_vodyanoy.md` | 1-1: ролик «Яга ставит задачу» и 2-Б: бой с Водяным в три этапа |
 | `CHANGELOG.md` | Изменения |
 | `feedback/` | 7 файлов |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 226 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 230 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

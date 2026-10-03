@@ -27,7 +27,9 @@ const SHOTS=process.env.SHOTS||path.join(__dirname,'shots');
     if(s.wait)await page.waitForTimeout(s.wait);
     // final07: перед снимком — свежий кадр (под автоматизацией кадры рисуются, только когда GPU закончил предыдущий); в &offscreen — ещё и перенос на холст-подложку
     if(s.shot&&gq){try{await page.evaluate(()=>!window.FIN_GPU||!FIN_GPU.fresh?0:FIN_GPU.offscreen?FIN_GPU.blit():FIN_GPU.fresh());}catch(e){console.log('BLIT ERROR',e.message);}}
-    if(s.shot){const p=path.isAbsolute(s.shot)?s.shot:path.join(SHOTS,s.shot);fs.mkdirSync(path.dirname(p),{recursive:true});await page.screenshot({path:p,timeout:120000});}}
+    if(s.shot){const p=path.isAbsolute(s.shot)?s.shot:path.join(SHOTS,s.shot);fs.mkdirSync(path.dirname(p),{recursive:true});
+      // снимок — материал для разбора, не проверка: на медленной машине (CI, программная графика) не успел — предупреждение, бот идёт дальше
+      try{await page.screenshot({path:p,timeout:+(process.env.SHOT_TIMEOUT||45000)});}catch(e){console.log('SHOT SKIPPED '+s.shot+': '+String(e.message).split('\n')[0]);}}}
   if(logs.length)console.log(logs.join('\n'));
   await browser.close();
 })();

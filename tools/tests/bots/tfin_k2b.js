@@ -1,7 +1,7 @@
 //@@ wait=1500
 // релиз final06: 2-Б «Водяной» вдвое длиннее (late_99j_k2b.js) — вдвоём настоящими нажатиями:
 // «Погоня Водяного»: ролик — река встаёт валом, камера разворачивается лицом к героям; Потап поднимает дуб; Йоша играет прилив у ручья, оба вплавь; за скалами Йоша поливает
-// гребешок — камыш стеной держит вал; плетень — две верёвки разом; к омуту — прежний ролик и бой (фазы, пузырь, Богатырский мах).
+// гребешок — камыш стеной держит вал; плетень — две верёвки разом; к омуту — ролик и начало нового боя (весь бой — tfin_k2bboss).
 // Отдельно: вал догоняет отставшего — все к последней отметке.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 window.KEYS=[{swap:'KeyQ'},{swap:'KeyK'}];
@@ -32,16 +32,10 @@ const D=ZC.W.dbg2b(),H=ZC.HERO;const r=[WALK(0,-5.2,18.2,6),WALK(1,5.2,18.2,6)];
 if(!D.F.gate)throw new Error('плетень не открылся: '+r.join()+' RP='+D.RP.map(v=>v.toFixed(2))+' '+U.st());r.push(WALK(0,-1,9.6,6),WALK(1,1,9.6,6));ZC.tick(20);if(!D.F.chaseDone)throw new Error('погоня не кончилась: '+r.join()+' '+U.st());if(ZC.W.camYaw!==0)throw new Error('камера не вернулась');
 'gate '+r.join()+' wave='+D.WV.z.toFixed(1)
 //@@
-// прежний бой: ролик у омута, фазы 1–2 в драке, пузырь — рогатка Прошки, Богатырский мах
-if(!CINE(200))throw new Error('нет ролика у омута');ZC.tick(30);const F=ZC.W.flags;if(F.phase!==1)throw new Error('бой не начался: '+F.phase);ACT(0,'proshka');ACT(1,'pelageya');const e=ZC.W.enemies.find(q=>q.kind==='vodyanoy');
-const log=[];let ph=F.phase;for(let k=0;k<60&&F.phase<3;k++){U.brawl(1.5);if(F.phase!==ph){log.push('t='+k*1.5+' phase '+ph+'->'+F.phase);ph=F.phase;}}
-if(F.phase<3)throw new Error('не дошли до третьей фазы: '+F.phase+' '+log.join());ZC.tick(120);
-const H=ZC.HERO;H.proshka.face=Math.atan2(e.pos.x-H.proshka.pos.x,e.pos.z-H.proshka.pos.z);U.tap('KeyE');ZC.tick(60);log.push('st='+e.state);
-log.push(U.walkTo(0,e.pos.x-2.4,e.pos.z+1.2,4),U.walkTo(1,e.pos.x+2.4,e.pos.z+1.2,4));
-H.proshka.face=Math.atan2(e.pos.x-H.proshka.pos.x,e.pos.z-H.proshka.pos.z);H.pelageya.face=Math.atan2(e.pos.x-H.pelageya.pos.x,e.pos.z-H.pelageya.pos.z);
-ZC.press('KeyF');ZC.press('Comma');ZC.tick(20);if(!F.won)throw new Error('мах не вышел: '+log.join());'boss '+log.join()
-//@@
-ZC.tick(60*21);ZC.skip();ZC.tick(200);if(!ZC.G.done['2-B'])throw new Error('уровень не пройден');'2-B done'
+// у омута: ролик — и начинается новый бой (этап 1 «Водяные кони»: Водяной на волне); весь бой — в tfin_k2bboss / tfin_k2bbosssolo
+if(!CINE(200))throw new Error('нет ролика у омута');ZC.tick(30);const F=ZC.W.flags,D2=ZC.W.dbg2b();if(F.phase!==1)throw new Error('бой не начался: '+F.phase);
+if(!D2.BS.ride)throw new Error('Водяной не на волне');ZC.tick(240);if(!ZC.W.bolts.length&&!ZC.W.enemies.some(e=>e.alive&&e.kind!=='vodyanoy'))throw new Error('Водяной не кидает шары и нет миньонов');
+if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'boss start ok phase=1 ride=true'
 //@@
 // вал догоняет отставшего: Прошка стоит — вал накрывает, все к отметке, вал позади
 ZC.startFrom(ZC.LV('2-B'));ZC.G.manual=true;ZC.tick(10);CINE(200);ZC.tick(5);const D=ZC.W.dbg2b();let t=0;while(!(ZC.W.flags.caughtSeen)&&t<60*30){if(D.WV.hold>1.0){ZC.W.flags.caughtSeen=true;break;}ZC.tick(1);t++;}

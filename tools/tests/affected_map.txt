@@ -124,7 +124,7 @@ zlataya_cep/build/late_99f_k22.js              @level:2-2 tfin_k22 tfin_k22solo 
 zlataya_cep/build/late_99g_k23.js              @level:2-3 tfin_k23 tfin_k23solo
 zlataya_cep/build/late_99h_k24.js              @level:2-4 tfin_k24 tfin_k24solo tfin_k23
 zlataya_cep/build/late_99i_k25.js              @level:2-5 tfin_k25 tfin_k25solo
-zlataya_cep/build/late_99j_k2b.js              @level:2-B tfin_k2b tfin_k2bsolo
+zlataya_cep/build/late_99j_k2b.js              @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
 zlataya_cep/build/late_99k_kitezh_foes.js      @level:2-1 @level:2-5 tfin_k21foes tfin_foekinds6
 zlataya_cep/build/late_99l_kitezh_magic_water.js @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_water
 zlataya_cep/build/late_99m_k21_hermit.js        @level:2-1 tfin_k21 tfin_k21solo tfin_foekinds6
@@ -132,10 +132,13 @@ zlataya_cep/build/late_99m_k21_hermit.js        @level:2-1 tfin_k21 tfin_k21solo
 # ---- замены в прототипе при сборке ----
 zlataya_cep/build/rep_10_cine.py              tfin_cine tfin_voice
 zlataya_cep/build/rep_20_subs.py              tfin_voice tfin_cine
-zlataya_cep/build/rep_30_gameplay.py#Горыныч  @level:4-B
-zlataya_cep/build/rep_30_gameplay.py#Лукоморье @level:luko tfin_col
-zlataya_cep/build/rep_30_gameplay.py#Пролог   @level:p
-zlataya_cep/build/rep_30_gameplay.py#Колобок  @level:1-3
-zlataya_cep/build/rep_30_gameplay.py#Леший    @level:1-4
-zlataya_cep/build/rep_30_gameplay.py#Эпилог   @level:epi tfin_epitheatre tfin_episolo
-zlataya_cep/build/rep_30_gameplay.py          @full
+# правки геймплея прототипа — по файлу на уровень (раньше один rep_30_gameplay.py: правка вне разделов требовала полного регресса)
+zlataya_cep/build/rep_30_gor4b.py             @level:4-B
+zlataya_cep/build/rep_30_luko.py              @level:luko tfin_col
+zlataya_cep/build/rep_30_prolog.py            @level:p
+zlataya_cep/build/rep_30_kolobok13.py         @level:1-3
+zlataya_cep/build/rep_30_leshy14.py           @level:1-4
+zlataya_cep/build/rep_30_epi.py               @level:epi tfin_epitheatre tfin_episolo
+zlataya_cep/build/late_99n_yaga11.js             @level:1-1 tfin_yaga11
+zlataya_cep/build/rep_31_yaga11.py              @level:1-1 tfin_yaga11
+zlataya_cep/build/rep_32_motylek.py             @level:3-1 tfin_motylek

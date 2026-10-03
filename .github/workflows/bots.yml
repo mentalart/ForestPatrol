@@ -1,7 +1,9 @@
 # Боты Playwright на каждый PR в main: tools/tests/affected.py --run выбирает ботов по изменённым файлам.
+# Выбранные боты делятся на 4 машины (--shard I/4) — проверка идёт вчетверо быстрее; итог — проверка «bots» (зелёная, только если
+# зелёные все четыре доли). На машине — по 2 бота разом (3 — тяжёлые боты с кадрами, tfin_occ и tfin_cam, не успевали). Chromium кешируется.
 # Полный регресс в CI не идёт (на раннере GitHub он слишком медленный): если скрипт его требует (код 2), CI гоняет только
-# страховку и пишет предупреждение — полный регресс прогоните локально. Вручную: Actions → Боты → Run workflow.
-# Выводы ботов и кадры — во вложении к запуску.
+# страховку (на первой доле) и пишет предупреждение — полный регресс прогоните локально. Вручную: Actions → Боты → Run workflow.
+# Выводы ботов и кадры — во вложениях к запуску (по одному на долю).
 name: Боты
 
 on:
@@ -14,9 +16,14 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  bots:
+  shard:
+    name: bots (${{ matrix.shard }}/4)
     runs-on: ubuntu-latest
-    timeout-minutes: 120         # широкая выборка (правка целого мира — 45+ ботов) на раннере идёт дольше часа
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -24,23 +31,34 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Playwright + Chromium
+      - name: Playwright (глобально)
         # глобально, а не в node_modules репозитория: иначе affected.py считает node_modules изменёнными файлами
         # и требует полный регресс (tools/tests/pw.js находит глобальную установку сам)
         run: |
           npm i -g playwright
-          playwright install --with-deps chromium
+          echo "PW_VER=$(playwright --version | awk '{print $2}')" >> "$GITHUB_ENV"
+      - name: Кеш Chromium
+        id: pwcache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-chromium-${{ runner.os }}-${{ env.PW_VER }}
+      - name: Chromium
+        run: |
+          if [ "${{ steps.pwcache.outputs.cache-hit }}" = "true" ]; then playwright install-deps chromium; else playwright install --with-deps chromium; fi
 
-      - name: Выборочные боты (affected.py)
+      - name: Выборочные боты (affected.py, доля ${{ matrix.shard }}/4)
         run: |
           set +e
-          python3 tools/tests/affected.py --run --jobs 3
+          python3 tools/tests/affected.py --run --jobs 2 --shard ${{ matrix.shard }}/4
           rc=$?
           set -e
-          if [ $rc = 2 ]; then   # «НУЖЕН ПОЛНЫЙ РЕГРЕСС» — здесь только страховка, полный регресс — локально
+          if [ $rc = 2 ]; then   # «НУЖЕН ПОЛНЫЙ РЕГРЕСС» — здесь только страховка (на первой доле), полный регресс — локально
             echo "::warning::affected.py требует полный регресс — прогоните его локально (см. CLAUDE.md). В CI — только smoke, tfin_col, tallobj."
-            python3 zlataya_cep/build/build_final.py
-            BOTS="smoke tfin_col tallobj" JOBS=3 sh tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html
+            if [ "${{ matrix.shard }}" = "1" ]; then
+              python3 zlataya_cep/build/build_final.py
+              BOTS="smoke tfin_col tallobj" JOBS=3 sh tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html
+            fi
           else
             exit $rc
           fi
@@ -49,9 +67,20 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: bots-out
+          name: bots-out-${{ matrix.shard }}
           path: |
             tools/tests/out/
             tools/tests/shots/
           retention-days: 7
           if-no-files-found: ignore
+
+  # итоговая проверка с прежним именем «bots» — её и смотреть в PR (и делать обязательной для автослияния)
+  bots:
+    if: always()
+    needs: shard
+    runs-on: ubuntu-latest
+    steps:
+      - name: Все доли зелёные?
+        run: |
+          echo "доли: ${{ needs.shard.result }}"
+          [ "${{ needs.shard.result }}" = "success" ]
