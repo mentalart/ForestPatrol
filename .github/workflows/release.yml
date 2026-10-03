@@ -1,5 +1,6 @@
 # Выкладка игры после каждого слияния в main: собрать релиз (build_final.py) и
-#   1) GitHub Pages — открыть и поиграть: https://mentalart.github.io/ForestPatrol/ (всегда свежая main);
+#   1) GitHub Pages — открыть и поиграть: https://mentalart.github.io/ForestPatrol/ (всегда свежая main; лёгкая версия — голоса
+#      отдельными файлами, build_final.py --pages; рядом и цельный файл zlataya_cep_final06.html);
 #   2) GitHub Releases — скачать файл и хранить версии: выпуск game-ГГГГ-ММ-ДД-ЧЧММ-<коммит> с файлом zlataya_cep_final06.html;
 #      хранятся последние 50 выпусков, старые удаляются вместе с тегами.
 # Сам релизный файл в git не хранится (26 МБ на каждый коммит) — его собирают здесь и локально командой build_final.py.
@@ -28,9 +29,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Сборка релиза
         run: |
+          # Releases и «скачать» — цельный файл (работает офлайн); Pages — лёгкая версия: голоса отдельными файлами рядом,
+          # подгружаются по уровням (index.html ~4 МБ вместо 27 — открывается за секунды)
           python3 zlataya_cep/build/build_final.py
-          mkdir -p _site
-          cp zlataya_cep/zlataya_cep_final06.html _site/index.html
+          python3 zlataya_cep/build/build_final.py --pages _site
           cp zlataya_cep/zlataya_cep_final06.html _site/zlataya_cep_final06.html
           touch _site/.nojekyll
       - name: Файл для Pages

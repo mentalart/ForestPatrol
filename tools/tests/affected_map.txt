@@ -27,6 +27,7 @@ tools/tests/affected_map.txt                  -
 tools/tests/layout_check.js                   -
 tools/tests/regress.sh                        -
 tools/tests/flaky.py                          -
+tools/changelog.py                            -
 tools/tests/col_update.py                     -
 .claude/*                                     -
 tools/tests/out/*                             -

@@ -12,6 +12,10 @@ B=os.path.dirname(os.path.abspath(__file__))
 ROOT=os.path.normpath(os.path.join(B,'..','..'))
 SRC=os.path.join(ROOT,'index.html')
 GPU='--gpu' in sys.argv
+# --pages ПАПКА — версия для GitHub Pages: ПАПКА/index.html без записей голосов внутри (27 МБ → ~8 МБ, игра открывается за секунды),
+# записи — отдельными файлами ПАПКА/voice/<id>.mp3; игра подгружает записи уровня при его загрузке (late_91_voice.js, e.src).
+# Обычная сборка (файл для скачивания в Releases и для ботов) — как прежде, всё в одном файле.
+PAGES=sys.argv[sys.argv.index('--pages')+1] if '--pages' in sys.argv else None
 VERSION='final07' if GPU else 'final06'
 OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_'+VERSION+'.html')
 GB=os.path.join(B,'gpu')
@@ -64,7 +68,11 @@ VD=os.path.join(B,'voice');VL=json.load(open(os.path.join(VD,'lines.json'),encod
 for e in VL:
     f=os.path.join(VD,e['id']+'.mp3')
     if not (os.path.exists(f) and e.get('dur')):print('voice: нет записи',e['id']);continue
-    vox.append({'id':e['id'],'lv':e['lv'],'who':e['who'],'text':e['text'],'dur':e['dur'],'gain':e.get('gain',1),'lul':e.get('lul'),'b64':base64.b64encode(open(f,'rb').read()).decode()})
+    ve={'id':e['id'],'lv':e['lv'],'who':e['who'],'text':e['text'],'dur':e['dur'],'gain':e.get('gain',1),'lul':e.get('lul')}
+    if PAGES:
+        os.makedirs(os.path.join(PAGES,'voice'),exist_ok=True);import shutil;shutil.copyfile(f,os.path.join(PAGES,'voice',e['id']+'.mp3'));ve['src']='voice/'+e['id']+'.mp3'
+    else:ve['b64']=base64.b64encode(open(f,'rb').read()).decode()
+    vox.append(ve)
 voxjs='const VOX_LINES='+json.dumps(vox,ensure_ascii=False)+';\n';late=voxjs+late
 # защита: модуль не должен объявлять функцию с именем функции прототипа — в общей области видимости она молча подменит оригинал
 PF=set(re.findall(r'(?m)^function\s+([A-Za-z_$][\w$]*)\s*\(',s))
@@ -85,6 +93,7 @@ sg=s.replace(voxjs,'',1)   # код игры без самого каталог�
 miss=[e for e in VL if ("'"+e['text'].replace("'","\\'")+"'" not in sg) and not (e.get('parts') and all(p in sg for p in e['parts']))]
 for e in miss: print('VOICE LINE NOT FOUND ::',e['id'],e['text'])
 if miss: sys.exit('VOICE LINE NOT FOUND: '+str(len(miss)))
+if PAGES:OUT=os.path.join(PAGES,'index.html')
 open(OUT+'.tmp','w',encoding='utf-8').write(s);os.replace(OUT+'.tmp',OUT)   # атомарно: идущие тесты не прочитают файл наполовину
 m=re.findall(r'<script>([\s\S]*?)</script>',s)
 chk=os.path.join(B,'.chk.js');open(chk,'w',encoding='utf-8').write(m[-1])
