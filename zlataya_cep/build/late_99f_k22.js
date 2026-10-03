@@ -323,8 +323,22 @@ build22=function(){
   const BH2={x:0,z:-419};addMesh(new THREE.CylinderGeometry(0.9,1.1,0.12,16),M(0x2a3040),BH2.x,8.53,BH2.z).receiveShadow=true;
   const col2=new THREE.Mesh(new THREE.CylinderGeometry(0.5,0.9,1,14,1,true),MB(0xe8f8ff,{transparent:true,opacity:0.5,side:THREE.DoubleSide,depthWrite:false}));col2.position.set(BH2.x,8.5,BH2.z);col2.visible=false;W.group.add(col2);
   const glint=new THREE.Mesh(new THREE.OctahedronGeometry(0.22),MB(0xffe08a));glint.visible=false;W.group.add(glint);
-  const LUL=[0,1].map(i=>({hum:0,ring(h){const was=this.hum;this.hum=6;if(was<=0)[60,64,67,72].forEach((m,k)=>gusli(m+(i?-5:0),k*0.18,0.1));}}));
-  const lulShells=[-3.6,3.6].map((x,i)=>kwShell('dance',x,-414,8.5,LUL[i],{ry:Math.PI,say:i?'Баю-бай, кит…':'Спи, кит, спи…'}));
+  // колыбельная в три куплета: 1) в лад с дыханием — волна от дыхала дошла до круга у ракушек, играй обе разом (3 строки);
+  // 2) сонные звёздочки — видны лишь Совиным взором Пелагеи, ловить прыжком, летят киту в глаза (4 штуки);
+  // 3) в четыре голоса — из макушки подымаются ещё две ракушки, все четыре звучат разом (оставленные держат напев) 3 с
+  const LS={stage:0,per:4.6,bt:0,tb:-99,judged:true,toned:false,lines:0,got:0,lonT:0};
+  const LUL=[0,1,2,3].map(i=>({i,hum:0,press:-99,off:i>1,ring(h){const was=this.hum;this.press=G.time;this.hum=LS.stage===3?6:1.0;if(was<=0)[60,64,67,72].forEach((m,k)=>gusli(m+[0,-5,4,-8][i],k*0.18,0.1));}}));
+  const lulShells=[[-3.6,-419],[3.6,-419],[0,-414.6],[0,-423.2]].map(([x,z],i)=>kwShell('dance',x,z,8.5,LUL[i],{ry:Math.PI,say:['Спи, кит, спи…','Баю-бай, кит…','Сон да дрёма…','Тише, море…'][i]}));
+  lulShells.forEach(S=>{S.g.traverse(c=>{c.userData.noBatch=true;c.userData.noBatchL=true;});});   // светятся в лад и подымаются — не в пачку
+  lulShells.slice(2).forEach(S=>{S.g.position.y=8.5-2.4;});   // третья и четвёртая — до последнего куплета спрятаны в макушке
+  // волна дыхания: кольцо бежит от дыхала; бледный круг через обе ракушки — где играть
+  const lulRing=new THREE.Mesh(new THREE.TorusGeometry(1,0.08,6,48),MB(0xfff0b0,{transparent:true,opacity:0,depthWrite:false}));lulRing.rotation.x=Math.PI/2;lulRing.position.set(BH2.x,8.62,BH2.z);lulRing.visible=false;W.group.add(lulRing);
+  const lulMark=new THREE.Mesh(new THREE.TorusGeometry(3.6,0.05,4,64),MB(0xffe08a,{transparent:true,opacity:0.22,depthWrite:false}));lulMark.rotation.x=Math.PI/2;lulMark.position.set(BH2.x,8.58,BH2.z);lulMark.visible=false;W.group.add(lulMark);
+  [lulRing,lulMark].forEach(m=>{m.userData.noBatch=true;});
+  const STARS=[0,1,2,3].map(i=>{const g=new THREE.Group();W.group.add(g);g.visible=false;const st=addMesh(new THREE.OctahedronGeometry(0.3),MB(0xfff2a0),0,0,0,g);
+    const halo=addMesh(new THREE.SphereGeometry(0.55,10,8),MB(0xffe08a,{transparent:true,opacity:0.25,depthWrite:false}),0,0,0,g);g.traverse(c=>{c.userData.noBatch=true;});
+    return {i,g,st,halo,a:i/4*Math.PI*2+0.4,r:[4.4,3.0,4.6,3.4][i],y:11.0,seen:0,got:false};});
+  const LYR=['Баю-баю, Рыба-кит, — море тихо говорит.','Спят на ниве мужички, спят в дубраве боровички.','Спят мальчишки меж бровей — спи и ты, кит, поскорей!'];
   const headEye=eye22(12.8,6.6,-416,2.2,1);
   const gullsH=[];const FN={dive:false,lull:0,done:false};
   // облако над головой — сюда фонтан донесёт героев; там звено
@@ -410,10 +424,51 @@ build22=function(){
       says:[[0.3,2.4,null,'<i>Кит вздыхает — и вдруг: «Ик!»</i>',true],[2.8,1.6,'potap','Икает, бедный!'],[4.6,3.4,null,'<i>Из дыры в голове — струйка, а в ней что-то золотое блеснуло.</i>',true],
         [8.2,3,'yosha','Он что-то проглотил! Золотое, блестящее!'],[11.2,1.8,'zven','Вот и икает. Запомним!'],[13.2,4.9,'kit','Ох, тяжко мне… Нырну-ка я на дно — там тихо…'],[18.2,2.5,'zven','Кит ныряет! Деревня утонет!']],
       events:[{t:2.2,fn:()=>hiccup()},{t:5,fn:()=>spout(4)},{t:13.2,fn:()=>{SEA.target=-1.4;tone(60,3,'sine',0.25,40);}}],
-      end:()=>{banner('Кит ныряет!','#ffb0a0',2.8,'море подымается! Скорей на макушку, к дыхалу — спойте киту колыбельную вдвоём');
-        for(const p of[0,1])tip(p,'Колыбельная: две ракушки на макушке — сыграйте '+K(p,'item')+' обе разом, в два голоса.<br>В одиночку: сыграй и смени героя '+K(p,'swap')+' — оставленный допоёт.',4.4);
+      end:()=>{banner('Кит ныряет!','#ffb0a0',2.8,'море подымается! Скорей на макушку, к дыхалу — спойте киту колыбельную в три куплета');
+        for(const p of[0,1])tip(p,'Колыбельная, куплет первый: от дыхала бежит волна. Дошла до круга у ракушек — играйте '+K(p,'item')+' обе разом!<br>В одиночку: сыграй и смени героя '+K(p,'swap')+' — оставленный держит напев, а ты — вторую в лад.',4.6);
         gullsH.push(chaika22(-6,-404,6.5,{leash:12}));if(!G.solo)gullsH.push(chaika22(6,-410,8.5,{leash:12}));}});}   // в одиночку одна чайка: играющий один у ракушки
-  function finaleScene(){FN.done=true;const T=HERO;const e=headEye;SEA.target=-3.2;
+  /* ---------- колыбельная в три куплета ---------- */
+  const heldBy=i=>HEROES.some(h=>h.kwHold&&h.kwHold.ref===LUL[i]);
+  const lullProg=()=>(LS.stage<=1?LS.lines/3:LS.stage===2?1+LS.got/4:2+Math.min(1,FN.lull/3))/3;
+  function lullStage(n){LS.stage=n;LS.lonT=0;
+    if(n===1){LS.bt=0;LS.judged=true;lulRing.visible=true;lulMark.visible=true;}
+    if(n===2){LS.lonT=6;lulRing.visible=false;lulMark.visible=false;LUL[0].off=LUL[1].off=true;SFX.bell();
+      banner('Первый куплет спет!','#ffe08a',2.6,'кит задрёмывает… над макушкой — сонные звёздочки');
+      later(1.2,()=>say('zven','Звёздочки сонные! Пелагея, глянь Совиным взором — а ловите прыжком!',3.4));
+      for(const p of[0,1])tip(p,'Сонные звёздочки видны только Совиным взором Пелагеи '+K(1,'skill')+'.<br>Пока светятся — допрыгни '+K(p,'jump')+' и поймай: звёздочка полетит киту в глаз.',4.2);}
+    if(n===3){LUL.forEach(q=>{q.off=false;q.hum=0;});SFX.gate();shakeAll(0.03,0.6);lulShells.slice(2).forEach(S=>{anim(1.6,k=>{S.g.position.y=8.5-2.4*(1-smooth(k));});burst(new V3(S.x,9,S.z),0xe8fbff,12,3);});
+      banner('Звёздочки — в глазах у кита!','#ffe08a',2.6,'последний куплет — в четыре голоса: подымаются ещё две ракушки');
+      later(1.2,()=>say('zven','Последний куплет — в четыре голоса! Все четверо — по ракушкам!',3.2));
+      for(const p of[0,1])tip(p,'Четыре ракушки — четыре голоса. Сыграй '+K(p,'item')+' и смени героя '+K(p,'swap')+' — оставленный держит напев.<br>Зазвучат все четыре разом — кит уснёт.',4.4);}}
+  // строка куплета: волна дошла до круга — обе ракушки в этот миг (±0,6 с) сыграны или держатся оставленным героем
+  function judgeBeat(){const tb=LS.tb,ok=[0,1].map(i=>heldBy(i)||Math.abs(LUL[i].press-tb)<=0.6),tried=[0,1].some(i=>LUL[i].press>tb-LS.per*0.6);
+    const at=new V3(0,11.4,-416);
+    if(ok[0]&&ok[1]){LS.lines++;SFX.bell();[60,64,67,64,60].forEach((m,k)=>later(k*0.22,()=>gusli(m+LS.lines*2,0,0.12)));SEA.target=Math.max(-3.2,SEA.target-1.8);
+      say(null,'<i>'+LYR[LS.lines-1]+'</i>',3.6,true);floatText(at,'Строка '+LS.lines+' из 3!','#ffe08a');for(let i=0;i<10;i++)burst(new V3(rand(-4,4),9.4+rand(0,2),-419+rand(-3,3)),[0xffe08a,0x9fe6ff,0xffb0d0][i%3],2,1.5,0.6);
+      if(LS.lines>=3)later(1.6,()=>{if(LS.stage===1&&!FN.done)lullStage(2);});}
+    else if(tried){if(ok[0]||ok[1])floatText(at,'Один голос в лад — а второй? Обе разом!','#9fe6ff');else{floatText(at,'Мимо волны — кит заворочался!','#ffb0a0');hiccup();SEA.target=Math.min(7,SEA.target+0.6);}}}
+  function catchStar(S,h){S.got=true;LS.got++;SFX.ok();const from=S.g.position.clone(),to=new V3(12.6,6.8,-416);
+    floatText(h.pos.clone().add(new V3(0,h.d.height+0.7,0)),'Дрёма! '+LS.got+' из 4','#ffe08a');gusli(72+LS.got*2,0,0.12);
+    anim(1.1,k=>{S.g.position.set(lerp(from.x,to.x,k),lerp(from.y,to.y,k)+Math.sin(k*Math.PI)*2,lerp(from.z,to.z,k));S.g.scale.setScalar(1-k*0.7);if(k>=1){S.g.visible=false;burst(to.clone(),0xfff2a0,8,2);}});
+    SEA.target=Math.max(-3.2,SEA.target-0.8);}
+  function lullTick(dt){if(!LS.stage)lullStage(1);
+    SEA.target=Math.min(7.0,SEA.target+dt*(LS.stage===3?0.16:0.1));
+    if(LS.stage===1){LS.bt+=dt;const k=LS.bt/LS.per,hit=0.7;lulRing.scale.setScalar(0.6+k/hit*3.0);lulRing.material.opacity=k<hit?0.3+0.6*k/hit:Math.max(0,0.9*(1-(k-hit)/(1-hit)));
+      const near=Math.abs(k-hit)*LS.per<0.6;lulMark.material.opacity=near?0.7:0.22;lulShells.slice(0,2).forEach(S=>{S.gm.emissiveIntensity=near?1.2:0.2;});
+      if(!LS.toned&&k>=hit){LS.toned=true;LS.tb=G.time;LS.judged=false;tone(392,0.45,'sine',0.12,330);}
+      if(!LS.judged&&G.time>=LS.tb+0.6){LS.judged=true;judgeBeat();}
+      if(LS.bt>=LS.per){LS.bt-=LS.per;LS.toned=false;}}
+    else if(LS.stage===2){for(const S of STARS){if(S.got)continue;S.a+=dt*0.22;const x=BH2.x+Math.cos(S.a)*S.r,z=BH2.z+Math.sin(S.a)*S.r,y=S.y+Math.sin(G.time*1.6+S.i)*0.15;S.g.position.set(x,y,z);
+        if(W.owlT>0)S.seen=6;S.seen=Math.max(0,S.seen-dt);S.g.visible=S.seen>0;S.st.rotation.y+=dt*2;S.halo.material.opacity=0.2+0.15*Math.sin(G.time*6);
+        if(S.seen>0)for(const h of HEROES){if(!h.active||h.cling)continue;if(Math.hypot(h.pos.x-x,h.pos.z-z)<0.9&&h.pos.y+h.d.height+0.7>y&&h.pos.y<y+0.5){catchStar(S,h);break;}}}
+      if(!F.starTold&&STARS.every(S=>S.seen<=0)){LS.lonT-=dt;if(LS.lonT<=0){LS.lonT=7;floatText(new V3(0,11.4,-416),'Где звёздочки? Совиный взор Пелагеи!','#e7c3ff');}}
+      if(LS.got>=4&&!LS.next){LS.next=true;later(1.3,()=>{if(LS.stage===2&&!FN.done)lullStage(3);});}}
+    else if(LS.stage===3){const on=LUL.map(q=>q.hum>0),n=on.filter(Boolean).length;lulShells.forEach((S,i)=>{S.ico.rotation.y+=dt*(on[i]?4:0.4);S.gm.emissiveIntensity=on[i]?1.0:0.2;});
+      if(n===4){FN.lull+=dt;SEA.target=Math.max(-3.2,SEA.target-dt*0.8);if(Math.random()<dt*4)burst(new V3(rand(-4,4),10,-419+rand(-3,3)),[0xffe08a,0x9fe6ff,0xffb0d0][Math.floor(rand(0,3))],2,1.5,0.6);}
+      else{FN.lull=Math.max(0,FN.lull-dt*0.5);if(n>0){LS.lonT-=dt;if(LS.lonT<=0){LS.lonT=3.5;floatText(new V3(0,11.4,-416),'Голосов '+n+' из 4 — нужны все четыре!','#9fe6ff');}}}
+      if(FN.lull>=3){say(null,'<i>В четыре голоса — баю-бай! Не ныряй, кит, засыпай…</i>',3,true);finaleScene();}}
+    headEye.set(Math.min(0.5,lullProg()*0.5));}
+  function finaleScene(){FN.done=true;lulRing.visible=false;lulMark.visible=false;STARS.forEach(S=>{S.g.visible=false;});const T=HERO;const e=headEye;SEA.target=-3.2;
     const spots=[[-1.4,-417.6],[1.4,-417.6],[-1.4,-420.4],[1.4,-420.4]];const land=[[-2,-436],[2,-436],[-2,-440],[2,-440]];
     play({dur:24,fov:46,shots:[shot(0,[0,11.4,-404],[0,8.6,-416]),shot(3.6,[7.2,8.4,-411],[12.8,6.6,-416]),shot(11.2,[2.4,10,-410],[T.yosha.pos.x,9.4,-416]),shot(14.0,[8.6,8.2,-412],[12.8,6.6,-416]),
         shot(15.0,[0,12,-398],[0,12,-420],[0,26,-412],[0,22,-438],4.4),shot(21,[6,25,-430],[0,22.6,-438])],
@@ -492,11 +547,7 @@ build22=function(){
     // голова: кит ныряет — море подымается; колыбельная в два голоса
     if(!FN.dive&&F.grove&&!G.cine&&[0,1].some(pi=>active(pi).pos.z<-362))diveScene();
     for(const q of LUL)q.hum=Math.max(0,q.hum-dt);
-    if(FN.dive&&!FN.done&&!G.cine){const both=LUL[0].hum>0&&LUL[1].hum>0;
-      if(both){FN.lull+=dt;SEA.target=Math.max(-3.2,SEA.target-dt*0.5);if(Math.random()<dt*3)burst(new V3(rand(-4,4),10,-414),[0xffe08a,0x9fe6ff,0xffb0d0][Math.floor(rand(0,3))],2,1.5,0.6);}
-      else{SEA.target=Math.min(7.0,SEA.target+dt*0.18);if(LUL[0].hum>0||LUL[1].hum>0){F.lonT=(F.lonT||0)-dt;if(F.lonT<=0){F.lonT=4;floatText(new V3(0,11,-414),'В два голоса! Одному кит не верит…','#9fe6ff');}}}
-      headEye.set(Math.min(0.5,FN.lull/12*0.5));
-      if(FN.lull>=12)finaleScene();
+    if(FN.dive&&!FN.done&&!G.cine){lullTick(dt);
       for(const h of HEROES){if(!h.active||h.cling)continue;if(h.pos.y<SEA.y-0.15&&h.pos.z<-140){placeOnGround(h,rand(-6,6),-415,8.5);h.vel.set(0,0,0);SFX.splash();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Кит выплеснул на макушку!','#cfe8ff');}}}
     if(!F.out&&FN.done&&!G.cine&&[0,1].every(pi=>active(pi).pos.y>20)&&(endLink.taken||F.cloudT>4)){F.out=true;finishLevel();}
     if(FN.done&&!G.cine)F.cloudT=(F.cloudT||0)+dt;
@@ -524,7 +575,7 @@ build22=function(){
     prompt(pi,'jump',()=>headOf(h()),()=>STV.state==='wait'&&h().groundRef!==STV.col&&hd(h().pos,STV)<4,'на печку!');
     prompt(pi,'guard',()=>headOf(h()),()=>!!STV.wave&&STV.wave.t<0&&h().groundRef===STV.col,'держись!');}
   for(const pi of[0,1]){const h=()=>active(pi);
-    prompt(pi,'item',()=>headOf(h()),()=>FN.dive&&!FN.done&&lulShells.some(s=>hd(s,h().pos)<2.2&&Math.abs(h().pos.y-8.5)<1.5),'колыбельная');
+    prompt(pi,'item',()=>headOf(h()),()=>FN.dive&&!FN.done&&lulShells.some(s=>!s.ref.off&&hd(s,h().pos)<2.2&&Math.abs(h().pos.y-8.5)<1.5),'колыбельная');
     prompt(pi,'attack',()=>headOf(h()),()=>HEROES.some(q=>q!==h()&&q.prilip&&hd(q.pos,h().pos)<2.6),'отлепи прилипалу!');
     prompt(pi,'roll',()=>headOf(h()),()=>!!h().prilip,'стряхни — два кувырка');}
   prompt(0,'skill',()=>headOf(T.potap),()=>!F.log&&T.potap.active&&hd(T.potap.pos,{x:5.4,z:32.6})<2.6,'повалить сосну');
@@ -534,23 +585,29 @@ build22=function(){
   prompt(0,'skill',()=>headOf(T.proshka),()=>T.proshka.active&&!BARN[2].gone&&hd(T.proshka.pos,BARN[2])<14&&T.proshka.pos.z<-238,'рогатка — жёлудь на губе');
   prompt(1,'skill',()=>headOf(T.pelageya),()=>T.pelageya.active&&!GR.done&&T.pelageya.pos.z<-304&&T.pelageya.pos.z>-356,'где грибы?');
   /* ---------- задачи ---------- */
+  // кто ведёт задачу: в одиночку — тот, кем играешь (оставленные герои стоят позади, по ним задача не сдвинется), вдвоём — свой герой
+  const at=pi=>G.solo?active(G.soloPi):active(pi);
   const g1=pi=>O(()=>'Вода тут одна на двоих! У ракушки посерёдке сыграй '+K(pi,'item')+' — над ней просьба твоя встанет.<br>Через две секунды вода у обоих сменится. Прилив — и через забор плыви, пока не отстанет.',
-      ()=>active(pi).pos.z<-23.4,()=>[Z1.shell.g]);
-  const tail=pi=>[O('Чудо-юдо Рыба-кит! На хвосте у него сыр-бор шумит — а кит дышит:<br>на вдохе гудит, на выдохе всю спину трясёт.',()=>active(pi).pos.z<38,()=>[]),
-    O(()=>'Трещина в хвостовом плавнике! Потап повалит сосну '+K(0,'skill')+' — будет мостик.',()=>F.log&&active(pi).pos.z<25,()=>F.log?[]:[fellP.g])];
-  const fountain=pi=>O(()=>'Фонтан кита! Лопнут два пузыря — кит выдохнет.<br>Встаньте на дыру в спине, прилив '+K(pi,'item')+' — до облаков подкинет, как вздохнет.',()=>active(pi).pos.y>6.5||active(pi).pos.z<-72,()=>[bhr,bubs[0]]);
+      ()=>at(pi).pos.z<-23.4,()=>[Z1.shell.g]);
+  const tail=pi=>[O('Чудо-юдо Рыба-кит! На хвосте у него сыр-бор шумит — а кит дышит:<br>на вдохе гудит, на выдохе всю спину трясёт.',()=>at(pi).pos.z<38,()=>[]),
+    // трещину можно и перепрыгнуть (Прошка, Пелагея) — задача закрывается, как только перебрался, сосна или нет
+    O(()=>'Трещина в хвостовом плавнике! Потап повалит сосну '+K(0,'skill')+' — будет мостик.',()=>at(pi).pos.z<25,()=>F.log?[]:[fellP.g])];
+  const fountain=pi=>O(()=>'Фонтан кита! Лопнут два пузыря — кит выдохнет.<br>Встаньте на дыру в спине, прилив '+K(pi,'item')+' — до облаков подкинет, как вздохнет.',()=>at(pi).pos.y>6.5||at(pi).pos.z<-72,()=>[bhr,bubs[0]]);
   const village=pi=>O(()=>pi?'Деревня на горбу кита. У пруда три ведра, в одном — щука. Совиным взором '+K(1,'skill')+' посмотри, в каком: светится!<br>Потап поднимет ведро — да пруд сперва наполните: прилив '+K(1,'item')+'.':
       'Деревня на горбу кита. У пруда три ведра, в одном — щука; Пелагея Совиным взором покажет, в каком.<br>Потап поднимет ведро '+K(0,'skill')+' — да пруд сперва наполните: прилив '+K(0,'item')+'.',
     ()=>!!F.pikeFree,()=>F.pikeFree?[]:BUCK.filter(b=>!b.tipped).map(b=>b.g).concat(PZ.state==='low'?[PZ.shell.g]:[]));
   const stoveO=pi=>O(()=>'По щучьему велению — печка сама едет по хребту! Садитесь на печку оба '+K(pi,'jump')+'.<br>Раки на дороге — гоните их '+K(pi,'attack')+'; волна — щит '+K(pi,'guard')+' или прыжок. Смыло — догоняй!',()=>F.stove==='done',()=>[stove.g]);
   const late=pi=>[
     O(()=>'Бока кита: рёбра ходят ходуном — прыгай с ребра на ребро, когда сойдутся.<br>Частоколы в рёбра вбиты: Потап выдернет кол '+K(0,'skill')+', а Йоша полечит рану живой водой '+K(1,'skill')+'.',
-      ()=>active(pi).pos.z<-185,()=>PALS.filter(P=>!P.healed).map(P=>P.pulled?P.mist:P.stake)),
+      ()=>at(pi).pos.z<-185,()=>PALS.filter(P=>!P.healed).map(P=>P.pulled?P.mist:P.stake)),
     O(()=>'Губа кита — мужички пашут, да плуги увязли в морских желудях: собьёте '+K(pi,'attack')+' — пойдёт соха.<br>Один жёлудь — высоко на губе: рогатка Прошки. Кит зевает — держись у Потапа или у плуга!',
-      ()=>!!F.plough&&active(pi).pos.z<-262,()=>BARN.filter(b=>!b.gone).map(b=>b.g)),
+      ()=>!!F.plough&&at(pi).pos.z<-262,()=>BARN.filter(b=>!b.gone).map(b=>b.g)),
     O(()=>'Между глаз мальчишки пляшут! Камушек твоего цвета загорается по кругу — успей на него встать.<br>Наплясаться надо вволю — тогда кит глаза откроет.',()=>!!F.dance,()=>DC.stones.map(S=>S.g)),
     O(()=>'Дубрава меж усов: девушки грибы ищут — да не видать. Совиный взор Пелагеи '+K(1,'skill')+' покажет.<br>Собери пять боровиков. Мухомор не трогай — это прилипала!',()=>!!F.grove,()=>MUSH.filter(m=>!m.got&&m.real&&m.seen>0).map(m=>m.g).concat(girls[0].g)),
-    O(()=>'Кит ныряет — море подымается! Скорей на макушку: две ракушки у дыхала.<br>Играйте '+K(pi,'item')+' обе разом — колыбельная в два голоса успокоит кита.',()=>FN.done,()=>lulShells.map(s=>s.g)),
+    O(()=>LS.stage<=1?'Кит ныряет — море подымается! Колыбельная, куплет первый: от дыхала бежит волна.<br>Дошла до круга у ракушек — играйте '+K(pi,'item')+' обе разом, в лад. Строк спето: '+LS.lines+' из 3.'
+        :LS.stage===2?'Куплет второй: сонные звёздочки кружат над макушкой — видны лишь Совиным взором '+K(1,'skill')+'.<br>Поймайте их прыжком '+K(pi,'jump')+' — полетят киту в глаза. Поймано: '+LS.got+' из 4.'
+        :'Последний куплет — в четыре голоса! Сыграй '+K(pi,'item')+' и смени героя '+K(pi,'swap')+' — оставленный держит напев.<br>Зазвучат все четыре ракушки разом — кит уснёт.',
+      ()=>FN.done,()=>LS.stage===2?STARS.filter(S=>!S.got&&S.seen>0).map(S=>S.g):lulShells.filter(S=>!S.ref.off).map(S=>S.g)),
     O('Звено — на облаке! Бери — и в путь.',()=>false,()=>[endLink.g])];
   W.objectives[0]=tail(0).concat([g1(0),
     O(()=>'Мачта из воды торчит. В прилив до гнезда доплыви, верёвку дёрни '+K(0,'attack')+'.<br>А другу нужен отлив — договоритесь, кто первый, мой друг.',()=>F.mast,()=>[flag],()=>({kind:active(0).kind,action:'walk',from:new V3(-4,3.0,-33),to:new V3(-6.2,3.3,-35.6)})),
@@ -567,10 +624,10 @@ build22=function(){
     {cond:(pi,h)=>h.pos.z<-146&&h.pos.z>-186&&h.pos.y<4.2,text:pi=>'Свалился в складку кожи меж рёбер — не беда: выпрыгни '+K(pi,'jump')+' на ребро, когда подойдёт.'},
     {cond:(pi,h)=>!!h.prilip,text:pi=>'Прилипала на спине! Пусть друг собьёт её ударом — или два кувырка '+K(pi,'roll')+' подряд.'});
   W.spawns=[[new V3(-3,0,41),new V3(-5,0,42)],[new V3(3,0,41),new V3(5,0,42)]];W.startAct=[0,0];
-  W.pauseLine='Рыба-кит дышит: вдох гудит, выдох трясёт спину. Вода одна на двоих — раковина посерёдке общая.<br>Хвост — сыр-бор; фонтан на выдохе до облаков; щука в ведре и печка Емели; частокол в боку — Потап тянет, Йоша лечит;<br>губа — кит зевает, держись у Потапа; между глаз — хоровод; в дубраве — грибы Совиным взором; на макушке — колыбельная вдвоём.';
+  W.pauseLine='Рыба-кит дышит: вдох гудит, выдох трясёт спину. Вода одна на двоих — раковина посерёдке общая.<br>Хвост — сыр-бор; фонтан на выдохе до облаков; щука в ведре и печка Емели; частокол в боку — Потап тянет, Йоша лечит;<br>губа — кит зевает, держись у Потапа; между глаз — хоровод; в дубраве — грибы Совиным взором; на макушке — колыбельная в три куплета: в лад с волной, сонные звёздочки, четыре голоса.';
   W.onStart=()=>{later(0.6,kitIntro);};
   // для ботов: перенос к участку и состояние
-  W.dbg22=()=>({F,PZ,BUCK,PIKE_AT,STV,PL,stove,Z3,endLink,pathAt,WB,SEA,RIB,RB,PALS,BARN,plows,YW,DC,MUSH,GR,LUL,lulShells,FN,headEye,flankEye,fellP});
+  W.dbg22=()=>({F,PZ,BUCK,PIKE_AT,STV,PL,stove,Z3,endLink,pathAt,WB,SEA,RIB,RB,PALS,BARN,plows,YW,DC,MUSH,GR,LUL,lulShells,FN,headEye,flankEye,fellP,LS,STARS,lullStage,lulRing});
   W.warp22=(where)=>{const order=['tail','yard','village','ride','ribs','lip','eyes','grove','head','crown'],after=w=>order.indexOf(where)>order.indexOf(w);
     if(after('tail')){F.log=true;logCol.on=true;fellP.cyl.on=false;fellP.g.position.set(0,0.15,30.4);fellP.g.rotation.x=-Math.PI/2;}
     if(after('yard')){F.mast=true;F.garden=true;G2.open=true;g2col.on=false;}

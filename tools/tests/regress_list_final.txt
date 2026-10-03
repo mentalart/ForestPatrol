@@ -38,5 +38,5 @@ tfin_kidnap14
 # final06: мир 2 «Подводный Китеж» — под водой как под водой (каустика, лучи, рыбы, дно без травы); перелив, течение, звон, оставленный
 # держит напев; уровни 2-1…2-Б вдвое длиннее — вдвоём и в одиночку
 tfin_kitezh_sea tfin_kitezh_water
-tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes tfin_k22 tfin_k22solo tfin_k23 tfin_k23solo
+tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes tfin_k22 tfin_k22solo tfin_k22hint tfin_k23 tfin_k23solo
 tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo

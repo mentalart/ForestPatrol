@@ -164,7 +164,7 @@ build24=function(){
   const startPos=()=>{[[T.proshka,-2.5,4],[T.potap,-4.5,5],[T.pelageya,2.5,4],[T.yosha,4.5,5]].forEach(([h,x,z])=>{placeOnGround(h,x,z,0);h.face=Math.PI;h.g.scale.setScalar(1);});};
   function intro(){skyOn(true);HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,OUTZ+6,0);h.pos.y=0.2;h.face=Math.PI;});
     play({dur:11,fov:48,camK:3,shots:[shot(0,[8,6,OUTZ+16],[0,2,OUTZ-6]),shot(3.6,[4,2.4,OUTZ+10],[0,1,OUTZ+4]),shot(6.4,[3,3,10],[0,1.4,0])],
-      says:[[0.3,3.2,null,'<i>Рыба-кит зевает — и всех четверых проглатывает.</i>',true],[6.6,2.4,'potap','Держимся вместе, не разлучаемся!'],[8.8,2.2,'zven','Внутри кита — целый мир! Пусть кит чихнёт —<br>Тогда и вылетим вперёд!']],
+      says:[[0.3,3.2,null,'<i>Ёрш довёл до Рыбы-кита. Кит зевает — и всех четверых проглатывает.</i>',true],[6.6,2.4,'potap','Держимся вместе, не разлучаемся!'],[8.8,2.2,'zven','Внутри кита — целый мир! Пусть кит чихнёт —<br>Тогда и вылетим вперёд!']],
       events:[{t:0.8,fn:()=>{SFX.whoosh();anim(1.8,k=>{wh.mouth.scale.set(1,0.35+k*1.6,1);});}},
         {t:3.2,fn:()=>{HEROES.forEach(h=>{const from=h.pos.clone(),to=new V3(0,1.5,OUTZ-8);anim(1.4,k=>{h.pos.lerpVectors(from,to,k*k);h.g.scale.setScalar(Math.max(0.05,1-k));h.face+=0.3;});});SFX.whoosh();}},
         {t:5.2,fn:()=>{anim(0.8,k=>{wh.mouth.scale.set(1,1.95-k*1.6,1);});SFX.thud();shakeAll(0.05,0.4);}},
