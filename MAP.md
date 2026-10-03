@@ -88,7 +88,7 @@
 | `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 3 | t23f tfin_k23 tfin_k23solo |
 | `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 3 | t24n tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 5 | t25c tfin_k25 tfin_k25solo tfoes tsospot |
-| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase | 6 | t2c tfin_k2b tfin_k2bboss tfin_k2bbosssolo tfin_k2bsolo thw2 |
+| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase | 7 | t2c tfin_k2b tfin_k2bboss tfin_k2bbosssolo tfin_k2bmill tfin_k2bsolo thw2 |
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_99p_sky31 | 13 | t31 t31c tfin_art tfin_motylek tfin_sky31 tfin_sky31boss tfin_sky31bosssolo tfin_sky31sol… |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32 | 5 | t32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32solo |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 2 | t33n tso33 |
@@ -324,5 +324,5 @@
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 154 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 155 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

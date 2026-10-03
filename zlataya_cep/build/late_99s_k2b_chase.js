@@ -3,7 +3,7 @@
 // Участки сверху вниз (бегут «на камеру», W.camYaw=π):
 //  1 «Деревня на сваях» — домики рушатся под валом; котёнок на крыше прыгает на голову пробегающему и едет до омута (тёплый момент, без провала);
 //  2 дуб поперёк тропы — Потап поднимает («Эх, дубинушка, ухнем!»);
-//  3 «Мельница на ручье» — колесо крутит течение: Потап держит его (умение у ступицы) — лопасти встают ступенями; на том берегу —
+//  3 «Мельница на ручье» — колесо крутит течение: Потап держит его (умение у тормоза справа от прохода — столб и светящийся круг) — лопасти встают ступенями; на том берегу —
 //    тормозная плита: кто на ней стоит, держит колесо для Потапа. В одиночку: Потап держит, сменил героя — оставленный держит, и наоборот;
 //  4 «Кувшинки в лад» — у пруда раковина: сыграл — кувшинки всплывают рядами по нотам напева Садко, напев стих — тонут от берега;
 //  5 ручей — в отлив не выбраться: прилив гуслями, и вплавь;
@@ -54,7 +54,13 @@ FIN.k2chase=function(KC){const F=W.flags,T=HERO,bank=KC.bank,rock=KC.rock,FX=FIN
   // мельничный дом на дальнем берегу
   {const g=new THREE.Group();g.position.set(-4.6,1,MZ-4.6);W.group.add(g);addMesh(new THREE.BoxGeometry(3.4,3,3),M(0xa08a64),0,1.5,0,g);const rf=addMesh(new THREE.ConeGeometry(2.8,1.6,4),M(0x7a4a2a),0,3.8,0,g);rf.rotation.y=Math.PI/4;colBox(-6.3,-2.9,1,4,MZ-6.1,MZ-3.1,true);}
   const millBlock=colBox(-1.6,1.6,1,6,MZ-1.9,MZ+1.9,false);   // крутится — не пройти и не перепрыгнуть
-  const millHold={x:2.6,z:MZ+2.7};const millPlate=plate(2.6,MZ-2.9,'k2mill',1);
+  const millHold={x:2.0,z:MZ+2.8};const millPlate=plate(2.6,MZ-2.9,'k2mill',1);
+  // тормоз колеса у прохода (справа, у перил): столб с рычагом и светящийся круг — тут Потап держит колесо
+  const millBrake=(()=>{const g=new THREE.Group();g.position.set(2.7,1,MZ+2.45);W.group.add(g);const wd=M(0x6a4424);
+    addMesh(new THREE.CylinderGeometry(0.16,0.2,1.5,7),wd,0,0.75,0,g);const arm=new THREE.Group();arm.position.set(0,1.35,0);g.add(arm);
+    addMesh(new THREE.BoxGeometry(0.12,0.12,1.3),wd,0,0,0.45,arm);addMesh(new THREE.SphereGeometry(0.13,6,5),M(0xd04a2a),0,0,1.1,arm);arm.rotation.x=0.5;
+    const ring=new THREE.Mesh(new THREE.RingGeometry(0.75,1,32),M(0xffa040,{emissive:0xff8020,emissiveIntensity:0.9,transparent:true,opacity:0.7,depthWrite:false}));
+    ring.rotation.x=-Math.PI/2;ring.position.set(millHold.x,1.04,millHold.z);W.group.add(ring);return {g,arm,ring};})();
   W.lifts.push({pos:new V3(millHold.x,1,millHold.z),active:()=>!mill.potap,onLift:h=>{mill.potap=true;mill.ph=h;SFX.latch();shakeAll(0.03,0.3);bark(h,'potap','Держу колесо! Беги по лопастям!',2,true);}});
   /* ---------- 4. КУВШИНКИ В ЛАД (пруд z 140…126) ---------- */
   const LZ0=140,LZ1=126;
@@ -178,9 +184,11 @@ FIN.k2chase=function(KC){const F=W.flags,T=HERO,bank=KC.bank,rock=KC.rock,FX=FIN
   /* ---------- шаг погони ---------- */
   W.updates.push(dt=>{
     // мельница: колесо крутит течение; держит Потап у ступицы или кто-то на тормозной плите
-    if(mill.potap){const h=mill.ph;if(!h||hd(h.pos,millHold)>1.7||(h.active&&players[h.player].downed)){mill.potap=false;mill.ph=null;if(h)floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'Отпустил колесо','#ffd9a0');}}
+    if(mill.potap){const h=mill.ph;if(!h||hd(h.pos,millHold)>2.6||(h.active&&players[h.player].downed)){mill.potap=false;mill.ph=null;if(h)floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'Отпустил колесо','#ffd9a0');}}
     mill.held=mill.potap||millPlate.pressed;mill.spin=damp(mill.spin,mill.held?0:1.2,4,dt);if(!mill.held)mill.ang+=mill.spin*dt;else mill.ang=damp(mill.ang,Math.round(mill.ang/(Math.PI*2/MN))*(Math.PI*2/MN),6,dt);
     millG.rotation.x=-mill.ang;millBlock.on=!mill.held;
+    millBrake.arm.rotation.x=damp(millBrake.arm.rotation.x,mill.potap?-0.7:0.5,8,dt);
+    millBrake.ring.visible=!mill.potap&&!CH.millDone&&!!F.oak;if(millBrake.ring.visible){millBrake.t=(millBrake.t||0)+dt;const k=0.5+0.5*Math.sin(millBrake.t*5);millBrake.ring.material.opacity=0.35+0.45*k;millBrake.ring.scale.setScalar(1+0.12*k);}
     for(const P of mill.paddles){const a=P.i/MN*Math.PI*2+mill.ang,y=MAY+Math.cos(a)*MR,z=MZ-Math.sin(a)*MR;
       const c=P.col;c.miny=y-0.15;c.maxy=y+0.08;c.minz=z-0.62;c.maxz=z+0.62;c.minx=-1.5;c.maxx=1.5;c.on=mill.held&&y>0.5;}
     if(Math.random()<dt*6&&!mill.held)FX.drop(new V3(rand(-1.5,1.5),MAY+MR+0.1,MZ+rand(-0.6,0.6)),new V3(0,rand(1,2),rand(-2.5,-0.5)),0.12);
@@ -230,17 +238,19 @@ FIN.k2chase=function(KC){const F=W.flags,T=HERO,bank=KC.bank,rock=KC.rock,FX=FIN
   // ---------- замедление: прыжок с обрыва (время игры — медленнее) ----------
   // ---------- рисунки кнопок и задачи погони ----------
   prompt(0,'skill',()=>headOf(T.potap),()=>!F.oak&&T.potap.active&&hd(T.potap.pos,{x:0,z:OAKZ+1.7})<2.3,'ухнем!');
-  prompt(0,'skill',()=>headOf(T.potap),()=>F.oak&&!mill.potap&&!CH.millDone&&T.potap.active&&hd(T.potap.pos,millHold)<2.3,'держи колесо!');
+  prompt(0,'skill',()=>headOf(T.potap),()=>F.oak&&!mill.potap&&!CH.millDone&&T.potap.active&&hd(T.potap.pos,millHold)<3.4,'держи колесо!');
   prompt(1,'skill',()=>headOf(T.yosha),()=>!F.reeds&&WV.on&&T.yosha.active&&hd(T.yosha.pos,{x:0,z:RZ-3.8})<3,'гребешок!');
   for(const pi of[0,1]){const h=()=>active(pi);prompt(pi,'item',()=>headOf(h()),()=>WV.on&&inZone(STR,h(),1.2)&&STR.state==='low','прилив');
     prompt(pi,'attack',()=>headOf(h()),()=>!F.gate&&ropes.some(Rr=>hd(h().pos,{x:Rr.sd*5.2,z:17.1})<1.8),'разом!');
     prompt(pi,'attack',()=>headOf(h()),()=>!F.sluice&&hd(h().pos,{x:-1.9,z:FZ0-11})<2.2&&h().pos.y>2.5,'рычаг!');
     prompt(pi,'item',()=>headOf(h()),()=>boat.on&&!boat.fly&&(SOLO()?pi===G.soloPi:pi===1),'гребок!');}
-  W.tipZones.push({cond:(pi,h)=>WV.on&&h.pos.z>104&&h.pos.z<112&&h.pos.y<0.4,text:pi=>'Из ручья в отлив не выбраться. Прилив '+K(pi,'item')+' — и вверх!'},
+  W.tipZones.push({cond:(pi,h)=>WV.on&&F.oak&&!CH.millDone&&!mill.held&&h.kind!=='potap'&&h.pos.z>MZ+1.8&&h.pos.z<MZ+5&&Math.abs(h.pos.x)<3.5,
+      text:pi=>SOLO()?'Колесо держит только Потап — смени героя '+K(pi,'swap')+' и встань Потапом в светящийся круг у тормоза '+K(pi,'skill')+'.':'Колесо держит Потап: пусть встанет в светящийся круг у тормоза справа и нажмёт '+K(0,'skill')+'.'},
+    {cond:(pi,h)=>WV.on&&h.pos.z>104&&h.pos.z<112&&h.pos.y<0.4,text:pi=>'Из ручья в отлив не выбраться. Прилив '+K(pi,'item')+' — и вверх!'},
     {cond:(pi,h)=>WV.on&&h.pos.x>1.2&&h.pos.z<sluiceZ+3&&h.pos.z>sluiceZ&&!F.sluice,text:pi=>'Заслонку открывает рычаг на уступе слева — пусть друг дёрнет.<br>Или Прошка собьёт его из рогатки '+K(0,'skill')+'.'});
   const OB=[
     pi=>O(pi?()=>'Вал по пятам! Дуб поперёк тропы — Потап его поднимет. Беги следом!':()=>'Вал по пятам! Дуб поперёк тропы — Потап его поднимет '+K(0,'skill')+' (смени героя '+K(0,'swap')+').',()=>!!F.oak,()=>[oak]),
-    pi=>O(()=>'Мельница: колесо крутится — не пройти. Потап держит колесо у ступицы '+K(0,'skill')+' — беги по лопастям!<br>На том берегу встань на плиту — колесо удержишь для Потапа.',()=>!!CH.millDone,()=>[millG]),
+    pi=>O(()=>'Мельница: колесо крутится — не пройти. Потап — к тормозу справа от колеса (светится) '+K(0,'skill')+': лопасти встанут ступенями — беги по ним!<br>На том берегу встань на плиту — колесо удержишь для Потапа.',()=>!!CH.millDone,()=>[millG]),
     pi=>O(()=>'Пруд глубокий. Сыграй у раковины '+K(pi,'item')+' — кувшинки всплывут в лад. Напев стих — тонут!',()=>!!CH.lilyDone,()=>[lilyShell.g]),
     pi=>O(()=>'Ручей: в отлив из него не выбраться. Прилив гуслями '+K(pi,'item')+' у ракушки — и вплавь!',()=>!!CH.streamDone,()=>[STR.shell.g]),
     pi=>O(()=>'Развилка! Один — наверх, к рычагу шлюза '+K(pi,'attack')+', другой — вниз, к заслонке: вода понесёт!',()=>!!CH.forkDone,()=>F.sluice?[]:[lever]),
