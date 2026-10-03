@@ -308,7 +308,7 @@ build31=function(){
   AG.push({pos:new V3(0,0,-362.6),r:2.4,active:()=>!F.steps,onApple:()=>{F.steps=true;stepCols.forEach(c=>{c.on=true;});newSt.visible=true;newSt.scale.set(1,0.02,1);anim(1.4,k=>{newSt.scale.y=Math.max(0.02,smooth(k));oldSt.position.y=-k*2;if(k>=1)oldSt.visible=false;});
       banner('Ступени помолодели!','#ffe08a',2.2,'наверх — в сад, где тени яблоки прячут');}});
   /* ---------- К. спящая стража ---------- */
-  function guardSpawn(){F.guards=true;for(const[x,z]of[[-3.4,-310],[3.4,-322],[-3.4,-334],[3.4,-346]]){const e=pugaloFoe(x,z,{leash:5});e.sleep=true;e.noMove=true;e.cd=99;e.alert=0;e.sx=x;e.face=x<0?Math.PI/2:-Math.PI/2;e.zT=rand(0,2);
+  function guardSpawn(){F.guards=true;for(const[x,z]of[[-3.4,-310],[3.4,-322],[-3.4,-334],[3.4,-346]]){const e=pugaloFoe(x,z,{leash:5});e.state='idle';e.t=0;e.g.position.y=e.baseY;e.sleep=true;e.noMove=true;e.cd=99;e.alert=0;e.sx=x;e.face=x<0?Math.PI/2:-Math.PI/2;e.zT=rand(0,2);
       const t0=e.tick;e.noCam=true;e.tick=(e,dt)=>{if(t0)t0(e,dt);e.noCam=!!e.sleep;if(!e.sleep)return;e.cd=99;e.face=e.sx<0?Math.PI/2:-Math.PI/2;
         const lit=HEROES.some(h=>heroLight(h)&&hd(h.pos,e.pos)<5&&Math.abs(h.pos.y-e.pos.y)<2);if(lit){e.alert+=dt;if(e.alert>0.15&&!e.alertSaid){e.alertSaid=true;floatText(e.pos.clone().add(new V3(0,2.4,0)),'М-м?.. Кто светит?','#ffe0a0');}if(e.alert>1.0)wakeGuard(e,'light');}
         else{if(e.alert>0.2&&e.alertSaid){floatText(e.pos.clone().add(new V3(0,2.4,0)),'Показалось… Хр-р…','#cfd8dc');}e.alert=Math.max(0,e.alert-dt*2);e.alertSaid=e.alert>0.15&&e.alertSaid;}
@@ -451,7 +451,7 @@ build31=function(){
     {const k=W.trees.filter(t=>t.revived).length/W.trees.length;const c=new THREE.Color(0x3a3470).lerp(new THREE.Color(0x7a78c0),k);if(VB.phase>=1&&!F.won)c.lerp(new THREE.Color(0x2a2448),0.5);if(F.stage!=='end'&&F.stage!=='link'){scene.background.copy(c);scene.fog.color.copy(c);}amb.intensity=0.52+0.2*k;}
     if(!F.metGardener&&!G.cine&&F.garden&&[0,1].some(pi=>active(pi).pos.z<-176&&active(pi).pos.z>-196))gardenerScene();
     updApples(dt);
-    if(!F.guards&&[0,1].some(pi=>active(pi).pos.z<-301&&active(pi).pos.z>-366))guardSpawn();
+    if(!F.guards&&[0,1].some(pi=>active(pi).pos.z<-286))guardSpawn();
     if(F.guards){updStrings(dt);if(!F.passed&&[0,1].some(pi=>active(pi).pos.z<-357)){F.passed=true;if(!F.woke){F.quiet=true;n8.locked=false;n8.g.visible=true;burst(n8.pos.clone(),COL.gold,16,3);banner('Тише воды, ниже травы!','#ffe08a',2.4,'стража не проснулась — орешек за ловкость');}}}
     if(!F.thiefRun&&[0,1].some(pi=>active(pi).pos.z<-372&&active(pi).pos.y>TY-0.5))thievesStart();
     updThieves(dt);
@@ -520,7 +520,6 @@ build31=function(){
     if(k>=6){F.guards=true;F.passed=true;F.steps=true;stepCols.forEach(c=>{c.on=true;});newSt.visible=true;oldSt.visible=false;}
     if(k>=7){F.thiefRun=true;F.thieves=true;THF.forEach(t=>{t.caught=true;W.group.remove(t.m.g);});TT.forEach(t=>{if(!t.revived)reviveTree(t,true);});}
     FIN.warpTo(P[0],P[1],P[2]);for(const pi of[0,1])players[pi].cp.set(P[0],P[2],P[1]);};
-  guardSpawn();
   W.onStart=()=>{later(0.1,intro);};
   flushDecor();flushPuffs();};
 // авторская режиссура новых роликов (late_86): настроение, эмоции героев, акценты
