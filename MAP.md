@@ -7,7 +7,7 @@
 2. Найти место: `python3 tools/map.py where <уровень|имя|текст>` — например `where 2-1`, `where openMap`, `where 'Жар-птица'`.
    Печатает файл:строку, для функций `index.html` — диапазон тела, для уровня — его модули, замены и ботов.
 3. Читать только этот диапазон: `sed -n 'A,Bp' файл | cut -c1-400` (в коде много строк по 300–1000 символов) или Read с offset/limit.
-4. Релизный `zlataya_cep_final06.html` / `final07.html` не читать никогда — это сборка (25 МБ, внутри озвучка в base64).
+4. Релизный `zlataya_cep_final06.html` не читать никогда — это сборка (25 МБ, внутри озвучка в base64).
 5. После добавления уровня, модуля, раздела `rep_*.py` или документа — `python3 tools/map.py` (обновит таблицы ниже).
 
 ## Как устроено
@@ -19,8 +19,8 @@
   прототипом: функции прототипа оборачивают присваиванием (`step=function(dt){_step(dt);…}`, `build5B2=function(){…}`),
   но не объявляют функций с теми же именами (сборка проверяет). Части уровня, закрытые в его функции, модулю отдают через
   замену в `rep_30_gameplay.py` (`W.epiL={…}`, `W.gor4L={…}`).
-- **final07** — та же игра на Three r186 + WebGPU: `build_final.py --gpu`, поверх — `build/gpu/` (совместимость, шейдеры на TSL,
-  постобработка; `docs/18_webgpu.md`). Новый `ShaderMaterial` в модуле — сразу перевод в `gpu/gpu_shaders.js`.
+- **final07 (WebGPU) снят** — актуален final06. `build/gpu/`, `build_final.py --gpu`, `regress_list_final07.txt`, `tfin_gpu`/`tfin_post`
+  заморожены (`docs/18_webgpu.md` — для истории): не собирать, шейдеры для WebGPU не переводить, ботов final07 не гонять.
 - **Боты** — `tools/tests/` (`README.md` там): шаги через `//@@ [shot=имя.png] [wait=мс]`; `tools/tests/run_one.sh бот [html]`;
   набор — `BOTS="a b" JOBS=3 tools/tests/regress.sh html`; кадры с полным качеством — `URLQ='&hq=1'`. Вывод — `tools/tests/out/`,
   кадры — `tools/tests/shots/`. Проверка перед коммитом — `python3 tools/tests/affected.py --run` (сама выбирает ботов).
@@ -112,7 +112,7 @@
 ## Модули релиза (`zlataya_cep/build/`, порядок подключения)
 
 `fin_early.js` — до создания геометрии; `late_*.js` — по имени (сортировка строк: `late_96b` после `late_96`), перед запуском игры;
-`gpu/` — только final07 (`--gpu`). Уровни — из `affected_map.txt` (`@level:`), проверок `levelId===` и подмен `buildXX=function`.
+`gpu/` (final07) заморожен и в таблицу не входит. Уровни — из `affected_map.txt` (`@level:`), проверок `levelId===` и подмен `buildXX=function`.
 
 | модуль | уровни | о чём |
 |---|---|---|
@@ -181,11 +181,6 @@
 | `late_99k_kitezh_foes.js` | 2-1, 2-5 | РЕЛИЗ final06 · МИР 2: ЖЕМЧУЖНИЦА И ЩУКИ, ЧТО ПЛАВАЮТ |
 | `late_99l_kitezh_magic_water.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ВОДА ГУСЛЕЙ — СКАЗОЧНАЯ, ПЕРЕЛИВЧАТАЯ |
 | `late_99m_k21_hermit.js` | 2-1 | РЕЛИЗ final06 · 2-1: МИНИ-БОСС «РАК-ОТШЕЛЬНИК» |
-| `gpu/gpu_compat.js` | — | РЕЛИЗ final07 · СОВМЕСТИМОСТЬ: Three r186 + WebGPU под кодом, написанным для r128 |
-| `gpu/gpu_early.js` | — | РЕЛИЗ final07 · МАТЕРИАЛЫ НА TSL: LOW-POLY, ЭФФЕКТЫ, ВИДИМОСТЬ, КАУСТИКА, ТОНМАППИНГ |
-| `gpu/gpu_late_10_render.js` | — | РЕЛИЗ final07 · РЕНДЕР: состояние для ботов и меню |
-| `gpu/gpu_late_20_post.js` | — | РЕЛИЗ final07 · ПОСТОБРАБОТКА: мягкие тени в углах, свечение, сглаживание, глубина резкости |
-| `gpu/gpu_shaders.js` | — | РЕЛИЗ final07 · ПЕРЕВОДЫ ShaderMaterial НА TSL |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
