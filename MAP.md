@@ -77,7 +77,7 @@
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` | — | 2 | th3 thub2 |
 | `1-B` | 1-Б · Леший-Путаник | `build1B()` | late_99b_kidnap14 | 3 | tfin_post th4 tsospot |
 | `2-1` | 2-1 · Гусли Садко | `build21()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 20 | art t21 t21b t21c t21x tfin_art tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tfin_k… |
-| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99l_kitezh_magic_water | 8 | t22 t22b t22c t22d t22shot tfin_k22 tfin_k22solo tfin_occ |
+| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99l_kitezh_magic_water | 9 | t22 t22b t22c t22d t22shot tfin_k22 tfin_k22hint tfin_k22solo tfin_occ |
 | `2-3` | 2-3 · Невод | `build23()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 8 | t23 t23b t23c t23d t23e t23f tfin_k23 tfin_k23solo |
 | `2-4` | 2-4 · В брюхе у кита | `build24()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 6 | t24 t24b t24c t24n tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 8 | t25 t25b t25c t25t tfin_k25 tfin_k25solo tfoes tsospot |
@@ -245,10 +245,11 @@
 | `16_hints.md` | Подсказки: одна карточка на игрока, без повторов |
 | `17_kitezh_2.md` | Мир 2, второй круг: сказочная вода, 2-1 «Гусли Садко» и 2-2 «Чудо-юдо Рыба-кит» |
 | `18_webgpu.md` | final07 — WebGPU и новый рендер |
+| `19_kitezh_3.md` | Мир 2, третий круг: подсказка в 2-2, колыбельная киту, путь из «Невода» к Рыбе-киту |
 | `CHANGELOG.md` | Изменения |
 | `feedback/` | 7 файлов |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 225 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 226 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

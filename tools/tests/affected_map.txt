@@ -120,9 +120,9 @@ zlataya_cep/build/late_99b_kidnap14.js        @level:1-4 @level:1-B
 zlataya_cep/build/late_99c_kitezh_sea.js       @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_sea
 zlataya_cep/build/late_99d_kitezh_water.js     @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_water
 zlataya_cep/build/late_99e_k21.js              @level:2-1 tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes
-zlataya_cep/build/late_99f_k22.js              @level:2-2 tfin_k22 tfin_k22solo tfin_foekinds6
+zlataya_cep/build/late_99f_k22.js              @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
 zlataya_cep/build/late_99g_k23.js              @level:2-3 tfin_k23 tfin_k23solo
-zlataya_cep/build/late_99h_k24.js              @level:2-4 tfin_k24 tfin_k24solo
+zlataya_cep/build/late_99h_k24.js              @level:2-4 tfin_k24 tfin_k24solo tfin_k23
 zlataya_cep/build/late_99i_k25.js              @level:2-5 tfin_k25 tfin_k25solo
 zlataya_cep/build/late_99j_k2b.js              @level:2-B tfin_k2b tfin_k2bsolo
 zlataya_cep/build/late_99k_kitezh_foes.js      @level:2-1 @level:2-5 tfin_k21foes tfin_foekinds6

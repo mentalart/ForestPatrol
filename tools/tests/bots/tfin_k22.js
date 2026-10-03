@@ -2,7 +2,7 @@
 // релиз final06: 2-2 «Рыба-кит» втрое длиннее, по «Коньку-Горбунку» (late_99f_k22.js) — вдвоём настоящими нажатиями:
 // хвост — Потап валит сосну-мостик; кит дышит (выдох трясёт); фонтан бьёт на выдохе; щука в ведре и печка Емели; бока — рёбра ходят,
 // Потап выдёргивает колья, Йоша лечит раны, кит открывает глаз; губа — желуди на плугах (один — рогаткой), кит зевает; хоровод между глаз;
-// грибы в дубраве Совиным взором; голова — кит ныряет, колыбельная в два голоса, фонтан до облаков, звено.
+// грибы в дубраве Совиным взором; голова — кит ныряет, колыбельная в три куплета (в лад с волной, сонные звёздочки Совиным взором, четыре голоса), фонтан до облаков, звено.
 // деревня на горбу: Совиный взор Пелагеи показывает ведро со щукой, не то ведро — окунь; пруд общий — прилив; Потап выпускает щуку;
 // «По щучьему велению» — печка выезжает сама; оба на печке — едет по хребту; раки перегораживают — бой; волна — щит; голова кита: икота,
 // золото в струйке; звено и конец уровня. В фонтане дыхания мелькает золото.
@@ -86,11 +86,24 @@ for(let i=0;i<60*80&&!D.GR.done;i++){if(i%240===0){U.tap('KeyL');}const m=D.MUSH
   if(m)STEP(0,m.x,m.z);else REL(0);if(i%180===0)STEP(1,U.act(0).pos.x+1.5,U.act(0).pos.z+1.5);ZC.tick(1);}
 [0,1].forEach(REL);if(!D.GR.done)throw new Error('грибы не собраны: '+D.GR.got+' '+U.st());ZC.tick(60);'grove ok got='+D.GR.got
 //@@
-// голова: кит ныряет; на макушку — колыбельная в два голоса; фонтан до облаков; звено
+// голова: кит ныряет; на макушке — колыбельная в три куплета; фонтан до облаков; звено
 const D=ZC.W.dbg22();const r=[U.walkTo(0,-1,-364,10),U.walkTo(1,1,-364,10)];let t=0;while(!ZC.G.cine&&t<200){ZC.tick(1);t++;}if(!D.FN.dive)throw new Error('кит не нырнул: '+r.join()+' '+U.st());NOCINE();
-const S=D.lulShells;for(let i=0;i<60*60&&!D.FN.done&&!ZC.G.cine;i++){for(const pi of[0,1]){const s=S[pi],h=U.act(pi),tx=s.x+(pi?-0.4:0.4),tz=s.z+0.6;
-    if(Math.hypot(h.pos.x-tx,h.pos.z-tz)<1.2&&Math.abs(h.pos.y-8.5)<0.6){REL(pi);if(i%50===pi*25)ZC.press(KEYS[pi].item);}else STEP(pi,tx,tz,hh=>hh.grounded&&hh.pos.y<8.3);}ZC.tick(1);}
-[0,1].forEach(REL);
+const S=D.lulShells,L=D.LS;ACT(0,'proshka');ACT(1,'pelageya');
+// стоять у ракушки i (чуть ближе к дыхалу); сбило — вернуться
+const SPOT=i=>[S[i].x*0.86,S[i].z+(i===2?-0.6:i===3?0.6:0)],ON=(pi,i)=>{const [x,z]=SPOT(i),h=U.act(pi);if(Math.hypot(h.pos.x-x,h.pos.z-z)<0.9&&Math.abs(h.pos.y-8.5)<0.6){REL(pi);return true;}STEP(pi,x,z,hh=>hh.grounded&&hh.pos.y<8.3);return false;};
+// куплет 1: волна дошла до круга — обе ракушки разом
+for(let i=0;i<60*90&&L.stage<2&&!ZC.G.cine;i++){for(const pi of[0,1]){if(ON(pi,pi)&&Math.abs(L.bt-0.7*L.per)<0.1&&ZC.G.time-S[pi].ref.press>1)ZC.press(KEYS[pi].item);}ZC.tick(1);}
+[0,1].forEach(REL);if(L.stage<2)throw new Error('куплет 1 не спет: строк '+L.lines+' '+U.st());r.push('v1 lines='+L.lines);
+// куплет 2: Пелагея — Совиный взор; звёздочки ловит Прошка прыжком
+for(let i=0;i<60*90&&L.stage<3&&!ZC.G.cine;i++){const vis=D.STARS.filter(q=>!q.got&&q.seen>0);if(!vis.length&&i%90===0)U.tap(KEYS[1].skill);
+  const h=U.act(0),q=vis.sort((a,b)=>Math.hypot(a.g.position.x-h.pos.x,a.g.position.z-h.pos.z)-Math.hypot(b.g.position.x-h.pos.x,b.g.position.z-h.pos.z))[0];
+  if(q){const x=q.g.position.x,z=q.g.position.z;STEP(0,x,z,hh=>hh.grounded&&Math.hypot(x-hh.pos.x,z-hh.pos.z)<0.7);}else REL(0);ZC.tick(1);}
+[0,1].forEach(REL);if(L.stage<3)throw new Error('звёздочки не пойманы: '+L.got+' '+U.st());r.push('v2 got='+L.got);
+// куплет 3: каждый играет, уступает (оставленный держит напев), второй герой — на свою ракушку
+const st=[0,0],A=[0,1],B=[2,3];for(let i=0;i<60*90&&!D.FN.done&&!ZC.G.cine;i++){for(const pi of[0,1]){const held=Object.values(ZC.HERO).some(h=>h.kwHold&&h.kwHold.ref===S[A[pi]].ref);
+    if(st[pi]===0){if(ON(pi,A[pi])){ZC.press(KEYS[pi].item);ZC.tick(2);U.tap(KEYS[pi].swap);ZC.tick(4);st[pi]=1;}}
+    else{if(!held&&S[A[pi]].ref.hum<=0){U.tap(KEYS[pi].swap);ZC.tick(4);st[pi]=0;continue;}if(ON(pi,B[pi])&&S[B[pi]].ref.hum<1)ZC.press(KEYS[pi].item);}}ZC.tick(1);}
+[0,1].forEach(REL);r.push('v3 lull='+D.FN.lull.toFixed(1));
 if(!D.FN.done)throw new Error('колыбельная не спета: lull='+D.FN.lull.toFixed(1)+' '+U.st());t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(30);r.push(U.walkTo(0,0,-438,6),U.walkTo(1,0.4,-437,6));ZC.tick(120);
 'head '+r.join()+' link='+D.endLink.taken+' lvl='+ZC.W.levelId+' out='+!!ZC.W.flags.out
 //@@ shot=k22_cloud.png

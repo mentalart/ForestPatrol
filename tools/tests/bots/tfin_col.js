@@ -15,5 +15,5 @@ const EXPECT='p=zgkzxx:52 luko=1rhy7t9:15 1-1=1sdpwwj:17 1-2=12ik6nh:36 1-3=px09
 // final06: Лукоморье — стан и берег отодвинуты от дуба на W.shoreDZ; 5-Б2 — новый финальный бой (свечи, Кощей в бою, late_93);
 // пролог — мебель штаба с коллизиями (сундук, бочонок, корзина, столик с рассадой, подзорная труба; late_96b)
 // мир 2 — уровни вдвое длиннее (late_99e…late_99j, docs/15_kitezh.md)
-const RELEASE={p:'cj1x5b:52',luko:'145umx4:15','5-B2':'skngqn:5','2-1':'13q3gl9:199','2-2':'1eca5br:83','2-3':'1oafop1:43','2-4':'1ki9wih:51','2-5':'9u122t:127','2-B':'1cu9uet:23'};   // 5-Б2: восемь свечей (final06, правки по отзыву)
+const RELEASE={p:'cj1x5b:52',luko:'145umx4:15','5-B2':'skngqn:5','2-1':'13q3gl9:199','2-2':'1eca5br:83','2-3':'1p3ohd:53','2-4':'1ki9wih:51','2-5':'9u122t:127','2-B':'1cu9uet:23'};   // 5-Б2: восемь свечей (final06, правки по отзыву)
 const got=__col;if(EXPECT==='EXPECT'+'_TABLE')'эталон не задан';else{const E=EXPECT.split(' ').map(e=>{const id=e.split('=')[0];return RELEASE[id]?id+'='+RELEASE[id]:e;});const bad=got.filter((g,i)=>g!==E[i]);'col '+(bad.length?'DIFF '+bad.join(' '):'same='+got.length);}
