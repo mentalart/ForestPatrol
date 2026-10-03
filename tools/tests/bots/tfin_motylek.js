@@ -5,8 +5,8 @@
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 window.SETUP=(solo)=>{ZC.setSolo(!!solo);ZC.startFrom(ZC.LV('3-1'));ZC.G.manual=true;ZC.tick(10);ZC.skip();ZC.tick(5);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}
   const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}
-  // тёмные аллеи: ворота открыты, герои у входа — выходят тени и мотылёк; тени убираем, остаётся мотылёк
-  const W=ZC.W,H=ZC.HERO;W.flags.gateOpen=true;H.proshka.pos.set(-1.4,0,-124.6);H.potap.pos.set(-0.4,0,-124.2);H.pelageya.pos.set(1.4,0,-124.6);H.yosha.pos.set(0.4,0,-124.2);
+  // тёмные аллеи (как в tfoes): ворота открыты, герои у входа — выходят тени и мотылёк; тени убираем, остаётся мотылёк
+  const W=ZC.W,H=ZC.HERO;W.abil.pero=true;W.flags.gateOpen=true;H.proshka.pos.set(-1.4,0,-124.6);H.potap.pos.set(-0.4,0,-124.2);H.pelageya.pos.set(1.4,0,-124.6);H.yosha.pos.set(0.4,0,-124.2);
   for(const h of Object.values(H)){h.vel.set(0,0,0);h.following=false;h.lit=false;}ZC.tick(3);H.proshka.pos.z=-126;ZC.tick(60);
   W.enemies.filter(x=>x.kind==='ten').forEach(x=>{x.alive=false;W.group.remove(x.g);});const e=W.enemies.find(x=>x.alive&&x.kind==='motylek');
   if(e){e.pos.set(0,e.pos.y,-126.2);}for(const h of Object.values(H))h.lit=false;ZC.tick(30);return e;};

@@ -7,7 +7,7 @@
 //   4) Прошка крупно, хорохорится — «Да я сам верёвку сплету»;
 //   5) Яга крупно: молча глядит поверх очков, бровь вверх — пауза, герои переглядываются (комичный «наезд»);
 //   6) лужи вскипают — кикиморки выскакивают; общий план из-за героев — «Кикиморки! Защищайтесь!»
-// Ролик зовёт прототип: замена в rep_30_gameplay.py отдаёт сцену сюда (FIN.yaga11), без модуля — прежний ролик.
+// Ролик зовёт прототип: замена в rep_31_yaga11.py отдаёт сцену сюда (FIN.yaga11), без модуля — прежний ролик.
 FIN.yaga11=function(c){const {F,yaga,hut,spawnKiki,arena,puddles}=c;F.stage='yaga';const T=HERO,B=yaga.rig||{};yaga.g.visible=true;hut.inner.visible=true;
   const YP=new V3(0,1.1,-26.4),EYE=2.85,spots=[[-2.6,-19.8],[-0.9,-19.3],[0.9,-19.3],[2.6,-19.8]],P=T.proshka,PI0=HEROES.indexOf(P),PX=spots[PI0<0?0:PI0][0],PZ=spots[PI0<0?0:PI0][1];
   const bone=n=>B[n]||null,rot=(n,x,y,z)=>{const b=bone(n);if(b)b.rotation.set(x,y,z);};

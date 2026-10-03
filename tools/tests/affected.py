@@ -3,8 +3,9 @@
 #   python3 tools/tests/affected.py                 # что изменилось с ответвления от origin/main (коммиты ветки + незакоммиченное)
 #   python3 tools/tests/affected.py --base HEAD     # только незакоммиченные правки
 #   python3 tools/tests/affected.py --files index.html zlataya_cep/build/late_87_boss4b.js
-#   python3 tools/tests/affected.py --run [--jobs 2] # пересобрать релиз и прогнать: релизные боты — на релизной сборке, боты только прототипа —
-#                                                    на index.html (--no-build — без пересборки)
+#   python3 tools/tests/affected.py --run [--jobs 2] # пересобрать релиз и прогнать ботов на релизной сборке (--no-build — без пересборки).
+#                                                    Прототип index.html — только исходник релиза: боты, что есть лишь в списке прототипа
+#                                                    (regress_list.txt), не гоняются — уровни проверяют их релизные боты.
 #   python3 tools/tests/affected.py --base A --to B  # что проверять для разницы двух коммитов (например, чужой ветки перед слиянием)
 # Как решается:
 #   · файлы — по таблице tools/tests/affected_map.txt (модули релиза, озвучка, документы…); файла нет в таблице — полный регресс;
@@ -338,16 +339,16 @@ def main():
         return 2
     rel = [b for b in bots if b in REL or b not in PROTO]
     pro = [b for b in bots if b in PROTO and b not in REL]
-    if not bots and not g07:
+    if not rel and not g07:
         print('\nБоты не нужны (документы, инструменты вне игры).')
         return 0
-    print('\n%s: %d из %d ботов' % ('Широкая проверка' if wide else 'Выборочная проверка', len(bots) + len(g07), len(set(REL + PROTO + REL07))))
+    print('\n%s: %d из %d ботов' % ('Широкая проверка' if wide else 'Выборочная проверка', len(rel) + len(g07), len(set(REL + REL07))))
     if rel:
         print('  релиз (zlataya_cep_final06.html): ' + ' '.join(rel))
     if g07:
         print('  final07 (zlataya_cep_final07.html, WebGPU): ' + ' '.join(g07))
     if pro:
-        print('  прототип (index.html): ' + ' '.join(pro))
+        print('  не гоняются (только прототип — он лишь исходник релиза): ' + ' '.join(pro))
     if not run:
         print('\nПрогнать: python3 tools/tests/affected.py --run' + (' --base ' + base if '--base' in a else ''))
         return 0
@@ -363,7 +364,7 @@ def main():
         if subprocess.run([sys.executable, os.path.join(ROOT, 'zlataya_cep', 'build', 'build_final.py'), '--gpu'], cwd=ROOT).returncode:
             print('Сборка final07 остановилась — боты не запускались.')
             return 1
-    for group, html in ((rel, 'zlataya_cep/zlataya_cep_final06.html'), (g07, 'zlataya_cep/zlataya_cep_final07.html'), (pro, 'index.html')):
+    for group, html in ((rel, 'zlataya_cep/zlataya_cep_final06.html'), (g07, 'zlataya_cep/zlataya_cep_final07.html')):
         if not group:
             continue
         lst = os.path.join(T, 'out', 'affected_list.txt')
