@@ -1,0 +1,4 @@
+# Боты только final07 (WebGPU, Three r186): полный регресс final07 — вместе с regress_list_final.txt:
+#   python3 zlataya_cep/build/build_final.py --gpu
+#   LIST="tools/tests/regress_list_final.txt tools/tests/regress_list_final07.txt" tools/tests/regress.sh zlataya_cep/zlataya_cep_final07.html
+tfin_gpu tfin_post

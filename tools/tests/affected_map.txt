@@ -12,6 +12,10 @@
 zlataya_cep/docs/*                            -
 zlataya_cep/zlataya_cep_final0[1-5].html      -
 zlataya_cep/zlataya_cep_final06.html          -
+zlataya_cep/zlataya_cep_final07.html          -
+tools/three/*                                 -
+tools/tests/gpu_parity.py                     -
+tools/tests/regress_list_final07.txt          -
 tools/video/*                                 -
 tools/script/*                                -
 tools/tests/grid.js                           -
@@ -38,6 +42,12 @@ zlataya_cep/build/voice/*                     tfin_voice
 # ---- сборка релиза ----
 zlataya_cep/build/build_final.py              @wide tfin_voice tfin_menu
 zlataya_cep/build/three.r128.min.js           @full
+# ---- final07 (WebGPU, Three r186): «@final07» — боты гоняются на zlataya_cep_final07.html (сборка build_final.py --gpu) ----
+zlataya_cep/build/three.r186.webgpu.min.js    @final07 @full07
+zlataya_cep/build/gpu/gpu_compat.js           @final07 tfin_gpu tfin_post tfin_art tfin_occ tfin_fadebatch tfin_fadesplit tfin_slash tfin_guard tfin_potap tfin_kitezh_water tfin_kitezh_sea tfin_prolog_night tfin_cine tfin_menu tfin_episolo
+zlataya_cep/build/gpu/gpu_early.js            @final07 tfin_gpu tfin_post tfin_art tfin_occ tfin_fadebatch tfin_fadelocal tfin_kitezh_water tfin_kitezh_sea tfin_gorend tfin_cast
+zlataya_cep/build/gpu/gpu_shaders.js          @final07 tfin_gpu tfin_art tfin_slash tfin_guard tfin_potap tfin_kitezh_water tfin_kitezh_sea tfin_prolog_night tfin_koshfx tfin_uzda
+zlataya_cep/build/gpu/gpu_late_*.js           @final07 tfin_gpu tfin_post
 zlataya_cep/build/header.txt                  -
 zlataya_cep/build/fonts/*                     tfin_splash tfin_menu
 zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine tfin_hints
@@ -62,7 +72,7 @@ zlataya_cep/build/late_05_gallery.js          tfin_cast tfin_foecast
 zlataya_cep/build/late_15_heroes.js           tfin_art tfin_slash tfin_guard tfin_cast tfin_cine tfin_scooter tfin_budget tfin_downswap
 zlataya_cep/build/late_16_cast.js             tfin_cast tfin_cine tfin_art tfin_budget
 zlataya_cep/build/late_17_cast2.js            tfin_cast tfin_cine tfin_art tfin_budget
-zlataya_cep/build/late_18_foes.js             tfin_foekinds tfin_foekinds2 tfin_foekinds3 tfin_foekinds4 tfin_foekinds5 tfin_foekinds6 tfin_foeidle tfin_foecast tfin_budget tfoes
+zlataya_cep/build/late_18_foes.js             tfin_foekinds tfin_foekinds1b tfin_foekinds2 tfin_foekinds2b tfin_foekinds3 tfin_foekinds4 tfin_foekinds5 tfin_foekinds6 tfin_foeidle tfin_foecast tfin_budget tfoes
 zlataya_cep/build/late_19_gor.js              tfin_foecast tfin_cast @level:4-B
 zlataya_cep/build/late_30_hero.js             tfin_art tfin_slash
 zlataya_cep/build/late_32_downswap.js         tfin_downswap tsolo

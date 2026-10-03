@@ -1,0 +1,7 @@
+{
+  "name": "zlataya-cep-three",
+  "private": true,
+  "description": "Three.js r186 (WebGPURenderer, TSL, постобработка) для релиза final07 — собирается в один классический скрипт",
+  "scripts": { "build": "esbuild entry.js --bundle --format=iife --minify --target=es2020 --legal-comments=none --outfile=../../zlataya_cep/build/three.r186.webgpu.min.js" },
+  "devDependencies": { "three": "0.186.1", "esbuild": "0.25.12" }
+}
