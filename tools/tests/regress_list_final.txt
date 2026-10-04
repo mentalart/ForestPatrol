@@ -41,4 +41,4 @@ tfin_kitezh_sea tfin_kitezh_water
 tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes tfin_k22 tfin_k22solo tfin_k22hint tfin_k23 tfin_k23solo
 tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo tfin_k2bmill tfin_k2bboss tfin_k2bbosssolo tfin_yaga11
 # final06: мир 3 — 3-1 «Сад молодильных яблок» и 3-2 «Облачные пастбища» втрое длиннее, с мини-боссами — вдвоём и в одиночку
-tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_juice
+tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor tfin_juice

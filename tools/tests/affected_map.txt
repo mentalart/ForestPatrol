@@ -164,7 +164,9 @@ zlataya_cep/build/levels/epi/rep_30_epi.py    @level:epi tfin_epitheatre tfin_ep
 zlataya_cep/build/levels/1-1/late_99n_yaga11.js @level:1-1 tfin_yaga11
 zlataya_cep/build/levels/1-1/rep_31_yaga11.py @level:1-1 tfin_yaga11
 zlataya_cep/build/levels/3-1/rep_32_motylek.py @level:3-1 tfin_motylek
-zlataya_cep/build/levels/3-2/late_99o_sky32.js @level:3-2 tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo
+zlataya_cep/build/levels/3-2/late_99o_sky32.js @level:3-2 tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor
+zlataya_cep/build/levels/3-2/late_99x_sky32_tut.js @level:3-2 tfin_sky32tut tfin_sky32boss tfin_sky32bosssolo
+zlataya_cep/build/levels/3-2/late_99y_sky32_cine.js @level:3-2 tfin_sky32cine tfin_sky32 tfin_sky32boss
 zlataya_cep/build/levels/3-1/late_99p_sky31.js @level:3-1 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo
 zlataya_cep/build/late_95b_warp.js              smoke tfin_warp
 tools/tests/cine_frames.js                    -
