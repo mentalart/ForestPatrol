@@ -3,6 +3,7 @@
 #finVig{position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 46%,rgba(0,0,0,0) 56%,rgba(12,6,24,.34) 100%)}
 #finGrade{position:fixed;inset:0;pointer-events:none;mix-blend-mode:soft-light;background:linear-gradient(180deg,rgba(255,214,168,.16),rgba(255,240,220,0) 45%,rgba(70,44,120,.16))}
 body.fin-noflash #flash{display:none}
+body.fin-softflash #flash{filter:opacity(.5);transition:opacity .35s ease-out !important}
 .fin-hide{display:none!important}
 /* ===== титул и главное меню ===== */
 #finTitle{position:fixed;inset:0;z-index:30;pointer-events:none;font-family:Georgia,'Palatino Linotype','Book Antiqua',serif;color:#fff}

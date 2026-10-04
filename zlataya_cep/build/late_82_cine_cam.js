@@ -147,7 +147,7 @@ function cdUpdate(dt){const S=CD.S,t=S.t,pose=CD.pose;const i=Math.max(0,shotAt(
       pose.look.lerpVectors(b.from.look,pose.look,q);pose.fov=lerp(b.from.fov,pose.fov,q);pose.roll=lerp(b.from.roll,pose.roll,q);}
     if(k>=1)CD.blend=null;}
   // тряска (trauma²), punch, голландский угол
-  const tr=CX.trauma*CX.trauma*(FIN.set.shake?1:0.2);if(tr>0.0004){const f=t*23;pose.pos.x+=CINE.noise(f)*0.42*tr;pose.pos.y+=CINE.noise(f+19)*0.32*tr;pose.pos.z+=CINE.noise(f+37)*0.42*tr;pose.roll+=CINE.noise(f+57)*0.06*tr;}
+  const tr=CX.trauma*CX.trauma*FIN.shakeK();if(tr>0.0004){const f=t*23;pose.pos.x+=CINE.noise(f)*0.42*tr;pose.pos.y+=CINE.noise(f+19)*0.32*tr;pose.pos.z+=CINE.noise(f+37)*0.42*tr;pose.roll+=CINE.noise(f+57)*0.06*tr;}
   pose.fov+=CX.punch.x;CX.dutch.a=damp(CX.dutch.a,CX.dutch.to,5,dt);pose.roll+=CX.dutch.a;pose.fov=clamp(pose.fov,18,80);
   // предвыход: если игра окажется далеко — закрыть шторку заранее
   if(!CD.exitChecked&&t>=S.dur-0.34){CD.exitChecked=true;const g=gameplayTarget();if(g&&g.pos.distanceTo(pose.pos)>30&&!CD.noIrisOut){CD.irisOut=true;CX.irisTo=0;CX.irisDur=0.3;CINE.emit('iris',{dir:'close'});}}
@@ -177,7 +177,7 @@ CINE.punch=(deg)=>{CX.punch.v+=deg*13;CINE.emit('punch',{deg});};               
 CINE.trauma=(a)=>{CX.trauma=Math.min(1,CX.trauma+a);};
 CINE.dollyZoom=(f,dur,hold)=>{if(!CD)return;CD.dz={t0:CD.S.t,dur:dur||0.9,hold:hold==null?0.8:hold,f:clamp(f||0.3,0.05,0.45)};CINE.emit('dollyzoom',{});};
 CINE.dutch=(a)=>{CX.dutch.to=a||0;};
-CINE.flashDip=(col,a)=>{if(!FIN.set.flash&&col!=='#120a1c')a=Math.min(a||0.5,0.25);CX.dipCol=col||'#fff6d8';CX.dip=Math.max(CX.dip,a||0.5);CX.dipTo=0;};
+CINE.flashDip=(col,a)=>{const fk=FIN.flashK();if(fk<1&&col!=='#120a1c')a=Math.min((a||0.5)*(fk?0.6:1),fk?0.4:0.25);CX.dipCol=col||'#fff6d8';CX.dip=Math.max(CX.dip,a||0.5);CX.dipTo=0;};
 CINE.active=()=>!!(CD&&G.cine===CD.S);
 CINE.state=()=>CD?{key:CD.key,shot:CD.si,size:CD.shots[Math.max(0,CD.si)].size,move:CD.shots[Math.max(0,CD.si)].move,tr:CD.shots[Math.max(0,CD.si)].tr,fov:+CD.pose.fov.toFixed(1),
   entry:CD.entry,insert:CD.insert?CD.insert.who:null,focus:CD.focus?CD.focus.who:null,blend:CD.blend?CD.blend.type:null}:{exit:!!CX.exit};
