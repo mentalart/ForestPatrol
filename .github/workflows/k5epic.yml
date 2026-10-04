@@ -1,0 +1,42 @@
+# «Битва с Кощеем» — тестовая сборка отдельным файлом (docs/28_koschei_epic_build.md).
+# На каждый пуш в рабочую ветку (не main), где менялись модули битвы, собирает build_final.py --k5epic и выкладывает файл
+# zlataya_cep_k5epic.html в предварительный выпуск с постоянным тегом k5epic (прежний выпуск с этим тегом заменяется):
+#   https://github.com/<владелец>/<репозиторий>/releases/tag/k5epic
+# Выпуск помечен «Pre-release» и не становится «Latest»: выкладка игры из main (release.yml, Pages и выпуски game-*) не меняется.
+# После утверждения битвы и переноса модулей в levels/5-B2/ этот файл удаляется.
+name: Битва с Кощеем — тестовая сборка
+
+on:
+  push:
+    branches-ignore: [main]
+    paths:
+      - 'zlataya_cep/build/k5epic/**'
+      - 'zlataya_cep/build/build_final.py'
+      - '.github/workflows/k5epic.yml'
+
+concurrency:
+  group: k5epic
+  cancel-in-progress: true
+
+permissions:
+  contents: write     # выпуск и тег k5epic
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Сборка битвы
+        run: python3 zlataya_cep/build/build_final.py --k5epic
+      - name: Выпуск k5epic (заменяет прежний)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MSG: ${{ github.event.head_commit.message }}
+          BR: ${{ github.ref_name }}
+        run: |
+          title="Битва с Кощеем · тест · $(date -u +'%d.%m.%Y %H:%M') UTC · ${GITHUB_SHA::7}"
+          printf 'Тестовая сборка «Битвы с Кощеем» (5-Б2, 12 стадий) — отдельный файл, в main не входит.\n\nВетка %s, коммит %s.\n\n%s\n\nСкачайте zlataya_cep_k5epic.html и откройте в браузере (Chrome, Edge, Firefox). На стартовом экране — выбор стадии; Tab — панель с оценками и заметками.\n' \
+            "$BR" "${GITHUB_SHA::7}" "${MSG:-}" > notes.md
+          gh release delete k5epic --cleanup-tag --yes || true
+          gh release create k5epic zlataya_cep/zlataya_cep_k5epic.html --prerelease --latest=false --title "$title" --notes-file notes.md --target "$GITHUB_SHA"
