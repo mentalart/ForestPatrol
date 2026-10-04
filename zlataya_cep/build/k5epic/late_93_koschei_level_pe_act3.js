@@ -30,7 +30,7 @@
     const fl=addMesh(new THREE.PlaneGeometry(1.4,1.0),M(i?0x2a5ab8:0xb83a2a,{side:THREE.DoubleSide,emissive:i?0x0a1a40:0x400a0a}),0.72,2.9,0,g);g.userData.fl=fl;
     const r=new THREE.Mesh(new THREE.RingGeometry(1.4,1.7,32),k5Add(0xffd76a,{opacity:0.5}));r.rotation.x=-Math.PI/2;r.position.y=0.06;g.add(r);g.userData.r=r;g.visible=false;K5L.noRay(g);return g;});
   const VIT=[];{const kinds=['i','d','a'];for(let i=0;i<9;i++){const b=makeBogatyr(kinds[i%3]);b.g.scale.setScalar(i<3?1.15:0.9);b.g.visible=false;K5L.noRay(b.g);VIT.push(b);}}
-  function vitLine(on){VIT.forEach((b,i)=>{b.g.visible=on;const x=-8+i*2,z=i<3?6.5:8.6;b.g.position.set(x,0,z);b.g.rotation.y=Math.PI;b.home=new V3(x,0,z);});}
+  function vitLine(on){VIT.forEach((b,i)=>{b.g.visible=on;const s=i%2?1:-1,k=Math.floor(i/2),x=s*(12.6+(k%2)*1.4),z=-9+k*2.6;b.g.position.set(x,0,z);b.g.rotation.y=s>0?-Math.PI/2:Math.PI/2;b.home=new V3(x,0,z);});}   // два строя по флангам — в кадре
   function vitCharge(){E.log('vitCharge');SFX.horn&&SFX.horn();say('ilya','За Лукоморье! Богатырским махом — разом!',2.2,true);
     VIT.forEach((b,i)=>{const f=b.home.clone(),to=new V3(C.x+(i-4)*1.6,0,C.z+1);anim(0.9,k=>{b.g.position.lerpVectors(f,to,CE.inOutSine(k));});later(1.0,()=>{anim(1.2,k=>{b.g.position.lerpVectors(to,f,CE.inOutSine(k));});});});
     later(0.9,()=>{shakeAll(0.08,0.4);k5Ring(new V3(C.x,0.1,C.z+1),0xffd76a,1,9,0.6,0.1);for(const e of K5.adds.slice())if(e.kind==='k5bone'&&e.alive){FX.dust(e.pos.clone(),10,0xe8e0c8);k5Kill(e);}if(K5.live&&KB.state!=='broken')emberOut(KB,1,'Витязи!');});}
@@ -83,7 +83,7 @@
     k5fx(2.2,(k,dt)=>{for(const P of parts){if(P.m.position.y>0.3){P.v.y-=12*dt;P.m.position.addScaledVector(P.v,dt);P.m.rotation.x+=dt*3;}else P.m.position.y=0.3;}});
     later(2.2,()=>{for(const P of parts){const f=P.m.position.clone(),to=OAK.clone().add(new V3(rand(-2,2),rand(1,8),rand(-2,2)));k5fx(1.2+rand(0,0.6),k=>{P.m.position.lerpVectors(f,to,k);P.m.position.y+=Math.sin(k*Math.PI)*4;},()=>{k5Del(P.m);});}glinks.length=0;});
     for(const h of HEROES)if(h.pos.y>1.5)placeOnGround(h,h.pos.x,h.pos.z+3,0);later(3.6,()=>{giant.visible=false;E.won(10);});}
-  E.stage[10]={start(o){E.hub(10);K5L.themeTo('sunset',1);K5.fight=false;liveBoss(false);KS.g.visible=false;dome.visible=false;candles.forEach(c=>{c.g.visible=false;});heroesHome(10);W.clampR={x:C.x,z:C.z-1,r:12.5};E.arenaCam(true,4);
+  E.stage[10]={start(o){E.hub(10);K5L.themeTo('sunset',1);K5.fight=false;liveBoss(false);KS.g.visible=false;dome.visible=false;candles.forEach(c=>{c.g.visible=false;});heroesHome(10);W.clampR={x:C.x,z:C.z-1,r:12.5};E.arenaCam(true,9);
       if(!glinks.length)return E.go(11);giant.visible=true;giant.position.copy(GC);SHW.y=10.5;shPlat.miny=9.9;shPlat.maxy=10.5;shPlat.on=true;gCyls.forEach(c=>{c.on=true;});kneeR.forEach(r=>{r.visible=true;});heartLock.visible=true;hammer.visible=false;
       Object.assign(ES,{ph:'knees',knee:[false,false],kHp:[G.solo?3:4,G.solo?3:4],root:null,rootT:0,arm:'rest',at:2.5,coinT:5,hb:[-9,-9],ramp:null,prog:0,spes:null,fight:false});gArm.quaternion.identity();gArm.scale.set(1,1,1);
       E.cards(10,()=>{ES.fight=true;});},

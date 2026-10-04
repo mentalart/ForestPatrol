@@ -5,7 +5,8 @@
   // и держат щит вместе — друг вспоминает себя и оборачивает приём против Кощея: Кощей открыт, удары гасят спесь.
   const WALL=k5Prop(new THREE.Group());{const c=document.createElement('canvas');c.width=512;c.height=256;const g=c.getContext('2d');g.fillStyle='#120a1c';g.fillRect(0,0,512,256);g.strokeStyle='rgba(170,110,255,0.55)';g.lineWidth=3;g.font='italic 34px Georgia,serif';g.fillStyle='rgba(190,150,255,0.5)';
     for(let i=0;i<14;i++){g.fillText(['Потап','Йоша','Прошка','Пелагея','Леший','Яга'][i%6],rand(10,400),rand(30,250));const y=rand(20,240);g.beginPath();g.moveTo(rand(0,200),y);g.lineTo(rand(300,512),y+rand(-10,10));g.stroke();}
-    const m=new THREE.Mesh(new THREE.PlaneGeometry(22,7),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),side:THREE.DoubleSide,transparent:true,opacity:0.92}));m.rotation.y=Math.PI/2;m.position.set(0,3.5,0);WALL.add(m);WALL.userData.m=m;}
+    const m=new THREE.Mesh(new THREE.BoxGeometry(0.9,7,22),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c),transparent:true,opacity:0.92}));m.position.set(0,3.5,0);WALL.add(m);WALL.userData.m=m;
+    const glow=new THREE.Mesh(new THREE.PlaneGeometry(2.4,22),k5Add(0x9a50ff,{opacity:0.55}));glow.rotation.x=-Math.PI/2;glow.position.y=0.06;WALL.add(glow);const top=new THREE.Mesh(new THREE.BoxGeometry(1.0,0.12,22),k5Add(0xc890ff,{opacity:0.9}));top.position.y=7.05;WALL.add(top);}   // плита с ребра видна узкой — светящаяся полоса на земле и кромка сверху
   WALL.position.set(C.x,0,C.z);WALL.visible=false;K5L.noRay(WALL);const wallBox={minx:C.x-0.3,maxx:C.x+0.3,miny:-1,maxy:8,minz:C.z-11,maxz:C.z+11,on:false,occ:false};W.boxes.push(wallBox);
   const crack=k5Glow(0xffd76a,3);k5Prop(crack);crack.visible=false;
   // где стоят замершие друзья в «Все сказки разом» (внутри поляны)

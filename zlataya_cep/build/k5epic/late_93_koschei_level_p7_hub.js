@@ -32,7 +32,7 @@
   // дуб зеленеет понемногу: k — доля листвы (0…1)
   E.oakGreen=(k,fx)=>{const n=Math.round(leaves.length*k);leaves.forEach((l,i)=>{if(i<n&&!l.visible){l.visible=true;if(fx){l.scale.setScalar(0.01);anim(0.8,q=>l.scale.setScalar(Math.max(0.01,CE.outBack(q))));K5L.gold(l.position.clone(),6);}else l.scale.setScalar(1);}});};
   // на Лукоморье: границы поляны и свет
-  E.hub=n=>{K5L.theme(n>=10&&n<=11?'sunset':n===8?'storm':'dawn',1);W.clampR={x:C.x,z:C.z,r:R};W.fallY=-12;E.hubFree();};
+  E.hub=n=>{W.camX=18;K5L.theme(n>=10&&n<=11?'sunset':n===8?'storm':'dawn',1);W.clampR={x:C.x,z:C.z,r:R};W.fallY=-12;E.hubFree();};
   /* ---------- Кот-часы: «Идёт направо — песнь заводит, налево — сказку говорит» ---------- */
   // Кот ходит по цепи вокруг дуба. Направо (правая половина) — песнь: Кощей бьёт в такт и вешает на цепь замки; Кот упрётся в замок —
   // стоит, песнь тянется. Налево — сказка: Кощей заслушался (бывший ученик Кота) — опустил руки, открыт; удары гасят спесь.

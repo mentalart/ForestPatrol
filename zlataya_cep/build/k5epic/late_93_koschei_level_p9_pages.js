@@ -26,7 +26,8 @@
     goal:pi=>ES.step==='walk'?'Вдвоём — на <b>порог страницы</b> «'+['','Дремучий лес','Подводный Китеж','Небесное царство','Огненная Смородина'][w]+'».':(AR[w].goal?AR[w].goal(pi):''),
     targets:pi=>ES.step==='walk'?[PAGES[w].g]:(AR[w].targets?AR[w].targets(pi):[])};};
   function enterPage(n,w,quick){const A=AR[w];E.log('enter'+w);E.paper(()=>{E.pagesShow(false);A.g.visible=true;ES.inPage=true;if(A.theme)K5L.theme(A.theme,1);
-      W.clampR=A.clamp||null;W.fallY=A.fallY!=null?A.fallY:-12;HEROES.forEach((h,i)=>{const s=A.spawn(i);placeOnGround(h,s.x,s.z,s.y||0);h.face=A.face||Math.PI;h.vel.set(0,0,0);h._down=false;});
+      W.clampR=A.clamp||null;W.fallY=A.fallY!=null?A.fallY:-12;W.camX=4000;   // камера уровня держится в ±18 м по X — арены страниц далеко
+      HEROES.forEach((h,i)=>{const s=A.spawn(i);placeOnGround(h,s.x,s.z,s.y||0);h.face=A.face||Math.PI;h.vel.set(0,0,0);h._down=false;});
       for(const pi of[0,1]){const p=players[pi];p.downed=false;p.petals=3;const s=A.spawn(pi*2);p.cp=new V3(s.x,s.y||0,s.z);}snapCams();if(FIN.music)FIN.music.play(['','w1','w2','w3','w4'][w]);
       ES.step='fight';A.start(quick);},quick?0.8:1.4);}
   /* ---------- поездка домой: роль «рулить» и роль «отбиваться»; 30 с ---------- */
@@ -40,7 +41,7 @@
     E.paper(()=>{E.pageOff();RIDE.g.visible=true;rideStart(kind,()=>{E.paper(()=>{rideEnd();if(E.freeF)E.freeF(['','yaga','vod','zhar','gor'][w],false);if(w===3)E.freeF('solo',false);
         E.hub(n+1);heroesHome(n+1);snapCams();done();},1.2);});},1.2);};
   function rideStart(kind,done){const R=RIDE;R.on=true;R.kind=kind;R.t=0;R.dur=G.solo?26:30;R.th=[];R.spawn=1.4;R.lane=[0,2];R.jumpT=[-9,-9];R.done=done;R.got=0;
-    const TH={stupa:'forest',kit:'kitezh',geese:'heaven',gor:'smorodina'}[kind];K5L.theme(TH,1);W.clampR={x:RIDE_X,z:0,r:2.0};W.fallY=-999;
+    const TH={stupa:'forest',kit:'kitezh',geese:'heaven',gor:'smorodina'}[kind];K5L.theme(TH,1);W.clampR={x:RIDE_X,z:0,r:2.0};W.fallY=-999;W.camX=4000;
     HEROES.forEach((h,i)=>{placeOnGround(h,RIDE_X+(i%2?0.8:-0.8),i<2?-0.6:0.9,0);h.face=Math.PI;h.vel.set(0,0,0);});for(const pi of[0,1]){players[pi].downed=false;players[pi].petals=Math.max(2,players[pi].petals);}snapCams();
     const v=new THREE.Group();k5Prop(v);v.position.set(RIDE_X,0,0);R.v=v;
     if(kind==='stupa'){const s=makeStupa();W.group.remove(s.g);v.add(s.g);s.g.scale.setScalar(3.2);s.g.position.set(0,-3.4,0.4);R.m=s;}

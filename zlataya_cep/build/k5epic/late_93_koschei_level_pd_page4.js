@@ -67,7 +67,7 @@
             else floatText(h.pos.clone().add(new V3(0,2.2,0)),'Не смотрю!','#9fe0ff');}}
         if(S.eye>2.8){S.eye=0;S.gaze=false;S.eyeT=G.solo?11:8.5;if(likho.lid)likho.lid.scale.y=1;}}
       for(const [h,t] of S.sleep){const r=t-dt;h.vel.x*=0.2;h.vel.z*=0.2;if(r<=0)S.sleep.delete(h);else S.sleep.set(h,r);}};
-    A.goal=pi=>S.ph==='forge'?(pi===0||G.solo?'У наковальни Демьяна — удар '+K(pi,'attack')+' <b>в такт</b>, когда кольцо сошлось: три раза.':'Прошка куёт узду. Огонь по дорожкам — уходи; Лихо открыло глаз — <b>отвернись</b>.'):
+    A.goal=pi=>S.ph==='forge'?'У наковальни Демьяна — удар '+K(pi,'attack')+' <b>в такт</b>, когда кольцо сошлось: три раза. Огонь по дорожкам — уходи; Лихо открыло глаз — <b>отвернись</b>.':
       S.ph==='carry'?(S.carry?'Несите узду к Горынычу. Огонь — другая дорожка, доска пропала — прыжок, глаз Лиха — отвернитесь. У головы — удар '+K(pi,'attack')+' <b>разом</b>.':'Узда готова: <b>клещи</b> '+K(pi,'item')+' у конца узды'+(G.solo?'.':' — каждый за свой конец.')):'Горыныч свободен!';
     A.targets=pi=>S.ph==='forge'?[anv&&anv.g?anv.g:dem.g]:S.ph==='carry'?(S.carry?[gor.g]:[bridle]):[];
   }

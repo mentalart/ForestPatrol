@@ -28,7 +28,7 @@ function k5Fit(def){if(!def||def._fit)return def;def._fit=1;const vf=FIN.vox&&FI
   def.dur+=ins.reduce((n,q)=>n+q[1],0);return def;}
 {const _play=play;play=function(def){if(def&&def.k5)k5Fit(def);_play(def);};}
 build5B2=function(){
-  W.zvenAway=false;W.world=5;setTheme('dawn');sky('dawn');W.name='5-Б2 · Кощей Бессмертный и Златая цепь';W.sub='Остров Буян · финал · пять этапов';W.camX=18;const F=W.flags;F.stage='intro';
+  W.zvenAway=false;W.world=5;setTheme('dawn');sky('dawn');W.name='5-Б2 · Кощей Бессмертный и Златая цепь';W.sub='Лукоморье · финал · двенадцать стадий';W.camX=18;const F=W.flags;F.stage='intro';
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.noLose=false;W.noPetals=false;W.fallY=-12;const T=HERO;const C=new V3(0,0,-13),R=11;
   if(!G.flags.names)G.flags.names={};
   Object.assign(K5,{st:0,fight:false,live:false,spark:null,locks:{},orbs:[],adds:[],needle:null,forge:null,zones:[],mark:0,log:[],said:{},bones:false,storm:0,stormTo:0});K5FX.length=0;K5TR.length=0;

@@ -106,7 +106,7 @@
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 1 | t53 |
 | `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | — | 2 | t54 tso54 |
 | `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | — | 1 | t5b1 |
-| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_94_koschei_tut | 10 | t5b2 tfin_kosh tfin_koshcine tfin_koshcoop tfin_koshfx tfin_koshnat tfin_koshrule tfin_ko… |
+| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_93_koschei_level, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_94_koschei_tut, late_94_koschei_tut, late_99z_k5e_boot | 10 | t5b2 tfin_kosh tfin_koshcine tfin_koshcoop tfin_koshfx tfin_koshnat tfin_koshrule tfin_ko… |
 | `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
 | `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 2 | tfin_juice tzast |
@@ -229,12 +229,32 @@
 | `late_91b_juice.js` | — | РЕЛИЗ · СОЧНЫЙ БОЙ: удар, сигналы мороков, движения, урон, клубок (docs/23_vfx_sfx.md) |
 | `late_91c_juice_world.js` | — | РЕЛИЗ · МИР, БОССЫ, ВДВОЁМ, МИКС, ДОСТУПНОСТЬ (docs/23_vfx_sfx.md, полигон заход 2) |
 | `levels/5-B2/late_92_koschei.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ»: ФИНАЛЬНЫЙ БОЙ В ПЯТЬ ЭТАПОВ |
+| `k5epic/late_92_koschei.js` | — | РЕЛИЗ final06 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ»: ФИНАЛЬНЫЙ БОЙ В ПЯТЬ ЭТАПОВ |
+| `k5epic/late_92b_k5e_lib.js` | — | БИТВА С КОЩЕЕМ (k5epic) · БИБЛИОТЕКА: пролог, Лукоморье, Кот на цепи, буквы-удары, страницы, оркестр |
 | `levels/5-B2/late_93_koschei_level.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними |
+| `k5epic/late_93_koschei_level.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними |
 | `levels/5-B2/late_93_koschei_level_p2_storm.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 2 из 5): ворон, гроза, буря, игла, этапы боя — части … |
+| `k5epic/late_93_koschei_level_p2_storm.js` | — | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 2 из 5): ворон, гроза, буря, игла, этапы боя — части … |
 | `levels/5-B2/late_93_koschei_level_p3_wind.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 3 из 5): ветер, анимация Кощея, помощники героев — ча… |
+| `k5epic/late_93_koschei_level_p3_wind.js` | — | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 3 из 5): ветер, анимация Кощея, помощники героев — ча… |
 | `levels/5-B2/late_93_koschei_level_p4_skaz.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 4 из 5): сказы и переходы между этапами — части склеи… |
+| `k5epic/late_93_koschei_level_p4_skaz.js` | — | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 4 из 5): сказы и переходы между этапами — части склеи… |
 | `levels/5-B2/late_93_koschei_level_p5_finale.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 5 из 5): последний сказ, цепь, кнопки, отладка — част… |
+| `k5epic/late_93_koschei_level_p5_finale.js` | — | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 5 из 5): последний сказ, цепь, кнопки, отладка — част… |
+| `k5epic/late_93_koschei_level_p6_epic.js` | — | ---- продолжение build5B2 (k5epic, часть 6): БИТВА В ДВЕНАДЦАТЬ СТАДИЙ — контроллер (docs/27_koschei_epic_proposals.md)… |
+| `k5epic/late_93_koschei_level_p7_hub.js` | — | ---- продолжение build5B2 (k5epic, часть 7): ЛУКОМОРЬЕ — постройки, друзья в чёрных цепях, Кот-часы, помощь друзей ---- |
+| `k5epic/late_93_koschei_level_p8_act1.js` | — | ---- продолжение build5B2 (k5epic, часть 8): АКТ I «ЧЁРНАЯ СТРОКА» — стадии 1–3 и их ролики ---- |
+| `k5epic/late_93_koschei_level_p9_pages.js` | — | ---- продолжение build5B2 (k5epic, часть 9): АКТ II «НЕВЕДОМЫЕ ДОРОЖКИ» — страницы-двери, переход в сказку, поездки дом… |
+| `k5epic/late_93_koschei_level_pa_page1.js` | — | ---- продолжение build5B2 (k5epic, часть 10): СТРАНИЦА 1 «ИЗБУШКА ТАМ НА КУРЬИХ НОЖКАХ» (стадия 4, мир 1, клубок) ---- |
+| `k5epic/late_93_koschei_level_pb_page2.js` | — | ---- продолжение build5B2 (k5epic, часть 11): СТРАНИЦА 2 «ТАМ О ЗАРЕ ПРИХЛЫНУТ ВОЛНЫ» (стадия 5, мир 2, гусли) ---- |
+| `k5epic/late_93_koschei_level_pc_page3.js` | — | ---- продолжение build5B2 (k5epic, часть 12): СТРАНИЦА 3 «В ТЕМНИЦЕ ТАМ ЦАРЕВНА ТУЖИТ» (стадия 6, мир 3, свет) ---- |
+| `k5epic/late_93_koschei_level_pd_page4.js` | — | ---- продолжение build5B2 (k5epic, часть 13): СТРАНИЦА 4 «ТАМ НА НЕВЕДОМЫХ ДОРОЖКАХ…» (стадия 7, мир 4, клещи) ---- |
+| `k5epic/late_93_koschei_level_pe_act3.js` | — | ---- продолжение build5B2 (k5epic, часть 14): АКТ III — стадии 8 (буря), 9 (витязи), 10 (Цепной великан) ---- |
+| `k5epic/late_93_koschei_level_pf_bezimen.js` | — | ---- продолжение build5B2 (k5epic, часть 15): СТАДИЯ 11 «БЕЗ ИМЁН» (новая; отзвук терема 5-Б1) ---- |
+| `k5epic/late_93_koschei_level_pg_final.js` | — | ---- продолжение build5B2 (k5epic, часть 16): СТАДИЯ 12, «ТЯНЕМ-ПОТЯНЕМ», ПРОЛОГ-ПОГОНЯ, тексты паузы ---- |
+| `k5epic/late_93_koschei_level_pz_end.js` | — | ---- конец build5B2 (k5epic): части p6…py — битва в двенадцать стадий; здесь функция закрывается ---- |
 | `levels/5-B2/late_94_koschei_tut.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: ОБУЧАЮЩИЕ КАРТОЧКИ ПЕРЕД ЭТАПАМИ И ЖИВЫЕ ПОДСКАЗКИ В БОЮ |
+| `k5epic/late_94_koschei_tut.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: ОБУЧАЮЩИЕ КАРТОЧКИ ПЕРЕД ЭТАПАМИ И ЖИВЫЕ ПОДСКАЗКИ В БОЮ |
 | `late_95_dev.js` | luko | РЕЛИЗ · КЛАВИШИ РАЗРАБОТЧИКА |
 | `late_95b_warp.js` | — | РЕЛИЗ · ДЛЯ БОТОВ И РАЗРАБОТКИ: ЕДИНАЯ ТЕЛЕПОРТАЦИЯ FIN.warp, ПОСЛЕДНИЙ РОЛИК FIN.lastCine |
 | `levels/p/late_96_prolog_scooter.js` | p | РЕЛИЗ final06 · ПРОЛОГ: ПРОШКА НЕСЁТ САМОКАТ ТИШКЕ |
@@ -270,6 +290,7 @@
 | `levels/3-B/late_99u_k3b_fx.js` | 3-B | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК»: ЭФФЕКТЫ — ВИДИМЫЙ ЗВУК, ВЕТЕР, РВУЩИЕСЯ ОБЛАКА, НОЧЬ, ВИХРЬ |
 | `levels/3-B/late_99v_k3b.js` | 3-B | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК» — ГНЕЗДО НА СЕМИ ДУБАХ И БОЙ ПО БЫЛИНЕ (docs/26_solovei_boss.md) |
 | `levels/3-B/late_99w_k3b_road.js` | — | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК»: ПОДХОД «ПРЯМОЕЗЖАЯ ДОРОЖКА» (≈170 м) |
+| `k5epic/late_99z_k5e_boot.js` | 5-B2 | БИТВА С КОЩЕЕМ (k5epic) · ЗАПУСК: стартовый экран, выбор стадии, панель оценок |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -345,12 +366,13 @@
 | `25_solovei_proposals.md` | 3-Б «Соловей-Разбойник»: предложения — бой, эффекты, подход к гнезду |
 | `26_solovei_boss.md` | 3-Б «Соловей-Разбойник»: подход к гнезду и бой по былине |
 | `27_koschei_epic_proposals.md` | 5-Б2 «Кощей Бессмертный и Златая цепь»: предложение — эпический финал в 12 стадий |
+| `28_koschei_epic_build.md` | Битва с Кощеем — отдельная сборка (k5epic): как собрать, проверить и продолжить |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 9 файлов |
+| `changes/` | 10 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 160 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 165 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

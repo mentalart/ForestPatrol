@@ -29,7 +29,7 @@
   /* ---------- уход со стадии и начало стадии ---------- */
   E.leave=()=>{const n=E.cur;if(n==null)return;K5.st=0;const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.end)try{L.end();}catch(e){console.error('k5e end',e);}
     if(E.clock)E.clock.off();W.camFn=null;K5.listen=false;K5.fight=false;ES.fight=false;clearAdds(true);natReset();if(E.pageOff)E.pageOff();for(const k in ES)delete ES[k];};
-  E.go=(n,o)=>{o=o||{};E.leave();E.cur=n;K5E.cur=n;try{K5E.badge&&K5E.badge();}catch(e){}F.k5e=n;applyFree(n);
+  E.go=(n,o)=>{o=o||{};E.leave();for(const p of players){p.tipT=0;}E.cur=n;K5E.cur=n;try{K5E.badge&&K5E.badge();}catch(e){}F.k5e=n;applyFree(n);
     for(let i=1;i<n;i++)if(E.done[i]||o.warp)E.sky.add(i,false);
     // прыжок к стадии: имена — как после частей Сказа (начало — после 3, помощник — после 7, Прошка — после 11)
     if(o.warp){G.flags.names=Object.assign(G.flags.names||{},n>=4?{potap:true}:{},n>=8?{yosha:true}:{},n>=12?{proshka:true}:{});}
@@ -61,6 +61,7 @@
   E.log=t=>{(E.logs=E.logs||[]).push(t);};
   /* ---------- общий шаг: тики новых стадий, слоёв и Лукоморья ---------- */
   W.updates.push(dt=>{const n=E.cur;if(n==null)return;
+    if(!K5.live&&KB.alive){KB.cd=Math.max(KB.cd||0,2);if(KB.state==='ready'||KB.state==='wind'||KB.state==='strike')KB.state='k5off';}   // невидимый Кощей вне своих стадий не бьёт
     if(E.hubTick)try{E.hubTick(dt);}catch(e){console.error('k5e hub',e);}
     if(!G.cine){const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.tick)try{L.tick(dt);}catch(e){console.error('k5e tick '+n,e);}
       // новые стадии: все четверо клубочками — стадия заново
