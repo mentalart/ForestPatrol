@@ -6,14 +6,32 @@ window.E5=ZC.FIN.k5e;window.RUN=(n,ticks)=>{const e0=_errs.length;E5.goStage(n);
   const r='st'+n+' cur='+E5.cur+' cine='+!!ZC.G.cine+' lv='+ZC.W.levelId+' errs='+(_errs.length-e0)+(_errs.length>e0?' '+_errs.slice(e0,e0+3).join(' / '):'');if(_errs.length>e0)throw new Error(r);return r;};
 'ok'
 //@@
+RUN(0,300)
+//@@
 RUN(1)
-//@@ shot=k5e_s1.png
-ZC.tick(1);
 //@@
 RUN(2)
 //@@
 RUN(3)
-//@@ shot=k5e_s3.png
-ZC.tick(1);
 //@@
 RUN(4)
+//@@
+RUN(5)
+//@@
+RUN(6)
+//@@
+RUN(7)
+//@@
+RUN(8)
+//@@
+RUN(9)
+//@@
+RUN(10)
+//@@ shot=k5e_s10.png
+ZC.tick(1);
+//@@
+RUN(11)
+//@@ shot=k5e_s11.png
+ZC.tick(1);
+//@@
+RUN(12)
