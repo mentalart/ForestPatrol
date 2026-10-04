@@ -119,9 +119,9 @@ FIN.k3road=function(KR){const F=W.flags,T=HERO,C=KR.C,FX=FIN.k3fx,FX2=FIN.k2fx,S
     for(const h of HEROES)if(h.slowT>0){h.slowT-=dt;h.vel.x*=0.9;h.vel.z*=0.9;}}
   /* ---------- 6. ОБЛАКА РВУТСЯ (z 70…54): облачные островки — на свист облачко под ногами тает ---------- */
   const ISL=[[-1.4,67.2],[1.2,63.9],[-1.2,60.6],[1.4,57.3]].map(([x,z])=>{const g=new THREE.Group();g.position.set(x,Y,z);W.group.add(g);const mat=new THREE.MeshLambertMaterial({color:0xece6ff,transparent:true,opacity:1});
-    for(let k=0;k<6;k++){const m=new THREE.Mesh(KP.sph(1,8,6),mat);const a=k/6*Math.PI*2;m.position.set(Math.cos(a)*0.8,-0.45,Math.sin(a)*0.8);m.scale.set(0.9,0.55,0.9);g.add(m);}const top=new THREE.Mesh(KP.cyl(1.35,1.1,0.4,12),mat);top.position.y=-0.2;g.add(top);
-    const col=colBox(x-1.3,x+1.3,Y-0.8,Y,z-1.3,z+1.3,false);return {g,mat,col,x,z,on:true,thin:0,gone:0};});
-  RD.ISL=ISL;const onIsle=(h,I)=>Math.abs(h.pos.x-I.x)<1.5&&Math.abs(h.pos.z-I.z)<1.5&&Math.abs(h.pos.y-Y)<0.5;
+    for(let k=0;k<6;k++){const m=new THREE.Mesh(KP.sph(1,8,6),mat);const a=k/6*Math.PI*2;m.position.set(Math.cos(a)*0.95,-0.45,Math.sin(a)*0.95);m.scale.set(1.0,0.55,1.0);g.add(m);}const top=new THREE.Mesh(KP.cyl(1.6,1.3,0.4,12),mat);top.position.y=-0.2;g.add(top);
+    const col=colBox(x-1.5,x+1.5,Y-0.8,Y,z-1.5,z+1.5,false);return {g,mat,col,x,z,on:true,thin:0,gone:0};});
+  RD.ISL=ISL;const onIsle=(h,I)=>Math.abs(h.pos.x-I.x)<1.7&&Math.abs(h.pos.z-I.z)<1.7&&Math.abs(h.pos.y-Y)<0.5;
   function islesTick(dt){for(const I of ISL){if(I.thin>0){I.thin-=dt;I.mat.opacity=0.35+0.65*I.thin/1.2;I.g.scale.set(1+0.3*(1-I.thin/1.2),1,1-0.2*(1-I.thin/1.2));if(Math.random()<dt*14)FX.part(new V3(I.x+rand(-1,1),Y-0.2,I.z+rand(-1,1)),new V3(rand(-2,2),rand(0,1),rand(-2,2)),'down',0xffffff,{life:1});
         if(I.thin<=0){I.on=false;I.col.on=false;I.g.visible=false;I.gone=3;}}
       else if(!I.on){I.gone-=dt;if(I.gone<=0){I.on=true;I.col.on=true;I.g.visible=true;I.mat.opacity=1;I.g.scale.set(1,1,1);}}}}

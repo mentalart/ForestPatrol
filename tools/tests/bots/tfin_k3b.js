@@ -37,8 +37,8 @@ if(U.act(0).pos.z>79)throw new Error('застава: '+r.join(' | '));r.join(' 
 //@@
 // 6 облачные островки: прыжками; растаяло — к колокольчику и снова
 const r=[];const ISL=[[-1.4,67.2],[1.2,63.9],[-1.2,60.6],[1.4,57.3]];let tries=0;
-for(const pi of[0,1]){for(let k=0;k<6&&U.act(pi).pos.z>53;k++){tries++;U.goto(pi,0,71,8,0.6);(U.until(()=>!!RD.wave,16),U.until(()=>!RD.wave,8));for(const[x,z]of ISL){const h=U.act(pi);for(let i=0;i<90;i++){const far=!U.step(pi,x,z,0.5);if(far&&h.grounded&&Math.hypot(h.pos.x-x,h.pos.z-z)<3.6&&Math.hypot(h.pos.x-x,h.pos.z-z)>1.6)ZC.press(U.K[pi].j);if(!far)break;ZC.tick(1);}U.rel(pi);if(h.pos.y<Y-1)break;}
-    if(U.act(pi).pos.y>=Y-0.5){const h=U.act(pi);for(let i=0;i<90&&h.pos.z>52.5;i++){U.step(pi,0,51,0.5);if(h.grounded&&h.pos.z<56.6&&h.pos.z>55.4)ZC.press(U.K[pi].j);ZC.tick(1);}U.rel(pi);}
+for(let k=0;k<12&&(U.act(0).pos.z>53||U.act(1).pos.z>53);k++){const pi=U.act(0).pos.z>53?0:1;{tries++;U.goto(pi,0,71,8,0.6);(U.until(()=>!!RD.wave,16),U.until(()=>!RD.wave,8));for(const[x,z]of ISL){const h=U.act(pi);for(let i=0;i<90;i++){const far=!U.step(pi,x,z,0.5);if(far&&h.grounded&&Math.hypot(h.pos.x-x,h.pos.z-z)<3.6&&Math.hypot(h.pos.x-x,h.pos.z-z)>1.6)ZC.press(U.K[pi].j);if(!far)break;ZC.tick(1);}U.rel(pi);if(h.pos.y<Y-1)break;}
+    if(U.act(pi).pos.y>=Y-0.5){const h=U.act(pi);for(let i=0;i<120&&h.pos.z>51.2;i++){U.step(pi,pi?2.4:-2.4,50,0.5);if(h.grounded&&h.pos.z<56.6&&h.pos.z>55.4)ZC.press(U.K[pi].j);ZC.tick(1);}U.rel(pi);}
     if(U.act(pi).pos.z>53)ZC.tick(80);}}
 r.push('cp='+ZC.players.map(p=>p.cp.z.toFixed(1)).join('/'),'y='+U.act(0).pos.y.toFixed(1)+'/'+U.act(1).pos.y.toFixed(1),'tries='+tries,'z='+U.act(0).pos.z.toFixed(1)+'/'+U.act(1).pos.z.toFixed(1),'errs='+_errs.length);if(U.act(0).pos.z>53||U.act(1).pos.z>53)throw new Error('островки: '+r.join(' | '));r.join(' | ')
 //@@ shot=k3b_3.png
