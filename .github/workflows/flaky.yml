@@ -1,0 +1,24 @@
+# Неустойчивые боты: раз в неделю (и вручную) — сводка по results.tsv всех запусков «Боты» за 14 дней (tools/tests/flaky.py):
+# кто прошёл только со второго раза, кто падал на main. Обновляет issue «Неустойчивые боты — сводка CI»; таблица — и в отчёте запуска.
+name: Неустойчивые боты
+
+on:
+  schedule:
+    - cron: '43 5 * * 1'       # понедельник, 05:43 UTC
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+  issues: write
+
+jobs:
+  flaky:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Сводка за 14 дней
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 tools/tests/flaky.py --days 14 --issue | tee -a "$GITHUB_STEP_SUMMARY"

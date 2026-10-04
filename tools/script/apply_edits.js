@@ -18,7 +18,12 @@ const S=JSON.parse(fs.readFileSync(SNAP,'utf8'));const ROWS=new Map();for(const 
 // index.html — склейка частей прототипа proto/ (tools/proto.py): читается склейкой, после записи режется обратно по частям
 const PROTO_PY=path.join(ROOT,'tools','proto.py'),protoCat=rev=>execFileSync('python3',[PROTO_PY,'cat',...(rev?[rev]:[])],{cwd:ROOT,maxBuffer:1<<28}).toString();
 const OLD={},NOW={};const old=f=>OLD[f]!=null?OLD[f]:(OLD[f]=f==='index.html'?protoCat(FLAG.rev):execFileSync('git',['show',FLAG.rev+':'+f],{cwd:ROOT,maxBuffer:1<<28}).toString());
-const now=f=>NOW[f]!=null?NOW[f]:(NOW[f]=f==='index.html'?protoCat():fs.readFileSync(path.join(ROOT,f),'utf8'));
+// модуль или замена, перенесённые в папку уровня (build/levels/<уровень>/) после снимка, — по имени файла
+const MOVED={};const here=f=>{if(MOVED[f])return MOVED[f];if(f==='index.html'||fs.existsSync(path.join(ROOT,f)))return MOVED[f]=f;
+  const base=path.basename(f),bd=path.join(ROOT,'zlataya_cep','build');let hit=null;
+  const walk=d=>{for(const e of fs.readdirSync(d,{withFileTypes:true})){const p=path.join(d,e.name);if(e.isDirectory()){if(!['gpu','voice','fonts'].includes(e.name))walk(p);}else if(e.name===base)hit=p;}};
+  if(/^zlataya_cep\/build\//.test(f))walk(bd);return MOVED[f]=hit?path.relative(ROOT,hit).split(path.sep).join('/'):f;};
+const now=f=>NOW[f]!=null?NOW[f]:(NOW[f]=f==='index.html'?protoCat():fs.readFileSync(path.join(ROOT,here(f)),'utf8'));
 const lineStart=(t,line)=>{let p=0;for(let i=1;i<line;i++){p=t.indexOf('\n',p)+1;if(!p)return -1;}return p;};
 const jsValue=raw=>raw[0]==='`'?null:Function('"use strict";return ('+raw+')')();
 const jsRaw=(v,q)=>q+v.replace(/\\/g,'\\\\').replace(new RegExp(q,'g'),'\\'+q).replace(/\n/g,'\\n')+q;
@@ -108,6 +113,6 @@ for(const [key,pl] of places){const vals=[...new Set(pl.claims.map(x=>x.value))]
   (reps[pl.file]=reps[pl.file]||[]).push({pos:best,len:rawOld.length,rawNew,key});
   applied.push({ids:pl.claims.map(x=>x.id),file:pl.file,from:pl.value,to:nvalue,shared:sharers.get(key)||undefined});}
 for(const f in reps){const L=reps[f].sort((a,b)=>b.pos-a.pos);for(let i=1;i<L.length;i++)if(L[i].pos+L[i].len>L[i-1].pos)problems.push({why:'замены пересекаются',file:f,keys:[L[i].key,L[i-1].key]});
-  if(FLAG.write){let t=now(f);for(const x of L)t=t.slice(0,x.pos)+x.rawNew+t.slice(x.pos+x.len);fs.writeFileSync(path.join(ROOT,f),t);if(f==='index.html')execFileSync('python3',[PROTO_PY,'split'],{cwd:ROOT,stdio:'ignore'});}}
+  if(FLAG.write){let t=now(f);for(const x of L)t=t.slice(0,x.pos)+x.rawNew+t.slice(x.pos+x.len);fs.writeFileSync(path.join(ROOT,f==='index.html'?f:here(f)),t);if(f==='index.html')execFileSync('python3',[PROTO_PY,'split'],{cwd:ROOT,stdio:'ignore'});}}
 const byWhy={};for(const p of problems)byWhy[p.why]=(byWhy[p.why]||0)+1;
 process.stdout.write(JSON.stringify({edits:E.length,places:places.size,appliedCount:applied.length,written:!!FLAG.write,problemsByWhy:byWhy,problems,br:brWarn,applied},null,1));

@@ -10,8 +10,10 @@ const voxKey=(who,text)=>(who||'-')+'|'+String(text).replace(/<[^>]*>/g,'').repl
 for(const e of VOX_LINES){VOX.map.set(voxKey(e.who,e.text),e);if(e.lul)VOX.lul[e.lul]=e;}
 const voxOn=()=>!!AC&&!(FIN.set.vox<=0);
 function voxDecode(e){if(e.buf)return Promise.resolve(e.buf);if(e.pending)return e.pending;if(!AC)return Promise.resolve(null);
-  const bin=atob(e.b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);
-  e.pending=new Promise(res=>{try{AC.decodeAudioData(u.buffer,b=>{e.buf=b;res(b);},()=>{e.bad=true;res(null);});}catch(err){e.bad=true;res(null);}});return e.pending;}
+  // версия для Pages (build_final.py --pages): записи лежат рядом файлами (e.src) и подгружаются при загрузке уровня; иначе — внутри (e.b64)
+  const raw=e.b64?Promise.resolve().then(()=>{const bin=atob(e.b64),u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u.buffer;})
+    :e.src?fetch(e.src).then(r=>{if(!r.ok)throw new Error(r.status);return r.arrayBuffer();}):Promise.reject(new Error('нет записи'));
+  e.pending=raw.then(buf=>new Promise(res=>{try{AC.decodeAudioData(buf,b=>{e.buf=b;res(b);},()=>{e.bad=true;res(null);});}catch(err){e.bad=true;res(null);}}),()=>{e.bad=true;e.pending=null;return null;});return e.pending;}
 function voxBus(){if(!VOX.bus){VOX.bus=AC.createGain();VOX.bus.connect(AC.destination);}VOX.bus.gain.value=0.9*(FIN.set.vox!=null?FIN.set.vox:1);return VOX.bus;}
 function voxStop(fade){const c=VOX.cur;if(!c||!AC)return;VOX.cur=null;if(FIN.voxEv)try{FIN.voxEv(c.e.id,'stop',fade||0.08);}catch(err){}const t=AC.currentTime,f=fade||0.08;
   try{c.g.gain.cancelScheduledValues(t);c.g.gain.setValueAtTime(c.g.gain.value,t);c.g.gain.linearRampToValueAtTime(0,t+f);c.s.stop(t+f+0.02);}catch(err){}}

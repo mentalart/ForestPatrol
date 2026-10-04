@@ -44,8 +44,15 @@ def levels(src):
     return out
 
 # ---------- модули релиза ----------
+def bfiles(pat):
+    """файлы сборки по шаблону имени: build/ и build/levels/<уровень>/ (как build_final.py) — пути от build/, по имени файла"""
+    out=[]
+    for d,ds,fs in os.walk(B):
+        ds[:]=[x for x in ds if x not in ('gpu','voice','fonts')]
+        out+=[os.path.relpath(os.path.join(d,f),B).replace(os.sep,'/') for f in fs if re.match(pat,f)]
+    return sorted(out,key=lambda x:x.split('/')[-1])
 def modules():
-    fs=sorted(f for f in os.listdir(B) if re.match(r'(late_\d+.*|fin_early)\.js$',f))
+    fs=bfiles(r'(late_\d+.*|fin_early)\.js$')
     fs=['fin_early.js']+[f for f in fs if f!='fin_early.js']
     return fs   # build/gpu/ (final07, WebGPU) заморожен — в карту не входит
 def mod_title(src):
@@ -100,7 +107,7 @@ def build_auto():
     for m in mods:
         s=msrc[m];o.append('| `%s` | %s | %s |'%(m,', '.join(sorted(mlv[m])) or '—',cut(mod_title(s),120)))
     o+=['','## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)','','| файл | раздел |','|---|---|']
-    for f in sorted(x for x in os.listdir(B) if re.match(r'rep_\d+.*\.py$',x)):
+    for f in bfiles(r'rep_\d+.*\.py$'):
         for i,l in enumerate(rd(os.path.join(B,f)).split('\n')):
             m=re.match(r'#\s*-{3,}\s*(.*?)\s*-{3,}',l)
             if m:o.append('| `%s` | %s |'%(f,cut(m.group(1),120)))
@@ -126,7 +133,7 @@ def write_map(check=False):
 
 # ---------- where ----------
 def files_for_search():
-    fs=[P(f) for f,a,b in OFFS]+[os.path.join(B,m) for m in modules()]+[os.path.join(B,f) for f in sorted(os.listdir(B)) if re.match(r'rep_\d+.*\.py$',f)]
+    fs=[P(f) for f,a,b in OFFS]+[os.path.join(B,m) for m in modules()]+[os.path.join(B,f) for f in bfiles(r'rep_\d+.*\.py$')]
     return [f for f in fs if os.path.exists(f)]
 def where(q):
     src=proto.join();L=src.split('\n');tb=top_blocks(L);lv=levels(src);found=False
@@ -144,7 +151,7 @@ def where(q):
         for m in modules():
             s=rd(os.path.join(B,m))
             if x['id'] in mod_levels(m,s,fn2lv,am):print('  модуль zlataya_cep/build/%s — %s'%(m,cut(mod_title(s),100)))
-        for f in sorted(f for f in os.listdir(B) if re.match(r'rep_\d+.*\.py$',f)):
+        for f in bfiles(r'rep_\d+.*\.py$'):
             for i,l in enumerate(rd(os.path.join(B,f)).split('\n')):
                 if re.match(r'#\s*-{3,}',l) and (x['name'].split('·')[-1].strip()[:12].lower() in l.lower() or "'%s'"%x['id'] in l):print('  замены zlataya_cep/build/%s:%d %s'%(f,i+1,cut(l,90)))
         print('  боты: '+' '.join(bots_by_level().get(x['id'],[])))

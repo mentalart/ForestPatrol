@@ -56,7 +56,7 @@ U.step=(pi,x,z,tol,jumpIf)=>{const h=U.hero(pi),K=U.K[U.pk(pi)],dx=x-h.pos.x,dz=
   ZC.hold(K.B[0],far&&dx<-0.25);ZC.hold(K.B[1],far&&dx>0.25);ZC.hold(K.B[2],far&&dz<-0.25);ZC.hold(K.B[3],far&&dz>0.25);if(jumpIf&&jumpIf(h))ZC.press(K.j);return !far;};
 U.goto=(pi,x,z,max,tol)=>{for(let i=0;i<(max||8)*60;i++){if(U.step(pi,x,z,tol)){U.rel(pi);return 't='+(i/60).toFixed(2);}ZC.tick(1);}U.rel(pi);return 'TIMEOUT';};
 // смена героя: вдвоём — своя пара (Q/K), в одиночке — Q по кругу Прошка → Потап → Пелагея → Йоша
-U.toKind=(kind,pi)=>{if(U.solo()){for(let i=0;i<4&&U.me().kind!==kind;i++){ZC.press('KeyQ');ZC.tick(6);}return U.me().kind;}
+U.toKind=(kind,pi)=>{if(U.solo()){for(let i=0;i<16&&U.me().kind!==kind;i++){ZC.press('KeyQ');ZC.tick(i<4?6:12);}return U.me().kind;}
   for(let i=0;i<3&&U.act(pi||0).kind!==kind;i++){U.tap(U.K[pi||0].s);ZC.tick(6);}return U.act(pi||0).kind;};
 // ролики: дождаться начала (до max кадров) и конца; U.nocine() — пропустить все подряд
 U.cine=max=>{let t=0;while(!ZC.G.cine&&t<(max||300)){ZC.tick(1);t++;}const was=!!ZC.G.cine;while(ZC.G.cine&&t<4000){ZC.tick(1);t++;}return was;};
