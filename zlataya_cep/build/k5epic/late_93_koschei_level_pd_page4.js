@@ -25,7 +25,7 @@
     const S={};A.S=S;
     function plankTick(dt){for(const P of planks){if(P.t>0){P.t-=dt;if(P.t<=0){P.c.on=true;P.m.visible=true;P.m.material=M(0x7a5634);}}}}
     function burn(li){for(const P of planks)if(P.li===li&&(P.j%3===1||P.j%4===0)&&P.t<=0){P.t=G.solo?5:7;P.c.on=false;P.m.visible=false;FX.sparks(P.m.position.clone().add(new V3(0,0.4,0)),4,0xff8a20);}}
-    function fire(li){S.fire={li,t:0};k5s('pSoft');bark(gor.g?{g:gor.g}:KS,['gorL','gorM','gorR'][li],['Ой… дышу! Левую — прочь!','Не хочу, а дышу! Середина!','Правая! Берегись!'][li],1.4,true);}
+    function fire(li){S.fire={li,t:0};k5s('pSoft');barkS(gor.g?{g:gor.g}:KS,['gorL','gorM','gorR'][li],['Ой… дышу! Левую — прочь!','Не хочу, а дышу! Середина!','Правая! Берегись!'][li],1.4,true);}
     function fireTick(dt){const F=S.fire;if(!F)return;F.t+=dt;const tele=G.solo?1.6:1.25;lanesT[F.li].material.opacity=F.t<tele?0.12+0.25*Math.abs(Math.sin(G.time*12)):Math.max(0,0.55-(F.t-tele));
       if(F.t>=tele&&!F.hit){F.hit=new Set();burn(F.li);k5s('strike');for(let i=0;i<10;i++)later(i*0.04,()=>FX.sparks(new V3(X+LANES[F.li],0.6,-12+i*2.2),6,0xff8a20));}
       if(F.hit&&F.t<tele+0.7)for(const h of k5Heroes())if(!F.hit.has(h)&&Math.abs(h.pos.x-(X+LANES[F.li]))<1.0&&h.pos.z<8.2&&h.pos.z>-14){F.hit.add(h);k5Hurt(h,new V3(X+LANES[F.li],0,h.pos.z-2));if(S.carry&&S.carry.indexOf(h)>=0)drop('Уронили!');}
@@ -37,15 +37,15 @@
     A.end=()=>{KS.g.visible=false;planks.forEach(P=>{P.c.on=true;});};
     A.attack=(h)=>{if(E.cur!==7||!ES.fight)return;
       if(S.ph==='forge'&&hd(h.pos,ANV4)<2.4){const per=0.8,ph=(S.bt%(per*3))/(per*3),win=ph>0.86||ph<0.06;if(win){S.good++;FX.sparks(ANV4.clone().add(new V3(0,1.3,0)),16,0xffd060);SFX.hammer?SFX.hammer():SFX.clink();floatText(ANV4.clone().add(new V3(0,2.4,0)),'В такт! '+S.good+' / 3','#ffe08a');
-          if(S.good>=3){S.ph='carry';bridle.visible=true;bridle.position.set(ANV4.x-1.6,0.25,ANV4.z-1.2);beatR.visible=false;bark(dem,'demyan','Готова узда! Горячая — берите клещами, вдвоём!',2.4,true);E.log('forged');ES.prog=1/3;}}
+          if(S.good>=3){S.ph='carry';bridle.visible=true;bridle.position.set(ANV4.x-1.6,0.25,ANV4.z-1.2);beatR.visible=false;barkS(dem,'demyan','Готова узда! Горячая — берите клещами, вдвоём!',2.4,true);E.log('forged');ES.prog=1/3;}}
         else{floatText(ANV4.clone().add(new V3(0,2.4,0)),'не в такт','#cccccc');SFX.clink();}return;}
       if(S.ph==='carry'&&S.carry&&hd(bridle.position,GOR)<5.8){const pi=h.player;S.rdt[pi]=G.time;const both=G.solo||Math.abs(S.rdt[0]-S.rdt[1])<1.0;
         if(both){S.ph='done';ES.prog=1;swap();}else floatText(h.pos.clone().add(new V3(0,2,0)),'Раз-два-три — разом!','#ffe08a');}};
     A.item=pi=>{if(E.cur!==7||!ES.fight||S.ph!=='carry'||S.carry)return null;const h=active(pi);const wp=i=>ends[i].getWorldPosition(new V3());let ei=-1;for(let i=0;i<2;i++)if(hd(h.pos,wp(i))<1.6)ei=i;if(ei<0)return null;
       return ()=>{S.grab[ei]=h;FX.sparkle(wp(ei),8,0xffd060);floatText(h.pos.clone().add(new V3(0,2,0)),'Клещи — взял!','#ffe08a');
-        if(G.solo||(S.grab[1-ei]&&S.grab[1-ei]!==h&&hd(S.grab[1-ei].pos,wp(1-ei))<2.2)){S.carry=G.solo?[h]:[S.grab[0],S.grab[1]];S.grab=[null,null];E.log('carry');bark(dem,'demyan',G.solo?'Второй конец — мой! Неси!':'Подняли! Шагайте в ногу!',1.6,true);}};};
+        if(G.solo||(S.grab[1-ei]&&S.grab[1-ei]!==h&&hd(S.grab[1-ei].pos,wp(1-ei))<2.2)){S.carry=G.solo?[h]:[S.grab[0],S.grab[1]];S.grab=[null,null];E.log('carry');barkS(dem,'demyan',G.solo?'Второй конец — мой! Неси!':'Подняли! Шагайте в ногу!',1.6,true);}};};
     function swap(){E.log('swap');bridleB.break();k5Flash(GOR.clone().add(new V3(0,4,0)),0xffd76a,4,0.5);bridle.visible=false;const gb=K5L.collar(gor.g,4.2,0.9);gb.g.children.forEach(c=>{if(c.material)c.material=M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.7});});
-      bark({g:gor.g},'gorM','Уговор есть уговор — возить буду! А тебя, Кощей, — вон!',2.6,true);
+      barkS({g:gor.g},'gorM','Уговор есть уговор — возить буду! А тебя, Кощей, — вон!',2.6,true);
       later(1.2,()=>{K5L.ink(KS.g.position.clone().add(new V3(0,2,0)),26);const f=KS.g.position.clone();anim(0.9,k=>{KS.g.position.set(f.x-k*8,f.y+Math.sin(k*Math.PI)*4,f.z-k*6);});later(1,()=>{KS.g.visible=false;E.won(7);});});}
     A.tick=dt=>{if(!ES.fight)return;plankTick(dt);fireTick(dt);if(gor.necks)gor.necks.forEach((n,i)=>{if(n&&n.rotation)n.rotation.z=Math.sin(G.time*1.4+i)*0.15+(S.fire&&S.fire.li===i?0.3:0);});
       // ковка: кольцо сходится в такт
@@ -60,7 +60,7 @@
       // огонь по дорожкам
       S.fireT-=dt;if(S.fireT<=0&&!S.fire){S.fireT=G.solo?4.6:3.4;const hs=k5Heroes();const tgt=hs.find(h=>h.pos.z<8.5&&h.pos.z>-14);const li=tgt?LANES.reduce((b,x,i)=>Math.abs(tgt.pos.x-(X+x))<Math.abs(tgt.pos.x-(X+LANES[b]))?i:b,0):Math.floor(rand(0,3));fire(li);}
       // Лихо: веко поднимается 1,6 с, глаз открыт 1,2 с — кто смотрит в его сторону, засыпает
-      S.eyeT-=dt;if(S.eyeT<=0&&S.eye===0){S.eye=0.001;bark({g:likho.g},'likho','Хр-р… кто тут?..',1.2,true);}
+      S.eyeT-=dt;if(S.eyeT<=0&&S.eye===0){S.eye=0.001;barkS({g:likho.g},'likho','Хр-р… кто тут?..',1.2,true);}
       if(S.eye>0){S.eye+=dt;const k=Math.min(1,S.eye/1.6);if(likho.lid)likho.lid.scale.y=1-k;if(likho.iris)likho.iris.material&&likho.iris.material.emissive&&likho.iris.material.emissive.set(k>=1?0xff4020:0x000000);
         if(S.eye>=1.6&&!S.gaze){S.gaze=true;const po=k5Heroes().find(h=>h.kind==='potap'&&h.guard);for(const h of k5Heroes()){const dx=LIKHO.x-h.pos.x,dz=LIKHO.z-h.pos.z,d=Math.hypot(dx,dz)||1,dot=(Math.sin(h.face)*dx+Math.cos(h.face)*dz)/d;
             const hid=po&&po!==h&&hd(po.pos,h.pos)<1.8&&hd(po.pos,LIKHO)<d;if(dot>0.25&&!hid&&!(h===po)){S.sleep.set(h,3);floatText(h.pos.clone().add(new V3(0,2.2,0)),'Zzz… заснул!','#c8b8ff');if(S.carry&&S.carry.indexOf(h)>=0)drop('Заснул — уронили!');E.log('sleep');}

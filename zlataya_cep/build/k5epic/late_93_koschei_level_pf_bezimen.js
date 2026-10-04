@@ -25,19 +25,19 @@
   /* ---------- «Все сказки разом» ---------- */
   const rows=[];
   function moveStart(i){const M0=MEM[i%4];ES.mv={i:i%4,t:0,done:!!ES.mem[i%4]};ES.atkT=0;KS.g.visible=true;KS.g.position.set(C.x,0,C.z-2);try{KA.pose('castR',{antic:0.25});}catch(e){}k5s('cast');
-    bark(KS,'koschei',['Я — Путаник! Лес, сомкнись!','Я — Водяной! Омут, крути!','Я — Соловей! Фью-у-у!','Я — Горыныч! Огонь!'][i%4],1.8,true);
+    barkS(KS,'koschei',['Я — Путаник! Лес, сомкнись!','Я — Водяной! Омут, крути!','Я — Соловей! Фью-у-у!','Я — Горыныч! Огонь!'][i%4],1.8,true);
     if(i%4===0){for(const s of[-1,1])for(let j=0;j<5;j++){const g=k5Prop(new THREE.Group());const m=M(0x1e1a2a,{emissive:0x2a1048,emissiveIntensity:0.4});addMesh(new THREE.CylinderGeometry(0.15,0.2,1,6),M(0x3a2a1a),0,0.5,0,g);
         for(let q=0;q<3;q++)addMesh(new THREE.ConeGeometry(1-q*0.25,1.3,7),m,0,1+q*0.75,0,g);g.position.set(C.x+s*11,0,C.z-8+j*4);g.userData.s=s;K5L.noRay(g);rows.push(g);}}
     memRings[i%4].visible=true;floatText(MEM[i%4].p.clone().add(new V3(0,3.6,0)),'Это же '+['Леший','Водяной','Соловей','Горыныч'][i%4]+'! Щит вместе рядом — вспомнит!','#ffe08a');E.log('move'+i%4);}
   function moveEnd(){const mv=ES.mv;if(!mv)return;memRings[mv.i].visible=false;for(const g of rows.splice(0))k5Del(g);ES.mv=null;}
-  function counter(i){ES.mem[i]=true;E.log('mem'+i);const M0=MEM[i];fog[i].visible=false;const p=M0.p.clone().add(new V3(0,2.4,0));K5L.gold(p,24);k5Pillar(M0.p.clone(),0xffd76a,6,0.6,1);
+  function counter(i){if(ES.mv){if(ES.mv.countered)return;ES.mv.countered=true;}ES.mem[i]=true;E.log('mem'+i);const M0=MEM[i];fog[i].visible=false;const p=M0.p.clone().add(new V3(0,2.4,0));K5L.gold(p,24);k5Pillar(M0.p.clone(),0xffd76a,6,0.6,1);
     say(['leshy','vod','solovei','gorM'][i],['Я — Леший! Ёлки мои — ко мне, на Кощея!','Я — Водяной! Омут мой — тебя и закрутит!','Я — Соловей-Разбойник! Пересвищу!','Мы — Горыныч! Крыльями укроем, огнём — обратно!'][i],2.6,true);
     const kp=KS.g.position.clone();if(i===0)for(const g of rows){const f=g.position.clone();k5fx(0.7,k=>{g.position.lerpVectors(f,kp.clone().add(new V3(rand(-1.5,1.5),0,rand(-1.5,1.5))),k);});}
     if(i===1)k5fx(1.4,k=>{KS.g.rotation.y+=0.4;});if(i===2)for(let q=0;q<4;q++)later(q*0.12,()=>k5Ring(new V3(M0.p.x,1.6,M0.p.z),0xfff4d0,0.5,12,0.7,0.06,new THREE.Euler(Math.PI/2,0,0)));
     if(i===3)k5Pillar(kp.clone(),0xff8a30,8,1.6,1);later(0.8,()=>{moveEnd();winOpen();});music();}
   function winOpen(){ES.win=G.solo?6:7;ES.wh=0;try{KA.pose('slump');}catch(e){}floatText(kosTop(),'Открыт! Бейте!','#ffe08a');}
-  W.hittables.push({pos:new V3(),r:1.4,alive:()=>E.cur===11&&ES.fight&&ES.ph==='moves'&&(ES.win>0||ES.spes<=0),onHit:h=>{if(ES.spes<=0){bindHit(h);return;}if(G.time<(ES.hcd||0))return;ES.hcd=G.time+0.3;ES.wh++;ES.spes--;burst(KS.g.position.clone().add(new V3(0,2,0)),0xffffff,6,3);SFX.hit&&SFX.hit();
-      floatText(kosTop(),ES.spes>0?'Удар!':'Спесь сбита!','#ffe08a');if(ES.spes<=0){ES.win=99;banner('Спесь сбита!','#ffd76a',2.4,G.solo?'ударь рядом — золотая нить':'оба — удар рядом: золотая нить сказа');}else if(ES.wh>=(G.solo?2:3))ES.win=Math.min(ES.win,0.3);}});
+  W.hittables.push({pos:new V3(),r:1.4,alive:()=>E.cur===11&&ES.fight&&ES.ph==='moves'&&(ES.win>0||ES.spes<=0),onHit:h=>{if(ES.spes<=0){bindHit(h);return;}const cap=Math.ceil(ES.spesMax/4);if(ES.wh>=cap&&ES.mem.some(m=>!m))return;if(G.time<(ES.hcd||0))return;ES.hcd=G.time+0.3;ES.wh++;ES.spes--;burst(KS.g.position.clone().add(new V3(0,2,0)),0xffffff,6,3);SFX.hit&&SFX.hit();
+      floatText(kosTop(),ES.spes>0?'Удар!':'Спесь сбита!','#ffe08a');if(ES.spes<=0){ES.win=99;banner('Спесь сбита!','#ffd76a',2.4,G.solo?'ударь рядом — золотая нить':'оба — удар рядом: золотая нить сказа');}else if(ES.wh>=Math.ceil(ES.spesMax/4)&&ES.mem.some(m=>!m))ES.win=Math.min(ES.win,0.3);}});
   const b11=W.hittables[W.hittables.length-1];
   function bindHit(h){const pi=h.player;ES.bind=ES.bind||[-9,-9];ES.bind[pi]=G.time;k5Thread(()=>hH(h),()=>KS.g.position.clone().add(new V3(0,2.4,0)));k5s('bind');if(G.solo||players[1-pi].downed||Math.abs(ES.bind[1-pi]-G.time)<1.6){ES.fight=false;bindBeat();E.won(11);}else floatText(kosTop(),'Второй — тоже!','#ffe08a');}
   const music=()=>K5L.music(ES.ph==='wall'?'ink':'song',ES.ph==='wall'?0:Math.max(1,E.freeCount()-4+ES.mem.filter(Boolean).length));
@@ -53,7 +53,7 @@
         return;}
       // «Все сказки разом»
       if(ES.win>0){ES.win-=dt;KS.g.rotation.y=Math.sin(G.time*1.4)*0.2;if(ES.win<=0&&ES.spes>0){floatText(kosTop(),'Опомнился!','#c8a8ff');ES.mi++;later(1.2,()=>{if(E.cur===11&&ES.spes>0)moveStart(ES.mi);});}return;}
-      const mv=ES.mv;if(!mv)return;mv.t+=dt;ES.atkT-=dt;const kp=KS.g.position;
+      const mv=ES.mv;if(!mv||mv.countered)return;mv.t+=dt;ES.atkT-=dt;const kp=KS.g.position;
       // помощник уже вспомнил себя — отвечает сам через 4 с
       if(mv.done&&mv.t>4){counter(mv.i);return;}
       // щит вместе в кругу замершего друга

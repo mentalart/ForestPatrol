@@ -13,7 +13,7 @@
         k5fx(0.8,k=>{n.position.lerpVectors(f,to,k);n.position.y+=Math.sin(k*Math.PI)*3;},()=>{k5Del(n);KB.dazeT=Math.max(KB.dazeT||0,1.6);K5L.gold(to,10);floatText(to.clone().add(new V3(0,1,0)),'Орешек-изумруд!','#9fe0a0');});E.log('nut');}
       ES.eggT-=dt;if(ES.eggT<=0)for(const pi of[0,1]){const p=players[pi];if(p.downed||p.petals>1)continue;const h=active(pi);ES.eggT=25;const e=k5Prop(new THREE.Mesh(new THREE.SphereGeometry(0.3,10,8),M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.7})));e.scale.set(1,1.3,1);
         const f=ryaba.g.position.clone().add(new V3(0,0.4,0));k5fx(1.0,k=>{e.position.lerpVectors(f,h.pos.clone().add(new V3(0,0.4,0)),k);e.rotation.z+=0.3;},()=>{k5Del(e);p.petals=Math.min(3,p.petals+1);K5L.gold(h.pos.clone().add(new V3(0,1,0)),12);floatText(h.pos.clone().add(new V3(0,2,0)),'Золотое яичко! +лепесток','#ffe08a');});
-        bark(ryaba,'ryaba','Ко-ко! Держи яичко — не простое, золотое!',1.8,true);E.log('egg');break;}},
+        barkS(ryaba,'ryaba','Ко-ко! Держи яичко — не простое, золотое!',1.8,true);E.log('egg');break;}},
     end(){},goal:pi=>'',targets:pi=>[]};
   /* ================= «Тянем-потянем»: последняя чёрная цепь вросла в корни дуба ================= */
   // Встают все, как в «Репке»: Дедка за цепь, Яга за Дедку, Пелагея за Ягу, Потап за Пелагею, Кот за Потапа — и мышка Йоша последней.
@@ -33,7 +33,7 @@
       // все держат свои места
       team.forEach(([k,o],i)=>{const s=slot(i);const back=R0.k*1.4;if(o.pos){o.pos.x=s.x+0.5;o.pos.z=s.z+back;o.vel.set(0,0,0);o.face=Math.PI;}else{(o.g||o).position.set(s.x+0.5,0,s.z+back);}});
       // рывок Кощея: щит обоих
-      R0.surgeT-=dt;if(!R0.surge&&R0.surgeT<=0&&!R0.last){R0.surge={t:0};R0.surgeT=G.solo?7:5.5;bark(KS,'koschei','Не отдам!',1,true);try{KA.pose('threat',{antic:0.2});}catch(e){}}
+      R0.surgeT-=dt;if(!R0.surge&&R0.surgeT<=0&&!R0.last){R0.surge={t:0};R0.surgeT=G.solo?7:5.5;barkS(KS,'koschei','Не отдам!',1,true);try{KA.pose('threat',{antic:0.2});}catch(e){}}
       if(R0.surge){R0.surge.t+=dt;const ok=G.solo?active(G.soloPi).guard:(active(0).guard&&active(1).guard);if(R0.surge.t>1.0){if(!ok&&R0.k>0){R0.k=Math.max(0,R0.k-1);floatText(endP.clone().add(new V3(0,2.4,0)),'Перетянул! Щиты!','#ff9ab8');shakeAll(0.06,0.3);}
           else if(ok)floatText(endP.clone().add(new V3(0,2.4,0)),'Удержали!','#9fe0ff');R0.surge=null;}else K5L.ink(root.clone().add(new V3(rand(-1,1),0.4,rand(-1,1))),1);}
       ES.prog=0.95;K5L.hud.show(12,0.7+0.3*R0.k/6,0,0,'тянем-потянем '+R0.k+' / 6');};
@@ -45,7 +45,7 @@
         if(R0.k>=5){R0.last=true;say('pelageya','Вытянуть не можем… Позвали мышку! Йоша — последний рывок!',3,true);floatText(T.yosha.pos.clone().add(new V3(0,1.6,0)),'Йоша: удар '+K(G.solo?0:1,'attack')+'!','#ffd76a');}}};
     function finish(){R0.done=true;E.log('repkaDone');k5s('shatter');shakeAll(0.12,0.8);k5Flash(root.clone(),0xffe0a0,8,0.6);K5L.gold(root.clone().add(new V3(0,1,0)),40);k5Del(ch);ch=chainLine(root,endP,COL.gold);
       const i=W.updates.indexOf(tickF);if(i>=0)W.updates.splice(i,1);k5Del(beatR);try{KA.pose('slump');}catch(e){}const f=KS.g.position.clone();anim(0.8,k=>{KS.g.position.set(f.x,Math.sin(k*Math.PI)*1.2,f.z+k*1.5);});
-      E.oakGreen(1,true);later(1.4,()=>{bark(kot,'kot','…И там я был, и мёд я пил; у моря видел дуб зелёный…',4,true);});later(5.6,()=>{k5Del(ch);ES.repkaAtk=null;done();});}};
+      E.oakGreen(1,true);later(1.4,()=>{barkS(kot,'kot','…И там я был, и мёд я пил; у моря видел дуб зелёный…',4,true);});later(5.6,()=>{k5Del(ch);ES.repkaAtk=null;done();});}};
   // удар во время «Репки»
   {const _oa=W.onAttack;W.onAttack=(pi,h)=>{if(E.cur===12&&ES.repkaAtk){ES.repkaAtk(h,pi);return;}if(_oa)_oa(pi,h);};}
   /* ================= пролог «Через леса, через моря»: на Горыныче за чёрной тучей Кощея ================= */

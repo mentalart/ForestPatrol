@@ -15,7 +15,7 @@
   {const _co=candleOff;candleOff=function(e,txt){const was=e.lit;_co(e,txt);if(!was||E.cur!==1||G.solo)return;const j=pairOf(e.idx),P=candles[j];if(!P)return;
       if(P.lit){e.relT=Math.min(e.relT,6+2*(E.fails[1]||0));floatText(P.pos.clone().add(new V3(0,2.9,0)),'и эту — скорей!','#ffb0d0');}
       else{e.relT=Math.max(e.relT,40);P.relT=Math.max(P.relT,40);const T=threads.find(t=>(t.a===e.idx&&t.b===j)||(t.b===e.idx&&t.a===j));if(T){const p=T.m.position.clone();K5L.gold(p,16);k5Flash(p,0xffd76a,2,0.3);}
-        const out=PAIRS.filter(([a,b])=>!candles[a].lit&&!candles[b].lit).length;E.oakGreen(out/4*0.5,true);if(!E.said_y){E.said_y=true;bark(T_.yosha,'yosha','Пару погасили! Дуб полью — пусть зеленеет!',2.2,true);}
+        const out=PAIRS.filter(([a,b])=>!candles[a].lit&&!candles[b].lit).length;E.oakGreen(out/4*0.5,true);if(!E.said_y){E.said_y=true;barkS(T_.yosha,'yosha','Пару погасили! Дуб полью — пусть зеленеет!',2.2,true);}
         k5Pillar(OAK.clone().setY(0),0x9fe0a0,7,1.4,1.0);}};}
   const T_=T;
   E.layer[1]={start(){ES.lt=6;},
@@ -29,14 +29,14 @@
   function rowMake(){const z=rand(C.z-8,C.z+7),dir=Math.random()<0.5?-1:1,x0=dir>0?-12:12,trees=[];const tele=k5Prop(new THREE.Mesh(new THREE.PlaneGeometry(24,2.2),k5Add(0x7aff9a,{opacity:0.0})));tele.rotation.x=-Math.PI/2;tele.position.set(C.x,0.06,z);
     for(let i=0;i<3;i++){const g=k5Prop(new THREE.Group());const m=M(0x1e2a24,{emissive:0x2a1048,emissiveIntensity:0.4});addMesh(new THREE.CylinderGeometry(0.15,0.2,1,6),M(0x3a2a1a),0,0.5,0,g);for(let j=0;j<3;j++)addMesh(new THREE.ConeGeometry(1.1-j*0.25,1.4,7),m,0,1.1+j*0.8,0,g);
       g.position.set(x0-dir*i*1.8,0,z+rand(-0.4,0.4));K5L.noRay(g);trees.push(g);}
-    const RW={z,dir,trees,tele,t:0,hit:new Set()};ES.rows.push(RW);if(!ES.saidRow){ES.saidRow=true;bark(FR.leshy.m,'leshy','Ой, ноги сами идут! Берегитесь, ребятушки!',2.4,true);}return RW;}
+    const RW={z,dir,trees,tele,t:0,hit:new Set()};ES.rows.push(RW);if(!ES.saidRow){ES.saidRow=true;barkS(FR.leshy.m,'leshy','Ой, ноги сами идут! Берегитесь, ребятушки!',2.4,true);}return RW;}
   function rowsTick(dt){for(const RW of ES.rows.slice()){RW.t+=dt;if(RW.t<1.4){RW.tele.material.opacity=0.12+0.15*Math.sin(G.time*14);continue;}RW.tele.material.opacity=Math.max(0,RW.tele.material.opacity-dt);
       for(const g of RW.trees){g.position.x+=RW.dir*6*dt;g.rotation.z=Math.sin(G.time*12)*0.05;for(const h of k5Heroes()){if(RW.hit.has(h))continue;if(Math.abs(h.pos.x-g.position.x)<1.0&&Math.abs(h.pos.z-g.position.z)<1.1&&h.pos.y<2){RW.hit.add(h);k5Hurt(h,g.position);}}}
       if(RW.t>6.5){RW.trees.forEach(k5Del);k5Del(RW.tele);ES.rows.splice(ES.rows.indexOf(RW),1);}}}
   // молния, ударившая рядом с Лешим, рвёт застёжку ошейника
   function boltWatch(){const now=new Set(K5.zones||[]);for(const z of ES.zw||[]){if(now.has(z)||z.userData.dead)continue;const p=z.position;if(!FR.leshy.free&&hd(p,FR.leshy.m.g.position)<2.6){ES.clasp=(ES.clasp||0)+1;
         K5L.gold(FR.leshy.m.g.position.clone().add(new V3(0,2.2,0)),14);k5s('keyBreak');floatText(FR.leshy.m.g.position.clone().add(new V3(0,3.4,0)),ES.clasp>=2?'Свободен!':'Застёжка лопнула!','#ffe08a');E.log('clasp');
-        if(ES.clasp>=2){E.freeF('leshy');bark(FR.leshy.m,'leshy','Спасибо, ребятушки! Ну, Кощей, держись — мой лес теперь за них!',3,true);later(0.8,()=>{const f=FR.leshy.m.g.position.clone();anim(1.2,k=>FR.leshy.m.g.position.lerpVectors(f,FR.leshy.home,k));E.sprucesOn();});}}}
+        if(ES.clasp>=2){E.freeF('leshy');barkS(FR.leshy.m,'leshy','Спасибо, ребятушки! Ну, Кощей, держись — мой лес теперь за них!',3,true);later(0.8,()=>{const f=FR.leshy.m.g.position.clone();anim(1.2,k=>FR.leshy.m.g.position.lerpVectors(f,FR.leshy.home,k));E.sprucesOn();});}}}
     ES.zw=[...now];}
   E.layer[2]={start(){ES.rows=[];ES.rowT=5;ES.clasp=0;ES.zw=[];if(!E.free.leshy){FR.leshy.m.g.position.copy(LSH_IN);FR.leshy.m.g.rotation.y=Math.atan2(C.x-LSH_IN.x,C.z-LSH_IN.z);}else E.sprucesOn();},
     tick(dt){if(!K5.fight)return;rowsTick(dt);boltWatch();
@@ -75,7 +75,7 @@
   const s3mk=W.marks.slice(-4);
   // Кикимора: её кудель путает ноги рядом (липкое пятно); веретено — три удара (Потапу — один), и она свободна
   W.hittables.push({pos:new V3(),r:0.9,alive:()=>E.cur===3&&ES.fight&&!E.free.kiki,onHit:h=>{ES.spool=(ES.spool||0)+(h.kind==='potap'?3:1);SFX.clink();FX.sparks(spool.position.clone().add(new V3(0,0.6,0)),8,0xd8c8a0);
-    if(ES.spool>=3){E.freeF('kiki');spool.visible=false;bark(FR.kiki.m,'kiki','Должна была — отдаю! Кудель моя — вам рогаткой!',2.8,true);later(0.6,()=>{sling.visible=true;handle.visible=true;FX.sparkle(SLING.clone().add(new V3(0,1,0)),14,0xfff0c0);});E.log('kiki');}else floatText(spool.position.clone().add(new V3(0,1.4,0)),'ещё!','#d8c8a0');}});
+    if(ES.spool>=3){E.freeF('kiki');spool.visible=false;barkS(FR.kiki.m,'kiki','Должна была — отдаю! Кудель моя — вам рогаткой!',2.8,true);later(0.6,()=>{sling.visible=true;handle.visible=true;FX.sparkle(SLING.clone().add(new V3(0,1,0)),14,0xfff0c0);});E.log('kiki');}else floatText(spool.position.clone().add(new V3(0,1.4,0)),'ещё!','#d8c8a0');}});
   const spoolHt=W.hittables[W.hittables.length-1];
   // рогатка: один встал в петлю, второй бьёт по ручке — летит к Кощею; в одиночку Кикимора тянет сама
   W.hittables.push({pos:HANDLE.clone(),r:0.9,alive:()=>E.cur===3&&ES.fight&&E.free.kiki&&!ES.fly,onHit:h=>{const rider=k5Heroes().find(q=>q!==h&&hd(q.pos,SLING)<0.9);if(rider)slingGo(rider);else floatText(HANDLE.clone().add(new V3(0,1.6,0)),'в петлю — друга!','#d8c8a0');}});

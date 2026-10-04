@@ -4,7 +4,7 @@
   // тот отбивает шар другу в небо, схваченный отбивает Кощею в лицо: Кощей разжимает кулак, Жар-птица ловит. Колокол под дубом — свист
   // Соловья: Кощея сдувает ниже, угольки гаснут. Горыныч кружит над поляной и жжёт воронов.
   const gorFly=makeGorynych();gorFly.g.scale.setScalar(0.9);gorFly.g.visible=false;K5L.noRay(gorFly.g);
-  function grabTry(){const hs=k5Heroes();if(hs.length<2||ES.grab)return;const h=hs[Math.floor(rand(0,2))];const p=h.pos.clone();bark(KS,'koschei','А этого — в тучи! Через леса, через моря!',1.6,true);
+  function grabTry(){const hs=k5Heroes();if(hs.length<2||ES.grab)return;const h=hs[Math.floor(rand(0,2))];const p=h.pos.clone();barkS(KS,'koschei','А этого — в тучи! Через леса, через моря!',1.6,true);
     k5Zone(p,1.7,G.solo?1.8:1.4,0xc040ff,q=>{if(E.cur!==8||!K5.fight)return;const t=k5Heroes().find(x=>hd(x.pos,q)<1.8&&x.rollT<=0&&G.time-(x.lastRoll||-9)>0.3);if(!t){floatText(q.clone().add(new V3(0,2,0)),'Увернулся!','#9fe0ff');return;}
       ES.grab={h:t,t:0};E.log('grab');k5s('flyUp');floatText(t.pos.clone().add(new V3(0,2,0)),'Унёс!','#c8a8ff');later(0.6,()=>say('zven','Шар — другу в небо! Пусть отобьёт Кощею в лицо!',2.8,true));
       const other=k5Heroes().find(x=>x!==t);if(other&&!K5.orbs.length)later(1.2,()=>{if(ES.grab&&K5.fight)orbThrow(other);});});}
@@ -68,13 +68,13 @@
   const rootsM=k5Prop(new THREE.Group());for(let i=0;i<6;i++){const c=addMesh(new THREE.CylinderGeometry(0.1,0.18,3,5),M(0x5a3a1a),Math.cos(i)*0.8,1.2,Math.sin(i)*0.8,rootsM);c.rotation.z=0.5*Math.cos(i*2);}rootsM.visible=false;K5L.noRay(rootsM);
   function kneeW(i){const p=new V3();kneeR[i].getWorldPosition(p);return p;}
   W.hittables.push({pos:new V3(),r:1.3,alive:()=>E.cur===10&&ES.fight&&ES.ph==='knees'&&ES.root!=null&&!ES.knee[ES.root],onHit:h=>{const i=ES.root;ES.kHp[i]-=(h.kind==='potap'?2:1);SFX.clink();FX.sparks(kneeW(i),10,0xffd060);
-      if(ES.kHp[i]<=0){ES.knee[i]=true;kneeR[i].visible=false;K5L.gold(kneeW(i),16);floatText(kneeW(i).add(new V3(0,1,0)),'Заклёпка долой!','#ffe08a');E.log('knee'+i);if(ES.knee[0]&&ES.knee[1])kneel();}
+      if(ES.kHp[i]<=0){ES.knee[i]=true;kneeR[i].visible=false;ES.root=null;ES.rootT=0;rootsM.visible=false;K5L.gold(kneeW(i),16);floatText(kneeW(i).add(new V3(0,1,0)),'Заклёпка долой!','#ffe08a');E.log('knee'+i);if(ES.knee[0]&&ES.knee[1])kneel();}
       else floatText(kneeW(i).add(new V3(0,1,0)),'ещё!','#ffe08a');}});
   const kneeHt=W.hittables[W.hittables.length-1];
   W.hittables.push({pos:new V3(),r:1.6,alive:()=>E.cur===10&&ES.fight&&ES.ph==='heart',onHit:h=>{const pi=h.player;if(h.pos.y<SHW.y-1)return;ES.hb[pi]=G.time;const both=G.solo||Math.abs(ES.hb[0]-ES.hb[1])<1.2;FX.sparks(heart.getWorldPosition(new V3()),12,0xffd060);
       if(both){ES.ph='open';E.log('heart');heartOpen();}else floatText(heart.getWorldPosition(new V3()).add(new V3(0,1.2,0)),'Вдвоём — разом!','#ffe08a');}});
   const heartHt=W.hittables[W.hittables.length-1];
-  function kneel(){ES.ph='heart';ES.prog=0.6;bark(FR.vod.m,'vod','Волна — под колено!',1.4,true);const wv=k5Prop(new THREE.Mesh(new THREE.BoxGeometry(22,3,1),k5eMB(0x7ad8ff,{opacity:0.6})));wv.position.set(0,1.5,8);
+  function kneel(){ES.ph='heart';ES.prog=0.6;barkS(FR.vod.m,'vod','Волна — под колено!',1.4,true);const wv=k5Prop(new THREE.Mesh(new THREE.BoxGeometry(22,3,1),k5eMB(0x7ad8ff,{opacity:0.6})));wv.position.set(0,1.5,8);
     k5fx(1.2,k=>{wv.position.z=8-k*24;},()=>k5Del(wv));later(0.9,()=>{const y0=giant.position.y;anim(0.8,k=>{giant.position.y=y0-3*CE.outBack(k);});shakeAll(0.1,0.5);k5s('stomp');SHW.y=7.5;shPlat.miny=6.9;shPlat.maxy=7.5;shPlat.on=true;
       floatText(SHW.clone().add(new V3(0,2,0)),'Великан на колене! На плечо — и в грудь, вдвоём!','#ffe08a');});}
   function heartOpen(){heartLock.visible=false;hammer.visible=true;K5L.gold(heart.getWorldPosition(new V3()),30);k5Flash(heart.getWorldPosition(new V3()),0xffe0a0,6,0.6);k5s('reveal');
@@ -93,7 +93,7 @@
       // Леший: встал у ноги на секунду — корни держат её 7 с
       if(ES.ph==='knees'){if(ES.root!=null){ES.rootT-=dt;if(ES.rootT<=0){ES.root=null;rootsM.visible=false;}}
         else for(let i=0;i<2;i++){if(ES.knee[i])continue;const p=new V3(GC.x+(i?2.2:-2.2),0,GC.z);if(k5Heroes().some(h=>hd(h.pos,p)<2.4)){ES.rootW=(ES.rootW||0)+dt;if(ES.rootW>0.8){ES.rootW=0;ES.root=i;ES.rootT=7;rootsM.visible=true;rootsM.position.copy(p);
-              bark(FR.leshy.m,'leshy','Корни, держите!',1.2,true);floatText(p.clone().add(new V3(0,4,0)),'Нога замерла — бей заклёпку!','#b8e070');E.log('root'+i);}break;}}}
+              barkS(FR.leshy.m,'leshy','Корни, держите!',1.2,true);floatText(p.clone().add(new V3(0,4,0)),'Нога замерла — бей заклёпку!','#b8e070');E.log('root'+i);}break;}}}
       // кулак: замах (красный круг) → удар → рука лежит 6 с (по ней — на плечо) → подъём
       const st=ES.arm;ES.at-=dt;const Q0=new THREE.Quaternion(),sh=new V3(GC.x+3.2,giant.position.y+10.5,GC.z);
       if(st==='rest'&&ES.at<=0&&ES.ph!=='open'){const h=nearH(GC);if(h){let dx=h.pos.x-sh.x,dz=h.pos.z-sh.z;const L=Math.hypot(dx,dz)||1;if(L>10){dx*=10/L;dz*=10/L;}ES.F=new V3(sh.x+dx,0,sh.z+dz);ES.arm='raise';ES.at=G.solo?1.7:1.3;

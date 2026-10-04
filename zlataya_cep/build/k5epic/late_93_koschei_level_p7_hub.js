@@ -82,7 +82,7 @@
   const sheltered=h=>SPR.some(S=>hd(S.pos,h.pos)<1.9);E.sheltered=sheltered;
   W.pingCall=(pi,h)=>{if(!E.isHub(E.cur)||G.cine)return;
     if(E.free.leshy&&SPR.length){const kz=KS.g.position,dx=h.pos.x-kz.x,dz=h.pos.z-kz.z,d=Math.hypot(dx,dz)||1;let S=SPR[0];for(const q of SPR)if(hd(q.pos,h.pos)>hd(S.pos,h.pos))S=q;   // дальнюю ёлку — к герою, между ним и Кощеем
-      spruceTo(S,h.pos.x-dx/d*1.3,h.pos.z-dz/d*1.3);npcEm(FR.leshy.m,'nod')();if(!E.said_l){E.said_l=true;bark(FR.leshy.m,'leshy','Ёлочки — встаньте, укройте ребят!',2.2,true);}}
+      spruceTo(S,h.pos.x-dx/d*1.3,h.pos.z-dz/d*1.3);npcEm(FR.leshy.m,'nod')();if(!E.said_l){E.said_l=true;barkS(FR.leshy.m,'leshy','Ёлочки — встаньте, укройте ребят!',2.2,true);}}
     if(E.free.zhar&&ES.dark){ES.lightT=5;}};
   // молния в красный круг рядом с ёлкой бьёт в ёлку, ветер не толкает того, кто за ёлкой
   {const _wt=windTick;windTick=function(dt){const keep=[];if(NAT.wind)for(const h of [active(0),active(1)])if(h&&sheltered(h))keep.push([h,h.pos.clone()]);_wt(dt);for(const [h,p] of keep){h.pos.x=p.x;h.pos.z=p.z;}};}
@@ -94,13 +94,13 @@
       stupaT=20;const to=f.pos.clone().add(new V3(1.2,0,0.6));stupa.g.visible=true;const a=h.pos.clone().add(new V3(0,6,0));stupa.g.position.copy(a);E.log('stupa');
       anim(0.7,k=>{stupa.g.position.lerpVectors(a,h.pos.clone().add(new V3(0,1,0)),CE.outCubic(k));});
       later(0.75,()=>{const b=stupa.g.position.clone();anim(1.0,k=>{stupa.g.position.lerpVectors(b,to.clone().add(new V3(0,1.4,0)),CE.inOutSine(k));stupa.g.position.y+=Math.sin(k*Math.PI)*3;});
-        later(1.0,()=>{placeOnGround(h,to.x,to.z,to.y);FX.dust(to.clone(),10,0xd8c8a8);bark(stupa,'yaga','Держи своего! Подшивай!',1.6,true);const c=stupa.g.position.clone();anim(0.8,k=>{stupa.g.position.set(c.x+k*6,c.y+k*8,c.z-k*4);if(k>=1)stupa.g.visible=false;});});});break;}}
+        later(1.0,()=>{placeOnGround(h,to.x,to.z,to.y);FX.dust(to.clone(),10,0xd8c8a8);barkS(stupa,'yaga','Держи своего! Подшивай!',1.6,true);const c=stupa.g.position.clone();anim(0.8,k=>{stupa.g.position.set(c.x+k*6,c.y+k*8,c.z-k*4);if(k>=1)stupa.g.visible=false;});});});break;}}
   // Соловей на ветке: колокол под дубом — удар или рогатка; свист сдувает тучу (стадия 8) или сбивает Кощея с ног (9, 12)
   let bellCd=0;E.bellCd=()=>bellCd;
   W.hittables.push({pos:new V3(bell.position.x,1.2,bell.position.z),r:1.0,alive:()=>E.free.solo&&E.isHub(E.cur)&&!G.cine&&bellCd<=0,onHit:()=>bellRing()});
   W.marks.push({pos:new V3(bell.position.x,2.3,bell.position.z),active:()=>E.free.solo&&E.isHub(E.cur)&&bellCd<=0,onHit:()=>bellRing()});
   function bellRing(){if(bellCd>0)return;bellCd=G.solo?14:20;SFX.bell?SFX.bell():AUD.ready()&&AUD.bell(660,{v:0.08,d:1.5,wet:0.5});anim(0.6,k=>{bell.userData.cup.rotation.z=Math.sin(k*Math.PI*4)*0.4*(1-k);});
-    later(0.4,()=>{bark(solo,'solovei','Фью-у-у-у-ить!',1.4,true);const p=solo.g.position.clone();for(let i=0;i<4;i++)later(i*0.12,()=>k5Ring(new V3(p.x,p.y-1,p.z+2),0xfff4d0,0.5,9,0.7,0.06,new THREE.Euler(0,0,0)));
+    later(0.4,()=>{barkS(solo,'solovei','Фью-у-у-у-ить!',1.4,true);const p=solo.g.position.clone();for(let i=0;i<4;i++)later(i*0.12,()=>k5Ring(new V3(p.x,p.y-1,p.z+2),0xfff4d0,0.5,9,0.7,0.06,new THREE.Euler(0,0,0)));
       if(E.onWhistle)E.onWhistle();else if(K5.live&&KB.pos.y<1.2&&KB.state!=='broken'){KB.dazeT=Math.max(KB.dazeT||0,2.6);K5.winN=0;floatText(kosTop(),'Сдуло!','#fff4d0');KB.pos.z-=0.6;}});E.log('bell');}
   // Жар-птица: кружит над полем; где темно (стадия 8) — подсвечивает Кощея по «Ко мне!»
   function zharTick(dt){if(!E.free.zhar)return;const a=G.time*0.6;zhar.g.position.set(C.x+Math.cos(a)*9,9+Math.sin(a*2)*0.8,C.z+Math.sin(a)*7);zhar.g.rotation.y=-a;if(ES.lightT>0){ES.lightT-=dt;zhar.g.position.lerp(KS.g.position.clone().add(new V3(0,6,0)),0.6);}}

@@ -18,12 +18,12 @@
       hut.g.position.set(X,0,-4);hut.g.rotation.y=0;if(hut.door)hut.door.visible=false;if(hut.house)hut.house.position.y=hut.house.userData.y0==null?(hut.house.userData.y0=hut.house.position.y):hut.house.userData.y0;
       (S.tieMs||[]).forEach(k5Del);S.tieMs=[];circles.forEach(c=>{c.visible=false;});hutCyl.on=true;}
     A.start=q=>{reset();KS.g.visible=true;dome.visible=false;KS.g.rotation.y=Math.PI;ES.fight=false;ES.prog=0;
-      E.cards(4,()=>{ES.fight=true;if(!q)later(0.4,()=>bark(KS,'koschei','Ну-ка, избушка, — побегай! Пусть ловят!',2.4,true));});};
+      E.cards(4,()=>{ES.fight=true;if(!q)later(0.4,()=>barkS(KS,'koschei','Ну-ка, избушка, — побегай! Пусть ловят!',2.4,true));});};
     A.end=()=>{hutCyl.on=false;KS.g.visible=false;for(const B of S.beasts||[]){B.ms.forEach(k5Del);if(B.w)k5Del(B.w);}S.beasts=[];if(S.line)k5Del(S.line);};
     const hutP=()=>hut.g.position;
     function charge(h){const p=hutP().clone(),d=new V3(h.pos.x-p.x,0,h.pos.z-p.z).normalize(),L=14;S.st='aim';S.t=0;S.dir=d;S.from=p;
       const m=new THREE.Mesh(new THREE.PlaneGeometry(2.4,L),k5Add(0xff4a3a,{opacity:0.3}));m.rotation.x=-Math.PI/2;m.rotation.z=-Math.atan2(d.x,d.z);m.position.set(p.x+d.x*L/2,0.07,p.z+d.z*L/2);A.g.add(m);S.line=m;
-      k5s('pSoft');bark(KS,'koschei','Н-но, пошла!',1.2,true);}
+      k5s('pSoft');barkS(KS,'koschei','Н-но, пошла!',1.2,true);}
     function stomp(){S.st='crouch';S.t=0;}
     function beast(h){const f=new V3(X+(h.pos.x>X?-15:15),0,h.pos.z+rand(-4,4)),to=h.pos.clone();to.y=0;const d=to.clone().sub(f),L=d.length();d.normalize();const ms=[];
       for(let i=0;i<7;i++){const m=new THREE.Mesh(new THREE.CircleGeometry(0.28,10),k5Add(0xb8ff8a,{opacity:0}));m.rotation.x=-Math.PI/2;const q=f.clone().addScaledVector(d,(i+1)*L/8);m.position.set(q.x+(i%2?0.25:-0.25),0.06,q.z);A.g.add(m);ms.push(m);
@@ -57,16 +57,16 @@
         if(B.t>3.4){B.ms.forEach(k5Del);if(B.w){K5L.ink(B.w.position.clone(),8);k5Del(B.w);}S.beasts.splice(S.beasts.indexOf(B),1);}else B.ms.forEach(m=>{m.material.opacity=Math.max(0,m.material.opacity-dt*0.25);});}
       // повернулась: дверь, Яга на ступе сбивает Кощея с крыши
       if(S.st==='open'&&!S.done){S.done=true;ES.prog=1;if(hut.door)hut.door.visible=true;E.log('hutOpen');const st=makeStupa();W.group.remove(st.g);A.g.add(st.g);st.g.position.copy(P).add(new V3(0,1.2,0));
-        bark(st,'yaga','Ох, спасибо, голубчики! А ну, Кощеюшка, — слезай с моей крыши!',3,true);
+        barkS(st,'yaga','Ох, спасибо, голубчики! А ну, Кощеюшка, — слезай с моей крыши!',3,true);
         anim(1.0,k=>{st.g.position.set(P.x+Math.sin(k*Math.PI)*2,1.2+k*(roofY-0.6),P.z+Math.cos(k*Math.PI)*2);});
         later(1.0,()=>{K5L.ink(KS.g.position.clone().add(new V3(0,2,0)),26);k5s('shatter');const f=KS.g.position.clone();anim(0.7,k=>{KS.g.position.set(f.x+k*4,f.y+Math.sin(k*Math.PI)*2-k*f.y,f.z-k*3);});
-          later(0.8,()=>{KS.g.visible=false;bark(KS,'koschei','Ничего! Ещё не вечер!',1.6,true);E.won(4);});});}};
+          later(0.8,()=>{KS.g.visible=false;barkS(KS,'koschei','Ничего! Ещё не вечер!',1.6,true);E.won(4);});});}};
     // клубок: нить на ногу (предмет у ноги)
     A.item=pi=>{if(E.cur!==4||!ES.fight||S.st==='sit'||S.done)return null;const h=active(pi);let li=-1,bd=2.6;for(let i=0;i<2;i++){const d=hd(h.pos,legW(i));if(d<bd){bd=d;li=i;}}if(li<0)return null;
       return ()=>{const ties=S.ties[li];ties.push({pi,t:G.time});while(ties.length&&G.time-ties[0].t>8)ties.shift();SFX.thwip&&SFX.thwip();
         const m=new THREE.Mesh(tieM,tieMat);m.rotation.x=Math.PI/2;m.position.set(0,0.6+ties.length*0.25,0);(hut.legs[li]||hut.g).add(m);S.tieMs.push(m);
         const ok=G.solo?ties.length>=2:new Set(ties.map(q=>q.pi)).size>=2;floatText(legW(li).add(new V3(0,2.4,0)),ok?'Нога спутана!':'нить! теперь — второй','#ffe08a');
-        if(ok&&!S.tied[li]){S.tied[li]=true;E.log('tie'+li);if(S.tied[0]&&S.tied[1]){S.st='sit';S.sitT=G.solo?16:13;if(S.line){k5Del(S.line);S.line=null;}hut.g.position.y=0;k5s('stomp');bark(KS,'koschei','Стой! Куда?! Ноги… спутаны!',1.8,true);
+        if(ok&&!S.tied[li]){S.tied[li]=true;E.log('tie'+li);if(S.tied[0]&&S.tied[1]){S.st='sit';S.sitT=G.solo?16:13;if(S.line){k5Del(S.line);S.line=null;}hut.g.position.y=0;k5s('stomp');barkS(KS,'koschei','Стой! Куда?! Ноги… спутаны!',1.8,true);
             later(0.6,()=>say('yaga','Избушка, избушка! Повернись к лесу задом, ко мне — передом!<br>Вставайте с двух сторон — и разом!',4,true));}}};};
     // удар на круге: «повернись!»
     A.attack=h=>{if(E.cur!==4||S.st!=='sit')return;const i=circles.findIndex(c=>c.visible&&hd(h.pos,c.position)<1.3);if(i<0)return;S.turn[i]=G.time;FX.sparkle(circles[i].position.clone().add(new V3(0,0.5,0)),8,0xffd76a);

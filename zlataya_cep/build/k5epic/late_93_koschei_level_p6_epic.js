@@ -3,7 +3,9 @@
   // слои (Кот-часы, друзья), между ними — новые стадии 3, 10, 11 и четыре страницы-портала 4–7. Каждая стадия: start(o) / tick(dt) /
   // end(); пройдена — E.won(n): строка пролога встаёт золотом над дубом, дальше переход E.after(n).
   const E=FIN.k5e;E.on=true;E.cur=null;E.free={};E.done={};E.fails=E.fails||{};E.stage={};E.layer={};E.cine={};
-  const ES={};E.es=ES;   // состояние текущей стадии — очищается при смене
+  const ES={};E.es=ES;
+  // реплика друга: короткая — над головой и субтитром, длинная — только субтитром (не громоздить надписи над полем)
+  const barkS=(o,who,t,d,nv)=>{if(String(t).replace(/<[^>]*>/g,'').length>28)say(who,t,d,true);else bark(o,who,t,d,true);};   // состояние текущей стадии — очищается при смене
   const OLD={1:1,2:2,8:3,9:4,12:5},EP={1:1,2:2,3:8,4:9,5:12};E.OLD=OLD;
   const HUBST=[1,2,3,8,9,10,11,12],CLOCK=[1,2,3,9,12];E.isHub=n=>HUBST.indexOf(n)>=0;
   // кто к началу стадии n уже свободен (прыжок к стадии из панели — мир как после прохождения прежних)
@@ -25,14 +27,18 @@
   E.arenaCam=(on,d)=>{if(!on){W.camFn=null;return;}d=d||0;W.camFn=()=>{const hs=k5Heroes();const a=hs[0]?hs[0].pos:C,b=hs[1]?hs[1].pos:a;const mid=new V3((a.x+b.x)/2,(a.y+b.y)/2,(a.z+b.z)/2);const sp=hd(a,b);
       return {pos:new V3(mid.x*0.7,mid.y+8.5+sp*0.25+d*0.6,mid.z+11+sp*0.35+d),look:new V3(mid.x*0.8,mid.y+1.2,mid.z-5),k:3};};};
   /* ---------- уход со стадии и начало стадии ---------- */
-  E.leave=()=>{const n=E.cur;if(n==null)return;const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.end)try{L.end();}catch(e){console.error('k5e end',e);}
+  E.leave=()=>{const n=E.cur;if(n==null)return;K5.st=0;const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.end)try{L.end();}catch(e){console.error('k5e end',e);}
     if(E.clock)E.clock.off();W.camFn=null;K5.listen=false;K5.fight=false;ES.fight=false;clearAdds(true);natReset();if(E.pageOff)E.pageOff();for(const k in ES)delete ES[k];};
   E.go=(n,o)=>{o=o||{};E.leave();E.cur=n;K5E.cur=n;try{K5E.badge&&K5E.badge();}catch(e){}F.k5e=n;applyFree(n);
     for(let i=1;i<n;i++)if(E.done[i]||o.warp)E.sky.add(i,false);
+    // прыжок к стадии: имена — как после частей Сказа (начало — после 3, помощник — после 7, Прошка — после 11)
+    if(o.warp){G.flags.names=Object.assign(G.flags.names||{},n>=4?{potap:true}:{},n>=8?{yosha:true}:{},n>=12?{proshka:true}:{});}
     if(E.isHub(n)&&E.hub)E.hub(n);W.pauseLine=(E.PAUSE&&E.PAUSE[n])||W.pauseLine;
     if(OLD[n]){stageStart(OLD[n],!!o.retry);const L=E.layer[n];if(L&&L.start)L.start(o);}
     else{const S=E.stage[n];if(S&&S.start)S.start(o);}
-    if(CLOCK.indexOf(n)>=0&&E.clock)E.clock.on(n);E.music();E.bar();K5L.hud.hide();};
+    if(CLOCK.indexOf(n)>=0&&E.clock)E.clock.on(n);E.music();E.bar();K5L.hud.hide();
+    // небо по стадиям: гроза — только в стадии 8; на заре — светло
+    {const ST={8:1,9:0.4,10:0.15,11:0.55,12:0.2};if(window.k5StormSet)k5StormSet(ST[n]||0,!OLD[n]);}};
   // стадия пройдена: строка встаёт золотом, через миг — переход
   E.won=n=>{if(E.cur!==n||E.done[n]&&E.wonT===n)return;E.done[n]=true;E.wonT=n;K5.fight=false;ES.fight=false;K5.listen=false;if(E.clock)E.clock.off();
     E.sky.add(n,true);SFX.horn&&SFX.horn();banner(K5L.LINES[n],'#ffd76a',3.2,'строка вернулась в сказку');K5L.hud.hide();E.log('won'+n);
@@ -74,4 +80,4 @@
     E.prep();if(n===1){E.cine.intro(()=>{E.prep();E.go(1);});return;}
     for(let i=1;i<n;i++)E.done[i]=true;E.go(n,{warp:true});};
   // для ботов и отладки
-  W.dbg5e=()=>({E,ES,K5,KB,KS,F,candles,C,R,OAK,KP,ANV,stageStart,stageWin,heroesHome,clearAdds,k5Zone,K5L,V3,THREE});
+  W.dbg5e=()=>({E,ES,K5,KB,KS,F,candles,C,R,OAK,KP,ANV,stageStart,stageWin,heroesHome,clearAdds,k5Zone,K5L,V3,THREE,light:()=>({bg:scene.background.getHexString(),fog:scene.fog?scene.fog.color.getHexString()+' '+scene.fog.near.toFixed(0)+'-'+scene.fog.far.toFixed(0):'-',amb:amb.intensity.toFixed(2),sun:sun.intensity.toFixed(2),storm:(K5.storm||0).toFixed(2),vig:(document.getElementById('k5storm')||{style:{}}).style.opacity,filt:(renderer.domElement.style.filter||'')})});

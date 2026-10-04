@@ -26,11 +26,11 @@
       if(G.solo||Math.abs(O.t-G.time)<1.5){locks.forEach(q=>{q.open=true;q.g.visible=false;});openCage();}else floatText(L.g.position.clone().add(new V3(0,1,0)),'Разом! И второй замок!','#ffe08a');}
     locks.forEach(L=>W.hittables.push({pos:L.g.position,r:1.0,alive:()=>E.cur===6&&ES.step==='fight'&&!L.open,onHit:h=>lockHit(L,h)}));
     function openCage(){S.ph='free';ES.prog=1;E.log('cage');k5s('reveal');bars.forEach((b,i)=>{const f=b.position.clone();anim(0.8,k=>{b.position.y=f.y+k*6;b.material.opacity=1-k;});});
-      bark(zh,'zhar','Свобода! Спасибо, родные!',2,true);const f=zh.g.position.clone();anim(1.4,k=>{zh.g.position.lerpVectors(f,SOL.clone().add(new V3(0,3.4,1.2)),CE.inOutSine(k));zh.g.position.y+=Math.sin(k*Math.PI)*3;});
-      later(1.5,()=>{k5Flash(beakRing.position.clone(),0xffc840,3,0.5);K5L.gold(beakRing.position.clone(),20);beakRing.visible=false;bark(sol,'solovei','Ох… Свободен! А ну, Кощей, — держись, свистну!',2.6,true);
+      barkS(zh,'zhar','Свобода! Спасибо, родные!',2,true);const f=zh.g.position.clone();anim(1.4,k=>{zh.g.position.lerpVectors(f,SOL.clone().add(new V3(0,3.4,1.2)),CE.inOutSine(k));zh.g.position.y+=Math.sin(k*Math.PI)*3;});
+      later(1.5,()=>{k5Flash(beakRing.position.clone(),0xffc840,3,0.5);K5L.gold(beakRing.position.clone(),20);beakRing.visible=false;barkS(sol,'solovei','Ох… Свободен! А ну, Кощей, — держись, свистну!',2.6,true);
         later(1.6,()=>{for(let i=0;i<5;i++)later(i*0.12,()=>k5Ring(new V3(SOL.x,3,SOL.z),0xfff4d0,0.5,10,0.7,0.06,new THREE.Euler(Math.PI/2,0,0)));k5s('gale');
           const c0=cloud.position.clone();anim(1.2,k=>{cloud.position.set(c0.x+k*30,c0.y+k*10,c0.z-k*20);});later(0.4,()=>{KS.g.visible=false;});later(2.0,()=>E.won(6));});});}
-    function whistle(tgt){S.wh={t:0,tgt:tgt?tgt.pos.clone():null};bark(sol,'solovei','(свист против воли) Фью-у-у!',1.2,true);}
+    function whistle(tgt){S.wh={t:0,tgt:tgt?tgt.pos.clone():null};barkS(sol,'solovei','(свист против воли) Фью-у-у!',1.2,true);}
     A.start=q=>{S.ph='go';S.whT=4;S.spotA=0;S.seen=null;S.seenT=0;S.wh=null;locks.forEach(L=>{L.open=false;L.t=-9;L.g.visible=true;});bars.forEach(b=>{b.position.y=1.9;b.material.opacity=1;});
       zh.g.position.set(CAGE.x,1.4,CAGE.z);beakRing.visible=true;cloud.position.set(0,0,0);KS.g.visible=true;KS.g.position.copy(KZ);KS.g.rotation.y=0;for(const h of HEROES)setLight(h,null);ES.prog=0;ES.fight=false;E.cards(6,()=>{ES.fight=true;});};
     A.end=()=>{for(const h of HEROES)setLight(h,null);KS.g.visible=false;};

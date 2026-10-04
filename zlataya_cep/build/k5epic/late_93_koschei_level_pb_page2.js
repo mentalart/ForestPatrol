@@ -29,11 +29,11 @@
       k5fx(2.6,(k,dt)=>{S0.r+=dt*6.5;m.scale.setScalar(S0.r);m.material.opacity=0.85*(1-k);for(const h of k5Heroes()){if(S0.hit.has(h))continue;const d=hd(h.pos,c);if(Math.abs(d-S0.r)<0.55&&h.pos.y<0.55&&h.rollT<=0){S0.hit.add(h);k5Hurt(h,c);}}},()=>A.g.remove(m));}
     function ring(i){if(S.ph!=='answer')return;const B=gold[i];bellSound(i,0.1);FX.sparkle(B.p.clone().add(new V3(0,1.4,0)),12,BC[i]);k5Ring(B.p.clone().setY(0.1),BC[i],0.4,2.4,0.5,0.12);
       if(S.seq[S.pos]===i){S.pos++;floatText(B.p.clone().add(new V3(0,2.2,0)),S.pos+' / '+S.seq.length,'#ffe08a');if(S.pos>=S.seq.length)chainBreak();}
-      else{floatText(B.p.clone().add(new V3(0,2.2,0)),'Не тот!','#ff9ab8');bark(KS,'koschei','Не в лад! Снова слушай!',1.4,true);wave(KZ,true);S.ph='wait';S.t=0;E.log('wrong');}}
+      else{floatText(B.p.clone().add(new V3(0,2.2,0)),'Не тот!','#ff9ab8');barkS(KS,'koschei','Не в лад! Снова слушай!',1.4,true);wave(KZ,true);S.ph='wait';S.t=0;E.log('wrong');}}
     function chainBreak(){const c=chains[S.chain];K5L.gold(VOD.clone().add(new V3(0,2,0)),18);k5s('keyBreak');c.visible=false;S.chain++;E.log('chain'+S.chain);ES.prog=S.chain/3;
-      if(S.chain>=3){S.ph='free';freeVod();return;}bark(vod,'vod','Ох! Одна цепь долой! Звоните, ребятки, звоните!',2.2,true);S.ph='wait';S.t=0;}
-    function freeVod(){bark(vod,'vod','Ну, Кощеюшка, — теперь моя волна!',2.4,true);const big=new THREE.Mesh(new THREE.BoxGeometry(30,6,1.4),k5eMB(0x7ad8ff,{opacity:0.7}));big.position.set(X,3,14);A.g.add(big);
-      later(1.0,()=>{k5s('gale');k5fx(1.6,k=>{big.position.z=14-k*26;big.scale.y=0.6+Math.sin(k*Math.PI)*0.6;},()=>A.g.remove(big));later(1.2,()=>{K5L.ink(KS.g.position.clone().add(new V3(0,2,0)),30);KS.g.visible=false;bark(KS,'koschei','Мокро!.. Ну, погодите!',1.6,true);});
+      if(S.chain>=3){S.ph='free';freeVod();return;}barkS(vod,'vod','Ох! Одна цепь долой! Звоните, ребятки, звоните!',2.2,true);S.ph='wait';S.t=0;}
+    function freeVod(){barkS(vod,'vod','Ну, Кощеюшка, — теперь моя волна!',2.4,true);const big=new THREE.Mesh(new THREE.BoxGeometry(30,6,1.4),k5eMB(0x7ad8ff,{opacity:0.7}));big.position.set(X,3,14);A.g.add(big);
+      later(1.0,()=>{k5s('gale');k5fx(1.6,k=>{big.position.z=14-k*26;big.scale.y=0.6+Math.sin(k*Math.PI)*0.6;},()=>A.g.remove(big));later(1.2,()=>{K5L.ink(KS.g.position.clone().add(new V3(0,2,0)),30);KS.g.visible=false;barkS(KS,'koschei','Мокро!.. Ну, погодите!',1.6,true);});
         later(2.2,()=>E.won(5));});}
     A.start=q=>{S.chain=0;S.tide=0;S.waveT=5;chains.forEach(c=>{c.visible=true;});gold.forEach(B=>{B.up=0;B.g.position.y=-1.4;});KS.g.visible=true;KS.g.position.copy(KZ);KS.g.rotation.y=0;dome.visible=false;sadko.g.visible=G.solo;
       ES.fight=false;ES.prog=0;S.ph='wait';S.t=0;E.cards(5,()=>{ES.fight=true;});};
@@ -43,7 +43,7 @@
       // вода: прилив держится 9 с (в одиночку Садко играет сам)
       if(G.solo&&S.ph==='answer'&&S.tide<2)S.tide=16;S.tide=Math.max(0,S.tide-dt);const hi=S.tide>0;watr.material.opacity+=((hi?0.32:0.0)-watr.material.opacity)*Math.min(1,dt*3);watr.position.y=hi?1.0:0.05;
       for(const B of gold){B.up+=((hi?1:0)-B.up)*Math.min(1,dt*2.5);B.g.position.y=-1.4+B.up*2.2;B.g.rotation.y+=dt*0.6;}
-      if(S.ph==='wait'&&S.t>2){seqNew();bark(KS,'koschei','Слушайте — да повторяйте, коли сумеете!',1.6,true);}
+      if(S.ph==='wait'&&S.t>2){seqNew();barkS(KS,'koschei','Слушайте — да повторяйте, коли сумеете!',1.6,true);}
       else if(S.ph==='show'){if(S.t>0.9*S.si+0.6&&S.si<S.seq.length){const i=S.seq[S.si];const b=black[i];b.userData.gl.material.opacity=1;later(0.5,()=>{b.userData.gl.material.opacity=0;});bellSound(i,0.07);anim(0.5,k=>{b.rotation.z=Math.sin(k*Math.PI*3)*0.5*(1-k);});
           floatText(b.position.clone().add(new V3(0,1,0)),String(S.si+1),'#'+BC[i].toString(16).padStart(6,'0'));wave(KZ,true);S.si++;}
         if(S.si>=S.seq.length&&S.t>0.9*S.seq.length+1.2){S.ph='answer';S.t=0;floatText(SHELL.clone().add(new V3(0,2.4,0)),'Ваш черёд! Гусли — прилив!','#ffe08a');}}
