@@ -77,7 +77,7 @@
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
 | `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_95_dev | 10 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_luko thw3a thw3b thw4 tluko tmenu3 |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_99n_yaga11 | 25 | t11 tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekinds1b tf… |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_99n_yaga11 | 26 | t11 tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekinds1b tf… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | — | 1 | tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_99_kolobok_dance | 0 |  |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_99b_kidnap14 | 1 | tfin_kidnap14 |
@@ -89,7 +89,7 @@
 | `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 3 | t24n tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 5 | t25c tfin_k25 tfin_k25solo tfoes tsospot |
 | `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase | 7 | t2c tfin_k2b tfin_k2bboss tfin_k2bbosssolo tfin_k2bmill tfin_k2bsolo thw2 |
-| `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_99p_sky31 | 13 | t31 t31c tfin_art tfin_motylek tfin_sky31 tfin_sky31boss tfin_sky31bosssolo tfin_sky31sol… |
+| `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_99p_sky31 | 14 | t31 t31c tfin_art tfin_juice tfin_motylek tfin_sky31 tfin_sky31boss tfin_sky31bosssolo tf… |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32 | 5 | t32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32solo |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 2 | t33n tso33 |
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | — | 2 | t34 tmenu3 |
@@ -109,7 +109,7 @@
 | `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_94_koschei_tut | 10 | t5b2 tfin_kosh tfin_koshcine tfin_koshcoop tfin_koshfx tfin_koshnat tfin_koshrule tfin_ko… |
 | `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
-| `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 1 | tzast |
+| `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 2 | tfin_juice tzast |
 | `z-a` | Застава · Алёша Попович: колокольная перекличка | `buildZast('a')` · `levels/zastava.js` | — | 1 | tzast |
 
 ## Части прототипа (`proto/`, порядок — `proto/parts.txt`; склейка — `index.html`, `python3 tools/proto.py`)
@@ -226,6 +226,8 @@
 | `late_89_camorbit.js` | — | РЕЛИЗ final04 · КАМЕРА ПРАВЫМ СТИКОМ: орбита вокруг героя, наклон, автовозврат, столкновения |
 | `late_90_boot.js` | — | РЕЛИЗ · ЗАПУСК |
 | `late_91_voice.js` | — | РЕЛИЗ · ОЗВУЧКА РЕПЛИК (final06) |
+| `late_91b_juice.js` | — | РЕЛИЗ · СОЧНЫЙ БОЙ: удар, сигналы мороков, движения, урон, клубок (docs/23_vfx_sfx.md) |
+| `late_91c_juice_world.js` | — | РЕЛИЗ · МИР, БОССЫ, ВДВОЁМ, МИКС, ДОСТУПНОСТЬ (docs/23_vfx_sfx.md, полигон заход 2) |
 | `levels/5-B2/late_92_koschei.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ»: ФИНАЛЬНЫЙ БОЙ В ПЯТЬ ЭТАПОВ |
 | `levels/5-B2/late_93_koschei_level.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними |
 | `levels/5-B2/late_93_koschei_level_p2_storm.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 2 из 5): ворон, гроза, буря, игла, этапы боя — части … |
@@ -333,13 +335,14 @@
 | `20_yaga_vodyanoy.md` | 1-1: ролик «Яга ставит задачу» и 2-Б: бой с Водяным в три этапа |
 | `21_sky_31_32.md` | 3-1 «Сад молодильных яблок» и 3-2 «Облачные пастбища»: втрое длиннее, кооперативные механики, мини-боссы |
 | `22_vodyanoy_proposals.md` | 2-Б «Водяной»: предложения — бой, эффекты, погоня с валом |
+| `23_vfx_sfx.md` | VFX и SFX: предложения по souls-like и семейным кооперативным играм |
 | `23_vodyanoy_boss.md` | 2-Б «Водяной»: бой в четыре этапа, вода и вал, погоня вдвое длиннее |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 4 файлов |
+| `changes/` | 5 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 155 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 156 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

@@ -102,6 +102,8 @@ zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tso
 zlataya_cep/build/late_80_ui.js               tfin_menu tfin_cine
 zlataya_cep/build/late_81_sfx.js              tfin_cine tfin_uisnd
 zlataya_cep/build/late_91_voice.js            tfin_voice tfin_cine tfin_scooter tfin_uisnd
+zlataya_cep/build/late_91b_juice.js            @full tfin_juice
+zlataya_cep/build/late_91c_juice_world.js      @full tfin_juice
 zlataya_cep/build/late_95_dev.js              tfin_dev tfin_devluko
 
 # ---- модули релиза: ролики, камера, видимость ----

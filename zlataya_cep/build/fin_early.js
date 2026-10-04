@@ -1,7 +1,9 @@
 /* ============================== РЕЛИЗ · LOW-POLY: грани вместо гладкости ============================== */
 // Общий объект релизной сборки: настройки, состояние меню, музыка, сохранения
-const FIN={ver:'final06',set:{mus:0.7,sfx:0.8,vox:1,subs:true,ts:1,shake:true,flash:true,quality:'high',photo:true},menu:null,title:null};
+const FIN={ver:'final06',set:{mus:0.7,sfx:0.8,vox:1,subs:true,ts:1,shake:true,flash:true,shakeK:null,flashK:null,caps:false,rumble:true,quality:'high',photo:true},menu:null,title:null};
 try{const s=JSON.parse(localStorage.getItem('zlatayaCep.settings.v1')||'null');if(s)Object.assign(FIN.set,s);}catch(e){}
+// тряска и вспышки — три ступени 1 / 0,5 / 0 (раньше вкл/слабая и вкл/выкл: старые настройки переводятся)
+if(FIN.set.shakeK==null)FIN.set.shakeK=FIN.set.shake===false?0.5:1;if(FIN.set.flashK==null)FIN.set.flashK=FIN.set.flash===false?0:1;
 // Материалы «Ламберта» рисуются с плоским затенением: каждая грань — своим тоном, без бликов
 // final03: тон по вершинам — атрибут aShade (vec3) прибавляется к цвету материала: +0.1 светлее, −0.2 темнее, по каналам — теплее/холоднее.
 // У геометрии без атрибута он равен нулю, поэтому материалы игровых объектов (перекрашивание, прозрачность, свечение) работают как раньше.
