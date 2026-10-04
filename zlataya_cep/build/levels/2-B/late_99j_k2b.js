@@ -347,7 +347,7 @@ build2B=function(){
         {t:1.6,fn:()=>{ISL.col.on=true;anim(2,k=>{ISL.g.position.y=-4+4*smooth(k);});FX.column(C.x,surf(),C.z,6,1.6,2.6);shakeAll(0.05,1.2);const from=e.pos.clone();anim(1.6,k=>{e.pos.lerpVectors(from,new V3(C.x,3.2,C.z),smooth(k));e.pos.y+=Math.sin(k*Math.PI)*2;});}},
         {t:3.6,fn:()=>{K2FX.lightning();s2Start();V.set(e.k2,'conduct','happy');}},{t:6.5,fn:()=>K2FX.lightning()}],
       tick:(t,dt)=>{for(const H of S2.horses){H.tick(dt);}},end:()=>{if(F.phase!==2)s2Start();}});}
-  function scene3(){const e=vod;e.dazeT=0;e.state='idle';S2.st='off';S2.horses.forEach(H=>{if(H.g.visible)FX.crown(H.g.position.clone().setY(surf()),1.2);H.g.visible=false;H.state='off';if(H.rider){H.rider.k2ride=null;H.rider=null;}});   // табун рассыпается пенойSH2.forEach(S=>{S.g.visible=false;S.ref.off=true;S.ref.hum=0;});
+  function scene3(){const e=vod;e.dazeT=0;e.state='idle';S2.st='off';S2.horses.forEach(H=>{if(H.g.visible)FX.crown(H.g.position.clone().setY(surf()),1.2);H.g.visible=false;H.state='off';if(H.rider){H.rider.k2ride=null;H.rider=null;}});SH2.forEach(S=>{S.g.visible=false;S.ref.off=true;S.ref.hum=0;});   // табун рассыпается пеной
     play2({dur:9.5,fov:50,shots:[shot(0,[0,4,-3],[0,2,-14]),shot(4,[8,7,-5],[0,0,-14],[6,9,-2],[0,-1,-14],5)],
       says:[[0.3,2.8,'vod','Буль-буль… А ну-ка, угадайте, где я!'],[3.6,3.4,null,'<i>Омут закрутился воронкой — и Водяных стало трое.</i>',true],[7.2,2,'zven','Пелагея, Совиный взор! Прошка — рогатку!']],
       events:[{t:0.6,fn:()=>{OM.swirl=1;SFX.wave();anim(2,k=>{ISL.g.position.y=-4*smooth(k);});later(2,()=>{ISL.col.on=false;});const from=e.pos.clone();anim(1.4,k=>{e.pos.lerpVectors(from,new V3(C.x,-0.9,C.z),k);});}},
