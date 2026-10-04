@@ -73,3 +73,8 @@ for(let i=0;i<60*30&&!F.won;i++){let at=0;for(const pi of[0,1]){const h=U.act(pi
 [0,1].forEach(REL);if(!F.won)throw new Error('общий удар не засчитан: fin='+fin+' st='+e.state+' '+U.st());'stage4 ok waves='+S.ok+' miss='+miss+' fin='+fin
 //@@ shot=k2bb_5.png
 U.cine(600);ZC.tick(200);if(!ZC.G.done['2-B'])throw new Error('уровень не пройден: lvl='+ZC.W.levelId);if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'2-B boss done errs=0'
+//@@
+// конь не возвращается после этапа 2 (баг: всадник на острове добил Водяного за 3 с — конь через 3 с снова появлялся и висел до конца боя)
+ZC.startFrom(ZC.LV('2-B'));ZC.G.manual=true;ZC.tick(10);U.cine(200);ZC.tick(5);const D=ZC.W.warp2b('boss2');ZC.tick(60);const S=D.S2,H=S.horses.find(q=>q.state==='run');
+D.s2Mount(H,U.act(0));for(let i=0;i<60*4&&!S.onIsl;i++)ZC.tick(1);if(!S.onIsl)throw new Error('всадник не на острове');D.scene3();U.cine(400);ZC.tick(60*4);
+const vis=S.horses.filter(q=>q.g.visible).length;if(vis)throw new Error('кони видны после этапа 2: '+vis+' '+S.horses.map(q=>q.state).join());if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'horses gone after stage 2'
