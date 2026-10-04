@@ -1,11 +1,11 @@
 //@@ wait=1500
 // релиз final06: 3-2 «Облачные пастбища» — мини-босс Громовой Баран вдвоём (late_99o_sky32.js):
 // 1 «Таран» — Йоша поливает стожок, Прошка со светом стоит за ним: Баран бежит на свет и вязнет; в свете бьём, Потап — за рога;
-// 2 «Гроза» — Йоша поливает западную тучку со своим светом: радуга на тучу; Прошка и Йоша наверху бьют в свете, от топота прыгают;
+// 2 «Гроза» — Йоша поливает западную тучку, Прошка зажигает перо (клавишей) ПЕРЕД тучкой, со стороны арены: радуга на тучу; Прошка и Йоша наверху бьют в свете, от топота прыгают;
 // 3 «Пушок» — снова стожок; Баран увяз — Прошка со светом подводит Пушка к батюшке; ролик, звено с радуги, уровень пройден.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(false);ZC.startFrom(ZC.LV('3-2'));ZC.G.manual=true;ZC.tick(30);const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}
-const W=ZC.W,H=ZC.HERO;ZC.FIN.warp('boss');ZC.tick(10);for(const h of Object.values(H)){h.following=false;h.lit=false;}
+const W=ZC.W,H=ZC.HERO;ZC.FIN.tut32.auto=false;ZC.FIN.warp('boss');ZC.tick(10);for(const h of Object.values(H)){h.following=false;h.lit=false;}
 U.toKind('proshka',0);U.toKind('yosha',1);U.goto(0,0,-307,5);ZC.tick(5);if(!ZC.G.cine)throw new Error('нет ролика Барана: '+U.st());U.nocine();ZC.tick(10);
 const B=W.ram32;if(B.phase!==1)throw new Error('этап не 1: '+B.phase);'boss phase='+B.phase+' e='+!!B.e
 //@@
@@ -25,12 +25,12 @@ ZC.tick(1);
 //@@
 // этап 2: радуга от западной тучки — наверх; бить в свете, от топота прыгать
 const W=ZC.W,H=ZC.HERO,B=W.ram32,e=B.e,RW=W.rains.find(r=>r.name==='rw');const Pr=H.proshka,Y=H.yosha;if(B.phase!==2)throw new Error('не этап 2: '+B.phase);
-Pr.lit=true;Y.lit=true;let bows=0,jumps=0,top=0;const t0=ZC.G.time;
+Pr.lit=false;Y.lit=false;let bows=0,jumps=0,top=0,presses=0;const t0=ZC.G.time;
 for(let i=0;i<60*150&&B.phase===2;i++){for(const h of Object.values(H))if(h.active)h.iT=Math.max(h.iT,0.5);
-  if(!RW.bow.on){if(RW.rain<=0.3){if(U.step(1,RW.x-1.2,RW.z+1.0,0.4)){U.rel(1);Y.face=Math.atan2(RW.x-Y.pos.x,RW.z-Y.pos.z);if(i%20===0)ZC.press('KeyL');}}U.step(0,RW.x-1.4,RW.z-1.2,0.5);}
-  else{for(const pi of[0,1]){const h=U.act(pi);if(h.pos.y<27.2){U.step(pi,-2.9,-316,0.3);}else{const K=U.K[pi];if(B.stompT>0&&B.stompT<0.25&&h.grounded){ZC.press(K.j);jumps++;}else U.hit(pi,e,i);}}if(RW.bow.k>=1&&bows===0)bows=1;}
+  if(!RW.bow.on){if(RW.rain<=0.3){if(U.step(1,RW.x-1.2,RW.z+1.0,0.4)){U.rel(1);Y.face=Math.atan2(RW.x-Y.pos.x,RW.z-Y.pos.z);if(i%20===0)ZC.press('KeyL');}}if(U.step(0,RW.x+2.2,RW.z+0.6,0.5)){U.rel(0);if(RW.rain>0.3&&!Pr.lit&&i%30===0){ZC.press('KeyR');presses++;}}}
+  else{for(const pi of[0,1]){const h=U.act(pi);if(h.pos.y<27.2){U.step(pi,-2.9,-316,0.3);}else{const K=U.K[pi];if(B.stompT>0&&B.stompT<0.25&&h.grounded){ZC.press(K.j);jumps++;}else U.hit(pi,e,i);}}if(RW.bow.k>=1&&bows===0){bows=1;Pr.lit=true;Y.lit=true;}}
   ZC.tick(1);}
-U.rel(0);U.rel(1);if(B.phase<2.5)throw new Error('этап 2 не пройден: bows='+bows+' emb='+e.embers+' st='+e.state+' '+U.st());U.nocine();ZC.tick(10);
+U.rel(0);U.rel(1);if(B.phase<2.5)throw new Error('этап 2 не пройден: bows='+bows+' presses='+presses+' lit='+Pr.lit+' emb='+e.embers+' st='+e.state+' '+U.st());U.nocine();ZC.tick(10);
 'phase2 ok jumps='+jumps+' t='+(ZC.G.time-t0).toFixed(0)
 //@@
 // этап 3: стожок — увяз; Прошка со светом подводит Пушка

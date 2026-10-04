@@ -13,7 +13,10 @@ FIN.fxHook.bemis=(sh)=>{sh.vertexShader=sh.vertexShader.replace('#include <commo
 const BAT_MAT={};function batMat(k){if(BAT_MAT[k])return BAT_MAT[k];const d=k.indexOf('d')>=0,basic=k.indexOf('b')>=0;let m;
   if(basic)m=new THREE.MeshBasicMaterial({vertexColors:true,side:d?THREE.DoubleSide:THREE.FrontSide,fog:k.indexOf('n')<0,toneMapped:k.indexOf('t')<0});
   else{m=new THREE.MeshLambertMaterial({vertexColors:true,side:d?THREE.DoubleSide:THREE.FrontSide});m.userData.fx='bemis';m.defaultAttributeValues.aEmis=[0,0,0];}
-  m.userData.shared=true;m.userData.kit=true;m.userData.batch=true;BAT_MAT[k]=m;return m;}
+  m.userData.shared=true;m.userData.kit=true;m.userData.batch=true;batLockMat(m);BAT_MAT[k]=m;return m;}
+// материал пачки — один на все ячейки уровня: код уровня, растворяющий «детей группы» (material.opacity у всех children), задевал
+// и меш локальной пачки внутри группы — и весь пол уровня становился невидимым (3-2: нить Пушка в ролике). Прозрачность пачки заперта.
+function batLockMat(m){for(const k of['opacity','transparent']){const v=k==='opacity'?1:false;Object.defineProperty(m,k,{get:()=>v,set:x=>{if(x!==v)BAT.stats.matLock=(BAT.stats.matLock||0)+1;},configurable:true});}}
 RAY.layers.enable(BAT_LAYER);   // полупрозрачность стен видит заместителей
 const B_V=new V3(),B_N=new THREE.Matrix4();
 function batVis(o){while(o){if(!o.visible)return false;if(o===W.group)return true;o=o.parent;}return false;}
@@ -159,7 +162,17 @@ FB.tick=fbTick;FB.scan=fbScan;
 FIN.afterDress2=function(){batReset();};
 // final05: враг помечается живым сразу при создании — в статическую пачку мира он не попадёт даже на миг (детали врага склеиваются только локально)
 {const _mf=makeFoe;makeFoe=function(){const e=_mf.apply(this,arguments);try{if(e&&e.g)e.g.traverse(c=>{c.userData.batchNo=true;});}catch(err){}return e;};}
-{const _step=step;step=function(dt){_step(dt);try{batTick(dt);}catch(e){console.error('batch',e);BAT.on=false;}};}
+// страховка: оригинал, спрятанный на слой 31, рисует только его пачка. Ошибка посреди пересборки ячейки (старая пачка уже снята,
+// новой ещё нет) или пачка, пропавшая со сцены, оставляли невидимыми целые куски пола (3-2: острова «Высокого уступа» — видно
+// только юбки-клинья и пухи под полом). Теперь такие оригиналы сразу рисуются сами; при ошибке пачки выключаются целиком.
+function batBail(){for(const p of BAT.prox)if(p.m&&p.m.userData.bat){p.m.layers.set(0);p.m.userData.bat=false;p.gone=true;}
+  for(const c of BAT.cells.values())if(c.mesh&&c.mesh.parent)c.mesh.parent.remove(c.mesh);BAT.cells.clear();BAT.prox=[];BAT.dirty.clear();BAT.upd.clear();BAT.on=false;}
+function batGuard(){let n=0;for(const p of BAT.prox){if(p.gone||p.out||!p.m.userData.bat||!p.cell||p.cell.local)continue;const c=p.cell,mh=c.mesh;
+    if(mh&&mh.visible&&mh.parent===W.group)continue;if(BAT.dirty.has(c)&&!mh)continue;   // ячейка ждёт пересборки — соберётся в ближайшие кадры
+    p.m.layers.set(0);p.m.userData.bat=false;p.gone=true;n++;}
+  if(n){BAT.prox=BAT.prox.filter(p=>!p.gone);BAT.stats.guarded=(BAT.stats.guarded||0)+n;}return n;}
+FIN.batchGuard=batGuard;FIN.batchBail=batBail;
+{const _step=step;let gT=0;step=function(dt){_step(dt);try{batTick(dt);gT+=dt;if(gT>0.5&&BAT.on&&BAT.st==='live'){gT=0;batGuard();}}catch(e){console.error('batch',e);try{batBail();}catch(e2){BAT.on=false;}}};}
 // диагностика: что рисуется отдельно и почему (для разработки)
 FIN.batchDiag=function(){const R={};const add=k=>{R[k]=(R[k]||0)+1;};W.group.traverse(m=>{if(!(m.isMesh||m.isPoints||m.isLine||m.isSprite))return;if(!batVis(m)){add('hidden');return;}
   if(m.userData.bat&&m.layers.mask!==1){add('batched');return;}if(m.userData.bat){add('ejected');return;}if(m.userData.batchMesh){add('batchMesh');return;}if(m.isInstancedMesh){add('instanced');return;}if(!m.isMesh){add('points/lines');return;}

@@ -112,13 +112,15 @@ function rainStart32(R,who){R.dur=R.rain=rainDur32();R.told=false;SFX.water();to
   floatText(new V3(R.x,R.y+3.2,R.z),who==='potap'?'Выжал тучку! Дождик!':'Заплакала тучка — дождик!','#cfe8ff');
   const c=R.cloud;anim(0.6,k=>{const s=1+Math.sin(k*Math.PI)*(who==='potap'?-0.3:0.15);c.scale.set(1/Math.sqrt(Math.abs(s)),s,1/Math.sqrt(Math.abs(s)));});
   if(W.onRain)W.onRain(R,who);}
-function lightBehind32(R){return HEROES.some(h=>heroLight(h)&&hd(h.pos,R)<6.5&&Math.abs(h.pos.y-R.y)<2.6&&((h.pos.x-R.x)*R.dx+(h.pos.z-R.z)*R.dz)<0.8);}
+// свет рядом с тучкой — с любой стороны (раньше — только «из-за спины», в узкой полосе у стены арены: игроки светили спереди, и радуга не вставала)
+function lightNear32(h,R){return heroLight(h)&&hd(h.pos,R)<6.5&&Math.abs(h.pos.y-R.y)<2.6;}
+function lightBehind32(R){return HEROES.some(h=>lightNear32(h,R));}
 function updRain32(R,dt){const en=!R.on||R.on();R.g.visible=en;const B=R.bow;if(!en){R.rain=0;B.on=false;B.m.visible=false;R.drops.forEach(d=>{d.visible=false;});return;}
   if(R.rain>0){R.rain-=dt;R.drops.forEach(d=>{d.visible=true;const ph=(d.userData.ph+G.time*1.6)%1;d.position.set(d.userData.dx,1.9-ph*2.0,d.userData.dz);});
-    if(!B.on){if(lightBehind32(R)){B.on=true;B.k=0;SFX.flower();tone(1047,0.3,'sine',0.08);tone(1319,0.3,'sine',0.07,null,0.12);tone(1568,0.4,'sine',0.07,null,0.24);
+    if(!B.on){if(lightBehind32(R)){B.on=true;B.k=0;if(R.on)R.rain=Math.max(R.rain,rainDur32());SFX.flower();tone(1047,0.3,'sine',0.08);tone(1319,0.3,'sine',0.07,null,0.12);tone(1568,0.4,'sine',0.07,null,0.24);
         const mid=B.P(0.5,0);floatText(new V3(mid[0],mid[1]+0.8,mid[2]),'Радуга-дуга!','#ffe08a');for(let i=0;i<7;i++){const p=B.P(i/6,0);burst(new V3(p[0],p[1]+0.2,p[2]),BOW_COL32[i],6,2);}
         if(W.onBow)W.onBow(R);}
-      else if(!R.told&&R.rain<R.dur-1.6){R.told=true;for(const pi of[0,1])tip(pi,'Дождик идёт, а радуги нет: солнышко должно светить <b>из-за спины</b>.<br>Зажги перо '+K(pi,'item')+' позади тучки — радуга и встанет.',3.4);}}
+      else if(!R.told&&R.rain<R.dur-1.6){R.told=true;for(const pi of[0,1])tip(pi,'Дождик идёт, а радуги нет: нужно <b>солнышко</b>.<br>Зажги перо '+K(pi,'item')+' рядом с тучкой — радуга и встанет.',3.4);}}
     if(R.rain<=0){R.rain=0;B.on=false;R.drops.forEach(d=>{d.visible=false;});floatText(new V3(R.x,R.y+3,R.z),'Дождик кончился','#cfe8ff');}}
   if(B.on){B.k=Math.min(1,B.k+dt/0.5);B.m.visible=true;B.mat.opacity=(R.rain<3&&Math.sin(G.time*14)>0?0.35:0.9)*B.k;}else{B.k=0;B.m.visible=false;}}
 // Ветер-Ветрило: облачное лицо с надутыми щеками; дует поперёк мостков (+x)
@@ -161,7 +163,7 @@ build32=function(){
   /* ---------- Е. последнее облако — наверх; там дрожит Пушок ---------- */
   const C6=cloudLift(0,-93.3,10.08,15.08,{name:'c6'});
   cloudIsle(-7,7,-110,-95.6,15);bell(3,-98,15);const n5=nutItem(5.4,15.6,-108.6);
-  const LB=lambMesh32();LB.pos=new V3(0,15,-106);LB.g.position.copy(LB.pos);LB.mode='caught';LB.puffT=0;LB.face=Math.PI;LB.scared=0;LB.hop=null;LB.sq=0;LB.stuck=0;W.lamb32=LB;
+  const LB=lambMesh32();LB.pos=new V3(0,15,-106);LB.g.position.copy(LB.pos);LB.mode='caught';LB.puffT=0;LB.face=Math.PI;LB.scared=0;LB.hop=null;LB.sq=0;LB.stuck=0;W.lamb32=LB;LB.g.traverse(c=>{c.userData.batchNo=true;c.userData.noBatchL=true;});   // живой — ни в статические, ни в локальные пачки: ролик растворяет нить (opacity), а у пачки материал общий на весь уровень
   /* ---------- Ж. Пушок-пружинка: уступ в 4 м ---------- */
   cloudIsle(-7,7,-128,-110,15);bell(4.5,-113,15);
   cloudIsle(-7,7,-148,-128,19.2);bell(4.5,-131,19.2);const n6=nutItem(-5.6,19.8,-146);
@@ -241,7 +243,7 @@ build32=function(){
     play({dur:12.4,fov:46,shots:[shot(0,[3.2,16.6,-101.8],[0,15.6,-106]),shot(4.4,[-1.6,15.9,-104.2],[0,15.5,-106.2]),shot(8.4,[4.5,17.4,-99],[0,15.8,-110],[2.6,17.8,-100],[0,16.5,-118],3.6)],
       says:[[0.3,2.8,null,'<i>От тепла двух перьев грозовая нить тает, как иней.</i>',true],[3.2,1.4,'pushok','Бе-е…'],[4.6,2.6,'pelageya','Ягнёночек! Облачный, как пушок.'],
         [7.3,3.2,'zven','От стада отбился. Слышите, гром за облаками? Его батюшка ищет — вожак стада.'],[10.6,1.8,'proshka','Не бойся, Пушок, — доведём!']],
-      events:[{t:0.6,fn:()=>{const th=LB.thr;anim(2.2,k=>{th.children.forEach((t,i)=>{t.scale.setScalar(1+k*1.5);t.material.opacity=1-k;t.material.transparent=true;t.rotation.z+=0.05*(i+1);});if(k>=1)th.visible=false;});
+      events:[{t:0.6,fn:()=>{const th=LB.thr;anim(2.2,k=>{th.children.forEach((t,i)=>{t.scale.setScalar(1+k*1.5);if(t.material&&!t.userData.batchMesh){t.material.opacity=1-k;t.material.transparent=true;}t.rotation.z+=0.05*(i+1);});if(k>=1)th.visible=false;});
           SFX.flower();burst(LB.pos.clone().add(new V3(0,0.6,0)),0xffe08a,18,3);}},
         {t:3.2,fn:()=>{LB.sq=0.5;SFX.dzin();}},{t:10.6,fn:()=>{LB.sq=0.6;}}],
       end:()=>{LB.thr.visible=false;LB.mode='free';F.stage='free';snapCams();banner('Пушок с нами!','#f4f0ff',2.4,'ягнёнок бежит за светом пера · польёт Йоша — распушится');}});}
@@ -287,7 +289,7 @@ build32=function(){
       s.m.g.position.set(s.pos.x,s.pos.y+(d>0.1?Math.abs(Math.sin(G.time*12+i))*0.12:0),s.pos.z);s.m.g.rotation.y=s.face;s.m.legs.forEach((l,k)=>{l.rotation.x=d>0.1?Math.sin(G.time*14+k*Math.PI)*0.5:0;});});
     F.penCount=n;if(!F.penned&&n>=HERD.length){F.penned=true;later(0.6,veterScene);}}
   function veterScene(){F.stage='veter';const hs=HEROES;hs.forEach((h,i)=>{placeOnGround(h,-3+i*2,-279,19.2);h.face=Math.PI;h.vel.set(0,0,0);});VT.g.position.set(-14,27,-292);VT.g.lookAt(0,20,-282);
-    play({dur:13,fov:48,shots:[shot(0,[6,23.4,-274],[0,20,-285]),shot(3.4,[3,23,-276],[-14,27,-292]),shot(9.6,[0,24,-282],[0,21,-296],[0,25,-286],[0,23,-302],3.2)],
+    play({dur:13,fov:48,shots:[shot(0,[6,23.4,-274],[0,20,-285]),shot(3.4,[4.2,21.6,-281.6],[-10,25.6,-290],[3.2,22.2,-282.4],[-11,26,-291],3.2),shot(6.7,[-6.8,24.6,-283],[-14,27,-292],[-7.6,25,-284.2],[-14,27,-292],2.9),shot(9.6,[0,24,-282],[0,21,-296],[0,25,-286],[0,23,-302],1.6),shot(11.2,[1.8,20.9,-284.6],[-0.4,20.3,-279.4],[1.2,21,-284],[-0.4,20.4,-279.2],1.8)],
       says:[[0.3,2.8,null,'<i>Все девять барашков — в кошаре. Ветер подлетает поближе.</i>',true],[3.4,3.2,'veter','Ух, спасибо, малые! Я стадо по всему небу гонял — да только пуще разгонял.'],
         [6.7,3.0,'veter','А вожак, Громовой Баран, грозою обернулся: сынка ищет — своих не узнаёт. Там он, на вершине.'],[9.8,1.6,'pushok','Бе-е!'],[11.4,1.6,'pelageya','Пушок, это твой папа гремит!']],
       events:[{t:9.6,fn:()=>{SFX.whoosh();stormWall.on=false;anim(1.2,k=>{stormCurtain.position.x=k*16;stormCurtain.children.forEach(m=>{m.scale.multiplyScalar(0.985);});if(k>=1)stormCurtain.visible=false;});
@@ -295,9 +297,9 @@ build32=function(){
       end:()=>{F.stage='free';stormWall.on=false;stormCurtain.visible=false;if(W.ramps.indexOf(rampR)<0)W.ramps.push(rampR);rampM.visible=true;rampM.scale.set(1,1,1);snapCams();
         banner('Грозовая вершина','#9fd0ff',2.4,'облачная лестница — наверх, к Громовому Барану');}});}
   /* ---------- Л. Громовой Баран ---------- */
-  function bossBar(){if(B.phase<1){bb.style.display='none';return;}bb.style.display='block';const e=B.e;const nm=['','Таран','Гроза','Пушок'][Math.min(3,B.phase)]||'';
+  function bossBar(){if(B.phase<1){bb.style.display='none';return;}bb.style.display='block';const e=B.e;const nm=['','Таран','Гроза','Пушок'][Math.min(3,Math.floor(B.phase))]||'';
     const hp=F.won?0:B.phase===3?(LB.mode==='free'?0.25:0.2):e?(e.state==='broken'?0.02:e.embers/e.maxEmb):1;
-    bb.innerHTML='<b>Громовой Баран</b> · '+Math.max(1,Math.min(3,B.phase))+' / 3 · '+nm+' <span class="seg"><i style="width:'+Math.round(hp*100)+'%"></i></span>';}
+    bb.innerHTML='<b>Громовой Баран</b> · '+Math.max(1,Math.min(3,Math.floor(B.phase)))+' / 3 · '+nm+' <span class="seg"><i style="width:'+Math.round(hp*100)+'%"></i></span>';}
   function bossIntro(){F.boss=1;F.stage='bossIntro';gateCol.on=true;gateFx.visible=true;const hs=HEROES;hs.forEach((h,i)=>{placeOnGround(h,-3+i*2,-307,AY);h.face=Math.PI;h.vel.set(0,0,0);});
     putLamb(LAMB_HIDE.x,AY,LAMB_HIDE.z);LB.mode='hide';
     const e=makeFoe('grombaran',0,-320,{y:AY,leash:40,scale:1.25});B.e=e;e.noKill=true;e.cd=99;e.face=0;e.maxEmb=e.embers;
@@ -346,13 +348,14 @@ build32=function(){
     onLift:h=>{const e=B.e;if(B.hornT>G.time)return;B.hornT=G.time+2;SFX.toss();shakeAll(0.06,0.45);ringFx(e.pos,0xc08a48,2.6);floatText(e.pos.clone().add(new V3(0,3.6,0)),'За рога!','#ffd9a0');
       if(e.state!=='broken')emberOut(e,2,'За рога!');if(!F.hornTold){F.hornTold=true;later(0.3,()=>bark(h,'potap','Взял быка… то есть барана — за рога!',2.4));}}});
   const hornLift=W.lifts[W.lifts.length-1];
-  function toPhase2(){B.phase=1.5;laneDraw(false);const e=B.e;e.dazeT=0;e.state='idle';e.t=0;if(B.stog){stogScatter32(B.stog,3);B.stog=null;}
-    play({dur:7.2,fov:50,shots:[shot(0,[0,26,-302],[0,24,-318],[0,27,-304],[0,29,-316],3),shot(3.2,[6,27,-306],[0,29.6,-316])],
+  function stage32(z){HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,z,AY);h.face=Math.PI;h.vel.set(0,0,0);});$('banner').style.opacity=0;}
+  function toPhase2(){B.phase=1.5;laneDraw(false);const e=B.e;stage32(-308.5);e.dazeT=0;e.state='idle';e.t=0;if(B.stog){stogScatter32(B.stog,3);B.stog=null;}
+    play({dur:7.2,fov:50,shots:[shot(0,[0,26,-302],[0,24,-318],[0,27,-304],[0,29,-316],3),shot(3.2,[4.6,24.6,-314.2],[0,24.2,-308.4],[3.4,25.4,-314.6],[0,25.6,-309],4)],
       says:[[0.4,2.4,'baran','Не дамся! Грому-у-у!'],[3.2,3.6,'zven','Тучей обернулся! Радуга — дорога наверх: дождик впереди, солнышко позади!']],
       events:[{t:0.6,fn:()=>{const p0=e.pos.clone();SFX.crash();anim(1.6,k=>{e.pos.set(lerp(p0.x,ARC.x,k),lerp(AY,TOP.y+0.1,k)+Math.sin(k*Math.PI)*3,lerp(p0.z,ARC.z,k));});topG.visible=true;topG.scale.setScalar(0.1);anim(1.4,k=>{topG.scale.setScalar(Math.max(0.1,k));});}},
         {t:2.4,fn:()=>{shakeAll(0.05,0.5);for(let i=0;i<3;i++)later(i*0.25,()=>{SFX.crash();});}}],
       end:()=>{B.phase=2;topG.visible=true;topG.scale.setScalar(1);topCyl.on=true;e.pos.set(ARC.x,TOP.y,ARC.z);e.baseY=TOP.y;e.maxEmb=9;e.embers=9;e.state='idle';e.noMove=true;B.strikeT=2.4;B.stompT=-1;
-        snapCams();bossBar();banner('Громовой Баран · Гроза','#9fd0ff',2.8,'молния бьёт в тень-круг — уйди или щит · радуга наверх: западную тучку польёт Йоша, восточную выжмет Потап');}});}
+        snapCams();bossBar();banner('Громовой Баран · Гроза','#9fd0ff',2.8,'молния бьёт в тень-круг — уйди или щит · радуга наверх: тучку польёт Йоша (западную) или выжмет Потап (восточную), а рядом — свет пера');}});}
   function strike(at){const s={at:at.clone(),t:0,dur:soloK()?1.55:1.25,done:false};const g=new THREE.Group();g.position.set(at.x,AY+0.06,at.z);W.group.add(g);g.userData.noBatch=true;
     const disc=new THREE.Mesh(new THREE.CircleGeometry(1.5,28),MB(0x1a2a60,{transparent:true,opacity:0.2,depthWrite:false}));disc.rotation.x=-Math.PI/2;disc.renderOrder=4;g.add(disc);
     const ring=new THREE.Mesh(new THREE.TorusGeometry(1.5,0.06,6,30),MB(0x9fd0ff,{transparent:true,opacity:0.9}));ring.rotation.x=Math.PI/2;g.add(ring);s.g=g;s.disc=disc;s.ring=ring;B.strikes.push(s);SFX.blue();}
@@ -372,12 +375,12 @@ build32=function(){
         for(const h of onTop){if(!h.grounded){floatText(headOf(h),'Перепрыгнул!','#ffe36b');continue;}const dx=h.pos.x-ARC.x,dz=h.pos.z-ARC.z,d=Math.hypot(dx,dz)||1;h.vel.set(dx/d*8,7,dz/d*8);h.grounded=false;h.knockT=0.5;floatText(headOf(h),'Сдуло!','#bfe4ff');
           if(!F.stompTold){F.stompTold=true;for(const pi of[0,1])tip(pi,'Кольцо по туче бежит — прыгай '+K(pi,'jump')+', не то сдует!',2.6);}}}}
     else{B.stompT=-1;B.stompRing.visible=false;B.stompSaid=false;}}
-  function toPhase3(){B.phase=2.5;const e=B.e;B.strikes.forEach(s=>{W.group.remove(s.g);if(s.bolt)W.group.remove(s.bolt);});B.strikes.length=0;B.stompRing.visible=false;
-    play({dur:9.4,fov:48,shots:[shot(0,[0,27,-303],[0,26,-316]),shot(3.2,[5,24.4,-310],[0,23.2,-318]),shot(6.2,[-3,23.8,-308],[0,23,-306.4],[-2,24.6,-309],[0,23.4,-314],3)],
+  function toPhase3(){B.phase=2.5;const e=B.e;stage32(-309);B.strikes.forEach(s=>{W.group.remove(s.g);if(s.bolt)W.group.remove(s.bolt);});B.strikes.length=0;B.stompRing.visible=false;
+    play({dur:9.4,fov:48,shots:[shot(0,[0,27,-303],[0,26,-316]),shot(3.2,[5,24.4,-310],[0,23.2,-318]),shot(6.2,[2.8,24.2,-313.2],[-0.4,23.5,-307.6],[1.6,24.6,-313.8],[-0.6,23.6,-307.2],3.2)],
       says:[[0.3,2.6,null,'<i>Гроза иссякла — Баран падает на облако. Только на рогах чёрная нить держится.</i>',true],[3.3,2.6,'baran','Бе-е… Где я? Кто вы?! Не подходи!'],
         [6.2,1.4,'pushok','Бе-е-е!'],[7.6,1.8,'pelageya','Он своих не узнаёт. Пушок, позови папу!']],
       events:[{t:0.5,fn:()=>{const p0=e.pos.clone();anim(1.3,k=>{e.pos.set(p0.x,lerp(p0.y,AY,k*k),lerp(p0.z,-318,k));});topCyl.on=false;anim(1.4,k=>{topG.scale.setScalar(Math.max(0.05,1-k));if(k>=1)topG.visible=false;});
-          HEROES.forEach(h=>{if(h.pos.y>AY+2){placeOnGround(h,h.pos.x*2.2,ARC.z+4,AY);}});}},
+          }},
         {t:1.8,fn:()=>{SFX.thud();shakeAll(0.07,0.5);burst(new V3(0,AY+0.4,-318),0xffffff,30,5);}},{t:6.2,fn:()=>{LB.sq=0.6;}}],
       end:()=>{B.phase=3;e.pos.set(0,AY,-318);e.baseY=AY;e.noMove=false;e.state='idle';e.maxEmb=6;e.embers=6;B.ai='graze';B.t=0;B.dur=1.6;topCyl.on=false;topG.visible=false;LB.mode='free';LB.scared=0;snapCams();bossBar();
         banner('Громовой Баран · Пушок','#f4f0ff',2.8,'подведите Пушка к батюшке, пока тот увяз в стожке иль стоит · Пушок бежит за светом');}});}
@@ -466,7 +469,7 @@ build32=function(){
     prompt(pi,'attack',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&hd(e.pos,h().pos)<4+(e.r||0)&&(e.state==='broken'||(e.litNow&&(e.open>0||e.dazeT>0)))&&!(e.kind==='grombaran'&&B.phase===3)),'');
     prompt(pi,'item',()=>headOf(h()),()=>LB.mode==='caught'&&!h().lit&&hd(h().pos,LB.pos)<5,'два пера рядом');
     prompt(pi,'jump',()=>headOf(h()),()=>LB.mode!=='caught'&&LB.puffT>0&&hd(h().pos,LB.pos)<2.4&&h().grounded,'на Пушка!');
-    prompt(pi,'item',()=>headOf(h()),()=>!h().lit&&W.rains.some(R=>R.rain>0&&!R.bow.on&&hd(R,h().pos)<6.5&&((h().pos.x-R.x)*R.dx+(h().pos.z-R.z)*R.dz)<0.8),'солнышко позади');
+    prompt(pi,'item',()=>headOf(h()),()=>!h().lit&&W.rains.some(R=>R.rain>0&&!R.bow.on&&hd(R,h().pos)<6.5&&Math.abs(h().pos.y-R.y)<2.6),'посвети — радуга');
     prompt(pi,'roll',()=>headOf(h()),()=>B.ai==='paw'&&B.tgt===h()&&B.phase!==2,'в сторону!');
     prompt(pi,'jump',()=>headOf(h()),()=>B.phase===2&&B.stompT>0&&B.stompT<1.1&&h().pos.y>TOP.y-0.6,'прыгай!');
     prompt(pi,'guard',()=>headOf(h()),()=>B.strikes.some(s=>!s.done&&hd(s.at,h().pos)<1.7),'щит');
@@ -493,7 +496,7 @@ build32=function(){
     O(()=>'На облаке ягнёнок дрожит — в грозовой нити запутан.<br>Два пера рядом зажгите '+K(pi,'item')+' — от тепла нить растает.',()=>F.lambFree,()=>[LB.g]),
     O(()=>'Высокий уступ. Пушок — облачко живое: польёт Йоша '+K(1,'skill')+' — распушится, станет пружинкой.<br>Пушок бежит за светом пера; прыгай на него '+K(pi,'jump')+' — подкинет, даже Потапа.',()=>active(pi).pos.y>18.6&&active(pi).pos.z<-128.4,()=>[LB.g]),
     O(()=>'Ветер-Ветрило дует поперёк мостков! Надул щёки — прячься за Потапа или за стожок.<br>Потапа не сдвинет, и перо у него не задует: светомостки держит его свет.',()=>active(pi).pos.z<-188.6&&active(pi).pos.y>18.5,()=>[VT.g]),
-    O(()=>'Радуга-дуга: солнце за спиной, дождик впереди. Йоша, полей тучку '+K(1,'skill')+' (Потап — выжми '+K(0,'skill')+'),<br>а кто-то пусть светит пером '+K(pi,'item')+' позади тучки. По радуге идите, пока дождик идёт.',()=>active(pi).pos.z<-214.4&&active(pi).pos.y>18.5,()=>[R1.g]),
+    O(()=>'Радуга-дуга: солнце за спиной, дождик впереди. Йоша, полей тучку '+K(1,'skill')+' (Потап — выжми '+K(0,'skill')+'),<br>а кто-то пусть светит пером '+K(pi,'item')+' рядом с тучкой. По радуге идите, пока дождик идёт.',()=>active(pi).pos.z<-214.4&&active(pi).pos.y>18.5,()=>[R1.g]),
     O(()=>'Две радуги: тучку-дождевичок польёт Йоша, а тучку-толстушку на островке выжмет только Потап '+K(0,'skill')+'.',()=>active(pi).pos.z<-256.4&&active(pi).pos.y>18.5,()=>[R2.g,R3.g]),
     O(()=>'Стадо разбежалось! Барашки бегут к свету пера '+K(pi,'item')+' — отведите всех в кошару ('+(F.penCount||0)+' из 9).<br>Тучки громом пугают барашков — в свете тучки мягкие, бейте.',()=>F.penned,()=>F.penned?[]:HERD.filter(s=>!s.penned).slice(0,3).map(s=>s.m.g)),
     O(()=>F.boss?ramText(pi):'Облачная лестница — наверх, на Грозовую вершину.',()=>F.won,()=>B.e&&B.e.alive?[B.e.g]:[rampM]),

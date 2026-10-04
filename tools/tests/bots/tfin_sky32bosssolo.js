@@ -3,7 +3,7 @@
 // Баран бежит на того, кем играешь; радуга — Йоша сама (дождик + своё перо позади тучки); Пушок — Прошка со светом. Без бессмертия.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(true);ZC.startFrom(ZC.LV('3-2'));ZC.G.manual=true;ZC.tick(30);const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}
-const W=ZC.W,H=ZC.HERO;ZC.FIN.warp('boss');ZC.tick(10);for(const h of Object.values(H)){h.following=false;h.lit=false;}
+const W=ZC.W,H=ZC.HERO;ZC.FIN.tut32.auto=false;ZC.FIN.warp('boss');ZC.tick(10);for(const h of Object.values(H)){h.following=false;h.lit=false;}
 U.toKind('proshka');U.goto(0,0,-307,5);ZC.tick(5);U.nocine();ZC.tick(10);const B=W.ram32;if(B.phase!==1)throw new Error('этап не 1: '+B.phase);'solo boss phase='+B.phase
 //@@
 // этап 1 одним игроком: Йоша поливает, Q к Прошке (свет), стоим за стожком, увяз — бьём
