@@ -28,6 +28,8 @@ tools/tests/layout_check.js                   -
 tools/tests/regress.sh                        -
 tools/tests/flaky.py                          -
 tools/changelog.py                            -
+wiki/*                                        -
+tools/wiki_shots.js                           -
 tools/tests/col_update.py                     -
 .claude/*                                     -
 tools/tests/out/*                             -
