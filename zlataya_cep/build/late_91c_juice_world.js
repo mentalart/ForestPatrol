@@ -148,7 +148,7 @@ function jwBoss(dt){const bb=$('bossbar');if(!bb)return;const B=JW.bw;const vis=
   // аура этапа и последовательность последнего удара
   const e=B.anchor&&B.anchor.alive?B.anchor:null;for(const p of JW.parts){p.s.visible=!!e&&B.ph>1&&!B.done;if(!p.s.visible)continue;p.a+=dt*p.sp;p.s.position.set(e.pos.x+Math.cos(p.a)*p.r*e.r,e.pos.y+p.h+Math.sin(p.a*2)*0.2,e.pos.z+Math.sin(p.a)*p.r*e.r);p.s.material.color.lerp(B.auraC,Math.min(1,dt*4));}
   if(B.seq!=null)jwBossSeq(dt);}
-function jwAura(){if(JW.parts.length)return;for(let i=0;i<12;i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:jxTex('dot'),color:JWBC[0],transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));s.visible=false;s.renderOrder=9;s.scale.setScalar(0.4);W.group.add(s);JW.parts.push({s,a:i/12*Math.PI*2,h:rand(0.4,3.2),r:rand(1.2,1.6),sp:rand(0.6,1.2)});}}
+function jwAura(){if(JW.parts.length)return;for(let i=0;i<12;i++){const s=jxNoRay(new THREE.Sprite(new THREE.SpriteMaterial({map:jxTex('dot'),color:JWBC[0],transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false})));s.visible=false;s.renderOrder=9;s.scale.setScalar(0.4);W.group.add(s);JW.parts.push({s,a:i/12*Math.PI*2,h:rand(0.4,3.2),r:rand(1.2,1.6),sp:rand(0.6,1.2)});}}
 function jwBossPhase(st,max){const B=JW.bw;B.anchor=jwBossAnchor();const c=JWBC[st-1]||JWBC[2];B.auraC=new THREE.Color(c);JWS.stinger(st);jwCap('стингер: этап '+st,null);
   const M=FIN.music;if(M&&(M.cur==='boss'||String(M.cur).indexOf('jxBoss')===0)&&M.TR['jxBoss'+st]){M.play('jxBoss'+st);B.music=true;}
   const pos=B.anchor?B.anchor.pos.clone():active(0).pos.clone(),fl=jxFl();jwAura();for(const p of JW.parts)p.s.material.color.setHex(0xffffff);
@@ -163,7 +163,7 @@ function jwBossSeq(dt){const B=JW.bw;B.t+=dt;   // по реальному вр�
 // слабое место: крупный морок открыт (пробой, оглушён, открыт, шатается) — золотое свечение и «звяк»
 function jwWeak(dt){for(const e of W.enemies){const open=e.alive&&e.big&&e.kind!=='golova'&&!G.cine&&(e.state==='broken'||e.dazeT>0||e.open>0||e.state==='stagger');
     if(!open){if(e._jwW)e._jwW.visible=false;e._jwZ=0;continue;}
-    if(!e._jwW){e._jwW=new THREE.Sprite(new THREE.SpriteMaterial({map:jxTex('dot'),color:0xffd040,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));e._jwW.renderOrder=9;W.group.add(e._jwW);}
+    if(!e._jwW){e._jwW=jxNoRay(new THREE.Sprite(new THREE.SpriteMaterial({map:jxTex('dot'),color:0xffd040,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false})));e._jwW.renderOrder=9;W.group.add(e._jwW);}
     const g=e._jwW,top=(e.L&&e.L.top||1.4)*(e.s||1),ph=G.time*7;g.visible=true;g.position.set(e.pos.x,e.pos.y+top*0.5,e.pos.z);g.scale.setScalar(e.r*(2+0.6*Math.sin(ph))*(0.7+0.3*jxFl()));g.material.opacity=0.45+0.25*Math.sin(ph);
     e._jwZ=(e._jwZ||0)-dt;if(e._jwZ<=0){e._jwZ=0.7;JWS.zvyak(jxPan(e.pos,0));}}}
 
@@ -210,7 +210,7 @@ function jwMagic(dt){const wp=new V3();if(!JW_HG.size)for(const h of HEROES)if(h
   for(let i=JW.magic.length-1;i>=0;i--){const M=JW.magic[i],g=M.g;let o=g,inScene=false,shown=true,onHero=false;for(let k=0;k<14&&o;k++){if(o===scene){inScene=true;break;}if(o.visible===false)shown=false;if(JW_HG.has(o))onHero=true;o=o.parent;}
     if(onHero)inScene=false;   // перо за спиной и гусли-наряд у героя — без ореола
     if(!inScene){if(M.sp&&M.sp.parent)M.sp.parent.remove(M.sp);if(!g.parent||M.dead>3){JW.magic.splice(i,1);continue;}M.dead=(M.dead||0)+dt;continue;}M.dead=0;
-    if(!M.sp){M.sp=new THREE.Sprite(new THREE.SpriteMaterial({map:jxTex('dot'),color:M.kind==='pero'?0xffb060:0xffe2a0,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false}));M.sp.renderOrder=9;M.sp.userData.noBatch=true;W.group.add(M.sp);}
+    if(!M.sp){M.sp=jxNoRay(new THREE.Sprite(new THREE.SpriteMaterial({map:jxTex('dot'),color:M.kind==='pero'?0xffb060:0xffe2a0,transparent:true,depthWrite:false,blending:THREE.AdditiveBlending,fog:false})));M.sp.renderOrder=9;M.sp.userData.noBatch=true;W.group.add(M.sp);}
     if(M.sp.parent!==W.group)W.group.add(M.sp);
     g.getWorldPosition(wp);M.sp.visible=shown&&jxFl()>0;const ws=g.getWorldScale(new V3()).x||1;
     M.sp.position.copy(wp);M.sp.scale.setScalar((M.kind==='pero'?1.5:1.8)*Math.min(2,ws)*(0.85+0.15*Math.sin(G.time*4+i)));M.sp.material.opacity=(M.kind==='pero'?0.5:0.4)*jxFl();

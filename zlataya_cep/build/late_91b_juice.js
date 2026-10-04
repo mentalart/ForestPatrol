@@ -87,6 +87,8 @@ jxWrapSfx('nut','ladder',()=>{const P=JX.pick;if(G.time-P.t>2.5)P.n=0;P.t=G.time
 {const _pf=parryFoe;parryFoe=function(e,h){JX.ctxH=h;try{return _pf.apply(this,arguments);}finally{JX.ctxH=null;}};}
 
 /* ---------- частицы: спрайты-вспышки, блики, лепестки ---------- */
+// спрайты эффектов не ловят лучи: raycast по группе мира у Sprite без камеры бросает ошибку
+const jxNoRay=o=>{o.raycast=()=>{};return o;};
 const JXTEX={};
 function jxTex(kind){if(JXTEX[kind])return JXTEX[kind];const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');
   if(kind==='star'){x.translate(32,32);x.fillStyle='#fff';for(let i=0;i<4;i++){x.rotate(Math.PI/2);x.beginPath();x.moveTo(0,-31);x.quadraticCurveTo(3,-3,31,0);x.quadraticCurveTo(3,3,0,31);x.fill();}
@@ -94,9 +96,9 @@ function jxTex(kind){if(JXTEX[kind])return JXTEX[kind];const c=document.createEl
   else{const g=x.createRadialGradient(32,32,0,32,32,32);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(0.35,'rgba(255,255,255,0.8)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,64,64);}
   return JXTEX[kind]=new THREE.CanvasTexture(c);}
 function jxSprite(kind,col,pos,size,life,o){o=o||{};const m=new THREE.SpriteMaterial({map:jxTex(kind),color:col,transparent:true,depthTest:false,depthWrite:false,blending:THREE.AdditiveBlending,fog:false});
-  const s=new THREE.Sprite(m);s.position.copy(pos);s.scale.setScalar(0.01);s.renderOrder=10;W.group.add(s);JX.parts.push({kind:'spr',m:s,t:0,life,size,op:o.op==null?1:o.op,spin:o.spin||0,shape:o.shape||'pop'});return s;}
+  const s=jxNoRay(new THREE.Sprite(m));s.position.copy(pos);s.scale.setScalar(0.01);s.renderOrder=10;W.group.add(s);JX.parts.push({kind:'spr',m:s,t:0,life,size,op:o.op==null?1:o.op,spin:o.spin||0,shape:o.shape||'pop'});return s;}
 const JXPETAL_G=new THREE.PlaneGeometry(0.26,0.38);
-function jxPetal(h){const m=new THREE.Mesh(JXPETAL_G,new THREE.MeshBasicMaterial({color:0xff9ab8,side:THREE.DoubleSide,transparent:true}));m.position.copy(h.pos).add(new V3(0,heroHeight(h)*0.9,0));m.scale.set(1.4,1.4,1.4);W.group.add(m);
+function jxPetal(h){const m=jxNoRay(new THREE.Mesh(JXPETAL_G,new THREE.MeshBasicMaterial({color:0xff9ab8,side:THREE.DoubleSide,transparent:true})));m.position.copy(h.pos).add(new V3(0,heroHeight(h)*0.9,0));m.scale.set(1.4,1.4,1.4);W.group.add(m);
   JX.parts.push({kind:'petal',m,t:0,life:3.2,v:new V3(rand(-1.6,1.6),3.6,rand(-1.6,1.6)),floor:h.pos.y+0.05,ph:rand(0,6)});}
 function jxPartsTick(dt){for(let i=JX.parts.length-1;i>=0;i--){const p=JX.parts[i];p.t+=dt;const k=p.t/p.life;
     if(k>=1||!p.m.parent){if(p.m.parent)p.m.parent.remove(p.m);p.m.material.dispose();JX.parts.splice(i,1);continue;}
@@ -127,7 +129,7 @@ const JXV={};{const css='position:fixed;top:0;bottom:0;pointer-events:none;opaci
 /* ---------- телеграфы: блик перед ударом, нить и кольцо цели ---------- */
 const JXTGT_G={ring:new THREE.RingGeometry(0.55,0.74,32),line:new THREE.BoxGeometry(0.07,0.03,1)};JXTGT_G.ring.rotateX(-Math.PI/2);
 function jxTarget(e){if(e._jt)return e._jt;const mr=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0.8,depthWrite:false,fog:false}),ml=mr.clone();
-  const ring=new THREE.Mesh(JXTGT_G.ring,mr),line=new THREE.Mesh(JXTGT_G.line,ml);ring.renderOrder=line.renderOrder=6;W.group.add(ring);W.group.add(line);return e._jt={ring,line};}
+  const ring=jxNoRay(new THREE.Mesh(JXTGT_G.ring,mr)),line=jxNoRay(new THREE.Mesh(JXTGT_G.line,ml));ring.renderOrder=line.renderOrder=6;W.group.add(ring);W.group.add(line);return e._jt={ring,line};}
 {const _uf=updateFoe;updateFoe=function(e,dt){const r=_uf.apply(this,arguments);try{jxFoe(e,dt);}catch(err){console.error('juice foe',err);}return r;};}
 function jxFoe(e,dt){const w=e.alive&&e.state==='wind'&&e.tgt;
   // проседание после удара
