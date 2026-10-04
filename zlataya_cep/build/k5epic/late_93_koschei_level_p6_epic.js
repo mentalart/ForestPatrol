@@ -74,4 +74,4 @@
     E.prep();if(n===1){E.cine.intro(()=>{E.prep();E.go(1);});return;}
     for(let i=1;i<n;i++)E.done[i]=true;E.go(n,{warp:true});};
   // для ботов и отладки
-  W.dbg5e=()=>({E,ES,K5,KB,KS,F,candles,C,R,OAK,KP,ANV,stageStart,stageWin,heroesHome,clearAdds});
+  W.dbg5e=()=>({E,ES,K5,KB,KS,F,candles,C,R,OAK,KP,ANV,stageStart,stageWin,heroesHome,clearAdds,k5Zone,K5L,V3,THREE});

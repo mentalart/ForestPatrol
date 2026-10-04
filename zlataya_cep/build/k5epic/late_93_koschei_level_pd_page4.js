@@ -39,7 +39,7 @@
       if(S.ph==='forge'&&hd(h.pos,ANV4)<2.4){const per=0.8,ph=(S.bt%(per*3))/(per*3),win=ph>0.86||ph<0.06;if(win){S.good++;FX.sparks(ANV4.clone().add(new V3(0,1.3,0)),16,0xffd060);SFX.hammer?SFX.hammer():SFX.clink();floatText(ANV4.clone().add(new V3(0,2.4,0)),'В такт! '+S.good+' / 3','#ffe08a');
           if(S.good>=3){S.ph='carry';bridle.visible=true;bridle.position.set(ANV4.x-1.6,0.25,ANV4.z-1.2);beatR.visible=false;bark(dem,'demyan','Готова узда! Горячая — берите клещами, вдвоём!',2.4,true);E.log('forged');ES.prog=1/3;}}
         else{floatText(ANV4.clone().add(new V3(0,2.4,0)),'не в такт','#cccccc');SFX.clink();}return;}
-      if(S.ph==='carry'&&S.carry&&hd(bridle.position,GOR)<4.6){const pi=h.player;S.rdt[pi]=G.time;const both=G.solo||Math.abs(S.rdt[0]-S.rdt[1])<1.0;
+      if(S.ph==='carry'&&S.carry&&hd(bridle.position,GOR)<5.8){const pi=h.player;S.rdt[pi]=G.time;const both=G.solo||Math.abs(S.rdt[0]-S.rdt[1])<1.0;
         if(both){S.ph='done';ES.prog=1;swap();}else floatText(h.pos.clone().add(new V3(0,2,0)),'Раз-два-три — разом!','#ffe08a');}};
     A.item=pi=>{if(E.cur!==7||!ES.fight||S.ph!=='carry'||S.carry)return null;const h=active(pi);const wp=i=>ends[i].getWorldPosition(new V3());let ei=-1;for(let i=0;i<2;i++)if(hd(h.pos,wp(i))<1.6)ei=i;if(ei<0)return null;
       return ()=>{S.grab[ei]=h;FX.sparkle(wp(ei),8,0xffd060);floatText(h.pos.clone().add(new V3(0,2,0)),'Клещи — взял!','#ffe08a');

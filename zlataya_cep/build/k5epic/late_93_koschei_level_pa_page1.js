@@ -13,7 +13,7 @@
     const tieM=new THREE.TorusGeometry(0.42,0.06,5,16),tieMat=M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.6});
     const legW=i=>{const p=new V3();(hut.legs&&hut.legs[i]?hut.legs[i]:hut.g).getWorldPosition(p);p.y=0;return p;};
     const circles=[0,1].map(i=>{const m=new THREE.Mesh(new THREE.RingGeometry(0.9,1.2,32),k5Add(0xffd76a,{opacity:0.9}));m.rotation.x=-Math.PI/2;m.visible=false;A.g.add(m);return m;});
-    const S={};A.S=S;
+    const S={};A.S=S;A.legW=i=>legW(i);A.hut=hut;
     function reset(){S.st='walk';S.t=0;S.cd=3;S.tgt=new V3(X,0,-4);S.ties=[[],[]];S.tied=[false,false];S.sitT=0;S.turn=[-9,-9];S.done=false;S.beasts=[];S.beastT=5;S.letT=4;
       hut.g.position.set(X,0,-4);hut.g.rotation.y=0;if(hut.door)hut.door.visible=false;if(hut.house)hut.house.position.y=hut.house.userData.y0==null?(hut.house.userData.y0=hut.house.position.y):hut.house.userData.y0;
       (S.tieMs||[]).forEach(k5Del);S.tieMs=[];circles.forEach(c=>{c.visible=false;});hutCyl.on=true;}
@@ -62,7 +62,7 @@
         later(1.0,()=>{K5L.ink(KS.g.position.clone().add(new V3(0,2,0)),26);k5s('shatter');const f=KS.g.position.clone();anim(0.7,k=>{KS.g.position.set(f.x+k*4,f.y+Math.sin(k*Math.PI)*2-k*f.y,f.z-k*3);});
           later(0.8,()=>{KS.g.visible=false;bark(KS,'koschei','Ничего! Ещё не вечер!',1.6,true);E.won(4);});});}};
     // клубок: нить на ногу (предмет у ноги)
-    A.item=pi=>{if(E.cur!==4||!ES.fight||S.st==='sit'||S.done)return null;const h=active(pi);let li=-1;for(let i=0;i<2;i++)if(hd(h.pos,legW(i))<2.6)li=i;if(li<0)return null;
+    A.item=pi=>{if(E.cur!==4||!ES.fight||S.st==='sit'||S.done)return null;const h=active(pi);let li=-1,bd=2.6;for(let i=0;i<2;i++){const d=hd(h.pos,legW(i));if(d<bd){bd=d;li=i;}}if(li<0)return null;
       return ()=>{const ties=S.ties[li];ties.push({pi,t:G.time});while(ties.length&&G.time-ties[0].t>8)ties.shift();SFX.thwip&&SFX.thwip();
         const m=new THREE.Mesh(tieM,tieMat);m.rotation.x=Math.PI/2;m.position.set(0,0.6+ties.length*0.25,0);(hut.legs[li]||hut.g).add(m);S.tieMs.push(m);
         const ok=G.solo?ties.length>=2:new Set(ties.map(q=>q.pi)).size>=2;floatText(legW(li).add(new V3(0,2.4,0)),ok?'Нога спутана!':'нить! теперь — второй','#ffe08a');
