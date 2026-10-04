@@ -19,7 +19,7 @@
 // музыка по этапам, одна табличка над Соловьём вместо надписей, своя камера арены.
 build3B=function(){
   W.zvenAway=true;W.world=3;setTheme('heaven');W.name='3-Б · «Соловей-Разбойник»';W.sub='Босс мира 3 · прямоезжая дорожка и гнездо на семи дубах · свист, крик, шип и полный свист';W.camX=16;
-  const F=W.flags;F.phase=0;F.fin=[-9,-9];
+  const F=W.flags;F.phase=0;F.fin=[-9,-9];HEROES.forEach(h=>{h.k3ride=null;h.slowT=0;h.tangleT=0;});
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.pero=true;W.fallY=-40;W.k2fx=true;
   const C={x:0,z:-14},R=12,T=HERO,SL=FIN.k3s,FX=FIN.k3fx,FX2=FIN.k2fx,SOLO=()=>!!G.solo,ft=FIN.k2ft||floatText;
   const BG0=new THREE.Color(0x5a54a0),BG1=new THREE.Color(0x0a0a20),BG3=new THREE.Color(0x3a3a6c),BG4=new THREE.Color(0x8a4c6c),BG5=new THREE.Color(0xe8a070);
@@ -332,7 +332,7 @@ build3B=function(){
     BELL.ring.visible=false;sol.k3.st.roll=0;S3.st='fly';S3.thrT=2.6;key(h.pos.clone(),'Ух!','#ffe9a0');if(Math.random()<0.6)sayS(line('tease'),1.4,'cocky','laugh');}
   function hatOff(){const Rd=S3.ride,h=Rd.h,e=sol;S3.ride=null;h.k3ride=null;h.iT=2;h.grounded=false;h.vel.set(rand(-1.5,1.5),3,rand(-1.5,1.5));sol.k3.st.roll=0;BELL.ring.visible=false;S3.banksKept=0;
     SL.hat(e.k3,false);key(solTop(),'Шапку сорвали!','#ffd76a');sayS('Шапка! Моя шапка!',1.6,'hurt');FX.feathers(e.pos.clone().add(new V3(0,3,0)),12,[0xd8402e,0xffd34a,0x6a2a4a]);
-    const hat=new THREE.Group();W.group.add(hat);fk(hat,K=>{K.add(KP.cyl(0.42,0.5,0.56,10),hp(0x6a2a4a),tm(0,0.28,0));K.add(KP.tor(0.52,0.13,5,14),hp(0x8a6a4a),tm(0,0.04,0,Math.PI/2,0,0));});hat.scale.setScalar(sol.s);
+    const hat=new THREE.Group();W.group.add(hat);fk(hat,K=>{K.add(KP.cyl(0.42,0.5,0.56,10),hp(0x6a2a4a),tm(0,0.28,0));K.add(KP.tor(0.52,0.13,5,14),hp(0x8a6a4a),tm(0,0.04,0,Math.PI/2,0,0));});hat.scale.setScalar(1.1);
     const hp0=e.pos.clone().add(new V3(0,3.4*sol.s,0)),hp1=at(rand(0,6.28),rand(3,7),0.02);FX.anim(1.4,k=>{hat.position.lerpVectors(hp0,hp1,k);hat.position.y=lerp(hp0.y,0.02,k)+Math.sin(k*Math.PI)*1.5;hat.rotation.set(k*6,k*3,0);},()=>{hat.rotation.set(0,0,0.3);});
     s3Fall();}
   function s3Fall(){const e=sol;S3.st='fall';if(S3.ride){const h=S3.ride.h;h.k3ride=null;h.iT=2;S3.ride=null;}SL.set(e.k3,'dazed','hurt');tumble(at(rand(0,6.28),2.5),1.0,()=>{if(F.phase!==3)return;S3.st='down';winStart(winDur(),'dazed');});}
@@ -449,12 +449,12 @@ build3B=function(){
   function stageRestart(){const e=sol;clearWaves();cring.on=false;ringM.forEach(m=>{m.visible=false;});banner('Этап сначала!','#cfe8ff',2.4,'отметка у входа — и снова в гнездо');sayS(line('tease'),1.8,'cocky','laugh');
     if(F.phase===1){S1.bow=null;S1.inh=null;S1.sw=null;OAKS.forEach(O=>{O.tb=0;});s1Start();}else if(F.phase===2){clearBeasts();s2Start();}else if(F.phase===3){clearStorm();s3Start();}else if(F.phase===4){s4Start();}}
   // ---------- карточка этапа: баннер + одна подсказка на игрока ----------
-  function card(title,sub,tipFn){banner(title,'#d8b070',3,sub);BS.signT=3.2;W.k3hint=tipFn;BS.idleT=0;later(0.8,()=>{for(const p of[0,1])tip(p,tipFn(p),5.5);});}
+  function card(title,sub,tipFn){banner(title,'#d8b070',3,sub);BS.signT=3.9;W.k3hint=tipFn;BS.idleT=0;later(0.8,()=>{for(const p of[0,1])tip(p,tipFn(p),5.5);});}
   /* ---------- ролики ---------- */
   const play2=def=>{play(def);try{const cd=CINE.CD&&CINE.CD();if(cd&&cd.S===G.cine){cd.inserts=false;cd.cover=[];}}catch(err){}};
   function intro(){bb.style.display='block';W.gateOpen&&W.gateOpen();HEROES.forEach((h,i)=>{placeOnGround(h,-3.6+i*2.4,C.z+R-3,0);h.face=Math.PI;h.following=false;});if(!sol)spawnSol();sol.state='idle';const O=OAKS[3];
     placeSol(perchOf(O,true));SL.set(sol.k3,'idle','cocky');const top=perchOf(O,true);
-    play2({dur:14,fov:50,camK:2.6,shots:[shot(0,[0,7,4],[0,8,-30]),shot(4.4,[3.5,8.2,-17],[0,10.5,-26.5]),shot(7.6,[0,3.4,-6],[0,6,-24],[0,2.6,-4],[0,5.4,-24],3),shot(11.2,[7,9,2],[0,2,-16])],
+    play2({dur:14,fov:50,camK:2.6,shots:[shot(0,[0,7,4],[0,8,-30]),shot(4.4,[5.5,7.6,-12.5],[0,9.2,-26.5]),shot(7.6,[0,3.4,-6],[0,6,-24],[0,2.6,-4],[0,5.4,-24],3),shot(11.2,[7,9,2],[0,2,-16])],
       says:[[0.3,4,null,'<i>Соловей-Разбойник на семи дубах сидит, свитых гнездом,</i><br><i>И свистит так, что облака рвутся кругом.</i>',true],[4.6,2.6,'solovei','Фью-у-ить! Кто там звенит, кто спать не даёт?'],[7.6,2.6,'solovei','А ну — сдуло! Прочь, народ!'],[10.6,2.8,'zven','На табличку над ним глядите — там написано, что делать!']],
       events:[{t:0.2,fn:()=>{SL.set(sol.k3,'sing','cocky');}},{t:4.4,fn:()=>{SL.set(sol.k3,'idle','cocky');sol.k3.st.look[0]=0.3;}},
         {t:6.2,fn:()=>{SL.set(sol.k3,'hop');}},{t:6.6,fn:()=>{const from=sol.pos.clone(),to=at(O.a,7.5);SL.set(sol.k3,'glide');FX.anim(1.0,k=>{sol.pos.lerpVectors(from,to,smooth(k));sol.pos.y=lerp(from.y,0,smooth(k))+Math.sin(k*Math.PI)*1.5;sol.face=faceTo(from,to);},()=>{sol.face=faceTo(sol.pos,C);SL.set(sol.k3,'roar','angry');SFX.thud();shakeAll(0.05,0.4);});}},

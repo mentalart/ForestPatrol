@@ -22,15 +22,15 @@ FIN.k3road=function(KR){const F=W.flags,T=HERO,C=KR.C,FX=FIN.k3fx,FX2=FIN.k2fx,S
   const CLD=M(0xd6d0f4),CLDS=M(0xa8a0d8),BARK=M(0x6b4a2b),MOSS=M(0x6a9a4a);
   const plat=(minx,maxx,minz,maxz,top)=>cloudIsle(minx,maxx,minz,maxz,top==null?Y:top);
   /* ---------- земля по участкам (сверху вниз по z) ---------- */
-  plat(-6,6,158,178);plat(-6,6,140,158);plat(-6,6,121,140);plat(-6,6,106,110);plat(-6,6,103,106);plat(-6,6,90,95);plat(-6,6,74,90);plat(-6,6,70,74);plat(-6,6,48,54);plat(-11,11,26,48);
+  plat(-6,6,158,178);plat(-6,6,140,158);plat(-6,6,121,140);plat(-6,6,106,110);plat(-6,6,103,106);plat(-6,6,90,95);plat(-6,6,74,90);plat(-6,6,70,74);plat(-6,6,48,55);plat(-11,11,26,48);
   // заколодевший край дорожки: камни-укрытия по бокам
   const COVER=[];const rock=(x,z,r,y)=>{const g=new THREE.Group();g.position.set(x,(y==null?Y:y),z);W.group.add(g);fk(g,K=>{K.add(KP.dod(r),hp(0x8a84a0),tm(0,r*0.55,0,0.3,0.7,0.2,1,0.75,1),{noise:0.08});K.add(KP.dod(r*0.6),hp(0x9a94b0),tm(r*0.6,r*0.35,r*0.3,1.1,0.2,0.4),{noise:0.06});});
     W.cyls.push({x,z,r:r*0.95,miny:(y==null?Y:y)-1,maxy:(y==null?Y:y)+r*1.1,on:true});COVER.push({x,z,r:r*1.1});};
   for(const[x,z,r]of[[-4,170,1.1],[3.6,163,1.3],[-3.2,149,1.2],[4.2,144,1.0],[-4.5,131,1.0],[4.4,126,1.1],[-4.2,99.5,0.9],[4.3,92.5,1.0],[-3.5,86,1.0],[4,77,1.1],[-4,51,1.1],[4.2,49.5,0.9]])rock(x,z,r);
   // лес по сторонам дорожки и облака внизу
-  for(let z=30;z<178;z+=rand(5,8))for(const sd of[-1,1]){const x=sd*rand(9,15),h=rand(4,7);const g=new THREE.Group();g.position.set(x,Y-1,z);W.group.add(g);
+  let fi=0;for(let z=30;z<178;z+=k3hr(fi,41,5,8))for(const sd of[-1,1]){fi++;const x=sd*k3hr(fi,42,9,15),h=k3hr(fi,43,4,7);const g=new THREE.Group();g.position.set(x,Y-1,z);W.group.add(g);   // без случая: коллизии уровня одинаковы при каждой загрузке
     fk(g,K=>{K.add(KP.cyl(0.25,0.4,h,6),hp(0x5a3d22),tm(0,h/2,0),{noise:0.03});for(let k=0;k<3;k++)K.add(KP.ico(rand(1.2,1.9),1),hp(k%2?0x4f7a2c:0x5f8a34),tm(rand(-0.6,0.6),h+rand(-0.5,1),rand(-0.6,0.6)),{noise:0.15});},{mat:KMAT.wind});
-    plat(x-2,x+2,z-2,z+2,Y-1.2);}
+    W.puffs=W.puffs||[];for(let k=0;k<5;k++)W.puffs.push({x:x+Math.cos(k*1.26)*1.8,y:Y-1.6,z:z+Math.sin(k*1.26)*1.8,s:1.1});}   // облачко под деревом — только вид
   // колокольчики-закладки
   const BELLS=[[0,157],[0,137],[0,121.6],[0,105.4],[0,89],[0,72.6],[0,47],[-7.5,26]];BELLS.forEach(([x,z],i)=>bell(x,z,i===7?0:Y));
   /* ---------- свист издалека ---------- */
@@ -53,7 +53,7 @@ FIN.k3road=function(KR){const F=W.flags,T=HERO,C=KR.C,FX=FIN.k3fx,FX2=FIN.k2fx,S
     for(const h of live()){if(R.hit.has(h))continue;const d=Math.hypot(h.pos.x-NEST.x,h.pos.z-NEST.z);if(Math.abs(d-R.r)>1.2)continue;R.hit.add(h);
       for(const I of ISL)if(I.on&&!I.thin&&onIsle(h,I))I.thin=1.2;   // облачко под ногами тает — и за укрытием
       if(sheltered(h)||ISL.some(I=>onIsle(h,I))){FX.sparks(h.pos.clone().add(new V3(0,1.2,0)),4,0xffffff);continue;}if(inGrass(h)){h.tangleT=2.4;key(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Трава оплела!','#b8e090');continue;}if(h.pos.y>Y+1.6&&h.pos.z>26&&h.pos.z<44&&!h.grounded)continue;
-      {const g=groundAt(h.pos.x,h.pos.z+1.4,h.pos.y+0.5,0.3),g2=groundAt(h.pos.x,h.pos.z+3.8,h.pos.y+0.5,0.3);if(g.y<h.pos.y-9||g2.y<h.pos.y-9){h.knockT=0.25;h.vel.x*=0.2;h.vel.z*=0.2;key(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ух! Устоял!','#e8f2ff');continue;}}   // за спиной пропасть — не сдувает
+      if([0.7,1.4,2.1,2.8,3.5,4.2,4.9].some(d=>groundAt(h.pos.x,h.pos.z+d,h.pos.y+0.5,0.3).y<h.pos.y-9)){{h.knockT=0.25;h.vel.x*=0.2;h.vel.z*=0.2;key(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ух! Устоял!','#e8f2ff');continue;}}   // за спиной пропасть — не сдувает
       h.vel.z+=h.guard?4:8;h.vel.y=2.6;h.grounded=false;h.knockT=0.35;FX.down(h.pos.clone().add(new V3(0,0.8,0)),6);key(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ух, сдуло!','#e8f2ff');
       if(!RD.pushTold){RD.pushTold=1;for(const pi of[0,1])tip(pi,'Свист сдувает! Как слышишь трель — встань за камень, за дерево или за щит Потапа '+K(0,'guard')+'.',3.6);}}
     if(R.r>(Math.max(...ctl().map(h=>h.pos.z))-C.z)+22){R.Wv.del();RD.wave=null;}}
@@ -118,7 +118,7 @@ FIN.k3road=function(KR){const F=W.flags,T=HERO,C=KR.C,FX=FIN.k3fx,FX2=FIN.k2fx,S
     // в пуху — вязнешь
     for(const h of HEROES)if(h.slowT>0){h.slowT-=dt;h.vel.x*=0.9;h.vel.z*=0.9;}}
   /* ---------- 6. ОБЛАКА РВУТСЯ (z 70…54): облачные островки — на свист облачко под ногами тает ---------- */
-  const ISL=[[-2.2,67.2],[1.8,63.8],[-1.6,60.4],[2.2,57]].map(([x,z])=>{const g=new THREE.Group();g.position.set(x,Y,z);W.group.add(g);const mat=new THREE.MeshLambertMaterial({color:0xece6ff,transparent:true,opacity:1});
+  const ISL=[[-1.4,67.2],[1.2,63.9],[-1.2,60.6],[1.4,57.3]].map(([x,z])=>{const g=new THREE.Group();g.position.set(x,Y,z);W.group.add(g);const mat=new THREE.MeshLambertMaterial({color:0xece6ff,transparent:true,opacity:1});
     for(let k=0;k<6;k++){const m=new THREE.Mesh(KP.sph(1,8,6),mat);const a=k/6*Math.PI*2;m.position.set(Math.cos(a)*0.8,-0.45,Math.sin(a)*0.8);m.scale.set(0.9,0.55,0.9);g.add(m);}const top=new THREE.Mesh(KP.cyl(1.35,1.1,0.4,12),mat);top.position.y=-0.2;g.add(top);
     const col=colBox(x-1.3,x+1.3,Y-0.8,Y,z-1.3,z+1.3,false);return {g,mat,col,x,z,on:true,thin:0,gone:0};});
   RD.ISL=ISL;const onIsle=(h,I)=>Math.abs(h.pos.x-I.x)<1.5&&Math.abs(h.pos.z-I.z)<1.5&&Math.abs(h.pos.y-Y)<0.5;

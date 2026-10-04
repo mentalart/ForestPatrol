@@ -22,7 +22,7 @@ const K3_PN=420,K3M4=new THREE.Matrix4(),K3Q=new THREE.Quaternion(),K3E=new THRE
 const K3_PT={leaf:{g:1.4,drag:1.6,fl:1.2,sx:0.26,sy:0.18},feather:{g:0.9,drag:1.8,fl:1.6,sx:0.12,sy:0.42},down:{g:0.25,drag:2.2,fl:0.8,sx:0.13,sy:0.13},
   twig:{g:9,drag:0.3,fl:0,sx:0.07,sy:0.7},fly:{g:-0.15,drag:1.2,fl:0.6,sx:0.09,sy:0.09},spark:{g:-0.4,drag:1.5,fl:0.3,sx:0.07,sy:0.07}};
 function k3Pim(){if(K3FX.pim&&K3FX.pim.parent)return K3FX.pim;const g=new THREE.PlaneGeometry(1,1);const m=new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide,fog:true});
-  const im=new THREE.InstancedMesh(g,m,K3_PN);im.frustumCulled=false;im.count=0;im.renderOrder=7;im.setColorAt(0,K3C1.set(0xffffff));k3Add(im);K3FX.pim=im;return im;}
+  const im=new THREE.InstancedMesh(g,m,K3_PN);im.setColorAt(0,K3C1.set(0xffffff));im.frustumCulled=false;im.count=0;im.renderOrder=7;k3Add(im);K3FX.pim=im;return im;}   // буфер цветов — до count=0, иначе он пустой (частицы чёрные)
 // p — откуда, v — скорость, kind — вид частицы, col — цвет; o: life, s (размер), spiral:{c,w} (по спирали вверх)
 K3FX.part=(p,v,kind,col,o)=>{if(K3FX.parts.length>=K3_PN)return null;o=o||{};k3Pim();const T=K3_PT[kind]||K3_PT.leaf;
   const q={p:p.clone(),v:v.clone(),T,col:new THREE.Color(col),t:0,life:o.life||rand(1.6,2.8),s:(o.s||1)*rand(0.8,1.2),rx:rand(0,6),ry:rand(0,6),rz:rand(0,6),sp:rand(2,7)*(Math.random()<0.5?-1:1),ph:rand(0,6),spiral:o.spiral||null,wind:o.wind!==false};
