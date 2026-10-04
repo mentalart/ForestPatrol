@@ -52,8 +52,9 @@ r.push(BOTH(i=>{IMM();const S2=D.S2,s=D.sol,P=H.potap,Pe=H.pelageya;if(D.F.phase
   if(s.state==='broken'){ZC.hold('KeyG',false);HITSOL(0,i);NEAR(1,s.pos.x+1.2,s.pos.z+1.2,1);return false;}
   if(s.dazeT>0){ZC.hold('KeyG',false);NEAR(1,s.pos.x+1.0,s.pos.z+1.4,0.8);HITSOL(0,i);if(s.litNow&&i%9===4)ZC.press('Comma');return false;}
   if(S2.st==='down'||S2.st==='fall'){dz++;return false;}
-  const O=D.OAKS[S2.perch];ZC.hold('KeyG',true);const tx=O.x*0.25,tz=-14+(O.z+14)*0.25;U.step(0,O.x,O.z,0.3);if(Math.hypot(P.pos.x-tx,P.pos.z-tz)<1.5)U.rel(0);
-  if(!JUMP(1))NEAR(1,P.pos.x-Math.sin(P.face)*1.2,P.pos.z-Math.cos(P.face)*1.2,0.5);JUMP(0);return false;},180));
+  // Потап — у середины гнезда, щит на дуб с Соловьём (зайчик бежит с любого места); Пелагея светит рядом
+  const O=D.OAKS[S2.perch],ox=O.x/15.2*2.4,oz=-14+(O.z+14)/15.2*2.4;if(Math.hypot(P.pos.x-ox,P.pos.z-oz)>0.7){ZC.hold('KeyG',false);U.step(0,ox,oz,0.5);}else{U.rel(0);ZC.hold('KeyG',true);P.face=Math.atan2(O.x-P.pos.x,O.z-P.pos.z);}
+  if(!JUMP(1))NEAR(1,P.pos.x-Math.sin(P.face)*1.1,P.pos.z-Math.cos(P.face)*1.1,0.5);JUMP(0);return false;},180));
 U.rel(0);U.rel(1);ZC.hold('KeyG',false);
 const S2=D.S2;r.push('dz='+dz,'beasts='+beasts,'relit='+relit,'ph='+D.F.phase,'S2='+[S2.st,S2.perch,S2.spotOak,S2.spotK.toFixed(2),S2.hopCd.toFixed(1),S2.tilt.toFixed(1),D.sol.embers].join('/'),U.st(),'errs='+_errs.length+' '+_errs.slice(0,2).join(' / '));if(D.F.phase<2.5)throw new Error('этап 2 не пройден: '+r.join(' | '));r.join(' | ')
 //@@ shot=k3bb_2.png
