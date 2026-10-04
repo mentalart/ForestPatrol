@@ -191,7 +191,8 @@ K2FX.val=(Wd,Ht,o)=>{o=o||{};const P=K2_VAL_PROF,nx=o.nx||48,pos=[],av=[],idx=[]
         K2FX.drop(K2V1,new V3(rand(-0.8,0.8),rand(1,3),0).addScaledVector(K2V2,rand(2,5)),rand(0.1,0.18),{noRing:true,life:1.4});if(Math.random()<0.25)K2FX.mist(K2V1,1,0.9);}}};
   return VA;};
 /* ---------- шаг всех эффектов ---------- */
-function k2fxTick(dt){if(!W||W.levelId!=='2-B')return;const sdt=dt;
+function k2fxTick(dt){if(!W||(W.levelId!=='2-B'&&!W.k2fx))return;   // W.k2fx — уровень берёт эффекты 2-Б (3-Б: телеграфы, капли, вспышка)
+ const sdt=dt;
   for(let i=K2FX.tick.length-1;i>=0;i--){const a=K2FX.tick[i];a.t+=sdt;const k=Math.min(1,a.t/a.dur);try{a.fn(k);}catch(e){console.error('k2fx anim',e);}if(k>=1){K2FX.tick.splice(i,1);try{if(a.end)a.end();}catch(e){console.error('k2fx end',e);}}}
   // капли
   const im=K2FX.drops;if(im){let n=0;const L=K2FX.live;for(let i=L.length-1;i>=0;i--){const d=L[i];d.t+=dt;d.v.y-=13*dt;d.p.addScaledVector(d.v,dt);

@@ -166,7 +166,7 @@ build2B=function(){
     key(h.pos.clone().add(new V3(0,h.d.height+1,0)),'Верхом!','#ffe9a0');bark(h,h.kind,'Но-о, водяной! К острову!',1.6,true);}
   function s2Island(H){const h=H.rider;h.k2ride=null;H.state='gone';H.rider=null;placeOnGround(h,C.x+(h.pos.x-C.x>0?1.9:-1.9),C.z+1.5,3.2);h.vel.set(0,0,0);H.g.visible=false;FX.crown(H.g.position.clone(),1.6);
     winStart(SOLO()?7:5,3);V.set(vod.k2,'dazed','surprise');sayV('Ой! Как ты сюда?!',1.6,'surprise');S2.washT=SOLO()?7.2:5.2;S2.onIsl=h;
-    later(3,()=>{H.state='run';H.g.visible=true;H.r=S2.ring[H.lane];});}
+    later(3,()=>{if(F.phase!==2||H.state!=='gone')return;H.state='run';H.g.visible=true;H.r=S2.ring[H.lane];});}   // этап уже кончился — конь не возвращается
   function s2Wash(){const h=S2.onIsl;S2.onIsl=null;V.set(vod.k2,'whistle','angry');sayV('Фью-у-ить! Смою!',1.4);FX.column(C.x,surf(),C.z,5,1.4,2.4);SFX.wave();
     for(const q of HEROES){if(Math.hypot(q.pos.x-C.x,q.pos.z-C.z)<3&&q.pos.y>2.5){const a=Math.atan2(q.pos.z-C.z,q.pos.x-C.x);q.vel.set(Math.cos(a)*7,7,Math.sin(a)*7);q.grounded=false;}}
     later(1.2,()=>{if(F.phase===2)V.set(vod.k2,'conduct','angry');});}
@@ -347,7 +347,7 @@ build2B=function(){
         {t:1.6,fn:()=>{ISL.col.on=true;anim(2,k=>{ISL.g.position.y=-4+4*smooth(k);});FX.column(C.x,surf(),C.z,6,1.6,2.6);shakeAll(0.05,1.2);const from=e.pos.clone();anim(1.6,k=>{e.pos.lerpVectors(from,new V3(C.x,3.2,C.z),smooth(k));e.pos.y+=Math.sin(k*Math.PI)*2;});}},
         {t:3.6,fn:()=>{K2FX.lightning();s2Start();V.set(e.k2,'conduct','happy');}},{t:6.5,fn:()=>K2FX.lightning()}],
       tick:(t,dt)=>{for(const H of S2.horses){H.tick(dt);}},end:()=>{if(F.phase!==2)s2Start();}});}
-  function scene3(){const e=vod;e.dazeT=0;e.state='idle';S2.st='off';S2.horses.forEach(H=>{H.g.visible=false;if(H.rider){H.rider.k2ride=null;H.rider=null;}});SH2.forEach(S=>{S.g.visible=false;S.ref.off=true;S.ref.hum=0;});
+  function scene3(){const e=vod;e.dazeT=0;e.state='idle';S2.st='off';S2.horses.forEach(H=>{if(H.g.visible)FX.crown(H.g.position.clone().setY(surf()),1.2);H.g.visible=false;H.state='off';if(H.rider){H.rider.k2ride=null;H.rider=null;}});SH2.forEach(S=>{S.g.visible=false;S.ref.off=true;S.ref.hum=0;});   // табун рассыпается пеной
     play2({dur:9.5,fov:50,shots:[shot(0,[0,4,-3],[0,2,-14]),shot(4,[8,7,-5],[0,0,-14],[6,9,-2],[0,-1,-14],5)],
       says:[[0.3,2.8,'vod','Буль-буль… А ну-ка, угадайте, где я!'],[3.6,3.4,null,'<i>Омут закрутился воронкой — и Водяных стало трое.</i>',true],[7.2,2,'zven','Пелагея, Совиный взор! Прошка — рогатку!']],
       events:[{t:0.6,fn:()=>{OM.swirl=1;SFX.wave();anim(2,k=>{ISL.g.position.y=-4*smooth(k);});later(2,()=>{ISL.col.on=false;});const from=e.pos.clone();anim(1.4,k=>{e.pos.lerpVectors(from,new V3(C.x,-0.9,C.z),k);});}},
@@ -423,7 +423,7 @@ build2B=function(){
     'Зеркало: Совиный взор, рогатка в настоящего, кувшинка-плот. Вал: на «БОМ!» — каждый свой колокол; потом общий удар.';
   W.onStart=()=>{later(0.4,CH.chaseScene);};
   W.dbg2b=()=>({F,WV:CH.WV,CH,STR:CH.STR,oakCol:CH.oakCol,reedCol:CH.reedCol,gateCol:CH.gateCol,ropes:CH.ropes,RP:CH.RP,vod,CKS:CH.CKS,wave:CH.VAL.root,zone,BS,S1,S2,S3,S4,SOM,SHOAL,SH2,BUDS,BELL4,ISL,OM,whiskTip,
-    scene2,scene3,scene4,sceneParting,ending,posSlot,s1Start,s2Start,s3Start,s4Start});
+    scene2,scene3,scene4,sceneParting,ending,posSlot,s1Start,s2Start,s3Start,s4Start,s2Mount,s2Island});
   // для ботов: 'boss' — сразу к омуту; 'boss2'…'boss4' — к этапу; участки погони — CH.warp
   W.warp2b=(where)=>{if(where==='boss'){CH.skip();intro();return W.dbg2b();}
     const m=/^boss([1-4])$/.exec(where);if(m){CH.skip();const n=+m[1];W.camFn=arenaCam;snag.visible=false;bb.style.display='block';if(!vod)spawnVod();SOM.g.visible=n===1;W.clampR={x:C.x,z:C.z,r:R-0.7};HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-5.4,1);h.following=false;});snapCams();
