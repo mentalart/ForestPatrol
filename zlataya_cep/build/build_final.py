@@ -12,12 +12,14 @@ B=os.path.dirname(os.path.abspath(__file__))
 ROOT=os.path.normpath(os.path.join(B,'..','..'))
 SRC=os.path.join(ROOT,'index.html')
 GPU='--gpu' in sys.argv
+K5SB='--k5sandbox' in sys.argv   # «Полигон Кощея» (docs/24_koschei_proposals.md): модули sandbox_k5/, без озвучки, свой файл; в main не вливается
 # --pages ПАПКА — версия для GitHub Pages: ПАПКА/index.html без записей голосов внутри (27 МБ → ~8 МБ, игра открывается за секунды),
 # записи — отдельными файлами ПАПКА/voice/<id>.mp3; игра подгружает записи уровня при его загрузке (late_91_voice.js, e.src).
 # Обычная сборка (файл для скачивания в Releases и для ботов) — как прежде, всё в одном файле.
 PAGES=sys.argv[sys.argv.index('--pages')+1] if '--pages' in sys.argv else None
 VERSION='final07' if GPU else 'final06'
-OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_'+VERSION+'.html')
+OUT=os.path.join(ROOT,'zlataya_cep','zlataya_cep_'+('k5sandbox' if K5SB else VERSION)+'.html')
+SBK=os.path.join(B,'sandbox_k5')
 GB=os.path.join(B,'gpu')
 def rdg(n):return open(os.path.join(GB,n),encoding='utf-8').read()
 sys.path.insert(0,os.path.join(ROOT,'tools'));import proto
@@ -28,7 +30,7 @@ def rd(n):return open(os.path.join(B,n),encoding='utf-8').read()
 def walk(pat):
     out={}
     for d,ds,fs in os.walk(B):
-        ds[:]=sorted(x for x in ds if x not in ('gpu','voice','fonts'))
+        ds[:]=sorted(x for x in ds if x not in ('gpu','voice','fonts','sandbox_k5'))
         for f in fs:
             if re.match(pat,f):
                 rp=os.path.relpath(os.path.join(d,f),B).replace(os.sep,'/')
@@ -61,11 +63,12 @@ rep('<div id="ui">',rd('fin_body.html').rstrip()+'\n<div id="ui">')
 GPU_EARLY=['gpu_early.js','gpu_shaders.js']   # final07: материалы и переводы шейдеров на TSL — до поздних модулей
 rep("const V3=THREE.Vector3;","const V3=THREE.Vector3;\n"+rd('fin_early.js').rstrip()+'\n'+(''.join(rdg(f).rstrip()+'\n' for f in GPU_EARLY) if GPU else ''))
 late='\n'.join(rd(f).rstrip() for f in walk(r'late_\d+.*\.js$'))
+if K5SB:late+='\n'+'\n'.join(open(os.path.join(SBK,f),encoding='utf-8').read().rstrip() for f in sorted(os.listdir(SBK)) if f.endswith('.js'))   # после всех поздних модулей
 if GPU:late+='\n'+'\n'.join(rdg(f).rstrip() for f in sorted(os.listdir(GB)) if re.match(r'gpu_late_\d+.*\.js$',f))   # final07: после всех поздних модулей
 # озвучка реплик (final06): каталог voice/lines.json и записи voice/<id>.mp3 → VOX_LINES (MP3 в base64) перед поздними модулями
 import json
 VD=os.path.join(B,'voice');VL=json.load(open(os.path.join(VD,'lines.json'),encoding='utf-8'))['lines'];vox=[]
-for e in VL:
+for e in ([] if K5SB else VL):
     f=os.path.join(VD,e['id']+'.mp3')
     if not (os.path.exists(f) and e.get('dur')):print('voice: нет записи',e['id']);continue
     ve={'id':e['id'],'lv':e['lv'],'who':e['who'],'text':e['text'],'dur':e['dur'],'gain':e.get('gain',1),'lul':e.get('lul')}
@@ -77,6 +80,7 @@ voxjs='const VOX_LINES='+json.dumps(vox,ensure_ascii=False)+';\n';late=voxjs+lat
 # защита: модуль не должен объявлять функцию с именем функции прототипа — в общей области видимости она молча подменит оригинал
 PF=set(re.findall(r'(?m)^function\s+([A-Za-z_$][\w$]*)\s*\(',s))
 MODS=[(f,rd(f)) for f in walk(r'(late_\d+.*|fin_early)\.js$')]
+if K5SB:MODS+=[('sandbox_k5/'+f,open(os.path.join(SBK,f),encoding='utf-8').read()) for f in sorted(os.listdir(SBK)) if f.endswith('.js')]
 if GPU:MODS+=[('gpu/'+f,rdg(f)) for f in sorted(os.listdir(GB)) if re.match(r'gpu_(early|shaders|late_\d+.*)\.js$',f)]
 for f,src in MODS:
         clash=sorted(set(re.findall(r'(?<![\w.])function\s+([A-Za-z_$][\w$]*)\s*\(',src))&PF)
@@ -90,7 +94,7 @@ for mod in walk(r'rep_\d+.*\.py$'):
 # у каждой озвученной реплики должна быть такая же строка в игре (после всех замен субтитров), иначе запись не прозвучит
 # (реплика, собранная в коде из кусков — например t+'…', — перечисляет эти куски в поле parts: в игре должен быть каждый)
 sg=s.replace(voxjs,'',1)   # код игры без самого каталога записей (в нём есть все тексты)
-miss=[e for e in VL if ("'"+e['text'].replace("'","\\'")+"'" not in sg) and not (e.get('parts') and all(p in sg for p in e['parts']))]
+miss=[] if K5SB else [e for e in VL if ("'"+e['text'].replace("'","\\'")+"'" not in sg) and not (e.get('parts') and all(p in sg for p in e['parts']))]
 for e in miss: print('VOICE LINE NOT FOUND ::',e['id'],e['text'])
 if miss: sys.exit('VOICE LINE NOT FOUND: '+str(len(miss)))
 if PAGES:OUT=os.path.join(PAGES,'index.html')

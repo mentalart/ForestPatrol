@@ -169,3 +169,9 @@ zlataya_cep/build/levels/3-1/late_99p_sky31.js @level:3-1 tfin_sky31 tfin_sky31s
 zlataya_cep/build/late_95b_warp.js              smoke tfin_warp
 tools/tests/cine_frames.js                    -
 tools/tests/bots/archive/*                    -
+zlataya_cep/build/sandbox_k5/sb_k5_10_core.js   tsb_k5
+zlataya_cep/build/sandbox_k5/sb_k5_20_boss.js   tsb_k5
+zlataya_cep/build/sandbox_k5/sb_k5_30_stages.js tsb_k5
+zlataya_cep/build/sandbox_k5/sb_k5_40_giant.js  tsb_k5
+zlataya_cep/build/sandbox_k5/sb_k5_50_flight.js tsb_k5
+zlataya_cep/build/sandbox_k5/sb_k5_60_page.js   tsb_k5
