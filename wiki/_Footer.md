@@ -1,0 +1,1 @@
+**«Златая цепь»** · [Играть онлайн](https://mentalart.github.io/ForestPatrol/) · [Скачать](https://github.com/mentalart/ForestPatrol/releases) · [Репозиторий](https://github.com/mentalart/ForestPatrol) · Вики собирается из папки `wiki/` — правки через pull request.

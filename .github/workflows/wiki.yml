@@ -1,0 +1,44 @@
+# Вики игры: исходник — папка wiki/ в репозитории (правки через PR, как код). После слияния в main страницы переносятся
+# в раздел Wiki на GitHub (https://github.com/mentalart/ForestPatrol/wiki) — отдельный git-репозиторий ForestPatrol.wiki.
+# Один раз вручную: Settings → General → Features → Wikis — включить, затем на вкладке Wiki создать любую первую страницу
+# («Create the first page» → Save): после этого репозиторий вики существует, и workflow заменит её содержимым wiki/.
+name: Вики
+
+on:
+  push:
+    branches: [main]
+    paths: ['wiki/**', '.github/workflows/wiki.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wiki
+  cancel-in-progress: false
+
+jobs:
+  wiki:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Перенести wiki/ в раздел Wiki
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          url="https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git"
+          if ! git clone --depth 1 "$url" _wiki 2>/dev/null; then
+            echo "::warning::Раздел Wiki ещё не создан: Settings → Features → Wikis, затем на вкладке Wiki — «Create the first page» → Save, и перезапустить этот workflow."
+            echo "Раздел Wiki ещё не создан — см. предупреждение." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          rsync -a --delete --exclude '.git' wiki/ _wiki/
+          cd _wiki
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then echo "Вики без изменений"; exit 0; fi
+          git commit -q -m "Вики из ${GITHUB_SHA::7}: $(git -C .. log -1 --format=%s | cut -c1-80)"
+          git push -q origin HEAD
+          n=$(ls *.md | grep -vc '^_'); echo "Вики обновлена: $n страниц — https://github.com/${GITHUB_REPOSITORY}/wiki" | tee -a "$GITHUB_STEP_SUMMARY"

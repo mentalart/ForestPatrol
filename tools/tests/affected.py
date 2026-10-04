@@ -30,6 +30,8 @@ WIDE = ['smoke', 'tfin_col', 'tallobj', 'tfin_art', 'tfin_budget', 'tfin_occ', '
 
 
 def sh(*a):
+    if a and a[0] == 'git':   # имена файлов с русскими буквами — как есть, а не "\320\221…"
+        a = ('git', '-c', 'core.quotePath=false') + tuple(a[1:])
     r = subprocess.run(list(a), cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True)
     return r.stdout if r.returncode == 0 else ''
 
