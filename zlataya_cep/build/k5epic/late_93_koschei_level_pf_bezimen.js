@@ -42,7 +42,7 @@
   function bindHit(h){const pi=h.player;ES.bind=ES.bind||[-9,-9];ES.bind[pi]=G.time;k5Thread(()=>hH(h),()=>KS.g.position.clone().add(new V3(0,2.4,0)));k5s('bind');if(G.solo||players[1-pi].downed||Math.abs(ES.bind[1-pi]-G.time)<1.6){ES.fight=false;bindBeat();E.won(11);}else floatText(kosTop(),'Второй — тоже!','#ffe08a');}
   const music=()=>K5L.music(ES.ph==='wall'?'ink':'song',ES.ph==='wall'?0:Math.max(1,E.freeCount()-4+ES.mem.filter(Boolean).length));
   E.stage[11]={start(o){E.hub(11);K5L.themeTo('night',1);K5.fight=false;liveBoss(false);dome.visible=false;candles.forEach(c=>{c.g.visible=false;});KS.g.visible=true;KS.g.position.set(C.x,0,C.z-12);KS.g.rotation.y=0;sword.visible=false;
-      W.clampR={x:C.x,z:C.z,r:R};Object.assign(ES,{ph:'wall',fight:false,spes:G.solo?6:8,spesMax:G.solo?6:8,mem:[false,false,false,false],win:0,prog:0});
+      W.clampR={x:C.x,z:C.z,r:R};Object.assign(ES,{ph:'wall',fight:false,spes:8,spesMax:8,mem:[false,false,false,false],win:0,prog:0});
       MEM.forEach((M0,i)=>{const m=memMods[i];if(m&&m.g){m.g.visible=true;m.g.position.copy(M0.p);m.g.rotation.y=Math.atan2(C.x-M0.p.x,C.z-M0.p.z);}fog[i].visible=true;fog[i].position.copy(M0.p).add(new V3(0,1.6,0));});
       wallUp();music();E.cards(11,()=>{ES.fight=true;});},
     tick(dt){b11.pos.copy(KS.g.position);if(!ES.fight)return;ES.prog=ES.ph==='wall'?0.1:0.25+0.75*(1-ES.spes/ES.spesMax);
