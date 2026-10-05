@@ -21,9 +21,9 @@ const ES=E5.es,S3=E5.s3,r=[];{const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.
 for(let k=0;k<8&&ES.spes>0;k++){for(let j=0;j<400&&ES.down;j++)ZC.tick(1);ZC.tick(50);S3.down('бот');for(let j=0;j<6&&ES.down&&ES.spes>0;j++){const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.4);if(t)t.onHit(ME());ZC.tick(25);}}
 r.push('spes='+ES.spes);const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.4);if(t)t.onHit(ME());TK(30);r.push('done3='+!!E5.done[3]);if(!E5.done[3])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
-// страница 1: клубок дважды на каждую ногу, «Повернись!» одним ударом
-const r=[GO(4),SILL(1)];const A1=E5.ar[1],S=A1.S;for(let li=0;li<2;li++)for(let k=0;k<2;k++){const lp=A1.legW(li),ot=A1.legW(1-li),dx=lp.x-ot.x,dz=lp.z-ot.z,dl=Math.hypot(dx,dz)||1;PUT(ME(),lp.x+dx/dl*0.9,lp.z+dz/dl*0.9);const f=ZC.W.itemSign(0);if(f)f(0);ZC.tick(2);}
-r.push('tied='+S.tied.join(','));TK(20);const cs=A1.targets(0);if(cs[0]){PUT(ME(),cs[0].position.x,cs[0].position.z);ZC.W.onAttack(0,ME());}TK(240);r.push('done='+S.done+' won='+!!E5.done[4]);if(!E5.done[4])throw new Error(r.join(' | '));CHK(r.join(' | '))
+// страница 1: застряла в дубе (бот), клубок дважды на каждую ногу, «Повернись!» одним ударом, Кощей с крыши
+const r=[GO(4),SILL(1)];const A1=E5.ar[1],S=A1.S;A1.bot.stuck();ZC.tick(2);for(let li=0;li<2;li++)for(let k=0;k<2;k++){const lp=A1.legW(li),ot=A1.legW(1-li),dx=lp.x-ot.x,dz=lp.z-ot.z,dl=Math.hypot(dx,dz)||1;PUT(ME(),lp.x+dx/dl*0.9,lp.z+dz/dl*0.9);const f=ZC.W.itemSign(0);if(f)f(0);ZC.tick(2);}
+r.push('tied='+S.tied.join(','));TK(20);const cs=A1.targets(0);if(cs[0]){PUT(ME(),cs[0].position.x,cs[0].position.z);ZC.W.onAttack(0,ME());}TK(200);for(let k=0;k<8&&!S.done;k++){A1.bot.roofHit(ME());TK(30);}TK(120);r.push('done='+S.done+' won='+!!E5.done[4]);if(!E5.done[4])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
 // страница 2: Садко держит воду сам; колокола по порядку
 const r=[GO(5),SILL(2)];const S=E5.ar[2].S,X=500,BP=[[-7,-5],[7,-5],[-7,4],[7,4]];

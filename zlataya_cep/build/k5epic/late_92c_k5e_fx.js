@@ -24,11 +24,11 @@ const k5xAdd=o=>{o.userData.noBatch=true;o.userData.noBatchL=true;o.traverse(q=>
 K5X.add=k5xAdd;
 /* ---------- частицы окружения: одна пачка точек на стадию ---------- */
 // kind: fire — светлячки (мигают), ink — чернильные хлопья (падают, кружат), ember — искры (летят вверх), gold — золотая пыль,
-//       bubble — пузырьки (вверх, покачиваясь), snow — снег, petal — лепестки (розовые, кружат), mist — светлые пылинки
+//       bubble — пузырьки (вверх, покачиваясь), snow — снег, petal — лепестки (розовые, кружат), leaf — сухие листья, mist — светлые пылинки
 const K5X_MO={fire:{col:[0xd8ff7a,0xfff2a0],sz:0.32,vy:0.05,sway:0.9,blink:1,add:1},ink:{col:[0x2a1440,0x6a3aa0],sz:0.28,vy:-0.35,sway:0.6,blink:0,add:0},
   ember:{col:[0xffa040,0xffe080],sz:0.22,vy:1.1,sway:0.5,blink:0.6,add:1},gold:{col:[0xffd76a,0xfff2c0],sz:0.2,vy:0.15,sway:0.5,blink:0.8,add:1},
   bubble:{col:[0xbfeaff,0xffffff],sz:0.26,vy:0.9,sway:0.4,blink:0,add:1},snow:{col:[0xffffff,0xe8f0ff],sz:0.18,vy:-0.8,sway:0.7,blink:0,add:0},
-  petal:{col:[0xff9ad0,0xffd0e8],sz:0.24,vy:-0.4,sway:1.2,blink:0,add:0},mist:{col:[0xf0f4ff,0xd8e0ff],sz:0.16,vy:0.05,sway:0.3,blink:0.4,add:1}};
+  petal:{col:[0xff9ad0,0xffd0e8],sz:0.24,vy:-0.4,sway:1.2,blink:0,add:0},leaf:{col:[0xc8782a,0x8a9a3a],sz:0.3,vy:-0.55,sway:1.4,blink:0,add:0},mist:{col:[0xf0f4ff,0xd8e0ff],sz:0.16,vy:0.05,sway:0.3,blink:0.4,add:1}};
 K5X.motes=(kind,c,r,n,h)=>{if(K5X.mo){const p=K5X.mo.pts;if(p.parent)p.parent.remove(p);K5X.mo=null;}if(!kind)return null;const D=K5X_MO[kind];n=Math.round((n||160)*FXQ());h=h||7;
   const pos=new Float32Array(n*3),col=new Float32Array(n*3),P=[];const ca=new THREE.Color(D.col[0]),cb=new THREE.Color(D.col[1]),cc=new THREE.Color();
   for(let i=0;i<n;i++){const a=rand(0,6.283),d=Math.sqrt(Math.random())*r;P.push({x:c.x+Math.cos(a)*d,y:rand(0.2,h),z:c.z+Math.sin(a)*d,ph:rand(0,6.28),sp:rand(0.6,1.4)});cc.copy(ca).lerp(cb,Math.random());col[i*3]=cc.r;col[i*3+1]=cc.g;col[i*3+2]=cc.b;}
