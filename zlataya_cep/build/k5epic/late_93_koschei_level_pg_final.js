@@ -5,16 +5,46 @@
   const dem12=makeSmith('demyan',false);dem12.g.visible=false;K5L.noRay(dem12.g);
   const ryaba=(()=>{const g=k5Prop(new THREE.Group());addMesh(new THREE.SphereGeometry(0.42,10,8),M(0xf4f0e8),0,0.5,0,g);addMesh(new THREE.SphereGeometry(0.24,8,6),M(0xf4f0e8),0,0.95,0.28,g);addMesh(new THREE.ConeGeometry(0.08,0.2,5),M(0xf0a020),0,0.95,0.55,g).rotation.x=Math.PI/2;
     addMesh(new THREE.BoxGeometry(0.06,0.18,0.2),M(0xd82a2a),0,1.2,0.28,g);g.visible=false;K5L.noRay(g);return {g};})();
+  // Глубже: дуб — живой счётчик ковки: каждый верный удар — золотое звено летит к дубу и вплетается в цепь на стволе, дуб зеленеет.
+  // Кот учёный ходит по цепи кругом: идёт направо — песнь заводит (у наковальни золотой круг — такт шире), налево — сказку говорит
+  // (Кощей заслушался — 3 с стоит, бить можно больше). Кощей пишет «Чёрным пером»: лиловая черта по земле, через 1,6 с — чернильная
+  // стена на 2,5 с. Атлас: progress-visual, ally buffs (окно такта, оглушение), delayed-activation line + lingering wall. Бот — tk5e_s12.
+  const oakRing=k5Prop(new THREE.Group());oakRing.visible=false;const OAKL=[];{const gm=M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.6}),lg=new THREE.TorusGeometry(0.32,0.08,6,12);
+    for(let i=0;i<24;i++){const a=i/24*Math.PI*2*3,y=4+i*0.32,r=2.75-i*0.012;const m=new THREE.Mesh(lg,gm);m.position.set(OAK.x+Math.cos(a)*r,y,OAK.z+Math.sin(a)*r);m.rotation.set(Math.PI/2,a,i%2?Math.PI/2:0);m.visible=false;oakRing.add(m);OAKL.push(m);}}
+  K5L.noRay(oakRing);
+  const songR=k5Prop(new THREE.Mesh(new THREE.RingGeometry(2.4,2.7,40),k5Add(0xffd76a,{opacity:0})));songR.rotation.x=-Math.PI/2;songR.raycast=()=>{};
+  function linkFly(n){const m=OAKL[Math.min(OAKL.length-1,n-1)];if(!m)return;const to=m.position.clone();const f=ANV.clone().add(new V3(0,1.4,0));const L=k5Prop(new THREE.Mesh(new THREE.TorusGeometry(0.32,0.08,6,12),M(COL.gold,{emissive:0xffa020,emissiveIntensity:1})));
+    k5fx(0.9,k=>{L.position.lerpVectors(f,to,CE.inOutSine(k));L.position.y+=Math.sin(k*Math.PI)*3;L.rotation.x+=0.3;},()=>{k5Del(L);for(let i=0;i<Math.max(1,Math.round(OAKL.length/((K5.forge&&K5.forge.need)||12)));i++){const q=OAKL[ES.linkN++];if(q)q.visible=true;}K5L.gold(to,8);
+      E.oakGreen(Math.min(0.9,0.2+0.7*(K5.forge?K5.forge.n/Math.max(1,K5.forge.need):0)),true);});E.log('link');}
+  function penLine(){const hs=k5Heroes();if(!hs.length)return;const h=hs[Math.floor(rand(0,hs.length))];const a=rand(0,Math.PI);const d=new V3(Math.cos(a),0,Math.sin(a));const c=new V3(h.pos.x,0.07,h.pos.z);
+    const A0=c.clone().addScaledVector(d,-7),B0=c.clone().addScaledVector(d,7);const ln=k5Prop(new THREE.Mesh(new THREE.PlaneGeometry(0.35,14),k5Add(0x9a50ff,{opacity:0.2})));ln.rotation.x=-Math.PI/2;ln.rotation.z=-a+Math.PI/2;ln.position.copy(c);ln.raycast=()=>{};
+    try{KA.pose('cast',{snap:true});later(0.4,()=>KA.reset());}catch(e){}k5s('magic');ES.pens.push({ln,c,d,t:0,wall:null,hit:new Set()});E.log('pen');}
+  function penTick(dt){for(const P of ES.pens.slice()){P.t+=dt;if(P.t<1.6){P.ln.material.opacity=0.2+0.6*(P.t/1.6)*(0.6+0.4*Math.sin(G.time*18));continue;}
+      if(!P.wall){P.wall=k5Prop(new THREE.Mesh(new THREE.BoxGeometry(0.5,2.2,14),M(0x140a20,{emissive:0x4a1a7a,emissiveIntensity:0.6,transparent:true,opacity:0.9})));P.wall.position.copy(P.c).setY(1.1);P.wall.rotation.y=Math.atan2(P.d.x,P.d.z);
+        P.ln.material.opacity=0.8;K5L.ink(P.c.clone().add(new V3(0,1,0)),20);shakeAll(0.05,0.25);k5s('crack');}
+      for(const h of k5Heroes()){if(P.hit.has(h))continue;const v=h.pos.clone().sub(P.c);v.y=0;const along=v.dot(P.d),side=Math.abs(v.x*P.d.z-v.z*P.d.x);if(Math.abs(along)<7&&side<0.6&&h.pos.y<2.2&&h.rollT<=0){P.hit.add(h);k5Hurt(h,P.c);}}
+      if(P.t>4.1){k5Del(P.wall);k5Del(P.ln);ES.pens.splice(ES.pens.indexOf(P),1);}}}
+  function kotTick(dt){if(!kot||!kot.g)return;ES.kotA+=dt*0.35;const a=ES.kotA,r=3.0;kot.g.position.set(OAK.x+Math.cos(a)*r,5.6,OAK.z+Math.sin(a)*r);kot.g.rotation.y=-a;
+    const right=Math.sin(a)>0;if(right!==ES.kotRight){ES.kotRight=right;if(right){ES.song=5;W.ladBonus=0.12;songR.material.opacity=0.8;barkS(kot,'kot','Иду направо — песнь завожу! Куй в лад!',2,true);E.log('song');}
+      else{ES.tale=3;K5.listen=true;if(K5.live&&KB.state!=='broken')KB.dazeT=Math.max(KB.dazeT||0,3);barkS(kot,'kot','Иду налево — сказку говорю… Кощей, слушай!',2,true);floatText(KS.g.position.clone().add(new V3(0,3.6,0)),'Заслушался!','#ffe08a');E.log('tale');}}
+    if(ES.song>0){ES.song-=dt;songR.position.set(ANV.x,0.08,ANV.z);songR.scale.setScalar(1+0.06*Math.sin(G.time*6));if(Math.random()<dt*5)FX.sparkle(ANV.clone().add(new V3(rand(-2,2),rand(1,3),rand(-2,2))),1,0xffd76a);if(ES.song<=0){W.ladBonus=0;songR.material.opacity=0;}}
+    if(ES.tale>0){ES.tale-=dt;if(Math.random()<dt*4)FX.sparkle(KS.g.position.clone().add(new V3(rand(-1,1),3,rand(-1,1))),1,0xfff4c0);if(ES.tale<=0)K5.listen=false;}}
   E.layer[12]={start(){dem12.g.visible=true;dem12.g.position.set(ANV.x-2.2,0,ANV.z-1.2);dem12.g.rotation.y=0.6;kuzma.g.position.set(ANV.x+2.2,0,ANV.z-1.0);kuzma.g.rotation.y=-0.6;
-      ryaba.g.visible=true;ryaba.g.position.set(-10,0,-8);belka.g.position.set(10.5,0,-7.5);ES.nutT=9;ES.eggT=0;
+      ryaba.g.visible=true;ryaba.g.position.set(-10,0,-8);belka.g.position.set(10.5,0,-7.5);ES.nutT=9;ES.eggT=0;oakRing.visible=true;OAKL.forEach(m=>{m.visible=false;});Object.assign(ES,{linkN:0,fN:0,pens:[],penT:8,kotA:Math.PI*0.5,kotRight:null,song:0,tale:0});ES.kot0=kot&&kot.g?{p:kot.g.position.clone(),r:kot.g.rotation.y}:null;K5X.motes('gold',new V3(C.x,0,C.z),13,120,7);K5X.rays(new V3(C.x,0,C.z-6),0xffd8a0,5,{spread:12,op:0.2});
       later(1.2,()=>{if(E.cur===12)say('kuzma','Куй, Прошка! Не лупи — слушай металл. Мы рядом!',2.6,true);});},
-    tick(dt){if(!K5.fight)return;ES.nutT-=dt;ryaba.g.rotation.y=Math.sin(G.time*2)*0.4;
+    tick(dt){if(!K5.fight)return;kotTick(dt);penTick(dt);if(K5.forge&&K5.forge.n>ES.fN){for(let n=ES.fN+1;n<=K5.forge.n;n++)linkFly(n);ES.fN=K5.forge.n;}
+      if(K5.live&&KB.state!=='broken'){ES.penT-=dt;if(ES.penT<=0){ES.penT=G.solo?9:6.5;penLine();}}
+      ES.nutT-=dt;ryaba.g.rotation.y=Math.sin(G.time*2)*0.4;
       if(ES.nutT<=0&&K5.live&&KB.state!=='broken'){ES.nutT=G.solo?10:13;const f=belka.g.position.clone().add(new V3(0,1.4,0)),to=KS.g.position.clone().add(new V3(0,2.4,0));const n=k5Prop(new THREE.Mesh(new THREE.SphereGeometry(0.2,8,6),M(0x7ad06a,{emissive:0x2a8a30})));
         k5fx(0.8,k=>{n.position.lerpVectors(f,to,k);n.position.y+=Math.sin(k*Math.PI)*3;},()=>{k5Del(n);KB.dazeT=Math.max(KB.dazeT||0,1.6);K5L.gold(to,10);floatText(to.clone().add(new V3(0,1,0)),'Орешек-изумруд!','#9fe0a0');});E.log('nut');}
       ES.eggT-=dt;if(ES.eggT<=0)for(const pi of[0,1]){const p=players[pi];if(p.downed||p.petals>1)continue;const h=active(pi);ES.eggT=25;const e=k5Prop(new THREE.Mesh(new THREE.SphereGeometry(0.3,10,8),M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.7})));e.scale.set(1,1.3,1);
         const f=ryaba.g.position.clone().add(new V3(0,0.4,0));k5fx(1.0,k=>{e.position.lerpVectors(f,h.pos.clone().add(new V3(0,0.4,0)),k);e.rotation.z+=0.3;},()=>{k5Del(e);p.petals=Math.min(3,p.petals+1);K5L.gold(h.pos.clone().add(new V3(0,1,0)),12);floatText(h.pos.clone().add(new V3(0,2,0)),'Золотое яичко! +лепесток','#ffe08a');});
         barkS(ryaba,'ryaba','Ко-ко! Держи яичко — не простое, золотое!',1.8,true);E.log('egg');break;}},
-    end(){},goal:pi=>'',targets:pi=>[]};
+    end(){W.ladBonus=0;K5.listen=false;songR.material.opacity=0;oakRing.visible=false;(ES.pens||[]).forEach(P=>{k5Del(P.ln);if(P.wall)k5Del(P.wall);});ES.pens=[];if(ES.kot0&&kot&&kot.g){kot.g.position.copy(ES.kot0.p);kot.g.rotation.y=ES.kot0.r;}},
+    goal:pi=>(ES.song>0?'Кот поёт — <b>куй в лад</b>: такт шире. ':ES.tale>0?'Кот сказку говорит — <b>Кощей заслушался</b>: бейте! ':'')+'Лиловая черта — <b>Чёрное перо</b>: уйди, сейчас встанет стена.',targets:pi=>[]};
+  E.layer[12].bot={pen:()=>penLine(),pens:()=>ES.pens,links:()=>OAKL.filter(m=>m.visible).length,kot:()=>({song:ES.song,tale:ES.tale,a:ES.kotA}),turnKot:a=>{ES.kotA=a;}};
+  for(const pi of[0,1]){const me=()=>G.solo?active(G.soloPi):active(pi),st12=()=>E.cur===12&&K5.fight&&!G.cine&&(!G.solo||pi===0),top=()=>headOf(me()).add(new V3(0,0.6,0));
+    prompt(pi,'label',top,()=>st12()&&(ES.pens||[]).some(P=>P.t<1.6&&(()=>{const v=me().pos.clone().sub(P.c);v.y=0;return Math.abs(v.dot(P.d))<7&&Math.abs(v.x*P.d.z-v.z*P.d.x)<1.0;})()),'черта! — уйди');}
   /* ================= «Тянем-потянем»: последняя чёрная цепь вросла в корни дуба ================= */
   // Встают все, как в «Репке»: Дедка за цепь, Яга за Дедку, Пелагея за Ягу, Потап за Пелагею, Кот за Потапа — и мышка Йоша последней.
   // Прошка считает: «Раз — два — ТЯНИ!» — оба удар в такт; Кощей дёргает — оба щит. Последний рывок — самый маленький: Йоша.
