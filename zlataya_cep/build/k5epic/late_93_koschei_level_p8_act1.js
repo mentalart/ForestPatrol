@@ -79,81 +79,7 @@
     goal:pi=>E.free.leshy?'<b>Леший свободен.</b> Отбивайте удары Кощея <b>щитом '+K(pi,'guard')+' в последний миг</b> — гаснут угольки спеси. Спесь сбита — бейте '+K(pi,'attack')+' рядом с ним.<br>«Ко мне!» '+K(pi,'call')+' — ёлка встанет рядом, укроет от ветра и молний.':
       '<b>Как победить:</b> 1) пока Леший в цепи, Кощея не сломить — встань в <b>зелёный круг</b> у Лешего, Кощей ударит молнией — уходи кувырком '+K(pi,'roll')+': молния рвёт застёжку (их две);<br>2) отбивайте удары щитом '+K(pi,'guard')+' в последний миг — гаснут угольки; 3) спесь сбита — бейте '+K(pi,'attack')+' рядом с ним.',
     targets:pi=>E.free.leshy?[]:[FR.leshy.m.g]};
-  /* ================= стадия 3 «Там лес и дол видений полны» (новая): мороки-двойники на чернильных пнях, Кикимора, кудель-рогатка ================= */
-  // Кощей и трое его мороков стоят на чернильных пнях (до них не дотянуться). Настоящий пишет «Чёрное слово» — не сбили за 4,5 с — чернильный
-  // дождь. Видно настоящего: Совиный взор, а в сказку Кота заслушивается только настоящий. Сбить: Потап подкидывает, кудель-рогатка
-  // Кикиморы (один в петле, второй тянет), рогатка Прошки сбивает только заклинание. Сбитый — на земле открыт; спесь — угольки.
-  const STUMPS=[[-6.5,-15],[6.5,-15],[-5,-7],[5,-7]];const KIKI_IN=new V3(-8.6,0,-9.8),SLING=new V3(-6.4,0,-6.2),HANDLE=new V3(-8.2,0,-5.2);
-  const decoys=[];for(let i=0;i<3;i++){const d=makeKoschei();d.g.scale.setScalar(0.9);d.g.visible=false;d.g.traverse(o=>{o.castShadow=false;});K5L.noRay(d.g);decoys.push(d);}
-  const stumps=STUMPS.map(([x,z])=>{const g=k5Prop(new THREE.Group());g.position.set(x,0,z);addMesh(new THREE.CylinderGeometry(1.0,1.3,1.6,10),K5L.INKM,0,0.8,0,g);const gl=k5Glow(0x8a40ff,3);gl.position.y=1.6;g.add(gl);g.visible=false;K5L.noRay(g);
-    const c={x,z,r:1.3,miny:-1,maxy:1.6,on:false};W.cyls.push(c);return {g,c,x,z};});
-  const sling=k5Prop(new THREE.Group());sling.position.copy(SLING);for(const s of[-1,1])addMesh(new THREE.CylinderGeometry(0.08,0.1,1.8,6),M(0x6a4a2a),s*1.1,0.9,0,sling);
-  const band=addMesh(new THREE.CylinderGeometry(0.04,0.04,2.2,5),M(0xd8c8a0),0,1.4,0,sling);band.rotation.z=Math.PI/2;const seat=new THREE.Mesh(new THREE.RingGeometry(0.6,0.8,24),k5Add(0xd8c8a0,{opacity:0.8}));seat.rotation.x=-Math.PI/2;seat.position.y=0.06;sling.add(seat);
-  const handle=addMesh(new THREE.SphereGeometry(0.3,8,6),M(0xd8c8a0,{emissive:0x605030,emissiveIntensity:0.3}),HANDLE.x,1.0,HANDLE.z);sling.visible=false;handle.visible=false;K5L.noRay(sling);K5L.noRay(handle);
-  const spool=k5Prop(new THREE.Group());addMesh(new THREE.CylinderGeometry(0.45,0.45,0.7,10),M(0x2a2034,{emissive:0x3a1060,emissiveIntensity:0.5}),0,0.35,0,spool);spool.visible=false;K5L.noRay(spool);
-  const bodyOf=i=>i===ES.real?KS:decoys[ES.map[i]];
-  function s3Bodies(){ES.map=[];let k=0;for(let i=0;i<4;i++){if(i===ES.real)continue;ES.map[i]=k++;}for(let i=0;i<4;i++){const b=bodyOf(i),S=stumps[i];b.g.visible=true;b.g.position.set(S.x,1.6,S.z);b.g.rotation.y=Math.atan2(C.x-S.x,C.z-S.z);}}
-  function s3Shuffle(){ES.real=Math.floor(rand(0,4));for(let i=0;i<4;i++)K5L.ink(new V3(stumps[i].x,3,stumps[i].z),8);s3Bodies();k5s('blink');}
-  function s3Down(how){if(ES.down)return;ES.down=true;ES.cast=null;const S=stumps[ES.real],f=KS.g.position.clone(),to=new V3(S.x+(C.x-S.x)*0.25,0,S.z+(C.z-S.z)*0.25);
-    anim(0.5,k=>{KS.g.position.lerpVectors(f,to,k);KS.g.position.y=1.6*(1-k)+Math.sin(k*Math.PI)*0.8;});try{KA.pose('recoil',{snap:true});}catch(e){}k5s('shatter');shakeAll(0.06,0.3);
-    floatText(f.clone().add(new V3(0,2.4,0)),how,'#ffe08a');ES.winT=G.solo?7:6;ES.hits=0;ES.downPos=to;for(let i=0;i<4;i++)if(i!==ES.real){const b=bodyOf(i);K5L.ink(b.g.position.clone().add(new V3(0,1.6,0)),10);b.g.visible=false;}E.log('s3down');}
-  function s3Up(){ES.down=false;s3Shuffle();ES.castT=G.solo?7:5;}
-  function s3HitReal(h){if(!ES.down||!ES.fight)return;if(ES.spes<=0){s3Bind(h);return;}if(G.time<(ES.hcd||0))return;ES.hcd=G.time+0.3;ES.hits++;ES.spes--;burst(KS.g.position.clone().add(new V3(0,2,0)),0xffffff,6,3);shake(h.player,0.03,0.12);SFX.hit&&SFX.hit();
-    floatText(kosTop(),ES.spes>0?'Удар!':'Спесь сбита!','#ffe08a');if(ES.spes<=0){banner('Спесь сбита!','#ffd76a',2.4,G.solo?'ударь рядом с ним — золотая нить':'оба — удар рядом с ним: золотая нить сказа');ES.winT=99;}else if(ES.hits>=(G.solo?2:3))ES.winT=Math.min(ES.winT,0.4);}
-  function s3Bind(h){const pi=h.player;ES.bind=ES.bind||[-9,-9];ES.bind[pi]=G.time;k5Thread(()=>hH(h),()=>KS.g.position.clone().add(new V3(0,2.4,0)));k5s('bind');
-    if(G.solo||players[1-pi].downed||Math.abs(ES.bind[1-pi]-G.time)<1.6){ES.fight=false;bindBeat();E.won(3);}else floatText(kosTop(),'Второй — тоже!','#ffe08a');}
-  W.hittables.push({pos:new V3(),r:1.3,alive:()=>E.cur===3&&ES.fight&&ES.down,onHit:h=>s3HitReal(h)});const s3ht=W.hittables[W.hittables.length-1];
-  // рогатка Прошки — в настоящего, пока он пишет: слово сбито (без окна); в морока — морок лопнул
-  for(let i=0;i<4;i++){const mk={pos:new V3(),active:()=>E.cur===3&&ES.fight&&!ES.down,onHit:()=>{if(i===ES.real){if(ES.cast){ES.cast=null;floatText(kosTop(),'Слово сбито!','#ffe08a');k5s('keyBreak');ES.castT=6;}else floatText(kosTop(),'Ха!','#c8a8ff');}
-      else{const b=bodyOf(i);K5L.ink(b.g.position.clone().add(new V3(0,1.6,0)),12);floatText(b.g.position.clone().add(new V3(0,4.6,0)),'морок!','#c8a8ff');b.g.visible=false;later(3,()=>{if(E.cur===3&&!ES.down)b.g.visible=true;});}}};W.marks.push(mk);ES.mks=ES.mks||[];}
-  const s3mk=W.marks.slice(-4);
-  // Кикимора: её кудель путает ноги рядом (липкое пятно); веретено — три удара (Потапу — один), и она свободна
-  W.hittables.push({pos:new V3(),r:0.9,alive:()=>E.cur===3&&ES.fight&&!E.free.kiki,onHit:h=>{ES.spool=(ES.spool||0)+(h.kind==='potap'?3:1);SFX.clink();FX.sparks(spool.position.clone().add(new V3(0,0.6,0)),8,0xd8c8a0);
-    if(ES.spool>=3){E.freeF('kiki');spool.visible=false;barkS(FR.kiki.m,'kiki','Должна была — отдаю! Кудель моя — вам рогаткой!',2.8,true);later(0.6,()=>{sling.visible=true;handle.visible=true;FX.sparkle(SLING.clone().add(new V3(0,1,0)),14,0xfff0c0);});E.log('kiki');}else floatText(spool.position.clone().add(new V3(0,1.4,0)),'ещё!','#d8c8a0');}});
-  const spoolHt=W.hittables[W.hittables.length-1];
-  // рогатка: один встал в петлю, второй бьёт по ручке — летит к Кощею; в одиночку Кикимора тянет сама
-  W.hittables.push({pos:HANDLE.clone(),r:0.9,alive:()=>E.cur===3&&ES.fight&&E.free.kiki&&!ES.fly,onHit:h=>{const rider=k5Heroes().find(q=>q!==h&&hd(q.pos,SLING)<0.9);if(rider)slingGo(rider);else floatText(HANDLE.clone().add(new V3(0,1.6,0)),'в петлю — друга!','#d8c8a0');}});
-  function slingTarget(h){let best=0,bs=-1e9;for(let i=0;i<4;i++){const b=bodyOf(i);if(!b.g.visible)continue;const p=b.g.position,dx=p.x-h.pos.x,dz=p.z-h.pos.z,d=Math.hypot(dx,dz)||1,s=(dx*Math.sin(h.face)+dz*Math.cos(h.face))/d*4-d*0.1+((W.owlT>0||K5.listen)&&i===ES.real?6:0);if(s>bs){bs=s;best=i;}}return best;}
-  function slingGo(h){ES.fly=true;const i=slingTarget(h),b=bodyOf(i),f=h.pos.clone(),to=b.g.position.clone().add(new V3(0,0.6,0));k5s('whoosh');SFX.thwip&&SFX.thwip();anim(0.3,k=>{band.scale.y=1-k*0.5;});
-    anim(0.9,k=>{h.pos.lerpVectors(f,to,k);h.pos.y+=Math.sin(k*Math.PI)*3.4;h.vel.set(0,0,0);h.grounded=false;});E.log('sling');
-    later(0.92,()=>{ES.fly=false;band.scale.y=1;if(!ES.fight)return;if(i===ES.real)s3Down('Кудель-рогатка!');else{K5L.ink(to.clone(),14);floatText(to.clone().add(new V3(0,1.6,0)),'морок!','#c8a8ff');b.g.visible=false;}
-      placeOnGround(h,to.x+(C.x-to.x)*0.15,to.z+(C.z-to.z)*0.15,0);});}
-  E.stage[3]={start(o){E.hub(3);K5L.themeTo('ink',1.2);K5.fight=false;liveBoss(false);ES.fight=false;ES.spes=ES.spesMax=G.solo?4:6;ES.down=false;ES.castT=6;ES.blobT=3;ES.spool=0;ES.fly=false;
-      W.clampR={x:C.x,z:C.z,r:R};stumps.forEach(s=>{s.g.visible=true;s.c.on=true;});heroesHome(3);KS.g.scale.setScalar(0.9);s3Shuffle();E.arenaCam(true);
-      if(!E.free.kiki){FR.kiki.m.g.position.copy(KIKI_IN);FR.kiki.m.g.rotation.y=Math.atan2(C.x-KIKI_IN.x,C.z-KIKI_IN.z);spool.visible=true;spool.position.set(KIKI_IN.x+1.2,0,KIKI_IN.z+0.6);spoolHt.pos.copy(spool.position);}
-      else{sling.visible=true;handle.visible=true;}
-      const go=()=>{ES.fight=true;E.log('s3go');};E.cards(3,go);},
-    tick(dt){if(!ES.fight)return;const real=KS;s3ht.pos.copy(KS.g.position);for(let i=0;i<4;i++)s3mk[i].pos.copy(bodyOf(i).g.position).add(new V3(0,2.4,0));
-      // Совиный взор и сказка Кота выдают настоящего: золотое свечение
-      const reveal=(W.owlT>0||K5.listen)&&!ES.down;aura.color.set(reveal?0xffd76a:0xa070ff);aura.intensity=reveal?2.2:0.6;aura.position.copy(KS.g.position).add(new V3(0,3,0));
-      for(let i=0;i<4;i++){const b=bodyOf(i);if(!b.g.visible||(ES.down&&i===ES.real))continue;b.g.position.y=1.6+Math.sin(G.time*1.6+i)*0.12;const t=nearH(b.g.position);if(t)b.g.rotation.y=angDamp(b.g.rotation.y,Math.atan2(t.pos.x-b.g.position.x,t.pos.z-b.g.position.z),3,dt);}
-      if(K5.listen&&!ES.down){KS.head.rotation.z=Math.sin(G.time*1.2)*0.15;}
-      // кудель: в одиночку Кикимора тянет сама
-      if(E.free.kiki&&!ES.fly){const rider=k5Heroes().find(q=>hd(q.pos,SLING)<0.9);if(rider&&(G.solo||k5Heroes().length<2)){ES.ride=(ES.ride||0)+dt;if(ES.ride>1.2){ES.ride=0;slingGo(rider);}}else ES.ride=0;}
-      // подкидка Потапа: подброшенный рядом с Кощеем на пне — сбил
-      if(!ES.down)for(const h of k5Heroes()){if(h.pos.y<1.8)continue;for(let i=0;i<4;i++){const b=bodyOf(i);if(!b.g.visible||hd(h.pos,b.g.position)>1.8)continue;if(i===ES.real)s3Down('Сбит!');else{K5L.ink(b.g.position.clone().add(new V3(0,1.6,0)),12);b.g.visible=false;}}}
-      // кудель держит ноги рядом со скованной Кикиморой
-      if(!E.free.kiki)for(const h of k5Heroes()){if(hd(h.pos,KIKI_IN)<2.6&&h.kind!=='potap'){h.vel.x*=0.8;h.vel.z*=0.8;}}
-      if(ES.down){ES.winT-=dt;if(ES.winT<=0&&ES.spes>0){floatText(kosTop(),'Опомнился!','#c8a8ff');s3Up();}return;}
-      if(K5.listen)return;
-      // «Чёрное слово»: настоящий пишет над собой большую букву 4,5 с; мороки тоже «пишут» (обманки)
-      if(!ES.cast){ES.castT-=dt;if(ES.castT<=0){ES.cast={t:0,dur:G.solo?5.5:4.5};ES.letters=[];for(let i=0;i<4;i++){const b=bodyOf(i);if(!b.g.visible)continue;const s=new THREE.Sprite(new THREE.SpriteMaterial({map:K5L.letterT('Ч'),transparent:true,depthWrite:false,fog:false,toneMapped:false}));s.raycast=()=>{};k5Prop(s);s.position.copy(b.g.position).add(new V3(0,5.6,0));s.scale.setScalar(0.1);ES.letters.push(s);}k5s('cast');}}
-      else{ES.cast.t+=dt;const k=ES.cast.t/ES.cast.dur;for(const s of ES.letters)s.scale.setScalar(0.1+2.6*Math.min(1,k));
-        if(k>=1){ES.cast=null;ES.castT=G.solo?9:7;for(const s of ES.letters)k5Del(s);ES.letters=[];K5L.themeTo('night',0.4);later(3,()=>{if(E.cur===3)K5L.themeTo('ink',1);});
-          for(const h of k5Heroes())for(let j=0;j<2;j++)later(j*0.6,()=>{if(ES.fight)K5L.letter('О',KS.g.position.clone().add(new V3(0,5,0)),h.pos.clone().setY(0),new V3(0,0,1),{tele:1.1});});E.log('word');}}
-      if(!ES.cast&&ES.letters&&ES.letters.length){for(const s of ES.letters)k5Del(s);ES.letters=[];}
-      // чернильные кляксы от мороков — медленно летят к герою: щит отбивает
-      ES.blobT-=dt;if(ES.blobT<=0){ES.blobT=G.solo?4.5:3.2;const i=Math.floor(rand(0,4)),b=bodyOf(i);const h=nearH(b.g.position);if(h&&b.g.visible)blobMake(b.g.position.clone().add(new V3(0,3.4,0)),h);}
-      blobsTick(dt);},
-    end(){stumps.forEach(s=>{s.g.visible=false;s.c.on=false;});decoys.forEach(d=>{d.g.visible=false;});sling.visible=false;handle.visible=false;spool.visible=false;aura.intensity=0;KS.g.scale.setScalar(1.15);W.camFn=null;
-      for(const s of ES.letters||[])k5Del(s);for(const b of ES.blobs||[])k5Del(b.m);if(!E.free.kiki)FR.kiki.m.g.position.copy(FR.kiki.home);KS.head.rotation.z=0;},
-    goal:pi=>ES.down?(ES.spes>0?'Кощей сбит — <b>бейте</b> '+K(pi,'attack')+'!':'Спесь сбита — оба удар рядом: <b>золотая нить</b>!'):
-      (!E.free.kiki?'Кикимора в цепи: веретено у её ног — три удара (Потапу — один).':'Кто настоящий? '+(pi===1||G.solo?'Совиный взор '+K(pi,'skill')+'. ':'')+'Сбейте его с пня: <b>кудель-рогатка</b> (один в петлю, второй — по ручке) или подкидка Потапа '+K(pi,'skill')+'.'),
-    targets:pi=>ES.down?[KS.g]:!E.free.kiki?[spool]:[sling]};
-  // чернильная клякса: летит к герою; щит — отбита, иначе −лепесток
-  function blobMake(from,h){const m=k5Prop(new THREE.Mesh(new THREE.SphereGeometry(0.35,10,8),K5L.INKM));m.position.copy(from);ES.blobs=ES.blobs||[];ES.blobs.push({m,h,t:0});}
-  function blobsTick(dt){for(const b of (ES.blobs||[]).slice()){b.t+=dt;const to=b.h.pos.clone().add(new V3(0,1,0)),d=to.clone().sub(b.m.position),L=d.length();b.m.position.addScaledVector(d.normalize(),Math.min(L,6.5*dt));b.m.rotation.y+=dt*4;
-      if(L<0.9||b.t>5){ES.blobs.splice(ES.blobs.indexOf(b),1);k5Del(b.m);if(L<0.9){if(b.h.guard){shieldBlock(b.h);floatText(b.h.pos.clone().add(new V3(0,b.h.d.height+0.7,0)),'Отбил!','#9fd0ff');K5L.ink(b.m.position,6);}else k5Hurt(b.h,b.m.position);}}}}
+  // стадия 3 «Там лес и дол видений полны» — в своём модуле: late_93_koschei_level_p8b_stage3.js
   /* ================= ролики акта I ================= */
   // вступление на Лукоморье: дуб почернел, друзья в чёрных цепях, Кощей на дубе переписывает пролог
   E.cine.intro=done=>{F.stage='introCine';heroLine(8.5);const po=T.potap,pr=T.proshka,yo=T.yosha,pe=T.pelageya;KS.g.visible=true;KS.g.position.set(0.4,6.4,-24.7);KS.g.rotation.y=0;book.g.visible=true;book.g.userData.free=false;
@@ -189,7 +115,7 @@
     play({dur:9,fov:46,camK:2.4,k5:{mood:[DARK,0.14]},
       shots:[SH(0,[KP.x+3,2.6,KP.z+8],[KP.x,2.6,KP.z+3],{fov:42}),MV(3.4,[0,9,4],[0,1,-13],[0,6,8],[0,1,-13],5.6,{ease:'inOutSine',fov:50})],
       says:[[0.4,3.0,'koschei','Не сломить меня в лоб? Так заморочу!<br>Туман, вставай! Мороки, ко мне!'],[4.6,3.6,'pelageya','Их четверо… а настоящий — один.<br>Совиным взором увижу, какой!']],
-      events:[{t:0.3,fn:()=>{KA.pose('castR',{antic:0.2});k5s('cast');}},{t:3.4,fn:()=>K5L.themeTo('ink',3)},{t:3.6,fn:()=>{for(const s of STUMPS)K5L.ink(new V3(s[0],0.4,s[1]),14);}}],
+      events:[{t:0.3,fn:()=>{KA.pose('castR',{antic:0.2});k5s('cast');}},{t:3.4,fn:()=>K5L.themeTo('ink',3)},{t:3.6,fn:()=>{for(const s of S3_A)K5L.ink(new V3(s[0],0.4,s[1]),14);}}],
       end:()=>{W.anims.length=0;KA.reset();done();}});};
   // после стадии 3: «Тогда я вас — в сказки!» — Кощей вырывает четыре листа, листы встают дверями по краям Лукоморья
   E.cine.tear=done=>{heroLine(-5.5);KS.g.visible=true;KS.g.position.set(C.x,0,C.z-3);KS.g.rotation.y=0;if(E.pagesShow)E.pagesShow(true,false);
@@ -201,7 +127,3 @@
       end:()=>{W.anims.length=0;KA.reset();K5L.themeTo('dawn',1.5);done();}});};
   // карточки «как победить» перед новыми стадиями (движок карточек 4-Б); при повторе — коротко
   E.CARDS={};E.cards=(n,go)=>{const c=E.CARDS[n];if(!c||!K5.auto){go();return;}const seen=E.seenCards=E.seenCards||{};const steps=(seen[n]?c.slice(0,1):c).map(s=>Object.assign({dur:seen[n]?3.6:5},s));seen[n]=true;t4Run(steps,{end:go});};
-  E.CARDS[3]=[{p:[0,10,6],l:[0,1,-13],card:{tag:'Как победить',title:'Стадия 3 из 12 · Там лес и дол видений полны',icon:'orb',text:'Кощей и трое его <b>мороков</b> стоят на чернильных пнях. Настоящий пишет «Чёрное слово» — не сбили за пять секунд — чернильный дождь.'}},
-    {p:[-4,4,-2],l:[-8,1,-9],card:{tag:'Кикимора',title:'Освободите Кикимору',icon:'lock',text:'Её держит чёрная цепь. Ударьте <b>веретено</b> у её ног (Потапу хватит одного удара) — и её кудель станет <b>рогаткой</b>.'}},
-    {p:[-4,3,-1],l:[-6.4,1,-6],card:{tag:'Вместе',title:'Кудель-рогатка',icon:'spark',text:'Один встаёт в <b>петлю</b>, второй бьёт по <b>ручке</b> — и первый летит к Кощею на пень. Настоящего видно Совиным взором Пелагеи, а в сказку Кота заслушивается только он.'}},
-    {p:[0,8,4],l:[0,2,-13],card:{tag:'Ещё',title:'Подкидка и рогатка',icon:'candle',text:'Потап может <b>подкинуть</b> друга прямо к пню. Рогатка Прошки сбивает «Чёрное слово». Сбитый Кощей — на земле: бейте, пока опомнится!'}}];

@@ -3,7 +3,7 @@
   // слои (Кот-часы, друзья), между ними — новые стадии 3, 10, 11 и четыре страницы-портала 4–7. Каждая стадия: start(o) / tick(dt) /
   // end(); пройдена — E.won(n): строка пролога встаёт золотом над дубом, дальше переход E.after(n).
   const E=FIN.k5e;E.on=true;E.cur=null;E.free={};E.done={};E.fails=E.fails||{};E.stage={};E.layer={};E.cine={};
-  const ES={};E.es=ES;
+  const ES={};E.es=ES;W.k2fx=true;K5L.B=null;   // эффекты 2-Б (капли, брызги, телеграфы, дождь, молнии) — и в этом уровне; общий набор стадий — K5X (late_92c)
   // реплика друга: короткая — над головой и субтитром, длинная — только субтитром (не громоздить надписи над полем)
   const barkS=(o,who,t,d,nv)=>{if(o===KS||String(t).replace(/<[^>]*>/g,'').length>28)say(who,t,d,true);else bark(o,who,t,d,true);};   // Кощей — только субтитром: надпись над ним закрывала бы его удары   // состояние текущей стадии — очищается при смене
   const OLD={1:1,2:2,8:3,9:4,12:5},EP={1:1,2:2,3:8,4:9,5:12};E.OLD=OLD;
@@ -35,7 +35,7 @@
       return {pos:new V3(mid.x*0.7,mid.y+8.5+sp*0.25+d*0.6,mid.z+11+sp*0.35+d),look:new V3(mid.x*0.8,mid.y+1.2,mid.z-5),k:3};};};
   /* ---------- уход со стадии и начало стадии ---------- */
   E.leave=()=>{const n=E.cur;if(n==null)return;K5.st=0;const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.end)try{L.end();}catch(e){console.error('k5e end',e);}
-    if(E.clock)E.clock.off();W.camFn=null;K5.listen=false;K5.fight=false;ES.fight=false;clearAdds(true);natReset();if(E.pageOff)E.pageOff();for(const k in ES)delete ES[k];};
+    if(E.clock)E.clock.off();try{FIN.k5x.clear();}catch(e){}W.camFn=null;K5.listen=false;K5.fight=false;ES.fight=false;clearAdds(true);natReset();if(E.pageOff)E.pageOff();for(const k in ES)delete ES[k];};
   E.go=(n,o)=>{o=o||{};E.leave();E.hintReset(o.retry?6:HINT_S);for(const p of players){p.tipT=0;}E.cur=n;K5E.cur=n;try{K5E.badge&&K5E.badge();}catch(e){}F.k5e=n;applyFree(n);
     for(let i=1;i<n;i++)if(E.done[i]||o.warp)E.sky.add(i,false);
     // прыжок к стадии: имена — как после частей Сказа (начало — после 3, помощник — после 7, Прошка — после 11)
@@ -67,7 +67,7 @@
     say('zven',msg||'Сбился сказ — беда невелика:<br>Начнём сначала, с этого листка!',3.4,true);later(1.4,()=>{if(f)f.style.opacity=0;if(E.cur===n)E.go(n,{retry:true});});};
   E.log=t=>{(E.logs=E.logs||[]).push(t);};
   /* ---------- общий шаг: тики новых стадий, слоёв и Лукоморья ---------- */
-  W.updates.push(dt=>{const n=E.cur;if(n==null)return;if(E.hintLeft>0&&!G.cine&&!G.ui&&!G.trans&&G.state==='play'&&!titleOn())E.hintLeft-=dt;
+  W.updates.push(dt=>{try{FIN.k5x.tick(dt);}catch(e){console.error('k5x',e);}const n=E.cur;if(n==null)return;if(E.hintLeft>0&&!G.cine&&!G.ui&&!G.trans&&G.state==='play'&&!titleOn())E.hintLeft-=dt;
     if(!K5.live&&KB.alive){KB.cd=Math.max(KB.cd||0,2);if(KB.state==='ready'||KB.state==='wind'||KB.state==='strike')KB.state='k5off';}   // невидимый Кощей вне своих стадий не бьёт
     if(E.hubTick)try{E.hubTick(dt);}catch(e){console.error('k5e hub',e);}
     if(!G.cine){const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.tick)try{L.tick(dt);}catch(e){console.error('k5e tick '+n,e);}

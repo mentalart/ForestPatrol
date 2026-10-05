@@ -27,12 +27,11 @@ const c=K5.candles;for(const x of c)for(let i=0;i<6&&x.lit;i++)x.k5hit(x,A(0));r
 const r=[];const LM=E5.fr.leshy.m.g.position;for(let k=0;k<2;k++){k5Zone(LM.clone(),1.6,0.3,0xff4a5a,()=>{});TK(40);}r.push('leshy free='+!!E5.free.leshy,'spruces='+E5.spruces.length);
 if(!E5.free.leshy)throw new Error('Леший не освободился: '+r.join(' '));BREAK();r.push(WAITCUR(3));CHK(r.join(' | '))
 //@@ shot=k5e_f3.png
-// стадия 3: веретено — Кикимора свободна; кудель-рогатка сбивает настоящего; окно — удары; нить → листы-страницы → Сказ: начало → стадия 4
-const ES=E5.es;const r=[];TK(30);
-for(let i=0;i<3&&!E5.free.kiki;i++){const t=ZC.W.hittables.find(t=>t.alive()&&Math.hypot(t.pos.x+7.4,t.pos.z+9.2)<1.5);if(t)t.onHit(A(0));ZC.tick(2);}r.push('kiki free='+!!E5.free.kiki);
-for(let k=0;k<6&&ES.spes>0;k++){for(let j=0;j<240&&!ES.down;j++){const W0=ZC.W;if(!ES.fly&&j%30===0){PUT(A(1),-6.4,-6.2);const t=W0.hittables.find(t=>t.alive()&&Math.hypot(t.pos.x+8.2,t.pos.z+5.2)<0.5);if(t)t.onHit(A(0));}ZC.tick(1);}
-  for(let j=0;j<6&&ES.down&&ES.spes>0;j++){const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.3);if(t)t.onHit(A(j%2));ZC.tick(25);}}
-r.push('spes='+ES.spes,'log='+E5.logs.filter(x=>/sling|s3down/.test(x)).length);const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.3);if(t){t.onHit(A(0));ZC.tick(2);t.onHit(A(1));}r.push('done3='+!!E5.done[3]);r.push(WAITCUR(4));r.push('names.potap='+!!(ZC.G.flags.names||{}).potap);CHK(r.join(' | '))
+// стадия 3: веретено (удар Потапа) — Кикимора свободна; Кощей сбит (S3.down — механики сбивания проверяет tk5e_s3); окно — удары; нить → листы-страницы → Сказ: начало → стадия 4
+const ES=E5.es,S3=E5.s3;const r=[];TK(30);
+{const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.1);if(t)t.onHit(ZC.HERO.potap);}r.push('kiki free='+!!E5.free.kiki);
+for(let k=0;k<8&&ES.spes>0;k++){for(let j=0;j<400&&ES.down;j++)ZC.tick(1);ZC.tick(50);S3.down('бот');if(!k)r.push('сбит='+ES.down+' fight='+ES.fight+' cur='+E5.cur+' wj='+ES.walkJump);for(let j=0;j<6&&ES.down&&ES.spes>0;j++){const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.4);if(t)t.onHit(A(j%2));ZC.tick(25);}}
+r.push('spes='+ES.spes,'log='+E5.logs.filter(x=>/s3down/.test(x)).length);if(ES.spes>0)throw new Error(r.join(' | '));const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.4);if(t){t.onHit(A(0));ZC.tick(2);t.onHit(A(1));}r.push('done3='+!!E5.done[3]);r.push(WAITCUR(4));r.push('names.potap='+!!(ZC.G.flags.names||{}).potap);CHK(r.join(' | '))
 //@@
 // страницы 1–4: порог вдвоём → арена → цель мира → поездка домой; страница 1 — клубок на ноги, «Повернись!»
 window.SILL=w=>{const P=E5.pages[w];PUT(A(0),P.pos.x-0.5,P.pos.z);PUT(A(1),P.pos.x+0.5,P.pos.z);for(let i=0;i<200&&E5.es.step!=='fight';i++){PUT(A(0),P.pos.x-0.5,P.pos.z);PUT(A(1),P.pos.x+0.5,P.pos.z);TK(1);}for(let i=0;i<300&&!E5.es.fight;i++)TK(1);return 'in'+w+' step='+E5.es.step+' fight='+E5.es.fight;};

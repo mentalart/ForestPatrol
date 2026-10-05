@@ -25,13 +25,17 @@ K5L.TH={dawn:[0xf0b8a8,40,150,0xffe4e0,0.64,0xffc8a0,0.82],ink:[0x5a4a78,30,120,
   kitezh:[0x0e4654,16,72,0xa8e4e8,0.68,0xfff0c8,0.72],heaven:[0x3a3470,26,100,0xb8b0ec,0.56,0xd8c8ff,0.55],smorodina:[0x3a1a18,22,85,0xf0b098,0.56,0xffb070,0.7],
   storm:[0x2a2440,24,90,0xa8a0d8,0.5,0xc8b8ff,0.48],sunset:[0xf0a070,40,140,0xffd8c0,0.62,0xffa060,0.8],night:[0x141228,18,70,0x8c84c0,0.46,0xa8a0ff,0.36],
   gold:[0xffd8a0,40,160,0xfff0d8,0.7,0xffe0a0,0.9],page:[0xf4ecd8,60,200,0xffffff,0.9,0xfff4e0,0.5]};
-K5L.theme=(n,k)=>{const T=K5L.TH[n]||K5L.TH.dawn;k=k==null?1:k;const bg=scene.background&&scene.background.isColor?scene.background:new THREE.Color();
-  const tc=new THREE.Color(T[0]);bg.lerp(tc,k);scene.background=bg;if(scene.fog){scene.fog.color.copy(bg);scene.fog.near+=(T[1]-scene.fog.near)*k;scene.fog.far+=(T[2]-scene.fog.far)*k;}
-  amb.color.lerp(new THREE.Color(T[3]),k);amb.intensity+=(T[4]-amb.intensity)*k;sun.color.lerp(new THREE.Color(T[5]),k);sun.intensity+=(T[6]-sun.intensity)*k;};
+// основа неба (K5L.B): тема стадии меняет основу, а гроза уровня (stormTick в p2_storm) каждый кадр затемняет именно её —
+// раньше гроза возвращала фон уровня (рассвет) и темы стадий не держались
+K5L.B=null;
+K5L.base=()=>{if(!K5L.B)K5L.B={bg:(scene.background&&scene.background.isColor?scene.background:new THREE.Color(0xf0b8a8)).clone(),ac:amb.color.clone(),ai:amb.intensity,sc:sun.color.clone(),si:sun.intensity};return K5L.B;};
+K5L.applyBase=()=>{const B=K5L.B;if(!B)return;if(scene.background&&scene.background.isColor)scene.background.copy(B.bg);else scene.background=B.bg.clone();if(scene.fog)scene.fog.color.copy(B.bg);amb.color.copy(B.ac);amb.intensity=B.ai;sun.color.copy(B.sc);sun.intensity=B.si;};
+K5L.theme=(n,k)=>{const T=K5L.TH[n]||K5L.TH.dawn;k=k==null?1:k;const B=K5L.base();B.bg.lerp(new THREE.Color(T[0]),k);B.ac.lerp(new THREE.Color(T[3]),k);B.ai+=(T[4]-B.ai)*k;B.sc.lerp(new THREE.Color(T[5]),k);B.si+=(T[6]-B.si)*k;
+  if(scene.fog){scene.fog.near+=(T[1]-scene.fog.near)*k;scene.fog.far+=(T[2]-scene.fog.far)*k;}K5L.applyBase();};
 // плавный переход за dur секунд
-K5L.themeTo=(n,dur)=>{const T0={bg:scene.background.clone(),fn:scene.fog?scene.fog.near:0,ff:scene.fog?scene.fog.far:0,ac:amb.color.clone(),ai:amb.intensity,sc:sun.color.clone(),si:sun.intensity};
-  const T=K5L.TH[n]||K5L.TH.dawn;k5fx(dur||1.5,k=>{const e=k*k*(3-2*k);scene.background.copy(T0.bg).lerp(new THREE.Color(T[0]),e);if(scene.fog){scene.fog.color.copy(scene.background);scene.fog.near=lerp(T0.fn,T[1],e);scene.fog.far=lerp(T0.ff,T[2],e);}
-    amb.color.copy(T0.ac).lerp(new THREE.Color(T[3]),e);amb.intensity=lerp(T0.ai,T[4],e);sun.color.copy(T0.sc).lerp(new THREE.Color(T[5]),e);sun.intensity=lerp(T0.si,T[6],e);});};
+K5L.themeTo=(n,dur)=>{const B=K5L.base(),T0={bg:B.bg.clone(),fn:scene.fog?scene.fog.near:0,ff:scene.fog?scene.fog.far:0,ac:B.ac.clone(),ai:B.ai,sc:B.sc.clone(),si:B.si};
+  const T=K5L.TH[n]||K5L.TH.dawn;k5fx(dur||1.5,k=>{const e=k*k*(3-2*k);B.bg.copy(T0.bg).lerp(new THREE.Color(T[0]),e);if(scene.fog){scene.fog.near=lerp(T0.fn,T[1],e);scene.fog.far=lerp(T0.ff,T[2],e);}
+    B.ac.copy(T0.ac).lerp(new THREE.Color(T[3]),e);B.ai=lerp(T0.ai,T[4],e);B.sc.copy(T0.sc).lerp(new THREE.Color(T[5]),e);B.si=lerp(T0.si,T[6],e);K5L.applyBase();});};
 
 /* ---------- чернила и золото: частицы ---------- */
 K5L.INKM=M(0x1c1028,{emissive:0x3a1060,emissiveIntensity:0.55});

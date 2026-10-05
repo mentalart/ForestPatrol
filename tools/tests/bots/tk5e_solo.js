@@ -16,10 +16,10 @@ window.GO=n=>{E5.goStage(n);ZC.G.manual=true;ZC.tick(20);return WAITCUR(n);};
 window.SILL=w=>{const P=E5.pages[w];for(let i=0;i<300&&E5.es.step!=='fight';i++){PUT(ME(),P.pos.x,P.pos.z);TK(1);}for(let i=0;i<300&&!E5.es.fight;i++)TK(1);return 'in'+w+'='+E5.es.fight;};
 ZC.setSolo(true);for(const pi of[0,1])ZC.players[pi].petals=3;E5.goStage(3);ZC.G.manual=true;ZC.tick(20);{const D=ZC.W.dbg5e();window.THREE=D.THREE;}CHK(WAITCUR(3))
 //@@
-// стадия 3: веретено, Кикимора сама тянет кудель — рогатка; окна; нить одним
-const ES=E5.es,r=[];for(let i=0;i<3&&!E5.free.kiki;i++){const t=ZC.W.hittables.find(t=>t.alive()&&Math.hypot(t.pos.x+7.4,t.pos.z+9.2)<1.5);if(t)t.onHit(ME());ZC.tick(2);}r.push('kiki='+!!E5.free.kiki);
-for(let k=0;k<8&&ES.spes>0;k++){for(let j=0;j<300&&!ES.down;j++){if(!ES.fly)PUT(ME(),-6.4,-6.2);ZC.tick(1);}for(let j=0;j<6&&ES.down&&ES.spes>0;j++){const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.3);if(t)t.onHit(ME());ZC.tick(25);}}
-r.push('spes='+ES.spes,'slings='+E5.logs.filter(x=>x==='sling').length);const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.3);if(t)t.onHit(ME());TK(30);r.push('done3='+!!E5.done[3]);if(!E5.done[3])throw new Error(r.join(' | '));CHK(r.join(' | '))
+// стадия 3: веретено (удар Потапа) — Кикимора свободна; Кощей сбит (S3.down — сбивание проверяет tk5e_s3); окна; нить одним
+const ES=E5.es,S3=E5.s3,r=[];{const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.1);if(t)t.onHit(ZC.HERO.potap);}r.push('kiki='+!!E5.free.kiki);
+for(let k=0;k<8&&ES.spes>0;k++){for(let j=0;j<400&&ES.down;j++)ZC.tick(1);ZC.tick(50);S3.down('бот');for(let j=0;j<6&&ES.down&&ES.spes>0;j++){const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.4);if(t)t.onHit(ME());ZC.tick(25);}}
+r.push('spes='+ES.spes);const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.4);if(t)t.onHit(ME());TK(30);r.push('done3='+!!E5.done[3]);if(!E5.done[3])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
 // страница 1: клубок дважды на каждую ногу, «Повернись!» одним ударом
 const r=[GO(4),SILL(1)];const A1=E5.ar[1],S=A1.S;for(let li=0;li<2;li++)for(let k=0;k<2;k++){const lp=A1.legW(li),ot=A1.legW(1-li),dx=lp.x-ot.x,dz=lp.z-ot.z,dl=Math.hypot(dx,dz)||1;PUT(ME(),lp.x+dx/dl*0.9,lp.z+dz/dl*0.9);const f=ZC.W.itemSign(0);if(f)f(0);ZC.tick(2);}
