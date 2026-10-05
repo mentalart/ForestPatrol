@@ -4,7 +4,7 @@
     if(!K5.fight||K5.st!==2||KB.state==='broken'||KB.state==='k5wait')return;const sm=G.solo?1.25:1;
     NAT.windT=(NAT.windT==null?6:NAT.windT)-dt;if(NAT.windT<=0&&!NAT.wind){NAT.windT=rand(13,17)*sm;NAT.wdir=-NAT.wdir;windStart('lin',{dir:new V3(NAT.wdir,0,0),dur:5.2,str:G.solo?2.6:3.3});kosCast();
       natBark('wind','Ветер буйный, налетай —<br>С ног их всех, гуляй, сбивай!',3.0);if(!NAT.said.windTip){NAT.said.windTip=true;later(3.4,()=>{if(K5.fight)say('zven','Ветер! Щит держи — не сдует!<br>Пусть Кощей сколько хочет дует!',3.6,true);});}K5.log.push('wind');}
-    NAT.boltT=(NAT.boltT==null?3.5:NAT.boltT)-dt;if(NAT.boltT<=0){NAT.boltT=rand(6.5,8.5)*sm;const hs=k5Heroes();if(hs.length){natBolt(hs[Math.floor(rand(0,hs.length))]);if(!NAT.wind)natBark('bolt','Гром, греми, гроза, сверкай —<br>В красный круг огнём стреляй!',3.0,0.2);K5.log.push('bolt');}}
+    NAT.boltT=(NAT.boltT==null?3.5:NAT.boltT)-dt;if(NAT.boltT<=0){NAT.boltT=rand(6.5,8.5)*sm;const hs=k5Heroes();if(hs.length){natBolt((K5.boltPick&&K5.boltPick(hs))||hs[Math.floor(rand(0,hs.length))]);if(!NAT.wind)natBark('bolt','Гром, греми, гроза, сверкай —<br>В красный круг огнём стреляй!',3.0,0.2);K5.log.push('bolt');}}
     NAT.quakeT=(NAT.quakeT==null?10:NAT.quakeT)-dt;if(NAT.quakeT<=0&&!(NAT.wind&&NAT.wind.t<1.5)){NAT.quakeT=rand(15,19)*sm;kosCast();quake(G.solo?2:3);natBark('quake','Задрожи, земля сырая, —<br>Руки, лезьте, всех хватая!',3.0);K5.log.push('quake');}}
   function bossTick(dt){if(!K5.live)return;
     // новое окно — снова можно ударить; после кувырка Кощей опоминается быстрее мелких мороков

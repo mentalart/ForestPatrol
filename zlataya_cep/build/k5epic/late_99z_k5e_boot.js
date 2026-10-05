@@ -25,7 +25,11 @@ function k5ePanel(){const st=document.createElement('style');st.textContent=`
 #k5ePanel .row.cur b{color:#ffd76a}#k5ePanel button{font:12px system-ui;padding:3px 8px;border-radius:6px;border:1px solid #6a6478;background:#352f42;color:#fff;cursor:pointer;margin:1px}
 #k5ePanel .rt button.sel.y{background:#2f9e5b;border-color:#2f9e5b}#k5ePanel .rt button.sel.n{background:#b4433c;border-color:#b4433c}#k5ePanel .rt button.sel.m{background:#c38a1f;border-color:#c38a1f}
 #k5ePanel textarea{width:100%;box-sizing:border-box;height:46px;margin-top:4px;background:#111;color:#eee;border:1px solid #555;border-radius:6px;font:12px system-ui}
-#k5ePanel .help{color:#bdb6a8;font-size:12px}#k5ePanel .note{grid-column:1/3}`;document.head.appendChild(st);
+#k5ePanel .help{color:#bdb6a8;font-size:12px}#k5ePanel .note{grid-column:1/3}
+#k5ePanel .jump{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px;margin:6px 0 4px}
+#k5ePanel .jump button{font:600 12px/1.25 system-ui;padding:7px 8px;text-align:left;border-radius:8px;background:#45386a;border-color:#7a68b0;margin:0}
+#k5ePanel .jump button small{display:block;font-weight:400;opacity:.8}#k5ePanel .jump button.cur{background:#b8862a;border-color:#ffd76a}
+#k5ePanel button.play{background:#2f6e4a;border-color:#4aa070}`;document.head.appendChild(st);
   const b=document.createElement('div');b.id='k5eBadge';document.body.appendChild(b);b.onclick=()=>k5eShow(K5EP.panel.style.display!=='block');K5EP.badge=b;
   const P=document.createElement('div');P.id='k5ePanel';document.body.appendChild(P);K5EP.panel=P;k5ePanelHtml();
   P.addEventListener('input',ev=>{const t=ev.target;if(t.dataset.note!=null){K5E.notes[t.dataset.note]=t.value;K5E.save();}});
@@ -40,7 +44,9 @@ function k5ePanel(){const st=document.createElement('style');st.textContent=`
   k5eBadge();}
 function k5ePanelHtml(){const P=K5EP.panel,RT=[['y','Да'],['m','Доработать'],['n','Нет']],cur=K5E.cur==null?K5E.startAt:K5E.cur;
   let h='<h3>Битва с Кощеем · тестовая сборка</h3><div class="help">Отдельный файл, в main не входит. Tab — панель · N / B — следующая / предыдущая стадия · Esc — пауза.<br>Оцените каждую стадию и напишите заметки — «Скопировать отчёт» и пришлите текст в чат.</div>';
-  for(const [a,b,t] of K5E.ACTS){h+='<h4>'+t+'</h4>';for(let n=a;n<=b;n++)h+='<div class="row'+(n===cur?' cur':'')+'"><div><button data-go="'+n+'">▶</button> <b>'+K5E.NAMES[n]+'</b></div><div class="rt">'+RT.map(([c,l])=>'<button data-r="'+n+'" data-v="'+c+'" class="'+c+(K5E.r[n]===c?' sel':'')+'">'+l+'</button>').join('')+'</div>'+
+  // переход к любой стадии одной кнопкой: уровень загружается с этой стадии (прежние — как пройденные)
+  h+='<h4>Перейти к стадии</h4><div class="jump">';for(let n=0;n<=12;n++)h+='<button data-go="'+n+'"'+(n===cur?' class="cur"':'')+'>'+(n?n+'. ':'')+K5E.NAMES[n].replace(/^\d+\s*·\s*/,'')+'<small>'+(n===cur?'идёт сейчас — заново':'загрузить')+'</small></button>';h+='</div>';
+  for(const [a,b,t] of K5E.ACTS){h+='<h4>'+t+'</h4>';for(let n=a;n<=b;n++)h+='<div class="row'+(n===cur?' cur':'')+'"><div><button class="play" data-go="'+n+'">▶ Играть</button> <b>'+K5E.NAMES[n]+'</b></div><div class="rt">'+RT.map(([c,l])=>'<button data-r="'+n+'" data-v="'+c+'" class="'+c+(K5E.r[n]===c?' sel':'')+'">'+l+'</button>').join('')+'</div>'+
     '<textarea class="note" data-note="'+n+'" placeholder="заметки к стадии">'+(K5E.notes[n]||'')+'</textarea></div>';}
   h+='<h4>Общее</h4><textarea data-note="all" placeholder="общие заметки">'+(K5E.notes.all||'')+'</textarea><button data-copy>Скопировать отчёт</button><textarea data-out readonly style="display:none;height:120px"></textarea>';
   P.innerHTML=h;}
