@@ -22,10 +22,11 @@ window.BEAT=()=>{let n=0;for(let t=0;t<60*8&&ES.down&&ES.spes>0;t++){const K=ZC.
 // рогатка куделью: поставить героев так, чтобы настоящий был между ними, и выстрелить
 // идущие мороки: подойти и ударить (иначе рогатка попадёт в них)
 window.CLEAR=()=>{let n=0;if(!ES.walk||!ES.wk)return 0;for(let i=0;i<4;i++){if(i===ES.real||ES.gone[i])continue;for(let t=0;t<60*3&&!ES.gone[i]&&!ES.down;t++){const p=S3.body(i),pi=PIS()[0];PUT(H(pi),p.x+1.2,p.z+0.2,Math.atan2(-1.2,-0.2));if(t%10===0){ZC.press(KEY(pi,'a'));n++;}TK(1);}}return n;};
-window.SLING=()=>{CLEAR();const S=S3.stump(ES.real),pis=PIS();const C={x:0,z:-11};const dx=S.x-C.x,dz=S.z-C.z,d=Math.hypot(dx,dz)||1,ux=dx/d,uz=dz/d;
-  if(ZC.G.solo){const k=S3.kiki;const vx=S.x-k.x,vz=S.z-k.z,vl=Math.hypot(vx,vz)||1;PUT(H(pis[0]),S.x+vx/vl*3.6,S.z+vz/vl*3.6);}
+window.SLING=()=>{CLEAR();const S=S3.body(ES.real),pis=PIS();   // целимся в самого Кощея (он стоит на пне не по центру)
+  const C={x:0,z:-11};const dx=S.x-C.x,dz=S.z-C.z,d=Math.hypot(dx,dz)||1,ux=dx/d,uz=dz/d;
+  if(ZC.G.solo){const cx=C.x-S.x,cz=C.z-S.z,cl=Math.hypot(cx,cz)||1;for(let t=0;t<150;t++){PUT(H(pis[0]),S.x+cx/cl*4.6,S.z+cz/cl*4.6);ZC.tick(1);}}   // одному: встать у пня ближе к середине — Кикимора забежит за пень
   else{PUT(H(0),S.x-ux*4.4,S.z-uz*4.4);PUT(H(1),S.x+ux*4.4,S.z+uz*4.4);}
-  for(let i=0;i<10;i++){ZC.tick(1);}const t0=ES.taut;ZC.press(KEY(pis[0],'i'));for(let i=0;i<70&&!ES.down;i++)TK(1);return 'натянута='+t0+' сбит='+ES.down;};
+  for(let i=0;i<10;i++){ZC.tick(1);}const t0=ES.taut;ZC.press(KEY(pis[0],'i'));for(let i=0;i<70&&!ES.down;i++)TK(1);return 'натянута='+t0+' сбит='+ES.down+' '+(E5.logs||[]).filter(x=>/^sling/.test(x)).slice(-1);};
 'ok'
 //@@
 // вдвоём: окружение, капли обратно

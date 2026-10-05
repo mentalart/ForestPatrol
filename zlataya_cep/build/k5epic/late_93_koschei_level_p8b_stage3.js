@@ -101,10 +101,16 @@
   const s3SegD=(p,a,b)=>{const dx=b.x-a.x,dz=b.z-a.z,L2=dx*dx+dz*dz;let k=L2?((p.x-a.x)*dx+(p.z-a.z)*dz)/L2:0;k=Math.max(0,Math.min(1,k));return {d:Math.hypot(p.x-a.x-dx*k,p.z-a.z-dz*k),k};};
   // что на линии рогатки (от того, кто летит, к другому концу): ближнее тело
   function s3OnLine(from,to){let best=null,bk=9;for(let i=0;i<4;i++){if(ES.gone[i])continue;const B=s3Body(i);if(!B.m.g.visible)continue;const p=B.m.g.position,q=s3SegD(p,from,to);if(q.d<1.5&&q.k>0.08&&q.k<0.95&&q.k<bk){bk=q.k;best=i;}}return best;}
-  function s3TieTick(dt){if(!E.free.kiki||!s3Tie.visible)return;const [A,Bh]=s3Ends();const a=s3EP(A),b=s3EP(Bh),d=hd(a,b);
+  // одним игроком второй конец кудели у Кикиморы: она забегает за пень, ближний к герою (кудель — через него), — иначе дальние пни
+  // рогаткой не достать (за ними нет земли, а дальше 10,5 кудель не пускает)
+  function s3KikiRun(dt,A){if(!G.solo||ES.fly||!A)return;let best=null,bd=7.5;for(let i=0;i<4;i++){if(ES.gone[i])continue;const B=s3Body(i);if(!B.m.g.visible)continue;const d=hd(B.m.g.position,A.pos);if(d<bd){bd=d;best=B.m.g.position;}}
+    let t;if(best){const dir=new V3(best.x-A.pos.x,0,best.z-A.pos.z).normalize();t=new V3(best.x+dir.x*4.5,0,best.z+dir.z*4.5);}else{const dir=new V3(C.x-A.pos.x,0,C.z-A.pos.z).normalize();t=new V3(A.pos.x+dir.x*7.8,0,A.pos.z+dir.z*7.8);}
+    const v=new V3(t.x-C.x,0,t.z-C.z);if(v.length()>R-1.2)v.setLength(R-1.2);t.set(C.x+v.x,0,C.z+v.z);const K=FR.kiki.m.g.position,dx=t.x-K.x,dz=t.z-K.z,dd=Math.hypot(dx,dz);
+    if(dd>0.05){const st=Math.min(dd,7*dt);K.x+=dx/dd*st;K.z+=dz/dd*st;K.y=Math.abs(Math.sin(G.time*12))*0.15*Math.min(1,dd);}FR.kiki.m.g.rotation.y=Math.atan2(A.pos.x-K.x,A.pos.z-K.z);}
+  function s3TieTick(dt){if(!E.free.kiki||!s3Tie.visible)return;const [A,Bh]=s3Ends();s3KikiRun(dt,A);const a=s3EP(A),b=s3EP(Bh),d=hd(a,b);
     // дальше S3_TIE не пустит: подтягивает того, кто тянет
     if(d>S3_TIE&&!ES.fly){const pull=(d-S3_TIE);const dir=new V3(b.x-a.x,0,b.z-a.z).normalize();if(Bh&&Bh.pos){Bh.pos.x-=dir.x*pull*0.5;Bh.pos.z-=dir.z*pull*0.5;A.pos.x+=dir.x*pull*0.5;A.pos.z+=dir.z*pull*0.5;}else{A.pos.x+=dir.x*pull;A.pos.z+=dir.z*pull;}}
-    const taut=d>=S3_TAUT,sag=Math.max(0,(S3_TAUT+1-d))*0.22;ES.taut=taut;s3TieM.color.set(taut?0xffd040:0xfff0c0);
+    const taut=d>=(G.solo?5.5:S3_TAUT),sag=Math.max(0,(S3_TAUT+1-d))*0.22;ES.taut=taut;s3TieM.color.set(taut?0xffd040:0xfff0c0);
     for(let i=0;i<S3N;i++){const k0=i/S3N,k1=(i+1)/S3N,p0=a.clone().lerp(b,k0),p1=a.clone().lerp(b,k1);p0.y-=Math.sin(k0*Math.PI)*sag*2;p1.y-=Math.sin(k1*Math.PI)*sag*2;if(taut){const w=Math.sin(G.time*30+i)*0.03;p0.y+=w;p1.y+=w;}
       const m=s3Seg[i],dv=p1.clone().sub(p0),L=dv.length()||0.01;m.position.copy(p0).addScaledVector(dv,0.5);m.scale.set(taut?1.6:1,L,taut?1.6:1);m.quaternion.setFromUnitVectors(new V3(0,1,0),dv.normalize());}
     s3TieG.position.copy(a.clone().lerp(b,0.5));s3TieG.material.opacity=taut?0.8+0.2*Math.sin(G.time*12):0.25;
@@ -118,8 +124,8 @@
       if(hit!=null){const p=s3Pos(hit);stop=new V3(p.x,0,p.z).addScaledVector(dir,-1.3);}k5s('whoosh');SFX.thwip&&SFX.thwip();E.log('sling');const T=Math.min(0.85,0.25+hd(f,stop)*0.06);
       anim(T,k=>{me.pos.lerpVectors(f,stop,k);me.pos.y=Math.sin(k*Math.PI)*2.6+(hit!=null?k*1.2:0);me.vel.set(0,0,0);me.grounded=false;me.face=Math.atan2(dir.x,dir.z);});
       if(typeof k5Trail==='function'){const tr=k5Trail(me.g||{position:me.pos},0xffd76a,{life:0.35,size:0.6});later(T+0.1,()=>{tr.on=false;});}
-      later(T+0.02,()=>{ES.fly=false;placeOnGround(me,stop.x,stop.z,0);if(!ES.fight)return;if(hit==null){floatText(stop.clone().add(new V3(0,2,0)),'мимо!','#fff0c0');return;}
-        if(hit===ES.real)s3Down('Кудель-рогатка!');else s3Pop(hit,'рогаткой — морок!');});};}
+      later(T+0.02,()=>{ES.fly=false;placeOnGround(me,stop.x,stop.z,0);if(!ES.fight)return;if(hit==null){floatText(stop.clone().add(new V3(0,2,0)),'мимо!','#fff0c0');E.log('slingMiss');return;}
+        E.log(hit===ES.real?'slingReal':'slingPop');if(hit===ES.real)s3Down('Кудель-рогатка!');else s3Pop(hit,'рогаткой — морок!');});};}
   /* ---------- мороки сходят с пней (вторая половина): идут к героям, бросаются по красной дорожке ---------- */
   function s3WalkStart(){ES.walk=true;ES.walkNext=false;ES.wk=[];banner('Мороки сошли с пней!','#c8a8ff',2.6,'кудель режет их, удары и капли — тоже');say('koschei','Мороки мои — ступайте! Найдите их в тумане!',2.4);
     if(ES.fogF)ES.fogF.set(0.62);ES.walkJump=true;for(let i=0;i<4;i++)K5L.ink(new V3(s3St[i].x,1,s3St[i].z),20,1.5);k5s('blink');
