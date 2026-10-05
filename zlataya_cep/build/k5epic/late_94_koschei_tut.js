@@ -88,19 +88,26 @@ FIN.k5stage=n=>{if(K5.stageStart)K5.stageStart(n);};   // для ботов и �
 const K5H={cur:null,until:0,cd:{},last:-99,cycle:0,arrows:[],logN:0};
 function k5ArrowsClear(){for(const a of K5H.arrows)k5Del(a);K5H.arrows=[];}
 const k5Tg=t=>t&&t.isVector3?t.clone():t&&t.d&&t.pos?headOf(t).add(new V3(0,0.5,0)):t&&t.kind==='k5kos'?K5.KS.g.position.clone().add(new V3(0,5.2,0)):t&&t.pos&&t.L?t.pos.clone().add(new V3(0,(t.L.top||1.8)*(t.s||1)+0.9,0)):t&&t.position?t.position.clone().add(new V3(0,1.6,0)):new V3();
-function k5HintShow(key,c,targets,expect,dur){if(K5H.cur&&K5H.cur.key===key&&K5H.until>G.time)return;K5H.cur={key,c,expect:(expect||[]).map(e=>[k5P(e[0]),e[1],e[2]])};K5H.until=G.time+(dur||6);K5H.last=G.time;K5H.cd[key]=G.time;t4Dom();
+// тихий режим (k5epic: прошли первые секунды стадии — FIN.k5e.quiet()): карточки нет, над целью (или над героем) — кнопка, над целью — стрелка
+const k5Quiet=()=>!!(FIN.k5e&&FIN.k5e.on&&FIN.k5e.quiet&&W&&W.levelId==='5-B2'&&FIN.k5e.quiet());
+function k5HintShow(key,c,targets,expect,dur){if(K5H.cur&&K5H.cur.key===key&&K5H.until>G.time)return;const quiet=k5Quiet();
+  K5H.cur={key,c,quiet,tg:(targets||[]).filter(Boolean)[0]||null,expect:(expect||[]).map(e=>[k5P(e[0]),e[1],e[2]])};K5H.until=G.time+(dur||6);K5H.last=G.time;K5H.cd[key]=G.time;
+  if(quiet){if(T4.hint)T4.hint.classList.remove('on');k5ArrowsClear();K5H.arrows=(targets||[]).filter(Boolean).map(t=>{const ar=t4Arrow(c.col||0xffd76a);ar.userData.tgt=t;ar.position.copy(k5Tg(t));k5Prop(ar);return ar;});return;}
+  t4Dom();
   const kh=t4Keys(K5H.cur.expect.map(e=>({pi:e[0],a:e[1],label:e[2]||'',wait:true})),{}).replace('class="ft-keys"','class="fh-keys"');
   T4.hint.innerHTML='<div class="fh-row"><div class="ft-ico">'+(T4I[c.icon]||'')+'</div><div class="fh-main"><div class="fh-title"><span class="ft-tag">'+c.tag+'</span>'+c.title+'</div><div class="fh-text">'+c.text+'</div></div>'+kh+'</div>';
   T4.hint.classList.add('on');T4.hint.classList.remove('ok');tone(1320,0.1,'triangle',0.12);tone(1760,0.12,'sine',0.08,null,0.08);
   k5ArrowsClear();K5H.arrows=(targets||[]).filter(Boolean).map(t=>{const ar=t4Arrow(c.col||0xffd76a);ar.userData.tgt=t;ar.position.copy(k5Tg(t));k5Prop(ar);return ar;});}
-function k5HintHide(ok){if(!K5H.cur||!T4.hint)return;if(ok){T4.hint.classList.add('ok');let k=T4.hint.querySelector('.fh-keys');if(!k){k=document.createElement('div');k.className='fh-keys';if(T4.hint.firstChild)T4.hint.firstChild.appendChild(k);}k.innerHTML='<span class="fh-ok">✓ Молодец!</span>';K5H.until=Math.min(K5H.until,G.time+1.1);}
+function k5HintHide(ok){if(K5H.cur&&K5H.cur.quiet){if(ok){const e=K5H.cur.expect[0];floatText(headOf(active(e?e[0]:0)).add(new V3(0,0.9,0)),'✓','#9fe0a0');}K5H.cur=null;k5ArrowsClear();return;}
+  if(!K5H.cur||!T4.hint)return;if(ok){T4.hint.classList.add('ok');let k=T4.hint.querySelector('.fh-keys');if(!k){k=document.createElement('div');k.className='fh-keys';if(T4.hint.firstChild)T4.hint.firstChild.appendChild(k);}k.innerHTML='<span class="fh-ok">✓ Молодец!</span>';K5H.until=Math.min(K5H.until,G.time+1.1);}
   else{T4.hint.classList.remove('on');K5H.cur=null;k5ArrowsClear();}}
 function k5Ctx(key,fn,cd){if(K5H.cur&&K5H.until>G.time&&!/^g\d/.test(K5H.cur.key))return;if(G.time-(K5H.cd[key]||-99)<(cd||6))return;fn();}
 function k5Cycle(list){if(K5H.cur)return;list[K5H.cycle%list.length]();K5H.cycle++;}
 function k5HintTick(dt){const st=K5.st,now=G.time,E=K5.e,solo=G.solo;if(G.cine||G.state!=='play'||!K5.fight){if(K5H.cur)k5HintHide(false);return;}
   if(K5.log.length!==K5H.logN){K5H.logN=K5.log.length;K5.lastProg=now;}
   for(const a of K5H.arrows){a.position.copy(k5Tg(a.userData.tgt)).add(new V3(0,0.35*Math.abs(Math.sin(now*4)),0));a.rotation.y+=dt*2.5;}
-  if(K5H.cur&&T4.hint&&!T4.hint.classList.contains('ok')){for(const [pi,a] of K5H.cur.expect)if(t4Tap(pi,a)){k5HintHide(true);break;}}
+  if(K5H.cur&&(K5H.cur.quiet||T4.hint&&!T4.hint.classList.contains('ok'))){for(const [pi,a] of K5H.cur.expect)if(t4Tap(pi,a)){k5HintHide(true);break;}}
+  if(K5H.cur&&!K5H.cur.quiet&&k5Quiet())k5HintHide(false);   // окно подсказок закрылось — карточка уходит
   if(K5H.cur&&now>K5H.until)k5HintHide(false);
   if(now<(K5.hint0||0)+2.5)return;
   const idle=now-Math.max(K5H.last,K5.lastProg||0,K5.hint0||0);
@@ -145,4 +152,7 @@ function k5HintTick(dt){const st=K5.st,now=G.time,E=K5.e,solo=G.solo;if(G.cine||
     else if(h&&!fg)k5Ctx('go',()=>k5HintShow('go',{tag:'Прошка',title:'Неси иглу к наковальне',icon:'anvil',text:'Встань у наковальни — там куют застёжку.',col:0xffb070},[AV.clone().add(new V3(0,1.2,0))],null,4),7);
     else if(fg&&!solo&&hd(active(1).pos,HERO.proshka.pos)>3.2)k5Ctx('cover',()=>k5HintShow('cover',{tag:'Второй',title:'Заслони Прошку!',icon:'shield',text:'Встань <b>рядом с Прошкой</b> и держи щит — удар Кощея достанется щиту.',col:0x9fe0ff},[HERO.proshka],[[1,'guard','щит']],4),9);
     else if(fg&&idle>6)k5Ctx('beat',()=>k5HintShow('beat',{tag:'Прошка',title:'Бей в такт!',icon:'anvil',text:'Бей, когда кружок над наковальней <b>сожмётся</b>. Ещё '+(K5.forge.need-K5.forge.n)+'.',col:0xffe08a},[AV.clone().add(new V3(0,1.2,0))],[[0,'attack','в такт']],4),10);}}
-{const _ll=loadLevel;loadLevel=function(i){_ll(i);K5H.cur=null;K5H.arrows=[];K5H.cd={};if(T4.hint)T4.hint.classList.remove('on');if(!W||W.levelId!=='5-B2'){K5.fight=false;K5.st=0;K5.live=false;}};}
+// кнопки тихого режима: до двух на игрока, над целью подсказки (или над героем), с подписью действия
+function k5QuietPrompts(){for(const pi of[0,1])for(let j=0;j<2;j++){prompt(pi,'attack',()=>{const t=K5H.cur&&K5H.cur.tg,dx=(pi?0.7:-0.7)+j*1.3;return (t?k5Tg(t):headOf(active(pi))).add(new V3(dx,0.9,0));},()=>false);const pr=W.prompts[W.prompts.length-1];
+  pr.cond=()=>{const c=K5H.cur;if(!c||!c.quiet||G.cine)return false;const ex=c.expect.filter(e=>e[0]===pi)[j];if(!ex)return false;pr.action=ex[1];pr.note=ex[2]||'';return true;};}}
+{const _ll=loadLevel;loadLevel=function(i){_ll(i);K5H.cur=null;K5H.arrows=[];K5H.cd={};if(T4.hint)T4.hint.classList.remove('on');if(!W||W.levelId!=='5-B2'){K5.fight=false;K5.st=0;K5.live=false;}else if(FIN.k5e&&FIN.k5e.on)k5QuietPrompts();};}

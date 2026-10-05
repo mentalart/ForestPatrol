@@ -126,12 +126,12 @@
        if(L.passed){L.pt=(L.pt||0)+dt;const o=Math.max(0,1-L.pt*2.5);L.mi.opacity=o;L.gm.opacity=0.25*o;if(L.g.userData.haze)L.g.userData.haze.material.opacity=0.6*o;}}
      letters=letters.filter(L=>{if(L.passed&&L.pt>0.5){k5Del(L.g);k5Del(L.spr);return false;}return true;});};
    /* ---------- отрезки ---------- */
-   const legSea=()=>{PRO.leg='sea';PRO.wave=0;PRO.wT=1.2;PRO.th='storm';if(window.k5StormSet)k5StormSet(0.6);banner('Через моря!','#9fe0ff',2.4,'ворон твоего цвета — твой');
+   const legSea=()=>{PRO.leg='sea';E.hintReset(7);PRO.wave=0;PRO.wT=1.2;PRO.th='storm';if(window.k5StormSet)k5StormSet(0.6);banner('Через моря!','#9fe0ff',2.4,'ворон твоего цвета — твой');
      later(0.6,()=>say('koschei','Догоняете? Вороны мои — ко мне!',2.2));};
-   const legWrite=()=>{PRO.leg='write';LK.position.z=GP.z-430;for(const c of crows)c.leave=true;CL.gapTo=40;PRO.wi=0;PRO.wT=2.6;PRO.th='sunset';if(window.k5StormSet)k5StormSet(0);
+   const legWrite=()=>{PRO.leg='write';E.hintReset(7);LK.position.z=GP.z-430;for(const c of crows)c.leave=true;CL.gapTo=40;PRO.wi=0;PRO.wT=2.6;PRO.th='sunset';if(window.k5StormSet)k5StormSet(0);
      banner('Почерк Кощея!','#c8a0ff',2.4,'в просвет — к золотым кольцам');later(0.4,()=>say('koschei','Ах так? Я вас самих перепишу!',2.4));
      later(3.2,()=>say('gorM','Рулим вместе — в просвет!',1.8));};
-   const legThree=()=>{PRO.leg='three';CL.gapTo=18;PRO.cnt=null;PRO.cT=1.8;banner('Догнали тучу!','#ffd76a',2.2,'на «три» — вместе '+K(0,'skill')+(G.solo?'':' и '+K(1,'skill')));
+   const legThree=()=>{PRO.leg='three';E.hintReset(7);CL.gapTo=18;PRO.cnt=null;PRO.cT=1.8;banner('Догнали тучу!','#ffd76a',2.2,'на «три» — вместе '+K(0,'skill')+(G.solo?'':' и '+K(1,'skill')));
      say('gorM','Моя очередь! Вы — «раз-два-три», я — огонь!',2.4);};
    const midFire=()=>{PRO.cnt=null;DG.visible=false;PRO.leg='burn';const hp=hpos(MIDH),to=CL.pos.clone();if(SFX.whoosh)SFX.whoosh();if(SFX.ok)SFX.ok();
      for(let i=0;i<26;i++)later(i*0.03,()=>{burst(hp.clone().lerp(to,i/26),0xff8a30,5,3);});anim(0.8,k=>{MIDH.jaw.rotation.x=Math.sin(k*Math.PI)*0.7;});E.log('proBurn');
@@ -227,6 +227,6 @@
        tick:t=>{GP.z=zt(t);place();clPlace(0.016);const S=G.cine;if(!S||!S.camPos)return;const kp=CL.pos.clone().add(new V3(0,4,0)),d=new V3(PX+GP.x,GP.y,GP.z);
          const cams=[[d.clone().add(new V3(7,8.5,20)),d.clone().add(new V3(0,4,-35))],[kp.clone().add(new V3(6,1.5,14)),kp],[d.clone().add(new V3(12,5,-8)),d.clone().add(new V3(0,4.5,0))],[d.clone().add(new V3(0,9.5,19)),d.clone().add(new V3(0,4.5,-26))]];
          let i=0;while(i<3&&t>=TC[i+1])i++;S.camPos.copy(cams[i][0]);S.camLook.copy(cams[i][1]);},
-       end:()=>{W.anims.length=0;try{KA.reset();}catch(e){}PRO.leg='forest';GP.z=zt(9.6);place();snapCams();
+       end:()=>{W.anims.length=0;try{KA.reset();}catch(e){}PRO.leg='forest';E.hintReset(8);GP.z=zt(9.6);place();snapCams();
          banner('Через леса!','#ffd76a',3,'ловите золотые буквы · '+(G.solo?'держи направление':'тяните вместе')+' — разгон');}});
      E.log('prologue');};}

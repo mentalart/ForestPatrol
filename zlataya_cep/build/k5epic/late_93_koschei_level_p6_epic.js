@@ -5,7 +5,7 @@
   const E=FIN.k5e;E.on=true;E.cur=null;E.free={};E.done={};E.fails=E.fails||{};E.stage={};E.layer={};E.cine={};
   const ES={};E.es=ES;
   // реплика друга: короткая — над головой и субтитром, длинная — только субтитром (не громоздить надписи над полем)
-  const barkS=(o,who,t,d,nv)=>{if(String(t).replace(/<[^>]*>/g,'').length>28)say(who,t,d,true);else bark(o,who,t,d,true);};   // состояние текущей стадии — очищается при смене
+  const barkS=(o,who,t,d,nv)=>{if(o===KS||String(t).replace(/<[^>]*>/g,'').length>28)say(who,t,d,true);else bark(o,who,t,d,true);};   // Кощей — только субтитром: надпись над ним закрывала бы его удары   // состояние текущей стадии — очищается при смене
   const OLD={1:1,2:2,8:3,9:4,12:5},EP={1:1,2:2,3:8,4:9,5:12};E.OLD=OLD;
   const HUBST=[1,2,3,8,9,10,11,12],CLOCK=[1,2,3,9,12];E.isHub=n=>HUBST.indexOf(n)>=0;
   // кто к началу стадии n уже свободен (прыжок к стадии из панели — мир как после прохождения прежних)
@@ -14,6 +14,13 @@
   E.freeCount=()=>FREE_N.filter(k=>E.free[k]).length;
   function applyFree(n){for(const k in FREE_AT)E.free[k]=n>=FREE_AT[k];if(E.hubFree)E.hubFree();}
   E.sky=K5L.sky(OAK);
+  /* ---------- подсказки текстом — только в начале стадии ---------- */
+  // Первые HINT_S секунд игры (без роликов и меню) видны карточки задачи и событий; потом они гаснут и не заслоняют Кощея и его
+  // удары — остаются подсказки в мире: кнопки над целями, стрелки, кольца (late_94: карточка боя становится кнопкой над целью).
+  // Полный текст стадии и текущей цели — в паузе (Esc). Окно открывается заново: новая стадия, повтор, вход на страницу, отрезок пролога.
+  const titleOn=()=>{try{const lv=$('level');return G.time-HN.titleT<4.2&&!!lv&&lv.style.opacity==='1';}catch(e){return false;}};   // заставка с именем уровня — карточки ждут её (late_79)
+  const HINT_S=10;E.hintLeft=HINT_S;E.hintReset=s=>{E.hintLeft=s||HINT_S;};E.quiet=()=>E.hintLeft<=0;W.hintsOff=()=>E.quiet();
+  {let base=W.pauseLine||'';Object.defineProperty(W,'pauseLine',{configurable:true,set:v=>{base=v;},get:()=>{let g='';try{if(E.cur!=null){const a=E.goal(0),b=G.solo?'':E.goal(1);g=a+(b&&b!==a?'<br>'+b:'');}}catch(e){}return base+(g?'<br><br>'+g:'');}});}
   /* ---------- музыка: «оркестр собирается» ---------- */
   E.music=mode=>{const n=E.cur;if(n>=4&&n<=7&&!mode){if(FIN.music)FIN.music.play(['','','','','w1','w2','w3','w4'][n]);return;}K5L.music(mode||(n===8?'storm':'ink'),E.freeCount());};
   /* ---------- строка пролога вместо полосы босса ---------- */
@@ -29,7 +36,7 @@
   /* ---------- уход со стадии и начало стадии ---------- */
   E.leave=()=>{const n=E.cur;if(n==null)return;K5.st=0;const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.end)try{L.end();}catch(e){console.error('k5e end',e);}
     if(E.clock)E.clock.off();W.camFn=null;K5.listen=false;K5.fight=false;ES.fight=false;clearAdds(true);natReset();if(E.pageOff)E.pageOff();for(const k in ES)delete ES[k];};
-  E.go=(n,o)=>{o=o||{};E.leave();for(const p of players){p.tipT=0;}E.cur=n;K5E.cur=n;try{K5E.badge&&K5E.badge();}catch(e){}F.k5e=n;applyFree(n);
+  E.go=(n,o)=>{o=o||{};E.leave();E.hintReset(o.retry?6:HINT_S);for(const p of players){p.tipT=0;}E.cur=n;K5E.cur=n;try{K5E.badge&&K5E.badge();}catch(e){}F.k5e=n;applyFree(n);
     for(let i=1;i<n;i++)if(E.done[i]||o.warp)E.sky.add(i,false);
     // прыжок к стадии: имена — как после частей Сказа (начало — после 3, помощник — после 7, Прошка — после 11)
     if(o.warp){G.flags.names=Object.assign(G.flags.names||{},n>=4?{potap:true}:{},n>=8?{yosha:true}:{},n>=12?{proshka:true}:{});}
@@ -60,7 +67,7 @@
     say('zven',msg||'Сбился сказ — беда невелика:<br>Начнём сначала, с этого листка!',3.4,true);later(1.4,()=>{if(f)f.style.opacity=0;if(E.cur===n)E.go(n,{retry:true});});};
   E.log=t=>{(E.logs=E.logs||[]).push(t);};
   /* ---------- общий шаг: тики новых стадий, слоёв и Лукоморья ---------- */
-  W.updates.push(dt=>{const n=E.cur;if(n==null)return;
+  W.updates.push(dt=>{const n=E.cur;if(n==null)return;if(E.hintLeft>0&&!G.cine&&!G.ui&&!G.trans&&G.state==='play'&&!titleOn())E.hintLeft-=dt;
     if(!K5.live&&KB.alive){KB.cd=Math.max(KB.cd||0,2);if(KB.state==='ready'||KB.state==='wind'||KB.state==='strike')KB.state='k5off';}   // невидимый Кощей вне своих стадий не бьёт
     if(E.hubTick)try{E.hubTick(dt);}catch(e){console.error('k5e hub',e);}
     if(!G.cine){const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.tick)try{L.tick(dt);}catch(e){console.error('k5e tick '+n,e);}

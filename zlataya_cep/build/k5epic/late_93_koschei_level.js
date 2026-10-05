@@ -109,7 +109,7 @@ build5B2=function(){
   function candleSet(e,on){e.lit=on;e.L.flame.visible=on;e.embers=on?5:0;e.maxEmb=5;e.state=on?'idle':'k5out';e.cd=rand(1.5,3);if(!on)e.relT=relight();}
   function candleOff(e,txt){if(!e.lit)return;candleSet(e,false);k5s('candleOff');FX.dust(e.pos.clone().add(new V3(0,1.7,0)),10,0x4a3a5a);floatText(e.pos.clone().add(new V3(0,2.5,0)),'Свеча '+txt,'#e0c8ff');K5.log.push('candle'+e.idx);
     if(K5.fight&&K5.st===1&&candles.every(c=>!c.lit))later(0.4,()=>{if(K5.st===1&&K5.fight)stageWin(1);});}
-  function candleOn(e){candleSet(e,true);k5s('candleOn');FX.sparkle(e.pos.clone().add(new V3(0,1.8,0)),10,0xb070ff);if(G.time>(K5.gorT||0)){K5.gorT=G.time+14;bark(KS,'koschei','Горите вновь, огни мои!',1.4);}}
+  function candleOn(e){candleSet(e,true);k5s('candleOn');FX.sparkle(e.pos.clone().add(new V3(0,1.8,0)),10,0xb070ff);if(G.time>(K5.gorT||0)){K5.gorT=G.time+14;say('koschei','Горите вновь, огни мои!',1.4);}}
   candles.forEach(c=>candleSet(c,false));   // до начала боя свечи не горят (зажигает Кощей в конце вступления)
   function stage1Tick(dt){for(const c of candles){if(c.lit){c.L.flame.scale.set(1+0.12*Math.sin(G.time*13+c.idx),1+0.2*Math.sin(G.time*9+c.idx*2),1);}else{c.relT-=dt;if(c.relT<=0)candleOn(c);}}
     // цепи: у каждого игрока по две (в одиночном — две); вдвое больше прежнего

@@ -29,7 +29,7 @@
       W.clampR=A.clamp||null;W.fallY=A.fallY!=null?A.fallY:-12;W.camX=4000;   // камера уровня держится в ±18 м по X — арены страниц далеко
       HEROES.forEach((h,i)=>{const s=A.spawn(i);placeOnGround(h,s.x,s.z,s.y||0);h.face=A.face||Math.PI;h.vel.set(0,0,0);h._down=false;});
       for(const pi of[0,1]){const p=players[pi];p.downed=false;p.petals=3;const s=A.spawn(pi*2);p.cp=new V3(s.x,s.y||0,s.z);}snapCams();if(FIN.music)FIN.music.play(['','w1','w2','w3','w4'][w]);
-      ES.step='fight';A.start(quick);},quick?0.8:1.4);}
+      ES.step='fight';E.hintReset();A.start(quick);},quick?0.8:1.4);}
   /* ---------- поездка домой: роль «рулить» и роль «отбиваться»; 30 с ---------- */
   // Мир летит навстречу по трём дорожкам: тёмное A гасит удар игрока 1, тёмное B — удар/предмет игрока 2 (в одиночку — удар гасит всё);
   // золотые буквы ловит та дорожка, где стоит метка игрока. Не погасили — −лепесток (без клубков: поездку не проиграть).

@@ -69,7 +69,7 @@ function hnCard(o,t){if(!t)return o?{head:'',body:o}:null;if(!o)return {head:'',
 function hnVisible(id){const e=$(id);if(!e||!e.innerHTML.trim())return '';const cs=getComputedStyle(e);if(cs.display==='none')return '';return +(e.style.opacity!==''?e.style.opacity:cs.opacity)<0.1?'':e.innerHTML;}
 const hnHit=(r,q,m)=>Math.min(r.right,q.right)-Math.max(r.left,q.left)>-m&&Math.min(r.bottom,q.bottom)-Math.max(r.top,q.top)>-m;   // пересекаются или ближе m px
 function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-HN.titleT<4.2&&!!lv&&lv.style.opacity==='1';   // заставка с именем уровня (3,6 с; баннер убирает её раньше) — карточки ждут
-  const off=cine||title||G.ui||G.state!=='play'||!W||document.body.classList.contains('fin-title');
+  const off=cine||title||G.ui||G.state!=='play'||!W||document.body.classList.contains('fin-title')||!!(W.hintsOff&&W.hintsOff());   // W.hintsOff — уровень сам гасит карточки (5-Б2 k5epic: текст — только в начале стадии)
   let O=[0,1].map(pi=>off?'':(hudEls[pi].cache.obj||'')),T=[0,1].map(pi=>off?'':(hudEls[pi].cache.tip||''));
   // подсказка босса, субтитры, баннер — уже говорят: подсказки игроков молчат или не повторяют их
   const boss=$('finBossHint'),bossOn=!!(boss&&boss.classList.contains('on'));if(bossOn)T=['',''];
