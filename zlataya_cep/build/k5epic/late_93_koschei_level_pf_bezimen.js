@@ -39,8 +39,19 @@
     if(R.t>=9){ES.rage=null;for(const g of rows.splice(0))k5Del(g);ES.raged=true;ES.win=G.solo?12:11;ES.wh=-99;try{KA.pose('slump');}catch(e){}floatText(kosTop(),'Выдохся! Бейте!','#ffe08a');E.log('rageEnd');}}
   // где стоят замершие друзья в «Все сказки разом» (внутри поляны)
   const MEM=[{k:'leshy',p:new V3(-8.4,0,-8.6),n:'Путаник'},{k:'vod',p:new V3(8.4,0,-8.6),n:'Водяной'},{k:'solo',p:new V3(-6.6,0,-19.6),n:'Соловей'},{k:'gor',p:new V3(6.6,0,-19.6),n:'Горыныч'}];
-  const memRings=MEM.map(M0=>{const r=new THREE.Mesh(new THREE.RingGeometry(2.0,2.4,40),k5Add(0xd8d0ff,{opacity:0.5}));r.rotation.x=-Math.PI/2;r.position.set(M0.p.x,0.07,M0.p.z);k5Prop(r);r.visible=false;return r;});
-  const memMods=[FR.leshy.m,FR.vod.m,(()=>{const s=makeSolovei();s.g.scale.setScalar(0.8);s.g.visible=false;K5L.noRay(s.g);return s;})(),(()=>{const g=makeGorynych();g.g.scale.setScalar(0.55);g.g.visible=false;K5L.noRay(g.g);return g;})()];
+  const memRings=MEM.map(M0=>{const r=new THREE.Mesh(new THREE.RingGeometry(2.0,2.5,40),k5Add(0xffd76a,{opacity:0.9}));r.rotation.x=-Math.PI/2;r.position.set(M0.p.x,0.07,M0.p.z);k5Prop(r);r.visible=false;
+    const fill=new THREE.Mesh(new THREE.CircleGeometry(2.0,40),k5Add(0xffd76a,{opacity:0.18}));fill.position.z=-0.01;r.add(fill);return r;});
+  // ориентиры без текста: над кругом друга — «щит + двое», столб света; над Кощеем — «бей» / «двое + бей»; ярость — песочные часы и кольцо-таймер
+  const memSigns=MEM.map(M0=>{const sp=K5PIC.spr(G.solo?['shield']:['two','+','shield'],1.3);sp.position.set(M0.p.x,4.6,M0.p.z);k5Prop(sp);sp.visible=false;return sp;});
+  const memBeams=MEM.map(M0=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(1.9,2.1,9,24,1,true),k5Add(0xffd76a,{opacity:0.22,map:K5TEX.beam}));m.position.set(M0.p.x,4.5,M0.p.z);k5Prop(m);m.visible=false;m.raycast=()=>{};return m;});
+  const kSignHit=K5PIC.spr(['hit'],1.6),kSignBind=K5PIC.spr(['two','+','hit'],1.4),kSignRage=K5PIC.spr(['clock','+','shield'],1.4);[kSignHit,kSignBind,kSignRage].forEach(sp=>{k5Prop(sp);sp.visible=false;});
+  const kRing=new THREE.Mesh(new THREE.RingGeometry(2.6,3.0,48),k5Add(0xffd76a,{opacity:0.9}));kRing.rotation.x=-Math.PI/2;k5Prop(kRing);kRing.visible=false;
+  // бегущие стрелки на земле от каждого героя к цели (кругу друга или к открытому Кощею)
+  const chev=[0,1].map(()=>[0,1,2,3].map(()=>{const m=new THREE.Mesh(new THREE.ConeGeometry(0.45,0.9,3),k5Add(0xffd76a,{opacity:0}));m.rotation.x=-Math.PI/2;k5Prop(m);m.visible=false;m.raycast=()=>{};return m;}));
+  function chevTo(pi,h,to){const row=chev[pi];if(!h||!to||hd(h.pos,to)<3.2){row.forEach(m=>{m.visible=false;});return;}const d=new V3(to.x-h.pos.x,0,to.z-h.pos.z),L=d.length();d.normalize();const a=Math.atan2(d.x,d.z);
+    row.forEach((m,k)=>{const u=1.4+k*1.3;if(u>L-1.6){m.visible=false;return;}m.visible=true;m.position.set(h.pos.x+d.x*u,0.12,h.pos.z+d.z*u);m.rotation.order='YXZ';m.rotation.set(Math.PI/2,a,0);m.material.opacity=0.35+0.6*Math.max(0,Math.sin(G.time*7-k*1.1));});}
+  const rageRing=new THREE.Mesh(new THREE.RingGeometry(0.92,1,64),k5Add(0xff6a40,{opacity:0.9}));rageRing.rotation.x=-Math.PI/2;k5Prop(rageRing);rageRing.visible=false;
+  const memMods=[FR.leshy.m,FR.vod.m,(()=>{const s=makeSolovei();s.g.scale.setScalar(0.8);s.g.visible=false;K5L.noRay(s.g);return s;})(),(()=>{const g=makeGorynych5(0.55);g.g.scale.setScalar(0.55);g.g.visible=false;K5L.noRay(g.g);return g;})()];
   const fog=MEM.map(()=>{const s=k5Glow(0x6a5a8a,4);k5Prop(s);s.visible=false;return s;});
   function satur(v){try{renderer.domElement.style.filter=v<1?'saturate('+v+')':'';}catch(e){}}
   function wallUp(){inkWorld(true);ES.whipT=4;ES.letT=6;WALL.visible=true;wallBox.on=true;WALL.userData.m.material.opacity=0.92;satur(0.25);ES.saved=Object.assign({},G.flags.names||{});G.flags.names={};ES.call=[-9,-9];ES.crackT=0;ES.wallHit=[-9,-9];
@@ -70,11 +81,25 @@
   const b11=W.hittables[W.hittables.length-1];
   function bindHit(h){const pi=h.player;ES.bind=ES.bind||[-9,-9];ES.bind[pi]=G.time;k5Thread(()=>hH(h),()=>KS.g.position.clone().add(new V3(0,2.4,0)));k5s('bind');if(G.solo||players[1-pi].downed||Math.abs(ES.bind[1-pi]-G.time)<1.6){ES.fight=false;bindBeat();E.won(11);}else floatText(kosTop(),'Второй — тоже!','#ffe08a');}
   const music=()=>K5L.music(ES.ph==='wall'?'ink':'song',ES.ph==='wall'?0:Math.max(1,E.freeCount()-4+ES.mem.filter(Boolean).length));
+  // помощники живые: замершие покачиваются серыми, вспомнившие подпрыгивают, смотрят на Кощея, Водяной и Горыныч — со своей мимикой
+  function helpersTick(dt){if(E.cur!==11)return;const t=G.time,kp=KS.g.position;MEM.forEach((M0,i)=>{const m=memMods[i];if(!m||!m.g||!m.g.visible)return;const on=ES.mem&&ES.mem[i],act=ES.mv&&ES.mv.i===i;
+      const hop=on?Math.max(0,Math.sin(t*4.2+i))*0.35:0;m.g.position.set(M0.p.x,M0.p.y+hop+Math.sin(t*1.6+i)*0.05,M0.p.z);
+      const look=Math.atan2(kp.x-M0.p.x,kp.z-M0.p.z);m.g.rotation.y=on?angDamp(m.g.rotation.y,look,4,dt):look+Math.sin(t*0.7+i)*(act?0.35:0.12);m.g.rotation.z=on?Math.sin(t*3+i)*0.06:Math.sin(t*0.9+i)*0.04;
+      if(m.R&&FIN.k2v&&FIN.k2v.anim){try{FIN.k2v.set(m.R,on?'conduct':act?'dazed':'sleep',on?'neutral':'tired');FIN.k2v.anim(m.R,dt);}catch(e){}}
+      if(m.heads)m.heads.forEach((h,k)=>{const q=h&&(h.g||h.hg||h);if(!q||!q.rotation)return;q.rotation.x=Math.sin(t*(on?3:1.2)+k*1.7)*(on?0.25:0.1);q.rotation.y=Math.sin(t*0.8+k)*0.2;});
+      if(m.wings)m.wings.forEach(w=>{const q=w.wp||w;if(q&&q.rotation)q.rotation.z=(w.s||1)*Math.sin(t*(on?6:1.5))*(on?0.4:0.12);});});}
+  function guideTick(){if(E.cur!==11)return;const t=G.time,kp=KS.g.position,mv=ES.mv,open=ES.fight&&ES.ph==='moves'&&(ES.win>0||ES.spes<=0)&&!ES.rage;
+    MEM.forEach((M0,i)=>{const on=!!(ES.fight&&mv&&mv.i===i&&!mv.countered);memSigns[i].visible=on;memBeams[i].visible=on;if(on){memSigns[i].position.y=4.4+Math.sin(t*4)*0.3;memBeams[i].material.opacity=0.16+0.1*Math.sin(t*6);memRings[i].scale.setScalar(1+0.05*Math.sin(t*8));}});
+    kSignHit.visible=open&&ES.spes>0;kSignBind.visible=open&&ES.spes<=0;kSignRage.visible=!!ES.rage;kRing.visible=open;rageRing.visible=!!ES.rage;
+    for(const sp of[kSignHit,kSignBind,kSignRage])if(sp.visible)sp.position.set(kp.x,kp.y+4.4+Math.sin(t*4)*0.3,kp.z);
+    if(kRing.visible){kRing.position.set(kp.x,0.08,kp.z);kRing.scale.setScalar(1+0.08*Math.sin(t*7));}
+    const hs=k5Heroes();[0,1].forEach(j=>{const h=hs[j];const tgt=!ES.fight||ES.ph!=='moves'||ES.rage?null:mv&&!mv.countered?MEM[mv.i].p:open?kp:null;chevTo(j,h||null,tgt);});
+    if(ES.rage){const k=Math.max(0.05,1-ES.rage.t/9);rageRing.position.set(kp.x,0.09,kp.z);rageRing.scale.setScalar(2+9*k);}}
   E.stage[11]={start(o){E.hub(11);K5L.themeTo('night',1);K5.fight=false;liveBoss(false);dome.visible=false;candles.forEach(c=>{c.g.visible=false;});KS.g.visible=true;KS.g.position.set(C.x,0,C.z-12);KS.g.rotation.y=0;sword.visible=false;
       W.clampR={x:C.x,z:C.z,r:R};Object.assign(ES,{ph:'wall',fight:false,spes:10,spesMax:10,mem:[false,false,false,false],win:0,prog:0});
       MEM.forEach((M0,i)=>{const m=memMods[i];if(m&&m.g){m.g.visible=true;m.g.position.copy(M0.p);m.g.rotation.y=Math.atan2(C.x-M0.p.x,C.z-M0.p.z);}fog[i].visible=true;fog[i].position.copy(M0.p).add(new V3(0,1.6,0));});
       ES.rage=null;ES.raged=false;K5X.motes('ink',new V3(C.x,0,C.z),13,160,8);K5X.tint('rgba(20,0,40,.85)',0.55);wallUp();music();E.cards(11,()=>{ES.fight=true;});},
-    tick(dt){b11.pos.copy(KS.g.position);if(!ES.fight)return;ES.prog=ES.ph==='wall'?0.1:0.25+0.75*(1-ES.spes/ES.spesMax);
+    tick(dt){b11.pos.copy(KS.g.position);helpersTick(dt);guideTick();if(!ES.fight)return;ES.prog=ES.ph==='wall'?0.1:0.25+0.75*(1-ES.spes/ES.spesMax);
       for(let i=0;i<4;i++)if(fog[i].visible){fog[i].material.opacity=0.5+0.2*Math.sin(G.time*2+i);}
       nameSp.forEach(N=>{if(!N.sp.visible||N.gone||ES.ph!=='wall')return;N.a+=dt*N.sp0;N.sp.position.set(C.x+Math.cos(N.a)*N.r,N.y+Math.sin(G.time+N.a)*0.3,C.z+Math.sin(N.a)*N.r*0.8);});
       sheets.forEach(S0=>{if(!S0.m.visible)return;S0.a+=dt*S0.w;S0.m.position.set(C.x+Math.cos(S0.a)*S0.r,S0.y+Math.sin(G.time*1.3+S0.ph)*0.6,C.z+Math.sin(S0.a)*S0.r*0.8);S0.m.rotation.set(Math.sin(G.time*2+S0.ph),S0.a*2,Math.cos(G.time*1.7+S0.ph)*0.6);});
@@ -90,18 +115,20 @@
       // помощник уже вспомнил себя — отвечает сам через 4 с
       if(mv.done&&mv.t>4){counter(mv.i);return;}
       // щит вместе в кругу замершего друга
-      const ring=MEM[mv.i].p,inR=k5Heroes().filter(h=>hd(h.pos,ring)<2.4&&h.guard);if(inR.length>=(G.solo?1:Math.min(2,k5Heroes().length))){mv.g=(mv.g||0)+dt;if(mv.g>0.6){counter(mv.i);return;}}else mv.g=0;
-      if(mv.i===0){for(const g of rows){const tx=g.userData.s*1.6;g.position.x+=(tx-(g.position.x-C.x))*dt*0.18;g.rotation.z=Math.sin(G.time*10)*0.03;for(const h of k5Heroes())if(hd(h.pos,g.position)<1.0&&h.pos.y<2)k5Hurt(h,g.position);}}
-      else if(mv.i===1){for(const h of k5Heroes()){const dx=kp.x-h.pos.x,dz=kp.z-h.pos.z,d=Math.hypot(dx,dz)||1;h.pos.x+=dx/d*dt*(h.guard?1:2.4);h.pos.z+=dz/d*dt*(h.guard?1:2.4);if(d<2.4)k5Hurt(h,kp);}
+      const ring=MEM[mv.i].p,inR=k5Heroes().filter(h=>hd(h.pos,ring)<2.4&&h.guard);const safe=h=>hd(h.pos,ring)<2.6;/* в кругу друга его приём не бьёт */if(inR.length>=(G.solo?1:Math.min(2,k5Heroes().length))){mv.g=(mv.g||0)+dt;if(mv.g>0.6){counter(mv.i);return;}}else mv.g=0;
+      if(mv.i===0){for(const g of rows){const tx=g.userData.s*1.6;g.position.x+=(tx-(g.position.x-C.x))*dt*0.18;g.rotation.z=Math.sin(G.time*10)*0.03;for(const h of k5Heroes())if(!safe(h)&&hd(h.pos,g.position)<1.0&&h.pos.y<2)k5Hurt(h,g.position);}}
+      else if(mv.i===1){for(const h of k5Heroes()){if(safe(h))continue;const dx=kp.x-h.pos.x,dz=kp.z-h.pos.z,d=Math.hypot(dx,dz)||1;h.pos.x+=dx/d*dt*(h.guard?1:2.4);h.pos.z+=dz/d*dt*(h.guard?1:2.4);if(d<2.4)k5Hurt(h,kp);}
         if(Math.random()<dt*6)k5Ring(new V3(kp.x,0.1,kp.z),0x7ad8ff,7,1,0.8,0.05);}
       else if(mv.i===2){if(ES.atkT<=0){ES.atkT=G.solo?3:2.4;for(let q=0;q<3;q++)later(q*0.1,()=>k5Ring(new V3(kp.x,1.4,kp.z),0xfff4d0,0.6,13,0.8,0.05,new THREE.Euler(Math.PI/2,0,0)));k5s('gale');
-          for(const h of k5Heroes()){const dx=h.pos.x-kp.x,dz=h.pos.z-kp.z,d=Math.hypot(dx,dz)||1;const f=h.guard?2.5:8;h.vel.x+=dx/d*f;h.vel.z+=dz/d*f;h.vel.y=Math.max(h.vel.y,2);if(!h.guard)k5Hurt(h,kp);}}}
+          for(const h of k5Heroes()){if(safe(h))continue;const dx=h.pos.x-kp.x,dz=h.pos.z-kp.z,d=Math.hypot(dx,dz)||1;const f=h.guard?2.5:8;h.vel.x+=dx/d*f;h.vel.z+=dz/d*f;h.vel.y=Math.max(h.vel.y,2);if(!h.guard)k5Hurt(h,kp);}}}
       else if(mv.i===3){mv.a=(mv.a||0)+dt*0.55;if(!mv.beams){mv.beams=[0,1,2].map(()=>{const m=k5Prop(new THREE.Mesh(new THREE.BoxGeometry(0.9,0.5,10),k5Add(0xff7a20,{opacity:0.75})));rows.push(m);return m;});}
-        mv.beams.forEach((m,q)=>{const a=mv.a+q*Math.PI*2/3;m.position.set(kp.x+Math.sin(a)*5.4,0.5,kp.z+Math.cos(a)*5.4);m.rotation.y=a;for(const h of k5Heroes()){const dx=h.pos.x-kp.x,dz=h.pos.z-kp.z,along=dx*Math.sin(a)+dz*Math.cos(a),side=Math.abs(dx*Math.cos(a)-dz*Math.sin(a));if(along>0.6&&along<10.4&&side<0.7&&h.pos.y<1.2)k5Hurt(h,kp);}});}},
-    end(){inkWorld(false);if(ES.rage){for(const g of rows.splice(0))k5Del(g);ES.rage=null;}wallBox.on=false;WALL.visible=false;crack.visible=false;satur(1);moveEnd();memRings.forEach(r=>{r.visible=false;});fog.forEach(f=>{f.visible=false;});memMods[2].g.visible=false;memMods[3].g.visible=false;
+        mv.beams.forEach((m,q)=>{const a=mv.a+q*Math.PI*2/3;m.position.set(kp.x+Math.sin(a)*5.4,0.5,kp.z+Math.cos(a)*5.4);m.rotation.y=a;for(const h of k5Heroes()){if(safe(h)||h.guard)continue;const dx=h.pos.x-kp.x,dz=h.pos.z-kp.z,along=dx*Math.sin(a)+dz*Math.cos(a),side=Math.abs(dx*Math.cos(a)-dz*Math.sin(a));if(along>0.6&&along<10.4&&side<0.7&&h.pos.y<1.2)k5Hurt(h,kp);}});}},
+    end(){memSigns.concat(memBeams,[kSignHit,kSignBind,kSignRage,kRing,rageRing],chev[0],chev[1]).forEach(o=>{o.visible=false;});inkWorld(false);if(ES.rage){for(const g of rows.splice(0))k5Del(g);ES.rage=null;}wallBox.on=false;WALL.visible=false;crack.visible=false;satur(1);moveEnd();memRings.forEach(r=>{r.visible=false;});fog.forEach(f=>{f.visible=false;});memMods[2].g.visible=false;memMods[3].g.visible=false;
       if(FR.leshy.m)FR.leshy.m.g.position.copy(FR.leshy.home);if(FR.vod.m)FR.vod.m.g.position.copy(FR.vod.home);if(ES.saved&&ES.ph==='wall')G.flags.names=Object.assign({},ES.saved);for(const e of ES.shadows||[])k5Kill(e);},
     attack(h,pi){if(E.cur!==11||ES.ph!=='wall'||!crack.visible)return;if(hd(h.pos,crack.position)>2.2)return;ES.wallHit[h.player]=G.time;FX.sparks(crack.position.clone(),10,0xffd76a);
       if(G.solo||Math.abs(ES.wallHit[0]-ES.wallHit[1])<1.4)wallDown();else floatText(crack.position.clone().add(new V3(0,1.6,0)),'Вместе — с двух сторон!','#ffe08a');},
+    pics:pi=>ES.ph==='wall'?(crack.visible?['spark','>','two','@attack']:['call','@call']):ES.win>0||ES.spes<=0?(ES.spes>0?['koschei','@attack']:['two','hit','>','gchain']):
+      ES.rage?['shield','@guard','+','clock']:ES.mv?['friend','ring','>','two','@guard']:['koschei','@attack'],
     goal:pi=>ES.ph==='wall'?(crack.visible?'Стена тонкая — <b>удар</b> '+K(pi,'attack')+' в золотую трещину'+(G.solo?'':' — вдвоём, с двух сторон')+'!':'Стена разделила вас. Позови друга по имени: <b>«Ко мне!»</b> '+K(pi,'call')+(G.solo?'':' — оба')+'.'):
       ES.win>0||ES.spes<=0?(ES.spes>0?'Кощей открыт — <b>бейте</b> '+K(pi,'attack')+'!':'Оба — удар рядом с ним: <b>золотая нить</b>!'):
       ES.rage?'<b>Все сказки разом!</b> Держись: ряды ёлок, свист (щит '+K(pi,'guard')+'), огненные лучи — 9 с, потом Кощей выдохнется.':ES.mv?'Кощей взял приём: '+MEM[ES.mv.i].n+'. Беги к замершему другу — <b>щит вместе</b> '+K(pi,'guard')+' в его кругу: он вспомнит себя!':'',

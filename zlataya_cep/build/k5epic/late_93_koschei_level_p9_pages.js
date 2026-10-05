@@ -23,6 +23,7 @@
         P.sill.material.color.set(at>0?0xfff4c0:0xffd76a);if(at>=Math.min(need,hs.length)&&hs.length){ES.sill+=dt;if(ES.sill>0.6){ES.step='in';enterPage(n,w,false);}}else ES.sill=0;return;}
       if(ES.step==='fight'&&AR[w].tick)AR[w].tick(dt);},
     end(){if(AR[w].end)AR[w].end();AR[w].g.visible=false;},
+    pics:pi=>ES.step==='walk'?['two','>','book']:(AR[w].pics?AR[w].pics(pi):null),
     goal:pi=>ES.step==='walk'?'Вдвоём — на <b>порог страницы</b> «'+['','Дремучий лес','Подводный Китеж','Небесное царство','Огненная Смородина'][w]+'».':(AR[w].goal?AR[w].goal(pi):''),
     targets:pi=>ES.step==='walk'?[PAGES[w].g]:(AR[w].targets?AR[w].targets(pi):[])};};
   function enterPage(n,w,quick){const A=AR[w];E.log('enter'+w);E.paper(()=>{E.pagesShow(false);A.g.visible=true;ES.inPage=true;if(A.theme)K5L.theme(A.theme,1);
@@ -47,7 +48,7 @@
     if(kind==='stupa'){const s=makeStupa();W.group.remove(s.g);v.add(s.g);s.g.scale.setScalar(3.2);s.g.position.set(0,-3.4,0.4);R.m=s;}
     else if(kind==='kit'){const k=makeWhale(14);W.group.remove(k.g);v.add(k.g);k.g.position.set(0,-2.8,1);k.g.rotation.y=Math.PI;R.m=k;}
     else if(kind==='geese'){for(const s of[-1,1]){const gs=makeGoose(3.2);W.group.remove(gs.g);v.add(gs.g);gs.g.position.set(s*1.3,-1.6,0.4);gs.g.rotation.y=Math.PI;(R.gs=R.gs||[]).push(gs);}}
-    else{const g5=makeGorynych();W.group.remove(g5.g);v.add(g5.g);g5.g.scale.setScalar(1.5);g5.g.rotation.y=Math.PI;g5.g.position.set(0,-6.2,0.5);R.m=g5;}
+    else{const g5=makeGorynych5(1);W.group.remove(g5.g);v.add(g5.g);g5.g.scale.setScalar(1.5);g5.g.rotation.y=Math.PI;g5.g.position.set(0,-6.2,0.5);R.m=g5;}
     K5L.noRay(v);
     // декор: летящие навстречу облака/кроны/водоросли/искры
     R.dec=[];const dm={stupa:M(0x2e5a3a),kit:M(0x2a6a6a,{emissive:0x0a3030}),geese:new THREE.MeshLambertMaterial({color:0xffffff,transparent:true,opacity:0.85}),gor:M(0x5a2a1a,{emissive:0x401008})}[kind];

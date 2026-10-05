@@ -6,7 +6,7 @@
 //  • K5X.rays(c, col, n) — лучи солнца сквозь тучи;
 //  • K5X.shock(p, r, sp, col, o) — ударная волна по земле: кольцо бежит, кого настигло на земле — удар (прыжок/кувырок спасают); o.y — высота (по воде), o.fx(p) — свои брызги вместо чернил;
 //  • K5X.bolt(src, h, o) — снаряд с отбивом в последний миг (механика движка W.bolts), свой цвет и своя реакция на отбив;
-//  • K5X.puddle(p, r, life, o) — чернильная лужа: держится и бьёт стоящего (остаточная опасность);
+//  • K5X.puddle(p, r, life, o) — чернильная лужа: держится и бьёт стоящего (остаточная опасность); o.hurt=false, o.slow — только вязнешь;
 //  • K5X.screen(col, a, dur) — вспышка на весь экран; K5X.tint(col, a) — тон по краям экрана стадии;
 //  • K5X.own(o) — объект стадии: K5X.clear() (смена стадии) убирает всё своё.
 //  • эффекты 3-Б (FIN.k3fx: видимый звук свиста, ветер, ночь, рвущиеся облака, вихрь) — их шаг идёт только на уровне 3-Б; при W.k3fx
@@ -81,6 +81,7 @@ K5X.puddle=(p,r,life,o)=>{o=o||{};const g=new THREE.Group();g.position.set(p.x,0
   const P={g,t:0,dead:false,cd:new Map(),off(){P.dead=true;k5Del(g);}};
   K5X.ticks.push(dt=>{if(P.dead)return false;P.t+=dt;const k=P.t<0.4?P.t/0.4:P.t>life-0.6?Math.max(0,(life-P.t)/0.6):1;d.material.opacity=0.8*k;rim.material.opacity=(0.4+0.3*Math.sin(G.time*6))*k;
     if(Math.random()<dt*3)K5L.ink(new V3(p.x+rand(-r,r)*0.7,0.2,p.z+rand(-r,r)*0.7),1,0.4);
+    if(o.slow&&k>0.5)for(const h of k5Heroes()){if(h.pos.y>0.4||Math.hypot(h.pos.x-p.x,h.pos.z-p.z)>r)continue;h.vel.x*=o.slow;h.vel.z*=o.slow;}
     if(P.t>0.5&&k>0.5&&o.hurt!==false)for(const h of k5Heroes()){if(h.pos.y>0.4||Math.hypot(h.pos.x-p.x,h.pos.z-p.z)>r)continue;if((P.cd.get(h)||-9)>G.time-1.2)continue;P.cd.set(h,G.time);if(o.onHit)o.onHit(h);else k5Hurt(h,p);}
     if(P.t>=life){P.off();return false;}});return K5X.own(P);};
 /* ---------- экран: вспышка и тон по краям ---------- */

@@ -283,7 +283,8 @@
    PRO.dbg=()=>({GP,GV,CL,WV,pages,spires,crows,drops,letters,hoops,rocks,orbs,GLY,V0,PX,PY,YL,GZ,LK,sc});   // для ботов (tk5e_prolog)
    /* ---------- цели и рисунки кнопок ---------- */
    E.note=n=>n===0?(ES.note||''):'';
-   E.stage[0]={goal:pi=>{const q=KP_(pi),hd=G.solo?'Обе головы — твои: ':(pi?'Правая голова — твоя: ':'Левая голова — твоя: ');
+   E.stage[0]={pics:pi=>({forest:['dragon','>','ring','+','letter'],gorge:['wave','>','dragon','>','ring'],sea:['bird','@attack','+','ink','@guard'],sky:['koschei','light','>','@attack'],
+       write:['letter','>','ring','dragon'],three:['two','sync','@skill','>','cloud']})[PRO.leg]||null,goal:pi=>{const q=KP_(pi),hd=G.solo?'Обе головы — твои: ':(pi?'Правая голова — твоя: ':'Левая голова — твоя: ');
        if(PRO.leg==='forest')return hd+MOVEK(q)+'. Ловите <b>золотые буквы</b> и летите сквозь <b>золотые обручи</b> — рывок.<br>'+(G.solo?'Держи направление — разгон':'Тяните в одну сторону — разгон')+'. <b>Красный столб</b> — вырастет чёрная ель: облетай.';
        if(PRO.leg==='gorge')return '<b>Чернильная волна за спиной!</b> '+(G.solo?'Держи направление':'Тяните вместе')+' — разгон, и сквозь <b>обручи</b> — рывок.<br><b>Скалы</b> — облетай, <b>мост</b> — под ним или поверху.';
        if(PRO.leg==='sea')return '<b>Вороны Кощея!</b> '+(G.solo?'Огонь':'Ворон с кольцом твоего цвета — твой: огонь')+' '+K(q,'attack')+' сам летит в ворона.<br>Капля — <b>щит '+K(q,'guard')+' в последний миг</b>: летит обратно и сбивает ворона.';

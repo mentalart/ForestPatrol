@@ -19,8 +19,9 @@
   // удары — остаются подсказки в мире: кнопки над целями, стрелки, кольца (late_94: карточка боя становится кнопкой над целью).
   // Полный текст стадии и текущей цели — в паузе (Esc). Окно открывается заново: новая стадия, повтор, вход на страницу, отрезок пролога.
   const titleOn=()=>{try{const lv=$('level');return G.time-HN.titleT<4.2&&!!lv&&lv.style.opacity==='1';}catch(e){return false;}};   // заставка с именем уровня — карточки ждут её (late_79)
-  const HINT_S=10;E.hintLeft=HINT_S;E.hintReset=s=>{E.hintLeft=s||HINT_S;};E.quiet=()=>E.hintLeft<=0;W.hintsOff=()=>E.quiet();
-  {let base=W.pauseLine||'';Object.defineProperty(W,'pauseLine',{configurable:true,set:v=>{base=v;},get:()=>{let g='';try{if(E.cur!=null){const a=E.goal(0),b=G.solo?'':E.goal(1);g=a+(b&&b!==a?'<br>'+b:'');}}catch(e){}return base+(g?'<br><br>'+g:'');}});}
+  const HINT_S=0;E.hintLeft=HINT_S;E.hintReset=s=>{E.hintLeft=0;};   // по отзыву: текстовых подсказок нет совсем — карточки-картинки в начале, дальше значки в мире
+  E.quiet=()=>E.hintLeft<=0;W.hintsOff=()=>E.quiet();
+  {let base=W.pauseLine||'';Object.defineProperty(W,'pauseLine',{configurable:true,set:v=>{base=v;},get:()=>{let g='';try{if(E.cur!=null){const a=E.goal(0),b=G.solo?'':E.goal(1);g=a+(b&&b!==a?'<br>'+b:'');}}catch(e){}return base;}});}   // цель стадии текстом в паузе не пишем
   /* ---------- музыка: «оркестр собирается» ---------- */
   E.music=mode=>{const n=E.cur;if(n>=4&&n<=7&&!mode){if(FIN.music)FIN.music.play(['','','','','w1','w2','w3','w4'][n]);return;}K5L.music(mode||(n===8?'storm':'ink'),E.freeCount());};
   /* ---------- строка пролога вместо полосы босса ---------- */
@@ -77,8 +78,11 @@
   /* ---------- цели над полем ---------- */
   E.goal=pi=>{const n=E.cur;if(n==null)return 'Битва с Кощеем';const L=OLD[n]?E.layer[n]:E.stage[n];const own=L&&L.goal?L.goal(pi):'';
     if(OLD[n]&&K5.fight)return (own?own+'<br>':'')+'<small>'+objText(pi)+'</small>';return own||K5L.LINES[n];};
+  // цель внизу экрана (k5epic): значки по фазе стадии (L.pics) или значки её первой карточки — без текста
+  E.goalPics=pi=>{const n=E.cur;if(n==null)return '';const L=OLD[n]?E.layer[n]:E.stage[n];let P=null;try{P=L&&L.pics?L.pics(pi):null;}catch(e){}
+    if(!P){const c=(E.CARDS[n]||[])[0],m=c&&c.card&&K5PIC.CARD[c.card.title];P=m?m.p:null;}return P?K5PIC.h(P,40,G.solo?0:pi):'';};
   E.targets=pi=>{const n=E.cur;const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.targets)return L.targets(pi);return OLD[n]?objTg(pi):[];};
-  for(const pi of[0,1])W.objectives[pi]=[O(()=>E.goal(pi),()=>F.stage==='chain',()=>E.targets(pi))];
+  for(const pi of[0,1])W.objectives[pi]=[O(()=>k5On()?E.goalPics(pi):E.goal(pi),()=>F.stage==='chain',()=>E.targets(pi))];
   /* ---------- начало уровня: пролог (полёт) → вступление на Лукоморье → стадия 1; или прыжок к выбранной стадии ---------- */
   // состояние мира «после вступления»: Кощей у дуба, тетрадка на камне, купол (стадия 1)
   E.prep=()=>{W.anims.length=0;KA.reset();KS.g.visible=true;KS.g.position.copy(KP);KS.g.rotation.y=0;KS.armR.rotation.x=0;book.g.visible=true;book.g.userData.free=true;

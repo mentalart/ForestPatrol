@@ -41,6 +41,7 @@
         const f=ryaba.g.position.clone().add(new V3(0,0.4,0));k5fx(1.0,k=>{e.position.lerpVectors(f,h.pos.clone().add(new V3(0,0.4,0)),k);e.rotation.z+=0.3;},()=>{k5Del(e);p.petals=Math.min(3,p.petals+1);K5L.gold(h.pos.clone().add(new V3(0,1,0)),12);floatText(h.pos.clone().add(new V3(0,2,0)),'Золотое яичко! +лепесток','#ffe08a');});
         barkS(ryaba,'ryaba','Ко-ко! Держи яичко — не простое, золотое!',1.8,true);E.log('egg');break;}},
     end(){W.ladBonus=0;K5.listen=false;songR.material.opacity=0;oakRing.visible=false;(ES.pens||[]).forEach(P=>{k5Del(P.ln);if(P.wall)k5Del(P.wall);});ES.pens=[];if(ES.kot0&&kot&&kot.g){kot.g.position.copy(ES.kot0.p);kot.g.rotation.y=ES.kot0.r;}},
+    pics:pi=>ES.rp?['two','sync','pull','@attack']:ES.song>0?['hammer','notes','@attack']:ES.tale>0?['koschei','>','@attack']:['hammer','notes','+','pen','run'],
     goal:pi=>(ES.song>0?'Кот поёт — <b>куй в лад</b>: такт шире. ':ES.tale>0?'Кот сказку говорит — <b>Кощей заслушался</b>: бейте! ':'')+'Лиловая черта — <b>Чёрное перо</b>: уйди, сейчас встанет стена.',targets:pi=>[]};
   E.layer[12].bot={pen:()=>penLine(),pens:()=>ES.pens,links:()=>OAKL.filter(m=>m.visible).length,kot:()=>({song:ES.song,tale:ES.tale,a:ES.kotA}),turnKot:a=>{ES.kotA=a;}};
   for(const pi of[0,1]){const me=()=>G.solo?active(G.soloPi):active(pi),st12=()=>E.cur===12&&K5.fight&&!G.cine&&(!G.solo||pi===0),top=()=>headOf(me()).add(new V3(0,0.6,0));
@@ -56,26 +57,40 @@
     team.forEach(([k,o],i)=>{const g=o.g||o;const s=slot(i);if(o.pos){placeOnGround(o,s.x+0.5,s.z,0);o.face=Math.PI;}else{g.position.set(s.x+0.5,0,s.z);g.rotation.y=Math.PI;}});
     placeOnGround(T.proshka,endP.x+2.6,endP.z+1.6,0);T.proshka.face=-Math.PI/2;
     const R0={k:0,beat:0,t:0,pull:[-9,-9],surge:null,surgeT:6,last:false,done:false};ES.rp=R0;ES.prog=0.95;
+    // по отзыву «механика невнятная»: ритм виден — кольцо сходится к центру и вспыхивает зелёным на «ТЯНИ!»; над героями в этот миг —
+    // кнопка удара и значок «тянем»; рывок Кощея — значок щита; ряд из шести звеньев над корнями — сколько уже вытянули
+    const per0=0.7,nextPull=t=>{const bar=per0*4;const n=Math.round((t-per0*3)/bar);return per0*3+n*bar;};R0.next=nextPull;R0.per=per0;
+    const tgtR=k5Prop(new THREE.Mesh(new THREE.RingGeometry(0.75,1.0,40),k5Add(0x9ff0a8,{opacity:0.9})));tgtR.rotation.x=-Math.PI/2;tgtR.position.copy(endP).setY(0.11);
+    const prog=k5Prop(new THREE.Group());prog.position.set(root.x,4.2,root.z+1);const progSp=[0,1,2,3,4,5].map(i=>{const sp=K5PIC.spr(['gchain'],0.9);sp.position.set((i-2.5)*1.0,0,0);sp.material.opacity=0.25;prog.add(sp);return sp;});
+    R0.vis=[tgtR,prog];
     const beatR=k5Prop(new THREE.Mesh(new THREE.RingGeometry(0.9,1.05,40),k5Add(0xffd76a,{opacity:0.9})));beatR.rotation.x=-Math.PI/2;
     K5L.music('gold',E.freeCount());say('proshka','Все за цепь! Я считаю: раз — два — ТЯНИ!',3,true);floatText(endP.clone().add(new V3(0,3,0)),'На «ТЯНИ!» — удар '+K(0,'attack')+(G.solo?'':' + '+K(1,'attack'))+' разом. Кощей дёрнет — щит!','#ffe08a');
-    const per=0.62;const tickF=dt=>{if(R0.done||G.cine||E.cur!==12)return;R0.t+=dt;const nb=Math.floor(R0.t/per),ph=(R0.t%(per*4))/(per*4);beatR.position.copy(endP).setY(0.1);beatR.scale.setScalar(0.6+(1-ph)*2.6);
+    const per=per0;const tickF=dt=>{if(R0.done||G.cine||E.cur!==12)return;R0.t+=dt;const nb=Math.floor(R0.t/per),ph=(R0.t%(per*4))/(per*4);beatR.position.copy(endP).setY(0.1);beatR.scale.setScalar(0.9+(1-ph)*3.2);
+      const near=Math.abs(R0.t-nextPull(R0.t))<0.45;beatR.material.color.set(near?0x9ff0a8:0xffd76a);tgtR.scale.setScalar(near?1.25+0.15*Math.sin(G.time*20):1);R0.near=near&&!R0.surge;
+      progSp.forEach((sp,i)=>{sp.material.opacity=i<R0.k?1:0.25;sp.scale.setScalar(i<R0.k?1.0+0.06*Math.sin(G.time*5+i):0.9);});
       if(nb!==R0.beat){R0.beat=nb;const pull=nb%4===3;if(AUD.ready())(pull?AUD.bell(523,{v:0.06,d:0.8}):AUD.osc({f0:880,d:0.05,v:0.02}));floatText(T.proshka.pos.clone().add(new V3(0,1.8,0)),pull?'ТЯНИ!':['раз','два','и…'][nb%4],pull?'#ffd76a':'#ffffff');if(pull)R0.pullAt=R0.t;}
       // все держат свои места
-      team.forEach(([k,o],i)=>{const s=slot(i);const back=R0.k*1.4;if(o.pos){o.pos.x=s.x+0.5;o.pos.z=s.z+back;o.vel.set(0,0,0);o.face=Math.PI;}else{(o.g||o).position.set(s.x+0.5,0,s.z+back);}});
+      R0.lean=Math.max(0,(R0.lean||0)-dt*2.2);const fwd=R0.surge?Math.min(0.6,R0.surge.t*0.6):0;
+      team.forEach(([k,o],i)=>{const s=slot(i);const back=R0.k*1.4+R0.lean*0.5-fwd;if(o.pos){o.pos.x=s.x+0.5;o.pos.z=s.z+back;o.vel.set(0,0,0);o.face=Math.PI;}else{const g=o.g||o;g.position.set(s.x+0.5,0,s.z+back);g.rotation.x=-0.35*R0.lean+0.25*fwd;}});
       // рывок Кощея: щит обоих
       R0.surgeT-=dt;if(!R0.surge&&R0.surgeT<=0&&!R0.last){R0.surge={t:0};R0.surgeT=G.solo?7:5.5;barkS(KS,'koschei','Не отдам!',1,true);try{KA.pose('threat',{antic:0.2});}catch(e){}}
       if(R0.surge){R0.surge.t+=dt;const ok=G.solo?active(G.soloPi).guard:(active(0).guard&&active(1).guard);if(R0.surge.t>1.0){if(!ok&&R0.k>0){R0.k=Math.max(0,R0.k-1);floatText(endP.clone().add(new V3(0,2.4,0)),'Перетянул! Щиты!','#ff9ab8');shakeAll(0.06,0.3);}
           else if(ok)floatText(endP.clone().add(new V3(0,2.4,0)),'Удержали!','#9fe0ff');R0.surge=null;}else K5L.ink(root.clone().add(new V3(rand(-1,1),0.4,rand(-1,1))),1);}
       ES.prog=0.95;K5L.hud.show(12,0.7+0.3*R0.k/6,0,0,'тянем-потянем '+R0.k+' / 6');};
     W.updates.push(tickF);
-    ES.repkaAtk=(h,pi)=>{if(R0.done||R0.surge)return;const win=R0.pullAt!=null&&Math.abs(R0.t-R0.pullAt)<0.3;
+    ES.repkaAtk=(h,pi)=>{if(R0.done||R0.surge)return;const np=nextPull(R0.t),win=Math.abs(R0.t-np)<0.45;R0.pullAt=np;
       if(R0.last){if(h.kind==='yosha'||G.solo){finish();}return;}
-      if(!win){floatText(h.pos.clone().add(new V3(0,1.8,0)),'не в такт','#cccccc');return;}R0.pull[pi]=R0.t;const both=G.solo||Math.abs(R0.pull[0]-R0.pull[1])<0.4;
-      if(both&&R0.lastPullBeat!==R0.beat){R0.lastPullBeat=R0.beat;R0.k++;k5s('pSoft');FX.dust(root.clone(),10,0x5a4a3a);floatText(endP.clone().add(new V3(0,2.6,0)),'Тянем-потянем! '+R0.k+' / 6','#ffe08a');E.log('pull');
+      if(!win){floatText(h.pos.clone().add(new V3(0,1.8,0)),'не в такт','#cccccc');return;}R0.pull[pi]=R0.t;const both=G.solo||Math.abs(R0.pull[0]-R0.pull[1])<0.6;
+      if(both&&R0.lastPullAt!==np){R0.lastPullAt=np;R0.k++;R0.lean=1;k5s('pSoft');FX.dust(root.clone(),10,0x5a4a3a);floatText(endP.clone().add(new V3(0,2.6,0)),'Тянем-потянем! '+R0.k+' / 6','#ffe08a');E.log('pull');
         if(R0.k>=5){R0.last=true;say('pelageya','Вытянуть не можем… Позвали мышку! Йоша — последний рывок!',3,true);floatText(T.yosha.pos.clone().add(new V3(0,1.6,0)),'Йоша: удар '+K(G.solo?0:1,'attack')+'!','#ffd76a');}}};
     function finish(){R0.done=true;E.log('repkaDone');k5s('shatter');shakeAll(0.12,0.8);k5Flash(root.clone(),0xffe0a0,8,0.6);K5L.gold(root.clone().add(new V3(0,1,0)),40);k5Del(ch);ch=chainLine(root,endP,COL.gold);
-      const i=W.updates.indexOf(tickF);if(i>=0)W.updates.splice(i,1);k5Del(beatR);try{KA.pose('slump');}catch(e){}const f=KS.g.position.clone();anim(0.8,k=>{KS.g.position.set(f.x,Math.sin(k*Math.PI)*1.2,f.z+k*1.5);});
+      const i=W.updates.indexOf(tickF);if(i>=0)W.updates.splice(i,1);k5Del(beatR);(R0.vis||[]).forEach(o=>k5Del(o));try{KA.pose('slump');}catch(e){}const f=KS.g.position.clone();anim(0.8,k=>{KS.g.position.set(f.x,Math.sin(k*Math.PI)*1.2,f.z+k*1.5);});
       E.oakGreen(1,true);later(1.4,()=>{barkS(kot,'kot','…И там я был, и мёд я пил; у моря видел дуб зелёный…',4,true);});later(5.6,()=>{k5Del(ch);ES.repkaAtk=null;done();});}};
+  // подсказки «Тянем-потянем» над героями: в миг «ТЯНИ!» — удар; рывок Кощея — щит; последний рывок — Йоша
+  for(const pi of[0,1]){const me=()=>G.solo?active(G.soloPi):active(pi),on=()=>E.cur===12&&ES.rp&&!ES.rp.done&&!G.cine&&(!G.solo||pi===0),top=()=>headOf(me()).add(new V3(0,0.6,0));
+    prompt(pi,'attack',top,()=>on()&&!ES.rp.last&&ES.rp.near,K5PIC.h(['pull','!'],30));
+    prompt(pi,'guard',top,()=>on()&&!!ES.rp.surge,K5PIC.h(['shield'],30));
+    prompt(pi,'attack',top,()=>on()&&ES.rp.last&&(G.solo||me().kind==='yosha'),K5PIC.h(['pull','star'],30));}
   // удар во время «Репки»
   {const _oa=W.onAttack;W.onAttack=(pi,h)=>{if(E.cur===12&&ES.repkaAtk){ES.repkaAtk(h,pi);return;}if(_oa)_oa(pi,h);};}
   /* ---------- тексты паузы по стадиям ---------- */

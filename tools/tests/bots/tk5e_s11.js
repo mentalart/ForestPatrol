@@ -28,6 +28,10 @@ const c=cz.position;PUT(H(0),c.x-1,c.z,0,Math.PI/2);PUT(H(1),c.x+1,c.z,0,-Math.P
 r.push('стена='+(ES.ph)+' имена ушли='+S11.names().filter(N=>N.gone).length);if(ES.ph!=='moves')throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
 // четверо вспомнили себя — «Все сказки разом» 9 с — выдохся; спесь — нить вдвоём
+for(let t=0;t<60*8&&!(ES.mv&&!ES.mv.countered);t++)TK(1);'ход друга '+(ES.mv&&ES.mv.i)
+//@@ shot=k5e_s11_guide.png
+ZC.tick(1);
+//@@
 const r=[];for(let i=0;i<4;i++){for(let t=0;t<60*8&&!(ES.mv&&!ES.mv.countered);t++)TK(1);S11.counter(ES.mv?ES.mv.i:i);TK(60);for(let k=0;k<3;k++){S11.hit(H(0));ZC.tick(20);}for(let t=0;t<60*10&&ES.win>0&&!ES.rage;t++)TK(1);}
 r.push('память='+ES.mem.join(',')+' спесь='+ES.spes);for(let t=0;t<60*6&&!ES.rage;t++)TK(1);r.push('ярость='+!!ES.rage);if(!ES.rage&&!LOG().includes('rage'))throw new Error(r.join(' | '));
 for(let t=0;t<60*11&&ES.rage;t++)TK(1);r.push('выдохся='+LOG().includes('rageEnd')+' окно='+ES.win.toFixed(1));for(let k=0;k<12&&ES.spes>0;k++){S11.hit(H(0));ZC.tick(20);}r.push('спесь='+ES.spes);

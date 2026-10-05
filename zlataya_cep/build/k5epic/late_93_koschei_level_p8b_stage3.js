@@ -77,7 +77,7 @@
   // чернильный дождь: круги — потом лужи; туман густеет
   function s3Rain(){say('koschei','Чёрное слово — чёрный дождь!',2);K5X.screen('#2a1040',0.35,0.8);if(ES.fogF)ES.fogF.set(0.8);later(8,()=>{if(E.cur===3&&ES.fogF)ES.fogF.set(0.45);});
     const pts=[];for(const h of k5Heroes())pts.push(new V3(h.pos.x,0,h.pos.z));for(let i=0;i<(G.solo?4:6);i++){const a=rand(0,6.28),d=rand(2,R-2);pts.push(new V3(C.x+Math.cos(a)*d,0,C.z+Math.sin(a)*d));}
-    pts.forEach((p,i)=>later(i*0.12,()=>{if(E.cur!==3||!ES.fight)return;const T=FIN.k2fx?FIN.k2fx.tele(p.x,0,p.z,1.7,1.3,'red'):null;later(1.3,()=>{if(E.cur!==3||!ES.fight)return;K5L.ink(p.clone().add(new V3(0,0.4,0)),10,1);K5X.puddle(p,1.7,7.5);});}));E.log('s3rain');}
+    pts.forEach((p,i)=>later(i*0.12,()=>{if(E.cur!==3||!ES.fight)return;const T=FIN.k2fx?FIN.k2fx.tele(p.x,0,p.z,1.7,1.3,'red'):null;later(1.3,()=>{if(E.cur!==3||!ES.fight)return;K5L.ink(p.clone().add(new V3(0,0.4,0)),10,1);K5X.puddle(p,1.7,7.5,{hurt:false,slow:0.86});});}));E.log('s3rain');}
   /* ---------- капли: все четверо бросают; отбил — обратно ---------- */
   function s3Throw(i){const B=s3Body(i);if(!B.m.g.visible)return;const hs=k5Heroes().filter(h=>!h._down);if(!hs.length)return;const h=hs[Math.floor(rand(0,hs.length))];
     try{(B.a||{pose(){}}).pose('cast',{antic:0.15});}catch(e){}later(0.25,()=>{try{(B.a||{reset(){}}).reset();}catch(e){}});
@@ -160,6 +160,7 @@
     end(){s3St.forEach(s=>{s.g.visible=false;s.c.on=false;});s3D.forEach(d=>{d.m.g.visible=false;});s3Spin.visible=false;s3Tie.visible=false;s3Vis.visible=false;aura.intensity=0;KS.g.scale.setScalar(1.15);W.camFn=null;
       if(ES.cast)for(const P of ES.cast.parts)k5Del(P.g);ES.cast=null;if(!E.free.kiki)FR.kiki.m.g.position.copy(FR.kiki.home);else FR.kiki.m.g.position.copy(FR.kiki.home);KS.head.rotation.z=0;try{KA.reset();}catch(e){}},
     item:pi=>E.cur===3?s3Sling(pi):null,
+    pics:pi=>ES.down?(ES.spes>0?['koschei','>','@attack']:['two','hit','>','gchain']):!E.free.kiki?['friend','chain','>','@attack']:['eye','koschei','+','ink','@guard'],
     goal:pi=>{const q=G.solo?0:pi;if(ES.down)return ES.spes>0?'Кощей сбит — <b>бейте</b> '+K(q,'attack')+', пока не опомнился!':'Спесь сбита — '+(G.solo?'удар':'оба удар')+' рядом: <b>золотая нить</b>!';
       const find='Настоящий — с <b>тенью</b> на пне и <b>паром</b> изо рта'+(pi===1||G.solo?'; Совиный взор '+K(q,'skill'):'')+'. Капля — <b>щит '+K(q,'guard')+' в последний миг</b>: вернётся в бросившего.';
       if(!E.free.kiki)return find+'<br>Кикимора в цепи: веретено замерло <b>золотом</b> — бей '+K(q,'attack')+' (Потапу — одного удара).';

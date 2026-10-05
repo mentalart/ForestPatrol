@@ -66,6 +66,8 @@
     const spot=new THREE.Mesh(new THREE.CircleGeometry(2.1,32),k5Add(0xfff0a0,{opacity:0.3}));spot.rotation.x=-Math.PI/2;spot.position.set(X,0.1,0);A.g.add(spot);
     const spotRing=new THREE.Mesh(new THREE.RingGeometry(1.9,2.1,40),k5Add(0xfff8c0,{opacity:0.7}));spotRing.rotation.x=-Math.PI/2;spot.add(spotRing);spotRing.rotation.x=0;
     const beam=new THREE.Mesh(new THREE.CylinderGeometry(0.22,2.1,1,20,1,true),k5Add(0xfff0a0,{opacity:0.16,map:K5TEX.beam}));A.g.add(beam);K5L.noRay(beam);
+    const windArrows=[];for(let q=0;q<9;q++){const z=1.2-q*1.25;const m=new THREE.Mesh(new THREE.ConeGeometry(0.42,0.9,3),k5Add(0xffd76a,{opacity:0}));m.rotation.x=-Math.PI/2;m.position.set(X,0.12,z);m.visible=false;m.raycast=()=>{};A.g.add(m);windArrows.push(m);}
+    const coverRings=STONES.map(st=>{const m=new THREE.Mesh(new THREE.RingGeometry(1.5,1.8,32),k5Add(0x9fe0ff,{opacity:0}));m.rotation.x=-Math.PI/2;const d=hd(st,SOL)||1;m.position.set(st.x+(st.x-SOL.x)/d*1.6,0.1,st.z+(st.z-SOL.z)/d*1.6);m.visible=false;m.raycast=()=>{};A.g.add(m);return m;});
     const S={};A.S=S;A.STONES=STONES;A.BIRD=BIRD;A.SOL=SOL;A.CAGE=CAGE;const orbs=new Map();
     const K3=()=>FIN.k3fx;
     function setLight(h,c){const o=orbs.get(h);if(o){k5Del(o);orbs.delete(h);}h.k5lt=c;if(c==null)return;const m=k5Glow(LCOL[c],1.5);k5Prop(m);orbs.set(h,m);}
@@ -111,7 +113,7 @@
       S.shadows.slice().forEach(s=>shadowPop(s,null));barkS(zh,'zhar','Свобода! Встань, заря!',2,true);const f=zh.g.position.clone();anim(1.6,k=>{zh.g.position.set(f.x,f.y+k*5,f.z);});
       later(1.0,()=>{S.dawn=true;if(K3()&&K3().nightSet)K3().nightSet(0);K5L.themeTo('gold',2.5);K5X.tint(null);K5X.rays(new V3(X,0,-2),0xffd8a0,6,{spread:12,op:0.24});K5L.gold(new V3(X,6,-1.3),30);});
       later(2.6,()=>{barkS(KS,'koschei','Свисти, Соловей! Сдуй их с облаков!',2.2,true);later(1.4,startWind);});}
-    function startWind(){if(E.cur!==6||S.ph!=='free')return;S.ph='wind';S.gustT=3;S.boltT=2.5;S.ring=0;const W3=K3();if(W3&&W3.windOn){W3.windOn(new V3(X,0,0),13);W3.windSet('blow',1,SOL);}sset('whistle','angry');E.log('wind');
+    function startWind(){if(E.cur!==6||S.ph!=='free')return;S.ph='wind';S.gustT=3;S.boltT=4;S.ring=0;S.wc=0;S.blowing=null;S.blowN=0;const W3=K3();if(W3&&W3.windOn){W3.windOn(new V3(X,0,0),13);W3.windSet('blow',1,SOL);}sset('whistle','angry');E.log('wind');
       later(1.2,()=>barkS(zh,'zhar','За облачные камни — и к нему! Кольцо на клюве — разом!',2.8,true));}
     function ringHit(h){if(S.ph!=='wind'||hd(h.pos,SOL)>3.4)return;S.rt[h.player]=G.time;
       const both=G.solo||Math.abs(S.rt[0]-S.rt[1])<0.8;if(!both){if(G.time>(S.rtTip||0)){S.rtTip=G.time+1;floatText(SOL.clone().add(new V3(0,3.8,0)),'Разом! Второй — тоже!','#ffe08a');}return;}
@@ -182,13 +184,23 @@
         else if(s.st==='flee'){const dx=s.to.x-p.x,dz=s.to.z-p.z,d=Math.hypot(dx,dz)||1;s.g.rotation.y=Math.atan2(dx,dz);p.x+=dx/d*3.6*dt;p.z+=dz/d*3.6*dt;
           if(d<0.6){K5L.ink(p.clone().add(new V3(0,1,0)),10);k5Del(s.g);S.shadows.splice(S.shadows.indexOf(s),1);}}}
       // ветер: сносит с облаков; укрытия — камни и щит Потапа; порывы — прыжок; молнии Кощея
-      if(S.ph==='wind'){const f=G.solo?2.7:3.3;for(const h of k5Heroes()){if(sheltered(h))continue;const dx=h.pos.x-SOL.x,dz=h.pos.z-SOL.z,d=Math.hypot(dx,dz)||1;if(d>15)continue;const k=(h.kind==='potap'?0.4:1)*f*dt;h.pos.x+=dx/d*k;h.pos.z+=dz/d*k;}
-        S.gustT-=dt;if(S.gustT<=0){S.gustT=G.solo?5.5:4.2;sset('inhale','angry');later(0.8,()=>{if(S.ph==='wind')whBlow('white');});}
-        S.boltT-=dt;if(S.boltT<=0){S.boltT=G.solo?4.6:3.2;const hs=k5Heroes();const h=hs[Math.floor(rand(0,hs.length))];if(h){const at=new V3(h.pos.x+h.vel.x*0.3,0,h.pos.z+h.vel.z*0.3);if(FIN.k2fx)FIN.k2fx.tele(at.x,0,at.z,1.6,1.2,'red');try{KA.pose('cast',{snap:true});later(0.4,()=>KA.reset());}catch(e){}
-            later(1.2,()=>{if(S.ph!=='wind')return;if(FIN.k2fx)FIN.k2fx.lightning(at.clone());shakeAll(0.06,0.25);for(const q of k5Heroes())if(hd(q.pos,at)<1.6&&q.rollT<=0)k5Hurt(q,at);});}}}};
+      if(S.ph==='wind'){S.wc+=dt;const cyc=G.solo?6:5.4,blowT=G.solo?2.2:2.6,ph=S.wc%cyc,blowing=ph<blowT,inh=ph>cyc-1.0;
+        // порывы с затишьями: вдох — дует — тихо (беги!)
+        if(blowing!==S.blowing){S.blowing=blowing;const W3=K3();if(W3&&W3.windSet)W3.windSet('blow',blowing?1:0.06,SOL);sset(blowing?'whistle':'dazed',blowing?'angry':'hurt');
+          if(blowing){k5s('gale');if(W3&&W3.cl)W3.cl.tear(0.4,1);S.blowN=(S.blowN||0)+1;if(S.blowN%2===0)whBlow('white');}}
+        if(inh&&!S.inh){S.inh=true;sset('inhale','angry');}if(!inh)S.inh=false;
+        if(blowing){const f=G.solo?2.2:2.6;for(const h of k5Heroes()){if(sheltered(h))continue;const dx=h.pos.x-SOL.x,dz=h.pos.z-SOL.z,d=Math.hypot(dx,dz)||1;if(d>15)continue;const k=(h.kind==='potap'?0.4:1)*f*dt;
+          const nx=h.pos.x+dx/d*k,nz=h.pos.z+dz/d*k;if(groundAt(nx,nz,h.pos.y+0.6).y>h.pos.y-0.8){h.pos.x=nx;h.pos.z=nz;}}}   // с облака ветер не сдувает
+        // дорожка к Соловью и укрытия
+        windArrows.forEach((m,q)=>{m.visible=true;m.material.opacity=(blowing?0.25:0.95)*(0.35+0.65*Math.max(0,Math.sin(G.time*6-q*0.9)));});
+        coverRings.forEach(c=>{c.visible=true;c.material.opacity=blowing?0.85+0.15*Math.sin(G.time*10):0.35;});
+        if(!G.solo){S.boltT-=dt;if(S.boltT<=0){S.boltT=6.5;const hs=k5Heroes().filter(h=>hd(h.pos,SOL)>5);const h=hs[Math.floor(rand(0,hs.length))];if(h){const at=new V3(h.pos.x+h.vel.x*0.3,0,h.pos.z+h.vel.z*0.3);if(FIN.k2fx)FIN.k2fx.tele(at.x,0,at.z,1.6,1.4,'red');try{KA.pose('cast',{snap:true});later(0.4,()=>KA.reset());}catch(e){}
+            later(1.4,()=>{if(S.ph!=='wind')return;if(FIN.k2fx)FIN.k2fx.lightning(at.clone());shakeAll(0.06,0.25);for(const q of k5Heroes())if(hd(q.pos,at)<1.6&&q.rollT<=0)k5Hurt(q,at);});}}}}
+      else{windArrows.forEach(m=>{m.visible=false;});coverRings.forEach(c=>{c.visible=false;});}};
     // ---------- удары ----------
     locks.forEach(L=>W.hittables.push({pos:L.pos,r:1.0,alive:()=>E.cur===6&&ES.fight&&!L.open&&L.pair===S.pair&&L.g.visible,onHit:h=>lockHit(L,h)}));
     {const rp=new V3();W.updates.push(()=>{if(E.cur===6)ring.getWorldPosition(rp);});W.hittables.push({pos:rp,r:1.6,alive:()=>E.cur===6&&ES.fight&&S.ph==='wind',onHit:h=>ringHit(h)});}
+    A.pics=pi=>S.ph==='won'?['star']:S.ph==='wind'||S.ph==='free'?['wind','>','stone','+','bird','@attack']:['bird','>','light','>','lock','@attack'];
     A.goal=pi=>{const q=G.solo?0:pi;if(S.ph==='won')return 'Соловей свободен!';
       if(S.ph==='wind'||S.ph==='free')return '<b>Ветер!</b> Укрытия — облачные камни и щит Потапа '+K(q,'guard')+'; порыв — прыжок. У Соловья — удар '+K(q,'attack')+' по <b>кольцу на клюве</b>'+(G.solo?'':' разом')+', дважды.';
       return 'Свет у птиц: <b>Сирин — синий</b>, <b>Алконост — золотой</b>; мостики к клетке светятся только при свете. Замки — <b>разом</b>, каждый своим светом'+(S.ph==='night'?' (вторые — сзади, клетка крутится). <b>Тени</b> крадут свет — бей их в свете.':'.')+

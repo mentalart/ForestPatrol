@@ -11,6 +11,14 @@ window.TK=n=>{for(let i=0;i<n;i++){if(ZC.G.cine&&i%3===0)ZC.skip();if(ZC.G.ui===
 window.WAITCUR=(n,max)=>{for(let i=0;i<(max||60*150);i++){if(E5.cur===n&&!ZC.G.cine&&ZC.G.ui!=='skaz'&&FIGHT(n))return 'cur'+n+'@'+(i/60).toFixed(0)+'s';TK(1);}
   throw new Error('WAITCUR '+n+': cur='+E5.cur+' ui='+ZC.G.ui+' fight='+K5.fight+' es='+JSON.stringify({f:E5.es.fight,st:E5.es.step,ph:E5.es.ph})+' log='+(E5.logs||[]).slice(-6).join(',')+' errs='+_errs.slice(0,3).join(' / '));};
 window.PUT=(h,x,z,y)=>{h.pos.set(x,(y||0)+0.05,z);h.vel.set(0,0,0);};
+window.HTR=r=>ZC.W.hittables.filter(t=>t.alive()&&t.r===r);window.FULL10=()=>{for(const pi of[0,1])ZC.players[pi].petals=3;};
+// стадия 10: на колене — на плечо, удар в замок на груди; оковы — замки на лежащей руке; глаза — оба круга у ног
+window.HEART=hs=>{const ES=E5.es;for(let i=0;i<60*8&&ES.ph!=='heart';i++){FULL10();TK(1);}for(let i=0;i<120;i++){FULL10();TK(1);}hs.forEach((h,j)=>PUT(h,1.7+j*0.2,-18.6-j*0.6,7.5));ZC.tick(2);const t=HTR(1.6)[0];if(t)hs.forEach(h=>t.onHit(h));TK(2);return 'пробой'+ES.breaks+' ph='+ES.ph;};
+window.WRISTS=hs=>{const ES=E5.es;for(let i=0;i<60*8&&ES.ph!=='wrists';i++){FULL10();TK(1);}for(let i=0;i<60*14&&ES.arm!=='down';i++){hs.forEach((h,j)=>PUT(h,3+j,-12));if(ES.arm==='rest'&&ES.at>0.3)ES.at=0.3;FULL10();TK(1);}
+  for(let k=0;k<20&&ES.ph==='wrists'&&ES.arm==='down';k++){const t=HTR(1.3)[0];if(!t)break;PUT(hs[0],t.pos.x,t.pos.z,t.pos.y-1);t.onHit(hs[0]);TK(2);}return 'оковы='+ES.wHp.join(',')+' ph='+ES.ph;};
+window.EYES=hs=>{const ES=E5.es;for(let i=0;i<60*8&&ES.ph!=='eyes';i++){FULL10();TK(1);}for(let i=0;i<60*8&&ES.ph==='eyes';i++){if(hs.length>1){PUT(hs[0],-2.2,-17.8);PUT(hs[1],2.2,-17.8);}else PUT(hs[0],i<90?-2.2:2.2,-17.8);FULL10();TK(1);}
+  return 'корни='+ES.r2.map(v=>v.toFixed(1)).join(',')+' ph='+ES.ph;};
+window.BREAK3=hs=>[HEART(hs),WRISTS(hs),HEART(hs),EYES(hs),HEART(hs)].join(' ');
 window.CHK=s=>{if(_errs.length)throw new Error(s+' — ошибки: '+_errs.slice(0,4).join(' / '));return s;};
 window.GO=n=>{E5.goStage(n);ZC.G.manual=true;ZC.tick(20);return WAITCUR(n);};
 window.SILL=w=>{const P=E5.pages[w];for(let i=0;i<300&&E5.es.step!=='fight';i++){PUT(ME(),P.pos.x,P.pos.z);TK(1);}for(let i=0;i<300&&!E5.es.fight;i++)TK(1);return 'in'+w+'='+E5.es.fight;};
@@ -46,7 +54,7 @@ r.push('ph='+S.ph+' won='+!!E5.done[7]);if(!E5.done[7])throw new Error(r.join(' 
 //@@
 // стадия 10: корни, заклёпки, плечо — один удар в замок на груди
 const r=[GO(10)];const ES=E5.es;for(let k=0;k<2;k++){const x=k?2.2:-2.2;for(let i=0;i<500&&ES.root!==k&&!ES.knee[k];i++){PUT(ME(),x+0.6,-17.4);TK(1);}for(let i=0;i<8&&!ES.knee[k];i++){const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.3);if(t)t.onHit(ME());ZC.tick(3);}}
-TK(120);PUT(ME(),1.7,-18.6,7.5);ZC.tick(2);const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.6);if(t)t.onHit(ME());TK(600);r.push('knees='+ES.knee+' won='+!!E5.done[10]);if(!E5.done[10])throw new Error(r.join(' | '));CHK(r.join(' | '))
+r.push(BREAK3([ME()]));TK(600);r.push('won='+!!E5.done[10]);if(!E5.done[10])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
 // стадия 11: одна рябь — спутник откликается; один удар в трещину; щит у замершего друга; окна; нить
 const r=[GO(11)];const ES=E5.es;ZC.W.pingCall(0,ME());TK(90);const cr=E5.stage[11].targets(0)[0];r.push('crack='+!!cr);if(cr){PUT(ME(),cr.position.x-1,cr.position.z);ZC.W.onAttack(0,ME());}TK(180);r.push('ph='+ES.ph);
@@ -56,5 +64,5 @@ r.push('mem='+ES.mem+' spes='+ES.spes);const t=ZC.W.hittables.find(t=>t.alive()&
 //@@
 // стадия 12: игла (отладкой) → «Тянем-потянем» одним → сцена «Цепь»
 const r=[GO(12)];TK(60);K5.forge.n=K5.forge.need;ZC.W.dbg5e().stageWin(5);for(let i=0;i<300&&!E5.es.repkaAtk;i++)TK(1);const R0=E5.es.rp;
-for(let i=0;i<60*40&&R0&&!R0.done;i++){ZC.hold('KeyG',!!R0.surge);if(R0.pullAt!=null&&Math.abs(R0.t-R0.pullAt)<0.05&&R0.lastPullBeat!==R0.beat&&!R0.last)E5.es.repkaAtk(ME(),0);if(R0.last)E5.es.repkaAtk(ME(),0);ZC.tick(1);}ZC.hold('KeyG',false);
+for(let i=0;i<60*40&&R0&&!R0.done;i++){ZC.hold('KeyG',!!R0.surge);if(R0.near&&Math.abs(R0.t-R0.next(R0.t))<0.1&&R0.lastPullAt!==R0.next(R0.t)&&!R0.last)E5.es.repkaAtk(ME(),0);if(R0.last)E5.es.repkaAtk(ME(),0);ZC.tick(1);}ZC.hold('KeyG',false);
 r.push('repka='+!!(R0&&R0.done));for(let i=0;i<60*200&&ZC.W.flags.stage!=='chain';i++)TK(1);r.push('stage='+ZC.W.flags.stage);if(ZC.W.flags.stage!=='chain')throw new Error(r.join(' | '));CHK('k5epic solo ok '+r.join(' | '))

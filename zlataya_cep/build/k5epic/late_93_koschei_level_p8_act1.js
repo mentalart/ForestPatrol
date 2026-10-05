@@ -22,6 +22,7 @@
     tick(dt){threadsTick();if(!K5.fight)return;if(K5.listen)return;ES.lt-=dt;   // удары-буквы — только в песнь
       if(ES.lt<=0){ES.lt=G.solo?11:8.5;const hs=k5Heroes();if(hs.length){const h=hs[Math.floor(rand(0,hs.length))];E.letterAt(Math.random()<0.5?'О':'Х',h);}}},
     end(){threads.forEach(t=>{t.m.visible=false;});},
+    pics:pi=>['two','+','fire','no'],
     goal:pi=>'Погасите <b>чёрные свечи</b> — парами, обе в пару. Кот налево — сказку говорит: Кощей не колдует.',targets:pi=>candles.filter(c=>c.lit).map(c=>c.g)};
   /* ================= стадия 2 «Там леший бродит»: прежние ключи, искорка и природа + скованный Леший ================= */
   // Леший в чёрной цепи ведёт ряды ёлок поперёк поляны; две застёжки ошейника рвёт только Кощеева молния — заманить её к Лешему
@@ -29,13 +30,14 @@
   function rowMake(){const z=rand(C.z-8,C.z+7),dir=Math.random()<0.5?-1:1,x0=dir>0?-12:12,trees=[];const tele=k5Prop(new THREE.Mesh(new THREE.PlaneGeometry(24,2.2),k5Add(0x7aff9a,{opacity:0.0})));tele.rotation.x=-Math.PI/2;tele.position.set(C.x,0.06,z);
     for(let i=0;i<3;i++){const g=k5Prop(new THREE.Group());const m=M(0x1e2a24,{emissive:0x2a1048,emissiveIntensity:0.4});addMesh(new THREE.CylinderGeometry(0.15,0.2,1,6),M(0x3a2a1a),0,0.5,0,g);for(let j=0;j<3;j++)addMesh(new THREE.ConeGeometry(1.1-j*0.25,1.4,7),m,0,1.1+j*0.8,0,g);
       g.position.set(x0-dir*i*1.8,0,z+rand(-0.4,0.4));K5L.noRay(g);trees.push(g);}
-    const RW={z,dir,trees,tele,t:0,hit:new Set()};ES.rows.push(RW);if(!ES.saidRow){ES.saidRow=true;barkS(FR.leshy.m,'leshy','Ой, ноги сами идут! Берегитесь, ребятушки!',2.4,true);}return RW;}
-  function rowsTick(dt){for(const RW of ES.rows.slice()){RW.t+=dt;if(RW.t<1.4){RW.tele.material.opacity=0.12+0.15*Math.sin(G.time*14);continue;}RW.tele.material.opacity=Math.max(0,RW.tele.material.opacity-dt);
+    const arr=[-6,0,6].map(x=>{const a=K5PIC.spr(['>'],1.6);a.material.rotation=dir>0?0:Math.PI;a.position.set(C.x+x,1.2,z);k5Prop(a);return a;});   // куда пойдут ёлки
+    const RW={z,dir,trees,tele,arr,t:0,hit:new Set()};ES.rows.push(RW);if(!ES.saidRow){ES.saidRow=true;barkS(FR.leshy.m,'leshy','Ой, ноги сами идут! Берегитесь, ребятушки!',2.4,true);}return RW;}
+  function rowsTick(dt){for(const RW of ES.rows.slice()){RW.t+=dt;if(RW.t<1.4){RW.tele.material.opacity=0.12+0.15*Math.sin(G.time*14);RW.arr.forEach((a,i)=>{a.position.x+=RW.dir*dt*1.5;a.material.opacity=0.6+0.4*Math.sin(G.time*10+i);});continue;}RW.tele.material.opacity=Math.max(0,RW.tele.material.opacity-dt);RW.arr.forEach(a=>{a.visible=false;});
       for(const g of RW.trees){g.position.x+=RW.dir*6*dt;g.rotation.z=Math.sin(G.time*12)*0.05;for(const h of k5Heroes()){if(RW.hit.has(h))continue;if(Math.abs(h.pos.x-g.position.x)<1.0&&Math.abs(h.pos.z-g.position.z)<1.1&&h.pos.y<2){RW.hit.add(h);k5Hurt(h,g.position);}}}
-      if(RW.t>6.5){RW.trees.forEach(k5Del);k5Del(RW.tele);ES.rows.splice(ES.rows.indexOf(RW),1);}}}
+      if(RW.t>6.5){RW.trees.forEach(k5Del);k5Del(RW.tele);RW.arr.forEach(k5Del);ES.rows.splice(ES.rows.indexOf(RW),1);}}}
   // молния, ударившая рядом с Лешим, рвёт застёжку ошейника
   function boltWatch(){const now=new Set(K5.zones||[]);for(const z of ES.zw||[]){if(now.has(z)||z.userData.dead)continue;const p=z.position;if(!FR.leshy.free&&hd(p,FR.leshy.m.g.position)<2.6){ES.clasp=(ES.clasp||0)+1;
-        K5L.gold(FR.leshy.m.g.position.clone().add(new V3(0,2.2,0)),14);k5s('keyBreak');floatText(FR.leshy.m.g.position.clone().add(new V3(0,3.4,0)),ES.clasp>=2?'Свободен!':'Застёжка лопнула!','#ffe08a');E.log('clasp');
+        K5L.gold(FR.leshy.m.g.position.clone().add(new V3(0,2.2,0)),14);k5s('keyBreak');K5PIC.float(FR.leshy.m.g.position.clone().add(new V3(0,3.4,0)),ES.clasp>=2?['friend','star']:['lock','>','check']);{const f=FR.leshy.m.g.position.clone().add(new V3(ES.clasp>1?0.8:-0.8,4.2,0)),sp=k5Prop(K5PIC.spr(['lock'],1.1)),to=f.clone().add(new V3(rand(-3,3),5,rand(-2,2)));k5fx(0.9,k=>{sp.position.lerpVectors(f,to,k);sp.material.opacity=1-k;sp.material.rotation=k*6;},()=>k5Del(sp));}E.log('clasp');
         if(ES.clasp>=2){E.freeF('leshy');barkS(FR.leshy.m,'leshy','Спасибо, ребятушки! Ну, Кощей, держись — мой лес теперь за них!',3,true);banner('Леший свободен!','#b8e070',2.6,'теперь щит в последний миг — гасите угольки Кощея');later(0.8,()=>{const f=FR.leshy.m.g.position.clone();anim(1.2,k=>FR.leshy.m.g.position.lerpVectors(f,FR.leshy.home,k));E.sprucesOn();});}}}
     ES.zw=[...now];}
   // ---- стадия 2: как победить — подсказки в мире (после первых секунд стадии карточек нет) ----
@@ -48,11 +50,14 @@
   function leshyGuideMake(){const g=k5Prop(new THREE.Group());const ring=new THREE.Mesh(new THREE.RingGeometry(LG_R-0.35,LG_R,40),k5Add(0x9fe070,{opacity:0.7}));ring.rotation.x=-Math.PI/2;ring.position.y=0.08;g.add(ring);
     const fill=new THREE.Mesh(new THREE.CircleGeometry(LG_R-0.35,40),k5Add(0x9fe070,{opacity:0.12}));fill.rotation.x=-Math.PI/2;fill.position.y=0.07;g.add(fill);
     const ar=t4Arrow(0x9fe070);ar.position.y=5.6;g.add(ar);const beam=k5Prop(new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,1,6,1,true),k5Add(0x9a60ff,{opacity:0.5})));
-    K5L.noRay(g);K5L.noRay(beam);Object.assign(LG,{g,ring,fill,ar,beam,lab:null,n:-1});}
+    const locks=[-0.8,0.8].map(x=>{const sp=K5PIC.spr(['lock'],1.1);sp.position.set(x,4.2,0);g.add(sp);return sp;});const aim=k5Prop(K5PIC.spr(['lightning'],1.5));aim.visible=false;
+    K5L.noRay(g);K5L.noRay(beam);Object.assign(LG,{g,ring,fill,ar,beam,locks,aim,n:-1});}
   function leshyGuideTick(dt){const on=E.cur===2&&K5.fight&&!E.free.leshy&&!G.cine;if(!LG.g){if(!on)return;leshyGuideMake();}
-    LG.g.visible=on;LG.beam.visible=on;if(!on)return;const L=FR.leshy.m.g.position;LG.g.position.set(L.x,0,L.z);
+    LG.g.visible=on;LG.beam.visible=on;if(!on){LG.aim.visible=false;return;}const L=FR.leshy.m.g.position;LG.g.position.set(L.x,0,L.z);
     const k=0.5+0.5*Math.sin(G.time*4),inR=k5Heroes().some(nearLeshy);LG.ring.material.opacity=inR?0.95:0.35+0.45*k;LG.fill.material.opacity=inR?0.28:0.1;LG.ar.position.y=5.4+0.35*k;LG.ar.rotation.y+=dt*2.5;LG.ar.visible=!inR;
-    const n=ES.clasp||0;if(LG.n!==n){LG.n=n;if(LG.lab)LG.g.remove(LG.lab);LG.lab=K5L.textSpr('застёжки '+'●'.repeat(n)+'○'.repeat(Math.max(0,2-n)),3.6,{w:512,h:96,col:'#eaffd0',glow:'#3a7a1a'});LG.lab.position.y=4.2;LG.g.add(LG.lab);}
+    const n=ES.clasp||0;if(LG.n!==n){LG.n=n;LG.locks.forEach((sp,i)=>{sp.visible=i>=n;});}LG.locks.forEach((sp,i)=>{sp.position.y=4.2+Math.sin(G.time*3+i)*0.15;});
+    // кто ждёт в круге — над ним молния: чем ближе удар, тем чаще мигает
+    {const w=k5Heroes().find(nearLeshy),N0=K5.nat;LG.aim.visible=!!w&&!!N0;if(LG.aim.visible){const f=N0.boltT<1.5?14:5;LG.aim.position.copy(headOf(w)).add(new V3(0,1.9,0));LG.aim.material.opacity=0.55+0.45*Math.abs(Math.sin(G.time*f));LG.aim.scale.setScalar(1.5*(1+0.15*Math.sin(G.time*f)));}}
     const a=L.clone().add(new V3(0,2.2,0)),b=kosTop(),d=b.clone().sub(a),len=d.length();LG.beam.position.copy(a).addScaledVector(d,0.5);LG.beam.scale.set(1,len,1);LG.beam.quaternion.setFromUnitVectors(new V3(0,1,0),d.normalize());
     LG.beam.material.opacity=0.25+0.3*Math.abs(Math.sin(G.time*6));
     // кто стоит у Лешего — в того и молния, и скоро (иначе ждать её — дело случая)
@@ -73,9 +78,10 @@
   E.layer[2]={start(){ES.rows=[];ES.rowT=5;ES.clasp=0;ES.zw=[];if(!E.free.leshy){FR.leshy.m.g.position.copy(LSH_IN);FR.leshy.m.g.rotation.y=Math.atan2(C.x-LSH_IN.x,C.z-LSH_IN.z);}else E.sprucesOn();},
     tick(dt){if(!K5.fight)return;rowsTick(dt);boltWatch();
       if(!E.free.leshy&&!K5.listen){ES.rowT-=dt;if(ES.rowT<=0){ES.rowT=G.solo?11:8;rowMake();}}
-      if(!E.free.leshy&&KB.embers<2&&KB.state!=='broken'){KB.embers=2;if(G.time>(ES.holdT||0)){ES.holdT=G.time+6;floatText(FR.leshy.m.g.position.clone().add(new V3(0,3.6,0)),'Освободите меня — тогда Кощей ослабнет!','#b8e070');}}
+      if(!E.free.leshy&&KB.embers<2&&KB.state!=='broken'){KB.embers=2;if(G.time>(ES.holdT||0)){ES.holdT=G.time+6;K5PIC.float(FR.leshy.m.g.position.clone().add(new V3(0,3.6,0)),['friend','chain','>','lightning']);}}
       leshyGuideTick(dt);},
-    end(){for(const RW of ES.rows||[]){RW.trees.forEach(k5Del);k5Del(RW.tele);}if(!E.free.leshy)FR.leshy.m.g.position.copy(FR.leshy.home);},
+    end(){for(const RW of ES.rows||[]){RW.trees.forEach(k5Del);k5Del(RW.tele);(RW.arr||[]).forEach(k5Del);}if(LG.g){LG.g.visible=false;LG.aim.visible=false;}if(!E.free.leshy)FR.leshy.m.g.position.copy(FR.leshy.home);},
+    pics:pi=>E.free.leshy?['koschei','>','@guard','>','@attack']:['friend','ring','>','lightning','>','@roll'],
     goal:pi=>E.free.leshy?'<b>Леший свободен.</b> Отбивайте удары Кощея <b>щитом '+K(pi,'guard')+' в последний миг</b> — гаснут угольки спеси. Спесь сбита — бейте '+K(pi,'attack')+' рядом с ним.<br>«Ко мне!» '+K(pi,'call')+' — ёлка встанет рядом, укроет от ветра и молний.':
       '<b>Как победить:</b> 1) пока Леший в цепи, Кощея не сломить — встань в <b>зелёный круг</b> у Лешего, Кощей ударит молнией — уходи кувырком '+K(pi,'roll')+': молния рвёт застёжку (их две);<br>2) отбивайте удары щитом '+K(pi,'guard')+' в последний миг — гаснут угольки; 3) спесь сбита — бейте '+K(pi,'attack')+' рядом с ним.',
     targets:pi=>E.free.leshy?[]:[FR.leshy.m.g]};
@@ -126,4 +132,5 @@
       events:[{t:3.2,fn:()=>{KA.pose('threat',{antic:0.25});k5s('shatter');if(E.pagesShow)E.pagesShow(true,true);}},{t:6.4,fn:()=>{K5L.ink(KS.g.position.clone().add(new V3(0,2,0)),30);KS.g.visible=false;k5s('blink');}}],
       end:()=>{W.anims.length=0;KA.reset();K5L.themeTo('dawn',1.5);done();}});};
   // карточки «как победить» перед новыми стадиями (движок карточек 4-Б); при повторе — коротко
-  E.CARDS={};E.cards=(n,go)=>{const c=E.CARDS[n];if(!c||!K5.auto){go();return;}const seen=E.seenCards=E.seenCards||{};const steps=(seen[n]?c.slice(0,1):c).map(s=>Object.assign({dur:seen[n]?3.6:5},s));seen[n]=true;t4Run(steps,{end:go});};
+  E.CARDS={};E.cards=(n,go)=>{const c=E.CARDS[n];if(!c||!K5.auto){go();return;}const seen=E.seenCards=E.seenCards||{};const steps=(seen[n]?c.slice(0,1):c).map(s=>{const o=Object.assign({dur:seen[n]?3.6:5},s);o.card=Object.assign({},s.card);const m=FIN.k5pic&&FIN.k5pic.CARD[o.card.title];
+    if(m&&m.k){const who=G.solo?[G.soloPi]:[0,1];o.wait={who:G.solo?G.soloPi:'both',a:m.k,timeout:12};o.card.keys=who.map(pi=>({pi,a:m.k}));o.dur=Math.max(o.dur,6);}return o;});seen[n]=true;t4Run(steps,{end:go});};   // карточка с кнопкой ждёт, пока её нажмут

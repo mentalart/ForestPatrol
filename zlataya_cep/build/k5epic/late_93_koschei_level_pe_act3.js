@@ -6,7 +6,7 @@
   // Жар-птица (если свободна) — встань в её золотой круг: клюнет кулак. Не успели — бросит с высоты. Друзья в бурю: Яга на ступе
   // метлой сметает круги игл, Водяной открывает родник живой воды (лепесток), Горыныч жжёт воронов, колокол Соловья сдувает Кощея.
   // Атлас: grab + rescue (co-op), mash-to-escape, marked-area-strike (молнии), ally assists (cleanse, heal), environment. Бот — tk5e_s8.
-  const gorFly=makeGorynych();gorFly.g.scale.setScalar(0.9);gorFly.g.visible=false;K5L.noRay(gorFly.g);
+  const gorFly=makeGorynych5(1);gorFly.g.scale.setScalar(0.9);gorFly.g.visible=false;K5L.noRay(gorFly.g);
   const grabRing=k5Prop(new THREE.Mesh(new THREE.TorusGeometry(0.7,0.07,6,40),k5Add(0xc080ff,{opacity:0})));grabRing.raycast=()=>{};
   const zhCircle=k5Prop(new THREE.Mesh(new THREE.RingGeometry(1.2,1.45,40),k5Add(0xffc040,{opacity:0})));zhCircle.rotation.x=-Math.PI/2;zhCircle.raycast=()=>{};
   const spring8=k5Prop(new THREE.Group());{const d=new THREE.Mesh(new THREE.CircleGeometry(1.3,32),k5Add(0x7ad8ff,{opacity:0.5}));d.rotation.x=-Math.PI/2;spring8.add(d);
@@ -59,6 +59,7 @@
     attack(h){if(E.cur!==8||!ES.grab||ES.grab.h!==h)return;ES.grab.mash+=G.solo?0.6:0.55;shakeAll(0.03,0.12);FX.sparks(h.pos.clone().add(new V3(0,1.2,0)),6,0xffffff);floatText(h.pos.clone().add(new V3(rand(-0.4,0.4),2.2,0)),'Пусти!','#ffe08a');},
     end(){if(ES.grab)release(false);gorFly.g.visible=false;gor.g.visible=true;E.onWhistle=null;spring8.visible=false;stupa8.g.visible=false;grabRing.material.opacity=0;zhCircle.material.opacity=0;
       if(FIN.k2fx)FIN.k2fx.rain(false);if(FIN.k3fx&&FIN.k3fx.windSet)FIN.k3fx.windSet('swirl',0);},
+    pics:pi=>ES.grab?(ES.grab.h.player===pi||G.solo?['hand','@attack']:E.free.zhar?['bird','ring','>','friend']:['light','@guard','>','friend']):['light','@guard','+','redring','run'],
     goal:pi=>ES.grab?(ES.grab.h.player===pi?'Ты у Кощея в кулаке! Бей '+K(pi,'attack')+' — вырывайся! Шар летит — <b>щит</b> '+K(pi,'guard')+' в последний миг — Кощею в лицо!':'Друга унесли! Тёмный шар — <b>отбей щитом</b> '+K(pi,'guard')+' в последний миг — к другу'+(E.free.zhar?'; или встань в <b>золотой круг</b> Жар-птицы.':'.')):
       'Тёмный шар — щит в последний миг: к другу, друг — в небо. Красный круг — молния: уйди.'+(E.free.solo?' Колокол под дубом — <b>Соловей свистнет</b>, Кощея сдует.':''),
     targets:pi=>ES.zh&&!G.solo?[zhCircle]:[]};
@@ -130,6 +131,7 @@
     attack(h){if(E.cur!==9)return;for(const R of ES.rub.slice()){if(hd(h.pos,R.g.position)>2.2)continue;R.hp--;burst(R.g.position.clone().add(new V3(0,1.2,0)),0xe8e0c8,8,2);if(R.hp<=0)rubPop(R,false);else{R.st='walk';R.t=0;if(R.tele)R.tele.userData.dead=true;}return;}},
     item(pi){if(E.cur!==9)return null;const h=active(pi);const B=banners.find(b=>b.down&&hd(h.pos,b.g.position)<2.2);if(!B)return null;return ()=>banRaise(B);},
     end(){banners.forEach(b=>{b.g.visible=false;});vitLine(false);(ES.rub||[]).forEach(R=>k5Del(R.g));ES.rub=[];if(ES.val)ES.val.root.visible=false;},
+    pics:pi=>ES.warn?['flag','+','two']:banners.some(b=>b.down)?['flag','up','@item']:['bone','@attack','+','wave','@jump'],
     goal:pi=>'Трубит рог — встаньте <b>у знамён</b> Заставы'+(G.solo?'':' (оба!)')+': витязи сметут щитников. <b>Кости-рубаки</b> рубят древко — бей их; упало знамя — подними '+K(G.solo?0:pi,'item')+'.',
     targets:pi=>ES.warn?banners.map(b=>b.g):banners.filter(b=>b.down).map(b=>b.g)};
   E.layer[9].bot={kn:()=>KN,rub:bi=>rubMake(bi),horn:()=>{ES.hornT=0.01;},banners:()=>banners,rubs:()=>ES.rub,fall:bi=>banFall(banners[bi])};
@@ -186,14 +188,32 @@
       else floatText(kneeW(i).add(new V3(0,1,0)),'ещё!','#ffe08a');}});
   const kneeHt=W.hittables[W.hittables.length-1];
   W.hittables.push({pos:new V3(),r:1.6,alive:()=>E.cur===10&&ES.fight&&ES.ph==='heart',onHit:h=>{const pi=h.player;if(h.pos.y<SHW.y-1)return;ES.hb[pi]=G.time;const both=G.solo||Math.abs(ES.hb[0]-ES.hb[1])<1.2;FX.sparks(heart.getWorldPosition(new V3()),12,0xffd060);
-      if(both){ES.ph='open';E.log('heart');heartOpen();}else floatText(heart.getWorldPosition(new V3()).add(new V3(0,1.2,0)),'Вдвоём — разом!','#ffe08a');}});
+      if(both)heartBreak();else floatText(heart.getWorldPosition(new V3()).add(new V3(0,1.2,0)),'Вдвоём — разом!','#ffe08a');}});
   const heartHt=W.hittables[W.hittables.length-1];
   function pileMake(c){if(E.cur!==10||!ES.fight)return;const g=k5Prop(new THREE.Group());g.position.set(c.x,0,c.z);const gm=M(COL.gold,{emissive:0x806010,emissiveIntensity:0.5});
     const m=new THREE.Mesh(new THREE.ConeGeometry(1.5,0.7,12),gm);m.position.y=0.35;g.add(m);const r=new THREE.Mesh(new THREE.RingGeometry(1.5,1.65,32),k5Add(0xffd060,{opacity:0.7}));r.rotation.x=-Math.PI/2;r.position.y=0.05;g.add(r);
     g.scale.setScalar(0.01);anim(0.4,k=>g.scale.setScalar(Math.max(0.01,CE.outBack(k))));ES.piles.push({g,t:0});E.log('pile');}
-  function kneel(){ES.ph='heart';ES.prog=0.6;barkS(FR.vod.m,'vod','Волна — под колено!',1.4,true);const wv=k5Prop(new THREE.Mesh(new THREE.BoxGeometry(22,3,1),k5eMB(0x7ad8ff,{opacity:0.6})));wv.position.set(0,1.5,8);
+  // ---- три пробоя (по отзыву: великана слишком легко победить) ----
+  // 1) колени (заклёпки, корни Лешего) → на колене → пробой; 2) оковы на правой руке: кулак лежит — бей замок на запястье и, взбежав
+  // по руке, на локте → на колене → пробой; 3) глаза метут землю двумя лучами (прыжок), Леший держит корнями ОБЕ ноги разом → пробой.
+  // На колене — на плечо: «Ко мне!» — Горыныч поднимет (или по лежащей руке), и вдвоём удар в сердце. Три замка над сердцем — сколько осталось.
+  const wristL=[[0,-9.4,0.7],[0,-4.8,0.7]].map(([x,y,z])=>{const g=K5L.lock();g.scale.setScalar(1.2);g.position.set(x,y,z);gArm.add(g);g.visible=false;return g;});
+  const wristHt=wristL.map((L,i)=>{const t={pos:new V3(),r:1.3,alive:()=>E.cur===10&&ES.fight&&ES.ph==='wrists'&&ES.arm==='down'&&ES.wHp[i]>0,onHit:h=>{const p=L.getWorldPosition(new V3());
+      if(Math.abs(h.pos.y-p.y)>2.6){K5PIC.float(h.pos.clone().add(new V3(0,2.4,0)),['stairs','up']);return;}ES.wHp[i]-=(h.kind==='potap'?2:1);SFX.clink();FX.sparks(p,10,0xffd060);
+      if(ES.wHp[i]<=0){L.visible=false;K5L.gold(p,16);E.log('wrist'+i);if(ES.wHp.every(v=>v<=0))kneel();}}};W.hittables.push(t);return t;});
+  const eyeBeams=[0,1].map(()=>{const m=k5Prop(new THREE.Mesh(new THREE.BoxGeometry(0.5,0.12,11),k5Add(0xff3030,{opacity:0.85})));m.visible=false;m.raycast=()=>{};return m;});
+  const legRings=[-1,1].map(sx=>{const m=k5Prop(new THREE.Mesh(new THREE.RingGeometry(1.8,2.2,32),k5Add(0x9fe070,{opacity:0.8})));m.rotation.x=-Math.PI/2;m.position.set(GC.x+sx*2.2,0.09,GC.z+1.2);m.visible=false;return m;});
+  const crackSp=[0,1,2].map(i=>{const sp=K5PIC.spr(['lock'],0.8);sp.visible=false;k5Prop(sp);return sp;});
+  function heartBreak(){ES.breaks=(ES.breaks||0)+1;E.log('heart'+ES.breaks);const hp=heart.getWorldPosition(new V3());K5L.gold(hp,22);k5Flash(hp,0xffe0a0,5,0.5);k5s('shatter');shakeAll(0.1,0.5);
+    crackSp.forEach((sp,i)=>{sp.material.map=K5PIC.tex(i<ES.breaks?['check']:['lock']);});
+    if(ES.breaks>=3){ES.ph='open';heartOpen();return;}
+    ES.ph='rise';shPlat.on=false;ES.ramp=null;for(const h of HEROES)if(h.pos.y>1.5)placeOnGround(h,h.pos.x,h.pos.z+4,0);barkS(KS,'koschei',ES.breaks===1?'Треснуло?! Ещё не всё — оковы мои, держите!':'Глаза мои — всё вижу! Ни шагу!',2.4,true);
+    const y0=giant.position.y;anim(1.0,k=>{giant.position.y=y0*(1-CE.outBack(k));});later(1.2,()=>{if(E.cur!==10)return;SHW.y=10.5;shPlat.miny=9.9;shPlat.maxy=10.5;shPlat.on=true;if(ES.breaks===1)wristsStart();else eyesStart();});}
+  function wristsStart(){ES.ph='wrists';ES.wHp=[G.solo?2:3,G.solo?2:3];wristL.forEach(L=>{L.visible=true;});ES.at=1;E.log('wrists');}
+  function eyesStart(){ES.ph='eyes';ES.r2=[0,0];ES.r2w=[0,0];ES.eyeA=0;eyeBeams.forEach(m=>{m.visible=true;});legRings.forEach(m=>{m.visible=true;});E.log('eyes');}
+  function kneel(){ES.ph='heart';ES.prog=0.3+0.3*(ES.breaks||0);eyeBeams.forEach(m=>{m.visible=false;});legRings.forEach(m=>{m.visible=false;});rootsM.visible=false;barkS(FR.vod.m,'vod','Волна — под колено!',1.4,true);const wv=k5Prop(new THREE.Mesh(new THREE.BoxGeometry(22,3,1),k5eMB(0x7ad8ff,{opacity:0.6})));wv.position.set(0,1.5,8);
     k5fx(1.2,k=>{wv.position.z=8-k*24;},()=>k5Del(wv));later(0.9,()=>{const y0=giant.position.y;anim(0.8,k=>{giant.position.y=y0-3*CE.outBack(k);});shakeAll(0.1,0.5);k5s('stomp');SHW.y=7.5;shPlat.miny=6.9;shPlat.maxy=7.5;shPlat.on=true;
-      floatText(SHW.clone().add(new V3(0,2,0)),'Великан на колене! На плечо — и в грудь, вдвоём!','#ffe08a');});}
+      K5PIC.float(SHW.clone().add(new V3(0,2,0)),['giant','>','dragon','up','>','two','hit']);});}
   function heartOpen(){heartLock.visible=false;hammer.visible=true;K5L.gold(heart.getWorldPosition(new V3()),30);k5Flash(heart.getWorldPosition(new V3()),0xffe0a0,6,0.6);k5s('reveal');
     later(0.4,()=>say('pelageya','Это же… его молоточек. Детский. Деревянный.',3,true));later(3.2,()=>{giantFall();});}
   function giantFall(){E.log('giantFall');shPlat.on=false;ES.ramp=null;shakeAll(0.15,1.0);k5s('shatter');const parts=glinks.map(m=>{const p=new V3();m.getWorldPosition(p);const q=new THREE.Quaternion();m.getWorldQuaternion(q);W.group.attach(m);return {m,v:new V3(rand(-4,4),rand(2,7),rand(-4,4))};});
@@ -202,11 +222,18 @@
     for(const h of HEROES)if(h.pos.y>1.5)placeOnGround(h,h.pos.x,h.pos.z+3,0);later(3.6,()=>{giant.visible=false;E.won(10);});}
   E.stage[10]={start(o){E.hub(10);K5L.themeTo('sunset',1);K5.fight=false;liveBoss(false);KS.g.visible=false;dome.visible=false;candles.forEach(c=>{c.g.visible=false;});heroesHome(10);W.clampR={x:C.x,z:C.z-1,r:12.5};E.arenaCam(true,9);
       if(!glinks.length)return E.go(11);giant.visible=true;giant.position.copy(GC);SHW.y=10.5;shPlat.miny=9.9;shPlat.maxy=10.5;shPlat.on=true;gCyls.forEach(c=>{c.on=true;});kneeR.forEach(r=>{r.visible=true;});heartLock.visible=true;hammer.visible=false;
-      Object.assign(ES,{ph:'knees',knee:[false,false],kHp:[G.solo?3:4,G.solo?3:4],root:null,rootT:0,arm:'rest',at:2.5,coinT:5,hb:[-9,-9],ramp:null,prog:0,spes:null,fight:false});gArm.quaternion.identity();gArm.scale.set(1,1,1);gArmL.rotation.set(0,0,0);hoard.visible=true;Object.assign(ES,{sw:'rest',swT:7,las:null,lasT:9,piles:[]});K5X.motes('gold',new V3(GC.x,0,GC.z+6),12,140,6);K5X.fog(new V3(GC.x,0,GC.z+5),12,0xffc870,14,{op:0.18,y0:0.2,y1:1.6});
+      Object.assign(ES,{ph:'knees',knee:[false,false],kHp:[G.solo?3:4,G.solo?3:4],root:null,rootT:0,arm:'rest',at:2.5,coinT:5,hb:[-9,-9],ramp:null,prog:0,spes:null,fight:false});gArm.quaternion.identity();gArm.scale.set(1,1,1);gArmL.rotation.set(0,0,0);hoard.visible=true;Object.assign(ES,{sw:'rest',swT:7,las:null,lasT:9,piles:[]});Object.assign(ES,{breaks:0,wHp:[0,0],r2:[0,0],r2w:[0,0],eyeA:0});wristL.forEach(L=>{L.visible=false;});eyeBeams.forEach(m=>{m.visible=false;});legRings.forEach(m=>{m.visible=false;});crackSp.forEach(sp=>{sp.visible=true;sp.material.map=K5PIC.tex(['lock']);});K5X.motes('gold',new V3(GC.x,0,GC.z+6),12,140,6);K5X.fog(new V3(GC.x,0,GC.z+5),12,0xffc870,14,{op:0.18,y0:0.2,y1:1.6});
       E.cards(10,()=>{ES.fight=true;});},
     tick(dt){if(!ES.fight)return;giant.position.y=(ES.ph==='knees'?0:giant.position.y)+(ES.ph==='knees'?Math.sin(G.time*1.1)*0.12:0);gHead.rotation.y=Math.sin(G.time*0.6)*0.3;kneeHt.pos.copy(ES.root!=null?kneeW(ES.root):new V3(0,-99,0));heartHt.pos.copy(heart.getWorldPosition(new V3()));
       if(E.free.zhar){const a=G.time*0.9,t=ES.ph==='knees'&&ES.root!=null?kneeW(ES.root):heart.getWorldPosition(new V3());FR.zhar.m.g.position.set(t.x+Math.cos(a)*2,t.y+2,t.z+Math.sin(a)*2);}
-      ES.prog=ES.ph==='knees'?(ES.knee[0]+ES.knee[1])*0.3:ES.ph==='heart'?0.6:0.95;
+      ES.prog=ES.ph==='knees'?(ES.knee[0]+ES.knee[1])*0.12:ES.ph==='wrists'?0.33+0.2*(ES.wHp.filter(v=>v<=0).length/2):ES.ph==='eyes'?0.66:ES.ph==='open'?0.97:0.3+0.3*(ES.breaks||0);
+      {const hp=heart.getWorldPosition(new V3());crackSp.forEach((sp,i)=>{sp.position.set(hp.x+(i-1)*0.95,hp.y+2.4,hp.z+0.4);});}
+      wristHt.forEach((t,i)=>{wristL[i].getWorldPosition(t.pos);});
+      // глаза: два луча метут землю (прыжок); корни Лешего держат ногу 6 с — обе разом: на колено
+      if(ES.ph==='eyes'){ES.eyeA+=dt*(G.solo?0.42:0.55);eyeBeams.forEach((m,q)=>{const a=ES.eyeA*(q?-1:1)+q*Math.PI;m.position.set(GC.x+Math.sin(a)*6.5,0.08,GC.z+Math.cos(a)*6.5);m.rotation.y=a;m.material.opacity=0.6+0.3*Math.sin(G.time*12);
+          for(const h of k5Heroes()){const dx=h.pos.x-GC.x,dz=h.pos.z-GC.z,along=dx*Math.sin(a)+dz*Math.cos(a),side=Math.abs(dx*Math.cos(a)-dz*Math.sin(a));if(along>1&&along<12&&side<0.55&&h.pos.y<0.7&&h.rollT<=0&&(ES.eyeCd||0)<G.time){ES.eyeCd=G.time+0.8;k5Hurt(h,GC);}}});
+        for(let i=0;i<2;i++){const lp=legRings[i].position;if(ES.r2[i]>0){ES.r2[i]-=dt;legRings[i].material.color.set(0x7ad84a);}else{legRings[i].material.color.set(0xffd76a);if(k5Heroes().some(h=>hd(h.pos,lp)<2.2)){ES.r2w[i]+=dt;if(ES.r2w[i]>0.8){ES.r2[i]=G.solo?8:6;ES.r2w[i]=0;barkS(FR.leshy.m,'leshy','Корни, держите!',1.0,true);E.log('root2'+i);}}else ES.r2w[i]=0;}}
+        if(ES.r2[0]>0&&ES.r2[1]>0){E.log('rootsBoth');kneel();}}
       // Леший: встал у ноги на секунду — корни держат её 7 с
       if(ES.ph==='knees'){if(ES.root!=null){ES.rootT-=dt;if(ES.rootT<=0){ES.root=null;rootsM.visible=false;}}
         else for(let i=0;i<2;i++){if(ES.knee[i])continue;const p=new V3(GC.x+(i?2.2:-2.2),0,GC.z);if(k5Heroes().some(h=>hd(h.pos,p)<2.4)){ES.rootW=(ES.rootW||0)+dt;if(ES.rootW>0.8){ES.rootW=0;ES.root=i;ES.rootT=7;rootsM.visible=true;rootsM.position.copy(p);
@@ -244,10 +271,12 @@
         else if(L.st==='tied'){const h=L.h,dx=L.a.x-h.pos.x,dz=L.a.z-h.pos.z,d=Math.hypot(dx,dz)||1;h.pos.x+=dx/d*1.3*dt;h.pos.z+=dz/d*1.3*dt;h.vel.x*=0.5;h.vel.z*=0.5;
           const m=L.a.clone().lerp(h.pos.clone().add(new V3(0,1,0)),0.5);lasso.position.copy(m);lasso.scale.y=L.a.distanceTo(h.pos.clone().add(new V3(0,1,0)));lasso.quaternion.setFromUnitVectors(new V3(0,1,0),h.pos.clone().add(new V3(0,1,0)).sub(L.a).normalize());
           if(d<1.8){k5Hurt(h,L.a);lasso.visible=false;ES.las=null;ES.lasT=G.solo?12:9;floatText(h.pos.clone().add(new V3(0,2.2,0)),'Подтянул!','#ff9ab8');E.log('lassoPull');}}}},
-    end(){giant.visible=false;shPlat.on=false;gCyls.forEach(c=>{c.on=false;});ES.ramp=null;rootsM.visible=false;W.camFn=null;hoard.visible=false;swArc.material.opacity=0;lasso.visible=false;(ES.piles||[]).forEach(P=>k5Del(P.g));ES.piles=[];ES.las=null;},
+    end(){giant.visible=false;shPlat.on=false;gCyls.forEach(c=>{c.on=false;});ES.ramp=null;rootsM.visible=false;W.camFn=null;hoard.visible=false;swArc.material.opacity=0;lasso.visible=false;wristL.forEach(L=>{L.visible=false;});eyeBeams.concat(legRings,crackSp).forEach(m=>{m.visible=false;});(ES.piles||[]).forEach(P=>k5Del(P.g));ES.piles=[];ES.las=null;},
     attack(h){if(E.cur!==10)return;const L=ES.las;if(!L||L.st!=='tied')return;const mid=L.a.clone().lerp(L.h.pos,0.5);
       if(h===L.h){L.hp-=G.solo?0.6:0.25;floatText(h.pos.clone().add(new V3(0,2.2,0)),'Пусти!','#ffe08a');}else if(hd(h.pos,mid)<2.6||hd(h.pos,L.h.pos)<2.2){L.hp-=1;FX.sparks(mid,10,0xffd060);SFX.clink();}
       if(L.hp<=0){lasso.visible=false;floatText(L.h.pos.clone().add(new V3(0,2.2,0)),'Цепь разрублена!','#ffe08a');K5L.gold(mid,10);ES.las=null;ES.lasT=G.solo?13:10;E.log('lassoCut');}},
+    pics:pi=>ES.ph==='knees'?['friend','>','lock','@attack']:ES.ph==='heart'?(E.free.gor?['@call','dragon','up','>','two','@attack']:['stairs','up','>','two','@attack']):
+      ES.ph==='wrists'?['redring','hand','>','lock','@attack']:ES.ph==='eyes'?['two','ring','ring','+','@jump']:['star'],
     goal:pi=>ES.ph==='knees'?'Встань у ноги великана — <b>Леший подымет корни</b>, нога замрёт: бей <b>заклёпку</b> на колене '+K(pi,'attack')+'. Кулак лежит — по руке можно взбежать.':
       ES.ph==='heart'?'Великан на колене! На <b>плечо</b> — по лежащей руке'+(E.free.gor?' или «Ко мне!» — Горыныч поднимет':'')+' — и <b>вдвоём</b> удар в замок на груди.':'',
     targets:pi=>ES.ph==='knees'?kneeR.filter((r,i)=>!ES.knee[i]):ES.ph==='heart'?[heart]:[]};
@@ -255,6 +284,23 @@
   {const _pc=W.pingCall;W.pingCall=(pi,h)=>{if(E.cur===10&&ES.fight&&ES.ph==='heart'&&E.free.gor&&h.pos.y<2){const f=h.pos.clone(),to=SHW.clone().add(new V3(rand(-0.6,0.6),0.1,rand(-0.3,0.6)));
       gorFly.g.visible=true;anim(1.2,k=>{h.pos.lerpVectors(f,to,CE.inOutSine(k));h.pos.y+=Math.sin(k*Math.PI)*4;h.vel.set(0,0,0);gorFly.g.position.copy(h.pos).add(new V3(0,1.6,0));});later(1.25,()=>{gorFly.g.visible=false;h.pos.copy(to);h.vel.set(0,0,0);});E.log('gorLift');return;}
     if(_pc)_pc(pi,h);};}
+  // подсказки без текста (стадия 10): значки над тем, что делать сейчас, и кнопки над целью
+  {const sgK=[0,1].map(()=>{const s=k5Prop(K5PIC.spr(['friend','ring'],1.4));s.visible=false;return s;}),sgW=[0,1].map(()=>{const s=k5Prop(K5PIC.spr(['hit'],1.1));s.visible=false;return s;}),
+     sgE=legRings.map(()=>{const s=k5Prop(K5PIC.spr(['kid','ring'],1.4));s.visible=false;return s;});
+   const wNear=h=>{let bi=-1,bd=3.5;wristL.forEach((L,i)=>{if(ES.wHp[i]<=0)return;const p=L.getWorldPosition(new V3()),d=hd(h.pos,p);if(d<bd&&Math.abs(h.pos.y-p.y)<2.6){bd=d;bi=i;}});return bi;};
+   // луч глаз идёт на героя: он у земли и до луча меньше полрадиана по ходу
+   const eyeNear=h=>{const dx=h.pos.x-GC.x,dz=h.pos.z-GC.z,d=Math.hypot(dx,dz);if(d<1||d>12||h.pos.y>0.7)return false;const ah=Math.atan2(dx,dz);
+     return [0,1].some(q=>{const a=ES.eyeA*(q?-1:1)+q*Math.PI;let df=(ah-a)*(q?-1:1);df=((df%(Math.PI*2))+Math.PI*2)%(Math.PI*2);return df<0.6;});};
+   W.updates.push(dt=>{const on=E.cur===10&&!!ES.fight&&!G.cine,b=Math.sin(G.time*4)*0.2;
+     sgK.forEach((s,i)=>{s.visible=on&&ES.ph==='knees'&&ES.root==null&&!ES.knee[i];if(s.visible)s.position.set(GC.x+(i?2.2:-2.2),3.4+b,GC.z+1);});
+     sgW.forEach((s,i)=>{s.visible=on&&ES.ph==='wrists'&&ES.arm==='down'&&ES.wHp[i]>0;if(s.visible){wristL[i].getWorldPosition(s.position);s.position.y+=1.7+b;}});
+     sgE.forEach((s,i)=>{s.visible=on&&ES.ph==='eyes';if(s.visible){s.position.copy(legRings[i].position).setY(2.6+b);const k=ES.r2[i]>0?'check':'kid';if(s._k!==k){s._k=k;s.material.map=K5PIC.tex(k==='check'?['check']:['kid','ring']);}}});});
+   for(const pi of[0,1]){const me=()=>G.solo?active(G.soloPi):active(pi),st10=()=>E.cur===10&&!!ES.fight&&!G.cine&&(!G.solo||pi===0),top=()=>headOf(me()).add(new V3(0,0.6,0));
+     prompt(pi,'attack',()=>kneeW(ES.root).add(new V3(0,1.4,0)),()=>st10()&&ES.ph==='knees'&&ES.root!=null&&hd(me().pos,kneeW(ES.root))<4);
+     prompt(pi,'call',top,()=>st10()&&ES.ph==='heart'&&E.free.gor&&me().pos.y<2,K5PIC.h(['dragon','up'],30));
+     prompt(pi,'attack',()=>heart.getWorldPosition(new V3()).add(new V3(0,1.4,0)),()=>st10()&&ES.ph==='heart'&&me().pos.y>SHW.y-1.5,G.solo?'':K5PIC.h(['two','sync'],30));
+     prompt(pi,'attack',()=>wristL[Math.max(0,wNear(me()))].getWorldPosition(new V3()).add(new V3(0,1.2,0)),()=>st10()&&ES.ph==='wrists'&&ES.arm==='down'&&wNear(me())>=0);
+     prompt(pi,'jump',top,()=>st10()&&ES.ph==='eyes'&&eyeNear(me()));}}
   /* ---------- ролики акта III ---------- */
   // после стадии 9: «над златом чахнет» — Кощей стягивает золото, из звеньев встаёт великан
   E.cine.gold=done=>{heroLine(-4.5);KS.g.visible=true;KS.g.position.set(GC.x,0,GC.z+2);KS.g.rotation.y=0;sword.visible=false;giant.visible=false;

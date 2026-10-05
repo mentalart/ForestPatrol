@@ -48,7 +48,7 @@
     addMesh(new THREE.CylinderGeometry(0.05,0.05,0.9,5),M(0x4a3020),0.9,0,0,belTop).rotation.z=Math.PI/2;K5L.noRay(bel);W.cyls.push({x:BELL4.x,z:BELL4.z,r:0.8,miny:-1,maxy:1,on:true});
     const heatBar=new THREE.Mesh(new THREE.BoxGeometry(0.22,1,0.22),MB(0xff8a2a));heatBar.position.set(HEARTH.x-1.4,2.0,HEARTH.z);A.g.add(heatBar);const heatGl=k5Glow(0xff8a2a,4);heatGl.position.set(HEARTH.x,1.6,HEARTH.z);A.g.add(heatGl);
     const belR=new THREE.Mesh(new THREE.RingGeometry(0.9,1.05,40),k5Add(0xff9a40,{opacity:0.9}));belR.rotation.x=-Math.PI/2;belR.position.set(BELL4.x,0.1,BELL4.z);A.g.add(belR);
-    const gor=makeGorynych();W.group.remove(gor.g);A.g.add(gor.g);gor.g.position.copy(GOR);gor.g.scale.setScalar(1.2);K5L.noRay(gor.g);W.cyls.push({x:GOR.x,z:GOR.z,r:3,miny:-1,maxy:4,on:true});
+    const gor=makeGorynych5(1);W.group.remove(gor.g);A.g.add(gor.g);gor.g.position.copy(GOR);gor.g.scale.setScalar(1.2);K5L.noRay(gor.g);W.cyls.push({x:GOR.x,z:GOR.z,r:3,miny:-1,maxy:4,on:true});
     const bridleB=K5L.collar(gor.g,4.2,0.9);
     const likho=makeLikho();W.group.remove(likho.g);A.g.add(likho.g);likho.g.position.copy(LIKHO);likho.g.rotation.y=Math.atan2(X-LIKHO.x,4-LIKHO.z);likho.g.scale.setScalar(1.2);K5L.noRay(likho.g);if(likho.lid)likho.lid.userData.lidHold=true;
     const gaze=new THREE.Mesh(new THREE.ConeGeometry(4.5,18,24,1,true),k5Add(0xb060ff,{opacity:0,map:K5TEX.beam}));gaze.geometry.rotateX(-Math.PI/2);gaze.geometry.translate(0,0,9);A.g.add(gaze);K5L.noRay(gaze);
@@ -153,6 +153,8 @@
             else floatText(h.pos.clone().add(new V3(0,2.2,0)),'Не смотрю!','#9fe0ff');}}
         if(S.eye>2.8){S.eye=0;S.gaze=false;S.eyeT=G.solo?11:8.5;if(likho.lid)likho.lid.rotation.x=0.6;gaze.material.opacity=0;K5X.tint('rgba(80,10,0,.8)',0.4);}}
       for(const [h,t] of S.sleep){const r=t-dt;h.vel.x*=0.2;h.vel.z*=0.2;if(r<=0)S.sleep.delete(h);else S.sleep.set(h,r);}};
+    A.pics=pi=>S.ph==='forge'?['fire','notes','+','hammer','@attack']:S.ph==='carry'&&!S.carry?['gchain','hand','@item']:S.ph==='carry'?['gchain','>','run','+','eye','no']:
+      S.ph==='crown'?['dragon','clock','>','two','@attack']:['star'];
     A.goal=pi=>{const q=G.solo?0:pi;if(S.ph==='forge')return (G.solo?'Меха качает Демьян. ':'<b>Меха</b> — удар '+K(q,'attack')+', когда кольцо у мехов сошлось: держат жар. ')+'Жарко — удар по <b>наковальне в такт</b> ('+(G.solo?3:4)+'). Головни Кощея — уйди из красного круга.';
       if(S.ph==='carry'&&!S.carry)return 'Узда готова: <b>клещи</b> '+K(q,'item')+' у конца узды'+(G.solo?'.':' — каждый за свой конец.');
       if(S.ph==='carry')return 'Несите узду по мосту. Огонь — другая дорожка, доска пропала — прыжок, глаз Лиха — <b>отвернитесь</b>.';

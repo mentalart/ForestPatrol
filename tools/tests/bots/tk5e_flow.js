@@ -13,6 +13,14 @@ window.WAITCUR=(n,max)=>{for(let i=0;i<(max||60*150);i++){if(E5.cur===n&&!ZC.G.c
   throw new Error('WAITCUR '+n+': cur='+E5.cur+' ui='+ZC.G.ui+' cine='+!!ZC.G.cine+' fight='+K5.fight+' es='+JSON.stringify({f:E5.es.fight,st:E5.es.step,ph:E5.es.ph})+' log='+(E5.logs||[]).slice(-6).join(',')+' errs='+_errs.slice(0,3).join(' / '));};
 window.TK=n=>{for(let i=0;i<n;i++){if(ZC.G.cine&&i%3===0)ZC.skip();ZC.tick(1);}};
 window.PUT=(h,x,z,y)=>{h.pos.set(x,(y||0)+0.05,z);h.vel.set(0,0,0);};
+window.HTR=r=>ZC.W.hittables.filter(t=>t.alive()&&t.r===r);window.FULL10=()=>{for(const pi of[0,1])ZC.players[pi].petals=3;};
+// стадия 10: на колене — на плечо, удар в замок на груди; оковы — замки на лежащей руке; глаза — оба круга у ног
+window.HEART=hs=>{const ES=E5.es;for(let i=0;i<60*8&&ES.ph!=='heart';i++){FULL10();TK(1);}for(let i=0;i<120;i++){FULL10();TK(1);}hs.forEach((h,j)=>PUT(h,1.7+j*0.2,-18.6-j*0.6,7.5));ZC.tick(2);const t=HTR(1.6)[0];if(t)hs.forEach(h=>t.onHit(h));TK(2);return 'пробой'+ES.breaks+' ph='+ES.ph;};
+window.WRISTS=hs=>{const ES=E5.es;for(let i=0;i<60*8&&ES.ph!=='wrists';i++){FULL10();TK(1);}for(let i=0;i<60*14&&ES.arm!=='down';i++){hs.forEach((h,j)=>PUT(h,3+j,-12));if(ES.arm==='rest'&&ES.at>0.3)ES.at=0.3;FULL10();TK(1);}
+  for(let k=0;k<20&&ES.ph==='wrists'&&ES.arm==='down';k++){const t=HTR(1.3)[0];if(!t)break;PUT(hs[0],t.pos.x,t.pos.z,t.pos.y-1);t.onHit(hs[0]);TK(2);}return 'оковы='+ES.wHp.join(',')+' ph='+ES.ph;};
+window.EYES=hs=>{const ES=E5.es;for(let i=0;i<60*8&&ES.ph!=='eyes';i++){FULL10();TK(1);}for(let i=0;i<60*8&&ES.ph==='eyes';i++){if(hs.length>1){PUT(hs[0],-2.2,-17.8);PUT(hs[1],2.2,-17.8);}else PUT(hs[0],i<90?-2.2:2.2,-17.8);FULL10();TK(1);}
+  return 'корни='+ES.r2.map(v=>v.toFixed(1)).join(',')+' ph='+ES.ph;};
+window.BREAK3=hs=>[HEART(hs),WRISTS(hs),HEART(hs),EYES(hs),HEART(hs)].join(' ');
 window.HT=(p,r)=>ZC.W.hittables.filter(t=>t.alive()&&Math.hypot(t.pos.x-p.x,t.pos.z-p.z)<(r||1.5));
 window.CHK=s=>{if(_errs.length)throw new Error(s+' — ошибки: '+_errs.slice(0,4).join(' / '));return s;};
 window.BREAK=()=>{const kb=K5.KB;kb.embers=0;kb.state='broken';kb.t=0;kb.pos.y=0;ZC.tick(3);kb.k5hit(kb,A(0));ZC.tick(2);kb.k5hit(kb,A(1));ZC.tick(10);};
@@ -67,8 +75,8 @@ BREAK();r.push(WAITCUR(9));CHK(r.join(' | '))
 const r=[];TK(60);const ES=E5.es;PUT(A(0),-8.6,-12.5);PUT(A(1),8.6,-12.5);ES.hornT=0.5;TK(80);r.push('charge='+E5.logs.includes('vitCharge'));BREAK();r.push(WAITCUR(10));CHK(r.join(' | '))
 //@@ shot=k5e_f10.png
 // стадия 10: корни Лешего держат ногу — заклёпки; великан на колене; на плечо — в замок на груди вдвоём
-const r=[];const ES=E5.es;r.push('start root='+ES.root+' A0='+A(0).pos.toArray().map(v=>v.toFixed(1))+' A1='+A(1).pos.toArray().map(v=>v.toFixed(1))+' k0='+A(0).kind+' k1='+A(1).kind);for(let k=0;k<2;k++){const x=k?2.2:-2.2;for(let i=0;i<200&&ES.root!==k&&!ES.knee[k];i++){PUT(A(0),x+0.6,-17.4);TK(1);}for(let i=0;i<8&&!ES.knee[k];i++){const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.3);if(t)t.onHit(A(0));ZC.tick(3);}}
-r.push('knees='+ES.knee.join(',')+' ph='+ES.ph);TK(120);PUT(A(0),1.7,-18.6,7.5);PUT(A(1),1.9,-19.2,7.5);ZC.tick(2);const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.6);if(t){t.onHit(A(0));t.onHit(A(1));}r.push('ph='+ES.ph);try{r.push(WAITCUR(11,60*60));}catch(e){throw new Error(r.join(' | ')+' :: '+e.message);}CHK(r.join(' | '))
+const r=[];const ES=E5.es;r.push('start root='+ES.root+' A0='+A(0).pos.toArray().map(v=>v.toFixed(1))+' A1='+A(1).pos.toArray().map(v=>v.toFixed(1))+' k0='+A(0).kind+' k1='+A(1).kind);for(let k=0;k<2;k++){const x=k?2.2:-2.2;for(let i=0;i<600&&ES.root!==k&&!ES.knee[k];i++){PUT(A(0),x+0.6,-17.4);TK(1);}for(let i=0;i<8&&!ES.knee[k];i++){const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.3);if(t)t.onHit(A(0));ZC.tick(3);}}
+r.push('knees='+ES.knee.join(',')+' ph='+ES.ph);r.push(BREAK3([A(0),A(1)]));try{r.push(WAITCUR(11,60*60));}catch(e){throw new Error(r.join(' | ')+' :: '+e.message);}CHK(r.join(' | '))
 //@@ shot=k5e_f11.png
 // стадия 11: «Ко мне!» обоих — трещина; удар с двух сторон — стена пала; четыре друга вспоминают себя — окна; нить
 const r=[];const ES=E5.es;ZC.W.pingCall(0,A(0));ZC.W.pingCall(1,A(1));TK(40);const cr=E5.stage[11].targets(0)[0];r.push('crack='+!!cr);
@@ -80,7 +88,7 @@ r.push('mem='+ES.mem.join(',')+' spes='+ES.spes);const t=ZC.W.hittables.find(t=>
 // стадия 12: застёжка выкована → «Тянем-потянем» в такт, рывок Кощея — щиты, последний рывок — Йоша → сцена «Цепь» → конец уровня
 const r=[];TK(60);K5.forge.n=K5.forge.need;ZC.W.dbg5e().stageWin(5);for(let i=0;i<300&&!E5.es.repkaAtk;i++)TK(1);r.push('repka='+!!E5.es.repkaAtk);
 const R0=E5.es.rp;for(let i=0;i<60*40&&R0&&!R0.done;i++){ZC.hold('KeyG',!!R0.surge);ZC.hold('Period',!!R0.surge);
-  if(R0.pullAt!=null&&Math.abs(R0.t-R0.pullAt)<0.05&&R0.lastPullBeat!==R0.beat&&!R0.last){E5.es.repkaAtk(A(0),0);E5.es.repkaAtk(A(1),1);}if(R0.last)E5.es.repkaAtk(H.yosha,1);ZC.tick(1);}
+  if(R0.near&&Math.abs(R0.t-R0.next(R0.t))<0.1&&R0.lastPullAt!==R0.next(R0.t)&&!R0.last){E5.es.repkaAtk(A(0),0);E5.es.repkaAtk(A(1),1);}if(R0.last)E5.es.repkaAtk(H.yosha,1);ZC.tick(1);}
 ZC.hold('KeyG',false);ZC.hold('Period',false);r.push('repka done='+!!(R0&&R0.done)+' k='+(R0&&R0.k));
 for(let i=0;i<60*200&&ZC.W.flags.stage!=='chain';i++){if(ZC.G.cine&&i%3===0)ZC.skip();if(ZC.G.ui==='skaz'&&i%20===0){ZC.press('Space');ZC.press('KeyM');}ZC.tick(1);}
 r.push('stage='+ZC.W.flags.stage+' ending='+(ZC.G.flags.ending||[]).join(','),'logs='+E5.logs.length);if(ZC.W.flags.stage!=='chain')throw new Error('нет сцены «Цепь»: '+r.join(' | '));CHK('k5epic flow ok '+r.join(' | '))

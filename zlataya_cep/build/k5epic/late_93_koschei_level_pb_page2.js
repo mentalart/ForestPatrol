@@ -95,6 +95,13 @@
         'void main(){float e=uF+sin(vW.x*0.9+uT*2.0)*0.35+sin(vW.x*0.37-uT)*0.5;if(vW.z>e)discard;float n=vn(vW.xz*0.45+vec2(uT*0.25,uT*0.4))*0.6+vn(vW.xz*1.3-vec2(uT*0.5,0.0))*0.4;'+
         'float k=smoothstep(e-1.6,e,vW.z);vec3 c=mix(vec3(0.06,0.02,0.11),vec3(0.32,0.12,0.5),n*0.6+k*0.8);c+=vec3(0.7,0.4,1.0)*pow(k,6.0)*0.8;gl_FragColor=vec4(c,0.86+0.1*n);}'}));
     ink.rotation.x=-Math.PI/2;ink.position.set(X,0.1,0);ink.renderOrder=6;ink.visible=false;ink.raycast=()=>{};A.g.add(ink);
+    // мелодия картинкой: над площадью ряд цветных колоколов (собирается, пока Кощей звонит; сыгранные гаснут, следующий пульсирует);
+    // над следующим золотым колоколом — столб его цвета и прыгающая стрелка (по отзыву: «какой колокол бить» — видно сразу)
+    for(let i=0;i<4;i++)K5PIC.SVG['bell'+i]=K5PIC.SVG.bell.replace('#ffd76a',hexS(BC[i]));
+    const melRow=new THREE.Group();A.g.add(melRow);melRow.position.set(X,6.2,-1.5);let melSp=[];
+    const nextCol=new THREE.Mesh(new THREE.CylinderGeometry(0.9,1.1,8,20,1,true),k5Add(0xffffff,{opacity:0,map:K5TEX.beam}));A.g.add(nextCol);nextCol.raycast=()=>{};
+    const nextAr=t4Arrow(0xffffff);A.g.add(nextAr);nextAr.visible=false;
+    function melSet(show){melSp.forEach(sp=>melRow.remove(sp));melSp=[];const n=S.seq.length;S.seq.forEach((b,j)=>{const sp=K5PIC.spr(['bell'+b],1.25);sp.position.set((j-(n-1)/2)*1.55,0,0);sp.visible=!!show;melRow.add(sp);melSp.push(sp);});}
     const S={};A.S=S;A.BP=BP;A.SHELL=SHELL;A.BLAG=BLAG;
     const lvl=()=>zone?Math.max(0,zone.level):0,high=()=>zone&&zone.level>LV*0.7;
     const swirlFx=p=>{if(FIN.k2fx)FIN.k2fx.mist(p,1,0.6);};
@@ -104,12 +111,12 @@
     // ---------- перекличка ----------
     function seqNew(){const c=S.chain,L=G.solo?[3,3,4][c]:[3,4,5][c];S.seq=[];for(let i=0;i<L;i++){let b;do{b=Math.floor(rand(0,4));}while(S.seq.length&&S.seq[S.seq.length-1]===b);S.seq.push(b);}
       S.notes=S.seq.map(b=>({b,fake:false}));if(c>=1){const k=1+Math.floor(rand(0,S.notes.length-1));let fb;do{fb=Math.floor(rand(0,4));}while(fb===S.notes[k-1].b||fb===S.notes[k].b);S.notes.splice(k,0,{b:fb,fake:true});}
-      S.pos=0;S.ph='show';S.t=0;S.si=0;S.ansT=G.solo?24:18;S.idle=0;S.hint=false;try{KA.pose('threat');later(0.8,()=>KA.reset());}catch(e){}}
+      S.pos=0;S.ph='show';S.t=0;S.si=0;S.ansT=G.solo?24:18;S.idle=0;S.hint=false;melSet(false);try{KA.pose('threat');later(0.8,()=>KA.reset());}catch(e){}}
     function strike(n){const B=black[n.b];B.sw=1.5;B.gl.material.color.set(n.fake?0x8a30d0:BC[n.b]);B.gl.material.opacity=1;later(0.55,()=>{B.gl.material.opacity=0;});
       try{KA.pose('cast',{snap:true});later(0.3,()=>KA.reset());}catch(e){}
       if(n.fake){bellSound(n.b,0.07,0.93);if(AUD.ready())AUD.thump({f0:90,f1:40,d:0.4,v:0.16});K5L.ink(B.g.position.clone(),12);floatText(B.g.position.clone().add(new V3(0,0.6,0)),'✕','#b070ff');}
       else{bellSound(n.b,0.08);const real=S.notes.slice(0,S.notes.indexOf(n)+1).filter(q=>!q.fake).length;floatText(B.g.position.clone().add(new V3(0,0.6,0)),String(real),hexS(BC[n.b]));
-        const Gb=gold[n.b];Gb.lit=1;k5Pillar(Gb.p.clone(),BC[n.b],7,0.9,1.0);}
+        const Gb=gold[n.b];Gb.lit=1;k5Pillar(Gb.p.clone(),BC[n.b],7,0.9,1.0);const sp=melSp[real-1];if(sp){sp.visible=true;const s0=sp.scale.x;anim(0.4,k=>{sp.scale.set(s0*(1+0.6*Math.sin(k*Math.PI)),s0*(1+0.6*Math.sin(k*Math.PI)),1);});}}
       K5X.shock(TOW,16,7.5,n.fake?0x6a2aa0:BC[n.b],{y:lvl(),h:0.8,fx:n.fake?null:swirlFx});}
     function ring(i){const B=gold[i];if(B.up<0.7)return;B.sw=1.6;bellSound(i,0.1);FX.sparkle(B.g.position.clone().add(new V3(0,0.4,0)),12,BC[i]);k5Ring(B.g.position.clone().setY(lvl()+0.08),BC[i],0.4,2.6,0.5,0.12);
       if(FIN.k2fx)FIN.k2fx.rip(B.g.position.x,B.g.position.z,0.7);if(S.ph!=='answer')return;
@@ -136,7 +143,7 @@
       K5L.ink(KZ.clone().add(new V3(0,2.4,0)),8);try{KA.pose('cast',{snap:true});later(0.4,()=>KA.reset());}catch(e){}S.drops.push({B,to,t:0,col:null});}
     function kHit(txt){if(G.time<S.kCd||!ES.fight)return;S.kCd=G.time+1.4;E.log('kHit');try{KA.pose('recoil',{snap:true});later(0.5,()=>KA.reset());}catch(e){}
       burst(KS.g.position.clone().add(new V3(0,2,0)),0xffffff,10,3);FX.sparks(KS.g.position.clone().add(new V3(0,2,0)),10,0x9fe8ff);if(FIN.k2fx)FIN.k2fx.crown(KS.g.position.clone().add(new V3(0,1.6,0)),0.7);
-      let what='Сбился!';if(S.ph==='show'){const done=S.notes.slice(0,S.si).filter(n=>!n.fake).map(n=>n.b);if(done.length>=2){S.seq=done;S.notes=S.notes.slice(0,S.si);S.si=S.notes.length;S.t=0.95*S.si+1.5;what='Сбился! Перекличка короче';}else{S.t=-0.6;S.si=0;}}
+      let what='Сбился!';if(S.ph==='show'){const done=S.notes.slice(0,S.si).filter(n=>!n.fake).map(n=>n.b);if(done.length>=2){S.seq=done;S.notes=S.notes.slice(0,S.si);S.si=S.notes.length;S.t=0.95*S.si+1.5;melSet(true);what='Сбился! Перекличка короче';}else{S.t=-0.6;S.si=0;}}
       else if(S.ph==='answer'){S.ansT+=5;S.waveT+=3;S.pikeT+=3;S.dropT+=3;what='Сбился! +5 с';}else if(S.ph==='final'){S.front=Math.max(-14,S.front-4);what='Чёрная вода отступила!';}
       floatText(KS.g.position.clone().add(new V3(0,3.4,0)),(txt?txt+' ':'')+what,'#ffe08a');barkS(KS,'koschei',['Ай! Мокро!','Тьфу ты, рыба!','Сбили, окаянные!'][Math.floor(rand(0,3))],1.2,true);}
     // ---------- финал ----------
@@ -192,6 +199,9 @@
       // золотые: на дне лежат на боку, в прилив всплывают и плавают кругами у пьедестала
       for(const B of gold){B.up+=((high()?1:0)-B.up)*Math.min(1,dt*2.2);const a=G.time*0.45+B.ph,r=B.up*0.9;B.g.position.set(B.p.x+Math.cos(a)*r,lerp(0.55,y+1.5,B.up)+Math.sin(G.time*1.7+B.ph)*0.08*B.up,B.p.z+Math.sin(a)*r);
         B.g.rotation.z=lerp(1.35,0,B.up)+(B.sw?0:Math.sin(G.time*1.3+B.ph)*0.06*B.up);B.lit=Math.max(0,B.lit-dt*0.9);B.gl.material.opacity=0.2+0.8*B.lit+(S.hint&&S.seq[S.pos]===B.i?0.4+0.4*Math.sin(G.time*8):0);}
+      melRow.visible=ES.fight&&(S.ph==='show'||S.ph==='answer');melSp.forEach((sp,j)=>{const cur=S.ph==='answer'&&j===S.pos,done=S.ph==='answer'&&j<S.pos;const k=cur?1.25*(1.25+0.2*Math.sin(G.time*8)):done?0.85:1.25;sp.scale.set(k,k,1);sp.material.opacity=done?0.35:1;sp.position.y=cur?0.35+0.15*Math.sin(G.time*8):0;});
+      {const B=S.ph==='answer'&&high()?gold[S.seq[S.pos]]:null;nextAr.visible=!!B;if(B){nextCol.position.set(B.g.position.x,lvl()+4,B.g.position.z);nextCol.material.color.set(BC[B.i]);nextCol.material.opacity=0.28+0.12*Math.sin(G.time*6);
+          nextAr.position.set(B.g.position.x,B.g.position.y+1.6+0.35*Math.abs(Math.sin(G.time*5)),B.g.position.z);nextAr.userData.mat.color.set(BC[B.i]);}else nextCol.material.opacity=0;}
       if(!ES.fight)return;
       if(S.ph!=='won'&&S.ph!=='free')KS.g.rotation.y=Math.sin(G.time*0.7)*0.35;
       // вода: прилив держится, потом сходит (одному — Садко играет сам, пока ответ)
@@ -234,6 +244,8 @@
     gold.forEach(B=>{W.hittables.push({pos:B.g.position,r:1.0,alive:()=>E.cur===5&&ES.fight&&B.up>0.7,onHit:()=>ring(B.i)});W.marks.push({pos:B.g.position,active:()=>E.cur===5&&ES.fight&&B.up>0.7,onHit:()=>ring(B.i)});});
     W.hittables.push({pos:BLAG.clone().setY(3),r:1.9,alive:()=>E.cur===5&&ES.fight&&S.ph==='final',onHit:h=>blagHit(h)});
     {const kp=new V3();W.updates.push(()=>{if(E.cur===5)kp.copy(KS.g.position).add(new V3(0,1.8,0));});W.marks.push({pos:kp,active:()=>E.cur===5&&ES.fight&&(S.ph==='show'||S.ph==='answer'||S.ph==='final')&&G.time>S.slCd,onHit:()=>{S.slCd=G.time+4;kHit('Рогатка!');}});}
+    A.pics=pi=>S.ph==='won'?['star']:S.ph==='final'||S.ph==='free'?['two','bell','>','@attack']:S.ph==='show'?['bellK','notes','+','wave','@jump']:
+      S.ph==='answer'?(high()?['bell','notes','>','@attack']:['gusli','@item','>','water']):['chain','no'];
     A.goal=pi=>{const q=G.solo?0:pi;if(S.ph==='won')return 'Вал Водяного!';
       if(S.ph==='final'||S.ph==='free')return 'Водяной свободен! <b>Благовест</b> посреди площади — удар '+K(q,'attack')+(G.solo?'':' <b>вдвоём разом</b>')+', трижды. Чёрная вода ползёт с севера — не стой в ней.';
       if(S.ph==='show')return 'Слушайте Кощеевы колокола — <b>какой за каким</b>. Откликается золото на дне; <b>чернильный удар (✕) — фальшивый</b>. Волна — прыжок.';
@@ -248,7 +260,7 @@
       prompt(pi,'item',()=>SHELL.clone().add(new V3(0,1.8,0)),()=>st5()&&!G.solo&&S.ph==='answer'&&(!high()||S.tide<2.5)&&nearShell(),'гусли — прилив!');
       prompt(pi,'jump',top,()=>st5()&&K5X.owned.some(o=>o.r!=null&&o.hit&&!o.dead&&o.g&&Math.abs(Math.hypot(me().pos.x-o.g.position.x,me().pos.z-o.g.position.z)-o.r)<2.4),'волна — прыжок!');
       prompt(pi,'attack',top,()=>st5()&&S.pikes&&S.pikes.some(p=>p.tgt===me()&&!p.bat&&!p.land&&p.t/p.dur>0.45),'щука — бей!');
-      prompt(pi,'attack',()=>{const B=gold[S.seq[S.pos]];return B?B.g.position.clone().add(new V3(0,1.8,0)):me().pos;},()=>st5()&&S.ph==='answer'&&S.hint&&high()&&!!gold[S.seq[S.pos]]&&k5Heroes().slice().sort((a,b)=>hd(a.pos,gold[S.seq[S.pos]].g.position)-hd(b.pos,gold[S.seq[S.pos]].g.position))[0]===me(),'этот!');
+      prompt(pi,'attack',()=>{const B=gold[S.seq[S.pos]];return B?B.g.position.clone().add(new V3(0,1.8,0)):me().pos;},()=>st5()&&S.ph==='answer'&&high()&&!!gold[S.seq[S.pos]]&&k5Heroes().slice().sort((a,b)=>hd(a.pos,gold[S.seq[S.pos]].g.position)-hd(b.pos,gold[S.seq[S.pos]].g.position))[0]===me(),'этот!');
       prompt(pi,'attack',()=>BLAG.clone().add(new V3(pi?1.4:-1.4,7.2,0)),()=>st5()&&S.ph==='final'&&blagG.position.y>-0.5,G.solo?'в Благовест!':'разом — в Благовест!');
       prompt(pi,'label',top,()=>st5()&&S.ph==='final'&&me().pos.z<S.front,'прочь из чёрной воды!');}
   }

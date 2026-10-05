@@ -151,6 +151,7 @@
       const both=G.solo?true:Math.abs(S.turn[0]-S.turn[1])<1.0;if(both){S.st='turn';S.t=0;circles.forEach(c=>{c.visible=false;});(S.wolves||[]).forEach(w=>{K5L.ink(w.m.g.position.clone().add(new V3(0,0.6,0)),10);k5Del(w.m.g);});S.wolves=[];
         const r0=hut.g.rotation.y,p0=hutP().clone();anim(1.3,k=>{hut.g.rotation.y=r0+Math.PI*CE.inOutCubic(k);hut.g.position.lerpVectors(p0,HC,CE.inOutCubic(k));});k5s('reveal');E.log('turn');}
       else floatText(h.pos.clone().add(new V3(0,2,0)),'Разом! Второй — тоже!','#ffe08a');};
+    A.pics=pi=>S.done?['star']:S.phase===3?['stairs','up','>','koschei','@attack']:S.st==='sit'?['two','ring','>','@attack']:S.st==='stuck'?['hut','oak','>','yarn','@item']:['hut','>','kid','>','oak'];
     A.goal=pi=>{const q=G.solo?0:pi;if(S.done)return 'Яга на свободе!';if(S.phase===3)return '<b>Кощей на крыше!</b> По ступеням крыльца — на галерею, бей '+K(q,'attack')+'. Капля сверху — щит в последний миг: обратно в него.';
       if(S.st==='sit')return 'Избушка села! Двое — на <b>золотые круги</b> с двух сторон, удар '+K(q,'attack')+' разом: «Повернись!» Волки — бей их.';
       return '<b>Заманите избушку в старый дуб</b>: встань у дуба — разбежится, уйди вбок в последний миг. Застряла — <b>клубок</b> '+K(q,'item')+' у ноги'+(G.solo?' — дважды':' — нить от каждого')+'.';};

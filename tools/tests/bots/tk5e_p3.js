@@ -50,9 +50,9 @@ for(let k=0;k<5&&S.ph==='night';k++){S.whT=99;LIGHTS();r.push('ph='+LOCKS());}if
 //@@ shot=k5e_p3_wind.png
 ZC.tick(1);
 //@@
-// ветер сносит открытого, за камнем — нет; кольцо на клюве разом дважды — пройдена
-const r=[];const So=A3.SOL,St=A3.STONES[3];const ds=Math.hypot(St.x-So.x,St.z-So.z),ux=(St.x-So.x)/ds,uz=(St.z-So.z)/ds;PUT(H(0),St.x+ux*1.8,St.z+uz*1.8);PUT(H(1),So.x-3,So.z+6);
-const a0=H(0).pos.clone(),b0=H(1).pos.clone();S.gustT=99;S.boltT=99;for(let i=0;i<60;i++)ZC.tick(1);r.push('за камнем сдвиг='+Math.hypot(H(0).pos.x-a0.x,H(0).pos.z-a0.z).toFixed(1)+' открытый='+Math.hypot(H(1).pos.x-b0.x,H(1).pos.z-b0.z).toFixed(1));
+// ветер дует порывами (затишье — беги), сносит открытого, за камнем — нет, с облака не сдувает; кольцо на клюве разом дважды — пройдена
+const r=[];const So=A3.SOL,St=A3.STONES[3];const ds=Math.hypot(St.x-So.x,St.z-So.z),ux=(St.x-So.x)/ds,uz=(St.z-So.z)/ds;PUT(H(0),St.x+ux*1.8,St.z+uz*1.8);PUT(H(1),So.x-3.5,So.z-0.6);
+const a0=H(0).pos.clone(),b0=H(1).pos.clone();S.gustT=99;S.boltT=99;S.wc=0.05;S.blowN=1;for(let i=0;i<60;i++)ZC.tick(1);let sp='';const c0=S.wc;S.wc=3.0;for(let i=0;i<40;i++){if(!sp&&!S.blowing)sp='затишье';ZC.tick(1);}r.push('за камнем сдвиг='+Math.hypot(H(0).pos.x-a0.x,H(0).pos.z-a0.z).toFixed(1)+' открытый='+Math.hypot(H(1).pos.x-b0.x,H(1).pos.z-b0.z).toFixed(1));
 const put=()=>{PUT(H(0),So.x-0.9,So.z+1.8,0,Math.PI);PUT(H(1),So.x+0.9,So.z+1.8,0,Math.PI);};
 for(let k=0;k<4&&S.ph==='wind';k++){put();ZC.tick(1);ZC.press(KEY(0,'a'));ZC.press(KEY(1,'a'));TK(80);r.push('кольцо='+S.ring);}TK(60*5);r.push('пройдена='+!!E5.done[6]);if(!E5.done[6])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
