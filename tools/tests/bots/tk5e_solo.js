@@ -37,11 +37,12 @@ for(const ph of['night','wind']){for(let k=0;k<5&&S.ph!==ph&&S.ph!=='free';k++){
 const So=A3.SOL;for(let k=0;k<4&&S.ph==='wind';k++){PUT(ME(),So.x,So.z+1.8);A3.bot.ring(ME());TK(90);}r.push('кольцо='+S.ring);
 TK(480);r.push('won='+!!E5.done[6]);if(!E5.done[6])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
-// страница 4: ковка в такт, второй конец узды — Демьян, у Горыныча — один удар
-const r=[GO(7),SILL(4)];const X=900,S=E5.ar[4].S;PUT(ME(),X+4,12.6);for(let i=0;i<900&&S.ph==='forge';i++){const per=0.8,ph=(S.bt%(per*3))/(per*3);if((ph>0.88||ph<0.04)&&ZC.G.time>(window._ft||0)){window._ft=ZC.G.time+0.5;ZC.W.onAttack(0,ME());}TK(1);}
-const br=E5.ar[4].targets(0)[0];PUT(ME(),br.position.x-1.1,br.position.z);const f=ZC.W.itemSign(0);if(f)f(0);ZC.tick(2);r.push('carry='+!!S.carry);
-for(let z=ME().pos.z;z>-16.4;){const wait=S.eye>0.2||(S.fire&&S.fire.t<1.6&&Math.abs(ME().pos.x-(X+[-2,0,2][S.fire.li]))<1.2);ME().face=S.eye>0.2?0:Math.PI;const x=S.fire?[X+1,X+2,X-1][S.fire.li]:X-1;PUT(ME(),x,z);ZC.tick(1);if(!wait)z-=0.25;if(!S.carry)break;}
-ZC.W.onAttack(0,ME());TK(300);r.push('ph='+S.ph+' won='+!!E5.done[7]);if(!E5.done[7])throw new Error(r.join(' | '));CHK(r.join(' | '))
+// страница 4: ковка (Демьян качает меха), второй конец узды — Демьян, у Горыныча — один удар, когда голова опустилась
+const r=[GO(7),SILL(4)];const X=900,A4=E5.ar[4],S=A4.S;A4.bot.forge();
+const br=A4.bot.bridle().clone();PUT(ME(),br.x-1.1,br.z);const f=ZC.W.itemSign(0);if(f)f(0);ZC.tick(2);r.push('carry='+!!S.carry);
+for(let z=ME().pos.z;z>-15.0;){S.blobT=99;const wait=S.eye>0.2||(S.fire&&S.fire.t<1.6&&Math.abs(ME().pos.x-(X+[-2,0,2][S.fire.li]))<1.2);ME().face=S.eye>0.2?0:Math.PI;const x=S.fire?[X+1,X+2,X-1][S.fire.li]:X-1;PUT(ME(),x,z);ZC.tick(1);if(!wait)z-=0.25;if(!S.carry)break;}
+for(let i=0;i<60*20&&S.ph==='crown';i++){S.biteT=99;PUT(ME(),X,-12.3);ME().face=S.eye>0.2?0:Math.PI;if(S.hd==='low'&&S.eye<0.2&&i%15===0)ZC.W.onAttack(0,ME());TK(1);}TK(300);
+r.push('ph='+S.ph+' won='+!!E5.done[7]);if(!E5.done[7])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
 // стадия 10: корни, заклёпки, плечо — один удар в замок на груди
 const r=[GO(10)];const ES=E5.es;for(let k=0;k<2;k++){const x=k?2.2:-2.2;for(let i=0;i<500&&ES.root!==k&&!ES.knee[k];i++){PUT(ME(),x+0.6,-17.4);TK(1);}for(let i=0;i<8&&!ES.knee[k];i++){const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.3);if(t)t.onHit(ME());ZC.tick(3);}}

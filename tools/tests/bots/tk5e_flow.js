@@ -52,11 +52,12 @@ for(const ph of['night','wind']){for(let k=0;k<5&&S.ph!==ph&&S.ph!=='free';k++){
 const So=A3.SOL;for(let k=0;k<4&&S.ph==='wind';k++){PUT(A(0),So.x-0.9,So.z+1.8);PUT(A(1),So.x+0.9,So.z+1.8);A3.bot.ring(A(0));A3.bot.ring(A(1));TK(80);}r.push('кольцо='+S.ring);
 r.push(WAITCUR(7));r.push('zhar='+!!E5.free.zhar+' solo='+!!E5.free.solo);CHK(r.join(' | '))
 //@@ shot=k5e_f7.png
-// страница 4: три удара в такт у наковальни; клещи вдвоём; к голове Горыныча — разом
-const r=[SILL(4)];const X=900,S=E5.ar[4].S;PUT(A(0),X+4,12.6);for(let i=0;i<900&&S.ph==='forge';i++){const per=0.8,ph=(S.bt%(per*3))/(per*3);if((ph>0.88||ph<0.04)&&ZC.G.time>(window._ft||0)){window._ft=ZC.G.time+0.5;ZC.W.onAttack(0,A(0));}TK(1);}r.push('ph='+S.ph+' good='+S.good);
-const br=E5.ar[4].targets(0)[0];const bp=br.position.clone();PUT(A(0),bp.x-1.1,bp.z);PUT(A(1),bp.x+1.1,bp.z);for(const pi of[0,1]){const f=ZC.W.itemSign(pi);if(f)f(pi);ZC.tick(2);}r.push('carry='+!!S.carry);
-const XS=[[0.2,2.2],[-2.1,2.1],[-2.2,-0.2]];let xs=[-1.1,1.1];for(let z=bp.z;z>-16.4;){if(S.fire)xs=XS[S.fire.li];const wait=S.eye>0.2||(S.fire&&S.fire.t<1.6);A(0).face=wait&&S.eye>0.2?0:Math.PI;A(1).face=A(0).face;PUT(A(0),X+xs[0],z);PUT(A(1),X+xs[1],z);ZC.tick(1);if(!wait)z-=0.25;if(!S.carry)break;}r.push('carry@'+A(0).pos.z.toFixed(1)+'='+!!S.carry);
-ZC.W.onAttack(0,A(0));ZC.W.onAttack(1,A(1));TK(30);r.push('ph='+S.ph);try{r.push(WAITCUR(8,60*240));}catch(e){throw new Error(r.join(' | ')+' :: '+e.message);}r.push('gor='+!!E5.free.gor+' names.yosha='+!!(ZC.G.flags.names||{}).yosha);CHK(r.join(' | '))
+// страница 4: ковка (A4.bot.forge — меха и молот проверяет tk5e_p4); клещи вдвоём; по мосту (огонь — другая дорожка, Лихо — отвернуться); у Горыныча — разом, когда голова опустилась
+const r=[SILL(4)];const X=900,A4=E5.ar[4],S=A4.S;A4.bot.forge();r.push('ph='+S.ph);
+const bp=A4.bot.bridle().clone();PUT(A(0),bp.x-1.1,bp.z);PUT(A(1),bp.x+1.1,bp.z);for(const pi of[0,1]){const f=ZC.W.itemSign(pi);if(f)f(pi);ZC.tick(2);}r.push('carry='+!!S.carry);
+const XS=[[0.2,2.2],[-2.1,2.1],[-2.2,-0.2]];let xs=[-1.1,1.1];for(let z=bp.z;z>-15.0;){S.blobT=99;if(S.fire)xs=XS[S.fire.li];const wait=S.eye>0.2||(S.fire&&S.fire.t<1.6);A(0).face=wait&&S.eye>0.2?0:Math.PI;A(1).face=A(0).face;PUT(A(0),X+xs[0],z);PUT(A(1),X+xs[1],z);ZC.tick(1);if(!wait)z-=0.25;if(!S.carry)break;}r.push('carry@'+A(0).pos.z.toFixed(1)+'='+!!S.carry+' ph='+S.ph);
+for(let i=0;i<60*20&&S.ph==='crown';i++){S.biteT=99;PUT(A(0),X-1.1,-12.3);PUT(A(1),X+1.1,-12.3);A(0).face=A(1).face=S.eye>0.2?0:Math.PI;if(S.hd==='low'&&S.eye<0.2&&i%15===0){ZC.W.onAttack(0,A(0));ZC.W.onAttack(1,A(1));}TK(1);}
+r.push('ph='+S.ph);try{r.push(WAITCUR(8,60*240));}catch(e){throw new Error(r.join(' | ')+' :: '+e.message);}r.push('gor='+!!E5.free.gor+' names.yosha='+!!(ZC.G.flags.names||{}).yosha);CHK(r.join(' | '))
 //@@ shot=k5e_f8.png
 // стадия 8: буря — Кощей уносит героя, шар через схваченного; спесь сбита → меч → стадия 9
 const r=[];TK(60);const ES=E5.es;ES.grabT=0;for(let i=0;i<400&&!ES.grab;i++){TK(1);}r.push('grab='+!!ES.grab);if(ES.grab){const g=ES.grab.h;for(let i=0;i<700&&ES.grab;i++){for(const o of K5.orbs){if(o.left===null&&o.eta<0.25)ZC.W.onGuardTap(o.tgt.player,o.tgt);}TK(1);}r.push('released caught='+E5.logs.includes('caught'));}
