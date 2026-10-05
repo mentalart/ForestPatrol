@@ -4,7 +4,7 @@
 //  • K5X.motes(kind, c, r, n) — частицы окружения стадии (светлячки, чернильные хлопья, искры, золото, пузырьки, снег, лепестки);
 //  • K5X.fog(c, r, col, n) — слои тумана из мягких клубов, плывут у земли;
 //  • K5X.rays(c, col, n) — лучи солнца сквозь тучи;
-//  • K5X.shock(p, r, sp, col, o) — ударная волна по земле: кольцо бежит, кого настигло на земле — удар (прыжок/кувырок спасают);
+//  • K5X.shock(p, r, sp, col, o) — ударная волна по земле: кольцо бежит, кого настигло на земле — удар (прыжок/кувырок спасают); o.y — высота (по воде), o.fx(p) — свои брызги вместо чернил;
 //  • K5X.bolt(src, h, o) — снаряд с отбивом в последний миг (механика движка W.bolts), свой цвет и своя реакция на отбив;
 //  • K5X.puddle(p, r, life, o) — чернильная лужа: держится и бьёт стоящего (остаточная опасность);
 //  • K5X.screen(col, a, dur) — вспышка на весь экран; K5X.tint(col, a) — тон по краям экрана стадии;
@@ -56,14 +56,14 @@ K5X.rays=(c,col,n,o)=>{o=o||{};const g=new THREE.Group();k5xAdd(g);const R=[];
 /* ---------- ударная волна по земле ---------- */
 // p — центр, r — до какого радиуса бежит, sp — м/с; кого фронт настиг на земле (не в прыжке и не в кувырке) — удар.
 // o: {w ширина фронта, col, h высота гребня, onHit(h), skip(h) — кого не трогать, safe(h) — укрыт (ёлка Лешего, щит)}
-K5X.shock=(p,r,sp,col,o)=>{o=o||{};col=col||0xb070ff;const w=o.w||0.7;const g=new THREE.Group();g.position.set(p.x,0.08,p.z);k5xAdd(g);
+K5X.shock=(p,r,sp,col,o)=>{o=o||{};col=col||0xb070ff;const w=o.w||0.7,y0=o.y||0;const g=new THREE.Group();g.position.set(p.x,y0+0.08,p.z);k5xAdd(g);
   const ring=new THREE.Mesh(new THREE.RingGeometry(0.86,1,64),k5Add(col,{opacity:0.9}));ring.rotation.x=-Math.PI/2;g.add(ring);
   const wall=new THREE.Mesh(new THREE.CylinderGeometry(1,1,o.h||0.9,64,1,true),k5Add(col,{opacity:0.45,map:K5TEX.beam}));wall.position.y=(o.h||0.9)/2;g.add(wall);
   const S={g,r:0.3,hit:new Set(),dead:false,off(){S.dead=true;k5Del(g);}};
   K5X.ticks.push(dt=>{if(S.dead)return false;S.r+=sp*dt;const k=S.r/r;ring.scale.setScalar(S.r);wall.scale.set(S.r,1,S.r);ring.material.opacity=0.9*(1-k*0.5);wall.material.opacity=0.45*(1-k);
-    if(Math.random()<0.6&&FIN.k2fx){const a=rand(0,6.28);K5L.ink(new V3(p.x+Math.cos(a)*S.r,0.3,p.z+Math.sin(a)*S.r),1,0.6);}
+    if(Math.random()<0.6&&FIN.k2fx){const a=rand(0,6.28),q=new V3(p.x+Math.cos(a)*S.r,y0+0.3,p.z+Math.sin(a)*S.r);if(o.fx)o.fx(q);else K5L.ink(q,1,0.6);}
     for(const h of k5Heroes()){if(S.hit.has(h)||(o.skip&&o.skip(h)))continue;const d=Math.hypot(h.pos.x-p.x,h.pos.z-p.z);if(Math.abs(d-S.r)>w)continue;
-      if(h.pos.y>0.45||h.rollT>0||(o.safe&&o.safe(h))){S.hit.add(h);continue;}S.hit.add(h);if(o.onHit)o.onHit(h);else k5Hurt(h,p);}
+      if(h.pos.y>y0+0.45||h.rollT>0||(o.safe&&o.safe(h))){S.hit.add(h);continue;}S.hit.add(h);if(o.onHit)o.onHit(h);else k5Hurt(h,p);}
     if(S.r>=r){S.off();return false;}});
   if(AUD.ready())AUD.thump({f0:110,f1:40,d:0.5,v:0.22});shakeAll(0.05,0.25);return K5X.own(S);};
 /* ---------- снаряд с отбивом (механика движка: щит в последний миг — летит назад) ---------- */

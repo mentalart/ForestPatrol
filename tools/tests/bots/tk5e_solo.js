@@ -25,9 +25,10 @@ r.push('spes='+ES.spes);const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.4);if(
 const r=[GO(4),SILL(1)];const A1=E5.ar[1],S=A1.S;A1.bot.stuck();ZC.tick(2);for(let li=0;li<2;li++)for(let k=0;k<2;k++){const lp=A1.legW(li),ot=A1.legW(1-li),dx=lp.x-ot.x,dz=lp.z-ot.z,dl=Math.hypot(dx,dz)||1;PUT(ME(),lp.x+dx/dl*0.9,lp.z+dz/dl*0.9);const f=ZC.W.itemSign(0);if(f)f(0);ZC.tick(2);}
 r.push('tied='+S.tied.join(','));TK(20);const cs=A1.targets(0);if(cs[0]){PUT(ME(),cs[0].position.x,cs[0].position.z);ZC.W.onAttack(0,ME());}TK(200);for(let k=0;k<8&&!S.done;k++){A1.bot.roofHit(ME());TK(30);}TK(120);r.push('done='+S.done+' won='+!!E5.done[4]);if(!E5.done[4])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
-// страница 2: Садко держит воду сам; колокола по порядку
-const r=[GO(5),SILL(2)];const S=E5.ar[2].S,X=500,BP=[[-7,-5],[7,-5],[-7,4],[7,4]];
-for(let round=0;round<4&&S.chain<3;round++){for(let i=0;i<700&&S.ph!=='answer';i++)TK(1);TK(60);for(const b of S.seq.slice()){const p=new THREE.Vector3(X+BP[b][0],0,BP[b][1]);PUT(ME(),p.x,p.z+1.2);const t=ZC.W.hittables.find(t=>t.alive()&&Math.hypot(t.pos.x-p.x,t.pos.z-p.z)<0.5);if(t)t.onHit(ME());ZC.tick(4);}r.push('chain='+S.chain);}
+// страница 2: Садко держит воду сам; три переклички; Благовест одним ударом
+const r=[GO(5),SILL(2)];const A2=E5.ar[2],S=A2.S;
+for(let round=0;round<6&&S.chain<3;round++){for(let i=0;i<60*30&&S.ph!=='answer';i++)TK(1);TK(60);A2.bot.answer();r.push('chain='+S.chain);}
+for(let i=0;i<60*10&&S.ph!=='final';i++)TK(1);TK(100);for(let k=0;k<3&&S.ph==='final';k++){A2.bot.blag(ME());TK(100);}r.push('благовест='+S.fin);
 TK(240);r.push('won='+!!E5.done[5]);if(!E5.done[5])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
 // страница 3: один свет — один замок открывает клетку (птицы помогают)

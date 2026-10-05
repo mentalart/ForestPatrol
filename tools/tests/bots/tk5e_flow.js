@@ -40,10 +40,10 @@ r.push('tied='+S.tied.join(',')+' st='+S.st);if(S.st!=='sit')throw new Error('и
 TK(20);const cs=A1.targets(0);PUT(A(0),cs[0].position.x,cs[0].position.z);PUT(A(1),cs[1].position.x,cs[1].position.z);ZC.W.onAttack(0,A(0));ZC.W.onAttack(1,A(1));TK(200);r.push('phase='+S.phase);for(let k=0;k<8&&!S.done;k++){A1.bot.roofHit(A(k%2));TK(30);}r.push('st='+S.st+' done='+S.done);
 r.push(WAITCUR(5));r.push('yaga free='+!!E5.free.yaga);CHK(r.join(' | '))
 //@@ shot=k5e_f5.png
-// страница 2: гусли у раковины — прилив; золотые колокола в порядке Кощея; три цепи → Водяной свободен
-const r=[SILL(2)];const S=E5.ar[2].S;const X=500,SH=new THREE.Vector3(X,0,8.5);
-for(let round=0;round<4&&S.chain<3;round++){for(let i=0;i<600&&S.ph!=='answer';i++)TK(1);PUT(A(0),SH.x,SH.z);const f=ZC.W.itemSign(0);if(f)f(0);TK(80);
-  const BP=[[-7,-5],[7,-5],[-7,4],[7,4]];for(const b of S.seq.slice()){const p=new THREE.Vector3(X+BP[b][0],0,BP[b][1]);PUT(A(1),p.x,p.z+1.2);const t=ZC.W.hittables.find(t=>t.alive()&&Math.hypot(t.pos.x-p.x,t.pos.z-p.z)<0.5);if(t)t.onHit(A(1));ZC.tick(4);}r.push('chain='+S.chain);}
+// страница 2: перекличка — три цепи (ответ через A2.bot.answer: прилив и колокола по порядку; удары проверяет tk5e_p2); Благовест разом трижды
+const r=[SILL(2)];const A2=E5.ar[2],S=A2.S;
+for(let round=0;round<6&&S.chain<3;round++){for(let i=0;i<60*30&&S.ph!=='answer';i++)TK(1);A2.bot.answer();r.push('chain='+S.chain);}
+for(let i=0;i<60*10&&S.ph!=='final';i++)TK(1);TK(100);for(let k=0;k<3&&S.ph==='final';k++){A2.bot.blag(A(0));A2.bot.blag(A(1));TK(75);}r.push('благовест='+S.fin);
 r.push(WAITCUR(6));r.push('vod free='+!!E5.free.vod);CHK(r.join(' | '))
 //@@ shot=k5e_f6.png
 // страница 3: свет печали и свет радости; замки клетки — разом
