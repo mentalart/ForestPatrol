@@ -9,6 +9,8 @@
 //  • K5X.puddle(p, r, life, o) — чернильная лужа: держится и бьёт стоящего (остаточная опасность);
 //  • K5X.screen(col, a, dur) — вспышка на весь экран; K5X.tint(col, a) — тон по краям экрана стадии;
 //  • K5X.own(o) — объект стадии: K5X.clear() (смена стадии) убирает всё своё.
+//  • эффекты 3-Б (FIN.k3fx: видимый звук свиста, ветер, ночь, рвущиеся облака, вихрь) — их шаг идёт только на уровне 3-Б; при W.k3fx
+//    шагаем их и здесь (уровень на время шага называется 3-Б — сам модуль 3-Б не трогаем).
 // Всё — без логики уровня; стадии берут эти кирпичи и строят из них свои приёмы.
 const K5X={owned:[],ticks:[],mo:null};FIN.k5x=K5X;
 {const _ll=loadLevel;loadLevel=function(i){K5X.reset();_ll(i);};}
@@ -89,3 +91,5 @@ K5X.tint=(col,a)=>{const el=k5xDom('k5xTint','z-index:3;transition:opacity 1.2s'
   el.style.background='radial-gradient(ellipse at 50% 50%,rgba(0,0,0,0) 50%,'+col+' 100%)';el.style.opacity=a==null?0.6:a;};
 /* ---------- чернильная тень по земле (на кого бежит — видно заранее) ---------- */
 K5X.shadow=(r,col)=>{const m=new THREE.Mesh(new THREE.CircleGeometry(1,32),new THREE.MeshBasicMaterial({color:col||0x140820,transparent:true,opacity:0.45,depthWrite:false}));m.rotation.x=-Math.PI/2;m.scale.setScalar(r||1);m.position.y=0.05;k5xAdd(m);return K5X.own(m);};
+/* ---------- шаг эффектов 3-Б в битве (W.k3fx) ---------- */
+{const _st=step;step=function(dt){_st(dt);if(W&&W.k3fx&&W.levelId!=='3-B'&&typeof k3fxTick==='function'){const id=W.levelId;W.levelId='3-B';try{k3fxTick(dt);}catch(e){console.error('k3fx',e);}finally{W.levelId=id;}}};}

@@ -94,7 +94,7 @@
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 2 | t33n tso33 |
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | — | 2 | t34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | — | 1 | t35 |
-| `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_99u_k3b_fx, late_99v_k3b | 6 | t3bv tfin_k3b tfin_k3bboss tfin_k3bbosssolo tfin_k3bsolo thw3b |
+| `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 6 | t3bv tfin_k3b tfin_k3bboss tfin_k3bbosssolo tfin_k3bsolo thw3b |
 | `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | — | 7 | t41v tfin_fadelocal tfin_luko thw4 tluko tsolo tsolo41 |
 | `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | — | 2 | t42v tfin_art |
 | `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | — | 1 | t43 |
@@ -231,7 +231,7 @@
 | `levels/5-B2/late_92_koschei.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ»: ФИНАЛЬНЫЙ БОЙ В ПЯТЬ ЭТАПОВ |
 | `k5epic/late_92_koschei.js` | — | РЕЛИЗ final06 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ»: ФИНАЛЬНЫЙ БОЙ В ПЯТЬ ЭТАПОВ |
 | `k5epic/late_92b_k5e_lib.js` | — | БИТВА С КОЩЕЕМ (k5epic) · БИБЛИОТЕКА: пролог, Лукоморье, Кот на цепи, буквы-удары, страницы, оркестр |
-| `k5epic/late_92c_k5e_fx.js` | — | k5epic · ОБЩИЙ НАБОР ЭФФЕКТОВ СТАДИЙ (K5X) |
+| `k5epic/late_92c_k5e_fx.js` | 3-B | k5epic · ОБЩИЙ НАБОР ЭФФЕКТОВ СТАДИЙ (K5X) |
 | `levels/5-B2/late_93_koschei_level.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними |
 | `k5epic/late_93_koschei_level.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними |
 | `levels/5-B2/late_93_koschei_level_p2_storm.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 2 из 5): ворон, гроза, буря, игла, этапы боя — части … |
@@ -379,5 +379,5 @@
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 173 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 174 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

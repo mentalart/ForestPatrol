@@ -31,8 +31,10 @@ for(let round=0;round<6&&S.chain<3;round++){for(let i=0;i<60*30&&S.ph!=='answer'
 for(let i=0;i<60*10&&S.ph!=='final';i++)TK(1);TK(100);for(let k=0;k<3&&S.ph==='final';k++){A2.bot.blag(ME());TK(100);}r.push('благовест='+S.fin);
 TK(240);r.push('won='+!!E5.done[5]);if(!E5.done[5])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
-// страница 3: один свет — один замок открывает клетку (птицы помогают)
-const r=[GO(6),SILL(3)];const X=700;PUT(ME(),X-9.5,3);TK(10);r.push('light='+ME().k5lt);const L0=ZC.W.hittables.find(t=>t.alive()&&Math.hypot(t.pos.x-(X-1.65),t.pos.z+0.9)<0.6);PUT(ME(),X-2.6,0);if(L0)L0.onHit(ME());
+// страница 3: один свет — замки подряд (пара 1 — ночь, пара 2 — Жар-птица свободна); кольцо на клюве одним ударом дважды
+const r=[GO(6),SILL(3)];const A3=E5.ar[3],S=A3.S;const W8=(ph)=>{for(let i=0;i<60*10&&S.ph!==ph;i++)TK(1);return S.ph;};
+for(const ph of['night','wind']){for(let k=0;k<5&&S.ph!==ph&&S.ph!=='free';k++){S.whT=99;A3.bot.light(ME(),0);A3.bot.lock(0,ME());A3.bot.lock(1,ME());TK(5);}r.push(W8(ph));}
+const So=A3.SOL;for(let k=0;k<4&&S.ph==='wind';k++){PUT(ME(),So.x,So.z+1.8);A3.bot.ring(ME());TK(90);}r.push('кольцо='+S.ring);
 TK(480);r.push('won='+!!E5.done[6]);if(!E5.done[6])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
 // страница 4: ковка в такт, второй конец узды — Демьян, у Горыныча — один удар

@@ -46,10 +46,11 @@ for(let round=0;round<6&&S.chain<3;round++){for(let i=0;i<60*30&&S.ph!=='answer'
 for(let i=0;i<60*10&&S.ph!=='final';i++)TK(1);TK(100);for(let k=0;k<3&&S.ph==='final';k++){A2.bot.blag(A(0));A2.bot.blag(A(1));TK(75);}r.push('благовест='+S.fin);
 r.push(WAITCUR(6));r.push('vod free='+!!E5.free.vod);CHK(r.join(' | '))
 //@@ shot=k5e_f6.png
-// страница 3: свет печали и свет радости; замки клетки — разом
-const r=[SILL(3)];const X=700;PUT(A(0),X-9.5,3);PUT(A(1),X+9.5,3);TK(10);r.push('lights='+A(0).k5lt+','+A(1).k5lt);
-const L0=ZC.W.hittables.find(t=>t.alive()&&Math.hypot(t.pos.x-(X-1.65),t.pos.z+0.9)<0.6),L1=ZC.W.hittables.find(t=>t.alive()&&Math.hypot(t.pos.x-(X+1.65),t.pos.z+0.9)<0.6);
-PUT(A(0),X-2.6,0);PUT(A(1),X+2.6,0);if(L0)L0.onHit(A(0));if(L1)L1.onHit(A(1));r.push('ph='+E5.ar[3].S.ph);r.push(WAITCUR(7));r.push('zhar='+!!E5.free.zhar+' solo='+!!E5.free.solo);CHK(r.join(' | '))
+// страница 3: свет у птиц; замки разом (пара 1) — ночь; пара 2 — Жар-птица свободна; кольцо на клюве разом дважды (механики — tk5e_p3)
+const r=[SILL(3)];const A3=E5.ar[3],S=A3.S;const W8=(ph)=>{for(let i=0;i<60*10&&S.ph!==ph;i++)TK(1);return S.ph;};
+for(const ph of['night','wind']){for(let k=0;k<5&&S.ph!==ph&&S.ph!=='free';k++){S.whT=99;A3.bot.light(A(0),0);A3.bot.light(A(1),1);A3.bot.lock(0,A(0));A3.bot.lock(1,A(1));TK(5);}r.push(W8(ph));}
+const So=A3.SOL;for(let k=0;k<4&&S.ph==='wind';k++){PUT(A(0),So.x-0.9,So.z+1.8);PUT(A(1),So.x+0.9,So.z+1.8);A3.bot.ring(A(0));A3.bot.ring(A(1));TK(80);}r.push('кольцо='+S.ring);
+r.push(WAITCUR(7));r.push('zhar='+!!E5.free.zhar+' solo='+!!E5.free.solo);CHK(r.join(' | '))
 //@@ shot=k5e_f7.png
 // страница 4: три удара в такт у наковальни; клещи вдвоём; к голове Горыныча — разом
 const r=[SILL(4)];const X=900,S=E5.ar[4].S;PUT(A(0),X+4,12.6);for(let i=0;i<900&&S.ph==='forge';i++){const per=0.8,ph=(S.bt%(per*3))/(per*3);if((ph>0.88||ph<0.04)&&ZC.G.time>(window._ft||0)){window._ft=ZC.G.time+0.5;ZC.W.onAttack(0,A(0));}TK(1);}r.push('ph='+S.ph+' good='+S.good);
