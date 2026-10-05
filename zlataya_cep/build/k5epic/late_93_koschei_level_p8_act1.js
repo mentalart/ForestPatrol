@@ -123,7 +123,7 @@
   /* ================= ролики акта I ================= */
   // вступление на Лукоморье: дуб почернел, друзья в чёрных цепях, Кощей на дубе переписывает пролог
   E.cine.intro=done=>{F.stage='introCine';heroLine(8.5);const po=T.potap,pr=T.proshka,yo=T.yosha,pe=T.pelageya;KS.g.visible=true;KS.g.position.set(0.4,6.4,-24.7);KS.g.rotation.y=0;book.g.visible=true;book.g.userData.free=false;
-    candles.forEach(c=>candleSet(c,false));dome.visible=false;RING.g.visible=true;RING.set(Math.PI/2);const ink=K5L.textSpr(K5L.INK[1],12,{col:'#2a1040',glow:'#a060ff',stroke:'#c8a0ff'});k5Prop(ink);ink.position.set(OAK.x,15,OAK.z+2);ink.material.opacity=0;
+    candles.forEach(c=>{c.g.visible=true;candleSet(c,false);});dome.visible=false;RING.g.visible=true;RING.set(Math.PI/2);const ink=K5L.textSpr(K5L.INK[1],12,{col:'#2a1040',glow:'#a060ff',stroke:'#c8a0ff'});k5Prop(ink);ink.position.set(OAK.x,15,OAK.z+2);ink.material.opacity=0;
     K5L.theme('dawn',1);
     play({dur:27,fov:46,camK:2.2,k5:{mood:[WARM,0.1],cues:[[9.4,()=>CINE.mood(COLD,0.14)],[13.2,()=>{CINE.trauma(0.2);CINE.flashDip('#c8a0ff',0.3);}],[20.4,()=>CINE.punch(-5)]]},
       shots:[MV(0,[0,9,24],[0,6,-26],[0,6,14],[0,5,-26],5,{ease:'inOutSine'}),

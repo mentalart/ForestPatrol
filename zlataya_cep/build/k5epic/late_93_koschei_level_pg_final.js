@@ -48,11 +48,5 @@
       E.oakGreen(1,true);later(1.4,()=>{barkS(kot,'kot','…И там я был, и мёд я пил; у моря видел дуб зелёный…',4,true);});later(5.6,()=>{k5Del(ch);ES.repkaAtk=null;done();});}};
   // удар во время «Репки»
   {const _oa=W.onAttack;W.onAttack=(pi,h)=>{if(E.cur===12&&ES.repkaAtk){ES.repkaAtk(h,pi);return;}if(_oa)_oa(pi,h);};}
-  /* ================= пролог «Через леса, через моря»: на Горыныче за чёрной тучей Кощея ================= */
-  E.prologue=done=>{rideBuild();K5.fight=false;liveBoss(false);KS.g.visible=false;dome.visible=false;candles.forEach(c=>{c.g.visible=false;});E.cur=0;K5E.cur=0;try{K5E.badge&&K5E.badge();}catch(e){}
-    const cl=k5Prop(new THREE.Group());for(let i=0;i<8;i++)addMesh(new THREE.SphereGeometry(rand(1.6,2.6),9,7),new THREE.MeshLambertMaterial({color:0x221c30,emissive:0x1a0a2a}),rand(-3,3),rand(-1,1),rand(-2,2),cl);K5L.noRay(cl);
-    RIDE.g.visible=true;rideStart('gor',()=>{E.paper(()=>{rideEnd();k5Del(cl);W.updates.splice(W.updates.indexOf(fol),1);done();},1.4);});
-    const fol=dt=>{if(!RIDE.on)return;cl.position.set(RIDE_X+Math.sin(G.time*0.7)*4,6,-48+Math.sin(G.time*0.5)*4);cl.rotation.y+=dt*0.2;ES.prog=Math.min(1,RIDE.t/RIDE.dur);};W.updates.push(fol);
-    later(0.4,()=>say(null,'<i>Унёс Кощей тетрадку с Буяна — туда, где сказки рождаются: на Лукоморье. За ним — на Горыныче!</i>',4,true));};
   /* ---------- тексты паузы по стадиям ---------- */
   E.PAUSE=[];for(let n=0;n<=12;n++)E.PAUSE[n]='<b>'+K5E.NAMES[n]+'</b><br><i>'+K5L.LINES[n]+'</i><br>Битва с Кощеем: двенадцать строк пролога — двенадцать стадий. Tab — панель стадий и оценок.';

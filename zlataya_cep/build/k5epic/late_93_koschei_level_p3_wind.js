@@ -29,7 +29,7 @@
   function stageStart(n,retry){K5.st=n;F.stage='s'+n;K5.fight=false;clearAdds();natReset();RG.on=false;eye.visible=false;fring.visible=false;K5.combo=null;K5.delayNext=false;K5.bind=[-9,-9];K5.crash=false;K5.bones=false;RG.tries=0;
     ['castT','keyT','orbT','rainT','vxT','rvT','leapT','diveT','cs0','cs1'].forEach(k=>{K5[k]=null;});heroesHome(n);W.pauseLine=PAUSE[n];dome.visible=n===1;sword.visible=n>=4;
     const f=K5.fails[n];
-    if(n===1){liveBoss(false);KS.g.position.copy(KP);KS.g.rotation.y=0;candles.forEach(c=>candleSet(c,true));}
+    if(n===1){liveBoss(false);KS.g.position.copy(KP);KS.g.rotation.y=0;candles.forEach(c=>{c.g.visible=true;candleSet(c,true);});}   // свечи могли спрятать пролог и другие стадии
     else candles.forEach(c=>{candleSet(c,false);c.relT=1e9;c.g.visible=false;});
     if(n===2){KS.g.position.set(KP.x,0,KP.z+3);liveBoss(true);bossCfg((G.solo?10:12)-2*f,['yellow','yellow','red'],2.4);sword.visible=false;KB.pi=0;}
     if(n===3){KS.g.position.set(C.x,5.4,C.z-4);liveBoss(true,true);bossCfg((G.solo?5:8)-(f?1:0)-(f>2?1:0),['yellow'],2.4);KB.pos.y=5.4;k5StormSet(1);}
