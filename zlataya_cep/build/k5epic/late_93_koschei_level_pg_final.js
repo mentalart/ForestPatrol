@@ -66,7 +66,7 @@
     const beatR=k5Prop(new THREE.Mesh(new THREE.RingGeometry(0.9,1.05,40),k5Add(0xffd76a,{opacity:0.9})));beatR.rotation.x=-Math.PI/2;
     K5L.music('gold',E.freeCount());say('proshka','Все за цепь! Я считаю: раз — два — ТЯНИ!',3,true);floatText(endP.clone().add(new V3(0,3,0)),'На «ТЯНИ!» — удар '+K(0,'attack')+(G.solo?'':' + '+K(1,'attack'))+' разом. Кощей дёрнет — щит!','#ffe08a');
     const per=per0;const tickF=dt=>{if(R0.done||G.cine||E.cur!==12)return;R0.t+=dt;const nb=Math.floor(R0.t/per),ph=(R0.t%(per*4))/(per*4);beatR.position.copy(endP).setY(0.1);beatR.scale.setScalar(0.9+(1-ph)*3.2);
-      const near=Math.abs(R0.t-nextPull(R0.t))<0.45;beatR.material.color.set(near?0x9ff0a8:0xffd76a);tgtR.scale.setScalar(near?1.25+0.15*Math.sin(G.time*20):1);R0.near=near&&!R0.surge;
+      const near=Math.abs(R0.t-nextPull(R0.t))<0.45;beatR.material.color.set(near?0x9ff0a8:0xffd76a);if(E.noHint()){beatR.visible=false;tgtR.visible=false;progSp.forEach(sp=>{sp.visible=false;});}tgtR.scale.setScalar(near?1.25+0.15*Math.sin(G.time*20):1);R0.near=near&&!R0.surge;
       progSp.forEach((sp,i)=>{sp.material.opacity=i<R0.k?1:0.25;sp.scale.setScalar(i<R0.k?1.0+0.06*Math.sin(G.time*5+i):0.9);});
       if(nb!==R0.beat){R0.beat=nb;const pull=nb%4===3;if(AUD.ready())(pull?AUD.bell(523,{v:0.06,d:0.8}):AUD.osc({f0:880,d:0.05,v:0.02}));floatText(T.proshka.pos.clone().add(new V3(0,1.8,0)),pull?'ТЯНИ!':['раз','два','и…'][nb%4],pull?'#ffd76a':'#ffffff');if(pull)R0.pullAt=R0.t;}
       // все держат свои места

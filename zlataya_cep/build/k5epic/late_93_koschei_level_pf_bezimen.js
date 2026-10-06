@@ -88,7 +88,7 @@
       if(m.R&&FIN.k2v&&FIN.k2v.anim){try{FIN.k2v.set(m.R,on?'conduct':act?'dazed':'sleep',on?'neutral':'tired');FIN.k2v.anim(m.R,dt);}catch(e){}}
       if(m.heads)m.heads.forEach((h,k)=>{const q=h&&(h.g||h.hg||h);if(!q||!q.rotation)return;q.rotation.x=Math.sin(t*(on?3:1.2)+k*1.7)*(on?0.25:0.1);q.rotation.y=Math.sin(t*0.8+k)*0.2;});
       if(m.wings)m.wings.forEach(w=>{const q=w.wp||w;if(q&&q.rotation)q.rotation.z=(w.s||1)*Math.sin(t*(on?6:1.5))*(on?0.4:0.12);});});}
-  function guideTick(){if(E.cur!==11)return;const t=G.time,kp=KS.g.position,mv=ES.mv,open=ES.fight&&ES.ph==='moves'&&(ES.win>0||ES.spes<=0)&&!ES.rage;
+  function guideTick(){if(E.cur!==11)return;if(E.noHint()){[memSigns,memBeams,memRings].forEach(a=>a.forEach(o=>{o.visible=false;}));[kSignHit,kSignBind,kSignRage,kRing,rageRing].forEach(o=>{o.visible=false;});return;}const t=G.time,kp=KS.g.position,mv=ES.mv,open=ES.fight&&ES.ph==='moves'&&(ES.win>0||ES.spes<=0)&&!ES.rage;
     MEM.forEach((M0,i)=>{const on=!!(ES.fight&&mv&&mv.i===i&&!mv.countered);memSigns[i].visible=on;memBeams[i].visible=on;if(on){memSigns[i].position.y=4.4+Math.sin(t*4)*0.3;memBeams[i].material.opacity=0.16+0.1*Math.sin(t*6);memRings[i].scale.setScalar(1+0.05*Math.sin(t*8));}});
     kSignHit.visible=open&&ES.spes>0;kSignBind.visible=open&&ES.spes<=0;kSignRage.visible=!!ES.rage;kRing.visible=open;rageRing.visible=!!ES.rage;
     for(const sp of[kSignHit,kSignBind,kSignRage])if(sp.visible)sp.position.set(kp.x,kp.y+4.4+Math.sin(t*4)*0.3,kp.z);

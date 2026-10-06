@@ -192,8 +192,8 @@
         if(blowing){const f=G.solo?2.2:2.6;for(const h of k5Heroes()){if(sheltered(h))continue;const dx=h.pos.x-SOL.x,dz=h.pos.z-SOL.z,d=Math.hypot(dx,dz)||1;if(d>15)continue;const k=(h.kind==='potap'?0.4:1)*f*dt;
           const nx=h.pos.x+dx/d*k,nz=h.pos.z+dz/d*k;if(groundAt(nx,nz,h.pos.y+0.6).y>h.pos.y-0.8){h.pos.x=nx;h.pos.z=nz;}}}   // с облака ветер не сдувает
         // дорожка к Соловью и укрытия
-        windArrows.forEach((m,q)=>{m.visible=true;m.material.opacity=(blowing?0.25:0.95)*(0.35+0.65*Math.max(0,Math.sin(G.time*6-q*0.9)));});
-        coverRings.forEach(c=>{c.visible=true;c.material.opacity=blowing?0.85+0.15*Math.sin(G.time*10):0.35;});
+        windArrows.forEach((m,q)=>{m.visible=!E.noHint();m.material.opacity=(blowing?0.25:0.95)*(0.35+0.65*Math.max(0,Math.sin(G.time*6-q*0.9)));});
+        coverRings.forEach(c=>{c.visible=!E.noHint();c.material.opacity=blowing?0.85+0.15*Math.sin(G.time*10):0.35;});
         if(!G.solo){S.boltT-=dt;if(S.boltT<=0){S.boltT=6.5;const hs=k5Heroes().filter(h=>hd(h.pos,SOL)>5);const h=hs[Math.floor(rand(0,hs.length))];if(h){const at=new V3(h.pos.x+h.vel.x*0.3,0,h.pos.z+h.vel.z*0.3);if(FIN.k2fx)FIN.k2fx.tele(at.x,0,at.z,1.6,1.4,'red');try{KA.pose('cast',{snap:true});later(0.4,()=>KA.reset());}catch(e){}
             later(1.4,()=>{if(S.ph!=='wind')return;if(FIN.k2fx)FIN.k2fx.lightning(at.clone());shakeAll(0.06,0.25);for(const q of k5Heroes())if(hd(q.pos,at)<1.6&&q.rollT<=0)k5Hurt(q,at);});}}}}
       else{windArrows.forEach(m=>{m.visible=false;});coverRings.forEach(c=>{c.visible=false;});}};

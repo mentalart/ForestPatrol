@@ -23,7 +23,7 @@
   E.quiet=()=>E.hintLeft<=0;W.hintsOff=()=>E.quiet();
   // стадии без подсказок совсем (по отзыву: значки непонятны — стадия 1 играется без них): ни карточек, ни значков цели, ни кнопок
   // и стрелок над целями, ни значков и слов над героями и во всплывашках (late_92d), ни подсветки целей, ни реплик-инструкций
-  E.NOHINT={1:true};E.noHint=()=>E.cur!=null&&!!E.NOHINT[E.cur];
+  E.NOHINT={};E.noHint=()=>E.cur!=null;   // по решению: подсказок нет ни на одной стадии (как в главе 1)
   {let base=W.pauseLine||'';Object.defineProperty(W,'pauseLine',{configurable:true,set:v=>{base=v;},get:()=>{let g='';try{if(E.cur!=null){const a=E.goal(0),b=G.solo?'':E.goal(1);g=a+(b&&b!==a?'<br>'+b:'');}}catch(e){}return base;}});}   // цель стадии текстом в паузе не пишем
   /* ---------- музыка: «оркестр собирается» ---------- */
   E.music=mode=>{const n=E.cur;if(n>=4&&n<=7&&!mode){if(FIN.music)FIN.music.play(['','','','','w1','w2','w3','w4'][n]);return;}K5L.music(mode||(n===8?'storm':'ink'),E.freeCount());};

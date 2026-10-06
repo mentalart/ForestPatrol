@@ -52,7 +52,7 @@
     const ar=t4Arrow(0x9fe070);ar.position.y=5.6;g.add(ar);const beam=k5Prop(new THREE.Mesh(new THREE.CylinderGeometry(0.08,0.08,1,6,1,true),k5Add(0x9a60ff,{opacity:0.5})));
     const locks=[-0.8,0.8].map(x=>{const sp=K5PIC.spr(['lock'],1.1);sp.position.set(x,4.2,0);g.add(sp);return sp;});const aim=k5Prop(K5PIC.spr(['lightning'],1.5));aim.visible=false;
     K5L.noRay(g);K5L.noRay(beam);Object.assign(LG,{g,ring,fill,ar,beam,locks,aim,n:-1});}
-  function leshyGuideTick(dt){const on=E.cur===2&&K5.fight&&!E.free.leshy&&!G.cine;if(!LG.g){if(!on)return;leshyGuideMake();}
+  function leshyGuideTick(dt){const on=E.cur===2&&K5.fight&&!E.free.leshy&&!G.cine&&!E.noHint();if(!LG.g){if(!on)return;leshyGuideMake();}
     LG.g.visible=on;LG.beam.visible=on;if(!on){LG.aim.visible=false;return;}const L=FR.leshy.m.g.position;LG.g.position.set(L.x,0,L.z);
     const k=0.5+0.5*Math.sin(G.time*4),inR=k5Heroes().some(nearLeshy);LG.ring.material.opacity=inR?0.95:0.35+0.45*k;LG.fill.material.opacity=inR?0.28:0.1;LG.ar.position.y=5.4+0.35*k;LG.ar.rotation.y+=dt*2.5;LG.ar.visible=!inR;
     const n=ES.clasp||0;if(LG.n!==n){LG.n=n;LG.locks.forEach((sp,i)=>{sp.visible=i>=n;});}LG.locks.forEach((sp,i)=>{sp.position.y=4.2+Math.sin(G.time*3+i)*0.15;});

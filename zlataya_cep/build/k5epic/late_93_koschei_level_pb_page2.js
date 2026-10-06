@@ -101,7 +101,7 @@
     const melRow=new THREE.Group();A.g.add(melRow);melRow.position.set(X,6.2,-1.5);let melSp=[];
     const nextCol=new THREE.Mesh(new THREE.CylinderGeometry(0.9,1.1,8,20,1,true),k5Add(0xffffff,{opacity:0,map:K5TEX.beam}));A.g.add(nextCol);nextCol.raycast=()=>{};
     const nextAr=t4Arrow(0xffffff);A.g.add(nextAr);nextAr.visible=false;
-    function melSet(show){melSp.forEach(sp=>melRow.remove(sp));melSp=[];const n=S.seq.length;S.seq.forEach((b,j)=>{const sp=K5PIC.spr(['bell'+b],1.25);sp.position.set((j-(n-1)/2)*1.55,0,0);sp.visible=!!show;melRow.add(sp);melSp.push(sp);});}
+    function melSet(show){melSp.forEach(sp=>melRow.remove(sp));melSp=[];const n=S.seq.length;S.seq.forEach((b,j)=>{const sp=K5PIC.spr(['bell'+b],1.25);sp.position.set((j-(n-1)/2)*1.55,0,0);sp.visible=!!show&&!E.noHint();melRow.add(sp);melSp.push(sp);});}
     const S={};A.S=S;A.BP=BP;A.SHELL=SHELL;A.BLAG=BLAG;
     const lvl=()=>zone?Math.max(0,zone.level):0,high=()=>zone&&zone.level>LV*0.7;
     const swirlFx=p=>{if(FIN.k2fx)FIN.k2fx.mist(p,1,0.6);};
@@ -200,7 +200,7 @@
       for(const B of gold){B.up+=((high()?1:0)-B.up)*Math.min(1,dt*2.2);const a=G.time*0.45+B.ph,r=B.up*0.9;B.g.position.set(B.p.x+Math.cos(a)*r,lerp(0.55,y+1.5,B.up)+Math.sin(G.time*1.7+B.ph)*0.08*B.up,B.p.z+Math.sin(a)*r);
         B.g.rotation.z=lerp(1.35,0,B.up)+(B.sw?0:Math.sin(G.time*1.3+B.ph)*0.06*B.up);B.lit=Math.max(0,B.lit-dt*0.9);B.gl.material.opacity=0.2+0.8*B.lit+(S.hint&&S.seq[S.pos]===B.i?0.4+0.4*Math.sin(G.time*8):0);}
       melRow.visible=ES.fight&&(S.ph==='show'||S.ph==='answer');melSp.forEach((sp,j)=>{const cur=S.ph==='answer'&&j===S.pos,done=S.ph==='answer'&&j<S.pos;const k=cur?1.25*(1.25+0.2*Math.sin(G.time*8)):done?0.85:1.25;sp.scale.set(k,k,1);sp.material.opacity=done?0.35:1;sp.position.y=cur?0.35+0.15*Math.sin(G.time*8):0;});
-      {const B=S.ph==='answer'&&high()?gold[S.seq[S.pos]]:null;nextAr.visible=!!B;if(B){nextCol.position.set(B.g.position.x,lvl()+4,B.g.position.z);nextCol.material.color.set(BC[B.i]);nextCol.material.opacity=0.28+0.12*Math.sin(G.time*6);
+      {const B=S.ph==='answer'&&high()&&!E.noHint()?gold[S.seq[S.pos]]:null;nextAr.visible=!!B;if(B){nextCol.position.set(B.g.position.x,lvl()+4,B.g.position.z);nextCol.material.color.set(BC[B.i]);nextCol.material.opacity=0.28+0.12*Math.sin(G.time*6);
           nextAr.position.set(B.g.position.x,B.g.position.y+1.6+0.35*Math.abs(Math.sin(G.time*5)),B.g.position.z);nextAr.userData.mat.color.set(BC[B.i]);}else nextCol.material.opacity=0;}
       if(!ES.fight)return;
       if(S.ph!=='won'&&S.ph!=='free')KS.g.rotation.y=Math.sin(G.time*0.7)*0.35;
