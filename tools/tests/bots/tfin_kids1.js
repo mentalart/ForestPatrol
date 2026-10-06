@@ -80,19 +80,34 @@ put(H.proshka,0,-90);put(H.pelageya,0,-92);ZC.tick(90);chk(C.gateOpen(),'лап�
 ['gateKept='+ZC.W.flags.gateKept].concat(BAD)
 //@@
 // задачи вслух: новая карточка читается сама, «Повтори» (H) — ещё раз; в Лукоморье — молчит
-window.SAID=[];ZC.FIN.readAloud.mock=t=>SAID.push(t);ZC.FIN.set.readAloud=true;
+window.SAID=[];ZC.FIN.readAloud.mock=t=>SAID.push(t);ZC.FIN.set.readAloud=true;ZC.FIN.set.vox=0;   // голоса героев не мешают: иначе чтение вслух ждёт, пока договорит Звенышко (время зависит от записи)
 ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(10);for(let q=0;q<4&&ZC.G.cine;q++){ZC.skip();ZC.tick(5);}ZC.sim(6);for(let i=0;i<240;i++)ZC.FIN.ui(1/60);'start'   // sim зовёт updateUI раз в 30 кадров — субтитр не успел бы погаснуть сам
 //@@ wait=1200
 ZC.sim(0.2);'sim1'
 //@@ wait=1200
 ZC.sim(0.2);'sim2'
 //@@ wait=1200
-ZC.sim(0.2);const n0=SAID.length;
+ZC.sim(0.2);const n0=SAID.length;window.N0=n0;
 chk(n0>=1,'задача прочитана вслух сама: '+JSON.stringify(SAID));chk(SAID.every(t=>!/<|kbd|&/.test(t)&&t.length>5&&t.length<=171),'текст без разметки: '+JSON.stringify(SAID));
-ZC.press('KeyH');ZC.sim(0.2);chk(SAID.length>n0,'«Повтори» (H) читает ещё раз: '+SAID.length+' из '+n0);
+// один раз за игру: счётчик в тексте не делает задачу новой, время без успеха не повторяет чтение
+const RA=ZC.FIN.readAloud;chk(RA.key('В кучу у забора неси: 3 / 10. Корыто — вдвоём')===RA.key('В кучу у забора неси: 4 / 10. Корыто — вдвоём'),'ключ без цифр: счётчик не новая задача');
+chk(RA.key('Брось клубок — и по нити!')!==RA.key('Калитка ждёт две лапки разом'),'разные задачи — разные ключи');
+Object.keys(RA.said).forEach(k=>{RA.said[k]-=20000;});   // как будто прочитано давно: прежний код повторил бы по времени без успеха
+ZC.players.forEach(p=>{p.idle=40;});ZC.sim(0.2);'idle'
+//@@ wait=1200
+ZC.sim(0.2);'idle1'
+//@@ wait=1200
+ZC.sim(0.2);chk(SAID.length===N0,'долгое «без успеха» не повторяет чтение: было '+N0+', стало '+SAID.length+' '+JSON.stringify(SAID));
+// «Повтори» (H) — только по просьбе
+ZC.press('KeyH');ZC.sim(0.2);chk(SAID.length>N0,'«Повтори» (H) читает ещё раз: '+SAID.length+' из '+N0);
 const s1=SAID.length;ZC.FIN.set.readAloud=false;ZC.press('KeyH');ZC.sim(0.2);chk(SAID.length===s1,'выключено в настройках — молчит');ZC.FIN.set.readAloud=true;
+// меню паузы: вторым пунктом «Читать задачи вслух», стрелкой выключается и включается
+ZC.menu('pause');const PI=ZC.FIN.menu.items.map(i=>i.label);chk(PI[1]==='Читать задачи вслух'&&PI[0]==='Продолжить'&&PI.length===6,'пауза в мире 1: '+PI.join('|'));
+ZC.menuKey('ArrowDown');ZC.menuKey('ArrowRight');chk(ZC.FIN.set.readAloud===false,'в паузе выключили: '+ZC.FIN.set.readAloud);
+ZC.menuKey('ArrowRight');chk(ZC.FIN.set.readAloud===true,'в паузе включили');ZC.start();
 ZC.loadLevel(ZC.LV('luko'));ZC.G.manual=true;ZC.tick(5);const s2=SAID.length;ZC.press('KeyH');ZC.sim(0.3);chk(SAID.length===s2,'Лукоморье — молчит');
-['said='+n0,JSON.stringify(SAID.slice(0,2))].concat(BAD)
+ZC.menu('pause');const PL=ZC.FIN.menu.items.map(i=>i.label);chk(PL[1]==='Настройки'&&PL.length===5,'пауза в Лукоморье без нового пункта: '+PL.join('|'));ZC.start();
+['said='+N0,JSON.stringify(SAID.slice(0,2))].concat(BAD)
 //@@
 // без ошибок в консоли и по итогам — ok
 BAD.length||ERR.length?'FAIL '+BAD.join(' ; ')+' errs='+ERR.slice(0,3).join(' | '):'kids1 ok'

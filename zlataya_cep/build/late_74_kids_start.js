@@ -22,7 +22,7 @@ function kidsSetupScreen(){const S=FIN.set,cyc=(pi,d)=>{cyclePath(pi);if(d<0)cyc
   const items=[
     {label:'Сколько вас?',val:()=>G.solo?'я один':'вдвоём',sub:()=>G.solo?'один игрок водит всех четверых героев по очереди':'двое: игрок 1 слева, игрок 2 справа',side:()=>{setSolo(!G.solo);}},
     p1,p2,
-    {label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>{S.readAloud=!kidsRead();save();if(S.readAloud&&FIN.readAloud)FIN.readAloud.test();}},
+    {label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>FIN.readAloud.toggle()},
     {label:'Крупный текст',val:()=>S.ts>=1.3?'да':'нет',side:()=>{S.ts=S.ts>=1.3?1:1.3;save();}},
     {label:'Начать сказку!',sub:'можно поменять потом: Настройки',act:()=>{save();finGo(()=>startFrom(0));}},
     {label:'Назад',act:finBack}];
@@ -31,13 +31,17 @@ function kidsSetupScreen(){const S=FIN.set,cyc=(pi,d)=>{cyclePath(pi);if(d<0)cyc
   if(KIDS.debug&&!KIDS.force){_ng();return;}
   if(!KIDS.seen){KIDS.seen=true;players.forEach(p=>{p.path='easy';});if(G.solo)players[1].path=players[0].path;}
   finPush(kidsSetupScreen());};}
+// пауза: «Читать задачи вслух» вторым пунктом (в пологе и мире 1), чтобы выключить, не заходя в настройки; в ?debug скрыт, чтобы не сдвигать пункты для ботов
+{const _ps=pauseScreen;pauseScreen=function(){const scr=_ps();
+  if(W&&W.kids&&(!KIDS.debug||KIDS.force))scr.items.splice(1,0,{label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>FIN.readAloud.toggle()});
+  return scr;};}
 // версия на титуле
 {const _ot=FIN.openTitle;FIN.openTitle=function(first){_ot(first);const v=$('finVer');if(v)v.textContent='версия '+FIN.ver+' · '+KIDS.ver;};}
 // ---------- настройки и управление ----------
 function kidsFullscreen(){try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();}catch(e){}}
 addEventListener('fullscreenchange',()=>{if(FIN.menu)finDraw();});
 {const _ss=settingsScreen;settingsScreen=function(){const scr=_ss(),S=FIN.set,L=scr.items,k=L.findIndex(it=>it.label==='Джойстики местами'),save=()=>{FIN.saveSettings();FIN.applySettings();};
-  const add=[{label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>{S.readAloud=!kidsRead();save();if(S.readAloud&&FIN.readAloud)FIN.readAloud.test();}},
+  const add=[{label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>FIN.readAloud.toggle()},
     {label:'На весь экран',val:()=>document.fullscreenElement?'да':'нет',sub:'Esc выйдет из полного экрана',side:()=>kidsFullscreen()}];
   L.splice(k<0?L.length-1:k,0,...add);return scr;};}
 {const _cs=controlsScreen;controlsScreen=function(){const scr=_cs(),h0=scr.html;scr.html=()=>h0().replace('</table>','<tr><td>Повторить задачу вслух</td><td><kbd>H</kbd></td><td><kbd>H</kbd></td><td>'+padGlyph('help')+'</td></tr><tr><td>«Ко мне!» — ещё и ближе к рукам</td><td><kbd>T</kbd></td><td><kbd>Enter</kbd></td><td>—</td></tr></table>');return scr;};}
