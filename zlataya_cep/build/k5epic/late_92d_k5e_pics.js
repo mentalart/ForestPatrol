@@ -87,7 +87,7 @@ const K5PIC={};FIN.k5pic=K5PIC;
   K5PIC.spr=(list,size)=>{if(typeof list==='string')list=[list];const n=list.length;const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:K5PIC.tex(list),transparent:true,depthTest:false,depthWrite:false,fog:false}));
     sp.scale.set((size||1.4)*n,size||1.4,1);sp.renderOrder=12;sp.raycast=()=>{};sp.userData.noBatch=true;return sp;};
   // всплывает значок (вместо текстовой всплывашки)
-  K5PIC.float=(pos,list,size)=>{if(!W||!W.group)return null;const sp=K5PIC.spr(list,size||1.1);sp.position.copy(pos);W.group.add(sp);const y0=pos.y;
+  K5PIC.float=(pos,list,size)=>{if(!W||!W.group||K5PIC.show&&K5PIC.show())return null;const sp=K5PIC.spr(list,size||1.1);sp.position.copy(pos);W.group.add(sp);const y0=pos.y;
     let t=0;const life=1.6;W.updates.push(function f(dt){t+=dt;sp.position.y=y0+t*0.9;sp.material.opacity=t<life-0.5?1:Math.max(0,(life-t)/0.5);if(t>=life){if(sp.parent)sp.parent.remove(sp);const i=W.updates.indexOf(f);if(i>=0)W.updates.splice(i,1);}});return sp;};}
 // стиль значков в подсказках и карточках
 {const st=document.createElement('style');st.textContent=
@@ -99,6 +99,8 @@ const K5PIC={};FIN.k5pic=K5PIC;
   '@keyframes k5bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}@keyframes k5pulse{0%,100%{transform:scale(1);box-shadow:0 0 0 0 rgba(255,215,106,.7)}50%{transform:scale(1.18);box-shadow:0 0 0 10px rgba(255,215,106,0)}}';
   document.head.appendChild(st);}
 const k5On=()=>!!(FIN.k5e&&FIN.k5e.on&&W&&W.levelId==='5-B2');
+// стадия учит показом (двойник героя и кнопка — p8a): всплывашки со словами и значки-подписи молчат совсем
+K5PIC.show=()=>{const E=FIN.k5e;return k5On()&&!!(E&&E.s1&&E.s1.live());};
 // ---------- карточки (t4Run) без текста: «фраза» значками и кнопка ----------
 // card.pics — значки ('+', '>' — знаки); нет pics — значок карточки; card.key — кнопка, которую надо нажать (карточка ждёт её)
 const K5ICONMAP={candle:['fire'],key:['lock'],lock:['lock'],spark:['spark'],orb:['light'],sword:['hit'],needle:['pen'],anvil:['anvil'],wave:['wave'],wind:['wind'],hand:['hand'],raven:['bird'],red:['redring'],yellow:['shield'],blue:['shield'],shield:['shield'],hit:['hit'],eye:['eye'],drop:['water'],clock:['clock'],go:['>'],ring:['ring'],n123:['notes']};
@@ -123,6 +125,7 @@ K5PIC.RX=[[/^\s*[+-]?\d+\s*\/\s*\d+\s*$/,null],[/^-?\d+ лепест/i,null],
   [/удар!|ещё!?$/i,['hit']],[/прочь|уйди/i,['run']],[/подними/i,['flag','up']],[/подсказк|нажми|держи/i,['hand']],[/^(раз|два|и…)$/i,['notes']],
   [/[А-Яа-яЁё]{3,}.*!|^[А-ЯЁ]/,['star']]];
 {const _ft=floatText;floatText=function(pos,txt,col){if(k5On()&&typeof txt==='string'){const m=/^\s*([+-]?\d+)\s*лепест/i.exec(txt);if(m)return _ft.call(this,pos,m[1],col);   // «-1 лепесток» → «-1»
+    if(K5PIC.show()&&/[А-Яа-яЁё]/.test(txt))return;   // стадия показом: слова не всплывают (числа — да)
     for(const [rx,pics] of K5PIC.RX)if(rx.test(txt)){if(pics){K5PIC.float(pos,pics);return;}break;}}return _ft.apply(this,arguments);};}
 // «весточка» (бонус друга мира 2) — строка текста вверху: в битве не показываем
 // подпись пропуска ролика («Пропуск — оба держат») — значком ⏭ (класс k5pic на body, пока идёт битва)
@@ -158,7 +161,7 @@ K5PIC.NRX=[[/лихо|отвернись/i,['eye','no']],[/жар-птиц/i,['b
   [/свет у птиц|возьми свет/i,['bird','>','light']],[/замки/i,['lock','lock']],[/клещи/i,['hand']],[/к лешему/i,['friend']],[/разом|вместе|по кольцу|вдвоём/i,['two','sync']],[/уходи|уйди|прочь/i,['run']],
   [/щит/i,['shield']],[/бей|руби|удар/i,['hit']]];
 K5PIC.NC=new Map();
-K5PIC.note=t=>{if(typeof t!=='string'||!t||t.indexOf('<svg')>=0||!/[А-Яа-яЁё]/.test(t))return t;let r=K5PIC.NC.get(t);if(r!==undefined)return r;r='';for(const [rx,p] of K5PIC.NRX)if(rx.test(t)){r=K5PIC.h(p,30);break;}K5PIC.NC.set(t,r);return r;};
+K5PIC.note=t=>{if(K5PIC.show())return '';if(typeof t!=='string'||!t||t.indexOf('<svg')>=0||!/[А-Яа-яЁё]/.test(t))return t;let r=K5PIC.NC.get(t);if(r!==undefined)return r;r='';for(const [rx,p] of K5PIC.NRX)if(rx.test(t)){r=K5PIC.h(p,30);break;}K5PIC.NC.set(t,r);return r;};
 {const _up=updatePrompts;updatePrompts=function(){if(k5On())for(const pr of W.prompts){if(pr._k5n)continue;pr._k5n=1;let raw=pr.note;
       Object.defineProperty(pr,'note',{configurable:true,get(){return typeof raw==='function'?()=>K5PIC.note(raw()):K5PIC.note(raw);},set(v){raw=v;}});}
     return _up.apply(this,arguments);};}

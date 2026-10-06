@@ -38,9 +38,10 @@
       K5.needle={holder:null,ground:null,t:0};needleHold(G.solo?active(G.soloPi):active(1));K5.forge={n:0,need:12-2*Math.min(2,f),c:0,b:-1,good:0,tries:0,rings:{}};}
     K5.wake=K5.live?KB.state:null;if(K5.live)KB.state='k5wait';   // пока идут карточки — Кощей ждёт
     setBar();const go=()=>{if(FIN.k5e.cur!=null&&FIN.k5e.OLD&&FIN.k5e.OLD[FIN.k5e.cur]!==n)return;   // карточки прежней стадии досмотрели уже на другой
-      K5.fight=true;K5.t0=G.time;K5.hint0=G.time;if(K5.live&&KB.state==='k5wait')KB.state=K5.wake;setBar();if(n===1&&!K5.said.k01){K5.said.k01=true;later(0.4,()=>say('pelageya','Восемь чёрных свеч — смотрите! —<br>Купол держат. Погасите!',4.4));}
+      K5.fight=true;K5.t0=G.time;K5.hint0=G.time;if(K5.live&&KB.state==='k5wait')KB.state=K5.wake;setBar();if(n===1&&!K5.said.k01&&!(FIN.k5e&&FIN.k5e.s1)){K5.said.k01=true;later(0.4,()=>say('pelageya','Восемь чёрных свеч — смотрите! —<br>Купол держат. Погасите!',4.4));}
       if(n===4&&!G.solo&&!K5.said.k18){K5.said.k18=true;later(0.6,()=>say('zven','Кого око выбрало — щит держи!<br>А второй — со спины: бей, не дрожи!',4.4,true));}};
-    if(!K5.auto)go();else if(K5.seen[n]||retry)k5Short(n,go);else{K5.seen[n]=true;k5Tut(n,go);}}
+    if(!K5.auto)go();else if(n===1&&FIN.k5e&&FIN.k5e.s1)go();   // k5epic: стадия 1 учит показом (p8a), карточек нет
+    else if(K5.seen[n]||retry)k5Short(n,go);else{K5.seen[n]=true;k5Tut(n,go);}}
   // герой выбыл: клубок или рассыпался тот, кем играют; «Сбился сказ» — только когда выбыли все четверо (отзыв 4): пока цел второй герой — «Смена» и в бой
   const k5Down=h=>!!h._down||(h.active&&players[h.player].downed);
   function stageLose(){if(!K5.fight)return;K5.fight=false;K5.fails[K5.st]++;K5.log.push('lose'+K5.st);const f=$('flash');if(f){f.style.transition='opacity .6s';f.style.opacity=1;}

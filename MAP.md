@@ -106,7 +106,7 @@
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 1 | t53 |
 | `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | — | 2 | t54 tso54 |
 | `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | — | 1 | t5b1 |
-| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_93_koschei_level, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_94_koschei_tut, late_94_koschei_tut, late_99z_k5e_boot | 10 | t5b2 tfin_kosh tfin_koshcine tfin_koshcoop tfin_koshfx tfin_koshnat tfin_koshrule tfin_ko… |
+| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_94_koschei_tut, late_94_koschei_tut, late_99z_k5e_boot | 10 | t5b2 tfin_kosh tfin_koshcine tfin_koshcoop tfin_koshfx tfin_koshnat tfin_koshrule tfin_ko… |
 | `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
 | `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 2 | tfin_juice tzast |
@@ -232,6 +232,7 @@
 | `k5epic/late_92_koschei.js` | — | РЕЛИЗ final06 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ»: ФИНАЛЬНЫЙ БОЙ В ПЯТЬ ЭТАПОВ |
 | `k5epic/late_92b_k5e_lib.js` | — | БИТВА С КОЩЕЕМ (k5epic) · БИБЛИОТЕКА: пролог, Лукоморье, Кот на цепи, буквы-удары, страницы, оркестр |
 | `k5epic/late_92c_k5e_fx.js` | 3-B | k5epic · ОБЩИЙ НАБОР ЭФФЕКТОВ СТАДИЙ (K5X) |
+| `k5epic/late_92d_k5e_pics.js` | 5-B2 | k5epic · ПОДСКАЗКИ БЕЗ ТЕКСТА: ПИКТОГРАММЫ (K5PIC) |
 | `levels/5-B2/late_93_koschei_level.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними |
 | `k5epic/late_93_koschei_level.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: УРОВЕНЬ — арена, пять этапов, ролики между ними |
 | `levels/5-B2/late_93_koschei_level_p2_storm.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 2 из 5): ворон, гроза, буря, игла, этапы боя — части … |
@@ -245,8 +246,10 @@
 | `k5epic/late_93_koschei_level_p6_epic.js` | — | ---- продолжение build5B2 (k5epic, часть 6): БИТВА В ДВЕНАДЦАТЬ СТАДИЙ — контроллер (docs/27_koschei_epic_proposals.md)… |
 | `k5epic/late_93_koschei_level_p7_hub.js` | — | ---- продолжение build5B2 (k5epic, часть 7): ЛУКОМОРЬЕ — постройки, друзья в чёрных цепях, Кот-часы, помощь друзей ---- |
 | `k5epic/late_93_koschei_level_p8_act1.js` | — | ---- продолжение build5B2 (k5epic, часть 8): АКТ I «ЧЁРНАЯ СТРОКА» — стадии 1–3 и их ролики ---- |
+| `k5epic/late_93_koschei_level_p8a_s1show.js` | — | ---- продолжение build5B2 (k5epic, часть 8а): СТАДИЯ 1 — ПОДСКАЗКИ ПОКАЗОМ: ДВОЙНИК ГЕРОЯ И КНОПКА, БЕЗ ЗНАЧКОВ И СЛОВ … |
 | `k5epic/late_93_koschei_level_p8b_stage3.js` | — | ---- продолжение build5B2 (k5epic, часть 8b): СТАДИЯ 3 «ТАМ ЛЕС И ДОЛ ВИДЕНИЙ ПОЛНЫ» ---- |
 | `k5epic/late_93_koschei_level_p9_pages.js` | — | ---- продолжение build5B2 (k5epic, часть 9): АКТ II «НЕВЕДОМЫЕ ДОРОЖКИ» — страницы-двери, переход в сказку, поездки дом… |
+| `k5epic/late_93_koschei_level_p9b_flights.js` | — | ---- продолжение build5B2 (k5epic, часть 9b): ПОЛЁТЫ ДОМОЙ — ступа Яги (после стадии 4) и Горыныч (после стадии 7) ---- |
 | `k5epic/late_93_koschei_level_pa_page1.js` | — | ---- продолжение build5B2 (k5epic, часть 10): СТРАНИЦА 1 «ИЗБУШКА ТАМ НА КУРЬИХ НОЖКАХ» (стадия 4, мир 1, клубок) ---- |
 | `k5epic/late_93_koschei_level_pb_page2.js` | — | ---- продолжение build5B2 (k5epic, часть 11): СТРАНИЦА 2 «ТАМ О ЗАРЕ ПРИХЛЫНУТ ВОЛНЫ» (стадия 5, мир 2, гусли) ---- |
 | `k5epic/late_93_koschei_level_pc_page3.js` | — | ---- продолжение build5B2 (k5epic, часть 12): СТРАНИЦА 3 «В ТЕМНИЦЕ ТАМ ЦАРЕВНА ТУЖИТ» (стадия 6, мир 3, свет) ---- |
@@ -379,5 +382,5 @@
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 180 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 182 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
