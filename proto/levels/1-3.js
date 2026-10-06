@@ -392,7 +392,7 @@ function build13(){W.soloMirror=true;
         if(dtB<2.4&&dtB>2.2&&!f.told){f.told=true;floatText(g.position.clone().add(new V3(0,2.6,0)),f.air?'Вожак стаи!':'Волк-вожак!','#ffe08a');for(const pi of[0,1])teach(pi,'duo','Вожак! Кружки сжимаются у обоих —<br>Жмите щит '+K(pi,'guard')+' вместе, как станут малы, — вас двое!');}
         if(!f.res&&S.t>BT[f.k]+Math.max(foeWin(0),foeWin(1))*1.2+0.05){const ok=[0,1].map(pi=>f.press[pi]!==null&&Math.abs(f.press[pi])<=foeWin(pi)*1.2);
           if(ok[0]&&ok[1]){f.res='ok';f.t=0;S.duos++;SFX.horn();banner('Богатырский щит!','#ffd76a',1.4,'вдвоём, в одну долю · каждому +5 искр');for(const pi of[0,1]){foeOk(pi,f,'Вместе!',5);burst(active(pi).pos.clone().add(new V3(0,1,0)),0xffffff,12,4);}}
-          else{f.res='miss';f.t=0;for(const pi of[0,1]){if(ok[pi]){S.tries[pi][f.ph]++;S.hits[pi][f.ph]++;floatText(active(pi).pos.clone().add(new V3(0,2.2,0)),'Закрылся — а друг-то где?','#cfe0ff');}else foeBad(pi,f,'Вместе — в одну долю, в лад!');}}}}}
+          else{f.res='miss';f.t=0;for(const pi of[0,1]){if(ok[pi]){S.tries[pi][f.ph]++;S.hits[pi][f.ph]++;floatText(active(pi).pos.clone().add(new V3(0,2.2,0)),'Закрылся! Ждём друга — вместе, раз-два-три!','#cfe0ff');}else foeBad(pi,f,'Вместе — в одну долю, в лад!');}}}}}
     for(const e of eyes){e.userData.ph+=dt;e.visible=Math.sin(e.userData.ph*0.9)>-0.5;}
     // бочки катятся навстречу и приходят на свою долю
     for(const o of S.obst){if(o.type!=='barrel')continue;const tl=BT[o.k]-S.t;if(S.state!=='play'){continue;}

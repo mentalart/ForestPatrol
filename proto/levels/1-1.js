@@ -79,7 +79,7 @@ function build11(){
     return {g,x,z,pm,on:false};});
   let gOpen=0,gShut=0;const gateOpen=()=>gOpen>0.6,onPlate=h=>PL.some(p=>Math.hypot(h.pos.x-p.x,h.pos.z-p.z)<0.85);
   W.clean11={TR,TRB,HEAP,PL,gateOpen:()=>gateOpen(),cleanN:()=>cleanN()};   // для проверки ботом
-  const gateObj=pi=>O(()=>'Калитка пускает лишь на ДВЕ лапки: встань героем, смени '+K(pi,'swap')+' — второй пройдёт.<br>За калиткой — тоже две лапки: держите, пока остальной народ идёт.',
+  const gateObj=pi=>O(()=>'Калитка ждёт две лапки разом: встань героем на лапку, смени '+K(pi,'swap')+' — второй встанет на другую.<br>Постойте вдвоём секунду — и калитка откроется насовсем.',
     ()=>!!F.out,()=>(endLink.taken?[]:[endLink.g]).concat(PL.map(p=>p.g)));
   W.abil.clew=false;W.abil.toss=false;W.threadLife=10;
   /* ---------- кикиморки из луж ---------- */
@@ -130,7 +130,9 @@ function build11(){
     // калитка-упрямица
     for(const p of PL){p.on=HEROES.some(h=>!(h.active&&players[h.player].downed)&&!h.cling&&Math.hypot(h.pos.x-p.x,h.pos.z-p.z)<0.85&&h.pos.y<0.6);p.pm.emissiveIntensity=p.on?1.0:0.2;p.g.position.y=p.on?-0.05:0;}
     {const want=(PL[0].on&&PL[1].on)||(PL[2].on&&PL[3].on),under=HEROES.some(h=>Math.abs(h.pos.x)<2.4&&Math.abs(h.pos.z-GZ)<0.9);gShut=want?0:gShut+dt;const g0=gOpen;
-      gOpen=damp(gOpen,(want||gShut<0.5||(under&&gOpen>0.5))?1:0,6,dt);gateCol.on=gOpen<0.6;leaves.forEach(L=>{L.lv.rotation.y=L.sd*gOpen*1.5;});gmouth.rotation.z=gOpen>0.5?Math.PI:0;gmouth.position.y=gOpen>0.5?-0.02:-0.1;
+      // для малышей: две лапки нажаты вместе секунду — калитка остаётся открытой для всех (четвёрку по очереди расставлять не нужно)
+      F.gateT=want?(F.gateT||0)+dt:0;if(F.gateT>1&&!F.gateKept){F.gateKept=true;floatText(new V3(0,3.9,GZ),'Так и быть — открыто насовсем! Проходите!','#e0d0a0');}
+      gOpen=damp(gOpen,(want||F.gateKept||gShut<0.5||(under&&gOpen>0.5))?1:0,6,dt);gateCol.on=gOpen<0.6;leaves.forEach(L=>{L.lv.rotation.y=L.sd*gOpen*1.5;});gmouth.rotation.z=gOpen>0.5?Math.PI:0;gmouth.position.y=gOpen>0.5?-0.02:-0.1;
       if(g0<0.6&&gOpen>=0.6){SFX.gate();if(!F.gateTold){F.gateTold=true;floatText(new V3(0,3.9,GZ),'Ну ладно, так и быть — проходите!','#e0d0a0');}}
       if(!want&&!F.oneTold&&PL.some(p=>p.on)){F.oneTold=true;SFX.miss();floatText(new V3(0,3.9,GZ),'Одного не пущу! Обе лапки держите, обе!','#e0d0a0');}}
     if(F.bye&&!F.out&&HEROES.every(h=>h.pos.z<GZ-1.4)){F.out=true;SFX.ok();banner('Калитка всех пропустила!','#ffd76a',2.2,'всей гурьбой — в Дремучий лес');floatText(new V3(0,3.9,GZ),'Вот это компания — хоть куда!','#e0d0a0');later(1.8,finishLevel);}
@@ -172,7 +174,7 @@ function build11(){
     gateObj(1)]);
   W.tipZones.push({cond:(pi,h)=>F.stage==='clean'&&!!h.trash,text:pi=>'Мусор несёшь — неси в кучу у забора, не зевай!'},
     {cond:(pi,h)=>F.stage==='clean'&&!!TRB.g&&(TRB.state==='ground'||TRB.state==='carry')&&hd(h.pos,TRB.g.position)<3,text:pi=>'Корыто тяжело. Встаньте рядышком вдвоём —<br>И в кучу несите его вдвоём.'},
-    {cond:(pi,h)=>h.pos.z<-96&&h.pos.z>GZ&&!gateOpen(),text:pi=>'Калитка пускает лишь на две лапки — одну твою да одну дружка.'},
+    {cond:(pi,h)=>h.pos.z<-96&&h.pos.z>GZ&&!gateOpen(),text:pi=>'Встаньте двумя героями на две лапки — калитка откроется для всех.'},
     {cond:(pi,h)=>F.stage==='yard'&&h.pos.z<-35.3&&h.pos.z>-38&&!W.threads.some(t=>t.owner===pi&&!t.ret),text:pi=>'По грядке пешком нельзя. Брось клубок '+K(pi,'item')+' —<br>И по нити иди, как по дощечке, вперёд.'},
     {cond:(pi,h)=>F.stage==='yard'&&h.pos.z<-59&&h.pos.z>-63&&W.threads.some(t=>t.owner!==pi&&!t.ret),text:pi=>'Нить друга лежит — брось свою рядом:<br>Прицепится к кончику, как надо.'});
   W.onGlue=()=>{F.glued=true;};
