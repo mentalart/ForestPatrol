@@ -86,7 +86,7 @@ BOT_LV = {b: bot_levels(b) for b in ALLBOTS}
 
 
 def level_bots(lid):
-    return [b for b in ALLBOTS if lid in BOT_LV[b]]
+    return [b for b in ALLBOTS if lid in BOT_LV[b] and (b in REL or b in PROTO or b not in REL07)]   # боты только final07 (tfin_post) на final06 падают — их сюда не берём
 
 
 # ---------- таблица соответствий ----------
