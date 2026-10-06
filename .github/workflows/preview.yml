@@ -1,0 +1,40 @@
+# Тестовая сборка ветки: игра собирается из ветки claude/** и кладётся в предварительный выпуск (Releases → Pre-release) файлом
+# zlataya_cep_final06.html — скачать и открыть в Chrome, Edge или Firefox (интернет не нужен). main и Pages не затрагиваются:
+# сайт https://mentalart.github.io/ForestPatrol/ выкладывает только release.yml после слияния в main.
+# Хранятся 10 последних тестовых выпусков, старые удаляются вместе с тегами. Запустить вручную: Actions → «Тестовая сборка ветки» → Run workflow.
+name: Тестовая сборка ветки
+
+on:
+  push:
+    branches: ['claude/**']
+  workflow_dispatch:
+
+concurrency:
+  group: preview-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write     # выпуски и теги
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Сборка релиза
+        run: python3 zlataya_cep/build/build_final.py
+      - name: Предварительный выпуск (хранятся последние 10)
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MSG: ${{ github.event.head_commit.message }}
+        run: |
+          br="${GITHUB_REF_NAME//\//-}"
+          tag="preview-${br}-${GITHUB_SHA::7}"
+          title="Тест ветки ${GITHUB_REF_NAME} · ${GITHUB_SHA::7}"
+          printf '%s\n\nТестовая сборка ветки `%s`, коммит %s. Скачайте файл zlataya_cep_final06.html и откройте в браузере. В main не влита.\n' \
+            "${MSG:-сборка вручную}" "${GITHUB_REF_NAME}" "${GITHUB_SHA::7}" > notes.md
+          gh release delete "$tag" --cleanup-tag --yes 2>/dev/null || true
+          gh release create "$tag" zlataya_cep/zlataya_cep_final06.html --prerelease --title "$title" --notes-file notes.md --target "$GITHUB_SHA"
+          gh release list --limit 1000 --json tagName,createdAt --jq '[.[] | select(.tagName|startswith("preview-"))] | sort_by(.createdAt) | reverse | .[10:] | .[].tagName' |
+            while read -r old; do [ -n "$old" ] && gh release delete "$old" --cleanup-tag --yes; done

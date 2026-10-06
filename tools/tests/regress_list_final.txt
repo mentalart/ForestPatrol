@@ -14,7 +14,7 @@ tallobj
 # одиночный режим
 tsolo tsolo41 tsospot tso12long tso13 tso33 tso54 tso51
 # релиз: титул, меню, пауза, сохранения, клавиши разработчика, кино (final02), коллизии и арт (final03), обучение Горыныча, видимость героев, камера (final04)
-tfin_menu tfin_save tfin_dev tfin_devluko tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b tfin_occ tfin_cam
+tfin_menu tfin_save tfin_dev tfin_devluko tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b tfin_occ tfin_cam tfin_kids1
 # final05: джойстики в меню, переключение на живого героя, враги видимы (все виды и появившиеся позже), удар героев, бюджет отрисовок, пачки прозрачных стен, персонажи и враги (витрины)
 tfin_pads tfin_downswap tfin_foekinds tfin_foekinds1b tfin_foekinds2 tfin_foekinds2b tfin_foekinds3 tfin_foekinds4 tfin_foekinds5 tfin_foekinds6 tfin_foeidle tfin_slash tfin_budget tfin_fadebatch tfin_cast tfin_foecast
 # final06: озвучка всей игры; щиты героев (B) и удар Потапа со спины; пауза с джойстика на живом пути (курсор над меню); Лукоморье — стан и берег дальше от дуба; звук с первого нажатия, голос заставки, звуки меню; пролог — Прошка несёт самокат, падает, все смеются; большие «прозрачные стены» — кусками
@@ -42,3 +42,5 @@ tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes tfin_k22 tfin_k22solo tfin_k22hi
 tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo tfin_k2bmill tfin_k2bboss tfin_k2bbosssolo tfin_k3b tfin_k3bsolo tfin_k3bboss tfin_k3bbosssolo tfin_yaga11
 # final06: мир 3 — 3-1 «Сад молодильных яблок» и 3-2 «Облачные пастбища» втрое длиннее, с мини-боссами — вдвоём и в одиночку
 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor tfin_juice
+# Ctrl+Alt+B — следующая стадия у всех боссов (late_95_dev.js, W.bossNext)
+tfin_bossnext
