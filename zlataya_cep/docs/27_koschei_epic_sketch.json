@@ -1,0 +1,5786 @@
+{
+ "format": "boss-fight-atlas/boss-sketch",
+ "version": 2,
+ "locale": "en",
+ "name": "Кощей Бессмертный и Златая цепь — 12 стадий (предложение)",
+ "mechanics": [
+  {
+   "id": "objective-linked-invulnerability",
+   "title": "Objective-linked invulnerability",
+   "category": "Encounter goals and vulnerability",
+   "summary": "The boss ignores normal damage until a finite set of visible protection objectives is complete, then opens for a timed damage window.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/objective-linked-invulnerability/",
+   "profile": {
+    "geometry": [
+     "entity",
+     "arena",
+     "target"
+    ],
+    "signal": [
+     "state",
+     "marker",
+     "environment"
+    ],
+    "response": [
+     "interact",
+     "attack",
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "telegraphing",
+     "counterplay",
+     "rule-exception"
+    ]
+   }
+  },
+  {
+   "id": "burrow-and-emerge",
+   "title": "Burrow and emerge",
+   "category": "Body and melee",
+   "summary": "The boss leaves direct interaction.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/burrow-and-emerge/",
+   "profile": {
+    "geometry": [
+     "zone"
+    ],
+    "signal": [
+     "marker",
+     "environment"
+    ],
+    "response": [
+     "dodge",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "counterplay",
+     "commitment"
+    ]
+   }
+  },
+  {
+   "id": "marked-area-strike",
+   "title": "Marked-area strike",
+   "category": "Zones and traps",
+   "summary": "The boss marks a region first and damages it after a delay.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/marked-area-strike/",
+   "profile": {
+    "geometry": [
+     "zone"
+    ],
+    "signal": [
+     "marker"
+    ],
+    "response": [
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "counterplay",
+     "access-paths"
+    ]
+   }
+  },
+  {
+   "id": "beat-synced-attack",
+   "title": "Beat-synced attack",
+   "category": "Space, movement, and perception",
+   "summary": "An attack lands on a known position in an audible, visible rhythm whose clock persists across the boss's actions.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/beat-synced-attack/",
+   "profile": {
+    "geometry": [
+     "arena",
+     "zone"
+    ],
+    "signal": [
+     "rhythm",
+     "state"
+    ],
+    "response": [
+     "reposition",
+     "dodge",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "rule-exception",
+     "difficulty-rhythm",
+     "telegraphing",
+     "access-paths",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "telegraph",
+   "title": "Telegraph",
+   "category": "Structure and readability",
+   "summary": "A telegraph communicates an upcoming attack’s timing.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/telegraph/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "pose",
+     "marker"
+    ],
+    "response": [
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "progress-clarity",
+     "phase-structure",
+     "difficulty-rhythm",
+     "context-and-sequence"
+    ]
+   }
+  },
+  {
+   "id": "tower-soak",
+   "title": "Tower soak",
+   "category": "Cooperative coordination",
+   "summary": "A fixed point checks how many living players occupy it when the timer ends; a missed count changes the whole group's outcome.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/tower-soak/",
+   "profile": {
+    "geometry": [
+     "zone"
+    ],
+    "signal": [
+     "marker",
+     "rhythm"
+    ],
+    "response": [
+     "coordinate",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "counterplay",
+     "threat-geometry",
+     "risk-reward",
+     "difficulty-rhythm",
+     "progress-clarity"
+    ]
+   }
+  },
+  {
+   "id": "encounter-specific-tool",
+   "title": "Encounter-specific tool",
+   "category": "Encounter goals and vulnerability",
+   "summary": "The encounter grants or activates a portable tool whose rule-specific action is unusually effective against this boss.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/encounter-specific-tool/",
+   "profile": {
+    "geometry": [
+     "entity",
+     "line",
+     "arena"
+    ],
+    "signal": [
+     "environment",
+     "state",
+     "trajectory"
+    ],
+    "response": [
+     "interact",
+     "reposition",
+     "attack",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "encounter-purpose",
+     "player-expression",
+     "counterplay",
+     "progress-clarity",
+     "risk-reward"
+    ]
+   }
+  },
+  {
+   "id": "posture-stagger-gauge",
+   "title": "Posture stagger gauge",
+   "category": "Encounter goals and vulnerability",
+   "summary": "Authored attacks and counters pressure a separate posture gauge; a break opens a bounded critical state that only an explicit finisher can consume.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/posture-stagger-gauge/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "state",
+     "marker",
+     "rhythm"
+    ],
+    "response": [
+     "attack",
+     "counter",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "risk-reward",
+     "commitment",
+     "counterplay",
+     "difficulty-rhythm"
+    ]
+   }
+  },
+  {
+   "id": "ally-theft",
+   "title": "Ally theft and charm",
+   "category": "States, resources, and scaling",
+   "summary": "The boss temporarily takes control of a player-owned helper or party member and turns that ally’s readable abilities against its former owner.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ally-theft/",
+   "profile": {
+    "geometry": [
+     "entity",
+     "line",
+     "target"
+    ],
+    "signal": [
+     "marker",
+     "state"
+    ],
+    "response": [
+     "interrupt",
+     "manage",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "counterplay",
+     "player-expression",
+     "risk-reward",
+     "rule-exception"
+    ]
+   }
+  },
+  {
+   "id": "moving-hazard",
+   "title": "Moving hazard",
+   "category": "Arena",
+   "summary": "A persistent dangerous area travels through the arena, making the player plan against its future footprint rather than its starting position.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/moving-hazard/",
+   "profile": {
+    "geometry": [
+     "arena"
+    ],
+    "signal": [
+     "environment"
+    ],
+    "response": [
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "difficulty-rhythm",
+     "telegraphing",
+     "commitment",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "knockback",
+   "title": "Knockback",
+   "category": "Arena",
+   "summary": "A hit displaces the player.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/knockback/",
+   "profile": {
+    "geometry": [
+     "line",
+     "arena"
+    ],
+    "signal": [
+     "environment"
+    ],
+    "response": [
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "difficulty-rhythm",
+     "counterplay",
+     "access-paths",
+     "risk-reward"
+    ]
+   }
+  },
+  {
+   "id": "ability-lock",
+   "title": "Ability or healing lock",
+   "category": "States, resources, and scaling",
+   "summary": "A marked contact temporarily rejects one named action while movement and the rest of the player kit remain available.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ability-lock/",
+   "profile": {
+    "geometry": [
+     "radial",
+     "target"
+    ],
+    "signal": [
+     "state",
+     "marker"
+    ],
+    "response": [
+     "dodge",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "counterplay",
+     "rule-exception",
+     "risk-reward",
+     "telegraphing"
+    ]
+   }
+  },
+  {
+   "id": "debuff-handoff",
+   "title": "Debuff handoff",
+   "category": "Cooperative coordination",
+   "summary": "A marked player transfers a harmful timed state through deliberate contact before it expires.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/debuff-handoff/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "marker"
+    ],
+    "response": [
+     "coordinate",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "counterplay",
+     "difficulty-rhythm",
+     "risk-reward",
+     "progress-clarity"
+    ]
+   }
+  },
+  {
+   "id": "cover-line-of-sight",
+   "title": "Cover and line of sight",
+   "category": "Space, movement, and perception",
+   "summary": "A physical object creates safety by blocking the line between a directional threat and the player.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/cover-line-of-sight/",
+   "profile": {
+    "geometry": [
+     "line",
+     "arena"
+    ],
+    "signal": [
+     "marker",
+     "environment",
+     "state"
+    ],
+    "response": [
+     "reposition",
+     "interact",
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "rule-exception",
+     "telegraphing",
+     "access-paths",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "baited-self-hit",
+   "title": "Baited self-hit",
+   "category": "Encounter goals and vulnerability",
+   "summary": "The player places or exposes a valid hazard, baits a committed boss action through it, and turns the boss's own resolution into damage or stagger.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/baited-self-hit/",
+   "profile": {
+    "geometry": [
+     "line",
+     "zone",
+     "target"
+    ],
+    "signal": [
+     "marker",
+     "trajectory",
+     "state"
+    ],
+    "response": [
+     "reposition",
+     "manage",
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "commitment",
+     "counterplay",
+     "risk-reward",
+     "progress-clarity"
+    ]
+   }
+  },
+  {
+   "id": "decoy",
+   "title": "Decoy",
+   "category": "Additional targets",
+   "summary": "The boss presents a convincing false target, so the player must identify which body can advance the fight before committing an attack.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/decoy/",
+   "profile": {
+    "geometry": [
+     "entity",
+     "target"
+    ],
+    "signal": [
+     "state"
+    ],
+    "response": [
+     "attack",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "player-expression",
+     "counterplay",
+     "telegraphing",
+     "commitment"
+    ]
+   }
+  },
+  {
+   "id": "teleport",
+   "title": "Teleport",
+   "category": "Space, movement, and perception",
+   "summary": "A teleport removes the boss from one position and restores it at another without dangerous travel between the two points.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/teleport/",
+   "profile": {
+    "geometry": [
+     "target",
+     "arena"
+    ],
+    "signal": [
+     "marker",
+     "environment"
+    ],
+    "response": [
+     "reposition",
+     "interact"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "rule-exception",
+     "telegraphing",
+     "commitment",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "interruptible-wind-up",
+   "title": "Interruptible wind-up",
+   "category": "Defense",
+   "summary": "A marked wind-up can be cancelled by a qualifying player action before its deadline.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/interruptible-wind-up/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "pose",
+     "state"
+    ],
+    "response": [
+     "interrupt"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "counterplay",
+     "risk-reward",
+     "telegraphing",
+     "rule-exception"
+    ]
+   }
+  },
+  {
+   "id": "homing-projectile",
+   "title": "Homing projectile",
+   "category": "Targeting and rhythm",
+   "summary": "A projectile adjusts its heading toward the player after launch.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/homing-projectile/",
+   "profile": {
+    "geometry": [
+     "target",
+     "line"
+    ],
+    "signal": [
+     "trajectory"
+    ],
+    "response": [
+     "dodge",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "commitment",
+     "difficulty-rhythm",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "escape-phase",
+   "title": "Escape phase",
+   "category": "Space, movement, and perception",
+   "summary": "An escape phase gives the boss a destination and consequence outside ordinary combat. The player must interrupt, pursue, or accept the clearly stated result.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/escape-phase/",
+   "profile": {
+    "geometry": [
+     "entity",
+     "arena"
+    ],
+    "signal": [
+     "marker",
+     "state"
+    ],
+    "response": [
+     "reposition",
+     "interrupt"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "rule-exception",
+     "encounter-purpose",
+     "progress-clarity",
+     "counterplay",
+     "risk-reward"
+    ]
+   }
+  },
+  {
+   "id": "entity-tether",
+   "title": "Entity tether",
+   "category": "Cooperative coordination",
+   "summary": "A visible bond makes two entities' movement interdependent; crossing its stated limit changes the outcome for both.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/entity-tether/",
+   "profile": {
+    "geometry": [
+     "line"
+    ],
+    "signal": [
+     "state"
+    ],
+    "response": [
+     "coordinate",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "counterplay",
+     "threat-geometry",
+     "risk-reward",
+     "difficulty-rhythm",
+     "progress-clarity"
+    ]
+   }
+  },
+  {
+   "id": "relocated-arena",
+   "title": "Nested / relocated arena",
+   "category": "Space, movement, and perception",
+   "summary": "A relocated arena transfers the active boss fight into another playable space without ending or silently rebuilding the encounter.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/relocated-arena/",
+   "profile": {
+    "geometry": [
+     "arena"
+    ],
+    "signal": [
+     "environment",
+     "state"
+    ],
+    "response": [
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "rule-exception",
+     "phase-structure",
+     "progress-clarity",
+     "dramatic-framing"
+    ]
+   }
+  },
+  {
+   "id": "boss-as-terrain",
+   "title": "Boss as terrain",
+   "category": "Space, movement, and perception",
+   "summary": "The player traverses the boss's body, and access to the damage point depends on a readable route and reliable holding rules.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/boss-as-terrain/",
+   "profile": {
+    "geometry": [
+     "entity",
+     "arena"
+    ],
+    "signal": [
+     "marker",
+     "state"
+    ],
+    "response": [
+     "reposition",
+     "interact",
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "rule-exception",
+     "access-paths",
+     "risk-reward",
+     "dramatic-framing"
+    ]
+   }
+  },
+  {
+   "id": "charge",
+   "title": "Charge",
+   "category": "Body and melee",
+   "summary": "The boss aims, locks its direction, and charges forward. It cannot turn after the lock.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/charge/",
+   "profile": {
+    "geometry": [
+     "line"
+    ],
+    "signal": [
+     "pose",
+     "trajectory"
+    ],
+    "response": [
+     "dodge",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "counterplay",
+     "commitment",
+     "risk-reward",
+     "mastery-check"
+    ]
+   }
+  },
+  {
+   "id": "ground-slam",
+   "title": "Ground slam",
+   "category": "Body and melee",
+   "summary": "The boss strikes the floor and sends a readable shockwave outward from the impact point.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ground-slam/",
+   "profile": {
+    "geometry": [
+     "radial"
+    ],
+    "signal": [
+     "pose",
+     "environment"
+    ],
+    "response": [
+     "dodge",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "counterplay",
+     "commitment",
+     "mastery-check"
+    ]
+   }
+  },
+  {
+   "id": "secondary-cues-invisibility",
+   "title": "Invisibility",
+   "category": "Space, movement, and perception",
+   "summary": "The boss hides its primary body signal while bounded environmental, audio, or particle traces preserve position and attack intent.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/secondary-cues-invisibility/",
+   "profile": {
+    "geometry": [
+     "target",
+     "line"
+    ],
+    "signal": [
+     "environment",
+     "state",
+     "marker"
+    ],
+    "response": [
+     "reposition",
+     "dodge",
+     "attack",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "access-paths",
+     "threat-geometry",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "forced-scrolling",
+   "title": "Forced scrolling",
+   "category": "Space, movement, and perception",
+   "summary": "Forced scrolling moves the camera or playable route independently of the player, so maintaining progress becomes a required part of the encounter.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/forced-scrolling/",
+   "profile": {
+    "geometry": [
+     "arena"
+    ],
+    "signal": [
+     "environment",
+     "rhythm"
+    ],
+    "response": [
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "rule-exception",
+     "dramatic-framing",
+     "difficulty-rhythm",
+     "progress-clarity",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "partner-revival",
+   "title": "Partner revival",
+   "category": "Multi-boss relationships",
+   "summary": "A surviving boss can restore a downed partner unless the cast is stopped or the pair is finished within the authored window.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/partner-revival/",
+   "profile": {
+    "geometry": [
+     "entity",
+     "line",
+     "arena"
+    ],
+    "signal": [
+     "state",
+     "pose",
+     "rhythm"
+    ],
+    "response": [
+     "attack",
+     "interrupt",
+     "coordinate"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "context-and-sequence",
+     "progress-clarity",
+     "risk-reward",
+     "difficulty-rhythm",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "ordered-targets",
+   "title": "Ordered targets",
+   "category": "Cooperative coordination",
+   "summary": "The boss marks several targets and strikes them in a visible, committed order.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ordered-targets/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "marker"
+    ],
+    "response": [
+     "coordinate",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "counterplay",
+     "threat-geometry",
+     "difficulty-rhythm",
+     "progress-clarity"
+    ]
+   }
+  },
+  {
+   "id": "shockwave",
+   "title": "Shockwave",
+   "category": "Zones and traps",
+   "summary": "An impact creates a threat that travels across a surface.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/shockwave/",
+   "profile": {
+    "geometry": [
+     "radial",
+     "line"
+    ],
+    "signal": [
+     "pose",
+     "environment"
+    ],
+    "response": [
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "counterplay",
+     "access-paths"
+    ]
+   }
+  },
+  {
+   "id": "shrinking-safe-area",
+   "title": "Shrinking safe area",
+   "category": "Arena",
+   "summary": "Danger advances inward or outward to reduce usable space.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/shrinking-safe-area/",
+   "profile": {
+    "geometry": [
+     "arena"
+    ],
+    "signal": [
+     "environment"
+    ],
+    "response": [
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "difficulty-rhythm",
+     "counterplay",
+     "access-paths",
+     "risk-reward"
+    ]
+   }
+  },
+  {
+   "id": "environmental-weapon",
+   "title": "Environmental weapon",
+   "category": "Encounter goals and vulnerability",
+   "summary": "A fixed arena device must be reached and prepared; its resolved shot, not ordinary weapon damage, advances the encounter.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/environmental-weapon/",
+   "profile": {
+    "geometry": [
+     "entity",
+     "line",
+     "arena"
+    ],
+    "signal": [
+     "environment",
+     "marker",
+     "state"
+    ],
+    "response": [
+     "interact",
+     "reposition",
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "encounter-purpose",
+     "access-paths",
+     "counterplay",
+     "progress-clarity",
+     "risk-reward"
+    ]
+   }
+  },
+  {
+   "id": "party-split",
+   "title": "Party split",
+   "category": "Cooperative coordination",
+   "summary": "The boss divides the group; both teams must finish their own task before everyone can reunite.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/party-split/",
+   "profile": {
+    "geometry": [
+     "arena",
+     "zone"
+    ],
+    "signal": [
+     "marker"
+    ],
+    "response": [
+     "coordinate",
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "counterplay",
+     "difficulty-rhythm",
+     "progress-clarity"
+    ]
+   }
+  },
+  {
+   "id": "scanning-beam",
+   "title": "Scanning beam",
+   "category": "Beams",
+   "summary": "A sustained beam sweeps across space from one side to another.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/scanning-beam/",
+   "profile": {
+    "geometry": [
+     "line"
+    ],
+    "signal": [
+     "marker",
+     "trajectory"
+    ],
+    "response": [
+     "dodge",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "progress-clarity",
+     "commitment",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "pairing-polarity",
+   "title": "Pairing polarity",
+   "category": "Cooperative coordination",
+   "summary": "The boss marks four players; each receiving zone needs exactly one player of each polarity.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/pairing-polarity/",
+   "profile": {
+    "geometry": [
+     "zone",
+     "target"
+    ],
+    "signal": [
+     "marker"
+    ],
+    "response": [
+     "coordinate",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "counterplay",
+     "threat-geometry",
+     "difficulty-rhythm",
+     "progress-clarity"
+    ]
+   }
+  },
+  {
+   "id": "part-break",
+   "title": "Part break",
+   "category": "Defense",
+   "summary": "A targeted boss component is destroyed, visibly disabling its associated attack.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/part-break/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "state"
+    ],
+    "response": [
+     "attack",
+     "interrupt",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "counterplay",
+     "risk-reward",
+     "rule-exception"
+    ]
+   }
+  },
+  {
+   "id": "gaze-check",
+   "title": "Gaze check",
+   "category": "Cooperative coordination",
+   "summary": "A marked source checks which way the player character faces when its gaze resolves.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/gaze-check/",
+   "profile": {
+    "geometry": [
+     "target",
+     "entity"
+    ],
+    "signal": [
+     "marker",
+     "pose"
+    ],
+    "response": [
+     "manage",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "counterplay",
+     "difficulty-rhythm",
+     "progress-clarity"
+    ]
+   }
+  },
+  {
+   "id": "hazard-trail",
+   "title": "Hazard trail",
+   "category": "Zones and traps",
+   "summary": "Movement leaves a temporary dangerous path behind the boss or player.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/hazard-trail/",
+   "profile": {
+    "geometry": [
+     "line",
+     "zone"
+    ],
+    "signal": [
+     "trajectory",
+     "environment"
+    ],
+    "response": [
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "counterplay",
+     "access-paths"
+    ]
+   }
+  },
+  {
+   "id": "platform-destruction",
+   "title": "Platform destruction",
+   "category": "Arena",
+   "summary": "The boss removes or disables pieces of traversable space.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/platform-destruction/",
+   "profile": {
+    "geometry": [
+     "arena"
+    ],
+    "signal": [
+     "environment"
+    ],
+    "response": [
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "difficulty-rhythm",
+     "counterplay",
+     "access-paths",
+     "risk-reward"
+    ]
+   }
+  },
+  {
+   "id": "grab",
+   "title": "Grab",
+   "category": "Body and melee",
+   "summary": "A grab replaces ordinary damage with capture.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/grab/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "pose"
+    ],
+    "response": [
+     "dodge",
+     "interrupt"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "counterplay",
+     "commitment"
+    ]
+   }
+  },
+  {
+   "id": "pull",
+   "title": "Pull",
+   "category": "Arena",
+   "summary": "An announced inward force changes the player's movement and can draw their body into a dangerous center.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/pull/",
+   "profile": {
+    "geometry": [
+     "radial",
+     "arena"
+    ],
+    "signal": [
+     "environment"
+    ],
+    "response": [
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "difficulty-rhythm",
+     "telegraphing",
+     "commitment",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "control-mode-shift",
+   "title": "Control mode shift",
+   "category": "Space, movement, and perception",
+   "summary": "A control mode shift replaces the player's current movement or response grammar with another one during the same encounter.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/control-mode-shift/",
+   "profile": {
+    "geometry": [
+     "arena"
+    ],
+    "signal": [
+     "environment",
+     "state"
+    ],
+    "response": [
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "rule-exception",
+     "progress-clarity",
+     "mastery-check",
+     "dramatic-framing"
+    ]
+   }
+  },
+  {
+   "id": "projectile-rally",
+   "title": "Projectile rally",
+   "category": "Encounter goals and vulnerability",
+   "summary": "Boss and player repeatedly return the same projectile until a missed response resolves the rally.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/projectile-rally/",
+   "profile": {
+    "geometry": [
+     "line",
+     "target"
+    ],
+    "signal": [
+     "trajectory",
+     "rhythm",
+     "state"
+    ],
+    "response": [
+     "counter",
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "counterplay",
+     "difficulty-rhythm",
+     "commitment",
+     "progress-clarity"
+    ]
+   }
+  },
+  {
+   "id": "attack-combination",
+   "title": "Attack combination",
+   "category": "Targeting and rhythm",
+   "summary": "Two or more familiar attacks are sequenced so the first response changes the starting conditions for the next.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/attack-combination/",
+   "profile": {
+    "geometry": [
+     "arena"
+    ],
+    "signal": [
+     "rhythm"
+    ],
+    "response": [
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "commitment",
+     "difficulty-rhythm",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "wind-up",
+   "title": "Wind-up",
+   "category": "Structure and readability",
+   "summary": "A wind-up is a readable pre-action state that gives the player time to identify and answer a pending attack.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/wind-up/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "pose"
+    ],
+    "response": [
+     "interrupt",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "progress-clarity",
+     "phase-structure",
+     "difficulty-rhythm",
+     "commitment",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "landing-jump",
+   "title": "Landing jump",
+   "category": "Body and melee",
+   "summary": "The boss leaps to a committed destination and turns the landing radius into a short radial threat.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/landing-jump/",
+   "profile": {
+    "geometry": [
+     "radial",
+     "zone"
+    ],
+    "signal": [
+     "pose",
+     "marker"
+    ],
+    "response": [
+     "dodge",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "counterplay",
+     "commitment",
+     "risk-reward"
+    ]
+   }
+  },
+  {
+   "id": "target-lock",
+   "title": "Target lock",
+   "category": "Targeting and rhythm",
+   "summary": "The boss selects a player or position.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/target-lock/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "marker"
+    ],
+    "response": [
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "commitment",
+     "difficulty-rhythm",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "summon",
+   "title": "Summon",
+   "category": "Additional targets",
+   "summary": "The boss calls a limited group of helpers, changing priorities without flooding the arena.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/summon/",
+   "profile": {
+    "geometry": [
+     "entity"
+    ],
+    "signal": [
+     "state",
+     "environment"
+    ],
+    "response": [
+     "attack",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "player-expression",
+     "counterplay",
+     "commitment",
+     "risk-reward",
+     "mastery-check"
+    ]
+   }
+  },
+  {
+   "id": "directional-shield",
+   "title": "Directional shield",
+   "category": "Defense",
+   "summary": "A raised shield blocks attacks from a fixed front sector, but an ordinary move around its edge leaves the boss exposed.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/directional-shield/",
+   "profile": {
+    "geometry": [
+     "arc"
+    ],
+    "signal": [
+     "state"
+    ],
+    "response": [
+     "reposition",
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "counterplay",
+     "risk-reward",
+     "telegraphing",
+     "commitment"
+    ]
+   }
+  },
+  {
+   "id": "tank-swap",
+   "title": "Tankbuster and target handoff",
+   "category": "Cooperative coordination",
+   "summary": "A strong hit leaves its recipient vulnerable, so another defender must claim the boss before the repeat.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/tank-swap/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "marker",
+     "pose"
+    ],
+    "response": [
+     "coordinate",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "counterplay",
+     "difficulty-rhythm",
+     "risk-reward",
+     "progress-clarity"
+    ]
+   }
+  },
+  {
+   "id": "recovery",
+   "title": "Recovery",
+   "category": "Structure and readability",
+   "summary": "Recovery is the post-action interval before the boss may choose or start another action.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/recovery/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "state"
+    ],
+    "response": [
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "progress-clarity",
+     "phase-structure",
+     "difficulty-rhythm",
+     "commitment",
+     "counterplay",
+     "risk-reward"
+    ]
+   }
+  },
+  {
+   "id": "sweep",
+   "title": "Arc sweep",
+   "category": "Body and melee",
+   "summary": "The boss anchors one end of an attack and sweeps a dangerous arc across the arena.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/sweep/",
+   "profile": {
+    "geometry": [
+     "arc"
+    ],
+    "signal": [
+     "pose",
+     "trajectory"
+    ],
+    "response": [
+     "dodge",
+     "reposition"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "threat-geometry",
+     "counterplay",
+     "commitment",
+     "risk-reward"
+    ]
+   }
+  },
+  {
+   "id": "converging-threats",
+   "title": "Converging threats",
+   "category": "Arena",
+   "summary": "Separate threats approach one another, narrowing a previously safe region and asking the player to leave it before the overlap.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/converging-threats/",
+   "profile": {
+    "geometry": [
+     "arena"
+    ],
+    "signal": [
+     "environment"
+    ],
+    "response": [
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "threat-geometry",
+     "context-and-sequence",
+     "difficulty-rhythm",
+     "telegraphing",
+     "commitment",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "weak-point",
+   "title": "Weak point",
+   "category": "Defense",
+   "summary": "Damage is concentrated on a specific body part.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/weak-point/",
+   "profile": {
+    "geometry": [
+     "target"
+    ],
+    "signal": [
+     "marker",
+     "state"
+    ],
+    "response": [
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "counterplay",
+     "risk-reward",
+     "player-expression"
+    ]
+   }
+  },
+  {
+   "id": "false-death",
+   "title": "False death and return",
+   "category": "States, resources, and scaling",
+   "summary": "The boss appears defeated, but encounter completion stays pending until a readable revival begins a new phase.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/false-death/",
+   "profile": {
+    "geometry": [
+     "target",
+     "arena",
+     "radial"
+    ],
+    "signal": [
+     "state",
+     "marker",
+     "rhythm"
+    ],
+    "response": [
+     "manage",
+     "reposition",
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "phase-structure",
+     "dramatic-framing",
+     "telegraphing",
+     "rule-exception"
+    ]
+   }
+  },
+  {
+   "id": "interface-interaction",
+   "title": "Interface interaction",
+   "category": "States, resources, and scaling",
+   "summary": "The boss can only be opened, weakened, or answered by using an input channel or system interface outside the player character's ordinary verbs.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/interface-interaction/",
+   "profile": {
+    "geometry": [
+     "target",
+     "entity"
+    ],
+    "signal": [
+     "state",
+     "marker",
+     "environment"
+    ],
+    "response": [
+     "interact",
+     "manage",
+     "counter"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "rule-exception",
+     "progress-clarity",
+     "player-expression",
+     "context-and-sequence",
+     "access-paths"
+    ]
+   }
+  },
+  {
+   "id": "loadout-mirror",
+   "title": "Loadout mirror",
+   "category": "States, resources, and scaling",
+   "summary": "At a declared moment, the boss snapshots selected parts of the player’s build and converts them into a stable encounter package.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/loadout-mirror/",
+   "profile": {
+    "geometry": [
+     "target",
+     "entity"
+    ],
+    "signal": [
+     "state",
+     "marker"
+    ],
+    "response": [
+     "manage",
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "player-expression",
+     "risk-reward",
+     "rule-exception",
+     "progress-clarity",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "moveset-shapeshifting",
+   "title": "Moveset shapeshifting",
+   "category": "States, resources, and scaling",
+   "summary": "The boss changes between complete borrowed movesets, each with its own signals, attacks, movement rules, and recovery.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/moveset-shapeshifting/",
+   "profile": {
+    "geometry": [
+     "arena",
+     "radial",
+     "line"
+    ],
+    "signal": [
+     "state",
+     "rhythm"
+    ],
+    "response": [
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "phase-structure",
+     "difficulty-rhythm",
+     "mastery-check",
+     "progress-clarity",
+     "rule-exception"
+    ]
+   }
+  },
+  {
+   "id": "enrage",
+   "title": "Enrage",
+   "category": "Structure and readability",
+   "summary": "The boss enters a more demanding state after a threshold or time limit.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/enrage/",
+   "profile": {
+    "geometry": [
+     "arena"
+    ],
+    "signal": [
+     "state",
+     "rhythm"
+    ],
+    "response": [
+     "attack",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "progress-clarity",
+     "phase-structure",
+     "difficulty-rhythm",
+     "risk-reward"
+    ]
+   }
+  },
+  {
+   "id": "sound-detection",
+   "title": "Sound detection",
+   "category": "Space, movement, and perception",
+   "summary": "The boss learns a location from audible events instead of reading the player's live position, making noise output part of movement and attack choices.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/sound-detection/",
+   "profile": {
+    "geometry": [
+     "arena",
+     "zone",
+     "target"
+    ],
+    "signal": [
+     "environment",
+     "state",
+     "marker"
+    ],
+    "response": [
+     "manage",
+     "reposition",
+     "attack"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "access-paths",
+     "counterplay",
+     "rule-exception"
+    ]
+   }
+  },
+  {
+   "id": "attack-reflection",
+   "title": "Attack reflection",
+   "category": "Defense",
+   "summary": "A guarded boss reverses an incoming attack, making its return path dangerous to the player.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/attack-reflection/",
+   "profile": {
+    "geometry": [
+     "line"
+    ],
+    "signal": [
+     "state"
+    ],
+    "response": [
+     "counter"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "counterplay",
+     "risk-reward",
+     "rule-exception"
+    ]
+   }
+  },
+  {
+   "id": "survival-phase",
+   "title": "Survival phase",
+   "category": "Structure and readability",
+   "summary": "A survival phase advances when players endure a bounded sequence, timer, or objective rather than reducing boss health.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/survival-phase/",
+   "profile": {
+    "geometry": [
+     "arena"
+    ],
+    "signal": [
+     "state",
+     "rhythm"
+    ],
+    "response": [
+     "dodge",
+     "reposition",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "telegraphing",
+     "progress-clarity",
+     "phase-structure",
+     "difficulty-rhythm",
+     "counterplay"
+    ]
+   }
+  },
+  {
+   "id": "pacifist-resolution",
+   "title": "Pacifist resolution",
+   "category": "Encounter goals and vulnerability",
+   "summary": "The encounter can end without emptying boss health when the player satisfies a visible nonviolent condition and commits to a separate spare action.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/pacifist-resolution/",
+   "profile": {
+    "geometry": [
+     "line",
+     "target",
+     "arena"
+    ],
+    "signal": [
+     "state",
+     "marker",
+     "rhythm"
+    ],
+    "response": [
+     "dodge",
+     "interact",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "encounter-purpose",
+     "player-expression",
+     "progress-clarity",
+     "risk-reward",
+     "rule-exception"
+    ]
+   }
+  },
+  {
+   "id": "run-history-manifestation",
+   "title": "Run-history manifestation",
+   "category": "States, resources, and scaling",
+   "summary": "The encounter turns selected decisions accumulated before the boss into a stable set of enemies, allies, attacks, or rules.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/run-history-manifestation/",
+   "profile": {
+    "geometry": [
+     "entity",
+     "arena",
+     "target"
+    ],
+    "signal": [
+     "state",
+     "marker",
+     "environment"
+    ],
+    "response": [
+     "manage",
+     "reposition",
+     "interact"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "context-and-sequence",
+     "player-expression",
+     "progress-clarity",
+     "risk-reward",
+     "rule-exception"
+    ]
+   }
+  },
+  {
+   "id": "persistent-progress",
+   "title": "Persistent encounter progress",
+   "category": "Encounter goals and vulnerability",
+   "summary": "Completed encounter objectives survive player defeat, so a new attempt resumes from an explicit authored milestone instead of rebuilding the whole fight.",
+   "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/persistent-progress/",
+   "profile": {
+    "geometry": [
+     "target",
+     "arena"
+    ],
+    "signal": [
+     "state",
+     "marker"
+    ],
+    "response": [
+     "attack",
+     "interact",
+     "manage"
+    ],
+    "dimensions": [
+     "2d",
+     "3d"
+    ],
+    "lenses": [
+     "progress-clarity",
+     "phase-structure",
+     "encounter-purpose",
+     "risk-reward",
+     "context-and-sequence"
+    ]
+   }
+  }
+ ],
+ "phases": [
+  {
+   "id": "stage-01",
+   "name": "1 · «У лукоморья дуб зелёный» — Лукоморье: чёрные свечи, Кот-часы",
+   "activationHealthPercent": 100.0,
+   "healthRange": {
+    "minPercent": 91.7,
+    "maxPercent": 100.0
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "objective-linked-invulnerability",
+       "title": "Objective-linked invulnerability",
+       "category": "Encounter goals and vulnerability",
+       "summary": "The boss ignores normal damage until a finite set of visible protection objectives is complete, then opens for a timed damage window.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/objective-linked-invulnerability/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "arena",
+         "target"
+        ],
+        "signal": [
+         "state",
+         "marker",
+         "environment"
+        ],
+        "response": [
+         "interact",
+         "attack",
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "telegraphing",
+         "counterplay",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "burrow-and-emerge",
+       "title": "Burrow and emerge",
+       "category": "Body and melee",
+       "summary": "The boss leaves direct interaction.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/burrow-and-emerge/",
+       "profile": {
+        "geometry": [
+         "zone"
+        ],
+        "signal": [
+         "marker",
+         "environment"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "commitment"
+        ]
+       }
+      },
+      {
+       "id": "marked-area-strike",
+       "title": "Marked-area strike",
+       "category": "Zones and traps",
+       "summary": "The boss marks a region first and damages it after a delay.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/marked-area-strike/",
+       "profile": {
+        "geometry": [
+         "zone"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "access-paths"
+        ]
+       }
+      },
+      {
+       "id": "beat-synced-attack",
+       "title": "Beat-synced attack",
+       "category": "Space, movement, and perception",
+       "summary": "An attack lands on a known position in an audible, visible rhythm whose clock persists across the boss's actions.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/beat-synced-attack/",
+       "profile": {
+        "geometry": [
+         "arena",
+         "zone"
+        ],
+        "signal": [
+         "rhythm",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "dodge",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "difficulty-rhythm",
+         "telegraphing",
+         "access-paths",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "telegraph",
+       "title": "Telegraph",
+       "category": "Structure and readability",
+       "summary": "A telegraph communicates an upcoming attack’s timing.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/telegraph/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "pose",
+         "marker"
+        ],
+        "response": [
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "progress-clarity",
+         "phase-structure",
+         "difficulty-rhythm",
+         "context-and-sequence"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "tower-soak",
+       "title": "Tower soak",
+       "category": "Cooperative coordination",
+       "summary": "A fixed point checks how many living players occupy it when the timer ends; a missed count changes the whole group's outcome.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/tower-soak/",
+       "profile": {
+        "geometry": [
+         "zone"
+        ],
+        "signal": [
+         "marker",
+         "rhythm"
+        ],
+        "response": [
+         "coordinate",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "counterplay",
+         "threat-geometry",
+         "risk-reward",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "encounter-specific-tool",
+       "title": "Encounter-specific tool",
+       "category": "Encounter goals and vulnerability",
+       "summary": "The encounter grants or activates a portable tool whose rule-specific action is unusually effective against this boss.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/encounter-specific-tool/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "state",
+         "trajectory"
+        ],
+        "response": [
+         "interact",
+         "reposition",
+         "attack",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "encounter-purpose",
+         "player-expression",
+         "counterplay",
+         "progress-clarity",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "posture-stagger-gauge",
+       "title": "Posture stagger gauge",
+       "category": "Encounter goals and vulnerability",
+       "summary": "Authored attacks and counters pressure a separate posture gauge; a break opens a bounded critical state that only an explicit finisher can consume.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/posture-stagger-gauge/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "state",
+         "marker",
+         "rhythm"
+        ],
+        "response": [
+         "attack",
+         "counter",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "risk-reward",
+         "commitment",
+         "counterplay",
+         "difficulty-rhythm"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-02",
+   "name": "2 · «Там леший бродит» — Лукоморье: ключ и искорка, Леший",
+   "activationHealthPercent": 91.7,
+   "healthRange": {
+    "minPercent": 83.3,
+    "maxPercent": 91.7
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "ally-theft",
+       "title": "Ally theft and charm",
+       "category": "States, resources, and scaling",
+       "summary": "The boss temporarily takes control of a player-owned helper or party member and turns that ally’s readable abilities against its former owner.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ally-theft/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "target"
+        ],
+        "signal": [
+         "marker",
+         "state"
+        ],
+        "response": [
+         "interrupt",
+         "manage",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "player-expression",
+         "risk-reward",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "moving-hazard",
+       "title": "Moving hazard",
+       "category": "Arena",
+       "summary": "A persistent dangerous area travels through the arena, making the player plan against its future footprint rather than its starting position.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/moving-hazard/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "difficulty-rhythm",
+         "telegraphing",
+         "commitment",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "knockback",
+       "title": "Knockback",
+       "category": "Arena",
+       "summary": "A hit displaces the player.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/knockback/",
+       "profile": {
+        "geometry": [
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "environment"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "difficulty-rhythm",
+         "counterplay",
+         "access-paths",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "marked-area-strike",
+       "title": "Marked-area strike",
+       "category": "Zones and traps",
+       "summary": "The boss marks a region first and damages it after a delay.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/marked-area-strike/",
+       "profile": {
+        "geometry": [
+         "zone"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "access-paths"
+        ]
+       }
+      },
+      {
+       "id": "burrow-and-emerge",
+       "title": "Burrow and emerge",
+       "category": "Body and melee",
+       "summary": "The boss leaves direct interaction.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/burrow-and-emerge/",
+       "profile": {
+        "geometry": [
+         "zone"
+        ],
+        "signal": [
+         "marker",
+         "environment"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "commitment"
+        ]
+       }
+      },
+      {
+       "id": "ability-lock",
+       "title": "Ability or healing lock",
+       "category": "States, resources, and scaling",
+       "summary": "A marked contact temporarily rejects one named action while movement and the rest of the player kit remain available.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ability-lock/",
+       "profile": {
+        "geometry": [
+         "radial",
+         "target"
+        ],
+        "signal": [
+         "state",
+         "marker"
+        ],
+        "response": [
+         "dodge",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "counterplay",
+         "rule-exception",
+         "risk-reward",
+         "telegraphing"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "debuff-handoff",
+       "title": "Debuff handoff",
+       "category": "Cooperative coordination",
+       "summary": "A marked player transfers a harmful timed state through deliberate contact before it expires.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/debuff-handoff/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "coordinate",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "difficulty-rhythm",
+         "risk-reward",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "cover-line-of-sight",
+       "title": "Cover and line of sight",
+       "category": "Space, movement, and perception",
+       "summary": "A physical object creates safety by blocking the line between a directional threat and the player.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/cover-line-of-sight/",
+       "profile": {
+        "geometry": [
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "marker",
+         "environment",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "interact",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "telegraphing",
+         "access-paths",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "baited-self-hit",
+       "title": "Baited self-hit",
+       "category": "Encounter goals and vulnerability",
+       "summary": "The player places or exposes a valid hazard, baits a committed boss action through it, and turns the boss's own resolution into damage or stagger.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/baited-self-hit/",
+       "profile": {
+        "geometry": [
+         "line",
+         "zone",
+         "target"
+        ],
+        "signal": [
+         "marker",
+         "trajectory",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "manage",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "commitment",
+         "counterplay",
+         "risk-reward",
+         "progress-clarity"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-03",
+   "name": "3 · «Там лес и дол видений полны» — Лукоморье: мороки, Кикимора",
+   "activationHealthPercent": 83.3,
+   "healthRange": {
+    "minPercent": 75.0,
+    "maxPercent": 83.3
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "decoy",
+       "title": "Decoy",
+       "category": "Additional targets",
+       "summary": "The boss presents a convincing false target, so the player must identify which body can advance the fight before committing an attack.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/decoy/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "target"
+        ],
+        "signal": [
+         "state"
+        ],
+        "response": [
+         "attack",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "player-expression",
+         "counterplay",
+         "telegraphing",
+         "commitment"
+        ]
+       }
+      },
+      {
+       "id": "teleport",
+       "title": "Teleport",
+       "category": "Space, movement, and perception",
+       "summary": "A teleport removes the boss from one position and restores it at another without dangerous travel between the two points.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/teleport/",
+       "profile": {
+        "geometry": [
+         "target",
+         "arena"
+        ],
+        "signal": [
+         "marker",
+         "environment"
+        ],
+        "response": [
+         "reposition",
+         "interact"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "telegraphing",
+         "commitment",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "interruptible-wind-up",
+       "title": "Interruptible wind-up",
+       "category": "Defense",
+       "summary": "A marked wind-up can be cancelled by a qualifying player action before its deadline.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/interruptible-wind-up/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "pose",
+         "state"
+        ],
+        "response": [
+         "interrupt"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "counterplay",
+         "risk-reward",
+         "telegraphing",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "homing-projectile",
+       "title": "Homing projectile",
+       "category": "Targeting and rhythm",
+       "summary": "A projectile adjusts its heading toward the player after launch.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/homing-projectile/",
+       "profile": {
+        "geometry": [
+         "target",
+         "line"
+        ],
+        "signal": [
+         "trajectory"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "commitment",
+         "difficulty-rhythm",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "escape-phase",
+       "title": "Escape phase",
+       "category": "Space, movement, and perception",
+       "summary": "An escape phase gives the boss a destination and consequence outside ordinary combat. The player must interrupt, pursue, or accept the clearly stated result.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/escape-phase/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "arena"
+        ],
+        "signal": [
+         "marker",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "interrupt"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "encounter-purpose",
+         "progress-clarity",
+         "counterplay",
+         "risk-reward"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "entity-tether",
+       "title": "Entity tether",
+       "category": "Cooperative coordination",
+       "summary": "A visible bond makes two entities' movement interdependent; crossing its stated limit changes the outcome for both.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/entity-tether/",
+       "profile": {
+        "geometry": [
+         "line"
+        ],
+        "signal": [
+         "state"
+        ],
+        "response": [
+         "coordinate",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "counterplay",
+         "threat-geometry",
+         "risk-reward",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "encounter-specific-tool",
+       "title": "Encounter-specific tool",
+       "category": "Encounter goals and vulnerability",
+       "summary": "The encounter grants or activates a portable tool whose rule-specific action is unusually effective against this boss.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/encounter-specific-tool/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "state",
+         "trajectory"
+        ],
+        "response": [
+         "interact",
+         "reposition",
+         "attack",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "encounter-purpose",
+         "player-expression",
+         "counterplay",
+         "progress-clarity",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "posture-stagger-gauge",
+       "title": "Posture stagger gauge",
+       "category": "Encounter goals and vulnerability",
+       "summary": "Authored attacks and counters pressure a separate posture gauge; a break opens a bounded critical state that only an explicit finisher can consume.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/posture-stagger-gauge/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "state",
+         "marker",
+         "rhythm"
+        ],
+        "response": [
+         "attack",
+         "counter",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "risk-reward",
+         "commitment",
+         "counterplay",
+         "difficulty-rhythm"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-04",
+   "name": "4 · «Избушка на курьих ножках» — страница мира 1: Яга",
+   "activationHealthPercent": 75.0,
+   "healthRange": {
+    "minPercent": 66.7,
+    "maxPercent": 75.0
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "relocated-arena",
+       "title": "Nested / relocated arena",
+       "category": "Space, movement, and perception",
+       "summary": "A relocated arena transfers the active boss fight into another playable space without ending or silently rebuilding the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/relocated-arena/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "phase-structure",
+         "progress-clarity",
+         "dramatic-framing"
+        ]
+       }
+      },
+      {
+       "id": "boss-as-terrain",
+       "title": "Boss as terrain",
+       "category": "Space, movement, and perception",
+       "summary": "The player traverses the boss's body, and access to the damage point depends on a readable route and reliable holding rules.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/boss-as-terrain/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "arena"
+        ],
+        "signal": [
+         "marker",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "interact",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "access-paths",
+         "risk-reward",
+         "dramatic-framing"
+        ]
+       }
+      },
+      {
+       "id": "charge",
+       "title": "Charge",
+       "category": "Body and melee",
+       "summary": "The boss aims, locks its direction, and charges forward. It cannot turn after the lock.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/charge/",
+       "profile": {
+        "geometry": [
+         "line"
+        ],
+        "signal": [
+         "pose",
+         "trajectory"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "commitment",
+         "risk-reward",
+         "mastery-check"
+        ]
+       }
+      },
+      {
+       "id": "ground-slam",
+       "title": "Ground slam",
+       "category": "Body and melee",
+       "summary": "The boss strikes the floor and sends a readable shockwave outward from the impact point.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ground-slam/",
+       "profile": {
+        "geometry": [
+         "radial"
+        ],
+        "signal": [
+         "pose",
+         "environment"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "commitment",
+         "mastery-check"
+        ]
+       }
+      },
+      {
+       "id": "secondary-cues-invisibility",
+       "title": "Invisibility",
+       "category": "Space, movement, and perception",
+       "summary": "The boss hides its primary body signal while bounded environmental, audio, or particle traces preserve position and attack intent.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/secondary-cues-invisibility/",
+       "profile": {
+        "geometry": [
+         "target",
+         "line"
+        ],
+        "signal": [
+         "environment",
+         "state",
+         "marker"
+        ],
+        "response": [
+         "reposition",
+         "dodge",
+         "attack",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "access-paths",
+         "threat-geometry",
+         "counterplay"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "entity-tether",
+       "title": "Entity tether",
+       "category": "Cooperative coordination",
+       "summary": "A visible bond makes two entities' movement interdependent; crossing its stated limit changes the outcome for both.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/entity-tether/",
+       "profile": {
+        "geometry": [
+         "line"
+        ],
+        "signal": [
+         "state"
+        ],
+        "response": [
+         "coordinate",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "counterplay",
+         "threat-geometry",
+         "risk-reward",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "tower-soak",
+       "title": "Tower soak",
+       "category": "Cooperative coordination",
+       "summary": "A fixed point checks how many living players occupy it when the timer ends; a missed count changes the whole group's outcome.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/tower-soak/",
+       "profile": {
+        "geometry": [
+         "zone"
+        ],
+        "signal": [
+         "marker",
+         "rhythm"
+        ],
+        "response": [
+         "coordinate",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "counterplay",
+         "threat-geometry",
+         "risk-reward",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "forced-scrolling",
+       "title": "Forced scrolling",
+       "category": "Space, movement, and perception",
+       "summary": "Forced scrolling moves the camera or playable route independently of the player, so maintaining progress becomes a required part of the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/forced-scrolling/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "rhythm"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "dramatic-framing",
+         "difficulty-rhythm",
+         "progress-clarity",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "partner-revival",
+       "title": "Partner revival",
+       "category": "Multi-boss relationships",
+       "summary": "A surviving boss can restore a downed partner unless the cast is stopped or the pair is finished within the authored window.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/partner-revival/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "state",
+         "pose",
+         "rhythm"
+        ],
+        "response": [
+         "attack",
+         "interrupt",
+         "coordinate"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "context-and-sequence",
+         "progress-clarity",
+         "risk-reward",
+         "difficulty-rhythm",
+         "counterplay"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-05",
+   "name": "5 · «Там о заре прихлынут волны» — страница мира 2: Водяной, Садко, Рыба-кит",
+   "activationHealthPercent": 66.7,
+   "healthRange": {
+    "minPercent": 58.3,
+    "maxPercent": 66.7
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "relocated-arena",
+       "title": "Nested / relocated arena",
+       "category": "Space, movement, and perception",
+       "summary": "A relocated arena transfers the active boss fight into another playable space without ending or silently rebuilding the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/relocated-arena/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "phase-structure",
+         "progress-clarity",
+         "dramatic-framing"
+        ]
+       }
+      },
+      {
+       "id": "ordered-targets",
+       "title": "Ordered targets",
+       "category": "Cooperative coordination",
+       "summary": "The boss marks several targets and strikes them in a visible, committed order.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ordered-targets/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "coordinate",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "threat-geometry",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "beat-synced-attack",
+       "title": "Beat-synced attack",
+       "category": "Space, movement, and perception",
+       "summary": "An attack lands on a known position in an audible, visible rhythm whose clock persists across the boss's actions.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/beat-synced-attack/",
+       "profile": {
+        "geometry": [
+         "arena",
+         "zone"
+        ],
+        "signal": [
+         "rhythm",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "dodge",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "difficulty-rhythm",
+         "telegraphing",
+         "access-paths",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "shockwave",
+       "title": "Shockwave",
+       "category": "Zones and traps",
+       "summary": "An impact creates a threat that travels across a surface.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/shockwave/",
+       "profile": {
+        "geometry": [
+         "radial",
+         "line"
+        ],
+        "signal": [
+         "pose",
+         "environment"
+        ],
+        "response": [
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "access-paths"
+        ]
+       }
+      },
+      {
+       "id": "shrinking-safe-area",
+       "title": "Shrinking safe area",
+       "category": "Arena",
+       "summary": "Danger advances inward or outward to reduce usable space.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/shrinking-safe-area/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "difficulty-rhythm",
+         "counterplay",
+         "access-paths",
+         "risk-reward"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "encounter-specific-tool",
+       "title": "Encounter-specific tool",
+       "category": "Encounter goals and vulnerability",
+       "summary": "The encounter grants or activates a portable tool whose rule-specific action is unusually effective against this boss.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/encounter-specific-tool/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "state",
+         "trajectory"
+        ],
+        "response": [
+         "interact",
+         "reposition",
+         "attack",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "encounter-purpose",
+         "player-expression",
+         "counterplay",
+         "progress-clarity",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "environmental-weapon",
+       "title": "Environmental weapon",
+       "category": "Encounter goals and vulnerability",
+       "summary": "A fixed arena device must be reached and prepared; its resolved shot, not ordinary weapon damage, advances the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/environmental-weapon/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "marker",
+         "state"
+        ],
+        "response": [
+         "interact",
+         "reposition",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "encounter-purpose",
+         "access-paths",
+         "counterplay",
+         "progress-clarity",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "party-split",
+       "title": "Party split",
+       "category": "Cooperative coordination",
+       "summary": "The boss divides the group; both teams must finish their own task before everyone can reunite.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/party-split/",
+       "profile": {
+        "geometry": [
+         "arena",
+         "zone"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "coordinate",
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "forced-scrolling",
+       "title": "Forced scrolling",
+       "category": "Space, movement, and perception",
+       "summary": "Forced scrolling moves the camera or playable route independently of the player, so maintaining progress becomes a required part of the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/forced-scrolling/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "rhythm"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "dramatic-framing",
+         "difficulty-rhythm",
+         "progress-clarity",
+         "counterplay"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-06",
+   "name": "6 · «В темнице там царевна тужит» — страница мира 3: Жар-птица, Соловей, Сирин и Алконост",
+   "activationHealthPercent": 58.3,
+   "healthRange": {
+    "minPercent": 50.0,
+    "maxPercent": 58.3
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "relocated-arena",
+       "title": "Nested / relocated arena",
+       "category": "Space, movement, and perception",
+       "summary": "A relocated arena transfers the active boss fight into another playable space without ending or silently rebuilding the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/relocated-arena/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "phase-structure",
+         "progress-clarity",
+         "dramatic-framing"
+        ]
+       }
+      },
+      {
+       "id": "ally-theft",
+       "title": "Ally theft and charm",
+       "category": "States, resources, and scaling",
+       "summary": "The boss temporarily takes control of a player-owned helper or party member and turns that ally’s readable abilities against its former owner.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ally-theft/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "target"
+        ],
+        "signal": [
+         "marker",
+         "state"
+        ],
+        "response": [
+         "interrupt",
+         "manage",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "player-expression",
+         "risk-reward",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "scanning-beam",
+       "title": "Scanning beam",
+       "category": "Beams",
+       "summary": "A sustained beam sweeps across space from one side to another.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/scanning-beam/",
+       "profile": {
+        "geometry": [
+         "line"
+        ],
+        "signal": [
+         "marker",
+         "trajectory"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "progress-clarity",
+         "commitment",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "knockback",
+       "title": "Knockback",
+       "category": "Arena",
+       "summary": "A hit displaces the player.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/knockback/",
+       "profile": {
+        "geometry": [
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "environment"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "difficulty-rhythm",
+         "counterplay",
+         "access-paths",
+         "risk-reward"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "cover-line-of-sight",
+       "title": "Cover and line of sight",
+       "category": "Space, movement, and perception",
+       "summary": "A physical object creates safety by blocking the line between a directional threat and the player.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/cover-line-of-sight/",
+       "profile": {
+        "geometry": [
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "marker",
+         "environment",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "interact",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "telegraphing",
+         "access-paths",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "pairing-polarity",
+       "title": "Pairing polarity",
+       "category": "Cooperative coordination",
+       "summary": "The boss marks four players; each receiving zone needs exactly one player of each polarity.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/pairing-polarity/",
+       "profile": {
+        "geometry": [
+         "zone",
+         "target"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "coordinate",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "threat-geometry",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "debuff-handoff",
+       "title": "Debuff handoff",
+       "category": "Cooperative coordination",
+       "summary": "A marked player transfers a harmful timed state through deliberate contact before it expires.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/debuff-handoff/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "coordinate",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "difficulty-rhythm",
+         "risk-reward",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "part-break",
+       "title": "Part break",
+       "category": "Defense",
+       "summary": "A targeted boss component is destroyed, visibly disabling its associated attack.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/part-break/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "state"
+        ],
+        "response": [
+         "attack",
+         "interrupt",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "counterplay",
+         "risk-reward",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "forced-scrolling",
+       "title": "Forced scrolling",
+       "category": "Space, movement, and perception",
+       "summary": "Forced scrolling moves the camera or playable route independently of the player, so maintaining progress becomes a required part of the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/forced-scrolling/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "rhythm"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "dramatic-framing",
+         "difficulty-rhythm",
+         "progress-clarity",
+         "counterplay"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-07",
+   "name": "7 · «Следы невиданных зверей» — страница мира 4: Горыныч, Демьян, Лихо",
+   "activationHealthPercent": 50.0,
+   "healthRange": {
+    "minPercent": 41.7,
+    "maxPercent": 50.0
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "relocated-arena",
+       "title": "Nested / relocated arena",
+       "category": "Space, movement, and perception",
+       "summary": "A relocated arena transfers the active boss fight into another playable space without ending or silently rebuilding the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/relocated-arena/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "phase-structure",
+         "progress-clarity",
+         "dramatic-framing"
+        ]
+       }
+      },
+      {
+       "id": "gaze-check",
+       "title": "Gaze check",
+       "category": "Cooperative coordination",
+       "summary": "A marked source checks which way the player character faces when its gaze resolves.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/gaze-check/",
+       "profile": {
+        "geometry": [
+         "target",
+         "entity"
+        ],
+        "signal": [
+         "marker",
+         "pose"
+        ],
+        "response": [
+         "manage",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "ally-theft",
+       "title": "Ally theft and charm",
+       "category": "States, resources, and scaling",
+       "summary": "The boss temporarily takes control of a player-owned helper or party member and turns that ally’s readable abilities against its former owner.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ally-theft/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "target"
+        ],
+        "signal": [
+         "marker",
+         "state"
+        ],
+        "response": [
+         "interrupt",
+         "manage",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "player-expression",
+         "risk-reward",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "hazard-trail",
+       "title": "Hazard trail",
+       "category": "Zones and traps",
+       "summary": "Movement leaves a temporary dangerous path behind the boss or player.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/hazard-trail/",
+       "profile": {
+        "geometry": [
+         "line",
+         "zone"
+        ],
+        "signal": [
+         "trajectory",
+         "environment"
+        ],
+        "response": [
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "access-paths"
+        ]
+       }
+      },
+      {
+       "id": "platform-destruction",
+       "title": "Platform destruction",
+       "category": "Arena",
+       "summary": "The boss removes or disables pieces of traversable space.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/platform-destruction/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "difficulty-rhythm",
+         "counterplay",
+         "access-paths",
+         "risk-reward"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "encounter-specific-tool",
+       "title": "Encounter-specific tool",
+       "category": "Encounter goals and vulnerability",
+       "summary": "The encounter grants or activates a portable tool whose rule-specific action is unusually effective against this boss.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/encounter-specific-tool/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "state",
+         "trajectory"
+        ],
+        "response": [
+         "interact",
+         "reposition",
+         "attack",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "encounter-purpose",
+         "player-expression",
+         "counterplay",
+         "progress-clarity",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "beat-synced-attack",
+       "title": "Beat-synced attack",
+       "category": "Space, movement, and perception",
+       "summary": "An attack lands on a known position in an audible, visible rhythm whose clock persists across the boss's actions.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/beat-synced-attack/",
+       "profile": {
+        "geometry": [
+         "arena",
+         "zone"
+        ],
+        "signal": [
+         "rhythm",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "dodge",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "difficulty-rhythm",
+         "telegraphing",
+         "access-paths",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "entity-tether",
+       "title": "Entity tether",
+       "category": "Cooperative coordination",
+       "summary": "A visible bond makes two entities' movement interdependent; crossing its stated limit changes the outcome for both.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/entity-tether/",
+       "profile": {
+        "geometry": [
+         "line"
+        ],
+        "signal": [
+         "state"
+        ],
+        "response": [
+         "coordinate",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "counterplay",
+         "threat-geometry",
+         "risk-reward",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-08",
+   "name": "8 · «Колдун несёт богатыря» — небо над Лукоморьем: буря на Горыныче",
+   "activationHealthPercent": 41.7,
+   "healthRange": {
+    "minPercent": 33.3,
+    "maxPercent": 41.7
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "grab",
+       "title": "Grab",
+       "category": "Body and melee",
+       "summary": "A grab replaces ordinary damage with capture.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/grab/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "pose"
+        ],
+        "response": [
+         "dodge",
+         "interrupt"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "commitment"
+        ]
+       }
+      },
+      {
+       "id": "homing-projectile",
+       "title": "Homing projectile",
+       "category": "Targeting and rhythm",
+       "summary": "A projectile adjusts its heading toward the player after launch.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/homing-projectile/",
+       "profile": {
+        "geometry": [
+         "target",
+         "line"
+        ],
+        "signal": [
+         "trajectory"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "commitment",
+         "difficulty-rhythm",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "marked-area-strike",
+       "title": "Marked-area strike",
+       "category": "Zones and traps",
+       "summary": "The boss marks a region first and damages it after a delay.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/marked-area-strike/",
+       "profile": {
+        "geometry": [
+         "zone"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "access-paths"
+        ]
+       }
+      },
+      {
+       "id": "pull",
+       "title": "Pull",
+       "category": "Arena",
+       "summary": "An announced inward force changes the player's movement and can draw their body into a dangerous center.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/pull/",
+       "profile": {
+        "geometry": [
+         "radial",
+         "arena"
+        ],
+        "signal": [
+         "environment"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "difficulty-rhythm",
+         "telegraphing",
+         "commitment",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "secondary-cues-invisibility",
+       "title": "Invisibility",
+       "category": "Space, movement, and perception",
+       "summary": "The boss hides its primary body signal while bounded environmental, audio, or particle traces preserve position and attack intent.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/secondary-cues-invisibility/",
+       "profile": {
+        "geometry": [
+         "target",
+         "line"
+        ],
+        "signal": [
+         "environment",
+         "state",
+         "marker"
+        ],
+        "response": [
+         "reposition",
+         "dodge",
+         "attack",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "access-paths",
+         "threat-geometry",
+         "counterplay"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "control-mode-shift",
+       "title": "Control mode shift",
+       "category": "Space, movement, and perception",
+       "summary": "A control mode shift replaces the player's current movement or response grammar with another one during the same encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/control-mode-shift/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "progress-clarity",
+         "mastery-check",
+         "dramatic-framing"
+        ]
+       }
+      },
+      {
+       "id": "forced-scrolling",
+       "title": "Forced scrolling",
+       "category": "Space, movement, and perception",
+       "summary": "Forced scrolling moves the camera or playable route independently of the player, so maintaining progress becomes a required part of the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/forced-scrolling/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "rhythm"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "dramatic-framing",
+         "difficulty-rhythm",
+         "progress-clarity",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "projectile-rally",
+       "title": "Projectile rally",
+       "category": "Encounter goals and vulnerability",
+       "summary": "Boss and player repeatedly return the same projectile until a missed response resolves the rally.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/projectile-rally/",
+       "profile": {
+        "geometry": [
+         "line",
+         "target"
+        ],
+        "signal": [
+         "trajectory",
+         "rhythm",
+         "state"
+        ],
+        "response": [
+         "counter",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "difficulty-rhythm",
+         "commitment",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "party-split",
+       "title": "Party split",
+       "category": "Cooperative coordination",
+       "summary": "The boss divides the group; both teams must finish their own task before everyone can reunite.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/party-split/",
+       "profile": {
+        "geometry": [
+         "arena",
+         "zone"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "coordinate",
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "environmental-weapon",
+       "title": "Environmental weapon",
+       "category": "Encounter goals and vulnerability",
+       "summary": "A fixed arena device must be reached and prepared; its resolved shot, not ordinary weapon damage, advances the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/environmental-weapon/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "marker",
+         "state"
+        ],
+        "response": [
+         "interact",
+         "reposition",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "encounter-purpose",
+         "access-paths",
+         "counterplay",
+         "progress-clarity",
+         "risk-reward"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-09",
+   "name": "9 · «И тридцать витязей прекрасных» — берег: меч Бессмертного, витязи и богатыри",
+   "activationHealthPercent": 33.3,
+   "healthRange": {
+    "minPercent": 25.0,
+    "maxPercent": 33.3
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "attack-combination",
+       "title": "Attack combination",
+       "category": "Targeting and rhythm",
+       "summary": "Two or more familiar attacks are sequenced so the first response changes the starting conditions for the next.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/attack-combination/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "rhythm"
+        ],
+        "response": [
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "commitment",
+         "difficulty-rhythm",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "wind-up",
+       "title": "Wind-up",
+       "category": "Structure and readability",
+       "summary": "A wind-up is a readable pre-action state that gives the player time to identify and answer a pending attack.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/wind-up/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "pose"
+        ],
+        "response": [
+         "interrupt",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "progress-clarity",
+         "phase-structure",
+         "difficulty-rhythm",
+         "commitment",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "landing-jump",
+       "title": "Landing jump",
+       "category": "Body and melee",
+       "summary": "The boss leaps to a committed destination and turns the landing radius into a short radial threat.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/landing-jump/",
+       "profile": {
+        "geometry": [
+         "radial",
+         "zone"
+        ],
+        "signal": [
+         "pose",
+         "marker"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "commitment",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "shockwave",
+       "title": "Shockwave",
+       "category": "Zones and traps",
+       "summary": "An impact creates a threat that travels across a surface.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/shockwave/",
+       "profile": {
+        "geometry": [
+         "radial",
+         "line"
+        ],
+        "signal": [
+         "pose",
+         "environment"
+        ],
+        "response": [
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "access-paths"
+        ]
+       }
+      },
+      {
+       "id": "target-lock",
+       "title": "Target lock",
+       "category": "Targeting and rhythm",
+       "summary": "The boss selects a player or position.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/target-lock/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "commitment",
+         "difficulty-rhythm",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "summon",
+       "title": "Summon",
+       "category": "Additional targets",
+       "summary": "The boss calls a limited group of helpers, changing priorities without flooding the arena.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/summon/",
+       "profile": {
+        "geometry": [
+         "entity"
+        ],
+        "signal": [
+         "state",
+         "environment"
+        ],
+        "response": [
+         "attack",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "player-expression",
+         "counterplay",
+         "commitment",
+         "risk-reward",
+         "mastery-check"
+        ]
+       }
+      },
+      {
+       "id": "directional-shield",
+       "title": "Directional shield",
+       "category": "Defense",
+       "summary": "A raised shield blocks attacks from a fixed front sector, but an ordinary move around its edge leaves the boss exposed.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/directional-shield/",
+       "profile": {
+        "geometry": [
+         "arc"
+        ],
+        "signal": [
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "counterplay",
+         "risk-reward",
+         "telegraphing",
+         "commitment"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "tank-swap",
+       "title": "Tankbuster and target handoff",
+       "category": "Cooperative coordination",
+       "summary": "A strong hit leaves its recipient vulnerable, so another defender must claim the boss before the repeat.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/tank-swap/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "marker",
+         "pose"
+        ],
+        "response": [
+         "coordinate",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "difficulty-rhythm",
+         "risk-reward",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "tower-soak",
+       "title": "Tower soak",
+       "category": "Cooperative coordination",
+       "summary": "A fixed point checks how many living players occupy it when the timer ends; a missed count changes the whole group's outcome.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/tower-soak/",
+       "profile": {
+        "geometry": [
+         "zone"
+        ],
+        "signal": [
+         "marker",
+         "rhythm"
+        ],
+        "response": [
+         "coordinate",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "counterplay",
+         "threat-geometry",
+         "risk-reward",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "recovery",
+       "title": "Recovery",
+       "category": "Structure and readability",
+       "summary": "Recovery is the post-action interval before the boss may choose or start another action.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/recovery/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "state"
+        ],
+        "response": [
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "progress-clarity",
+         "phase-structure",
+         "difficulty-rhythm",
+         "commitment",
+         "counterplay",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "posture-stagger-gauge",
+       "title": "Posture stagger gauge",
+       "category": "Encounter goals and vulnerability",
+       "summary": "Authored attacks and counters pressure a separate posture gauge; a break opens a bounded critical state that only an explicit finisher can consume.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/posture-stagger-gauge/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "state",
+         "marker",
+         "rhythm"
+        ],
+        "response": [
+         "attack",
+         "counter",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "risk-reward",
+         "commitment",
+         "counterplay",
+         "difficulty-rhythm"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-10",
+   "name": "10 · «Там царь Кащей над златом чахнет» — Цепной великан",
+   "activationHealthPercent": 25.0,
+   "healthRange": {
+    "minPercent": 16.7,
+    "maxPercent": 25.0
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "boss-as-terrain",
+       "title": "Boss as terrain",
+       "category": "Space, movement, and perception",
+       "summary": "The player traverses the boss's body, and access to the damage point depends on a readable route and reliable holding rules.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/boss-as-terrain/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "arena"
+        ],
+        "signal": [
+         "marker",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "interact",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "access-paths",
+         "risk-reward",
+         "dramatic-framing"
+        ]
+       }
+      },
+      {
+       "id": "sweep",
+       "title": "Arc sweep",
+       "category": "Body and melee",
+       "summary": "The boss anchors one end of an attack and sweeps a dangerous arc across the arena.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/sweep/",
+       "profile": {
+        "geometry": [
+         "arc"
+        ],
+        "signal": [
+         "pose",
+         "trajectory"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "commitment",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "ground-slam",
+       "title": "Ground slam",
+       "category": "Body and melee",
+       "summary": "The boss strikes the floor and sends a readable shockwave outward from the impact point.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/ground-slam/",
+       "profile": {
+        "geometry": [
+         "radial"
+        ],
+        "signal": [
+         "pose",
+         "environment"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "commitment",
+         "mastery-check"
+        ]
+       }
+      },
+      {
+       "id": "converging-threats",
+       "title": "Converging threats",
+       "category": "Arena",
+       "summary": "Separate threats approach one another, narrowing a previously safe region and asking the player to leave it before the overlap.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/converging-threats/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "environment"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "difficulty-rhythm",
+         "telegraphing",
+         "commitment",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "objective-linked-invulnerability",
+       "title": "Objective-linked invulnerability",
+       "category": "Encounter goals and vulnerability",
+       "summary": "The boss ignores normal damage until a finite set of visible protection objectives is complete, then opens for a timed damage window.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/objective-linked-invulnerability/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "arena",
+         "target"
+        ],
+        "signal": [
+         "state",
+         "marker",
+         "environment"
+        ],
+        "response": [
+         "interact",
+         "attack",
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "telegraphing",
+         "counterplay",
+         "rule-exception"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "weak-point",
+       "title": "Weak point",
+       "category": "Defense",
+       "summary": "Damage is concentrated on a specific body part.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/weak-point/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "marker",
+         "state"
+        ],
+        "response": [
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "counterplay",
+         "risk-reward",
+         "player-expression"
+        ]
+       }
+      },
+      {
+       "id": "part-break",
+       "title": "Part break",
+       "category": "Defense",
+       "summary": "A targeted boss component is destroyed, visibly disabling its associated attack.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/part-break/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "state"
+        ],
+        "response": [
+         "attack",
+         "interrupt",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "counterplay",
+         "risk-reward",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "environmental-weapon",
+       "title": "Environmental weapon",
+       "category": "Encounter goals and vulnerability",
+       "summary": "A fixed arena device must be reached and prepared; its resolved shot, not ordinary weapon damage, advances the encounter.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/environmental-weapon/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "environment",
+         "marker",
+         "state"
+        ],
+        "response": [
+         "interact",
+         "reposition",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "encounter-purpose",
+         "access-paths",
+         "counterplay",
+         "progress-clarity",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "false-death",
+       "title": "False death and return",
+       "category": "States, resources, and scaling",
+       "summary": "The boss appears defeated, but encounter completion stays pending until a readable revival begins a new phase.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/false-death/",
+       "profile": {
+        "geometry": [
+         "target",
+         "arena",
+         "radial"
+        ],
+        "signal": [
+         "state",
+         "marker",
+         "rhythm"
+        ],
+        "response": [
+         "manage",
+         "reposition",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "phase-structure",
+         "dramatic-framing",
+         "telegraphing",
+         "rule-exception"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-11",
+   "name": "11 · «Без имён» — Лукоморье, разделённое страницей",
+   "activationHealthPercent": 16.7,
+   "healthRange": {
+    "minPercent": 8.3,
+    "maxPercent": 16.7
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "interface-interaction",
+       "title": "Interface interaction",
+       "category": "States, resources, and scaling",
+       "summary": "The boss can only be opened, weakened, or answered by using an input channel or system interface outside the player character's ordinary verbs.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/interface-interaction/",
+       "profile": {
+        "geometry": [
+         "target",
+         "entity"
+        ],
+        "signal": [
+         "state",
+         "marker",
+         "environment"
+        ],
+        "response": [
+         "interact",
+         "manage",
+         "counter"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "rule-exception",
+         "progress-clarity",
+         "player-expression",
+         "context-and-sequence",
+         "access-paths"
+        ]
+       }
+      },
+      {
+       "id": "loadout-mirror",
+       "title": "Loadout mirror",
+       "category": "States, resources, and scaling",
+       "summary": "At a declared moment, the boss snapshots selected parts of the player’s build and converts them into a stable encounter package.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/loadout-mirror/",
+       "profile": {
+        "geometry": [
+         "target",
+         "entity"
+        ],
+        "signal": [
+         "state",
+         "marker"
+        ],
+        "response": [
+         "manage",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "player-expression",
+         "risk-reward",
+         "rule-exception",
+         "progress-clarity",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "moveset-shapeshifting",
+       "title": "Moveset shapeshifting",
+       "category": "States, resources, and scaling",
+       "summary": "The boss changes between complete borrowed movesets, each with its own signals, attacks, movement rules, and recovery.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/moveset-shapeshifting/",
+       "profile": {
+        "geometry": [
+         "arena",
+         "radial",
+         "line"
+        ],
+        "signal": [
+         "state",
+         "rhythm"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "phase-structure",
+         "difficulty-rhythm",
+         "mastery-check",
+         "progress-clarity",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "enrage",
+       "title": "Enrage",
+       "category": "Structure and readability",
+       "summary": "The boss enters a more demanding state after a threshold or time limit.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/enrage/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "state",
+         "rhythm"
+        ],
+        "response": [
+         "attack",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "progress-clarity",
+         "phase-structure",
+         "difficulty-rhythm",
+         "risk-reward"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "party-split",
+       "title": "Party split",
+       "category": "Cooperative coordination",
+       "summary": "The boss divides the group; both teams must finish their own task before everyone can reunite.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/party-split/",
+       "profile": {
+        "geometry": [
+         "arena",
+         "zone"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "coordinate",
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "difficulty-rhythm",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "sound-detection",
+       "title": "Sound detection",
+       "category": "Space, movement, and perception",
+       "summary": "The boss learns a location from audible events instead of reading the player's live position, making noise output part of movement and attack choices.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/sound-detection/",
+       "profile": {
+        "geometry": [
+         "arena",
+         "zone",
+         "target"
+        ],
+        "signal": [
+         "environment",
+         "state",
+         "marker"
+        ],
+        "response": [
+         "manage",
+         "reposition",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "access-paths",
+         "counterplay",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "attack-reflection",
+       "title": "Attack reflection",
+       "category": "Defense",
+       "summary": "A guarded boss reverses an incoming attack, making its return path dangerous to the player.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/attack-reflection/",
+       "profile": {
+        "geometry": [
+         "line"
+        ],
+        "signal": [
+         "state"
+        ],
+        "response": [
+         "counter"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "counterplay",
+         "risk-reward",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "baited-self-hit",
+       "title": "Baited self-hit",
+       "category": "Encounter goals and vulnerability",
+       "summary": "The player places or exposes a valid hazard, baits a committed boss action through it, and turns the boss's own resolution into damage or stagger.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/baited-self-hit/",
+       "profile": {
+        "geometry": [
+         "line",
+         "zone",
+         "target"
+        ],
+        "signal": [
+         "marker",
+         "trajectory",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "manage",
+         "attack"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "commitment",
+         "counterplay",
+         "risk-reward",
+         "progress-clarity"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "stage-12",
+   "name": "12 · «Златая цепь на дубе том» — игла, «Репка», Сказ по памяти",
+   "activationHealthPercent": 8.3,
+   "healthRange": {
+    "minPercent": 0,
+    "maxPercent": 8.3
+   },
+   "combinations": [
+    {
+     "id": "koschei",
+     "name": "Кощей",
+     "mechanics": [
+      {
+       "id": "beat-synced-attack",
+       "title": "Beat-synced attack",
+       "category": "Space, movement, and perception",
+       "summary": "An attack lands on a known position in an audible, visible rhythm whose clock persists across the boss's actions.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/beat-synced-attack/",
+       "profile": {
+        "geometry": [
+         "arena",
+         "zone"
+        ],
+        "signal": [
+         "rhythm",
+         "state"
+        ],
+        "response": [
+         "reposition",
+         "dodge",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "rule-exception",
+         "difficulty-rhythm",
+         "telegraphing",
+         "access-paths",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "knockback",
+       "title": "Knockback",
+       "category": "Arena",
+       "summary": "A hit displaces the player.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/knockback/",
+       "profile": {
+        "geometry": [
+         "line",
+         "arena"
+        ],
+        "signal": [
+         "environment"
+        ],
+        "response": [
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "threat-geometry",
+         "context-and-sequence",
+         "difficulty-rhythm",
+         "counterplay",
+         "access-paths",
+         "risk-reward"
+        ]
+       }
+      },
+      {
+       "id": "burrow-and-emerge",
+       "title": "Burrow and emerge",
+       "category": "Body and melee",
+       "summary": "The boss leaves direct interaction.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/burrow-and-emerge/",
+       "profile": {
+        "geometry": [
+         "zone"
+        ],
+        "signal": [
+         "marker",
+         "environment"
+        ],
+        "response": [
+         "dodge",
+         "reposition"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "threat-geometry",
+         "counterplay",
+         "commitment"
+        ]
+       }
+      },
+      {
+       "id": "part-break",
+       "title": "Part break",
+       "category": "Defense",
+       "summary": "A targeted boss component is destroyed, visibly disabling its associated attack.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/part-break/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "state"
+        ],
+        "response": [
+         "attack",
+         "interrupt",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "counterplay",
+         "risk-reward",
+         "rule-exception"
+        ]
+       }
+      }
+     ]
+    },
+    {
+     "id": "coop",
+     "name": "Двое героев и помощник",
+     "mechanics": [
+      {
+       "id": "debuff-handoff",
+       "title": "Debuff handoff",
+       "category": "Cooperative coordination",
+       "summary": "A marked player transfers a harmful timed state through deliberate contact before it expires.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/debuff-handoff/",
+       "profile": {
+        "geometry": [
+         "target"
+        ],
+        "signal": [
+         "marker"
+        ],
+        "response": [
+         "coordinate",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "counterplay",
+         "difficulty-rhythm",
+         "risk-reward",
+         "progress-clarity"
+        ]
+       }
+      },
+      {
+       "id": "survival-phase",
+       "title": "Survival phase",
+       "category": "Structure and readability",
+       "summary": "A survival phase advances when players endure a bounded sequence, timer, or objective rather than reducing boss health.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/survival-phase/",
+       "profile": {
+        "geometry": [
+         "arena"
+        ],
+        "signal": [
+         "state",
+         "rhythm"
+        ],
+        "response": [
+         "dodge",
+         "reposition",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "telegraphing",
+         "progress-clarity",
+         "phase-structure",
+         "difficulty-rhythm",
+         "counterplay"
+        ]
+       }
+      },
+      {
+       "id": "pacifist-resolution",
+       "title": "Pacifist resolution",
+       "category": "Encounter goals and vulnerability",
+       "summary": "The encounter can end without emptying boss health when the player satisfies a visible nonviolent condition and commits to a separate spare action.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/pacifist-resolution/",
+       "profile": {
+        "geometry": [
+         "line",
+         "target",
+         "arena"
+        ],
+        "signal": [
+         "state",
+         "marker",
+         "rhythm"
+        ],
+        "response": [
+         "dodge",
+         "interact",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "encounter-purpose",
+         "player-expression",
+         "progress-clarity",
+         "risk-reward",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "run-history-manifestation",
+       "title": "Run-history manifestation",
+       "category": "States, resources, and scaling",
+       "summary": "The encounter turns selected decisions accumulated before the boss into a stable set of enemies, allies, attacks, or rules.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/run-history-manifestation/",
+       "profile": {
+        "geometry": [
+         "entity",
+         "arena",
+         "target"
+        ],
+        "signal": [
+         "state",
+         "marker",
+         "environment"
+        ],
+        "response": [
+         "manage",
+         "reposition",
+         "interact"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "context-and-sequence",
+         "player-expression",
+         "progress-clarity",
+         "risk-reward",
+         "rule-exception"
+        ]
+       }
+      },
+      {
+       "id": "persistent-progress",
+       "title": "Persistent encounter progress",
+       "category": "Encounter goals and vulnerability",
+       "summary": "Completed encounter objectives survive player defeat, so a new attempt resumes from an explicit authored milestone instead of rebuilding the whole fight.",
+       "url": "https://polyakovin.github.io/boss-fight-atlas/en/mechanics/persistent-progress/",
+       "profile": {
+        "geometry": [
+         "target",
+         "arena"
+        ],
+        "signal": [
+         "state",
+         "marker"
+        ],
+        "response": [
+         "attack",
+         "interact",
+         "manage"
+        ],
+        "dimensions": [
+         "2d",
+         "3d"
+        ],
+        "lenses": [
+         "progress-clarity",
+         "phase-structure",
+         "encounter-purpose",
+         "risk-reward",
+         "context-and-sequence"
+        ]
+       }
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
