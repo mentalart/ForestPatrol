@@ -75,15 +75,15 @@
 
 | id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
-| `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
-| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_95_dev | 10 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_luko thw3a thw3b thw4 tluko tmenu3 |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_99n_yaga11 | 26 | t11 tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekinds1b tf… |
-| `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | — | 1 | tsospot |
-| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_99_kolobok_dance | 0 |  |
-| `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_99b_kidnap14 | 1 | tfin_kidnap14 |
-| `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | — | 1 | thub2 |
-| `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_99b_kidnap14 | 2 | tfin_post tsospot |
-| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 13 | t21 t21x tfin_art tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tfin_k21kelp tfin_k2… |
+| `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
+| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 11 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_kids1 tfin_luko thw3a thw3b thw4 tluko … |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_99n_yaga11 | 27 | t11 tfin_art tfin_cam tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfin_foekinds1b tf… |
+| `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1 | 1 | tsospot |
+| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 1 | tfin_kids1 |
+| `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14 | 1 | tfin_kidnap14 |
+| `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_75_kids_w1 | 1 | thub2 |
+| `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14 | 2 | tfin_post tsospot |
+| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 14 | t21 t21x tfin_art tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tfin_k21kelp tfin_k2… |
 | `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99l_kitezh_magic_water | 7 | t22d t22shot tfin_k22 tfin_k22hint tfin_k22solo tfin_occ tfin_warp |
 | `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 3 | t23f tfin_k23 tfin_k23solo |
 | `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 3 | t24n tfin_k24 tfin_k24solo |
@@ -107,7 +107,7 @@
 | `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | — | 2 | t54 tso54 |
 | `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | — | 1 | t5b1 |
 | `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_94_koschei_tut | 10 | t5b2 tfin_kosh tfin_koshcine tfin_koshcoop tfin_koshfx tfin_koshnat tfin_koshrule tfin_ko… |
-| `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows | 3 | tepi tfin_episolo tfin_epitheatre |
+| `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
 | `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 2 | tfin_juice tzast |
 | `z-a` | Застава · Алёша Попович: колокольная перекличка | `buildZast('a')` · `levels/zastava.js` | — | 1 | tzast |
@@ -130,7 +130,7 @@
 | `engine/09_hud_cine.js` | 112 | HUD / UI · ОБНОВЛЕНИЕ ГЕРОЕВ (визуал) · РОЛИКИ В ДВИЖКЕ (кадры, реплики, события; пропуск — оба дер… |
 | `levels/p_prologue.js` | 317 | УРОВЕНЬ: ПРОЛОГ «ЗВЕНЫШКО» |
 | `levels/w1_common.js` | 74 | ЖИТЕЛИ МИРА 1 И РЕКВИЗИТ (примитивы) |
-| `levels/1-1.js` | 183 | МИР 1 · ДРЕМУЧИЙ ЛЕС · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ» |
+| `levels/1-1.js` | 185 | МИР 1 · ДРЕМУЧИЙ ЛЕС · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ» |
 | `levels/1-2.js` | 509 | 1-2 «КИКИМОРИНО БОЛОТО» |
 | `levels/1-3.js` | 527 | 1-3 «КОЛОБОК» — гусельный уровень |
 | `levels/1-4.js` | 205 | 1-4 «ЛЕШИЙ ВОДИТ» |
@@ -213,7 +213,10 @@
 | `late_70_menu.js` | — | РЕЛИЗ · ГЛАВНОЕ МЕНЮ, ПАУЗА, ГЛАВЫ, НАСТРОЙКИ, УПРАВЛЕНИЕ, ТИТРЫ |
 | `late_71_pads.js` | — | РЕЛИЗ final05 · ДЖОЙСТИКИ В МЕНЮ: два джойстика, Start на паузе, нестандартные раскладки |
 | `late_72_splash.js` | — | РЕЛИЗ · ЗАСТАВКА СТУДИИ «АбадзехLAB · Лаборатория творчества» |
+| `late_74_kids_start.js` | epi, luko | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · СТАРТ, УДОБСТВО, СОХРАННОСТЬ |
+| `late_75_kids_w1.js` | 1-1, 1-2, 1-3, 1-4, 1-5, 1-B, p | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · ПРАВКИ УРОВНЕЙ |
 | `late_79_hints.js` | — | РЕЛИЗ final06 · ПОДСКАЗКИ: ОДНА КАРТОЧКА НА ИГРОКА, БЕЗ ПОВТОРОВ |
+| `late_79b_readaloud.js` | — | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · ЗАДАЧИ ВСЛУХ |
 | `late_80_ui.js` | — | РЕЛИЗ · ИНТЕРФЕЙС: баннер события важнее ленты с названием уровня |
 | `late_81_sfx.js` | — | РЕЛИЗ · ЗВУК: ИНСТРУМЕНТЫ И ЗАНОВО ОЗВУЧЕННЫЕ ЭФФЕКТЫ РОЛИКОВ |
 | `late_82_cine_cam.js` | — | РЕЛИЗ · КИНО 1: РЕЖИССЁР И КАМЕРА РОЛИКОВ |
@@ -310,6 +313,7 @@
 | `levels/4-B/rep_30_gor4b.py` | 4-Б «Змей Горыныч»: Пробой любой головы держится вдвое дольше — 12 секунд (на вдохе — 18) |
 | `levels/4-B/rep_30_gor4b.py` | 4-Б «Змей Горыныч», фаза 3 (late_37_gor_uzda.js): после оглушения всех трёх голов — 50 секунд (было 25); «раз-два-три» … |
 | `levels/1-3/rep_30_kolobok13.py` | 1-3 «Колобок»: последний ролик — пляска; Колобок отдаёт звено Прошке |
+| `levels/1-3/rep_30_kolobok13.py` | 1-3 «Колобок»: мир 1 для детей 7–11 — окно попадания в долю шире на Лёгком (±0,20 с) и Среднем (±0,12 с); Богатырский —… |
 | `levels/1-4/rep_30_leshy14.py` | 1-4 «Леший водит»: ролик «Пелагею увели» — ёлки кружат Пелагею хороводом и вихрем уносят в кольцо |
 | `levels/luko/rep_30_luko.py` | Лукоморье: волшебный стан, карта-рушник и берег — на 6 шагов дальше от дуба |
 | `levels/luko/rep_30_luko.py` | Лукоморье: после «Все уровни открыты» (Ctrl+Alt+], флаг devAll) Кот не встречает «Садитесь — начну рассказ!» |
@@ -346,12 +350,13 @@
 | `24_koschei_proposals.md` | 5-Б2 «Кощей Бессмертный и Златая цепь»: предложения — финал на голову выше 2-Б |
 | `25_solovei_proposals.md` | 3-Б «Соловей-Разбойник»: предложения — бой, эффекты, подход к гнезду |
 | `26_solovei_boss.md` | 3-Б «Соловей-Разбойник»: подход к гнезду и бой по былине |
+| `27_kids_world1.md` | Мир 1 для детей 7–11 лет |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 9 файлов |
+| `changes/` | 10 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 163 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 164 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
