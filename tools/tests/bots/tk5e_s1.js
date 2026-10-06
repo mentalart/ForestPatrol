@@ -31,9 +31,9 @@ ZC.tick(1);
 for(const c of D.candles){for(let k=0;k<6&&c.lit;k++)c.k5hit(c,H(0));}let i=0;for(;i<60*20&&!E5.done[1];i++)TK(1);
 R.push('все свечи погашены — стадия 1 пройдена='+!!E5.done[1]+' | кнопок '+N.bub+' всплывашек '+N.flt);if(!E5.done[1]||N.bub||N.flt)throw new Error(R.join(' | '));CHK(R.join(' | '))
 //@@
-// стадия 2 — подсказки остаются (значки цели внизу)
+// стадия 2 — подсказок тоже нет (значков цели внизу нет)
 for(let i=0;i<60*120&&!(E5.cur===2&&K5.fight&&!ZC.G.cine&&!ZC.G.ui);i++){if(ZC.G.ui&&i%10===0)ZC.press('Space');TK(1);}
-const g=E5.goalPics(0);R.push('стадия 2: cur='+E5.cur+' значки цели='+(/<svg/.test(g)));if(E5.cur!==2||!/<svg/.test(g))throw new Error(R.join(' | '));CHK(R.join(' | '))
+const g=E5.goalPics(0);R.push('стадия 2: cur='+E5.cur+' значки цели='+(/<svg/.test(g)));if(E5.cur!==2||/<svg/.test(g))throw new Error(R.join(' | '));CHK(R.join(' | '))
 //@@
 // одним игроком — так же без подсказок
 N.bub=N.flt=N.card=N.goal=N.tg=0;GO1(true);const sp=ZC.G.soloPi,c=D.candles[0];for(let i=0;i<60*12;i++){PUT(H(sp),c.pos.x+2.6,c.pos.z+1.2);TK(1);ZC.players[sp].petals=3;}
