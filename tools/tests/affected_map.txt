@@ -98,6 +98,7 @@ zlataya_cep/build/late_60_title.js            tfin_menu tfin_splash
 zlataya_cep/build/late_70_menu.js             tfin_menu tfin_pads tfin_pads2 tfin_uisnd tfin_save tfin_dev
 zlataya_cep/build/late_71_pads.js             tfin_pads tfin_pads2 tfin_menu
 zlataya_cep/build/late_72_splash.js           tfin_splash tfin_uisnd tfin_menu tfin_splashclick
+zlataya_cep/build/late_73_companion.js        tfin_companion tfin_menu tfin_save tfin_pads
 zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tsolo smoke
 zlataya_cep/build/late_80_ui.js               tfin_menu tfin_cine
 zlataya_cep/build/late_81_sfx.js              tfin_cine tfin_uisnd
