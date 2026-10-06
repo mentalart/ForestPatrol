@@ -60,6 +60,8 @@ function build4B(){
       banner('Фаза 3 · узда','#ffd76a',3,'на шее видно место для узды: горячую узду вдвоём несите — клещами '+K(0,'item')+' / '+K(1,'item')+' с двух сторон — и на «раз-два-три» нажмите '+K(0,'skill')+' вместе');
       later(1.2,()=>sayP('…Кузьма сказал: клещами возьмёте — не рукой.',3));}}
   function win(){F.phase=4;F.won=true;SFX.horn();shakeAll(0.06,0.5);const from=BR.pos.clone();anim(0.8,k=>{BR.pos.lerpVectors(from,neckSpot,smooth(k));});BR.holders=[null,null];spotM.visible=false;banner('Узда на Змее — вот так!','#ffd76a',2.2,'вдвоём — в один миг');later(1.2,ending);}
+  // Ctrl+Alt+B (релиз, late_95_dev.js): следующая фаза босса — для проверки и показа; вернуть true, если перешли
+  W.bossNext=()=>{if(G.cine||F.won||F.phase<1||F.phase>3)return false;if(F.phase===3)win();else nextPhase(F.phase+1);return true;};
   /* ---------- сюжет ---------- */
   function intro(){HEROES.forEach((h,i)=>{placeOnGround(h,-4.5+i*3,5,0);h.face=Math.PI;});spawnHeads();heads.forEach(e=>{e.state='idle';e.cd=99;});
     play({dur:20,fov:48,camK:2.4,shots:[shot(0,[0,6,10],[0,5,-18]),shot(5,[-7,3,-4],[-5.4,1.4,-9.6]),shot(9,[7,3,-4],[5.4,1.4,-9.6]),shot(13,[0,3.4,-3],[0,1.6,-10.8]),shot(16.6,[-5,2,4],[-7,0.8,3])],

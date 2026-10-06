@@ -479,6 +479,10 @@ build3B=function(){
         {t:2.4,fn:()=>{SL.set(e.k3,'inhale','angry');FIN.k3fx.anim(2.2,k=>{e.setScale(lerp(1.5,2.3,smooth(k)));});tone(200,2,'sine',0.1,600);}},
         {t:5,fn:()=>{SL.set(e.k3,'roar','angry');FX.cl.tear(1,2);shakeAll(0.07,1.2);OAKS.forEach(q=>{q.tb=0.12;later(1.4,()=>{q.tb=0;});});}}],
       end:()=>{s4Start();}});}
+  // Ctrl+Alt+B (late_95_dev.js): следующая стадия босса — для проверки и показа; вернуть true, если перешли
+  W.bossNext=()=>{if(G.cine||F.won)return false;const p=F.phase;
+    if(p===1){F.phase=1.5;later(0.4,scene2);return true;}if(p===2){F.phase=2.5;later(0.4,scene3);return true;}if(p===3){F.phase=3.5;later(0.4,scene4);return true;}
+    if(p===4||p===4.5){win();return true;}return false;};
   function win(){F.won=true;F.phase=5;SFX.horn();banner('Богатырский мах!','#ffd76a',2,'вместе — вдвое сильней');G.stats.bogatyr++;F.slow=0.9;shakeAll(0.09,0.8);FX2.flash(1);try{CINE.moodFlash('#ffe08a',0.3,1.4);}catch(err){}
     FX.feathers(sol.pos.clone().add(new V3(0,1,0)),24);FX.down(sol.pos.clone().add(new V3(0,1,0)),30);later(1.4,ending);}
   function ending(){const e=sol,pe=T.pelageya;bb.style.display='none';FIN.music.play(null);F.phase=5;FX.windSet(null,0);clearWaves();acorns.forEach(q=>{q.g.visible=false;});aim.visible=false;
