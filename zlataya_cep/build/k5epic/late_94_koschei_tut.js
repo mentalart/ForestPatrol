@@ -103,7 +103,7 @@ function k5HintHide(ok){if(K5H.cur&&K5H.cur.quiet){if(ok){const e=K5H.cur.expect
   else{T4.hint.classList.remove('on');K5H.cur=null;k5ArrowsClear();}}
 function k5Ctx(key,fn,cd){if(K5H.cur&&K5H.until>G.time&&!/^g\d/.test(K5H.cur.key))return;if(G.time-(K5H.cd[key]||-99)<(cd||6))return;fn();}
 function k5Cycle(list){if(K5H.cur)return;list[K5H.cycle%list.length]();K5H.cycle++;}
-function k5HintTick(dt){const st=K5.st,now=G.time,E=K5.e,solo=G.solo;if(G.cine||G.state!=='play'||!K5.fight){if(K5H.cur)k5HintHide(false);return;}
+function k5HintTick(dt){const st=K5.st,now=G.time,E=K5.e,solo=G.solo;if(G.cine||G.state!=='play'||!K5.fight||FIN.k5e&&FIN.k5e.noHint&&FIN.k5e.noHint()){if(K5H.cur)k5HintHide(false);return;}
   if(K5.log.length!==K5H.logN){K5H.logN=K5.log.length;K5.lastProg=now;}
   for(const a of K5H.arrows){a.position.copy(k5Tg(a.userData.tgt)).add(new V3(0,0.35*Math.abs(Math.sin(now*4)),0));a.rotation.y+=dt*2.5;}
   if(K5H.cur&&(K5H.cur.quiet||T4.hint&&!T4.hint.classList.contains('ok'))){for(const [pi,a] of K5H.cur.expect)if(t4Tap(pi,a)){k5HintHide(true);break;}}
@@ -113,7 +113,7 @@ function k5HintTick(dt){const st=K5.st,now=G.time,E=K5.e,solo=G.solo;if(G.cine||
   const idle=now-Math.max(K5H.last,K5.lastProg||0,K5.hint0||0);
   const bind=()=>k5Ctx('bind',()=>k5HintShow('bind',{tag:'Спесь сбита!',title:solo?'Ударь рядом с ним!':'Оба — удар рядом с ним!',icon:'n123',text:'Кощей без сил — '+(solo?'удар':'оба ударьте в одну секунду')+': золотая нить сказа!',col:0xffd76a},[E],solo?[[0,'attack','нить']]:[[0,'attack',''],[1,'attack','']],4),5);
   if(st>=2&&st<=4&&E.state==='broken'){bind();return;}
-  if(st===1&&!(FIN.k5e&&FIN.k5e.s1)){const lit=K5.candles.filter(c=>c.lit),bo=W.bolts.find(b=>!b.refl&&b.from&&b.from.kind==='k5candle'&&b.tgt);const soon=K5.candles.filter(c=>!c.lit&&c.relT<6).sort((a,b)=>a.relT-b.relT)[0];
+  if(st===1){const lit=K5.candles.filter(c=>c.lit),bo=W.bolts.find(b=>!b.refl&&b.from&&b.from.kind==='k5candle'&&b.tgt);const soon=K5.candles.filter(c=>!c.lit&&c.relT<6).sort((a,b)=>a.relT-b.relT)[0];
     if(bo)k5Ctx('drop',()=>k5HintShow('drop',{tag:'Щит в последний миг',title:'Капля — обратно в свечу!',icon:'blue',text:'Нажми <b>щит</b>, когда капля долетит, — она вернётся и погасит свечу.',col:0x5ab8ff},[bo.from],[[bo.tgt.player,'guard','щит']],3.4),8);
     else if(soon&&lit.length&&lit.length<6)k5Ctx('hurry',()=>k5HintShow('hurry',{tag:'Скорее!',title:'Свеча загорится через '+Math.ceil(soon.relT)+' с',icon:'clock',text:'Гасите <b>остальные</b>, пока не загорелась погасшая!',col:0xfff2b0},lit,null,4),8);
     else if(K5.zones&&K5.zones.length&&K5.zones.some(z=>k5Heroes().some(h=>hd(h.pos,z.position)<2)))k5Ctx('zone',()=>k5HintShow('zone',{tag:'Осторожно',title:'Красный круг — уходи!',icon:'red',text:'Сюда ударит молния — выйди из круга или <b>кувыркнись</b>.',col:0xff5a4a},null,[[0,'roll','кувырок']].concat(solo?[]:[[1,'roll','кувырок']]),3),9);

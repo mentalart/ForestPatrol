@@ -57,10 +57,10 @@
   CK.on=n=>{CK.live=true;CK.n=n;CK.ph='song';CK.t=0;CK.a=Math.PI/2+0.2;RING.g.visible=true;CK.started=false;locksClear();RING.set(CK.a);};
   CK.off=()=>{CK.live=false;K5.listen=false;locksClear();RING.g.visible=false;theatre.visible=false;note.visible=false;if(CK.ph==='tale'&&E.cur!=null)E.music();CK.ph='song';};
   function songStart(){CK.ph='song';CK.t=0;K5.listen=false;theatre.visible=false;const n=G.solo||CK.n===1?1:2;for(let i=0;i<n;i++)lockMake(Math.PI/2-0.6-i*0.5);E.music();
-    if(!CK.said.song&&CK.n!==1){CK.said.song=true;say('zven','Кот направо — песнь заводит:<br>Кощей в такт с неё колдует! Замки на цепи — сбейте!',3.6,true);}}
+    if(!CK.said.song&&!E.noHint()){CK.said.song=true;say('zven','Кот направо — песнь заводит:<br>Кощей в такт с неё колдует! Замки на цепи — сбейте!',3.6,true);}}
   function taleStart(){CK.ph='tale';CK.t=0;K5.listen=true;theatre.material.map=lub([1,1,1,1,1,2,3,4,4,4,4,4,4][CK.n]||1);theatre.material.needsUpdate=true;theatre.visible=true;
     K5L.music('tale',E.freeCount());if(K5.live&&KB.pos.y<1.2){KB.dazeT=Math.max(KB.dazeT||0,CK.taleDur());KB.state=KB.state==='broken'?'broken':KB.state;}
-    try{KA.pose('slump');}catch(e){}if(!CK.said.tale&&CK.n!==1){CK.said.tale=true;say('zven','Кот налево — сказку говорит!<br>Кощей заслушался — бейте, пока стоит!',3.6,true);}E.log('tale'+CK.n);}
+    try{KA.pose('slump');}catch(e){}if(!CK.said.tale&&!E.noHint()){CK.said.tale=true;say('zven','Кот налево — сказку говорит!<br>Кощей заслушался — бейте, пока стоит!',3.6,true);}E.log('tale'+CK.n);}
   CK.taleDur=()=>G.solo?11:9;
   CK.tick=dt=>{if(!CK.live)return;if(!fighting()){if(K5.listen&&CK.ph==='tale'){/* ролик — сказка ждёт */}return;}
     if(!CK.started){CK.started=true;songStart();}CK.t+=dt;

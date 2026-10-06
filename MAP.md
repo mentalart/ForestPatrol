@@ -246,7 +246,6 @@
 | `k5epic/late_93_koschei_level_p6_epic.js` | — | ---- продолжение build5B2 (k5epic, часть 6): БИТВА В ДВЕНАДЦАТЬ СТАДИЙ — контроллер (docs/27_koschei_epic_proposals.md)… |
 | `k5epic/late_93_koschei_level_p7_hub.js` | — | ---- продолжение build5B2 (k5epic, часть 7): ЛУКОМОРЬЕ — постройки, друзья в чёрных цепях, Кот-часы, помощь друзей ---- |
 | `k5epic/late_93_koschei_level_p8_act1.js` | — | ---- продолжение build5B2 (k5epic, часть 8): АКТ I «ЧЁРНАЯ СТРОКА» — стадии 1–3 и их ролики ---- |
-| `k5epic/late_93_koschei_level_p8a_s1show.js` | — | ---- продолжение build5B2 (k5epic, часть 8а): СТАДИЯ 1 — ПОДСКАЗКИ ПОКАЗОМ: ДВОЙНИК ГЕРОЯ И КНОПКА, БЕЗ ЗНАЧКОВ И СЛОВ … |
 | `k5epic/late_93_koschei_level_p8b_stage3.js` | — | ---- продолжение build5B2 (k5epic, часть 8b): СТАДИЯ 3 «ТАМ ЛЕС И ДОЛ ВИДЕНИЙ ПОЛНЫ» ---- |
 | `k5epic/late_93_koschei_level_p9_pages.js` | — | ---- продолжение build5B2 (k5epic, часть 9): АКТ II «НЕВЕДОМЫЕ ДОРОЖКИ» — страницы-двери, переход в сказку, поездки дом… |
 | `k5epic/late_93_koschei_level_p9b_flights.js` | — | ---- продолжение build5B2 (k5epic, часть 9b): ПОЛЁТЫ ДОМОЙ — ступа Яги (после стадии 4) и Горыныч (после стадии 7) ---- |

@@ -13,7 +13,7 @@
     const p=A.pos.clone().add(new V3(0,1.8,0)),q=B.pos.clone().add(new V3(0,1.8,0)),d=q.clone().sub(p);T.m.position.copy(p).addScaledVector(d,0.5);T.m.scale.set(1,d.length(),1);T.m.quaternion.setFromUnitVectors(new V3(0,1,0),d.normalize());
     T.m.material.opacity=A.lit&&B.lit?0.35:0.5+0.4*Math.sin(G.time*10);T.m.material.color.set(A.lit&&B.lit?0x9a50ff:0xff70a0);}}
   {const _co=candleOff;candleOff=function(e,txt){const was=e.lit;_co(e,txt);if(!was||E.cur!==1||G.solo)return;const j=pairOf(e.idx),P=candles[j];if(!P)return;
-      if(P.lit){e.relT=Math.min(e.relT,6+2*(E.fails[1]||0));}   // напарница зовёт сама: розовое сияние, к ней бежит двойник (p8a)
+      if(P.lit){e.relT=Math.min(e.relT,6+2*(E.fails[1]||0));floatText(P.pos.clone().add(new V3(0,2.9,0)),'и эту — скорей!','#ffb0d0');}
       else{e.relT=Math.max(e.relT,40);P.relT=Math.max(P.relT,40);const T=threads.find(t=>(t.a===e.idx&&t.b===j)||(t.b===e.idx&&t.a===j));if(T){const p=T.m.position.clone();K5L.gold(p,16);k5Flash(p,0xffd76a,2,0.3);}
         const out=PAIRS.filter(([a,b])=>!candles[a].lit&&!candles[b].lit).length;E.oakGreen(out/4*0.5,true);if(!E.said_y){E.said_y=true;barkS(T_.yosha,'yosha','Пару погасили! Дуб полью — пусть зеленеет!',2.2,true);}
         k5Pillar(OAK.clone().setY(0),0x9fe0a0,7,1.4,1.0);}};}
@@ -22,6 +22,7 @@
     tick(dt){threadsTick();if(!K5.fight)return;if(K5.listen)return;ES.lt-=dt;   // удары-буквы — только в песнь
       if(ES.lt<=0){ES.lt=G.solo?11:8.5;const hs=k5Heroes();if(hs.length){const h=hs[Math.floor(rand(0,hs.length))];E.letterAt(Math.random()<0.5?'О':'Х',h);}}},
     end(){threads.forEach(t=>{t.m.visible=false;});},
+    pics:pi=>['two','+','fire','no'],
     goal:pi=>'Погасите <b>чёрные свечи</b> — парами, обе в пару. Кот налево — сказку говорит: Кощей не колдует.',targets:pi=>candles.filter(c=>c.lit).map(c=>c.g)};
   /* ================= стадия 2 «Там леший бродит»: прежние ключи, искорка и природа + скованный Леший ================= */
   // Леший в чёрной цепи ведёт ряды ёлок поперёк поляны; две застёжки ошейника рвёт только Кощеева молния — заманить её к Лешему
