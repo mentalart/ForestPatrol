@@ -73,6 +73,11 @@ function build1B(){
     else for(const pi of[0,1]){const h=active(pi);if(players[pi].downed||h.cling)continue;if(cring.press[pi]!==null||h.guard)shieldBlock(h);else damageHero(h,{kind:'enemy',ref:boss3});
       if(!hit[pi])tip(pi,'Удар по кругу! Кружок над обоими —<br>Щитом '+K(pi,'guard')+' закройтесь вместе, в такт, как стеною!',2.6);}
     shakeAll(0.05,0.3);SFX.whoosh();}
+  // Ctrl+Alt+B (релиз, late_95_dev.js): следующая фаза босса — для проверки и показа; вернуть true, если перешли
+  W.bossNext=()=>{if(G.cine||F.won||F.phase<1)return false;
+    if(F.phase===1){F.head=2;headHit(null);return true;}
+    if(F.phase===2){doubles.forEach(d=>{if(d.state!=='gone'){W.group.remove(d.m.g);d.state='gone';}});startPhase3();return true;}
+    if(F.phase===3&&boss3&&boss3.alive){unravel(boss3);return true;}return false;};
   /* ---------- сюжет ---------- */
   function intro(){F.phase=0;play({dur:9,fov:50,shots:[shot(0,[0,3,2],[0,5,-24]),shot(4,[3,6,-12],[0,7,-24],[1.6,4.2,-16],[0,7.2,-24],3)],
       says:[[0.5,3.2,null,'<i>Леший ростом с ель, борода — мох седой,</i><br><i>Вместо рук — коряги, голос — скрип ветвей над водой.</i>',true],[4.2,3,'leshy','Опять заблудились? Ну-ка, где я?']],
