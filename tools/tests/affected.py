@@ -306,6 +306,9 @@ def analyse(files, base):
                 why.append('прототип: только комментарий в начале (proto/head.html)')
             continue
         m = re.match(r'tools/tests/bots/(\w+)\.js$', f)
+        if m and not os.path.exists(os.path.join(ROOT, f)):
+            why.append('%s — бот удалён' % f)
+            continue
         if m:
             if m.group(1) in REL07 and m.group(1) not in REL:
                 g07.append(m.group(1)) if m.group(1) not in g07 else None

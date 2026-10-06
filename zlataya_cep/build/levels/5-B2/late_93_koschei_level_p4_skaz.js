@@ -25,7 +25,7 @@
         says:[[0.4,3.8,'pelageya',t+'…'],[4.3,2.4,null,'<i>Кощей руку опускает — и слушает, не дыша:</i><br><i>Сказка-то — про него самого, про мальчишку-малыша.</i>',true],[6.8,1.9,'proshka','Дальше, дальше! Не томи —<br>Что там было? Говори!'],[8.9,4.2,'pelageya',t2]],
         events:[{t:0,fn:()=>{hWalk(pe,PEs.x,PEs.z,0.8,Math.PI);k5s('story');storyMotes(()=>pe.pos.clone().add(new V3(0,0.2,0)),4.4,18);}},{t:4.3,fn:()=>{KA.pose('listen',{k:60,c:11});}},
           {t:10.5,fn:()=>{G.flags.names.potap=true;k5s('name');nameBurst(po,0xe0b27a);floatText(po.pos.clone().add(new V3(0,2.6,0)),'Потап','#e0b27a');banner('Имя вернулось: Потап','#e0b27a',2.4);}},{t:10.8,fn:em(po,'joy')}],
-        end:()=>{W.anims.length=0;KA.reset();stageStart(2);}});});}
+        end:()=>{W.anims.length=0;KA.reset();FIN.k5e.flow('skaz1');}});});}
   function trans2(){F.stage='t2';liveBoss(false);KS.g.position.copy(KC);KS.g.rotation.y=0;heroLine(-9);const pr=T.proshka,po=T.potap,yo=T.yosha,pe=T.pelageya;
     const KH=new V3(KC.x,4.15,KC.z),F2=k5Face(KH,0,0.3,3.3,-0.4),F2b=k5Face(KH,0,0.3,2.8,-0.35);
     play({dur:9.4,fov:44,camK:2.4,k5:{iris:true,mood:[COLD,0.12],cues:[[0.15,()=>{CINE.hitstop(3);CINE.punch(-4);CINE.flashDip('#ffe8a0',0.35);}],[4.9,()=>{CINE.flashDip('#e8e0ff',0.4);CINE.trauma(0.3);CINE.mood(DARK,0.18);}],[5.8,()=>CINE.trauma(0.2)]]},
@@ -33,7 +33,7 @@
         MV(1.6,F2.p,F2.l,F2b.p,F2b.l,2.8,{ease:'inOutSine',fov:42,fov2:38,move:'none'}),
         MV(4.4,[KC.x+4,1.0,KC.z+7],[KC.x,4,KC.z],[KC.x+4.4,1.2,KC.z+7.6],[C.x,13,C.z-6],2.2,{ease:'outCubic',fov:56,move:'none'}),
         MV(6.6,[0.8,0.9,-12.4],[0,1.35,-9],[-0.6,0.95,-12.5],[-0.3,1.35,-9],2.8,{ease:'inOutSine',fov:44,move:'none'})],
-      says:[[1.8,3.0,'koschei','Ключи не страшны, и ветер — не беда?<br>Так буря грянет! Тучи, все — сюда!'],[4.6,3.6,null,'<i>Потемнело небо. С моря тучи ползут, как дым,</i><br><i>И над Буяном ветер воет — злым-презлым.</i>',true]],
+      says:[[1.8,3.0,'koschei','Из сказок воротились? Не беда!<br>Так буря грянет! Тучи, все — сюда!'],[4.6,3.6,null,'<i>Потемнело небо. С моря тучи ползут, как дым,</i><br><i>И над Буяном ветер воет — злым-презлым.</i>',true]],
       events:[{t:0.1,fn:()=>{bindBeat();KA.pose('recoil',{snap:true});}},{t:1.7,fn:pose('proud',{antic:0.15})},{t:3.6,fn:pose('castR',{antic:0.25})},
         {t:4.4,fn:()=>{k5StormSet(1);K5.storm=Math.max(K5.storm,0.55);k5s('thunder');}},{t:4.9,fn:()=>{k5Bolt(new V3(C.x+14,0,C.z-10),0xd8b0ff);k5s('bolt');}},{t:5.8,fn:()=>{k5Bolt(new V3(C.x-15,0,C.z-6),0xd8b0ff);k5s('bolt');}},
         {t:6.8,fn:emAll('fear',0.1)},{t:7.4,fn:()=>{hWalk(po,po.pos.x+0.8,po.pos.z-0.8,0.5,Math.PI);ACT.emote(po,'effort',0.1);later(0.5,()=>k5s('stomp'));}},{t:7.6,fn:()=>hWalk(yo,po.pos.x+1.2,po.pos.z+0.6,0.6,Math.PI)}],
@@ -78,7 +78,7 @@
         {t:6.7,fn:()=>{ghost.visible=true;const a=hH(pe),b=hH(pr);anim(0.7,k=>{ghost.position.lerpVectors(a,b,k);ghost.position.y+=Math.sin(k*Math.PI)*1.2;});k5s('orbPass');later(0.7,()=>{k5s('orbHit');k5Flash(b,0xffe08a,1.6,0.3);ACT.emote(pr,'hop');
           const c=b.clone();anim(0.8,k=>{ghost.position.set(c.x,c.y+k*6,c.z);});later(0.8,()=>{FX.sparkle(ghost.position.clone(),10,0xffe08a);ghost.visible=false;});});}},
         {t:8.0,fn:()=>{pe.face=Math.PI;ACT.emote(pr,'nod');}},{t:9.3,fn:()=>{KA.pose('proud');KA.laugh=2.2;later(0.3,()=>k5s('laugh'));}}],
-      end:()=>{W.anims.length=0;KA.reset();k5Del(ghost);stageStart(3);}});}
+      end:()=>{W.anims.length=0;KA.reset();k5Del(ghost);FIN.k5e.flow('trans2b');}});}
   function trans3(){F.stage='t3';liveBoss(false);KS.g.position.copy(KC);KS.g.rotation.y=0;heroLine(-9);const po=T.potap,pr=T.proshka,yo=T.yosha;
     const KH=new V3(KC.x,4.15,KC.z),hand=()=>KS.hand.getWorldPosition(new V3()),POs=new V3(po.pos.x+0.6,0,po.pos.z-1.4),F3=k5Face(hH(pr),Math.PI,0.35,1.7,0),F4=k5Face(new V3(POs.x,1.3,POs.z),Math.PI,-0.5,2.8,-0.1);
     const P2a=[KC.x+2.4,2.2,KC.z+1.6],P2b=[KC.x+1.0,3.4,KC.z+3.3],mid=new V3(0,0,(KC.z-9)/2);
@@ -95,7 +95,7 @@
         {t:4.4,fn:pose('threat')},{t:6.6,fn:em(pr,'fear')},{t:6.4,fn:()=>hWalk(yo,po.pos.x+0.5,po.pos.z+1.0,0.6,Math.PI)},
         {t:8.2,fn:()=>{hWalk(po,POs.x,POs.z,0.5,Math.PI);later(1.5,()=>{T.potap._demoGuard=G.time+2.4;FX.dust(new V3(POs.x,0.05,POs.z),8,0xd8c8a8,0.9);k5s('stomp');});}},{t:9.0,fn:em(po,'pride')},
         {t:10.4,fn:()=>{hWalk(pr,POs.x-1.2,POs.z+1.2,0.6,Math.PI);hWalk(T.pelageya,POs.x+1.2,POs.z+1.1,0.6,Math.PI);}}],
-      end:()=>{W.anims.length=0;KA.reset();KS.armR.rotation.x=0;stageStart(4);}});}
+      end:()=>{W.anims.length=0;KA.reset();KS.armR.rotation.x=0;FIN.k5e.flow('trans3');}});}
   function trans4(){F.stage='t4';liveBoss(false);KS.g.position.copy(KC);KS.g.rotation.y=0;heroLine(-9);const pr=T.proshka,pe=T.pelageya;
     const hand=()=>KS.hand.getWorldPosition(new V3()),ZP=new V3(0.2,2.2,-11.6),F4=k5Face(hH(pr),Math.PI,-0.3,1.8,0),AF=new V3(6,1.2,-19);
     KS.g.updateMatrixWorld(true);const NW=ndl.g.getWorldPosition(new V3()),NG=new V3(NW.x+0.4,0.3,NW.z+1.2);   // куда упадёт игла
@@ -129,7 +129,7 @@
           later(0.6,()=>{k5s('chain');FX.sparks(anvil.position.clone().add(new V3(0,1,0)),10);});later(1.6,()=>{k5s('chain');FX.sparks(anvil.position.clone().add(new V3(0,1,0)),10);});}},
         {t:4.8,fn:()=>{anvil.rotation.z=0;const p=new V3(ANV.x,0.05,ANV.z);FX.dust(p,14,0x9a8a6a,1.2);k5Ring(p,0xffe0a0,0.4,2.6,0.5,0.14);k5s('land');k5s('anvil');}},
         {t:5.0,fn:()=>{pr.face=0.3;}},{t:5.3,fn:()=>{ACT.emote(pr,'pride');FX.sparkle(hH(pr),8,0xffd23a);}}],
-      end:()=>{W.anims.length=0;anvil.position.set(ANV.x,0.9,ANV.z);anvil.rotation.z=0;anvilCyl.x=ANV.x;anvilCyl.z=ANV.z;anvilCyl.maxy=2;stageStart(5);}});}
+      end:()=>{W.anims.length=0;anvil.position.set(ANV.x,0.9,ANV.z);anvil.rotation.z=0;anvilCyl.x=ANV.x;anvilCyl.z=ANV.z;anvilCyl.maxy=2;FIN.k5e.flow('lift');}});}
   function finale(){F.stage='needle';liveBoss(false);const pr=T.proshka,pe=T.pelageya;k5force(0,'proshka');placeOnGround(pr,ANV.x,ANV.z+1.8,0);pr.face=Math.PI;
     const KS0=new V3(ANV.x-2.4,0,ANV.z+0.4);KS.g.position.copy(KS0);KS.g.rotation.y=Math.PI*0.4;k5StormSet(0.35);sword.visible=true;
     const PEs=new V3(ANV.x+1.4,0,ANV.z+3.6),peF=Math.atan2(KS0.x-PEs.x,KS0.z-PEs.z);placeOnGround(pe,PEs.x,PEs.z,0);pe.face=peF;
