@@ -6,7 +6,7 @@
 // иглы с неба, воронка), 4 «Меч Бессмертного» (серии, задержанный замах, прыжок с волной, «око» — кого выбрал; костяные щитники),
 // 5 «Игла» (застёжку из иглы куёт Прошка у наковальни в такт, иглу передают друг другу, Кощей охотится за ней; «Все цепи острова —
 // ко мне!» — три чёрные цепи у наковальни, ветер дует от наковальни, из-под земли лезут руки; три цепи разбиты — Кощей без сил). Спесь сбита — оба бьют рядом с ним: «золотая нить сказа». Сюжетные ролики и Сказ по памяти — из прежнего финала.
-const K5N=['','Чёрные свечи','Ключ и искорка','Буря','Меч Бессмертного','Игла'];
+const K5N=['','Чёрные свечи','Ключ и искорка','Буря','Меч Бессмертного','Игла'];   // прежние этапы: в битве — стадии 1, 2, 8, 9, 12
 /* Ролик под голос (отзыв 3: реплики в стихах длиннее прежних). Перед запуском ролика с полем k5 время ролика растягивается
    там, где запись реплики не успевает до следующей реплики: в точку перед следующей склейкой (если она во второй половине
    реплики) или перед следующей репликой вставляется пауза нужной длины — шоты, акценты, события и реплики после неё сдвигаются,
@@ -28,7 +28,7 @@ function k5Fit(def){if(!def||def._fit)return def;def._fit=1;const vf=FIN.vox&&FI
   def.dur+=ins.reduce((n,q)=>n+q[1],0);return def;}
 {const _play=play;play=function(def){if(def&&def.k5)k5Fit(def);_play(def);};}
 build5B2=function(){
-  W.zvenAway=false;W.world=5;setTheme('dawn');sky('dawn');W.name='5-Б2 · Кощей Бессмертный и Златая цепь';W.sub='Остров Буян · финал · пять этапов';W.camX=18;const F=W.flags;F.stage='intro';
+  W.zvenAway=false;W.world=5;setTheme('dawn');sky('dawn');W.name='5-Б2 · Кощей Бессмертный и Златая цепь';W.sub='Лукоморье · финал · двенадцать стадий';W.camX=18;const F=W.flags;F.stage='intro';
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.noLose=false;W.noPetals=false;W.fallY=-12;const T=HERO;const C=new V3(0,0,-13),R=11;
   if(!G.flags.names)G.flags.names={};
   Object.assign(K5,{st:0,fight:false,live:false,spark:null,locks:{},orbs:[],adds:[],needle:null,forge:null,zones:[],mark:0,log:[],said:{},bones:false,storm:0,stormTo:0});K5FX.length=0;K5TR.length=0;
@@ -109,7 +109,7 @@ build5B2=function(){
   function candleSet(e,on){e.lit=on;e.L.flame.visible=on;e.embers=on?5:0;e.maxEmb=5;e.state=on?'idle':'k5out';e.cd=rand(1.5,3);if(!on)e.relT=relight();}
   function candleOff(e,txt){if(!e.lit)return;candleSet(e,false);k5s('candleOff');FX.dust(e.pos.clone().add(new V3(0,1.7,0)),10,0x4a3a5a);floatText(e.pos.clone().add(new V3(0,2.5,0)),'Свеча '+txt,'#e0c8ff');K5.log.push('candle'+e.idx);
     if(K5.fight&&K5.st===1&&candles.every(c=>!c.lit))later(0.4,()=>{if(K5.st===1&&K5.fight)stageWin(1);});}
-  function candleOn(e){candleSet(e,true);k5s('candleOn');FX.sparkle(e.pos.clone().add(new V3(0,1.8,0)),10,0xb070ff);if(G.time>(K5.gorT||0)){K5.gorT=G.time+14;bark(KS,'koschei','Горите вновь, огни мои!',1.4);}}
+  function candleOn(e){candleSet(e,true);k5s('candleOn');FX.sparkle(e.pos.clone().add(new V3(0,1.8,0)),10,0xb070ff);if(G.time>(K5.gorT||0)){K5.gorT=G.time+14;say('koschei','Горите вновь, огни мои!',1.4);}}
   candles.forEach(c=>candleSet(c,false));   // до начала боя свечи не горят (зажигает Кощей в конце вступления)
   function stage1Tick(dt){for(const c of candles){if(c.lit){c.L.flame.scale.set(1+0.12*Math.sin(G.time*13+c.idx),1+0.2*Math.sin(G.time*9+c.idx*2),1);}else{c.relT-=dt;if(c.relT<=0)candleOn(c);}}
     // цепи: у каждого игрока по две (в одиночном — две); вдвое больше прежнего

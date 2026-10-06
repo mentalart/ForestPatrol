@@ -27,7 +27,7 @@ function k5Tut(n,go){const E=K5.e,KSg=K5.KS.g,A0=active(k5P(0)),A1=active(k5P(1)
   const saveFl=[];let S=[];
   if(n===1){const c0=K5.candles[0],c1=K5.candles[1],CC=c=>k5Cam([c.pos.x+(c.pos.x<0?3.2:-3.2),2.6,c.pos.z+4.4],[c.pos.x,1.4,c.pos.z]);
     const off=c=>{c.L.flame.visible=false;saveFl.push(c);FX.dust(c.pos.clone().add(new V3(0,1.7,0)),10,0x4a3a5a);K5S.candleOff&&k5s('candleOff');floatText(c.pos.clone().add(new V3(0,2.5,0)),'Свеча погасла!','#e0c8ff');};
-    S=[st(W0,5,{tag:'Как победить',title:'Этап 1 из 5 · Чёрные свечи',icon:'candle',text:'Кощей закрылся <b>волшебным куполом</b>. Купол держат <b>восемь чёрных свечей</b>. Погасите все восемь — и купол лопнет!'},{enter:()=>{K5.said.k01=true;say('pelageya','Восемь чёрных свеч — смотрите! —<br>Купол держат. Погасите!',4.4);}}),
+    S=[st(W0,5,{tag:'Как победить',title:'Стадия 1 из 12 · У лукоморья дуб зелёный',icon:'candle',text:'Кощей закрылся <b>волшебным куполом</b>. Купол держат <b>восемь чёрных свечей</b>. Погасите все восемь — и купол лопнет!'},{enter:()=>{K5.said.k01=true;say('pelageya','Восемь чёрных свеч — смотрите! —<br>Купол держат. Погасите!',4.4);}}),
       st(CC(c0),9,{tag:'Щит в последний миг',title:'Капля — обратно в свечу',icon:'blue',text:'Свеча плюётся <b>синей каплей</b>. Нажми <b>щит в самый последний миг</b> — капля полетит обратно и погасит свечу!',keys:[{pi:k5P(0),a:'guard',label:'щит',wait:true}],go:'Нажми щит!',okText:'Капля вернулась!'},
         {wait:{who:k5P(0),a:'guard'},at:1.2,done:()=>{A0._demoGuard=G.time+0.9;SFX.parry();off(c0);}}),
       st(CC(c1),8,{tag:'Йоша',title:'Живая вода',icon:'drop',text:'Йоша гасит свечу <b>одним ковшиком</b>'+k5Sw(HERO.yosha,1)+'. А ещё свечу гасят <b>пять ударов</b>.',keys:[{pi:k5P(1),a:'skill',label:'вода',wait:true}],go:'Полей!',okText:'Пш-ш-ш!'},
@@ -36,7 +36,7 @@ function k5Tut(n,go){const E=K5.e,KSg=K5.KS.g,A0=active(k5P(0)),A1=active(k5P(1)
       st(k5Cam([3,4,-1],[0,0.5,-8]),8,{tag:'Осторожно',title:'Цепи и красный круг',icon:'red',text:'Из земли лезут <b>цепи</b> — отбивай их, из них вылетают золотые звенья. <b>Красный круг</b> — сюда ударит молния: <b>уйди или кувыркнись</b>!',keys:[{pi:k5P(0),a:'roll',label:'кувырок',wait:true}],go:'Кувырок!',okText:'Увернулся!'},
         {wait:{who:k5P(0),a:'roll'},at:1.4,enter:()=>{if(K5.chainDemo)K5.chainDemo(true);const p=A0.pos.clone().add(new V3(1.6,0,-1.2));k5Zone(p,1.6,1.4,0xff4a5a,q=>{k5Bolt(q,0xd8b0ff);k5s('strike');});},done:()=>{const h=A0;if(h.grounded)h.vel.y=4;FX.dust(h.pos.clone(),8);}}),
       st(W0,2.6,{tag:'Вперёд!',title:'Гасите свечи!',icon:'go',text:'Подсказки будут рядом.'},{enter:()=>{SFX.ok();if(K5.chainDemo)K5.chainDemo(false);}})];}
-  if(n===2){S=[st(KC,5.4,{tag:'Как победить',title:'Этап 2 из 5 · Ключ и искорка',icon:'hit',text:'Купол лопнул — Кощей сам идёт в бой. Его не ранить, но можно <b>сбить спесь</b>: <b>отбивай его удары</b> щитом в последний миг. Погаснут все угольки над ним — <b>спесь сбита</b>!'}),
+  if(n===2){S=[st(KC,5.4,{tag:'Как победить',title:'Стадия 2 из 12 · Там леший бродит',icon:'hit',text:'Купол лопнул — Кощей сам идёт в бой. Его не ранить, но можно <b>сбить спесь</b>: <b>отбивай его удары</b> щитом в последний миг. Погаснут все угольки над ним — <b>спесь сбита</b>!'}),
       st(W0,9,{tag:'Искорка',title:solo?'Искорка — отбей ещё раз':'Отбил — искорка другу',icon:'spark',text:solo?'Отбил — над тобой <b>искорка</b>. Отбей <b>следующий</b> удар, пока она горит, — угольков гаснет <b>вдвое</b>!':'Отбил удар — над другом загорается <b>искорка</b>, и Кощей бьёт уже его. Друг отбивает с искоркой — угольков гаснет <b>вдвое</b>. Отбивайте <b>по очереди</b>!',
           keys:solo?[{pi:k5P(0),a:'guard',label:'отбей',wait:true}]:[{pi:0,a:'guard',label:'отбей',wait:true},{pi:1,a:'guard',label:'отбей с искоркой',wait:true}],go:'По очереди!',okText:'Вдвое!'},
         {wait:{who:solo?k5P(0):'both',a:'guard'},at:1,each:(s,pi)=>{const h=active(pi);h._demoGuard=G.time+0.8;SFX.parry();FX.stars(headOf(h),8,0xffe08a);}}),
@@ -49,7 +49,7 @@ function k5Tut(n,go){const E=K5.e,KSg=K5.KS.g,A0=active(k5P(0)),A1=active(k5P(1)
       st(KC,8,{tag:'Спесь сбита',title:solo?'Золотая нить':'Золотая нить — вместе!',icon:'n123',text:solo?'Все угольки погасли — Кощей без сил. <b>Ударь</b> рядом с ним — золотая нить сказа свяжет его!':'Все угольки погасли — Кощей без сил. <b>Оба ударьте</b> рядом с ним в одну секунду — золотая нить сказа свяжет его!',
           keys:solo?[{pi:k5P(0),a:'attack',label:'нить',wait:true}]:[{pi:0,a:'attack',label:'',wait:true},{pi:1,a:'attack',label:'',wait:true}],go:'Вместе!',okText:'Нить сказа!'},{wait:{who:solo?k5P(0):'both',a:'attack',sync:1.6},at:1,done:()=>{k5s('bind');}}),
       st(W0,2.6,{tag:'Вперёд!',title:'Сбейте с него спесь!',icon:'go',text:'Отбивайте по очереди.'},{enter:()=>SFX.ok()})];}
-  if(n===3){S=[st(k5Cam([0,3,-2],[0,5,-17]),5,{tag:'Как победить',title:'Этап 3 из 5 · Буря',icon:'orb',text:'Кощей взлетел — рукой не достать. Он бросает <b>тёмные шары</b>. Шар можно <b>отбить</b>!'}),
+  if(n===3){S=[st(k5Cam([0,3,-2],[0,5,-17]),5,{tag:'Как победить',title:'Стадия 8 из 12 · Колдун несёт богатыря',icon:'orb',text:'Кощей взлетел — рукой не достать. Он бросает <b>тёмные шары</b>. Шар можно <b>отбить</b>!'}),
       st(HC(A0),9,{tag:'Щит в последний миг',title:solo?'Шар — обратно!':'Шар — другу',icon:'orb',text:solo?'<b>Отбей шар в последний миг</b> — он улетит обратно, в Кощея!':'<b>Отбей шар в последний миг</b> — он полетит к другу.',keys:[{pi:k5P(0),a:'guard',label:'щит',wait:true}],go:'Отбей!',okText:solo?'В небо!':'Другу!'},
         {wait:{who:k5P(0),a:'guard'},at:1.2,done:()=>{A0._demoGuard=G.time+0.9;k5s('orbPass');FX.sparkle(headOf(A0),12,0xffe08a);}})].concat(solo?[]:[
       st(HC(A1),8,{tag:'А друг — в небо!',title:'Второй отбив — в Кощея',icon:'orb',text:'Друг отбивает шар ещё раз — шар летит <b>в Кощея</b> и гасит два уголька!',keys:[{pi:1,a:'guard',label:'щит',wait:true}],go:'В небо!',okText:'Попали!'},
@@ -58,7 +58,7 @@ function k5Tut(n,go){const E=K5.e,KSg=K5.KS.g,A0=active(k5P(0)),A1=active(k5P(1)
       st(W0,6,{tag:'Осторожно',title:'Иглы и воронка',icon:'red',text:'<b>Красные круги</b> — сюда падут иглы: выходи. Тёмная <b>воронка</b> тянет к себе — выбегай!'},{enter:()=>{const p=A0.pos.clone().add(new V3(-1.8,0,-1.5));k5Zone(p,1.3,1.5,0xff4a5a,()=>k5s('strike'));}}),
       st(W0,8,{tag:'Кости, встаньте!',title:'Три костяных щитника',icon:'shield',text:'Собьёте <b>полспеси</b> — Кощей поднимет из земли <b>трёх щитников</b>. Спереди у них щит — бей <b>сбоку или сзади</b>. А воронов — <b>четверо</b>!',keys:[{pi:k5P(0),a:'attack',label:'удар сбоку',wait:true}],go:'Сбоку!',okText:'Попал!'},{wait:{who:k5P(0),a:'attack'},at:1,done:()=>{A0.atkT=0.28;SFX.ember&&SFX.ember();}}),
       st(W0,2.6,{tag:'Вперёд!',title:'Отбивайте шары!',icon:'go',text:solo?'Шар — обратно в Кощея.':'Другу — и в небо.'},{enter:()=>SFX.ok()})]);}
-  if(n===4){S=[st(KC,5.4,{tag:'Как победить',title:'Этап 4 из 5 · Меч Бессмертного',icon:'sword',text:'Кощей взялся за меч. Он бьёт <b>сериями</b>: два жёлтых — и красный. Иногда <b>задерживает замах</b> — не спеши!'}),
+  if(n===4){S=[st(KC,5.4,{tag:'Как победить',title:'Стадия 9 из 12 · И тридцать витязей прекрасных',icon:'sword',text:'Кощей взялся за меч. Он бьёт <b>сериями</b>: два жёлтых — и красный. Иногда <b>задерживает замах</b> — не спеши!'}),
       st(HC(A0),9,{tag:'Кощеево око',title:solo?'Око над тобой':'Кого выбрал Кощей',icon:'eye',text:solo?'Над тобой горит <b>око</b> — Кощей бьёт тебя. Держи <b>щит</b> и отбивай серию в последний миг.':'Над кем горит <b>око</b> — того Кощей выбрал. Выбранный держит <b>щит</b> и отбивает серию.',keys:[{pi:k5P(0),a:'guard',label:'щит',wait:true}],go:'Щит!',okText:'Отбил!'},
         {wait:{who:k5P(0),a:'guard'},at:1,done:()=>{A0._demoGuard=G.time+0.9;k5s('clash');SFX.parry();}}),
       st(solo?HC(A0):HC(A1),8,{tag:'Со спины!',title:solo?'Кувырок — и сбоку':'Второй — со спины',icon:'hit',text:solo?'От <b>красного</b> — кувырок: он ставит тебя сбоку, Кощей открыт — <b>бей</b>!':'А второй заходит <b>Кощею за спину</b> и бьёт — сзади он открыт!',keys:[{pi:k5P(1),a:'attack',label:'удар',wait:true}],go:'Бей!',okText:'Со спины!'},
@@ -67,7 +67,7 @@ function k5Tut(n,go){const E=K5.e,KSg=K5.KS.g,A0=active(k5P(0)),A1=active(k5P(1)
       st(W0,7,{tag:'Кости, встаньте!',title:'Пятеро щитников',icon:'shield',text:'Собьёте <b>полспеси</b> — из земли встанут <b>пятеро костяных щитников</b>. Спереди щит — бей <b>сбоку или сзади</b>. Молнии за краем поляны не опасны.'}),
       st(W0,2.6,{tag:'Вперёд!',title:'Щит — и со спины!',icon:'go',text:'Око покажет, кого он выбрал.'},{enter:()=>SFX.ok()})];}
   if(n===5){const AV=K5.ANV,AC=k5Cam([AV.x-4,2.8,AV.z+5],[AV.x,1.2,AV.z]);
-    S=[st(AC,6,{tag:'Как победить',title:'Этап 5 из 5 · Игла',icon:'needle',text:'Смерть Кощея — на конце иглы. Мы не убьём его — мы <b>скуём из иглы застёжку</b> для Златой цепи! Куёт только <b>Прошка</b>, у наковальни.'}),
+    S=[st(AC,6,{tag:'Как победить',title:'Стадия 12 из 12 · Златая цепь на дубе том',icon:'needle',text:'Смерть Кощея — на конце иглы. Мы не убьём его — мы <b>скуём из иглы застёжку</b> для Златой цепи! Куёт только <b>Прошка</b>, у наковальни.'}),
       st(W0,9,{tag:'Игла',title:solo?'Игла — у того, кем управляешь':'Передай иглу',icon:'needle',text:solo?'Игла всегда у героя, которым управляешь. Кощей охотится за ней! <b>Переключись на Прошку</b>'+k5Sw(HERO.proshka,0)+'.':'Иглу несёт герой со свечением — Кощей охотится за ним! <b>Передай иглу</b> другу.',
           keys:[{pi:solo?k5P(0):1,a:solo?'swap':'item',label:solo?'Прошка':'передать',wait:true}],go:solo?'Переключись!':'Передай!',okText:'Поймал!'},{wait:{who:solo?k5P(0):1,a:solo?'swap':'item'},at:1}),
       st(AC,9,{tag:'Прошка',title:'Куй в такт',icon:'anvil',text:'Прошка с иглой у наковальни — бей, когда кружок <b>сожмётся</b>: дзинь, дзинь, дзинь! Нужно <b>двенадцать</b> ударов в такт.',keys:[{pi:k5P(0),a:'attack',label:'в такт',wait:true}],go:'Бей в такт!',okText:'Дзинь!'},
@@ -82,25 +82,32 @@ const K5SHORT={1:['candle','Погасите <b>все восемь свечей
   3:['orb','Шар — отбей <b>другу</b>, друг — <b>в небо</b> (одному — сразу в небо). Ворон — кувырок, застрял — бей. Щитник — <b>сбоку</b>. Круги и воронка — уходи!'],
   4:['sword','Око над тобой — <b>щит</b>. Над другом — <b>бей со спины</b>. Волна — <b>прыжок</b>. После прыжка он открыт!'],
   5:['needle','Иглу — Прошке, Прошка — <b>в такт</b> у наковальни, друг — <b>щит рядом</b>. «Все цепи — ко мне!» — щит против ветра и <b>разбейте три цепи</b>!']};
-function k5Short(n,go){const s=K5SHORT[n];t4Run([{dur:4.6,p:[0,8.6,3],l:[0,1.2,-15],card:{tag:'Ещё раз',title:'Этап '+n+' · '+K5N[n],icon:s[0],text:s[1]}}],{end:go});}
+function k5Short(n,go){const s=K5SHORT[n];t4Run([{dur:4.6,p:[0,8.6,3],l:[0,1.2,-15],card:{tag:'Ещё раз',title:'Стадия '+[0,1,2,8,9,12][n]+' · '+K5N[n],icon:s[0],text:s[1]}}],{end:go});}
 FIN.k5stage=n=>{if(K5.stageStart)K5.stageStart(n);};   // для ботов и отладки
 // ---------- живые подсказки в бою ----------
 const K5H={cur:null,until:0,cd:{},last:-99,cycle:0,arrows:[],logN:0};
 function k5ArrowsClear(){for(const a of K5H.arrows)k5Del(a);K5H.arrows=[];}
 const k5Tg=t=>t&&t.isVector3?t.clone():t&&t.d&&t.pos?headOf(t).add(new V3(0,0.5,0)):t&&t.kind==='k5kos'?K5.KS.g.position.clone().add(new V3(0,5.2,0)):t&&t.pos&&t.L?t.pos.clone().add(new V3(0,(t.L.top||1.8)*(t.s||1)+0.9,0)):t&&t.position?t.position.clone().add(new V3(0,1.6,0)):new V3();
-function k5HintShow(key,c,targets,expect,dur){if(K5H.cur&&K5H.cur.key===key&&K5H.until>G.time)return;K5H.cur={key,c,expect:(expect||[]).map(e=>[k5P(e[0]),e[1],e[2]])};K5H.until=G.time+(dur||6);K5H.last=G.time;K5H.cd[key]=G.time;t4Dom();
+// тихий режим (k5epic: прошли первые секунды стадии — FIN.k5e.quiet()): карточки нет, над целью (или над героем) — кнопка, над целью — стрелка
+const k5Quiet=()=>!!(FIN.k5e&&FIN.k5e.on&&FIN.k5e.quiet&&W&&W.levelId==='5-B2'&&FIN.k5e.quiet());
+function k5HintShow(key,c,targets,expect,dur){if(K5H.cur&&K5H.cur.key===key&&K5H.until>G.time)return;const quiet=k5Quiet();
+  K5H.cur={key,c,quiet,tg:(targets||[]).filter(Boolean)[0]||null,expect:(expect||[]).map(e=>[k5P(e[0]),e[1],e[2]])};K5H.until=G.time+(dur||6);K5H.last=G.time;K5H.cd[key]=G.time;
+  if(quiet){if(T4.hint)T4.hint.classList.remove('on');k5ArrowsClear();K5H.arrows=(targets||[]).filter(Boolean).map(t=>{const ar=t4Arrow(c.col||0xffd76a);ar.userData.tgt=t;ar.position.copy(k5Tg(t));k5Prop(ar);return ar;});return;}
+  t4Dom();
   const kh=t4Keys(K5H.cur.expect.map(e=>({pi:e[0],a:e[1],label:e[2]||'',wait:true})),{}).replace('class="ft-keys"','class="fh-keys"');
   T4.hint.innerHTML='<div class="fh-row"><div class="ft-ico">'+(T4I[c.icon]||'')+'</div><div class="fh-main"><div class="fh-title"><span class="ft-tag">'+c.tag+'</span>'+c.title+'</div><div class="fh-text">'+c.text+'</div></div>'+kh+'</div>';
   T4.hint.classList.add('on');T4.hint.classList.remove('ok');tone(1320,0.1,'triangle',0.12);tone(1760,0.12,'sine',0.08,null,0.08);
   k5ArrowsClear();K5H.arrows=(targets||[]).filter(Boolean).map(t=>{const ar=t4Arrow(c.col||0xffd76a);ar.userData.tgt=t;ar.position.copy(k5Tg(t));k5Prop(ar);return ar;});}
-function k5HintHide(ok){if(!K5H.cur||!T4.hint)return;if(ok){T4.hint.classList.add('ok');let k=T4.hint.querySelector('.fh-keys');if(!k){k=document.createElement('div');k.className='fh-keys';if(T4.hint.firstChild)T4.hint.firstChild.appendChild(k);}k.innerHTML='<span class="fh-ok">✓ Молодец!</span>';K5H.until=Math.min(K5H.until,G.time+1.1);}
+function k5HintHide(ok){if(K5H.cur&&K5H.cur.quiet){if(ok){const e=K5H.cur.expect[0];floatText(headOf(active(e?e[0]:0)).add(new V3(0,0.9,0)),'✓','#9fe0a0');}K5H.cur=null;k5ArrowsClear();return;}
+  if(!K5H.cur||!T4.hint)return;if(ok){T4.hint.classList.add('ok');let k=T4.hint.querySelector('.fh-keys');if(!k){k=document.createElement('div');k.className='fh-keys';if(T4.hint.firstChild)T4.hint.firstChild.appendChild(k);}k.innerHTML='<span class="fh-ok">✓ Молодец!</span>';K5H.until=Math.min(K5H.until,G.time+1.1);}
   else{T4.hint.classList.remove('on');K5H.cur=null;k5ArrowsClear();}}
 function k5Ctx(key,fn,cd){if(K5H.cur&&K5H.until>G.time&&!/^g\d/.test(K5H.cur.key))return;if(G.time-(K5H.cd[key]||-99)<(cd||6))return;fn();}
 function k5Cycle(list){if(K5H.cur)return;list[K5H.cycle%list.length]();K5H.cycle++;}
-function k5HintTick(dt){const st=K5.st,now=G.time,E=K5.e,solo=G.solo;if(G.cine||G.state!=='play'||!K5.fight){if(K5H.cur)k5HintHide(false);return;}
+function k5HintTick(dt){const st=K5.st,now=G.time,E=K5.e,solo=G.solo;if(G.cine||G.state!=='play'||!K5.fight||FIN.k5e&&FIN.k5e.noHint&&FIN.k5e.noHint()){if(K5H.cur)k5HintHide(false);return;}
   if(K5.log.length!==K5H.logN){K5H.logN=K5.log.length;K5.lastProg=now;}
   for(const a of K5H.arrows){a.position.copy(k5Tg(a.userData.tgt)).add(new V3(0,0.35*Math.abs(Math.sin(now*4)),0));a.rotation.y+=dt*2.5;}
-  if(K5H.cur&&T4.hint&&!T4.hint.classList.contains('ok')){for(const [pi,a] of K5H.cur.expect)if(t4Tap(pi,a)){k5HintHide(true);break;}}
+  if(K5H.cur&&(K5H.cur.quiet||T4.hint&&!T4.hint.classList.contains('ok'))){for(const [pi,a] of K5H.cur.expect)if(t4Tap(pi,a)){k5HintHide(true);break;}}
+  if(K5H.cur&&!K5H.cur.quiet&&k5Quiet())k5HintHide(false);   // окно подсказок закрылось — карточка уходит
   if(K5H.cur&&now>K5H.until)k5HintHide(false);
   if(now<(K5.hint0||0)+2.5)return;
   const idle=now-Math.max(K5H.last,K5.lastProg||0,K5.hint0||0);
@@ -115,7 +122,7 @@ function k5HintTick(dt){const st=K5.st,now=G.time,E=K5.e,solo=G.solo;if(G.cine||
       ()=>k5HintShow('g3',{tag:'Подсказка',title:'Пять ударов',icon:'hit',text:'Свечу гасят и <b>пять ударов</b> по ней.'},lit.slice(0,2),[[0,'attack','удар']])]);}
   if(st===2){const L=Object.values(K5.locks)[0],key=K5.adds.find(e=>e.kind==='k5key'&&e.state==='wind'),sp=K5.spark,NT=K5.nat;
     if(NT&&NT.wind&&NT.wind.k>0.5)k5Ctx('wind',()=>k5HintShow('wind',{tag:'Ветер!',title:'Держи щит — не сдует',icon:'wind',text:'Ветер сносит с ног. Со <b>щитом</b> устоишь — и снова к Кощею.',col:0xcfe4ff},null,[[0,'guard','щит']].concat(solo?[]:[[1,'guard','щит']]),3),10);
-    else if(K5.zones&&K5.zones.some(z=>k5Heroes().some(h=>hd(h.pos,z.position)<1.6)))k5Ctx('crack',()=>k5HintShow('crack',{tag:'Осторожно',title:'Круг под тобой — уходи!',icon:'hand',text:'Красный круг — молния, бурый с трещиной — вылезет <b>костлявая рука</b>. Уходи или <b>кувыркнись</b>!',col:0xff8a4a},null,[[0,'roll','кувырок']].concat(solo?[]:[[1,'roll','кувырок']]),3),9);
+    else if(!k5Quiet()&&K5.zones&&K5.zones.some(z=>k5Heroes().some(h=>hd(h.pos,z.position)<1.6)))k5Ctx('crack',()=>k5HintShow('crack',{tag:'Осторожно',title:'Круг под тобой — уходи!',icon:'hand',text:'Красный круг — молния, бурый с трещиной — вылезет <b>костлявая рука</b>. Уходи или <b>кувыркнись</b>!',col:0xff8a4a},null,[[0,'roll','кувырок']].concat(solo?[]:[[1,'roll','кувырок']]),3),9);
     else if(L&&solo)k5Ctx('lock',()=>k5HintShow('lock',{tag:'Тебя сковали!',title:'Смени героя — сбей замок',icon:'lock',text:'Сам замок не откроется. Переключись <b>'+K(G.soloPi,'swap')+'</b> на другого героя и <b>бей по замку пять раз</b>.',col:0xc080ff},[L.pad.getWorldPosition(new V3()).add(new V3(0,1.5,0))],[[G.soloPi,'swap','смени'],[G.soloPi,'attack','удар']],5),7);
     else if(L)k5Ctx('lock',()=>k5HintShow('lock',{tag:'Друга сковали!',title:'Бей по замку!',icon:'lock',text:'Подойди и <b>бей по замку пять раз</b> — шарики над замком гаснут. Сковали тебя — смени героя.',col:0xc080ff},[L.pad.getWorldPosition(new V3()).add(new V3(0,1.5,0))],[[1-L.pi,'attack','удар']],5),7);
     else if(key)k5Ctx('key',()=>k5HintShow('key',{tag:'Летучий ключ',title:'Жёлтый кружок — щит!',icon:'key',text:'Отбей ключ <b>щитом</b> — он рассыплется.',col:0xffd23a},[key],[[key.pi,'guard','щит']],3),6);
@@ -145,4 +152,7 @@ function k5HintTick(dt){const st=K5.st,now=G.time,E=K5.e,solo=G.solo;if(G.cine||
     else if(h&&!fg)k5Ctx('go',()=>k5HintShow('go',{tag:'Прошка',title:'Неси иглу к наковальне',icon:'anvil',text:'Встань у наковальни — там куют застёжку.',col:0xffb070},[AV.clone().add(new V3(0,1.2,0))],null,4),7);
     else if(fg&&!solo&&hd(active(1).pos,HERO.proshka.pos)>3.2)k5Ctx('cover',()=>k5HintShow('cover',{tag:'Второй',title:'Заслони Прошку!',icon:'shield',text:'Встань <b>рядом с Прошкой</b> и держи щит — удар Кощея достанется щиту.',col:0x9fe0ff},[HERO.proshka],[[1,'guard','щит']],4),9);
     else if(fg&&idle>6)k5Ctx('beat',()=>k5HintShow('beat',{tag:'Прошка',title:'Бей в такт!',icon:'anvil',text:'Бей, когда кружок над наковальней <b>сожмётся</b>. Ещё '+(K5.forge.need-K5.forge.n)+'.',col:0xffe08a},[AV.clone().add(new V3(0,1.2,0))],[[0,'attack','в такт']],4),10);}}
-{const _ll=loadLevel;loadLevel=function(i){_ll(i);K5H.cur=null;K5H.arrows=[];K5H.cd={};if(T4.hint)T4.hint.classList.remove('on');if(!W||W.levelId!=='5-B2'){K5.fight=false;K5.st=0;K5.live=false;}};}
+// кнопки тихого режима: до двух на игрока, над целью подсказки (или над героем), с подписью действия
+function k5QuietPrompts(){for(const pi of[0,1])for(let j=0;j<2;j++){prompt(pi,'attack',()=>{const t=K5H.cur&&K5H.cur.tg,dx=(pi?0.7:-0.7)+j*1.3;return (t?k5Tg(t):headOf(active(pi))).add(new V3(dx,0.9,0));},()=>false);const pr=W.prompts[W.prompts.length-1];
+  pr.cond=()=>{const c=K5H.cur;if(!c||!c.quiet||G.cine)return false;const ex=c.expect.filter(e=>e[0]===pi)[j];if(!ex)return false;pr.action=ex[1];pr.note=FIN.k5pic?FIN.k5pic.h(c.c.pics||K5ICONMAP[c.c.icon]||null,30):'';return true;};}}
+{const _ll=loadLevel;loadLevel=function(i){_ll(i);K5H.cur=null;K5H.arrows=[];K5H.cd={};if(T4.hint)T4.hint.classList.remove('on');if(!W||W.levelId!=='5-B2'){K5.fight=false;K5.st=0;K5.live=false;}else if(FIN.k5e&&FIN.k5e.on)k5QuietPrompts();};}
