@@ -6,6 +6,7 @@
 # и попадает в сводку неустойчивых ботов (flaky.yml). Итог — проверка «bots»: в её отчёте (Summary) — таблица по всем машинам.
 # Снимки кадров в CI не делаются (NOSHOTS=1: каждый стоит 20–45 с, а проверки на них не опираются) — кадры смотрят локально.
 # Выводы ботов и results.tsv — во вложениях к запуску (по одному на долю). Chromium кешируется.
+# Ночью и при ручном «полном регрессе» отдельная работа budget-hq гоняет tfin_budget ещё раз в высоком качестве (&hq=1, с тенями) — на PR её нет.
 name: Боты
 
 on:
@@ -75,10 +76,59 @@ jobs:
           retention-days: 14
           if-no-files-found: ignore
 
+  # бюджет отрисовок «по-честному»: в основном прогоне боты идут в низком качестве (без теней), а игроки по умолчанию играют в высоком.
+  # Раз в ночь (и при ручном запуске «полный регресс») tfin_budget идёт ещё раз с &hq=1: тени включены, общий экран ≤ 600 отрисовок,
+  # два экрана ≤ 900, треугольников ≤ 1,2 млн. На PR не запускается — бот идёт несколько минут и лишь удлинил бы проверку.
+  budget-hq:
+    name: бюджет отрисовок (высокое качество)
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.full)
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Playwright (глобально)
+        run: |
+          npm i -g playwright
+          echo "PW_VER=$(playwright --version | awk '{print $2}')" >> "$GITHUB_ENV"
+      - name: Кеш Chromium
+        id: pwcache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: pw-chromium-${{ runner.os }}-${{ env.PW_VER }}
+      - name: Chromium
+        run: |
+          if [ "${{ steps.pwcache.outputs.cache-hit }}" = "true" ]; then playwright install-deps chromium; else playwright install --with-deps chromium; fi
+      - name: Сборка релиза
+        run: python3 zlataya_cep/build/build_final.py
+      - name: tfin_budget в высоком качестве
+        env:
+          URLQ: '&hq=1'
+          NOSHOTS: '1'
+          RETRY: '0'
+          BOT_TIMEOUT: '1700'
+        run: |
+          set +e
+          BOTS=tfin_budget tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html
+          rc=$?
+          { echo "### Бюджет отрисовок, высокое качество (с тенями)"; echo; echo '```'; grep "^> " tools/tests/out/out_tfin_budget.txt | tail -3; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          exit $rc
+      - name: Вывод бота
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: budget-hq-out
+          path: tools/tests/out/
+          retention-days: 14
+          if-no-files-found: ignore
+
   # итоговая проверка с прежним именем «bots» — её и смотреть в PR (и делать обязательной для автослияния)
   bots:
     if: always()
-    needs: shard
+    needs: [shard, budget-hq]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -90,5 +140,7 @@ jobs:
         run: python3 tools/tests/flaky.py --summary _out | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Все доли зелёные?
         run: |
-          echo "доли: ${{ needs.shard.result }}"
+          echo "доли: ${{ needs.shard.result }}, бюджет в высоком качестве: ${{ needs.budget-hq.result }}"
           [ "${{ needs.shard.result }}" = "success" ]
+          # budget-hq запускается только ночью и вручную: на PR его результат «skipped» — это не ошибка
+          [ "${{ needs.budget-hq.result }}" = "success" ] || [ "${{ needs.budget-hq.result }}" = "skipped" ]
