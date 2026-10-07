@@ -1,13 +1,12 @@
 // ---- продолжение build5B2 (k5epic, часть 9b): ПОЛЁТЫ ДОМОЙ — ступа Яги (после стадии 4) и Горыныч (после стадии 7) ----
-  // По отзыву: «дорожка в три полосы» ребёнку непонятна. Теперь сначала ролик — почему летим (Яга сажает в ступу, Горыныч подставляет
-  // спину), потом урок без слов: стрелки у ступы — каждый качнул ← и →. Полёт: ведёте ступу / Горыныча стрелками (вдвоём в одну сторону —
-  // быстрее); золотая дорожка из букв — лети по ней и лови; чёрные ели / огненные столбы — облетай (красный круг видно заранее); мыши /
-  // змеи-коршуны с кольцом твоего цвета — твой удар (летит сам; у Горыныча бьёт твоя голова: левая — Игрок 1, правая — Игрок 2);
+  // Сначала ролик — почему летим (Яга сажает в ступу, Горыныч подставляет спину), потом обучающая катсцена (E.LES.fly_stupa / fly_gor):
+  // как рулить, какие буквы ловить, что облетать, кого бить и что делать в конце. Полёт: ведёте ступу / Горыныча стрелками (вдвоём в одну
+  // сторону — быстрее); золотая дорожка из букв — лети по ней и лови; чёрные ели / огненные столбы — облетай (красный круг видно заранее);
+  // мыши / змеи-коршуны с кольцом твоего цвета — твой удар (летит сам; у Горыныча бьёт твоя голова: левая — Игрок 1, правая — Игрок 2);
   // ворота и пасть Чудо-юда — удар разом (средняя голова); в конце ступы — туча-паутина: удар разом, Яга метёт метлой.
   // Проиграть нельзя: задел — буква выпала. Шкала сверху: от листа до дуба.
   const FL5={on:false,obs:[],dec:[]};E.fly=FL5;
   {const el=document.getElementById('k5fly');if(el)el.style.display='none';}   // уровень перезапущен посреди полёта (прыжок к стадии) — шкала не остаётся
-  const flyQ=pi=>G.solo?G.soloPi:pi;                  // чей это игрок на деле (в одиночку — тот, кем управляешь)
   const flyPis=()=>G.solo?[G.soloPi]:[0,1];
   const flyAx=pi=>{let x=0;if(btn(pi,'right'))x+=1;if(btn(pi,'left'))x-=1;const pa=padAx(pi);if(pa.x)x+=pa.x;return clamp(x,-1,1);};
   const flyCol=pi=>G.solo?0xffd76a:(pi?COL.p2:COL.p1);
@@ -21,7 +20,7 @@
     el.innerHTML=K5PIC.one('book',34)+'<div style="position:relative;width:300px;height:10px;border-radius:6px;background:rgba(255,255,255,.18)"><div id="k5flyBar" style="position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:linear-gradient(90deg,#ffd76a,#fff4c0);width:0"></div>'+
       '<div id="k5flyMv" style="position:absolute;top:-24px;left:0;transform:translateX(-50%)">'+K5PIC.one(FL5.kind==='gor'?'dragon':'stupa',46)+'</div></div>'+K5PIC.one('oak',38)+
       '<span style="display:inline-flex;align-items:center;gap:4px;margin-left:12px;font:800 26px system-ui;color:#ffe9a8;text-shadow:0 2px 3px rgba(0,0,0,.6)">'+K5PIC.one('star',32)+'<b id="k5flyN">0</b></span>';}
-  function flyHudTick(){const F=FL5,k=F.ph==='learn'?0:F.ph==='fly'?0.04+0.76*clamp(F.t/F.dur,0,1):F.ph==='final'?0.82+0.1*clamp(F.ft/12,0,1):1;
+  function flyHudTick(){const F=FL5,k=F.ph==='fly'?0.04+0.76*clamp(F.t/F.dur,0,1):F.ph==='final'?0.82+0.1*clamp(F.ft/12,0,1):1;
     const b=document.getElementById('k5flyBar'),m=document.getElementById('k5flyMv'),n=document.getElementById('k5flyN');if(b)b.style.width=(k*100)+'%';if(m)m.style.left=(k*100)+'%';if(n&&n.textContent!==String(F.got))n.textContent=F.got;}
   // ---------- транспорт ----------
   const ST_SEATS=[[-0.8,0,0.5],[0.8,0,0.5],[-0.45,0,1.35],[0.45,0,1.35]];
@@ -91,21 +90,20 @@
     shotFx(from,o,col,()=>{if(!o||o.dead)return;if(o.kind==='eye'){o.hp--;FX.sparks(o.g.position.clone(),10,0xffd060);if(o.hp<=0){o.open=false;eyeShut(o);}}else killFoe(o,pi);});}
   function onAtk(pi){const F=FL5;if(!F.on||G.cine||(F.ph!=='fly'&&F.ph!=='final'))return;F.atk[pi]=G.time;
     if(ownFoe(pi)){flyShoot(pi);return;}
-    const B=flyBig();if(B){const both=G.solo||Math.abs(F.atk[0]-F.atk[1])<0.7;if(both){F.atk=[-9,-9];bigHit(B);}else{K5PIC.float(F.kind==='gor'?headW(null).add(new V3(0,2,0)):new V3(RIDE_X,4,-2),['two','sync']);}return;}
+    const B=flyBig();if(B){const both=G.solo||Math.abs(F.atk[0]-F.atk[1])<0.7;if(both){F.atk=[-9,-9];bigHit(B);}return;}
     flyShoot(pi);}
   // ---------- большие цели: туча-паутина (ступа), ворота и Чудо-юдо (Горыныч) ----------
   function mkWeb(){const g=new THREE.Group();for(let i=0;i<14;i++){const a=i/14*6.28,r=rand(2,6);addMesh(new THREE.SphereGeometry(rand(2,3.4),10,8),K5L.INKM,Math.cos(a)*r,Math.sin(a)*r*0.6+3,rand(-1,1),g);}
     for(let i=0;i<8;i++){const l=addMesh(new THREE.BoxGeometry(18,0.12,0.12),MB(0xb070ff),0,3,0.8,g);l.rotation.z=i/8*Math.PI;}
-    const lk=K5PIC.spr(['two','sync'],2.4);lk.position.set(0,7.5,1);g.add(lk);
     return obsAdd({kind:'web',x:FL5.x,y:0,z:-140,r:0,g,hp:G.solo?2:3,ready:false});}
   function mkGate(){const g=new THREE.Group();const w=addMesh(new THREE.BoxGeometry(40,9,0.8),K5L.INKM,0,1.5,0,g);w.material=K5L.INKM;
     for(let i=0;i<9;i++)addMesh(new THREE.SphereGeometry(rand(1.2,2),8,6),K5L.INKM,rand(-18,18),rand(-2,6),0.3,g);
-    const lk=K5PIC.spr(['lock'],2.2);lk.position.set(0,3.4,0.8);g.add(lk);const sy=K5PIC.spr(['two','sync'],2.2);sy.position.set(0,6.6,0.8);g.add(sy);
     return obsAdd({kind:'gate',x:FL5.x,y:0,z:-150,r:0,g,ready:false,hp:1});}
   function mkSerp(){const F=FL5,g=new THREE.Group();const seg=[];for(let i=0;i<10;i++){const s=addMesh(new THREE.SphereGeometry(2.2-i*0.1,12,10),K5L.INKM,0,-14+i*1.7,i*1.2,g);seg.push(s);}
     const hd=new THREE.Group();hd.position.set(0,4,-0.5);g.add(hd);addMesh(new THREE.SphereGeometry(2.8,16,12),K5L.INKM,0,0,0,hd).scale.set(1.2,0.9,1.1);
     const jaw=new THREE.Group();jaw.position.set(0,-1.2,-1.6);hd.add(jaw);addMesh(new THREE.BoxGeometry(3.2,0.5,2.4),M(0x2a1440),0,0,-0.6,jaw);
     const mouth=new THREE.Mesh(new THREE.SphereGeometry(1.1,12,10),k5Add(0xffd060,{opacity:0}));mouth.position.set(0,-0.8,-2.4);hd.add(mouth);
+    g.rotation.y=Math.PI;   // лицом к игрокам: глаза и пасть видны, тело уходит за голову
     const S=obsAdd({kind:'serp',x:F.x,y:0,z:-160,r:0,g,seg,hd,jaw,mouth,ready:false,hp:1,spitT:3});g.scale.setScalar(1.5);
     S.eyes=[0,1].map(i=>{const pi=G.solo?G.soloPi:i;const sx=i?1:-1;const m=new THREE.Mesh(new THREE.SphereGeometry(0.75,12,10),MB(0xffe060));m.position.set(sx*1.5,0.9,-2.3);hd.add(m);
       const r=new THREE.Mesh(new THREE.TorusGeometry(1.1,0.12,8,28),k5Add(flyCol(pi),{opacity:0.95}));r.position.copy(m.position);hd.add(r);
@@ -127,7 +125,7 @@
   function serpBurn(B){K5L.ink(B.hd.getWorldPosition(new V3()),40);K5L.gold(B.hd.getWorldPosition(new V3()),24);FL5.got+=3;B.ready=false;FL5.big=null;
     for(const e of B.eyes)e.dead=true;const g=B.g;k5fx(1.2,k=>{g.position.y=-k*18;g.rotation.z=k*0.5;},()=>obsDel(B));later(0.6,()=>flyHome());}
   function flBump(o,n){const F=FL5;if(F.bumpCd>G.time)return;F.bumpCd=G.time+0.8;F.got=Math.max(0,F.got-(n||1));shakeAll(0.12,0.4);k5s('stomp');const s=o&&o.x>F.x?-1:1;F.vx+=s*7;F.bank=s*0.35;
-    K5L.ink(new V3(RIDE_X,1.5,-1.5),12);K5PIC.float(new V3(RIDE_X,4.2,-1.5),['star','no']);E.log('flyBump');}
+    K5L.ink(new V3(RIDE_X,1.5,-1.5),12);E.log('flyBump');}
   // ---------- конец: дуб Лукоморья впереди ----------
   function flyHome(){const F=FL5;if(F.ph==='home')return;F.ph='home';F.ht=0;const g=new THREE.Group();addMesh(new THREE.CylinderGeometry(2.2,3.4,22,12),M(0x6a5a4a),0,-3,0,g);
     for(const [x,y,z,r] of[[0,10,0,8],[-5,7,1,5.5],[5,7.5,-1,5.5],[0,14,-1,5]])addMesh(new THREE.SphereGeometry(r,14,10),M(0x3a7a3a),x,y,z,g);
@@ -144,7 +142,7 @@
       events:[{t:0.2,fn:()=>{const y0=F.v.position.y;anim(1.7,k=>{F.v.position.y=y0*(1-CE.outBack(k));});later(1.6,()=>{FX.dust(new V3(R0,0.2,0),24,0x9a8a6a,2);k5s('land');shakeAll(0.06,0.3);});}},
         {t:4.0,fn:()=>hopIn(0)},{t:4.35,fn:()=>hopIn(1)},{t:4.7,fn:()=>hopIn(2)},{t:5.05,fn:()=>hopIn(3)},
         {t:6.2,fn:()=>{k5s('flyUp');const g=F.ground,y0=g.position.y;anim(2.6,k=>{g.position.y=y0-40*k*k;});F.m.broom.rotation.z=-0.6;}}],
-      end:()=>{W.anims.length=0;HEROES.forEach((h,i)=>{F.hop[i]=true;});F.ground.visible=false;F.v.position.y=0;F.m.broom.rotation.z=0;flyLearn();}});}
+      end:()=>{W.anims.length=0;HEROES.forEach((h,i)=>{F.hop[i]=true;});F.ground.visible=false;F.v.position.y=0;F.m.broom.rotation.z=0;E.lesson('fly_stupa',flyGo);}});}
   function introGor(){const F=FL5,R0=RIDE_X;const gp=HEROES.map((h,i)=>new V3(R0-6+i*1.6+(i>1?7.4:0),-7.5,6.5));F.gp=gp;F.hop=HEROES.map(()=>false);
     HEROES.forEach((h,i)=>{h.pos.copy(gp[i]);h.face=Math.PI;});
     const g5=F.m;g5.heads.forEach(h=>{h.g.rotation.y=0;});
@@ -157,22 +155,20 @@
         {t:4.9,fn:()=>{const h=flHead(1);h.jaw.rotation.x=0.6;k5Flash(headW(1),flyCol(1),4,0.4);later(0.5,()=>{h.jaw.rotation.x=0;});}},
         {t:5.8,fn:()=>{const h=flHead(null);h.jaw.rotation.x=0.8;const p=headW(null);for(let i=0;i<6;i++)later(i*0.08,()=>shotFx(p.clone(),{g:{position:p.clone().add(new V3(0,6,-14))}},0xff8a2a,null));later(0.7,()=>{h.jaw.rotation.x=0;});}},
         {t:7.4,fn:()=>{k5s('flyUp');const g=F.ground,y0=g.position.y;anim(2.8,k=>{g.position.y=y0-40*k*k;});}}],
-      end:()=>{W.anims.length=0;HEROES.forEach((h,i)=>{F.hop[i]=true;});F.ground.visible=false;flyLearn();}});}
-  // ---------- урок без слов: стрелки ← → у ступы ----------
-  function flyLearn(){const F=FL5;F.ph='learn';F.lt=0;F.lL=[false,false];F.lR=[false,false];W.camFn=()=>flyCam();flyHud(true);
-    F.arrows=[-1,1].map(s=>{const sp=K5PIC.spr(['>'],2.2);sp.material.rotation=s<0?Math.PI:0;k5Prop(sp);return sp;});
-    for(let i=0;i<6;i++){mkGold(-6+(i%2)*12,-60-i*10);}}
+      end:()=>{W.anims.length=0;HEROES.forEach((h,i)=>{F.hop[i]=true;});F.ground.visible=false;E.lesson('fly_gor',flyGo);}});}
+  // ---------- взлёт: сразу в полёт (правила — в обучающей катсцене перед ним) ----------
+  function flyGo(){const F=FL5;F.ph='fly';F.t=0;W.camFn=()=>flyCam();flyHud(true);for(let i=0;i<6;i++){mkGold(-6+(i%2)*12,-60-i*10);}}
   function flyCam(){const F=FL5,gor=F.kind==='gor';return {pos:new V3(RIDE_X+F.vx*0.12,gor?9.5:7.4,gor?15:11.5),look:new V3(RIDE_X+F.vx*0.08,0.6,-24),k:3};}
   // ---------- запуск / конец ----------
   function flyStart(kind,done){const F=FL5;flyEndClean();Object.assign(F,{on:true,kind,done,ph:'intro',t:0,ft:0,dur:G.solo?26:28,x:0,vx:0,bank:0,got:0,kills:0,obs:[],atk:[-9,-9],li:0,fo:0,
-      sg:0,sf:2.5,so:2,sb:0,gates:0,big:null,fin:false,hop:null,learnFoe:false,bumpCd:0,spd:kind==='gor'?26:24,arrows:null,oak:null});
+      sg:0,sf:2.5,so:2,sb:0,gates:0,big:null,fin:false,hop:null,learnFoe:false,bumpCd:0,spd:kind==='gor'?26:24,oak:null});
     K5L.theme(kind==='gor'?'smorodina':'forest',1);W.clampR={x:RIDE_X,z:0,r:4};W.fallY=-999;W.camX=4000;
     for(const pi of[0,1]){players[pi].downed=false;players[pi].petals=Math.max(2,players[pi].petals);}
     // небо полёта: туман дальше (лес и река видны), океан Лукоморья (следует за камерой) — спрятать
     F.fog0=scene.fog?[scene.fog.near,scene.fog.far]:null;if(scene.fog){scene.fog.near=kind==='gor'?34:30;scene.fog.far=kind==='gor'?170:160;}F.ocean=(typeof ATMO!=='undefined'&&ATMO.ocean)?ATMO.ocean:null;if(F.ocean)F.ocean.visible=false;
     flyBuild(kind);flyDecor(kind);flyHud(false);snapCams();(kind==='gor'?introGor:introStupa)();E.log('fly_'+kind);}
   function flyEndClean(){const F=FL5;for(const o of F.obs||[])if(!o.dead&&o.g){o.dead=true;k5Del(o.g);if(o.w)k5Del(o.w);}F.obs=[];for(const m of F.dec||[])k5Del(m);F.dec=[];
-    for(const k of['v','ground','moon','oak'])if(F[k]){k5Del(F[k]);F[k]=null;}if(F.arrows){F.arrows.forEach(a=>k5Del(a));F.arrows=null;}}
+    for(const k of['v','ground','moon','oak'])if(F[k]){k5Del(F[k]);F[k]=null;}}
   function flyEnd(){const F=FL5;F.on=false;flyEndClean();if(F.fog0&&scene.fog){scene.fog.near=F.fog0[0];scene.fog.far=F.fog0[1];}F.fog0=null;if(F.ocean){F.ocean.visible=true;F.ocean=null;}flyHud(false);W.camFn=null;if(RIDE.g)RIDE.g.visible=false;W.fallY=-12;}
   E.fly.start=flyStart;E.fly.end=flyEnd;
   {const _rs=rideStart,_re=rideEnd;rideStart=function(kind,done){if(kind==='stupa'||kind==='gor')return flyStart(kind,done);return _rs(kind,done);};
@@ -193,11 +189,7 @@
     else{F.m.broom.rotation.x=Math.sin(G.time*5)*0.25;if(Math.random()<dt*24)FX.sparkle(new V3(RIDE_X+rand(-1.4,1.4),rand(-1,0.5),rand(1.5,3.5)),1,0xfff0a0);}
     seatHeroes();decorTick(dt);flyHudTick();
     for(const pi of pis)if(tap(pi,'attack')||tap(pi,'item'))onAtk(pi);
-    // урок: каждый качнул ← и →
-    if(F.ph==='learn'){F.lt+=dt;for(const pi of pis){const a=flyAx(pi);if(a<-0.5)F.lL[pi]=true;if(a>0.5)F.lR[pi]=true;}
-      F.arrows.forEach((sp,j)=>{sp.position.set(RIDE_X+(j?6:-6)+Math.sin(G.time*5)*0.4*(j?1:-1),2.4,-3);const done=pis.every(pi=>j?F.lR[pi]:F.lL[pi]);sp.material.opacity=done?0.25:1;});
-      if(pis.every(pi=>F.lL[pi]&&F.lR[pi])||F.lt>(G.solo?7:9)){F.arrows.forEach(a=>k5Del(a));F.arrows=null;F.ph='fly';F.t=0;K5PIC.float(new V3(RIDE_X,4,-3),['check']);}}
-    else if(F.ph==='fly'){F.t+=dt*(F.learnFoe?0.35:1);spawnTick(dt);if(F.t>=F.dur&&!F.obs.some(o=>!o.dead&&o.kind==='gate')){F.ph='final';F.ft=0;F.big=F.kind==='gor'?mkSerp():mkWeb();E.log('flyFinal');}}
+    if(F.ph==='fly'){F.t+=dt*(F.learnFoe?0.35:1);spawnTick(dt);if(F.t>=F.dur&&!F.obs.some(o=>!o.dead&&o.kind==='gate')){F.ph='final';F.ft=0;F.big=F.kind==='gor'?mkSerp():mkWeb();E.log('flyFinal');}}
     else if(F.ph==='final'){F.ft+=dt;const B=F.big;if(B&&!B.dead){
         // большая цель подлетает и ждёт впереди; через 14–18 с Яга / Горыныч справятся и сами
         const hold=B.kind==='serp'?-24:-20;if(B.g.position.z<hold){B.g.position.z=Math.min(hold,B.g.position.z+22*dt);B.z=B.g.position.z;}else{B.ready=B.kind==='web'?true:B.ready;}
@@ -239,13 +231,6 @@
       if(first){for(const pi of flyPis()){const o=mkFoe(pi,G.solo?-1:(pi?1:-1));o.learn=true;}if(G.solo){}F.learnFoe=true;}
       else{const pi=G.solo?G.soloPi:(F.fo++%2);mkFoe(pi,G.solo?(F.fo++%2?1:-1):(pi?1:-1));}}
     if(gor&&((F.gates===0&&t>11)||(F.gates===1&&t>20))){F.gates++;mkGate();}}
-  // ---------- подсказки над целями (кнопки и значки) ----------
-  for(const pi of[0,1]){const q=()=>flyQ(pi),on=()=>FL5.on&&!G.cine&&(!G.solo||pi===0);
-    prompt(pi,'left',()=>new V3(RIDE_X-6,4.1,-3),()=>on()&&FL5.ph==='learn'&&!FL5.lL[q()]);
-    prompt(pi,'right',()=>new V3(RIDE_X+6,4.1,-3),()=>on()&&FL5.ph==='learn'&&!FL5.lR[q()]);
-    prompt(pi,'attack',()=>{const o=ownFoe(q());return o?o.g.position.clone().add(new V3(0,2.2,0)):new V3(RIDE_X,3,-10);},()=>on()&&(FL5.ph==='fly'||FL5.ph==='final')&&!!ownFoe(q()));
-    prompt(pi,'attack',()=>{const B=flyBig();const p=B?(B.kind==='serp'?B.mouth.getWorldPosition(new V3()):B.g.position.clone().add(new V3(0,B.kind==='web'?9.5:8.5,0))):new V3(RIDE_X,4,-20);return p.add(new V3(G.solo?0:(pi?1.6:-1.6),1.2,0));},
-      ()=>on()&&!!flyBig()&&!ownFoe(q()),G.solo?'':K5PIC.h(['two','sync'],30));}
   // для ботов
   E.fly.bot={foes:()=>FL5.obs.filter(o=>!o.dead&&o.kind==='foe'),gold:(x,z)=>mkGold(x,z),tree:(x,z)=>(FL5.kind==='gor'?mkPillar:mkTree)(x,z),foe:(pi,s)=>mkFoe(pi,s),shoot:pi=>onAtk(pi),
     big:()=>FL5.big,eyes:()=>FL5.big&&FL5.big.eyes,gate:()=>{FL5.gates=9;return mkGate();}};
