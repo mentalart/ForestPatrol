@@ -76,6 +76,7 @@ function settingsScreen(){const S=FIN.set,pct=v=>Math.round(v*100)+'%',step=(v,d
     {label:'Вспышки',val:()=>pct(S.flashK),sub:'50 % — мягче и без мигания, 0 % — без вспышек',side:d=>{S.flashK=lvl3(S.flashK,d);save();}},
     {label:'Подписи к звукам',val:()=>S.caps?'вкл':'выкл',sub:'«[бубенец справа]» внизу экрана',side:()=>{S.caps=!S.caps;save();}},
     {label:'Вибрация джойстика',val:()=>S.rumble!==false?'вкл':'выкл',side:()=>{S.rumble=S.rumble===false;save();}},
+    {label:'«Дальше» после уровня',val:()=>S.nextBtn!==false?'вкл':'выкл',sub:'выбор: сразу в следующий уровень мира или в Лукоморье',side:()=>{S.nextBtn=S.nextBtn===false;save();}},
     {label:'Графика',val:()=>QN[S.quality],sub:'тени, чёткость, трава и цветы',side:d=>{const i=Q.indexOf(S.quality);S.quality=Q[Math.max(0,Math.min(2,i+d))];save();FIN.applyQuality();}}];
   if(G.solo||FIN.co.on)items.push({label:'Сложность',val:()=>PATHNAME[players[0].path],sub:'Лёгкий путь — шире окна для щита и такта',side:d=>cyc(0,d)});
   else items.push({label:'Путь игрока 1',val:()=>PATHNAME[players[0].path],side:d=>cyc(0,d)},{label:'Путь игрока 2',val:()=>PATHNAME[players[1].path],side:d=>cyc(1,d)});
