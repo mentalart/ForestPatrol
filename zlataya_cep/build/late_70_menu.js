@@ -54,7 +54,7 @@ function mainScreen(){const sv=FIN.readSave();return {id:'main',items:[
   {label:'Продолжить',sub:()=>sv?FIN.saveSummary(sv):'сохранений пока нет — начните новую игру',off:!sv,act:()=>finGo(()=>FIN.continueGame())},
   {label:'Новая игра',sub:'пролог «Звенышко» — с самого начала',act:()=>{if(sv)finPush(confirmNew());else finGo(newGame);}},
   {label:'Главы',sub:'переиграть пройденные уровни',act:()=>finPush(chaptersScreen())},
-  {label:'Режим',val:()=>G.solo?'один':'вдвоём',sub:()=>G.solo?'один игрок и все четверо героев':'кооператив на двоих: клавиатура и/или два джойстика',side:()=>{setSolo(!G.solo);}},
+  {label:'Режим',val:()=>FIN.co.label(),sub:()=>G.solo?'один игрок и все четверо героев':FIN.co.on?'за Игрока 2 играет бот-напарник: идёт следом, дерётся, подшивает':'кооператив на двоих: клавиатура и/или два джойстика',side:d=>FIN.co.cycle(d)},
   {label:'Настройки',sub:'звук, субтитры, размер текста, графика, сложность',act:()=>finPush(settingsScreen())},
   {label:'Управление',act:()=>finPush(controlsScreen())},
   {label:'Титры',act:()=>finPush(creditsScreen())}],sel:sv?0:1};}
@@ -77,7 +77,7 @@ function settingsScreen(){const S=FIN.set,pct=v=>Math.round(v*100)+'%',step=(v,d
     {label:'Подписи к звукам',val:()=>S.caps?'вкл':'выкл',sub:'«[бубенец справа]» внизу экрана',side:()=>{S.caps=!S.caps;save();}},
     {label:'Вибрация джойстика',val:()=>S.rumble!==false?'вкл':'выкл',side:()=>{S.rumble=S.rumble===false;save();}},
     {label:'Графика',val:()=>QN[S.quality],sub:'тени, чёткость, трава и цветы',side:d=>{const i=Q.indexOf(S.quality);S.quality=Q[Math.max(0,Math.min(2,i+d))];save();FIN.applyQuality();}}];
-  if(G.solo)items.push({label:'Сложность',val:()=>PATHNAME[players[0].path],sub:'Лёгкий путь — шире окна для щита и такта',side:d=>cyc(0,d)});
+  if(G.solo||FIN.co.on)items.push({label:'Сложность',val:()=>PATHNAME[players[0].path],sub:'Лёгкий путь — шире окна для щита и такта',side:d=>cyc(0,d)});
   else items.push({label:'Путь игрока 1',val:()=>PATHNAME[players[0].path],side:d=>cyc(0,d)},{label:'Путь игрока 2',val:()=>PATHNAME[players[1].path],side:d=>cyc(1,d)});
   items.push({label:'Джойстики местами',val:()=>PADS.swap?'да':'нет',sub:()=>String(padStatus()).replace(/<[^>]+>/g,''),side:()=>{PADS.swap=!PADS.swap;}},{label:'Назад',act:finBack});
   return {head:'Настройки',items,win:8};}
@@ -85,7 +85,7 @@ function controlsScreen(){const rows=[['move','Ходьба'],['jump','Прыж�
     ['attack','Удар'],['call',G.solo?'«Ко мне!» — зовёт всех троих':'«Ко мне!»'],['item','Чудо-вещь мира'],['roll','Кувырок (с уровня 1-2)']];
   const k=(pi,a)=>a==='move'?(pi?'<kbd>↑←↓→</kbd>':'<kbd>WASD</kbd>'):'<kbd>'+KEYNAME[BIND[pi][a]]+'</kbd>';
   const html=()=>'<div class="fin-note"><table class="fin-ctl"><tr><th></th><th>Игрок 1</th><th>Игрок 2</th><th>Джойстик</th></tr>'+rows.map(([a,t])=>'<tr><td>'+t+'</td><td>'+k(0,a)+'</td><td>'+k(1,a)+'</td><td>'+(a==='move'?STICK:padGlyph(a))+'</td></tr>').join('')+
-    '</table><div style="margin-top:8px;opacity:.85">'+(G.solo?'В одиночном режиме подходит любая половина клавиатуры и любой джойстик. ':'')+'Пауза — Esc или Start. Фото-режим — P. Ролик пропускается, если держать прыжок.</div></div>';
+    '</table><div style="margin-top:8px;opacity:.85">'+(G.solo?'В одиночном режиме подходит любая половина клавиатуры и любой джойстик. ':FIN.co.on?'С напарником за Игрока 2 играет бот, а стрелки и M K L , . / ; работают как вторая половина клавиатуры Игрока 1. ':'')+'Пауза — Esc или Start. Фото-режим — P. Ролик пропускается, если держать прыжок.</div></div>';
   return {head:'Управление',html,items:[{label:'Назад',act:finBack}]};}
 const CREDITS='<h3>Златая цепь</h3><p>кооперативная сказка для всей семьи</p>'+
   '<h3>По мотивам</h3><p>А. С. Пушкин, пролог к поэме «Руслан и Людмила» — «У лукоморья дуб зелёный…»</p><p>русские народные сказки: «Колобок», «Садко», «Гуси-лебеди», «Кощей Бессмертный», «Репка», «Курочка Ряба», «Кузьма и Демьян», былины о трёх богатырях</p>'+
@@ -97,7 +97,7 @@ const CREDITS='<h3>Златая цепь</h3><p>кооперативная ск�
 function creditsScreen(){return {head:'Титры',html:()=>'<div class="fin-credits"><div id="finCred">'+CREDITS+'</div></div>',items:[{label:'Назад',act:finBack}],credits:true};}
 function pauseScreen(){return {pause:true,items:[{label:'Продолжить',act:()=>hideMenu()},
   {label:'Настройки',act:()=>finPush(settingsScreen())},{label:'Управление',act:()=>finPush(controlsScreen())},
-  {label:'Режим',val:()=>G.solo?'один':'вдвоём',side:()=>{setSolo(!G.solo);}},
+  {label:'Режим',val:()=>FIN.co.label(),side:d=>FIN.co.cycle(d)},
   {label:'Выйти в главное меню',sub:()=>G.hub?'пройденные уровни сохранены, этот уровень начнётся заново':'пролог начнётся заново',act:()=>{FIN.saveGame();finGo(()=>FIN.openTitle(true));}}],onBack:()=>hideMenu()};}
 // ---------- открыть / закрыть ----------
 FIN.openTitle=function(first){G.state='menu';FIN.titleOn=true;document.body.classList.add('fin-title');$('menu').classList.add('hide');$('finPause').classList.add('fin-hide');$('finTitle').classList.remove('fin-hide');
