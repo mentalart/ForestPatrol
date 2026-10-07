@@ -38,7 +38,7 @@ function cloudBank(R,n,seed){const g=new THREE.Group();let rs=seed;const rnd=()=
   const m=new THREE.MeshBasicMaterial({color:0xffffff,fog:false,depthWrite:false,depthTest:false,toneMapped:false});
   for(let i=0;i<n;i++){const a=rnd()*Math.PI*2,r=R*(0.9+rnd()*0.15),s=8+rnd()*16;const c=new THREE.Mesh(new FIN.orig.Icosa(s,0),m);c.position.set(Math.sin(a)*r,-6+rnd()*6,Math.cos(a)*r);c.scale.set(1.6,0.55,1);c.renderOrder=-17;g.add(c);}
   return {g,m};}
-function buildHorizon(){const k=horKind(W&&W.theme)||(W&&W.theme===undefined?'hill':null);if(k===HOR.kind)return;HOR.meshes.forEach(m=>scene.remove(m.o));HOR.meshes=[];HOR.kind=k;if(!k)return;
+function buildHorizon(){const k=horKind(W&&W.theme)||(W&&W.theme===undefined?'hill':null);if(k===HOR.kind)return;HOR.meshes.forEach(m=>{scene.remove(m.o);disposeTree(m.o);m.m.dispose();});HOR.meshes=[];HOR.kind=k;if(!k)return;
   if(k==='cloud'){const b=cloudBank(230,34,7);b.g.userData.y0=-14;followCam(b.g);b.g.onBeforeRender=null;scene.add(b.g);HOR.meshes.push({o:b.g,m:b.m,mix:0.15,cloud:true});return;}
   const L=k==='fir'?[[235,34,64,false,0.35],[200,18,120,true,0.62]]:k==='peak'?[[230,60,40,true,0.3],[195,26,70,true,0.6]]:k==='isle'?[[240,14,26,false,0.3],[205,7,40,false,0.5]]:[[235,30,48,false,0.3],[200,15,72,false,0.55]];
   L.forEach(([R,h,n,sp,mix],i)=>{const m=new THREE.MeshBasicMaterial({color:0x888888,fog:false,depthWrite:false,depthTest:false,side:THREE.DoubleSide,toneMapped:false});

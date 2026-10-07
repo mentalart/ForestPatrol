@@ -76,7 +76,7 @@
 | id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
-| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 11 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_kids1 tfin_luko thw3a thw3b thw4 tluko … |
+| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 12 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_kids1 tfin_leak tfin_luko thw3a thw3b t… |
 | `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_99n_yaga11 | 28 | t11 tfin_art tfin_cam tfin_companion tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfi… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1 | 1 | tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 1 | tfin_kids1 |
@@ -121,7 +121,7 @@
 | `head.html` | 442 | — |
 | `engine/01_utils_input_sound.js` | 122 | УТИЛИТЫ · ВВОД · ДЖОЙСТИКИ (Gamepad API, стандартная раскладка, раскладка v4) · ЗВУК (placeholder) |
 | `engine/02_render_heroes.js` | 252 | РЕНДЕР / СЦЕНА · ГЕРОИ (осмысленные примитивы, умения по сценарию v4) |
-| `engine/03_world_fx_collision.js` | 226 | МИР · FX · ПОЛУПРОЗРАЧНОСТЬ ТОГО, ЧТО ЗАСЛОНЯЕТ ГЕРОЕВ · КОЛЛИЗИИ |
+| `engine/03_world_fx_collision.js` | 234 | МИР · FX · ПОЛУПРОЗРАЧНОСТЬ ТОГО, ЧТО ЗАСЛОНЯЕТ ГЕРОЕВ · КОЛЛИЗИИ |
 | `engine/04_physics_actions.js` | 156 | ФИЗИКА ГЕРОЯ · ДЕЙСТВИЯ ИГРОКОВ |
 | `engine/05_foes_moroki.js` | 349 | МОРОКИ (язык боя v4: сигнал → защита → запал гаснет → Пробо… |
 | `engine/06_damage_clew.js` | 172 | УРОН, КЛУБОК НИТОК И ПОДШИВАНИЕ (закон доброго дивана) · КЛУБОК-ПУТЕВОДИТЕЛЬ (RB): нить-тропка, нить к нити, струны … |
@@ -375,11 +375,11 @@
 | `28_koschei_epic_build.md` | Битва с Кощеем — отдельная сборка (k5epic): как собрать, проверить и продолжить |
 | `29_full_audit.md` | Полный аудит «Златой цепи» перед выводом в готовую игру |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 16 файлов |
+| `changes/` | 17 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 176 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 177 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
