@@ -40,6 +40,8 @@ function build5B1(){
     else{const r=swing.t*11;wave.position.set(0,0.3,-29);wave.scale.setScalar(r);waveM.opacity=0.8*(1-swing.t/1.8);
       for(const h of HEROES){if(!h.active)continue;const d=hd(h.pos,{x:0,z:-29});if(Math.abs(d-r)<0.9&&h.pos.y<0.7&&h.iT<=0&&!h.waveHit){h.waveHit=true;const dx=h.pos.x,dz=h.pos.z+29,dl=Math.hypot(dx,dz)||1;h.vel.x=dx/dl*8;h.vel.z=dz/dl*8;h.vel.y=4;h.grounded=false;h.knockT=0.4;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ох! Мах','#c8b0ff');}}
       if(swing.t>1.8){swing=null;wave.visible=false;KS.armR.rotation.x=0;HEROES.forEach(h=>{h.waveHit=false;});}}}
+  // Ctrl+Alt+B (релиз, late_95_dev.js): следующая часть боя — для проверки и показа; вернуть true, если перешли
+  W.bossNext=()=>{if(F.stage!=='fight'||G.cine)return false;if(!F.phase2)F.t=P1D;else if(!F.phase3)F.t=P1D+P2D;else F.p3t=P3D;return true;};
   /* ---------- ход боя ---------- */
   function intro(){F.stage='introCine';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,10,0);h.face=Math.PI;});
     play({dur:20,fov:46,camK:2.2,shots:[shot(0,[0,2,16],[0,1.6,8],[0,2.4,12],[0,1.8,4],5),shot(6,[6,5,2],[0,2,-26]),shot(12,[2,3,-24],[0,3.2,-30.6]),shot(16.4,[0,6,6],[0,1,-16])],

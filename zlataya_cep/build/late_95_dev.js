@@ -1,6 +1,7 @@
 /* ============================== РЕЛИЗ · КЛАВИШИ РАЗРАБОТЧИКА ============================== */
 // Ctrl+Alt+] — открыть все уровни: прогресс как у пройденной игры, в «Главах» — все уровни и испытания Заставы.
 //   Отметка живёт в самом сохранении (флаг devAll), поэтому «Новая игра» снимает её вместе со старым прогрессом.
+// Ctrl+Alt+B — следующая стадия босса (у всех боссов: 1-Б…4-Б, 5-Б1, 5-Б2): уровень сам переходит, как после настоящей победы в стадии.
 // Ctrl+Alt+[ — стереть всё, что игра хранит на этом компьютере (сохранение, настройки, гардероб лавки), и начать как в первый раз.
 // Всё хранится в localStorage под ключами «zlatayaCep.*» — других следов у игры нет.
 const DEV_PREFIX='zlatayaCep.';
@@ -47,3 +48,8 @@ FIN.ui=dt=>updateUI(dt);   // (window.ZC появляется позже мод�
 {const _t=tone;tone=function(){if(FIN.toneEv)try{FIN.toneEv([...arguments]);}catch(e){}return _t.apply(this,arguments);};}
 FIN.tone=(...a)=>tone(...a);
 FIN.ac=()=>AC;   // аудиоконтекст игры — для записи звуковой дорожки трейлера (tools/video/audio.js)
+// Ctrl+Alt+B — следующая стадия босса: у каждого босса уровень выставляет W.bossNext (true — переход начат); по коду клавиши — и в русской раскладке
+addEventListener('keydown',e=>{if(!e.ctrlKey||!e.altKey||e.repeat||!(e.code==='KeyB'||e.key==='b'||e.key==='B'||e.key==='и'||e.key==='И'))return;
+  e.preventDefault();e.stopImmediatePropagation();if(G.state!=='play'||G.ui||G.trans)return;
+  let ok=false;try{ok=!!(W&&W.bossNext&&W.bossNext());}catch(err){console.error(err);}
+  FIN.devToast(ok?'Следующая стадия босса':'Здесь нет следующей стадии','Ctrl+Alt+B');},true);
