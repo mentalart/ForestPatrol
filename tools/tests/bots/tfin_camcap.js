@@ -14,7 +14,7 @@ window.proj=(h,cam)=>{const t=new THREE.Vector3(h.pos.x,h.pos.y+h.d.height,h.pos
 // поставить героев на разлёт sep (A — на месте, B — вдоль оси уровня), fight — держать «бой», прокрутить 5 с и снять кадр
 window.scn=(sep,fight)=>{A.pos.set(X0,A.pos.y+0.3,Z0);A.vel.set(0,0,0);B.pos.set(X0,B.pos.y+0.3,Z0+DIR*sep);B.vel.set(0,0,0);
   for(let i=0;i<300;i++){if(fight)ZC.G.fightT=100;ZC.tick(1);}
-  ZC.sim(0.05);const cams=ZC.FIN.cam(),sp=cams.length>1,cb=sp?cams[1]:cams[0],ca=cams[0];
+  ZC.sim(0.05);const cams=ZC.FIN.panesCam(),sp=cams.length>1,cb=sp?cams[1]:cams[0],ca=cams[0];
   const pb=proj(B,cb),pa=proj(A,ca);return {split:sp,fb:pb.frac,fa:pa.frac,inView:pb.inView&&pa.inView,sep:Math.hypot(A.pos.x-B.pos.x,A.pos.z-B.pos.z),fell:B.pos.y<-3||A.pos.y<-3};};
 window.chk=(name,ok,info)=>{RES.push(name+': '+info);if(!ok)BAD.push(name+': '+info);};
 window.fmt=(r)=>'разлёт '+r.sep.toFixed(1)+' м, '+(r.split?'два экрана':'общий')+', Йоша '+(r.fb*100).toFixed(1)+' % кадра ('+Math.round(r.fb*720)+' px)'+(r.inView?'':', КТО-ТО ЗА КАДРОМ');

@@ -50,7 +50,7 @@ FIN.tone=(...a)=>tone(...a);
 FIN.ac=()=>AC;   // аудиоконтекст игры — для записи звуковой дорожки трейлера (tools/video/audio.js)
 // видеопамять (для бота tfin_leak): число геометрий, текстур и шейдерных программ в рендерере и куча JS — только с ?debug (window.ZC)
 // камеры кадра (для бота tfin_camcap: размер героя на экране) — только с ?debug
-FIN.cam=()=>PANES.map(p=>p.cam);
+FIN.panesCam=()=>PANES.map(p=>p.cam);   // (FIN.cam — состояние орбитальной камеры, late_89_camorbit.js: имя занято)
 FIN.gl=()=>({geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,programs:renderer.info.programs?renderer.info.programs.length:0,heap:performance.memory?Math.round(performance.memory.usedJSHeapSize/1048576):-1});
 // Ctrl+Alt+B — следующая стадия босса: у каждого босса уровень выставляет W.bossNext (true — переход начат; строка — то же, но с названием для подсказки,
 // так в 5-Б2: «Глава N из 12»); по коду клавиши — и в русской раскладке
