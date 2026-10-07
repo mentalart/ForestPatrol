@@ -55,7 +55,7 @@
     if(ES.walk){ES.wk=[];for(let i=0;i<4;i++){if(i===ES.real)continue;ES.wk[i]={hp:2,cd:2+i*0.5,lunge:null};s3Body(i).m.g.position.set(s3St[i].x,0,s3St[i].z);}}}
   function s3Hit(h){if(!ES.down||!ES.fight)return;if(ES.spes<=0){s3Bind(h);return;}if(G.time<(ES.hcd||0))return;ES.hcd=G.time+0.3;ES.hits++;ES.spes--;
     burst(KS.g.position.clone().add(new V3(0,2,0)),0xffffff,8,3);FX.sparks(KS.g.position.clone().add(new V3(0,2,0)),8,0xffd76a);shake(h.player,0.03,0.12);SFX.hit&&SFX.hit();
-    if(ES.spes<=0){banner('Спесь сбита!','#ffd76a',2.4,G.solo?'ударь рядом с ним — золотая нить':'оба — удар рядом с ним: золотая нить сказа');ES.winT=99;}
+    if(ES.spes<=0){banner('Спесь сбита!','#ffd76a',2.4);ES.winT=99;}
     else{if(ES.hits>=(G.solo?2:3))ES.winT=Math.min(ES.winT,0.5);if(!ES.walk&&ES.spes<=Math.ceil(ES.spesMax/2))ES.walkNext=true;}}
   function s3Bind(h){const pi=h.player;ES.bind=ES.bind||[-9,-9];ES.bind[pi]=G.time;k5Thread(()=>hH(h),()=>KS.g.position.clone().add(new V3(0,2.4,0)));k5s('bind');
     if(G.solo||players[1-pi].downed||Math.abs(ES.bind[1-pi]-G.time)<1.6){ES.fight=false;bindBeat();E.won(3);}else floatText(kosTop(),'Второй — тоже!','#ffe08a');}
@@ -66,7 +66,7 @@
       const L=[];for(let k=0;k<7;k++){const s=K5L.textSpr('ЧЁРНОЕСЛОВО'[k%11],0.9,{w:128,h:128,col:'#1c0a2e',glow:'#b070ff',weight:'italic 700 '});g.add(s);L.push(s);}
       K5L.noRay(g);try{(B.a||{pose(){}}).pose('castR',{antic:0.2});}catch(e){}return {i,g,rim,fill,L,real,fake:!real};};
     const C0={t:0,dur,parts:[]};for(let i=0;i<4;i++){if(ES.gone[i]||(ES.walk&&i!==ES.real))continue;if(i!==ES.real&&Math.random()<0.45)continue;C0.parts.push(mk(i));}ES.cast=C0;k5s('cast');
-    if(AUD.ready())AUD.nz({type:'bandpass',f0:300,f1:900,d:dur,v:0.04,q:3,a:0.4});if(!ES.wordTold){ES.wordTold=true;say('kot','Пишет «Чёрное слово»! Сбейте его, пока кольцо не полное!',2.6);}}
+    if(AUD.ready())AUD.nz({type:'bandpass',f0:300,f1:900,d:dur,v:0.04,q:3,a:0.4});}
   function s3CastStop(done){const C0=ES.cast;if(!C0)return;ES.cast=null;for(const P of C0.parts){k5Del(P.g);}ES.castT=ES.walk?5:G.solo?8:6.5;try{KA.reset();}catch(e){}s3D.forEach(d=>{try{d.a&&d.a.reset();}catch(e){}});
     if(done)s3Rain();else{floatText(kosTop(),'Слово сбито!','#ffe08a');k5s('keyBreak');E.log('s3word_broken');}}
   function s3CastTick(dt){const C0=ES.cast;if(!C0)return;C0.t+=dt;const k=Math.min(1,C0.t/C0.dur);
@@ -94,7 +94,7 @@
       if(ES.spinT<=0){ES.spinSt='rest';ES.spinT=G.solo?2.4:1.8;if(AUD.ready())AUD.bell(988,{v:0.05,d:0.6});k5Ring(s3Spin.position.clone().setY(0.1),0xffd76a,0.6,2.2,0.5);}}
     else{sp.rotation.y+=dt*0.6;gl.material.opacity=0.7+0.3*Math.sin(G.time*10);if(ES.spinT<=0){ES.spinSt='spin';ES.spinT=G.solo?3.6:4.2;ES.yarnT=0.6;}}}
   function s3KikiFree(){E.freeF('kiki');s3Spin.visible=false;K5L.gold(s3Spin.position.clone().add(new V3(0,1.2,0)),26);k5Flash(s3Spin.position.clone().add(new V3(0,1.2,0)),0xffd76a,5,0.5);
-    barkS(FR.kiki.m,'kiki','Должна была — отдаю! Кудель моя — вас свяжет, морок разрежет!',3,true);banner('Кикимора свободна!','#e0d0a0',2.6,G.solo?'золотая кудель — от неё к тебе':'золотая кудель связала вас');E.log('kiki');later(0.6,()=>{s3Tie.visible=true;});}
+    barkS(FR.kiki.m,'kiki','Должна была — отдаю! Кудель моя — вас свяжет, морок разрежет!',3,true);banner('Кикимора свободна!','#e0d0a0',2.6);E.log('kiki');later(0.6,()=>{s3Tie.visible=true;});}
   /* ---------- кудель: нить между героями (одному — от Кикиморы); режет мороков; натянута — рогатка ---------- */
   const s3Ends=()=>{const a=active(G.solo?G.soloPi:0),b=G.solo?null:active(1);return [a,b];};
   const s3EP=h=>h?new V3(h.pos.x,h.pos.y+1.0,h.pos.z):FR.kiki.m.g.position.clone().add(new V3(0,1.3,0));
@@ -127,7 +127,7 @@
       later(T+0.02,()=>{ES.fly=false;placeOnGround(me,stop.x,stop.z,0);if(!ES.fight)return;if(hit==null){floatText(stop.clone().add(new V3(0,2,0)),'мимо!','#fff0c0');E.log('slingMiss');return;}
         E.log(hit===ES.real?'slingReal':'slingPop');if(hit===ES.real)s3Down('Кудель-рогатка!');else s3Pop(hit,'рогаткой — морок!');});};}
   /* ---------- мороки сходят с пней (вторая половина): идут к героям, бросаются по красной дорожке ---------- */
-  function s3WalkStart(){ES.walk=true;ES.walkNext=false;ES.wk=[];banner('Мороки сошли с пней!','#c8a8ff',2.6,'кудель режет их, удары и капли — тоже');say('koschei','Мороки мои — ступайте! Найдите их в тумане!',2.4);
+  function s3WalkStart(){ES.walk=true;ES.walkNext=false;ES.wk=[];banner('Мороки сошли с пней!','#c8a8ff',2.6);say('koschei','Мороки мои — ступайте! Найдите их в тумане!',2.4);
     if(ES.fogF)ES.fogF.set(0.62);ES.walkJump=true;for(let i=0;i<4;i++)K5L.ink(new V3(s3St[i].x,1,s3St[i].z),20,1.5);k5s('blink');
     later(0.6,()=>{s3Layout(S3_B);ES.wk=[];for(let i=0;i<4;i++){if(i===ES.real)continue;ES.wk[i]={hp:2,cd:2+i*0.6,lunge:null};const B=s3Body(i);B.m.g.position.set(s3St[i].x,0,s3St[i].z);}s3Seat();
       for(let i=0;i<4;i++)if(i!==ES.real){const B=s3Body(i);B.m.g.position.set(s3St[i].x,0,s3St[i].z);}ES.walkJump=false;E.log('s3walk');});}
@@ -148,7 +148,7 @@
   E.stage[3]={start(o){E.hub(3);K5L.themeTo('ink',1.2);K5.fight=false;liveBoss(false);dome.visible=false;ES.fight=false;ES.spes=ES.spesMax=G.solo?4:6;ES.down=false;ES.castT=5;ES.blobT=2.5;ES.spool=0;ES.fly=false;ES.walk=false;ES.walkNext=false;
       ES.spinSt='spin';ES.spinT=3.5;ES.yarnT=1.2;ES.breathT=1;ES.gone=[false,false,false,false];W.clampR={x:C.x,z:C.z,r:R};s3Layout(S3_A);s3St.forEach(s=>{s.g.visible=true;s.c.on=true;});heroesHome(3);KS.g.scale.setScalar(0.9);s3Shuffle();E.arenaCam(true,1);
       s3EnvOn();if(!E.free.kiki){FR.kiki.m.g.position.copy(S3_KIKI);FR.kiki.m.g.rotation.y=Math.atan2(C.x-S3_KIKI.x,C.z-S3_KIKI.z);s3Spin.visible=true;s3Spin.position.copy(S3_SPIN);s3SpinHt.pos.copy(S3_SPIN);}else s3Tie.visible=true;
-      const go=()=>{ES.fight=true;E.log('s3go');};E.cards(3,go);},
+      const go=()=>{ES.fight=true;E.log('s3go');};E.lesson(3,go);},
     tick(dt){s3EnvTick(dt);if(!ES.fight)return;s3Ht.pos.copy(KS.g.position);for(let i=0;i<4;i++)s3Mk[i].pos.copy(s3Pos(i)).add(new V3(0,2.4,0));
       // кто настоящий: тень на пне и пар изо рта; Совиный взор и сказка Кота — золотое свечение
       const reveal=(W.owlT>0||K5.listen)&&!ES.down;aura.color.set(reveal?0xffd76a:0xa070ff);aura.intensity=reveal?2.4:0.5;aura.position.copy(KS.g.position).add(new V3(0,3,0));
@@ -165,35 +165,42 @@
       ES.blobT-=dt;if(ES.blobT<=0){ES.blobT=(G.solo?3.4:2.4)*(ES.walk?1.3:1);const vis=[0,1,2,3].filter(i=>!ES.gone[i]&&s3Body(i).m.g.visible&&(!ES.walk||i===ES.real||Math.random()<0.3));if(vis.length)s3Throw(vis[Math.floor(rand(0,vis.length))]);}},
     end(){s3St.forEach(s=>{s.g.visible=false;s.c.on=false;});s3D.forEach(d=>{d.m.g.visible=false;});s3Spin.visible=false;s3Tie.visible=false;s3Vis.visible=false;aura.intensity=0;KS.g.scale.setScalar(1.15);W.camFn=null;
       if(ES.cast)for(const P of ES.cast.parts)k5Del(P.g);ES.cast=null;if(!E.free.kiki)FR.kiki.m.g.position.copy(FR.kiki.home);else FR.kiki.m.g.position.copy(FR.kiki.home);KS.head.rotation.z=0;try{KA.reset();}catch(e){}},
-    item:pi=>E.cur===3?s3Sling(pi):null,
-    pics:pi=>ES.down?(ES.spes>0?['koschei','>','@attack']:['two','hit','>','gchain']):!E.free.kiki?['friend','chain','>','@attack']:['eye','koschei','+','ink','@guard'],
-    goal:pi=>{const q=G.solo?0:pi;if(ES.down)return ES.spes>0?'Кощей сбит — <b>бейте</b> '+K(q,'attack')+', пока не опомнился!':'Спесь сбита — '+(G.solo?'удар':'оба удар')+' рядом: <b>золотая нить</b>!';
-      const find='Настоящий — с <b>тенью</b> на пне и <b>паром</b> изо рта'+(pi===1||G.solo?'; Совиный взор '+K(q,'skill'):'')+'. Капля — <b>щит '+K(q,'guard')+' в последний миг</b>: вернётся в бросившего.';
-      if(!E.free.kiki)return find+'<br>Кикимора в цепи: веретено замерло <b>золотом</b> — бей '+K(q,'attack')+' (Потапу — одного удара).';
-      return find+'<br><b>Кудель</b>: нить режет мороков; натянули — '+K(q,'item')+' <b>рогатка</b>: Кощей между вами — и летишь в него.';},
-    targets:pi=>ES.down?[KS.g]:!E.free.kiki?[s3Spin]:[]};
+    item:pi=>E.cur===3?s3Sling(pi):null};
   // рогатка Прошки — в настоящего, пока он пишет: слово сбито; в морока — лопнул
   for(let i=0;i<4;i++){W.marks.push({pos:new V3(),active:()=>E.cur===3&&ES.fight&&!ES.down&&!ES.gone[i]&&s3Body(i).m.g.visible,onHit:()=>{if(i===ES.real){if(ES.cast)s3CastStop(false);else floatText(kosTop(),'Ха!','#c8a8ff');}else s3Pop(i,'рогаткой — морок!');}});}
   const s3Mk=W.marks.slice(-4);
-  /* ---------- подсказки в мире ---------- */
-  for(const pi of[0,1]){const me=()=>G.solo?active(G.soloPi):active(pi),st3=()=>E.cur===3&&ES.fight&&!G.cine&&(!G.solo||pi===0),top=()=>headOf(me()).add(new V3(0,0.4,0));
-    // капля летит в тебя — щит в последний миг
-    {prompt(pi,'guard',top,()=>false);const pr=W.prompts[W.prompts.length-1];pr.cond=()=>{if(!st3())return false;const b=W.bolts.find(b=>!b.refl&&b.tgt===me()&&b.eta<1.1);if(!b)return false;pr.note=b.eta<0.35?'СЕЙЧАС!':'щит — в последний миг';return true;};}
-    // веретено замерло — бей
-    prompt(pi,'attack',()=>s3Spin.position.clone().add(new V3(pi?0.6:-0.6,2.6,0)),()=>st3()&&!E.free.kiki&&ES.spinSt==='rest'&&hd(me().pos,S3_SPIN)<9,'веретено — бей!');
-    // кудель натянута — рогатка; на линии тело — «в него!»
-    {prompt(pi,'item',top,()=>false);const pr=W.prompts[W.prompts.length-1];pr.cond=()=>{if(!st3()||!E.free.kiki||!ES.taut||ES.down||ES.fly)return false;const [A,Bh]=s3Ends();const m=G.solo?A:me(),o=G.solo?null:(m===A?Bh:A);
-      const hit=s3OnLine(m.pos,s3EP(o).setY(0));pr.note=hit==null?'рогатка (на линии никого)':'рогатка — в того, кто на линии!';return true;};}
-    // Кощей сбит — бей
-    prompt(pi,'attack',()=>KS.g.position.clone().add(new V3(pi?0.8:-0.8,3,0)),()=>st3()&&ES.down,()=>ES.spes>0?'бей!':'вместе!');
-    // лужа или круг дождя под тобой — уходи
-    prompt(pi,'roll',top,()=>st3()&&K5X.owned.some(o=>o.g&&o.t!=null&&o.t>0.4&&Math.hypot(o.g.position.x-me().pos.x,o.g.position.z-me().pos.z)<1.8),'чернильная лужа — уходи');}
-  // цель на линии рогатки — золотой знак над ней
-  const s3Aim=k5Prop(t4Arrow(0xffd76a));s3Aim.visible=false;K5L.noRay(s3Aim);
-  W.updates.push(dt=>{if(E.cur!==3||!ES.fight||!ES.taut||ES.down||!E.free.kiki){s3Aim.visible=false;return;}const [A,Bh]=s3Ends();let best=null;for(const m of(G.solo?[A]:[A,Bh])){const o=G.solo?null:(m===A?Bh:A);const hit=s3OnLine(m.pos,s3EP(o).setY(0));if(hit!=null){best=hit;break;}}
-    s3Aim.visible=best!=null;if(best!=null){s3Aim.position.copy(s3Pos(best)).add(new V3(0,5.6+0.3*Math.sin(G.time*5),0));s3Aim.rotation.y+=dt*3;}});
   Object.assign(S3,{stump:i=>({x:s3St[i].x,z:s3St[i].z}),body:i=>s3Pos(i),spin:S3_SPIN,kiki:S3_KIKI,TAUT:S3_TAUT,down:how=>s3Down(how)});   // для ботов (tk5e_s3)
-  E.CARDS[3]=[{p:[0,10,6],l:[0,1,-13],card:{tag:'Как победить',title:'Стадия 3 из 12 · Там лес и дол видений полны',icon:'orb',text:'Кощей и трое <b>мороков</b> на чернильных пнях. Найдите настоящего, сбейте его с пня и бейте, пока он не опомнился. Спесь сбита — удар рядом с ним вдвоём.'}},
-    {p:[2,5,-6],l:[-5,2,-7],card:{tag:'Кто настоящий',title:'Тень и пар',icon:'orb',text:'У настоящего на пне <b>тень</b> и <b>пар</b> изо рта — у мороков их нет. Совиный взор Пелагеи и сказка Кота светят на него золотом.'}},
-    {p:[-2,5,-2],l:[-6.5,2,-15],card:{tag:'Капли',title:'Щит в последний миг',icon:'yellow',text:'Все четверо бросают чернильные капли. Отбей <b>щитом в последний миг</b> — капля вернётся: морок лопнет, настоящий слетит с пня. Кольцо над ним — «Чёрное слово»: сбей, пока не полное, иначе чернильный дождь.'}},
-    {p:[-4,4,-3],l:[-8,1,-9],card:{tag:'Кикимора',title:'Веретено и кудель',icon:'lock',text:'Веретено Кикиморы крутится и бросает нитки. Замерло <b>золотом</b> — бей. Свободная Кикимора свяжет вас <b>золотой куделью</b>: нить режет мороков, а натянутая — <b>рогатка</b>: Кощей между вами — '+K(0,'item')+', и летишь в него.'}}];
+  /* ---------- обучающая катсцена стадии 3: настоящий Кощей среди мороков, капли, «Чёрное слово», веретено, кудель, нить ---------- */
+  E.LES[3]=L=>{const po=T.potap,pr=T.proshka,pe=T.pelageya,yo=T.yosha,H=(x,z)=>[x,0.9,z],real=ES.real,mor=(real+2)%4,st=i=>S3.stump(i);
+    const BP=i=>{const p=s3Pos(i);return new V3(p.x,p.y+2.2,p.z);},side=(i,d,h)=>{const s=st(i),k=d/Math.max(1,Math.hypot(C.x-s.x,C.z-s.z));return [s.x+(C.x-s.x)*k,h,s.z+(C.z-s.z)*k];};
+    const gl=s3Spin.userData.gl;L.on(()=>{s3Seat();ES.down=false;s3St.forEach(S=>{S.sh.material.opacity=0;S.rune.material.color.set(0xa060ff);});aura.intensity=0;gl.material.opacity=0;try{KA.reset();}catch(e){}});
+    L.put(po,-1.6,-5.8);L.put(pr,-0.5,-5.4);L.put(pe,0.7,-5.4);L.put(yo,1.8,-5.8);
+    L.beat(6,{cam:[[0,10,5],[0,1.2,-12.5],[0,8,2],[0,1.2,-12.5]],need:[[-6.5,2.6,-15],[6.5,2.6,-15],[-5,2.6,-7],[5,2.6,-7]],says:[['zven','Кощей и трое мороков — на чернильных пнях.',0.2,3.0],['zven','Настоящий — только один!',3.3,2.4]],
+      ev:[0,1,2,3].map(i=>[1.0+i*0.3,()=>k5Ring(new V3(st(i).x,0.3,st(i).z),0xc090ff,0.5,2.2,0.7)])});
+    L.beat(8.6,{cam:[side(real,5.5,3.4),[st(real).x,2.4,st(real).z],side(real,4.5,3.0),[st(real).x,2.6,st(real).z]],need:[[st(real).x,2.6,st(real).z]],says:[['zven','Настоящего выдаёт тень на пне и пар изо рта —',0.2,3.6],['zven','у мороков их нет. Совиный взор '+kbd('skill')+' подсветит его золотом.',4.0,4.4]],
+      ev:[[0.3,()=>{s3St[real].sh.material.opacity=0.6;}],[0.6,()=>{for(let i=0;i<4;i++)L.later(i*0.7,()=>{const hp=KS.head.getWorldPosition(new V3());if(FIN.k2fx)FIN.k2fx.mist(hp.add(new V3(0,-0.1,0.25)),1,0.45);});}],
+        [4.4,()=>{L.emo(pe,'pride');aura.color.set(0xffd76a);aura.intensity=2.4;aura.position.copy(KS.g.position).add(new V3(0,3,0));s3St[real].rune.material.color.set(0xffd76a);k5Flash(KS.g.position.clone().add(new V3(0,2.4,0)),0xffd76a,4,0.6);k5Ring(new V3(st(real).x,0.3,st(real).z),0xffd76a,0.5,2.6,0.8);}]]});
+    // капля обратно: морок лопнул, настоящий слетел с пня
+    L.beat(10.6,{cam:[[0,9.5,3],[0,1.4,-11.5]],need:[H(-1,-8.6),[st(mor).x,2.6,st(mor).z],[st(real).x,2.6,st(real).z]],says:[['zven','Все четверо бросают капли. Щит '+kbd('guard')+' — в последний миг!',0.2,4.4],['zven','Капля вернётся: морок лопнет —',4.8,2.6],['zven','а настоящий слетит с пня!',7.6,2.6]],
+      ev:[[0,()=>{L.put(po,-1,-8.6);L.look(po,BP(mor));aura.intensity=0;}],...L.parry(0.6,po,BP(mor),{dur:2.6,back:1.1,col:0x9a40ff,then:()=>{const B=s3Body(mor),p=B.m.g.position.clone();B.m.g.visible=false;K5L.ink(p.clone().add(new V3(0,1.6,0)),18,1.4);k5Flash(p.clone().add(new V3(0,1.8,0)),0x9a60ff,3,0.4);k5s('keyBreak');}}),
+        [5.2,()=>{po.pos.set(-1,po.pos.y,-8.6);L.look(po,BP(real));}],...L.parry(5.4,po,BP(real),{dur:2.2,back:1.0,col:0x9a40ff,then:()=>{const S=st(real),f=KS.g.position.clone(),to=new V3(S.x+(C.x-S.x)*0.22,0,S.z+(C.z-S.z)*0.22);anim(0.5,k=>{KS.g.position.lerpVectors(f,to,k);KS.g.position.y=f.y*(1-k)+Math.sin(k*Math.PI)*0.9;});L.pose('recoil',{snap:true});k5s('shatter');k5Flash(f.clone().add(new V3(0,2,0)),0xffe08a,4,0.4);}}) ]});
+    // Чёрное слово
+    L.beat(8,{cam:[side(real,7.5,4.8),[st(real).x,4.2,st(real).z]],need:[[st(real).x,6,st(real).z]],says:[['zven','Настоящий пишет «Чёрное слово» — кольцо растёт.',0.2,3.6],['zven','Сбей слово, пока не полное — иначе чернильный дождь!',4.0,3.8]],
+      ev:[[0,()=>{s3Seat();KA.reset();aura.intensity=0;}],[0.3,()=>{L.pose('castR',{antic:0.2});k5s('cast');
+        const g=L.add(new THREE.Group()),rim=new THREE.Mesh(new THREE.RingGeometry(0.92,1.05,40),k5Add(0xb070ff,{opacity:0.9})),fill=new THREE.Mesh(new THREE.CircleGeometry(0.92,40),k5Add(0x2a1040,{opacity:0.55,blending:THREE.NormalBlending}));g.add(rim);g.add(fill);g.scale.setScalar(1.6);
+        const lt=[];for(let k=0;k<7;k++){const s=K5L.textSpr('ЧЁРНОЕСЛОВО'[k%11],0.9,{w:128,h:128,col:'#1c0a2e',glow:'#b070ff',weight:'italic 700 '});g.add(s);lt.push(s);}
+        const fx=k5fx(4.4,k=>{g.position.copy(KS.g.position).add(new V3(0,5.4,0));g.quaternion.copy(camS.quaternion);fill.scale.setScalar(Math.max(0.02,k));lt.forEach((s,j)=>{const a=G.time*2.2+j/7*6.283;s.position.set(Math.cos(a)*1.4,-1.6+Math.sin(G.time*1.7+j)*0.3,0.1);s.material.opacity=0.4+0.6*k;});},()=>k5Del(g));L.on(()=>{fx.t=fx.dur;k5Del(g);});
+        L.later(3.9,()=>{L.put(pr,st(real).x*0.6,st(real).z+4.6,Math.PI);L.look(pr,KS.g.position);});
+        L.later(4.1,()=>{L.orb(hH(pr),KS.g.position.clone().add(new V3(0,2.4,0)),0.5,{col:0xffd76a,r:0.2,dark:false,arc:0.6,on:p=>{fx.t=fx.dur;k5Del(g);L.ok(p);k5s('keyBreak');L.pose('recoil',{snap:true});}});});}]]});
+    // веретено
+    L.beat(7,{cam:[[-3,4,-3],[-8.2,1.4,-9]],need:[[-7.9,1.4,-8.4],H(-6.2,-7.2)],says:[['zven','Веретено Кикиморы крутится и бросает нитки.',0.2,3.2],['zven','Замерло золотом — бей '+kbd('attack')+'!',3.6,2.8]],
+      ev:[[0,()=>{L.put(po,-6.2,-7.4);L.look(po,S3_SPIN);s3Spin.visible=true;}],[0.2,()=>{const sp=s3Spin.userData.sp,fx=k5fx(3.6,(k,dt)=>{sp.rotation.y+=dt*14;},()=>{});L.on(()=>{fx.t=fx.dur;});}],
+        [3.6,()=>{gl.material.opacity=1;k5Ring(S3_SPIN.clone().setY(0.1),0xffd76a,0.6,2.2,0.5);SFX.bell();}],...L.strikes(4.6,po,S3_SPIN.clone().add(new V3(0,1.2,0)),1,0.4,()=>{K5L.gold(S3_SPIN.clone().add(new V3(0,1.2,0)),22);k5Flash(S3_SPIN.clone().add(new V3(0,1.2,0)),0xffd76a,5,0.5);npcEm(FR.kiki.m,'cheer')();})]});
+    // кудель
+    L.beat(7.6,{cam:[[0,8,1],[0,0.6,-11]],need:[H(-4.5,-9),H(4.5,-9)],says:[['zven','Кикимора свободна — золотая кудель связала вас.',0.2,3.8],['zven','Нить режет мороков! Натяни — '+kbd('item')+': рогатка!',4.2,3.4]],
+      ev:[[0,()=>{L.put(po,-4.5,-9);L.put(pe,4.5,-9);s3Seat();}],[0.6,()=>L.thread(()=>hH(po).setY(1.3),()=>hH(pe).setY(1.3),6.8)],
+        [3.2,()=>{L.walk(po,-5.2,-10,0.6);}],[4.4,()=>{const f=pe.pos.clone(),to=new V3(st(real).x*0.8,0,st(real).z+2);anim(0.5,k=>{pe.pos.lerpVectors(f,to,CE.inOutSine(k));pe.pos.y=Math.sin(k*Math.PI)*2.4;pe.vel.set(0,0,0);});k5s('whoosh');}]]});
+    // сбит — бей, нить
+    L.beat(7.6,{cam:[[-5,5,-8],[0,0.9,-14],[4,5,-8],[0,0.9,-14]],need:[H(-2.4,-13),H(1.6,-13)],says:[['zven','Сбит с пня — бейте, пока не опомнился!',0.2,3.2],['zven','Спесь сбита — оба удар рядом: золотая нить!',3.8,3.6]],
+      ev:[[0,()=>{s3Seat();KS.g.position.set(-0.4,0,-14.5);KS.g.rotation.y=0;L.pose('recoil',{snap:true});L.put(po,-2.4,-13.2);L.put(pe,1.6,-13.2);}],...L.strikes(0.6,po,KS.g.position.clone().add(new V3(0,2,0)),3,0.5),[3.8,()=>{L.dizzy(3.5);}],[5.2,()=>{L.hit(po,KS.g.position);L.hit(pe,KS.g.position);}],[5.7,()=>{SFX.mah();L.bind();}]]});
+  };

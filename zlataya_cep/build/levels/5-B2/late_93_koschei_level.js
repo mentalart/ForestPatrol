@@ -32,7 +32,7 @@ build5B2=function(){
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.noLose=false;W.noPetals=false;W.fallY=-12;const T=HERO;const C=new V3(0,0,-13),R=11;
   if(!G.flags.names)G.flags.names={};
   Object.assign(K5,{st:0,fight:false,live:false,spark:null,locks:{},orbs:[],adds:[],needle:null,forge:null,zones:[],mark:0,log:[],said:{},bones:false,storm:0,stormTo:0});K5FX.length=0;K5TR.length=0;
-  K5.seen={};   // карточки «как победить» — перед каждым этапом при каждой игре уровня (отзыв 4); после «Сбился сказ» — короткая карточка
+  K5.seen={};   // (прежние карточки «как победить» убраны — правила показывают обучающие катсцены)
   /* ---------- арена (как в прежнем финале) ---------- */
   const sea=new THREE.Mesh(new THREE.PlaneGeometry(700,700),M(0x6a8ab8,{emissive:0x302030,emissiveIntensity:0.2}));sea.rotation.x=-Math.PI/2;sea.position.set(0,-0.7,0);W.group.add(sea);
   ground(-22,22,-42,16,0,M(0x6a8a58));wall(-22.2,-22,-42,16);wall(22,22.2,-42,16);wall(-22,22,-42.2,-42);wall(-22,22,16,16.2);
@@ -55,7 +55,7 @@ build5B2=function(){
   const KA=k5Actor(KS);K5.KA=KA;   // Кощей-актёр: позы в роликах (late_92)
   const sword=k5Sword();KS.hand.add(sword);sword.position.set(0,-0.05,0.05);sword.rotation.set(-0.35,0,0);sword.visible=false;
   const Z=makeZven();W.zven=Z;Z.pos.set(0,3,6);
-  const bb=$('bossbar');W.onLeave=()=>{bb.style.display='none';try{k5HintHide(false);}catch(e){}k5StormSet(0,true);const v=document.getElementById('k5storm');if(v)v.style.opacity=0;};
+  const bb=$('bossbar');W.onLeave=()=>{bb.style.display='none';k5StormSet(0,true);const v=document.getElementById('k5storm');if(v)v.style.opacity=0;};
   F.links=0;F.skaz=0;
   // купол, аура, грозовые тучи
   const dome=k5Prop(new THREE.Group());dome.position.set(KP.x,0,KP.z);{const s=new THREE.Mesh(new THREE.SphereGeometry(2.9,26,16,0,Math.PI*2,0,Math.PI/2),MB(0x9a60ff,{transparent:true,opacity:0.2,depthWrite:false,side:THREE.DoubleSide}));dome.add(s);
@@ -91,11 +91,6 @@ build5B2=function(){
   function chainTick(e,dt){if(e.state==='k5sink'){e.k5k+=dt;e.g.position.y=-e.k5k*2.8;if(e.k5k>0.6){e.state='k5hide';e.g.visible=false;e.k5wait=rand(2.2,3.6);}return;}
     if(e.state==='k5hide'){if(!K5.fight||K5.st!==1)return;e.k5wait-=dt;if(e.k5wait<=0){const p=chainPos(e.pi);e.pos.set(p.x,0,p.z);e.home.set(p.x,0,p.z);e.g.visible=true;e.state='spawn';e.t=0;e.life=0;e.embers=e.maxEmb;burst(new V3(p.x,0.4,p.z),0x6a5a4a,12,3);SFX.crash();}return;}
     if(e.state==='idle'||e.state==='recover'){e.life+=dt;if(e.life>9||(!K5.fight&&e.state==='idle'))chainSink(e);}}
-  // показ для карточки «Цепи и красный круг» (late_94): три цепи вылезают перед героями и стоят, не бьют; off — уходят
-  function chainDemo(on){if(K5.demo){for(const e of K5.demo){burst(e.pos.clone().add(new V3(0,0.3,0)),0x6a5a4a,8,2);k5Kill(e);}K5.demo=null;}if(!on)return;
-    const P=[[1.3,-6.9],[-1.7,-8.1],[3.4,-8.9]];K5.demo=P.map(([x,z],i)=>{const e=makeFoe('cep',x,z,{leash:1});e.k5=true;e.k5demo=true;e.noMove=true;e.noKill=true;e.harmless=true;e.cd=99;e.state='k5demo';e.pos.y=-1.7;K5.adds.push(e);
-      e.tick=(e,dt)=>{e.cd=99;if(e.state!=='k5demo'){e.state='k5demo';e.t=0;}};
-      later(i*0.3,()=>{if(!e.alive)return;burst(new V3(x,0.4,z),0x6a5a4a,12,3);if(SFX.crash)SFX.crash();anim(0.7,k=>{e.pos.y=-1.7*(1-smooth(k))+Math.sin(k*Math.PI)*0.25;});});return e;});}
   /* ---------- этап 1: чёрные свечи и купол ---------- */
   // восемь свечей (по отзыву: четырёх было мало — гасли слишком легко): прежние четыре и ещё четыре — спереди, по бокам, сзади
   const CAND=[[-7.6,-7.4],[7.6,-7.4],[-7.2,-18.2],[7.2,-18.2],[0,-4.0],[-9.6,-12.8],[9.6,-12.8],[0,-16.6]];const candles=[];
@@ -165,8 +160,7 @@ build5B2=function(){
     const pips=[];for(let i=0;i<LOCK_HP;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.075,10,8),M(0xff7a1a,{emissive:0xff5a00,emissiveIntensity:1.1}));m.position.set((i-(LOCK_HP-1)/2)*0.19,0.52,0);pad.add(m);pips.push(m);}
     const aura=k5Glow(0x9a60ff,H*1.9);aura.position.y=H*0.5;g.add(aura);
     K5.locks[h.kind]={h,kind:h.kind,pi,hp:LOCK_HP,t:0,g,links,coil,pad,sh,kh,pips,aura,pin:h.pos.clone(),shk:0};
-    k5s('lock');floatText(h.pos.clone().add(new V3(0,H+0.8,0)),'Скован!','#c8a8ff');K5.log.push('lock'+pi);h.guard=false;
-    if(!K5.said.lock){K5.said.lock=true;say('zven','Друг в цепях — не зевай:<br>По замку бей, выручай!',3,true);}}
+    k5s('lock');floatText(h.pos.clone().add(new V3(0,H+0.8,0)),'Скован!','#c8a8ff');K5.log.push('lock'+pi);h.guard=false;}
   function unlock(L,by,quiet){if(!L)return;delete K5.locks[L.kind];if(quiet){k5Del(L.g);return;}
     k5s('unlock');const c=L.h.pos.clone().add(new V3(0,L.h.d.height*0.55,0));FX.sparks(c,22,0xffe08a);FX.sparkle(c,12,0xffffff);
     // путы разлетаются: звенья — в стороны и вниз, замок — вверх и раскрывается
@@ -194,7 +188,7 @@ build5B2=function(){
   const nearLock=pi=>{const me=active(pi);if(!me||k5Locked(me))return null;let best=null,bd=8;for(const k in K5.locks){const L=K5.locks[k];if(L.h===me)continue;const d=hd(L.h.pos,me.pos);if(d<bd){bd=d;best=L;}}return best;};
   function sparkTo(pi,from){const h=active(pi);if(!h)return;if(K5.spark)k5Del(K5.spark.m);const m=k5Prop(new THREE.Group());const s=new THREE.Mesh(new THREE.OctahedronGeometry(0.22),MB(0xfff2a0));m.add(s);
     m.add(new THREE.Mesh(new THREE.SphereGeometry(0.45,10,8),MB(0xffd76a,{transparent:true,opacity:0.3,depthWrite:false})));m.position.copy(from||h.pos).add(new V3(0,1.4,0));K5.spark={pi,t:4.5,m,fly:0};
-    if(!K5.said.spark){K5.said.spark=true;say('zven','Отбил — и искра к другу мчит!<br>По очереди — спесь слетит!',4.2,true);}}
+    }
   function sparkTick(dt){const S=K5.spark;if(!S)return;S.t-=dt;const h=active(S.pi);if(!h||S.t<=0){k5Del(S.m);K5.spark=null;return;}const to=headOf(h).add(new V3(0,0.2+0.1*Math.sin(G.time*6),0));S.m.position.lerp(to,1-Math.exp(-10*dt));S.m.rotation.y+=dt*5;S.m.scale.setScalar(S.t<1?S.t:1);}
   /* ---------- этап 3: шары, вороны, иглы, воронка, гроза ---------- */
   // шар (по отзыву 2: ярче): сначала копится в поднятой руке Кощея (искры стягиваются — замах), потом срывается с вспышкой и тянет светящийся шлейф

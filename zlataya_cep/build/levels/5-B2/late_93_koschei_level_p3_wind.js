@@ -3,14 +3,13 @@
   function nature2(dt){if(KB.state==='broken'&&NAT.wind&&NAT.wind.mode==='lin')windStop();   // спесь сбита — ветер стихает, бейте
     if(!K5.fight||K5.st!==2||KB.state==='broken'||KB.state==='k5wait')return;const sm=G.solo?1.25:1;
     NAT.windT=(NAT.windT==null?6:NAT.windT)-dt;if(NAT.windT<=0&&!NAT.wind){NAT.windT=rand(13,17)*sm;NAT.wdir=-NAT.wdir;windStart('lin',{dir:new V3(NAT.wdir,0,0),dur:5.2,str:G.solo?2.6:3.3});kosCast();
-      natBark('wind','Ветер буйный, налетай —<br>С ног их всех, гуляй, сбивай!',3.0);if(!NAT.said.windTip){NAT.said.windTip=true;later(3.4,()=>{if(K5.fight)say('zven','Ветер! Щит держи — не сдует!<br>Пусть Кощей сколько хочет дует!',3.6,true);});}K5.log.push('wind');}
+      natBark('wind','Ветер буйный, налетай —<br>С ног их всех, гуляй, сбивай!',3.0);K5.log.push('wind');}
     NAT.boltT=(NAT.boltT==null?3.5:NAT.boltT)-dt;if(NAT.boltT<=0){NAT.boltT=rand(6.5,8.5)*sm;const hs=k5Heroes();if(hs.length){natBolt((K5.boltPick&&K5.boltPick(hs))||hs[Math.floor(rand(0,hs.length))]);if(!NAT.wind)natBark('bolt','Гром, греми, гроза, сверкай —<br>В красный круг огнём стреляй!',3.0,0.2);K5.log.push('bolt');}}
     NAT.quakeT=(NAT.quakeT==null?10:NAT.quakeT)-dt;if(NAT.quakeT<=0&&!(NAT.wind&&NAT.wind.t<1.5)){NAT.quakeT=rand(15,19)*sm;kosCast();quake(G.solo?2:3);natBark('quake','Задрожи, земля сырая, —<br>Руки, лезьте, всех хватая!',3.0);K5.log.push('quake');}}
   function bossTick(dt){if(!K5.live)return;
     // новое окно — снова можно ударить; после кувырка Кощей опоминается быстрее мелких мороков
     if(KB.state==='stagger'&&!K5.pStag)K5.winN=0;K5.pStag=KB.state==='stagger';if(KB.dazeT>1.6&&!K5.listen)KB.dazeT=1.6;if(KB.dazeT>(K5.pDaze||0)+0.3)K5.winN=0;K5.pDaze=KB.dazeT;
-    if(KB.state==='broken'&&!KB._b){KB._b=true;KB.bdur=K5.st===5?6:(G.solo?10:9);if(K5.st!==5){banner('Спесь сбита!','#ffd76a',2.4,G.solo?'ударь рядом с ним '+K(G.soloPi,'attack')+' — золотая нить сказа':'оба — удар '+K(0,'attack')+' + '+K(1,'attack')+' рядом с ним: золотая нить сказа');
-        if(!K5.said['b'+K5.st]){K5.said['b'+K5.st]=true;say('zven','Он без сил! Не мешкай, друг, —<br>Нитью сказа — вкруг да вкруг!',3.6,true);}}else banner('Кощей без сил!','#ffd76a',2,'куй, Прошка!');}
+    if(KB.state==='broken'&&!KB._b){KB._b=true;KB.bdur=K5.st===5?6:(G.solo?10:9);if(K5.st!==5){banner('Спесь сбита!','#ffd76a',2.4);}else banner('Кощей без сил!','#ffd76a',2);}
     if(KB.state!=='broken'&&KB._b){KB._b=false;if(K5.fight){KB.embers=K5.st===5?KB.maxEmb:Math.max(2,Math.ceil(KB.maxEmb/2));if(K5.st!==3)floatText(kosTop(),'Спесь вернулась!','#c8a8ff');}}
     if(K5.st===2){if(G.solo)KB.pi=G.soloPi;else if(K5.spark)KB.pi=K5.spark.pi;else if(KB.state==='recover'&&!KB._sw){KB._sw=true;KB.pi=1-(KB.pi||0);}if(KB.state!=='recover'&&K5.st===2)KB._sw=false;if(KB.pi!=null&&players[KB.pi].downed)KB.pi=1-KB.pi;
       K5.keyT=(K5.keyT==null?5:K5.keyT)-dt;const nk=K5.adds.filter(e=>e.kind==='k5key').length;if(K5.keyT<=0&&nk<(G.solo?1:2)&&KB.state!=='broken'){K5.keyT=rand(8,11)+(G.solo?3:0);const tgp=G.solo?G.soloPi:1-(KB.pi||0);const th=active(tgp);if(th&&!players[tgp].downed&&!k5Locked(th)){keyMake(th);if(!K5.said.k9){K5.said.k9=true;say('koschei','Лети, мой ключ, — замкни, запри!',1.4);}anim(0.6,k=>{KS.armR.rotation.x=-2.2*Math.sin(k*Math.PI);});}}}
@@ -21,13 +20,8 @@
     else if(s==='strike'){}else if(s==='k5cast'||s==='k5rise'){KS.armR.rotation.x=damp(KS.armR.rotation.x,-1.1+0.3*Math.sin(G.time*2),3,dt);}else if(s!=='k5leap')KS.armR.rotation.x=damp(KS.armR.rotation.x,0,5,dt);
     KS.g.rotation.x=damp(KS.g.rotation.x,s==='broken'?0.25:s==='k5dive'?0.4:0,5,dt);if(sword.visible&&s!=='wind')sword.userData.edge.material.opacity=0.55+0.25*Math.sin(G.time*5);}
   /* ---------- этапы: начало, проигрыш, победа ---------- */
-  const PAUSE={1:'Этап 1 «Чёрные свечи». Купол держат восемь свечей: погасите все — отбей синюю каплю обратно в свечу, полей водой Йоши или ударь пять раз. Погасшая через 12 секунд (одному — через 30) горит снова. Красный круг — сюда ударит молния.',
-    2:'Этап 2 «Ключ и искорка». Отбивайте удары Кощея в последний миг: над другом загорается искорка — отбил с искоркой, спесь гаснет вдвое. Ключ падает сверху — отбей его щитом. Скованного сам замок не отпустит: друг сбивает его пятью ударами (одному — переключись на другого героя). Скуют всех четверых — этап заново. Спесь сбита — оба ударьте рядом с ним. Кощей зовёт непогоду: ветер сдувает — держи щит, и устоишь; красный круг — молния, уходи; земля трещит — из трещины вылезет костлявая рука: уходи или кувыркнись.',
-    3:'Этап 3 «Буря». Тёмный шар отбей в последний миг — он полетит к другу; друг отбивает его в небо, в Кощея. Воронов четверо: ворон пикирует — кувырок, застрял — бей. Красные круги — иглы, воронка тянет — выбегай. Собьёте полспеси — из земли встанут три костяных щитника: спереди у них щит, бейте сбоку или сзади.',
-    4:'Этап 4 «Меч Бессмертного». Над кем горит око — того Кощей выбрал: держи щит и отбивай серию. Второй заходит со спины и бьёт. Волна по земле — прыгай. После прыжка Кощей открыт. Собьёте полспеси — встанут пятеро костяных щитников: бейте сбоку или сзади. Молнии бьют за краем поляны — они не опасны.',
-    5:'Этап 5 «Игла». Иглу несёт герой со свечением — передай другу '+K(0,'item')+'. Прошка с иглой у наковальни — бей в такт. Второй встаёт рядом с Прошкой и держит щит. «Все цепи острова — ко мне!» — у наковальни встают три чёрные цепи, ветер гонит всех прочь, лезут костлявые руки: держи щит против ветра и разбейте все три цепи — тогда Кощей без сил.'};
   function stageStart(n,retry){K5.st=n;F.stage='s'+n;K5.fight=false;clearAdds();natReset();RG.on=false;eye.visible=false;fring.visible=false;K5.combo=null;K5.delayNext=false;K5.bind=[-9,-9];K5.crash=false;K5.bones=false;RG.tries=0;
-    ['castT','keyT','orbT','rainT','vxT','rvT','leapT','diveT','cs0','cs1'].forEach(k=>{K5[k]=null;});heroesHome(n);W.pauseLine=PAUSE[n];dome.visible=n===1;sword.visible=n>=4;
+    ['castT','keyT','orbT','rainT','vxT','rvT','leapT','diveT','cs0','cs1'].forEach(k=>{K5[k]=null;});heroesHome(n);dome.visible=n===1;sword.visible=n>=4;
     const f=K5.fails[n];
     if(n===1){liveBoss(false);KS.g.position.copy(KP);KS.g.rotation.y=0;candles.forEach(c=>{c.g.visible=true;candleSet(c,true);});}   // свечи могли спрятать пролог и другие стадии
     else candles.forEach(c=>{candleSet(c,false);c.relT=1e9;c.g.visible=false;});
@@ -38,9 +32,8 @@
       K5.needle={holder:null,ground:null,t:0};needleHold(G.solo?active(G.soloPi):active(1));K5.forge={n:0,need:12-2*Math.min(2,f),c:0,b:-1,good:0,tries:0,rings:{}};}
     K5.wake=K5.live?KB.state:null;if(K5.live)KB.state='k5wait';   // пока идут карточки — Кощей ждёт
     setBar();const go=()=>{if(FIN.k5e.cur!=null&&FIN.k5e.OLD&&FIN.k5e.OLD[FIN.k5e.cur]!==n)return;   // карточки прежней стадии досмотрели уже на другой
-      K5.fight=true;K5.t0=G.time;K5.hint0=G.time;if(K5.live&&KB.state==='k5wait')KB.state=K5.wake;setBar();if(n===1&&!K5.said.k01&&!FIN.k5e.noHint()){K5.said.k01=true;later(0.4,()=>say('pelageya','Восемь чёрных свеч — смотрите! —<br>Купол держат. Погасите!',4.4));}
-      if(n===4&&!G.solo&&!K5.said.k18){K5.said.k18=true;later(0.6,()=>say('zven','Кого око выбрало — щит держи!<br>А второй — со спины: бей, не дрожи!',4.4,true));}};
-    if(!K5.auto||FIN.k5e.noHint())go();else if(K5.seen[n]||retry)k5Short(n,go);else{K5.seen[n]=true;k5Tut(n,go);}}   // стадия без подсказок — без карточек
+      K5.fight=true;K5.t0=G.time;K5.hint0=G.time;if(K5.live&&KB.state==='k5wait')KB.state=K5.wake;setBar();};
+    FIN.k5e.lesson(FIN.k5e.cur,go);}   // перед боем — обучающая катсцена стадии (p6b); подсказок и карточек в бою нет
   // герой выбыл: клубок или рассыпался тот, кем играют; «Сбился сказ» — только когда выбыли все четверо (отзыв 4): пока цел второй герой — «Смена» и в бой
   const k5Down=h=>!!h._down||(h.active&&players[h.player].downed);
   function stageLose(){if(!K5.fight)return;K5.fight=false;K5.fails[K5.st]++;K5.log.push('lose'+K5.st);const f=$('flash');if(f){f.style.transition='opacity .6s';f.style.opacity=1;}

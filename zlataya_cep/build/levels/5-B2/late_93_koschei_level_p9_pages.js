@@ -13,19 +13,27 @@
     later(dur*0.5,()=>{if(mid)mid();el.style.transition='opacity '+(dur*0.5)+'s ease-out';el.style.opacity=0;});};
   const AR={};E.ar=AR;   // арены страниц: AR[w]={g,c,enter(),exit(),...}
   E.pageOff=()=>{for(const w in AR){AR[w].g.visible=false;}if(ES.inPage){ES.inPage=false;}};
+  /* ---------- обучающая катсцена «дверь»: как войти на страницу (при первом входе на первую страницу) ---------- */
+  E.LES.door=L=>{const hs=k5Heroes(),P=PAGES[1],S=P.pos.clone(),PG=P.g.position.clone(),H=(x,z)=>[x,0.9,z],fc=Math.atan2(PG.x-S.x,PG.z-S.z),two=hs.length>1;
+    hs.forEach((h,i)=>{L.put(h,-4.4+i*1.5,-12.8+i*0.7);L.look(h,PG);});
+    L.beat(null,{cam:[[-1.5,6.5,-2],[-8,1.8,-11]],need:[...hs.map(h=>H(h.pos.x,h.pos.z)),[PG.x,2.4,PG.z]],says:[['zven','Вот она — первая страница сказки: Дремучий лес.',0.2],['zven','Там Яга заперта. Страница — как дверь в сказку!',null]]});
+    L.beat(null,{cam:[[-6.5,4.4,-5.2],[-12.2,1.2,-10]],need:[[S.x,0.5,S.z],[PG.x,2.4,PG.z]],
+      says:[['zven',two?'Встаньте вдвоём на золотой порог —':'Встань на золотой порог —',0.2],['zven','и страница откроется.',null]],
+      ev:[[0.3,()=>{L.ring(S,1.9,0xffd76a,6);}],[0.6,()=>hs.forEach((h,i)=>L.walk(h,S.x+(two?(i?0.8:-0.8):0)*Math.cos(fc),S.z-(two?(i?0.8:-0.8):0)*Math.sin(fc),2.4,fc))]]});
+    L.beat(3.4,{cam:[[-8.4,3.4,-6.8],[-12.4,1.6,-10]],need:[[S.x,0.9,S.z],[PG.x,2.4,PG.z]],
+      says:[['zven',two?'Один не откроет — нужна пара!':'Шаг — и мы в сказке!',0.3,2.6]],
+      ev:[[0.2,()=>{hs.forEach(h=>L.ok(h));K5L.gold(PG.clone().add(new V3(0,2.4,0)),16);k5s('book');}],[1.6,()=>{k5Flash(PG.clone().setY(2.4),0xfff4c0,5,0.6);}]]});
+    return L;};
   /* ---------- стадия-страница: Лукоморье → порог → арена ---------- */
   E.pageStage=(n,w,o)=>{E.stage[n]={start(op){E.hub(n);W.clampR={x:C.x,z:C.z,r:16};K5.fight=false;liveBoss(false);KS.g.visible=false;dome.visible=false;candles.forEach(c=>{c.g.visible=false;});
       E.pagesShow(true,false);ES.fight=false;ES.step='walk';ES.sill=0;heroesHome(n);ES.prog=0;
       if(op&&op.retry&&ES.retryIn){/* повтор — сразу в арену */}
-      E.music('ink');const P=PAGES[w];if(!E.saidPage||!E.saidPage[w]){E.saidPage=E.saidPage||{};E.saidPage[w]=true;later(0.6,()=>say('zven',o.call,3.4,true));}
+      E.music('ink');const P=PAGES[w];if(!E.saidPage||!E.saidPage[w]){E.saidPage=E.saidPage||{};E.saidPage[w]=true;later(0.6,()=>{if(w===1)E.lesson('door',()=>{});else if(o.call)say('zven',o.call,3.4,true);});}
       if(op&&op.retry){ES.step='in';enterPage(n,w,true);}},
     tick(dt){const P=PAGES[w];P.tick(dt);if(ES.step==='walk'){const hs=k5Heroes();const need=G.solo?1:2;const at=hs.filter(h=>hd(h.pos,P.pos)<1.9).length;
         P.sill.material.color.set(at>0?0xfff4c0:0xffd76a);if(at>=Math.min(need,hs.length)&&hs.length){ES.sill+=dt;if(ES.sill>0.6){ES.step='in';enterPage(n,w,false);}}else ES.sill=0;return;}
       if(ES.step==='fight'&&AR[w].tick)AR[w].tick(dt);},
-    end(){if(AR[w].end)AR[w].end();AR[w].g.visible=false;},
-    pics:pi=>ES.step==='walk'?['two','>','book']:(AR[w].pics?AR[w].pics(pi):null),
-    goal:pi=>ES.step==='walk'?'Вдвоём — на <b>порог страницы</b> «'+['','Дремучий лес','Подводный Китеж','Небесное царство','Огненная Смородина'][w]+'».':(AR[w].goal?AR[w].goal(pi):''),
-    targets:pi=>ES.step==='walk'?[PAGES[w].g]:(AR[w].targets?AR[w].targets(pi):[])};};
+    end(){if(AR[w].end)AR[w].end();AR[w].g.visible=false;}};};
   function enterPage(n,w,quick){const A=AR[w];E.log('enter'+w);E.paper(()=>{E.pagesShow(false);A.g.visible=true;ES.inPage=true;if(A.theme)K5L.theme(A.theme,1);
       W.clampR=A.clamp||null;W.fallY=A.fallY!=null?A.fallY:-12;W.camX=4000;   // камера уровня держится в ±18 м по X — арены страниц далеко
       HEROES.forEach((h,i)=>{const s=A.spawn(i);placeOnGround(h,s.x,s.z,s.y||0);h.face=A.face||Math.PI;h.vel.set(0,0,0);h._down=false;});
@@ -55,7 +63,7 @@
     for(let i=0;i<34;i++){const m=new THREE.Mesh(kind==='stupa'?new THREE.ConeGeometry(rand(2,4),rand(5,9),7):new THREE.SphereGeometry(rand(2,5),9,7),dm);m.position.set(RIDE_X+rand(-40,40),kind==='stupa'?rand(-14,-9):rand(-18,-6),rand(-260,20));k5Prop(m);K5L.noRay(m);R.dec.push(m);}
     R.mk=[0,1].map(pi=>{const r=new THREE.Mesh(new THREE.RingGeometry(1.0,1.3,32),k5Add(pi?COL.p2:COL.p1,{opacity:0.85}));r.rotation.x=-Math.PI/2;k5Prop(r);return r;});
     W.camFn=()=>({pos:new V3(RIDE_X,8,11),look:new V3(RIDE_X,-1,-20),k:3});
-    say('zven',{stupa:'Ступа сама бредёт! Ведите — да бейте мышей летучих!',kit:'Кит нас домой! Чернильные медузы — гасите!',geese:'Гуси-лебеди — свои! Вороны и тучи — прочь!',gor:'Горыныч несёт! Вороны — огнём, тучи — светом!'}[kind],3.2,true);E.log('ride_'+kind);}
+    E.log('ride_'+kind);later(0.3,()=>E.lesson('ride',()=>{}));}
   function rideEnd(){const R=RIDE;R.on=false;for(const T of R.th)k5Del(T.g);R.th=[];for(const m of R.dec)k5Del(m);R.dec=[];for(const m of R.mk)k5Del(m);k5Del(R.v);R.gs=null;W.camFn=null;RIDE.g.visible=false;W.fallY=-12;}
   function rideFire(lane,kind){const p=new V3(RIDE_X+RLANES[lane],0.6,-3);const b=new THREE.Mesh(new THREE.SphereGeometry(0.5,8,6),k5Add(kind==='B'?0xffe08a:0xff9a40,{opacity:0.95}));b.position.copy(p);k5Prop(b);
     AUD.ready()&&AUD.nz({f0:300,f1:1400,d:0.35,v:0.1,q:0.8});k5fx(1.2,(k,dt)=>{b.position.z-=dt*70;for(const T of RIDE.th){if(T.dead||T.lane!==lane)continue;if((T.kind===kind||G.solo)&&T.kind!=='L'&&Math.abs(T.g.position.z-b.position.z)<3){T.dead=true;K5L.ink(T.g.position.clone(),8);k5Del(T.g);}}},()=>k5Del(b));}
