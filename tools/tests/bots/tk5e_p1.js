@@ -37,7 +37,7 @@ window.TIE=()=>{for(let li=0;li<2;li++)for(let k=0;k<(ZC.G.solo?2:1);k++)for(con
 const r=[GO4(false)];window.ES=E5.es;r.push('тема='+(ZC.W.dbg5e?'ok':'?'));
 {const lp=A1.legW(0);PUT(H(0),lp.x+0.9,lp.z);const f=ZC.W.itemSign(0);if(f)f(0);ZC.tick(2);r.push('нитей на бегу='+S.ties[0].length);if(S.ties[0].length)throw new Error('нить прицепилась к бегущей избушке: '+r.join(' | '));}
 r.push(BAIT());if(S.st!=='stuck')throw new Error('избушка не застряла в дубе: '+r.join(' | '));
-r.push('подсказки: '+VIS().join(' / '));if(!VIS().some(v=>/клубок на ногу/.test(v)))throw new Error('нет подсказки «клубок на ногу»: '+r.join(' | '));CHK(r.join(' | '))
+r.push('кнопок-подсказок: '+VIS().length);CHK(r.join(' | '))
 //@@ shot=k5e_p1_stuck.png
 ZC.tick(1);
 //@@

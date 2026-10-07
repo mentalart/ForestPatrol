@@ -135,12 +135,12 @@
   function ringTick(dt){if(!RG.on)return;RG.t+=dt;KB.pos.y=damp(KB.pos.y,3.4,2,dt);KB.pos.x=damp(KB.pos.x,ANV.x-4,1.2,dt);KB.pos.z=damp(KB.pos.z,ANV.z-1.5,1.2,dt);KB.face=Math.atan2(ANV.x-KB.pos.x,ANV.z-KB.pos.z);
     if(RG.t<0){KS.armR.rotation.x=-2.8;return;}
     if(!RG.chains.length){for(let i=0;i<3;i++)galeChain(i);windStart('rad',{c:ANV.clone(),dur:60,str:G.solo?2.8:3.6});quake(G.solo?1:2);k5Flash(ANV.clone().add(new V3(0,1.5,0)),0x9a70ff,4,0.5);
-      if(!K5.said.k28){K5.said.k28=true;later(3.8,()=>{if(RG.on)say('zven','Щит держи — и ветер не снесёт!<br>Цепи бейте — Прошка дальше скуёт!',3.8,true);});}}
+      }
     RG.handT-=dt;if(RG.handT<=0){RG.handT=G.solo?3.4:2.6;quake(1,true);if(Math.random()<0.4){k5s('quake');shakeAll(0.04,0.5);}}
     const left=RG.chains.filter(e=>e.alive&&!e.k5done).length;if(left===0)galeEnd(true);else if(RG.t>(G.solo?30:26))galeEnd(false);}
   function galeEnd(ok){RG.on=false;windStop();for(const e of RG.chains)if(e.alive&&!e.k5done){e.k5done=true;chainSink(e);}RG.chains=[];
     if(ok){SFX.horn();G.stats.shields++;for(const h of k5Heroes())burst(h.pos.clone().add(new V3(0,1,0)),0xffffff,14,4);floatText(ANV.clone().add(new V3(0,2.6,0)),'Цепи разбиты!','#ffe08a');KB.state='broken';KB.t=0;KB._b=false;K5.log.push('ringok');}
-    else{banner('Буря утихла','#cfd8ff',1.8,'куй, Прошка, пока тихо!');KB.state='k5rise';K5.log.push('ringend');}}
+    else{banner('Буря утихла','#cfd8ff',1.8);KB.state='k5rise';K5.log.push('ringend');}}
   function needleHold(h){const N=K5.needle;N.holder=h;N.ground=null;N.t=0;if(ndl.g.parent!==W.group){const w=ndl.g.getWorldPosition(new V3());W.group.add(ndl.g);ndl.g.position.copy(w);}ndl.g.scale.setScalar(1);}
   function needleDrop(h){const N=K5.needle;if(!N||N.holder!==h)return;N.holder=null;N.ground=inArena(h.pos.clone().add(new V3(rand(-1,1),0,rand(-1,1))),1);N.t=0;floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'Игла упала!','#ffe08a');SFX.clink();K5.log.push('drop');}
   function needlePass(pi){const N=K5.needle,h=active(pi),o=active(1-pi);if(!N||N.holder!==h||!o||players[1-pi].downed||hd(h.pos,o.pos)>13||k5Locked(o)){SFX.miss();return;}
@@ -209,7 +209,7 @@
     k5Zone(q,1.2,delay,0x9a5a2a,()=>{if(K5.fight)handUp(q);});FX.dust(q.clone().add(new V3(0,0.1,0)),6,0x7a6a5a,0.8);}
   function handUp(q){const H=k5HandMake(q);NAT.hands.push(H);k5s('handUp');FX.dust(q.clone().add(new V3(0,0.2,0)),14,0x6a5a4a,1.3);k5Ring(new V3(q.x,0.1,q.z),0xc8b090,0.3,2.0,0.45,0.12);shakeAll(0.04,0.2);
     for(const h of k5Heroes()){if(hd(h.pos,q)<1.15&&!NAT.grab.has(h)){if(k5Hurt(h,q)){NAT.grab.set(h,{t:1.1,p:h.pos.clone(),H});H.grab=h;k5s('grab');floatText(h.pos.clone().add(new V3(0,h.d.height+0.7,0)),'Схватила!','#e8dcc0');K5.log.push('grab');
-        if(!NAT.said.handTip){NAT.said.handTip=true;later(0.6,()=>say('zven','Где земля трещит — не стой:<br>Схватит лапой костяной!',3.4,true));}}break;}}}
+        }break;}}}
   function handsTick(dt){for(let i=NAT.hands.length-1;i>=0;i--){const H=NAT.hands[i];H.t+=dt;const t=H.t;
       if(t<0.22)H.g.position.y=lerp(-2.2,0,CE.outBack(t/0.22));else if(t<1.5){H.g.position.y=0;H.set(t<0.34?1:clamp(1-(t-0.34)/0.18,0,1));if(H.grab)H.g.rotation.y+=Math.sin(t*30)*0.01;}
       else{H.set(clamp((t-1.5)/0.2,0,1)*0.6);H.g.position.y=-(t-1.5)*4.5;if(t>2.0){k5Del(H.g);NAT.hands.splice(i,1);}}}

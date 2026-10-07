@@ -68,7 +68,7 @@
     function burn(li){for(const P of planks)if(P.li===li&&(P.j%3===1||P.j%4===0))burnP(P,G.solo?5:7);}
     // ---------- огонь по дорожкам ----------
     function fire(li){const tele=G.solo?1.6:1.25;S.fire={li,t:0,tele};k5s('pSoft');if(FIN.k2fx)FIN.k2fx.lane(new V3(X+LANES[li],0.05,-14),new V3(X+LANES[li],0.05,8.4),1.9,tele,'red');
-      barkS({g:gor.g},['gorL','gorM','gorR'][li],['Ой… дышу! Левую — прочь!','Не хочу, а дышу! Середина!','Правая! Берегись!'][li],1.4,true);}
+}
     function flameAt(p){const m=new THREE.Mesh(new THREE.ConeGeometry(0.5,1.6,7),k5Add(Math.random()<0.5?0xff8a20:0xffc040,{opacity:0.9}));m.position.copy(p);A.g.add(m);m.raycast=()=>{};
       k5fx(0.6,k=>{m.position.y=p.y+k*1.2;m.scale.setScalar(1+k*0.8);m.material.opacity=0.9*(1-k);},()=>k5Del(m));}
     function fireTick(dt){const F=S.fire;if(!F)return;F.t+=dt;
@@ -95,7 +95,7 @@
       if(FIN.atmo&&FIN.atmo.ocean)FIN.atmo.ocean.visible=false;   // живой океан уровня выше лавы — на этой странице прячем
       W.fallHook=h=>{if(E.cur!==7)return false;k5Hurt(h,h.pos.clone());if(S.carry&&S.carry.indexOf(h)>=0)drop('Упал в Смородину — уронили!');const pi=h.player;placeOnGround(h,X-1+pi*2,12,1);h.iT=1;
         floatText(h.pos.clone().add(new V3(0,2.4,0)),'Ой, горячо! Назад к кузне','#ffb070');return true;};
-      E.cards(7,()=>{ES.fight=true;if(!q)later(0.4,()=>barkS(KS,'koschei','Ну, кузнецы, — куйте! А я пока — огоньку подкину!',2.4,true));later(3,()=>barkS(dem,'demyan',G.solo?'Меха я сам качаю — бей в такт!':'Один — меха, другой — молот! В такт!',2.6,true));});};
+      E.lesson(7,()=>{ES.fight=true;if(!q)later(0.4,()=>barkS(KS,'koschei','Ну, кузнецы, — куйте! А я пока — огоньку подкину!',2.4,true));});};
     A.end=()=>{if(FIN.atmo&&FIN.atmo.ocean)FIN.atmo.ocean.visible=true;KS.g.visible=false;planks.forEach(P=>{P.c.on=false;});W.fallHook=null;gaze.material.opacity=0;halo.material.opacity=0;};
     A.attack=h=>{if(E.cur!==7||!ES.fight)return;
       if(S.ph==='forge'&&!G.solo&&hd(h.pos,BELL4)<2.2){const ok=inWin(beatPh(S.bbt,0.5));S.heat=Math.min(1,S.heat+(ok?0.34:0.1));belTop.position.y=0.55;later(0.2,()=>{belTop.position.y=0.9;});
@@ -107,10 +107,10 @@
       if((S.ph==='carry'||S.ph==='crown')&&S.carry&&hd(h.pos,GOR)<9){if(S.hd!=='low'){floatText(h.pos.clone().add(new V3(0,2,0)),'Голова поднята — ждите, пока опустит!','#ffb070');return;}
         S.rdt[h.player]=G.time;const both=G.solo||Math.abs(S.rdt[0]-S.rdt[1])<1.0;if(both)swap();else floatText(h.pos.clone().add(new V3(0,2,0)),'Раз-два-три — разом!','#ffe08a');}};
     function forged(){S.ph='carry';bridle.visible=true;bridle.position.set(ANV4.x-1.6,0.25,ANV4.z-1.2);beatR.visible=false;belR.visible=false;K5L.gold(bridle.position.clone().add(new V3(0,1,0)),16);
-      barkS(dem,'demyan','Готова узда! Горячая — берите клещами, вдвоём!',2.4,true);E.log('forged');ES.prog=1/3;}
+      E.log('forged');ES.prog=1/3;}
     A.item=pi=>{if(E.cur!==7||!ES.fight||(S.ph!=='carry')||S.carry)return null;const h=active(pi);const wp=i=>ends[i].getWorldPosition(new V3());let ei=-1;for(let i=0;i<2;i++)if(hd(h.pos,wp(i))<1.6)ei=i;if(ei<0)return null;
       return ()=>{S.grab[ei]=h;FX.sparkle(wp(ei),8,0xffd060);floatText(h.pos.clone().add(new V3(0,2,0)),'Клещи — взял!','#ffe08a');
-        if(G.solo||(S.grab[1-ei]&&S.grab[1-ei]!==h&&hd(S.grab[1-ei].pos,wp(1-ei))<2.2)){S.carry=G.solo?[h]:[S.grab[0],S.grab[1]];S.grab=[null,null];E.log('carry');barkS(dem,'demyan',G.solo?'Второй конец — мой! Неси!':'Подняли! Шагайте в ногу!',1.6,true);}};};
+        if(G.solo||(S.grab[1-ei]&&S.grab[1-ei]!==h&&hd(S.grab[1-ei].pos,wp(1-ei))<2.2)){S.carry=G.solo?[h]:[S.grab[0],S.grab[1]];S.grab=[null,null];E.log('carry');}};};
     // ---------- шаг ----------
     A.tick=dt=>{for(const c of crusts){c.m.position.x-=c.sp*dt;if(c.m.position.x<X-42)c.m.position.x=X+42;}for(const [i,c] of cracks.entries())c.material.color.setHSL(0.06,1,0.45+0.15*Math.sin(G.time*2+i));
       lavaGl.forEach((g,i)=>{g.material.opacity=0.3+0.08*Math.sin(G.time*1.7+i);});if(Math.random()<dt*3)FX.sparks(new V3(X+rand(-14,14),-2.2,rand(-12,6)),2,0xff8a20);
@@ -127,7 +127,7 @@
       if(S.carry){const a=S.carry[0],b=S.carry[1]||dem;const pa=a.pos,pb=b===dem?a.pos.clone().add(new V3(1.8,0,0.6)):b.pos;if(b===dem){dem.g.position.lerp(pb,Math.min(1,dt*6));}
         const mid=pa.clone().add(pb).multiplyScalar(0.5);bridle.position.set(mid.x,Math.max(pa.y,pb.y)+1.0,mid.z);bridle.rotation.y=Math.atan2(pb.x-pa.x,pb.z-pa.z)+Math.PI/2;
         if(b!==dem&&(hd(pa,pb)>4.4||players[a.player].downed||players[b.player].downed))drop('Разошлись — уронили!');ES.prog=1/3+Math.min(1,(12-bridle.position.z)/30)/3;
-        if(S.carry&&S.ph==='carry'&&bridle.position.z<-14.2){S.ph='crown';S.hd='up';S.hdT=0.8;E.log('crown');barkS(dem,'demyan','Дошли! Ждите, пока голова опустится, — и разом!',2.4,true);}}
+        if(S.carry&&S.ph==='carry'&&bridle.position.z<-14.2){S.ph='crown';S.hd='up';S.hdT=0.8;E.log('crown');}}
       if(S.ph==='done')return;
       // огонь по дорожкам; капли лавы на доски
       if(S.ph!=='forge'){S.fireT-=dt;if(S.fireT<=0&&!S.fire&&S.ph==='carry'){S.fireT=G.solo?4.6:3.4;const hs=k5Heroes();const tgt=hs.find(h=>h.pos.z<8.5&&h.pos.z>-14);const li=tgt?LANES.reduce((b,x,i)=>Math.abs(tgt.pos.x-(X+x))<Math.abs(tgt.pos.x-(X+LANES[b]))?i:b,0):Math.floor(rand(0,3));fire(li);}
@@ -153,26 +153,42 @@
             else floatText(h.pos.clone().add(new V3(0,2.2,0)),'Не смотрю!','#9fe0ff');}}
         if(S.eye>2.8){S.eye=0;S.gaze=false;S.eyeT=G.solo?11:8.5;if(likho.lid)likho.lid.rotation.x=0.6;gaze.material.opacity=0;K5X.tint('rgba(80,10,0,.8)',0.4);}}
       for(const [h,t] of S.sleep){const r=t-dt;h.vel.x*=0.2;h.vel.z*=0.2;if(r<=0)S.sleep.delete(h);else S.sleep.set(h,r);}};
-    A.pics=pi=>S.ph==='forge'?['fire','notes','+','hammer','@attack']:S.ph==='carry'&&!S.carry?['gchain','hand','@item']:S.ph==='carry'?['gchain','>','run','+','eye','no']:
-      S.ph==='crown'?['dragon','clock','>','two','@attack']:['star'];
-    A.goal=pi=>{const q=G.solo?0:pi;if(S.ph==='forge')return (G.solo?'Меха качает Демьян. ':'<b>Меха</b> — удар '+K(q,'attack')+', когда кольцо у мехов сошлось: держат жар. ')+'Жарко — удар по <b>наковальне в такт</b> ('+(G.solo?3:4)+'). Головни Кощея — уйди из красного круга.';
-      if(S.ph==='carry'&&!S.carry)return 'Узда готова: <b>клещи</b> '+K(q,'item')+' у конца узды'+(G.solo?'.':' — каждый за свой конец.');
-      if(S.ph==='carry')return 'Несите узду по мосту. Огонь — другая дорожка, доска пропала — прыжок, глаз Лиха — <b>отвернитесь</b>.';
-      if(S.ph==='crown')return 'Средняя голова дохнёт в круг и <b>опустится</b> — над шеей ореол: удар '+K(q,'attack')+(G.solo?'':' <b>разом</b>')+'. Пока поднята — боковые кусают.';return 'Горыныч свободен!';};
-    A.targets=pi=>S.ph==='forge'?[anv&&anv.g?anv.g:dem.g]:S.ph==='carry'?(S.carry?[gor.g]:[bridle]):S.ph==='crown'?[halo]:[];
     A.bot={forge:()=>{S.good=99;forged();},carry:hs=>{S.carry=hs;E.log('carry');},low:()=>{S.ph='crown';S.hd='low';S.hdT=3.2;},heat:()=>S.heat,bridle:()=>bridle.position,eye:()=>S.eye,fire:li=>fire(li),planks:()=>planks};
     // ---------- подсказки в мире ----------
-    for(const pi of[0,1]){const me=()=>G.solo?active(G.soloPi):active(pi),st7=()=>E.cur===7&&ES.step==='fight'&&ES.fight&&!G.cine&&(!G.solo||pi===0),top=()=>headOf(me()).add(new V3(0,0.4,0));
-      const nearest=p=>G.solo||k5Heroes().slice().sort((a,b)=>hd(a.pos,p)-hd(b.pos,p))[0]===me();
-      prompt(pi,'attack',()=>BELL4.clone().add(new V3(0,2,0)),()=>st7()&&!G.solo&&S.ph==='forge'&&S.heat<0.6&&nearest(BELL4),'меха — в такт!');
-      prompt(pi,'attack',()=>ANV4.clone().add(new V3(0,2.4,0)),()=>st7()&&S.ph==='forge'&&S.heat>=0.45&&inWin(beatPh(S.bt+0.15,0.8))&&nearest(ANV4),'молот — в такт!');
-      prompt(pi,'item',()=>{const i=hd(me().pos,ends[0].getWorldPosition(new V3()))<hd(me().pos,ends[1].getWorldPosition(new V3()))?0:1;return ends[i].getWorldPosition(new V3()).add(new V3(0,1.4,0));},()=>st7()&&S.ph==='carry'&&!S.carry&&bridle.visible,'клещи!');
-      prompt(pi,'label',top,()=>st7()&&S.fire&&!S.fire.hit&&Math.abs(me().pos.x-(X+LANES[S.fire.li]))<1.1&&me().pos.z<8.4&&me().pos.z>-14,'огонь! — на другую дорожку');
-      prompt(pi,'label',top,()=>st7()&&S.eye>0&&S.eye<1.7,'Лихо! — отвернись');
-      prompt(pi,'attack',()=>HALO.clone().add(new V3(pi?0.9:-0.9,1.2,0)),()=>st7()&&S.ph==='crown'&&S.hd==='low'&&!!S.carry,G.solo?'бей!':'разом!');}
+    /* ---------- обучающая катсцена стадии 7: кузня (меха и молот в такт), узда в клещах, огонь по дорожкам, Лихо, «разом» ---------- */
+    E.LES[7]=L=>{const po=T.potap,pr=T.proshka,pe=T.pelageya,yo=T.yosha,H=(x,z)=>[x,0.9,z],KP7=KS.g.position;
+      L.on(()=>{planks.forEach(P=>{P.t=0;plankSet(P,true);});bridle.visible=false;bridle.rotation.set(0,0,0);beatR.visible=true;belR.visible=!G.solo;gaze.material.opacity=0;halo.material.opacity=0;if(likho.lid)likho.lid.rotation.x=0.6;K5X.tint('rgba(80,10,0,.8)',0.4);if(bridleB)bridleB.g.visible=true;heatBar.scale.y=1.28;});
+      const cyc=(per,fn,sec)=>k5fx(sec,(k,dt)=>{const ph=((k*sec)%per)/per;fn(ph);});
+      L.put(po,X-3,4.5);L.put(pr,X-1,4.5);L.put(pe,X+1,4.5);L.put(yo,X+3,4.5);KS.g.visible=true;KS.g.position.copy(GOR).add(new V3(0,4.2,0.4));KS.g.rotation.y=0;bridle.visible=false;
+      L.beat(6.4,{cam:[[X,13,22],[X,0.5,-6],[X,11,19],[X,0.5,-8]],need:[H(X-3,4.5),H(X+3,4.5),[X,4,-20.5]],says:[['zven','Калинов мост над огненной Смородиной.',0.2,3.0],['zven','На том берегу — Горыныч в чёрной узде, Кощей верхом.',3.3,3.0]],
+        ev:[[1.0,()=>{k5Flash(GOR.clone().add(new V3(0,4,0)),0x9a50ff,5,0.8);}],[3.4,()=>L.pose('proud')]]});
+      // меха
+      L.beat(7,{cam:[[X+1,6.5,19],[X+5.6,1.4,10.4]],need:[H(X+5,10.4),[BELL4.x,1,BELL4.z]],says:[['zven','У кузни меха держат жар:',0.2,2.4],['zven','бей мех '+kbd('attack')+', когда кольцо сошлось!',2.7,3.2]],
+        ev:[[0,()=>{L.put(pe,X+5.2,10.4);L.look(pe,BELL4);L.put(po,X+2.6,11.6);L.look(po,ANV4);belR.visible=true;beatR.visible=false;}],[0.2,()=>{cyc(1.5,ph=>{belR.scale.setScalar(0.6+(1-ph)*2);belR.material.opacity=ph>0.86||ph<0.06?1:0.45;},6);}],
+          ...[1.5,3.0,4.5].map(t=>[t,()=>{L.hit(pe,BELL4);belTop.position.y=0.55;L.later(0.2,()=>{belTop.position.y=0.9;});FX.sparks(HEARTH.clone().add(new V3(0,1.4,0)),14,0xffa040);SFX.clink();}])]});
+      // молот в такт
+      L.beat(7.4,{cam:[[X+1,5.5,17],[X+3.6,1.4,11.6]],need:[H(X+2.6,11.6),[ANV4.x,1,ANV4.z]],says:[['zven','Жарко — бей по наковальне в такт: четыре раза!',0.2,3.6],['zven','Остыло — молот не считается: раздуй меха.',4.0,3.2]],
+        ev:[[0,()=>{L.put(po,X+2.4,11.6);L.look(po,ANV4);belR.visible=false;beatR.visible=true;beatR.material.color.set(0xffd76a);}],[0.2,()=>{cyc(0.8,ph=>{beatR.scale.setScalar(0.6+(1-ph)*2.2);beatR.material.opacity=ph>0.86||ph<0.06?1:0.5;},5.6);}],
+          ...[0.8,1.6,2.4,3.2].map(t=>[t,()=>{L.hit(po,ANV4);FX.sparks(ANV4.clone().add(new V3(0,1.3,0)),18,0xffd060);if(SFX.hammer)SFX.hammer();else SFX.clink();}]),
+          [3.9,()=>{beatR.visible=false;bridle.visible=true;bridle.position.set(ANV4.x-1.6,0.25,ANV4.z-1.2);K5L.gold(bridle.position.clone().add(new V3(0,1,0)),16);SFX.ok();}]]});
+      // узда в клещах
+      L.beat(7,{cam:[[X-6,6.5,17],[X,1,8],[X-6,6.5,11],[X,1,2]],need:[],says:[['zven','Золотую узду несут двое клещами '+kbd('item')+' —',0.2,3.2],['zven','каждый за свой конец. Разошлись — уронили!',3.5,3.2]],
+        ev:[[0,()=>{L.put(po,X-1,10.6);L.put(pe,X+1,10.6);bridle.visible=true;}],[0.4,()=>{L.emo(po,'effort');L.emo(pe,'effort');}],
+          [1.0,()=>{const f=po.pos.z;const fx=k5fx(5.6,k=>{const z=f-k*8.4;po.pos.set(X-1,po.pos.y,z);pe.pos.set(X+1,pe.pos.y,z);po.vel.set(0,0,0);pe.vel.set(0,0,0);po.face=pe.face=Math.PI;bridle.position.set(X,po.pos.y+1.0,z);bridle.rotation.y=Math.PI/2;},()=>{});L.on(()=>{fx.t=fx.dur;});}]]});
+      // огонь по дорожкам
+      L.beat(7.6,{cam:[[X,8.5,14],[X,0.2,-2]],need:[H(X-2,2),H(X+2,2)],says:[['zven','Головы дышат огнём по дорожкам моста.',0.2,3.0],['zven','Красная дорожка заполняется — перейди на другую!',3.4,3.4]],
+        ev:[[0,()=>{L.put(po,X,2.4);L.put(pe,X+2,2.4);bridle.visible=true;bridle.position.set(X+1,po.pos.y+1.0,2.4);L.on(()=>{});}],[0.5,()=>{const ln=FIN.k2fx&&FIN.k2fx.lane(new V3(X,0.05,-14),new V3(X,0.05,8.4),1.9,1.6,'red');L.on(()=>{if(ln&&ln.cancel)ln.cancel();});k5s('pSoft');gor.necks&&gor.necks.forEach((n,i)=>{if(n&&n.rotation)n.rotation.z=i===1?0.3:0;});}],
+          [1.8,()=>{L.walk(po,X-2,2.4,0.6);L.walk(pe,X+2,2.4,0.1);}],[2.2,()=>{bridle.position.set(X,po.pos.y+1.0,2.4);}],
+          [2.2,()=>{k5s('strike');shakeAll(0.05,0.3);for(let i=0;i<14;i++)L.later(i*0.035+0.01,()=>{const p=new V3(X+rand(-0.5,0.5),0.4,-13+i*1.6);flameAt(p);});planks.forEach(P=>{if(P.li===1&&(P.j%3===1||P.j%4===0))burnP(P,99);});}],[4.4,()=>L.ok(po)]]});
+      // Лихо
+      L.beat(7,{cam:[[X+5,7.5,5],[X-3,0.4,-11]],need:[H(X-2,-2),[LIKHO.x,2,LIKHO.z]],says:[['zven','Лихо открывает глаз —',0.2,2.2],['zven','кто смотрит на него, тот засыпает!',2.5,2.8],['zven','Отвернись или встань за щит Потапа.',5.0,2.0]],
+        ev:[[0,()=>{L.put(po,X-2,-2);L.put(pe,X+1.4,-2);L.look(po,LIKHO);L.look(pe,LIKHO);}],[0.4,()=>{K5X.tint('rgba(80,20,120,.8)',0.55);const fx=k5fx(4.2,k=>{const kk=Math.min(1,k*4.2/1.6);if(likho.lid)likho.lid.rotation.x=lerp(0.6,-2.4,kk);gaze.position.copy(LIKHO).add(new V3(0,2.6,0));gaze.lookAt(X,0.8,-2);gaze.material.opacity=kk>=1?0.35+0.1*Math.sin(G.time*20):0.12*kk;},()=>{gaze.material.opacity=0;if(likho.lid)likho.lid.rotation.x=0.6;});L.on(()=>{fx.t=fx.dur;});}],
+          [2.2,()=>{L.emo(pe,'droop');k5s('blink');FX.sparkle(pe.pos.clone().add(new V3(0,2,0)),10,0xc8b8ff);}],[3.0,()=>{pe.face=Math.PI;L.guard(po,2.6);}]]});
+      // голова опустилась — разом
+      L.beat(9,{cam:[[X,10.5,-1],[X,2,-16.5]],need:[H(X-1.4,-12.4),H(X+1.4,-12.4),[X,3.4,-17.4]],says:[['zven','У горыныча голова дышит в круг — и опускается.',0.2,3.4],['zven','Над шеей — золотой ореол: ударьте разом '+kbd('attack')+'!',3.8,3.6],['zven','Чёрная узда долой, золотая — на место!',7.0,1.9]],
+        ev:[[0,()=>{L.put(po,X-1.4,-12.4);L.put(pe,X+1.4,-12.4);bridle.visible=true;bridle.position.set(X,po.pos.y+1.0,-12.4);bridle.rotation.y=Math.PI/2;}],[0.6,()=>{L.tele(new V3(X,0,-15.6),2.8,1.6,0xff3a30,c=>{k5s('strike');for(let i=0;i<12;i++)L.later(i*0.03+0.01,()=>flameAt(c.clone().add(new V3(rand(-2,2),0.3,rand(-2,2)))));});L.pose('cast',{antic:0.2});}],
+          [2.4,()=>L.roll(po,-0.4,1.6,0.35)],[3.0,()=>{po.pos.z=-12.4;}],[3.8,()=>{const fx=k5fx(3.2,()=>{halo.material.opacity=0.6+0.4*Math.sin(G.time*10);},()=>{halo.material.opacity=0;});L.on(()=>{fx.t=fx.dur;halo.material.opacity=0;});}],
+          [5.4,()=>{L.hit(po,HALO);L.hit(pe,HALO);}],[5.9,()=>{bridleB.break();k5Flash(HALO.clone(),0xffd76a,4,0.5);bridle.visible=false;SFX.mah();K5L.gold(HALO.clone(),22);}]]});
+    };
   }
   E.pageStage(7,4,{call:'Четвёртая страница — Огненная Смородина! Горыныча Кощей взнуздал.'});
-  E.CARDS[7]=[{p:[900,10,20],l:[900,1,-6],card:{tag:'Как победить',title:'Стадия 7 из 12 · Там на неведомых дорожках',icon:'anvil',text:'Калинов мост над огненной Смородиной. Скуйте у Демьяна <b>золотую узду</b>, пронесите её по мосту <b>вдвоём клещами</b> и наденьте Горынычу вместо чёрной.'}},
-    {p:[905,4,16],l:[905,1,11],card:{tag:'Вместе',title:'Меха и молот',icon:'spark',text:'Один качает <b>меха</b> (удар, когда кольцо у мехов сошлось) — держит жар; другой бьёт по <b>наковальне в такт</b>. Кощей мечет <b>головни</b> — уходи из красного круга.'}},
-    {p:[900,6,10],l:[900,0,-4],card:{tag:'Берегись',title:'Мост',icon:'wave',text:'Дорожка заполняется красным — сейчас дохнёт огнём: <b>на другую</b>. Доски прогорают — прыгай. Веко Лиха поднимается — <b>отвернись</b> или за щит Потапа: кто посмотрит — заснёт и выронит узду.'}},
-    {p:[900,7,-8],l:[900,3,-18],card:{tag:'Вместе',title:'Раз-два-три',icon:'hand',text:'Средняя голова дохнёт в круг и <b>опустится</b> — над шеей золотой ореол: удар <b>разом</b>. Пока голова поднята — боковые кусают: красная дорожка — уйди.'}}];

@@ -86,7 +86,7 @@ for(let k=0;k<12&&ES.spes>0;k++){for(let i=0;i<400&&!ES.mv&&!(ES.win>0);i++)TK(1
 r.push('mem='+ES.mem.join(',')+' spes='+ES.spes);const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.4);if(t){t.onHit(A(0));ZC.tick(2);t.onHit(A(1));}r.push(WAITCUR(12,60*120));r.push('names.proshka='+!!(ZC.G.flags.names||{}).proshka);CHK(r.join(' | '))
 //@@ shot=k5e_f12.png
 // стадия 12: застёжка выкована → «Тянем-потянем» в такт, рывок Кощея — щиты, последний рывок — Йоша → сцена «Цепь» → конец уровня
-const r=[];TK(60);K5.forge.n=K5.forge.need;ZC.W.dbg5e().stageWin(5);for(let i=0;i<300&&!E5.es.repkaAtk;i++)TK(1);r.push('repka='+!!E5.es.repkaAtk);
+const r=[];TK(60);K5.forge.n=K5.forge.need;ZC.W.dbg5e().stageWin(5);for(let i=0;i<900&&!(E5.es.repkaAtk&&!ZC.G.cine);i++){if(ZC.G.cine&&i%3===0)ZC.skip();TK(1);}r.push('repka='+!!E5.es.repkaAtk);
 const R0=E5.es.rp;for(let i=0;i<60*40&&R0&&!R0.done;i++){ZC.hold('KeyG',!!R0.surge);ZC.hold('Period',!!R0.surge);
   if(R0.near&&Math.abs(R0.t-R0.next(R0.t))<0.1&&R0.lastPullAt!==R0.next(R0.t)&&!R0.last){E5.es.repkaAtk(A(0),0);E5.es.repkaAtk(A(1),1);}if(R0.last)E5.es.repkaAtk(H.yosha,1);ZC.tick(1);}
 ZC.hold('KeyG',false);ZC.hold('Period',false);r.push('repka done='+!!(R0&&R0.done)+' k='+(R0&&R0.k));

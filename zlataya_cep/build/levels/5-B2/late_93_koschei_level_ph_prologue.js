@@ -81,7 +81,7 @@
    const pageSpawn=()=>{const ch=LET[PRO.li++%LET.length];const s=K5L.textSpr(ch,3.8,{w:128,h:128,col:'#ffd76a',glow:'#ffb030',weight:'italic 700 '});k5Prop(s);
      const from=CL.pos.clone().add(new V3(rand(-2,2),1.5,0)),to=new V3(PX+rand(-12,12),rand(YL[0]+2,YL[1]+3),CL.pos.z+6);s.position.copy(from);pages.push({s,from,to,t:0,ph:rand(0,6)});};
    const pageGot=p=>{PRO.got++;GV.rush=Math.max(GV.rush,0.9);K5L.gold(p.s.position.clone(),12);if(AUD.ready())AUD.bell(660+(PRO.got%5)*110,{v:0.05,d:0.5});
-     if(PRO.got===1)say('gorM','Буква! Ещё лови — быстрее полетим!',2);else if(PRO.got%6===0)ft(fp().add(new V3(0,3,0)),'букв: '+PRO.got,'#ffd76a');};
+     if(PRO.got%6===0)ft(fp().add(new V3(0,3,0)),'букв: '+PRO.got,'#ffd76a');};
    // золотой обруч: пролетел — рывок; обручи подряд — комбо (выше звон)
    const hoopMake=(u,y,z)=>{const g=new THREE.Group();g.add(new THREE.Mesh(new THREE.TorusGeometry(3,0.32,8,32),new THREE.MeshBasicMaterial({color:0xffc030,transparent:true,fog:false,toneMapped:false})));
      g.add(new THREE.Mesh(new THREE.TorusGeometry(3,0.85,8,32),k5Add(0xffe080,{opacity:0.35})));g.position.set(PX+u,y,z);k5Prop(g);K5L.noRay(g);hoops.push({g,u,y,z,done:false,t:0});};
@@ -95,7 +95,7 @@
      g.position.set(PX+s.u,-0.5,s.z);g.scale.set(1,0.01,1);k5Prop(g);K5L.noRay(g);s.m=g;
      const mk=new THREE.Mesh(new THREE.CylinderGeometry(2.6,2.6,40,14,1,true),k5Add(0xff4a6a,{opacity:0.0}));mk.position.set(PX+s.u,20,s.z);k5Prop(mk);K5L.noRay(mk);s.mk=mk;};
    const spiresTick=dt=>{for(const s of spires){const dz=GP.z-s.z;
-       if(s.st===0&&dz<100){s.st=1;s.t=0;spireMake(s);if(s.wall&&!PRO.wallTold){PRO.wallTold=true;say('gorM','Стена из елей! Вверх тяните — поверху, сквозь обруч!',2.4);}}
+       if(s.st===0&&dz<100){s.st=1;s.t=0;spireMake(s);}
        if(s.st===1){s.t+=dt;s.mk.material.opacity=0.18+0.22*Math.sin(G.time*14);if(s.t>1.3){s.st=2;s.t=0;k5Del(s.mk);if(AUD.ready())AUD.thump({f0:90,f1:40,d:0.4,v:0.18});K5L.ink(new V3(PX+s.u,2,s.z),16,2);}}
        if(s.st===2){s.t+=dt;const k=Math.min(1,s.t/0.7);s.m.scale.y=Math.max(0.01,1-Math.pow(1-k,3));if(k>=1)s.st=3;}
        if(s.st>=2&&!s.hit&&Math.abs(GP.z-s.z)<2.8&&Math.abs(GP.x-s.u)<4&&GP.y<-1.5+23*s.m.scale.y){s.hit=true;GP.x+=(GP.x>=s.u?1:-1)*2;GV.x=(GP.x>=s.u?1:-1)*9;bump('Бум! Чернильная ель');}
@@ -105,14 +105,14 @@
      else{addMesh(new THREE.CylinderGeometry(2.2,2.8,38,9),M(0xa86040),0,18.7,0,g);addMesh(new THREE.ConeGeometry(2.6,4,9),M(0x5a9a3a),0,39.5,0,g);}
      g.position.set(PX+(R.u||0),-0.3,R.z);k5Prop(g);K5L.noRay(g);R.g=g;};
    const rocksTick=()=>{for(const R of rocks){if(!R.g&&GP.z-R.z<240)rockMake(R);
-       if(R.arch&&!PRO.archTold&&GP.z-R.z<70){PRO.archTold=true;say('gorM','Мост! Ныряем под него — вниз! Или поверху!',2.2);}
+       
        if(R.hit||Math.abs(GP.z-R.z)>2.6)continue;
        if(R.arch?(GP.y>11&&GP.y<21):Math.abs(GP.x-R.u)<4.1){R.hit=true;if(!R.arch){GP.x+=(GP.x>=R.u?1:-1)*2;GV.x=(GP.x>=R.u?1:-1)*9;}bump(R.arch?'Бум! Мост':'Бум! Скала');}}
      rocks=rocks.filter(R=>{if(GP.z<R.z-30){if(R.g)k5Del(R.g);return false;}return true;});};
    const waveTick=dt=>{const el=domFx('k5eWave','z-index:28;background:radial-gradient(ellipse at 50% 55%,rgba(40,12,70,0) 52%,rgba(40,12,70,.88) 100%)');
      if(PRO.leg!=='gorge'){if(!WV.out){el.style.opacity=0;return;}}
      else{const vw=G.solo?12.6:13.6;WV.d=Math.min(60,WV.d+(GV.sp-vw)*dt);if(WV.d<2.5){WV.d=24;PRO.caught++;bump('Волна догнала!');}
-       if(WV.d<17&&!PRO.waveTold){PRO.waveTold=true;say('gorM',G.solo?'Волна догоняет! Держи направление — разгон!':'Волна догоняет! Тяните вместе — разгон, и в обручи!',2.4);}
+       
        if(WV.d<22){PRO.rT=(PRO.rT||0)-dt;if(PRO.rT<=0){PRO.rT=0.55;if(AUD.ready())AUD.thump({f0:70,f1:35,d:0.5,v:0.05+0.12*(1-WV.d/22)});}}
        el.style.opacity=clamp((28-WV.d)/22,0,0.9).toFixed(2);}
      WV.g.position.set(PX,0,GP.z+WV.d);WV.crest.forEach((b,i)=>{b.position.y=44+Math.sin(G.time*5+i)*1.6;});WV.arms.forEach((a,i)=>{a.scale.z=1+0.15*Math.sin(G.time*3+i*2);});
@@ -127,7 +127,7 @@
    // вожак: большой, два кольца — его бьют обе головы, каждая по два раза (одному — четыре удара); отбитая капля — за два
    const leaderWave=()=>{const m=crowMake(0);const r2=new THREE.Mesh(new THREE.TorusGeometry(1.35,0.13,6,28),k5Add(PCOL[G.solo?0:1],{opacity:0.95}));r2.rotation.y=Math.PI/2;m.g.add(r2);m.ring2=r2;m.g.scale.setScalar(2.5);
      crows.push({m,pi:-1,lead:true,hp:4,hits:[0,0],pos:CL.pos.clone().add(new V3(0,1,2)),off:new V3(0,6,-20),t:0,cd:1.8,throws:0,alive:true,leave:false});
-     say('koschei','Вожак, вперёд! Склюй их!',1.8);banner('Вожак воронов!','#ffd0a0',2.2,G.solo?'четыре огня — или капля обратно':'огонь обеих голов — каждой по два');};
+     say('koschei','Вожак, вперёд! Склюй их!',1.8);banner('Вожак воронов!','#ffd0a0',2.2);};
    const crowKill=(c,how)=>{if(!c.alive)return;c.alive=false;PRO.crows++;if(SFX.brk)SFX.brk();burst(c.pos.clone(),0x2a2a34,c.lead?30:14,c.lead?6:4);K5L.gold(c.pos.clone(),c.lead?30:8);k5Del(c.m.g);
      if(c.lead){banner('Вожак сбит!','#ffd76a',1.8);GV.rush=1.2;}else ft(c.pos.clone().add(new V3(0,1.4,0)),how==='refl'?'Капля — обратно!':'Кар-р!','#ffe0a0');};
    const crowDmg=(c,pi,n,how)=>{if(!c.alive)return;const pop=()=>{c.m.g.scale.multiplyScalar(1.25);later(0.12,()=>{if(c.alive)c.m.g.scale.multiplyScalar(0.8);});};
@@ -204,17 +204,16 @@
      letters=letters.filter(L=>{if(L.passed&&L.pt>0.5){k5Del(L.g);k5Del(L.spr);return false;}return true;});};
    /* ---------- отрезки ---------- */
    const LEGS=['forest','gorge','sea','sky','write','three'];
-   const legGorge=()=>{PRO.leg='gorge';E.hintReset(7);PRO.th='gorge';WV.d=50;WV.out=false;WV.g.visible=true;WV.g.scale.y=1;banner('Чернильная волна!','#ffb070',2.4,'за спиной — уходим вместе, сквозь обручи');
-     later(0.4,()=>say('koschei','Чернила мои, за ними — залейте!',2.2));};
-   const legSea=()=>{PRO.leg='sea';E.hintReset(7);WV.out=true;WV.ot=0;K5L.ink(new V3(PX,8,GP.z+WV.d),30,3);PRO.wave=0;PRO.wT=1.2;PRO.th='sea';if(window.k5StormSet)k5StormSet(0.5);banner('Через моря!','#9fe0ff',2.4,'вырвались! ворон твоего цвета — твой');
-     later(0.6,()=>say('koschei','Ушли от волны? Вороны мои — ко мне!',2.2));};
-   const legSky=()=>{PRO.leg='sky';E.hintReset(7);for(const c of crows)c.leave=true;PRO.th='sky';if(window.k5StormSet)k5StormSet(0);CS.visible=true;CL.gapTo=36;PRO.vi=0;PRO.vT=2.6;
-     banner('Над облаками!','#ffffff',2.4,'шар твоего цвета — твой огонь, золотой — оба разом');later(0.5,()=>say('koschei','Высоко забрались? Ловите-ка шары мои!',2.2));};
-   const legWrite=()=>{PRO.leg='write';E.hintReset(7);LK.position.z=GP.z-560;for(const c of crows)c.leave=true;CL.gapTo=40;PRO.wi=0;PRO.wT=2.6;PRO.th='write';if(window.k5StormSet)k5StormSet(0);
-     banner('Почерк Кощея!','#c8a0ff',2.4,'в просвет — к золотым кольцам');later(0.4,()=>say('koschei','Ах так? Я вас самих перепишу!',2.4));
-     later(3.2,()=>say('gorM','Рулим вместе — в просвет!',1.8));};
-   const legThree=()=>{PRO.leg='three';E.hintReset(7);CL.gapTo=18;PRO.cnt=null;PRO.cT=1.8;banner('Догнали тучу!','#ffd76a',2.2,'на «три» — вместе '+K(0,'skill')+(G.solo?'':' и '+K(1,'skill')));
-     say('gorM','Моя очередь! Вы — «раз-два-три», я — огонь!',2.4);};
+   const legGorge=()=>{PRO.leg='gorge';PRO.th='gorge';WV.d=50;WV.out=false;WV.g.visible=true;WV.g.scale.y=1;banner('Чернильная волна!','#ffb070',2.4);
+     later(0.4,()=>say('koschei','Чернила мои, за ними — залейте!',2.2));E.lesson('pro_gorge',()=>{});};
+   const legSea=()=>{PRO.leg='sea';WV.out=true;WV.ot=0;K5L.ink(new V3(PX,8,GP.z+WV.d),30,3);PRO.wave=0;PRO.wT=1.2;PRO.th='sea';if(window.k5StormSet)k5StormSet(0.5);banner('Через моря!','#9fe0ff',2.4);
+     later(0.6,()=>say('koschei','Ушли от волны? Вороны мои — ко мне!',2.2));E.lesson('pro_sea',()=>{});};
+   const legSky=()=>{PRO.leg='sky';for(const c of crows)c.leave=true;PRO.th='sky';if(window.k5StormSet)k5StormSet(0);CS.visible=true;CL.gapTo=36;PRO.vi=0;PRO.vT=2.6;
+     banner('Над облаками!','#ffffff',2.4);later(0.5,()=>say('koschei','Высоко забрались? Ловите-ка шары мои!',2.2));E.lesson('pro_sky',()=>{});};
+   const legWrite=()=>{PRO.leg='write';LK.position.z=GP.z-560;for(const c of crows)c.leave=true;CL.gapTo=40;PRO.wi=0;PRO.wT=2.6;PRO.th='write';if(window.k5StormSet)k5StormSet(0);
+     banner('Почерк Кощея!','#c8a0ff',2.4);later(0.4,()=>say('koschei','Ах так? Я вас самих перепишу!',2.4));E.lesson('pro_write',()=>{});};
+   const legThree=()=>{PRO.leg='three';CL.gapTo=18;PRO.cnt=null;PRO.cT=1.8;banner('Догнали тучу!','#ffd76a',2.2);
+     E.lesson('pro_three',()=>{});};
    // туча прожжена: золотой салют — буквы пролога разлетаются из тучи
    const salute=()=>{const c=CL.pos.clone();for(let i=0;i<26;i++){const s=K5L.textSpr(LET[i%LET.length],2.6,{w:128,h:128,col:'#ffe08a',glow:'#ffb030',weight:'italic 700 '});k5Prop(s);s.position.copy(c);
        const v=new V3(rand(-1,1),rand(0.4,1.2),rand(-1,0.6)).normalize().multiplyScalar(rand(10,18));k5fx(1.8,(k,dt)=>{s.position.addScaledVector(v,dt);v.y-=dt*6;s.material.opacity=1-k;},()=>k5Del(s));}
@@ -222,7 +221,7 @@
    const midFire=()=>{PRO.cnt=null;DG.visible=false;PRO.leg='burn';const hp=hpos(MIDH),to=CL.pos.clone();if(SFX.whoosh)SFX.whoosh();if(SFX.ok)SFX.ok();
      for(let i=0;i<26;i++)later(i*0.03,()=>{burst(hp.clone().lerp(to,i/26),0xff8a30,5,3);});anim(0.8,k=>{MIDH.jaw.rotation.x=Math.sin(k*Math.PI)*0.7;});E.log('proBurn');
      later(0.8,()=>{shakeAll(0.15,0.6);k5Flash(CL.pos.clone(),0xffb060,10,0.5);salute();anim(1.2,k=>{CL.cm.opacity=1-k;CL.g.scale.setScalar(1+k*0.5);});if(SFX.brk)SFX.brk();
-       banner('Туча прожжена!','#ffd76a',2.6,'Кощей падает к дубу Лукоморья');try{KA.pose('recoil');}catch(e){}PRO.fall=true;say('koschei','А-а-а! Ничего… Лукоморье — моё! Перепишу!',2.6);
+       banner('Туча прожжена!','#ffd76a',2.6);try{KA.pose('recoil');}catch(e){}PRO.fall=true;say('koschei','А-а-а! Ничего… Лукоморье — моё! Перепишу!',2.6);
        const f=KS.g.position.clone(),to2=OAKW.clone().add(new V3(0,35,8));anim(3.0,k=>{KS.g.position.lerpVectors(f,to2,smooth(k));KS.g.position.y+=Math.sin(k*Math.PI)*6;KS.g.rotation.z=Math.sin(k*9)*0.3;if(Math.random()<0.3)K5L.ink(KS.g.position.clone(),2);});
        later(3.4,()=>{if(!PRO.on)return;PRO.leg='end';KS.g.rotation.z=0;E.paper(()=>{const d=PRO.done;proEnd();if(d)d();},1.4);});});};
    const countTick=dt=>{const C0=PRO.cnt;if(!C0){PRO.cT-=dt;if(PRO.cT<=0&&CL.gap<24){PRO.cnt={t:-0.3,press:[null,null],last:-1};}return;}
@@ -231,7 +230,7 @@
      const T3=2*B,win=PRO.tries>=2?0.6:0.42,ok=pi=>C0.press[pi]!==null&&Math.abs(C0.press[pi]-T3)<win;
      if(ok(0)&&(G.solo||ok(1)))midFire();
      else if(C0.t>T3+win+0.1){PRO.cnt=null;DG.visible=false;PRO.tries++;PRO.cT=2.2;CL.gap=30;if(SFX.miss)SFX.miss();shakeAll(0.1,0.4);
-       banner('Не вместе!','#ffd0d0',1.6,'туча отлетела — ещё раз: на «три», разом');}};
+       banner('Не вместе!','#ffd0d0',1.6);}};
    /* ---------- управление: каждый ведёт свою голову ---------- */
    const proCustom=(pi,h,dt,c)=>{if(c.lock||!PRO.on||G.cine||PRO.leg==='end'||PRO.leg==='burn'){IN[pi].x=0;IN[pi].y=0;return;}IN[pi].x=clamp(c.ix,-1,1);IN[pi].y=clamp(c.iz,-1,1);
      const p=players[pi];p.fireCd=Math.max(0,(p.fireCd||0)-dt);
@@ -270,7 +269,7 @@
      if(PRO.leg==='sea'){PRO.wT-=dt;const all=PRO.WV.length;if(PRO.wave<=all&&PRO.wT<=0&&crows.every(c=>!c.alive||c.leave)){if(PRO.wave<all)crowWave(PRO.WV[PRO.wave]);else leaderWave();PRO.wave++;PRO.wT=1.8;}
        if((PRO.wave>all&&crows.every(c=>!c.alive)&&GP.z<GZ[1]-300)||GP.z<GZ[1]-560)legSky();}
      if(PRO.leg==='sky'){PRO.vT-=dt;if(PRO.vi<PRO.VQ.length&&PRO.vT<=0&&!orbs.length){const V=PRO.VQ[PRO.vi++];V.forEach((k,i)=>later(i*0.5,()=>{if(PRO.leg==='sky')orbMake(k==='g',k==='2'?1:0);}));PRO.vT=1.6+V.length*0.5;
-         if(PRO.vi===2&&!G.solo)later(0.8,()=>say('gorM','Золотой — огонь обеих голов разом!',2));}
+         }
        if(PRO.vi>=PRO.VQ.length&&!orbs.length&&PRO.vT<=0)legWrite();}
      if(PRO.leg==='write'){PRO.wT-=dt;if(PRO.wi<PRO.WQ.length&&PRO.wT<=0&&CL.gap>34){letterMake(PRO.WQ[PRO.wi]);PRO.wi++;PRO.wT=G.solo?4.8:4.2;}
        if(PRO.wi>=PRO.WQ.length&&!letters.length)legThree();}
@@ -281,28 +280,151 @@
      ES.note=(PRO.leg==='gorge'?'волна в '+Math.max(0,Math.round(WV.d))+' м · ':PRO.leg==='forest'||PRO.leg==='sea'?'до тучи '+Math.round(CL.gap)+' м · ':'')+'букв '+PRO.got+(PRO.hoops?' · обручей '+PRO.hoops:'');});
    W.custom0=W.custom;
    PRO.dbg=()=>({GP,GV,CL,WV,pages,spires,crows,drops,letters,hoops,rocks,orbs,GLY,V0,PX,PY,YL,GZ,LK,sc});   // для ботов (tk5e_prolog)
-   /* ---------- цели и рисунки кнопок ---------- */
+   /* ---------- полоса стадии ---------- */
    E.note=n=>n===0?(ES.note||''):'';
-   E.stage[0]={pics:pi=>({forest:['dragon','>','ring','+','letter'],gorge:['wave','>','dragon','>','ring'],sea:['bird','@attack','+','ink','@guard'],sky:['koschei','light','>','@attack'],
-       write:['letter','>','ring','dragon'],three:['two','sync','@skill','>','cloud']})[PRO.leg]||null,goal:pi=>{const q=KP_(pi),hd=G.solo?'Обе головы — твои: ':(pi?'Правая голова — твоя: ':'Левая голова — твоя: ');
-       if(PRO.leg==='forest')return hd+MOVEK(q)+'. Ловите <b>золотые буквы</b> и летите сквозь <b>золотые обручи</b> — рывок.<br>'+(G.solo?'Держи направление — разгон':'Тяните в одну сторону — разгон')+'. <b>Красный столб</b> — вырастет чёрная ель: облетай.';
-       if(PRO.leg==='gorge')return '<b>Чернильная волна за спиной!</b> '+(G.solo?'Держи направление':'Тяните вместе')+' — разгон, и сквозь <b>обручи</b> — рывок.<br><b>Скалы</b> — облетай, <b>мост</b> — под ним или поверху.';
-       if(PRO.leg==='sea')return '<b>Вороны Кощея!</b> '+(G.solo?'Огонь':'Ворон с кольцом твоего цвета — твой: огонь')+' '+K(q,'attack')+' сам летит в ворона.<br>Капля — <b>щит '+K(q,'guard')+' в последний миг</b>: летит обратно и сбивает ворона.';
-       if(PRO.leg==='sky')return '<b>Шары Кощея!</b> '+(G.solo?'Огонь':'Шар с кольцом твоего цвета — твой огонь')+' '+K(q,'attack')+'.<br><b>Золотой</b> — '+(G.solo?'два огня подряд':'огонь обеих голов разом')+'.';
-       if(PRO.leg==='write')return '<b>Почерк Кощея:</b> пролетите сквозь букву — туда, где <b>золотые кольца</b>. Плывущая «О» — лети за просветом.<br>'+(G.solo?'':'Рулите вместе: Горыныч летит посерёдке между вашими головами.');
-       if(PRO.leg==='three')return 'На «три» — вместе '+K(q,'skill')+': средняя голова прожжёт тучу.';
-       return K5L.LINES[0];},targets:()=>[],end:()=>{proEnd();}};
-   for(const pi of[0,1]){const mine=()=>PRO.on&&(!G.solo||pi===0),dropNear=()=>drops.some(d=>!d.refl&&(G.solo||d.pi===pi)&&d.dur-d.t<0.95);
-     prompt(pi,'guard',()=>{const d=drops.find(q=>!q.refl&&(G.solo||q.pi===pi));return hpos(HEADS[d?d.pi:pi]).add(new V3(0,1.8,0));},()=>mine()&&dropNear());
-     prompt(pi,'attack',()=>{const t=fireTgt(pi,hpos(HEADS[pi]));return t?t.pos.clone().add(new V3(0,t.lead?4.4:2.6,0)):fp();},()=>mine()&&(PRO.leg==='sea'||PRO.leg==='sky')&&!!fireTgt(pi,hpos(HEADS[pi]))&&!dropNear(),
-       ()=>{const t=fireTgt(pi,hpos(HEADS[pi]));return t&&(t.gold||t.lead)&&!G.solo?'вместе!':'';});
-     prompt(pi,'skill',()=>hpos(MIDH).add(new V3(G.solo?0:pi?1:-1,2,0)),()=>mine()&&PRO.leg==='three'&&!!PRO.cnt,'на «три»');}
-   // подсказки в мире над Горынычем: волна близко, мост впереди
-   prompt(0,'label',()=>hpos(MIDH).add(new V3(0,2.6,0)),()=>PRO.on&&PRO.leg==='gorge'&&WV.d<16,()=>G.solo?'волна! держи направление — разгон':'волна! тяните вместе — разгон');
-   prompt(0,'label',()=>hpos(MIDH).add(new V3(0,2.6,0)),()=>PRO.on&&PRO.leg==='gorge'&&rocks.some(R=>R.arch&&GP.z-R.z>0&&GP.z-R.z<45)&&GP.y>10.8&&GP.y<21,'мост! вниз — под него');
-   E.PAUSE[0]='<b>'+K5E.NAMES[0]+'</b><br><i>'+K5L.LINES[0]+'</i><br>Погоня на Горыныче: Игрок 1 ведёт левую голову, Игрок 2 — правую, Горыныч летит посерёдке; вместе в одну сторону — разгон.<br>'+
-     'Лес — буквы и обручи, ущелье — уйти от чернильной волны, море — вороны, над облаками — шары Кощея, потом буквы-стены и «раз-два-три».<br>'+
-     'Удар — огонь своей головы, щит в последний миг — капля летит обратно, умение на «три» — огонь средней головы. Tab — панель стадий и оценок.';
+   E.stage[0]={targets:()=>[],end:()=>{proEnd();}};
+   E.PAUSE[0]='<b>'+K5E.NAMES[0]+'</b><br><i>'+K5L.LINES[0]+'</i><br>Погоня на Горыныче за тучей Кощея: через леса, ущелье, море и облака — к «раз-два-три». Tab — панель стадий и оценок.';
+   /* ---------- обучающие катсцены пролога ---------- */
+   // Горыныч летит сам, по сценарию (автопилот по времени урока); реквизит — настоящие обручи, ели, скалы, вороны, шары и буквы-стены, но зачёта нет.
+   // pro — после вступления (головы, руль, разгон, буквы, обручи, ели); pro_gorge / pro_sea / pro_sky / pro_write / pro_three — в начале отрезка.
+   const proPilot=(L,o)=>{const z0=o.z0!=null?o.z0:GP.z,sv={gp:GP.clone(),gv:Object.assign({},GV),i0:Object.assign({},IN[0]),i1:Object.assign({},IN[1]),gap:CL.gap,gapTo:CL.gapTo,hv:hoops.map(H=>H.g.visible),wd:WV.d,wp:WV.g.position.clone()};
+     const pw=(A,t)=>{const n=A.length;if(t<=A[0][0])return A[0].slice(1);if(t>=A[n-1][0])return A[n-1].slice(1);let j=0;while(t>A[j+1][0])j++;const u=smooth((t-A[j][0])/(A[j+1][0]-A[j][0]));return A[j].slice(1).map((v,i)=>v+(A[j+1][i+1]-v)*u);};
+     const spAt=t=>pw(o.sp||[[0,11]],t)[0],xyAt=t=>pw(o.path||[[0,0,GP.y]],t);
+     const DT=0.04,N=Math.ceil((o.dur+2)/DT),Zs=[z0];for(let i=0;i<N;i++)Zs.push(Zs[i]-spAt(i*DT)*DT);
+     const zAt=t=>{const f=clamp(t/DT,0,N-1),i=Math.floor(f);return Zs[i]+(Zs[i+1]-Zs[i])*(f-i);};
+     const fpAt=t=>{const a=xyAt(t);return new V3(PX+a[0],a[1]+PY,zAt(t));};          // точка полёта (там же — обручи и буквы)
+     const agreeAt=t=>(o.agree||[]).some(r=>t>=r[0]&&t<r[1]);
+     hoops.forEach(H=>{H.g.visible=false;});const rv=rocks.map(R=>R.g?R.g.visible:true);rocks.forEach(R=>{if(R.g)R.g.visible=false;});   // настоящие обручи и скалы на пути — спрятать: урок летит сквозь свои
+     L.tick((t)=>{const a=xyAt(t),b=xyAt(t+0.05);GP.set(a[0],a[1],zAt(t));GV.x=(b[0]-a[0])/0.05;GV.y=(b[1]-a[1])/0.05;GV.sp=spAt(t);GV.agreeT=agreeAt(t)?1.5:0;GV.bump=0;
+       const m=o.heads?o.heads(t):null,ix=clamp(GV.x/9,-1,1),iy=clamp(GV.y/6,-1,1);IN[0].x=m?m[0]:ix;IN[0].y=m?m[1]:iy;IN[1].x=m?m[2]:ix;IN[1].y=m?m[3]:iy;
+       if(o.gap)CL.gap=o.gap(t);if(o.wave)o.wave(t);place();clPlace(0.016);
+       if(GV.agreeT>0&&Math.random()<0.6)burst(pg.g.localToWorld(new V3(rand(-4.5,4.5),5,2)),0xffd76a,1,1.5,0.6);});
+     L.on(()=>{GP.copy(sv.gp);Object.assign(GV,sv.gv);Object.assign(IN[0],sv.i0);Object.assign(IN[1],sv.i1);CL.gap=sv.gap;CL.gapTo=sv.gapTo;hoops.forEach((H,i)=>{H.g.visible=sv.hv[i]!==false;});rocks.forEach((R,i)=>{if(R.g)R.g.visible=rv[i]!==false;});WV.d=sv.wd;WV.g.position.copy(sv.wp);place();clPlace(0.016);});
+     return {zAt,fpAt,xyAt,spAt};};
+   // камера по Горынычу: [от, до) секунд урока; po/lo — смещения камеры и точки взгляда от Горыныча (PX+x, y, z)
+   const proCam=(L,t0,t1,po,lo)=>L.tick(t=>{const S=G.cine;if(!S||!S.camPos||t<t0||t>=t1)return;const b=new V3(PX+GP.x,GP.y,GP.z);S.camPos.copy(b).add(new V3(po[0],po[1],po[2]));S.camLook.copy(b).add(new V3(lo[0],lo[1],lo[2]));});
+   const proBack=(L,t0,t1)=>L.tick(t=>{const S=G.cine;if(!S||!S.camPos||t<t0||t>=t1)return;S.camPos.set(PX+GP.x*0.8,GP.y+9.5,GP.z+19);S.camLook.set(PX+GP.x*0.9,GP.y+4.5,GP.z-26);});   // как в самом полёте
+   const proTwo=()=>!G.solo;
+   const proKeys=a=>G.solo?K(0,a):K(0,a)+' и '+K(1,a);
+   const proHeadFlash=(pi,col)=>k5Flash(hpos(pi==null?MIDH:HEADS[pi]),col||PCOL[G.solo?0:pi],4,0.6);
+   // золотой обруч (настоящий) в точке p: пролетели — вспышка и звон
+   const proHoop=(L,A,t)=>{const p=A.fpAt(t);hoopMake(0,0,0);const H=hoops.pop();H.g.position.copy(p);L.props.push(H.g);L.tick(tt=>{H.g.rotation.z+=0.03;});
+     L.atT(t,()=>{K5L.gold(p.clone(),18);if(AUD.ready())AUD.bell(660,{v:0.06,d:0.5});H.g.visible=false;});};
+   // буква из тетрадки: вылетает из тучи за tAppear с, ловится в tGet с
+   const proLetter=(L,A,tAppear,tGet,i)=>{const ch=LET[i%LET.length];const s=K5L.textSpr(ch,3.8,{w:128,h:128,col:'#ffd76a',glow:'#ffb030',weight:'italic 700 '});L.add(s);s.visible=false;const to=A.fpAt(tGet).add(new V3(0,0.2,0));let got=false;
+     L.tick(t=>{if(got)return;if(t<tAppear){s.visible=false;return;}s.visible=true;const k=clamp((t-tAppear)/(tGet-tAppear),0,1),from=CL.pos.clone().add(new V3(0,1.5,0));s.position.lerpVectors(from,to,smooth(k));s.position.y+=Math.sin(k*Math.PI)*3;s.material.rotation=Math.sin(t*3+i)*0.3;
+       if(t>=tGet){got=true;s.visible=false;K5L.gold(to.clone(),12);if(AUD.ready())AUD.bell(660+(i%5)*110,{v:0.05,d:0.5});}});};
+   // чернильная ель (настоящая): красный столб за 1,3 с, потом вырастает за 0,7 с
+   const proSpire=(L,x,z,tMark)=>{const s={u:x,z,m:null,mk:null};spireMake(s);L.props.push(s.m,s.mk);s.m.scale.set(1,0.01,1);s.mk.material.opacity=0;
+     L.tick(t=>{if(t<tMark){s.mk.material.opacity=0;s.m.scale.y=0.01;return;}if(t<tMark+1.3){s.mk.material.opacity=0.18+0.22*Math.sin(t*14);s.m.scale.y=0.01;return;}s.mk.material.opacity=0;const k=Math.min(1,(t-tMark-1.3)/0.7);s.m.scale.y=Math.max(0.01,1-Math.pow(1-k,3));});
+     L.atT(tMark+1.3,()=>{if(AUD.ready())AUD.thump({f0:90,f1:40,d:0.4,v:0.18});K5L.ink(new V3(PX+x,2,z),16,2);});return s;};
+
+   E.LES.pro=L=>{const two=proTwo(),Y0=GP.y;
+     const A=proPilot(L,{dur:41,z0:40,   // с начала леса: на весь урок хватает леса (до ущелья — 420 м)
+       sp:[[0,8],[13,8],[14.4,13],[18.6,13],[19.8,8],[26.8,8],[27.2,12],[28,9],[28.4,9],[28.8,13],[29.6,9],[30,9],[30.4,14],[31.6,8],[41,8]],
+       path:[[0,0,Y0],[6.4,0,Y0],[7.8,-8,Y0],[8.6,-8,Y0],[10,8,Y0],[10.8,8,Y0],[11.4,8,23],[12,8,23],[12.6,8,11.5],[13.2,0,Y0],[19,0,Y0],[20.5,5,19],[22,-5,15],[23.5,0,18],[25,0,Y0],[26.5,-6,20],[28,6,15],[29.5,-2,21],[31,0,Y0],[34,-6,Y0],[36,-6,Y0],[38,0,21.5],[40,0,21.5],[41,0,Y0]],
+       agree:[[14.2,18.6]],heads:t=>{if(t<5.5)return [0,0,0,0];return null;}});
+     // кадры: 1 — головы сбоку
+     L.beat(5.5,{says:[['zven',two?'У Горыныча три головы: левая — Игрока 1, правая — Игрока 2.':'У Горыныча три головы — левая и правая слушаются тебя.',0.2,5.0]],
+       ev:[[1.2,()=>proHeadFlash(0)],[2.6,()=>proHeadFlash(1)],[4.2,()=>proHeadFlash(null,0xffd76a)]]});
+     proCam(L,0,5.5,[6,7.5,-13],[0,5.5,-1]);
+     L.beat(7.5,{says:[['zven','Куда тянете — туда и летим:',0.2,2.6],['zven',two?'Игрок 1 — '+MOVEK(0)+', Игрок 2 — '+MOVEK(1)+'.':MOVEK(0)+'.',3.0,4.2]]});
+     L.beat(6.0,{says:[['zven',two?'Тяните обе головы в одну сторону — разгон!':'Держи одно направление — разгон!',0.2,3.4],['zven','Чем дольше вместе, тем быстрее.',3.8,2.0]]});
+     L.beat(6.0,{says:[['zven','Золотые буквы — ловите: они подгоняют.',0.2,3.4]]});
+     for(let i=0;i<4;i++)proLetter(L,A,[19.2,20.2,21.2,22.4][i],[20.6,21.7,22.7,23.8][i],i);
+     L.beat(7.0,{says:[['zven','Золотой обруч — пролетите сквозь: рывок!',0.2,3.2],['zven','Обручи подряд — всё быстрее.',3.6,2.6]]});
+     for(const t of[27,28.6,30.2])proHoop(L,A,t);
+     L.beat(9.0,{says:[['zven','Красный столб — здесь вырастет чёрная ель. Облетайте!',0.2,4.4],['zven','Стена из трёх елей — только поверху, сквозь обруч.',4.8,4.0]]});
+     proSpire(L,3,A.zAt(35.2),32.4);
+     for(const dx of[-10,0,10])proSpire(L,dx,A.zAt(39.6),36.6);
+     proHoop(L,A,39.6);
+     proBack(L,5.5,41);
+     return L;};
+   // огонь головы pi в движущуюся цель tgt() — и что сделать на месте
+   const proFire=(L,pi,tgt,then)=>{const h=pi==null?MIDH:HEADS[pi],hp=hpos(h),m=new THREE.Mesh(new THREE.SphereGeometry(0.5,10,8),MB(0xffa040));m.position.copy(hp);L.add(m);if(SFX.whoosh)SFX.whoosh();
+     anim(0.25,k=>{h.jaw.rotation.x=Math.sin(k*Math.PI)*0.6;});k5fx(0.4,k=>{m.position.lerpVectors(hp,tgt(),k);if(Math.random()<0.5)burst(m.position.clone(),0xffa040,1,1,0.4);},()=>{m.visible=false;burst(tgt(),0xff8a30,10,3);if(then)then();});};
+   const proJaws=L=>L.on(()=>{HEADS.forEach(h=>{h.jaw.rotation.x=0;});MIDH.jaw.rotation.x=0;});
+   const proPop=(g,col,n)=>{g.visible=false;burst(g.position.clone(),col,n||14,4);K5L.gold(g.position.clone(),8);if(SFX.brk)SFX.brk();};
+   const proBase=()=>new V3(PX+GP.x,GP.y,GP.z);
+   // вороны держатся впереди Горыныча на своих местах
+   const proCrow=(L,pi,off,lead)=>{const m=crowMake(pi);L.props.push(m.g);if(lead){const r2=new THREE.Mesh(new THREE.TorusGeometry(1.35,0.13,6,28),k5Add(PCOL[G.solo?0:1],{opacity:0.95}));r2.rotation.y=Math.PI/2;m.g.add(r2);m.ring2=r2;m.g.scale.setScalar(2.5);}
+     const C={m,g:m.g,off:off.clone(),pos:new V3(),alive:true};L.tick(t=>{if(!C.alive)return;C.pos.copy(proBase()).add(C.off);C.pos.y+=Math.sin(t*2+off.x)*0.4;m.g.position.copy(C.pos);m.g.lookAt(PX+GP.x,GP.y+4,GP.z);m.wings.forEach(q=>{q.w.rotation.z=q.s*Math.sin(t*14)*0.5;});m.ring.rotation.z+=0.03;if(m.ring2)m.ring2.rotation.x+=0.03;});return C;};
+
+   E.LES.pro_gorge=L=>{const two=proTwo(),Y0=GP.y;
+     const A=proPilot(L,{dur:20,sp:[[0,11],[6,11],[7.2,16.5],[12.5,16.5],[13.5,11],[20,11]],
+       path:[[0,0,Y0],[6,0,Y0],[8.5,-5,17],[10.5,5,14],[12.5,0,Y0],[13.5,0,Y0],[15.6,7,Y0],[17,4,Y0],[18,0,Y0],[19.3,0,9.2],[20,0,Y0]],agree:[[7.2,12.5]],
+       wave:t=>{const d=t<6?44-18*smooth(t/5.5):t<13?26+10*smooth((t-6)/5):36;WV.d=d;WV.g.visible=true;WV.g.position.set(PX,0,GP.z+d);}});
+     L.on(()=>{WV.g.visible=true;});
+     L.beat(6.0,{says:[['zven','Позади — чернильная волна! Она догоняет.',0.2,3.2],['zven','Догонит — собьёт с пути.',3.6,2.2]]});
+     proCam(L,0,6,[0,9,-24],[0,7,12]);
+     L.beat(6.5,{says:[['zven',two?'Тяните обе головы вместе — разгон, и волна отстанет.':'Держи направление — разгон, и волна отстанет.',0.2,4.2],['zven','Золотые обручи — рывок!',4.6,1.8]]});
+     proHoop(L,A,8.5);proHoop(L,A,10.5);
+     L.beat(7.5,{says:[['zven','Скалы — облетайте сбоку.',0.2,2.6],['zven','Мост — нырните под него или перелетите.',3.0,3.8]]});
+     const R1={u:-4,z:A.zAt(15.4)},R2={arch:true,z:A.zAt(19.0)};rockMake(R1);rockMake(R2);L.props.push(R1.g,R2.g);
+     proBack(L,6,20);
+     return L;};
+
+   E.LES.pro_sea=L=>{const two=proTwo(),Y0=GP.y;
+     const A=proPilot(L,{dur:30,sp:[[0,11]],path:[[0,0,Y0]],gap:()=>26});proJaws(L);
+     const c1=proCrow(L,0,new V3(-7,3.5,-17.5)),c2=two?proCrow(L,1,new V3(7,4.5,-18)):null;
+     // 1. кто чей
+     L.beat(6.0,{says:[['zven','Вороны Кощея!',0.2,2.0],['zven',two?'Ворон с кольцом вашего цвета — ваш.':'Бей любого ворона — все они твои.',2.4,3.4]]});
+     // 2. огонь
+     L.beat(7.0,{says:[['zven',two?'Огонь — '+K(0,'attack')+' и '+K(1,'attack')+': каждый бьёт своего ворона.':'Огонь — '+K(0,'attack')+'.',0.2,3.6],['zven','Он сам летит в ворона.',4.0,2.4]],
+       ev:[[1.4,()=>proFire(L,0,()=>c1.pos.clone(),()=>{c1.alive=false;proPop(c1.g,0x2a2a34);})],[2.0,()=>{if(c2)proFire(L,1,()=>c2.pos.clone(),()=>{c2.alive=false;proPop(c2.g,0x2a2a34);});}]]});
+     // 3. капля и щит
+     const c3=proCrow(L,0,new V3(-6,3.5,-16.5));c3.g.visible=false;L.atT(13.4,()=>{c3.g.visible=true;});
+     L.beat(9.0,{says:[['zven','Ворон бросает чернильную каплю.',0.4,2.8],['zven','Щит '+kbd('guard')+' в последний миг —',3.4,2.6],['zven','капля вернётся и собьёт ворона!',6.0,2.8]],
+       ev:[[1.2,()=>{dropThrow({pos:c3.pos.clone(),lead:false,pi:0,throws:0});const d=drops.pop();L.props.push(d.g);const f=c3.pos.clone(),h=HEADS[0];let ph='go',t0=0;
+           const tk=k5fx(5,(k,dt)=>{t0+=dt;if(ph==='go'){const kk=Math.min(1,t0/1.9),hp=hpos(h);d.g.position.lerpVectors(f,hp,kk);d.g.position.y+=Math.sin(kk*Math.PI)*1.5;d.g.scale.setScalar(1+0.25*Math.sin(t0*20));
+             if(kk>=0.92){ph='back';t0=0;shieldFx(0);if(SFX.parry)SFX.parry();k5Flash(hpos(h),0xffe08a,3,0.3);}}
+             else{const kk=Math.min(1,t0/0.3);d.g.position.lerpVectors(hpos(h),c3.pos,kk);if(kk>=1){d.g.visible=false;c3.alive=false;proPop(c3.g,0x2a2a34);tk.t=tk.dur;}}},()=>{});L.on(()=>{tk.t=tk.dur;});}]]});
+     // 4. вожак
+     const ld=proCrow(L,0,new V3(0,6,-19),true);ld.g.visible=false;L.atT(22.0,()=>{ld.g.visible=true;});
+     L.beat(8.0,{says:[['zven','В конце — вожак: большой, с двумя кольцами.',0.2,3.4],['zven',two?'Бьют обе головы — каждая по два раза.':'Бей четыре раза.',3.8,3.4]],
+       ev:[[4.0,()=>proFire(L,0,()=>ld.pos.clone())],[4.6,()=>proFire(L,two?1:0,()=>ld.pos.clone())],[5.2,()=>proFire(L,0,()=>ld.pos.clone())],[5.8,()=>proFire(L,two?1:0,()=>ld.pos.clone(),()=>{ld.alive=false;proPop(ld.g,0x2a2a34,30);})]]});
+     proBack(L,0,30);
+     return L;};
+
+   E.LES.pro_sky=L=>{const two=proTwo(),Y0=GP.y;
+     const A=proPilot(L,{dur:16,sp:[[0,11]],path:[[0,0,Y0]],gap:()=>36});proJaws(L);
+     // шар летит от Кощея к голове по дуге, как в игре
+     const orbTo=(gold,pi,t0,dur)=>{orbMake(gold,pi);const o=orbs.pop();L.props.push(o.g);o.g.visible=false;let dead=false;
+       L.tick(t=>{if(dead)return;if(t<t0){o.g.visible=false;return;}o.g.visible=true;const k=Math.min(1,(t-t0)/dur),hp=hpos(gold?MIDH:HEADS[pi]),from=CL.pos.clone().add(new V3(0,1,2));o.g.position.lerpVectors(from,hp,k);o.g.position.y+=Math.sin(k*Math.PI)*4;o.g.children[1].rotation.z+=0.05;if(gold)o.g.children[2].rotation.x+=0.05;});
+       return {g:o.g,pos:()=>o.g.position.clone(),pop:()=>{dead=true;proPop(o.g,gold?0xffd23a:0xb070ff,gold?24:12);if(gold){K5L.gold(o.g.position.clone(),30);}}};};
+     const a=orbTo(false,0,0.8,3.2),b=two?orbTo(false,1,1.6,3.2):null;
+     L.beat(7.5,{says:[['zven','Кощей бросает шары. Шар с кольцом вашего цвета — ваш.',0.2,4.2],['zven','Огонь '+kbd('attack')+' сам летит в шар.',4.6,2.6]],
+       ev:[[2.4,()=>proFire(L,0,a.pos,()=>a.pop())],[3.1,()=>{if(b)proFire(L,1,b.pos,()=>b.pop());}]]});
+     const g=orbTo(true,0,8.4,3.4);
+     L.beat(8.5,{says:[['zven',two?'Золотой шар — огонь обеих голов разом!':'Золотой шар — два огня подряд!',0.4,3.6]],
+       ev:[[3.2,()=>proFire(L,0,g.pos)],[3.7,()=>proFire(L,two?1:0,g.pos,()=>g.pop())]]});
+     proBack(L,0,16);
+     return L;};
+
+   E.LES.pro_write=L=>{const Y0=GP.y,two=proTwo();
+     const tp=11.6;
+     const A=proPilot(L,{dur:15,sp:[[0,11]],path:[[0,0,Y0],[7,0,Y0],[10,-7,V0+1-PY],[13,-7,V0+1-PY],[14.5,0,Y0]],gap:()=>40});
+     letterMake('Ш');const W0=letters.pop();L.props.push(W0.g,W0.spr);W0.g.position.set(PX,V0,A.zAt(tp));const tb=1.0;
+     W0.spr.position.set(PX,V0+3,A.zAt(tp)+10);
+     L.tick(t=>{const k=clamp((t-tb)/0.9,0,1),n=W0.parts.length;W0.parts.forEach((p,i)=>{const a=i/n*0.75,b=a+0.25;p.scale.x=Math.max(0.01,Math.min(1,(k-a)/(b-a)));});
+       W0.marks.forEach((r,i)=>{r.material.opacity=t<tp?Math.min(0.95,Math.max(0,(t-tb-0.7)*2))*(0.7+0.3*Math.sin(t*8+i)):0;r.rotation.z+=0.03;});W0.spr.material.opacity=0;});
+     L.beat(6.5,{says:[['zven','Кощей пишет в небе буквы-стены.',0.2,3.0],['zven','Сквозь чёрную букву не пролететь.',3.4,2.8]]});
+     L.beat(8.5,{says:[['zven','Летите в просвет — туда, где золотые кольца!',0.2,4.2],['zven',two?'Рулите вместе.':'Держи курс на просвет.',4.6,2.4]]});
+     L.atT(tp,()=>{K5L.gold(A.fpAt(tp).clone(),16);if(AUD.ready())AUD.bell(880,{v:0.06,d:0.7});});
+     proBack(L,0,15);
+     return L;};
+
+   E.LES.pro_three=L=>{const two=proTwo(),Y0=GP.y;
+     const A=proPilot(L,{dur:14,sp:[[0,10]],path:[[0,0,Y0]],gap:()=>18});proJaws(L);DG.visible=false;L.on(()=>{DG.visible=false;});
+     L.tick(t=>{if(t>=6.6&&t<9.8){DG.visible=true;DG.position.copy(CL.pos).add(new V3(0,8.5,4));}else DG.visible=false;});
+     L.beat(6.0,{says:[['zven','Догнали тучу!',0.2,1.8],['zven','Средняя голова прожжёт её огнём.',2.2,3.2]]});
+     L.beat(8.0,{says:[['gorM','Моя очередь! Вы — «раз-два-три», я — огонь!',0.2,3.0],['zven','На «три» нажмите '+(two?K(0,'skill')+' и '+K(1,'skill')+' вместе!':K(0,'skill')+'!'),3.4,4.0]],
+       ev:[[0.6,()=>{setDigit(DG,1);tone(880,0.12,'square',0.08);}],[1.4,()=>{setDigit(DG,2);tone(880,0.12,'square',0.08);}],[2.2,()=>{setDigit(DG,3);tone(1320,0.12,'square',0.08);}],
+         [2.3,()=>{proHeadFlash(0);if(two)proHeadFlash(1);}],
+         [2.6,()=>{const hp=hpos(MIDH),to=CL.pos.clone();if(SFX.whoosh)SFX.whoosh();for(let i=0;i<26;i++)L.later(i*0.03,()=>{burst(hp.clone().lerp(to,i/26),0xff8a30,5,3);});anim(0.8,k=>{MIDH.jaw.rotation.x=Math.sin(k*Math.PI)*0.7;});
+           L.later(0.8,()=>{shakeAll(0.1,0.4);k5Flash(CL.pos.clone(),0xffb060,10,0.5);});}]]});
+     proBack(L,0,14);
+     return L;};
    /* ---------- начало и конец ---------- */
    const proEnd=()=>{if(!PRO.on)return;PRO.on=false;PRO.done=null;W.custom=W.custom0||null;W.soloMirror=PRO.mirror0;W.camFn=null;W.fallY=-12;
      for(const a of[pages.map(p=>p.s),spires.map(s=>s.m),spires.map(s=>s.mk),crows.map(c=>c.m.g),drops.map(d=>d.g),fires.map(f=>f.m),letters.map(L=>L.g),letters.map(L=>L.spr),hoops.map(H=>H.g),rocks.map(R=>R.g),orbs.map(o=>o.g)])a.forEach(o=>{if(o)k5Del(o);});
@@ -337,6 +459,6 @@
        tick:t=>{GP.z=zt(t);place();clPlace(0.016);const S=G.cine;if(!S||!S.camPos)return;const kp=CL.pos.clone().add(new V3(0,4,0)),d=new V3(PX+GP.x,GP.y,GP.z);
          const cams=[[d.clone().add(new V3(7,8.5,20)),d.clone().add(new V3(0,4,-35))],[kp.clone().add(new V3(6,1.5,14)),kp],[d.clone().add(new V3(12,5,-8)),d.clone().add(new V3(0,4.5,0))],[d.clone().add(new V3(0,9.5,19)),d.clone().add(new V3(0,4.5,-26))]];
          let i=0;while(i<3&&t>=TC[i+1])i++;S.camPos.copy(cams[i][0]);S.camLook.copy(cams[i][1]);},
-       end:()=>{W.anims.length=0;try{KA.reset();}catch(e){}PRO.leg='forest';E.hintReset(8);GP.z=zt(9.6);place();snapCams();
-         banner('Через леса!','#ffd76a',3,'ловите золотые буквы · '+(G.solo?'держи направление':'тяните вместе')+' — разгон');}});
+       end:()=>{W.anims.length=0;try{KA.reset();}catch(e){}PRO.leg='forest';GP.z=zt(9.6);place();snapCams();
+         E.lesson('pro',()=>banner('Через леса!','#ffd76a',3));}});
      E.log('prologue');};}

@@ -63,6 +63,6 @@ for(let k=0;k<14&&ES.spes>0;k++){for(let i=0;i<400&&!ES.mv&&!(ES.win>0);i++)TK(1
 r.push('mem='+ES.mem+' spes='+ES.spes);const t=ZC.W.hittables.find(t=>t.alive()&&t.r===1.4);if(t)t.onHit(ME());TK(200);r.push('won='+!!E5.done[11]);if(!E5.done[11])throw new Error(r.join(' | '));CHK(r.join(' | '))
 //@@
 // стадия 12: игла (отладкой) → «Тянем-потянем» одним → сцена «Цепь»
-const r=[GO(12)];TK(60);K5.forge.n=K5.forge.need;ZC.W.dbg5e().stageWin(5);for(let i=0;i<300&&!E5.es.repkaAtk;i++)TK(1);const R0=E5.es.rp;
+const r=[GO(12)];TK(60);K5.forge.n=K5.forge.need;ZC.W.dbg5e().stageWin(5);for(let i=0;i<900&&!(E5.es.repkaAtk&&!ZC.G.cine);i++){if(ZC.G.cine&&i%3===0)ZC.skip();TK(1);}const R0=E5.es.rp;
 for(let i=0;i<60*40&&R0&&!R0.done;i++){ZC.hold('KeyG',!!R0.surge);if(R0.near&&Math.abs(R0.t-R0.next(R0.t))<0.1&&R0.lastPullAt!==R0.next(R0.t)&&!R0.last)E5.es.repkaAtk(ME(),0);if(R0.last)E5.es.repkaAtk(ME(),0);ZC.tick(1);}ZC.hold('KeyG',false);
 r.push('repka='+!!(R0&&R0.done));for(let i=0;i<60*200&&ZC.W.flags.stage!=='chain';i++)TK(1);r.push('stage='+ZC.W.flags.stage);if(ZC.W.flags.stage!=='chain')throw new Error(r.join(' | '));CHK('k5epic solo ok '+r.join(' | '))
