@@ -112,7 +112,7 @@ K1F.unwrap=function(){K1F.wraps.forEach(k1Del);K1F.wraps.length=0;};
 const K1_LAMPS=[0xfff0a0,0xff9fc0,0x9fd4ff,0xb8ff98,0xffc070];
 function k1Lamps(carousel){const arr=[];carousel.children.forEach((f,i)=>{const px=f.position.x,pz=f.position.z,len=Math.hypot(px,pz)||1,col=K1_LAMPS[i%K1_LAMPS.length];const g=new THREE.Group();g.position.set(-px/len*1.05,2.3,-pz/len*1.05);g.scale.setScalar(0);g.visible=false;f.add(g);
     g.add(new THREE.Mesh(new THREE.SphereGeometry(0.34,10,8),new THREE.MeshBasicMaterial({color:col})));const gl=new THREE.Sprite(new THREE.SpriteMaterial({map:K1_SOFT,color:col,transparent:true,opacity:0.8,blending:THREE.AdditiveBlending,depthWrite:false}));gl.scale.setScalar(4.6);g.add(gl);
-    const cap=new THREE.Mesh(new THREE.ConeGeometry(0.28,0.22,8),new THREE.MeshLambertMaterial({color:0x5a3d22}));cap.position.y=0.36;g.add(cap);g.userData.noBatch=true;g.traverse(c=>{c.userData.noBatch=true;c.userData.noBatchL=true;});arr.push({g,on:false});});return arr;}
+    const cap=new THREE.Mesh(new THREE.ConeGeometry(0.28,0.22,8),new THREE.MeshLambertMaterial({color:0x5a3d22}));cap.position.y=0.36;g.add(cap);g.userData.noBatch=true;g.traverse(c=>{c.userData.noBatch=true;c.userData.noBatchL=true;if(c.isSprite)c.raycast=()=>{};});arr.push({g,on:false});});return arr;}
 K1F.lamp=function(i,on){const L=K1F.lamps[i];if(!L||L.on===on)return;L.on=on;if(on)L.g.visible=true;K1F.anim(0.4,k=>{const s=on?(k<0.7?k/0.7*1.25:1.25-0.25*(k-0.7)/0.3):1-k;L.g.scale.setScalar(Math.max(0,s));},()=>{if(!on)L.g.visible=false;});};
 K1F.lampsOn=function(n,gap){for(let i=0;i<K1F.lamps.length;i++)if(i<n)later(i*(gap||0.1),()=>K1F.lamp(i,true));};
 /* ---------- камера арены: дальше и выше, Леший целиком ---------- */
@@ -124,15 +124,26 @@ K1F.cam=function(){const c=K1F.ctx;if(!c)return null;const F=W.flags,C=c.C,CP=K1
   else{const P=CP.p1,hy=Math.max(a.pos.y,b.pos.y);K1F.up+=(clamp((hy-1.5)/3.5,0,1)-K1F.up)*0.06;const u=K1F.up;   // герои лезут на плечо — камера поднимается и смотрит на голову
     look=new V3(lerp(C.x,mid.x,0.3),P.ly+P.uy*u,lerp(C.z+P.lz,mid.z,0.35)+P.ul*u);off=new V3(0,P.oy+P.uo*u,P.oz+P.uz*u);}
   if(typeof BS!=='undefined'&&BS&&BS.zoom)off.multiplyScalar(1-0.2*BS.zoom);return {pos:look.clone().add(off),look,k:3};};
+/* ---------- мох-следы настоящего двойника и клубы дыма ---------- */
+const K1_PN=36;
+// зелёная кучка мха на земле: тает за 4,5 с
+K1F.print=function(x,z){if(!K1F.prints){K1F.prints={list:[],i:0};for(let i=0;i<K1_PN;i++){const m=new THREE.Mesh(new THREE.CircleGeometry(0.42,7),new THREE.MeshBasicMaterial({color:i%2?0x8fd05a:0x6cb040,transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide}));
+      m.rotation.x=-Math.PI/2;m.visible=false;m.renderOrder=4;k1Add(m);K1F.prints.list.push({m,t:99});}}
+  const P=K1F.prints,q=P.list[P.i++%K1_PN];q.t=0;q.m.visible=true;q.m.position.set(x+rand(-0.25,0.25),0.06,z+rand(-0.25,0.25));q.m.rotation.z=rand(0,6);q.m.scale.setScalar(rand(0.8,1.2));};
+function k1PrintTick(dt){const P=K1F.prints;if(!P)return;for(const q of P.list){if(q.t>=99)continue;q.t+=dt;if(q.t>=4.5){q.m.visible=false;q.t=99;continue;}q.m.material.opacity=0.7*Math.min(1,q.t*4)*(1-q.t/4.5);}}
+// клуб дыма: n мягких облачков расходятся и тают (двойник запутался, обменялись местами)
+K1F.puff=function(x,y,z,n,col){for(let i=0;i<(n||5);i++){const m=new THREE.Sprite(new THREE.SpriteMaterial({map:K1_SOFT,color:col||0xc8e8c0,transparent:true,opacity:0.7,depthWrite:false}));m.position.set(x,y,z);m.scale.setScalar(1.2);k1Add(m);
+    const v=new V3(rand(-1.6,1.6),rand(0.4,1.6),rand(-1.6,1.6)),s0=rand(1.6,2.6);K1F.anim(rand(0.7,1.1),k=>{m.position.set(x+v.x*k,y+v.y*k,z+v.z*k);m.scale.setScalar(s0*(0.5+k*1.4));m.material.opacity=0.7*(1-k);},()=>k1Del(m));}
+  try{tone(rand(220,300),0.12,'sine',0.06,rand(90,130));}catch(e){}};
 /* ---------- запуск уровня ---------- */
-K1F.reset=function(){K1F.q.length=0;K1F.ribbons.length=0;K1F.lamps=[];K1F.LV=null;K1F.ff=null;K1F.fog=[];K1F.rays=[];K1F.ctx=null;K1F.cur=null;K1F.tgt=null;K1F.ph=null;K1F.hT=new Map();K1F.wraps=[];K1F.amb=0;K1F.demoO=null;K1F.lanes=null;K1F.up=0;};
+K1F.reset=function(){K1F.prints=null;K1F.q.length=0;K1F.ribbons.length=0;K1F.lamps=[];K1F.LV=null;K1F.ff=null;K1F.fog=[];K1F.rays=[];K1F.ctx=null;K1F.cur=null;K1F.tgt=null;K1F.ph=null;K1F.hT=new Map();K1F.wraps=[];K1F.amb=0;K1F.demoO=null;K1F.lanes=null;K1F.up=0;};
 K1F.init=function(ctx){K1F.reset();K1F.ctx=ctx;const C=ctx.C;K1F.C=C;K1F.ff=k1Fireflies(C);K1F.fog=k1FogSprites(C);K1F.rays=k1Rays(C);K1F.lamps=k1Lamps(ctx.carousel);
   K1F.mood('dusk',0);W.camFn=K1F.cam;};
 // настроение по этапу, зрители реагируют; телеграфы ладоней; тик анимаций
 function k1PhaseWatch(){const F=W.flags,c=K1F.ctx;if(!c)return;const key=F.won?'won':F.phase;if(K1F.ph===key)return;const was=K1F.ph;K1F.ph=key;
-  if(key===0||key===1){K1F.mood('dusk',was==null?0:2.5);K1F.amb=0;}
-  else if(key===1.5||key===2){K1F.mood('night',3);K1F.amb=0;if(key===1.5)K1B.cheer('duck',1.6);}
-  else if(key===3){K1F.mood('fair',3);K1F.amb=2.5;K1F.lampsOn(14,0.12);K1B.bloom(c.L,true);K1B.cheer('clap',7);}
+  if(key===0||key===1){K1F.mood('dusk',was==null?0:2.5);K1F.amb=0;if(key===1&&K1B.music)K1B.music('k1b1');}
+  else if(key===1.5||key===2){K1F.mood('night',3);K1F.amb=0;if(key===1.5)K1B.cheer('duck',1.6);if(key===2&&K1B.music)K1B.music('k1b2');}
+  else if(key===3){K1F.mood('fair',3);K1F.amb=2.5;K1B.cheer('clap',7);}   // фонарики зажигаются по виткам (late_99zb_k1b_hoorovod.js)
   else if(key==='won'){K1F.mood('dawn',4);K1F.amb=4;K1F.leaves(new V3(K1F.C.x,6,K1F.C.z),60,{spd:2,up:1.4,size:1.4});K1B.cheer('clap',10);}}
 function k1HandTele(dt){const c=K1F.ctx;if(!c)return;const N=K1B.hands;for(const e of W.enemies){if(e.kind!=='hand')continue;let T=K1F.hT.get(e);
     if(e.state==='wind'&&e.alive){const red=e.sig==='red',kind=red?'red':'yellow';   // жёлтая — круг зоны удара, красная — веер перед ладонью (курс запирается на 60 % замаха)
@@ -141,7 +152,7 @@ function k1HandTele(dt){const c=K1F.ctx;if(!c)return;const N=K1B.hands;for(const
     else if(T&&T.live){T.live=false;if(e.state==='strike'||e.state==='recover'||e.state==='idle'||e.state==='chase'||e.state==='stagger'){T.o.flash();}else T.o.del();K1F.hT.delete(e);}}}
 {const _ll=loadLevel;loadLevel=function(i){K1F.reset();_ll(i);};}
 {const _st=step;step=function(dt){_st(dt);if(!K1F.ctx||!W||W.levelId!=='1-B')return;try{
-    k1MoodTick(dt);k1PhaseWatch();k1HandTele(dt);k1LeavesTick(dt);
+    k1MoodTick(dt);k1PhaseWatch();k1HandTele(dt);k1LeavesTick(dt);k1PrintTick(dt);
     for(let i=K1F.q.length-1;i>=0;i--){const a=K1F.q[i];a.t+=dt;const k=Math.min(1,a.t/a.dur);if(a.fn)a.fn(k);if(k>=1){if(a.end)a.end();K1F.q.splice(i,1);}}
     const t=G.time,C=K1F.C,cur=K1F.cur;
     if(K1F.ff&&cur){const F=K1F.ff,n=Math.round(cur.ff);F.g.setDrawRange(0,n);for(let i=0;i<n;i++){const s=F.S[i],a=s.a+t*s.sp;F.pos[i*3]=C.x+Math.cos(a)*s.r;F.pos[i*3+1]=s.y+Math.sin(t*s.w+s.ph)*0.45;F.pos[i*3+2]=C.z+Math.sin(a)*s.r;}F.g.attributes.position.needsUpdate=true;}

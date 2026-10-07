@@ -13,7 +13,7 @@ const K1C={bark:hp(0x6a4630),barkL:hp(0x8c6644),barkD:hp(0x4a2e1c),moss:hp(0x5f8
 const k1h=(i,s)=>{const x=Math.sin(i*127.1+(s||0)*311.7)*43758.5453;return x-Math.floor(x);};
 const k1hr=(i,s,a,b)=>a+(b-a)*k1h(i,s);
 function k1G(parent,x,y,z){const g=new THREE.Group();g.position.set(x||0,y||0,z||0);parent.add(g);return g;}
-function k1Dyn(o){o.traverse(c=>{c.userData.noBatch=true;c.userData.noBatchL=true;});return o;}
+function k1Dyn(o){o.traverse(c=>{c.userData.noBatch=true;c.userData.noBatchL=true;if(c.isSprite)c.raycast=()=>{};});return o;}
 K1B.dyn=k1Dyn;
 const K1_SOFT=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');const g=x.createRadialGradient(32,32,0,32,32,32);
   g.addColorStop(0,'rgba(255,255,255,0.9)');g.addColorStop(0.45,'rgba(255,255,255,0.35)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);})();
@@ -79,7 +79,8 @@ const K1EMO={neutral:{bL:0.1,bR:0.1,bh:0,lid:0.05,my:0.32,mx:1,mz:0,hx:0,hz:0,ex
   laugh:{bL:-0.3,bR:-0.3,bh:0.1,lid:0.85,my:1.15,mx:1.5,mz:0,hx:-0.06,hz:0,ex:0,sh:1},
   sheepish:{bL:-0.45,bR:-0.45,bh:0.06,lid:0.2,my:0.34,mx:0.9,mz:0.18,hx:0.15,hz:0.2,ex:-0.35,sh:0},
   mock:{bL:0.5,bR:0.5,bh:-0.04,lid:0.15,my:0.9,mx:1.4,mz:0,hx:0.02,hz:0,ex:0,sh:0},
-  dizzy:{bL:-0.3,bR:0.3,bh:0.05,lid:0.4,my:0.7,mx:1,mz:0,hx:0.1,hz:0.05,ex:0,sh:0.3}};
+  dizzy:{bL:-0.3,bR:0.3,bh:0.05,lid:0.4,my:0.7,mx:1,mz:0,hx:0.1,hz:0.05,ex:0,sh:0.3},
+  sleep:{bL:0.1,bR:0.1,bh:-0.02,lid:1,my:0.28,mx:0.9,mz:0,hx:0.3,hz:0.04,ex:0,sh:0}};
 function k1State(emo){return {emo:emo||'sly',base:emo||'sly',hold:0,t:Math.random()*6,real:true,cur:Object.assign({},K1EMO[emo||'sly'])};}
 // эмоция на hold секунд, потом — прежняя
 K1B.emo=function(o,name,hold){const k=o&&o.k1;if(!k||!K1EMO[name])return;k.emo=name;k.hold=hold||0;if(!hold)k.base=name;};
@@ -212,6 +213,7 @@ K1B.double=function(i,n,real,round){const R=k1Build(),eye=new THREE.MeshLambertM
   for(const k in D)if(D[k])B.head.add(D[k]);k1Costume(o,((i||0)+(round||0)*2)%5);k1Dyn(o.g);
   // настоящий — со своей тенью; у двойников теней нет, у ног дымок
   o.g.traverse(c=>{if(c.isMesh||c.isSkinnedMesh)c.castShadow=!!real;});if(!real)k1Smoke(o.g,1);
+  if(!real)k1Dyn(o.g);
   Object.assign(o,{head:B.head,hands,eye,parts:D,k1:k1State('sly')});o.k1.real=!!real;o.k1.lost={};o.k1.t=k1hr(i||0,7,0,6);
   return castReg(o,{hs:3,tick:k1Tick});};
 /* ---------- лешачата-зрители ---------- */
