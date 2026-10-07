@@ -72,6 +72,7 @@ zlataya_cep/build/late_22_synty.js            @wide
 zlataya_cep/build/late_24_world.js            @wide
 zlataya_cep/build/late_25_scatter.js          @wide
 zlataya_cep/build/late_26_batch.js            @wide
+zlataya_cep/build/late_26b_dispose_world.js   @wide
 zlataya_cep/build/late_27_atmo.js             @wide
 zlataya_cep/build/late_90_boot.js             @wide
 
