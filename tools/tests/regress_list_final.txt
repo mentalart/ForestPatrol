@@ -20,7 +20,7 @@ tfin_pads tfin_downswap tfin_foekinds tfin_foekinds1b tfin_foekinds2 tfin_foekin
 # final06: озвучка всей игры; щиты героев (B) и удар Потапа со спины; пауза с джойстика на живом пути (курсор над меню); Лукоморье — стан и берег дальше от дуба; звук с первого нажатия, голос заставки, звуки меню; пролог — Прошка несёт самокат, падает, все смеются; большие «прозрачные стены» — кусками
 tfin_voice tfin_guard tfin_pads2 tfin_luko tfin_uisnd tfin_scooter tfin_splashclick tfin_fadesplit tfin_fadelocal tfin_potap
 # final06: «Битва с Кощеем» 5-Б2 — пролог, двенадцать стадий, полёты домой, без подсказок, вдвоём и в одиночку (docs/28)
-tk5e_smoke tk5e_prolog tk5e_s1 tk5e_leshy tk5e_s3 tk5e_p1 tk5e_p2 tk5e_p3 tk5e_p4 tk5e_s8 tk5e_s9 tk5e_s10 tk5e_s11 tk5e_s12 tk5e_fly tk5e_solo tk5e_flow tk5e_lesson tk5e_lesson2
+tk5e_smoke tk5e_prolog tk5e_runner tk5e_s1 tk5e_leshy tk5e_s3 tk5e_p1 tk5e_p2 tk5e_p3 tk5e_p4 tk5e_s8 tk5e_s9 tk5e_s10 tk5e_s11 tk5e_s12 tk5e_fly tk5e_solo tk5e_flow tk5e_lesson tk5e_lesson2
 # подсказки: одна карточка на игрока, общая по центру, без повторов (late_79_hints.js)
 tfin_hints
 tfin_gor4

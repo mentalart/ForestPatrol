@@ -52,8 +52,9 @@ FIN.ac=()=>AC;   // аудиоконтекст игры — для записи 
 // камеры кадра (для бота tfin_camcap: размер героя на экране) — только с ?debug
 FIN.cam=()=>PANES.map(p=>p.cam);
 FIN.gl=()=>({geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,programs:renderer.info.programs?renderer.info.programs.length:0,heap:performance.memory?Math.round(performance.memory.usedJSHeapSize/1048576):-1});
-// Ctrl+Alt+B — следующая стадия босса: у каждого босса уровень выставляет W.bossNext (true — переход начат); по коду клавиши — и в русской раскладке
+// Ctrl+Alt+B — следующая стадия босса: у каждого босса уровень выставляет W.bossNext (true — переход начат; строка — то же, но с названием для подсказки,
+// так в 5-Б2: «Глава N из 12»); по коду клавиши — и в русской раскладке
 addEventListener('keydown',e=>{if(!e.ctrlKey||!e.altKey||e.repeat||!(e.code==='KeyB'||e.key==='b'||e.key==='B'||e.key==='и'||e.key==='И'))return;
   e.preventDefault();e.stopImmediatePropagation();if(G.state!=='play'||G.ui||G.trans)return;
   let ok=false;try{ok=!!(W&&W.bossNext&&W.bossNext());}catch(err){console.error(err);}
-  FIN.devToast(ok?'Следующая стадия босса':'Здесь нет следующей стадии','Ctrl+Alt+B');},true);
+  FIN.devToast(typeof ok==='string'?ok:ok?'Следующая стадия босса':'Здесь нет следующей стадии','Ctrl+Alt+B');},true);
