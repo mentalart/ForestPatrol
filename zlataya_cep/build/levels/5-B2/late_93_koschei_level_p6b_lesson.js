@@ -113,7 +113,9 @@
     // что вернуть: герои и Кощей — на места, Звенышко — как было
     const kl=K5.log.length,el=(E.logs||[]).length;
     const snap=HEROES.map(h=>({h,p:h.pos.clone(),f:h.face,v:h.g.visible})),ks={p:KS.g.position.clone(),r:KS.g.rotation.y,v:KS.g.visible,rx:KS.g.rotation.x},zs={mode:Z.mode,pos:Z.pos.clone(),vis:Z.vis,shown:Z.shown};
-    const fin=()=>{for(const s of snap){s.h.pos.copy(s.p);s.h.face=s.f;s.h.vel.set(0,0,0);s.h._demoGuard=0;s.h.atkT=0;s.h.rollT=0;s.h.iT=0;s.h._em=null;}
+    const fx0=new Set(K5FX);   // эффекты, начатые уроком: при пропуске дозавершить ДО возврата состояния (иначе их конец перетрёт возврат)
+    const fin=()=>{for(const f of K5FX.filter(f=>!fx0.has(f))){try{if(f.upd)f.upd(1,0);}catch(e){}try{if(f.end)f.end();}catch(e){}const i=K5FX.indexOf(f);if(i>=0)K5FX.splice(i,1);}
+      for(const s of snap){s.h.pos.copy(s.p);s.h.face=s.f;s.h.vel.set(0,0,0);s.h._demoGuard=0;s.h.atkT=0;s.h.rollT=0;s.h.iT=0;s.h._em=null;}
       KS.g.position.copy(ks.p);KS.g.rotation.set(ks.rx,ks.r,0);KS.g.visible=ks.v;try{KA.reset();}catch(e){}
       for(const f of L.undo.splice(0))try{f();}catch(e){console.error('lesson undo',e);}
       for(const o of L.props)k5Del(o);L.props.length=0;W.anims.length=0;K5.log.length=Math.min(K5.log.length,kl);if(E.logs)E.logs.length=Math.min(E.logs.length,el);Z.mode=zs.mode;Z.pos.copy(zs.pos);Z.vis=zs.vis;Z.shown=zs.shown;CINE.mood&&CINE.mood(null,0);};

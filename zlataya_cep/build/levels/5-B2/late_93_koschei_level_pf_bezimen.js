@@ -111,6 +111,7 @@
     attack(h,pi){if(E.cur!==11||ES.ph!=='wall'||!crack.visible)return;if(hd(h.pos,crack.position)>2.2)return;ES.wallHit[h.player]=G.time;FX.sparks(crack.position.clone(),10,0xffd76a);
       if(G.solo||Math.abs(ES.wallHit[0]-ES.wallHit[1])<1.4)wallDown();else floatText(crack.position.clone().add(new V3(0,1.6,0)),'Вместе — с двух сторон!','#ffe08a');}};
   E.stage[11].bot={counter:i=>counter(i),names:()=>nameSp,whip:()=>whip(),hit:h=>b11.onHit(h)};
+  E.stage[11].targets=pi=>ES.ph==='wall'?(crack.visible?[crack]:[]):ES.mv?[memRings[ES.mv.i]]:[KS.g];   // для ботов: что сейчас можно бить (на экране не показывается)
   // «Ко мне!» в стадии 11: золотая рябь; две ряби — трещина на стене между вами
   {const _pc=W.pingCall;W.pingCall=(pi,h)=>{if(E.cur===11&&ES.fight&&ES.ph==='wall'){ES.call[pi]=G.time;k5Ring(new V3(h.pos.x,0.2,h.pos.z),PCOL[pi],0.5,8,0.9,0.08);E.log('call'+pi);
       const both=G.solo||Math.abs(ES.call[0]-ES.call[1])<3;if(both){const a=active(0),b=G.solo?a:active(1);const z=(a.pos.z+b.pos.z)/2;later(G.solo?1.0:0.4,()=>{if(G.solo){const c=active(1-pi);floatText(c.pos.clone().add(new V3(0,2,0)),'Я здесь!','#ffe08a');}

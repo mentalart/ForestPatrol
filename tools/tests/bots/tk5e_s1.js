@@ -2,7 +2,7 @@
 // @timeout=600
 // Битва с Кощеем (сборка --k5epic), стадия 1 «У лукоморья дуб зелёный» — прежняя, без подсказок совсем (E.NOHINT, p6): нет карточек,
 // значков цели, кнопок и стрелок над героями и целями, значков и слов во всплывашках, подсветки целей; Кощей бьёт как прежде, свечи
-// гаснут, все восемь — стадия пройдена. На стадии 2 подсказки остаются.
+// гаснут, все восемь — стадия пройдена. Правила — в обучающих катсценах (tk5e_lesson), в бою подсказок нет ни на одной стадии.
 window._errs=[];window.addEventListener('error',e=>_errs.push(String(e.message)));{const _ce=console.error;console.error=function(){_errs.push([...arguments].map(String).join(' ').slice(0,300));_ce.apply(console,arguments);};}
 {const o=document.getElementById('k5eStart');if(o)o.remove();}
 window.E5=ZC.FIN.k5e;window.K5=ZC.FIN.k5;
@@ -10,7 +10,7 @@ window.CHK=s=>{if(_errs.length)throw new Error(s+' — ошибки: '+_errs.sli
 window.CYR=s=>/[А-Яа-яЁё]/.test(s||'');window.N={bub:0,flt:0,card:0,ui:0,goal:0,tg:0};
 // подсказки на экране: кнопки над героями, всплывашки со словами, карточка, значки цели, цели для подсветки
 window.SEE=()=>{for(const b of document.querySelectorAll('#bubs .bub'))if(b.style.display!=='none')N.bub++;for(const f of document.querySelectorAll('.float'))if(f.style.display!=='none'&&CYR(f.textContent))N.flt++;
-  const c=document.getElementById('finTut');if(c&&c.classList.contains('on'))N.card++;if(ZC.G.ui)N.ui++;if(E5.cur===1){if(E5.goalPics(0)||E5.goalPics(1))N.goal++;if(E5.targets(0).length)N.tg++;}};
+  const c=document.getElementById('finTut');if(c&&c.classList.contains('on'))N.card++;if(ZC.G.ui)N.ui++;};
 window.TK=n=>{for(let i=0;i<n;i++){if(ZC.G.cine&&i%3===0)ZC.skip();ZC.tick(1);if(i%5===0)SEE();}};
 window.PUT=(h,x,z)=>{h.pos.set(x,0.05,z);h.vel.set(0,0,0);};
 window.H=pi=>ZC.players[pi].heroes[ZC.players[pi].act];
@@ -31,9 +31,9 @@ ZC.tick(1);
 for(const c of D.candles){for(let k=0;k<6&&c.lit;k++)c.k5hit(c,H(0));}let i=0;for(;i<60*20&&!E5.done[1];i++)TK(1);
 R.push('все свечи погашены — стадия 1 пройдена='+!!E5.done[1]+' | кнопок '+N.bub+' всплывашек '+N.flt);if(!E5.done[1]||N.bub||N.flt)throw new Error(R.join(' | '));CHK(R.join(' | '))
 //@@
-// стадия 2 — подсказок тоже нет (значков цели внизу нет)
+// стадия 2 — подсказок тоже нет
 for(let i=0;i<60*120&&!(E5.cur===2&&K5.fight&&!ZC.G.cine&&!ZC.G.ui);i++){if(ZC.G.ui&&i%10===0)ZC.press('Space');TK(1);}
-const g=E5.goalPics(0);R.push('стадия 2: cur='+E5.cur+' значки цели='+(/<svg/.test(g)));if(E5.cur!==2||/<svg/.test(g))throw new Error(R.join(' | '));CHK(R.join(' | '))
+R.push('стадия 2: cur='+E5.cur+' кнопок '+N.bub+' всплывашек '+N.flt);if(E5.cur!==2||N.bub||N.flt)throw new Error(R.join(' | '));CHK(R.join(' | '))
 //@@
 // одним игроком — так же без подсказок
 N.bub=N.flt=N.card=N.goal=N.tg=0;GO1(true);const sp=ZC.G.soloPi,c=D.candles[0];for(let i=0;i<60*12;i++){PUT(H(sp),c.pos.x+2.6,c.pos.z+1.2);TK(1);ZC.players[sp].petals=3;}

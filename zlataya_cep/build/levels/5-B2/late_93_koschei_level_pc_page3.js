@@ -196,7 +196,7 @@
     locks.forEach(L=>W.hittables.push({pos:L.pos,r:1.0,alive:()=>E.cur===6&&ES.fight&&!L.open&&L.pair===S.pair&&L.g.visible,onHit:h=>lockHit(L,h)}));
     {const rp=new V3();W.updates.push(()=>{if(E.cur===6)ring.getWorldPosition(rp);});W.hittables.push({pos:rp,r:1.6,alive:()=>E.cur===6&&ES.fight&&S.ph==='wind',onHit:h=>ringHit(h)});}
     A.bot={light:(h,i)=>setLight(h,i),lock:(i,h)=>lockHit(locks.find(L=>L.pair===S.pair&&L.i===i),h),whistle:k=>whistle(null,k||'blue'),shadow:()=>spawnShadow(),ring:h=>ringHit(h),
-      sheltered:h=>sheltered(h),tiles:()=>tiles,lockPos:i=>locks.find(L=>L.pair===S.pair&&L.i===i).pos};
+      sheltered:h=>sheltered(h),tiles:()=>tiles,locks:()=>locks,lockPos:i=>locks.find(L=>L.pair===S.pair&&L.i===i).pos};
     /* ---------- обучающая катсцена стадии 6: свет птиц, мостики, замки разом, фонарь и свист, тени, ветер и кольцо ---------- */
     E.LES[6]=L=>{const po=T.potap,pr=T.proshka,pe=T.pelageya,yo=T.yosha,H=(x,z)=>[x,0.9,z];
       const orbFx=k5fx(999,()=>{for(const [h,o] of orbs){o.position.copy(h.pos).add(new V3(0,h.d.height+0.9,0));o.material.opacity=0.7+0.3*Math.sin(G.time*8);}tiles.forEach(t=>tileSolid(t,litK(t.x,t.z)));});

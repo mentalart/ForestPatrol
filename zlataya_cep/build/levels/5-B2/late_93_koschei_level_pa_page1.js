@@ -152,6 +152,7 @@
         const r0=hut.g.rotation.y,p0=hutP().clone();anim(1.3,k=>{hut.g.rotation.y=r0+Math.PI*CE.inOutCubic(k);hut.g.position.lerpVectors(p0,HC,CE.inOutCubic(k));});k5s('reveal');E.log('turn');}
       else floatText(h.pos.clone().add(new V3(0,2,0)),'Разом! Второй — тоже!','#ffe08a');};
     A.bot={stuck:()=>{const o=OAKS[0];hut.g.position.set(o.x+OAK_R+1.6,0,o.z);stuck(o);},roofHit:h=>roofHit(h)};   // для ботов
+    A.targets=pi=>S.phase===3?[]:S.st==='sit'?circles.filter(c=>c.visible):S.st==='stuck'?[hut.g]:[];   // для ботов: что сейчас можно бить / трогать (на экране не показывается)
     /* ---------- обучающая катсцена стадии 4: дуб, клубок, волна, «Повернись!», крыльцо и крыша ---------- */
     E.LES[4]=L=>{const po=T.potap,pr=T.proshka,pe=T.pelageya,yo=T.yosha,H=(x,z)=>[x,0.9,z],hp0=hut.g.position.clone(),hr0=hut.g.rotation.clone(),hy0=hut.house?(hut.house.userData.y0==null?hut.house.position.y:hut.house.userData.y0):0;
       const O0=OAKS[0],ties=[],pips=L.pips(3);pips.g.visible=false;const roofAt=()=>KS.g.position.set(hut.g.position.x,roofY+(hut.house?hut.house.position.y-hy0:0)+hut.g.position.y,hut.g.position.z);
