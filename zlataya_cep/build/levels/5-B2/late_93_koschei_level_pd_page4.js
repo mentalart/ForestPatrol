@@ -181,7 +181,7 @@
           [1.8,()=>{L.walk(po,X-2,2.4,0.6);L.walk(pe,X+2,2.4,0.1);}],[2.2,()=>{bridle.position.set(X,po.pos.y+1.0,2.4);}],
           [2.2,()=>{k5s('strike');shakeAll(0.05,0.3);for(let i=0;i<14;i++)L.later(i*0.035+0.01,()=>{const p=new V3(X+rand(-0.5,0.5),0.4,-13+i*1.6);flameAt(p);});planks.forEach(P=>{if(P.li===1&&(P.j%3===1||P.j%4===0))burnP(P,99);});}],[4.4,()=>L.ok(po)]]});
       // Лихо
-      L.beat(7,{cam:[[X+5,7.5,5],[X-3,1.6,-11]],need:[H(X-2,-2),[LIKHO.x,2,LIKHO.z]],says:[['zven','Лихо открывает глаз —',0.2,2.2],['zven','кто смотрит на него, тот засыпает!',2.5,2.8],['zven','Отвернись или встань за щит Потапа.',5.0,2.0]],
+      L.beat(7,{cam:[[X+5,7.5,5],[X-3,0.4,-11]],need:[H(X-2,-2),[LIKHO.x,2,LIKHO.z]],says:[['zven','Лихо открывает глаз —',0.2,2.2],['zven','кто смотрит на него, тот засыпает!',2.5,2.8],['zven','Отвернись или встань за щит Потапа.',5.0,2.0]],
         ev:[[0,()=>{L.put(po,X-2,-2);L.put(pe,X+1.4,-2);L.look(po,LIKHO);L.look(pe,LIKHO);}],[0.4,()=>{K5X.tint('rgba(80,20,120,.8)',0.55);const fx=k5fx(4.2,k=>{const kk=Math.min(1,k*4.2/1.6);if(likho.lid)likho.lid.rotation.x=lerp(0.6,-2.4,kk);gaze.position.copy(LIKHO).add(new V3(0,2.6,0));gaze.lookAt(X,0.8,-2);gaze.material.opacity=kk>=1?0.35+0.1*Math.sin(G.time*20):0.12*kk;},()=>{gaze.material.opacity=0;if(likho.lid)likho.lid.rotation.x=0.6;});L.on(()=>{fx.t=fx.dur;});}],
           [2.2,()=>{L.emo(pe,'droop');k5s('blink');FX.sparkle(pe.pos.clone().add(new V3(0,2,0)),10,0xc8b8ff);}],[3.0,()=>{pe.face=Math.PI;L.guard(po,2.6);}]]});
       // голова опустилась — разом

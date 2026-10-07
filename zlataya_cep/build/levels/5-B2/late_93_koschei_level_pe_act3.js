@@ -331,7 +331,7 @@
     L.on(()=>{giant.position.copy(GC);gArm.quaternion.identity();gArm.scale.set(1,1,1);gArmL.rotation.set(0,0,0);heartLock.visible=true;hammer.visible=false;kneeR.forEach(r=>{r.visible=true;});wristL.forEach(l=>{l.visible=false;});
       eyeBeams.forEach(m=>{m.visible=false;});legRings.forEach(m=>{m.visible=false;});rootsM.visible=false;swArc.material.opacity=0;lasso.visible=false;});
     L.put(po,-3,-12.4);L.put(pr,-1,-12);L.put(pe,1,-12);L.put(yo,3,-12.4);KS.g.visible=false;
-    L.beat(7,{cam:[[0,13,8],[0,6,-19],[0,10,3],[0,6.5,-19]],need:[H(-3,-12.4),[0,12,-19],[3.2,10,-19]],says:[['zven','Кощей стянул всё золото в Цепного великана.',0.2,3.4],['zven','Три раза надо расколоть замок у него на груди!',3.8,3.0]],ev:[[1.2,()=>{k5Flash(hp(),0xffe0a0,6,0.8);}],[3.6,()=>{K5L.gold(hp(),16);}]]});
+    L.beat(7,{cam:[[0,13,8],[0,3.5,-19],[0,12,6],[0,4,-19]],need:[H(-3,-12.4),[0,12,-19],[3.2,10,-19]],says:[['zven','Кощей стянул всё золото в Цепного великана.',0.2,3.4],['zven','Три раза надо расколоть замок у него на груди!',3.8,3.0]],ev:[[1.2,()=>{k5Flash(hp(),0xffe0a0,6,0.8);}],[3.6,()=>{K5L.gold(hp(),16);}]]});
     // кулак
     L.beat(8.4,{cam:[[0,10,2],[0,3.4,-13]],need:[H(-2,-10),[3.2,8,-19]],says:[['zven','Кулак бьёт в красный круг — уйди кувырком '+kbd('roll')+'!',0.2,3.6],['zven','А потом рука лежит: по ней можно взбежать на плечо!',4.2,3.8]],
       ev:[[0,()=>{L.put(po,-2,-10);L.put(pe,2.4,-10.6);}],[0.4,()=>{const F=new V3(-2,0,-10),s=sh();L.tele(F,2.3,1.5,0xff3030,()=>{});anim(1.5,k=>{gArm.quaternion.slerp(new THREE.Quaternion().setFromUnitVectors(new V3(0,-1,0),new V3(0,0.75,-0.66).normalize()),Math.min(1,k*0.2+0.04));});

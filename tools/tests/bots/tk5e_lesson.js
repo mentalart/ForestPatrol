@@ -9,7 +9,7 @@ window._errs=[];window.addEventListener('error',e=>_errs.push(String(e.message))
 window.E5=ZC.FIN.k5e;
 // запустить урок key: stage — стадия (по умолчанию key), home — после стадии идёт поездка домой, pro — отрезок пролога, repka — «репка» финала;
 // solo — один игрок; full — досмотреть до конца без пропуска. Возвращает строку-отчёт; любая ошибка страницы или кадра — исключение.
-window.LES=(key,o)=>{o=o||{};const e0=_errs.length,n=o.stage!=null?o.stage:(typeof key==='number'?key:4);ZC.setSolo(!!o.solo);E5.goStage(n);ZC.G.manual=true;
+window.LES=(key,o)=>{o=o||{};const e0=_errs.length,n=o.stage!=null?o.stage:(typeof key==='number'?key:4);E5.lessonN={};E5.saidPage={};ZC.setSolo(!!o.solo);E5.goStage(n);ZC.G.manual=true;
   if(o.home)E5.pageHome(n,()=>{});
   if(o.repka)E5.repka(()=>{});
   if(o.pro){ZC.tick(20);const P=E5.pro,D=P.dbg();for(let k=0;k<400&&(ZC.G.cine||P.leg==='intro');k++){if(ZC.G.cine)ZC.skip();ZC.tick(3);}

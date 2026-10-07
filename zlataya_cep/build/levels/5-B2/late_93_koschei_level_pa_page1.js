@@ -168,7 +168,7 @@
             L.later(2.4,()=>{const f=hut.g.position.clone();FX.dust(f,8,0x6a5a3a,1.5);anim(1.25,k=>{hut.g.position.lerpVectors(f,to,CE.inOutCubic(k));if(Math.random()<0.5)FX.dust(hut.g.position.clone(),1,0x6a5a3a);if(k>=1){shakeAll(0.14,0.5);k5s('stomp');FX.leaves&&FX.leaves(O0.clone().add(new V3(0,6,0)),26);FX.dust(to.clone(),20,0x6a5a3a,2);anim(0.5,q=>{hut.g.rotation.x=-0.25*Math.sin(Math.min(1,q)*Math.PI*0.5);});}});});}],
           [4.0,()=>L.roll(po,0.4,2.6,0.4)],[5.6,()=>{k5fx(3,()=>{if(Math.random()<0.1)FX.stars&&FX.stars(hut.g.position.clone().add(new V3(0,roofY+0.6,0)),1,0xfff4a0);});}]]});
       // 3. клубок на ноги
-      L.beat(7.4,{cam:[[X-5,4.4,1.5],[X-1.8,1,-4.2]],need:[H(X-3.0,-1.6),[X-2,0.5,-4.2]],says:[['zven','Застряла! Клубок '+kbd('item')+' — у ноги, нить от каждого:',0.2,3.8],['zven','избушка не сможет убежать.',4.2,2.6]],
+      L.beat(7.4,{cam:[[X-5,4.4,1.5],[X-1.8,0.2,-4.2]],need:[H(X-3.0,-1.6),[X-2,0.5,-4.2]],says:[['zven','Застряла! Клубок '+kbd('item')+' — у ноги, нить от каждого:',0.2,3.8],['zven','избушка не сможет убежать.',4.2,2.6]],
         ev:[[0,()=>{L.put(po,X-3.0,-1.6);L.put(pe,X+0.6,-1.6);L.look(po,legW(0));L.look(pe,legW(1));}],...[0,1,2,3].map(i=>[0.8+i*0.75,()=>{const li=i%2,m=new THREE.Mesh(tieM,tieMat);m.rotation.x=Math.PI/2;m.position.set(0,-0.6-Math.floor(i/2)*0.25-0.25,0);(hut.legs[li]||hut.g).add(m);ties.push(m);SFX.thwip&&SFX.thwip();K5L.gold(legW(li).add(new V3(0,1,0)),8);}]),
           [4.6,()=>{if(hut.house){const y1=hut.house.position.y;anim(0.6,k=>{hut.house.position.y=y1-1.1*k;});}hut.g.rotation.x=0;k5s('stomp');FX.dust(hut.g.position.clone(),14,0x6a5a3a,1.8);}]]});
       // 4. волна по земле
