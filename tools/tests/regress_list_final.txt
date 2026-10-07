@@ -54,3 +54,5 @@ tfin_fixedstep
 tfin_camcap
 # пропуск ролика — прыжок держит любой из двух игроков (docs/29_full_audit.md, 2.4)
 tfin_skipany
+# детские настройки — в прологе и во всех мирах 1–5 (docs/29_full_audit.md, 2.1)
+tfin_kidsw
