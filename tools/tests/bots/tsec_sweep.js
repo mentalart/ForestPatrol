@@ -179,18 +179,20 @@ S.sweep=(solo,from,to)=>S.IDS.slice(from,to).map(id=>S.lineOf(S.run(id,solo))).j
 // большой кадр. Игра сама режет dt до 0,05 (frame(): Math.min(0.05, …)), поэтому: dt=0,05 — худший достижимый кадр, красное здесь — настоящий баг;
 // dt=0,5 — стресс (недостижим в игре): сквозь тонкую стену/«за картой» — только предупреждение (WARN), красное — NaN/Infinity и исключения.
 // Стена «пролетена»: отрезок пути героя за кадр проходит сквозь коробку (расстояние до неё < радиуса героя − 0,2 м), а оба конца — снаружи; «врос» — конец кадра глубже 0,2 м внутри
-// (толчок врага у стены оставляет сантиметры — не считается). Кадры с роликом не считаются: пропуск ролика расставляет героев по сценарию.
+// (толчок врага у стены оставляет сантиметры — не считается). Не считаются: кадры с роликом (пропуск расставляет героев по сценарию), перемещения быстрее физики (вытащило из болота, телепорт),
+// коробки, которые за кадр появились или сдвинулись (ворота, платформы).
 (()=>{const STEP=0.36;
   S.dRect=(x,z,b)=>{const cx=Math.min(Math.max(x,b.minx),b.maxx),cz=Math.min(Math.max(z,b.minz),b.maxz);return Math.hypot(x-cx,z-cz);};
   S.big=(id,dt,frames)=>{const r={id,dt,tunnel:[],emb:[],oob:[],nan:[],err:[]};const e0=__errs.length;
     try{ZC.setSolo(false);ZC.startFrom(ZC.LV(id));ZC.G.manual=true;ZC.tick(20);S.drain();ZC.tick(10);const W=ZC.W,E=S.ext();
       for(let ph=0;ph<5;ph++){S.keysDown(false,ph);
-        for(let i=0;i<frames;i++){const hs=ZC.players.map(p=>p.heroes[p.act]),p0=hs.map(h=>({x:h.pos.x,y:h.pos.y,z:h.pos.z})),f0=ZC.G.stats.falls,c0=!!ZC.G.cine;
+        for(let i=0;i<frames;i++){const hs=ZC.players.map(p=>p.heroes[p.act]),p0=hs.map(h=>({x:h.pos.x,y:h.pos.y,z:h.pos.z})),f0=ZC.G.stats.falls,c0=!!ZC.G.cine,sig=bx=>bx.on+','+bx.minx+','+bx.maxx+','+bx.minz+','+bx.maxz+','+bx.miny+','+bx.maxy,sg=new Map(W.boxes.map(bx=>[bx,sig(bx)]));
           ZC.step(dt);const c1=!!ZC.G.cine;if(c1)ZC.skip();const scripted=c0||c1;   // ролик (и его пропуск) переставляет героев сам — кадр не считаем
           hs.forEach((h,k)=>{const a=p0[k],b=h.pos;if(!S.f(b.x)||!S.f(b.y)||!S.f(b.z)){if(r.nan.length<2)r.nan.push(h.kind+'='+S.fmt(b));return;}
-            const tele=scripted||ZC.G.stats.falls!==f0||Math.hypot(b.x-a.x,b.z-a.z)>14||Math.abs(b.y-a.y)>8;if(tele)return;
+            const tele=scripted||ZC.G.stats.falls!==f0||Math.hypot(b.x-a.x,b.z-a.z)>14*dt+0.5||Math.abs(b.y-a.y)>8;if(tele)return;   // быстрее физики (болото вытащило, телепорт сценария) — не коллизия
             const rad=Math.max(0.1,h.d.radius-0.2),y0=Math.min(a.y,b.y),y1=Math.max(a.y,b.y),len=Math.hypot(b.x-a.x,b.z-a.z),n=Math.max(1,Math.ceil(len/0.1));
             for(const bx of W.boxes){if(!bx.on||bx.maxy<=y0+STEP||bx.miny>=y1+1.0)continue;
+              if(sg.get(bx)!==sig(bx))continue;   // коробка за кадр появилась или сдвинулась (ворота, платформа) — врастание не от героя
               if(S.dRect(a.x,a.z,bx)<rad)continue;   // и до кадра уже внутри — это не кадр виноват
               const dEnd=S.dRect(b.x,b.z,bx);let deep=dEnd<rad;
               if(!deep)for(let q=1;q<n&&!deep;q++){const t=q/n;deep=S.dRect(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t,bx)<rad;}
