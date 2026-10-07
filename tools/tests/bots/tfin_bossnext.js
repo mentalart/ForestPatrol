@@ -1,5 +1,6 @@
 //@@
 // релиз final06: Ctrl+Alt+B — следующая стадия босса (late_95_dev.js, W.bossNext) у всех боссов: 1-Б, 2-Б, 3-Б, 4-Б, 5-Б1, 5-Б2.
+// 5-Б2: следующая из двенадцати глав — откуда ни нажми (пролог-погоня, посреди стадии, в ролике после стадии), последняя стадия засчитывается.
 // Ролики пропускаются; после каждого нажатия ждём, пока уровень сам перейдёт, и сверяем фазу.
 window._errs=[];window.addEventListener('error',e=>_errs.push(String(e.message)));
 window.HK=()=>window.dispatchEvent(new KeyboardEvent('keydown',{code:'KeyB',key:'b',ctrlKey:true,altKey:true,bubbles:true,cancelable:true}));
@@ -21,3 +22,14 @@ STEPS('5-B1',()=>FL().stage==='fight'&&!ZC.G.cine,[['золото',()=>FL().phas
 //@@
 {ZC.FIN.k5e.goStage(1);ZC.G.manual=true;ZC.tick(20);const E=ZC.FIN.k5e;if(!WAIT(()=>E.cur===1&&!ZC.G.cine&&ZC.FIN.k5&&ZC.FIN.k5.fight))throw new Error('5-B2: стадия 1 не началась');
   HK();if(!WAIT(()=>E.done[1]))throw new Error('5-B2: стадия 1 не засчитана');if(!WAIT(()=>E.cur===2&&!ZC.G.cine,60*90))throw new Error('5-B2: нет перехода к стадии 2, cur='+E.cur);'5-B2: стадия 1 → 2'+(_errs.length?' | ОШИБКИ '+_errs.slice(0,2):'')}
+//@@
+// 5-Б2: из пролога (погоня на Горыныче) — к главе 1; посреди стадии — к следующей; в ролике после засчитанной стадии — тоже к следующей; так по всем двенадцати
+{const E=ZC.FIN.k5e,GO_=n=>{E.goStage(n);ZC.G.manual=true;ZC.tick(20);};
+  const READY=n=>WAIT(()=>E.cur===n&&!ZC.G.cine&&!ZC.G.trans,60*120);
+  GO_(0);if(!(E.cur===0))throw new Error('5-B2: пролог не начался: cur='+E.cur);HK();if(!READY(1))throw new Error('5-B2: из пролога нет перехода к главе 1, cur='+E.cur);
+  const log=['пролог → 1'];
+  GO_(3);if(!READY(3))throw new Error('5-B2: стадия 3 не началась');
+  E.won(3);ZC.tick(120);if(!ZC.G.cine&&E.cur===3){/* ролика ещё нет — не страшно: нажмём и так */}
+  for(let n=3;n<12;n++){HK();if(!READY(n+1))throw new Error('5-B2: после Ctrl+Alt+B на стадии '+n+' нет главы '+(n+1)+', cur='+E.cur+' cine='+!!ZC.G.cine);log.push(n+' → '+(n+1));}
+  HK();if(!WAIT(()=>E.done[12],60*30))throw new Error('5-B2: двенадцатая стадия не засчитана');log.push('12 → конец битвы');
+  log.join(', ')+(_errs.length?' | ОШИБКИ '+_errs.slice(0,2):'')}

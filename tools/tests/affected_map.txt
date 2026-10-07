@@ -128,6 +128,8 @@ zlataya_cep/build/levels/5-B2/late_93_koschei_level_p4_skaz.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p3_wind.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p2_storm.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_94_koschei_reset.js @level:5-B2
+zlataya_cep/build/levels/5-B2/late_93_koschei_level_ph_prologue.js @level:5-B2 tk5e_prolog tk5e_runner tk5e_lesson tk5e_lesson2 tk5e_solo tk5e_flow
+zlataya_cep/build/levels/5-B2/late_93_koschei_level_p6_epic.js @level:5-B2 tfin_bossnext tk5e_prolog tk5e_flow tk5e_smoke
 zlataya_cep/build/levels/p/late_96_prolog_scooter.js @level:p
 zlataya_cep/build/levels/p/late_96b_prolog_night.js @level:p
 zlataya_cep/build/levels/5-1/late_97_buyan51.js @level:5-1
