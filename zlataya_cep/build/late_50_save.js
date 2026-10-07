@@ -1,7 +1,9 @@
 /* ============================== РЕЛИЗ · СОХРАНЕНИЯ И НАСТРОЙКИ ============================== */
 const SAVE_KEY='zlatayaCep.save.v1',SET_KEY='zlatayaCep.settings.v1';
 const SAVE_FIELDS=['stats','playTime','links','flags','done','got','nutsGot','forgedLinks','forgedW','zbest','gems','gemsSpent','nutsSpent','nutsHub','trips','garden','hen','owned','secrets','tales','medals'];
-FIN.readSave=()=>{try{return JSON.parse(localStorage.getItem(SAVE_KEY)||'null');}catch(e){return null;}};
+FIN.plain=v=>!!v&&typeof v==='object'&&!Array.isArray(v);
+// повреждённое сохранение (не объект, нет G) — как отсутствующее: иначе «Главы» и «Продолжить» падают
+FIN.readSave=()=>{try{const d=JSON.parse(localStorage.getItem(SAVE_KEY)||'null');return FIN.plain(d)&&FIN.plain(d.G)?d:null;}catch(e){return null;}};
 // автосохранение: после каждого пройденного уровня, в Лукоморье — раз в полминуты и при выходе в меню
 FIN.saveGame=function(){if(!G.hub)return false;try{const d={v:1,ver:FIN.ver,t:Date.now(),paths:players.map(p=>p.path),solo:!!G.solo,co:!!(FIN.co&&FIN.co.on),G:{}};
   SAVE_FIELDS.forEach(k=>{if(G[k]!==undefined&&G[k]!==null)d.G[k]=JSON.parse(JSON.stringify(G[k]));});localStorage.setItem(SAVE_KEY,JSON.stringify(d));
@@ -16,7 +18,11 @@ FIN.saveSummary=d=>{if(!d)return '';const g=d.G||{};const done=Object.keys(g.don
 // продолжить: вернуть всё сохранённое и выйти на Лукоморье (или сразу в выбранную главу)
 FIN.resetState=function(){for(const k in G.stats)G.stats[k]=0;G.playTime=0;G.links=0;G.flags={};G.done={};G.got={};G.nutsGot={};G.forgedLinks=0;G.forgedW={1:0,2:0,3:0,4:0,5:0};G.zbest={};G.gems={};G.gemsSpent=0;G.nutsSpent=0;G.nutsHub=0;G.trips=0;
   G.garden=null;G.hen=null;G.owned={};G.secrets={};G.tales={};document.body.classList.remove('photo');players.forEach(p=>{p.enc={};p.shieldTaught=false;p.closedTaught=false;p.staggerSeen=0;p.blue=0;p.act=0;});};
-FIN.applySave=function(d){FIN.resetState();if(!d)return;for(const k of SAVE_FIELDS){if(d.G[k]!==undefined)G[k]=JSON.parse(JSON.stringify(d.G[k]));}
+FIN.applySave=function(d){FIN.resetState();if(!d||!FIN.plain(d.G))return;
+  // поле берём, только если его тип совпал с исходным (после resetState): null, строка вместо объекта и т.п. из повреждённого сохранения пропускаются
+  for(const k of SAVE_FIELDS){const v=d.G[k],cur=G[k];if(v===undefined||v===null)continue;
+    if(cur!=null?(typeof v!==typeof cur||Array.isArray(v)!==Array.isArray(cur)):typeof v!=='object')continue;
+    G[k]=JSON.parse(JSON.stringify(v));}
   G.hub=true;if(d.paths)players.forEach((p,i)=>{if(d.paths[i])p.path=d.paths[i];});if(typeof d.solo==='boolean'&&d.solo!==G.solo)setSolo(d.solo);if(FIN.co&&!d.solo&&typeof d.co==='boolean')FIN.co.set(d.co);};
 FIN.continueGame=function(lv){const d=FIN.readSave();if(!d)return;FIN.applySave(d);loadLevel(lv===undefined?LV('luko'):lv);hideMenu();};
 // какие главы открыты: пройденные, Лукоморье и следующая по порядку

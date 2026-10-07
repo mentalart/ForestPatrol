@@ -20,6 +20,10 @@ on:
         type: boolean
         default: true
 
+# код PR исполняется в этих задачах: токену хватает чтения (артефакты и кеш идут через свой токен запуска)
+permissions:
+  contents: read
+
 concurrency:
   group: bots-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true

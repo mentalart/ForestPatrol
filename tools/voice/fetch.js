@@ -29,8 +29,10 @@ const TRIM='silenceremove=start_periods=1:start_threshold=-42dB:start_silence=0.
 const FORCE=process.argv.includes('--force');let done=0;
 for(const e of D.lines){if(ONLY.length&&!ONLY.includes(e.id))continue;if(!e.url){continue;}
   if(!FORCE&&!ONLY.length&&e.dur&&fs.existsSync(path.join(VD,e.id+'.mp3')))continue;   // готовые не переделываем (--force — все)
+  if(!/^[\w-]+$/.test(String(e.id)))throw new Error('недопустимый id в lines.json: '+e.id);   // id идёт в имена файлов: без ../ и разделителей
   const ext=(e.url.match(/\.(mp3|wav|ogg|m4a)(\?|$)/)||[,'mp3'])[1],raw=path.join(RAW,e.id+'.'+ext);
-  if(!fs.existsSync(raw)){execFileSync('curl',['-sSfL','-m','60','-o',raw,e.url]);}
+  // только https (и после перенаправлений): url из lines.json не должен читать локальные файлы (file://) и не может стать опцией curl (--)
+  if(!fs.existsSync(raw)){execFileSync('curl',['-sSfL','--proto','=https','--proto-redir','=https','-m','60','-o',raw,'--',e.url]);}
   const who=e.voice||e.who,c=D.cast[who]||{},p=+c.pitch||0,r=Math.pow(2,p/12);
   // 1) обрезка и сдвиг тона — во временный wav, чтобы узнать длину
   const tmp=path.join(RAW,e.id+'.tmp.wav');
