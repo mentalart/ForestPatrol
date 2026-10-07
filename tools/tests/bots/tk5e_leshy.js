@@ -1,8 +1,8 @@
 //@@
 // @timeout=600
-// Битва с Кощеем (сборка --k5epic), стадия 2 «Там леший бродит»: как победить — подсказки в мире. Пока Леший в цепи, над ближним
-// героем «к Лешему»; встал в зелёный круг — «жди молнию», и Кощей бьёт молнией в него (не позже чем через 3 с); красный круг —
-// «уходи», ушёл — молния рвёт застёжку; две застёжки — Леший свободен. Замах Кощея по герою — кнопка щита над ним.
+// Битва с Кощеем (сборка --k5epic), стадия 2 «Там леший бродит»: правила показывает обучающая катсцена, в бою подсказок нет. Пока Леший
+// в цепи, кто встал в зелёный круг у него — в того Кощей бьёт молнией (не позже чем через 3 с); красный круг — кувырок, молния рвёт
+// застёжку; две застёжки — Леший свободен. Замах Кощея по герою — над героем нет ни кнопки, ни слов.
 window._errs=[];window.addEventListener('error',e=>_errs.push(String(e.message)));{const _ce=console.error;console.error=function(){_errs.push([...arguments].map(String).join(' ').slice(0,300));_ce.apply(console,arguments);};}
 {const o=document.getElementById('k5eStart');if(o)o.remove();}
 window.E5=ZC.FIN.k5e;window.K5=ZC.FIN.k5;
@@ -27,6 +27,6 @@ const L=E5.fr.leshy.m.g.position,A=HERO0();const away=()=>{for(let i=0;i<20;i++)
 for(let k=0;k<3&&!E5.free.leshy;k++){let t=0;for(;t<60*6;t++){PUT(A,L.x+1.2,L.z+0.6);if((K5.zones||[]).some(z=>Math.hypot(z.position.x-A.pos.x,z.position.z-A.pos.z)<1.8))break;ZC.tick(1);}R.push('молния через '+(t/60).toFixed(1)+' с');away();}
 R.push('Леший свободен='+!!E5.free.leshy);if(!E5.free.leshy)throw new Error(R.join(' | '));CHK(R.join(' | '))
 //@@
-// Леший свободен: замах Кощея по герою — над ним кнопка щита (или кувырка на красный) со значком, без слов
-const KB=ZC.W.dbg5e().KB;let seen='';for(let i=0;i<60*25&&!seen;i++){if(KB.state==='wind'){const v=ZC.W.prompts.filter(p=>{try{return p.cond()&&(p.action==='guard'||p.action==='roll');}catch(e){return false;}}).map(p=>p.action+(/<svg/.test(typeof p.note==='function'?p.note():p.note||'')?'+значок':''));if(v.length)seen=v.join(' / ');}ZC.tick(1);}
-if(!seen)throw new Error('нет подсказки на замах Кощея');CHK('замах: '+seen)
+// Леший свободен: Кощей замахивается по герою (щит в последний миг / кувырок) — а подсказок над героем нет: кнопки скрыты, слов нет
+const KB=ZC.W.dbg5e().KB;let seen=false,bub=0;for(let i=0;i<60*25&&!seen;i++){if(KB.state==='wind'){seen=true;ZC.sim(1/60);for(const b of document.querySelectorAll('#bubs .bub'))if(b.style.display!=='none')bub++;}ZC.tick(1);}
+if(!seen)throw new Error('Кощей не замахнулся за 25 с');if(bub)throw new Error('над героем есть подсказка: '+bub);CHK('замах без подсказок')

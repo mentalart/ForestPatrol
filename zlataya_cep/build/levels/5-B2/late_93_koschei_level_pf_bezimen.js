@@ -120,7 +120,9 @@
     if(_pc)_pc(pi,h);};}
   /* ---------- обучающая катсцена стадии 11: вычеркнутые имена, стена и трещина, приёмы сказок и замершие друзья, «все сказки разом» ---------- */
   E.LES[11]=L=>{const po=T.potap,pr=T.proshka,pe=T.pelageya,yo=T.yosha,H=(x,z)=>[x,0.9,z],kc=()=>KS.g.position.clone().add(new V3(0,2.4,0)),pips=L.pips(6);pips.g.visible=false;
-    L.on(()=>{inkWorld(false);WALL.visible=false;WALL.scale.y=1;WALL.userData.m.material.opacity=0.92;wallBox.on=false;crack.visible=false;satur(1);for(const o of L.props)k5Del(o);nameSp.forEach(N=>{N.sp.visible=false;});memRings.forEach(r=>{r.visible=false;});});
+    // вернуть мир таким, каким его оставило начало стадии (wallUp): стена, имена в воздухе, замершие друзья за туманом
+    L.on(()=>{inkWorld(true);WALL.visible=true;WALL.scale.y=1;WALL.userData.m.material.opacity=0.92;wallBox.on=true;crack.visible=false;satur(0.25);memRings.forEach(r=>{r.visible=false;});
+      MEM.forEach((M0,i)=>{const m=memMods[i];if(m&&m.g){m.g.visible=true;m.g.position.copy(M0.p);m.g.rotation.y=Math.atan2(C.x-M0.p.x,C.z-M0.p.z);}fog[i].visible=true;fog[i].position.copy(M0.p).add(new V3(0,1.6,0));});for(const o of L.props)k5Del(o);});
     L.put(po,-5,-10);L.put(pr,-6.4,-10.6);L.put(pe,5,-10);L.put(yo,6.4,-10.6);KS.g.visible=true;KS.g.position.set(C.x,0,C.z-12);KS.g.rotation.y=0;
     L.beat(7,{cam:[[0,11,4],[0,2.4,-13],[0,9.5,2],[0,2.4,-13]],need:[H(-5,-10),H(5,-10),[0,2.4,-13]],says:[['zven','Кощей вычёркивает имена — мир блёкнет,',0.2,3.0],['zven','а друзья замирают, как будто забыты.',3.4,3.0]],
       ev:[[0,()=>{inkWorld(true);satur(0.3);nameSp.forEach(N=>{N.sp.visible=true;N.draw(false);});const fx=k5fx(60,(k,dt)=>{nameSp.forEach(N=>{N.a+=dt*N.sp0;N.sp.position.set(C.x+Math.cos(N.a)*N.r,N.y+Math.sin(G.time+N.a)*0.3,C.z+Math.sin(N.a)*N.r*0.8);});sheets.forEach(S0=>{S0.a+=dt*S0.w;S0.m.position.set(C.x+Math.cos(S0.a)*S0.r,S0.y+Math.sin(G.time*1.3+S0.ph)*0.6,C.z+Math.sin(S0.a)*S0.r*0.8);S0.m.rotation.set(Math.sin(G.time*2+S0.ph),S0.a*2,Math.cos(G.time*1.7+S0.ph)*0.6);});},()=>{});L.on(()=>{fx.t=fx.dur;});}],[1.0,()=>L.pose('cast',{antic:0.3})],[1.6,()=>k5s('cast')]]});
