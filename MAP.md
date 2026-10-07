@@ -77,9 +77,9 @@
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
 | `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 13 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_kids1 tfin_kidsw tfin_leak tfin_luko th… |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_99n_yaga11 | 33 | t11 tfin_art tfin_cam tfin_camcap tfin_companion tfin_dev tfin_fixedstep tfin_foecast tfi… |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_99n_yaga11 | 34 | t11 tfin_art tfin_cam tfin_camcap tfin_companion tfin_dev tfin_fixedstep tfin_foecast tfi… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1 | 1 | tsospot |
-| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 1 | tfin_kids1 |
+| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 2 | tfin_kids1 tfin_rhythmcal |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14 | 1 | tfin_kidnap14 |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_75_kids_w1 | 1 | thub2 |
 | `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14 | 2 | tfin_post tsospot |
@@ -91,7 +91,7 @@
 | `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase | 7 | t2c tfin_k2b tfin_k2bboss tfin_k2bbosssolo tfin_k2bmill tfin_k2bsolo thw2 |
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_99p_sky31 | 14 | t31 t31c tfin_art tfin_juice tfin_motylek tfin_sky31 tfin_sky31boss tfin_sky31bosssolo tf… |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32, late_99x_sky32_tut, late_99y_sky32_cine | 8 | t32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32cine tfin_sky32floor tfin_sky3… |
-| `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 2 | t33n tso33 |
+| `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 3 | t33n tfin_rhythmcal tso33 |
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | — | 2 | t34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | — | 1 | t35 |
 | `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 6 | t3bv tfin_k3b tfin_k3bboss tfin_k3bbosssolo tfin_k3bsolo thw3b |
@@ -104,7 +104,7 @@
 | `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51 | 3 | t51 tfoes tso51 |
 | `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | — | 1 | t52 |
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 1 | t53 |
-| `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | — | 2 | t54 tso54 |
+| `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | — | 3 | t54 tfin_rhythmcal tso54 |
 | `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | — | 1 | t5b1 |
 | `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_94_koschei_tut | 2 | t5b2 tlukoepi |
 | `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start | 4 | tepi tfin_episolo tfin_epitheatre tfin_kids1 |
@@ -119,7 +119,7 @@
 | часть | строк | разделы |
 |---|---|---|
 | `head.html` | 442 | — |
-| `engine/01_utils_input_sound.js` | 122 | УТИЛИТЫ · ВВОД · ДЖОЙСТИКИ (Gamepad API, стандартная раскладка, раскладка v4) · ЗВУК (placeholder) |
+| `engine/01_utils_input_sound.js` | 125 | УТИЛИТЫ · ВВОД · ДЖОЙСТИКИ (Gamepad API, стандартная раскладка, раскладка v4) · ЗВУК (placeholder) |
 | `engine/02_render_heroes.js` | 252 | РЕНДЕР / СЦЕНА · ГЕРОИ (осмысленные примитивы, умения по сценарию v4) |
 | `engine/03_world_fx_collision.js` | 234 | МИР · FX · ПОЛУПРОЗРАЧНОСТЬ ТОГО, ЧТО ЗАСЛОНЯЕТ ГЕРОЕВ · КОЛЛИЗИИ |
 | `engine/04_physics_actions.js` | 162 | ФИЗИКА ГЕРОЯ · ДЕЙСТВИЯ ИГРОКОВ |
@@ -216,6 +216,7 @@
 | `late_73_companion.js` | — | РЕЛИЗ final06 · НАПАРНИК: БОТ ЗА ИГРОКА 2 |
 | `late_74_kids_start.js` | epi, luko | РЕЛИЗ · ДЕТИ 7–11 · СТАРТ, УДОБСТВО, СОХРАННОСТЬ (пролог и миры 1–5) |
 | `late_75_kids_w1.js` | 1-1, 1-2, 1-3, 1-4, 1-5, 1-B, p | РЕЛИЗ · ДЕТИ 7–11 · ПРАВКИ УРОВНЕЙ (пролог и миры 1–5) |
+| `late_77_rcal.js` | — | РЕЛИЗ · КАЛИБРОВКА РИТМА |
 | `late_78_next.js` | — | РЕЛИЗ · КНОПКА «ДАЛЬШЕ» ПОСЛЕ УРОВНЯ |
 | `late_79_hints.js` | — | РЕЛИЗ final06 · ПОДСКАЗКИ: ОДНА КАРТОЧКА НА ИГРОКА, БЕЗ ПОВТОРОВ |
 | `late_79b_readaloud.js` | — | РЕЛИЗ · ДЕТИ 7–11 · ЗАДАЧИ ВСЛУХ (пролог и миры 1–5) |
@@ -382,5 +383,5 @@
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 183 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 184 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

@@ -1194,3 +1194,21 @@ for(const p of [WebGL2RenderingContext.prototype,WebGLRenderingContext.prototype
 - Раскрытие ИИ-контента на Steam: [AI Game Assets in 2026: Copyright, Steam Disclosure, and Platform Compliance](https://blog.promise.legal/ai-game-assets-copyright-steam-disclosure-2026/); [Steam updates AI disclosure policy](https://tbreak.com/steam-ai-disclosure-policy-update-developers/); [Valve announces changes to AI content policies](https://checkpointgaming.net/news/2024/01/valve-announces-changes-to-ai-content-policies-on-steam/).
 - Коммерческое использование ElevenLabs и ограничения голосов из Voice Library: [The Future of Speech Synthesis for Game Developers](https://elevenlabs.io/sv/blog/the-future-of-speech-synthesis-for-game-developers); [AI Voice Acting for Games: Tools, Costs, and the Rules (2026)](https://app.cinevva.com/guides/ai-voice-acting-games); [elevenlabs free commercial use](https://oakgen.ai/blog/elevenlabs-free-commercial-use). Условия конкретной платформы (Higgsfield) — не проверены.
 - Требования Яндекс Игр: [Требования к игре](https://yandex.ru/dev/games/doc/ru/concepts/requirements) — страница не открылась из этой среды; из результатов поиска: SDK обязателен, при сворачивании звук останавливается, модерация 3–5 рабочих дней.
+
+## Приложение Г. Что из аудита уже сделано
+
+Первая партия правок по этому аудиту (ветка `claude/wonderful-hawking-fp0evc`, 7 октября); каждая — отдельным коммитом с ботом в `tools/tests/bots/` и строкой в `regress_list_final.txt`; подробности — файл журнала `docs/changes/2026-10-07_0837_pravki_po_auditu_pamyat_vvod_fizika_kame.md`.
+
+| Пункт | Что сделано | Бот |
+|---|---|---|
+| 10.1 · утечка памяти | `disposeTree()` в `newWorld()` и `buildHorizon`: геометрии, текстуры, инстансы ушедшего уровня освобождаются; на цикле из 4 уровней ×5 геометрий 3001 → 441 и дальше не растут | `tfin_leak` |
+| 10.5 · бюджет отрисовок | ночная работа CI `budget-hq` гонит `tfin_budget` в высоком качестве | `tfin_budget` (hq) |
+| 7.1 · буфер ввода | прыжок за 0,12 с до приземления и удар за 0,15 с до конца предыдущего срабатывают | `tfin_inbuf` |
+| 7.3 · шаг физики | фиксированный шаг 1/60 с (`advance()`): высота прыжка одинакова на 20/30/60/144 fps | `tfin_fixedstep` |
+| 7.4 · камера на разлёт | в драке общий экран отъезжает не дальше разлёта 9 м, с 16 м делится | `tfin_camcap` |
+| 2.4 · пропуск ролика | прыжок держит любой из двух игроков | `tfin_skipany` |
+| 2.1 · детские настройки | включены в прологе и во всех мирах 1–5 | `tfin_kidsw` |
+| 3.5 · «Дальше» | карточка после уровня: следующий уровень или Лукоморье (не перед боссом, не после 5-3 и 2-3) | `tfin_next` |
+| 3.7 · калибровка ритма | экран «Хлопни в такт», поправка в мс вычитается из времени нажатия в 1-3, 3-3, 4-3, 3-B, 5-4 | `tfin_rhythmcal` |
+
+Не сделано из этой партии: измерение доли «в долю» на Bluetooth и проводных наушниках (3.7, «Измерить») — нужны живые игроки; проверка на слабом железе (10.5) — нужна реальная машина.

@@ -124,17 +124,17 @@ function build33(){
     hh.guard=btn(pi,'guard');
     // протяжная нота: держишь прыжок — паришь до конца ленты
     const H=S.hold[pi];if(H){if((btn(pi,'jump')||AUTO(pi))&&S.t<H.end+0.1){if(hh.vel.y<-0.6)hh.vel.y=-0.6;if(hh.pos.y<0.9&&hh.vel.y<1)hh.vel.y=2.2;}
-      else{const d=S.t-H.end;S.hold[pi]=null;if(Math.abs(d)<0.28||S.t>=H.end){S.holds++;floatText(hh.pos.clone().add(new V3(0,hh.d.height+0.8,0)),'Протянул!','#ffe36b');tone(1320,0.3,'sine',0.14,1760);combo(pi,true);}
+      else{const d=rT(S.t)-H.end;S.hold[pi]=null;if(Math.abs(d)<0.28||S.t>=H.end){S.holds++;floatText(hh.pos.clone().add(new V3(0,hh.d.height+0.8,0)),'Протянул!','#ffe36b');tone(1320,0.3,'sine',0.14,1760);combo(pi,true);}
         else floatText(hh.pos.clone().add(new V3(0,hh.d.height+0.8,0)),'отпустил рано','#dddddd');}}
-    if(tap(pi,'jump')&&(hh.grounded||hh.coyote>0)){hh.vel.y=6.4;hh.grounded=false;hh.coyote=0;SFX.jump();if(!free){const k=nearK(S.t,pi,need);if(k>=0&&Math.abs(S.t-bt[k])<beatB(Math.max(0,k-1))*0.5){const d=S.t-bt[k];hit(pi,k,Math.abs(d)<=winOf(pi),d);}}}
-    if(tap(pi,'guard')&&!free){const k=nearK(S.t,pi,needG);if(k>=0&&Math.abs(S.t-bt[k])<beatB(Math.max(0,k-1))*0.5){const d=S.t-bt[k];hitG(pi,k,Math.abs(d)<=winOf(pi)*1.2,d);}}};
+    if(tap(pi,'jump')&&(hh.grounded||hh.coyote>0)){hh.vel.y=6.4;hh.grounded=false;hh.coyote=0;SFX.jump();if(!free){const k=nearK(rT(S.t),pi,need);if(k>=0&&Math.abs(rT(S.t)-bt[k])<beatB(Math.max(0,k-1))*0.5){const d=rT(S.t)-bt[k];hit(pi,k,Math.abs(d)<=winOf(pi),d);}}}
+    if(tap(pi,'guard')&&!free){const k=nearK(rT(S.t),pi,needG);if(k>=0&&Math.abs(rT(S.t)-bt[k])<beatB(Math.max(0,k-1))*0.5){const d=rT(S.t)-bt[k];hitG(pi,k,Math.abs(d)<=winOf(pi)*1.2,d);}}};
   W.updates.push(dt=>{
     if(S.state==='play'&&!G.cine){S.t+=dt;while(S.state==='play'&&S.lastK+1<=NB&&S.t>=(S.lastK+1<0?(S.lastK+1)*B0:bt[S.lastK+1])-1e-6){S.lastK++;onBeat(S.lastK);}
       for(const pi of[0,1])for(let k=Math.max(0,S.lastK-2);k<=S.lastK&&k<NB;k++){
         if(AUTO(pi)&&need(pi,k)&&!S.judged[pi][k]&&S.t>=bt[k]&&!(pi===0&&typ(k)==='solo')){const ah=active(pi);if(ah.grounded){ah.vel.y=6.4;ah.grounded=false;}hit(pi,k,true,0);}
         if(AUTO(pi)&&needG(pi,k)&&!S.jg[pi][k]&&S.t>=bt[k]){active(pi).atkT=0.2;hitG(pi,k,true,0);}
-        if(need(pi,k)&&!S.judged[pi][k]&&S.t>bt[k]+winOf(pi)+0.06&&!(pi===0&&typ(k)==='solo'))hit(pi,k,false);
-        if(needG(pi,k)&&!S.jg[pi][k]&&S.t>bt[k]+winOf(pi)*1.2+0.06)hitG(pi,k,false);}}
+        if(need(pi,k)&&!S.judged[pi][k]&&rT(S.t)>bt[k]+winOf(pi)+0.06&&!(pi===0&&typ(k)==='solo'))hit(pi,k,false);
+        if(needG(pi,k)&&!S.jg[pi][k]&&rT(S.t)>bt[k]+winOf(pi)*1.2+0.06)hitG(pi,k,false);}}
     S.pulse=Math.max(0,S.pulse-dt*4);
     let fl=0;if(S.state==='play'&&S.t>-0.2){const k=Math.max(0,S.lastK);const d=Math.min(Math.abs(S.t-bt[k]),Math.abs(bt[Math.min(NB,k+1)]-S.t));fl=Math.max(0,1-d/0.16);}
     for(const pi of[0,1]){const h=active(pi);h.lit=fl>0.05;}

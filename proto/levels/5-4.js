@@ -92,9 +92,9 @@ function build54(){
     const hh=active(pi),oo=other(pi);const want=zAt(S.t);hh.vel.z=-SPEED+(want-hh.pos.z)*5;hh.vel.x=(LANE[pi]-hh.pos.x)*8;hh.face=Math.PI;
     {const tx=LANE[pi]+(pi?0.8:-0.8),tz=hh.pos.z+1.8;oo.vel.x=(tx-oo.pos.x)*6;oo.vel.z=(tz-oo.pos.z)*6;oo.face=Math.PI;}
     hh.guard=btn(pi,'guard');
-    const k=nearK(S.t);const inWin=k>=0&&Math.abs(S.t-bt[k])<beatB(Math.max(0,k-1))*0.5&&!S.judged[pi][k];
-    if(tap(pi,'jump')&&(hh.grounded||hh.coyote>0)){hh.vel.y=6.4;hh.grounded=false;hh.coyote=0;SFX.jump();if(inWin){const d=S.t-bt[k];judge(pi,k,act(pi,k)==='jump'&&Math.abs(d)<=winOf(pi),d,'jump');}}
-    if(tap(pi,'guard')&&inWin&&act(pi,k)==='guard'){const d=S.t-bt[k];judge(pi,k,Math.abs(d)<=winOf(pi)+0.03,d,'guard');}
+    const k=nearK(rT(S.t));const inWin=k>=0&&Math.abs(rT(S.t)-bt[k])<beatB(Math.max(0,k-1))*0.5&&!S.judged[pi][k];
+    if(tap(pi,'jump')&&(hh.grounded||hh.coyote>0)){hh.vel.y=6.4;hh.grounded=false;hh.coyote=0;SFX.jump();if(inWin){const d=rT(S.t)-bt[k];judge(pi,k,act(pi,k)==='jump'&&Math.abs(d)<=winOf(pi),d,'jump');}}
+    if(tap(pi,'guard')&&inWin&&act(pi,k)==='guard'){const d=rT(S.t)-bt[k];judge(pi,k,Math.abs(d)<=winOf(pi)+0.03,d,'guard');}
     if(tap(pi,'skill')&&pi===1&&F.cageOn&&!F.freed){if(hh.kind!=='yosha'){tip(1,'Нитки Йоша режет. Смени на него '+K(1,'swap')+' и из ковшика полей '+K(1,'skill')+'.',2);}else if(Math.abs(hh.pos.z-cageZ)<7){freeZven();}else tip(1,'Ближе к клетке подойди — она справа, на ленте.',1.6);}};
   function freeZven(){F.freed=true;F.cageOn=false;const Y=T.yosha;ladle(Y);SFX.water();burst(cage.position.clone().add(new V3(0,1,0)),0xa0e8ff,20,4);anim(0.6,k=>{cage.scale.set(1+k,1-k*0.9,1+k);});later(0.6,()=>{cage.visible=false;});
     zv.link.material.emissiveIntensity=0.9;zv.light.intensity=1.1;zv.g.scale.setScalar(1);zv.mode='script';anim(0.6,k=>{zv.pos.y=0.9+k*2.4;});later(0.3,()=>{SFX.dzin?SFX.dzin():SFX.bell();say('zven','Дзинь! Успели, успели!',2.6,true);banner('Звенышко свободно!','#ffd76a',2.4,'подсказки снова его голосом звучат');giveLink(cage.position.clone().add(new V3(0,1.5,0)),Y,1.5,1);});
@@ -102,7 +102,7 @@ function build54(){
   W.updates.push(dt=>{
     if(S.state==='play'&&!G.cine){S.t+=dt;while(S.state==='play'&&S.lastK+1<=NB&&S.t>=(S.lastK+1<0?(S.lastK+1)*B0:bt[S.lastK+1])-1e-6){S.lastK++;onBeat(S.lastK);}
       for(const pi of[0,1])for(let k=Math.max(0,S.lastK-2);k<=S.lastK&&k<NB;k++){if(AUTO(pi)&&!S.judged[pi][k]&&S.t>=bt[k]){const ah=active(pi),w=act(pi,k);if(w==='jump'&&ah.grounded){ah.vel.y=6.4;ah.grounded=false;}else if(w!=='jump')ah.atkT=0.2;judge(pi,k,true,0,w);}
-        if(!S.judged[pi][k]&&S.t>bt[k]+winOf(pi)+0.08)judge(pi,k,false,undefined,act(pi,k));}}
+        if(!S.judged[pi][k]&&rT(S.t)>bt[k]+winOf(pi)+0.08)judge(pi,k,false,undefined,act(pi,k));}}
     S.pulse=Math.max(0,S.pulse-dt*4);if(pullT>0){pullT-=dt;if(pullT<=0)pullLine.visible=false;}
     // переворот: зал вращается вокруг ленты
     flipA=damp(flipA,flipTo,6,dt);hall.rotation.z=flipA;

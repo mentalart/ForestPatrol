@@ -70,7 +70,7 @@ function build43(){
   const SG={on:false,t:0,C:2.6,k:-1,hit:[false,false],res:false,verse:0,rush:0};
   const LINES=[['Эй, ухнем!','Эй, ухнем!','Ещё разик, ещё да раз!','Эй, ухнем!'],['Разовьём мы берёзу…','Разовьём мы кудряву…','Ай-да, да ай-да!','Эй, ухнем!'],['Мы по бережку идём…','Песню солнышку поём…','Эй, ухнем!','Эй, ухнем!'],['Ай-да, да ай-да, ай-да, да ай-да!','Ещё разик, ещё да раз!','Эй, ухнем!','Эй, ухнем!']];
   function startSong(){SG.on=true;SG.t=-1.2;SG.k=-1;W.song={t:0,B:SG.C/2,show:true,state:'play',pulse:0};}
-  const inWin=()=>{const u=((SG.t%SG.C)+SG.C)%SG.C;return u>=1.0&&u<2.0;};
+  const inWin=()=>{const u=((rT(SG.t)%SG.C)+SG.C)%SG.C;return u>=1.0&&u<2.0;};
   W.skillHook=(pi,h)=>{if(!SG.on||G.cine)return false;const mine=RINGS.filter(r=>r.hero&&r.hero.player===pi);if(!mine.length)return false;
     if(inWin()){if(!SG.hit[pi]){SG.hit[pi]=true;mine.forEach(r=>{r.flash=1;});if(G.solo&&!SG.hit[1-pi]){const ot=RINGS.filter(r=>r.hero&&r.hero.player===1-pi);if(ot.length){SG.hit[1-pi]=true;ot.forEach(r=>{r.flash=1;});}}floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ух-нем!','#ffd76a');h.atkT=0.3;}}
     else{SFX.miss();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Рано — «ух-нем» подожди','#ffd0d0');}return true;};
@@ -79,7 +79,7 @@ function build43(){
     if(u>=1.0&&!SG.w1){SG.w1=true;tone(mf(50),0.35,'triangle',0.18);tone(mf(62),0.25,'sine',0.06);W.song.pulse=1;}
     if(u>=1.5&&!SG.w2){SG.w2=true;tone(mf(50),0.45,'triangle',0.18);W.song.pulse=1;}
     if(u<1.0){SG.w1=false;SG.w2=false;}
-    if(u>=2.0&&!SG.res){SG.res=true;resolvePull();}}
+    if(u>=2.0+(G.rLat||0)&&!SG.res){SG.res=true;resolvePull();}}
   function resolvePull(){let n=0;for(const r of RINGS)if(r.hero&&SG.hit[r.hero.player])n++;
     let mv=[0,0.5,1.0,1.6,3.2][n];if(n===4){SFX.ok();banner('Рывок!','#ffd76a',0.9,'все четверо — «ух-нем», разом!');SG.rush++;if(!F.l1){F.l1=true;const it=linkItem(-1.4,1.3,B.z-15);W.linkTotal--;anim(1,k=>{it.base=B.y+2.6-k*0.4;});}}
     const fire=FIRE.t>0;if(fire)mv*=1.4;

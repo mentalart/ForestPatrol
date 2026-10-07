@@ -58,3 +58,5 @@ tfin_skipany
 tfin_kidsw
 # кнопка «Дальше» после уровня (docs/29_full_audit.md, 3.5)
 tfin_next
+# калибровка ритма: поправка на задержку звука и ввода (docs/29_full_audit.md, 3.7)
+tfin_rhythmcal
