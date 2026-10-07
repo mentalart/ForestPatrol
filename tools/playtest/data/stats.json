@@ -1,0 +1,4690 @@
+{
+ "n": {
+  "respondents": 25,
+  "pairs": 10,
+  "solo": 5,
+  "by_group": {
+   "7-8": 6,
+   "9-10": 5,
+   "11-13": 7,
+   "14+": 7
+  },
+  "by_group_mode": {
+   "7-8": {
+    "pair": 5,
+    "solo": 1
+   },
+   "9-10": {
+    "pair": 4,
+    "solo": 1
+   },
+   "11-13": {
+    "pair": 5,
+    "solo": 2
+   },
+   "14+": {
+    "pair": 6,
+    "solo": 1
+   }
+  }
+ },
+ "members": {
+  "R01": {
+   "id": "R01",
+   "group": "7-8",
+   "mode": "pair",
+   "role": "child",
+   "sid": "P01",
+   "hours": 10.258333333333333,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.0,
+   "hits_lvl": 0.6129032258064516,
+   "stuck_n_lvl": 2.5806451612903225,
+   "stuck_min_lvl": 0.6593574725218022,
+   "asks": 49,
+   "unread_lvl": 0.0,
+   "understood": 0.7342192691029901,
+   "path_final": "easy",
+   "path0": "easy",
+   "switches": 0,
+   "support": true,
+   "F_lvl": 1.0270967741935484,
+   "diff": 2.393870967741935
+  },
+  "R02": {
+   "id": "R02",
+   "group": "14+",
+   "mode": "pair",
+   "role": "parent",
+   "sid": "P01",
+   "hours": 10.258333333333333,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.25806451612903225,
+   "hits_lvl": 1.6774193548387097,
+   "stuck_n_lvl": 2.5806451612903225,
+   "stuck_min_lvl": 0.6593574725218022,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.7342192691029901,
+   "path_final": "easy",
+   "path0": "easy",
+   "switches": 0,
+   "support": true,
+   "F_lvl": 1.1303225806451613,
+   "diff": 2.1109677419354838
+  },
+  "R03": {
+   "id": "R03",
+   "group": "7-8",
+   "mode": "pair",
+   "role": "child",
+   "sid": "P02",
+   "hours": 9.508333333333333,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.2903225806451613,
+   "hits_lvl": 1.3225806451612903,
+   "stuck_n_lvl": 2.3870967741935485,
+   "stuck_min_lvl": 0.6545353782047834,
+   "asks": 50,
+   "unread_lvl": 0.0,
+   "understood": 0.7541528239202658,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 1,
+   "support": true,
+   "F_lvl": 1.022258064516129,
+   "diff": 2.685483870967742
+  },
+  "R04": {
+   "id": "R04",
+   "group": "14+",
+   "mode": "pair",
+   "role": "parent",
+   "sid": "P02",
+   "hours": 9.508333333333333,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.03225806451612903,
+   "hits_lvl": 0.9354838709677419,
+   "stuck_n_lvl": 2.3870967741935485,
+   "stuck_min_lvl": 0.6545353782047834,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.7541528239202658,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 1,
+   "support": true,
+   "F_lvl": 0.919032258064516,
+   "diff": 1.996451612903226
+  },
+  "R05": {
+   "id": "R05",
+   "group": "7-8",
+   "mode": "pair",
+   "role": "child",
+   "sid": "P03",
+   "hours": 10.028333333333334,
+   "levels": 30,
+   "end": false,
+   "quit": "5-B1",
+   "downs_lvl": 0.43333333333333335,
+   "hits_lvl": 2.8333333333333335,
+   "stuck_n_lvl": 2.8666666666666667,
+   "stuck_min_lvl": 1.2134579970741302,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.7133333333333334,
+   "path_final": "easy",
+   "path0": "easy",
+   "switches": 1,
+   "support": false,
+   "F_lvl": 1.8466666666666667,
+   "diff": 3.089
+  },
+  "R06": {
+   "id": "R06",
+   "group": "11-13",
+   "mode": "pair",
+   "role": "sibling",
+   "sid": "P03",
+   "hours": 10.028333333333334,
+   "levels": 30,
+   "end": false,
+   "quit": "5-B1",
+   "downs_lvl": 0.0,
+   "hits_lvl": 0.6,
+   "stuck_n_lvl": 2.8666666666666667,
+   "stuck_min_lvl": 1.2134579970741302,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.7133333333333334,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 1,
+   "support": false,
+   "F_lvl": 1.6733333333333333,
+   "diff": 2.1719999999999997
+  },
+  "R07": {
+   "id": "R07",
+   "group": "7-8",
+   "mode": "pair",
+   "role": "friend",
+   "sid": "P04",
+   "hours": 5.9,
+   "levels": 12,
+   "end": false,
+   "quit": "2-5",
+   "downs_lvl": 1.1666666666666667,
+   "hits_lvl": 5.75,
+   "stuck_n_lvl": 7.583333333333333,
+   "stuck_min_lvl": 3.412433173745842,
+   "asks": 0,
+   "unread_lvl": 8.416666666666666,
+   "understood": 0.29457364341085274,
+   "path_final": "easy",
+   "path0": "easy",
+   "switches": 0,
+   "support": false,
+   "F_lvl": 5.465833333333333,
+   "diff": 4.0616666666666665
+  },
+  "R08": {
+   "id": "R08",
+   "group": "7-8",
+   "mode": "pair",
+   "role": "friend",
+   "sid": "P04",
+   "hours": 5.9,
+   "levels": 12,
+   "end": false,
+   "quit": "2-5",
+   "downs_lvl": 0.4166666666666667,
+   "hits_lvl": 3.0,
+   "stuck_n_lvl": 7.583333333333333,
+   "stuck_min_lvl": 3.412433173745842,
+   "asks": 0,
+   "unread_lvl": 8.416666666666666,
+   "understood": 0.29457364341085274,
+   "path_final": "easy",
+   "path0": "easy",
+   "switches": 0,
+   "support": false,
+   "F_lvl": 5.1658333333333335,
+   "diff": 4.096666666666667
+  },
+  "R09": {
+   "id": "R09",
+   "group": "9-10",
+   "mode": "pair",
+   "role": "child",
+   "sid": "P05",
+   "hours": 7.246666666666667,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.06451612903225806,
+   "hits_lvl": 0.7419354838709677,
+   "stuck_n_lvl": 1.4193548387096775,
+   "stuck_min_lvl": 0.31307204874123706,
+   "asks": 36,
+   "unread_lvl": 0.0,
+   "understood": 0.8538205980066446,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 1,
+   "support": true,
+   "F_lvl": 0.4929032258064516,
+   "diff": 2.2929032258064517
+  },
+  "R10": {
+   "id": "R10",
+   "group": "14+",
+   "mode": "pair",
+   "role": "parent",
+   "sid": "P05",
+   "hours": 7.246666666666667,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.0967741935483871,
+   "hits_lvl": 1.2903225806451613,
+   "stuck_n_lvl": 1.4193548387096775,
+   "stuck_min_lvl": 0.31307204874123706,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.8538205980066446,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 1,
+   "support": true,
+   "F_lvl": 0.5058064516129032,
+   "diff": 2.241612903225806
+  },
+  "R11": {
+   "id": "R11",
+   "group": "9-10",
+   "mode": "pair",
+   "role": "friend",
+   "sid": "P06",
+   "hours": 7.911666666666666,
+   "levels": 27,
+   "end": false,
+   "quit": "5-2",
+   "downs_lvl": 0.8518518518518519,
+   "hits_lvl": 4.37037037037037,
+   "stuck_n_lvl": 3.3333333333333335,
+   "stuck_min_lvl": 1.5134865664882269,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.6853146853146853,
+   "path_final": "easy",
+   "path0": "easy",
+   "switches": 1,
+   "support": false,
+   "F_lvl": 2.2774074074074075,
+   "diff": 2.7285185185185186
+  },
+  "R12": {
+   "id": "R12",
+   "group": "9-10",
+   "mode": "pair",
+   "role": "friend",
+   "sid": "P06",
+   "hours": 7.911666666666666,
+   "levels": 27,
+   "end": false,
+   "quit": "5-2",
+   "downs_lvl": 0.14814814814814814,
+   "hits_lvl": 1.2222222222222223,
+   "stuck_n_lvl": 3.3333333333333335,
+   "stuck_min_lvl": 1.5134865664882269,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.6853146853146853,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 1,
+   "support": false,
+   "F_lvl": 1.9959259259259259,
+   "diff": 2.642962962962963
+  },
+  "R13": {
+   "id": "R13",
+   "group": "9-10",
+   "mode": "pair",
+   "role": "sibling",
+   "sid": "P07",
+   "hours": 6.180000000000001,
+   "levels": 22,
+   "end": false,
+   "quit": "4-3",
+   "downs_lvl": 0.13636363636363635,
+   "hits_lvl": 1.1818181818181819,
+   "stuck_n_lvl": 2.227272727272727,
+   "stuck_min_lvl": 1.0213625013292449,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.7975206611570248,
+   "path_final": "easy",
+   "path0": "easy",
+   "switches": 0,
+   "support": false,
+   "F_lvl": 1.3213636363636363,
+   "diff": 2.226818181818182
+  },
+  "R14": {
+   "id": "R14",
+   "group": "11-13",
+   "mode": "pair",
+   "role": "sibling",
+   "sid": "P07",
+   "hours": 6.180000000000001,
+   "levels": 22,
+   "end": false,
+   "quit": "4-3",
+   "downs_lvl": 0.5,
+   "hits_lvl": 2.6818181818181817,
+   "stuck_n_lvl": 2.227272727272727,
+   "stuck_min_lvl": 1.0213625013292449,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.7975206611570248,
+   "path_final": "mid",
+   "path0": "mid",
+   "switches": 0,
+   "support": false,
+   "F_lvl": 1.466818181818182,
+   "diff": 2.2677272727272726
+  },
+  "R15": {
+   "id": "R15",
+   "group": "11-13",
+   "mode": "pair",
+   "role": "friend",
+   "sid": "P08",
+   "hours": 6.748333333333333,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.7741935483870968,
+   "hits_lvl": 3.3870967741935485,
+   "stuck_n_lvl": 1.5483870967741935,
+   "stuck_min_lvl": 0.6850842882362905,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.840531561461794,
+   "path_final": "easy",
+   "path0": "hard",
+   "switches": 2,
+   "support": false,
+   "F_lvl": 1.3235483870967741,
+   "diff": 2.4706451612903226
+  },
+  "R16": {
+   "id": "R16",
+   "group": "11-13",
+   "mode": "pair",
+   "role": "friend",
+   "sid": "P08",
+   "hours": 6.748333333333333,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.03225806451612903,
+   "hits_lvl": 0.5483870967741935,
+   "stuck_n_lvl": 1.5483870967741935,
+   "stuck_min_lvl": 0.6850842882362905,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.840531561461794,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 2,
+   "support": false,
+   "F_lvl": 1.026774193548387,
+   "diff": 2.2738709677419355
+  },
+  "R17": {
+   "id": "R17",
+   "group": "11-13",
+   "mode": "pair",
+   "role": "child",
+   "sid": "P09",
+   "hours": 6.281666666666666,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.06451612903225806,
+   "hits_lvl": 0.8709677419354839,
+   "stuck_n_lvl": 1.1935483870967742,
+   "stuck_min_lvl": 0.26201139375008664,
+   "asks": 22,
+   "unread_lvl": 0.0,
+   "understood": 0.8770764119601329,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 1,
+   "support": true,
+   "F_lvl": 0.5006451612903225,
+   "diff": 2.06
+  },
+  "R18": {
+   "id": "R18",
+   "group": "14+",
+   "mode": "pair",
+   "role": "parent",
+   "sid": "P09",
+   "hours": 6.281666666666666,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.22580645161290322,
+   "hits_lvl": 1.1612903225806452,
+   "stuck_n_lvl": 1.1935483870967742,
+   "stuck_min_lvl": 0.26201139375008664,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.8770764119601329,
+   "path_final": "easy",
+   "path0": "easy",
+   "switches": 1,
+   "support": true,
+   "F_lvl": 0.5651612903225807,
+   "diff": 1.9822580645161292
+  },
+  "R19": {
+   "id": "R19",
+   "group": "14+",
+   "mode": "pair",
+   "role": "friend",
+   "sid": "P10",
+   "hours": 6.078333333333333,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.06451612903225806,
+   "hits_lvl": 0.8387096774193549,
+   "stuck_n_lvl": 0.3870967741935484,
+   "stuck_min_lvl": 0.11520543996098662,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.9601328903654485,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 1,
+   "support": false,
+   "F_lvl": 0.21870967741935485,
+   "diff": 2.241612903225806
+  },
+  "R20": {
+   "id": "R20",
+   "group": "14+",
+   "mode": "pair",
+   "role": "friend",
+   "sid": "P10",
+   "hours": 6.078333333333333,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.0,
+   "hits_lvl": 0.1935483870967742,
+   "stuck_n_lvl": 0.3870967741935484,
+   "stuck_min_lvl": 0.11520543996098662,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.9601328903654485,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 1,
+   "support": false,
+   "F_lvl": 0.19290322580645164,
+   "diff": 2.241612903225806
+  },
+  "R21": {
+   "id": "R21",
+   "group": "7-8",
+   "mode": "solo",
+   "role": "solo",
+   "sid": "SR21",
+   "hours": 3.0383333333333336,
+   "levels": 8,
+   "end": false,
+   "quit": "2-1",
+   "downs_lvl": 2.5,
+   "hits_lvl": 10.125,
+   "stuck_n_lvl": 7.5,
+   "stuck_min_lvl": 2.8093218369325883,
+   "asks": 0,
+   "unread_lvl": 1.75,
+   "understood": 0.25,
+   "path_final": "easy",
+   "path0": "easy",
+   "switches": 0,
+   "support": false,
+   "F_lvl": 5.155,
+   "diff": 4.3237499999999995
+  },
+  "R22": {
+   "id": "R22",
+   "group": "9-10",
+   "mode": "solo",
+   "role": "solo",
+   "sid": "SR22",
+   "hours": 10.218333333333334,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.7419354838709677,
+   "hits_lvl": 4.741935483870968,
+   "stuck_n_lvl": 4.516129032258065,
+   "stuck_min_lvl": 2.128653247412474,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.5348837209302325,
+   "path_final": "easy",
+   "path0": "mid",
+   "switches": 1,
+   "support": false,
+   "F_lvl": 2.7541935483870965,
+   "diff": 2.826451612903226
+  },
+  "R23": {
+   "id": "R23",
+   "group": "11-13",
+   "mode": "solo",
+   "role": "solo",
+   "sid": "SR23",
+   "hours": 7.966666666666667,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.0,
+   "hits_lvl": 0.0,
+   "stuck_n_lvl": 3.3225806451612905,
+   "stuck_min_lvl": 1.275169823255021,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.6578073089700996,
+   "path_final": "hard",
+   "path0": "hard",
+   "switches": 0,
+   "support": false,
+   "F_lvl": 1.3016129032258066,
+   "diff": 2.678064516129032
+  },
+  "R24": {
+   "id": "R24",
+   "group": "11-13",
+   "mode": "solo",
+   "role": "solo",
+   "sid": "SR24",
+   "hours": 4.913333333333333,
+   "levels": 21,
+   "end": false,
+   "quit": "4-2",
+   "downs_lvl": 0.0,
+   "hits_lvl": 0.0,
+   "stuck_n_lvl": 3.238095238095238,
+   "stuck_min_lvl": 1.3694695288569774,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.7142857142857143,
+   "path_final": "mid",
+   "path0": "mid",
+   "switches": 0,
+   "support": false,
+   "F_lvl": 1.3695238095238094,
+   "diff": 2.218095238095238
+  },
+  "R25": {
+   "id": "R25",
+   "group": "14+",
+   "mode": "solo",
+   "role": "solo",
+   "sid": "SR25",
+   "hours": 5.451666666666667,
+   "levels": 31,
+   "end": true,
+   "quit": null,
+   "downs_lvl": 0.0,
+   "hits_lvl": 0.0,
+   "stuck_n_lvl": 1.096774193548387,
+   "stuck_min_lvl": 0.47551314676515644,
+   "asks": 0,
+   "unread_lvl": 0.0,
+   "understood": 0.8870431893687708,
+   "path_final": "mid",
+   "path0": "mid",
+   "switches": 0,
+   "support": false,
+   "F_lvl": 0.4754838709677419,
+   "diff": 2.251290322580645
+  }
+ },
+ "hours": {
+  "7-8": 7.44,
+  "9-10": 7.89,
+  "11-13": 6.98,
+  "14+": 7.27
+ },
+ "levels": {
+  "7-8": 20.67,
+  "9-10": 27.6,
+  "11-13": 28.14,
+  "14+": 31.0
+ },
+ "downs_lvl": {
+  "7-8": 0.8,
+  "9-10": 0.39,
+  "11-13": 0.2,
+  "14+": 0.1
+ },
+ "hits_lvl": {
+  "7-8": 3.94,
+  "9-10": 2.45,
+  "11-13": 1.16,
+  "14+": 0.87
+ },
+ "stuck_n_lvl": {
+  "7-8": 5.08,
+  "9-10": 2.97,
+  "11-13": 2.28,
+  "14+": 1.35
+ },
+ "stuck_min_lvl": {
+  "7-8": 2.03,
+  "9-10": 1.3,
+  "11-13": 0.93,
+  "14+": 0.37
+ },
+ "understood": {
+  "7-8": 0.51,
+  "9-10": 0.71,
+  "11-13": 0.78,
+  "14+": 0.86
+ },
+ "unread_lvl": {
+  "7-8": 3.1,
+  "9-10": 0.0,
+  "11-13": 0.0,
+  "14+": 0.0
+ },
+ "F_lvl": {
+  "7-8": 3.28,
+  "9-10": 1.77,
+  "11-13": 1.24,
+  "14+": 0.57
+ },
+ "diff": {
+  "7-8": 3.44,
+  "9-10": 2.54,
+  "11-13": 2.31,
+  "14+": 2.15
+ },
+ "completion": {
+  "7-8": 0.33,
+  "9-10": 0.4,
+  "11-13": 0.57,
+  "14+": 1.0
+ },
+ "quit_levels": {
+  "7-8": [
+   "5-B1",
+   "2-5",
+   "2-5",
+   "2-1"
+  ],
+  "9-10": [
+   "5-2",
+   "5-2",
+   "4-3"
+  ],
+  "11-13": [
+   "5-B1",
+   "4-3",
+   "4-2"
+  ],
+  "14+": []
+ },
+ "solo_vs_pair": {
+  "pair": {
+   "hours": 7.6,
+   "stuck_min_lvl": 0.99,
+   "downs_lvl": 0.28,
+   "completion": 0.6
+  },
+  "solo": {
+   "hours": 6.3,
+   "stuck_min_lvl": 1.61,
+   "downs_lvl": 0.65,
+   "completion": 0.6
+  }
+ },
+ "path_final": {
+  "7-8": {
+   "easy": 6
+  },
+  "9-10": {
+   "easy": 5
+  },
+  "11-13": {
+   "easy": 4,
+   "mid": 2,
+   "hard": 1
+  },
+  "14+": {
+   "easy": 6,
+   "mid": 1
+  }
+ },
+ "path0": {
+  "7-8": {
+   "easy": 5,
+   "mid": 1
+  },
+  "9-10": {
+   "mid": 3,
+   "easy": 2
+  },
+  "11-13": {
+   "mid": 5,
+   "hard": 2
+  },
+  "14+": {
+   "easy": 2,
+   "mid": 5
+  }
+ },
+ "path_switch_sessions": 8,
+ "levels_table": {
+  "p": {
+   "name": "Пролог «Звенышко»",
+   "world": 0,
+   "type": "tutorial",
+   "n_obj": 14,
+   "words": 154,
+   "words_per_obj": 11.0,
+   "coop_obj": 2,
+   "cine_sec": 43.4,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 6,
+     "F": 3.43,
+     "downs": 2.0,
+     "diff": 3.78,
+     "min": 19.5,
+     "stuck_min": 1.42,
+     "stuck_n": 4.3,
+     "unread": 2.67,
+     "understood": 0.69,
+     "read_s": 172.0,
+     "combat_s": 132.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 0.73,
+     "downs": 0.2,
+     "diff": 1.77,
+     "min": 12.8,
+     "stuck_min": 0.53,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.9,
+     "read_s": 129.0,
+     "combat_s": 76.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 0.69,
+     "downs": 0.29,
+     "diff": 1.93,
+     "min": 11.5,
+     "stuck_min": 0.49,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.9,
+     "read_s": 100.0,
+     "combat_s": 39.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.49,
+     "downs": 0.0,
+     "diff": 1.7,
+     "min": 11.5,
+     "stuck_min": 0.15,
+     "stuck_n": 0.6,
+     "unread": 0.0,
+     "understood": 0.96,
+     "read_s": 70.0,
+     "combat_s": 57.0
+    }
+   }
+  },
+  "1-1": {
+   "name": "Избушка, повернись",
+   "world": 1,
+   "type": "adventure",
+   "n_obj": 10,
+   "words": 139,
+   "words_per_obj": 13.9,
+   "coop_obj": 4,
+   "cine_sec": 31.7,
+   "enc": 1,
+   "by_group": {
+    "7-8": {
+     "n": 6,
+     "F": 2.66,
+     "downs": 0.67,
+     "diff": 3.38,
+     "min": 20.5,
+     "stuck_min": 1.48,
+     "stuck_n": 4.3,
+     "unread": 2.67,
+     "understood": 0.57,
+     "read_s": 154.0,
+     "combat_s": 93.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 1.57,
+     "downs": 0.2,
+     "diff": 2.47,
+     "min": 15.1,
+     "stuck_min": 1.13,
+     "stuck_n": 3.2,
+     "unread": 0.0,
+     "understood": 0.68,
+     "read_s": 116.0,
+     "combat_s": 52.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 1.6,
+     "downs": 0.43,
+     "diff": 2.29,
+     "min": 14.0,
+     "stuck_min": 1.17,
+     "stuck_n": 3.3,
+     "unread": 0.0,
+     "understood": 0.67,
+     "read_s": 89.0,
+     "combat_s": 41.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.93,
+     "downs": 0.43,
+     "diff": 2.04,
+     "min": 13.1,
+     "stuck_min": 0.59,
+     "stuck_n": 2.1,
+     "unread": 0.0,
+     "understood": 0.79,
+     "read_s": 63.0,
+     "combat_s": 30.0
+    }
+   }
+  },
+  "1-2": {
+   "name": "Кикиморино болото",
+   "world": 1,
+   "type": "adventure",
+   "n_obj": 14,
+   "words": 252,
+   "words_per_obj": 18.0,
+   "coop_obj": 0,
+   "cine_sec": 0,
+   "enc": 2,
+   "by_group": {
+    "7-8": {
+     "n": 6,
+     "F": 4.34,
+     "downs": 1.67,
+     "diff": 3.75,
+     "min": 29.2,
+     "stuck_min": 2.6,
+     "stuck_n": 7.7,
+     "unread": 4.33,
+     "understood": 0.45,
+     "read_s": 281.0,
+     "combat_s": 98.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 1.6,
+     "downs": 0.2,
+     "diff": 2.42,
+     "min": 20.8,
+     "stuck_min": 1.4,
+     "stuck_n": 4.2,
+     "unread": 0.0,
+     "understood": 0.7,
+     "read_s": 211.0,
+     "combat_s": 75.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 1.43,
+     "downs": 0.0,
+     "diff": 2.28,
+     "min": 17.8,
+     "stuck_min": 1.25,
+     "stuck_n": 3.4,
+     "unread": 0.0,
+     "understood": 0.76,
+     "read_s": 163.0,
+     "combat_s": 45.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.48,
+     "downs": 0.0,
+     "diff": 1.93,
+     "min": 17.3,
+     "stuck_min": 0.48,
+     "stuck_n": 2.0,
+     "unread": 0.0,
+     "understood": 0.86,
+     "read_s": 115.0,
+     "combat_s": 35.0
+    }
+   }
+  },
+  "1-3": {
+   "name": "Колобок",
+   "world": 1,
+   "type": "rhythm",
+   "n_obj": 7,
+   "words": 122,
+   "words_per_obj": 17.4,
+   "coop_obj": 3,
+   "cine_sec": 39.7,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 6,
+     "F": 1.19,
+     "downs": 0.0,
+     "diff": 2.65,
+     "min": 13.5,
+     "stuck_min": 1.11,
+     "stuck_n": 3.2,
+     "unread": 2.0,
+     "understood": 0.55,
+     "read_s": 137.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 0.95,
+     "downs": 0.0,
+     "diff": 2.07,
+     "min": 11.7,
+     "stuck_min": 0.95,
+     "stuck_n": 2.4,
+     "unread": 0.0,
+     "understood": 0.66,
+     "read_s": 103.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 0.42,
+     "downs": 0.0,
+     "diff": 2.09,
+     "min": 10.8,
+     "stuck_min": 0.31,
+     "stuck_n": 0.9,
+     "unread": 0.0,
+     "understood": 0.88,
+     "read_s": 79.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.4,
+     "downs": 0.0,
+     "diff": 1.85,
+     "min": 9.7,
+     "stuck_min": 0.4,
+     "stuck_n": 1.1,
+     "unread": 0.0,
+     "understood": 0.84,
+     "read_s": 56.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "1-4": {
+   "name": "Леший водит",
+   "world": 1,
+   "type": "adventure",
+   "n_obj": 9,
+   "words": 136,
+   "words_per_obj": 15.1,
+   "coop_obj": 0,
+   "cine_sec": 37.5,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 6,
+     "F": 1.45,
+     "downs": 0.0,
+     "diff": 2.82,
+     "min": 15.8,
+     "stuck_min": 1.37,
+     "stuck_n": 4.3,
+     "unread": 2.0,
+     "understood": 0.52,
+     "read_s": 146.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 1.2,
+     "downs": 0.0,
+     "diff": 2.2,
+     "min": 11.1,
+     "stuck_min": 1.2,
+     "stuck_n": 2.6,
+     "unread": 0.0,
+     "understood": 0.71,
+     "read_s": 110.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 0.83,
+     "downs": 0.0,
+     "diff": 2.13,
+     "min": 10.9,
+     "stuck_min": 0.83,
+     "stuck_n": 2.6,
+     "unread": 0.0,
+     "understood": 0.71,
+     "read_s": 84.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.35,
+     "downs": 0.0,
+     "diff": 1.89,
+     "min": 8.9,
+     "stuck_min": 0.35,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.84,
+     "read_s": 59.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "1-5": {
+   "name": "Кикиморина прялка",
+   "world": 1,
+   "type": "adventure",
+   "n_obj": 5,
+   "words": 79,
+   "words_per_obj": 15.8,
+   "coop_obj": 2,
+   "cine_sec": 34,
+   "enc": 2,
+   "by_group": {
+    "7-8": {
+     "n": 6,
+     "F": 2.47,
+     "downs": 0.17,
+     "diff": 3.69,
+     "min": 14.5,
+     "stuck_min": 0.85,
+     "stuck_n": 2.7,
+     "unread": 1.33,
+     "understood": 0.47,
+     "read_s": 89.0,
+     "combat_s": 167.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 0.91,
+     "downs": 0.0,
+     "diff": 1.97,
+     "min": 11.0,
+     "stuck_min": 0.42,
+     "stuck_n": 1.0,
+     "unread": 0.0,
+     "understood": 0.8,
+     "read_s": 66.0,
+     "combat_s": 132.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 0.67,
+     "downs": 0.0,
+     "diff": 2.13,
+     "min": 9.6,
+     "stuck_min": 0.5,
+     "stuck_n": 1.3,
+     "unread": 0.0,
+     "understood": 0.74,
+     "read_s": 51.0,
+     "combat_s": 66.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.69,
+     "downs": 0.0,
+     "diff": 2.02,
+     "min": 10.0,
+     "stuck_min": 0.09,
+     "stuck_n": 0.3,
+     "unread": 0.0,
+     "understood": 0.94,
+     "read_s": 36.0,
+     "combat_s": 104.0
+    }
+   }
+  },
+  "1-B": {
+   "name": "Леший-Путаник",
+   "world": 1,
+   "type": "boss",
+   "n_obj": 5,
+   "words": 63,
+   "words_per_obj": 12.6,
+   "coop_obj": 0,
+   "cine_sec": 37.6,
+   "enc": 3,
+   "by_group": {
+    "7-8": {
+     "n": 6,
+     "F": 0.74,
+     "downs": 0.0,
+     "diff": 2.33,
+     "min": 11.2,
+     "stuck_min": 0.7,
+     "stuck_n": 2.0,
+     "unread": 1.0,
+     "understood": 0.6,
+     "read_s": 73.0,
+     "combat_s": 123.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 0.35,
+     "downs": 0.0,
+     "diff": 2.09,
+     "min": 8.0,
+     "stuck_min": 0.35,
+     "stuck_n": 0.8,
+     "unread": 0.0,
+     "understood": 0.84,
+     "read_s": 55.0,
+     "combat_s": 72.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 0.16,
+     "downs": 0.0,
+     "diff": 2.28,
+     "min": 7.7,
+     "stuck_min": 0.16,
+     "stuck_n": 0.9,
+     "unread": 0.0,
+     "understood": 0.83,
+     "read_s": 42.0,
+     "combat_s": 46.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.2,
+     "downs": 0.0,
+     "diff": 2.08,
+     "min": 6.6,
+     "stuck_min": 0.2,
+     "stuck_n": 0.4,
+     "unread": 0.0,
+     "understood": 0.91,
+     "read_s": 30.0,
+     "combat_s": 57.0
+    }
+   }
+  },
+  "2-1": {
+   "name": "Гусли Садко",
+   "world": 2,
+   "type": "adventure",
+   "n_obj": 16,
+   "words": 321,
+   "words_per_obj": 20.1,
+   "coop_obj": 4,
+   "cine_sec": 84.6,
+   "enc": 6,
+   "by_group": {
+    "7-8": {
+     "n": 6,
+     "F": 9.19,
+     "downs": 2.5,
+     "diff": 4.75,
+     "min": 48.6,
+     "stuck_min": 4.31,
+     "stuck_n": 9.2,
+     "unread": 7.0,
+     "understood": 0.43,
+     "read_s": 490.0,
+     "combat_s": 468.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 5.68,
+     "downs": 1.6,
+     "diff": 4.02,
+     "min": 33.5,
+     "stuck_min": 2.99,
+     "stuck_n": 7.0,
+     "unread": 0.0,
+     "understood": 0.56,
+     "read_s": 300.0,
+     "combat_s": 307.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 3.59,
+     "downs": 0.14,
+     "diff": 2.8,
+     "min": 27.7,
+     "stuck_min": 2.08,
+     "stuck_n": 4.7,
+     "unread": 0.0,
+     "understood": 0.71,
+     "read_s": 228.0,
+     "combat_s": 221.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 1.95,
+     "downs": 0.14,
+     "diff": 2.5,
+     "min": 26.1,
+     "stuck_min": 0.95,
+     "stuck_n": 3.4,
+     "unread": 0.0,
+     "understood": 0.79,
+     "read_s": 153.0,
+     "combat_s": 186.0
+    }
+   }
+  },
+  "2-2": {
+   "name": "Чудо-юдо Рыба-кит",
+   "world": 2,
+   "type": "adventure",
+   "n_obj": 14,
+   "words": 311,
+   "words_per_obj": 22.2,
+   "coop_obj": 4,
+   "cine_sec": 99.8,
+   "enc": 3,
+   "by_group": {
+    "7-8": {
+     "n": 5,
+     "F": 5.42,
+     "downs": 1.8,
+     "diff": 3.98,
+     "min": 40.1,
+     "stuck_min": 3.17,
+     "stuck_n": 7.4,
+     "unread": 5.2,
+     "understood": 0.47,
+     "read_s": 407.0,
+     "combat_s": 157.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 2.46,
+     "downs": 0.4,
+     "diff": 2.89,
+     "min": 27.3,
+     "stuck_min": 1.94,
+     "stuck_n": 5.4,
+     "unread": 0.0,
+     "understood": 0.61,
+     "read_s": 280.0,
+     "combat_s": 93.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 2.1,
+     "downs": 0.14,
+     "diff": 2.27,
+     "min": 24.5,
+     "stuck_min": 1.78,
+     "stuck_n": 4.3,
+     "unread": 0.0,
+     "understood": 0.69,
+     "read_s": 213.0,
+     "combat_s": 66.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 1.07,
+     "downs": 0.43,
+     "diff": 2.11,
+     "min": 23.0,
+     "stuck_min": 0.55,
+     "stuck_n": 2.1,
+     "unread": 0.0,
+     "understood": 0.85,
+     "read_s": 143.0,
+     "combat_s": 59.0
+    }
+   }
+  },
+  "2-3": {
+   "name": "Невод",
+   "world": 2,
+   "type": "four",
+   "n_obj": 13,
+   "words": 271,
+   "words_per_obj": 20.8,
+   "coop_obj": 2,
+   "cine_sec": 68.8,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 5,
+     "F": 3.6,
+     "downs": 0.0,
+     "diff": 3.79,
+     "min": 26.5,
+     "stuck_min": 3.44,
+     "stuck_n": 6.8,
+     "unread": 4.0,
+     "understood": 0.48,
+     "read_s": 365.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 2.27,
+     "downs": 0.0,
+     "diff": 2.86,
+     "min": 20.0,
+     "stuck_min": 2.27,
+     "stuck_n": 4.8,
+     "unread": 0.0,
+     "understood": 0.63,
+     "read_s": 251.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 1.84,
+     "downs": 0.0,
+     "diff": 2.35,
+     "min": 16.8,
+     "stuck_min": 1.84,
+     "stuck_n": 3.9,
+     "unread": 0.0,
+     "understood": 0.7,
+     "read_s": 191.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.83,
+     "downs": 0.0,
+     "diff": 2.21,
+     "min": 14.9,
+     "stuck_min": 0.83,
+     "stuck_n": 2.0,
+     "unread": 0.0,
+     "understood": 0.85,
+     "read_s": 128.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "2-4": {
+   "name": "В брюхе у кита",
+   "world": 2,
+   "type": "adventure",
+   "n_obj": 9,
+   "words": 157,
+   "words_per_obj": 17.4,
+   "coop_obj": 1,
+   "cine_sec": 52.5,
+   "enc": 1,
+   "by_group": {
+    "7-8": {
+     "n": 5,
+     "F": 1.81,
+     "downs": 0.0,
+     "diff": 2.87,
+     "min": 17.4,
+     "stuck_min": 1.34,
+     "stuck_n": 3.6,
+     "unread": 2.8,
+     "understood": 0.6,
+     "read_s": 206.0,
+     "combat_s": 72.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 1.92,
+     "downs": 0.6,
+     "diff": 2.62,
+     "min": 13.6,
+     "stuck_min": 1.32,
+     "stuck_n": 3.0,
+     "unread": 0.0,
+     "understood": 0.67,
+     "read_s": 142.0,
+     "combat_s": 48.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 0.83,
+     "downs": 0.0,
+     "diff": 2.22,
+     "min": 12.2,
+     "stuck_min": 0.66,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.84,
+     "read_s": 108.0,
+     "combat_s": 42.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.28,
+     "downs": 0.0,
+     "diff": 2.06,
+     "min": 10.2,
+     "stuck_min": 0.19,
+     "stuck_n": 1.0,
+     "unread": 0.0,
+     "understood": 0.89,
+     "read_s": 73.0,
+     "combat_s": 30.0
+    }
+   }
+  },
+  "2-5": {
+   "name": "Китеж звонит",
+   "world": 2,
+   "type": "adventure",
+   "n_obj": 13,
+   "words": 227,
+   "words_per_obj": 17.5,
+   "coop_obj": 2,
+   "cine_sec": 40,
+   "enc": 1,
+   "by_group": {
+    "7-8": {
+     "n": 5,
+     "F": 3.62,
+     "downs": 0.4,
+     "diff": 3.62,
+     "min": 28.5,
+     "stuck_min": 2.47,
+     "stuck_n": 5.6,
+     "unread": 3.6,
+     "understood": 0.57,
+     "read_s": 309.0,
+     "combat_s": 97.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 3.27,
+     "downs": 0.2,
+     "diff": 3.24,
+     "min": 22.3,
+     "stuck_min": 2.47,
+     "stuck_n": 4.2,
+     "unread": 0.0,
+     "understood": 0.68,
+     "read_s": 213.0,
+     "combat_s": 92.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 1.73,
+     "downs": 0.0,
+     "diff": 2.44,
+     "min": 18.9,
+     "stuck_min": 1.3,
+     "stuck_n": 2.3,
+     "unread": 0.0,
+     "understood": 0.82,
+     "read_s": 162.0,
+     "combat_s": 56.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.53,
+     "downs": 0.0,
+     "diff": 2.21,
+     "min": 16.4,
+     "stuck_min": 0.45,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.89,
+     "read_s": 109.0,
+     "combat_s": 34.0
+    }
+   }
+  },
+  "2-B": {
+   "name": "Водяной",
+   "world": 2,
+   "type": "boss",
+   "n_obj": 15,
+   "words": 191,
+   "words_per_obj": 12.7,
+   "coop_obj": 1,
+   "cine_sec": 77.1,
+   "enc": 1,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 1.52,
+     "downs": 0.0,
+     "diff": 2.93,
+     "min": 27.4,
+     "stuck_min": 1.12,
+     "stuck_n": 2.7,
+     "unread": 0.0,
+     "understood": 0.82,
+     "read_s": 127.0,
+     "combat_s": 271.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 3.29,
+     "downs": 2.0,
+     "diff": 3.16,
+     "min": 24.9,
+     "stuck_min": 2.01,
+     "stuck_n": 4.0,
+     "unread": 0.0,
+     "understood": 0.73,
+     "read_s": 174.0,
+     "combat_s": 275.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 2.05,
+     "downs": 1.29,
+     "diff": 2.42,
+     "min": 20.5,
+     "stuck_min": 1.11,
+     "stuck_n": 2.3,
+     "unread": 0.0,
+     "understood": 0.85,
+     "read_s": 133.0,
+     "combat_s": 218.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 1.0,
+     "downs": 0.43,
+     "diff": 2.26,
+     "min": 19.2,
+     "stuck_min": 0.65,
+     "stuck_n": 1.7,
+     "unread": 0.0,
+     "understood": 0.89,
+     "read_s": 89.0,
+     "combat_s": 172.0
+    }
+   }
+  },
+  "3-1": {
+   "name": "Сад молодильных яблок",
+   "world": 3,
+   "type": "adventure",
+   "n_obj": 18,
+   "words": 256,
+   "words_per_obj": 14.2,
+   "coop_obj": 2,
+   "cine_sec": 112.4,
+   "enc": 3,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 2.98,
+     "downs": 1.0,
+     "diff": 3.67,
+     "min": 28.1,
+     "stuck_min": 1.78,
+     "stuck_n": 4.7,
+     "unread": 0.0,
+     "understood": 0.74,
+     "read_s": 175.0,
+     "combat_s": 111.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 3.1,
+     "downs": 1.6,
+     "diff": 3.15,
+     "min": 24.6,
+     "stuck_min": 1.74,
+     "stuck_n": 5.0,
+     "unread": 0.0,
+     "understood": 0.72,
+     "read_s": 240.0,
+     "combat_s": 131.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 3.25,
+     "downs": 1.0,
+     "diff": 2.64,
+     "min": 21.8,
+     "stuck_min": 2.08,
+     "stuck_n": 4.1,
+     "unread": 0.0,
+     "understood": 0.77,
+     "read_s": 182.0,
+     "combat_s": 86.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 1.21,
+     "downs": 0.71,
+     "diff": 2.21,
+     "min": 18.8,
+     "stuck_min": 0.41,
+     "stuck_n": 1.7,
+     "unread": 0.0,
+     "understood": 0.9,
+     "read_s": 122.0,
+     "combat_s": 59.0
+    }
+   }
+  },
+  "3-2": {
+   "name": "Облачные пастбища",
+   "world": 3,
+   "type": "adventure",
+   "n_obj": 15,
+   "words": 258,
+   "words_per_obj": 17.2,
+   "coop_obj": 0,
+   "cine_sec": 61.6,
+   "enc": 3,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 2.7,
+     "downs": 0.67,
+     "diff": 3.8,
+     "min": 23.6,
+     "stuck_min": 1.23,
+     "stuck_n": 4.7,
+     "unread": 0.0,
+     "understood": 0.69,
+     "read_s": 176.0,
+     "combat_s": 129.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 5.52,
+     "downs": 3.4,
+     "diff": 3.75,
+     "min": 23.4,
+     "stuck_min": 2.48,
+     "stuck_n": 5.0,
+     "unread": 0.0,
+     "understood": 0.67,
+     "read_s": 242.0,
+     "combat_s": 170.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 2.99,
+     "downs": 1.57,
+     "diff": 2.58,
+     "min": 18.7,
+     "stuck_min": 1.5,
+     "stuck_n": 4.3,
+     "unread": 0.0,
+     "understood": 0.71,
+     "read_s": 184.0,
+     "combat_s": 98.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 1.46,
+     "downs": 0.71,
+     "diff": 2.31,
+     "min": 16.1,
+     "stuck_min": 0.74,
+     "stuck_n": 2.4,
+     "unread": 0.0,
+     "understood": 0.84,
+     "read_s": 123.0,
+     "combat_s": 70.0
+    }
+   }
+  },
+  "3-3": {
+   "name": "Сирин и Алконост",
+   "world": 3,
+   "type": "rhythm",
+   "n_obj": 10,
+   "words": 162,
+   "words_per_obj": 16.2,
+   "coop_obj": 8,
+   "cine_sec": 27.6,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 0.73,
+     "downs": 0.0,
+     "diff": 2.21,
+     "min": 16.0,
+     "stuck_min": 0.73,
+     "stuck_n": 3.0,
+     "unread": 0.0,
+     "understood": 0.7,
+     "read_s": 112.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 1.73,
+     "downs": 0.0,
+     "diff": 2.57,
+     "min": 15.8,
+     "stuck_min": 1.73,
+     "stuck_n": 3.4,
+     "unread": 0.0,
+     "understood": 0.66,
+     "read_s": 153.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 1.13,
+     "downs": 0.0,
+     "diff": 2.1,
+     "min": 14.6,
+     "stuck_min": 1.13,
+     "stuck_n": 3.3,
+     "unread": 0.0,
+     "understood": 0.67,
+     "read_s": 116.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.3,
+     "downs": 0.0,
+     "diff": 2.0,
+     "min": 13.3,
+     "stuck_min": 0.3,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.86,
+     "read_s": 78.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "3-4": {
+   "name": "Летучий корабль",
+   "world": 3,
+   "type": "adventure",
+   "n_obj": 7,
+   "words": 121,
+   "words_per_obj": 17.3,
+   "coop_obj": 0,
+   "cine_sec": 12.4,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 0.24,
+     "downs": 0.0,
+     "diff": 1.98,
+     "min": 9.9,
+     "stuck_min": 0.24,
+     "stuck_n": 1.3,
+     "unread": 0.0,
+     "understood": 0.81,
+     "read_s": 83.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 1.14,
+     "downs": 0.0,
+     "diff": 2.22,
+     "min": 9.7,
+     "stuck_min": 1.14,
+     "stuck_n": 2.0,
+     "unread": 0.0,
+     "understood": 0.71,
+     "read_s": 113.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 0.76,
+     "downs": 0.0,
+     "diff": 2.25,
+     "min": 8.0,
+     "stuck_min": 0.76,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.8,
+     "read_s": 86.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.22,
+     "downs": 0.0,
+     "diff": 2.15,
+     "min": 7.1,
+     "stuck_min": 0.22,
+     "stuck_n": 1.0,
+     "unread": 0.0,
+     "understood": 0.86,
+     "read_s": 58.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "3-5": {
+   "name": "Гуси-лебеди",
+   "world": 3,
+   "type": "adventure",
+   "n_obj": 9,
+   "words": 111,
+   "words_per_obj": 12.3,
+   "coop_obj": 1,
+   "cine_sec": 62.4,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 0.45,
+     "downs": 0.0,
+     "diff": 2.08,
+     "min": 13.7,
+     "stuck_min": 0.45,
+     "stuck_n": 2.3,
+     "unread": 0.0,
+     "understood": 0.74,
+     "read_s": 74.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 0.98,
+     "downs": 0.0,
+     "diff": 2.31,
+     "min": 11.4,
+     "stuck_min": 0.98,
+     "stuck_n": 2.6,
+     "unread": 0.0,
+     "understood": 0.71,
+     "read_s": 101.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 0.42,
+     "downs": 0.0,
+     "diff": 2.21,
+     "min": 10.4,
+     "stuck_min": 0.42,
+     "stuck_n": 1.3,
+     "unread": 0.0,
+     "understood": 0.86,
+     "read_s": 77.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.2,
+     "downs": 0.0,
+     "diff": 2.11,
+     "min": 10.3,
+     "stuck_min": 0.2,
+     "stuck_n": 1.0,
+     "unread": 0.0,
+     "understood": 0.89,
+     "read_s": 52.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "3-B": {
+   "name": "Соловей-Разбойник",
+   "world": 3,
+   "type": "boss",
+   "n_obj": 15,
+   "words": 194,
+   "words_per_obj": 12.9,
+   "coop_obj": 0,
+   "cine_sec": 67,
+   "enc": 1,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 2.29,
+     "downs": 0.33,
+     "diff": 3.51,
+     "min": 28.2,
+     "stuck_min": 1.96,
+     "stuck_n": 5.0,
+     "unread": 0.0,
+     "understood": 0.67,
+     "read_s": 135.0,
+     "combat_s": 99.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 0.87,
+     "downs": 0.0,
+     "diff": 2.37,
+     "min": 21.3,
+     "stuck_min": 0.87,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.91,
+     "read_s": 185.0,
+     "combat_s": 68.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 0.93,
+     "downs": 0.0,
+     "diff": 2.38,
+     "min": 19.0,
+     "stuck_min": 0.76,
+     "stuck_n": 1.9,
+     "unread": 0.0,
+     "understood": 0.88,
+     "read_s": 141.0,
+     "combat_s": 56.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.75,
+     "downs": 0.14,
+     "diff": 2.31,
+     "min": 18.8,
+     "stuck_min": 0.61,
+     "stuck_n": 2.0,
+     "unread": 0.0,
+     "understood": 0.87,
+     "read_s": 95.0,
+     "combat_s": 54.0
+    }
+   }
+  },
+  "4-1": {
+   "name": "Кузня Кузьмы и Демьяна",
+   "world": 4,
+   "type": "adventure",
+   "n_obj": 11,
+   "words": 151,
+   "words_per_obj": 13.7,
+   "coop_obj": 2,
+   "cine_sec": 48,
+   "enc": 1,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 1.33,
+     "downs": 0.0,
+     "diff": 3.08,
+     "min": 17.6,
+     "stuck_min": 1.33,
+     "stuck_n": 3.3,
+     "unread": 0.0,
+     "understood": 0.7,
+     "read_s": 106.0,
+     "combat_s": 18.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 0.86,
+     "downs": 0.4,
+     "diff": 2.24,
+     "min": 13.8,
+     "stuck_min": 0.46,
+     "stuck_n": 2.4,
+     "unread": 0.0,
+     "understood": 0.78,
+     "read_s": 145.0,
+     "combat_s": 27.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 1.01,
+     "downs": 0.0,
+     "diff": 2.38,
+     "min": 12.3,
+     "stuck_min": 1.01,
+     "stuck_n": 2.9,
+     "unread": 0.0,
+     "understood": 0.74,
+     "read_s": 110.0,
+     "combat_s": 13.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.52,
+     "downs": 0.0,
+     "diff": 2.28,
+     "min": 12.4,
+     "stuck_min": 0.52,
+     "stuck_n": 1.9,
+     "unread": 0.0,
+     "understood": 0.83,
+     "read_s": 74.0,
+     "combat_s": 10.0
+    }
+   }
+  },
+  "4-2": {
+   "name": "Река Смородина",
+   "world": 4,
+   "type": "adventure",
+   "n_obj": 9,
+   "words": 149,
+   "words_per_obj": 16.6,
+   "coop_obj": 1,
+   "cine_sec": 39,
+   "enc": 1,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 1.27,
+     "downs": 0.0,
+     "diff": 2.87,
+     "min": 17.9,
+     "stuck_min": 0.47,
+     "stuck_n": 1.7,
+     "unread": 0.0,
+     "understood": 0.81,
+     "read_s": 99.0,
+     "combat_s": 94.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 1.91,
+     "downs": 0.2,
+     "diff": 2.7,
+     "min": 15.8,
+     "stuck_min": 1.11,
+     "stuck_n": 2.8,
+     "unread": 0.0,
+     "understood": 0.69,
+     "read_s": 136.0,
+     "combat_s": 83.0
+    },
+    "11-13": {
+     "n": 7,
+     "F": 1.25,
+     "downs": 0.29,
+     "diff": 2.39,
+     "min": 13.9,
+     "stuck_min": 0.71,
+     "stuck_n": 2.0,
+     "unread": 0.0,
+     "understood": 0.78,
+     "read_s": 104.0,
+     "combat_s": 47.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.48,
+     "downs": 0.0,
+     "diff": 2.28,
+     "min": 12.2,
+     "stuck_min": 0.23,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.84,
+     "read_s": 70.0,
+     "combat_s": 43.0
+    }
+   }
+  },
+  "4-3": {
+   "name": "Эй, ухнем",
+   "world": 4,
+   "type": "four",
+   "n_obj": 4,
+   "words": 83,
+   "words_per_obj": 20.8,
+   "coop_obj": 2,
+   "cine_sec": 41,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 0.78,
+     "downs": 0.0,
+     "diff": 2.42,
+     "min": 13.3,
+     "stuck_min": 0.78,
+     "stuck_n": 2.3,
+     "unread": 0.0,
+     "understood": 0.42,
+     "read_s": 55.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 5,
+     "F": 0.64,
+     "downs": 0.0,
+     "diff": 2.08,
+     "min": 10.4,
+     "stuck_min": 0.64,
+     "stuck_n": 1.6,
+     "unread": 0.0,
+     "understood": 0.6,
+     "read_s": 76.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 6,
+     "F": 0.5,
+     "downs": 0.0,
+     "diff": 2.29,
+     "min": 9.9,
+     "stuck_min": 0.5,
+     "stuck_n": 1.5,
+     "unread": 0.0,
+     "understood": 0.62,
+     "read_s": 57.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.4,
+     "downs": 0.0,
+     "diff": 2.19,
+     "min": 9.9,
+     "stuck_min": 0.4,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.64,
+     "read_s": 39.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "4-4": {
+   "name": "Змиевы валы",
+   "world": 4,
+   "type": "adventure",
+   "n_obj": 5,
+   "words": 118,
+   "words_per_obj": 23.6,
+   "coop_obj": 0,
+   "cine_sec": 39,
+   "enc": 1,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 1.01,
+     "downs": 0.67,
+     "diff": 2.64,
+     "min": 12.4,
+     "stuck_min": 0.55,
+     "stuck_n": 1.0,
+     "unread": 0.0,
+     "understood": 0.8,
+     "read_s": 80.0,
+     "combat_s": 45.0
+    },
+    "9-10": {
+     "n": 4,
+     "F": 1.26,
+     "downs": 0.0,
+     "diff": 2.38,
+     "min": 11.1,
+     "stuck_min": 1.26,
+     "stuck_n": 2.8,
+     "unread": 0.0,
+     "understood": 0.45,
+     "read_s": 111.0,
+     "combat_s": 37.0
+    },
+    "11-13": {
+     "n": 5,
+     "F": 0.96,
+     "downs": 0.0,
+     "diff": 2.24,
+     "min": 10.1,
+     "stuck_min": 0.84,
+     "stuck_n": 2.0,
+     "unread": 0.0,
+     "understood": 0.6,
+     "read_s": 78.0,
+     "combat_s": 30.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.21,
+     "downs": 0.0,
+     "diff": 2.13,
+     "min": 8.4,
+     "stuck_min": 0.21,
+     "stuck_n": 1.0,
+     "unread": 0.0,
+     "understood": 0.8,
+     "read_s": 56.0,
+     "combat_s": 22.0
+    }
+   }
+  },
+  "4-5": {
+   "name": "Калинов мост",
+   "world": 4,
+   "type": "adventure",
+   "n_obj": 7,
+   "words": 90,
+   "words_per_obj": 12.9,
+   "coop_obj": 0,
+   "cine_sec": 90,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 0.59,
+     "downs": 0.0,
+     "diff": 2.23,
+     "min": 14.2,
+     "stuck_min": 0.59,
+     "stuck_n": 1.7,
+     "unread": 0.0,
+     "understood": 0.76,
+     "read_s": 59.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 4,
+     "F": 0.87,
+     "downs": 0.0,
+     "diff": 2.29,
+     "min": 12.5,
+     "stuck_min": 0.87,
+     "stuck_n": 1.8,
+     "unread": 0.0,
+     "understood": 0.75,
+     "read_s": 82.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 5,
+     "F": 0.43,
+     "downs": 0.0,
+     "diff": 2.45,
+     "min": 11.7,
+     "stuck_min": 0.43,
+     "stuck_n": 1.4,
+     "unread": 0.0,
+     "understood": 0.8,
+     "read_s": 57.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.15,
+     "downs": 0.0,
+     "diff": 2.36,
+     "min": 10.2,
+     "stuck_min": 0.15,
+     "stuck_n": 0.4,
+     "unread": 0.0,
+     "understood": 0.94,
+     "read_s": 41.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "4-B": {
+   "name": "Змей Горыныч",
+   "world": 4,
+   "type": "boss",
+   "n_obj": 5,
+   "words": 74,
+   "words_per_obj": 14.8,
+   "coop_obj": 3,
+   "cine_sec": 169.2,
+   "enc": 2,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 0.67,
+     "downs": 0.0,
+     "diff": 2.3,
+     "min": 17.6,
+     "stuck_min": 0.68,
+     "stuck_n": 2.0,
+     "unread": 0.0,
+     "understood": 0.6,
+     "read_s": 49.0,
+     "combat_s": 142.0
+    },
+    "9-10": {
+     "n": 4,
+     "F": 0.57,
+     "downs": 0.0,
+     "diff": 2.21,
+     "min": 15.4,
+     "stuck_min": 0.57,
+     "stuck_n": 1.5,
+     "unread": 0.0,
+     "understood": 0.7,
+     "read_s": 68.0,
+     "combat_s": 202.0
+    },
+    "11-13": {
+     "n": 5,
+     "F": 1.01,
+     "downs": 0.2,
+     "diff": 2.39,
+     "min": 13.6,
+     "stuck_min": 0.69,
+     "stuck_n": 1.6,
+     "unread": 0.0,
+     "understood": 0.68,
+     "read_s": 48.0,
+     "combat_s": 149.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.19,
+     "downs": 0.0,
+     "diff": 2.3,
+     "min": 12.5,
+     "stuck_min": 0.19,
+     "stuck_n": 1.0,
+     "unread": 0.0,
+     "understood": 0.8,
+     "read_s": 34.0,
+     "combat_s": 92.0
+    }
+   }
+  },
+  "5-1": {
+   "name": "Сундук на дубе",
+   "world": 5,
+   "type": "adventure",
+   "n_obj": 21,
+   "words": 351,
+   "words_per_obj": 16.7,
+   "coop_obj": 2,
+   "cine_sec": 271.4,
+   "enc": 2,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 2.28,
+     "downs": 0.0,
+     "diff": 3.68,
+     "min": 35.8,
+     "stuck_min": 2.28,
+     "stuck_n": 5.7,
+     "unread": 0.0,
+     "understood": 0.73,
+     "read_s": 231.0,
+     "combat_s": 26.0
+    },
+    "9-10": {
+     "n": 4,
+     "F": 3.46,
+     "downs": 0.0,
+     "diff": 3.38,
+     "min": 30.9,
+     "stuck_min": 3.46,
+     "stuck_n": 6.5,
+     "unread": 0.0,
+     "understood": 0.69,
+     "read_s": 322.0,
+     "combat_s": 23.0
+    },
+    "11-13": {
+     "n": 5,
+     "F": 1.86,
+     "downs": 0.2,
+     "diff": 2.36,
+     "min": 26.5,
+     "stuck_min": 1.54,
+     "stuck_n": 3.6,
+     "unread": 0.0,
+     "understood": 0.83,
+     "read_s": 225.0,
+     "combat_s": 30.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 1.1,
+     "downs": 0.0,
+     "diff": 2.31,
+     "min": 24.9,
+     "stuck_min": 1.1,
+     "stuck_n": 3.4,
+     "unread": 0.0,
+     "understood": 0.84,
+     "read_s": 161.0,
+     "combat_s": 17.0
+    }
+   }
+  },
+  "5-2": {
+   "name": "Заяц",
+   "world": 5,
+   "type": "four",
+   "n_obj": 6,
+   "words": 57,
+   "words_per_obj": 9.5,
+   "coop_obj": 2,
+   "cine_sec": 27,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 0.24,
+     "downs": 0.0,
+     "diff": 2.02,
+     "min": 10.3,
+     "stuck_min": 0.24,
+     "stuck_n": 1.7,
+     "unread": 0.0,
+     "understood": 0.72,
+     "read_s": 38.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 4,
+     "F": 0.57,
+     "downs": 0.0,
+     "diff": 2.1,
+     "min": 7.1,
+     "stuck_min": 0.57,
+     "stuck_n": 1.2,
+     "unread": 0.0,
+     "understood": 0.79,
+     "read_s": 53.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 5,
+     "F": 0.32,
+     "downs": 0.0,
+     "diff": 2.28,
+     "min": 6.9,
+     "stuck_min": 0.32,
+     "stuck_n": 0.8,
+     "unread": 0.0,
+     "understood": 0.87,
+     "read_s": 37.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.04,
+     "downs": 0.0,
+     "diff": 2.19,
+     "min": 7.0,
+     "stuck_min": 0.04,
+     "stuck_n": 0.4,
+     "unread": 0.0,
+     "understood": 0.93,
+     "read_s": 27.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "5-3": {
+   "name": "Утка",
+   "world": 5,
+   "type": "flight",
+   "n_obj": 5,
+   "words": 50,
+   "words_per_obj": 10.0,
+   "coop_obj": 3,
+   "cine_sec": 28,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 0.44,
+     "downs": 0.0,
+     "diff": 2.12,
+     "min": 11.6,
+     "stuck_min": 0.44,
+     "stuck_n": 1.7,
+     "unread": 0.0,
+     "understood": 0.67,
+     "read_s": 34.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 2,
+     "F": 0.37,
+     "downs": 0.0,
+     "diff": 2.17,
+     "min": 10.2,
+     "stuck_min": 0.37,
+     "stuck_n": 1.5,
+     "unread": 0.0,
+     "understood": 0.7,
+     "read_s": 34.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 5,
+     "F": 0.26,
+     "downs": 0.0,
+     "diff": 2.28,
+     "min": 8.1,
+     "stuck_min": 0.26,
+     "stuck_n": 0.6,
+     "unread": 0.0,
+     "understood": 0.88,
+     "read_s": 33.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.16,
+     "downs": 0.0,
+     "diff": 2.19,
+     "min": 7.8,
+     "stuck_min": 0.16,
+     "stuck_n": 0.7,
+     "unread": 0.0,
+     "understood": 0.86,
+     "read_s": 24.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "5-4": {
+   "name": "Яйцо",
+   "world": 5,
+   "type": "rhythm",
+   "n_obj": 4,
+   "words": 46,
+   "words_per_obj": 11.5,
+   "coop_obj": 1,
+   "cine_sec": 37,
+   "enc": 0,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 0.11,
+     "downs": 0.0,
+     "diff": 1.85,
+     "min": 10.1,
+     "stuck_min": 0.11,
+     "stuck_n": 0.7,
+     "unread": 0.0,
+     "understood": 0.83,
+     "read_s": 33.0,
+     "combat_s": 0.0
+    },
+    "9-10": {
+     "n": 2,
+     "F": 0.15,
+     "downs": 0.0,
+     "diff": 2.0,
+     "min": 8.5,
+     "stuck_min": 0.15,
+     "stuck_n": 1.0,
+     "unread": 0.0,
+     "understood": 0.75,
+     "read_s": 34.0,
+     "combat_s": 0.0
+    },
+    "11-13": {
+     "n": 5,
+     "F": 0.0,
+     "downs": 0.0,
+     "diff": 2.11,
+     "min": 8.5,
+     "stuck_min": 0.0,
+     "stuck_n": 0.0,
+     "unread": 0.0,
+     "understood": 1.0,
+     "read_s": 32.0,
+     "combat_s": 0.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.05,
+     "downs": 0.0,
+     "diff": 2.02,
+     "min": 8.2,
+     "stuck_min": 0.05,
+     "stuck_n": 0.3,
+     "unread": 0.0,
+     "understood": 0.93,
+     "read_s": 23.0,
+     "combat_s": 0.0
+    }
+   }
+  },
+  "5-B1": {
+   "name": "Кощей в тереме",
+   "world": 5,
+   "type": "boss",
+   "n_obj": 5,
+   "words": 62,
+   "words_per_obj": 12.4,
+   "coop_obj": 0,
+   "cine_sec": 37,
+   "enc": 10,
+   "by_group": {
+    "7-8": {
+     "n": 3,
+     "F": 0.44,
+     "downs": 0.0,
+     "diff": 2.22,
+     "min": 15.8,
+     "stuck_min": 0.44,
+     "stuck_n": 1.0,
+     "unread": 0.0,
+     "understood": 0.8,
+     "read_s": 45.0,
+     "combat_s": 55.0
+    },
+    "9-10": {
+     "n": 2,
+     "F": 0.57,
+     "downs": 0.0,
+     "diff": 2.16,
+     "min": 12.5,
+     "stuck_min": 0.58,
+     "stuck_n": 1.0,
+     "unread": 0.0,
+     "understood": 0.8,
+     "read_s": 46.0,
+     "combat_s": 20.0
+    },
+    "11-13": {
+     "n": 5,
+     "F": 0.29,
+     "downs": 0.0,
+     "diff": 2.26,
+     "min": 11.1,
+     "stuck_min": 0.29,
+     "stuck_n": 0.8,
+     "unread": 0.0,
+     "understood": 0.84,
+     "read_s": 44.0,
+     "combat_s": 36.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 0.09,
+     "downs": 0.0,
+     "diff": 2.17,
+     "min": 10.9,
+     "stuck_min": 0.09,
+     "stuck_n": 0.6,
+     "unread": 0.0,
+     "understood": 0.89,
+     "read_s": 31.0,
+     "combat_s": 41.0
+    }
+   }
+  },
+  "5-B2": {
+   "name": "Кощей Бессмертный и Златая цепь",
+   "world": 5,
+   "type": "boss",
+   "n_obj": 1,
+   "words": 0,
+   "words_per_obj": 0.0,
+   "coop_obj": 0,
+   "cine_sec": 1111.0,
+   "enc": 5,
+   "by_group": {
+    "7-8": {
+     "n": 2,
+     "F": 1.2,
+     "downs": 0.0,
+     "diff": 2.77,
+     "min": 23.7,
+     "stuck_min": 0.0,
+     "stuck_n": 0.0,
+     "unread": 0.0,
+     "understood": 1.0,
+     "read_s": 0.0,
+     "combat_s": 185.0
+    },
+    "9-10": {
+     "n": 2,
+     "F": 0.6,
+     "downs": 0.0,
+     "diff": 2.38,
+     "min": 22.2,
+     "stuck_min": 0.0,
+     "stuck_n": 0.0,
+     "unread": 0.0,
+     "understood": 1.0,
+     "read_s": 0.0,
+     "combat_s": 105.0
+    },
+    "11-13": {
+     "n": 4,
+     "F": 0.9,
+     "downs": 0.0,
+     "diff": 2.46,
+     "min": 19.2,
+     "stuck_min": 0.0,
+     "stuck_n": 0.0,
+     "unread": 0.0,
+     "understood": 1.0,
+     "read_s": 0.0,
+     "combat_s": 133.0
+    },
+    "14+": {
+     "n": 7,
+     "F": 1.03,
+     "downs": 0.0,
+     "diff": 2.32,
+     "min": 21.2,
+     "stuck_min": 0.0,
+     "stuck_n": 0.0,
+     "unread": 0.0,
+     "understood": 1.0,
+     "read_s": 0.0,
+     "combat_s": 160.0
+    }
+   }
+  }
+ },
+ "hot": {
+  "7-8": [
+   [
+    "2-1",
+    9.19,
+    6
+   ],
+   [
+    "2-2",
+    5.42,
+    5
+   ],
+   [
+    "1-2",
+    4.34,
+    6
+   ],
+   [
+    "2-5",
+    3.62,
+    5
+   ],
+   [
+    "2-3",
+    3.6,
+    5
+   ],
+   [
+    "p",
+    3.43,
+    6
+   ]
+  ],
+  "9-10": [
+   [
+    "2-1",
+    5.68,
+    5
+   ],
+   [
+    "3-2",
+    5.52,
+    5
+   ],
+   [
+    "5-1",
+    3.46,
+    4
+   ],
+   [
+    "2-B",
+    3.29,
+    5
+   ],
+   [
+    "2-5",
+    3.27,
+    5
+   ],
+   [
+    "3-1",
+    3.1,
+    5
+   ]
+  ],
+  "11-13": [
+   [
+    "2-1",
+    3.59,
+    7
+   ],
+   [
+    "3-1",
+    3.25,
+    7
+   ],
+   [
+    "3-2",
+    2.99,
+    7
+   ],
+   [
+    "2-2",
+    2.1,
+    7
+   ],
+   [
+    "2-B",
+    2.05,
+    7
+   ],
+   [
+    "5-1",
+    1.86,
+    5
+   ]
+  ],
+  "14+": [
+   [
+    "2-1",
+    1.95,
+    7
+   ],
+   [
+    "3-2",
+    1.46,
+    7
+   ],
+   [
+    "3-1",
+    1.21,
+    7
+   ],
+   [
+    "5-1",
+    1.1,
+    7
+   ],
+   [
+    "2-2",
+    1.07,
+    7
+   ],
+   [
+    "5-B2",
+    1.03,
+    7
+   ]
+  ]
+ },
+ "hot_detail": {
+  "7-8": [
+   {
+    "lv": "2-1",
+    "name": "Гусли Садко",
+    "F": 9.19,
+    "n": 6,
+    "stuck_min": 4.31,
+    "combat": 4.6,
+    "unread": 7.0,
+    "read_min": 8.2,
+    "minutes": 48.6,
+    "solo": 1
+   },
+   {
+    "lv": "2-2",
+    "name": "Чудо-юдо Рыба-кит",
+    "F": 5.42,
+    "n": 5,
+    "stuck_min": 3.17,
+    "combat": 2.04,
+    "unread": 5.2,
+    "read_min": 6.8,
+    "minutes": 40.1,
+    "solo": 0
+   },
+   {
+    "lv": "1-2",
+    "name": "Кикиморино болото",
+    "F": 4.34,
+    "n": 6,
+    "stuck_min": 2.6,
+    "combat": 1.57,
+    "unread": 4.3,
+    "read_min": 4.7,
+    "minutes": 29.2,
+    "solo": 1
+   },
+   {
+    "lv": "2-5",
+    "name": "Китеж звонит",
+    "F": 3.62,
+    "n": 5,
+    "stuck_min": 2.47,
+    "combat": 1.0,
+    "unread": 3.6,
+    "read_min": 5.1,
+    "minutes": 28.5,
+    "solo": 0
+   },
+   {
+    "lv": "2-3",
+    "name": "Невод",
+    "F": 3.6,
+    "n": 5,
+    "stuck_min": 3.44,
+    "combat": 0.0,
+    "unread": 4.0,
+    "read_min": 6.1,
+    "minutes": 26.5,
+    "solo": 0
+   },
+   {
+    "lv": "p",
+    "name": "Пролог «Звенышко»",
+    "F": 3.43,
+    "n": 6,
+    "stuck_min": 1.42,
+    "combat": 1.9,
+    "unread": 2.7,
+    "read_min": 2.9,
+    "minutes": 19.5,
+    "solo": 1
+   }
+  ],
+  "9-10": [
+   {
+    "lv": "2-1",
+    "name": "Гусли Садко",
+    "F": 5.68,
+    "n": 5,
+    "stuck_min": 2.99,
+    "combat": 2.68,
+    "unread": 0.0,
+    "read_min": 5.0,
+    "minutes": 33.5,
+    "solo": 1
+   },
+   {
+    "lv": "3-2",
+    "name": "Облачные пастбища",
+    "F": 5.52,
+    "n": 5,
+    "stuck_min": 2.48,
+    "combat": 3.04,
+    "unread": 0.0,
+    "read_min": 4.0,
+    "minutes": 23.4,
+    "solo": 1
+   },
+   {
+    "lv": "5-1",
+    "name": "Сундук на дубе",
+    "F": 3.46,
+    "n": 4,
+    "stuck_min": 3.46,
+    "combat": 0.0,
+    "unread": 0.0,
+    "read_min": 5.4,
+    "minutes": 30.9,
+    "solo": 1
+   },
+   {
+    "lv": "2-B",
+    "name": "Водяной",
+    "F": 3.29,
+    "n": 5,
+    "stuck_min": 2.01,
+    "combat": 1.28,
+    "unread": 0.0,
+    "read_min": 2.9,
+    "minutes": 24.9,
+    "solo": 1
+   },
+   {
+    "lv": "2-5",
+    "name": "Китеж звонит",
+    "F": 3.27,
+    "n": 5,
+    "stuck_min": 2.47,
+    "combat": 0.8,
+    "unread": 0.0,
+    "read_min": 3.5,
+    "minutes": 22.3,
+    "solo": 1
+   },
+   {
+    "lv": "3-1",
+    "name": "Сад молодильных яблок",
+    "F": 3.1,
+    "n": 5,
+    "stuck_min": 1.74,
+    "combat": 1.36,
+    "unread": 0.0,
+    "read_min": 4.0,
+    "minutes": 24.6,
+    "solo": 1
+   }
+  ],
+  "11-13": [
+   {
+    "lv": "2-1",
+    "name": "Гусли Садко",
+    "F": 3.59,
+    "n": 7,
+    "stuck_min": 2.08,
+    "combat": 1.51,
+    "unread": 0.0,
+    "read_min": 3.8,
+    "minutes": 27.7,
+    "solo": 2
+   },
+   {
+    "lv": "3-1",
+    "name": "Сад молодильных яблок",
+    "F": 3.25,
+    "n": 7,
+    "stuck_min": 2.08,
+    "combat": 1.17,
+    "unread": 0.0,
+    "read_min": 3.0,
+    "minutes": 21.8,
+    "solo": 2
+   },
+   {
+    "lv": "3-2",
+    "name": "Облачные пастбища",
+    "F": 2.99,
+    "n": 7,
+    "stuck_min": 1.5,
+    "combat": 1.49,
+    "unread": 0.0,
+    "read_min": 3.1,
+    "minutes": 18.7,
+    "solo": 2
+   },
+   {
+    "lv": "2-2",
+    "name": "Чудо-юдо Рыба-кит",
+    "F": 2.1,
+    "n": 7,
+    "stuck_min": 1.78,
+    "combat": 0.31,
+    "unread": 0.0,
+    "read_min": 3.6,
+    "minutes": 24.5,
+    "solo": 2
+   },
+   {
+    "lv": "2-B",
+    "name": "Водяной",
+    "F": 2.05,
+    "n": 7,
+    "stuck_min": 1.11,
+    "combat": 0.94,
+    "unread": 0.0,
+    "read_min": 2.2,
+    "minutes": 20.5,
+    "solo": 2
+   },
+   {
+    "lv": "5-1",
+    "name": "Сундук на дубе",
+    "F": 1.86,
+    "n": 5,
+    "stuck_min": 1.54,
+    "combat": 0.32,
+    "unread": 0.0,
+    "read_min": 3.8,
+    "minutes": 26.5,
+    "solo": 1
+   }
+  ],
+  "14+": [
+   {
+    "lv": "2-1",
+    "name": "Гусли Садко",
+    "F": 1.95,
+    "n": 7,
+    "stuck_min": 0.95,
+    "combat": 1.0,
+    "unread": 0.0,
+    "read_min": 2.6,
+    "minutes": 26.1,
+    "solo": 1
+   },
+   {
+    "lv": "3-2",
+    "name": "Облачные пастбища",
+    "F": 1.46,
+    "n": 7,
+    "stuck_min": 0.74,
+    "combat": 0.71,
+    "unread": 0.0,
+    "read_min": 2.1,
+    "minutes": 16.1,
+    "solo": 1
+   },
+   {
+    "lv": "3-1",
+    "name": "Сад молодильных яблок",
+    "F": 1.21,
+    "n": 7,
+    "stuck_min": 0.41,
+    "combat": 0.8,
+    "unread": 0.0,
+    "read_min": 2.0,
+    "minutes": 18.8,
+    "solo": 1
+   },
+   {
+    "lv": "5-1",
+    "name": "Сундук на дубе",
+    "F": 1.1,
+    "n": 7,
+    "stuck_min": 1.1,
+    "combat": 0.0,
+    "unread": 0.0,
+    "read_min": 2.7,
+    "minutes": 24.9,
+    "solo": 1
+   },
+   {
+    "lv": "2-2",
+    "name": "Чудо-юдо Рыба-кит",
+    "F": 1.07,
+    "n": 7,
+    "stuck_min": 0.55,
+    "combat": 0.51,
+    "unread": 0.0,
+    "read_min": 2.4,
+    "minutes": 23.0,
+    "solo": 1
+   },
+   {
+    "lv": "5-B2",
+    "name": "Кощей Бессмертный и Златая цепь",
+    "F": 1.03,
+    "n": 7,
+    "stuck_min": 0.0,
+    "combat": 1.03,
+    "unread": 0.0,
+    "read_min": 0.0,
+    "minutes": 21.2,
+    "solo": 1
+   }
+  ]
+ },
+ "rhythm": {
+  "1-3": {
+   "7-8": 0.1,
+   "9-10": 0.12,
+   "11-13": 0.09,
+   "14+": 0.02
+  },
+  "3-3": {
+   "7-8": 0.01,
+   "9-10": 0.03,
+   "11-13": 0.04,
+   "14+": 0.02
+  },
+  "5-4": {
+   "7-8": 0.01,
+   "9-10": 0.08,
+   "11-13": 0.03,
+   "14+": 0.02
+  }
+ },
+ "combat": {
+  "7-8": {},
+  "9-10": {},
+  "11-13": {},
+  "14+": {}
+ },
+ "tutorial": {},
+ "plan": {
+  "7-8": {
+   "plans": 0,
+   "late": 0.0,
+   "lapse": 0.0,
+   "parry_try": 0.0,
+   "roll_try": 0.0,
+   "guard_only": 0.0,
+   "miskey": 0.0
+  },
+  "9-10": {
+   "plans": 0,
+   "late": 0.0,
+   "lapse": 0.0,
+   "parry_try": 0.0,
+   "roll_try": 0.0,
+   "guard_only": 0.0,
+   "miskey": 0.0
+  },
+  "11-13": {
+   "plans": 0,
+   "late": 0.0,
+   "lapse": 0.0,
+   "parry_try": 0.0,
+   "roll_try": 0.0,
+   "guard_only": 0.0,
+   "miskey": 0.0
+  },
+  "14+": {
+   "plans": 0,
+   "late": 0.0,
+   "lapse": 0.0,
+   "parry_try": 0.0,
+   "roll_try": 0.0,
+   "guard_only": 0.0,
+   "miskey": 0.0
+  }
+ },
+ "know_final": {},
+ "kind_down_rate": {},
+ "ab": {},
+ "reading": {
+  "per_level": {
+   "p": {
+    "n_obj": 14,
+    "words": 154,
+    "wpo": 11.0,
+    "max_words": 15,
+    "long": 0.052,
+    "coop": 2,
+    "key": 5,
+    "swap": 3
+   },
+   "luko": {
+    "n_obj": 2,
+    "words": 17,
+    "wpo": 8.5,
+    "max_words": 15,
+    "long": 0.176,
+    "coop": 0,
+    "key": 1,
+    "swap": 0
+   },
+   "1-1": {
+    "n_obj": 10,
+    "words": 139,
+    "wpo": 13.9,
+    "max_words": 22,
+    "long": 0.043,
+    "coop": 4,
+    "key": 6,
+    "swap": 3
+   },
+   "1-2": {
+    "n_obj": 14,
+    "words": 252,
+    "wpo": 18.0,
+    "max_words": 22,
+    "long": 0.067,
+    "coop": 0,
+    "key": 11,
+    "swap": 3
+   },
+   "1-3": {
+    "n_obj": 7,
+    "words": 122,
+    "wpo": 17.4,
+    "max_words": 26,
+    "long": 0.008,
+    "coop": 3,
+    "key": 5,
+    "swap": 0
+   },
+   "1-4": {
+    "n_obj": 9,
+    "words": 136,
+    "wpo": 15.1,
+    "max_words": 26,
+    "long": 0.059,
+    "coop": 0,
+    "key": 4,
+    "swap": 1
+   },
+   "1-5": {
+    "n_obj": 5,
+    "words": 79,
+    "wpo": 15.8,
+    "max_words": 21,
+    "long": 0.025,
+    "coop": 2,
+    "key": 3,
+    "swap": 0
+   },
+   "1-B": {
+    "n_obj": 5,
+    "words": 63,
+    "wpo": 12.6,
+    "max_words": 20,
+    "long": 0.048,
+    "coop": 0,
+    "key": 3,
+    "swap": 0
+   },
+   "2-1": {
+    "n_obj": 16,
+    "words": 321,
+    "wpo": 20.1,
+    "max_words": 40,
+    "long": 0.053,
+    "coop": 4,
+    "key": 11,
+    "swap": 0
+   },
+   "2-2": {
+    "n_obj": 14,
+    "words": 311,
+    "wpo": 22.2,
+    "max_words": 30,
+    "long": 0.042,
+    "coop": 4,
+    "key": 11,
+    "swap": 1
+   },
+   "2-3": {
+    "n_obj": 13,
+    "words": 271,
+    "wpo": 20.8,
+    "max_words": 33,
+    "long": 0.048,
+    "coop": 2,
+    "key": 10,
+    "swap": 3
+   },
+   "2-4": {
+    "n_obj": 9,
+    "words": 157,
+    "wpo": 17.4,
+    "max_words": 39,
+    "long": 0.07,
+    "coop": 1,
+    "key": 4,
+    "swap": 0
+   },
+   "2-5": {
+    "n_obj": 13,
+    "words": 227,
+    "wpo": 17.5,
+    "max_words": 29,
+    "long": 0.048,
+    "coop": 2,
+    "key": 8,
+    "swap": 1
+   },
+   "2-B": {
+    "n_obj": 15,
+    "words": 191,
+    "wpo": 12.7,
+    "max_words": 29,
+    "long": 0.026,
+    "coop": 1,
+    "key": 9,
+    "swap": 1
+   },
+   "3-1": {
+    "n_obj": 18,
+    "words": 256,
+    "wpo": 14.2,
+    "max_words": 33,
+    "long": 0.062,
+    "coop": 2,
+    "key": 8,
+    "swap": 0
+   },
+   "3-2": {
+    "n_obj": 15,
+    "words": 258,
+    "wpo": 17.2,
+    "max_words": 30,
+    "long": 0.043,
+    "coop": 0,
+    "key": 9,
+    "swap": 0
+   },
+   "3-3": {
+    "n_obj": 10,
+    "words": 162,
+    "wpo": 16.2,
+    "max_words": 22,
+    "long": 0.062,
+    "coop": 8,
+    "key": 7,
+    "swap": 0
+   },
+   "3-4": {
+    "n_obj": 7,
+    "words": 121,
+    "wpo": 17.3,
+    "max_words": 23,
+    "long": 0.008,
+    "coop": 0,
+    "key": 4,
+    "swap": 1
+   },
+   "3-5": {
+    "n_obj": 9,
+    "words": 111,
+    "wpo": 12.3,
+    "max_words": 21,
+    "long": 0.036,
+    "coop": 1,
+    "key": 4,
+    "swap": 0
+   },
+   "3-B": {
+    "n_obj": 15,
+    "words": 194,
+    "wpo": 12.9,
+    "max_words": 24,
+    "long": 0.057,
+    "coop": 0,
+    "key": 4,
+    "swap": 0
+   },
+   "4-1": {
+    "n_obj": 11,
+    "words": 151,
+    "wpo": 13.7,
+    "max_words": 26,
+    "long": 0.079,
+    "coop": 2,
+    "key": 6,
+    "swap": 1
+   },
+   "4-2": {
+    "n_obj": 9,
+    "words": 149,
+    "wpo": 16.6,
+    "max_words": 27,
+    "long": 0.02,
+    "coop": 1,
+    "key": 6,
+    "swap": 1
+   },
+   "4-3": {
+    "n_obj": 4,
+    "words": 83,
+    "wpo": 20.8,
+    "max_words": 33,
+    "long": 0.036,
+    "coop": 2,
+    "key": 3,
+    "swap": 1
+   },
+   "4-4": {
+    "n_obj": 5,
+    "words": 118,
+    "wpo": 23.6,
+    "max_words": 35,
+    "long": 0.034,
+    "coop": 0,
+    "key": 3,
+    "swap": 0
+   },
+   "4-5": {
+    "n_obj": 7,
+    "words": 90,
+    "wpo": 12.9,
+    "max_words": 25,
+    "long": 0.067,
+    "coop": 0,
+    "key": 5,
+    "swap": 0
+   },
+   "4-B": {
+    "n_obj": 5,
+    "words": 74,
+    "wpo": 14.8,
+    "max_words": 24,
+    "long": 0.027,
+    "coop": 3,
+    "key": 3,
+    "swap": 0
+   },
+   "5-1": {
+    "n_obj": 21,
+    "words": 351,
+    "wpo": 16.7,
+    "max_words": 30,
+    "long": 0.06,
+    "coop": 2,
+    "key": 14,
+    "swap": 1
+   },
+   "5-2": {
+    "n_obj": 6,
+    "words": 57,
+    "wpo": 9.5,
+    "max_words": 19,
+    "long": 0.088,
+    "coop": 2,
+    "key": 2,
+    "swap": 1
+   },
+   "5-3": {
+    "n_obj": 5,
+    "words": 50,
+    "wpo": 10.0,
+    "max_words": 22,
+    "long": 0.04,
+    "coop": 3,
+    "key": 2,
+    "swap": 0
+   },
+   "5-4": {
+    "n_obj": 4,
+    "words": 46,
+    "wpo": 11.5,
+    "max_words": 23,
+    "long": 0.065,
+    "coop": 1,
+    "key": 1,
+    "swap": 0
+   },
+   "5-B1": {
+    "n_obj": 5,
+    "words": 62,
+    "wpo": 12.4,
+    "max_words": 26,
+    "long": 0.032,
+    "coop": 0,
+    "key": 2,
+    "swap": 0
+   },
+   "5-B2": {
+    "n_obj": 1,
+    "words": 0,
+    "wpo": 0.0,
+    "max_words": 0,
+    "long": 0.0,
+    "coop": 0,
+    "key": 0,
+    "swap": 0
+   },
+   "epi": {
+    "n_obj": 2,
+    "words": 2,
+    "wpo": 1.0,
+    "max_words": 2,
+    "long": 0.0,
+    "coop": 0,
+    "key": 0,
+    "swap": 0
+   }
+  },
+  "total_obj": 287,
+  "words_total": 4761,
+  "words_mean": 16.6,
+  "words_median": 18,
+  "gt20": 94,
+  "gt25": 39,
+  "coop_total": 52,
+  "swap_total": 22,
+  "key_total": 174,
+  "keystrict_total": 170,
+  "7-8": {
+   "mean_read_s": 33.7,
+   "share_gt20s": 0.77,
+   "share_gt30s": 0.61
+  },
+  "9-10": {
+   "mean_read_s": 18.4,
+   "share_gt20s": 0.45,
+   "share_gt30s": 0.08
+  },
+  "11-13": {
+   "mean_read_s": 11.2,
+   "share_gt20s": 0.06,
+   "share_gt30s": 0.0
+  },
+  "14+": {
+   "mean_read_s": 7.2,
+   "share_gt20s": 0.0,
+   "share_gt30s": 0.0
+  },
+  "kids_levels": [
+   "p",
+   "1-1",
+   "1-2",
+   "1-3",
+   "1-4",
+   "1-5",
+   "1-B"
+  ],
+  "kids_obj": 64,
+  "all_obj": 305,
+  "cine_sec_total": 3153.0
+ },
+ "voice": {
+  "recorded_lines": 875,
+  "tasks": 269,
+  "tasks_voiced": 1
+ },
+ "survey": {
+  "7-8": {
+   "n": 6,
+   "stars": [
+    3.0,
+    6
+   ],
+   "answered_pct": 0.96,
+   "story_like": [
+    2.0,
+    6
+   ],
+   "hints": [
+    2.0,
+    6
+   ],
+   "fight": [
+    2.5,
+    6
+   ],
+   "slash": [
+    2.83,
+    6
+   ],
+   "buttons": [
+    2.0,
+    6
+   ],
+   "coop": [
+    2.4,
+    5
+   ],
+   "pretty": [
+    2.5,
+    6
+   ],
+   "looks": [
+    2.5,
+    6
+   ],
+   "music": [
+    2.5,
+    6
+   ],
+   "ending": [
+    2.0,
+    2
+   ],
+   "end": {
+    "Нет, не дошёл": 3,
+    "Да, до самого конца!": 2,
+    "Почти до конца": 1
+   },
+   "hard": {
+    "Очень трудно": 3,
+    "В самый раз": 2,
+    "Трудно": 1
+   },
+   "stuck": {
+    "Да": 6
+   },
+   "read": {
+    "Мне читал взрослый": 3,
+    "Не всегда": 2,
+    "Я не читал": 1
+   },
+   "scary": {
+    "Чуть-чуть страшно": 5,
+    "Нет, совсем не страшно": 1
+   },
+   "again": {
+    "Нет": 3,
+    "Может быть": 2,
+    "Да, очень хочу!": 1
+   },
+   "story_clear": {
+    "Было непонятно": 3,
+    "Да, всё понятно": 2,
+    "Понятно немножко": 1
+   },
+   "hero": {
+    "Потап": 3,
+    "Пелагея": 1,
+    "Прошка": 1,
+    "Йоша": 1
+   },
+   "world_best": {
+    "Лукоморье": 5,
+    "Огненная Смородина": 1
+   },
+   "world_worst": {
+    "Подводный Китеж": 5,
+    "Все понравились!": 1
+   },
+   "fun": {
+    "Наряжать героев": 3,
+    "Разгадывать загадки": 2,
+    "Смотреть мультики между уровнями": 2,
+    "Помогать друг другу": 2,
+    "Собирать звенья и орешки": 2,
+    "Драться с мороками": 2,
+    "Лететь на Змее Горыныче": 2,
+    "Кормить Курочку Рябу": 2,
+    "Бежать с Колобком под музыку": 1
+   },
+   "boss": {
+    "Леший-Путаник": 4,
+    "Кощей Бессмертный": 2
+   }
+  },
+  "9-10": {
+   "n": 5,
+   "stars": [
+    3.2,
+    5
+   ],
+   "answered_pct": 0.98,
+   "story_like": [
+    3.4,
+    5
+   ],
+   "hints": [
+    3.8,
+    5
+   ],
+   "fight": [
+    3.8,
+    5
+   ],
+   "slash": [
+    4.2,
+    5
+   ],
+   "coop": [
+    3.0,
+    4
+   ],
+   "pretty": [
+    3.6,
+    5
+   ],
+   "looks": [
+    3.8,
+    5
+   ],
+   "music": [
+    3.8,
+    5
+   ],
+   "movies": [
+    4.2,
+    5
+   ],
+   "sounds": [
+    4.2,
+    5
+   ],
+   "skazy": [
+    3.4,
+    5
+   ],
+   "koschei": [
+    3.5,
+    2
+   ],
+   "downed": [
+    4.2,
+    5
+   ],
+   "split": [
+    3.0,
+    4
+   ],
+   "done": {
+    "Всё до конца": 2,
+    "Почти всё": 2,
+    "Половину": 1
+   },
+   "hard": [
+    2.6,
+    5
+   ],
+   "signals": {
+    "Понял не сразу": 3,
+    "Да, сразу понял": 2
+   },
+   "stuck": {
+    "Да": 5
+   },
+   "recommend": {
+    "Может быть": 3,
+    "Точно посоветую": 1,
+    "Нет": 1
+   },
+   "subs": {
+    "Иногда не успевал": 5
+   },
+   "story_clear": {
+    "Почти всё": 4,
+    "Всё понятно": 1
+   },
+   "hero": {
+    "Йоша": 3,
+    "Прошка": 1,
+    "Пелагея": 1
+   },
+   "levels_best": {
+    "Колобок": 3,
+    "Утка (полёт на Горыныче)": 2,
+    "Застава трёх богатырей": 2,
+    "Кузня Кузьмы и Демьяна": 1,
+    "Рыба-кит": 1,
+    "Яйцо («Калинка»)": 1,
+    "Летучий корабль": 1,
+    "Гуси-лебеди": 1,
+    "Эй, ухнем!": 1,
+    "Калинов мост": 1,
+    "Кикиморино болото": 1
+   },
+   "ability": {
+    "Ковшик Йоши": 1,
+    "Кузнечные клещи": 1,
+    "Совиный взор Пелагеи": 1,
+    "Подкидка Потапа": 1,
+    "Рогатка Прошки": 1
+   },
+   "path": {
+    "Средний": 3,
+    "Лёгкий": 2
+   },
+   "m_worlds": {
+    "Дремучий лес": [
+     3.2,
+     5
+    ],
+    "Подводный Китеж": [
+     2.8,
+     5
+    ],
+    "Небесное царство": [
+     3.2,
+     5
+    ],
+    "Огненная Смородина": [
+     3.4,
+     5
+    ],
+    "Остров Буян": [
+     3.75,
+     4
+    ],
+    "Лукоморье": [
+     4.2,
+     5
+    ]
+   },
+   "m_bosses": {
+    "Леший-Путаник": [
+     3.6,
+     5
+    ],
+    "Водяной": [
+     2.4,
+     5
+    ],
+    "Соловей-Разбойник": [
+     4.0,
+     5
+    ],
+    "Змей Горыныч": [
+     4.0,
+     4
+    ],
+    "Кощей Бессмертный": [
+     4.0,
+     2
+    ]
+   },
+   "m_luko": {
+    "Кузня Кузьмы: ковать звенья в такт": [
+     3.6,
+     5
+    ],
+    "Лавка Векши и примерочная: наряды": [
+     4.0,
+     5
+    ],
+    "Огород Дедки": [
+     3.6,
+     5
+    ],
+    "Курочка Ряба": [
+     3.75,
+     4
+    ],
+    "Застава трёх богатырей": [
+     2.0,
+     2
+    ],
+    "Сказки-лубки и пляски Кота": [
+     4.0,
+     2
+    ]
+   }
+  },
+  "11-13": {
+   "n": 7,
+   "stars": [
+    3.29,
+    7
+   ],
+   "answered_pct": 1.0,
+   "story": [
+    3.57,
+    7
+   ],
+   "clarity": [
+    3.57,
+    7
+   ],
+   "villain": [
+    3.57,
+    7
+   ],
+   "humor": [
+    3.43,
+    7
+   ],
+   "choices": [
+    4.29,
+    7
+   ],
+   "combat": [
+    3.86,
+    7
+   ],
+   "signals": [
+    4.29,
+    7
+   ],
+   "controls": [
+    4.43,
+    7
+   ],
+   "camera": [
+    3.43,
+    7
+   ],
+   "hints": [
+    3.86,
+    7
+   ],
+   "coop_fun": [
+    4.2,
+    5
+   ],
+   "split": [
+    3.6,
+    5
+   ],
+   "solo": [
+    3.5,
+    2
+   ],
+   "helper": [
+    3.0,
+    2
+   ],
+   "downed": [
+    3.71,
+    7
+   ],
+   "nps": [
+    5.43,
+    7
+   ],
+   "pace": {
+    "Где-то затянуто, где-то скомкано": 6,
+    "Слишком медленно": 1
+   },
+   "dialog": {
+    "Слишком детские": 4,
+    "Живые и интересные": 2,
+    "Нормальные": 2,
+    "Слишком длинные": 1
+   },
+   "combat_bad": {
+    "Ничего не мешало": 6,
+    "Камера мешала": 1
+   },
+   "lv_best": {
+    "Утка (полёт на Горыныче)": 5,
+    "Летучий корабль": 2,
+    "В брюхе у кита": 2,
+    "Избушка, повернись": 2,
+    "Яйцо («Калинка»)": 2,
+    "Кощей в тереме": 1,
+    "Кузня Кузьмы и Демьяна": 1,
+    "Сад молодильных яблок": 1,
+    "Рыба-кит": 1,
+    "Гуси-лебеди": 1,
+    "Колобок": 1,
+    "Заяц": 1,
+    "Сирин и Алконост": 1
+   },
+   "lv_worst": {
+    "Гусли Садко": 3,
+    "Река Смородина": 2,
+    "Невод": 2,
+    "Облачные пастбища": 2,
+    "Сад молодильных яблок": 2,
+    "Китеж звонит": 2,
+    "Заяц": 1,
+    "Яйцо («Калинка»)": 1,
+    "Змиевы валы": 1,
+    "Кузня Кузьмы и Демьяна": 1,
+    "Эй, ухнем!": 1,
+    "Рыба-кит": 1,
+    "Сундук на дубе": 1,
+    "Кикиморино болото": 1
+   },
+   "style": {
+    "Нравится, но это для младших": 4,
+    "Как раз для меня": 3
+   },
+   "hours": {
+    "6–10": 5,
+    "3–6": 1,
+    "Больше 10": 1
+   },
+   "done": {
+    "Сюжет до конца": 3,
+    "Примерно половину": 2,
+    "Почти до конца": 1,
+    "На 100%: все звенья и Застава": 1
+   },
+   "bugs": {
+    "Ничего такого не было": 5,
+    "Не пропускался ролик": 1,
+    "Кнопка не срабатывала": 1
+   },
+   "roles": {
+    "Всем было что делать": 3,
+    "Один делал больше": 2
+   },
+   "screen": {
+    "Экран слишком часто делился и соединялся": 4,
+    "Мешали друг другу": 1,
+    "Ничего не мешало": 1
+   },
+   "sequel": {
+    "Больше головоломок": 4,
+    "Новые герои": 4,
+    "Больше нарядов": 3,
+    "Больше боссов": 3,
+    "Игра по сети": 3,
+    "Новые миры": 2,
+    "Больше сюжета": 1,
+    "Больше ритм-уровней": 1
+   },
+   "gamer": {
+    "Часто": 4,
+    "Иногда": 3
+   },
+   "m_heroes": {
+    "Прошка": [
+     4.14,
+     7
+    ],
+    "Потап": [
+     4.43,
+     7
+    ],
+    "Пелагея": [
+     4.43,
+     7
+    ],
+    "Йоша": [
+     4.14,
+     7
+    ]
+   },
+   "m_worlds": {
+    "Дремучий лес": [
+     3.43,
+     7
+    ],
+    "Подводный Китеж": [
+     3.0,
+     7
+    ],
+    "Небесное царство": [
+     3.29,
+     7
+    ],
+    "Огненная Смородина": [
+     3.0,
+     7
+    ],
+    "Остров Буян": [
+     3.6,
+     5
+    ]
+   },
+   "m_special": {
+    "Ритм-раннеры: Колобок, Сирин и Алконост, «Калинка»": [
+     3.14,
+     7
+    ],
+    "Полёт на Горыныче (Утка)": [
+     4.2,
+     5
+    ],
+    "Летучий корабль": [
+     3.71,
+     7
+    ],
+    "Уровни на четверых: Невод, Эй ухнем, Заяц": [
+     2.86,
+     7
+    ],
+    "Свет и тень: перо Жар-птицы": [
+     2.43,
+     7
+    ],
+    "Прилив и отлив: гусли Садко": [
+     2.71,
+     7
+    ],
+    "Лава и клещи в Смородине": [
+     2.86,
+     7
+    ]
+   },
+   "m_bosses": {
+    "Леший-Путаник": [
+     3.57,
+     7
+    ],
+    "Водяной": [
+     3.29,
+     7
+    ],
+    "Соловей-Разбойник": [
+     3.29,
+     7
+    ],
+    "Змей Горыныч": [
+     3.6,
+     5
+    ],
+    "Кощей Бессмертный": [
+     3.2,
+     5
+    ]
+   },
+   "m_diff": {
+    "Дремучий лес": [
+     2.29,
+     7
+    ],
+    "Подводный Китеж": [
+     2.71,
+     7
+    ],
+    "Небесное царство": [
+     2.43,
+     7
+    ],
+    "Огненная Смородина": [
+     2.29,
+     7
+    ],
+    "Остров Буян": [
+     2.6,
+     5
+    ]
+   },
+   "m_abilities": {
+    "Рогатка Прошки": [
+     4.29,
+     7
+    ],
+    "Подкидка и щит Потапа": [
+     4.57,
+     7
+    ],
+    "Совиный взор и полёт Пелагеи": [
+     4.57,
+     7
+    ],
+    "Ковшик Йоши: живая и мёртвая вода": [
+     4.29,
+     7
+    ],
+    "Клубок-путеводитель": [
+     3.0,
+     7
+    ],
+    "Гусли Садко": [
+     3.43,
+     7
+    ],
+    "Перо Жар-птицы": [
+     3.71,
+     7
+    ],
+    "Кузнечные клещи": [
+     3.29,
+     7
+    ]
+   },
+   "m_av": {
+    "Графика в целом": [
+     4.0,
+     7
+    ],
+    "Главные герои": [
+     3.57,
+     7
+    ],
+    "Жители сказки": [
+     4.0,
+     7
+    ],
+    "Мороки и боссы": [
+     3.86,
+     7
+    ],
+    "Анимации и мимика": [
+     3.57,
+     7
+    ],
+    "Эффекты ударов": [
+     3.86,
+     7
+    ],
+    "Ролики между уровнями": [
+     3.43,
+     7
+    ],
+    "Меню и интерфейс": [
+     3.43,
+     7
+    ],
+    "Музыка": [
+     3.71,
+     7
+    ],
+    "Звуки": [
+     3.43,
+     7
+    ],
+    "Субтитры": [
+     3.71,
+     7
+    ]
+   }
+  },
+  "14+": {
+   "n": 7,
+   "stars": [
+    3.43,
+    7
+   ],
+   "answered_pct": 0.98,
+   "edu": [
+    4.14,
+    7
+   ],
+   "onboard": [
+    4.14,
+    7
+   ],
+   "perf": [
+    4.43,
+    7
+   ],
+   "nps": [
+    5.57,
+    7
+   ],
+   "age_fit": {
+    "8+": 4,
+    "6+": 2,
+    "10+": 1
+   },
+   "scary": {
+    "Пара напряжённых моментов — это нормально": 4,
+    "Ничего пугающего": 2,
+    "Есть моменты, слишком страшные для малышей": 1
+   },
+   "paths": {
+    "Заметна и уместна": 4,
+    "Не пробовали разные": 2,
+    "Слабо заметна": 1
+   },
+   "lv_best": {
+    "Утка (полёт на Горыныче)": 5,
+    "Яйцо («Калинка»)": 3,
+    "Леший водит": 2,
+    "Кощей в тереме": 2,
+    "Колобок": 2,
+    "Невод": 1,
+    "Застава трёх богатырей": 1,
+    "Эй, ухнем!": 1,
+    "Летучий корабль": 1,
+    "В брюхе у кита": 1,
+    "Заяц": 1,
+    "Кузня Кузьмы и Демьяна": 1
+   },
+   "lv_worst": {
+    "Сундук на дубе": 3,
+    "Кикиморина прялка": 3,
+    "Застава трёх богатырей": 3,
+    "Гусли Садко": 3,
+    "Заяц": 2,
+    "Сирин и Алконост": 1,
+    "Избушка, повернись": 1,
+    "Облачные пастбища": 1,
+    "Река Смородина": 1,
+    "Китеж звонит": 1,
+    "Невод": 1
+   },
+   "access": {
+    "Озвучка реплик": 7,
+    "Переназначение кнопок": 5,
+    "Помощь в сложных местах": 2,
+    "Настройка размера шрифта": 1
+   },
+   "voice": {
+    "Хватает субтитров и звуков": 5,
+    "Нужна полноценная озвучка героев": 2
+   },
+   "price": {
+    "300–700 ₽": 3,
+    "До 300 ₽": 2,
+    "Бесплатно": 1,
+    "700–1500 ₽": 1
+   },
+   "buy": {
+    "Скорее да": 5,
+    "Скорее нет": 1,
+    "Да": 1
+   },
+   "bugs": {
+    "Ничего такого не было": 6,
+    "Не пропускался ролик": 1
+   },
+   "hours": {
+    "6–10 ч": 3,
+    "3–6 ч": 3,
+    "10–15 ч": 1
+   },
+   "done": {
+    "Сюжет до конца": 7
+   },
+   "role": {
+    "Играл(а) вместе с ребёнком": 4,
+    "Играл(а) сам(а)": 2,
+    "Тестирую игры профессионально": 1
+   },
+   "exp": {
+    "Играю иногда": 3,
+    "Почти не играю": 2,
+    "Хардкорный игрок / разработчик": 1,
+    "Играю регулярно": 1
+   },
+   "m_nar": {
+    "Сюжет понятен детям 7–10 лет": [
+     3.14,
+     7
+    ],
+    "История цельная, мотивы героев и злодея ясны": [
+     4.14,
+     7
+    ],
+    "Темп хороший, ролики не затянуты": [
+     2.57,
+     7
+    ],
+    "Персонажи запоминаются и различаются характерами": [
+     4.43,
+     7
+    ],
+    "Диалоги естественные, юмор уместный": [
+     3.86,
+     7
+    ],
+    "Фольклорная основа (Пушкин, былины, сказки) передана бережно и интересно": [
+     3.86,
+     7
+    ],
+    "Выборы в Сказах ощущаются значимыми": [
+     3.29,
+     7
+    ],
+    "Финал и концовки работают эмоционально": [
+     4.29,
+     7
+    ],
+    "Субтитры легко читать, лексика понятна детям": [
+     2.86,
+     7
+    ]
+   },
+   "m_mech": {
+    "Бой: читаемость сигналов (жёлтый кружок, красный зубец, синяя капля)": [
+     4.57,
+     7
+    ],
+    "Бой: отбив, кувырок, «Пробой», Богатырский мах и щит": [
+     3.71,
+     7
+    ],
+    "Способности героев: рогатка, подкидка, ковшик, Совиный взор": [
+     4.14,
+     7
+    ],
+    "Чудо-вещи миров: клубок, гусли, перо, клещи": [
+     3.71,
+     7
+    ],
+    "Головоломки и совместные задачи": [
+     3.29,
+     7
+    ],
+    "Платформинг и передвижение": [
+     3.43,
+     7
+    ],
+    "Ритм-раннеры: Колобок, Сирин и Алконост, «Калинка»": [
+     3.57,
+     7
+    ],
+    "Особые уровни: корабль, полёт на Горыныче, уровни на четверых": [
+     3.86,
+     7
+    ],
+    "Боссы": [
+     4.29,
+     7
+    ],
+    "Разнообразие механик по ходу игры": [
+     4.43,
+     7
+    ]
+   },
+   "m_diff": {
+    "Дремучий лес": [
+     2.0,
+     7
+    ],
+    "Подводный Китеж": [
+     2.0,
+     7
+    ],
+    "Небесное царство": [
+     2.14,
+     7
+    ],
+    "Огненная Смородина": [
+     2.14,
+     7
+    ],
+    "Остров Буян": [
+     2.14,
+     7
+    ]
+   },
+   "m_eco": {
+    "Звенья и кузня Кузьмы": [
+     3.86,
+     7
+    ],
+    "Орешки, лавка Векши и примерочная": [
+     3.0,
+     5
+    ],
+    "Самоцветы, сказки-лубки и карта тайников": [
+     3.5,
+     4
+    ],
+    "Огород Дедки и Курочка Ряба": [
+     3.75,
+     4
+    ],
+    "Застава трёх богатырей": [
+     3.33,
+     6
+    ],
+    "Карта-рушник и выбор уровня": [
+     3.43,
+     7
+    ]
+   },
+   "m_coop": {
+    "Оба игрока были вовлечены": [
+     3.67,
+     6
+    ],
+    "Роли героев дополняют друг друга": [
+     4.5,
+     6
+    ],
+    "Экран делится и соединяется уместно": [
+     3.5,
+     6
+    ],
+    "Разделённый экран удобен": [
+     3.67,
+     6
+    ],
+    "Ребёнок и взрослый могут играть на равных": [
+     3.25,
+     4
+    ]
+   },
+   "m_solo": {
+    "Переключаться между четырьмя героями удобно": [
+     3.0,
+     1
+    ],
+    "Помощник справляется с задачами «вдвоём»": [
+     4.0,
+     1
+    ],
+    "Удобно играть вторым героем, пока первый без сил": [
+     3.0,
+     1
+    ]
+   },
+   "m_ui": {
+    "Главное меню и пауза (в том числе с двумя геймпадами)": [
+     3.57,
+     7
+    ],
+    "HUD: читаемость, нет ли перегруза": [
+     3.14,
+     7
+    ],
+    "Подсказки и задачи внизу экрана": [
+     3.57,
+     7
+    ],
+    "Сохранения и продолжение": [
+     3.29,
+     7
+    ],
+    "Камера, в том числе правый стик": [
+     3.57,
+     7
+    ],
+    "Видимость героев за препятствиями": [
+     3.71,
+     7
+    ],
+    "Управление с клавиатуры": [
+     3.71,
+     7
+    ],
+    "Управление с геймпада": [
+     5.0,
+     1
+    ]
+   },
+   "m_vis": {
+    "Общий low-poly стиль": [
+     4.0,
+     7
+    ],
+    "Окружение и атмосфера миров": [
+     4.0,
+     7
+    ],
+    "Главные герои": [
+     4.14,
+     7
+    ],
+    "Жители сказки": [
+     4.14,
+     7
+    ],
+    "Мороки и боссы": [
+     4.0,
+     7
+    ],
+    "Анимация и мимика": [
+     3.71,
+     7
+    ],
+    "Эффекты ударов и VFX": [
+     3.86,
+     7
+    ],
+    "Ролики: режиссура и камера": [
+     4.0,
+     7
+    ],
+    "Свет и палитра": [
+     4.0,
+     7
+    ]
+   },
+   "m_snd": {
+    "Музыка: фольклорный саундтрек": [
+     4.14,
+     7
+    ],
+    "Песни в ритм-уровнях": [
+     3.86,
+     7
+    ],
+    "Звуковые эффекты": [
+     3.71,
+     7
+    ],
+    "Баланс громкости": [
+     3.0,
+     7
+    ]
+   }
+  }
+ },
+ "consistency": {
+  "n": 11,
+  "r_diff_vs_selfreport": 0.96
+ }
+}

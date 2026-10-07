@@ -1,0 +1,7388 @@
+{
+ "p": {
+  "id": "p",
+  "name": "Пролог · «Звенышко»",
+  "world": 0,
+  "n_obj": 14,
+  "words": 154,
+  "chars": 938,
+  "words_per_obj": 11.0,
+  "max_words": 15,
+  "long_word_share": 0.052,
+  "coop_obj": 2,
+  "key_obj": 5,
+  "swap_obj": 3,
+  "tip_zones": 3,
+  "prompts": 27,
+  "bells": 7,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "К жёлтому пятну ступай: WASD",
+    "words": 5,
+    "chars": 28,
+    "coop": false,
+    "keys": false,
+    "keystrict": true,
+    "swap": false,
+    "dt": 0.0
+   },
+   {
+    "idx": 1,
+    "text": "Подождём, пока дойдёт Друг до пятнышка — вот-вот!",
+    "words": 8,
+    "chars": 49,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 0.7
+   },
+   {
+    "idx": 2,
+    "text": "За Звенышком беги скорей, Трещину прыжком Пробел одолей!",
+    "words": 8,
+    "chars": 56,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 7.2
+   },
+   {
+    "idx": 3,
+    "text": "Уступ высок — Потапу не допрыгнуть, Прошку бери Q: он выше всех умеет прыгнуть!",
+    "words": 13,
+    "chars": 79,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 4,
+    "text": "Прошка наверху! На кнопку с лапкой встань — Для Потапа лесенка слетит, ты только глянь!",
+    "words": 14,
+    "chars": 87,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 5,
+    "text": "Упала лесенка! Кликни Потапа 1 — и в путь: За Звенышком вперёд, не отставать ничуть!",
+    "words": 14,
+    "chars": 84,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 6,
+    "text": "Щеколда высоко — рукой не достать. Метку-жёлудь видишь? Из рогатки E — стрелять!",
+    "words": 12,
+    "chars": 80,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 7,
+    "text": "Тропинка надвое бежит — Тебе налево: там Звенышко звенит.",
+    "words": 8,
+    "chars": 57,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 8,
+    "text": "Жёлтая плита с лапкой — встань на неё, И ворота откроются — вот и всё!",
+    "words": 13,
+    "chars": 70,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 9,
+    "text": "Смени героя Q — ступай в ворота смело: Первый на плите стоит — ворота не закроются.",
+    "words": 14,
+    "chars": 83,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 10,
+    "text": "За воротами — такая ж плита, гляди: Встань — теперь ворота держишь ты один.",
+    "words": 12,
+    "chars": 75,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 11,
+    "text": "Второго героя проведи теперь: Смени Q или позови к себе 1 — пройдёт он в дверь.",
+    "words": 15,
+    "chars": 79,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 12,
+    "text": "Впереди поляна. Постой — Подождём друга с тобой.",
+    "words": 7,
+    "chars": 48,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 13,
+    "text": "В дупло светящееся прыгай смело — За Звенышком! Вот и всё дело.",
+    "words": 11,
+    "chars": 63,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 3,
+  "dt_mean": 2.6,
+  "cines": [
+   {
+    "dur": 43.4,
+    "says": 7,
+    "chars": 223
+   }
+  ],
+  "n_cine": 1,
+  "cine_sec": 43.4,
+  "tips": 3,
+  "says": 7,
+  "banners": 1,
+  "say_chars": 223,
+  "tip_chars": 244,
+  "banner_chars": 39,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t12chudo",
+    "t12deep",
+    "t12long",
+    "t12n",
+    "t12pond",
+    "t13v",
+    "t15n",
+    "t1b",
+    "t21x",
+    "t24n",
+    "tfin_k1b",
+    "tfin_k1b3",
+    "tfin_k1bcine",
+    "tfin_k1bhands",
+    "tfin_k1bhide",
+    "tfin_kolobok",
+    "tfin_prolog_night",
+    "tfin_scooter",
+    "thub2",
+    "tpjump",
+    "tso12long",
+    "tso13"
+   ],
+   "best": "tpjump",
+   "complete": false,
+   "sim_sec": 19.0,
+   "hits": 0
+  },
+  "cat": {
+   "order": 0,
+   "world": 0,
+   "name": "Пролог «Звенышко»",
+   "survey": null,
+   "type": "tutorial",
+   "kids": true,
+   "mech": [
+    "platforming",
+    "swap",
+    "first_fight"
+   ],
+   "scene": [
+    "погоня за Звенышком по веткам",
+    "первая трещина и прыжок",
+    "калитка и рогатка Прошки"
+   ],
+   "funny": [
+    "Звенышко звенит в темноте"
+   ],
+   "demand": {
+    "r": 0.2,
+    "c": 0.3,
+    "l": 0.3,
+    "p": 0.3,
+    "e": 0.2
+   }
+  }
+ },
+ "luko": {
+  "id": "luko",
+  "name": "Лукоморье",
+  "world": 0,
+  "n_obj": 2,
+  "words": 17,
+  "chars": 116,
+  "words_per_obj": 8.5,
+  "max_words": 15,
+  "long_word_share": 0.176,
+  "coop_obj": 0,
+  "key_obj": 1,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 14,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Лукоморье! Погуляйте на просторе. Стан с рушником стоит у самого моря — подойди и нажми Пробел.",
+    "words": 15,
+    "chars": 95,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 1,
+    "text": "Рушник раскатывается…",
+    "words": 2,
+    "chars": 21,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 0,
+  "dt_mean": null,
+  "cines": [
+   {
+    "dur": 7,
+    "says": 2,
+    "chars": 144
+   },
+   {
+    "dur": 7.6,
+    "says": 2,
+    "chars": 158
+   },
+   {
+    "dur": 19,
+    "says": 3,
+    "chars": 175
+   },
+   {
+    "dur": 52,
+    "says": 12,
+    "chars": 692
+   },
+   {
+    "dur": 3,
+    "says": 0,
+    "chars": 0
+   },
+   {
+    "dur": 24.5,
+    "says": 3,
+    "chars": 129
+   },
+   {
+    "dur": 12.5,
+    "says": 3,
+    "chars": 195
+   }
+  ],
+  "n_cine": 7,
+  "cine_sec": 125.6,
+  "tips": 0,
+  "says": 12,
+  "banners": 1,
+  "say_chars": 747,
+  "tip_chars": 0,
+  "banner_chars": 59,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t11",
+    "t12long",
+    "t13v",
+    "t15n",
+    "t33n",
+    "t35",
+    "t41v",
+    "t43",
+    "t44",
+    "t45",
+    "t51",
+    "t52",
+    "t53",
+    "t54",
+    "t5b1",
+    "tepi",
+    "tfin_k1b3",
+    "tfin_k1b3solo",
+    "tfin_k1bcine",
+    "tfin_k21",
+    "tfin_k22",
+    "tfin_k24",
+    "tfin_k25",
+    "tfin_k2bboss",
+    "tfin_k3bboss",
+    "tfin_kolobok",
+    "tfin_luko",
+    "tfin_sky31boss",
+    "tfin_sky32boss",
+    "thub2",
+    "thub9",
+    "tluko",
+    "tso12long",
+    "tso13",
+    "tso33",
+    "tso54",
+    "tzast"
+   ],
+   "best": "thub9",
+   "complete": false,
+   "sim_sec": 32.9,
+   "hits": 0
+  },
+  "cat": {
+   "order": 1,
+   "world": 0,
+   "name": "Лукоморье",
+   "survey": "Лукоморье",
+   "type": "hub",
+   "kids": false,
+   "mech": [
+    "hub",
+    "forge_rhythm",
+    "shop",
+    "garden"
+   ],
+   "scene": [
+    "дуб с Златой цепью и Кот Учёный",
+    "кузня Кузьмы",
+    "лавка Векши и примерочная",
+    "огород Дедки",
+    "курочка Ряба"
+   ],
+   "funny": [
+    "Кот Учёный и самовар"
+   ],
+   "demand": {
+    "r": 0.1,
+    "c": 0.1,
+    "l": 0.1,
+    "p": 0.1,
+    "e": 0.1
+   }
+  }
+ },
+ "1-1": {
+  "id": "1-1",
+  "name": "1-1 · «Избушка, повернись»",
+  "world": 1,
+  "n_obj": 10,
+  "words": 139,
+  "chars": 840,
+  "words_per_obj": 13.9,
+  "max_words": 22,
+  "long_word_share": 0.043,
+  "coop_obj": 4,
+  "key_obj": 6,
+  "swap_obj": 3,
+  "tip_zones": 5,
+  "prompts": 16,
+  "bells": 5,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Избушка к нам задом стоит. Звенышко: «Скажите ей, как в сказке, — пусть повернёт!»",
+    "words": 13,
+    "chars": 82,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 1,
+    "text": "Все четверо — на пеньки с лапками! Смени Q или кликни 1, На счёт «ТРИ» — свой приём E жми, будь готов!",
+    "words": 20,
+    "chars": 102,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 2,
+    "text": "Избушка поворачивается…",
+    "words": 2,
+    "chars": 23,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 3.5
+   },
+   {
+    "idx": 3,
+    "text": "Кикиморки! Солнышко над ней — щитом G закройся, Огоньки погасли — бей F, не бойся!",
+    "words": 13,
+    "chars": 82,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 18.7
+   },
+   {
+    "idx": 4,
+    "text": "Кикиморки намусорили! Подойди — мусор сам возьмётся. В кучу у забора неси: 0 / 1. Корыто — вдвоём несётся.",
+    "words": 16,
+    "chars": 106,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 55.7
+   },
+   {
+    "idx": 5,
+    "text": "Баба Яга клубки раздаёт…",
+    "words": 4,
+    "chars": 24,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 0.0
+   },
+   {
+    "idx": 6,
+    "text": "На грядках капуста — топтать не смей! Брось клубок R — и по нити, как по дощечке, скорей.",
+    "words": 16,
+    "chars": 89,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 12.2
+   },
+   {
+    "idx": 7,
+    "text": "Звено на крыше сарая! Прошкой рядом с Потапом встань, Смени на Потапа, жми E — он подкинет, только глянь!",
+    "words": 18,
+    "chars": 105,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": 9.1
+   },
+   {
+    "idx": 8,
+    "text": "Лужа широка — одной нити мало. Бросьте клубки ОБА у края R — нить к нити пристала.",
+    "words": 15,
+    "chars": 82,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 3.9
+   },
+   {
+    "idx": 9,
+    "text": "Калитка ждёт две лапки разом: встань героем на лапку, смени Q — второй встанет на другую. Постойте вдвоём секунду — и калитка откроется насовсем.",
+    "words": 22,
+    "chars": 145,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   }
+  ],
+  "dt_known": 7,
+  "dt_mean": 14.7,
+  "cines": [
+   {
+    "dur": 19.2,
+    "says": 5,
+    "chars": 258
+   },
+   {
+    "dur": 12.5,
+    "says": 5,
+    "chars": 298
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 31.7,
+  "tips": 4,
+  "says": 5,
+  "banners": 7,
+  "say_chars": 307,
+  "tip_chars": 247,
+  "banner_chars": 403,
+  "encounters": [
+   {
+    "kinds": [
+     "kiki",
+     "kiki",
+     "kiki",
+     "kiki",
+     "kiki"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "kiki"
+  ],
+  "oracle": {
+   "bots": [
+    "t11",
+    "tfin_luko"
+   ],
+   "best": "t11",
+   "complete": true,
+   "sim_sec": 136.3,
+   "hits": 0
+  },
+  "cat": {
+   "order": 2,
+   "world": 1,
+   "name": "Избушка, повернись",
+   "survey": "Избушка, повернись",
+   "type": "adventure",
+   "kids": true,
+   "mech": [
+    "coop_puzzle",
+    "combat_basic",
+    "clew",
+    "reading"
+   ],
+   "scene": [
+    "избушка поворачивается задом-наперёд",
+    "кикиморки намусорили",
+    "корыто поднимают вдвоём",
+    "калитка-упрямица",
+    "нить через грядки Яги"
+   ],
+   "funny": [
+    "Баба Яга у избушки на курьих ножках",
+    "кикиморки с ложками"
+   ],
+   "demand": {
+    "r": 0.35,
+    "c": 0.7,
+    "l": 0.6,
+    "p": 0.3,
+    "e": 0.4
+   }
+  }
+ },
+ "1-2": {
+  "id": "1-2",
+  "name": "1-2 · «Кикиморино болото»",
+  "world": 1,
+  "n_obj": 14,
+  "words": 252,
+  "chars": 1531,
+  "words_per_obj": 18.0,
+  "max_words": 22,
+  "long_word_share": 0.067,
+  "coop_obj": 0,
+  "key_obj": 11,
+  "swap_obj": 3,
+  "tip_zones": 12,
+  "prompts": 28,
+  "bells": 12,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Болото! Простая нить за пять секунд тонет. Брось клубок R в колышек с ленточкой — струна не утонет, пока не смотаешь, не тронет.",
+    "words": 22,
+    "chars": 128,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 1,
+    "text": "Следующий колышек — над трясиной. Брось клубок R — и по струне иди. Пустую струну Паутинник грызёт — стой на ней иль прогони.",
+    "words": 20,
+    "chars": 125,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 15.7
+   },
+   {
+    "idx": 2,
+    "text": "По пенькам на высокую ветку взберись, Брось клубок R к колышку — и по струне вниз катись.",
+    "words": 16,
+    "chars": 89,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 5.2
+   },
+   {
+    "idx": 3,
+    "text": "Дальше — трясина глубока. На Потапа смени, Встань на камень с медвежьей лапой, брось клубок R — толстую струну натяни.",
+    "words": 18,
+    "chars": 118,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": 9.9
+   },
+   {
+    "idx": 4,
+    "text": "Потап, стой, не оборачивайся — пусть друзья пройдут! Потом Прошку возьми Q, перейди и Потапа кликни 1 — тут как тут.",
+    "words": 19,
+    "chars": 116,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": 16.8
+   },
+   {
+    "idx": 5,
+    "text": "Журавль сватается к Цапле — отнесите ей сватовство! Струны по кочкам до её избушки перекинь R — у каждого их не больше трёх.",
+    "words": 21,
+    "chars": 124,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 42.5
+   },
+   {
+    "idx": 6,
+    "text": "Журавль идёт по струнам свататься! Держите струны — не сматывайте, пока не дойдёт. Пузыри у струны — болотное чудо: отойди или щит G!",
+    "words": 21,
+    "chars": 133,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 46.6
+   },
+   {
+    "idx": 7,
+    "text": "Туман! Огоньки манят в трясину — который настоящий? Щёлкни огонёк из рогатки Прошки E: ложный лопнет, настоящий тропку поднимет.",
+    "words": 18,
+    "chars": 128,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 62.7
+   },
+   {
+    "idx": 8,
+    "text": "Стрела Ивана-царевича на сухой ольхе! Сбей её из рогатки Прошки E — Лягушка запоёт, и кувшинки в лад всплывут.",
+    "words": 19,
+    "chars": 110,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 6.7
+   },
+   {
+    "idx": 9,
+    "text": "Прыгай по кувшинкам в лад: на «Ква!» всплывают одни, на «Ква-ква!» — другие. Пруд глубокий: промахнулся — плюх, и снова у колокольчика.",
+    "words": 21,
+    "chars": 135,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 22.0
+   },
+   {
+    "idx": 10,
+    "text": "Бесёнок зовёт наперегонки вокруг омута! Встань на кружок у омута — и беги к флажку на том берегу.",
+    "words": 17,
+    "chars": 97,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 11.5
+   },
+   {
+    "idx": 11,
+    "text": "Подними-ка «кобылу»-колоду! Смени на Потапа Q, подойди к колоде и жми E — Потап её и закинет!",
+    "words": 18,
+    "chars": 93,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": 12.8
+   },
+   {
+    "idx": 12,
+    "text": "Пень-ворчун в коре — спереди не пробить. Красный зубец — кувырком Shift вбок, и сбоку бить!",
+    "words": 15,
+    "chars": 91,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 30.2
+   },
+   {
+    "idx": 13,
+    "text": "Бери звено — и дальше, за Звенышком, вперёд!",
+    "words": 7,
+    "chars": 44,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 12,
+  "dt_mean": 23.6,
+  "cines": [],
+  "n_cine": 0,
+  "cine_sec": 0,
+  "tips": 18,
+  "says": 24,
+  "banners": 14,
+  "say_chars": 1291,
+  "tip_chars": 1375,
+  "banner_chars": 704,
+  "encounters": [
+   {
+    "kinds": [
+     "kiki",
+     "kiki",
+     "kiki",
+     "stump",
+     "stump",
+     "tat"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "tat",
+     "tat",
+     "tat"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "kiki",
+   "stump",
+   "tat"
+  ],
+  "oracle": {
+   "bots": [
+    "t12chudo",
+    "t12deep",
+    "t12long",
+    "t12n",
+    "t12pond",
+    "tso12long"
+   ],
+   "best": "t12long",
+   "complete": false,
+   "sim_sec": 288.2,
+   "hits": 12
+  },
+  "cat": {
+   "order": 3,
+   "world": 1,
+   "name": "Кикиморино болото",
+   "survey": "Кикиморино болото",
+   "type": "adventure",
+   "kids": true,
+   "mech": [
+    "platforming",
+    "clew_strings",
+    "combat_basic",
+    "long",
+    "fog"
+   ],
+   "scene": [
+    "струны на колышках над болотом",
+    "Царевна-лягушка и стрела",
+    "бесёнок Балды наперегонки",
+    "Тать-Паутинник грызёт струну",
+    "огоньки-обманщики в тумане"
+   ],
+   "funny": [
+    "Ква! — кувшинки всплывают в лад",
+    "бесёнок Балды"
+   ],
+   "demand": {
+    "r": 0.4,
+    "c": 0.3,
+    "l": 0.5,
+    "p": 0.6,
+    "e": 0.8
+   }
+  }
+ },
+ "1-3": {
+  "id": "1-3",
+  "name": "1-3 · «Колобок»",
+  "world": 1,
+  "n_obj": 7,
+  "words": 122,
+  "chars": 744,
+  "words_per_obj": 17.4,
+  "max_words": 26,
+  "long_word_share": 0.008,
+  "coop_obj": 3,
+  "key_obj": 5,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 32,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "За Колобком беги! Дорожки — AD. Струна поперёк тропы — прыгай Пробел под бубенец: подкинет — будешь браво!",
+    "words": 15,
+    "chars": 106,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 1,
+    "text": "Мост через речку. Дыры да бочки — обегай стороной. Возьми перо — гусь-лебедь понесёт над мостом, над водой.",
+    "words": 17,
+    "chars": 107,
+    "coop": false,
+    "keys": true,
+    "keystrict": false,
+    "swap": false,
+    "dt": 18.5
+   },
+   {
+    "idx": 2,
+    "text": "Лиса сзади! Трижды подряд не споткнись — искры утащит. А в конце — три струны подряд, кто вперёд обрящет!",
+    "words": 17,
+    "chars": 105,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 17.1
+   },
+   {
+    "idx": 3,
+    "text": "Волчья чаща! Красный круг — на другую дорожку AD или кувырок Shift. Жёлтый — щит G в такт, потом бей F. Кабан — прыжок Пробел. Вожак — щит вдвоём, дружок.",
+    "words": 26,
+    "chars": 154,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 16.6
+   },
+   {
+    "idx": 4,
+    "text": "Гуси-лебеди! Красная ворона — перелети на соседнюю тропку. Жёлтый коршун — щит G в такт и бей F. Туча — облети. Вожак — щит вдвоём, в охотку.",
+    "words": 24,
+    "chars": 141,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 16.0
+   },
+   {
+    "idx": 5,
+    "text": "Пляска на гуслях 1 / 3 · прыгайте Пробел вместе на каждый звон — Четыре струны зажгите — вот вам и лад, и звон!",
+    "words": 20,
+    "chars": 111,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 30.6
+   },
+   {
+    "idx": 6,
+    "text": "Колобок звено отдаёт",
+    "words": 3,
+    "chars": 20,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 5,
+  "dt_mean": 19.8,
+  "cines": [
+   {
+    "dur": 5.2,
+    "says": 2,
+    "chars": 107
+   },
+   {
+    "dur": 22,
+    "says": 6,
+    "chars": 435
+   },
+   {
+    "dur": 12.5,
+    "says": 1,
+    "chars": 69
+   }
+  ],
+  "n_cine": 3,
+  "cine_sec": 39.7,
+  "tips": 11,
+  "says": 7,
+  "banners": 35,
+  "say_chars": 417,
+  "tip_chars": 904,
+  "banner_chars": 1656,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t13v",
+    "tfin_kolobok",
+    "tso13"
+   ],
+   "best": "tfin_kolobok",
+   "complete": false,
+   "sim_sec": 135.6,
+   "hits": 0
+  },
+  "cat": {
+   "order": 4,
+   "world": 1,
+   "name": "Колобок",
+   "survey": "Колобок",
+   "type": "rhythm",
+   "kids": true,
+   "mech": [
+    "rhythm",
+    "runner",
+    "three_lanes"
+   ],
+   "scene": [
+    "бег с Колобком под музыку",
+    "лиса сзади",
+    "мост с дырами и бочки",
+    "Колобок катится по тропинке"
+   ],
+   "funny": [
+    "Колобок поёт «Я от бабушки ушёл»",
+    "лиса злится"
+   ],
+   "demand": {
+    "r": 0.6,
+    "c": 0.3,
+    "l": 0.1,
+    "p": 0.6,
+    "e": 0.3
+   }
+  }
+ },
+ "1-4": {
+  "id": "1-4",
+  "name": "1-4 · «Леший водит»",
+  "world": 1,
+  "n_obj": 9,
+  "words": 136,
+  "chars": 794,
+  "words_per_obj": 15.1,
+  "max_words": 26,
+  "long_word_share": 0.059,
+  "coop_obj": 0,
+  "key_obj": 4,
+  "swap_obj": 1,
+  "tip_zones": 2,
+  "prompts": 14,
+  "bells": 5,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Шапки из мха на пне лежат…",
+    "words": 6,
+    "chars": 26,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 4.3
+   },
+   {
+    "idx": 1,
+    "text": "Ёлки ходят, когда на них не глядят! Светлячок светит, куда герой смотрит, — в луче ёлки стоят.",
+    "words": 16,
+    "chars": 94,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 9.8
+   },
+   {
+    "idx": 2,
+    "text": "Пелагею увели…",
+    "words": 2,
+    "chars": 14,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 25.6
+   },
+   {
+    "idx": 3,
+    "text": "Пелагея в кольце из ёлок — её луч держит ёлки на твоей тропе. Веди Прошку к изгороди. А Йоша под корнями пролезет — ёлку-замок полить на себе.",
+    "words": 26,
+    "chars": 142,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 4,
+    "text": "Сбей три шишки-замка (0 / 3): встань Прошкой на след светящийся И из рогатки стреляй E — не промахнёшься, не смутишься.",
+    "words": 20,
+    "chars": 119,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 5,
+    "text": "Поставь героя к тропе лицом и смени Q — светить он будет, пока светлячок горит. Ёлку-ворота клубком R у колышка привяжи — пусть стоит.",
+    "words": 23,
+    "chars": 134,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 6,
+    "text": "Поляна Лешего — всё тут ходит. Пелагея серебряную тропу покажет. Брось клубок R вдоль неё: нить Леший не сдвинет — ни на пядь, ни даже.",
+    "words": 23,
+    "chars": 135,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 7,
+    "text": "Лешачата! Жёлтый кружок — щитом G закройся, Красный зубец — кувыркнись Shift, не бойся!",
+    "words": 12,
+    "chars": 87,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 8,
+    "text": "Бери звено — и прочь из леса, за Звенышком!",
+    "words": 8,
+    "chars": 43,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 3,
+  "dt_mean": 13.2,
+  "cines": [
+   {
+    "dur": 12,
+    "says": 2,
+    "chars": 198
+   },
+   {
+    "dur": 25.5,
+    "says": 10,
+    "chars": 455
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 37.5,
+  "tips": 1,
+  "says": 11,
+  "banners": 2,
+  "say_chars": 553,
+  "tip_chars": 57,
+  "banner_chars": 150,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "tfin_kidnap14"
+   ],
+   "best": "tfin_kidnap14",
+   "complete": false,
+   "sim_sec": 51.5,
+   "hits": 0
+  },
+  "cat": {
+   "order": 5,
+   "world": 1,
+   "name": "Леший водит",
+   "survey": "Леший водит",
+   "type": "adventure",
+   "kids": true,
+   "mech": [
+    "coop_puzzle",
+    "separation",
+    "reading"
+   ],
+   "scene": [
+    "Леший водит по лесу",
+    "друзей разводит в разные стороны"
+   ],
+   "funny": [
+    "Леший путает тропинки"
+   ],
+   "demand": {
+    "r": 0.2,
+    "c": 0.6,
+    "l": 0.6,
+    "p": 0.3,
+    "e": 0.4
+   }
+  }
+ },
+ "1-5": {
+  "id": "1-5",
+  "name": "1-5 · «Кикиморина прялка»",
+  "world": 1,
+  "n_obj": 5,
+  "words": 79,
+  "chars": 482,
+  "words_per_obj": 15.8,
+  "max_words": 21,
+  "long_word_share": 0.025,
+  "coop_obj": 2,
+  "key_obj": 3,
+  "swap_obj": 0,
+  "tip_zones": 2,
+  "prompts": 12,
+  "bells": 3,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Нитяные мороки! Жёлтый кружок — щит. Синяя капля — отбей назад. Красный зубец — кувырок, и никаких преград.",
+    "words": 15,
+    "chars": 107,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 1,
+    "text": "Встань в своё кольцо — там герой твой нарисован — и клубок R в колышек брось. Струна друга поперёк ляжет — вот и сошлось.",
+    "words": 21,
+    "chars": 121,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 11.4
+   },
+   {
+    "idx": 2,
+    "text": "Встань в своё кольцо — там герой твой нарисован — и клубок R в колышек брось. Струна друга поперёк ляжет — вот и сошлось.",
+    "words": 21,
+    "chars": 121,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 19.9
+   },
+   {
+    "idx": 3,
+    "text": "Чердак, а тут пять мороков! С паутинки прыгни, в полёте ударь F — Сверху гаснут сразу два огонька, будь уверен, друг.",
+    "words": 20,
+    "chars": 117,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 26.1
+   },
+   {
+    "idx": 4,
+    "text": "Веретено падает…",
+    "words": 2,
+    "chars": 16,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 3,
+  "dt_mean": 19.1,
+  "cines": [
+   {
+    "dur": 13,
+    "says": 3,
+    "chars": 222
+   },
+   {
+    "dur": 21,
+    "says": 4,
+    "chars": 310
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 34,
+  "tips": 7,
+  "says": 5,
+  "banners": 3,
+  "say_chars": 212,
+  "tip_chars": 457,
+  "banner_chars": 188,
+  "encounters": [
+   {
+    "kinds": [
+     "thread",
+     "thread"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "thread",
+     "thread",
+     "thread",
+     "thread",
+     "thread"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "thread"
+  ],
+  "oracle": {
+   "bots": [
+    "t15n",
+    "thub2"
+   ],
+   "best": "thub2",
+   "complete": true,
+   "sim_sec": 0.9,
+   "hits": 3
+  },
+  "cat": {
+   "order": 6,
+   "world": 1,
+   "name": "Кикиморина прялка",
+   "survey": "Кикиморина прялка",
+   "type": "adventure",
+   "kids": true,
+   "mech": [
+    "combat_thread",
+    "puzzle"
+   ],
+   "scene": [
+    "прялка Кикиморы",
+    "нитяные мороки"
+   ],
+   "funny": [
+    "Кикимора ворчит у прялки"
+   ],
+   "demand": {
+    "r": 0.45,
+    "c": 0.4,
+    "l": 0.5,
+    "p": 0.4,
+    "e": 0.4
+   }
+  }
+ },
+ "1-B": {
+  "id": "1-B",
+  "name": "1-Б · «Леший-Путаник»",
+  "world": 1,
+  "n_obj": 5,
+  "words": 63,
+  "chars": 397,
+  "words_per_obj": 12.6,
+  "max_words": 20,
+  "long_word_share": 0.048,
+  "coop_obj": 0,
+  "key_obj": 3,
+  "swap_obj": 0,
+  "tip_zones": 2,
+  "prompts": 11,
+  "bells": 1,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Леший-Путаник…",
+    "words": 2,
+    "chars": 14,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 9.0
+   },
+   {
+    "idx": 1,
+    "text": "Руки-коряги! Левая — отбей щитом G, правая — кувырком Shift. Рука оглушена — беги по ней, как по мостку, бегом.",
+    "words": 18,
+    "chars": 111,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 0.1
+   },
+   {
+    "idx": 2,
+    "text": "Двойники прячутся! У настоящего — тень и мох-следы. Брось клубок R в колышек — настоящий упадёт: бей F, пока не очухался!",
+    "words": 20,
+    "chars": 121,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 6.0
+   },
+   {
+    "idx": 3,
+    "text": "Хоровод! Бегом по стрелкам вокруг Лешего — ленты наматываются (0 / 2). Скакалка — прыжок Пробел иль кувырок Shift, и беги дальше!",
+    "words": 19,
+    "chars": 129,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 3.0
+   },
+   {
+    "idx": 4,
+    "text": "Леший на пень садится…",
+    "words": 4,
+    "chars": 22,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 4,
+  "dt_mean": 4.5,
+  "cines": [
+   {
+    "dur": 9,
+    "says": 2,
+    "chars": 145
+   },
+   {
+    "dur": 6,
+    "says": 1,
+    "chars": 44
+   },
+   {
+    "dur": 6.6,
+    "says": 1,
+    "chars": 26
+   },
+   {
+    "dur": 16,
+    "says": 2,
+    "chars": 176
+   }
+  ],
+  "n_cine": 4,
+  "cine_sec": 37.6,
+  "tips": 19,
+  "says": 11,
+  "banners": 12,
+  "say_chars": 442,
+  "tip_chars": 1206,
+  "banner_chars": 737,
+  "encounters": [
+   {
+    "kinds": [
+     "leshyBoss"
+    ],
+    "count": 2
+   },
+   {
+    "kinds": [
+     "hand",
+     "hand"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "hand",
+   "leshyBoss"
+  ],
+  "oracle": {
+   "bots": [
+    "t1b",
+    "tfin_k1b",
+    "tfin_k1b3",
+    "tfin_k1b3solo",
+    "tfin_k1bcine",
+    "tfin_k1bhands",
+    "tfin_k1bhide"
+   ],
+   "best": "tfin_k1b3solo",
+   "complete": true,
+   "sim_sec": 63.1,
+   "hits": 28
+  },
+  "cat": {
+   "order": 7,
+   "world": 1,
+   "name": "Леший-Путаник",
+   "survey": null,
+   "boss": "Леший-Путаник",
+   "type": "boss",
+   "kids": true,
+   "mech": [
+    "boss",
+    "hide_and_seek",
+    "hands"
+   ],
+   "scene": [
+    "руки-коряги Лешего",
+    "прятки двойников",
+    "хоровод"
+   ],
+   "funny": [
+    "Леший в коре и шапке из мха"
+   ],
+   "demand": {
+    "r": 0.55,
+    "c": 0.6,
+    "l": 0.6,
+    "p": 0.4,
+    "e": 0.5
+   }
+  }
+ },
+ "2-1": {
+  "id": "2-1",
+  "name": "2-1 · «Гусли Садко»",
+  "world": 2,
+  "n_obj": 16,
+  "words": 321,
+  "chars": 1977,
+  "words_per_obj": 20.1,
+  "max_words": 40,
+  "long_word_share": 0.053,
+  "coop_obj": 4,
+  "key_obj": 11,
+  "swap_obj": 0,
+  "tip_zones": 13,
+  "prompts": 43,
+  "bells": 15,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Подводный Китеж! По дну идём в пузырях воздушных — Нам на площадь, к Садко, к гуслям звучным.",
+    "words": 16,
+    "chars": 93,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 0.7
+   },
+   {
+    "idx": 1,
+    "text": "У Садко струна порвалась. Мёртвая вода у Йоши — друга у Садко подожди.",
+    "words": 12,
+    "chars": 70,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 12.3
+   },
+   {
+    "idx": 2,
+    "text": "У каждого теперь гусли! Звено — на столбе фонтана. Встань у чаши, сыграй прилив R: доски всплывут без обмана.",
+    "words": 18,
+    "chars": 109,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 3,
+    "text": "Терем-библиотека. Прошка, книгу сказок открой.",
+    "words": 6,
+    "chars": 46,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 4,
+    "text": "Причал. Сыграй прилив R — лодки всплывут до крыш. С лодки шагни на крышу — и дальше, мимо крыш.",
+    "words": 17,
+    "chars": 95,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 5,
+    "text": "Дверь дома — на втором этаже. Прилив R сыграй, плыви к двери. Внутри — отлив: вода опустит, как лифт. Сундук на дне — бери.",
+    "words": 21,
+    "chars": 123,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 0.3
+   },
+   {
+    "idx": 6,
+    "text": "Переливная улица! Вода в двух каналах одна — через заслонку на дне левого канала. Поставь на неё Потапа: он тяжёлый, не всплывёт и держит, даже оставленный. Прилив у тебя R — отлив у друга. Лодкой — к террасе, дёрни верёвку: откроешь ворота ДРУГА.",
+    "words": 40,
+    "chars": 247,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 40.8
+   },
+   {
+    "idx": 7,
+    "text": "Шлюзы! Встань в воду и прилив R сыграй — вода подымет на ступеньку. Три ступеньки — и наверх, помаленьку.",
+    "words": 17,
+    "chars": 105,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 8,
+    "text": "Колодец-лифт. Встань в воду, отлив R сыграй — Спустишься вниз, как на лифте, так и знай.",
+    "words": 16,
+    "chars": 88,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 9,
+    "text": "Торговые ряды! Раки щиплют красным — кувырком Shift. Жемчужница в пруду: отлив R — ахнет и раскроется, тут и бей.",
+    "words": 18,
+    "chars": 113,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 5.2
+   },
+   {
+    "idx": 10,
+    "text": "Звонкая мостовая! Встаньте на звонкие плиты по напеву Садко: дзинь, дилинь — по очереди, а дон-дон — вдвоём, разом. Ворота сами запоют!",
+    "words": 21,
+    "chars": 135,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 15.7
+   },
+   {
+    "idx": 11,
+    "text": "Палаты Морского царя! Два стула гусляра — перед троном: играйте R оба — царь пляшет в два голоса. Кольца-волны от пляски — прыгай Пробел; пляс-ракушки над троном копят пляску. Наплясается — двери отворит.",
+    "words": 31,
+    "chars": 204,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 54.9
+   },
+   {
+    "idx": 12,
+    "text": "Две раковины. На таблички гляди: левой — прилив, правой — отлив. Сыграйте R — каждый у своей, вот и весь мотив.",
+    "words": 18,
+    "chars": 111,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 7.1
+   },
+   {
+    "idx": 13,
+    "text": "Сад Китежа. Ракушка — на дне, у родника: в приливе дойдёт только тяжёлый Потап — отлив R. Йоша польёт ростки L — вырастут лесенки к террасе. Родник снова наполнит сад — пусть оставленный держит напев!",
+    "words": 31,
+    "chars": 200,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 78.7
+   },
+   {
+    "idx": 14,
+    "text": "Рак-Отшельник не пускает к воротам! Раковину не пробить: сыграй R у ракушки-музыкалки — заслушается, тут и бей. Пробой — Потап вытянет его из раковины. Без домика удирает: зажмите с двух сторон!",
+    "words": 31,
+    "chars": 194,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 48.9
+   },
+   {
+    "idx": 15,
+    "text": "Ворота Китежа — бери звено, и в путь-дорогу!",
+    "words": 8,
+    "chars": 44,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 10,
+  "dt_mean": 26.5,
+  "cines": [
+   {
+    "dur": 9.4,
+    "says": 3,
+    "chars": 191
+   },
+   {
+    "dur": 20.6,
+    "says": 7,
+    "chars": 298
+   },
+   {
+    "dur": 8.2,
+    "says": 2,
+    "chars": 105
+   },
+   {
+    "dur": 9,
+    "says": 2,
+    "chars": 142
+   },
+   {
+    "dur": 15,
+    "says": 4,
+    "chars": 193
+   },
+   {
+    "dur": 6.4,
+    "says": 2,
+    "chars": 67
+   },
+   {
+    "dur": 16,
+    "says": 4,
+    "chars": 161
+   }
+  ],
+  "n_cine": 7,
+  "cine_sec": 84.6,
+  "tips": 23,
+  "says": 34,
+  "banners": 17,
+  "say_chars": 1506,
+  "tip_chars": 2316,
+  "banner_chars": 1237,
+  "encounters": [
+   {
+    "kinds": [
+     "otshel"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "otshel2"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "puzyr",
+     "rak",
+     "rak"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "rak",
+     "rak",
+     "shchuka",
+     "shchuka",
+     "shchuka",
+     "shchuka",
+     "shchuka",
+     "zhemchug",
+     "zhemchug",
+     "zhemchug"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "shchuka",
+     "shchuka",
+     "shchuka",
+     "shchuka",
+     "shchuka",
+     "zhemchug",
+     "zhemchug"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "zhemchug"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "otshel",
+   "otshel2",
+   "puzyr",
+   "rak",
+   "shchuka",
+   "zhemchug"
+  ],
+  "oracle": {
+   "bots": [
+    "t21",
+    "t21x",
+    "tfin_k21",
+    "tfin_k21foes",
+    "thub9"
+   ],
+   "best": "tfin_k21",
+   "complete": true,
+   "sim_sec": 282,
+   "hits": 6
+  },
+  "cat": {
+   "order": 8,
+   "world": 2,
+   "name": "Гусли Садко",
+   "survey": "Гусли Садко",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "water_tide",
+    "gusli",
+    "combat_ranged",
+    "coop_puzzle",
+    "long"
+   ],
+   "scene": [
+    "идём по дну в пузырях воздуха",
+    "гусли Садко",
+    "прилив и отлив поднимают лодки",
+    "две раковины одновременно",
+    "Рак-Отшельник"
+   ],
+   "funny": [
+    "щуки-мороки пускают пузыри",
+    "пустая книга «Не про меня»"
+   ],
+   "demand": {
+    "r": 0.45,
+    "c": 0.6,
+    "l": 0.8,
+    "p": 0.5,
+    "e": 0.9
+   }
+  }
+ },
+ "2-2": {
+  "id": "2-2",
+  "name": "2-2 · «Чудо-юдо Рыба-кит»",
+  "world": 2,
+  "n_obj": 14,
+  "words": 311,
+  "chars": 1845,
+  "words_per_obj": 22.2,
+  "max_words": 30,
+  "long_word_share": 0.042,
+  "coop_obj": 4,
+  "key_obj": 11,
+  "swap_obj": 1,
+  "tip_zones": 6,
+  "prompts": 45,
+  "bells": 8,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Чудо-юдо Рыба-кит! На хвосте у него сыр-бор шумит — а кит дышит: на вдохе гудит, на выдохе всю спину трясёт.",
+    "words": 22,
+    "chars": 108,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 3.7
+   },
+   {
+    "idx": 1,
+    "text": "Трещина в хвостовом плавнике! Потап повалит сосну E — будет мостик.",
+    "words": 10,
+    "chars": 67,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 5.7
+   },
+   {
+    "idx": 2,
+    "text": "Вода тут одна на двоих! У ракушки посерёдке сыграй R — над ней просьба твоя встанет. Через две секунды вода у обоих сменится. Прилив — и через забор плыви, пока не отстанет.",
+    "words": 30,
+    "chars": 173,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 3,
+    "text": "Мачта из воды торчит. В прилив до гнезда доплыви, верёвку дёрни F. А другу нужен отлив — договоритесь, кто первый, мой друг.",
+    "words": 21,
+    "chars": 124,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 4,
+    "text": "Пока у друга отлив — на дне кувшин, Потап его поднимет E. В грядках — раки, берегись! Ворота откроются, как оба своё сделают, — не торопись.",
+    "words": 23,
+    "chars": 140,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 5,
+    "text": "Фонтан кита! Лопнут два пузыря — кит выдохнет. Встаньте на дыру в спине, прилив R — до облаков подкинет, как вздохнет.",
+    "words": 19,
+    "chars": 118,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 13.8
+   },
+   {
+    "idx": 6,
+    "text": "Деревня на горбу кита. У пруда три ведра, в одном — щука; Пелагея Совиным взором покажет, в каком. Потап поднимет ведро E — да пруд сперва наполните: прилив R.",
+    "words": 27,
+    "chars": 159,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 20.1
+   },
+   {
+    "idx": 7,
+    "text": "По щучьему велению — печка сама едет по хребту! Садитесь на печку оба Пробел. Раки на дороге — гоните их F; волна — щит G или прыжок. Смыло — догоняй!",
+    "words": 26,
+    "chars": 150,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 45.6
+   },
+   {
+    "idx": 8,
+    "text": "Бока кита: рёбра ходят ходуном — прыгай с ребра на ребро, когда сойдутся. Частоколы в рёбра вбиты: Потап выдернет кол E, а Йоша полечит рану живой водой L.",
+    "words": 27,
+    "chars": 155,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 30.8
+   },
+   {
+    "idx": 9,
+    "text": "Губа кита — мужички пашут, да плуги увязли в морских желудях: собьёте F — пойдёт соха. Один жёлудь — высоко на губе: рогатка Прошки. Кит зевает — держись у Потапа или у плуга!",
+    "words": 29,
+    "chars": 175,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 20.2
+   },
+   {
+    "idx": 10,
+    "text": "Между глаз мальчишки пляшут! Камушек твоего цвета загорается по кругу — успей на него встать. Наплясаться надо вволю — тогда кит глаза откроет.",
+    "words": 21,
+    "chars": 143,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 16.1
+   },
+   {
+    "idx": 11,
+    "text": "Дубрава меж усов: девушки грибы ищут — да не видать. Совиный взор Пелагеи L покажет. Собери пять боровиков. Мухомор не трогай — это прилипала!",
+    "words": 22,
+    "chars": 142,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 18.7
+   },
+   {
+    "idx": 12,
+    "text": "Кит ныряет — море подымается! Колыбельная, куплет первый: от дыхала бежит волна. Дошла до круга у ракушек — играйте R обе разом, в лад. Строк спето: 0 из 3.",
+    "words": 27,
+    "chars": 156,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 106.8
+   },
+   {
+    "idx": 13,
+    "text": "Звено — на облаке! Бери — и в путь.",
+    "words": 7,
+    "chars": 35,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 10,
+  "dt_mean": 28.1,
+  "cines": [
+   {
+    "dur": 12.6,
+    "says": 2,
+    "chars": 263
+   },
+   {
+    "dur": 12.4,
+    "says": 5,
+    "chars": 152
+   },
+   {
+    "dur": 12.6,
+    "says": 3,
+    "chars": 232
+   },
+   {
+    "dur": 17.4,
+    "says": 4,
+    "chars": 253
+   },
+   {
+    "dur": 20.8,
+    "says": 7,
+    "chars": 236
+   },
+   {
+    "dur": 24,
+    "says": 7,
+    "chars": 304
+   }
+  ],
+  "n_cine": 6,
+  "cine_sec": 99.8,
+  "tips": 26,
+  "says": 37,
+  "banners": 13,
+  "say_chars": 1825,
+  "tip_chars": 2403,
+  "banner_chars": 826,
+  "encounters": [
+   {
+    "kinds": [
+     "chaika",
+     "chaika",
+     "chaika",
+     "chaika",
+     "prilip",
+     "prilip",
+     "rak",
+     "rak",
+     "rak",
+     "rak",
+     "rak"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "chaika",
+     "chaika",
+     "prilip"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "rak",
+     "rak"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "chaika",
+   "prilip",
+   "rak"
+  ],
+  "oracle": {
+   "bots": [
+    "t22d",
+    "tfin_k22"
+   ],
+   "best": "tfin_k22",
+   "complete": true,
+   "sim_sec": 316.4,
+   "hits": 6
+  },
+  "cat": {
+   "order": 9,
+   "world": 2,
+   "name": "Чудо-юдо Рыба-кит",
+   "survey": "Рыба-кит",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "water_shared",
+    "gusli",
+    "combat_basic",
+    "lullaby"
+   ],
+   "scene": [
+    "деревня на спине кита",
+    "колыбельная киту в три куплета",
+    "трещина в хвостовом плавнике",
+    "Потап забыл былину"
+   ],
+   "funny": [
+    "рак-щипач вязнет в грядках",
+    "кит зевает"
+   ],
+   "demand": {
+    "r": 0.35,
+    "c": 0.6,
+    "l": 0.7,
+    "p": 0.4,
+    "e": 0.8
+   }
+  }
+ },
+ "2-3": {
+  "id": "2-3",
+  "name": "2-3 · «Невод»",
+  "world": 2,
+  "n_obj": 13,
+  "words": 271,
+  "chars": 1654,
+  "words_per_obj": 20.8,
+  "max_words": 33,
+  "long_word_share": 0.048,
+  "coop_obj": 2,
+  "key_obj": 10,
+  "swap_obj": 3,
+  "tip_zones": 5,
+  "prompts": 26,
+  "bells": 6,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Первое дело — сундук на дне. Видишь четыре камня со знаком клубка? Встань на камень, брось клубок R к середине. У каждого — два героя: сменяй Q слегка.",
+    "words": 26,
+    "chars": 151,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 1,
+    "text": "Нити встретились! Сейчас Йоша их мёртвой водой срастит…",
+    "words": 8,
+    "chars": 55,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 2,
+    "text": "Держите углы невода (хоть три) и прилив R — вот и всё: Невод всплывёт, и сундук с собой унесёт.",
+    "words": 18,
+    "chars": 95,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 3,
+    "text": "Второе: звено над течением висит. Героев на ближние камни поставь, клубки R бросай. Три угла да прилив — невод станет мостом, так и знай.",
+    "words": 23,
+    "chars": 137,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 4,
+    "text": "Золотая рыбка! Пред ней четыре кольца в ряд. Встань на кольцо «1», брось клубок R. По порядку: 1, 2, 3, 4 — как велят.",
+    "words": 23,
+    "chars": 118,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 5,
+    "text": "Рыбка подарила напев «Течение»! Протока — на юге, за скалой. Ракушка с рыбкой на причале: сыграй R — вода побежит, куда смотришь, и плот поплывёт. Сменишь героя — оставленный доиграет.",
+    "words": 27,
+    "chars": 184,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 6,
+    "text": "Водоворот держит плот! Кто-то воду крутит. Пелагея Совиным взором покажет тайное течение — на уступе у стены. Сыграй его R — водоворот распадётся.",
+    "words": 22,
+    "chars": 146,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 7,
+    "text": "Ёрш Ершович в озере озорует! Невод поперёк озера держат двое на камнях — и оставленные держат. Двое у раковин — течения навстречу R: одно течение ёрш проскочит, два — зажмут его посредине.",
+    "words": 29,
+    "chars": 188,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 8,
+    "text": "Рыбий суд…",
+    "words": 2,
+    "chars": 10,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 9,
+    "text": "Ёрш проводит к Рыбе-киту! Лодка старика — у причала: все в лодку Пробел. Ракушка с рыбкой на причале: сыграй «Течение» R — и запрыгивай, пока лодка не уплыла. Сменишь героя — оставленный доиграет.",
+    "words": 31,
+    "chars": 196,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 10,
+    "text": "Заросли водорослей поперёк протока — лодку не пускают, вплавь не пролезть. Руби F с носа лодки — и течение понесёт дальше, к отмели.",
+    "words": 21,
+    "chars": 132,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 11,
+    "text": "Рыба-кит спит, пасть на замке, — а язык колокола у него в брюхе. Ёрш шепчет: зевнёт, коль усы пощекотать! Все четыре разом: нижние — удар F, верхние — рогатка Прошки E. Храпнёт — отходи в сторону!",
+    "words": 33,
+    "chars": 196,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 12,
+    "text": "Кит зевает! Все — в пасть, за языком колокола!",
+    "words": 8,
+    "chars": 46,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 0,
+  "dt_mean": null,
+  "cines": [
+   {
+    "dur": 12,
+    "says": 3,
+    "chars": 217
+   },
+   {
+    "dur": 20.4,
+    "says": 6,
+    "chars": 335
+   },
+   {
+    "dur": 22,
+    "says": 5,
+    "chars": 280
+   },
+   {
+    "dur": 14.4,
+    "says": 4,
+    "chars": 214
+   }
+  ],
+  "n_cine": 4,
+  "cine_sec": 68.8,
+  "tips": 6,
+  "says": 22,
+  "banners": 8,
+  "say_chars": 1173,
+  "tip_chars": 598,
+  "banner_chars": 604,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t23f",
+    "tfin_k23"
+   ],
+   "best": "t23f",
+   "complete": false,
+   "sim_sec": 18.7,
+   "hits": 0
+  },
+  "cat": {
+   "order": 10,
+   "world": 2,
+   "name": "Невод",
+   "survey": "Невод",
+   "type": "four",
+   "kids": false,
+   "mech": [
+    "four_heroes",
+    "coop_puzzle",
+    "reading",
+    "net"
+   ],
+   "scene": [
+    "невод держат четыре героя",
+    "золотая рыбка и четыре кольца",
+    "Ёрш Ершович ведёт к киту",
+    "усы на отмели щекочут разом"
+   ],
+   "funny": [
+    "Ёрш Ершович озорует в озере",
+    "золотая рыбка"
+   ],
+   "demand": {
+    "r": 0.2,
+    "c": 0.9,
+    "l": 0.8,
+    "p": 0.3,
+    "e": 0.6
+   }
+  }
+ },
+ "2-4": {
+  "id": "2-4",
+  "name": "2-4 · «В брюхе у кита»",
+  "world": 2,
+  "n_obj": 9,
+  "words": 157,
+  "chars": 936,
+  "words_per_obj": 17.4,
+  "max_words": 39,
+  "long_word_share": 0.07,
+  "coop_obj": 1,
+  "key_obj": 4,
+  "swap_obj": 0,
+  "tip_zones": 3,
+  "prompts": 27,
+  "bells": 6,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Нас кит проглотил! Внутри — целый мир. Бегите вглубь, к сердцу, — там и пир.",
+    "words": 13,
+    "chars": 76,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 1,
+    "text": "Перепонки под стук сердца «тук-тук» раскрываются. Жди, как раскроется, — и беги! А пред тем она мигает, качается.",
+    "words": 18,
+    "chars": 113,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 3.3
+   },
+   {
+    "idx": 2,
+    "text": "Желудочное озеро. Колокол над озером ворота Йоши откроет, как попросит он. А твои откроет Йоша. В отлив R к кораблю спуститься можно — там звено, и путь хороший.",
+    "words": 27,
+    "chars": 161,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 18.8
+   },
+   {
+    "idx": 3,
+    "text": "За озером — завал. В восточной стене дверь: там залив, а в нём корабли, что кит проглотил. Прилив R — корабли всплывут, течение R у ракушки с рыбкой — поплывут к горлу. Корабль на ребре — Потап снимет; на дне — что-то золотое!",
+    "words": 39,
+    "chars": 226,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 32.5
+   },
+   {
+    "idx": 4,
+    "text": "Зелёные лужи — кислый сок, обходи! Тинники медленны — щит и бей. Пузырник надувается — Прошка, из рогатки в него, скорей!",
+    "words": 18,
+    "chars": 121,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 0.0
+   },
+   {
+    "idx": 5,
+    "text": "Вперёд, к китову сердцу!",
+    "words": 4,
+    "chars": 24,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 6,
+    "text": "Сердце кита сбилось с лада. Нотка твоего цвета долетит до сердца — гусли R в долю! Нужно 11 из 16.",
+    "words": 19,
+    "chars": 98,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 7,
+    "text": "Реснички в носу кита! Одну вместе разом ударьте F — кит поморщится. Три реснички — и чихнёт, не удержится!",
+    "words": 17,
+    "chars": 106,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 4.7
+   },
+   {
+    "idx": 8,
+    "text": "Кит чихает…",
+    "words": 2,
+    "chars": 11,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 5,
+  "dt_mean": 11.9,
+  "cines": [
+   {
+    "dur": 11,
+    "says": 3,
+    "chars": 165
+   },
+   {
+    "dur": 10,
+    "says": 3,
+    "chars": 132
+   },
+   {
+    "dur": 9,
+    "says": 2,
+    "chars": 154
+   },
+   {
+    "dur": 6.5,
+    "says": 3,
+    "chars": 68
+   },
+   {
+    "dur": 16,
+    "says": 4,
+    "chars": 179
+   }
+  ],
+  "n_cine": 5,
+  "cine_sec": 52.5,
+  "tips": 7,
+  "says": 12,
+  "banners": 10,
+  "say_chars": 514,
+  "tip_chars": 498,
+  "banner_chars": 610,
+  "encounters": [
+   {
+    "kinds": [
+     "puzyr",
+     "puzyr",
+     "tinnik",
+     "tinnik",
+     "tinnik"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "puzyr",
+   "tinnik"
+  ],
+  "oracle": {
+   "bots": [
+    "t24n",
+    "tfin_k23",
+    "tfin_k24"
+   ],
+   "best": "tfin_k24",
+   "complete": true,
+   "sim_sec": 73.5,
+   "hits": 0
+  },
+  "cat": {
+   "order": 11,
+   "world": 2,
+   "name": "В брюхе у кита",
+   "survey": "В брюхе у кита",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "pulse_rhythm",
+    "coop_puzzle",
+    "platforming",
+    "combat_basic"
+   ],
+   "scene": [
+    "внутри кита светло, светящийся планктон",
+    "сердце стучит, клапаны-батуты",
+    "Йоша просит «Прошка, позвони в колокол! Пожалуйста!»",
+    "кит чихает и всех выносит"
+   ],
+   "funny": [
+    "кит чихает",
+    "медузы пульсируют"
+   ],
+   "demand": {
+    "r": 0.4,
+    "c": 0.6,
+    "l": 0.6,
+    "p": 0.5,
+    "e": 0.6
+   }
+  }
+ },
+ "2-5": {
+  "id": "2-5",
+  "name": "2-5 · «Китеж звонит»",
+  "world": 2,
+  "n_obj": 13,
+  "words": 227,
+  "chars": 1400,
+  "words_per_obj": 17.5,
+  "max_words": 29,
+  "long_word_share": 0.048,
+  "coop_obj": 2,
+  "key_obj": 8,
+  "swap_obj": 1,
+  "tip_zones": 7,
+  "prompts": 32,
+  "bells": 9,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Китеж подняться хочет, да колокола молчат. Первый колокол — на островке посреди колодца, говорят.",
+    "words": 13,
+    "chars": 97,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 1,
+    "text": "Звено упало на дно. Все в колодец — и отлив R сыграй: Вода вас опустит через весь город, так и знай.",
+    "words": 20,
+    "chars": 100,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 2,
+    "text": "Прилив R сделай — и наверх, к звонницам!",
+    "words": 7,
+    "chars": 40,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 3,
+    "text": "Низкая звонница. Отлив R сделай — язычок повиснет в пустоте. Из рогатки E в него стрельни — зазвенит в высоте.",
+    "words": 18,
+    "chars": 110,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 4,
+    "text": "Колокола звонят — Китеж растёт! Бегом вверх по ступеням!",
+    "words": 8,
+    "chars": 56,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 5,
+    "text": "Двойная звонница. Твой колокол — нижний: отлив R и рогатка E. У друга — верхний. Звоните подряд — за пять секунд успейте, как на праздник первый!",
+    "words": 23,
+    "chars": 145,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 6,
+    "text": "Выше — на площадку над провалом!",
+    "words": 5,
+    "chars": 32,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 7,
+    "text": "Невидимый Китеж: мост виден и твёрд, пока звенит колокол. Колокол на этом краю кажет ДРУГОЙ мост. Ракушка с колокольчиком — гусли R. Один звонит — другой идёт; за провалом — наоборот.",
+    "words": 28,
+    "chars": 183,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 26.4
+   },
+   {
+    "idx": 8,
+    "text": "Светлояр: камни через озеро невидимы, их кажет лишь отражение в воде — пока кто-то стоит на Феврониином камне у берега. Один смотрит — другой идёт.",
+    "words": 24,
+    "chars": 147,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 16.9
+   },
+   {
+    "idx": 9,
+    "text": "Напев Садко: дзинь, дилинь, дон, дон. Ноты на воротах — по порядку, лента на колоколе — его нота. Звоните гуслями R у ракушек друг за другом: слева, справа, слева, справа.",
+    "words": 28,
+    "chars": 171,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 11.9
+   },
+   {
+    "idx": 10,
+    "text": "Пузырники и щуки! Потап щитом G закрывает всех за спиной, Прошка из рогатки E надутых сбивает. Тягуна под водой не достать — отлив R сделай, на мели он и застревает.",
+    "words": 29,
+    "chars": 165,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 38.0
+   },
+   {
+    "idx": 11,
+    "text": "Главный колокол качают вчетвером. Прилив R сделай. Все четверо — на круг под колоколом (сменяй Q, кличь 1), на «ТРИ» — прыгайте Пробел смело!",
+    "words": 22,
+    "chars": 141,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": 20.2
+   },
+   {
+    "idx": 12,
+    "text": "Китеж звонит…",
+    "words": 2,
+    "chars": 13,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 5,
+  "dt_mean": 22.7,
+  "cines": [
+   {
+    "dur": 10,
+    "says": 3,
+    "chars": 161
+   },
+   {
+    "dur": 9,
+    "says": 3,
+    "chars": 127
+   },
+   {
+    "dur": 21,
+    "says": 5,
+    "chars": 212
+   }
+  ],
+  "n_cine": 3,
+  "cine_sec": 40,
+  "tips": 10,
+  "says": 15,
+  "banners": 9,
+  "say_chars": 667,
+  "tip_chars": 1029,
+  "banner_chars": 407,
+  "encounters": [
+   {
+    "kinds": [
+     "puzyr",
+     "puzyr",
+     "puzyr",
+     "puzyr",
+     "shchuka",
+     "shchuka",
+     "tyagun"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "puzyr",
+   "shchuka",
+   "tyagun"
+  ],
+  "oracle": {
+   "bots": [
+    "t25c",
+    "tfin_k25"
+   ],
+   "best": "tfin_k25",
+   "complete": true,
+   "sim_sec": 137.2,
+   "hits": 4
+  },
+  "cat": {
+   "order": 12,
+   "world": 2,
+   "name": "Китеж звонит",
+   "survey": "Китеж звонит",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "water_tide",
+    "bells",
+    "combat_tyagun",
+    "four_heroes_finale"
+   ],
+   "scene": [
+    "колокола звонят на отметке воды",
+    "главный колокол на «ТРИ»",
+    "Тягун у главного колокола",
+    "город растёт под ногами"
+   ],
+   "funny": [
+    "колокол теряет звук и уходит на дно"
+   ],
+   "demand": {
+    "r": 0.45,
+    "c": 0.7,
+    "l": 0.8,
+    "p": 0.5,
+    "e": 0.7
+   }
+  }
+ },
+ "2-B": {
+  "id": "2-B",
+  "name": "2-Б · «Водяной»",
+  "world": 2,
+  "n_obj": 15,
+  "words": 191,
+  "chars": 1148,
+  "words_per_obj": 12.7,
+  "max_words": 29,
+  "long_word_share": 0.026,
+  "coop_obj": 1,
+  "key_obj": 9,
+  "swap_obj": 1,
+  "tip_zones": 3,
+  "prompts": 30,
+  "bells": 7,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Вал по пятам! Дуб поперёк тропы — Потап его поднимет E (смени героя Q).",
+    "words": 13,
+    "chars": 71,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": 9.1
+   },
+   {
+    "idx": 1,
+    "text": "Мельница: колесо крутится — не пройти. Потап — к тормозу справа от колеса (светится) E: лопасти встанут ступенями — беги по ним! На том берегу встань на плиту — колесо удержишь для Потапа.",
+    "words": 29,
+    "chars": 188,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 7.7
+   },
+   {
+    "idx": 2,
+    "text": "Пруд глубокий. Сыграй у раковины R — кувшинки всплывут в лад. Напев стих — тонут!",
+    "words": 13,
+    "chars": 81,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 8.9
+   },
+   {
+    "idx": 3,
+    "text": "Ручей: в отлив из него не выбраться. Прилив гуслями R у ракушки — и вплавь!",
+    "words": 14,
+    "chars": 75,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 7.5
+   },
+   {
+    "idx": 4,
+    "text": "Развилка! Один — наверх, к рычагу шлюза F, другой — вниз, к заслонке: вода понесёт!",
+    "words": 13,
+    "chars": 83,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 11.7
+   },
+   {
+    "idx": 5,
+    "text": "За скалами — гребешок Василисы: Йоша польёт — и камыш встанет стеной. Проходи скорей!",
+    "words": 12,
+    "chars": 85,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 3.6
+   },
+   {
+    "idx": 6,
+    "text": "Лодка Садко! В лодку: ты у руля — влево-вправо, мимо коряг.",
+    "words": 11,
+    "chars": 59,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 10.6
+   },
+   {
+    "idx": 7,
+    "text": "Плетень на запоре: две верёвки — дёрните разом F!",
+    "words": 8,
+    "chars": 49,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 1.2
+   },
+   {
+    "idx": 8,
+    "text": "К омуту!",
+    "words": 2,
+    "chars": 8,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 2.6
+   },
+   {
+    "idx": 9,
+    "text": "Омут…",
+    "words": 1,
+    "chars": 5,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 16.0
+   },
+   {
+    "idx": 10,
+    "text": "Этап 1 · Сом-перевозчик. Синий круг — щит G в последний миг; красная дорожка — в сторону. Сом бросится на мель — сбей ему ус и тяни! Запал: 0%",
+    "words": 26,
+    "chars": 142,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 34.1
+   },
+   {
+    "idx": 11,
+    "text": "Этап 2 · Водяные кони. Сыграй у раковины R — конь замрёт; садится другой Пробел. Красный круг на воде — кони меняют ряд.",
+    "words": 20,
+    "chars": 120,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 49.8
+   },
+   {
+    "idx": 12,
+    "text": "Этап 3 · Омут-зеркало. Совиный взор — настоящий; рогатка — метка; плот-кувшинка — к середине.",
+    "words": 13,
+    "chars": 93,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 16.0
+   },
+   {
+    "idx": 13,
+    "text": "Этап 4 · Великий вал. На «БОМ!» — бей свой колокол F. Волн разбито: 0 / 3",
+    "words": 14,
+    "chars": 73,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 46.5
+   },
+   {
+    "idx": 14,
+    "text": "Колокола Китежа…",
+    "words": 2,
+    "chars": 16,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 14,
+  "dt_mean": 16.1,
+  "cines": [
+   {
+    "dur": 8.6,
+    "says": 3,
+    "chars": 112
+   },
+   {
+    "dur": 16,
+    "says": 5,
+    "chars": 315
+   },
+   {
+    "dur": 9.5,
+    "says": 3,
+    "chars": 124
+   },
+   {
+    "dur": 12,
+    "says": 4,
+    "chars": 187
+   },
+   {
+    "dur": 7,
+    "says": 3,
+    "chars": 76
+   },
+   {
+    "dur": 24,
+    "says": 6,
+    "chars": 323
+   }
+  ],
+  "n_cine": 6,
+  "cine_sec": 77.1,
+  "tips": 23,
+  "says": 58,
+  "banners": 23,
+  "say_chars": 1895,
+  "tip_chars": 2394,
+  "banner_chars": 841,
+  "encounters": [
+   {
+    "kinds": [
+     "vodyanoy"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "vodyanoy"
+  ],
+  "oracle": {
+   "bots": [
+    "t2c",
+    "tfin_k2b",
+    "tfin_k2bboss",
+    "tfin_k2bmill"
+   ],
+   "best": "tfin_k2bboss",
+   "complete": true,
+   "sim_sec": 200.5,
+   "hits": 9
+  },
+  "cat": {
+   "order": 13,
+   "world": 2,
+   "name": "Водяной",
+   "survey": null,
+   "boss": "Водяной",
+   "type": "boss",
+   "kids": false,
+   "mech": [
+    "boss",
+    "chase",
+    "four_stages"
+   ],
+   "scene": [
+    "погоня с валом",
+    "сом-перевозчик",
+    "водяные кони",
+    "омут-зеркало",
+    "великий вал"
+   ],
+   "funny": [
+    "Водяной — буйная вода, а не злодей"
+   ],
+   "demand": {
+    "r": 0.65,
+    "c": 0.7,
+    "l": 0.6,
+    "p": 0.5,
+    "e": 0.7
+   }
+  }
+ },
+ "3-1": {
+  "id": "3-1",
+  "name": "3-1 · «Сад молодильных яблок»",
+  "world": 3,
+  "n_obj": 18,
+  "words": 256,
+  "chars": 1579,
+  "words_per_obj": 14.2,
+  "max_words": 33,
+  "long_word_share": 0.062,
+  "coop_obj": 2,
+  "key_obj": 8,
+  "swap_obj": 0,
+  "tip_zones": 7,
+  "prompts": 28,
+  "bells": 12,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Небесное царство! Звенышко к гнезду Жар-птицы ведёт.",
+    "words": 8,
+    "chars": 52,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 1.1
+   },
+   {
+    "idx": 1,
+    "text": "Жар-птица…",
+    "words": 2,
+    "chars": 10,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 4.1
+   },
+   {
+    "idx": 2,
+    "text": "Золотые мостки лишь в свете видны. Зажги перо R — И по золотой дорожке ступай вперёд.",
+    "words": 15,
+    "chars": 85,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 3.1
+   },
+   {
+    "idx": 3,
+    "text": "Лиловые мостки лишь во тьме видны. Погаси перо R.",
+    "words": 9,
+    "chars": 49,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 2.8
+   },
+   {
+    "idx": 4,
+    "text": "Три шага по золоту, три — по лиловому. Где сменяются — прыгни Пробел, И в прыжке перо R жми — не оступишься, не сникнешь.",
+    "words": 21,
+    "chars": 121,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 5,
+    "text": "Серая яблоня. С горящим пером три секунды постой — Засияют яблоки золотой красой.",
+    "words": 12,
+    "chars": 81,
+    "coop": false,
+    "keys": true,
+    "keystrict": false,
+    "swap": false,
+    "dt": 8.7
+   },
+   {
+    "idx": 6,
+    "text": "Две дорожки: золотая да лиловая. Идите рядом — у одного свет, у другого тьма. Встаньте в чаши вдвоём — вот и вся кутерьма.",
+    "words": 21,
+    "chars": 122,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 6.0
+   },
+   {
+    "idx": 7,
+    "text": "Тёмные аллеи, тут тени-мороки. Во тьме удар насквозь — посвети пером R и бей F. Мотылёк раскроется, лишь коль оба перья зажжёте рядом — вдвоём, без робей.",
+    "words": 26,
+    "chars": 154,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 32.4
+   },
+   {
+    "idx": 8,
+    "text": "У выхода две яблони — оживите обе: с горящим пером постойте рядом.",
+    "words": 11,
+    "chars": 66,
+    "coop": false,
+    "keys": true,
+    "keystrict": false,
+    "swap": false,
+    "dt": 7.1
+   },
+   {
+    "idx": 9,
+    "text": "Сад ожил! По светомостку — в глубь сада.",
+    "words": 7,
+    "chars": 40,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 0.9
+   },
+   {
+    "idx": 10,
+    "text": "Старик-садовник у ворот. Оживи яблоню светом пера — молодильное яблочко само в руки упадёт. Поднеси его садовнику: кто яблочко откусит — тот помолодеет.",
+    "words": 22,
+    "chars": 152,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 15.9
+   },
+   {
+    "idx": 11,
+    "text": "Мост трухлявый — под ногами рассыпается. Сорви яблочко (оживи яблоню) — и к мосту: пусть помолодеет!",
+    "words": 14,
+    "chars": 100,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 16.7
+   },
+   {
+    "idx": 12,
+    "text": "Дуб-старик за лиловыми мостками. А лиловые мостки — во тьме, яблочко же светится: с ним не пройти! Встаньте на островке и за мостками без света — и перебросьте яблочко F из рук в руки.",
+    "words": 33,
+    "chars": 184,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 22.4
+   },
+   {
+    "idx": 13,
+    "text": "Стража спит. Не свети пером рядом — разбудишь; струн не задень — зазвенят. Йоша под струной пролезет, остальным — прыгать Пробел.",
+    "words": 18,
+    "chars": 129,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 23.1
+   },
+   {
+    "idx": 14,
+    "text": "Старые ступени рассыпались. Оживи яблоню — яблочко ступеням!",
+    "words": 7,
+    "chars": 60,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 5.7
+   },
+   {
+    "idx": 15,
+    "text": "Тени-воришки уносят яблоки — и света боятся. Загоните тень в угол двумя светами и коснитесь со светом (0 из 4).",
+    "words": 20,
+    "chars": 111,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 25.8
+   },
+   {
+    "idx": 16,
+    "text": "Светомосток — к колодцу живой воды.",
+    "words": 5,
+    "chars": 35,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 47.9
+   },
+   {
+    "idx": 17,
+    "text": "Звено от Жар-птицы — возьми!",
+    "words": 5,
+    "chars": 28,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 16,
+  "dt_mean": 14.0,
+  "cines": [
+   {
+    "dur": 6.4,
+    "says": 2,
+    "chars": 92
+   },
+   {
+    "dur": 31.6,
+    "says": 10,
+    "chars": 541
+   },
+   {
+    "dur": 14.4,
+    "says": 5,
+    "chars": 276
+   },
+   {
+    "dur": 9.2,
+    "says": 3,
+    "chars": 150
+   },
+   {
+    "dur": 12.6,
+    "says": 5,
+    "chars": 186
+   },
+   {
+    "dur": 22,
+    "says": 6,
+    "chars": 370
+   },
+   {
+    "dur": 16.2,
+    "says": 5,
+    "chars": 277
+   }
+  ],
+  "n_cine": 7,
+  "cine_sec": 112.4,
+  "tips": 12,
+  "says": 20,
+  "banners": 19,
+  "say_chars": 1024,
+  "tip_chars": 938,
+  "banner_chars": 1289,
+  "encounters": [
+   {
+    "kinds": [
+     "motylek",
+     "ten",
+     "ten",
+     "ten",
+     "ten",
+     "ten",
+     "ten"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "pugalo",
+     "pugalo",
+     "pugalo",
+     "pugalo"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "voron31"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "motylek",
+   "pugalo",
+   "ten",
+   "voron31"
+  ],
+  "oracle": {
+   "bots": [
+    "t31",
+    "t31c",
+    "tfin_sky31",
+    "tfin_sky31boss"
+   ],
+   "best": "tfin_sky31boss",
+   "complete": true,
+   "sim_sec": 60.6,
+   "hits": 2
+  },
+  "cat": {
+   "order": 14,
+   "world": 3,
+   "name": "Сад молодильных яблок",
+   "survey": "Сад молодильных яблок",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "light_shadow",
+    "feather",
+    "pass_apple",
+    "stealth_guards",
+    "miniboss"
+   ],
+   "scene": [
+    "светомостки и тенемостки",
+    "молодильное яблочко молодит Деда-Садовника и дуб-старика",
+    "Кощеев Ворон",
+    "Жар-птица состарилась"
+   ],
+   "funny": [
+    "яблочко делает дуб молодым",
+    "пугала просыпаются от звона"
+   ],
+   "demand": {
+    "r": 0.45,
+    "c": 0.5,
+    "l": 0.8,
+    "p": 0.5,
+    "e": 0.9
+   }
+  }
+ },
+ "3-2": {
+  "id": "3-2",
+  "name": "3-2 · «Облачные пастбища»",
+  "world": 3,
+  "n_obj": 15,
+  "words": 258,
+  "chars": 1592,
+  "words_per_obj": 17.2,
+  "max_words": 30,
+  "long_word_share": 0.043,
+  "coop_obj": 0,
+  "key_obj": 9,
+  "swap_obj": 0,
+  "tip_zones": 6,
+  "prompts": 32,
+  "bells": 12,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Облачные пастбища! Звенья высоко висят. Облака тепло любят: встань на облачко, зажги перо R — подымет, как в сказке говорят.",
+    "words": 19,
+    "chars": 124,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 3.6
+   },
+   {
+    "idx": 1,
+    "text": "Облако к лугу повыше: встань да посвети. Потап тяжёл — облако для него Йоша пухлым сделает в пути.",
+    "words": 17,
+    "chars": 98,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 22.7
+   },
+   {
+    "idx": 2,
+    "text": "Высокое звено над облаком. Поднятое облако тает за пятнадцать секунд — А перед тем мигает: мол, берегитесь, вот-вот капут.",
+    "words": 19,
+    "chars": 122,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 3,
+    "text": "Обрыв и два облака. Потапа на пухлое облако поставь, посвети. Кликни Йошу — довезёшь в пути.",
+    "words": 15,
+    "chars": 92,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 4,
+    "text": "Облачные барашки к свету бегут. Зажги перо R на холмике у края — Барашки мостиком встанут. Погасишь — разбегутся, играя.",
+    "words": 18,
+    "chars": 120,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 5,
+    "text": "Грозовые тучки! Во тьме их не пробить — посвети R. Синяя молния: щитом G закройся, а в последний миг — назад отбей, не спи!",
+    "words": 22,
+    "chars": 123,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 6,
+    "text": "Последнее облако — наверх!",
+    "words": 3,
+    "chars": 26,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 7,
+    "text": "На облаке ягнёнок дрожит — в грозовой нити запутан. Два пера рядом зажгите R — от тепла нить растает.",
+    "words": 17,
+    "chars": 101,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 8,
+    "text": "Высокий уступ. Пушок — облачко живое: польёт Йоша L — распушится, станет пружинкой. Пушок бежит за светом пера; прыгай на него Пробел — подкинет, даже Потапа.",
+    "words": 23,
+    "chars": 158,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 9,
+    "text": "Ветер-Ветрило дует поперёк мостков! Надул щёки — прячься за Потапа или за стожок. Потапа не сдвинет, и перо у него не задует: светомостки держит его свет.",
+    "words": 26,
+    "chars": 154,
+    "coop": false,
+    "keys": true,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 10,
+    "text": "Радуга-дуга: солнце за спиной, дождик впереди. Йоша, полей тучку L (Потап — выжми E), а кто-то пусть светит пером R рядом с тучкой. По радуге идите, пока дождик идёт.",
+    "words": 30,
+    "chars": 166,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 11,
+    "text": "Две радуги: тучку-дождевичок польёт Йоша, а тучку-толстушку на островке выжмет только Потап E.",
+    "words": 15,
+    "chars": 94,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 12,
+    "text": "Стадо разбежалось! Барашки бегут к свету пера R — отведите всех в кошару (0 из 9). Тучки громом пугают барашков — в свете тучки мягкие, бейте.",
+    "words": 24,
+    "chars": 142,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 13,
+    "text": "Облачная лестница — наверх, на Грозовую вершину.",
+    "words": 6,
+    "chars": 48,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 14,
+    "text": "Звено с радуги — возьми!",
+    "words": 4,
+    "chars": 24,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 2,
+  "dt_mean": 13.2,
+  "cines": [
+   {
+    "dur": 12.4,
+    "says": 5,
+    "chars": 189
+   },
+   {
+    "dur": 12.6,
+    "says": 5,
+    "chars": 198
+   },
+   {
+    "dur": 7.2,
+    "says": 2,
+    "chars": 93
+   },
+   {
+    "dur": 9.4,
+    "says": 4,
+    "chars": 156
+   },
+   {
+    "dur": 20,
+    "says": 7,
+    "chars": 302
+   }
+  ],
+  "n_cine": 5,
+  "cine_sec": 61.6,
+  "tips": 6,
+  "says": 20,
+  "banners": 10,
+  "say_chars": 963,
+  "tip_chars": 440,
+  "banner_chars": 820,
+  "encounters": [
+   {
+    "kinds": [
+     "grombaran",
+     "ten",
+     "ten",
+     "ten",
+     "tucha",
+     "tucha",
+     "tucha",
+     "tucha"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "ten",
+     "ten",
+     "ten",
+     "tucha",
+     "tucha",
+     "tucha",
+     "tucha"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "tucha",
+     "tucha",
+     "tucha"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "grombaran",
+   "ten",
+   "tucha"
+  ],
+  "oracle": {
+   "bots": [
+    "t32",
+    "tfin_sky32",
+    "tfin_sky32boss"
+   ],
+   "best": "tfin_sky32boss",
+   "complete": true,
+   "sim_sec": 58.3,
+   "hits": 1
+  },
+  "cat": {
+   "order": 15,
+   "world": 3,
+   "name": "Облачные пастбища",
+   "survey": "Облачные пастбища",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "light_shadow",
+    "clouds",
+    "wind",
+    "rainbow",
+    "miniboss",
+    "long"
+   ],
+   "scene": [
+    "облака-лифты под пером",
+    "барашки-мостик",
+    "ягнёнок Пушок",
+    "радуга-дуга после дождика",
+    "Громовой Баран"
+   ],
+   "funny": [
+    "Пушок-пружинка",
+    "Ветер-Ветрило сдувает перо"
+   ],
+   "demand": {
+    "r": 0.5,
+    "c": 0.5,
+    "l": 0.9,
+    "p": 0.6,
+    "e": 1.0
+   }
+  }
+ },
+ "3-3": {
+  "id": "3-3",
+  "name": "3-3 · «Сирин и Алконост»",
+  "world": 3,
+  "n_obj": 10,
+  "words": 162,
+  "chars": 1009,
+  "words_per_obj": 16.2,
+  "max_words": 22,
+  "long_word_share": 0.062,
+  "coop_obj": 8,
+  "key_obj": 7,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 9,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Поёт Сирин. Перья в такт вспыхивают — мосток золотой встаёт. Прыгай Пробел на каждую вспышку — вперёд! · лад ×0",
+    "words": 17,
+    "chars": 111,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 20.3
+   },
+   {
+    "idx": 1,
+    "text": "Эхо! Сперва птица поёт — плитки призраками светятся. Запомни, где светилось, и прыгай Пробел так же — не ошибётся, кто метится! · лад ×0",
+    "words": 21,
+    "chars": 136,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 22.9
+   },
+   {
+    "idx": 2,
+    "text": "Припев! Алконост быстрее поёт. Прыгай Пробел в такт, не отставай! · лад ×0",
+    "words": 12,
+    "chars": 74,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 15.6
+   },
+   {
+    "idx": 3,
+    "text": "Протяжные ноты! На длинной золотой ленте прыгни Пробел в такт И держи кнопку до конца ленты — будешь парить, вот так! · лад ×0",
+    "words": 22,
+    "chars": 126,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 20.9
+   },
+   {
+    "idx": 4,
+    "text": "Гроза! Синяя молния над дорожкой — щит G в такт жми. Золотая плитка — прыжок Пробел, не спи! · лад ×0",
+    "words": 18,
+    "chars": 101,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 20.0
+   },
+   {
+    "idx": 5,
+    "text": "Птицы поют вместе. Ты прыгаешь, как Сирин, — через звон. Широкая золотая плитка — прыгайте вместе, в унисон! · лад ×0",
+    "words": 18,
+    "chars": 117,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 15.0
+   },
+   {
+    "idx": 6,
+    "text": "Перья в небе! Над плиткой перо висит — прыгни Пробел в такт: К нему подбросит — вот так! · лад ×0",
+    "words": 18,
+    "chars": 97,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 19.2
+   },
+   {
+    "idx": 7,
+    "text": "Хоровод! Дорожки крест-накрест — местами меняетесь вы. На перекрёстке прыгайте Пробел вместе — дружно, как соловьи! · лад ×0",
+    "words": 17,
+    "chars": 124,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 14.4
+   },
+   {
+    "idx": 8,
+    "text": "Последний куплет поёт Пелагея. Можно бежать дальше — А можно встать да послушать, без фальши.",
+    "words": 14,
+    "chars": 93,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 9.2
+   },
+   {
+    "idx": 9,
+    "text": "Сирин с Алконостом поют вдвоём",
+    "words": 5,
+    "chars": 30,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 9,
+  "dt_mean": 17.5,
+  "cines": [
+   {
+    "dur": 9.6,
+    "says": 3,
+    "chars": 188
+   },
+   {
+    "dur": 18,
+    "says": 4,
+    "chars": 254
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 27.6,
+  "tips": 0,
+  "says": 3,
+  "banners": 61,
+  "say_chars": 298,
+  "tip_chars": 0,
+  "banner_chars": 1572,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t33n",
+    "tso33"
+   ],
+   "best": "t33n",
+   "complete": true,
+   "sim_sec": 164.9,
+   "hits": 0
+  },
+  "cat": {
+   "order": 16,
+   "world": 3,
+   "name": "Сирин и Алконост",
+   "survey": "Сирин и Алконост",
+   "type": "rhythm",
+   "kids": false,
+   "mech": [
+    "rhythm",
+    "runner",
+    "duet",
+    "sustained_notes"
+   ],
+   "scene": [
+    "перья вспыхивают в такт",
+    "эхо за птицей",
+    "дуэт Сирин и Алконост",
+    "«Во поле берёза стояла»"
+   ],
+   "funny": [
+    "птицы поют по очереди"
+   ],
+   "demand": {
+    "r": 0.65,
+    "c": 0.5,
+    "l": 0.1,
+    "p": 0.7,
+    "e": 0.5
+   }
+  }
+ },
+ "3-4": {
+  "id": "3-4",
+  "name": "3-4 · «Летучий корабль»",
+  "world": 3,
+  "n_obj": 7,
+  "words": 121,
+  "chars": 746,
+  "words_per_obj": 17.3,
+  "max_words": 23,
+  "long_word_share": 0.008,
+  "coop_obj": 0,
+  "key_obj": 4,
+  "swap_obj": 1,
+  "tip_zones": 2,
+  "prompts": 13,
+  "bells": 2,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Летучий корабль. Ночью паруса его — как тряпки висят. Звенышко: «Зажгите перо в фонаре у мачты!» Все на борт — и в полёт, в закат!",
+    "words": 23,
+    "chars": 130,
+    "coop": false,
+    "keys": true,
+    "keystrict": false,
+    "swap": false,
+    "dt": 5.8
+   },
+   {
+    "idx": 1,
+    "text": "Корабль кренится туда, где тяжелее. Потап тяжёл, как трое, — от борта к борту веди. Звено у правого борта — на лету хватай, не упусти!",
+    "words": 23,
+    "chars": 134,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 2,
+    "text": "Ущелье! С одной стороны скала — Потапа Q к другому борту переведи: Корабль наклонится — и крыло над камнем пролетит, погляди!",
+    "words": 19,
+    "chars": 125,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 3,
+    "text": "Корабль боком встаёт! Потап мачту держит: в жёлтый кружок встань, щитом G закройся.",
+    "words": 13,
+    "chars": 83,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 4,
+    "text": "Тёмные тучи. Фонарь корабля золотые мостки на облаках зажигает. Сбегай за звеном — и назад, пока корабль не улетает!",
+    "words": 18,
+    "chars": 116,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 5,
+    "text": "Вороны хватают фонарь! Гони их Потапом. Жёлтый кружок — щитом G закройся. Синяя капля — отбей назад, не бойся.",
+    "words": 17,
+    "chars": 110,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 6,
+    "text": "Гнездо Гусей-лебедей — выходи на берег, к звену!",
+    "words": 8,
+    "chars": 48,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 1,
+  "dt_mean": 5.8,
+  "cines": [
+   {
+    "dur": 12.4,
+    "says": 4,
+    "chars": 144
+   }
+  ],
+  "n_cine": 1,
+  "cine_sec": 12.4,
+  "tips": 3,
+  "says": 2,
+  "banners": 2,
+  "say_chars": 86,
+  "tip_chars": 237,
+  "banner_chars": 147,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t34"
+   ],
+   "best": "t34",
+   "complete": false,
+   "sim_sec": 15.5,
+   "hits": 0
+  },
+  "cat": {
+   "order": 17,
+   "world": 3,
+   "name": "Летучий корабль",
+   "survey": "Летучий корабль",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "balance",
+    "tilt",
+    "lantern",
+    "combat_ravens"
+   ],
+   "scene": [
+    "палуба кренится от веса Потапа",
+    "Пелагея-фонарщица",
+    "вороны с чёрными ключами",
+    "вёдра-крылья Прошки"
+   ],
+   "funny": [
+    "Потап весит за троих — корабль съезжает набок"
+   ],
+   "demand": {
+    "r": 0.4,
+    "c": 0.6,
+    "l": 0.7,
+    "p": 0.6,
+    "e": 0.5
+   }
+  }
+ },
+ "3-5": {
+  "id": "3-5",
+  "name": "3-5 · «Гуси-лебеди»",
+  "world": 3,
+  "n_obj": 9,
+  "words": 111,
+  "chars": 667,
+  "words_per_obj": 12.3,
+  "max_words": 21,
+  "long_word_share": 0.036,
+  "coop_obj": 1,
+  "key_obj": 4,
+  "swap_obj": 0,
+  "tip_zones": 2,
+  "prompts": 12,
+  "bells": 6,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Гуси-лебеди Тишку унесли! Гуси свет видят. Под белым лучом — лишь без света ступай; по лиловым мосткам — смело, никто не обидит.",
+    "words": 21,
+    "chars": 128,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 6.0
+   },
+   {
+    "idx": 1,
+    "text": "Золотой мосток под гусем. Жди, пока гусь отвернётся, — И перо зажги R на три шага, пусть не оглянётся.",
+    "words": 18,
+    "chars": 102,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 3.3
+   },
+   {
+    "idx": 2,
+    "text": "Тишка в гнезде — Йоша его заберёт.",
+    "words": 6,
+    "chars": 34,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 2.1
+   },
+   {
+    "idx": 3,
+    "text": "Погоня! У облака — печка: она спрячет. Кто первым добежит — с тем и речь поведёт, не иначе.",
+    "words": 16,
+    "chars": 91,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 4.2
+   },
+   {
+    "idx": 4,
+    "text": "Гуси над головой! Бегом к яблоньке!",
+    "words": 6,
+    "chars": 35,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 19.9
+   },
+   {
+    "idx": 5,
+    "text": "Яблонька. Прошкой кислое яблочко E сорви. Потом все четверо — под ветки, за восемь секунд, в тени!",
+    "words": 16,
+    "chars": 98,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 13.8
+   },
+   {
+    "idx": 6,
+    "text": "Речку запруда перегородила. Из рогатки Прошки E в жёлудь стрельни!",
+    "words": 10,
+    "chars": 66,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 15.7
+   },
+   {
+    "idx": 7,
+    "text": "Яга на ступе! Через пропасть — золотые мостки. Перья зажгите R и бегите — за лучами гусей следите, смельчаки!",
+    "words": 17,
+    "chars": 109,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 23.8
+   },
+   {
+    "idx": 8,
+    "text": "Яга…",
+    "words": 1,
+    "chars": 4,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 8,
+  "dt_mean": 11.1,
+  "cines": [
+   {
+    "dur": 8.4,
+    "says": 2,
+    "chars": 131
+   },
+   {
+    "dur": 10,
+    "says": 4,
+    "chars": 93
+   },
+   {
+    "dur": 14,
+    "says": 3,
+    "chars": 182
+   },
+   {
+    "dur": 30,
+    "says": 8,
+    "chars": 416
+   }
+  ],
+  "n_cine": 4,
+  "cine_sec": 62.4,
+  "tips": 3,
+  "says": 18,
+  "banners": 4,
+  "say_chars": 962,
+  "tip_chars": 258,
+  "banner_chars": 296,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t35"
+   ],
+   "best": "t35",
+   "complete": true,
+   "sim_sec": 111.3,
+   "hits": 0
+  },
+  "cat": {
+   "order": 18,
+   "world": 3,
+   "name": "Гуси-лебеди",
+   "survey": "Гуси-лебеди",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "stealth",
+    "cone_of_sight",
+    "hide"
+   ],
+   "scene": [
+    "гуси смотрят конусом взгляда",
+    "печка с пирожком",
+    "яблонька",
+    "речка с кисельными берегами",
+    "Тишка едет у Йоши на спине"
+   ],
+   "funny": [
+    "Яга на ступе",
+    "пирожок в печке"
+   ],
+   "demand": {
+    "r": 0.4,
+    "c": 0.5,
+    "l": 0.7,
+    "p": 0.6,
+    "e": 0.6
+   }
+  }
+ },
+ "3-B": {
+  "id": "3-B",
+  "name": "3-Б · «Соловей-Разбойник»",
+  "world": 3,
+  "n_obj": 15,
+  "words": 194,
+  "chars": 1221,
+  "words_per_obj": 12.9,
+  "max_words": 24,
+  "long_word_share": 0.057,
+  "coop_obj": 0,
+  "key_obj": 4,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 31,
+  "bells": 9,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Прямоезжая дорожка: свист сдувает — прячься за камни и за щит Потапа.",
+    "words": 11,
+    "chars": 69,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 16.8
+   },
+   {
+    "idx": 1,
+    "text": "Колода поперёк дорожки: Потап, откати её E. Колоды поменьше катятся — прыгай.",
+    "words": 11,
+    "chars": 77,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 8.1
+   },
+   {
+    "idx": 2,
+    "text": "Травы-муравы: на свист трава заплетается. Стой на кочках; Йоша польёт тропку L — трава расступится.",
+    "words": 15,
+    "chars": 99,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 12.9
+   },
+   {
+    "idx": 3,
+    "text": "Лазоревы цветочки: после свиста лепестки плывут над прорехой — беги по ним.",
+    "words": 11,
+    "chars": 75,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 32.6
+   },
+   {
+    "idx": 4,
+    "text": "Леса приклоняются: после свиста деревья ложатся мостом — скорей на тот берег.",
+    "words": 11,
+    "chars": 77,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 7.1
+   },
+   {
+    "idx": 5,
+    "text": "Застава дочек: Потап держит подворотню E в жёлтом круге; за воротами — плита: кто на ней, держит для Потапа.",
+    "words": 18,
+    "chars": 108,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 21.5
+   },
+   {
+    "idx": 6,
+    "text": "Облака рвутся: на свист облачко под ногами тает — прыгай на соседнее.",
+    "words": 11,
+    "chars": 69,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 24.6
+   },
+   {
+    "idx": 7,
+    "text": "Дуб-сторож: вверх по уступам. Середина уступа — за стволом, свист не достаёт.",
+    "words": 12,
+    "chars": 77,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 25.1
+   },
+   {
+    "idx": 8,
+    "text": "Плетёный обод: Потап раздвинет прутья E — и в гнездо.",
+    "words": 9,
+    "chars": 53,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 43.6
+   },
+   {
+    "idx": 9,
+    "text": "Гнездо Соловья…",
+    "words": 2,
+    "chars": 15,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 14.2
+   },
+   {
+    "idx": 10,
+    "text": "Свист соловьиный: белая волна — прыгай, синяя — за щит Потапа. Щёки дует — Йоша, воду ему в клюв! Дуб кланяется — полей корни и дёрни за хвост.",
+    "words": 24,
+    "chars": 143,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 25.0
+   },
+   {
+    "idx": 11,
+    "text": "Крик звериный: ночь. Свет пера — щитом «зайчиком» в глаза Соловью. Упал — в свете пера бей. Тени тают в свете.",
+    "words": 19,
+    "chars": 110,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 26.8
+   },
+   {
+    "idx": 12,
+    "text": "Шип змеиный: в вихрь — и верхом на Соловья. Кренится — наклонись в другую сторону. Петля — в колокол на «БОМ».",
+    "words": 18,
+    "chars": 110,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 37.5
+   },
+   {
+    "idx": 13,
+    "text": "Полный свист: выдох — за щит Потапа, вдох — Совиный взор и рогатка в золотой жёлудь. Три голоса — и Богатырский мах.",
+    "words": 19,
+    "chars": 116,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 38.4
+   },
+   {
+    "idx": 14,
+    "text": "Соловей петь разучился…",
+    "words": 3,
+    "chars": 23,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 14,
+  "dt_mean": 23.9,
+  "cines": [
+   {
+    "dur": 9,
+    "says": 2,
+    "chars": 112
+   },
+   {
+    "dur": 14,
+    "says": 4,
+    "chars": 222
+   },
+   {
+    "dur": 8,
+    "says": 2,
+    "chars": 104
+   },
+   {
+    "dur": 7,
+    "says": 2,
+    "chars": 95
+   },
+   {
+    "dur": 13,
+    "says": 4,
+    "chars": 172
+   },
+   {
+    "dur": 16,
+    "says": 5,
+    "chars": 258
+   }
+  ],
+  "n_cine": 6,
+  "cine_sec": 67,
+  "tips": 30,
+  "says": 51,
+  "banners": 14,
+  "say_chars": 1941,
+  "tip_chars": 2620,
+  "banner_chars": 744,
+  "encounters": [
+   {
+    "kinds": [
+     "solovei"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "solovei"
+  ],
+  "oracle": {
+   "bots": [
+    "t3bv",
+    "tfin_k3b",
+    "tfin_k3bboss"
+   ],
+   "best": "tfin_k3bboss",
+   "complete": true,
+   "sim_sec": 171.8,
+   "hits": 0
+  },
+  "cat": {
+   "order": 19,
+   "world": 3,
+   "name": "Соловей-Разбойник",
+   "survey": null,
+   "boss": "Соловей-Разбойник",
+   "type": "boss",
+   "kids": false,
+   "mech": [
+    "boss",
+    "wind_cover",
+    "four_stages"
+   ],
+   "scene": [
+    "прямоезжая дорожка, свист сдувает",
+    "щит Потапа",
+    "родео на Соловье",
+    "полный свист"
+   ],
+   "funny": [
+    "Соловей свистит, а все прячутся за Потапа"
+   ],
+   "demand": {
+    "r": 0.7,
+    "c": 0.6,
+    "l": 0.6,
+    "p": 0.6,
+    "e": 0.7
+   }
+  }
+ },
+ "4-1": {
+  "id": "4-1",
+  "name": "4-1 · «Кузня Кузьмы и Демьяна»",
+  "world": 4,
+  "n_obj": 11,
+  "words": 151,
+  "chars": 952,
+  "words_per_obj": 13.7,
+  "max_words": 26,
+  "long_word_share": 0.079,
+  "coop_obj": 2,
+  "key_obj": 6,
+  "swap_obj": 1,
+  "tip_zones": 2,
+  "prompts": 28,
+  "bells": 3,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Кузня у огненной реки. Внутрь, смелей!",
+    "words": 6,
+    "chars": 38,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 2.4
+   },
+   {
+    "idx": 1,
+    "text": "Кузнецы окаменели…",
+    "words": 2,
+    "chars": 18,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 2.5
+   },
+   {
+    "idx": 2,
+    "text": "Клещи 0 / 4. 2 · Прошка молотом бьёт F, как жёлтый кружок станет мал. Семь огоньков над наковальней — клещи готовы, час настал",
+    "words": 21,
+    "chars": 126,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 29.2
+   },
+   {
+    "idx": 3,
+    "text": "Горячим двери открываются: слиток из горна клещами возьми R — На холодную плиту положи.",
+    "words": 13,
+    "chars": 87,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 5.0
+   },
+   {
+    "idx": 4,
+    "text": "Дальние ворота засовом заперты: горячий гвоздь из горна — в щель. На галерею — подъёмник: уголь в его печь — вот и вся цель.",
+    "words": 21,
+    "chars": 124,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 8.4
+   },
+   {
+    "idx": 5,
+    "text": "Чугунные болваны в раскалённых латах! По горячему не бей: Йоша поливает L, используй клещи R — нагрудник сорвать, и бейте его, скорей!",
+    "words": 21,
+    "chars": 134,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 34.9
+   },
+   {
+    "idx": 6,
+    "text": "Горячий уголь иль слиток — в большой горн: он большую заготовку разогреет.",
+    "words": 11,
+    "chars": 74,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 12.4
+   },
+   {
+    "idx": 7,
+    "text": "В четыре руки! Большую заготовку лишь вдвоём подымают: каждый клещами R свой конец берёт. Несите её на большую наковальню — вперёд!",
+    "words": 20,
+    "chars": 131,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 9.4
+   },
+   {
+    "idx": 8,
+    "text": "Куём вдвоём: 0 / 24. Плита «БИТЬ» — удар F на раз-два-три. Плита «ДЕРЖАТЬ» — клещами R поворот на четыре (голубой кружок). На середине — местами меняйтесь, смотри.",
+    "words": 26,
+    "chars": 163,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 21.6
+   },
+   {
+    "idx": 9,
+    "text": "Кольцо готово! Йоша K — живой водой L его закали.",
+    "words": 9,
+    "chars": 49,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": 0.9
+   },
+   {
+    "idx": 10,
+    "text": "Кузнецы…",
+    "words": 1,
+    "chars": 8,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 10,
+  "dt_mean": 12.7,
+  "cines": [
+   {
+    "dur": 27,
+    "says": 7,
+    "chars": 548
+   },
+   {
+    "dur": 21,
+    "says": 6,
+    "chars": 255
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 48,
+  "tips": 12,
+  "says": 14,
+  "banners": 14,
+  "say_chars": 680,
+  "tip_chars": 852,
+  "banner_chars": 924,
+  "encounters": [
+   {
+    "kinds": [
+     "bolvan",
+     "bolvan",
+     "bolvan"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "bolvan"
+  ],
+  "oracle": {
+   "bots": [
+    "t41v",
+    "tfin_luko",
+    "tluko"
+   ],
+   "best": "t41v",
+   "complete": true,
+   "sim_sec": 137.9,
+   "hits": 0
+  },
+  "cat": {
+   "order": 20,
+   "world": 4,
+   "name": "Кузня Кузьмы и Демьяна",
+   "survey": "Кузня Кузьмы и Демьяна",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "forge_rhythm",
+    "tongs",
+    "coop_puzzle",
+    "combat_golem",
+    "four_hands"
+   ],
+   "scene": [
+    "кузнецы окаменели",
+    "мехи — ковка — закалка",
+    "чугунные болваны в раскалённых латах",
+    "«Хорошо сковано. Вчетвером?»"
+   ],
+   "funny": [
+    "Прошка бьёт молотом в такт",
+    "кузнецы оживают"
+   ],
+   "demand": {
+    "r": 0.5,
+    "c": 0.8,
+    "l": 0.7,
+    "p": 0.6,
+    "e": 0.7
+   }
+  }
+ },
+ "4-2": {
+  "id": "4-2",
+  "name": "4-2 · «Река Смородина»",
+  "world": 4,
+  "n_obj": 9,
+  "words": 149,
+  "chars": 897,
+  "words_per_obj": 16.6,
+  "max_words": 27,
+  "long_word_share": 0.02,
+  "coop_obj": 1,
+  "key_obj": 6,
+  "swap_obj": 1,
+  "tip_zones": 3,
+  "prompts": 22,
+  "bells": 7,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Река огня. Корку Йоша делает. Ящерки огнём в него плюют — прикрой: рогатка E по ящерке. Потом на корку Йоши прыгай — не мешкай ни капельки.",
+    "words": 24,
+    "chars": 139,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 5.8
+   },
+   {
+    "idx": 1,
+    "text": "Бурлящая струя: корка там не встаёт. Йоша в тихой заводи делает, клещи R несут да кладут на струю. Стоишь на одной — заднюю вперёд переложи, как по краю.",
+    "words": 27,
+    "chars": 153,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 38.4
+   },
+   {
+    "idx": 2,
+    "text": "Широкий разлив: корка на струе плотом плывёт. Паровые столбы бьют — Йоша поливает L, и стихают. Второй герой на плот запрыгнет, коль рядом стоит, — не отстаёт.",
+    "words": 25,
+    "chars": 159,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 19.3
+   },
+   {
+    "idx": 3,
+    "text": "Лавопад…",
+    "words": 1,
+    "chars": 8,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 29.8
+   },
+   {
+    "idx": 4,
+    "text": "Прикрой Йошу: ящерки огнём плюют — рогатка E по ящеркам. Потап на краю поймает, коль Йоша оступится, — не бойся нимало.",
+    "words": 19,
+    "chars": 119,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 5,
+    "text": "Огненная завеса! Потап Q подкинет E, кто рядом стоит, — через огонь. Потом Йоша с той стороны завесу польёт L: на восемь секунд застынет — Потапа не тронь.",
+    "words": 26,
+    "chars": 155,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 6,
+    "text": "Запруда: рогаткой E щеколду на скале сбей — плита в протоку упадёт. Йоша её сразу остудит — и путь вперёд.",
+    "words": 18,
+    "chars": 106,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 7,
+    "text": "Огонь ушёл! Вниз по застывшим ступеням — все вместе!",
+    "words": 8,
+    "chars": 52,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 8,
+    "text": "Внизу…",
+    "words": 1,
+    "chars": 6,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 4,
+  "dt_mean": 23.3,
+  "cines": [
+   {
+    "dur": 15,
+    "says": 4,
+    "chars": 157
+   },
+   {
+    "dur": 24,
+    "says": 7,
+    "chars": 352
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 39,
+  "tips": 11,
+  "says": 28,
+  "banners": 0,
+  "say_chars": 805,
+  "tip_chars": 987,
+  "banner_chars": 0,
+  "encounters": [
+   {
+    "kinds": [
+     "lizard",
+     "lizard",
+     "lizard",
+     "lizard",
+     "lizard",
+     "lizard"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "lizard"
+  ],
+  "oracle": {
+   "bots": [
+    "t42v"
+   ],
+   "best": "t42v",
+   "complete": false,
+   "sim_sec": 154.1,
+   "hits": 0
+  },
+  "cat": {
+   "order": 21,
+   "world": 4,
+   "name": "Река Смородина",
+   "survey": "Река Смородина",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "lava_crust",
+    "tongs",
+    "combat_ranged",
+    "coop_puzzle",
+    "platforming_precise"
+   ],
+   "scene": [
+    "корка на лаве держит 8 секунд",
+    "паровые столбы как лифт",
+    "лавопад в три яруса",
+    "жар-ящерки на сваях"
+   ],
+   "funny": [
+    "корка мигает перед тем как утонуть"
+   ],
+   "demand": {
+    "r": 0.5,
+    "c": 0.6,
+    "l": 0.7,
+    "p": 0.8,
+    "e": 0.7
+   }
+  }
+ },
+ "4-3": {
+  "id": "4-3",
+  "name": "4-3 · «Эй, ухнем»",
+  "world": 4,
+  "n_obj": 4,
+  "words": 83,
+  "chars": 500,
+  "words_per_obj": 20.8,
+  "max_words": 33,
+  "long_word_share": 0.036,
+  "coop_obj": 2,
+  "key_obj": 3,
+  "swap_obj": 1,
+  "tip_zones": 1,
+  "prompts": 6,
+  "bells": 3,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Лямка на четверых: в кольца встаньте — оставленный держит сам. На «ух-нем» жмите E вместе: все четверо — рывок, по часам!",
+    "words": 20,
+    "chars": 121,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 61.6
+   },
+   {
+    "idx": 1,
+    "text": "Брёвна на берегу: кольцо у бревна пройдёт, лишь коль его герой на «ух-нем» прыгнет Пробел. Оставленного — смени и прыгай. Кто перепрыгнул — «Ко мне!» 1 кликни.",
+    "words": 26,
+    "chars": 159,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": 26.1
+   },
+   {
+    "idx": 2,
+    "text": "В гору! Топка на носу баржи (над ней вывеска «ТОПКА» горит): уголь из горячей кучи клещами R — туда (можно на ходу бросить). Три уголька — тридцать секунд. Двое держат лямку, двое бегают — не спросят.",
+    "words": 33,
+    "chars": 200,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 18.2
+   },
+   {
+    "idx": 3,
+    "text": "Кузьма у ворот ждёт…",
+    "words": 4,
+    "chars": 20,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 3,
+  "dt_mean": 35.3,
+  "cines": [
+   {
+    "dur": 23,
+    "says": 8,
+    "chars": 317
+   },
+   {
+    "dur": 18,
+    "says": 5,
+    "chars": 241
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 41,
+  "tips": 11,
+  "says": 8,
+  "banners": 3,
+  "say_chars": 395,
+  "tip_chars": 985,
+  "banner_chars": 187,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t43"
+   ],
+   "best": "t43",
+   "complete": true,
+   "sim_sec": 127.4,
+   "hits": 0
+  },
+  "cat": {
+   "order": 22,
+   "world": 4,
+   "name": "Эй, ухнем",
+   "survey": "Эй, ухнем!",
+   "type": "four",
+   "kids": false,
+   "mech": [
+    "four_heroes",
+    "rhythm_pull",
+    "coal",
+    "reading"
+   ],
+   "scene": [
+    "баржа и лямка",
+    "на «ух-нем» жмут вместе",
+    "уголь в топку за 30 секунд",
+    "Кузьма снимает шапку"
+   ],
+   "funny": [
+    "Потап запевает «Эй, ухнем»"
+   ],
+   "demand": {
+    "r": 0.5,
+    "c": 0.9,
+    "l": 0.5,
+    "p": 0.5,
+    "e": 0.5
+   }
+  }
+ },
+ "4-4": {
+  "id": "4-4",
+  "name": "4-4 · «Змиевы валы»",
+  "world": 4,
+  "n_obj": 5,
+  "words": 118,
+  "chars": 718,
+  "words_per_obj": 23.6,
+  "max_words": 35,
+  "long_word_share": 0.034,
+  "coop_obj": 0,
+  "key_obj": 3,
+  "swap_obj": 0,
+  "tip_zones": 2,
+  "prompts": 10,
+  "bells": 4,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Плуг кузнецов: лемех раскалён — клещи R у лемеха, и плуг за тобой пойдёт, борозду оставляя. Ещё раз R — отпустить, так и знай.",
+    "words": 22,
+    "chars": 126,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 2.7
+   },
+   {
+    "idx": 1,
+    "text": "Доведи лаву из жерла до каменной чаши: борозду от жерла к чаше пропаши. Мостки Потапа не пашутся — лава пройдёт лишь под каменной аркой. Пелагея L — Совиный взор: куда течь, подскажи.",
+    "words": 30,
+    "chars": 183,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 7.9
+   },
+   {
+    "idx": 2,
+    "text": "Чугунная дверь в валу: к порогу её лаву доведи — раскалится. Вышибет Потап — плечом F. (Вторая чаша слева — сундук кузнецов.) Не туда пропахали — Йоша, мёртвая вода L, и снова — вперёд.",
+    "words": 29,
+    "chars": 185,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 37.4
+   },
+   {
+    "idx": 3,
+    "text": "Змеёныши в бороздах с лавой! От истока в яму справа борозду пропаши — лава уйдёт, и они на сухом. Болвана — полить да латы сорвать. Печник остыл — поднеси ему клещами уголь из жаровни, бей, пока горит огнём.",
+    "words": 35,
+    "chars": 207,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 35.0
+   },
+   {
+    "idx": 4,
+    "text": "Светлячки Лешего…",
+    "words": 2,
+    "chars": 17,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 4,
+  "dt_mean": 20.8,
+  "cines": [
+   {
+    "dur": 22,
+    "says": 5,
+    "chars": 342
+   },
+   {
+    "dur": 17,
+    "says": 4,
+    "chars": 229
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 39,
+  "tips": 9,
+  "says": 9,
+  "banners": 8,
+  "say_chars": 448,
+  "tip_chars": 575,
+  "banner_chars": 393,
+  "encounters": [
+   {
+    "kinds": [
+     "bolvan",
+     "pechnik",
+     "zmeenysh",
+     "zmeenysh",
+     "zmeenysh",
+     "zmeenysh",
+     "zmeenysh"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "bolvan",
+   "pechnik",
+   "zmeenysh"
+  ],
+  "oracle": {
+   "bots": [
+    "t44"
+   ],
+   "best": "t44",
+   "complete": true,
+   "sim_sec": 103.8,
+   "hits": 0
+  },
+  "cat": {
+   "order": 23,
+   "world": 4,
+   "name": "Змиевы валы",
+   "survey": "Змиевы валы",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "plough",
+    "lava_flow",
+    "combat_snakes",
+    "reading"
+   ],
+   "scene": [
+    "плуг пашет борозды для лавы",
+    "змеёныши в лаве сильные",
+    "печник и жаровня"
+   ],
+   "funny": [
+    "змеёныш на сухом ленивый"
+   ],
+   "demand": {
+    "r": 0.45,
+    "c": 0.4,
+    "l": 0.8,
+    "p": 0.6,
+    "e": 0.6
+   }
+  }
+ },
+ "4-5": {
+  "id": "4-5",
+  "name": "4-5 · «Калинов мост»",
+  "world": 4,
+  "n_obj": 7,
+  "words": 90,
+  "chars": 528,
+  "words_per_obj": 12.9,
+  "max_words": 25,
+  "long_word_share": 0.067,
+  "coop_obj": 0,
+  "key_obj": 5,
+  "swap_obj": 0,
+  "tip_zones": 1,
+  "prompts": 8,
+  "bells": 2,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Цепи к крюкам подняты. Прошка — жёлуди E по двум крюкам на столбах у моста.",
+    "words": 14,
+    "chars": 75,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 2.6
+   },
+   {
+    "idx": 1,
+    "text": "Калёные доски на цепи: доска из горна клещами R — на край моста. Йоша стык мёртвой водой L сращивает — тогда следующую кладут, и так до конца.",
+    "words": 25,
+    "chars": 142,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 94.4
+   },
+   {
+    "idx": 2,
+    "text": "Прошка — по натянутой цепи, как по струне на болоте, на тот берег. У ворота — R.",
+    "words": 15,
+    "chars": 80,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 7.4
+   },
+   {
+    "idx": 3,
+    "text": "Середина провисает. Каменный бык с медвежьей лапой — Потапа к лапе: E.",
+    "words": 11,
+    "chars": 70,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 4.2
+   },
+   {
+    "idx": 4,
+    "text": "Держи мост! Стик — против качания (жёлтый шарик — в середину). Синее — щит G. Красная дрожь — упереться Shift, как в былину.",
+    "words": 19,
+    "chars": 124,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 40.0
+   },
+   {
+    "idx": 5,
+    "text": "Беги, Потап! Мост за спиной рушится!",
+    "words": 6,
+    "chars": 36,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 9.5
+   },
+   {
+    "idx": 6,
+    "text": "…",
+    "words": 0,
+    "chars": 1,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 6,
+  "dt_mean": 26.3,
+  "cines": [
+   {
+    "dur": 22,
+    "says": 4,
+    "chars": 241
+   },
+   {
+    "dur": 21,
+    "says": 6,
+    "chars": 309
+   },
+   {
+    "dur": 23,
+    "says": 5,
+    "chars": 268
+   },
+   {
+    "dur": 24,
+    "says": 6,
+    "chars": 253
+   }
+  ],
+  "n_cine": 4,
+  "cine_sec": 90,
+  "tips": 6,
+  "says": 20,
+  "banners": 7,
+  "say_chars": 708,
+  "tip_chars": 458,
+  "banner_chars": 482,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t45"
+   ],
+   "best": "t45",
+   "complete": true,
+   "sim_sec": 179.3,
+   "hits": 0
+  },
+  "cat": {
+   "order": 24,
+   "world": 4,
+   "name": "Калинов мост",
+   "survey": "Калинов мост",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "asymmetric",
+    "balance_stick",
+    "coop_puzzle",
+    "reading"
+   ],
+   "scene": [
+    "Игрок 1 держит мост, Игрок 2 чинит",
+    "«Не сила богатыря держит — земля его держит»",
+    "бег Потапа по рушащемуся мосту"
+   ],
+   "funny": [
+    "Кикимора: «Должна была — отдаю»"
+   ],
+   "demand": {
+    "r": 0.6,
+    "c": 0.8,
+    "l": 0.7,
+    "p": 0.7,
+    "e": 0.7
+   }
+  }
+ },
+ "4-B": {
+  "id": "4-B",
+  "name": "4-Б · «Змей Горыныч»",
+  "world": 4,
+  "n_obj": 5,
+  "words": 74,
+  "chars": 442,
+  "words_per_obj": 14.8,
+  "max_words": 24,
+  "long_word_share": 0.027,
+  "coop_obj": 3,
+  "key_obj": 3,
+  "swap_obj": 0,
+  "tip_zones": 1,
+  "prompts": 15,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Скала за Калиновым мостом стоит…",
+    "words": 5,
+    "chars": 32,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 1.0
+   },
+   {
+    "idx": 1,
+    "text": "Левая голова — твоя: сонная, бьёт медленно жёлтым — отбей G и бей. Пробой двенадцать секунд держится — гасите левую с правой вместе, дружней.",
+    "words": 21,
+    "chars": 141,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 7.3
+   },
+   {
+    "idx": 2,
+    "text": "На вдохе средней — жёлудь: Прошка, рогатка E. Большой вдох тянет к пасти — держи щит G. Средняя дует — Потап, щит. Все три — в Пробой разом!",
+    "words": 24,
+    "chars": 140,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 54.2
+   },
+   {
+    "idx": 3,
+    "text": "Узда! Горяча — двумя клещами R с двух сторон. К золотому ореолу на шее — и «раз-два-три»: E трижды, оба — на каждый счёт!",
+    "words": 23,
+    "chars": 121,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 4,
+    "text": "Горыныч…",
+    "words": 1,
+    "chars": 8,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 3,
+  "dt_mean": 20.8,
+  "cines": [
+   {
+    "dur": 20,
+    "says": 6,
+    "chars": 248
+   },
+   {
+    "dur": 4.8,
+    "says": 0,
+    "chars": 0
+   },
+   {
+    "dur": 6.8,
+    "says": 1,
+    "chars": 16
+   },
+   {
+    "dur": 48.7,
+    "says": 0,
+    "chars": 0
+   },
+   {
+    "dur": 51.6,
+    "says": 0,
+    "chars": 0
+   },
+   {
+    "dur": 37.3,
+    "says": 0,
+    "chars": 0
+   }
+  ],
+  "n_cine": 6,
+  "cine_sec": 169.2,
+  "tips": 13,
+  "says": 15,
+  "banners": 6,
+  "say_chars": 504,
+  "tip_chars": 820,
+  "banner_chars": 694,
+  "encounters": [
+   {
+    "kinds": [
+     "golova",
+     "golova",
+     "golova"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "golova",
+     "golova",
+     "golova",
+     "golova",
+     "golova",
+     "golova",
+     "golova",
+     "golova",
+     "golova"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "golova"
+  ],
+  "oracle": {
+   "bots": [
+    "t4b",
+    "tfin_boss4b",
+    "tfin_gor4"
+   ],
+   "best": "tfin_boss4b",
+   "complete": false,
+   "sim_sec": 137.6,
+   "hits": 39
+  },
+  "cat": {
+   "order": 25,
+   "world": 4,
+   "name": "Змей Горыныч",
+   "survey": null,
+   "boss": "Змей Горыныч",
+   "type": "boss",
+   "kids": false,
+   "mech": [
+    "boss",
+    "three_heads",
+    "bridle"
+   ],
+   "scene": [
+    "три головы",
+    "узда",
+    "Горыныч становится другом"
+   ],
+   "funny": [
+    "головы спорят между собой"
+   ],
+   "demand": {
+    "r": 0.75,
+    "c": 0.7,
+    "l": 0.6,
+    "p": 0.6,
+    "e": 0.7
+   }
+  }
+ },
+ "5-1": {
+  "id": "5-1",
+  "name": "5-1 · Сундук на дубе",
+  "world": 5,
+  "n_obj": 21,
+  "words": 351,
+  "chars": 2081,
+  "words_per_obj": 16.7,
+  "max_words": 30,
+  "long_word_share": 0.06,
+  "coop_obj": 2,
+  "key_obj": 14,
+  "swap_obj": 1,
+  "tip_zones": 12,
+  "prompts": 47,
+  "bells": 9,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Буян…",
+    "words": 1,
+    "chars": 5,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 1.0
+   },
+   {
+    "idx": 1,
+    "text": "Идите вдоль берега к дубу. Там кто-то кричит…",
+    "words": 9,
+    "chars": 45,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 1.7
+   },
+   {
+    "idx": 2,
+    "text": "Коршун бьёт Лебедь! Нацелился — стреляй из рогатки: Прошка, E. Или на знаке гуслей у воды R — волна спрячет Лебедь. Упал на песок — бей F",
+    "words": 24,
+    "chars": 137,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 20.9
+   },
+   {
+    "idx": 3,
+    "text": "Лебедь…",
+    "words": 1,
+    "chars": 7,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 3.0
+   },
+   {
+    "idx": 4,
+    "text": "Голова дует! Потап, держи щит G навстречу ветру — друзья спрячутся за тобой. Шагай, когда Голова вдыхает",
+    "words": 16,
+    "chars": 104,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 29.4
+   },
+   {
+    "idx": 5,
+    "text": "Хрустальный залив. Посвети пером R у хрусталика — по лучу пройдёт светлая дорожка. Хрусталик на островке поверни ударом F. С того берега посвети в ответ другу",
+    "words": 25,
+    "chars": 158,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 28.8
+   },
+   {
+    "idx": 6,
+    "text": "Пугала-стражи Кощея! Распутайте их: защита — щит иль отбив, погасли угольки — удар F. Хамелей ближайший знак перенимает: у пера — посвети R, у гуслей — капли отбивай, мой друг.",
+    "words": 27,
+    "chars": 176,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 9.1
+   },
+   {
+    "idx": 7,
+    "text": "В дупле у корней что-то лежит — поглядим…",
+    "words": 8,
+    "chars": 41,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 1.2
+   },
+   {
+    "idx": 8,
+    "text": "Ярус клубка. Встань в своё кольцо, брось клубок R к колышку: Две струны крест-накрест — паутинка. Прыжок с неё — наверх, под самую макушку.",
+    "words": 23,
+    "chars": 139,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 11.2
+   },
+   {
+    "idx": 9,
+    "text": "Замок на цепи сундука: удар F у замка.",
+    "words": 8,
+    "chars": 38,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 4.0
+   },
+   {
+    "idx": 10,
+    "text": "Лихо! Ближайшего разглядывает. Одного героя в кольце-приманке оставь (Q), Другим — в обход, у Лиха за спиной, к дуплу-колодцу. Увидело — кувырок Shift, не бойся.",
+    "words": 25,
+    "chars": 161,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": 15.6
+   },
+   {
+    "idx": 11,
+    "text": "Ярус гуслей: колодец в дупле. Гусли по знаку R — прилив подымет. Всех — «Ко мне!» 1, никто не застынет.",
+    "words": 18,
+    "chars": 103,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 29.0
+   },
+   {
+    "idx": 12,
+    "text": "Ярус пера. Зажги перо у знака R: твоя ветка слева — светомостки, замок — в конце.",
+    "words": 14,
+    "chars": 81,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 14.8
+   },
+   {
+    "idx": 13,
+    "text": "Крона открыта. Вниз по корню — на поляну!",
+    "words": 7,
+    "chars": 41,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 7.1
+   },
+   {
+    "idx": 14,
+    "text": "Лихо спрыгнуло на поляну — в лапе у него пятая цепь. Приманка — в кольцо, остальные — в обход, к горну у дальнего края",
+    "words": 21,
+    "chars": 118,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 29.7
+   },
+   {
+    "idx": 15,
+    "text": "Ярус клещей: ключ в горне раскалён. Клещи по знаку R — Ключ возьми да в свою скважину вставь (твой цвет) — вот и весь предмет.",
+    "words": 23,
+    "chars": 126,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 35.8
+   },
+   {
+    "idx": 16,
+    "text": "В шкурах — к корням дуба! В отаре Лихо не видит, идём шагом. Лихо считает овец («Раз… два… пять?..») — тут и перебегай ко второй отаре",
+    "words": 24,
+    "chars": 134,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 29.9
+   },
+   {
+    "idx": 17,
+    "text": "Лихо смотрит на того, кто ближе, а на зеркальце не глядит. Один — в золотое кольцо (Лихо уставится на него). Второй — возьми зеркальце R и встань между ними спиной к Лиху",
+    "words": 30,
+    "chars": 170,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 25.0
+   },
+   {
+    "idx": 18,
+    "text": "Считаем овечек! Прыгай через бревно Пробел — Лихо считает. По очереди: двое сразу — собьётся. Нужно восемь",
+    "words": 15,
+    "chars": 106,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 24.8
+   },
+   {
+    "idx": 19,
+    "text": "Не разбуди! Гусли у головы R — колыбельная. Перо у лапы R — щекочи, витки цепи соскользнут. Храп стих — замри!",
+    "words": 18,
+    "chars": 110,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 17.4
+   },
+   {
+    "idx": 20,
+    "text": "Сундук упал! Крышку поднимают вдвоём: оба у сундука — и F разом. Тихо — Лихо спит",
+    "words": 14,
+    "chars": 81,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 20,
+  "dt_mean": 17.0,
+  "cines": [
+   {
+    "dur": 21,
+    "says": 7,
+    "chars": 393
+   },
+   {
+    "dur": 9.4,
+    "says": 3,
+    "chars": 110
+   },
+   {
+    "dur": 34,
+    "says": 11,
+    "chars": 453
+   },
+   {
+    "dur": 13.4,
+    "says": 4,
+    "chars": 166
+   },
+   {
+    "dur": 17.2,
+    "says": 5,
+    "chars": 187
+   },
+   {
+    "dur": 11.6,
+    "says": 3,
+    "chars": 172
+   },
+   {
+    "dur": 19.4,
+    "says": 5,
+    "chars": 269
+   },
+   {
+    "dur": 31.4,
+    "says": 9,
+    "chars": 463
+   },
+   {
+    "dur": 12.6,
+    "says": 3,
+    "chars": 148
+   },
+   {
+    "dur": 15.6,
+    "says": 5,
+    "chars": 250
+   },
+   {
+    "dur": 24.4,
+    "says": 7,
+    "chars": 287
+   },
+   {
+    "dur": 15,
+    "says": 5,
+    "chars": 156
+   },
+   {
+    "dur": 13.6,
+    "says": 4,
+    "chars": 173
+   },
+   {
+    "dur": 15.2,
+    "says": 4,
+    "chars": 198
+   },
+   {
+    "dur": 17.6,
+    "says": 6,
+    "chars": 190
+   }
+  ],
+  "n_cine": 15,
+  "cine_sec": 271.4,
+  "tips": 9,
+  "says": 47,
+  "banners": 23,
+  "say_chars": 1995,
+  "tip_chars": 560,
+  "banner_chars": 1835,
+  "encounters": [
+   {
+    "kinds": [
+     "hameley",
+     "pugalo"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "pugalo",
+     "pugalo"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "hameley",
+   "pugalo"
+  ],
+  "oracle": {
+   "bots": [
+    "t51"
+   ],
+   "best": "t51",
+   "complete": true,
+   "sim_sec": 355.1,
+   "hits": 0
+  },
+  "cat": {
+   "order": 26,
+   "world": 5,
+   "name": "Сундук на дубе",
+   "survey": "Сундук на дубе",
+   "type": "adventure",
+   "kids": false,
+   "mech": [
+    "long",
+    "coop_puzzle",
+    "stealth",
+    "all_items",
+    "combat_basic",
+    "reading"
+   ],
+   "scene": [
+    "заводь Лебедя и коршун",
+    "Голова в ущелье",
+    "ярусы дуба",
+    "побег в овечьих шкурах",
+    "Лихо Одноглазое и зеркальце"
+   ],
+   "funny": [
+    "овечьи шкуры",
+    "Лихо пугается зеркальца"
+   ],
+   "demand": {
+    "r": 0.45,
+    "c": 0.6,
+    "l": 0.9,
+    "p": 0.6,
+    "e": 1.0
+   }
+  }
+ },
+ "5-2": {
+  "id": "5-2",
+  "name": "5-2 · Заяц",
+  "world": 5,
+  "n_obj": 6,
+  "words": 57,
+  "chars": 344,
+  "words_per_obj": 9.5,
+  "max_words": 19,
+  "long_word_share": 0.088,
+  "coop_obj": 2,
+  "key_obj": 2,
+  "swap_obj": 1,
+  "tip_zones": 1,
+  "prompts": 5,
+  "bells": 1,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Заяц…",
+    "words": 1,
+    "chars": 5,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 1.0
+   },
+   {
+    "idx": 1,
+    "text": "На первый круг встаньте — все четверо: цифра и цвет — чьё кольцо. Меж стоящими героями нить натянется — вот и крыльцо.",
+    "words": 19,
+    "chars": 118,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 12.5
+   },
+   {
+    "idx": 2,
+    "text": "Смена Q, шаг — по одному на кольца ближе. Дырка у друга — «Ко мне!» 1: его оставленный покатится закрывать, слышишь?",
+    "words": 19,
+    "chars": 116,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": 3.0
+   },
+   {
+    "idx": 3,
+    "text": "Последний круг — три шага. А заяц всё дырку ищет.",
+    "words": 9,
+    "chars": 49,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 6.6
+   },
+   {
+    "idx": 4,
+    "text": "Потап — подкидка E: Прошку — сверху прямо на зайца.",
+    "words": 8,
+    "chars": 51,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 0.2
+   },
+   {
+    "idx": 5,
+    "text": "Утка…",
+    "words": 1,
+    "chars": 5,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 5,
+  "dt_mean": 4.7,
+  "cines": [
+   {
+    "dur": 14,
+    "says": 4,
+    "chars": 165
+   },
+   {
+    "dur": 13,
+    "says": 4,
+    "chars": 133
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 27,
+  "tips": 1,
+  "says": 5,
+  "banners": 7,
+  "say_chars": 249,
+  "tip_chars": 57,
+  "banner_chars": 528,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t52"
+   ],
+   "best": "t52",
+   "complete": true,
+   "sim_sec": 25.9,
+   "hits": 0
+  },
+  "cat": {
+   "order": 27,
+   "world": 5,
+   "name": "Заяц",
+   "survey": "Заяц",
+   "type": "four",
+   "kids": false,
+   "mech": [
+    "four_heroes",
+    "coop_puzzle",
+    "reading",
+    "threads"
+   ],
+   "scene": [
+    "зайца не поймать — зайца загоняют",
+    "четыре столба и нить",
+    "Потап подкидывает Прошку на зайца"
+   ],
+   "funny": [
+    "заяц ищет дырку",
+    "«Слушаем ежа»"
+   ],
+   "demand": {
+    "r": 0.3,
+    "c": 0.9,
+    "l": 0.8,
+    "p": 0.4,
+    "e": 0.5
+   }
+  }
+ },
+ "5-3": {
+  "id": "5-3",
+  "name": "5-3 · Утка",
+  "world": 5,
+  "n_obj": 5,
+  "words": 50,
+  "chars": 305,
+  "words_per_obj": 10.0,
+  "max_words": 22,
+  "long_word_share": 0.04,
+  "coop_obj": 3,
+  "key_obj": 2,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 4,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Полёт…",
+    "words": 1,
+    "chars": 6,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 1.0
+   },
+   {
+    "idx": 1,
+    "text": "Левая голова — твоя: WASD её ведут. Вместе тянете дольше секунды — Горыныч разгоняется. Огонь — F, синее перо — защита G, и туча не сгустится.",
+    "words": 22,
+    "chars": 142,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 16.2
+   },
+   {
+    "idx": 2,
+    "text": "Туча Кощея! Цифры «раз-два-три»: на «три» — вместе E: Средняя голова тучу прожжёт — вот и затея.",
+    "words": 17,
+    "chars": 96,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 28.9
+   },
+   {
+    "idx": 3,
+    "text": "Утка! Догнать можно лишь вместе — в одну сторону тяните.",
+    "words": 9,
+    "chars": 56,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 13.5
+   },
+   {
+    "idx": 4,
+    "text": "Яйцо…",
+    "words": 1,
+    "chars": 5,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 4,
+  "dt_mean": 14.9,
+  "cines": [
+   {
+    "dur": 13,
+    "says": 4,
+    "chars": 183
+   },
+   {
+    "dur": 15,
+    "says": 4,
+    "chars": 206
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 28,
+  "tips": 0,
+  "says": 7,
+  "banners": 7,
+  "say_chars": 265,
+  "tip_chars": 0,
+  "banner_chars": 310,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t53"
+   ],
+   "best": "t53",
+   "complete": true,
+   "sim_sec": 62.2,
+   "hits": 0
+  },
+  "cat": {
+   "order": 28,
+   "world": 5,
+   "name": "Утка",
+   "survey": "Утка (полёт на Горыныче)",
+   "type": "flight",
+   "kids": false,
+   "mech": [
+    "flight",
+    "two_heads",
+    "combat_ranged"
+   ],
+   "scene": [
+    "летим на Змее Горыныче",
+    "левая и правая голова",
+    "вороны Кощея и синее перо"
+   ],
+   "funny": [
+    "Горыныч летит зигзагами"
+   ],
+   "demand": {
+    "r": 0.6,
+    "c": 0.8,
+    "l": 0.4,
+    "p": 0.6,
+    "e": 0.5
+   }
+  }
+ },
+ "5-4": {
+  "id": "5-4",
+  "name": "5-4 · Яйцо",
+  "world": 5,
+  "n_obj": 4,
+  "words": 46,
+  "chars": 300,
+  "words_per_obj": 11.5,
+  "max_words": 23,
+  "long_word_share": 0.065,
+  "coop_obj": 1,
+  "key_obj": 1,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 4,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "«Калинка»! Прыжок Пробел на каждую золотую плитку — в долю, по бубенцу. Широкая полоса — пол переворачивается. Жёлтое солнышко — защита G в долю, к лицу.",
+    "words": 23,
+    "chars": 153,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 34.3
+   },
+   {
+    "idx": 1,
+    "text": "Клетка из чёрных ниток! Там что-то тусклое… Йоша нитки режет — держи долю.",
+    "words": 13,
+    "chars": 74,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 3.0
+   },
+   {
+    "idx": 2,
+    "text": "Последний припев — на подушке, все четверо. Последние доли — вместе.",
+    "words": 9,
+    "chars": 68,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 14.8
+   },
+   {
+    "idx": 3,
+    "text": "Игла…",
+    "words": 1,
+    "chars": 5,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 3,
+  "dt_mean": 17.4,
+  "cines": [
+   {
+    "dur": 12,
+    "says": 3,
+    "chars": 200
+   },
+   {
+    "dur": 25,
+    "says": 6,
+    "chars": 343
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 37,
+  "tips": 1,
+  "says": 5,
+  "banners": 32,
+  "say_chars": 235,
+  "tip_chars": 46,
+  "banner_chars": 862,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "t54",
+    "tso54"
+   ],
+   "best": "tso54",
+   "complete": true,
+   "sim_sec": 60.2,
+   "hits": 0
+  },
+  "cat": {
+   "order": 29,
+   "world": 5,
+   "name": "Яйцо",
+   "survey": "Яйцо («Калинка»)",
+   "type": "rhythm",
+   "kids": false,
+   "mech": [
+    "rhythm",
+    "runner",
+    "floor_flip",
+    "tiles"
+   ],
+   "scene": [
+    "Кощеев бальный зал золотой и перевёрнутый",
+    "прыжок на плитку в долю",
+    "«Калинка»"
+   ],
+   "funny": [
+    "пол переворачивается"
+   ],
+   "demand": {
+    "r": 0.7,
+    "c": 0.5,
+    "l": 0.1,
+    "p": 0.7,
+    "e": 0.5
+   }
+  }
+ },
+ "5-B1": {
+  "id": "5-B1",
+  "name": "5-Б1 · Кощей в тереме",
+  "world": 5,
+  "n_obj": 5,
+  "words": 62,
+  "chars": 406,
+  "words_per_obj": 12.4,
+  "max_words": 26,
+  "long_word_share": 0.032,
+  "coop_obj": 0,
+  "key_obj": 2,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 5,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Терем…",
+    "words": 1,
+    "chars": 6,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 1.0
+   },
+   {
+    "idx": 1,
+    "text": "Держитесь! Тени-двойники дерутся, как мы, и защиту запоминают. Меняй приёмы: щит G, отбив, кувырок Shift — пусть гадают.",
+    "words": 18,
+    "chars": 120,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 75.0
+   },
+   {
+    "idx": 2,
+    "text": "Золотой слиток клещами R возьми — в печь у стены брось: искрами станет опять. Видишь жёлудь на длинном замахе? Из рогатки Прошки E стрельни — вот так стрелять!",
+    "words": 26,
+    "chars": 159,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 70.0
+   },
+   {
+    "idx": 3,
+    "text": "Кощей иглу поднял — сейчас его не ранить. Закройте Пелагею: Потап — щитом, Прошка стреляет, Йоша поливает — не оставить!",
+    "words": 17,
+    "chars": 120,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 30
+   },
+   {
+    "idx": 4,
+    "text": "…",
+    "words": 0,
+    "chars": 1,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 4,
+  "dt_mean": 44.0,
+  "cines": [
+   {
+    "dur": 20,
+    "says": 5,
+    "chars": 347
+   },
+   {
+    "dur": 17,
+    "says": 5,
+    "chars": 241
+   }
+  ],
+  "n_cine": 2,
+  "cine_sec": 37,
+  "tips": 8,
+  "says": 8,
+  "banners": 6,
+  "say_chars": 341,
+  "tip_chars": 520,
+  "banner_chars": 374,
+  "encounters": [
+   {
+    "kinds": [
+     "dvoynik"
+    ],
+    "count": 3
+   },
+   {
+    "kinds": [
+     "dvoynik",
+     "dvoynik"
+    ],
+    "count": 3
+   },
+   {
+    "kinds": [
+     "dvoynik",
+     "dvoynik",
+     "dvoynik"
+    ],
+    "count": 2
+   },
+   {
+    "kinds": [
+     "dvoynik",
+     "dvoynik",
+     "dvoynik",
+     "dvoynik"
+    ],
+    "count": 2
+   }
+  ],
+  "foe_kinds": [
+   "dvoynik"
+  ],
+  "oracle": {
+   "bots": [
+    "t5b1"
+   ],
+   "best": "t5b1",
+   "complete": true,
+   "sim_sec": 178.8,
+   "hits": 13
+  },
+  "cat": {
+   "order": 30,
+   "world": 5,
+   "name": "Кощей в тереме",
+   "survey": "Кощей в тереме",
+   "boss": "Кощей Бессмертный",
+   "type": "boss",
+   "kids": false,
+   "mech": [
+    "boss",
+    "survive",
+    "shadow_doubles"
+   ],
+   "scene": [
+    "выстоять в тереме",
+    "тени-двойники",
+    "«Без имён»"
+   ],
+   "funny": [],
+   "demand": {
+    "r": 0.75,
+    "c": 0.5,
+    "l": 0.5,
+    "p": 0.6,
+    "e": 0.6
+   }
+  }
+ },
+ "5-B2": {
+  "id": "5-B2",
+  "name": "5-Б2 · Кощей Бессмертный и Златая цепь",
+  "world": 5,
+  "n_obj": 1,
+  "words": 0,
+  "chars": 0,
+  "words_per_obj": 0.0,
+  "max_words": 0,
+  "long_word_share": 0.0,
+  "coop_obj": 0,
+  "key_obj": 0,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 9,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "",
+    "words": 0,
+    "chars": 0,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 0,
+  "dt_mean": null,
+  "cines": [
+   {
+    "dur": 27,
+    "says": 7,
+    "chars": 528
+   },
+   {
+    "dur": 53.2,
+    "says": 17,
+    "chars": 511
+   },
+   {
+    "dur": 15,
+    "says": 3,
+    "chars": 205
+   },
+   {
+    "dur": 68.7,
+    "says": 20,
+    "chars": 777
+   },
+   {
+    "dur": 9.4,
+    "says": 2,
+    "chars": 149
+   },
+   {
+    "dur": 55.7,
+    "says": 15,
+    "chars": 630
+   },
+   {
+    "dur": 11,
+    "says": 3,
+    "chars": 195
+   },
+   {
+    "dur": 15.3,
+    "says": 4,
+    "chars": 130
+   },
+   {
+    "dur": 14.5,
+    "says": 5,
+    "chars": 178
+   },
+   {
+    "dur": 45.7,
+    "says": 15,
+    "chars": 574
+   },
+   {
+    "dur": 9.2,
+    "says": 3,
+    "chars": 100
+   },
+   {
+    "dur": 48.8,
+    "says": 10,
+    "chars": 389
+   },
+   {
+    "dur": 51.9,
+    "says": 15,
+    "chars": 630
+   },
+   {
+    "dur": 38.3,
+    "says": 8,
+    "chars": 357
+   },
+   {
+    "dur": 50.3,
+    "says": 14,
+    "chars": 734
+   },
+   {
+    "dur": 52.2,
+    "says": 16,
+    "chars": 467
+   },
+   {
+    "dur": 9.6,
+    "says": 3,
+    "chars": 146
+   },
+   {
+    "dur": 69.1,
+    "says": 15,
+    "chars": 556
+   },
+   {
+    "dur": 25.7,
+    "says": 5,
+    "chars": 316
+   },
+   {
+    "dur": 11.8,
+    "says": 3,
+    "chars": 188
+   },
+   {
+    "dur": 12.6,
+    "says": 3,
+    "chars": 174
+   },
+   {
+    "dur": 42.2,
+    "says": 12,
+    "chars": 522
+   },
+   {
+    "dur": 10.2,
+    "says": 2,
+    "chars": 213
+   },
+   {
+    "dur": 13,
+    "says": 4,
+    "chars": 125
+   },
+   {
+    "dur": 39.3,
+    "says": 11,
+    "chars": 553
+   },
+   {
+    "dur": 14.2,
+    "says": 3,
+    "chars": 200
+   },
+   {
+    "dur": 51.7,
+    "says": 14,
+    "chars": 612
+   },
+   {
+    "dur": 32.9,
+    "says": 9,
+    "chars": 361
+   },
+   {
+    "dur": 22.8,
+    "says": 5,
+    "chars": 345
+   },
+   {
+    "dur": 57.6,
+    "says": 14,
+    "chars": 1111
+   },
+   {
+    "dur": 9.6,
+    "says": 5,
+    "chars": 172
+   },
+   {
+    "dur": 41.3,
+    "says": 10,
+    "chars": 358
+   },
+   {
+    "dur": 20.3,
+    "says": 6,
+    "chars": 195
+   },
+   {
+    "dur": 30.3,
+    "says": 9,
+    "chars": 222
+   },
+   {
+    "dur": 16.3,
+    "says": 3,
+    "chars": 107
+   },
+   {
+    "dur": 14.3,
+    "says": 4,
+    "chars": 107
+   }
+  ],
+  "n_cine": 36,
+  "cine_sec": 1111.0,
+  "tips": 1,
+  "says": 73,
+  "banners": 35,
+  "say_chars": 2709,
+  "tip_chars": 81,
+  "banner_chars": 970,
+  "encounters": [
+   {
+    "kinds": [
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5kos"
+    ],
+    "count": 2
+   },
+   {
+    "kinds": [
+     "cep",
+     "cep",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5candle",
+     "k5kos"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "k5bone",
+     "k5bone",
+     "k5bone",
+     "k5bone"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "k5raven"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "cep",
+   "k5bone",
+   "k5candle",
+   "k5kos",
+   "k5raven"
+  ],
+  "oracle": {
+   "bots": [
+    "t5b2",
+    "tk5e_flow",
+    "tk5e_prolog"
+   ],
+   "best": "tk5e_prolog",
+   "complete": false,
+   "sim_sec": 265.9,
+   "hits": 21
+  },
+  "cat": {
+   "order": 31,
+   "world": 5,
+   "name": "Кощей Бессмертный и Златая цепь",
+   "survey": null,
+   "boss": "Кощей Бессмертный",
+   "type": "boss",
+   "kids": false,
+   "mech": [
+    "boss",
+    "twelve_stages",
+    "cinematic_tutorials",
+    "long"
+   ],
+   "scene": [
+    "двенадцать стадий боя",
+    "страницы-порталы",
+    "Златая цепь"
+   ],
+   "funny": [],
+   "demand": {
+    "r": 0.8,
+    "c": 0.8,
+    "l": 0.7,
+    "p": 0.7,
+    "e": 1.0
+   }
+  }
+ },
+ "epi": {
+  "id": "epi",
+  "name": "Эпилог",
+  "world": 0,
+  "n_obj": 2,
+  "words": 2,
+  "chars": 15,
+  "words_per_obj": 1.0,
+  "max_words": 2,
+  "long_word_share": 0.0,
+  "coop_obj": 0,
+  "key_obj": 0,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 1,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Слушаем сказку",
+    "words": 2,
+    "chars": 14,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 41.4
+   },
+   {
+    "idx": 1,
+    "text": "…",
+    "words": 0,
+    "chars": 1,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 1,
+  "dt_mean": 41.4,
+  "cines": [
+   {
+    "dur": 24,
+    "says": 6,
+    "chars": 373
+   },
+   {
+    "dur": 9.6,
+    "says": 2,
+    "chars": 81
+   },
+   {
+    "dur": 21,
+    "says": 7,
+    "chars": 159
+   },
+   {
+    "dur": 24,
+    "says": 8,
+    "chars": 357
+   }
+  ],
+  "n_cine": 4,
+  "cine_sec": 78.6,
+  "tips": 0,
+  "says": 19,
+  "banners": 6,
+  "say_chars": 871,
+  "tip_chars": 0,
+  "banner_chars": 378,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "tepi"
+   ],
+   "best": "tepi",
+   "complete": true,
+   "sim_sec": 74.4,
+   "hits": 0
+  },
+  "cat": {
+   "order": 32,
+   "world": 0,
+   "name": "Эпилог",
+   "survey": null,
+   "type": "story",
+   "kids": false,
+   "mech": [
+    "story",
+    "cinematic"
+   ],
+   "scene": [
+    "театр теней"
+   ],
+   "funny": [],
+   "demand": {
+    "r": 0.05,
+    "c": 0.05,
+    "l": 0.1,
+    "p": 0.05,
+    "e": 0.1
+   }
+  }
+ },
+ "z-i": {
+  "id": "z-i",
+  "name": "Застава · Илья Муромец",
+  "world": 0,
+  "n_obj": 2,
+  "words": 23,
+  "chars": 147,
+  "words_per_obj": 11.5,
+  "max_words": 23,
+  "long_word_share": 0.087,
+  "coop_obj": 1,
+  "key_obj": 0,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 0,
+  "bells": 1,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Все четверо — на тот берег по Калинову мосту. Мост кренится туда, где тяжелей. Потап тяжёл, как трое. До края наклонится — перевернётся, не жалей.",
+    "words": 23,
+    "chars": 146,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": 201.3
+   },
+   {
+    "idx": 1,
+    "text": "…",
+    "words": 0,
+    "chars": 1,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 1,
+  "dt_mean": 201.3,
+  "cines": [
+   {
+    "dur": 7,
+    "says": 2,
+    "chars": 129
+   }
+  ],
+  "n_cine": 1,
+  "cine_sec": 7,
+  "tips": 3,
+  "says": 2,
+  "banners": 4,
+  "say_chars": 80,
+  "tip_chars": 180,
+  "banner_chars": 213,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "tzast"
+   ],
+   "best": "tzast",
+   "complete": false,
+   "sim_sec": 201.9,
+   "hits": 0
+  },
+  "cat": {
+   "order": 33,
+   "world": 0,
+   "name": "Застава · Илья Муромец",
+   "survey": "Застава трёх богатырей",
+   "type": "zastava",
+   "kids": false,
+   "mech": [
+    "timed",
+    "challenge"
+   ],
+   "scene": [
+    "крен Калинова моста"
+   ],
+   "funny": [],
+   "demand": {
+    "r": 0.6,
+    "c": 0.3,
+    "l": 0.3,
+    "p": 0.7,
+    "e": 0.3
+   }
+  }
+ },
+ "z-d": {
+  "id": "z-d",
+  "name": "Застава · Добрыня Никитич",
+  "world": 0,
+  "n_obj": 2,
+  "words": 17,
+  "chars": 105,
+  "words_per_obj": 8.5,
+  "max_words": 17,
+  "long_word_share": 0.118,
+  "coop_obj": 0,
+  "key_obj": 1,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 0,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Семерых одним махом! Щитом G закрывайся в самый последний миг пред ударом — Так быстрее всего, не даром.",
+    "words": 17,
+    "chars": 104,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 30.8
+   },
+   {
+    "idx": 1,
+    "text": "…",
+    "words": 0,
+    "chars": 1,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 1,
+  "dt_mean": 30.8,
+  "cines": [
+   {
+    "dur": 7,
+    "says": 2,
+    "chars": 99
+   }
+  ],
+  "n_cine": 1,
+  "cine_sec": 7,
+  "tips": 2,
+  "says": 2,
+  "banners": 6,
+  "say_chars": 84,
+  "tip_chars": 142,
+  "banner_chars": 226,
+  "encounters": [
+   {
+    "kinds": [
+     "kiki",
+     "rak"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "leshonok",
+     "morok"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "stump",
+     "thread",
+     "vorona"
+    ],
+    "count": 1
+   }
+  ],
+  "foe_kinds": [
+   "kiki",
+   "leshonok",
+   "morok",
+   "rak",
+   "stump",
+   "thread",
+   "vorona"
+  ],
+  "oracle": {
+   "bots": [
+    "tzast"
+   ],
+   "best": "tzast",
+   "complete": true,
+   "sim_sec": 35.0,
+   "hits": 0
+  },
+  "cat": {
+   "order": 34,
+   "world": 0,
+   "name": "Застава · Добрыня Никитич",
+   "survey": "Застава трёх богатырей",
+   "type": "zastava",
+   "kids": false,
+   "mech": [
+    "timed",
+    "challenge"
+   ],
+   "scene": [
+    "семерых одним махом"
+   ],
+   "funny": [],
+   "demand": {
+    "r": 0.7,
+    "c": 0.3,
+    "l": 0.2,
+    "p": 0.6,
+    "e": 0.3
+   }
+  }
+ },
+ "z-a": {
+  "id": "z-a",
+  "name": "Застава · Алёша Попович",
+  "world": 0,
+  "n_obj": 2,
+  "words": 18,
+  "chars": 126,
+  "words_per_obj": 9.0,
+  "max_words": 18,
+  "long_word_share": 0.167,
+  "coop_obj": 0,
+  "key_obj": 1,
+  "swap_obj": 0,
+  "tip_zones": 0,
+  "prompts": 3,
+  "bells": 0,
+  "objectives": [
+   {
+    "idx": 0,
+    "text": "Колокола по очереди звонят. Запомните порядок и повторите. Низкий колокол — ударь F, на башне — из рогатки Прошки стрельните.",
+    "words": 18,
+    "chars": 125,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": 40.7
+   },
+   {
+    "idx": 1,
+    "text": "…",
+    "words": 0,
+    "chars": 1,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 1,
+  "dt_mean": 40.7,
+  "cines": [
+   {
+    "dur": 7,
+    "says": 2,
+    "chars": 109
+   }
+  ],
+  "n_cine": 1,
+  "cine_sec": 7,
+  "tips": 0,
+  "says": 1,
+  "banners": 6,
+  "say_chars": 52,
+  "tip_chars": 0,
+  "banner_chars": 357,
+  "encounters": [],
+  "foe_kinds": [],
+  "oracle": {
+   "bots": [
+    "tzast"
+   ],
+   "best": "tzast",
+   "complete": false,
+   "sim_sec": 41.2,
+   "hits": 0
+  },
+  "cat": {
+   "order": 35,
+   "world": 0,
+   "name": "Застава · Алёша Попович",
+   "survey": "Застава трёх богатырей",
+   "type": "zastava",
+   "kids": false,
+   "mech": [
+    "timed",
+    "challenge"
+   ],
+   "scene": [
+    "колокольная перекличка"
+   ],
+   "funny": [],
+   "demand": {
+    "r": 0.5,
+    "c": 0.3,
+    "l": 0.3,
+    "p": 0.7,
+    "e": 0.3
+   }
+  }
+ }
+}
