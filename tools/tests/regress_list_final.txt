@@ -46,3 +46,5 @@ tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky32 tfin_sky3
 tfin_bossnext
 # утечка видеопамяти при смене уровня (docs/29_full_audit.md, 10.1): геометрии и текстуры освобождаются при выходе из уровня
 tfin_leak
+# буфер ввода: прыжок 0,12 с и удар 0,15 с (docs/29_full_audit.md, 7.1)
+tfin_inbuf

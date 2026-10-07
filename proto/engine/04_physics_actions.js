@@ -33,6 +33,10 @@ function teleportBehind(o,h){const tx=h.pos.x-Math.sin(h.face)*1.2,tz=h.pos.z-Ma
 
 /* ============================== ДЕЙСТВИЯ ИГРОКОВ ============================== */
 function camBack(){return new V3(Math.sin(W.camYaw),0,Math.cos(W.camYaw));}
+// буфер ввода: прыжок и удар, нажатые чуть раньше, чем герой смог (до приземления, до конца отдачи прошлого удара), не пропадают, а
+// исполняются, как только стало можно; нажатие живёт INBUF секунд, исполненное — сгорает (двойного прыжка и удара не будет)
+const INBUF={jump:0.12,attack:0.15};
+const inBuf=(t,w)=>t!==undefined&&G.time-t<=w;
 function updatePlayer(pi,dt){
   const p=players[pi],h=active(pi),o=other(pi);p.spiritLock=Math.max(0,p.spiritLock-dt);p.gusCd=Math.max(0,(p.gusCd||0)-dt);p.featCd=Math.max(0,(p.featCd||0)-dt);p.tongCd=Math.max(0,(p.tongCd||0)-dt);p.lockedTip=Math.max(0,p.lockedTip-dt);p.yarnCd=Math.max(0,p.yarnCd-dt);p.owlCd=Math.max(0,p.owlCd-dt);
   if(!h.guard)p.spirit=Math.min(1,p.spirit+dt*0.3);
@@ -54,9 +58,11 @@ function updatePlayer(pi,dt){
   if(!lock&&tap(pi,'guard')){for(const e of W.enemies)if(e.alive&&e.tgt===h&&e.state==='wind')e.left=e.wdur-e.t;for(const b of W.bolts)if(b.tgt===h&&!b.refl)b.left=b.eta;if(W.onGuardTap){W.onGuardTap(pi,h);if(G.solo)W.onGuardTap(1-pi,active(1-pi));}}
   if(!lock&&tap(pi,'roll')){if(!W.abil.roll){if(p.lockedTip<=0){p.lockedTip=4;tip(pi,'Кувыркаться выучишься позже — в уровне 1-2 «Кикиморино болото».',2.2);}}
     else if(h.rollCd<=0&&h.grounded&&!h.hang){h.rollT=0.38;h.iT=Math.max(h.iT,0.42);h.rollCd=0.7;h.lastRoll=G.time;if(wl>0.1)h.rollDir.set(wx,0,wz).normalize();else h.rollDir.set(Math.sin(h.face),0,Math.cos(h.face));SFX.roll();}}
-  if(!lock&&tap(pi,'attack')&&h.atkCd<=0&&h.rollT<=0&&!h.hang){h.atkT=0.28;h.atkCd=0.36;SFX.swish();heroAttack(h,h.d.range,0.2);if(W.onAttack)W.onAttack(pi,h);}
+  if(!lock&&tap(pi,'attack'))p.atkAt=G.time;
+  if(!lock&&inBuf(p.atkAt,INBUF.attack)&&h.atkCd<=0&&h.rollT<=0&&!h.hang){p.atkAt=undefined;h.atkT=0.28;h.atkCd=0.36;SFX.swish();heroAttack(h,h.d.range,0.2);if(W.onAttack)W.onAttack(pi,h);}
   if(!lock&&tap(pi,'skill')&&!h.hang)doSkill(pi,h);
-  if(!lock&&tap(pi,'jump')&&!h.hang){if(p.clingOffer&&h.grounded)startCling(pi,h);else doJump(h);}
+  if(!lock&&tap(pi,'jump'))p.jumpAt=G.time;
+  if(!lock&&!h.hang&&inBuf(p.jumpAt,INBUF.jump)){if(p.clingOffer&&h.grounded){p.jumpAt=undefined;startCling(pi,h);}else if(h.grounded||h.coyote>0){p.jumpAt=undefined;doJump(h);}}
   h.glide=h.kind==='pelageya'&&!lock&&!h.grounded&&btn(pi,'jump')&&h.vel.y<0&&!(W.noGlide&&W.noGlide(h));
   let sp=h.d.speed;if(h.guard)sp*=0.35;if(h.atkT>0)sp*=0.5;if(W.slowZone&&W.slowZone(h))sp*=0.4;if(h.grounded&&h.groundRef&&h.groundRef.water)sp*=0.8;if(W.wade)sp*=W.wade(h);
   if(h.hang||h.aimT>0){}else if(h.rollT>0){h.vel.x=h.rollDir.x*7.2;h.vel.z=h.rollDir.z*7.2;}else if(h.knockT<=0)moveHero(h,dt,wx,wz,sp);   // aimT — паутинка сама несёт к уступу
