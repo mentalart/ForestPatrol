@@ -81,5 +81,7 @@
     if(n===0&&E.prologue){E.prologue(()=>{E.cine.intro(()=>{E.prep();E.go(1);});});return;}
     E.prep();if(n===1){E.cine.intro(()=>{E.prep();E.go(1);});return;}
     for(let i=1;i<n;i++)E.done[i]=true;E.go(n,{warp:true});};
+  // Ctrl+Alt+B (late_95_dev.js): следующая стадия — засчитать текущую, дальше всё идёт как обычно; вернуть true, если перешли
+  W.bossNext=()=>{const n=E.cur;if(n==null||n<1||G.cine||E.done[n]&&E.wonT===n)return false;E.won(n);return true;};
   // для ботов и отладки
   W.dbg5e=()=>({E,ES,K5,KB,KS,F,candles,C,R,OAK,KP,ANV,stageStart,stageWin,heroesHome,clearAdds,k5Zone,K5L,V3,THREE,light:()=>({bg:scene.background.getHexString(),fog:scene.fog?scene.fog.color.getHexString()+' '+scene.fog.near.toFixed(0)+'-'+scene.fog.far.toFixed(0):'-',amb:amb.intensity.toFixed(2),sun:sun.intensity.toFixed(2),storm:(K5.storm||0).toFixed(2),vig:(document.getElementById('k5storm')||{style:{}}).style.opacity,filt:(renderer.domElement.style.filter||'')})});

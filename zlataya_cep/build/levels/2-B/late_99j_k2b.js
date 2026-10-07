@@ -372,6 +372,10 @@ build2B=function(){
         {t:1.2,fn:()=>{const from=e.pos.clone();anim(2.2,k=>{e.setScale(lerp(3.0,1.4,smooth(k)));e.pos.lerpVectors(from,new V3(C.x,-2,C.z-1.5),smooth(k));});V.set(e.k2,'fish','surprise');}}],
       end:()=>{F.phase=4.5;e.state='broken';e.t=0;e.bdur=999;e.embers=0;e.setScale(1.4);e.pos.set(C.x,-2,C.z-1.5);V.set(e.k2,'fish','surprise');banner('Общий удар!','#ffd76a',2.6,'ударьте '+K(0,'attack')+' и '+K(1,'attack')+' разом — Богатырский мах');
         for(const p of[0,1])tip(p,'Водяной на дне хлопает губами! Подбегите и ударьте '+K(p,'attack')+' ОБА РАЗОМ.',4);}});}
+  // Ctrl+Alt+B (late_95_dev.js): следующая стадия босса — для проверки и показа; вернуть true, если перешли
+  W.bossNext=()=>{if(G.cine||F.won)return false;const p=F.phase;
+    if(p===1){F.phase=1.5;BS.winHits=0;later(0.4,scene2);return true;}if(p===2){F.phase=2.5;later(0.4,scene3);return true;}if(p===3){F.phase=3.5;later(0.4,scene4);return true;}
+    if(p===4||p===4.5){win();return true;}return false;};
   function win(){F.won=true;F.phase=5;SFX.horn();banner('Богатырский мах!','#ffd76a',2,'вместе — вдвое сильней');G.stats.bogatyr++;F.slow=0.9;shakeAll(0.09,0.8);K2FX.flash(1);try{CINE.moodFlash('#ffe08a',0.3,1.4);}catch(err){}
     for(let i=0;i<12;i++){const a=i/12*Math.PI*2;later(i*0.04,()=>FX.crown(new V3(C.x+Math.cos(a)*rand(2,8),-1.9,C.z+Math.sin(a)*rand(2,8)),1.4));}FX.beam(null,false);
     BELL4.forEach(K4=>K4.B.ring());later(1.4,ending);}
