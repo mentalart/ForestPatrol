@@ -109,7 +109,9 @@ S.sweep=(solo,from,to)=>S.IDS.slice(from,to).map(id=>S.lineOf(S.run(id,solo))).j
       if(!c)r.nocine=true;
       else{r.dur=+c.dur.toFixed(1);r.how=S.how;S.midCine(c);
         r.skips=S.drain();if(ZC.G.cine)r.notes.push('G.cine остался после '+r.skips+' пропусков (ZC.skip)');if(ZC.G.skipT)r.notes.push('G.skipT='+ZC.G.skipT.toFixed(2)+' после пропуска');
-        ZC.tick(30);const m=S.moved();if(m<0.5)r.notes.push('после пропуска ролика герой не двигается (смещение '+m.toFixed(2)+' м)');
+        ZC.tick(90);S.drain();ZC.tick(30);   // за первым роликом может сразу идти второй (2-2: «кит вдохнул») — досматриваем цепочку
+        if(ZC.G.cine)r.notes.push('цепочка роликов не кончилась за '+(r.skips+1)+' пропусков');
+        else{const m=S.moved();if(!ZC.G.cine&&m<0.5)r.notes.push('после пропуска роликов герой не двигается (смещение '+m.toFixed(2)+' м)');}
         const nn=S.nan();if(nn.length)r.notes.push('NaN после пропуска: '+nn[0]);const iv=S.inv();if(iv.length)r.notes.push('inv после пропуска: '+iv[0]);}
       // смерть во время ролика: герой «рассыпался» посреди ролика; ролик досматривается, герой встаёт сам за 15 с
       const c2=S.waitCine(id,solo);
@@ -170,31 +172,36 @@ S.sweep=(solo,from,to)=>S.IDS.slice(from,to).map(id=>S.lineOf(S.run(id,solo))).j
   S.swapLine=r=>{const red=r.notes.length;const s=[r.id+'/solo',r.foes?'врагов '+r.foes+', смен '+r.swaps:'врагов нет',red?r.notes.join(' ; '):'ok'].join(' | ');if(red)S.RED.push('swap '+s);return (red?'RED ':'    ')+s;};
   return 'смена героя в бою\n'+S.IDS.map(id=>S.swapLine(S.swapFight(id))).join('\n');})()
 //@@
-// большой кадр: step(dt=0,5) — герой не за картой, не пролетает сквозь стену (и контроль с обычным dt: там красное — настоящий баг)
+// большой кадр. Игра сама режет dt до 0,05 (frame(): Math.min(0.05, …)), поэтому: dt=0,05 — худший достижимый кадр, красное здесь — настоящий баг;
+// dt=0,5 — стресс (недостижим в игре): сквозь тонкую стену/«за картой» — только предупреждение (WARN), красное — NaN/Infinity и исключения.
+// Стена «пролетена»: отрезок пути героя за кадр проходит сквозь коробку (расстояние до неё < радиуса героя), а оба конца — снаружи; «врос» — конец кадра внутри.
 (()=>{const STEP=0.36;
-  S.crosses=(x0,z0,x1,z1,b,r)=>{const e=1e-3,minx=b.minx-r+e,maxx=b.maxx+r-e,minz=b.minz-r+e,maxz=b.maxz+r-e;let t0=0,t1=1;const dx=x1-x0,dz=z1-z0;
-    for(const [p,q,lo,hi] of [[-dx,x0-minx,0,0],[dx,maxx-x0,0,0],[-dz,z0-minz,0,0],[dz,maxz-z0,0,0]]){if(Math.abs(p)<1e-12){if(q<0)return false;}else{const u=q/p;if(p<0){if(u>t1)return false;if(u>t0)t0=u;}else{if(u<t0)return false;if(u<t1)t1=u;}}}
-    return t0<t1;};
-  S.big=(id,dt,frames)=>{const r={id,dt,tunnel:[],emb:[],oob:[],nan:[]};const e0=__errs.length;
+  S.dRect=(x,z,b)=>{const cx=Math.min(Math.max(x,b.minx),b.maxx),cz=Math.min(Math.max(z,b.minz),b.maxz);return Math.hypot(x-cx,z-cz);};
+  S.big=(id,dt,frames)=>{const r={id,dt,tunnel:[],emb:[],oob:[],nan:[],err:[]};const e0=__errs.length;
     try{ZC.setSolo(false);ZC.startFrom(ZC.LV(id));ZC.G.manual=true;ZC.tick(20);S.drain();ZC.tick(10);const W=ZC.W,E=S.ext();
       for(let ph=0;ph<5;ph++){S.keysDown(false,ph);
         for(let i=0;i<frames;i++){const hs=ZC.players.map(p=>p.heroes[p.act]),p0=hs.map(h=>({x:h.pos.x,y:h.pos.y,z:h.pos.z})),f0=ZC.G.stats.falls;
-          ZC.step(dt);if(ZC.G.cine){ZC.skip();}
+          ZC.step(dt);if(ZC.G.cine)ZC.skip();
           hs.forEach((h,k)=>{const a=p0[k],b=h.pos;if(!S.f(b.x)||!S.f(b.y)||!S.f(b.z)){if(r.nan.length<2)r.nan.push(h.kind+'='+S.fmt(b));return;}
             const tele=ZC.G.stats.falls!==f0||Math.hypot(b.x-a.x,b.z-a.z)>14||Math.abs(b.y-a.y)>8;if(tele)return;
-            const rad=h.d.radius,y0=Math.min(a.y,b.y),y1=Math.max(a.y,b.y);
+            const rad=h.d.radius-0.05,y0=Math.min(a.y,b.y),y1=Math.max(a.y,b.y),len=Math.hypot(b.x-a.x,b.z-a.z),n=Math.max(1,Math.ceil(len/0.1));
             for(const bx of W.boxes){if(!bx.on||bx.maxy<=y0+STEP||bx.miny>=y1+1.0)continue;
-              if(S.crosses(a.x,a.z,b.x,b.z,bx,rad)){const inside=b.x>bx.minx-rad+0.02&&b.x<bx.maxx+rad-0.02&&b.z>bx.minz-rad+0.02&&b.z<bx.maxz+rad-0.02;
-                const msg=h.kind+' ('+a.x.toFixed(1)+','+a.z.toFixed(1)+')→('+b.x.toFixed(1)+','+b.z.toFixed(1)+') коробка x'+bx.minx.toFixed(1)+'…'+bx.maxx.toFixed(1)+' z'+bx.minz.toFixed(1)+'…'+bx.maxz.toFixed(1)+' y'+bx.miny.toFixed(1)+'…'+bx.maxy.toFixed(1);
-                if(inside){if(r.emb.length<2)r.emb.push(msg);}else if(r.tunnel.length<2)r.tunnel.push(msg);break;}}
+              if(S.dRect(a.x,a.z,bx)<rad)continue;   // и до кадра уже внутри — это не кадр виноват
+              const dEnd=S.dRect(b.x,b.z,bx);let deep=dEnd<rad;
+              if(!deep)for(let q=1;q<n&&!deep;q++){const t=q/n;deep=S.dRect(a.x+(b.x-a.x)*t,a.z+(b.z-a.z)*t,bx)<rad;}
+              if(deep){const msg=h.kind+' ('+a.x.toFixed(1)+','+a.z.toFixed(1)+')→('+b.x.toFixed(1)+','+b.z.toFixed(1)+') y'+a.y.toFixed(1)+' коробка x'+bx.minx.toFixed(1)+'…'+bx.maxx.toFixed(1)+' z'+bx.minz.toFixed(1)+'…'+bx.maxz.toFixed(1)+' y'+bx.miny.toFixed(1)+'…'+bx.maxy.toFixed(1);
+                if(dEnd<rad){if(r.emb.length<2)r.emb.push(msg);}else if(r.tunnel.length<2)r.tunnel.push(msg);break;}}
             const o=S.oob(E);if(o.length&&r.oob.length<2)r.oob.push(o[0]);});
           const n=S.nan();if(n.length&&r.nan.length<2)r.nan.push(n[0]);}}
       S.relAll();
-    }catch(e){r.emb.push('EXC '+String(e.message).slice(0,100)+' @'+((e.stack||'').split('\n')[1]||'').trim().slice(-60));}
-    r.err=__errs.slice(e0).slice(0,2);return r;};
-  S.bigLine=(a,b)=>{const g=r=>[r.tunnel.length?'TUNNEL '+r.tunnel.join(' | '):'',r.emb.length?'EMBED '+r.emb.join(' | '):'',r.oob.length?'OOB '+r.oob.join(' ; '):'',r.nan.length?'NAN '+r.nan.join(' ; '):'',r.err.length?'ERR '+r.err.join(' ; '):''].filter(Boolean).join(' ');
-    const ca=g(a),cb=g(b);const red=ca||cb;const s=a.id+' | dt=1/60: '+(ca||'ok')+' | dt=0.5: '+(cb||'ok');if(ca)S.RED.push('bigdt-control '+s);else if(cb)S.RED.push('bigdt '+s);return (red?'RED ':'    ')+s;};
-  S.bigSweep=(from,to)=>S.IDS.slice(from,to).map(id=>S.bigLine(S.big(id,1/60,60),S.big(id,0.5,6))).join('\n');
+    }catch(e){r.err.push('EXC '+String(e.message).slice(0,100)+' @'+((e.stack||'').split('\n')[1]||'').trim().slice(-60));}
+    r.err=r.err.concat(__errs.slice(e0).slice(0,2));return r;};
+  S.WARN=[];
+  S.bigLine=(a,b)=>{const hard=r=>[r.nan.length?'NAN '+r.nan.join(' ; '):'',r.err.length?'ERR '+r.err.join(' ; '):''].filter(Boolean).join(' ');
+    const soft=r=>[r.tunnel.length?'TUNNEL '+r.tunnel.join(' | '):'',r.emb.length?'EMBED '+r.emb.join(' | '):'',r.oob.length?'OOB '+r.oob.join(' ; '):''].filter(Boolean).join(' ');
+    const ca=hard(a)+soft(a),hb=hard(b),sb=soft(b);const l=a.id+' | dt=0.05: '+(ca||'ok')+' | dt=0.5: '+(hb||sb?(hb?hb+' ':'')+(sb?'WARN '+sb:''):'ok');
+    if(ca)S.RED.push('bigdt-0.05 '+l);else if(hb)S.RED.push('bigdt-0.5 '+l);else if(sb)S.WARN.push(a.id);return (ca||hb?'RED ':sb?'warn ':'    ')+l;};
+  S.bigSweep=(from,to)=>S.IDS.slice(from,to).map(id=>S.bigLine(S.big(id,0.05,100),S.big(id,0.5,6))).join('\n');
   return 'большой кадр: готово';})()
 //@@
 (()=>'bigdt 0..18\n'+S.bigSweep(0,18))()
@@ -202,4 +209,4 @@ S.sweep=(solo,from,to)=>S.IDS.slice(from,to).map(id=>S.lineOf(S.run(id,solo))).j
 (()=>'bigdt 18..\n'+S.bigSweep(18,99))()
 //@@
 // итог
-(()=>{const red=S.RED.length;return 'SUMMARY tsec_sweep: red='+red+(red?'\n'+S.RED.map(x=>'  RED '+x.slice(0,260)).join('\n'):'')+(S.INFO.length?'\nINFO '+S.INFO.join(' ; '):'');})()
+(()=>{const red=S.RED.length;return 'SUMMARY tsec_sweep: red='+red+' warn(dt=0.5, недостижимо в игре)='+S.WARN.length+(red?'\n'+S.RED.map(x=>'  RED '+x.slice(0,260)).join('\n'):'')+(S.WARN.length?'\n  warn dt=0.5: '+S.WARN.join(' '):'')+(S.INFO.length?'\nINFO '+S.INFO.join(' ; '):'');})()
