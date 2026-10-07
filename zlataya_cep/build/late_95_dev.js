@@ -48,8 +48,9 @@ FIN.ui=dt=>updateUI(dt);   // (window.ZC появляется позже мод�
 {const _t=tone;tone=function(){if(FIN.toneEv)try{FIN.toneEv([...arguments]);}catch(e){}return _t.apply(this,arguments);};}
 FIN.tone=(...a)=>tone(...a);
 FIN.ac=()=>AC;   // аудиоконтекст игры — для записи звуковой дорожки трейлера (tools/video/audio.js)
-// Ctrl+Alt+B — следующая стадия босса: у каждого босса уровень выставляет W.bossNext (true — переход начат); по коду клавиши — и в русской раскладке
+// Ctrl+Alt+B — следующая стадия босса: у каждого босса уровень выставляет W.bossNext (true — переход начат; строка — то же, но с названием для подсказки,
+// так в 5-Б2: «Глава N из 12»); по коду клавиши — и в русской раскладке
 addEventListener('keydown',e=>{if(!e.ctrlKey||!e.altKey||e.repeat||!(e.code==='KeyB'||e.key==='b'||e.key==='B'||e.key==='и'||e.key==='И'))return;
   e.preventDefault();e.stopImmediatePropagation();if(G.state!=='play'||G.ui||G.trans)return;
   let ok=false;try{ok=!!(W&&W.bossNext&&W.bossNext());}catch(err){console.error(err);}
-  FIN.devToast(ok?'Следующая стадия босса':'Здесь нет следующей стадии','Ctrl+Alt+B');},true);
+  FIN.devToast(typeof ok==='string'?ok:ok?'Следующая стадия босса':'Здесь нет следующей стадии','Ctrl+Alt+B');},true);

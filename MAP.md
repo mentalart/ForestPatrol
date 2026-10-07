@@ -106,7 +106,7 @@
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 1 | t53 |
 | `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | — | 2 | t54 tso54 |
 | `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | — | 1 | t5b1 |
-| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_94_koschei_reset | 2 | t5b2 tlukoepi |
+| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_93_koschei_level_p6_epic, late_93_koschei_level_ph_prologue, late_94_koschei_reset | 2 | t5b2 tlukoepi |
 | `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
 | `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 2 | tfin_juice tzast |
@@ -242,7 +242,7 @@
 | `levels/5-B2/late_93_koschei_level_p3_wind.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 3 из 5): ветер, анимация Кощея, помощники героев — ча… |
 | `levels/5-B2/late_93_koschei_level_p4_skaz.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 4 из 5): сказы и переходы между этапами — части склеи… |
 | `levels/5-B2/late_93_koschei_level_p5_finale.js` | 5-B2 | ---- продолжение late_93_koschei_level.js (внутри build5B2, часть 5 из 5): последний сказ, цепь, кнопки, отладка — част… |
-| `levels/5-B2/late_93_koschei_level_p6_epic.js` | — | ---- продолжение build5B2 (k5epic, часть 6): БИТВА В ДВЕНАДЦАТЬ СТАДИЙ — контроллер (docs/27_koschei_epic_proposals.md)… |
+| `levels/5-B2/late_93_koschei_level_p6_epic.js` | 5-B2 | ---- продолжение build5B2 (k5epic, часть 6): БИТВА В ДВЕНАДЦАТЬ СТАДИЙ — контроллер (docs/27_koschei_epic_proposals.md)… |
 | `levels/5-B2/late_93_koschei_level_p6b_lesson.js` | — | ---- продолжение build5B2 (часть p6b): ОБУЧАЮЩИЕ КАТСЦЕНЫ — общий движок ---- |
 | `levels/5-B2/late_93_koschei_level_p7_hub.js` | — | ---- продолжение build5B2 (k5epic, часть 7): ЛУКОМОРЬЕ — постройки, друзья в чёрных цепях, Кот-часы, помощь друзей ---- |
 | `levels/5-B2/late_93_koschei_level_p8_act1.js` | — | ---- продолжение build5B2 (k5epic, часть 8): АКТ I «ЧЁРНАЯ СТРОКА» — стадии 1–3 и их ролики ---- |
@@ -257,7 +257,7 @@
 | `levels/5-B2/late_93_koschei_level_pe_act3.js` | — | ---- продолжение build5B2 (k5epic, часть 14): АКТ III — стадии 8 (буря), 9 (витязи), 10 (Цепной великан) ---- |
 | `levels/5-B2/late_93_koschei_level_pf_bezimen.js` | — | ---- продолжение build5B2 (k5epic, часть 15): СТАДИЯ 11 «БЕЗ ИМЁН» (новая; отзвук терема 5-Б1) ---- |
 | `levels/5-B2/late_93_koschei_level_pg_final.js` | — | ---- продолжение build5B2 (k5epic, часть 16): СТАДИЯ 12, «ТЯНЕМ-ПОТЯНЕМ», ПРОЛОГ-ПОГОНЯ, тексты паузы ---- |
-| `levels/5-B2/late_93_koschei_level_ph_prologue.js` | — | ---- продолжение build5B2 (k5epic, часть ph): ПРОЛОГ «Через леса, через моря» — погоня на Горыныче за чёрной тучей Коще… |
+| `levels/5-B2/late_93_koschei_level_ph_prologue.js` | 5-B2 | ---- продолжение build5B2 (k5epic, часть ph): ПРОЛОГ «Через леса, через моря» — погоня на Горыныче за чёрной тучей Коще… |
 | `levels/5-B2/late_93_koschei_level_pz_end.js` | — | ---- конец build5B2 (k5epic): части p6…py — битва в двенадцать стадий; здесь функция закрывается ---- |
 | `levels/5-B2/late_94_koschei_reset.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: СБРОС БОЯ ПРИ ЗАГРУЗКЕ УРОВНЯ |
 | `late_95_dev.js` | luko | РЕЛИЗ · КЛАВИШИ РАЗРАБОТЧИКА |
@@ -392,5 +392,5 @@
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 184 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 185 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
