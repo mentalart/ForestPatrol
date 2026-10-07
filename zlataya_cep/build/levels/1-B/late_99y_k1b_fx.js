@@ -71,7 +71,7 @@ K1F.tele=function(x,z,r,dur,kind,o){o=o||{};const T=K1F.teleObj(x,z,r,kind);let 
 K1F.sectorObj=function(x,z,dir,half,r,kind){const col=K1COL[kind]||kind||K1COL.red,g=new THREE.Group();g.position.set(x,0.08,z);k1Add(g);const th0=dir-Math.PI/2-half;
   const out=new THREE.Mesh(new THREE.RingGeometry(r*0.96,r,28,1,th0,half*2),k1TeleMats(col,0.85));out.rotation.x=-Math.PI/2;g.add(out);
   const fill=new THREE.Mesh(new THREE.CircleGeometry(r,28,th0,half*2),k1TeleMats(col,0.28));fill.rotation.x=-Math.PI/2;fill.position.y=0.01;g.add(fill);g.traverse(c=>{c.renderOrder=6;});
-  return {g,out,fill,r,set(k){const kk=Math.max(0.02,Math.min(1,k));fill.scale.setScalar(kk);fill.material.opacity=0.2+0.3*kk;out.material.opacity=0.55+0.4*Math.abs(Math.sin(kk*14));},
+  return {g,out,fill,r,set(k){const kk=Math.max(0.02,Math.min(1,k));fill.scale.setScalar(kk);fill.material.opacity=0.28+0.42*kk;out.material.opacity=0.6+0.4*Math.abs(Math.sin(kk*14));},
     flash(){fill.scale.setScalar(1);fill.material.opacity=0.85;K1F.anim(0.25,k=>{fill.material.opacity=0.85*(1-k);out.material.opacity=0.85*(1-k);},()=>k1Del(g));},del(){k1Del(g);}};};
 K1F.sector=function(x,z,dir,half,r,dur,kind){const T=K1F.sectorObj(x,z,dir,half,r,kind);let done=false;K1F.anim(dur,k=>{if(!done)T.set(k);},()=>{if(!done){done=true;T.flash();}});return {cancel(){done=true;T.del();}};};
 // кольцо ростков от ладони по земле (после хлопка)
@@ -134,10 +134,11 @@ function k1PhaseWatch(){const F=W.flags,c=K1F.ctx;if(!c)return;const key=F.won?'
   else if(key===1.5||key===2){K1F.mood('night',3);K1F.amb=0;if(key===1.5)K1B.cheer('duck',1.6);}
   else if(key===3){K1F.mood('fair',3);K1F.amb=2.5;K1F.lampsOn(14,0.12);K1B.bloom(c.L,true);K1B.cheer('clap',7);}
   else if(key==='won'){K1F.mood('dawn',4);K1F.amb=4;K1F.leaves(new V3(K1F.C.x,6,K1F.C.z),60,{spd:2,up:1.4,size:1.4});K1B.cheer('clap',10);}}
-function k1HandTele(dt){const c=K1F.ctx;if(!c)return;for(const e of W.enemies){if(e.kind!=='hand')continue;let T=K1F.hT.get(e);
-    if(e.state==='wind'&&e.alive){const kind=e.sig==='red'?'red':'yellow',rad=e.r+2.0;if(!T||T.kind!==kind||!T.o.g.parent){if(T)T.o.del();T={o:K1F.teleObj(e.pos.x,e.pos.z,rad,kind),kind};K1F.hT.set(e,T);}
-      T.o.g.position.x=e.pos.x;T.o.g.position.z=e.pos.z;T.o.set(clamp(e.t/Math.max(0.05,e.wdur),0,1));T.live=true;}
-    else if(T&&T.live){T.live=false;if(e.state==='strike'||e.state==='recover'||e.state==='idle'||e.state==='chase'){T.o.flash();}else T.o.del();K1F.hT.delete(e);}}}
+function k1HandTele(dt){const c=K1F.ctx;if(!c)return;const N=K1B.hands;for(const e of W.enemies){if(e.kind!=='hand')continue;let T=K1F.hT.get(e);
+    if(e.state==='wind'&&e.alive){const red=e.sig==='red',kind=red?'red':'yellow';   // жёлтая — круг зоны удара, красная — веер перед ладонью (курс запирается на 60 % замаха)
+      if(!T||T.kind!==kind||!T.o.g.parent){if(T)T.o.del();T={o:red?K1F.sectorObj(e.pos.x,e.pos.z,0,N?N.fanHalf:0.8,e.r+(N?N.fanExtra:3.4),'red'):K1F.teleObj(e.pos.x,e.pos.z,e.r+2.0,'yellow'),kind,red};K1F.hT.set(e,T);}
+      T.o.g.position.x=e.pos.x;T.o.g.position.z=e.pos.z;if(T.red)T.o.g.rotation.y=e.face;T.o.set(clamp(e.t/Math.max(0.05,e.wdur),0,1));T.live=true;}
+    else if(T&&T.live){T.live=false;if(e.state==='strike'||e.state==='recover'||e.state==='idle'||e.state==='chase'||e.state==='stagger'){T.o.flash();}else T.o.del();K1F.hT.delete(e);}}}
 {const _ll=loadLevel;loadLevel=function(i){K1F.reset();_ll(i);};}
 {const _st=step;step=function(dt){_st(dt);if(!K1F.ctx||!W||W.levelId!=='1-B')return;try{
     k1MoodTick(dt);k1PhaseWatch();k1HandTele(dt);k1LeavesTick(dt);

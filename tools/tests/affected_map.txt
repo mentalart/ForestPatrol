@@ -163,9 +163,10 @@ zlataya_cep/build/levels/luko/rep_30_luko.py  @level:luko tfin_col
 zlataya_cep/build/levels/p/rep_30_prolog.py   @level:p
 zlataya_cep/build/levels/1-3/rep_30_kolobok13.py @level:1-3
 zlataya_cep/build/levels/1-4/rep_30_leshy14.py @level:1-4
-zlataya_cep/build/levels/1-B/rep_30_leshy1b.py @level:1-B tfin_k1b
-zlataya_cep/build/levels/1-B/late_99x_k1b_leshy.js @level:1-B tfin_k1b
-zlataya_cep/build/levels/1-B/late_99y_k1b_fx.js @level:1-B tfin_k1b
+zlataya_cep/build/levels/1-B/rep_30_leshy1b.py @level:1-B tfin_k1b tfin_k1bhands
+zlataya_cep/build/levels/1-B/late_99x_k1b_leshy.js @level:1-B tfin_k1b tfin_k1bhands
+zlataya_cep/build/levels/1-B/late_99y_k1b_fx.js @level:1-B tfin_k1b tfin_k1bhands
+zlataya_cep/build/levels/1-B/late_99z_k1b_hands.js @level:1-B tfin_k1b tfin_k1bhands
 zlataya_cep/build/levels/epi/rep_30_epi.py    @level:epi tfin_epitheatre tfin_episolo
 zlataya_cep/build/levels/1-1/late_99n_yaga11.js @level:1-1 tfin_yaga11
 zlataya_cep/build/levels/1-1/rep_31_yaga11.py @level:1-1 tfin_yaga11

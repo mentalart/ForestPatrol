@@ -82,7 +82,7 @@
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 1 | tfin_kids1 |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14 | 1 | tfin_kidnap14 |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_75_kids_w1 | 1 | thub2 |
-| `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx | 2 | tfin_post tsospot |
+| `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands | 2 | tfin_post tsospot |
 | `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 14 | t21 t21x tfin_art tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tfin_k21kelp tfin_k2… |
 | `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99l_kitezh_magic_water | 7 | t22d t22shot tfin_k22 tfin_k22hint tfin_k22solo tfin_occ tfin_warp |
 | `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 3 | t23f tfin_k23 tfin_k23solo |
@@ -296,6 +296,7 @@
 | `levels/3-2/late_99x_sky32_tut.js` | 3-2 | РЕЛИЗ final06 · 3-2: ГРОМОВОЙ БАРАН — ОБУЧАЮЩИЕ КАРТОЧКИ ПЕРЕД ЭТАПАМИ И ЖИВЫЕ ПОДСКАЗКИ |
 | `levels/1-B/late_99y_k1b_fx.js` | 1-B | РЕЛИЗ final06 · 1-Б «ЛЕШИЙ-ПУТАНИК»: АРЕНА И ЭФФЕКТЫ — СВЕТ ПО ЭТАПАМ, СВЕТЛЯКИ, ЛИСТОПАД, ТЕЛЕГРАФЫ, КАМЕРА, ЛЕНТЫ И С… |
 | `levels/3-2/late_99y_sky32_cine.js` | 3-2 | РЕЛИЗ final06 · 3-2: РОЛИКИ — ГЕРОИ ЛИЦОМ К КАМЕРЕ, ЧИСТЫЙ КАДР |
+| `levels/1-B/late_99z_k1b_hands.js` | 1-B | РЕЛИЗ final06 · 1-Б «ЛЕШИЙ-ПУТАНИК»: ЭТАП 1 — РУКИ-КОРЯГИ: ПОЗА → УДАР → ОКНО |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -377,11 +378,11 @@
 | `28_koschei_epic_build.md` | Битва с Кощеем — отдельная сборка (k5epic): как собрать, проверить и продолжить |
 | `29_leshy_proposals.md` | 1-Б «Леший-Путаник»: предложения — бой, этапы, хоровод |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 16 файлов |
+| `changes/` | 17 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 176 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 177 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

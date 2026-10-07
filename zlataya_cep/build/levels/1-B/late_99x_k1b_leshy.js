@@ -229,7 +229,7 @@ function k1CrowdTick(dt){const l=K1B.crowdL;if(!l)return;const t=G.time;for(cons
     q.g.position.y=y;if(!r||r.kind!=='clap')q.g.rotation.y=q.base+Math.sin(t*0.6+q.ph)*0.12;}}
 K1B.cheer=function(kind,len){if(!K1B.crowdL)return;K1B.crowdL.forEach((q,i)=>{const d=kind==='hit'?i*0.05:0;later(d,()=>{q.react={kind,t:0,len:len||1.2};});});};
 /* ---------- запуск уровня: Леший, руки, зрители ---------- */
-K1B.init=function(ctx){K1B.cur=ctx;K1B.fly.length=0;K1B.tick.length=0;ctx.arms=[1,-1].map(s=>{const A=k1MakeArm(s);A.reach=5.4;return A;});
+K1B.init=function(ctx){K1B.cur=ctx;K1B.fly.length=0;K1B.tick.length=0;ctx.arms=[1,-1].map(s=>{const A=k1MakeArm(s);A.reach=7;return A;});
   K1B.crowd(ctx.C,ctx.R,10);if(K1B.fx&&K1B.fx.init)K1B.fx.init(ctx);};
 {const _ll=loadLevel;loadLevel=function(i){K1B.cur=null;K1B.crowdL=null;K1B.fly.length=0;K1B.tick.length=0;_ll(i);};}
 {const _st=step;step=function(dt){_st(dt);const c=K1B.cur;if(!c||!W||W.levelId!=='1-B')return;try{
