@@ -49,6 +49,8 @@ FIN.ui=dt=>updateUI(dt);   // (window.ZC появляется позже мод�
 FIN.tone=(...a)=>tone(...a);
 FIN.ac=()=>AC;   // аудиоконтекст игры — для записи звуковой дорожки трейлера (tools/video/audio.js)
 // видеопамять (для бота tfin_leak): число геометрий, текстур и шейдерных программ в рендерере и куча JS — только с ?debug (window.ZC)
+// камеры кадра (для бота tfin_camcap: размер героя на экране) — только с ?debug
+FIN.cam=()=>PANES.map(p=>p.cam);
 FIN.gl=()=>({geometries:renderer.info.memory.geometries,textures:renderer.info.memory.textures,programs:renderer.info.programs?renderer.info.programs.length:0,heap:performance.memory?Math.round(performance.memory.usedJSHeapSize/1048576):-1});
 // Ctrl+Alt+B — следующая стадия босса: у каждого босса уровень выставляет W.bossNext (true — переход начат); по коду клавиши — и в русской раскладке
 addEventListener('keydown',e=>{if(!e.ctrlKey||!e.altKey||e.repeat||!(e.code==='KeyB'||e.key==='b'||e.key==='B'||e.key==='и'||e.key==='И'))return;

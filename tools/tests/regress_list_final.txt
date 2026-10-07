@@ -50,3 +50,5 @@ tfin_leak
 tfin_inbuf
 # фиксированный шаг физики 1/60 с (docs/29_full_audit.md, 7.3)
 tfin_fixedstep
+# потолок камеры на разлёт героев в драке (docs/29_full_audit.md, 7.4)
+tfin_camcap
