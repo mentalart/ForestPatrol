@@ -47,11 +47,16 @@ def heat(key,title,fname,vmin,vmax,fmt='{:.1f}',note=''):
 def combat_world():
     ws=['пролог','мир 1','мир 2','мир 3','мир 4','мир 5']
     fig,ax=plt.subplots(figsize=(7.4,3.9))
+    ends=[]
     for g in GR:
         y=[S['combat'][g].get(w,{}).get('downs_per_enc') for w in ws]
         xs=[i for i,v in enumerate(y) if v is not None];ys=[v for v in y if v is not None]
         ax.plot(xs,ys,'-o',color=COL[g],lw=2,ms=6,mec='white',mew=1.2,label=GL[g])
-        ax.text(xs[-1]+0.08,ys[-1],GL[g],color=INK,fontsize=8.5,va='center')
+        ends.append([ys[-1],g,xs[-1]])
+    ends.sort();gap=0.028
+    for i in range(1,len(ends)):
+        if ends[i][0]-ends[i-1][0]<gap: ends[i][0]=ends[i-1][0]+gap     # подписи концов не наезжают друг на друга
+    for yv,g,xv in ends: ax.text(xv+0.1,yv,GL[g],color=INK,fontsize=8.5,va='center')
     ax.set_xticks(range(len(ws)));ax.set_xticklabels(ws);ax.set_xlim(-0.2,5.9)
     ax.set_ylabel('«падений» (клубок ниток) на встречу с мороками');ax.grid(axis='y',color=GRID)
     ax.set_title('Бой в движке: падения на одну встречу по мирам',loc='left',fontsize=11.5,fontweight='bold')
@@ -68,9 +73,9 @@ def reading_hist():
     top=ax.get_ylim()[1]
     for g,c in sp.items():
         x=15*c/cpw
-        ax.axvline(x,color=COL[g],lw=2);ax.text(x+0.4,top*(0.97-0.1*GR.index(g)),f'{GL[g]}: за 15 с — {x:.0f} слов',color=INK,fontsize=8.5,va='top')
+        ax.axvline(x,color=COL[g],lw=2);ax.text(x+0.5,top*(0.97-0.1*GR.index(g)),f'{GL[g]}: {x:.0f} слов',color=INK,fontsize=8.5,va='top',bbox=dict(fc=SURF,ec='none',pad=1.5))
     ax.set_xlabel('слов в задаче уровня');ax.set_ylabel('число задач');ax.grid(axis='y',color=GRID)
-    ax.set_title(f'Длина задач ({len(w)} задач Игрока 1) и сколько слов успевают прочесть за 15 секунд',loc='left',fontsize=11,fontweight='bold')
+    ax.set_title(f'Длина задач ({len(w)} задач Игрока 1) и сколько слов читают за 15 с',loc='left',fontsize=10.5,fontweight='bold')
     fig.tight_layout();fig.savefig(os.path.join(CH,'c4_reading.png'),dpi=150);plt.close(fig)
 
 def retention():
@@ -111,8 +116,29 @@ def solo_pair():
         ax.set_xticks([0,1]);ax.set_xticklabels(['вдвоём','один']);ax.set_title(t,fontsize=9.5,loc='left',fontweight='bold');ax.set_ylim(0,max(v)*1.25);ax.grid(axis='y',color=GRID);ax.set_axisbelow(True)
     fig.tight_layout();fig.savefig(os.path.join(CH,'c7_solo_pair.png'),dpi=150);plt.close(fig)
 
+def ab_chart():
+    ab=S.get('ab') or {}
+    if not ab: return
+    gs=[g for g in('7-8','9-10') if g in ab]
+    fig,axs=plt.subplots(1,3,figsize=(8.6,3.1))
+    items=[('hits_per_fight','попаданий по герою за бой'),('downs_per_fight','падений за бой'),('clear','выиграно за минуту (доля)')]
+    for ax,(k,t) in zip(axs,items):
+        w=0.36
+        for j,(lab,col) in enumerate((('детские настройки (мир 1)','#2a5db0'),('обычные (мир 2)','#d4541b'))):
+            v=[]
+            for g in gs:
+                key=[a for a in ab[g] if a.startswith('детские' if j==0 else 'обычные')][0];v.append(ab[g][key][k])
+            xs=[i+(j-0.5)*w for i in range(len(gs))]
+            ax.bar(xs,v,width=w*0.92,color=col,label=lab)
+            for x,y in zip(xs,v): ax.text(x,y,f'{y:.2f}' if k!='clear' else f'{round(100*y)}%',ha='center',va='bottom',fontsize=8)
+        ax.set_xticks(range(len(gs)));ax.set_xticklabels([GL[g] for g in gs],fontsize=8.5);ax.set_title(t,fontsize=9.5,loc='left',fontweight='bold');ax.grid(axis='y',color=GRID);ax.set_axisbelow(True)
+        ax.set_ylim(0,ax.get_ylim()[1]*1.15)
+    axs[0].legend(fontsize=7.5,frameon=False,loc='upper left')
+    fig.suptitle('Те же дети, те же встречи: детские настройки мира 1 против обычных',x=0.01,ha='left',fontsize=10.5,fontweight='bold')
+    fig.tight_layout(rect=(0,0,1,0.93));fig.savefig(os.path.join(CH,'c8_ab_kids.png'),dpi=150);plt.close(fig)
+
 if __name__=='__main__':
     heat('diff','Воспринимаемая трудность уровней (1 — легко … 5 — очень трудно)','c1_diff_heatmap.png',1,5,'{:.1f}','Модель: минуты «застрял», падения и неудачные встречи → шкала 1–5; «—» — менее двух участников дошли до уровня.')
     heat('stuck_min','Минут «застрял» на уровне (непонятная задача, ожидание подсказки)','c3_stuck_heatmap.png',0,10,'{:.1f}','Среднее по участникам; считается из текстов задач каждого уровня и возраста игрока.')
-    combat_world();reading_hist();retention();group_bars();solo_pair()
+    combat_world();reading_hist();retention();group_bars();solo_pair();ab_chart()
     print('графики:',sorted(os.listdir(CH)))

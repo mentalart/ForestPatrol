@@ -76,6 +76,14 @@ for g in GR:
         a=lvg[lv][g]
         S['hot_detail'][g].append({'lv':lv,'name':cat[lv]['name'],'F':F,'n':n,'stuck_min':r1(mean([x['stuck_s'] for x in a])/60,2),'combat':r1(mean([0.4*x['downs']+0.6*x['enc_fail'] for x in a]),2),
             'unread':r1(mean([x['unread'] for x in a]),1),'read_min':r1(mean([x['read_s'] for x in a])/60,1),'minutes':r1(mean([x['min'] for x in a]),1),'solo':sum(1 for x in a if x['solo'])})
+S['F_parts']={}
+for g in GR:
+    st_=[];cb_=[];rh_=[];rd_=[]
+    for lv in LV:
+        for x in lvg.get(lv,{}).get(g,[]):
+            st_.append(x['stuck_s']/60);cb_.append(0.4*x['downs']+0.6*x['enc_fail']);rh_.append(0.8 if (x['miss'] or 0)>0.35 else 0.0);rd_.append(0.04*x['unread'])
+    tot=sum(st_)+sum(cb_)+sum(rh_)+sum(rd_)
+    S['F_parts'][g]={'stuck':r1(sum(st_)/tot,2),'combat':r1(sum(cb_)/tot,2),'rhythm':r1(sum(rh_)/tot,2),'unread':r1(sum(rd_)/tot,2)}
 S['rhythm']={lv:{g:r1(mean([x['miss'] for x in lvg.get(lv,{}).get(g,[]) if x['miss'] is not None]),2) for g in GR if [x for x in lvg.get(lv,{}).get(g,[]) if x['miss'] is not None]} for lv in('1-3','3-3','5-4')}
 # ---------------------------------------------------------------- бой (движок)
 cm={g:collections.defaultdict(lambda:collections.Counter()) for g in GR}   # g -> world -> счётчики

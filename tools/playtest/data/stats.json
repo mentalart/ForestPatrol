@@ -35,12 +35,12 @@
    "mode": "pair",
    "role": "child",
    "sid": "P01",
-   "hours": 10.258333333333333,
+   "hours": 10.223333333333333,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.0,
-   "hits_lvl": 0.6129032258064516,
+   "downs_lvl": 0.06451612903225806,
+   "hits_lvl": 0.7419354838709677,
    "stuck_n_lvl": 2.5806451612903225,
    "stuck_min_lvl": 0.6593574725218022,
    "asks": 49,
@@ -50,8 +50,8 @@
    "path0": "easy",
    "switches": 0,
    "support": true,
-   "F_lvl": 1.0270967741935484,
-   "diff": 2.393870967741935
+   "F_lvl": 0.9948387096774194,
+   "diff": 2.371935483870968
   },
   "R02": {
    "id": "R02",
@@ -59,12 +59,12 @@
    "mode": "pair",
    "role": "parent",
    "sid": "P01",
-   "hours": 10.258333333333333,
+   "hours": 10.223333333333333,
    "levels": 31,
    "end": true,
    "quit": null,
    "downs_lvl": 0.25806451612903225,
-   "hits_lvl": 1.6774193548387097,
+   "hits_lvl": 1.7419354838709677,
    "stuck_n_lvl": 2.5806451612903225,
    "stuck_min_lvl": 0.6593574725218022,
    "asks": 0,
@@ -74,8 +74,8 @@
    "path0": "easy",
    "switches": 0,
    "support": true,
-   "F_lvl": 1.1303225806451613,
-   "diff": 2.1109677419354838
+   "F_lvl": 1.072258064516129,
+   "diff": 2.0806451612903225
   },
   "R03": {
    "id": "R03",
@@ -83,12 +83,12 @@
    "mode": "pair",
    "role": "child",
    "sid": "P02",
-   "hours": 9.508333333333333,
+   "hours": 9.514999999999999,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.2903225806451613,
-   "hits_lvl": 1.3225806451612903,
+   "downs_lvl": 0.41935483870967744,
+   "hits_lvl": 1.8709677419354838,
    "stuck_n_lvl": 2.3870967741935485,
    "stuck_min_lvl": 0.6545353782047834,
    "asks": 50,
@@ -98,8 +98,8 @@
    "path0": "mid",
    "switches": 1,
    "support": true,
-   "F_lvl": 1.022258064516129,
-   "diff": 2.685483870967742
+   "F_lvl": 1.093225806451613,
+   "diff": 2.7229032258064514
   },
   "R04": {
    "id": "R04",
@@ -107,12 +107,12 @@
    "mode": "pair",
    "role": "parent",
    "sid": "P02",
-   "hours": 9.508333333333333,
+   "hours": 9.514999999999999,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.03225806451612903,
-   "hits_lvl": 0.9354838709677419,
+   "downs_lvl": 0.0967741935483871,
+   "hits_lvl": 1.1935483870967742,
    "stuck_n_lvl": 2.3870967741935485,
    "stuck_min_lvl": 0.6545353782047834,
    "asks": 0,
@@ -122,8 +122,8 @@
    "path0": "mid",
    "switches": 1,
    "support": true,
-   "F_lvl": 0.919032258064516,
-   "diff": 1.996451612903226
+   "F_lvl": 0.9641935483870968,
+   "diff": 2.008709677419355
   },
   "R05": {
    "id": "R05",
@@ -131,12 +131,12 @@
    "mode": "pair",
    "role": "child",
    "sid": "P03",
-   "hours": 10.028333333333334,
+   "hours": 10.113333333333333,
    "levels": 30,
    "end": false,
    "quit": "5-B1",
-   "downs_lvl": 0.43333333333333335,
-   "hits_lvl": 2.8333333333333335,
+   "downs_lvl": 0.3,
+   "hits_lvl": 2.6,
    "stuck_n_lvl": 2.8666666666666667,
    "stuck_min_lvl": 1.2134579970741302,
    "asks": 0,
@@ -146,8 +146,8 @@
    "path0": "easy",
    "switches": 1,
    "support": false,
-   "F_lvl": 1.8466666666666667,
-   "diff": 3.089
+   "F_lvl": 1.8333333333333333,
+   "diff": 3.090333333333333
   },
   "R06": {
    "id": "R06",
@@ -155,12 +155,12 @@
    "mode": "pair",
    "role": "sibling",
    "sid": "P03",
-   "hours": 10.028333333333334,
+   "hours": 10.113333333333333,
    "levels": 30,
    "end": false,
    "quit": "5-B1",
-   "downs_lvl": 0.0,
-   "hits_lvl": 0.6,
+   "downs_lvl": 0.03333333333333333,
+   "hits_lvl": 0.43333333333333335,
    "stuck_n_lvl": 2.8666666666666667,
    "stuck_min_lvl": 1.2134579970741302,
    "asks": 0,
@@ -170,8 +170,8 @@
    "path0": "mid",
    "switches": 1,
    "support": false,
-   "F_lvl": 1.6733333333333333,
-   "diff": 2.1719999999999997
+   "F_lvl": 1.7266666666666666,
+   "diff": 2.2939999999999996
   },
   "R07": {
    "id": "R07",
@@ -179,12 +179,36 @@
    "mode": "pair",
    "role": "friend",
    "sid": "P04",
-   "hours": 5.9,
+   "hours": 5.926666666666667,
    "levels": 12,
    "end": false,
    "quit": "2-5",
-   "downs_lvl": 1.1666666666666667,
-   "hits_lvl": 5.75,
+   "downs_lvl": 1.25,
+   "hits_lvl": 6.666666666666667,
+   "stuck_n_lvl": 7.583333333333333,
+   "stuck_min_lvl": 3.412433173745842,
+   "asks": 0,
+   "unread_lvl": 8.416666666666666,
+   "understood": 0.29457364341085274,
+   "path_final": "easy",
+   "path0": "easy",
+   "switches": 0,
+   "support": false,
+   "F_lvl": 5.699166666666667,
+   "diff": 4.096666666666667
+  },
+  "R08": {
+   "id": "R08",
+   "group": "7-8",
+   "mode": "pair",
+   "role": "friend",
+   "sid": "P04",
+   "hours": 5.926666666666667,
+   "levels": 12,
+   "end": false,
+   "quit": "2-5",
+   "downs_lvl": 0.6666666666666666,
+   "hits_lvl": 3.6666666666666665,
    "stuck_n_lvl": 7.583333333333333,
    "stuck_min_lvl": 3.412433173745842,
    "asks": 0,
@@ -195,31 +219,7 @@
    "switches": 0,
    "support": false,
    "F_lvl": 5.465833333333333,
-   "diff": 4.0616666666666665
-  },
-  "R08": {
-   "id": "R08",
-   "group": "7-8",
-   "mode": "pair",
-   "role": "friend",
-   "sid": "P04",
-   "hours": 5.9,
-   "levels": 12,
-   "end": false,
-   "quit": "2-5",
-   "downs_lvl": 0.4166666666666667,
-   "hits_lvl": 3.0,
-   "stuck_n_lvl": 7.583333333333333,
-   "stuck_min_lvl": 3.412433173745842,
-   "asks": 0,
-   "unread_lvl": 8.416666666666666,
-   "understood": 0.29457364341085274,
-   "path_final": "easy",
-   "path0": "easy",
-   "switches": 0,
-   "support": false,
-   "F_lvl": 5.1658333333333335,
-   "diff": 4.096666666666667
+   "diff": 4.1325
   },
   "R09": {
    "id": "R09",
@@ -227,23 +227,23 @@
    "mode": "pair",
    "role": "child",
    "sid": "P05",
-   "hours": 7.246666666666667,
+   "hours": 7.286666666666666,
    "levels": 31,
    "end": true,
    "quit": null,
    "downs_lvl": 0.06451612903225806,
-   "hits_lvl": 0.7419354838709677,
+   "hits_lvl": 1.064516129032258,
    "stuck_n_lvl": 1.4193548387096775,
    "stuck_min_lvl": 0.31307204874123706,
    "asks": 36,
    "unread_lvl": 0.0,
    "understood": 0.8538205980066446,
-   "path_final": "easy",
+   "path_final": "mid",
    "path0": "mid",
-   "switches": 1,
+   "switches": 0,
    "support": true,
-   "F_lvl": 0.4929032258064516,
-   "diff": 2.2929032258064517
+   "F_lvl": 0.5896774193548387,
+   "diff": 2.3716129032258064
   },
   "R10": {
    "id": "R10",
@@ -251,23 +251,23 @@
    "mode": "pair",
    "role": "parent",
    "sid": "P05",
-   "hours": 7.246666666666667,
+   "hours": 7.286666666666666,
    "levels": 31,
    "end": true,
    "quit": null,
    "downs_lvl": 0.0967741935483871,
-   "hits_lvl": 1.2903225806451613,
+   "hits_lvl": 1.1935483870967742,
    "stuck_n_lvl": 1.4193548387096775,
    "stuck_min_lvl": 0.31307204874123706,
    "asks": 0,
    "unread_lvl": 0.0,
    "understood": 0.8538205980066446,
-   "path_final": "easy",
+   "path_final": "mid",
    "path0": "mid",
-   "switches": 1,
+   "switches": 0,
    "support": true,
-   "F_lvl": 0.5058064516129032,
-   "diff": 2.241612903225806
+   "F_lvl": 0.6025806451612903,
+   "diff": 2.2696774193548386
   },
   "R11": {
    "id": "R11",
@@ -275,12 +275,12 @@
    "mode": "pair",
    "role": "friend",
    "sid": "P06",
-   "hours": 7.911666666666666,
+   "hours": 7.818333333333333,
    "levels": 27,
    "end": false,
    "quit": "5-2",
-   "downs_lvl": 0.8518518518518519,
-   "hits_lvl": 4.37037037037037,
+   "downs_lvl": 0.25925925925925924,
+   "hits_lvl": 2.7037037037037037,
    "stuck_n_lvl": 3.3333333333333335,
    "stuck_min_lvl": 1.5134865664882269,
    "asks": 0,
@@ -288,10 +288,10 @@
    "understood": 0.6853146853146853,
    "path_final": "easy",
    "path0": "easy",
-   "switches": 1,
+   "switches": 0,
    "support": false,
-   "F_lvl": 2.2774074074074075,
-   "diff": 2.7285185185185186
+   "F_lvl": 1.9959259259259259,
+   "diff": 2.6529629629629627
   },
   "R12": {
    "id": "R12",
@@ -299,23 +299,23 @@
    "mode": "pair",
    "role": "friend",
    "sid": "P06",
-   "hours": 7.911666666666666,
+   "hours": 7.818333333333333,
    "levels": 27,
    "end": false,
    "quit": "5-2",
-   "downs_lvl": 0.14814814814814814,
-   "hits_lvl": 1.2222222222222223,
+   "downs_lvl": 0.07407407407407407,
+   "hits_lvl": 0.9629629629629629,
    "stuck_n_lvl": 3.3333333333333335,
    "stuck_min_lvl": 1.5134865664882269,
    "asks": 0,
    "unread_lvl": 0.0,
    "understood": 0.6853146853146853,
-   "path_final": "easy",
+   "path_final": "mid",
    "path0": "mid",
-   "switches": 1,
+   "switches": 0,
    "support": false,
-   "F_lvl": 1.9959259259259259,
-   "diff": 2.642962962962963
+   "F_lvl": 1.921851851851852,
+   "diff": 2.711851851851852
   },
   "R13": {
    "id": "R13",
@@ -323,12 +323,12 @@
    "mode": "pair",
    "role": "sibling",
    "sid": "P07",
-   "hours": 6.180000000000001,
+   "hours": 6.114999999999999,
    "levels": 22,
    "end": false,
    "quit": "4-3",
-   "downs_lvl": 0.13636363636363635,
-   "hits_lvl": 1.1818181818181819,
+   "downs_lvl": 0.045454545454545456,
+   "hits_lvl": 0.8181818181818182,
    "stuck_n_lvl": 2.227272727272727,
    "stuck_min_lvl": 1.0213625013292449,
    "asks": 0,
@@ -338,8 +338,8 @@
    "path0": "easy",
    "switches": 0,
    "support": false,
-   "F_lvl": 1.3213636363636363,
-   "diff": 2.226818181818182
+   "F_lvl": 1.285,
+   "diff": 2.2445454545454546
   },
   "R14": {
    "id": "R14",
@@ -347,12 +347,12 @@
    "mode": "pair",
    "role": "sibling",
    "sid": "P07",
-   "hours": 6.180000000000001,
+   "hours": 6.114999999999999,
    "levels": 22,
    "end": false,
    "quit": "4-3",
-   "downs_lvl": 0.5,
-   "hits_lvl": 2.6818181818181817,
+   "downs_lvl": 0.22727272727272727,
+   "hits_lvl": 1.7272727272727273,
    "stuck_n_lvl": 2.227272727272727,
    "stuck_min_lvl": 1.0213625013292449,
    "asks": 0,
@@ -362,8 +362,8 @@
    "path0": "mid",
    "switches": 0,
    "support": false,
-   "F_lvl": 1.466818181818182,
-   "diff": 2.2677272727272726
+   "F_lvl": 1.3577272727272727,
+   "diff": 2.2404545454545453
   },
   "R15": {
    "id": "R15",
@@ -371,23 +371,23 @@
    "mode": "pair",
    "role": "friend",
    "sid": "P08",
-   "hours": 6.748333333333333,
+   "hours": 6.668333333333334,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.7741935483870968,
-   "hits_lvl": 3.3870967741935485,
+   "downs_lvl": 0.6451612903225806,
+   "hits_lvl": 3.2580645161290325,
    "stuck_n_lvl": 1.5483870967741935,
    "stuck_min_lvl": 0.6850842882362905,
    "asks": 0,
    "unread_lvl": 0.0,
    "understood": 0.840531561461794,
-   "path_final": "easy",
+   "path_final": "mid",
    "path0": "hard",
-   "switches": 2,
+   "switches": 1,
    "support": false,
-   "F_lvl": 1.3235483870967741,
-   "diff": 2.4706451612903226
+   "F_lvl": 1.2525806451612902,
+   "diff": 2.3438709677419354
   },
   "R16": {
    "id": "R16",
@@ -395,23 +395,23 @@
    "mode": "pair",
    "role": "friend",
    "sid": "P08",
-   "hours": 6.748333333333333,
+   "hours": 6.668333333333334,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.03225806451612903,
-   "hits_lvl": 0.5483870967741935,
+   "downs_lvl": 0.0967741935483871,
+   "hits_lvl": 0.7096774193548387,
    "stuck_n_lvl": 1.5483870967741935,
    "stuck_min_lvl": 0.6850842882362905,
    "asks": 0,
    "unread_lvl": 0.0,
    "understood": 0.840531561461794,
-   "path_final": "easy",
+   "path_final": "mid",
    "path0": "mid",
-   "switches": 2,
+   "switches": 1,
    "support": false,
-   "F_lvl": 1.026774193548387,
-   "diff": 2.2738709677419355
+   "F_lvl": 1.0332258064516129,
+   "diff": 2.282258064516129
   },
   "R17": {
    "id": "R17",
@@ -419,23 +419,23 @@
    "mode": "pair",
    "role": "child",
    "sid": "P09",
-   "hours": 6.281666666666666,
+   "hours": 6.2716666666666665,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.06451612903225806,
-   "hits_lvl": 0.8709677419354839,
+   "downs_lvl": 0.12903225806451613,
+   "hits_lvl": 1.3225806451612903,
    "stuck_n_lvl": 1.1935483870967742,
    "stuck_min_lvl": 0.26201139375008664,
    "asks": 22,
    "unread_lvl": 0.0,
    "understood": 0.8770764119601329,
-   "path_final": "easy",
+   "path_final": "mid",
    "path0": "mid",
-   "switches": 1,
+   "switches": 0,
    "support": true,
-   "F_lvl": 0.5006451612903225,
-   "diff": 2.06
+   "F_lvl": 0.5264516129032258,
+   "diff": 2.2964516129032257
   },
   "R18": {
    "id": "R18",
@@ -443,12 +443,12 @@
    "mode": "pair",
    "role": "parent",
    "sid": "P09",
-   "hours": 6.281666666666666,
+   "hours": 6.2716666666666665,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.22580645161290322,
-   "hits_lvl": 1.1612903225806452,
+   "downs_lvl": 0.3870967741935484,
+   "hits_lvl": 1.8387096774193548,
    "stuck_n_lvl": 1.1935483870967742,
    "stuck_min_lvl": 0.26201139375008664,
    "asks": 0,
@@ -456,10 +456,10 @@
    "understood": 0.8770764119601329,
    "path_final": "easy",
    "path0": "easy",
-   "switches": 1,
+   "switches": 0,
    "support": true,
-   "F_lvl": 0.5651612903225807,
-   "diff": 1.9822580645161292
+   "F_lvl": 0.6296774193548387,
+   "diff": 2.027096774193548
   },
   "R19": {
    "id": "R19",
@@ -467,23 +467,23 @@
    "mode": "pair",
    "role": "friend",
    "sid": "P10",
-   "hours": 6.078333333333333,
+   "hours": 6.008333333333334,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.06451612903225806,
+   "downs_lvl": 0.0967741935483871,
    "hits_lvl": 0.8387096774193549,
    "stuck_n_lvl": 0.3870967741935484,
    "stuck_min_lvl": 0.11520543996098662,
    "asks": 0,
    "unread_lvl": 0.0,
    "understood": 0.9601328903654485,
-   "path_final": "easy",
+   "path_final": "mid",
    "path0": "mid",
-   "switches": 1,
+   "switches": 0,
    "support": false,
-   "F_lvl": 0.21870967741935485,
-   "diff": 2.241612903225806
+   "F_lvl": 0.19290322580645164,
+   "diff": 2.251290322580645
   },
   "R20": {
    "id": "R20",
@@ -491,7 +491,7 @@
    "mode": "pair",
    "role": "friend",
    "sid": "P10",
-   "hours": 6.078333333333333,
+   "hours": 6.008333333333334,
    "levels": 31,
    "end": true,
    "quit": null,
@@ -502,12 +502,12 @@
    "asks": 0,
    "unread_lvl": 0.0,
    "understood": 0.9601328903654485,
-   "path_final": "easy",
+   "path_final": "mid",
    "path0": "mid",
-   "switches": 1,
+   "switches": 0,
    "support": false,
-   "F_lvl": 0.19290322580645164,
-   "diff": 2.241612903225806
+   "F_lvl": 0.15419354838709678,
+   "diff": 2.251290322580645
   },
   "R21": {
    "id": "R21",
@@ -515,12 +515,12 @@
    "mode": "solo",
    "role": "solo",
    "sid": "SR21",
-   "hours": 3.0383333333333336,
+   "hours": 3.1,
    "levels": 8,
    "end": false,
    "quit": "2-1",
-   "downs_lvl": 2.5,
-   "hits_lvl": 10.125,
+   "downs_lvl": 2.75,
+   "hits_lvl": 11.125,
    "stuck_n_lvl": 7.5,
    "stuck_min_lvl": 2.8093218369325883,
    "asks": 0,
@@ -530,8 +530,8 @@
    "path0": "easy",
    "switches": 0,
    "support": false,
-   "F_lvl": 5.155,
-   "diff": 4.3237499999999995
+   "F_lvl": 5.405,
+   "diff": 4.5125
   },
   "R22": {
    "id": "R22",
@@ -539,12 +539,12 @@
    "mode": "solo",
    "role": "solo",
    "sid": "SR22",
-   "hours": 10.218333333333334,
+   "hours": 10.316666666666666,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.7419354838709677,
-   "hits_lvl": 4.741935483870968,
+   "downs_lvl": 1.032258064516129,
+   "hits_lvl": 5.354838709677419,
    "stuck_n_lvl": 4.516129032258065,
    "stuck_min_lvl": 2.128653247412474,
    "asks": 0,
@@ -554,8 +554,8 @@
    "path0": "mid",
    "switches": 1,
    "support": false,
-   "F_lvl": 2.7541935483870965,
-   "diff": 2.826451612903226
+   "F_lvl": 2.9090322580645163,
+   "diff": 2.9000000000000004
   },
   "R23": {
    "id": "R23",
@@ -563,23 +563,23 @@
    "mode": "solo",
    "role": "solo",
    "sid": "SR23",
-   "hours": 7.966666666666667,
+   "hours": 8.483333333333333,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.0,
-   "hits_lvl": 0.0,
+   "downs_lvl": 0.3548387096774194,
+   "hits_lvl": 3.032258064516129,
    "stuck_n_lvl": 3.3225806451612905,
    "stuck_min_lvl": 1.275169823255021,
    "asks": 0,
    "unread_lvl": 0.0,
    "understood": 0.6578073089700996,
-   "path_final": "hard",
+   "path_final": "mid",
    "path0": "hard",
-   "switches": 0,
+   "switches": 1,
    "support": false,
-   "F_lvl": 1.3016129032258066,
-   "diff": 2.678064516129032
+   "F_lvl": 1.6758064516129034,
+   "diff": 2.5825806451612903
   },
   "R24": {
    "id": "R24",
@@ -587,12 +587,12 @@
    "mode": "solo",
    "role": "solo",
    "sid": "SR24",
-   "hours": 4.913333333333333,
+   "hours": 5.22,
    "levels": 21,
    "end": false,
    "quit": "4-2",
-   "downs_lvl": 0.0,
-   "hits_lvl": 0.0,
+   "downs_lvl": 0.09523809523809523,
+   "hits_lvl": 1.7619047619047619,
    "stuck_n_lvl": 3.238095238095238,
    "stuck_min_lvl": 1.3694695288569774,
    "asks": 0,
@@ -602,7 +602,7 @@
    "path0": "mid",
    "switches": 0,
    "support": false,
-   "F_lvl": 1.3695238095238094,
+   "F_lvl": 1.4933333333333334,
    "diff": 2.218095238095238
   },
   "R25": {
@@ -611,12 +611,12 @@
    "mode": "solo",
    "role": "solo",
    "sid": "SR25",
-   "hours": 5.451666666666667,
+   "hours": 5.785,
    "levels": 31,
    "end": true,
    "quit": null,
-   "downs_lvl": 0.0,
-   "hits_lvl": 0.0,
+   "downs_lvl": 0.12903225806451613,
+   "hits_lvl": 1.4516129032258065,
    "stuck_n_lvl": 1.096774193548387,
    "stuck_min_lvl": 0.47551314676515644,
    "asks": 0,
@@ -626,15 +626,15 @@
    "path0": "mid",
    "switches": 0,
    "support": false,
-   "F_lvl": 0.4754838709677419,
+   "F_lvl": 0.6045161290322582,
    "diff": 2.251290322580645
   }
  },
  "hours": {
-  "7-8": 7.44,
-  "9-10": 7.89,
-  "11-13": 6.98,
-  "14+": 7.27
+  "7-8": 7.47,
+  "9-10": 7.87,
+  "11-13": 7.08,
+  "14+": 7.3
  },
  "levels": {
   "7-8": 20.67,
@@ -643,16 +643,16 @@
   "14+": 31.0
  },
  "downs_lvl": {
-  "7-8": 0.8,
-  "9-10": 0.39,
-  "11-13": 0.2,
-  "14+": 0.1
+  "7-8": 0.91,
+  "9-10": 0.3,
+  "11-13": 0.23,
+  "14+": 0.15
  },
  "hits_lvl": {
-  "7-8": 3.94,
-  "9-10": 2.45,
-  "11-13": 1.16,
-  "14+": 0.87
+  "7-8": 4.45,
+  "9-10": 2.18,
+  "11-13": 1.75,
+  "14+": 1.21
  },
  "stuck_n_lvl": {
   "7-8": 5.08,
@@ -679,16 +679,16 @@
   "14+": 0.0
  },
  "F_lvl": {
-  "7-8": 3.28,
-  "9-10": 1.77,
-  "11-13": 1.24,
-  "14+": 0.57
+  "7-8": 3.42,
+  "9-10": 1.74,
+  "11-13": 1.3,
+  "14+": 0.6
  },
  "diff": {
-  "7-8": 3.44,
-  "9-10": 2.54,
-  "11-13": 2.31,
-  "14+": 2.15
+  "7-8": 3.49,
+  "9-10": 2.58,
+  "11-13": 2.32,
+  "14+": 2.16
  },
  "completion": {
   "7-8": 0.33,
@@ -719,13 +719,13 @@
   "pair": {
    "hours": 7.6,
    "stuck_min_lvl": 0.99,
-   "downs_lvl": 0.28,
+   "downs_lvl": 0.26,
    "completion": 0.6
   },
   "solo": {
-   "hours": 6.3,
+   "hours": 6.6,
    "stuck_min_lvl": 1.61,
-   "downs_lvl": 0.65,
+   "downs_lvl": 0.87,
    "completion": 0.6
   }
  },
@@ -734,16 +734,16 @@
    "easy": 6
   },
   "9-10": {
-   "easy": 5
+   "mid": 2,
+   "easy": 3
   },
   "11-13": {
-   "easy": 4,
-   "mid": 2,
-   "hard": 1
+   "easy": 1,
+   "mid": 6
   },
   "14+": {
-   "easy": 6,
-   "mid": 1
+   "easy": 3,
+   "mid": 4
   }
  },
  "path0": {
@@ -764,7 +764,7 @@
    "mid": 5
   }
  },
- "path_switch_sessions": 8,
+ "path_switch_sessions": 5,
  "levels_table": {
   "p": {
    "name": "Пролог «Звенышко»",
@@ -779,55 +779,55 @@
    "by_group": {
     "7-8": {
      "n": 6,
-     "F": 3.43,
+     "F": 3.13,
      "downs": 2.0,
-     "diff": 3.78,
-     "min": 19.5,
+     "diff": 3.7,
+     "min": 19.1,
      "stuck_min": 1.42,
      "stuck_n": 4.3,
      "unread": 2.67,
      "understood": 0.69,
      "read_s": 172.0,
-     "combat_s": 132.0
+     "combat_s": 114.0
     },
     "9-10": {
      "n": 5,
-     "F": 0.73,
-     "downs": 0.2,
-     "diff": 1.77,
-     "min": 12.8,
+     "F": 1.41,
+     "downs": 0.4,
+     "diff": 2.27,
+     "min": 13.4,
      "stuck_min": 0.53,
      "stuck_n": 1.4,
      "unread": 0.0,
      "understood": 0.9,
      "read_s": 129.0,
-     "combat_s": 76.0
+     "combat_s": 104.0
     },
     "11-13": {
      "n": 7,
-     "F": 0.69,
+     "F": 0.86,
      "downs": 0.29,
-     "diff": 1.93,
-     "min": 11.5,
+     "diff": 1.89,
+     "min": 11.8,
      "stuck_min": 0.49,
      "stuck_n": 1.4,
      "unread": 0.0,
      "understood": 0.9,
      "read_s": 100.0,
-     "combat_s": 39.0
+     "combat_s": 55.0
     },
     "14+": {
      "n": 7,
      "F": 0.49,
      "downs": 0.0,
-     "diff": 1.7,
-     "min": 11.5,
+     "diff": 1.69,
+     "min": 11.6,
      "stuck_min": 0.15,
      "stuck_n": 0.6,
      "unread": 0.0,
      "understood": 0.96,
      "read_s": 70.0,
-     "combat_s": 57.0
+     "combat_s": 63.0
     }
    }
   },
@@ -844,55 +844,55 @@
    "by_group": {
     "7-8": {
      "n": 6,
-     "F": 2.66,
-     "downs": 0.67,
-     "diff": 3.38,
-     "min": 20.5,
+     "F": 2.42,
+     "downs": 0.33,
+     "diff": 3.29,
+     "min": 20.2,
      "stuck_min": 1.48,
      "stuck_n": 4.3,
      "unread": 2.67,
      "understood": 0.57,
      "read_s": 154.0,
-     "combat_s": 93.0
+     "combat_s": 85.0
     },
     "9-10": {
      "n": 5,
-     "F": 1.57,
-     "downs": 0.2,
-     "diff": 2.47,
-     "min": 15.1,
+     "F": 1.69,
+     "downs": 0.8,
+     "diff": 2.51,
+     "min": 15.3,
      "stuck_min": 1.13,
      "stuck_n": 3.2,
      "unread": 0.0,
      "understood": 0.68,
      "read_s": 116.0,
-     "combat_s": 52.0
+     "combat_s": 54.0
     },
     "11-13": {
      "n": 7,
-     "F": 1.6,
-     "downs": 0.43,
-     "diff": 2.29,
-     "min": 14.0,
+     "F": 2.15,
+     "downs": 0.71,
+     "diff": 2.43,
+     "min": 14.6,
      "stuck_min": 1.17,
      "stuck_n": 3.3,
      "unread": 0.0,
      "understood": 0.67,
      "read_s": 89.0,
-     "combat_s": 41.0
+     "combat_s": 65.0
     },
     "14+": {
      "n": 7,
-     "F": 0.93,
-     "downs": 0.43,
-     "diff": 2.04,
-     "min": 13.1,
+     "F": 0.79,
+     "downs": 0.29,
+     "diff": 2.05,
+     "min": 12.9,
      "stuck_min": 0.59,
      "stuck_n": 2.1,
      "unread": 0.0,
      "understood": 0.79,
      "read_s": 63.0,
-     "combat_s": 30.0
+     "combat_s": 26.0
     }
    }
   },
@@ -909,55 +909,55 @@
    "by_group": {
     "7-8": {
      "n": 6,
-     "F": 4.34,
-     "downs": 1.67,
-     "diff": 3.75,
-     "min": 29.2,
+     "F": 4.74,
+     "downs": 2.17,
+     "diff": 3.85,
+     "min": 29.8,
      "stuck_min": 2.6,
      "stuck_n": 7.7,
      "unread": 4.33,
      "understood": 0.45,
      "read_s": 281.0,
-     "combat_s": 98.0
+     "combat_s": 124.0
     },
     "9-10": {
      "n": 5,
-     "F": 1.6,
+     "F": 1.96,
      "downs": 0.2,
-     "diff": 2.42,
+     "diff": 2.64,
      "min": 20.8,
      "stuck_min": 1.4,
      "stuck_n": 4.2,
      "unread": 0.0,
      "understood": 0.7,
      "read_s": 211.0,
-     "combat_s": 75.0
+     "combat_s": 74.0
     },
     "11-13": {
      "n": 7,
-     "F": 1.43,
-     "downs": 0.0,
-     "diff": 2.28,
-     "min": 17.8,
+     "F": 1.57,
+     "downs": 0.14,
+     "diff": 2.19,
+     "min": 18.0,
      "stuck_min": 1.25,
      "stuck_n": 3.4,
      "unread": 0.0,
      "understood": 0.76,
      "read_s": 163.0,
-     "combat_s": 45.0
+     "combat_s": 57.0
     },
     "14+": {
      "n": 7,
-     "F": 0.48,
-     "downs": 0.0,
-     "diff": 1.93,
-     "min": 17.3,
+     "F": 0.63,
+     "downs": 0.14,
+     "diff": 1.94,
+     "min": 17.5,
      "stuck_min": 0.48,
      "stuck_n": 2.0,
      "unread": 0.0,
      "understood": 0.86,
      "read_s": 115.0,
-     "combat_s": 35.0
+     "combat_s": 48.0
     }
    }
   },
@@ -1002,7 +1002,7 @@
      "n": 7,
      "F": 0.42,
      "downs": 0.0,
-     "diff": 2.09,
+     "diff": 2.04,
      "min": 10.8,
      "stuck_min": 0.31,
      "stuck_n": 0.9,
@@ -1067,7 +1067,7 @@
      "n": 7,
      "F": 0.83,
      "downs": 0.0,
-     "diff": 2.13,
+     "diff": 2.08,
      "min": 10.9,
      "stuck_min": 0.83,
      "stuck_n": 2.6,
@@ -1104,55 +1104,55 @@
    "by_group": {
     "7-8": {
      "n": 6,
-     "F": 2.47,
-     "downs": 0.17,
-     "diff": 3.69,
-     "min": 14.5,
+     "F": 2.11,
+     "downs": 0.0,
+     "diff": 3.45,
+     "min": 14.3,
      "stuck_min": 0.85,
      "stuck_n": 2.7,
      "unread": 1.33,
      "understood": 0.47,
      "read_s": 89.0,
-     "combat_s": 167.0
+     "combat_s": 157.0
     },
     "9-10": {
      "n": 5,
-     "F": 0.91,
-     "downs": 0.0,
-     "diff": 1.97,
-     "min": 11.0,
+     "F": 1.83,
+     "downs": 0.8,
+     "diff": 2.6,
+     "min": 11.5,
      "stuck_min": 0.42,
      "stuck_n": 1.0,
      "unread": 0.0,
      "understood": 0.8,
      "read_s": 66.0,
-     "combat_s": 132.0
+     "combat_s": 143.0
     },
     "11-13": {
      "n": 7,
-     "F": 0.67,
+     "F": 0.75,
      "downs": 0.0,
-     "diff": 2.13,
-     "min": 9.6,
+     "diff": 2.1,
+     "min": 10.2,
      "stuck_min": 0.5,
      "stuck_n": 1.3,
      "unread": 0.0,
      "understood": 0.74,
      "read_s": 51.0,
-     "combat_s": 66.0
+     "combat_s": 100.0
     },
     "14+": {
      "n": 7,
      "F": 0.69,
      "downs": 0.0,
-     "diff": 2.02,
-     "min": 10.0,
+     "diff": 1.98,
+     "min": 10.1,
      "stuck_min": 0.09,
      "stuck_n": 0.3,
      "unread": 0.0,
      "understood": 0.94,
      "read_s": 36.0,
-     "combat_s": 104.0
+     "combat_s": 107.0
     }
    }
   },
@@ -1169,55 +1169,55 @@
    "by_group": {
     "7-8": {
      "n": 6,
-     "F": 0.74,
-     "downs": 0.0,
-     "diff": 2.33,
-     "min": 11.2,
+     "F": 1.44,
+     "downs": 0.5,
+     "diff": 2.97,
+     "min": 11.7,
      "stuck_min": 0.7,
      "stuck_n": 2.0,
      "unread": 1.0,
      "understood": 0.6,
      "read_s": 73.0,
-     "combat_s": 123.0
+     "combat_s": 143.0
     },
     "9-10": {
      "n": 5,
      "F": 0.35,
      "downs": 0.0,
      "diff": 2.09,
-     "min": 8.0,
+     "min": 8.4,
      "stuck_min": 0.35,
      "stuck_n": 0.8,
      "unread": 0.0,
      "understood": 0.84,
      "read_s": 55.0,
-     "combat_s": 72.0
+     "combat_s": 96.0
     },
     "11-13": {
      "n": 7,
-     "F": 0.16,
-     "downs": 0.0,
-     "diff": 2.28,
-     "min": 7.7,
+     "F": 0.39,
+     "downs": 0.14,
+     "diff": 2.27,
+     "min": 8.4,
      "stuck_min": 0.16,
      "stuck_n": 0.9,
      "unread": 0.0,
      "understood": 0.83,
      "read_s": 42.0,
-     "combat_s": 46.0
+     "combat_s": 83.0
     },
     "14+": {
      "n": 7,
      "F": 0.2,
      "downs": 0.0,
      "diff": 2.08,
-     "min": 6.6,
+     "min": 6.5,
      "stuck_min": 0.2,
      "stuck_n": 0.4,
      "unread": 0.0,
      "understood": 0.91,
      "read_s": 30.0,
-     "combat_s": 57.0
+     "combat_s": 56.0
     }
    }
   },
@@ -1234,55 +1234,55 @@
    "by_group": {
     "7-8": {
      "n": 6,
-     "F": 9.19,
-     "downs": 2.5,
-     "diff": 4.75,
-     "min": 48.6,
+     "F": 11.22,
+     "downs": 4.33,
+     "diff": 4.83,
+     "min": 50.7,
      "stuck_min": 4.31,
      "stuck_n": 9.2,
      "unread": 7.0,
      "understood": 0.43,
      "read_s": 490.0,
-     "combat_s": 468.0
+     "combat_s": 562.0
     },
     "9-10": {
      "n": 5,
-     "F": 5.68,
-     "downs": 1.6,
-     "diff": 4.02,
-     "min": 33.5,
+     "F": 4.84,
+     "downs": 0.4,
+     "diff": 3.77,
+     "min": 33.6,
      "stuck_min": 2.99,
      "stuck_n": 7.0,
      "unread": 0.0,
      "understood": 0.56,
      "read_s": 300.0,
-     "combat_s": 307.0
+     "combat_s": 329.0
     },
     "11-13": {
      "n": 7,
-     "F": 3.59,
-     "downs": 0.14,
-     "diff": 2.8,
-     "min": 27.7,
+     "F": 4.28,
+     "downs": 0.57,
+     "diff": 2.98,
+     "min": 28.9,
      "stuck_min": 2.08,
      "stuck_n": 4.7,
      "unread": 0.0,
      "understood": 0.71,
      "read_s": 228.0,
-     "combat_s": 221.0
+     "combat_s": 290.0
     },
     "14+": {
      "n": 7,
-     "F": 1.95,
-     "downs": 0.14,
-     "diff": 2.5,
-     "min": 26.1,
+     "F": 2.23,
+     "downs": 0.0,
+     "diff": 2.59,
+     "min": 27.3,
      "stuck_min": 0.95,
      "stuck_n": 3.4,
      "unread": 0.0,
      "understood": 0.79,
      "read_s": 153.0,
-     "combat_s": 186.0
+     "combat_s": 263.0
     }
    }
   },
@@ -1299,55 +1299,55 @@
    "by_group": {
     "7-8": {
      "n": 5,
-     "F": 5.42,
-     "downs": 1.8,
-     "diff": 3.98,
-     "min": 40.1,
+     "F": 4.42,
+     "downs": 0.8,
+     "diff": 3.85,
+     "min": 39.4,
      "stuck_min": 3.17,
      "stuck_n": 7.4,
      "unread": 5.2,
      "understood": 0.47,
      "read_s": 407.0,
-     "combat_s": 157.0
+     "combat_s": 136.0
     },
     "9-10": {
      "n": 5,
-     "F": 2.46,
-     "downs": 0.4,
-     "diff": 2.89,
-     "min": 27.3,
+     "F": 2.26,
+     "downs": 0.2,
+     "diff": 2.79,
+     "min": 27.1,
      "stuck_min": 1.94,
      "stuck_n": 5.4,
      "unread": 0.0,
      "understood": 0.61,
      "read_s": 280.0,
-     "combat_s": 93.0
+     "combat_s": 84.0
     },
     "11-13": {
      "n": 7,
-     "F": 2.1,
-     "downs": 0.14,
-     "diff": 2.27,
-     "min": 24.5,
+     "F": 2.3,
+     "downs": 0.43,
+     "diff": 2.45,
+     "min": 25.0,
      "stuck_min": 1.78,
      "stuck_n": 4.3,
      "unread": 0.0,
      "understood": 0.69,
      "read_s": 213.0,
-     "combat_s": 66.0
+     "combat_s": 91.0
     },
     "14+": {
      "n": 7,
-     "F": 1.07,
-     "downs": 0.43,
-     "diff": 2.11,
-     "min": 23.0,
+     "F": 0.55,
+     "downs": 0.0,
+     "diff": 2.04,
+     "min": 23.1,
      "stuck_min": 0.55,
      "stuck_n": 2.1,
      "unread": 0.0,
      "understood": 0.85,
      "read_s": 143.0,
-     "combat_s": 59.0
+     "combat_s": 66.0
     }
    }
   },
@@ -1392,7 +1392,7 @@
      "n": 7,
      "F": 1.84,
      "downs": 0.0,
-     "diff": 2.35,
+     "diff": 2.34,
      "min": 16.8,
      "stuck_min": 1.84,
      "stuck_n": 3.9,
@@ -1429,46 +1429,46 @@
    "by_group": {
     "7-8": {
      "n": 5,
-     "F": 1.81,
-     "downs": 0.0,
-     "diff": 2.87,
-     "min": 17.4,
+     "F": 2.13,
+     "downs": 0.2,
+     "diff": 2.96,
+     "min": 17.3,
      "stuck_min": 1.34,
      "stuck_n": 3.6,
      "unread": 2.8,
      "understood": 0.6,
      "read_s": 206.0,
-     "combat_s": 72.0
+     "combat_s": 61.0
     },
     "9-10": {
      "n": 5,
-     "F": 1.92,
+     "F": 1.8,
      "downs": 0.6,
-     "diff": 2.62,
+     "diff": 2.53,
      "min": 13.6,
      "stuck_min": 1.32,
      "stuck_n": 3.0,
      "unread": 0.0,
      "understood": 0.67,
      "read_s": 142.0,
-     "combat_s": 48.0
+     "combat_s": 53.0
     },
     "11-13": {
      "n": 7,
-     "F": 0.83,
-     "downs": 0.0,
-     "diff": 2.22,
-     "min": 12.2,
+     "F": 1.57,
+     "downs": 0.57,
+     "diff": 2.27,
+     "min": 12.6,
      "stuck_min": 0.66,
      "stuck_n": 1.4,
      "unread": 0.0,
      "understood": 0.84,
      "read_s": 108.0,
-     "combat_s": 42.0
+     "combat_s": 54.0
     },
     "14+": {
      "n": 7,
-     "F": 0.28,
+     "F": 0.19,
      "downs": 0.0,
      "diff": 2.06,
      "min": 10.2,
@@ -1477,7 +1477,7 @@
      "unread": 0.0,
      "understood": 0.89,
      "read_s": 73.0,
-     "combat_s": 30.0
+     "combat_s": 25.0
     }
    }
   },
@@ -1494,55 +1494,55 @@
    "by_group": {
     "7-8": {
      "n": 5,
-     "F": 3.62,
-     "downs": 0.4,
-     "diff": 3.62,
-     "min": 28.5,
+     "F": 4.34,
+     "downs": 1.0,
+     "diff": 4.05,
+     "min": 29.1,
      "stuck_min": 2.47,
      "stuck_n": 5.6,
      "unread": 3.6,
      "understood": 0.57,
      "read_s": 309.0,
-     "combat_s": 97.0
+     "combat_s": 126.0
     },
     "9-10": {
      "n": 5,
-     "F": 3.27,
-     "downs": 0.2,
-     "diff": 3.24,
-     "min": 22.3,
+     "F": 2.95,
+     "downs": 0.0,
+     "diff": 3.0,
+     "min": 22.0,
      "stuck_min": 2.47,
      "stuck_n": 4.2,
      "unread": 0.0,
      "understood": 0.68,
      "read_s": 213.0,
-     "combat_s": 92.0
+     "combat_s": 77.0
     },
     "11-13": {
      "n": 7,
      "F": 1.73,
      "downs": 0.0,
-     "diff": 2.44,
-     "min": 18.9,
+     "diff": 2.4,
+     "min": 19.0,
      "stuck_min": 1.3,
      "stuck_n": 2.3,
      "unread": 0.0,
      "understood": 0.82,
      "read_s": 162.0,
-     "combat_s": 56.0
+     "combat_s": 62.0
     },
     "14+": {
      "n": 7,
-     "F": 0.53,
+     "F": 0.87,
      "downs": 0.0,
      "diff": 2.21,
-     "min": 16.4,
+     "min": 16.9,
      "stuck_min": 0.45,
      "stuck_n": 1.4,
      "unread": 0.0,
      "understood": 0.89,
      "read_s": 109.0,
-     "combat_s": 34.0
+     "combat_s": 63.0
     }
    }
   },
@@ -1562,52 +1562,52 @@
      "F": 1.52,
      "downs": 0.0,
      "diff": 2.93,
-     "min": 27.4,
+     "min": 26.9,
      "stuck_min": 1.12,
      "stuck_n": 2.7,
      "unread": 0.0,
      "understood": 0.82,
      "read_s": 127.0,
-     "combat_s": 271.0
+     "combat_s": 242.0
     },
     "9-10": {
      "n": 5,
-     "F": 3.29,
-     "downs": 2.0,
-     "diff": 3.16,
-     "min": 24.9,
+     "F": 2.81,
+     "downs": 0.8,
+     "diff": 2.99,
+     "min": 24.0,
      "stuck_min": 2.01,
      "stuck_n": 4.0,
      "unread": 0.0,
      "understood": 0.73,
      "read_s": 174.0,
-     "combat_s": 275.0
+     "combat_s": 255.0
     },
     "11-13": {
      "n": 7,
-     "F": 2.05,
+     "F": 2.22,
      "downs": 1.29,
-     "diff": 2.42,
-     "min": 20.5,
+     "diff": 2.51,
+     "min": 21.4,
      "stuck_min": 1.11,
      "stuck_n": 2.3,
      "unread": 0.0,
      "understood": 0.85,
      "read_s": 133.0,
-     "combat_s": 218.0
+     "combat_s": 269.0
     },
     "14+": {
      "n": 7,
      "F": 1.0,
      "downs": 0.43,
      "diff": 2.26,
-     "min": 19.2,
+     "min": 19.1,
      "stuck_min": 0.65,
      "stuck_n": 1.7,
      "unread": 0.0,
      "understood": 0.89,
      "read_s": 89.0,
-     "combat_s": 172.0
+     "combat_s": 165.0
     }
    }
   },
@@ -1624,55 +1624,55 @@
    "by_group": {
     "7-8": {
      "n": 3,
-     "F": 2.98,
-     "downs": 1.0,
-     "diff": 3.67,
-     "min": 28.1,
+     "F": 2.91,
+     "downs": 0.33,
+     "diff": 3.88,
+     "min": 28.5,
      "stuck_min": 1.78,
      "stuck_n": 4.7,
      "unread": 0.0,
      "understood": 0.74,
      "read_s": 175.0,
-     "combat_s": 111.0
+     "combat_s": 136.0
     },
     "9-10": {
      "n": 5,
-     "F": 3.1,
-     "downs": 1.6,
-     "diff": 3.15,
-     "min": 24.6,
+     "F": 3.82,
+     "downs": 2.8,
+     "diff": 3.3,
+     "min": 24.8,
      "stuck_min": 1.74,
      "stuck_n": 5.0,
      "unread": 0.0,
      "understood": 0.72,
      "read_s": 240.0,
-     "combat_s": 131.0
+     "combat_s": 119.0
     },
     "11-13": {
      "n": 7,
-     "F": 3.25,
-     "downs": 1.0,
-     "diff": 2.64,
-     "min": 21.8,
+     "F": 2.54,
+     "downs": 0.29,
+     "diff": 2.49,
+     "min": 21.6,
      "stuck_min": 2.08,
      "stuck_n": 4.1,
      "unread": 0.0,
      "understood": 0.77,
      "read_s": 182.0,
-     "combat_s": 86.0
+     "combat_s": 94.0
     },
     "14+": {
      "n": 7,
-     "F": 1.21,
-     "downs": 0.71,
-     "diff": 2.21,
-     "min": 18.8,
+     "F": 1.67,
+     "downs": 1.43,
+     "diff": 2.29,
+     "min": 19.4,
      "stuck_min": 0.41,
      "stuck_n": 1.7,
      "unread": 0.0,
      "understood": 0.9,
      "read_s": 122.0,
-     "combat_s": 59.0
+     "combat_s": 82.0
     }
    }
   },
@@ -1689,55 +1689,55 @@
    "by_group": {
     "7-8": {
      "n": 3,
-     "F": 2.7,
-     "downs": 0.67,
-     "diff": 3.8,
-     "min": 23.6,
+     "F": 1.83,
+     "downs": 0.0,
+     "diff": 3.32,
+     "min": 23.9,
      "stuck_min": 1.23,
      "stuck_n": 4.7,
      "unread": 0.0,
      "understood": 0.69,
      "read_s": 176.0,
-     "combat_s": 129.0
+     "combat_s": 148.0
     },
     "9-10": {
      "n": 5,
-     "F": 5.52,
-     "downs": 3.4,
-     "diff": 3.75,
-     "min": 23.4,
+     "F": 4.32,
+     "downs": 1.6,
+     "diff": 3.48,
+     "min": 22.7,
      "stuck_min": 2.48,
      "stuck_n": 5.0,
      "unread": 0.0,
      "understood": 0.67,
      "read_s": 242.0,
-     "combat_s": 170.0
+     "combat_s": 172.0
     },
     "11-13": {
      "n": 7,
-     "F": 2.99,
-     "downs": 1.57,
-     "diff": 2.58,
-     "min": 18.7,
+     "F": 3.13,
+     "downs": 1.71,
+     "diff": 2.64,
+     "min": 19.5,
      "stuck_min": 1.5,
      "stuck_n": 4.3,
      "unread": 0.0,
      "understood": 0.71,
      "read_s": 184.0,
-     "combat_s": 98.0
+     "combat_s": 140.0
     },
     "14+": {
      "n": 7,
-     "F": 1.46,
-     "downs": 0.71,
-     "diff": 2.31,
-     "min": 16.1,
+     "F": 2.26,
+     "downs": 1.86,
+     "diff": 2.41,
+     "min": 16.9,
      "stuck_min": 0.74,
      "stuck_n": 2.4,
      "unread": 0.0,
      "understood": 0.84,
      "read_s": 123.0,
-     "combat_s": 70.0
+     "combat_s": 101.0
     }
    }
   },
@@ -1782,7 +1782,7 @@
      "n": 7,
      "F": 1.13,
      "downs": 0.0,
-     "diff": 2.1,
+     "diff": 2.13,
      "min": 14.6,
      "stuck_min": 1.13,
      "stuck_n": 3.3,
@@ -1834,7 +1834,7 @@
      "n": 5,
      "F": 1.14,
      "downs": 0.0,
-     "diff": 2.22,
+     "diff": 2.28,
      "min": 9.7,
      "stuck_min": 1.14,
      "stuck_n": 2.0,
@@ -1847,7 +1847,7 @@
      "n": 7,
      "F": 0.76,
      "downs": 0.0,
-     "diff": 2.25,
+     "diff": 2.28,
      "min": 8.0,
      "stuck_min": 0.76,
      "stuck_n": 1.4,
@@ -1899,7 +1899,7 @@
      "n": 5,
      "F": 0.98,
      "downs": 0.0,
-     "diff": 2.31,
+     "diff": 2.37,
      "min": 11.4,
      "stuck_min": 0.98,
      "stuck_n": 2.6,
@@ -1912,7 +1912,7 @@
      "n": 7,
      "F": 0.42,
      "downs": 0.0,
-     "diff": 2.21,
+     "diff": 2.24,
      "min": 10.4,
      "stuck_min": 0.42,
      "stuck_n": 1.3,
@@ -1949,49 +1949,49 @@
    "by_group": {
     "7-8": {
      "n": 3,
-     "F": 2.29,
-     "downs": 0.33,
-     "diff": 3.51,
-     "min": 28.2,
+     "F": 1.96,
+     "downs": 0.0,
+     "diff": 3.33,
+     "min": 27.9,
      "stuck_min": 1.96,
      "stuck_n": 5.0,
      "unread": 0.0,
      "understood": 0.67,
      "read_s": 135.0,
-     "combat_s": 99.0
+     "combat_s": 88.0
     },
     "9-10": {
      "n": 5,
      "F": 0.87,
      "downs": 0.0,
      "diff": 2.37,
-     "min": 21.3,
+     "min": 21.4,
      "stuck_min": 0.87,
      "stuck_n": 1.4,
      "unread": 0.0,
      "understood": 0.91,
      "read_s": 185.0,
-     "combat_s": 68.0
+     "combat_s": 75.0
     },
     "11-13": {
      "n": 7,
-     "F": 0.93,
-     "downs": 0.0,
-     "diff": 2.38,
-     "min": 19.0,
+     "F": 1.13,
+     "downs": 0.29,
+     "diff": 2.4,
+     "min": 19.8,
      "stuck_min": 0.76,
      "stuck_n": 1.9,
      "unread": 0.0,
      "understood": 0.88,
      "read_s": 141.0,
-     "combat_s": 56.0
+     "combat_s": 96.0
     },
     "14+": {
      "n": 7,
      "F": 0.75,
      "downs": 0.14,
      "diff": 2.31,
-     "min": 18.8,
+     "min": 18.7,
      "stuck_min": 0.61,
      "stuck_n": 2.0,
      "unread": 0.0,
@@ -2023,33 +2023,33 @@
      "unread": 0.0,
      "understood": 0.7,
      "read_s": 106.0,
-     "combat_s": 18.0
+     "combat_s": 15.0
     },
     "9-10": {
      "n": 5,
-     "F": 0.86,
-     "downs": 0.4,
-     "diff": 2.24,
-     "min": 13.8,
+     "F": 0.66,
+     "downs": 0.2,
+     "diff": 2.3,
+     "min": 13.6,
      "stuck_min": 0.46,
      "stuck_n": 2.4,
      "unread": 0.0,
      "understood": 0.78,
      "read_s": 145.0,
-     "combat_s": 27.0
+     "combat_s": 19.0
     },
     "11-13": {
      "n": 7,
      "F": 1.01,
      "downs": 0.0,
-     "diff": 2.38,
+     "diff": 2.41,
      "min": 12.3,
      "stuck_min": 1.01,
      "stuck_n": 2.9,
      "unread": 0.0,
      "understood": 0.74,
      "read_s": 110.0,
-     "combat_s": 13.0
+     "combat_s": 14.0
     },
     "14+": {
      "n": 7,
@@ -2062,7 +2062,7 @@
      "unread": 0.0,
      "understood": 0.83,
      "read_s": 74.0,
-     "combat_s": 10.0
+     "combat_s": 11.0
     }
    }
   },
@@ -2079,55 +2079,55 @@
    "by_group": {
     "7-8": {
      "n": 3,
-     "F": 1.27,
+     "F": 1.47,
      "downs": 0.0,
-     "diff": 2.87,
-     "min": 17.9,
+     "diff": 2.98,
+     "min": 18.1,
      "stuck_min": 0.47,
      "stuck_n": 1.7,
      "unread": 0.0,
      "understood": 0.81,
      "read_s": 99.0,
-     "combat_s": 94.0
+     "combat_s": 108.0
     },
     "9-10": {
      "n": 5,
-     "F": 1.91,
-     "downs": 0.2,
-     "diff": 2.7,
-     "min": 15.8,
+     "F": 1.95,
+     "downs": 0.0,
+     "diff": 2.8,
+     "min": 15.9,
      "stuck_min": 1.11,
      "stuck_n": 2.8,
      "unread": 0.0,
      "understood": 0.69,
      "read_s": 136.0,
-     "combat_s": 83.0
+     "combat_s": 92.0
     },
     "11-13": {
      "n": 7,
-     "F": 1.25,
-     "downs": 0.29,
-     "diff": 2.39,
+     "F": 1.05,
+     "downs": 0.0,
+     "diff": 2.41,
      "min": 13.9,
      "stuck_min": 0.71,
      "stuck_n": 2.0,
      "unread": 0.0,
      "understood": 0.78,
      "read_s": 104.0,
-     "combat_s": 47.0
+     "combat_s": 52.0
     },
     "14+": {
      "n": 7,
-     "F": 0.48,
+     "F": 0.65,
      "downs": 0.0,
      "diff": 2.28,
-     "min": 12.2,
+     "min": 12.5,
      "stuck_min": 0.23,
      "stuck_n": 1.4,
      "unread": 0.0,
      "understood": 0.84,
      "read_s": 70.0,
-     "combat_s": 43.0
+     "combat_s": 59.0
     }
    }
   },
@@ -2159,7 +2159,7 @@
      "n": 5,
      "F": 0.64,
      "downs": 0.0,
-     "diff": 2.08,
+     "diff": 2.14,
      "min": 10.4,
      "stuck_min": 0.64,
      "stuck_n": 1.6,
@@ -2172,7 +2172,7 @@
      "n": 6,
      "F": 0.5,
      "downs": 0.0,
-     "diff": 2.29,
+     "diff": 2.32,
      "min": 9.9,
      "stuck_min": 0.5,
      "stuck_n": 1.5,
@@ -2209,36 +2209,36 @@
    "by_group": {
     "7-8": {
      "n": 3,
-     "F": 1.01,
-     "downs": 0.67,
-     "diff": 2.64,
-     "min": 12.4,
+     "F": 0.55,
+     "downs": 0.0,
+     "diff": 2.31,
+     "min": 12.1,
      "stuck_min": 0.55,
      "stuck_n": 1.0,
      "unread": 0.0,
      "understood": 0.8,
      "read_s": 80.0,
-     "combat_s": 45.0
+     "combat_s": 36.0
     },
     "9-10": {
      "n": 4,
      "F": 1.26,
      "downs": 0.0,
      "diff": 2.38,
-     "min": 11.1,
+     "min": 11.2,
      "stuck_min": 1.26,
      "stuck_n": 2.8,
      "unread": 0.0,
      "understood": 0.45,
      "read_s": 111.0,
-     "combat_s": 37.0
+     "combat_s": 39.0
     },
     "11-13": {
      "n": 5,
-     "F": 0.96,
+     "F": 0.84,
      "downs": 0.0,
-     "diff": 2.24,
-     "min": 10.1,
+     "diff": 2.27,
+     "min": 10.0,
      "stuck_min": 0.84,
      "stuck_n": 2.0,
      "unread": 0.0,
@@ -2248,16 +2248,16 @@
     },
     "14+": {
      "n": 7,
-     "F": 0.21,
-     "downs": 0.0,
+     "F": 0.35,
+     "downs": 0.14,
      "diff": 2.13,
-     "min": 8.4,
+     "min": 8.6,
      "stuck_min": 0.21,
      "stuck_n": 1.0,
      "unread": 0.0,
      "understood": 0.8,
      "read_s": 56.0,
-     "combat_s": 22.0
+     "combat_s": 32.0
     }
    }
   },
@@ -2289,7 +2289,7 @@
      "n": 4,
      "F": 0.87,
      "downs": 0.0,
-     "diff": 2.29,
+     "diff": 2.37,
      "min": 12.5,
      "stuck_min": 0.87,
      "stuck_n": 1.8,
@@ -2302,7 +2302,7 @@
      "n": 5,
      "F": 0.43,
      "downs": 0.0,
-     "diff": 2.45,
+     "diff": 2.49,
      "min": 11.7,
      "stuck_min": 0.43,
      "stuck_n": 1.4,
@@ -2339,55 +2339,55 @@
    "by_group": {
     "7-8": {
      "n": 3,
-     "F": 0.67,
-     "downs": 0.0,
-     "diff": 2.3,
-     "min": 17.6,
+     "F": 1.01,
+     "downs": 0.33,
+     "diff": 2.61,
+     "min": 18.0,
      "stuck_min": 0.68,
      "stuck_n": 2.0,
      "unread": 0.0,
      "understood": 0.6,
      "read_s": 49.0,
-     "combat_s": 142.0
+     "combat_s": 168.0
     },
     "9-10": {
      "n": 4,
-     "F": 0.57,
+     "F": 0.87,
      "downs": 0.0,
-     "diff": 2.21,
-     "min": 15.4,
+     "diff": 2.3,
+     "min": 14.6,
      "stuck_min": 0.57,
      "stuck_n": 1.5,
      "unread": 0.0,
      "understood": 0.7,
      "read_s": 68.0,
-     "combat_s": 202.0
+     "combat_s": 151.0
     },
     "11-13": {
      "n": 5,
-     "F": 1.01,
-     "downs": 0.2,
-     "diff": 2.39,
+     "F": 0.81,
+     "downs": 0.0,
+     "diff": 2.43,
      "min": 13.6,
      "stuck_min": 0.69,
      "stuck_n": 1.6,
      "unread": 0.0,
      "understood": 0.68,
      "read_s": 48.0,
-     "combat_s": 149.0
+     "combat_s": 152.0
     },
     "14+": {
      "n": 7,
-     "F": 0.19,
-     "downs": 0.0,
-     "diff": 2.3,
-     "min": 12.5,
+     "F": 0.47,
+     "downs": 0.29,
+     "diff": 2.31,
+     "min": 12.9,
      "stuck_min": 0.19,
      "stuck_n": 1.0,
      "unread": 0.0,
      "understood": 0.8,
      "read_s": 34.0,
-     "combat_s": 92.0
+     "combat_s": 111.0
     }
    }
   },
@@ -2404,16 +2404,16 @@
    "by_group": {
     "7-8": {
      "n": 3,
-     "F": 2.28,
-     "downs": 0.0,
-     "diff": 3.68,
-     "min": 35.8,
+     "F": 2.62,
+     "downs": 0.33,
+     "diff": 3.85,
+     "min": 36.0,
      "stuck_min": 2.28,
      "stuck_n": 5.7,
      "unread": 0.0,
      "understood": 0.73,
      "read_s": 231.0,
-     "combat_s": 26.0
+     "combat_s": 35.0
     },
     "9-10": {
      "n": 4,
@@ -2426,33 +2426,33 @@
      "unread": 0.0,
      "understood": 0.69,
      "read_s": 322.0,
-     "combat_s": 23.0
+     "combat_s": 27.0
     },
     "11-13": {
      "n": 5,
-     "F": 1.86,
+     "F": 1.98,
      "downs": 0.2,
-     "diff": 2.36,
+     "diff": 2.45,
      "min": 26.5,
      "stuck_min": 1.54,
      "stuck_n": 3.6,
      "unread": 0.0,
      "understood": 0.83,
      "read_s": 225.0,
-     "combat_s": 30.0
+     "combat_s": 25.0
     },
     "14+": {
      "n": 7,
      "F": 1.1,
      "downs": 0.0,
      "diff": 2.31,
-     "min": 24.9,
+     "min": 25.0,
      "stuck_min": 1.1,
      "stuck_n": 3.4,
      "unread": 0.0,
      "understood": 0.84,
      "read_s": 161.0,
-     "combat_s": 17.0
+     "combat_s": 19.0
     }
    }
   },
@@ -2484,7 +2484,7 @@
      "n": 4,
      "F": 0.57,
      "downs": 0.0,
-     "diff": 2.1,
+     "diff": 2.18,
      "min": 7.1,
      "stuck_min": 0.57,
      "stuck_n": 1.2,
@@ -2497,7 +2497,7 @@
      "n": 5,
      "F": 0.32,
      "downs": 0.0,
-     "diff": 2.28,
+     "diff": 2.26,
      "min": 6.9,
      "stuck_min": 0.32,
      "stuck_n": 0.8,
@@ -2562,7 +2562,7 @@
      "n": 5,
      "F": 0.26,
      "downs": 0.0,
-     "diff": 2.28,
+     "diff": 2.26,
      "min": 8.1,
      "stuck_min": 0.26,
      "stuck_n": 0.6,
@@ -2627,7 +2627,7 @@
      "n": 5,
      "F": 0.0,
      "downs": 0.0,
-     "diff": 2.11,
+     "diff": 2.09,
      "min": 8.5,
      "stuck_min": 0.0,
      "stuck_n": 0.0,
@@ -2664,16 +2664,16 @@
    "by_group": {
     "7-8": {
      "n": 3,
-     "F": 0.44,
+     "F": 0.64,
      "downs": 0.0,
-     "diff": 2.22,
-     "min": 15.8,
+     "diff": 2.25,
+     "min": 16.2,
      "stuck_min": 0.44,
      "stuck_n": 1.0,
      "unread": 0.0,
      "understood": 0.8,
      "read_s": 45.0,
-     "combat_s": 55.0
+     "combat_s": 82.0
     },
     "9-10": {
      "n": 2,
@@ -2686,33 +2686,33 @@
      "unread": 0.0,
      "understood": 0.8,
      "read_s": 46.0,
-     "combat_s": 20.0
+     "combat_s": 23.0
     },
     "11-13": {
      "n": 5,
      "F": 0.29,
      "downs": 0.0,
-     "diff": 2.26,
-     "min": 11.1,
+     "diff": 2.24,
+     "min": 11.4,
      "stuck_min": 0.29,
      "stuck_n": 0.8,
      "unread": 0.0,
      "understood": 0.84,
      "read_s": 44.0,
-     "combat_s": 36.0
+     "combat_s": 53.0
     },
     "14+": {
      "n": 7,
-     "F": 0.09,
+     "F": 0.18,
      "downs": 0.0,
      "diff": 2.17,
-     "min": 10.9,
+     "min": 11.0,
      "stuck_min": 0.09,
      "stuck_n": 0.6,
      "unread": 0.0,
      "understood": 0.89,
      "read_s": 31.0,
-     "combat_s": 41.0
+     "combat_s": 48.0
     }
    }
   },
@@ -2729,55 +2729,55 @@
    "by_group": {
     "7-8": {
      "n": 2,
-     "F": 1.2,
+     "F": 0.0,
      "downs": 0.0,
-     "diff": 2.77,
-     "min": 23.7,
+     "diff": 2.28,
+     "min": 20.6,
      "stuck_min": 0.0,
      "stuck_n": 0.0,
      "unread": 0.0,
      "understood": 1.0,
      "read_s": 0.0,
-     "combat_s": 185.0
+     "combat_s": 0.0
     },
     "9-10": {
      "n": 2,
-     "F": 0.6,
+     "F": 0.0,
      "downs": 0.0,
-     "diff": 2.38,
-     "min": 22.2,
+     "diff": 2.43,
+     "min": 20.4,
      "stuck_min": 0.0,
      "stuck_n": 0.0,
      "unread": 0.0,
      "understood": 1.0,
      "read_s": 0.0,
-     "combat_s": 105.0
+     "combat_s": 0.0
     },
     "11-13": {
      "n": 4,
-     "F": 0.9,
+     "F": 0.0,
      "downs": 0.0,
-     "diff": 2.46,
-     "min": 19.2,
+     "diff": 2.58,
+     "min": 17.0,
      "stuck_min": 0.0,
      "stuck_n": 0.0,
      "unread": 0.0,
      "understood": 1.0,
      "read_s": 0.0,
-     "combat_s": 133.0
+     "combat_s": 0.0
     },
     "14+": {
      "n": 7,
-     "F": 1.03,
+     "F": 0.0,
      "downs": 0.0,
-     "diff": 2.32,
-     "min": 21.2,
+     "diff": 2.45,
+     "min": 18.6,
      "stuck_min": 0.0,
      "stuck_n": 0.0,
      "unread": 0.0,
      "understood": 1.0,
      "read_s": 0.0,
-     "combat_s": 160.0
+     "combat_s": 0.0
     }
    }
   }
@@ -2786,22 +2786,22 @@
   "7-8": [
    [
     "2-1",
-    9.19,
+    11.22,
+    6
+   ],
+   [
+    "1-2",
+    4.74,
     6
    ],
    [
     "2-2",
-    5.42,
+    4.42,
     5
    ],
    [
-    "1-2",
-    4.34,
-    6
-   ],
-   [
     "2-5",
-    3.62,
+    4.34,
     5
    ],
    [
@@ -2811,19 +2811,24 @@
    ],
    [
     "p",
-    3.43,
+    3.13,
     6
    ]
   ],
   "9-10": [
    [
     "2-1",
-    5.68,
+    4.84,
     5
    ],
    [
     "3-2",
-    5.52,
+    4.32,
+    5
+   ],
+   [
+    "3-1",
+    3.82,
     5
    ],
    [
@@ -2832,67 +2837,62 @@
     4
    ],
    [
-    "2-B",
-    3.29,
-    5
-   ],
-   [
     "2-5",
-    3.27,
+    2.95,
     5
    ],
    [
-    "3-1",
-    3.1,
+    "2-B",
+    2.81,
     5
    ]
   ],
   "11-13": [
    [
     "2-1",
-    3.59,
-    7
-   ],
-   [
-    "3-1",
-    3.25,
+    4.28,
     7
    ],
    [
     "3-2",
-    2.99,
+    3.13,
+    7
+   ],
+   [
+    "3-1",
+    2.54,
     7
    ],
    [
     "2-2",
-    2.1,
+    2.3,
     7
    ],
    [
     "2-B",
-    2.05,
+    2.22,
     7
    ],
    [
-    "5-1",
-    1.86,
-    5
+    "1-1",
+    2.15,
+    7
    ]
   ],
   "14+": [
    [
-    "2-1",
-    1.95,
+    "3-2",
+    2.26,
     7
    ],
    [
-    "3-2",
-    1.46,
+    "2-1",
+    2.23,
     7
    ],
    [
     "3-1",
-    1.21,
+    1.67,
     7
    ],
    [
@@ -2901,13 +2901,13 @@
     7
    ],
    [
-    "2-2",
-    1.07,
+    "2-B",
+    1.0,
     7
    ],
    [
-    "5-B2",
-    1.03,
+    "2-5",
+    0.87,
     7
    ]
   ]
@@ -2917,49 +2917,49 @@
    {
     "lv": "2-1",
     "name": "Гусли Садко",
-    "F": 9.19,
+    "F": 11.22,
     "n": 6,
     "stuck_min": 4.31,
-    "combat": 4.6,
+    "combat": 6.63,
     "unread": 7.0,
     "read_min": 8.2,
-    "minutes": 48.6,
+    "minutes": 50.7,
+    "solo": 1
+   },
+   {
+    "lv": "1-2",
+    "name": "Кикиморино болото",
+    "F": 4.74,
+    "n": 6,
+    "stuck_min": 2.6,
+    "combat": 1.97,
+    "unread": 4.3,
+    "read_min": 4.7,
+    "minutes": 29.8,
     "solo": 1
    },
    {
     "lv": "2-2",
     "name": "Чудо-юдо Рыба-кит",
-    "F": 5.42,
+    "F": 4.42,
     "n": 5,
     "stuck_min": 3.17,
-    "combat": 2.04,
+    "combat": 1.04,
     "unread": 5.2,
     "read_min": 6.8,
-    "minutes": 40.1,
+    "minutes": 39.4,
     "solo": 0
-   },
-   {
-    "lv": "1-2",
-    "name": "Кикиморино болото",
-    "F": 4.34,
-    "n": 6,
-    "stuck_min": 2.6,
-    "combat": 1.57,
-    "unread": 4.3,
-    "read_min": 4.7,
-    "minutes": 29.2,
-    "solo": 1
    },
    {
     "lv": "2-5",
     "name": "Китеж звонит",
-    "F": 3.62,
+    "F": 4.34,
     "n": 5,
     "stuck_min": 2.47,
-    "combat": 1.0,
+    "combat": 1.72,
     "unread": 3.6,
     "read_min": 5.1,
-    "minutes": 28.5,
+    "minutes": 29.1,
     "solo": 0
    },
    {
@@ -2977,13 +2977,13 @@
    {
     "lv": "p",
     "name": "Пролог «Звенышко»",
-    "F": 3.43,
+    "F": 3.13,
     "n": 6,
     "stuck_min": 1.42,
-    "combat": 1.9,
+    "combat": 1.6,
     "unread": 2.7,
     "read_min": 2.9,
-    "minutes": 19.5,
+    "minutes": 19.1,
     "solo": 1
    }
   ],
@@ -2991,25 +2991,37 @@
    {
     "lv": "2-1",
     "name": "Гусли Садко",
-    "F": 5.68,
+    "F": 4.84,
     "n": 5,
     "stuck_min": 2.99,
-    "combat": 2.68,
+    "combat": 1.84,
     "unread": 0.0,
     "read_min": 5.0,
-    "minutes": 33.5,
+    "minutes": 33.6,
     "solo": 1
    },
    {
     "lv": "3-2",
     "name": "Облачные пастбища",
-    "F": 5.52,
+    "F": 4.32,
     "n": 5,
     "stuck_min": 2.48,
-    "combat": 3.04,
+    "combat": 1.84,
     "unread": 0.0,
     "read_min": 4.0,
-    "minutes": 23.4,
+    "minutes": 22.7,
+    "solo": 1
+   },
+   {
+    "lv": "3-1",
+    "name": "Сад молодильных яблок",
+    "F": 3.82,
+    "n": 5,
+    "stuck_min": 1.74,
+    "combat": 2.08,
+    "unread": 0.0,
+    "read_min": 4.0,
+    "minutes": 24.8,
     "solo": 1
    },
    {
@@ -3025,39 +3037,27 @@
     "solo": 1
    },
    {
-    "lv": "2-B",
-    "name": "Водяной",
-    "F": 3.29,
-    "n": 5,
-    "stuck_min": 2.01,
-    "combat": 1.28,
-    "unread": 0.0,
-    "read_min": 2.9,
-    "minutes": 24.9,
-    "solo": 1
-   },
-   {
     "lv": "2-5",
     "name": "Китеж звонит",
-    "F": 3.27,
+    "F": 2.95,
     "n": 5,
     "stuck_min": 2.47,
-    "combat": 0.8,
+    "combat": 0.48,
     "unread": 0.0,
     "read_min": 3.5,
-    "minutes": 22.3,
+    "minutes": 22.0,
     "solo": 1
    },
    {
-    "lv": "3-1",
-    "name": "Сад молодильных яблок",
-    "F": 3.1,
+    "lv": "2-B",
+    "name": "Водяной",
+    "F": 2.81,
     "n": 5,
-    "stuck_min": 1.74,
-    "combat": 1.36,
+    "stuck_min": 2.01,
+    "combat": 0.8,
     "unread": 0.0,
-    "read_min": 4.0,
-    "minutes": 24.6,
+    "read_min": 2.9,
+    "minutes": 24.0,
     "solo": 1
    }
   ],
@@ -3065,111 +3065,111 @@
    {
     "lv": "2-1",
     "name": "Гусли Садко",
-    "F": 3.59,
+    "F": 4.28,
     "n": 7,
     "stuck_min": 2.08,
-    "combat": 1.51,
+    "combat": 2.2,
     "unread": 0.0,
     "read_min": 3.8,
-    "minutes": 27.7,
-    "solo": 2
-   },
-   {
-    "lv": "3-1",
-    "name": "Сад молодильных яблок",
-    "F": 3.25,
-    "n": 7,
-    "stuck_min": 2.08,
-    "combat": 1.17,
-    "unread": 0.0,
-    "read_min": 3.0,
-    "minutes": 21.8,
+    "minutes": 28.9,
     "solo": 2
    },
    {
     "lv": "3-2",
     "name": "Облачные пастбища",
-    "F": 2.99,
+    "F": 3.13,
     "n": 7,
     "stuck_min": 1.5,
-    "combat": 1.49,
+    "combat": 1.63,
     "unread": 0.0,
     "read_min": 3.1,
-    "minutes": 18.7,
+    "minutes": 19.5,
+    "solo": 2
+   },
+   {
+    "lv": "3-1",
+    "name": "Сад молодильных яблок",
+    "F": 2.54,
+    "n": 7,
+    "stuck_min": 2.08,
+    "combat": 0.46,
+    "unread": 0.0,
+    "read_min": 3.0,
+    "minutes": 21.6,
     "solo": 2
    },
    {
     "lv": "2-2",
     "name": "Чудо-юдо Рыба-кит",
-    "F": 2.1,
+    "F": 2.3,
     "n": 7,
     "stuck_min": 1.78,
-    "combat": 0.31,
+    "combat": 0.51,
     "unread": 0.0,
     "read_min": 3.6,
-    "minutes": 24.5,
+    "minutes": 25.0,
     "solo": 2
    },
    {
     "lv": "2-B",
     "name": "Водяной",
-    "F": 2.05,
+    "F": 2.22,
     "n": 7,
     "stuck_min": 1.11,
-    "combat": 0.94,
+    "combat": 1.11,
     "unread": 0.0,
     "read_min": 2.2,
-    "minutes": 20.5,
+    "minutes": 21.4,
     "solo": 2
    },
    {
-    "lv": "5-1",
-    "name": "Сундук на дубе",
-    "F": 1.86,
-    "n": 5,
-    "stuck_min": 1.54,
-    "combat": 0.32,
+    "lv": "1-1",
+    "name": "Избушка, повернись",
+    "F": 2.15,
+    "n": 7,
+    "stuck_min": 1.17,
+    "combat": 0.97,
     "unread": 0.0,
-    "read_min": 3.8,
-    "minutes": 26.5,
-    "solo": 1
+    "read_min": 1.5,
+    "minutes": 14.6,
+    "solo": 2
    }
   ],
   "14+": [
    {
-    "lv": "2-1",
-    "name": "Гусли Садко",
-    "F": 1.95,
+    "lv": "3-2",
+    "name": "Облачные пастбища",
+    "F": 2.26,
     "n": 7,
-    "stuck_min": 0.95,
-    "combat": 1.0,
+    "stuck_min": 0.74,
+    "combat": 1.51,
     "unread": 0.0,
-    "read_min": 2.6,
-    "minutes": 26.1,
+    "read_min": 2.1,
+    "minutes": 16.9,
     "solo": 1
    },
    {
-    "lv": "3-2",
-    "name": "Облачные пастбища",
-    "F": 1.46,
+    "lv": "2-1",
+    "name": "Гусли Садко",
+    "F": 2.23,
     "n": 7,
-    "stuck_min": 0.74,
-    "combat": 0.71,
+    "stuck_min": 0.95,
+    "combat": 1.29,
     "unread": 0.0,
-    "read_min": 2.1,
-    "minutes": 16.1,
+    "read_min": 2.6,
+    "minutes": 27.3,
     "solo": 1
    },
    {
     "lv": "3-1",
     "name": "Сад молодильных яблок",
-    "F": 1.21,
+    "F": 1.67,
     "n": 7,
     "stuck_min": 0.41,
-    "combat": 0.8,
+    "combat": 1.26,
     "unread": 0.0,
     "read_min": 2.0,
-    "minutes": 18.8,
+    "minutes": 19.4,
     "solo": 1
    },
    {
@@ -3181,34 +3181,60 @@
     "combat": 0.0,
     "unread": 0.0,
     "read_min": 2.7,
-    "minutes": 24.9,
+    "minutes": 25.0,
     "solo": 1
    },
    {
-    "lv": "2-2",
-    "name": "Чудо-юдо Рыба-кит",
-    "F": 1.07,
+    "lv": "2-B",
+    "name": "Водяной",
+    "F": 1.0,
     "n": 7,
-    "stuck_min": 0.55,
-    "combat": 0.51,
+    "stuck_min": 0.65,
+    "combat": 0.34,
     "unread": 0.0,
-    "read_min": 2.4,
-    "minutes": 23.0,
+    "read_min": 1.5,
+    "minutes": 19.1,
     "solo": 1
    },
    {
-    "lv": "5-B2",
-    "name": "Кощей Бессмертный и Златая цепь",
-    "F": 1.03,
+    "lv": "2-5",
+    "name": "Китеж звонит",
+    "F": 0.87,
     "n": 7,
-    "stuck_min": 0.0,
-    "combat": 1.03,
+    "stuck_min": 0.45,
+    "combat": 0.43,
     "unread": 0.0,
-    "read_min": 0.0,
-    "minutes": 21.2,
+    "read_min": 1.8,
+    "minutes": 16.9,
     "solo": 1
    }
   ]
+ },
+ "F_parts": {
+  "7-8": {
+   "stuck": 0.61,
+   "combat": 0.36,
+   "rhythm": 0.0,
+   "unread": 0.03
+  },
+  "9-10": {
+   "stuck": 0.74,
+   "combat": 0.26,
+   "rhythm": 0.0,
+   "unread": 0.0
+  },
+  "11-13": {
+   "stuck": 0.7,
+   "combat": 0.29,
+   "rhythm": 0.0,
+   "unread": 0.0
+  },
+  "14+": {
+   "stuck": 0.61,
+   "combat": 0.39,
+   "rhythm": 0.0,
+   "unread": 0.0
+  }
  },
  "rhythm": {
   "1-3": {
@@ -3231,53 +3257,349 @@
   }
  },
  "combat": {
-  "7-8": {},
-  "9-10": {},
-  "11-13": {},
-  "14+": {}
- },
- "tutorial": {},
- "plan": {
   "7-8": {
-   "plans": 0,
-   "late": 0.0,
-   "lapse": 0.0,
-   "parry_try": 0.0,
-   "roll_try": 0.0,
-   "guard_only": 0.0,
-   "miskey": 0.0
+   "мир 1": {
+    "enc": 66,
+    "downs_per_enc": 0.273,
+    "hits_per_enc": 1.32,
+    "clear": 0.56,
+    "sec": 40.0
+   },
+   "мир 2": {
+    "enc": 138,
+    "downs_per_enc": 0.348,
+    "hits_per_enc": 1.82,
+    "clear": 0.54,
+    "sec": 42.8
+   },
+   "мир 3": {
+    "enc": 90,
+    "downs_per_enc": 0.211,
+    "hits_per_enc": 1.22,
+    "clear": 0.76,
+    "sec": 30.3
+   },
+   "мир 4": {
+    "enc": 48,
+    "downs_per_enc": 0.292,
+    "hits_per_enc": 1.69,
+    "clear": 0.71,
+    "sec": 38.0
+   },
+   "мир 5": {
+    "enc": 30,
+    "downs_per_enc": 0.067,
+    "hits_per_enc": 0.6,
+    "clear": 0.83,
+    "sec": 28.1
+   },
+   "пролог": {
+    "enc": 18,
+    "downs_per_enc": 0.667,
+    "hits_per_enc": 2.06,
+    "clear": 0.61,
+    "sec": 38.0
+   }
   },
   "9-10": {
-   "plans": 0,
-   "late": 0.0,
-   "lapse": 0.0,
-   "parry_try": 0.0,
-   "roll_try": 0.0,
-   "guard_only": 0.0,
-   "miskey": 0.0
+   "мир 1": {
+    "enc": 55,
+    "downs_per_enc": 0.164,
+    "hits_per_enc": 1.04,
+    "clear": 0.82,
+    "sec": 28.9
+   },
+   "мир 2": {
+    "enc": 115,
+    "downs_per_enc": 0.087,
+    "hits_per_enc": 0.88,
+    "clear": 0.83,
+    "sec": 26.9
+   },
+   "мир 3": {
+    "enc": 75,
+    "downs_per_enc": 0.293,
+    "hits_per_enc": 1.37,
+    "clear": 0.95,
+    "sec": 20.9
+   },
+   "мир 4": {
+    "enc": 40,
+    "downs_per_enc": 0.025,
+    "hits_per_enc": 0.78,
+    "clear": 0.82,
+    "sec": 25.1
+   },
+   "мир 5": {
+    "enc": 25,
+    "downs_per_enc": 0.0,
+    "hits_per_enc": 0.32,
+    "clear": 1.0,
+    "sec": 16.2
+   },
+   "пролог": {
+    "enc": 15,
+    "downs_per_enc": 0.133,
+    "hits_per_enc": 1.2,
+    "clear": 0.73,
+    "sec": 34.6
+   }
   },
   "11-13": {
-   "plans": 0,
-   "late": 0.0,
-   "lapse": 0.0,
-   "parry_try": 0.0,
-   "roll_try": 0.0,
-   "guard_only": 0.0,
-   "miskey": 0.0
+   "мир 1": {
+    "enc": 77,
+    "downs_per_enc": 0.091,
+    "hits_per_enc": 0.94,
+    "clear": 0.94,
+    "sec": 24.0
+   },
+   "мир 2": {
+    "enc": 161,
+    "downs_per_enc": 0.124,
+    "hits_per_enc": 0.78,
+    "clear": 0.83,
+    "sec": 25.1
+   },
+   "мир 3": {
+    "enc": 105,
+    "downs_per_enc": 0.152,
+    "hits_per_enc": 0.95,
+    "clear": 0.98,
+    "sec": 17.5
+   },
+   "мир 4": {
+    "enc": 56,
+    "downs_per_enc": 0.0,
+    "hits_per_enc": 0.48,
+    "clear": 0.93,
+    "sec": 18.8
+   },
+   "мир 5": {
+    "enc": 35,
+    "downs_per_enc": 0.029,
+    "hits_per_enc": 0.29,
+    "clear": 1.0,
+    "sec": 16.1
+   },
+   "пролог": {
+    "enc": 21,
+    "downs_per_enc": 0.095,
+    "hits_per_enc": 1.05,
+    "clear": 1.0,
+    "sec": 18.3
+   }
   },
   "14+": {
-   "plans": 0,
-   "late": 0.0,
-   "lapse": 0.0,
-   "parry_try": 0.0,
-   "roll_try": 0.0,
-   "guard_only": 0.0,
-   "miskey": 0.0
+   "мир 1": {
+    "enc": 77,
+    "downs_per_enc": 0.039,
+    "hits_per_enc": 0.42,
+    "clear": 0.91,
+    "sec": 18.9
+   },
+   "мир 2": {
+    "enc": 161,
+    "downs_per_enc": 0.019,
+    "hits_per_enc": 0.36,
+    "clear": 0.89,
+    "sec": 20.2
+   },
+   "мир 3": {
+    "enc": 105,
+    "downs_per_enc": 0.229,
+    "hits_per_enc": 1.2,
+    "clear": 1.0,
+    "sec": 13.2
+   },
+   "мир 4": {
+    "enc": 56,
+    "downs_per_enc": 0.054,
+    "hits_per_enc": 0.59,
+    "clear": 0.91,
+    "sec": 18.2
+   },
+   "мир 5": {
+    "enc": 35,
+    "downs_per_enc": 0.0,
+    "hits_per_enc": 0.14,
+    "clear": 0.97,
+    "sec": 13.5
+   },
+   "пролог": {
+    "enc": 21,
+    "downs_per_enc": 0.0,
+    "hits_per_enc": 0.38,
+    "clear": 0.9,
+    "sec": 21.0
+   }
   }
  },
- "know_final": {},
- "kind_down_rate": {},
- "ab": {},
+ "tutorial": {
+  "7-8": {
+   "sec": 38.0,
+   "hits": 2.06
+  },
+  "9-10": {
+   "sec": 34.6,
+   "hits": 1.2
+  },
+  "11-13": {
+   "sec": 18.3,
+   "hits": 1.05
+  },
+  "14+": {
+   "sec": 21.0,
+   "hits": 0.38
+  }
+ },
+ "plan": {
+  "7-8": {
+   "plans": 2777,
+   "late": 0.287,
+   "lapse": 0.218,
+   "parry_try": 0.193,
+   "roll_try": 0.063,
+   "guard_only": 0.025,
+   "miskey": 0.039
+  },
+  "9-10": {
+   "plans": 1471,
+   "late": 0.155,
+   "lapse": 0.084,
+   "parry_try": 0.368,
+   "roll_try": 0.101,
+   "guard_only": 0.016,
+   "miskey": 0.051
+  },
+  "11-13": {
+   "plans": 1728,
+   "late": 0.075,
+   "lapse": 0.053,
+   "parry_try": 0.577,
+   "roll_try": 0.137,
+   "guard_only": 0.005,
+   "miskey": 0.019
+  },
+  "14+": {
+   "plans": 1467,
+   "late": 0.042,
+   "lapse": 0.034,
+   "parry_try": 0.659,
+   "roll_try": 0.175,
+   "guard_only": 0.007,
+   "miskey": 0.007
+  }
+ },
+ "know_final": {
+  "7-8": {
+   "parry": 0.9,
+   "roll": 0.91
+  },
+  "9-10": {
+   "parry": 0.93,
+   "roll": 0.91
+  },
+  "11-13": {
+   "parry": 0.96,
+   "roll": 0.99
+  },
+  "14+": {
+   "parry": 0.97,
+   "roll": 0.99
+  }
+ },
+ "kind_down_rate": {
+  "morok": 0.213,
+  "kiki": 0.164,
+  "stump": 0.32,
+  "tat": 0.26,
+  "thread": 0.053,
+  "leshyBoss": 0.06,
+  "hand": 0.04,
+  "otshel": 0.08,
+  "otshel2": 0.36,
+  "shchuka": 0.1,
+  "rak": 0.136,
+  "chaika": 0.08,
+  "prilip": 0.08,
+  "tinnik": 0.24,
+  "tyagun": 0.08,
+  "vodyanoy": 0.64,
+  "ten": 0.48,
+  "motylek": 0.4,
+  "pugalo": 0.05,
+  "voron31": 0.0,
+  "grombaran": 0.08,
+  "solovei": 0.2,
+  "bolvan": 0.14,
+  "pechnik": 0.08,
+  "zmeenysh": 0.093,
+  "golova": 0.12,
+  "hameley": 0.12,
+  "dvoynik": 0.0
+ },
+ "ab": {
+  "9-10": {
+   "детские настройки (мир 1)": {
+    "fights": 100,
+    "downs_per_fight": 0.58,
+    "hits_per_fight": 2.93,
+    "clear": 0.65,
+    "sec": 39.3,
+    "by_comp": {
+     "2 кикиморки": {
+      "hits": 2.65,
+      "clear": 0.65
+     },
+     "два паутинника": {
+      "hits": 2.6,
+      "clear": 0.9
+     },
+     "две щуки-стрелка": {
+      "hits": 2.95,
+      "clear": 0.2
+     },
+     "кикиморка и рак": {
+      "hits": 3.9,
+      "clear": 0.6
+     },
+     "пень в коре": {
+      "hits": 2.55,
+      "clear": 0.9
+     }
+    }
+   },
+   "обычные настройки (мир 2)": {
+    "fights": 100,
+    "downs_per_fight": 0.87,
+    "hits_per_fight": 3.67,
+    "clear": 0.59,
+    "sec": 44.7,
+    "by_comp": {
+     "2 кикиморки": {
+      "hits": 4.15,
+      "clear": 0.65
+     },
+     "два паутинника": {
+      "hits": 5.0,
+      "clear": 0.6
+     },
+     "две щуки-стрелка": {
+      "hits": 2.8,
+      "clear": 0.25
+     },
+     "кикиморка и рак": {
+      "hits": 4.2,
+      "clear": 0.5
+     },
+     "пень в коре": {
+      "hits": 2.2,
+      "clear": 0.95
+     }
+    }
+   }
+  }
+ },
  "reading": {
   "per_level": {
    "p": {
@@ -3663,7 +3985,7 @@
   "7-8": {
    "n": 6,
    "stars": [
-    3.0,
+    2.83,
     6
    ],
    "answered_pct": 0.96,
@@ -3676,7 +3998,7 @@
     6
    ],
    "fight": [
-    2.5,
+    2.33,
     6
    ],
    "slash": [
@@ -3750,7 +4072,8 @@
     "Огненная Смородина": 1
    },
    "world_worst": {
-    "Подводный Китеж": 5,
+    "Подводный Китеж": 4,
+    "Дремучий лес": 1,
     "Все понравились!": 1
    },
    "fun": {
@@ -3765,8 +4088,8 @@
     "Бежать с Колобком под музыку": 1
    },
    "boss": {
-    "Леший-Путаник": 4,
-    "Кощей Бессмертный": 2
+    "Леший-Путаник": 3,
+    "Кощей Бессмертный": 3
    }
   },
   "9-10": {
@@ -3781,15 +4104,15 @@
     5
    ],
    "hints": [
-    3.8,
+    3.6,
     5
    ],
    "fight": [
-    3.8,
+    3.6,
     5
    ],
    "slash": [
-    4.2,
+    4.0,
     5
    ],
    "coop": [
@@ -3825,7 +4148,7 @@
     2
    ],
    "downed": [
-    4.2,
+    4.4,
     5
    ],
    "split": [
@@ -3867,23 +4190,20 @@
    },
    "levels_best": {
     "Колобок": 3,
+    "Кузня Кузьмы и Демьяна": 3,
     "Утка (полёт на Горыныче)": 2,
     "Застава трёх богатырей": 2,
-    "Кузня Кузьмы и Демьяна": 1,
     "Рыба-кит": 1,
     "Яйцо («Калинка»)": 1,
     "Летучий корабль": 1,
-    "Гуси-лебеди": 1,
     "Эй, ухнем!": 1,
-    "Калинов мост": 1,
-    "Кикиморино болото": 1
+    "Калинов мост": 1
    },
    "ability": {
-    "Ковшик Йоши": 1,
+    "Рогатка Прошки": 2,
+    "Гусли Садко": 1,
     "Кузнечные клещи": 1,
-    "Совиный взор Пелагеи": 1,
-    "Подкидка Потапа": 1,
-    "Рогатка Прошки": 1
+    "Подкидка Потапа": 1
    },
    "path": {
     "Средний": 3,
@@ -3891,7 +4211,7 @@
    },
    "m_worlds": {
     "Дремучий лес": [
-     3.2,
+     3.0,
      5
     ],
     "Подводный Китеж": [
@@ -3899,7 +4219,7 @@
      5
     ],
     "Небесное царство": [
-     3.2,
+     3.0,
      5
     ],
     "Огненная Смородина": [
@@ -3921,7 +4241,7 @@
      5
     ],
     "Водяной": [
-     2.4,
+     2.8,
      5
     ],
     "Соловей-Разбойник": [
@@ -3929,17 +4249,17 @@
      5
     ],
     "Змей Горыныч": [
-     4.0,
+     3.5,
      4
     ],
     "Кощей Бессмертный": [
-     4.0,
+     3.0,
      2
     ]
    },
    "m_luko": {
     "Кузня Кузьмы: ковать звенья в такт": [
-     3.6,
+     3.8,
      5
     ],
     "Лавка Векши и примерочная: наряды": [
@@ -3951,11 +4271,11 @@
      5
     ],
     "Курочка Ряба": [
-     3.75,
+     4.0,
      4
     ],
     "Застава трёх богатырей": [
-     2.0,
+     2.5,
      2
     ],
     "Сказки-лубки и пляски Кота": [
@@ -4032,7 +4352,7 @@
     7
    ],
    "nps": [
-    5.43,
+    5.29,
     7
    ],
    "pace": {
@@ -4047,37 +4367,37 @@
    },
    "combat_bad": {
     "Ничего не мешало": 6,
-    "Камера мешала": 1
+    "Мало приёмов": 1
    },
    "lv_best": {
     "Утка (полёт на Горыныче)": 5,
     "Летучий корабль": 2,
-    "В брюхе у кита": 2,
     "Избушка, повернись": 2,
+    "Гуси-лебеди": 2,
     "Яйцо («Калинка»)": 2,
     "Кощей в тереме": 1,
     "Кузня Кузьмы и Демьяна": 1,
     "Сад молодильных яблок": 1,
     "Рыба-кит": 1,
-    "Гуси-лебеди": 1,
     "Колобок": 1,
     "Заяц": 1,
+    "В брюхе у кита": 1,
     "Сирин и Алконост": 1
    },
    "lv_worst": {
-    "Гусли Садко": 3,
+    "Гусли Садко": 4,
     "Река Смородина": 2,
     "Невод": 2,
-    "Облачные пастбища": 2,
-    "Сад молодильных яблок": 2,
+    "Рыба-кит": 2,
     "Китеж звонит": 2,
     "Заяц": 1,
     "Яйцо («Калинка»)": 1,
     "Змиевы валы": 1,
     "Кузня Кузьмы и Демьяна": 1,
+    "Облачные пастбища": 1,
     "Эй, ухнем!": 1,
-    "Рыба-кит": 1,
     "Сундук на дубе": 1,
+    "В брюхе у кита": 1,
     "Кикиморино болото": 1
    },
    "style": {
@@ -4147,7 +4467,7 @@
      7
     ],
     "Подводный Китеж": [
-     3.0,
+     2.86,
      7
     ],
     "Небесное царство": [
@@ -4165,7 +4485,7 @@
    },
    "m_special": {
     "Ритм-раннеры: Колобок, Сирин и Алконост, «Калинка»": [
-     3.14,
+     3.29,
      7
     ],
     "Полёт на Горыныче (Утка)": [
@@ -4177,7 +4497,7 @@
      7
     ],
     "Уровни на четверых: Невод, Эй ухнем, Заяц": [
-     2.86,
+     2.71,
      7
     ],
     "Свет и тень: перо Жар-птицы": [
@@ -4199,15 +4519,15 @@
      7
     ],
     "Водяной": [
-     3.29,
+     3.43,
      7
     ],
     "Соловей-Разбойник": [
-     3.29,
+     3.43,
      7
     ],
     "Змей Горыныч": [
-     3.6,
+     4.0,
      5
     ],
     "Кощей Бессмертный": [
@@ -4217,15 +4537,15 @@
    },
    "m_diff": {
     "Дремучий лес": [
-     2.29,
+     2.14,
      7
     ],
     "Подводный Китеж": [
-     2.71,
+     2.57,
      7
     ],
     "Небесное царство": [
-     2.43,
+     2.29,
      7
     ],
     "Огненная Смородина": [
@@ -4233,7 +4553,7 @@
      7
     ],
     "Остров Буян": [
-     2.6,
+     2.8,
      5
     ]
    },
@@ -4243,11 +4563,11 @@
      7
     ],
     "Подкидка и щит Потапа": [
-     4.57,
+     4.71,
      7
     ],
     "Совиный взор и полёт Пелагеи": [
-     4.57,
+     4.43,
      7
     ],
     "Ковшик Йоши: живая и мёртвая вода": [
@@ -4259,7 +4579,7 @@
      7
     ],
     "Гусли Садко": [
-     3.43,
+     3.57,
      7
     ],
     "Перо Жар-птицы": [
@@ -4334,7 +4654,7 @@
     7
    ],
    "perf": [
-    4.43,
+    4.14,
     7
    ],
    "nps": [
@@ -4352,42 +4672,43 @@
     "Есть моменты, слишком страшные для малышей": 1
    },
    "paths": {
-    "Заметна и уместна": 4,
-    "Не пробовали разные": 2,
+    "Заметна и уместна": 3,
+    "Не пробовали разные": 3,
     "Слабо заметна": 1
    },
    "lv_best": {
     "Утка (полёт на Горыныче)": 5,
     "Яйцо («Калинка»)": 3,
     "Леший водит": 2,
-    "Кощей в тереме": 2,
     "Колобок": 2,
     "Невод": 1,
     "Застава трёх богатырей": 1,
     "Эй, ухнем!": 1,
     "Летучий корабль": 1,
+    "Рыба-кит": 1,
+    "Кощей в тереме": 1,
     "В брюхе у кита": 1,
     "Заяц": 1,
     "Кузня Кузьмы и Демьяна": 1
    },
    "lv_worst": {
+    "Облачные пастбища": 4,
     "Сундук на дубе": 3,
-    "Кикиморина прялка": 3,
-    "Застава трёх богатырей": 3,
-    "Гусли Садко": 3,
-    "Заяц": 2,
-    "Сирин и Алконост": 1,
-    "Избушка, повернись": 1,
-    "Облачные пастбища": 1,
-    "Река Смородина": 1,
-    "Китеж звонит": 1,
+    "Китеж звонит": 2,
+    "Застава трёх богатырей": 2,
+    "Гусли Садко": 2,
+    "Кикиморина прялка": 2,
+    "Сад молодильных яблок": 2,
+    "Заяц": 1,
+    "Змиевы валы": 1,
     "Невод": 1
    },
    "access": {
     "Озвучка реплик": 7,
-    "Переназначение кнопок": 5,
-    "Помощь в сложных местах": 2,
-    "Настройка размера шрифта": 1
+    "Переназначение кнопок": 4,
+    "Настройка размера шрифта": 2,
+    "Помощь в сложных местах": 1,
+    "Режим для дальтоников": 1
    },
    "voice": {
     "Хватает субтитров и звуков": 5,
@@ -4395,9 +4716,9 @@
    },
    "price": {
     "300–700 ₽": 3,
-    "До 300 ₽": 2,
+    "700–1500 ₽": 2,
     "Бесплатно": 1,
-    "700–1500 ₽": 1
+    "До 300 ₽": 1
    },
    "buy": {
     "Скорее да": 5,
@@ -4405,13 +4726,14 @@
     "Да": 1
    },
    "bugs": {
-    "Ничего такого не было": 6,
-    "Не пропускался ролик": 1
+    "Ничего такого не было": 5,
+    "Не пропускался ролик": 1,
+    "Герой застревал или проваливался": 1
    },
    "hours": {
-    "6–10 ч": 3,
-    "3–6 ч": 3,
-    "10–15 ч": 1
+    "6–10 ч": 5,
+    "10–15 ч": 1,
+    "3–6 ч": 1
    },
    "done": {
     "Сюжет до конца": 7
@@ -4531,7 +4853,7 @@
    },
    "m_eco": {
     "Звенья и кузня Кузьмы": [
-     3.86,
+     3.57,
      7
     ],
     "Орешки, лавка Векши и примерочная": [
@@ -4539,19 +4861,19 @@
      5
     ],
     "Самоцветы, сказки-лубки и карта тайников": [
-     3.5,
-     4
-    ],
-    "Огород Дедки и Курочка Ряба": [
      3.75,
      4
     ],
+    "Огород Дедки и Курочка Ряба": [
+     4.0,
+     4
+    ],
     "Застава трёх богатырей": [
-     3.33,
+     3.0,
      6
     ],
     "Карта-рушник и выбор уровня": [
-     3.43,
+     3.29,
      7
     ]
    },
@@ -4565,7 +4887,7 @@
      6
     ],
     "Экран делится и соединяется уместно": [
-     3.5,
+     3.83,
      6
     ],
     "Разделённый экран удобен": [
@@ -4573,7 +4895,7 @@
      6
     ],
     "Ребёнок и взрослый могут играть на равных": [
-     3.25,
+     3.5,
      4
     ]
    },
@@ -4601,7 +4923,7 @@
      7
     ],
     "Подсказки и задачи внизу экрана": [
-     3.57,
+     3.71,
      7
     ],
     "Сохранения и продолжение": [
@@ -4609,11 +4931,11 @@
      7
     ],
     "Камера, в том числе правый стик": [
-     3.57,
+     3.71,
      7
     ],
     "Видимость героев за препятствиями": [
-     3.71,
+     3.86,
      7
     ],
     "Управление с клавиатуры": [
@@ -4621,7 +4943,7 @@
      7
     ],
     "Управление с геймпада": [
-     5.0,
+     4.0,
      1
     ]
    },
@@ -4631,7 +4953,7 @@
      7
     ],
     "Окружение и атмосфера миров": [
-     4.0,
+     4.14,
      7
     ],
     "Главные герои": [
@@ -4639,7 +4961,7 @@
      7
     ],
     "Жители сказки": [
-     4.14,
+     4.0,
      7
     ],
     "Мороки и боссы": [
@@ -4651,7 +4973,7 @@
      7
     ],
     "Эффекты ударов и VFX": [
-     3.86,
+     4.0,
      7
     ],
     "Ролики: режиссура и камера": [
@@ -4665,15 +4987,15 @@
    },
    "m_snd": {
     "Музыка: фольклорный саундтрек": [
-     4.14,
+     4.29,
      7
     ],
     "Песни в ритм-уровнях": [
-     3.86,
+     3.71,
      7
     ],
     "Звуковые эффекты": [
-     3.71,
+     3.43,
      7
     ],
     "Баланс громкости": [
@@ -4685,6 +5007,6 @@
  },
  "consistency": {
   "n": 11,
-  "r_diff_vs_selfreport": 0.96
+  "r_diff_vs_selfreport": 0.95
  }
 }
