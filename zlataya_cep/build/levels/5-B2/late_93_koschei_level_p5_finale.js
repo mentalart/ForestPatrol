@@ -91,6 +91,6 @@
   W.spawns=[[new V3(-3,0,4),new V3(-1,0,4)],[new V3(1,0,4),new V3(3,0,4)]];W.startAct=[0,0];
   W.pauseLine='Кощея силой не сломить —<br>С него бы спесь сначала сбить,<br>Связать бы нитью золотой<br>И досказать конец другой! Пять этапов; подсказки — на экране. Рассыпался клубком — «Смена»: второй герой цел. Этап заново, только если клубками стали все четверо.';
   // для ботов и отладки
-  Object.assign(K5,{KB,KS,candles,C,ANV,RG,stageStart,stageWin,stageLose,orbThrow,keyMake,lockHero,unlock,k5Locked,nearLock,LOCK_HP,chainDemo,ravenMake,needlePass,leap,ringStart,sparkTo,setBar,forging,sword,dome});
+  Object.assign(K5,{KB,KS,candles,C,ANV,RG,stageStart,stageWin,stageLose,orbThrow,keyMake,lockHero,unlock,k5Locked,nearLock,LOCK_HP,ravenMake,needlePass,leap,ringStart,sparkTo,setBar,forging,sword,dome});
   W.onStart=()=>{FIN.k5e.start();};
 

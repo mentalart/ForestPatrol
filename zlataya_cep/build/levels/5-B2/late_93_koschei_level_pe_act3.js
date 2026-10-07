@@ -320,12 +320,7 @@
     end(){giant.visible=false;shPlat.on=false;gCyls.forEach(c=>{c.on=false;});ES.ramp=null;rootsM.visible=false;W.camFn=null;hoard.visible=false;swArc.material.opacity=0;lasso.visible=false;wristL.forEach(L=>{L.visible=false;});eyeBeams.concat(legRings).forEach(m=>{m.visible=false;});(ES.piles||[]).forEach(P=>k5Del(P.g));ES.piles=[];ES.las=null;},
     attack(h){if(E.cur!==10)return;const L=ES.las;if(!L||L.st!=='tied')return;const mid=L.a.clone().lerp(L.h.pos,0.5);
       if(h===L.h){L.hp-=G.solo?0.6:0.25;floatText(h.pos.clone().add(new V3(0,2.2,0)),'Пусти!','#ffe08a');}else if(hd(h.pos,mid)<2.6||hd(h.pos,L.h.pos)<2.2){L.hp-=1;FX.sparks(mid,10,0xffd060);SFX.clink();}
-      if(L.hp<=0){lasso.visible=false;floatText(L.h.pos.clone().add(new V3(0,2.2,0)),'Цепь разрублена!','#ffe08a');K5L.gold(mid,10);ES.las=null;ES.lasT=G.solo?13:10;E.log('lassoCut');}},
-    pics:pi=>ES.ph==='knees'?['friend','>','lock','@attack']:ES.ph==='heart'?(E.free.gor?['@call','dragon','up','>','two','@attack']:['stairs','up','>','two','@attack']):
-      ES.ph==='wrists'?['redring','hand','>','lock','@attack']:ES.ph==='eyes'?['two','ring','ring','+','@jump']:['star'],
-    goal:pi=>ES.ph==='knees'?'Встань у ноги великана — <b>Леший подымет корни</b>, нога замрёт: бей <b>заклёпку</b> на колене '+K(pi,'attack')+'. Кулак лежит — по руке можно взбежать.':
-      ES.ph==='heart'?'Великан на колене! На <b>плечо</b> — по лежащей руке'+(E.free.gor?' или «Ко мне!» — Горыныч поднимет':'')+' — и <b>вдвоём</b> удар в замок на груди.':'',
-    targets:pi=>ES.ph==='knees'?kneeR.filter((r,i)=>!ES.knee[i]):ES.ph==='heart'?[heart]:[]};
+      if(L.hp<=0){lasso.visible=false;floatText(L.h.pos.clone().add(new V3(0,2.2,0)),'Цепь разрублена!','#ffe08a');K5L.gold(mid,10);ES.las=null;ES.lasT=G.solo?13:10;E.log('lassoCut');}}};
   // «Ко мне!» в стадии 10: Горыныч поднимает героя на плечо великана
   {const _pc=W.pingCall;W.pingCall=(pi,h)=>{if(E.cur===10&&ES.fight&&ES.ph==='heart'&&E.free.gor&&h.pos.y<2){const f=h.pos.clone(),to=SHW.clone().add(new V3(rand(-0.6,0.6),0.1,rand(-0.3,0.6)));
       gorFly.g.visible=true;anim(1.2,k=>{h.pos.lerpVectors(f,to,CE.inOutSine(k));h.pos.y+=Math.sin(k*Math.PI)*4;h.vel.set(0,0,0);gorFly.g.position.copy(h.pos).add(new V3(0,1.6,0));});later(1.25,()=>{gorFly.g.visible=false;h.pos.copy(to);h.vel.set(0,0,0);});E.log('gorLift');return;}

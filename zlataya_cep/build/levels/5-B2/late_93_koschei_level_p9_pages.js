@@ -33,10 +33,7 @@
     tick(dt){const P=PAGES[w];P.tick(dt);if(ES.step==='walk'){const hs=k5Heroes();const need=G.solo?1:2;const at=hs.filter(h=>hd(h.pos,P.pos)<1.9).length;
         P.sill.material.color.set(at>0?0xfff4c0:0xffd76a);if(at>=Math.min(need,hs.length)&&hs.length){ES.sill+=dt;if(ES.sill>0.6){ES.step='in';enterPage(n,w,false);}}else ES.sill=0;return;}
       if(ES.step==='fight'&&AR[w].tick)AR[w].tick(dt);},
-    end(){if(AR[w].end)AR[w].end();AR[w].g.visible=false;},
-    pics:pi=>ES.step==='walk'?['two','>','book']:(AR[w].pics?AR[w].pics(pi):null),
-    goal:pi=>ES.step==='walk'?'Вдвоём — на <b>порог страницы</b> «'+['','Дремучий лес','Подводный Китеж','Небесное царство','Огненная Смородина'][w]+'».':(AR[w].goal?AR[w].goal(pi):''),
-    targets:pi=>ES.step==='walk'?[PAGES[w].g]:(AR[w].targets?AR[w].targets(pi):[])};};
+    end(){if(AR[w].end)AR[w].end();AR[w].g.visible=false;}};};
   function enterPage(n,w,quick){const A=AR[w];E.log('enter'+w);E.paper(()=>{E.pagesShow(false);A.g.visible=true;ES.inPage=true;if(A.theme)K5L.theme(A.theme,1);
       W.clampR=A.clamp||null;W.fallY=A.fallY!=null?A.fallY:-12;W.camX=4000;   // камера уровня держится в ±18 м по X — арены страниц далеко
       HEROES.forEach((h,i)=>{const s=A.spawn(i);placeOnGround(h,s.x,s.z,s.y||0);h.face=A.face||Math.PI;h.vel.set(0,0,0);h._down=false;});
