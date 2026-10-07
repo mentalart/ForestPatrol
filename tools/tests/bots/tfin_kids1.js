@@ -15,7 +15,8 @@ ZC.menuKey('ArrowUp');ZC.menuKey('ArrowUp');ZC.menuKey('ArrowUp');ZC.menuKey('Ar
 chk(P[0].path==='mid'&&P[1].path==='easy','путь игрока 1 → Средний: '+P.map(p=>p.path));
 ZC.menuKey('ArrowLeft');chk(P[0].path==='easy','влево — назад');
 ZC.menuKey('ArrowUp');ZC.menuKey('ArrowRight');chk(ZC.G.solo===true,'«Сколько вас?» → я один');chk(M.items[2].off===true,'в соло пункт игрока 2 недоступен');
-ZC.menuKey('ArrowRight');chk(ZC.G.solo===false&&M.items[2].off===false,'обратно вдвоём');
+ZC.menuKey('ArrowRight');chk(ZC.G.solo===false&&F.co.on===true&&M.items[2].off===true,'дальше — с напарником-ботом (одна сложность на двоих)');
+ZC.menuKey('ArrowRight');chk(ZC.G.solo===false&&F.co.on===false&&M.items[2].off===false,'обратно вдвоём');
 R.push('read='+F.readAloud.can(),'status='+F.readAloud.status());
 ZC.menuKey('ArrowDown');ZC.menuKey('ArrowDown');ZC.menuKey('ArrowDown');ZC.menuKey('ArrowRight');chk(F.set.readAloud===false,'«Читать задачи вслух» выключается');ZC.menuKey('ArrowRight');chk(F.set.readAloud===true,'и включается');
 ZC.menuKey('ArrowDown');ZC.menuKey('ArrowRight');chk(F.set.ts===1.3,'крупный текст: '+F.set.ts);ZC.menuKey('ArrowRight');chk(F.set.ts===1,'обычный текст: '+F.set.ts);

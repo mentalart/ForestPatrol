@@ -17,10 +17,10 @@ const kidsRead=()=>FIN.set.readAloud!==false;
 const KIDS_PATHS={easy:['🦔 Ёжик','Лёгкий путь','больше времени на щит и кувырок, подсказки приходят быстрее'],mid:['🦊 Лисёнок','Средний путь','щит и кувырок вовремя — как в сказке'],hard:['🛡 Богатырь','Богатырский путь','для опытных: враги быстрее, окна короче']};
 function kidsSetupScreen(){const S=FIN.set,cyc=(pi,d)=>{cyclePath(pi);if(d<0)cyclePath(pi);},save=()=>{FIN.saveSettings();FIN.applySettings();};
   const pathItem=(pi,label)=>({label,val:()=>KIDS_PATHS[players[pi].path][0]+' · '+KIDS_PATHS[players[pi].path][1],sub:()=>KIDS_PATHS[players[pi].path][2],side:d=>cyc(pi,d)});   // ← → меняют путь; малышам — Ёжик, взрослым и подросткам — Лисёнок или Богатырь
-  const p2=pathItem(1,'Путь игрока 2');Object.defineProperty(p2,'off',{get:()=>!!G.solo});
-  const p1=pathItem(0,'Путь игрока 1');Object.defineProperty(p1,'label',{get:()=>G.solo?'Твой путь':'Путь игрока 1'});
+  const p2=pathItem(1,'Путь игрока 2');Object.defineProperty(p2,'off',{get:()=>!!G.solo||FIN.co.on});
+  const p1=pathItem(0,'Путь игрока 1');Object.defineProperty(p1,'label',{get:()=>G.solo||FIN.co.on?'Твой путь':'Путь игрока 1'});
   const items=[
-    {label:'Сколько вас?',val:()=>G.solo?'я один':'вдвоём',sub:()=>G.solo?'один игрок водит всех четверых героев по очереди':'двое: игрок 1 слева, игрок 2 справа',side:()=>{setSolo(!G.solo);}},
+    {label:'Сколько вас?',val:()=>G.solo?'я один':FIN.co.on?'я и напарник-бот':'вдвоём',sub:()=>G.solo?'один игрок водит всех четверых героев по очереди':FIN.co.on?'за второго игрока играет бот: идёт следом, дерётся, подшивает':'двое: игрок 1 слева, игрок 2 справа',side:d=>FIN.co.cycle(d)},
     p1,p2,
     {label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>FIN.readAloud.toggle()},
     {label:'Крупный текст',val:()=>S.ts>=1.3?'да':'нет',side:()=>{S.ts=S.ts>=1.3?1:1.3;save();}},
@@ -29,7 +29,7 @@ function kidsSetupScreen(){const S=FIN.set,cyc=(pi,d)=>{cyclePath(pi);if(d<0)cyc
   return {head:'Кто играет?',items,sel:5};}
 {const _ng=newGame;newGame=function(){
   if(KIDS.debug&&!KIDS.force){_ng();return;}
-  if(!KIDS.seen){KIDS.seen=true;players.forEach(p=>{p.path='easy';});if(G.solo)players[1].path=players[0].path;}
+  if(!KIDS.seen){KIDS.seen=true;players.forEach(p=>{p.path='easy';});if(G.solo||FIN.co.on)players[1].path=players[0].path;}
   finPush(kidsSetupScreen());};}
 // пауза: «Читать задачи вслух» вторым пунктом (в пологе и мире 1), чтобы выключить, не заходя в настройки; в ?debug скрыт, чтобы не сдвигать пункты для ботов
 {const _ps=pauseScreen;pauseScreen=function(){const scr=_ps();
