@@ -57,13 +57,13 @@ S.run=(id,solo)=>{const r={id,solo,exc:[],nan:[],oob:[],inv:[],cine:false,mode:t
     const sn=tag=>{const n=S.nan();if(n.length&&r.nan.length<3)r.nan.push(tag+':'+n[0]);const o=S.oob(E);if(o.length&&r.oob.length<3)r.oob.push(tag+':'+o[0]);const v=S.inv();if(v.length&&r.inv.length<3)r.inv.push(tag+':'+v[0]);};
     sn('start');S.wander(300,i=>sn('t'+i));ZC.tick(60);sn('end');
     r.L=S.lens();ZC.tick(300);r.Lg=S.lens().map((v,k)=>v-r.L[k]);sn('idle');
-    r.fr=S.frame();sn('frame');
+    r.fr=S.frame();r.fr.split=ZC.G.split>0.5;r.fr.lim=r.fr.split?900:600;sn('frame');
   }catch(e){r.exc.push(String(e.message).slice(0,100)+' @'+((e.stack||'').split('\n')[1]||'').trim().slice(-60));}
   r.exc=r.exc.concat(__errs.slice(e0).slice(0,3));return r;};
 S.GROW=40;   // рост W.timers/W.anims за 5 с «стояния» — утечка
-S.lineOf=r=>{const red=r.exc.length||r.nan.length||r.oob.length||r.inv.length||r.cine||!r.mode||(r.Lg&&(r.Lg[1]>S.GROW||r.Lg[2]>S.GROW));
+S.lineOf=r=>{const over=r.fr&&r.fr.calls>r.fr.lim;const red=r.exc.length||r.nan.length||r.oob.length||r.inv.length||r.cine||!r.mode||over||(r.Lg&&(r.Lg[1]>S.GROW||r.Lg[2]>S.GROW));
   const s=[r.id+(r.solo?'/solo':'/duo'),r.exc.length?'ERR '+r.exc.join(' ; '):'-',r.nan.length?'NAN '+r.nan.join(' '):'-',(r.oob.length?'OOB '+r.oob.join(' '):'-')+(r.inv.length?' INV '+r.inv.join(' '):'')+(r.cine?' CINE-STUCK':'')+(r.mode?'':' SOLO-MODE-LOST'),
-    r.fr?'calls='+r.fr.calls+' geo='+r.fr.geo+'(+'+(r.fr.geo-r.geo0)+') tex='+r.fr.tex:'-',r.L?'upd/tim/anim='+r.L.join('/')+' grow5s='+r.Lg.join('/'):'-'].join(' | ');
+    r.fr?'calls='+r.fr.calls+(over?'>'+r.fr.lim+' БЮДЖЕТ':'')+(r.fr.split?'[2]':'[1]')+' geo='+r.fr.geo+'(+'+(r.fr.geo-r.geo0)+') tex='+r.fr.tex:'-',r.L?'upd/tim/anim='+r.L.join('/')+' grow5s='+r.Lg.join('/'):'-'].join(' | ');
   if(red)S.RED.push(s);return (red?'RED ':'    ')+s;};
 S.sweep=(solo,from,to)=>S.IDS.slice(from,to).map(id=>S.lineOf(S.run(id,solo))).join('\n');
 'tsec_sweep: '+S.IDS.length+' уровней'
@@ -96,7 +96,10 @@ S.sweep=(solo,from,to)=>S.IDS.slice(from,to).map(id=>S.lineOf(S.run(id,solo))).j
   if(red)S.RED.push(out.filter(l=>/^RED/.test(l)).join(' ; '));return out.join('\n');})()
 //@@
 // ролики: пропуск посреди ролика, смерть во время ролика (вдвоём и в одиночку); пауза — ниже, по настоящему кадровому циклу
-(()=>{S.waitCine=(id,solo)=>{ZC.setSolo(solo);ZC.startFrom(ZC.LV(id));ZC.G.manual=true;ZC.tick(2);for(let t=0;t<180&&!ZC.G.cine;t++)ZC.tick(1);return ZC.G.cine;};
+(()=>{S.how='';S.waitCine=(id,solo)=>{ZC.setSolo(solo);ZC.startFrom(ZC.LV(id));ZC.G.manual=true;ZC.tick(2);for(let t=0;t<180&&!ZC.G.cine;t++)ZC.tick(1);S.how='на входе';
+    // ролика на входе нет — бродим до 20 с (ролики у триггеров и по ходу уровня) и останавливаемся на первом
+    if(!ZC.G.cine){let ph=-1;for(let i=0;i<1200&&!ZC.G.cine;i++){const q=Math.floor(i/90)%5;if(q!==ph){ph=q;S.keysDown(solo,q);}if(i%20===0){ZC.press('KeyR');ZC.press('Semicolon');}if(i%33===0){ZC.press('KeyF');ZC.press('Comma');}if(i%25===5){ZC.press('Space');ZC.press('KeyM');}ZC.tick(1);}S.relAll();S.how='в ходу уровня';}
+    return ZC.G.cine;};
   S.midCine=c=>{const want=Math.min(c.dur*0.45,4);for(let t=0;t<3000&&ZC.G.cine===c&&c.t<want;t++)ZC.tick(1);};
   S.drain=()=>{let n=0;for(;n<12&&ZC.G.cine;n++){ZC.skip();ZC.tick(5);}return n;};
   S.moved=()=>{const B=U.K[0].B,h=()=>U.hero(0);let best=0;for(const k of[B[2],B[1],B[3],B[0]]){const x0=h().pos.x,z0=h().pos.z;ZC.hold(k,true);ZC.tick(25);ZC.hold(k,false);ZC.tick(5);best=Math.max(best,Math.hypot(h().pos.x-x0,h().pos.z-z0));}return best;};
@@ -104,7 +107,7 @@ S.sweep=(solo,from,to)=>S.IDS.slice(from,to).map(id=>S.lineOf(S.run(id,solo))).j
     try{
       const c=S.waitCine(id,solo);
       if(!c)r.nocine=true;
-      else{r.dur=+c.dur.toFixed(1);S.midCine(c);
+      else{r.dur=+c.dur.toFixed(1);r.how=S.how;S.midCine(c);
         r.skips=S.drain();if(ZC.G.cine)r.notes.push('G.cine остался после '+r.skips+' пропусков (ZC.skip)');if(ZC.G.skipT)r.notes.push('G.skipT='+ZC.G.skipT.toFixed(2)+' после пропуска');
         ZC.tick(30);const m=S.moved();if(m<0.5)r.notes.push('после пропуска ролика герой не двигается (смещение '+m.toFixed(2)+' м)');
         const nn=S.nan();if(nn.length)r.notes.push('NaN после пропуска: '+nn[0]);const iv=S.inv();if(iv.length)r.notes.push('inv после пропуска: '+iv[0]);}
@@ -116,7 +119,7 @@ S.sweep=(solo,from,to)=>S.IDS.slice(from,to).map(id=>S.lineOf(S.run(id,solo))).j
         const nn=S.nan();if(nn.length)r.notes.push('смерть в ролике: NaN '+nn[0]);const iv=S.inv();if(iv.length)r.notes.push('смерть в ролике: '+iv[0]);}
     }catch(e){r.notes.push('EXC '+String(e.message).slice(0,100)+' @'+((e.stack||'').split('\n')[1]||'').trim().slice(-60));}
     r.notes=r.notes.concat(__errs.slice(e0).slice(0,2).map(x=>'ERR '+x));return r;};
-  S.cineLine=r=>{const red=r.notes.length;const s=[r.id+(r.solo?'/solo':'/duo'),r.nocine?'без ролика на входе':'ролик '+r.dur+' с, пропусков '+r.skips,red?r.notes.join(' ; '):'ok'].join(' | ');if(red)S.RED.push('cine '+s);return (red?'RED ':'    ')+s;};
+  S.cineLine=r=>{const red=r.notes.length;const s=[r.id+(r.solo?'/solo':'/duo'),r.nocine?'ролика нет за 20 с (не покрыто)':'ролик '+r.dur+' с ('+r.how+'), пропусков '+r.skips,red?r.notes.join(' ; '):'ok'].join(' | ');if(red)S.RED.push('cine '+s);return (red?'RED ':'    ')+s;};
   S.cineSweep=(solo,from,to)=>S.IDS.slice(from,to).map(id=>S.cineLine(S.cineTest(id,solo))).join('\n');
   return 'ролики: готово';})()
 //@@
@@ -128,24 +131,27 @@ S.sweep=(solo,from,to)=>S.IDS.slice(from,to).map(id=>S.lineOf(S.run(id,solo))).j
 //@@
 (()=>'cine solo 18..\n'+S.cineSweep(true,18,99))()
 //@@
-// пауза посреди ролика (вдвоём): настоящий кадровый цикл (G.manual=false), Esc → пауза, ролик стоит, Esc → ролик идёт дальше
-(async()=>{const sl=ms=>new Promise(r=>setTimeout(r,ms));const out=[];
-  for(const id of S.IDS){const notes=[];const e0=__errs.length;let info='без ролика на входе';
-    try{const c=S.waitCine(id,false);
-      if(c){ZC.G.manual=false;await sl(400);const t1=c.t;
-        ZC.press('Escape');await sl(250);const st=ZC.G.state,t2=c.t;await sl(350);const t3=c.t;
-        if(!(t1>0.02))notes.push('ролик не идёт в обычном цикле (t='+t1.toFixed(3)+')');
-        if(st!=='pause')notes.push('Esc в ролике не открыл паузу (state='+st+')');
-        if(t3>t2+1e-6)notes.push('ролик идёт под паузой ('+t2.toFixed(2)+'→'+t3.toFixed(2)+')');
-        ZC.press('Escape');await sl(250);const st2=ZC.G.state;await sl(450);const t4=c.t;
-        if(st2!=='play')notes.push('Esc в паузе не вернул игру (state='+st2+')');
-        if(ZC.G.cine===c&&!(t4>t3+0.01))notes.push('после паузы ролик не продолжился ('+t3.toFixed(2)+'→'+t4.toFixed(2)+')');
-        ZC.G.manual=true;info='пауза: t '+t1.toFixed(2)+'→'+t3.toFixed(2)+'→'+t4.toFixed(2);S.drain();if(ZC.G.cine)notes.push('G.cine остался после паузы и пропуска');}
-    }catch(e){notes.push('EXC '+String(e.message).slice(0,100));}
-    ZC.G.manual=true;if(ZC.G.state!=='play')ZC.menuKey('Escape');
+// пауза посреди ролика (вдвоём и в одиночку). Кадровый цикл frame() в G.manual не идёт, поэтому — по его правилам: Esc → showMenu('pause') (ZC.menu),
+// пока пауза, step не вызывается; Esc в меню паузы → hideMenu (ZC.menuKey). Ролик стоит, после паузы идёт дальше, пропуск его заканчивает.
+(()=>{S.pauseTest=(id,solo)=>{const notes=[];const e0=__errs.length;let info='ролика нет за 20 с (не покрыто)';
+    try{const c=S.waitCine(id,solo);
+      if(c){S.midCine(c);const t0=c.t;ZC.menu('pause');const st=ZC.G.state;const mh=document.getElementById('menu').classList.contains('hide');
+        if(st!=='pause')notes.push('showMenu(pause) в ролике: state='+st);if(mh)notes.push('меню паузы скрыто');
+        ZC.menuKey('Escape');const st2=ZC.G.state,mh2=document.getElementById('menu').classList.contains('hide');
+        if(st2!=='play')notes.push('Esc в паузе не вернул игру (state='+st2+')');if(!mh2)notes.push('меню паузы осталось на экране');
+        if(ZC.G.cine!==c)notes.push('пауза оборвала ролик');if(Math.abs(c.t-t0)>1e-9)notes.push('ролик сдвинулся от паузы ('+t0.toFixed(2)+'→'+c.t.toFixed(2)+')');
+        ZC.tick(30);if(ZC.G.cine===c&&!(c.t>t0+0.4))notes.push('после паузы ролик не идёт ('+t0.toFixed(2)+'→'+c.t.toFixed(2)+')');
+        // пауза уже под конец: Esc → пропуск → Esc
+        ZC.menu('pause');ZC.skip();ZC.menuKey('Escape');ZC.tick(5);S.drain();if(ZC.G.cine)notes.push('G.cine остался после паузы и пропуска');if(ZC.G.state!=='play')notes.push('state='+ZC.G.state+' после паузы и пропуска');
+        const nn=S.nan();if(nn.length)notes.push('NaN '+nn[0]);const iv=S.inv();if(iv.length)notes.push(iv[0]);
+        info='пауза в ролике '+c.dur.toFixed(1)+' с ('+S.how+')';}
+    }catch(e){notes.push('EXC '+String(e.message).slice(0,100)+' @'+((e.stack||'').split('\n')[1]||'').trim().slice(-60));}
+    if(ZC.G.state!=='play'){try{ZC.menuKey('Escape');}catch(e){}}
     const er=__errs.slice(e0).slice(0,2);if(er.length)notes.push('ERR '+er.join(' ; '));
-    const s=id+'/duo | '+info+' | '+(notes.length?notes.join(' ; '):'ok');if(notes.length)S.RED.push('pause '+s);out.push((notes.length?'RED ':'    ')+s);}
-  return 'пауза в ролике\n'+out.join('\n');})()
+    const l=id+(solo?'/solo':'/duo')+' | '+info+' | '+(notes.length?notes.join(' ; '):'ok');if(notes.length)S.RED.push('pause '+l);return (notes.length?'RED ':'    ')+l;};
+  return 'пауза в ролике (вдвоём)\n'+S.IDS.map(id=>S.pauseTest(id,false)).join('\n');})()
+//@@
+(()=>'пауза в ролике (одиночка)\n'+S.IDS.map(id=>S.pauseTest(id,true)).join('\n'))()
 //@@
 // смена героя посреди боя (одиночка): на каждом уровне с врагами — телепорт к ближайшему, бой и Q каждые 25 кадров
 (()=>{S.swapFight=id=>{const r={id,foes:0,swaps:0,notes:[]};const e0=__errs.length;
