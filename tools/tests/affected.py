@@ -26,7 +26,7 @@ import proto   # noqa: E402  прототип по частям (proto/)
 T = os.path.join(ROOT, 'tools', 'tests')
 GUARD = ['smoke', 'tfin_col', 'tallobj']
 WIDE = ['smoke', 'tfin_col', 'tallobj', 'tfin_art', 'tfin_budget', 'tfin_occ', 'tfin_fadebatch', 'tfin_foeidle', 'tfin_foekinds', 'tfin_foekinds1b',
-        'tfin_foekinds2', 'tfin_foekinds2b', 'tfin_foekinds3', 'tfin_cast', 'tfin_foecast', 'tfin_slash', 'tfin_cine', 'tfin_menu']
+        'tfin_foekinds2', 'tfin_foekinds2b', 'tfin_foekinds3', 'tfin_cast', 'tfin_foecast', 'tfin_slash', 'tfin_cine', 'tfin_menu', 'tsec_sweep']
 
 
 def sh(*a):

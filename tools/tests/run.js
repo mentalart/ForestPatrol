@@ -25,6 +25,8 @@ const SHOTS=process.env.SHOTS||path.join(__dirname,'shots');
   for(const s of steps){si++;const t0=Date.now();let t1=t0,t2=t0;if(s.reload){await page.reload({waitUntil:'load'});await page.waitForTimeout(1200);}
     if(s.mouse){const [mx,my]=String(s.mouse).split(',').map(Number);await page.mouse.move(mx,my);}   // mouse=x,y — курсор в точку перед шагом (наведение мыши)
     if(s.key){await page.keyboard.press(String(s.key));}   // key=Код — настоящее нажатие клавиши перед шагом (жест пользователя: браузер разрешает звук)
+    // gc=1 — перед шагом собрать мусор (CDP) и записать занятую память JS в window.__heap (байты): иначе usedJSHeapSize шумит на десятки МБ (замер утечек)
+    if(s.gc){try{const cdp=await page.context().newCDPSession(page);await cdp.send('HeapProfiler.collectGarbage');await cdp.send('HeapProfiler.collectGarbage');const u=await cdp.send('Runtime.getHeapUsage');await page.evaluate(h=>{window.__heap=h;},u.usedSize);await cdp.detach();}catch(e){console.log('GC ERROR',e.message);}}
     if(s.code){try{const r=await page.evaluate(s.code);if(r!==undefined&&r!==null)console.log('>',typeof r==='string'?r:JSON.stringify(r));}catch(e){console.log('EVAL ERROR',e.message);}}
     t1=Date.now();if(s.wait)await page.waitForTimeout(s.wait);t2=Date.now();
     // final07: перед снимком — свежий кадр (под автоматизацией кадры рисуются, только когда GPU закончил предыдущий); в &offscreen — ещё и перенос на холст-подложку
