@@ -37,7 +37,7 @@ function updateUI(dt){
   // субтитры, пропуск ролика, «вышитый» кадр, киношные поля
   subT-=dt;const se=$('subs');const sv=G.subs&&subT>0;if(se._h!==subHTML){se._h=subHTML;se.innerHTML=subHTML;}se.style.display=sv?'block':'none';if(document.body.classList.contains('subs-on')!==!!sv)document.body.classList.toggle('subs-on',!!sv);
   const sk=$('skip');const skv=cine&&G.cine.skippable&&G.cine.t>0.8;sk.style.display=skv?'flex':'none';
-  if(skv){const st=sk.firstElementChild,stt=G.solo?'Пропуск — держи':'Пропуск — оба держат';if(st.textContent!==stt)st.textContent=stt;sk.querySelector('.k1').style.display=$('sk1').style.display=G.solo?'none':'';const k0=sk.querySelector('.k0'),k1=sk.querySelector('.k1');const g0=K(0,'jump'),g1=K(1,'jump');if(k0._h!==g0){k0._h=g0;k0.innerHTML=g0;}if(k1._h!==g1){k1._h=g1;k1.innerHTML=g1;}
+  if(skv){const st=sk.firstElementChild,stt=G.solo?'Пропуск — держи':'Пропуск — держит любой';if(st.textContent!==stt)st.textContent=stt;sk.querySelector('.k1').style.display=$('sk1').style.display=G.solo?'none':'';const k0=sk.querySelector('.k0'),k1=sk.querySelector('.k1');const g0=K(0,'jump'),g1=K(1,'jump');if(k0._h!==g0){k0._h=g0;k0.innerHTML=g0;}if(k1._h!==g1){k1._h=g1;k1.innerHTML=g1;}
     $('sk0').style.background=btn(G.solo?G.soloPi:0,'jump')?PCSS[0]:'transparent';$('sk1').style.background=btn(1,'jump')?PCSS[1]:'transparent';$('skbar').style.width=Math.round(G.skipT*100)+'%';}
   stitchT=Math.max(0,stitchT-dt);$('stitch').style.opacity=stitchT>0?Math.min(1,stitchT/0.2):0;
   const lb=cine&&G.cine.cam?'7vh':'0';$('lbT').style.height=lb;$('lbB').style.height=lb;
@@ -96,7 +96,7 @@ function animHero(h,dt){const g=h.g;g.position.copy(h.pos);g.rotation.y=h.face;c
   heroW2(h,dt);heroW3(h,dt);heroW4(h,dt);
   g.visible=!(h.hurtT>0&&Math.floor(G.time*16)%2===0);}
 
-/* ============================== РОЛИКИ В ДВИЖКЕ (кадры, реплики, события; пропуск — оба держат A) ============================== */
+/* ============================== РОЛИКИ В ДВИЖКЕ (кадры, реплики, события; пропуск — держит любой игрок A) ============================== */
 function play(def){const S={t:0,dur:def.dur,cam:true,camPos:new V3(),camLook:new V3(),snap:true,camK:def.camK||4.5,fov:def.fov||50,skippable:def.skip!==false,ei:0,si:-1,yi:0};
   const ev=(def.events||[]).slice().sort((a,b)=>a.t-b.t),shots=def.shots||[],says=def.says||[];
   const P=v=>new V3(v[0],v[1],v[2]);

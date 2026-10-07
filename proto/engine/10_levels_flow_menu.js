@@ -96,8 +96,9 @@ function rtShow(T){const R=rtInit();if(!T.info){T.info=rtInfo();const img='url('
 function updateTrans(dt){const T=G.trans;if(!T)return;T.t+=dt;$('fade').style.opacity=0;rtShow(T);
   if(T.t>0.8&&!T.done){T.done=true;if(G.nextLevel){const id=G.nextLevel;G.nextLevel=null;loadLevel(LV(id));}else if(G.levelIdx+1<LEVELS.length)loadLevel(G.levelIdx+1);else endGame();}if(T.t>2.15){G.trans=null;$('fade').style.opacity=0;if(RT.el)RT.el.style.display='none';}}
 function step(dt){G.time+=dt;G.playTime+=dt;if(G.uiTick&&!G.cine&&!G.trans)G.uiTick();
+  // пропуск ролика — прыжок держит любой из двух игроков (раньше оба: один ребёнок заставлял смотреть второго; docs/29_full_audit.md, 2.4)
   if(G.cine){const c=G.cine;c.t+=dt;c.update(c.t,dt);
-    if(c.skippable&&c.t>0.8){if(G.solo?btn(G.soloPi,'jump'):(btn(0,'jump')&&btn(1,'jump')))G.skipT+=dt;else G.skipT=Math.max(0,G.skipT-dt*2);if(G.skipT>=1){G.skipT=0;c.skip();c.t=c.dur;}}
+    if(c.skippable&&c.t>0.8){if(G.solo?btn(G.soloPi,'jump'):(btn(0,'jump')||btn(1,'jump')))G.skipT+=dt;else G.skipT=Math.max(0,G.skipT-dt*2);if(G.skipT>=1){G.skipT=0;c.skip();c.t=c.dur;}}
     if(c.t>=c.dur&&G.cine===c){G.cine=null;G.skipT=0;c.end();}}
   HEROES.forEach(h=>tickHero(h,dt));
   for(const pi of[0,1])updatePlayer(pi,dt);

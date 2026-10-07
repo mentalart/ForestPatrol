@@ -52,3 +52,5 @@ tfin_inbuf
 tfin_fixedstep
 # потолок камеры на разлёт героев в драке (docs/29_full_audit.md, 7.4)
 tfin_camcap
+# пропуск ролика — прыжок держит любой из двух игроков (docs/29_full_audit.md, 2.4)
+tfin_skipany

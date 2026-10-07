@@ -172,7 +172,7 @@
 | `levels/luko_4_zastava_forge_map.js` | 198 | — |
 | `levels/luko_5_dress_garden.js` | 224 | — |
 | `levels/luko_6_festival_end.js` | 68 | — |
-| `engine/10_levels_flow_menu.js` | 229 | ПОТОК ИГРЫ |
+| `engine/10_levels_flow_menu.js` | 230 | ПОТОК ИГРЫ |
 | `tail.html` | 3 | — |
 
 ## Модули релиза (`zlataya_cep/build/`, порядок подключения)
