@@ -26,7 +26,7 @@ RA.key=t=>String(t).toLowerCase().replace(/[0-9]+/g,'').replace(/[^a-zа-яё ]+
 RA.toggle=()=>{const S=FIN.set;S.readAloud=!kidsRead();FIN.saveSettings();FIN.applySettings();if(S.readAloud)RA.test();else RA.stop();};
 RA.stop=()=>{RA.q.length=0;RA.speaking=false;try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}};
 // текст карточки без кнопок: знаки боя — словами, пары «первый / второй» — только первый вариант
-function raText(html){if(!html)return '';const d=document.createElement('div');d.innerHTML=html;const b=d.querySelector('.hn-body')||d;
+function raText(html){if(!html)return '';const d=document.createElement('div');d.innerHTML=html;const b=d.querySelector('.hn-rd')||d.querySelector('.hn-body')||d;   // у задачи есть краткая строка (крупная, ≤ 12 слов) — читаем её, а не весь текст
   b.querySelectorAll('kbd,.pb,.hn-k2,.hn-p2,.hn-v2>i').forEach(e=>e.remove());
   b.querySelectorAll('i.sg').forEach(e=>{const c=e.className,w=/ y\b/.test(c)?'жёлтый знак':/ r\b/.test(c)?'красный знак':/ b\b/.test(c)?'синий знак':'знак';e.replaceWith(' '+w+' ');});
   b.querySelectorAll('br').forEach(e=>e.replaceWith(' '));

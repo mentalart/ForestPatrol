@@ -198,6 +198,9 @@ body.fin-gallery #finTut,body.fin-gallery #finBossHint{display:none}
 #hintS::before{content:'';position:absolute;left:14px;right:14px;top:0;height:3px;border-radius:0 0 3px 3px;background:linear-gradient(90deg,var(--p1),var(--p2))}
 .hn-head{font:800 calc(12.5px*var(--fts))/1.25 system-ui,sans-serif;color:#ffd98a;opacity:.92;margin-bottom:3px}
 .hn-head::before{content:'◆ ';color:#e8b33a}
+/* краткая формулировка задачи — крупно; полный текст под ней мельче */
+.hn-head.hn-short{font:800 calc(17.5px*var(--fts))/1.25 system-ui,sans-serif;color:#fff1c4;opacity:1;margin-bottom:4px}
+.hn-head.hn-short+.hn-body{font-size:calc(12.5px*var(--fts));opacity:.78}
 .hn-card.hn-dim.on{opacity:.55}
 .hn-card.hn-cmp{padding:5px 13px 6px}.hn-cmp .hn-body{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:calc(14.5px*var(--fts))}.hn-cmp .hn-body::before{content:'◆ ';color:#e8b33a}   /* под баннером — одна строка */
 .hn-card.on.hn-yield{opacity:0;visibility:hidden;transition:opacity .2s,visibility 0s .2s}   /* баннер события поверх — карточка уступает */
