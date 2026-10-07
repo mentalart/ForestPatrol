@@ -33,7 +33,7 @@ class Exp:
     # ---------- вкус ----------
     def level_fun(self,lv):
         C=cat[lv];rec=self.recs[lv];m=self.mem[lv];t=self.t;rng=seed_of('fun',self.id,lv)
-        x=0.58+0.2*(t['enthu']-0.6)+WOW.get(lv,0)
+        x=0.68+0.2*(t['enthu']-0.6)+WOW.get(lv,0)     # база: нормально сделанная семейная игра нравится; досада вычитается ниже
         ty=C['type']
         if ty=='rhythm':
             x+=0.35*(t['music']-0.5)+(-0.25 if (m['miss'] or 0)>0.35 else 0.05)

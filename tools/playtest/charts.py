@@ -133,7 +133,7 @@ def ab_chart():
             for x,y in zip(xs,v): ax.text(x,y,f'{y:.2f}' if k!='clear' else f'{round(100*y)}%',ha='center',va='bottom',fontsize=8)
         ax.set_xticks(range(len(gs)));ax.set_xticklabels([GL[g] for g in gs],fontsize=8.5);ax.set_title(t,fontsize=9.5,loc='left',fontweight='bold');ax.grid(axis='y',color=GRID);ax.set_axisbelow(True)
         ax.set_ylim(0,ax.get_ylim()[1]*1.15)
-    axs[0].legend(fontsize=7.5,frameon=False,loc='upper left')
+    h,l=axs[0].get_legend_handles_labels();fig.legend(h,l,fontsize=8,frameon=False,loc='upper right',ncol=2,bbox_to_anchor=(0.99,0.995))
     fig.suptitle('Те же дети, те же встречи: детские настройки мира 1 против обычных',x=0.01,ha='left',fontsize=10.5,fontweight='bold')
     fig.tight_layout(rect=(0,0,1,0.93));fig.savefig(os.path.join(CH,'c8_ab_kids.png'),dpi=150);plt.close(fig)
 
