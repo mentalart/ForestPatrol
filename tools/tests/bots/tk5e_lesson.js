@@ -12,7 +12,7 @@ window.E5=ZC.FIN.k5e;
 window.LES=(key,o)=>{o=o||{};const e0=_errs.length,n=o.stage!=null?o.stage:(typeof key==='number'?key:4);E5.lessonN={};E5.saidPage={};ZC.setSolo(!!o.solo);E5.goStage(n);ZC.G.manual=true;
   if(o.home)E5.pageHome(n,()=>{});
   if(o.repka)E5.repka(()=>{});
-  if(o.pro){ZC.tick(20);const P=E5.pro,D=P.dbg();for(let k=0;k<400&&(ZC.G.cine||P.leg==='intro');k++){if(ZC.G.cine)ZC.skip();ZC.tick(3);}
+  if(o.pro){ZC.tick(20);const P=E5.pro,D=P.dbg();for(let k=0;k<400&&(ZC.G.cine||P.leg==='intro');k++){if(o.pro==='forest'&&E5.lessonOn==='pro')break;if(ZC.G.cine)ZC.skip();ZC.tick(3);}
     ({gorge:()=>{P.leg='forest';D.GP.z=D.GZ[0]-1;},sea:()=>{P.leg='gorge';D.GP.z=D.GZ[1]-1;},sky:()=>{P.leg='sea';P.wave=99;D.crows.length=0;D.GP.z=D.GZ[1]-700;},
       write:()=>{P.leg='sky';P.vi=P.VQ.length;P.vT=0;D.orbs.length=0;},three:()=>{P.leg='write';P.wi=P.WQ.length;D.letters.length=0;},forest:()=>{}})[o.pro]();}
   let k=0;while(k<500&&!(ZC.G.cine&&E5.lessonOn===key)){
