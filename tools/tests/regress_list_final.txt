@@ -48,3 +48,5 @@ tfin_bossnext
 tfin_leak
 # буфер ввода: прыжок 0,12 с и удар 0,15 с (docs/29_full_audit.md, 7.1)
 tfin_inbuf
+# фиксированный шаг физики 1/60 с (docs/29_full_audit.md, 7.3)
+tfin_fixedstep

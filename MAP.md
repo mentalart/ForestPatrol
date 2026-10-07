@@ -77,7 +77,7 @@
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_96_prolog_scooter, late_96b_prolog_night | 6 | tfin_cine tfin_fadesplit tfin_prolog_night tfin_scooter tfin_voice tpjump |
 | `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 12 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_kids1 tfin_leak tfin_luko thw3a thw3b t… |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_99n_yaga11 | 29 | t11 tfin_art tfin_cam tfin_companion tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfi… |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_99n_yaga11 | 32 | t11 tfin_art tfin_cam tfin_camcap tfin_companion tfin_dev tfin_fixedstep tfin_foecast tfi… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1 | 1 | tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 1 | tfin_kids1 |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14 | 1 | tfin_kidnap14 |
@@ -126,8 +126,8 @@
 | `engine/05_foes_moroki.js` | 349 | МОРОКИ (язык боя v4: сигнал → защита → запал гаснет → Пробо… |
 | `engine/06_damage_clew.js` | 172 | УРОН, КЛУБОК НИТОК И ПОДШИВАНИЕ (закон доброго дивана) · КЛУБОК-ПУТЕВОДИТЕЛЬ (RB): нить-тропка, нить к нити, струны … |
 | `engine/07_props.js` | 105 | ПРЕДМЕТЫ: звенья и золотые орешки · КОЛЫШКИ, КАМНИ С ЛАПОЙ, КОЧКИ · ВЗГЛЯД И ХОДЯЧИЕ ЁЛКИ (1-4) · ПЕНЬКИ «НА РАЗ-ДВА-ТРИ» · ПЛИТЫ, ВОРОТА, КОЛОКОЛЬЧИКИ · РИСУНОК КНОПКИ НАД ГЕРОЕМ |
-| `engine/08_zven_tasks_camera.js` | 98 | ЗВЕНЫШКО: проводник и подсказчик · ЗАДАЧИ, ПОДСКАЗКИ 20/40 с, ПРИЗРАК · КАМЕРА (демпфирование, lookahead, крен, тряска, слияние, ро… |
-| `engine/09_hud_cine.js` | 112 | HUD / UI · ОБНОВЛЕНИЕ ГЕРОЕВ (визуал) · РОЛИКИ В ДВИЖКЕ (кадры, реплики, события; пропуск — оба дер… |
+| `engine/08_zven_tasks_camera.js` | 105 | ЗВЕНЫШКО: проводник и подсказчик · ЗАДАЧИ, ПОДСКАЗКИ 20/40 с, ПРИЗРАК · КАМЕРА (демпфирование, lookahead, крен, тряска, слияние, ро… |
+| `engine/09_hud_cine.js` | 112 | HUD / UI · ОБНОВЛЕНИЕ ГЕРОЕВ (визуал) · РОЛИКИ В ДВИЖКЕ (кадры, реплики, события; пропуск — держит … |
 | `levels/p_prologue.js` | 317 | УРОВЕНЬ: ПРОЛОГ «ЗВЕНЫШКО» |
 | `levels/w1_common.js` | 74 | ЖИТЕЛИ МИРА 1 И РЕКВИЗИТ (примитивы) |
 | `levels/1-1.js` | 185 | МИР 1 · ДРЕМУЧИЙ ЛЕС · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ» |
@@ -172,7 +172,7 @@
 | `levels/luko_4_zastava_forge_map.js` | 198 | — |
 | `levels/luko_5_dress_garden.js` | 224 | — |
 | `levels/luko_6_festival_end.js` | 68 | — |
-| `engine/10_levels_flow_menu.js` | 214 | ПОТОК ИГРЫ |
+| `engine/10_levels_flow_menu.js` | 229 | ПОТОК ИГРЫ |
 | `tail.html` | 3 | — |
 
 ## Модули релиза (`zlataya_cep/build/`, порядок подключения)
@@ -381,5 +381,5 @@
 | `screens/` | 25 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 178 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 181 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

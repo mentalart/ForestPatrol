@@ -60,8 +60,9 @@ addEventListener('beforeunload',e=>{try{if(KIDS.debug||!W||!W.kids||G.state==='m
   e.preventDefault();e.returnValue='Уровень начнётся заново. Выйти?';return e.returnValue;}catch(err){}});
 // ---------- слабый компьютер: графика сама проще ----------
 {const _ll=loadLevel;loadLevel=function(i){_ll(i);KIDS.t0=performance.now();const q=KIDS.q;q.t=0;q.n=0;q.sum=0;q.last=0;};}
-{const _st=step;step=function(dt){_st(dt);if(KIDS.debug||KIDS.q.done||G.state!=='play'||G.cine||G.trans||document.hidden)return;const q=KIDS.q,now=performance.now();
-  if(q.last&&now-q.last<400){q.t+=now-q.last;if(q.t>4000){q.n++;q.sum+=now-q.last;}}q.last=now;
+{const _st=step;step=function(dt){_st(dt);if(KIDS.debug||KIDS.q.done||G.state!=='play'||G.cine||G.trans||document.hidden)return;const q=KIDS.q;
+  if(q.fn===G.frameN)return;q.fn=G.frameN;const fm=G.frameMs;   // меряем кадр (G.frameMs — длина кадра из frame()), а не шаг: в кадре их бывает несколько или ни одного
+  if(fm<400){q.t+=fm;if(q.t>4000){q.n++;q.sum+=fm;}}
   if(q.n>=240){const ms=q.sum/q.n;q.done=true;if(ms>34&&FIN.set.quality!=='low'){FIN.set.quality=FIN.set.quality==='high'?'mid':'low';FIN.applyQuality();banner('Игре тяжело — картинка стала проще','#ffffff',2.6,'так она пойдёт плавнее · вернуть можно в «Настройки → Графика»');}}};}
 // ---------- числа для плейтеста: по уровням мира 1 — сколько раз упали, сколько просили «Повтори», сколько играли ----------
 KIDS.log={};KIDS.lv=()=>{const id=W&&W.levelId||'?';return KIDS.log[id]||(KIDS.log[id]={downs:0,help:0,read:0,sec:0,visits:0});};
