@@ -11,7 +11,7 @@
   E.kbd=kbd;
   // сколько показывать строку: у записанной реплики — её длина, у новой — по длине текста (детям читать небыстро)
   const lessonLen=(t,who)=>{const e=FIN.vox&&FIN.vox.find&&FIN.vox.find(who,t);if(e&&e.dur)return e.dur+0.5;return Math.max(2.6,1.5+String(t).replace(/<[^>]*>/g,'').length/11);};
-  function Lesson(n){const L={n,dur:0,shots:[],says:[],evs:[],undo:[],props:[],checks:[],solo:G.solo};
+  function Lesson(n){const L={n,dur:0,shots:[],says:[],evs:[],undo:[],props:[],checks:[],ticks:[],solo:G.solo};
     // beat(d, {cam:[p,l]|[p,l,p2,l2], fov, say:[кто,текст,(через,(на сколько))], says:[…], ev:[[через,fn]…], zv:[x,y,z]}): d=null — по длине реплики
     L.beat=(d,o)=>{o=o||{};const t=L.dur,ss=(o.say?[o.say]:[]).concat(o.says||[]);if(d==null)d=Math.max(2.6,...ss.map(s=>(s[2]==null?0.2:s[2])+lessonLen(s[1],s[0])));
       if(o.cam)L.checks.push({t:t,d:d,cam:o.cam,fov:o.fov||46,need:o.need||[]});
@@ -24,6 +24,8 @@
     L.at=(dt,fn)=>L.evs.push({t:L.dur+dt,fn});                    // событие внутри уже добавленного кадра (dt — от конца)
     L.add=o=>{k5Prop(o);L.props.push(o);return o;};                // реквизит урока — уберётся в конце
     L.later=(t,fn)=>anim(Math.max(0.01,t),k=>{if(k>=1)fn();});   // как later, но не переживёт ролик (при пропуске W.anims очищается)
+    L.atT=(tt,fn)=>L.evs.push({t:tt,fn});                           // событие в абсолютный момент урока (с)
+    L.tick=fn=>{L.ticks.push(fn);};                                // что делать каждый кадр: fn(t, dt) — t в секундах урока (камера и автопилот по времени)
     L.on=fn=>{L.undo.push(fn);};                                   // что вернуть после урока
     // ---------- участники ----------
     L.h=k=>T[k];
@@ -123,5 +125,5 @@
         pt.set(at[0],at[1],at[2]).project(cam);if(Math.abs(pt.x)>0.93||pt.y>0.9||pt.y<-0.62||pt.z>1)E.lessonWarn.push('кадр '+bi+' ('+c.t.toFixed(1)+' с, '+(k?'конец':'начало')+'): точка '+at.map(q=>q.toFixed(1))+' → x='+pt.x.toFixed(2)+' y='+pt.y.toFixed(2));}}}}
     if(!L.dur){fin();go();return;}
     E.lessonOn=n;E.log('lesson'+n);
-    play({dur:L.dur+0.3,fov:46,camK:3.2,shots:L.shots,says:L.says,events:L.evs,end:()=>{E.lessonOn=null;fin();go();}});
+    play({dur:L.dur+0.3,fov:46,camK:3.2,shots:L.shots,says:L.says,events:L.evs,tick:L.ticks.length?(t,dt)=>{for(const f of L.ticks)f(t,dt);}:undefined,end:()=>{E.lessonOn=null;fin();go();}});
     const cd=CINE.CD&&CINE.CD();if(cd&&cd.S===G.cine){cd.inserts=false;cd.cover=[];cd.calm=true;}};

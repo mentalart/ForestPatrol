@@ -7,7 +7,6 @@
   // Проиграть нельзя: задел — буква выпала. Шкала сверху: от листа до дуба.
   const FL5={on:false,obs:[],dec:[]};E.fly=FL5;
   {const el=document.getElementById('k5fly');if(el)el.style.display='none';}   // уровень перезапущен посреди полёта (прыжок к стадии) — шкала не остаётся
-  const flyQ=pi=>G.solo?G.soloPi:pi;                  // чей это игрок на деле (в одиночку — тот, кем управляешь)
   const flyPis=()=>G.solo?[G.soloPi]:[0,1];
   const flyAx=pi=>{let x=0;if(btn(pi,'right'))x+=1;if(btn(pi,'left'))x-=1;const pa=padAx(pi);if(pa.x)x+=pa.x;return clamp(x,-1,1);};
   const flyCol=pi=>G.solo?0xffd76a:(pi?COL.p2:COL.p1);

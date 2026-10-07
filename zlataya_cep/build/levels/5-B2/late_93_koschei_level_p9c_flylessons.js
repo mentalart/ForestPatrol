@@ -92,16 +92,16 @@
     const mv=(g,z0,z1,sec,done)=>anim(sec,k=>{g.position.z=z0+(z1-z0)*k;if(g.userData.w)g.userData.w.rotation.z=Math.sin(G.time*16)*0.6;if(k>=1&&done)done();});
     const fire=(pi,lane,z1,done)=>{const b=L.add(new THREE.Mesh(new THREE.SphereGeometry(0.5,8,6),k5Add(COLS[pi],{opacity:0.95})));b.position.set(lx(lane),0.6,-3);L.hit(active(pi));k5s('whoosh');anim(0.5,k=>{b.position.z=-3+(z1+3)*k;if(k>=1){b.visible=false;if(done)done();}});};
     const kill=g=>{g.visible=false;K5L.ink(g.position.clone(),8);K5L.gold(g.position.clone(),6);k5s('orbHit');};
-    const CAM=[[R0,4.8,8],[R0,0.6,-14]];
+    const CAM=[[R0,3.8,6],[R0,0.8,-10]];
     L.beat(null,{cam:[[R0+7,3.6,8],[R0,0.4,-4]],need:[H(0,0)],says:[['zven',kind==='kit'?'Кит несёт нас домой — мир летит навстречу.':'Гуси-лебеди несут нас домой — мир летит навстречу.',0.3]]});
     L.beat(8.4,{cam:CAM,need:[[lx(0),0,-12],[lx(2),0,-12],H(0,0)],
       says:[['zven',two?'Ваши круги стоят на дорожках — по кругу у каждого.':'Твой круг стоит на одной из трёх дорожек.',0.2,3.8],['zven','Влево — '+kbd('left')+', вправо — '+kbd('right')+': круг идёт на другую дорожку.',4.2,4.0]],
       ev:[[4.8,()=>{mkTo(0,1,0.4);if(two)mkTo(1,1,0.4);}],[6.0,()=>{mkTo(0,2,0.4);if(two)mkTo(1,0,0.4);}],[7.2,()=>{mkTo(0,0,0.4);if(two)mkTo(1,2,0.4);}]]});
     L.beat(8.0,{cam:CAM,need:[[lx(0),0,-12],[lx(2),0,-12],H(0,0)],
       says:[['zven','Золотые буквы — ловите: встаньте кругом на их дорожку.',0.2,5.0]],
-      ev:[[0.1,()=>{const g=thr('L',1,-50);mv(g,-50,2,2.6,()=>{g.visible=false;K5L.gold(new V3(lx(1),1,0),10);k5s('tink');});L.later(0.4,()=>mkTo(0,1,0.8));}],[3.8,()=>{const g=thr('L',2,-50);mv(g,-50,2,2.6,()=>{g.visible=false;K5L.gold(new V3(lx(2),1,0),10);k5s('tink');});L.later(0.4,()=>mkTo(0,2,0.8));}]]});
+      ev:[[0.1,()=>{const g=thr('L',1,-34);mv(g,-34,2,2.2,()=>{g.visible=false;K5L.gold(new V3(lx(1),1,0),10);k5s('tink');});L.later(0.4,()=>mkTo(0,1,0.8));}],[3.8,()=>{const g=thr('L',2,-34);mv(g,-34,2,2.2,()=>{g.visible=false;K5L.gold(new V3(lx(2),1,0),10);k5s('tink');});L.later(0.4,()=>mkTo(0,2,0.8));}]]});
     // тёмное летит по дорожке; выстрел игрока pi сбивает его на полпути
-    const wave=(tp,lane,pi,t0)=>L.later(t0,()=>{const g=thr(tp,lane,-50);mv(g,-50,2,2.6);L.later(0.5,()=>fire(pi,lane,-30,()=>kill(g)));});
+    const wave=(tp,lane,pi,t0)=>L.later(t0,()=>{const g=thr(tp,lane,-34);mv(g,-34,2,2.2);L.later(0.45,()=>fire(pi,lane,-18,()=>kill(g)));});
     L.beat(11.4,{cam:CAM,need:[[lx(0),0,-12],[lx(2),0,-12],H(0,0)],
       says:[['zven',two?'Тёмных летучек сбивает Игрок 1: '+K(0,'attack')+',':'Тёмных летучек и тучи — бей '+K(0,'attack')+':',0.2,3.6],two?['zven','тёмные тучи — Игрок 2: '+K(1,'attack')+'.',3.9,3.2]:['zven','выстрел летит по дорожке твоего круга.',3.9,3.4],['zven','Выстрел летит по дорожке круга.',7.6,3.0]],
       ev:[[0.1,()=>{mkTo(0,0,0.4);if(two)mkTo(1,2,0.4);}],[0.5,()=>wave('A',0,0,0)],[5.0,()=>wave('B',two?2:0,two?1:0,0)]]});
