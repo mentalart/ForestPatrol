@@ -14,17 +14,10 @@
   E.freeCount=()=>FREE_N.filter(k=>E.free[k]).length;
   function applyFree(n){for(const k in FREE_AT)E.free[k]=n>=FREE_AT[k];if(E.hubFree)E.hubFree();}
   E.sky=K5L.sky(OAK);
-  /* ---------- подсказки текстом — только в начале стадии ---------- */
-  // Первые HINT_S секунд игры (без роликов и меню) видны карточки задачи и событий; потом они гаснут и не заслоняют Кощея и его
-  // удары — остаются подсказки в мире: кнопки над целями, стрелки, кольца (late_94: карточка боя становится кнопкой над целью).
-  // Полный текст стадии и текущей цели — в паузе (Esc). Окно открывается заново: новая стадия, повтор, вход на страницу, отрезок пролога.
-  const titleOn=()=>{try{const lv=$('level');return G.time-HN.titleT<4.2&&!!lv&&lv.style.opacity==='1';}catch(e){return false;}};   // заставка с именем уровня — карточки ждут её (late_79)
-  const HINT_S=0;E.hintLeft=HINT_S;E.hintReset=s=>{E.hintLeft=0;};   // по отзыву: текстовых подсказок нет совсем — карточки-картинки в начале, дальше значки в мире
-  E.quiet=()=>E.hintLeft<=0;W.hintsOff=()=>E.quiet();
-  // стадии без подсказок совсем (по отзыву: значки непонятны — стадия 1 играется без них): ни карточек, ни значков цели, ни кнопок
-  // и стрелок над целями, ни значков и слов над героями и во всплывашках (late_92d), ни подсветки целей, ни реплик-инструкций
-  E.NOHINT={};E.noHint=()=>E.cur!=null;   // по решению: подсказок нет ни на одной стадии (как в главе 1)
-  {let base=W.pauseLine||'';Object.defineProperty(W,'pauseLine',{configurable:true,set:v=>{base=v;},get:()=>{let g='';try{if(E.cur!=null){const a=E.goal(0),b=G.solo?'':E.goal(1);g=a+(b&&b!==a?'<br>'+b:'');}}catch(e){}return base;}});}   // цель стадии текстом в паузе не пишем
+  /* ---------- подсказок нет: правила показывают обучающие катсцены (p6b_lesson) ---------- */
+  const titleOn=()=>{try{const lv=$('level');return G.time-HN.titleT<4.2&&!!lv&&lv.style.opacity==='1';}catch(e){return false;}};   // заставка с именем уровня (late_79)
+  E.hintLeft=0;E.hintReset=()=>{};E.quiet=()=>true;W.hintsOff=()=>true;
+  E.noHint=()=>E.cur!=null;   // ни значков, ни слов-указаний, ни кнопок и стрелок над целями — ни на одной стадии
   /* ---------- музыка: «оркестр собирается» ---------- */
   E.music=mode=>{const n=E.cur;if(n>=4&&n<=7&&!mode){if(FIN.music)FIN.music.play(['','','','','w1','w2','w3','w4'][n]);return;}K5L.music(mode||(n===8?'storm':'ink'),E.freeCount());};
   /* ---------- строка пролога вместо полосы босса ---------- */
@@ -40,7 +33,7 @@
   /* ---------- уход со стадии и начало стадии ---------- */
   E.leave=()=>{const n=E.cur;if(n==null)return;K5.st=0;const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.end)try{L.end();}catch(e){console.error('k5e end',e);}
     if(E.clock)E.clock.off();try{FIN.k5x.clear();}catch(e){}W.camFn=null;K5.listen=false;K5.fight=false;ES.fight=false;clearAdds(true);natReset();if(E.pageOff)E.pageOff();for(const k in ES)delete ES[k];};
-  E.go=(n,o)=>{o=o||{};E.leave();E.hintReset(o.retry?6:HINT_S);for(const p of players){p.tipT=0;}E.cur=n;K5E.cur=n;try{K5E.badge&&K5E.badge();}catch(e){}F.k5e=n;applyFree(n);
+  E.go=(n,o)=>{o=o||{};E.leave();for(const p of players){p.tipT=0;}E.cur=n;K5E.cur=n;try{K5E.badge&&K5E.badge();}catch(e){}F.k5e=n;applyFree(n);
     for(let i=1;i<n;i++)if(E.done[i]||o.warp)E.sky.add(i,false);
     // прыжок к стадии: имена — как после частей Сказа (начало — после 3, помощник — после 7, Прошка — после 11)
     if(o.warp){G.flags.names=Object.assign(G.flags.names||{},n>=4?{potap:true}:{},n>=8?{yosha:true}:{},n>=12?{proshka:true}:{});}
@@ -78,14 +71,8 @@
       // новые стадии: все четверо клубочками — стадия заново
       if(!OLD[n]&&ES.fight&&HEROES.length&&HEROES.every(h=>!!h._down||(h.active&&players[h.player].downed)))E.lose('Все четверо — клубочки!<br>Начнём сначала, с этого листка!');}
     if(Math.floor(G.time*4)!==E.bt){E.bt=Math.floor(G.time*4);if(!OLD[n]||!K5.fight)E.bar();}});
-  /* ---------- цели над полем ---------- */
-  E.goal=pi=>{const n=E.cur;if(n==null)return 'Битва с Кощеем';const L=OLD[n]?E.layer[n]:E.stage[n];const own=L&&L.goal?L.goal(pi):'';
-    if(OLD[n]&&K5.fight)return (own?own+'<br>':'')+'<small>'+objText(pi)+'</small>';return own||K5L.LINES[n];};
-  // цель внизу экрана (k5epic): значки по фазе стадии (L.pics) или значки её первой карточки — без текста
-  E.goalPics=pi=>{const n=E.cur;if(n==null||E.noHint())return '';const L=OLD[n]?E.layer[n]:E.stage[n];let P=null;try{P=L&&L.pics?L.pics(pi):null;}catch(e){}
-    if(!P){const c=(E.CARDS[n]||[])[0],m=c&&c.card&&K5PIC.CARD[c.card.title];P=m?m.p:null;}return P?K5PIC.h(P,40,G.solo?0:pi):'';};
-  E.targets=pi=>{const n=E.cur;if(E.noHint())return [];const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.targets)return L.targets(pi);return OLD[n]?objTg(pi):[];};
-  for(const pi of[0,1])W.objectives[pi]=[O(()=>k5On()?E.goalPics(pi):E.goal(pi),()=>F.stage==='chain',()=>E.targets(pi))];
+  // целей и стрелок над полем нет — только полоса стадии (E.bar)
+  for(const pi of[0,1])W.objectives[pi]=[O(()=>'',()=>F.stage==='chain',()=>[])];
   /* ---------- начало уровня: пролог (полёт) → вступление на Лукоморье → стадия 1; или прыжок к выбранной стадии ---------- */
   // состояние мира «после вступления»: Кощей у дуба, тетрадка на камне, купол (стадия 1)
   E.prep=()=>{W.anims.length=0;KA.reset();KS.g.visible=true;KS.g.position.copy(KP);KS.g.rotation.y=0;KS.armR.rotation.x=0;book.g.visible=true;book.g.userData.free=true;

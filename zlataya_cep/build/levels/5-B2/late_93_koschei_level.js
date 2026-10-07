@@ -55,7 +55,7 @@ build5B2=function(){
   const KA=k5Actor(KS);K5.KA=KA;   // Кощей-актёр: позы в роликах (late_92)
   const sword=k5Sword();KS.hand.add(sword);sword.position.set(0,-0.05,0.05);sword.rotation.set(-0.35,0,0);sword.visible=false;
   const Z=makeZven();W.zven=Z;Z.pos.set(0,3,6);
-  const bb=$('bossbar');W.onLeave=()=>{bb.style.display='none';try{k5HintHide(false);}catch(e){}k5StormSet(0,true);const v=document.getElementById('k5storm');if(v)v.style.opacity=0;};
+  const bb=$('bossbar');W.onLeave=()=>{bb.style.display='none';k5StormSet(0,true);const v=document.getElementById('k5storm');if(v)v.style.opacity=0;};
   F.links=0;F.skaz=0;
   // купол, аура, грозовые тучи
   const dome=k5Prop(new THREE.Group());dome.position.set(KP.x,0,KP.z);{const s=new THREE.Mesh(new THREE.SphereGeometry(2.9,26,16,0,Math.PI*2,0,Math.PI/2),MB(0x9a60ff,{transparent:true,opacity:0.2,depthWrite:false,side:THREE.DoubleSide}));dome.add(s);
@@ -165,8 +165,7 @@ build5B2=function(){
     const pips=[];for(let i=0;i<LOCK_HP;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.075,10,8),M(0xff7a1a,{emissive:0xff5a00,emissiveIntensity:1.1}));m.position.set((i-(LOCK_HP-1)/2)*0.19,0.52,0);pad.add(m);pips.push(m);}
     const aura=k5Glow(0x9a60ff,H*1.9);aura.position.y=H*0.5;g.add(aura);
     K5.locks[h.kind]={h,kind:h.kind,pi,hp:LOCK_HP,t:0,g,links,coil,pad,sh,kh,pips,aura,pin:h.pos.clone(),shk:0};
-    k5s('lock');floatText(h.pos.clone().add(new V3(0,H+0.8,0)),'Скован!','#c8a8ff');K5.log.push('lock'+pi);h.guard=false;
-    if(!K5.said.lock){K5.said.lock=true;say('zven','Друг в цепях — не зевай:<br>По замку бей, выручай!',3,true);}}
+    k5s('lock');floatText(h.pos.clone().add(new V3(0,H+0.8,0)),'Скован!','#c8a8ff');K5.log.push('lock'+pi);h.guard=false;}
   function unlock(L,by,quiet){if(!L)return;delete K5.locks[L.kind];if(quiet){k5Del(L.g);return;}
     k5s('unlock');const c=L.h.pos.clone().add(new V3(0,L.h.d.height*0.55,0));FX.sparks(c,22,0xffe08a);FX.sparkle(c,12,0xffffff);
     // путы разлетаются: звенья — в стороны и вниз, замок — вверх и раскрывается
@@ -194,7 +193,7 @@ build5B2=function(){
   const nearLock=pi=>{const me=active(pi);if(!me||k5Locked(me))return null;let best=null,bd=8;for(const k in K5.locks){const L=K5.locks[k];if(L.h===me)continue;const d=hd(L.h.pos,me.pos);if(d<bd){bd=d;best=L;}}return best;};
   function sparkTo(pi,from){const h=active(pi);if(!h)return;if(K5.spark)k5Del(K5.spark.m);const m=k5Prop(new THREE.Group());const s=new THREE.Mesh(new THREE.OctahedronGeometry(0.22),MB(0xfff2a0));m.add(s);
     m.add(new THREE.Mesh(new THREE.SphereGeometry(0.45,10,8),MB(0xffd76a,{transparent:true,opacity:0.3,depthWrite:false})));m.position.copy(from||h.pos).add(new V3(0,1.4,0));K5.spark={pi,t:4.5,m,fly:0};
-    if(!K5.said.spark){K5.said.spark=true;say('zven','Отбил — и искра к другу мчит!<br>По очереди — спесь слетит!',4.2,true);}}
+    }
   function sparkTick(dt){const S=K5.spark;if(!S)return;S.t-=dt;const h=active(S.pi);if(!h||S.t<=0){k5Del(S.m);K5.spark=null;return;}const to=headOf(h).add(new V3(0,0.2+0.1*Math.sin(G.time*6),0));S.m.position.lerp(to,1-Math.exp(-10*dt));S.m.rotation.y+=dt*5;S.m.scale.setScalar(S.t<1?S.t:1);}
   /* ---------- этап 3: шары, вороны, иглы, воронка, гроза ---------- */
   // шар (по отзыву 2: ярче): сначала копится в поднятой руке Кощея (искры стягиваются — замах), потом срывается с вспышкой и тянет светящийся шлейф

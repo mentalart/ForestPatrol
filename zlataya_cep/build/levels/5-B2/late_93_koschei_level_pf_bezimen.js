@@ -41,16 +41,6 @@
   const MEM=[{k:'leshy',p:new V3(-8.4,0,-8.6),n:'Путаник'},{k:'vod',p:new V3(8.4,0,-8.6),n:'Водяной'},{k:'solo',p:new V3(-6.6,0,-19.6),n:'Соловей'},{k:'gor',p:new V3(6.6,0,-19.6),n:'Горыныч'}];
   const memRings=MEM.map(M0=>{const r=new THREE.Mesh(new THREE.RingGeometry(2.0,2.5,40),k5Add(0xffd76a,{opacity:0.9}));r.rotation.x=-Math.PI/2;r.position.set(M0.p.x,0.07,M0.p.z);k5Prop(r);r.visible=false;
     const fill=new THREE.Mesh(new THREE.CircleGeometry(2.0,40),k5Add(0xffd76a,{opacity:0.18}));fill.position.z=-0.01;r.add(fill);return r;});
-  // ориентиры без текста: над кругом друга — «щит + двое», столб света; над Кощеем — «бей» / «двое + бей»; ярость — песочные часы и кольцо-таймер
-  const memSigns=MEM.map(M0=>{const sp=K5PIC.spr(G.solo?['shield']:['two','+','shield'],1.3);sp.position.set(M0.p.x,4.6,M0.p.z);k5Prop(sp);sp.visible=false;return sp;});
-  const memBeams=MEM.map(M0=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(1.9,2.1,9,24,1,true),k5Add(0xffd76a,{opacity:0.22,map:K5TEX.beam}));m.position.set(M0.p.x,4.5,M0.p.z);k5Prop(m);m.visible=false;m.raycast=()=>{};return m;});
-  const kSignHit=K5PIC.spr(['hit'],1.6),kSignBind=K5PIC.spr(['two','+','hit'],1.4),kSignRage=K5PIC.spr(['clock','+','shield'],1.4);[kSignHit,kSignBind,kSignRage].forEach(sp=>{k5Prop(sp);sp.visible=false;});
-  const kRing=new THREE.Mesh(new THREE.RingGeometry(2.6,3.0,48),k5Add(0xffd76a,{opacity:0.9}));kRing.rotation.x=-Math.PI/2;k5Prop(kRing);kRing.visible=false;
-  // бегущие стрелки на земле от каждого героя к цели (кругу друга или к открытому Кощею)
-  const chev=[0,1].map(()=>[0,1,2,3].map(()=>{const m=new THREE.Mesh(new THREE.ConeGeometry(0.45,0.9,3),k5Add(0xffd76a,{opacity:0}));m.rotation.x=-Math.PI/2;k5Prop(m);m.visible=false;m.raycast=()=>{};return m;}));
-  function chevTo(pi,h,to){const row=chev[pi];if(!h||!to||hd(h.pos,to)<3.2){row.forEach(m=>{m.visible=false;});return;}const d=new V3(to.x-h.pos.x,0,to.z-h.pos.z),L=d.length();d.normalize();const a=Math.atan2(d.x,d.z);
-    row.forEach((m,k)=>{const u=1.4+k*1.3;if(u>L-1.6){m.visible=false;return;}m.visible=true;m.position.set(h.pos.x+d.x*u,0.12,h.pos.z+d.z*u);m.rotation.order='YXZ';m.rotation.set(Math.PI/2,a,0);m.material.opacity=0.35+0.6*Math.max(0,Math.sin(G.time*7-k*1.1));});}
-  const rageRing=new THREE.Mesh(new THREE.RingGeometry(0.92,1,64),k5Add(0xff6a40,{opacity:0.9}));rageRing.rotation.x=-Math.PI/2;k5Prop(rageRing);rageRing.visible=false;
   const memMods=[FR.leshy.m,FR.vod.m,(()=>{const s=makeSolovei();s.g.scale.setScalar(0.8);s.g.visible=false;K5L.noRay(s.g);return s;})(),(()=>{const g=makeGorynych5(0.55);g.g.scale.setScalar(0.55);g.g.visible=false;K5L.noRay(g.g);return g;})()];
   const fog=MEM.map(()=>{const s=k5Glow(0x6a5a8a,4);k5Prop(s);s.visible=false;return s;});
   function satur(v){try{renderer.domElement.style.filter=v<1?'saturate('+v+')':'';}catch(e){}}
@@ -68,7 +58,7 @@
     barkS(KS,'koschei',['Я — Путаник! Лес, сомкнись!','Я — Водяной! Омут, крути!','Я — Соловей! Фью-у-у!','Я — Горыныч! Огонь!'][i%4],1.8,true);
     if(i%4===0){for(const s of[-1,1])for(let j=0;j<5;j++){const g=k5Prop(new THREE.Group());const m=M(0x1e1a2a,{emissive:0x2a1048,emissiveIntensity:0.4});addMesh(new THREE.CylinderGeometry(0.15,0.2,1,6),M(0x3a2a1a),0,0.5,0,g);
         for(let q=0;q<3;q++)addMesh(new THREE.ConeGeometry(1-q*0.25,1.3,7),m,0,1+q*0.75,0,g);g.position.set(C.x+s*11,0,C.z-8+j*4);g.userData.s=s;K5L.noRay(g);rows.push(g);}}
-    memRings[i%4].visible=true;floatText(MEM[i%4].p.clone().add(new V3(0,3.6,0)),'Это же '+['Леший','Водяной','Соловей','Горыныч'][i%4]+'! Щит вместе рядом — вспомнит!','#ffe08a');E.log('move'+i%4);}
+    E.log('move'+i%4);}
   function moveEnd(){const mv=ES.mv;if(!mv)return;memRings[mv.i].visible=false;for(const g of rows.splice(0))k5Del(g);ES.mv=null;}
   function counter(i){if(ES.mv){if(ES.mv.countered)return;ES.mv.countered=true;}ES.mem[i]=true;E.log('mem'+i);const M0=MEM[i];fog[i].visible=false;const p=M0.p.clone().add(new V3(0,2.4,0));K5L.gold(p,24);k5Pillar(M0.p.clone(),0xffd76a,6,0.6,1);
     say(['leshy','vod','solovei','gorM'][i],['Я — Леший! Ёлки мои — ко мне, на Кощея!','Я — Водяной! Омут мой — тебя и закрутит!','Я — Соловей-Разбойник! Пересвищу!','Мы — Горыныч! Крыльями укроем, огнём — обратно!'][i],2.6,true);
@@ -77,7 +67,7 @@
     if(i===3)k5Pillar(kp.clone(),0xff8a30,8,1.6,1);later(0.8,()=>{moveEnd();winOpen();});music();}
   function winOpen(){ES.win=G.solo?6:7;ES.wh=0;try{KA.pose('slump');}catch(e){}floatText(kosTop(),'Открыт! Бейте!','#ffe08a');}
   W.hittables.push({pos:new V3(),r:1.4,alive:()=>E.cur===11&&ES.fight&&ES.ph==='moves'&&(ES.win>0||ES.spes<=0),onHit:h=>{if(ES.spes<=0){bindHit(h);return;}const cap=Math.floor((ES.spesMax-2)/4);if(ES.wh>=cap&&(ES.mem.some(m=>!m)||!ES.raged))return;if(G.time<(ES.hcd||0))return;ES.hcd=G.time+0.3;ES.wh++;ES.spes--;burst(KS.g.position.clone().add(new V3(0,2,0)),0xffffff,6,3);SFX.hit&&SFX.hit();
-      floatText(kosTop(),ES.spes>0?'Удар!':'Спесь сбита!','#ffe08a');if(ES.spes<=0){ES.win=99;banner('Спесь сбита!','#ffd76a',2.4,G.solo?'ударь рядом — золотая нить':'оба — удар рядом: золотая нить сказа');}else if(ES.wh>=Math.floor((ES.spesMax-2)/4)&&(ES.mem.some(m=>!m)||!ES.raged))ES.win=Math.min(ES.win,0.3);}});
+      floatText(kosTop(),ES.spes>0?'Удар!':'Спесь сбита!','#ffe08a');if(ES.spes<=0){ES.win=99;banner('Спесь сбита!','#ffd76a',2.4);}else if(ES.wh>=Math.floor((ES.spesMax-2)/4)&&(ES.mem.some(m=>!m)||!ES.raged))ES.win=Math.min(ES.win,0.3);}});
   const b11=W.hittables[W.hittables.length-1];
   function bindHit(h){const pi=h.player;ES.bind=ES.bind||[-9,-9];ES.bind[pi]=G.time;k5Thread(()=>hH(h),()=>KS.g.position.clone().add(new V3(0,2.4,0)));k5s('bind');if(G.solo||players[1-pi].downed||Math.abs(ES.bind[1-pi]-G.time)<1.6){ES.fight=false;bindBeat();E.won(11);}else floatText(kosTop(),'Второй — тоже!','#ffe08a');}
   const music=()=>K5L.music(ES.ph==='wall'?'ink':'song',ES.ph==='wall'?0:Math.max(1,E.freeCount()-4+ES.mem.filter(Boolean).length));
@@ -88,18 +78,11 @@
       if(m.R&&FIN.k2v&&FIN.k2v.anim){try{FIN.k2v.set(m.R,on?'conduct':act?'dazed':'sleep',on?'neutral':'tired');FIN.k2v.anim(m.R,dt);}catch(e){}}
       if(m.heads)m.heads.forEach((h,k)=>{const q=h&&(h.g||h.hg||h);if(!q||!q.rotation)return;q.rotation.x=Math.sin(t*(on?3:1.2)+k*1.7)*(on?0.25:0.1);q.rotation.y=Math.sin(t*0.8+k)*0.2;});
       if(m.wings)m.wings.forEach(w=>{const q=w.wp||w;if(q&&q.rotation)q.rotation.z=(w.s||1)*Math.sin(t*(on?6:1.5))*(on?0.4:0.12);});});}
-  function guideTick(){if(E.cur!==11)return;if(E.noHint()){[memSigns,memBeams,memRings].forEach(a=>a.forEach(o=>{o.visible=false;}));[kSignHit,kSignBind,kSignRage,kRing,rageRing].forEach(o=>{o.visible=false;});return;}const t=G.time,kp=KS.g.position,mv=ES.mv,open=ES.fight&&ES.ph==='moves'&&(ES.win>0||ES.spes<=0)&&!ES.rage;
-    MEM.forEach((M0,i)=>{const on=!!(ES.fight&&mv&&mv.i===i&&!mv.countered);memSigns[i].visible=on;memBeams[i].visible=on;if(on){memSigns[i].position.y=4.4+Math.sin(t*4)*0.3;memBeams[i].material.opacity=0.16+0.1*Math.sin(t*6);memRings[i].scale.setScalar(1+0.05*Math.sin(t*8));}});
-    kSignHit.visible=open&&ES.spes>0;kSignBind.visible=open&&ES.spes<=0;kSignRage.visible=!!ES.rage;kRing.visible=open;rageRing.visible=!!ES.rage;
-    for(const sp of[kSignHit,kSignBind,kSignRage])if(sp.visible)sp.position.set(kp.x,kp.y+4.4+Math.sin(t*4)*0.3,kp.z);
-    if(kRing.visible){kRing.position.set(kp.x,0.08,kp.z);kRing.scale.setScalar(1+0.08*Math.sin(t*7));}
-    const hs=k5Heroes();[0,1].forEach(j=>{const h=hs[j];const tgt=!ES.fight||ES.ph!=='moves'||ES.rage?null:mv&&!mv.countered?MEM[mv.i].p:open?kp:null;chevTo(j,h||null,tgt);});
-    if(ES.rage){const k=Math.max(0.05,1-ES.rage.t/9);rageRing.position.set(kp.x,0.09,kp.z);rageRing.scale.setScalar(2+9*k);}}
   E.stage[11]={start(o){E.hub(11);K5L.themeTo('night',1);K5.fight=false;liveBoss(false);dome.visible=false;candles.forEach(c=>{c.g.visible=false;});KS.g.visible=true;KS.g.position.set(C.x,0,C.z-12);KS.g.rotation.y=0;sword.visible=false;
       W.clampR={x:C.x,z:C.z,r:R};Object.assign(ES,{ph:'wall',fight:false,spes:10,spesMax:10,mem:[false,false,false,false],win:0,prog:0});
       MEM.forEach((M0,i)=>{const m=memMods[i];if(m&&m.g){m.g.visible=true;m.g.position.copy(M0.p);m.g.rotation.y=Math.atan2(C.x-M0.p.x,C.z-M0.p.z);}fog[i].visible=true;fog[i].position.copy(M0.p).add(new V3(0,1.6,0));});
-      ES.rage=null;ES.raged=false;K5X.motes('ink',new V3(C.x,0,C.z),13,160,8);K5X.tint('rgba(20,0,40,.85)',0.55);wallUp();music();E.cards(11,()=>{ES.fight=true;});},
-    tick(dt){b11.pos.copy(KS.g.position);helpersTick(dt);guideTick();if(!ES.fight)return;ES.prog=ES.ph==='wall'?0.1:0.25+0.75*(1-ES.spes/ES.spesMax);
+      ES.rage=null;ES.raged=false;K5X.motes('ink',new V3(C.x,0,C.z),13,160,8);K5X.tint('rgba(20,0,40,.85)',0.55);wallUp();music();E.lesson(11,()=>{ES.fight=true;});},
+    tick(dt){b11.pos.copy(KS.g.position);helpersTick(dt);if(!ES.fight)return;ES.prog=ES.ph==='wall'?0.1:0.25+0.75*(1-ES.spes/ES.spesMax);
       for(let i=0;i<4;i++)if(fog[i].visible){fog[i].material.opacity=0.5+0.2*Math.sin(G.time*2+i);}
       nameSp.forEach(N=>{if(!N.sp.visible||N.gone||ES.ph!=='wall')return;N.a+=dt*N.sp0;N.sp.position.set(C.x+Math.cos(N.a)*N.r,N.y+Math.sin(G.time+N.a)*0.3,C.z+Math.sin(N.a)*N.r*0.8);});
       sheets.forEach(S0=>{if(!S0.m.visible)return;S0.a+=dt*S0.w;S0.m.position.set(C.x+Math.cos(S0.a)*S0.r,S0.y+Math.sin(G.time*1.3+S0.ph)*0.6,C.z+Math.sin(S0.a)*S0.r*0.8);S0.m.rotation.set(Math.sin(G.time*2+S0.ph),S0.a*2,Math.cos(G.time*1.7+S0.ph)*0.6);});
@@ -123,16 +106,10 @@
           for(const h of k5Heroes()){if(safe(h))continue;const dx=h.pos.x-kp.x,dz=h.pos.z-kp.z,d=Math.hypot(dx,dz)||1;const f=h.guard?2.5:8;h.vel.x+=dx/d*f;h.vel.z+=dz/d*f;h.vel.y=Math.max(h.vel.y,2);if(!h.guard)k5Hurt(h,kp);}}}
       else if(mv.i===3){mv.a=(mv.a||0)+dt*0.55;if(!mv.beams){mv.beams=[0,1,2].map(()=>{const m=k5Prop(new THREE.Mesh(new THREE.BoxGeometry(0.9,0.5,10),k5Add(0xff7a20,{opacity:0.75})));rows.push(m);return m;});}
         mv.beams.forEach((m,q)=>{const a=mv.a+q*Math.PI*2/3;m.position.set(kp.x+Math.sin(a)*5.4,0.5,kp.z+Math.cos(a)*5.4);m.rotation.y=a;for(const h of k5Heroes()){if(safe(h)||h.guard)continue;const dx=h.pos.x-kp.x,dz=h.pos.z-kp.z,along=dx*Math.sin(a)+dz*Math.cos(a),side=Math.abs(dx*Math.cos(a)-dz*Math.sin(a));if(along>0.6&&along<10.4&&side<0.7&&h.pos.y<1.2)k5Hurt(h,kp);}});}},
-    end(){memSigns.concat(memBeams,[kSignHit,kSignBind,kSignRage,kRing,rageRing],chev[0],chev[1]).forEach(o=>{o.visible=false;});inkWorld(false);if(ES.rage){for(const g of rows.splice(0))k5Del(g);ES.rage=null;}wallBox.on=false;WALL.visible=false;crack.visible=false;satur(1);moveEnd();memRings.forEach(r=>{r.visible=false;});fog.forEach(f=>{f.visible=false;});memMods[2].g.visible=false;memMods[3].g.visible=false;
+    end(){inkWorld(false);if(ES.rage){for(const g of rows.splice(0))k5Del(g);ES.rage=null;}wallBox.on=false;WALL.visible=false;crack.visible=false;satur(1);moveEnd();memRings.forEach(r=>{r.visible=false;});fog.forEach(f=>{f.visible=false;});memMods[2].g.visible=false;memMods[3].g.visible=false;
       if(FR.leshy.m)FR.leshy.m.g.position.copy(FR.leshy.home);if(FR.vod.m)FR.vod.m.g.position.copy(FR.vod.home);if(ES.saved&&ES.ph==='wall')G.flags.names=Object.assign({},ES.saved);for(const e of ES.shadows||[])k5Kill(e);},
     attack(h,pi){if(E.cur!==11||ES.ph!=='wall'||!crack.visible)return;if(hd(h.pos,crack.position)>2.2)return;ES.wallHit[h.player]=G.time;FX.sparks(crack.position.clone(),10,0xffd76a);
-      if(G.solo||Math.abs(ES.wallHit[0]-ES.wallHit[1])<1.4)wallDown();else floatText(crack.position.clone().add(new V3(0,1.6,0)),'Вместе — с двух сторон!','#ffe08a');},
-    pics:pi=>ES.ph==='wall'?(crack.visible?['spark','>','two','@attack']:['call','@call']):ES.win>0||ES.spes<=0?(ES.spes>0?['koschei','@attack']:['two','hit','>','gchain']):
-      ES.rage?['shield','@guard','+','clock']:ES.mv?['friend','ring','>','two','@guard']:['koschei','@attack'],
-    goal:pi=>ES.ph==='wall'?(crack.visible?'Стена тонкая — <b>удар</b> '+K(pi,'attack')+' в золотую трещину'+(G.solo?'':' — вдвоём, с двух сторон')+'!':'Стена разделила вас. Позови друга по имени: <b>«Ко мне!»</b> '+K(pi,'call')+(G.solo?'':' — оба')+'.'):
-      ES.win>0||ES.spes<=0?(ES.spes>0?'Кощей открыт — <b>бейте</b> '+K(pi,'attack')+'!':'Оба — удар рядом с ним: <b>золотая нить</b>!'):
-      ES.rage?'<b>Все сказки разом!</b> Держись: ряды ёлок, свист (щит '+K(pi,'guard')+'), огненные лучи — 9 с, потом Кощей выдохнется.':ES.mv?'Кощей взял приём: '+MEM[ES.mv.i].n+'. Беги к замершему другу — <b>щит вместе</b> '+K(pi,'guard')+' в его кругу: он вспомнит себя!':'',
-    targets:pi=>ES.ph==='wall'?(crack.visible?[crack]:[]):ES.mv?[memRings[ES.mv.i]]:[KS.g]};
+      if(G.solo||Math.abs(ES.wallHit[0]-ES.wallHit[1])<1.4)wallDown();else floatText(crack.position.clone().add(new V3(0,1.6,0)),'Вместе — с двух сторон!','#ffe08a');}};
   E.stage[11].bot={counter:i=>counter(i),names:()=>nameSp,whip:()=>whip(),hit:h=>b11.onHit(h)};
   // «Ко мне!» в стадии 11: золотая рябь; две ряби — трещина на стене между вами
   {const _pc=W.pingCall;W.pingCall=(pi,h)=>{if(E.cur===11&&ES.fight&&ES.ph==='wall'){ES.call[pi]=G.time;k5Ring(new V3(h.pos.x,0.2,h.pos.z),PCOL[pi],0.5,8,0.9,0.08);E.log('call'+pi);
@@ -140,5 +117,29 @@
         crack.visible=true;crack.position.set(C.x,1.4,clamp(z,C.z-9,C.z+9));ES.crackT=7;k5s('reveal');floatText(crack.position.clone().add(new V3(0,1.8,0)),'Слышу тебя!','#ffe08a');});}
       else floatText(h.pos.clone().add(new V3(0,2,0)),'…кто там?','#d8d0ff');return;}
     if(_pc)_pc(pi,h);};}
-  E.CARDS[11]=[{p:[0,11,6],l:[0,1,-13],card:{tag:'Как победить',title:'Стадия 11 из 12 · Без имён',icon:'orb',text:'Кощей вычеркнул имена. Чернильная <b>стена</b> разделила вас. Позовите друг друга: <b>«Ко мне!»</b> — две золотые ряби найдут трещину. Ударьте в неё — с двух сторон.'}},
-    {p:[0,11,4],l:[0,1,-14],card:{tag:'Вместе',title:'Все сказки разом',icon:'spark',text:'Кощей берёт приёмы четырёх боссов. Беги к <b>замершему другу</b> из той сказки и держите <b>щит вместе</b> в его кругу — друг вспомнит себя и обернёт приём против Кощея.'}}];
+  /* ---------- обучающая катсцена стадии 11: вычеркнутые имена, стена и трещина, приёмы сказок и замершие друзья, «все сказки разом» ---------- */
+  E.LES[11]=L=>{const po=T.potap,pr=T.proshka,pe=T.pelageya,yo=T.yosha,H=(x,z)=>[x,0.9,z],kc=()=>KS.g.position.clone().add(new V3(0,2.4,0)),pips=L.pips(6);pips.g.visible=false;
+    L.on(()=>{inkWorld(false);WALL.visible=false;WALL.scale.y=1;WALL.userData.m.material.opacity=0.92;wallBox.on=false;crack.visible=false;satur(1);for(const o of L.props)k5Del(o);nameSp.forEach(N=>{N.sp.visible=false;});memRings.forEach(r=>{r.visible=false;});});
+    L.put(po,-5,-10);L.put(pr,-6.4,-10.6);L.put(pe,5,-10);L.put(yo,6.4,-10.6);KS.g.visible=true;KS.g.position.set(C.x,0,C.z-12);KS.g.rotation.y=0;
+    L.beat(7,{cam:[[0,11,4],[0,2.4,-13],[0,9.5,2],[0,2.4,-13]],need:[H(-5,-10),H(5,-10),[0,2.4,-13]],says:[['zven','Кощей вычёркивает имена — мир блёкнет,',0.2,3.0],['zven','а друзья замирают, как будто забыты.',3.4,3.0]],
+      ev:[[0,()=>{inkWorld(true);satur(0.3);nameSp.forEach(N=>{N.sp.visible=true;N.draw(false);});const fx=k5fx(60,(k,dt)=>{nameSp.forEach(N=>{N.a+=dt*N.sp0;N.sp.position.set(C.x+Math.cos(N.a)*N.r,N.y+Math.sin(G.time+N.a)*0.3,C.z+Math.sin(N.a)*N.r*0.8);});sheets.forEach(S0=>{S0.a+=dt*S0.w;S0.m.position.set(C.x+Math.cos(S0.a)*S0.r,S0.y+Math.sin(G.time*1.3+S0.ph)*0.6,C.z+Math.sin(S0.a)*S0.r*0.8);S0.m.rotation.set(Math.sin(G.time*2+S0.ph),S0.a*2,Math.cos(G.time*1.7+S0.ph)*0.6);});},()=>{});L.on(()=>{fx.t=fx.dur;});}],[1.0,()=>L.pose('cast',{antic:0.3})],[1.6,()=>k5s('cast')]]});
+    // стена и трещина
+    L.beat(11,{cam:[[0,10.5,3],[0,2,-12]],need:[H(-5,-8),H(5,-8),[0,3,-13]],says:[['zven','Чернильная страница-стена делит поляну: каждый — один против теней.',0.2,4.2],['zven','«Ко мне!» '+kbd('call')+' — обоим: золотая рябь найдёт трещину в стене.',4.6,3.8],['zven','Ударьте оба в трещину с двух сторон — стена падёт!',8.5,2.4]],
+      ev:[[0,()=>{WALL.visible=true;WALL.scale.y=1;WALL.userData.m.material.opacity=0.92;L.put(po,-5,-8);L.put(pe,5,-8);L.look(po,new V3(0,0,-8));L.look(pe,new V3(0,0,-8));}],[1.0,()=>{L.later(0.01,()=>{});const f=new V3(-1,0,-17);const e=K5L.ink(f.clone().add(new V3(0,0.6,0)),10);L.pose('castR',{antic:0.2});k5s('whooshBig');}],
+        [5.0,()=>{k5Ring(new V3(po.pos.x,0.2,po.pos.z),COL.p1,0.5,8,0.9,0.08);k5Ring(new V3(pe.pos.x,0.2,pe.pos.z),COL.p2,0.5,8,0.9,0.08);SFX.call&&SFX.call();L.emo(po,'hop');L.emo(pe,'hop');}],
+        [6.2,()=>{crack.visible=true;crack.position.set(0,1.4,-8);k5s('reveal');const fx=k5fx(5,()=>{crack.material.opacity=0.6+0.4*Math.sin(G.time*10);},()=>{crack.visible=false;});L.on(()=>{fx.t=fx.dur;crack.visible=false;});}],
+        [7.4,()=>{L.walk(po,-1.4,-8,0.8);L.walk(pe,1.4,-8,0.8);}],[9.2,()=>{L.hit(po,crack.position);L.hit(pe,crack.position);FX.sparks(crack.position.clone(),12,0xffd76a);}],
+        [9.7,()=>{k5s('shatter');shakeAll(0.08,0.5);K5L.ink(crack.position.clone(),30);K5L.gold(crack.position.clone(),24);crack.visible=false;anim(0.8,k=>{WALL.userData.m.material.opacity=0.92*(1-k);WALL.scale.y=1-k*0.5;});satur(1);nameSp.forEach((N,i)=>{N.draw(true);const f=N.sp.position.clone();const hh=[po,pe][i%2];anim(1.0,k=>{N.sp.position.lerpVectors(f,hh.pos.clone().add(new V3(0,2.4,0)),CE.inOutSine(k));N.sp.material.opacity=0.95*(1-k*0.9);});});sheets.forEach(S0=>{S0.m.visible=false;});}]]});
+    // приёмы сказок и замершие друзья
+    L.beat(11,{cam:[[-2,9,0],[-4,1.8,-12]],need:[H(-2,-9),[-8.4,2,-8.6],[0,2.4,-15]],says:[['zven','Кощей берёт приёмы четырёх сказок — вот Путаник: ёлки смыкаются!',0.2,4.4],['zven','Беги к замершему другу той сказки и держите щит '+kbd('guard')+' вместе —',4.8,3.6],['zven','друг вспомнит себя и вернёт приём Кощею!',8.6,2.2]],
+      ev:[[0,()=>{L.put(po,-2.4,-6);L.put(pe,2.4,-6);pips.g.visible=true;KS.g.position.set(0,0,-15);memMods[0].g.visible=true;memMods[0].g.position.copy(MEM[0].p);fog[0].visible=true;fog[0].position.copy(MEM[0].p).add(new V3(0,1.6,0));}],[0.6,()=>{L.pose('castR',{antic:0.25});k5s('cast');const gs=[];for(const s of[-1,1])for(let j=0;j<5;j++){const g=L.add(new THREE.Group());const m=M(0x1e1a2a,{emissive:0x2a1048,emissiveIntensity:0.4});addMesh(new THREE.CylinderGeometry(0.15,0.2,1,6),M(0x3a2a1a),0,0.5,0,g);for(let q=0;q<3;q++)addMesh(new THREE.ConeGeometry(1-q*0.25,1.3,7),m,0,1+q*0.75,0,g);g.position.set(C.x+s*11,0,C.z-8+j*4);gs.push([g,s]);}
+          const fx=k5fx(8,(k,dt)=>{const kk=k*8;gs.forEach(([g,s])=>{if(g.visible===false)return;if(kk<5.4){g.position.x+= (s*3.2-(g.position.x-C.x))*dt*0.4;g.rotation.z=Math.sin(G.time*10)*0.03;}});},()=>{});L.on(()=>{fx.t=fx.dur;});L.later(5.6,()=>{gs.forEach(([g])=>{const f=g.position.clone(),to=KS.g.position.clone().add(new V3(rand(-1.5,1.5),0,rand(-1.5,1.5)));anim(0.7,k=>{g.position.lerpVectors(f,to,k);});L.later(0.75,()=>{g.visible=false;});});});}],
+        [2.2,()=>{L.walk(po,MEM[0].p.x+1.0,MEM[0].p.z+1.2,1.6);L.walk(pe,MEM[0].p.x+2.0,MEM[0].p.z+0.4,1.6);}],[4.6,()=>{L.look(po,MEM[0].p);L.look(pe,MEM[0].p);L.guard(po,2.2);L.guard(pe,2.2);}],
+        [5.6,()=>{const M0=MEM[0],p=M0.p.clone().add(new V3(0,2.4,0));fog[0].visible=false;K5L.gold(p,24);k5Pillar(M0.p.clone(),0xffd76a,6,0.6,1);npcEm(memMods[0],'cheer')();SFX.ok();}],[7.4,()=>{L.pose('recoil',{snap:true});pips.out();pips.out();FX.sparks(kc(),14,0xffd76a);}]]});
+    // все сказки разом
+    L.beat(10,{cam:[[0,10,-1],[0,1.6,-14]],need:[H(-2,-10),H(2,-10),[0,2,-14]],says:[['zven','Все четыре — и «Все сказки разом»: ёлки, свист и огненные лучи.',0.2,4.2],['zven','Держи щит и продержись девять секунд —',4.6,2.8],['zven','потом Кощей выдохнется: бейте!',7.6,2.2]],
+      ev:[[0,()=>{L.put(po,-2,-10);L.put(pe,2,-10);memMods.forEach(m=>{if(m&&m.g)m.g.visible=true;});KS.g.position.set(0,0,-14);KS.g.rotation.y=0;pips.g.visible=true;}],[0.4,()=>{L.pose('castR',{antic:0.25});k5s('ult');shakeAll(0.1,0.6);K5X.screen('#3a1a5a',0.35,0.6);const bs=[0,1].map(()=>{const m=L.add(new THREE.Mesh(new THREE.BoxGeometry(0.9,0.5,10),k5Add(0xff7a20,{opacity:0.75})));return m;});
+          const fx=k5fx(7,(k,dt)=>{const a=k*7*0.6,kp=KS.g.position;bs.forEach((m,q)=>{const aa=a+q*Math.PI;m.position.set(kp.x+Math.sin(aa)*5.4,0.5,kp.z+Math.cos(aa)*5.4);m.rotation.y=aa;});},()=>{bs.forEach(k5Del);});L.on(()=>{fx.t=fx.dur;});}],
+        [1.2,()=>{L.guard(po,3);L.guard(pe,3);}],[1.5,()=>{for(let q=0;q<3;q++)L.later(q*0.1+0.01,()=>k5Ring(new V3(0,1.4,-14),0xfff4d0,0.6,13,0.8,0.05,new THREE.Euler(Math.PI/2,0,0)));k5s('gale');}],[3.6,()=>{for(let q=0;q<3;q++)L.later(q*0.1+0.01,()=>k5Ring(new V3(0,1.4,-14),0xfff4d0,0.6,13,0.8,0.05,new THREE.Euler(Math.PI/2,0,0)));k5s('gale');}],
+        [7.4,()=>{L.pose('slump');L.dizzy(2.6);}],[8.2,()=>{L.hit(po,KS.g.position);L.hit(pe,KS.g.position);pips.all();}],[8.8,()=>{SFX.mah();L.bind();}]]});
+  };

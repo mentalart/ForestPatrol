@@ -66,7 +66,6 @@
     aura.position.copy(KS.g.position).add(new V3(0,2.6,0));aura.intensity=K5.st>=2&&K5.st<=5?0.9+0.3*Math.sin(G.time*3):K5.st===1?0.5:0;kosAnim(dt);KA.tick(dt*CINE.timeScale());if(!G.cine&&KA.on)KA.reset();
     if(G.cine)return;if(!K5.fight){if(Math.floor(G.time*4)!==K5.bt){K5.bt=Math.floor(G.time*4);if(K5.st)setBar();}return;}
     if(K5.st===1)stage1Tick(dt);locksTick(dt);sparkTick(dt);orbTick(dt);bossTick(dt);
-    try{k5HintTick(dt);}catch(e){console.error('k5 hint',e);}
     if(HEROES.length&&HEROES.every(k5Down)){banner('Все четверо — клубочки!','#ffc8d8',2.6,'сказ сбился — снова у колокольчика');stageLose();}
     if(Math.floor(G.time*4)!==K5.bt){K5.bt=Math.floor(G.time*4);setBar();}});
   // щит: отбив шара, кольцо цепей; удар: замок, наковальня; предмет: передать иглу
