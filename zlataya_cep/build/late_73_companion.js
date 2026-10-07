@@ -7,7 +7,7 @@
 //   • упал человек — подходит «подшить»; упал сам — берёт второго героя; в окнах (Лукоморье, «Сказ») и в ритме повторяет за человеком; ролик пропускается, пока держишь прыжок.
 // Чего бот пока не умеет: парных загадок уровней (ритуал «Избушка, повернись», передача яблочка, ракушки и т. п.) — это следующий этап, по уровням.
 // Клавиатура: в этом режиме стрелки и M K L , . / ; работают как вторая половина клавиатуры Игрока 1 (WASD, пробел, F, G, Q, E, R, Shift, 1).
-const CMP={on:false,skill:0.85,mode:'idle',downT:0,tick:0};
+const CMP={on:false,hold:false,skill:0.85,mode:'idle',downT:0,tick:0};
 CMP.live=()=>CMP.on&&!G.solo;
 const CMP_MAP={};for(const a in BIND[1])CMP_MAP[BIND[1][a]]=BIND[0][a];
 const CMP_HELD=new Set();
@@ -67,6 +67,7 @@ function cmpThink(dt){cmpFree();
   const T=TIMING[p.path]||TIMING.mid;
   const near=W.enemies.filter(e=>cmpAlive(e)&&Math.abs(e.pos.y-h.pos.y)<2.6&&(e.tgt===h||hd(e.pos,h.pos)<8||(hd(e.pos,hh.pos)<8&&hd(e.pos,h.pos)<14)));
   if(near.length){CMP.mode='fight';h.following=false;cmpFight(h,hh,near,T);return;}
+  if(CMP.hold){CMP.mode='wait';h.following=false;return;}   // команда «стой»: ждёт на месте (если на него напали — отбивается выше)
   if(hp.downed&&!hh.cling){CMP.mode='revive';h.following=false;cmpGoto(h,hh.pos.x,hh.pos.z,0.7);return;}   // друга надо подшить: постоять рядом секунду
   CMP.mode='follow';}
 // шаг мира: сначала ход бота, потом — всё остальное
@@ -77,7 +78,8 @@ function cmpThink(dt){cmpFree();
     G.solo=true;G.soloPi=0;try{_up(pi,dt);}finally{G.solo=s;G.soloPi=sp;}return;}
   _up(pi,dt);};}
 // включить / выключить; «Режим» в меню — вдвоём → один → с напарником
-CMP.set=function(on){on=!!on;if(on===CMP.on)return;CMP.on=on;cmpFree();CMP.mode='idle';CMP.downT=0;
+CMP.wait=function(on){CMP.hold=on===undefined?!CMP.hold:!!on;cmpFree();return CMP.hold;};   // «стой» / «за мной» — клавиша T или вызов
+CMP.set=function(on){on=!!on;if(on===CMP.on)return;CMP.on=on;CMP.hold=false;cmpFree();CMP.mode='idle';CMP.downT=0;
   if(on){if(G.solo)setSolo(false);PADS.swap=false;G.soloPi=0;players[1].path=players[0].path;}
   else for(const q of players[1].heroes)q.following=false;};
 CMP.index=()=>G.solo?1:CMP.on?2:0;
@@ -87,5 +89,6 @@ CMP.label=()=>['вдвоём','один','с напарником'][CMP.index()]
 {const _ss=setSolo;setSolo=function(on){if(on&&CMP.on)CMP.set(false);_ss(on);};}
 // стрелки и M K L , . / ; — вторая половина клавиатуры Игрока 1 (место Игрока 2 занято ботом)
 addEventListener('keydown',e=>{const m=CMP_MAP[e.code];if(!m||!e.isTrusted||!CMP.live()||G.state!=='play')return;down.delete(e.code);pressed.delete(e.code);down.add(m);if(!e.repeat)pressed.add(m);});
+addEventListener('keydown',e=>{if(e.code==='KeyT'&&!e.repeat&&e.isTrusted&&CMP.live()&&G.state==='play'&&!G.ui)CMP.wait();});
 addEventListener('keyup',e=>{const m=CMP_MAP[e.code];if(m&&e.isTrusted&&CMP.on)down.delete(m);});
 FIN.co=CMP;

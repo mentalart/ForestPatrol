@@ -39,3 +39,9 @@ const rv0=ZC.G.stats.revives,r=U.until(()=>!P[0].downed,9);
 // окна и ролики: в окне («Сказ» и т. п.) бот повторяет за человеком; ролик пропускается удержанием прыжка человека (бот держит свой)
 const G=ZC.G;G.ui='skaz';ZC.hold('Space',true);ZC.press('Space');ZC.tick(1);const mir=CO.mode==="mirror";ZC.hold('Space',false);G.ui=null;ZC.tick(2);
 ['ui mode='+(mir?'mirror':CO.mode),mir?'mirror ok':'FAIL mirror','errs='+window._errs.length+(window._errs[0]?' '+window._errs[0]:''),window._errs.length?'FAIL errs':'errs ok']
+//@@
+// команда «стой»: напарник останавливается, пока человек уходит вперёд; вторая команда — снова идёт следом
+lvl();CO.set(true);CO.skill=1;const b=bot(),x0=b.pos.x,z0=b.pos.z;CO.wait(true);U.goto(0,me().pos.x,me().pos.z-14,12,0.6);ZC.tick(60);
+const moved=Math.hypot(bot().pos.x-x0,bot().pos.z-z0),dw=dist(),mw=CO.mode;CO.wait(false);ZC.tick(150);const d2=dist();
+['wait mode='+mw+' moved='+moved.toFixed(1)+' dist='+dw.toFixed(1),'resume mode='+CO.mode+' dist='+d2.toFixed(1),(mw==='wait'&&moved<1&&dw>8&&CO.mode==='follow'&&d2<5.5)?'wait ok':'FAIL wait']
+
