@@ -71,13 +71,20 @@ function updateShared(dt){shakeUpd(shared,dt);
   if(W.camFn){const c=W.camFn();shared.pos.lerp(c.pos,1-Math.exp(-(c.k||4)*dt));shared.look.lerp(c.look,1-Math.exp(-(c.k||4)*1.4*dt));shared.roll=damp(shared.roll,c.roll||0,3,dt);return;}
   const back=camBack(),a=G.solo?active(G.soloPi):active(0),b=G.solo?a:active(1),mid=new V3((a.pos.x+b.pos.x)/2,(a.pos.y+b.pos.y)/2,(a.pos.z+b.pos.z)/2);let look,dist,hgt;const z=activeCamZone();
   if(z){const zy=(z.y||0)+0.8;look=new V3(z.x,zy,z.z).lerp(new V3(mid.x,zy,mid.z),0.25);dist=z.r*1.05+4;hgt=z.r*0.85+3.5;}
-  else{const sep=hd(a.pos,b.pos),la=G.solo?rigs[G.soloPi].la.clone():rigs[0].la.clone().add(rigs[1].la).multiplyScalar(0.5);look=new V3(mid.x+la.x,mid.y+1.1,mid.z+la.z);dist=7.2+sep*0.8;hgt=4.0+sep*0.5;}
+  else{const sep=hd(a.pos,b.pos),la=G.solo?rigs[G.soloPi].la.clone():rigs[0].la.clone().add(rigs[1].la).multiplyScalar(0.5);look=new V3(mid.x+la.x,mid.y+1.1,mid.z+la.z);const sc=G.fightMerge?Math.min(sep,CAM_SEP_CAP):sep;dist=7.2+sc*0.8;hgt=4.0+sc*0.5;}   // общий экран драки: камера не отъезжает дальше, чем на разлёт CAM_SEP_CAP, иначе герои в кадре — точки
+
   const des=look.clone().addScaledVector(back,dist);des.y+=hgt;if(!z)des.x=clamp(des.x,-W.camX,W.camX);shared.pos.lerp(des,1-Math.exp(-3.5*dt));shared.look.lerp(look,1-Math.exp(-5*dt));
   const right=new V3(back.z,0,-back.x),lat=((a.vel.x+b.vel.x)*right.x+(a.vel.z+b.vel.z)*right.z)*0.5;shared.roll=damp(shared.roll,clamp(-lat*0.008,-0.05,0.05),3,dt);}
 function fightNear(dt){const a=active(0),b=active(1);let f=false;if(!W.noFightCam)for(const e of W.enemies){if(!e.alive||e.state==='hide'||e.noCam)continue;if(hd(e.pos,a.pos)<14||hd(e.pos,b.pos)<14){f=true;break;}}
   G.fightT=f?1.8:Math.max(0,(G.fightT||0)-dt);return G.fightT>0;}
-function decideSplit(dt){const fight=fightNear(dt);
-  if(G.cine&&G.cine.cam)G.splitTarget=0;else if(G.solo||activeCamZone()||W.camFn)G.splitTarget=0;else if(W.noSplit)G.splitTarget=0;else if(W.forceSplit)G.splitTarget=1;else if(fight)G.splitTarget=0;
+// Общий экран в драке: камера отъезжает от героев на 0,8 м за каждый метр разлёта (updateShared). Уровни идут вдоль взгляда камеры,
+// поэтому дальний герой оказывается ещё на полразлёта дальше центра кадра: при разлёте 20 м Йоша — 16 px на кадре 720p (2,2 %), а
+// ближний герой уходит за нижний край (docs/29_full_audit.md, 7.4). В драке отъезд ограничен разлётом CAM_SEP_CAP, а при разлёте от
+// CAM_SEP_SPLIT экран делится даже в драке (обратно сливается ниже CAM_SEP_SPLIT − 4): камера с потолком держит обоих в кадре до ≈ 17 м.
+const CAM_SEP_CAP=9,CAM_SEP_SPLIT=16;
+function decideSplit(dt){const fight=fightNear(dt);G.fightMerge=false;
+  const sepNow=hd(active(0).pos,active(1).pos);G.farSplit=fight&&(G.farSplit?sepNow>=CAM_SEP_SPLIT-4:sepNow>=CAM_SEP_SPLIT);
+  if(G.cine&&G.cine.cam)G.splitTarget=0;else if(G.solo||activeCamZone()||W.camFn)G.splitTarget=0;else if(W.noSplit)G.splitTarget=0;else if(W.forceSplit)G.splitTarget=1;else if(fight&&!G.farSplit){G.splitTarget=0;G.fightMerge=true;}
   else{const a=active(0),b=active(1),d=hd(a.pos,b.pos);if(G.splitTarget<0.5){if(d>8)G.splitTarget=1;}else if(d<6&&!occluded(a,b))G.splitTarget=0;}
   const rate=dt/0.5;G.split=G.split<G.splitTarget?Math.min(G.splitTarget,G.split+rate):Math.max(G.splitTarget,G.split-rate);}
 function snapCams(){for(const i of[0,1]){const h=active(i),r=rigs[i];r.look.set(h.pos.x,h.pos.y+1.1,h.pos.z);r.pos.copy(r.look).addScaledVector(camBack(),7.2);r.pos.y+=4;r.la.set(0,0,0);}

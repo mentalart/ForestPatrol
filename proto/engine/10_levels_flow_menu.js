@@ -96,8 +96,9 @@ function rtShow(T){const R=rtInit();if(!T.info){T.info=rtInfo();const img='url('
 function updateTrans(dt){const T=G.trans;if(!T)return;T.t+=dt;$('fade').style.opacity=0;rtShow(T);
   if(T.t>0.8&&!T.done){T.done=true;if(G.nextLevel){const id=G.nextLevel;G.nextLevel=null;loadLevel(LV(id));}else if(G.levelIdx+1<LEVELS.length)loadLevel(G.levelIdx+1);else endGame();}if(T.t>2.15){G.trans=null;$('fade').style.opacity=0;if(RT.el)RT.el.style.display='none';}}
 function step(dt){G.time+=dt;G.playTime+=dt;if(G.uiTick&&!G.cine&&!G.trans)G.uiTick();
+  // пропуск ролика — прыжок держит любой из двух игроков (раньше оба: один ребёнок заставлял смотреть второго; docs/29_full_audit.md, 2.4)
   if(G.cine){const c=G.cine;c.t+=dt;c.update(c.t,dt);
-    if(c.skippable&&c.t>0.8){if(G.solo?btn(G.soloPi,'jump'):(btn(0,'jump')&&btn(1,'jump')))G.skipT+=dt;else G.skipT=Math.max(0,G.skipT-dt*2);if(G.skipT>=1){G.skipT=0;c.skip();c.t=c.dur;}}
+    if(c.skippable&&c.t>0.8){if(G.solo?btn(G.soloPi,'jump'):(btn(0,'jump')||btn(1,'jump')))G.skipT+=dt;else G.skipT=Math.max(0,G.skipT-dt*2);if(G.skipT>=1){G.skipT=0;c.skip();c.t=c.dur;}}
     if(c.t>=c.dur&&G.cine===c){G.cine=null;G.skipT=0;c.end();}}
   HEROES.forEach(h=>tickHero(h,dt));
   for(const pi of[0,1])updatePlayer(pi,dt);
@@ -203,12 +204,27 @@ function menuInput(){if(G.state==='end'){if(pressed.has('Enter')){if(G.flags.voi
   if(pressed.has('KeyC')){G.subs=!G.subs;showMenu(G.state);}if(pressed.has('KeyO')){setSolo(!G.solo);SFX.swap();showMenu(G.state);}
   if(pressed.has('Enter')||(G.state==='pause'&&pressed.has('Escape')))hideMenu();}
 let last=performance.now();
-function frame(now){requestAnimationFrame(frame);let dt=Math.min(0.05,(now-last)/1000);last=now;pollPads();
+// Игровое время идёт фиксированными шагами 1/60 с, а не длиной кадра (раньше — до 0,05 с): высота прыжка Потапа падала с 1,18 м
+// (120 fps) до 1,03 м (20 fps), на слабом ноутбуке щели получались длиннее (docs/29_full_audit.md, 7.3). Накопитель добирает кадр
+// шагами по 1/60; кадр короче шага (экран 144 Гц) иногда не даёт ни одного шага — нажатия такого кадра переносятся на следующий
+// шаг (carry), а в кадре с несколькими шагами нажатие видит только первый. Кадр, близкий к кратному 1/60 (16,2 или 17,1 мс на
+// экране 60 Гц), считается кратным — без «двойных» и пропущенных шагов. Возвращает игровое время, прошедшее за кадр (с учётом hit-stop).
+const FIXED=1/60;let accT=0;const carry=new Set();
+function advance(dt){const m=Math.round(dt/FIXED);if(m>=1&&Math.abs(dt-m*FIXED)<0.0015)dt=m*FIXED;
+  accT+=dt;let n=0,ran=0;
+  while(accT>=FIXED-1e-6&&n<5){if(n===0)for(const c of carry)pressed.add(c);
+    let sd=FIXED;if(G.hitstop>0){G.hitstop-=FIXED;sd*=0.15;}
+    step(sd);ran+=sd;accT-=FIXED;n++;if(accT>=FIXED-1e-6&&n<5)pressed.clear();}
+  if(accT>=FIXED)accT=0;
+  if(n===0){for(const c of pressed)carry.add(c);}else carry.clear();
+  return ran;}
+function frame(now){requestAnimationFrame(frame);G.frameMs=now-last;G.frameN=(G.frameN|0)+1;let dt=Math.min(0.05,(now-last)/1000);last=now;pollPads();
   if(G.state==='play'&&(pressed.has('KeyP')||pressed.has('PadBack')))togglePhoto();
-  if(G.state==='play'&&G.manual){}else if(G.state==='play'){if(pressed.has('Escape')){showMenu('pause');}else{if(G.hitstop>0){G.hitstop-=dt;dt*=0.15;}step(dt);}}else menuInput();
+  if(G.state==='play'&&G.manual){}else if(G.state==='play'){if(pressed.has('Escape')){showMenu('pause');}else{dt=advance(dt);}}else menuInput();
   render();updateUI(Math.min(0.05,G.state==='play'?dt:0));pressed.clear();}
 hudInit();loadLevel(0);showMenu('menu');requestAnimationFrame(frame);
 window.ZC={G,players,loadLevel,HERO,get W(){return W;},step,completeLevel,finishLevel,goLevel,startFrom,LEVELS,LV,worldLinks,setSolo,menuKey(c){pressed.add(c);menuInput();pressed.clear();},
   sim(sec){const n=Math.round(sec*60);for(let i=0;i<n;i++){if(G.state!=='play')break;step(1/60);if(i%30===0)updateUI(1/60);pressed.clear();}render();updateUI(1/60);},
+  advance(dt){const r=advance(dt);pressed.clear();return r;},   // кадр длиной dt секунд (для ботов: частота кадров 20…144 fps)
   start(){hideMenu();},menu:showMenu,tick(n){for(let i=0;i<(n||1);i++){step(1/60);pressed.clear();}},press(c){pressed.add(c);},hold(c,on){if(on)down.add(c);else down.delete(c);},skip(){if(G.cine){G.cine.skip();G.cine.t=G.cine.dur;}}};
 })();

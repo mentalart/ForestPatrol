@@ -1,14 +1,14 @@
-/* ============================== РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · СТАРТ, УДОБСТВО, СОХРАННОСТЬ ============================== */
-// По отчёту детской оценки (QA 7–11 лет). Здесь — то, что общее для игры и нужно ребёнку ещё до первого уровня; сами правки мира 1 — late_75_kids_w1.js.
+/* ============================== РЕЛИЗ · ДЕТИ 7–11 · СТАРТ, УДОБСТВО, СОХРАННОСТЬ (пролог и миры 1–5) ============================== */
+// По отчёту детской оценки (QA 7–11 лет). Здесь — то, что общее для игры и нужно ребёнку ещё до первого уровня; сами правки уровней — late_75_kids_w1.js (раньше только мир 1, теперь миры 1–5).
 //  • «Новая игра» открывает экран «Кто играет?»: вдвоём или один, у каждого игрока — Ёжик / Лисёнок / Богатырь (Лёгкий / Средний / Богатырский путь),
 //    чтение задач вслух и крупный текст. По умолчанию выбрано «Начать сказку!» — одно нажатие. В ?debug экран пропускается (боты), FIN.kids.force — показать.
 //  • Для новой установки тряска камеры и вспышки — 50 % (было 100 %).
 //  • Настройки: «Читать задачи вслух», «На весь экран». Управление: клавиша H / LB — «Повтори задачу».
 //  • Игра сама встаёт на паузу, когда окно теряет фокус или вкладка скрыта (раньше герои стояли без нажатий, а их били).
-//  • Закрытие вкладки посреди уровня мира 1 спрашивает подтверждение (сохранение внутри уровня нет — об этом честно сказано в паузе).
+//  • Закрытие вкладки посреди уровня пролога и миров 1–5 спрашивает подтверждение (сохранение внутри уровня нет — об этом честно сказано в паузе).
 //  • Слабый компьютер: если первые секунды уровня идут медленнее ~30 кадров/с, графика сама снижается на ступень (без сохранения в настройки).
-const KIDS=FIN.kids={ver:'мир 1 · версия для 7–11 лет',force:false,seen:false,t0:0,q:{t:0,n:0,sum:0,last:0,done:false},debug:/[?&]debug/.test(location.search),
-  worlds:[1],levels:['p']};   // где включены правки: миры из worlds и уровни из levels
+const KIDS=FIN.kids={ver:'пролог и миры 1–5 · версия для 7–11 лет',force:false,seen:false,t0:0,q:{t:0,n:0,sum:0,last:0,done:false},debug:/[?&]debug/.test(location.search),
+  worlds:[1,2,3,4,5],levels:['p']};   // где включены правки: миры из worlds и уровни из levels (до аудита 29 — только мир 1: с мира 2 «Ёжик» и чтение вслух пропадали)
 KIDS.isKidsLevel=i=>{const L=LEVELS[i];return !!L&&(KIDS.worlds.includes(L.world)||KIDS.levels.includes(L.id));};
 // ---------- настройки новой установки ----------
 try{if(localStorage.getItem('zlatayaCep.settings.v1')===null){FIN.set.shakeK=0.5;FIN.set.flashK=0.5;}}catch(e){}
@@ -31,7 +31,7 @@ function kidsSetupScreen(){const S=FIN.set,cyc=(pi,d)=>{cyclePath(pi);if(d<0)cyc
   if(KIDS.debug&&!KIDS.force){_ng();return;}
   if(!KIDS.seen){KIDS.seen=true;players.forEach(p=>{p.path='easy';});if(G.solo||FIN.co.on)players[1].path=players[0].path;}
   finPush(kidsSetupScreen());};}
-// пауза: «Читать задачи вслух» вторым пунктом (в пологе и мире 1), чтобы выключить, не заходя в настройки; в ?debug скрыт, чтобы не сдвигать пункты для ботов
+// пауза: «Читать задачи вслух» вторым пунктом (в прологе и мирах 1–5), чтобы выключить, не заходя в настройки; в ?debug скрыт, чтобы не сдвигать пункты для ботов
 {const _ps=pauseScreen;pauseScreen=function(){const scr=_ps();
   if(W&&W.kids&&(!KIDS.debug||KIDS.force))scr.items.splice(1,0,{label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>FIN.readAloud.toggle()});
   return scr;};}
@@ -60,10 +60,11 @@ addEventListener('beforeunload',e=>{try{if(KIDS.debug||!W||!W.kids||G.state==='m
   e.preventDefault();e.returnValue='Уровень начнётся заново. Выйти?';return e.returnValue;}catch(err){}});
 // ---------- слабый компьютер: графика сама проще ----------
 {const _ll=loadLevel;loadLevel=function(i){_ll(i);KIDS.t0=performance.now();const q=KIDS.q;q.t=0;q.n=0;q.sum=0;q.last=0;};}
-{const _st=step;step=function(dt){_st(dt);if(KIDS.debug||KIDS.q.done||G.state!=='play'||G.cine||G.trans||document.hidden)return;const q=KIDS.q,now=performance.now();
-  if(q.last&&now-q.last<400){q.t+=now-q.last;if(q.t>4000){q.n++;q.sum+=now-q.last;}}q.last=now;
+{const _st=step;step=function(dt){_st(dt);if(KIDS.debug||KIDS.q.done||G.state!=='play'||G.cine||G.trans||document.hidden)return;const q=KIDS.q;
+  if(q.fn===G.frameN)return;q.fn=G.frameN;const fm=G.frameMs;   // меряем кадр (G.frameMs — длина кадра из frame()), а не шаг: в кадре их бывает несколько или ни одного
+  if(fm<400){q.t+=fm;if(q.t>4000){q.n++;q.sum+=fm;}}
   if(q.n>=240){const ms=q.sum/q.n;q.done=true;if(ms>34&&FIN.set.quality!=='low'){FIN.set.quality=FIN.set.quality==='high'?'mid':'low';FIN.applyQuality();banner('Игре тяжело — картинка стала проще','#ffffff',2.6,'так она пойдёт плавнее · вернуть можно в «Настройки → Графика»');}}};}
-// ---------- числа для плейтеста: по уровням мира 1 — сколько раз упали, сколько просили «Повтори», сколько играли ----------
+// ---------- числа для плейтеста: по уровням пролога и миров 1–5 — сколько раз упали, сколько просили «Повтори», сколько играли ----------
 KIDS.log={};KIDS.lv=()=>{const id=W&&W.levelId||'?';return KIDS.log[id]||(KIDS.log[id]={downs:0,help:0,read:0,sec:0,visits:0});};
 {const _ll2=loadLevel;loadLevel=function(i){_ll2(i);if(W&&W.kids)KIDS.lv().visits++;};}
 {const _st2=step;step=function(dt){_st2(dt);if(W&&W.kids&&G.state==='play'&&!G.cine&&!G.trans)KIDS.lv().sec+=dt;};}

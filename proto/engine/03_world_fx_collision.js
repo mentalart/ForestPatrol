@@ -2,9 +2,17 @@
 const G={state:'menu',time:0,levelIdx:0,hitstop:0,split:0,splitTarget:0,cine:null,trans:null,playTime:0,subs:true,skipT:0,links:0,
   nutsGot:{},ui:null,uiTick:null,forgedLinks:0,forgedW:{1:0,2:0,3:0,4:0,5:0},zbest:{},gems:{},gemsSpent:0,nutsSpent:0,nutsHub:0,trips:0,garden:null,hen:null,owned:{},secrets:{},tales:{},stats:{parries:0,mahs:0,shields:0,finishers:0,sparks:0,swaps:0,falls:0,clings:0,carries:0,skips:0,dodges:0,revives:0,seven:0,bogatyr:0,glue:0},flags:{},got:{},done:{},slowFoes:0};
 let W=null;G.solo=false;G.soloPi=0;
+// ушедший уровень отдаёт видеопамять: геометрии (буферы) и текстуры. Материалы не трогаем — общие материалы кита живут между
+// уровнями, а их dispose выбросил бы шейдерные программы (повторная компиляция при входе). Общая геометрия или текстура, которой
+// пользуется следующий уровень, просто загрузится заново.
+function disposeTree(root){const seen=new Set();
+  const tex=v=>{if(v&&v.isTexture&&!seen.has(v)){seen.add(v);v.dispose();}};
+  root.traverse(o=>{if(o.geometry&&!seen.has(o.geometry)){seen.add(o.geometry);o.geometry.dispose();}
+    if(o.isInstancedMesh&&o.dispose)o.dispose();
+    for(const m of[].concat(o.material||[])){for(const k in m)tex(m[k]);if(m.uniforms)for(const u in m.uniforms)tex(m.uniforms[u]&&m.uniforms[u].value);}});}
 function newWorld(){
   if(W&&W.onLeave)W.onLeave();G.ui=null;G.uiTick=null;
-  if(W&&W.group)scene.remove(W.group);
+  if(W&&W.group){scene.remove(W.group);disposeTree(W.group);}
   W={group:new THREE.Group(),boxes:[],cyls:[],enemies:[],plates:[],gates:[],bells:[],hittables:[],marks:[],waterTargets:[],updates:[],camZones:[],tipZones:[],prompts:[],
      objectives:[[],[]],decor:[],needles:[],noCarry:[],camYaw:0,camX:8,clampR:null,name:'',sub:'',spawns:null,startAct:[0,0],fx:[],shots:[],sparks:[],timers:[],anims:[],debris:[],
      forceSplit:false,zven:null,zvenGoal:null,zvenFree:false,bolts:[],stakes:[],pawStones:[],hummocks:[],movers:[],stumps:[],rzt:null,threads:[],returning:[],webs:[],webMeshes:null,glueHints:null,items:[],links:0,nuts:0,linkTotal:0,nutTotal:0,

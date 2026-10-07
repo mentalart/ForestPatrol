@@ -41,6 +41,9 @@ addEventListener('blur',()=>down.clear());
 const soloHears=pi=>pi===G.soloPi||!!(W&&W.soloMirror&&!G.ui);
 const btn=(pi,a)=>G.solo?(soloHears(pi)&&(down.has(BIND[0][a])||down.has(BIND[1][a])||PADS.down.has(BIND[0][a])||PADS.down.has(BIND[1][a]))):(down.has(BIND[pi][a])||PADS.down.has(BIND[pi][a]));
 const tap=(pi,a)=>G.solo?(soloHears(pi)&&(pressed.has(BIND[0][a])||pressed.has(BIND[1][a]))):pressed.has(BIND[pi][a]);
+// ритм-уровни (1-3, 3-3, 4-3, 3-B, 5-4): время нажатия в «песенном» времени уровня за вычетом поправки на задержку звука и ввода (G.rLat, с;
+// настройка «Калибровка ритма», в прототипе 0): беспроводные наушники и телевизоры слышат долю позже, чем игра её сыграла
+const rT=t=>t-(G.rLat||0);
 const AUTO=pi=>G.solo&&pi!==G.soloPi;             // одиночный режим: за этого игрока «играет» помощник
 const ctrl=h=>G.solo?h===active(G.soloPi):h.active;   // этим героем сейчас управляет человек
 const UW=pi=>G.solo?G.soloPi:pi;                    // чей выбор в окне: в одиночку — всегда твой

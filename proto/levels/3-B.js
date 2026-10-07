@@ -160,7 +160,7 @@ function build3B(){
   const SG={on:false,t:0,k:-1,B:60/84,hits:0,judged:{}};W.song=null;
   function startSong(){SG.on=true;SG.t=-4*SG.B;SG.k=-5;SG.hits=0;W.song={t:SG.t,B:SG.B,show:true,state:'play',pulse:0};banner('Подпой, Пелагея!','#d7a6ec',2.4,'прыгай '+K(1,'jump')+' в такт — Соловей подпоёт, подхватит');
     W.custom=(pi,h,dt,c)=>{for(const q of players[pi].heroes){q.vel.x=damp(q.vel.x,0,10,dt);q.vel.z=damp(q.vel.z,0,10,dt);}
-      if(pi===1&&(tap(1,'jump')||G.solo&&tap(G.soloPi,'jump'))&&h.grounded&&SG.on){h.vel.y=6.4;h.grounded=false;SFX.jump();const k=Math.round(SG.t/SG.B);if(k>=0&&k<8&&!SG.judged[k]){const d=SG.t-k*SG.B;const ok=Math.abs(d)<=(LADWIN[players[1].path]||0.1)+0.05+(W.ladBonus||0);SG.judged[k]=1;
+      if(pi===1&&(tap(1,'jump')||G.solo&&tap(G.soloPi,'jump'))&&h.grounded&&SG.on){h.vel.y=6.4;h.grounded=false;SFX.jump();const k=Math.round(rT(SG.t)/SG.B);if(k>=0&&k<8&&!SG.judged[k]){const d=rT(SG.t)-k*SG.B;const ok=Math.abs(d)<=(LADWIN[players[1].path]||0.1)+0.05+(W.ladBonus||0);SG.judged[k]=1;
         if(ok){SG.hits++;const m=BER[0][k][0];if(m){tone(mf(m+12),0.4,'sine',0.2);}floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'В долю!','#e7c3ff');if(SG.hits>=3){const mm=BER[0][k][0];if(mm)tone(mf(mm),0.5,'triangle',0.16);}}
         else floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),d<0?'рано':'поздно','#dddddd');}}};}
   function songTick(dt){SG.t+=dt;W.song.t=SG.t;const k=Math.floor(SG.t/SG.B+1e-6);while(SG.k<k){SG.k++;const n=SG.k;if(n<0){tone(1760,0.06,'square',0.05);banner(['Раз','Два','Три','Четыре!'][n+4],'#ffe7a0',0.5);}

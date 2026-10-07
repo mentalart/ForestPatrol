@@ -103,6 +103,8 @@ zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tso
 zlataya_cep/build/late_74_kids_start.js       tfin_kids1 tfin_menu tfin_save tfin_dev tfin_pads2 smoke
 zlataya_cep/build/late_75_kids_w1.js          @level:p @level:1-1 @level:1-2 @level:1-3 @level:1-4 @level:1-5 @level:1-B tfin_kids1 smoke
 zlataya_cep/build/late_79b_readaloud.js       tfin_kids1 tfin_hints
+zlataya_cep/build/late_77_rcal.js              tfin_rhythmcal tfin_menu tfin_save smoke
+zlataya_cep/build/late_78_next.js              tfin_next tluko tfin_save tfin_menu smoke
 zlataya_cep/build/late_80_ui.js               tfin_menu tfin_cine
 zlataya_cep/build/late_81_sfx.js              tfin_cine tfin_uisnd
 zlataya_cep/build/late_91_voice.js            tfin_voice tfin_cine tfin_scooter tfin_uisnd

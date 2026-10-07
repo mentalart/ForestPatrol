@@ -32,7 +32,8 @@ chk(T.easy.lead===0.9&&T.easy.parry===0.4&&T.easy.broken===9&&T.mid.broken===5&&
 ZC.G.manual=true;ZC.startFrom(ZC.LV('1-1'));ZC.tick(10);for(let q=0;q<3&&ZC.G.cine;q++){ZC.skip();ZC.tick(5);}
 chk(ZC.W.levelId==='1-1'&&ZC.W.kids===true,'1-1: kids');
 ZC.loadLevel(ZC.LV('luko'));const L=KD.timing();chk(ZC.W.kids===false&&!ZC.W.tipMul&&L.easy.lead===0.7&&L.easy.broken===6&&L.easy.parry===0.35,'Лукоморье — как прежде: '+JSON.stringify(L.easy)+' tip='+ZC.W.tipMul);
-ZC.loadLevel(ZC.LV('2-1'));chk(ZC.W.kids===false&&KD.timing().easy.lead===0.7,'мир 2 — как прежде');
+ZC.loadLevel(ZC.LV('2-1'));chk(ZC.W.kids===true&&KD.timing().easy.lead===0.9&&ZC.W.tipMul===2.5,'мир 2 — детские настройки включены (аудит 29, 2.1; все миры — tfin_kidsw)');
+ZC.loadLevel(ZC.LV('epi'));chk(ZC.W.kids===false&&KD.timing().easy.lead===0.7,'эпилог — как прежде');
 ZC.loadLevel(ZC.LV('1-3'));chk(ZC.W.kids===true&&KD.timing().easy.lead===0.9,'1-3 — мир 1');
 ZC.W.kids=ZC.W.kids;['kids='+ZC.W.kids].concat(BAD)
 //@@

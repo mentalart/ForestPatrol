@@ -44,3 +44,19 @@ tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo tfin_k2bmill t
 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor tfin_juice
 # Ctrl+Alt+B — следующая стадия у всех боссов (late_95_dev.js, W.bossNext)
 tfin_bossnext
+# утечка видеопамяти при смене уровня (docs/29_full_audit.md, 10.1): геометрии и текстуры освобождаются при выходе из уровня
+tfin_leak
+# буфер ввода: прыжок 0,12 с и удар 0,15 с (docs/29_full_audit.md, 7.1)
+tfin_inbuf
+# фиксированный шаг физики 1/60 с (docs/29_full_audit.md, 7.3)
+tfin_fixedstep
+# потолок камеры на разлёт героев в драке (docs/29_full_audit.md, 7.4)
+tfin_camcap
+# пропуск ролика — прыжок держит любой из двух игроков (docs/29_full_audit.md, 2.4)
+tfin_skipany
+# детские настройки — в прологе и во всех мирах 1–5 (docs/29_full_audit.md, 2.1)
+tfin_kidsw
+# кнопка «Дальше» после уровня (docs/29_full_audit.md, 3.5)
+tfin_next
+# калибровка ритма: поправка на задержку звука и ввода (docs/29_full_audit.md, 3.7)
+tfin_rhythmcal
