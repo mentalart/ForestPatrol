@@ -219,7 +219,8 @@ const WEAR={
 };
 // сундук гардероба: {owned, wear[герой][слот], dance}
 const WARD=(()=>{let d=null;try{d=JSON.parse(localStorage.getItem('zlatayaCep.wardrobe.v1')||'null');}catch(e){d=null;}
-  d=d&&typeof d==='object'?d:{};d.owned=d.owned||{};d.wear=d.wear||{};for(const k of WEAR_KINDS)d.wear[k]=d.wear[k]||{};d.dance=d.dance||null;return d;})();
+  const po=v=>!!v&&typeof v==='object'&&!Array.isArray(v);   // повреждённое хранилище (не объект) — как пустое, иначе запуск падает
+  d=po(d)?d:{};if(!po(d.owned))d.owned={};if(!po(d.wear))d.wear={};for(const k of WEAR_KINDS)if(!po(d.wear[k]))d.wear[k]={};d.dance=d.dance||null;return d;})();
 function saveWard(){try{localStorage.setItem('zlatayaCep.wardrobe.v1',JSON.stringify(WARD));}catch(e){}}
 const own=id=>!!(WARD.owned[id]||(G.owned&&G.owned[id]));
 function buyWard(id){WARD.owned[id]=true;saveWard();}
