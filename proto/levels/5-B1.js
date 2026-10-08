@@ -27,7 +27,7 @@ function build5B1(){
   const Z=makeZven();W.zven=Z;Z.pos.set(0,3,8);
   const bb=$('bossbar');W.onLeave=()=>{bb.style.display='none';};
   function setBar(){const k=clamp(F.t/TOT,0,1);const ph=F.t<P1D?'тени':F.t<P1D+P2D?'золото':'тетрадка';bb.style.display='block';bb.style.borderColor='#a0ffb8';
-    bb.innerHTML='<b style="color:#a0ffb8">Цель: выстоять</b><span class="seg" style="width:180px"><i style="width:'+Math.round(k*100)+'%;background:#a0ffb8"></i></span> <small style="opacity:.8">'+ph+'</small>';}
+    const pn=F.t<P1D?1:F.t<P1D+P2D?2:3;bb.innerHTML='<b style="color:#a0ffb8">Цель: выстоять</b> · '+pn+' / 3 · '+ph+' <span class="seg" style="width:180px"><i style="width:'+Math.round(k*100)+'%;background:#a0ffb8"></i></span>';}
   /* ---------- тени-двойники ---------- */
   const SH=[['proshka',0],['potap',0],['pelageya',1],['yosha',1]];const shadows=[];
   function spawnShadow(kind,pi){const a=rand(-0.8,0.8)+(pi?0.6:-0.6);const x=C.x+Math.sin(a)*8,z=C.z-Math.cos(a)*8;const e=dvoynikFoe(kind,x,z,{pi,leash:14});e.dv=true;burst(new V3(x,1,z),0x3a1a6a,14,3);SFX.whoosh();shadows.push({e,kind,pi,t:0});return e;}
