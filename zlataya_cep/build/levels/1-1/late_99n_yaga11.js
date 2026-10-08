@@ -41,3 +41,13 @@ FIN.yaga11=function(c){const {F,yaga,hut,spawnKiki,arena,puddles}=c;F.stage='yag
       for(const n of['browL','browR']){const b=bone(n);if(b)b.position.y=(b.userData.y0!=null?b.userData.y0:(b.userData.y0=b.position.y))+(peer&&n==='browL'?0.035:0);}
       for(const h of HEROES)if(t<15)h.vel.set(0,0,0);},
     end:()=>{armBack();if(yaga.head)yaga.head.rotation.x=0;if(!arena.started)spawnKiki();F.stage='fight';}});};
+
+/* ---------- M-4b (docs/34): подсказки боя с Ягой — ≤ 7 слов, кнопки в карточке не мельче текста (≥ 3 % высоты окна) ---------- */
+// Тексты общего движка и 1-2 в других уровнях прежние; озвучки у этих подсказок нет (озвучены только реплики ролика).
+FIN.yaga11Tip=html=>{let m;
+  if(m=/^Сейчас по нему не попасть\. Сперва удар его отбей (.*?), потом бей (.*?)\.$/.exec(html))return 'Отбей удар '+m[1]+' — потом бей '+m[2]+'!';
+  if(/^Колокольчик! Коль упадёшь/.test(html))return 'Колокольчик — упадёшь, сюда вернёшься.';
+  return html;};
+{const _tp=tip;tip=function(pi,html,dur){if(W&&W.levelId==='1-1'&&typeof html==='string')html=FIN.yaga11Tip(html);return _tp(pi,html,dur);};}
+{const st=document.createElement('style');st.textContent='body.fin-y11 .hn-card kbd,body.fin-y11 .hn-card .pb{font-size:calc(var(--hnf)*var(--fts))}';document.head.appendChild(st);
+ const _ui=updateUI;updateUI=function(dt){_ui(dt);try{document.body.classList.toggle('fin-y11',!!(W&&W.levelId==='1-1'));}catch(e){}};}

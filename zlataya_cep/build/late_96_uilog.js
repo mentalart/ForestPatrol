@@ -29,7 +29,8 @@ if(typeof CINE!=='undefined'){const t=CINE.trauma,d=CINE.flashDip;
   if(t)CINE.trauma=function(a){push('trauma',{a});return t.apply(this,arguments);};
   if(d)CINE.flashDip=function(col,a){push('dip',{a:a==null?0.5:a,col});return d.apply(this,arguments);};}
 // hit-stop: прототип сам выставляет G.hitstop (в ZC.tick он не убывает) — пишем каждое выставление
-{let hv=G.hitstop||0;Object.defineProperty(G,'hitstop',{get(){return hv;},set(v){hv=v;if(v>0)push('hitstop',{d:+(+v).toFixed(3)});},configurable:true,enumerable:true});}
+{const pd=Object.getOwnPropertyDescriptor(G,'hitstop');let hv=G.hitstop||0;   // M-4b: сеттер с потолком FIN.bossfx (late_84b) — вызываем, а не затираем
+  Object.defineProperty(G,'hitstop',{get(){return pd&&pd.get?pd.get.call(G):hv;},set(v){if(pd&&pd.set)pd.set.call(G,v);else hv=v;if(v>0)push('hitstop',{d:+(+(pd&&pd.get?pd.get.call(G):v)).toFixed(3)});},configurable:true,enumerable:true});}
 // --- сэмплер HUD ---
 const own=el=>{let s='';for(const n of el.childNodes)if(n.nodeType===3)s+=n.nodeValue;return s.trim().length>0;};
 const fontOf=el=>{let m=parseFloat(getComputedStyle(el).fontSize)||0;const q=[el];while(q.length){const e=q.pop();for(const c of e.children){const cs=getComputedStyle(c);if(cs.display==='none'||cs.visibility==='hidden'||+cs.opacity<0.15)continue;
