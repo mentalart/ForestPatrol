@@ -36,7 +36,7 @@ K1S.begin=function(){const c=K1B.cur;if(!c||K1S.on)return;const C=c.C;K1S.on=tru
   K1S.lane=K1B.fx.lane(C,K1S_LANE,2.2,1);k1sRopes(1);k1sRibbons();
   K1B.fx.mood('fair',2);K1B.music&&K1B.music('k1b3');
   banner('Хоровод!','#ffd76a',2.4,'беги по стрелкам, через скакалку — прыжок');
-  for(const pi of k1sPis())tip(pi,'Бегом по стрелкам! Скакалка — прыжок '+K(pi,'jump')+', кувырок '+K(pi,'roll')+'.',3.4);
+  for(const pi of k1sPis())tip(pi,'Бегом по стрелкам! Скакалка — прыжок '+K(pi,'jump')+'.',3.4);
   if(G.solo)tip(G.soloPi,'Бежишь ты — второй держит ленту.',3.4);};
 function k1sRopes(n){const C=K1B.cur.C;K1S.ropes.forEach(r=>W.group.remove(r.R.g));K1S.ropes=[];const w=K1S.round===1?0.63:0.55,ws=({easy:0.8,mid:1,hard:1.05})[k1sPath()]||1;
   for(let i=0;i<n;i++){const R=K1B.fx.rope(C,K1S_ROPE,1);K1S.ropes.push({R,th:i*Math.PI,w:w*ws,prev:[null,null],len:K1S_ROPE});}}
@@ -118,3 +118,10 @@ K1S.hint=function(pi){const i=k1sIdx(pi),lap=Math.min(K1S.need,K1S.laps[i]||0);
 // «Добивающий мах» из общих подсказок и всплывашки — в 1-Б везде «Богатырский мах» (общий текст других уровней не трогаем)
 {const _ct=contextTip;contextTip=function(pi){const r=_ct(pi);return r&&W&&W.levelId==='1-B'?r.replace('Добивающий мах','Богатырский мах'):r;};
  const _ft=floatText;floatText=function(pos,text,color){return _ft(pos,W&&W.levelId==='1-B'&&text==='Добивающий мах!'?'Богатырский мах!':text,color);};}
+// общие подсказки боя в 1-Б — короче и без «оба»/дубля (в других уровнях тексты прежние)
+{const _tp=tip;tip=function(pi,html,dur){if(W&&W.levelId==='1-B'&&typeof html==='string'){let m;
+    if(m=/^Большой морок оглушён! Ударьте (.*?) оба разом/.exec(html))html='Бейте '+m[1]+' вдвоём — Богатырский мах!';
+    else if(/^Увернулся — враг закружился!/.test(html))html='Враг закружился — бей, пока открыт!';
+    else if(m=/^Синяя полоска полна! Смени героя (.*?) —/.exec(html))html='Полоска полна — смени героя '+m[1]+'!';
+    else if(/^Сейчас по нему не попасть/.test(html))html='Не попасть — сначала отбей его удар.';}
+  return _tp(pi,html,dur);};}
