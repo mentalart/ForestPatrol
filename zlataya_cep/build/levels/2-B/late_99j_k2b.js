@@ -101,13 +101,14 @@ build2B=function(){
   const S1={st:'off',t:0,ang:-Math.PI/2,throwT:2.6,lungeT:7,sh:null,a:null,b:null,lane:null,whisk:false,beat:-1,tw:null,dbl:false};BS.s1=S1;
   const somAt=(p,face,y)=>{SOM.g.position.set(p.x,y!=null?y:surf()-0.18,p.z);SOM.g.rotation.y=face;};
   const whiskTip=new V3();
-  W.marks.push({pos:whiskTip,active:()=>F.phase===1&&S1.st==='beached'&&!S1.whisk,onHit:()=>{S1.whisk=true;S1.t=0;S1.dur=SOLO()?10:8;SOM.thrash=1.6;SFX.latch();FX.splash(whiskTip.clone(),0.8);
+  W.marks.push({pos:whiskTip,active:()=>F.phase===1&&S1.st==='beached'&&!S1.whisk,onHit:()=>{S1.whisk=true;S1.t=0;if(!LK.seen('k2b','pull'))later(0.25,()=>lessonOnce('pull',()=>{if(F.phase===1&&S1.st==='beached')S1.t=0;}));S1.dur=SOLO()?10:8;SOM.thrash=1.6;SFX.latch();FX.splash(whiskTip.clone(),0.8);
     key(whiskTip.clone().add(new V3(0,1,0)),'Ус сбит! Потап — хватай!','#ffd76a');sayV('Ус не трожь!',1.4,'angry');whiskMat.emissiveIntensity=1;}});
   const whiskMat=M(COL.gold,{emissive:0xffb000,emissiveIntensity:0});const whiskGlow=new THREE.Mesh(new THREE.SphereGeometry(0.32,10,8),whiskMat);whiskGlow.visible=false;W.group.add(whiskGlow);
   W.lifts.push({pos:whiskTip,active:()=>F.phase===1&&S1.st==='beached'&&S1.whisk,onLift:h=>{S1.st='pull';S1.t=0;S1.beat=-1;S1.puller=h;S1.anchor=h.pos.clone();SFX.latch();bark(h,'potap','Держу ус! Раз…',1.4,true);}});
   function s1Start(){F.phase=1;S1.st='circle';S1.t=0;S1.throwT=2.4;S1.lungeT=SOLO()?8:6.5;SOM.g.visible=true;vod.embers=vod.maxEmb=8;BS.lastEmb=8;BS.zap=0;vod.setScale(1.2);V.set(vod.k2,'ride','angry');music('vod1');
     card(1,'Этап 1 · Сом-перевозчик','Водяной верхом на соме',p=>p===0?'Бей рогаткой в ус '+K(0,'skill')+'!':'Синий круг — щит '+K(1,'guard')+' в последний миг!');}
-  function s1Lunge(){const h=pick();let best=SHOAL[0],bd=1e9;for(const S of SHOAL){const d=Math.hypot(S.x-h.pos.x,S.z-h.pos.z);if(d<bd){bd=d;best=S;}}
+  function s1Lunge(){if(!LK.seen('k2b','whisk')&&FIN.k2les.auto!==false&&!G.cine){S1.lungeT=99;lessonOnce('whisk',()=>{if(F.phase===1)S1.lungeT=0;});return;}
+    const h=pick();let best=SHOAL[0],bd=1e9;for(const S of SHOAL){const d=Math.hypot(S.x-h.pos.x,S.z-h.pos.z);if(d<bd){bd=d;best=S;}}
     S1.sh=best;const dir=new V3(best.x-C.x,0,best.z-C.z).normalize();S1.b=new V3(best.x-dir.x*2.1,0,best.z-dir.z*2.1);S1.a=SOM.g.position.clone();S1.st='tele';S1.t=0;S1.dur=SOLO()?1.7:1.4;
     S1.lane=FX.lane(new V3(S1.a.x,0,S1.a.z),new V3(best.x,0,best.z),2.8,S1.dur,'red',surf());V.set(vod.k2,'grab','angry');sayV(Math.random()<0.5?'Поберегись!':'Н-но, сомушка!',1.2);
     if(!F.lungeTold){F.lungeTold=true;for(const p of[0,1])tip(p,'Красная дорожка — кувыркнись '+K(p,'roll')+'!',3.6);}}
@@ -153,7 +154,7 @@ build2B=function(){
   const shellRef=(i)=>({i,hum:0,dur:6,off:true,by:null,ring(h){this.hum=Math.max(this.hum,this.dur);this.by=h||null;s2Tame(this,h);}});
   const SH2=SHOAL.map((S,i)=>{const dx=(S.x-C.x)/8.6,dz=(S.z-C.z)/8.6,ref=shellRef(i);const sh=kwShell('dance',S.x+dx*0.9,S.z+dz*0.9,1.0,ref,{ry:Math.atan2(-dx,-dz),r:2.6,say:'Тпру, конёк!'});
     sh.g.visible=false;sh.g.traverse(c=>{c.userData.noBatch=true;});return sh;});
-  function s2Start(){F.phase=2;S2.st='run';S2.t=0;S2.throwT=5;S2.whistT=SOLO()?11:8.5;vod.embers=vod.maxEmb=6;BS.lastEmb=6;BS.zap=0;vod.setScale(1.5);V.resetFlowers(vod.k2);V.set(vod.k2,'conduct','happy');
+  function s2Start(){F.phase=2;S2.st='run';S2.t=0;S2.throwT=5;S2.whistT=SOLO()?11:8.5;{const n=SOLO()?3:6;vod.embers=vod.maxEmb=n;BS.lastEmb=n;}BS.zap=0;vod.setScale(1.5);V.resetFlowers(vod.k2);V.set(vod.k2,'conduct','happy');
     vod.pos.set(C.x,3.2,C.z);vod.face=0;SH2.forEach(S=>{S.g.visible=true;S.ref.off=false;});music('vod2');FX.rain(true,{c:new V3(C.x,0,C.z)});OM.chop=0.7;
     if(!S2.horses.length)for(let i=0;i<4;i++){const H=V.horse();H.g.scale.setScalar(1.15);H.ang=i/4*Math.PI*2;H.lane=i%2;H.r=S2.ring[H.lane];S2.horses.push(H);}
     S2.horses.forEach(H=>{H.g.visible=true;H.frozen=0;H.state='run';});
@@ -171,7 +172,10 @@ build2B=function(){
     later(1.2,()=>{if(F.phase===2)V.set(vod.k2,'conduct','angry');});}
   function s2Fall(){const e=vod;const a=rand(0,6.28),to=new V3(C.x+Math.cos(a)*3.6,-1.4,C.z+Math.sin(a)*3.6),from=e.pos.clone();anim(0.9,k=>{e.pos.lerpVectors(from,to,k);e.pos.y+=Math.sin(k*Math.PI)*2;});
     later(0.85,()=>FX.crown(to.clone().setY(surf()),1.6));winStart(SOLO()?6:4.5,3);S2.fallen=true;}
-  function s2Tick(dt){const e=vod,S=S2;S.t+=dt;S.lightT=(S.lightT==null?6:S.lightT)-dt;if(S.lightT<=0){S.lightT=rand(8,14);FX.lightning();}
+  function s2Tick(dt){const e=vod,S=S2;S.t+=dt;
+    // оставленный герой у раковины держит напев не 15 с, а 8: коню этого хватает, а ожидание в соло короче (смысл «оставленный держит» прежний)
+    for(const h of HEROES){const H=h.kwHold;if(H&&SH2.some(R=>R.ref===H.ref))H.t=Math.min(H.t,8);}
+S.lightT=(S.lightT==null?6:S.lightT)-dt;if(S.lightT<=0){S.lightT=rand(8,14);FX.lightning();}
     if(e.dazeT>0||e.state==='broken'){}else if(S.fallen){S.fallen=false;const from=e.pos.clone();anim(1,k=>{e.pos.lerpVectors(from,new V3(C.x,3.2,C.z),k);e.pos.y+=Math.sin(k*Math.PI)*2;});later(1,()=>V.set(e.k2,'conduct','angry'));}
     else if(!S.onIsl&&!S.fallen&&Math.hypot(e.pos.x-C.x,e.pos.z-C.z)<0.5)e.pos.set(C.x,3.2,C.z);
     if(S.onIsl&&!(e.dazeT>0)&&e.state!=='broken'){S.washT=0;s2Wash();}
@@ -325,6 +329,27 @@ build2B=function(){
     BS.idleT+=dt;if(BS.idleT>28){BS.idleT=0;for(const p of[0,1])tip(p,W.k2hint?W.k2hint(p):'',4);}});
   // ---------- карточка этапа: баннер + одна подсказка на игрока ----------
   function card(n,title,sub,tipFn){banner(title,'#7ad0a0',3,sub);W.k2hint=tipFn;BS.idleT=0;later(0.8,()=>{for(const p of[0,1])tip(p,tipFn(p),5.5);});}
+  /* ---------- уроки приёмов этапов 1–3 (общий шаблон FIN.lesson, late_79e_lesson.js): один приём — один урок ≤ 25 с; пропуск — держать прыжок ---------- */
+  // Показ — перед тем, как приём понадобится (первый бросок сома, первый сбитый ус, конец роликов к этапам 2 и 3); «Показать урок ещё раз» — в паузе.
+  // Шаг ≤ 8,2 с (ждёт кнопку 4,8 с, потом герои показывают сами): три шага — 24,6 с. Тексты шагов ≤ 7 слов, по docs/36 (озвучку не трогаем).
+  const LK=FIN.lesson;FIN.k2les=FIN.k2les||{auto:true};
+  const lpi=pi=>G.solo?G.soloPi:pi;
+  const LES2={
+    whisk:[{title:'Ус сома',icon:'red',text:'Сом на мели: Прошка, рогатку в ус!',keys:[{pi:0,a:'skill'}],who:0}],
+    pull:[{title:'Тяга Потапа',icon:'n123',text:'Потап, хватай ус — раз-два-три!',keys:[{pi:0,a:'skill'}],who:0}],
+    horse:[{title:'Водяной конь',icon:'ring',text:'Сыграй у ракушки — конь замрёт.',keys:[{pi:1,a:'item'}],who:1},
+      {title:'Водяной конь',icon:'go',text:'Другой — прыгай на коня!',keys:[{pi:0,a:'jump'}],who:0},
+      {title:'Водяной конь',icon:'hit',text:'На острове бей по короне!',keys:[{pi:0,a:'attack'}],who:0}],
+    roles:[{title:'Три роли',icon:'drop',text:'Йоша, полей бутон — будет плот!',keys:[{pi:1,a:'skill'}],who:1},
+      {title:'Три роли',icon:'eye',text:'Пелагея, взор — найди настоящего!',keys:[{pi:1,a:'skill'}],who:1},
+      {title:'Три роли',icon:'yellow',text:'Прошка, метка в настоящего — бейте!',keys:[{pi:0,a:'skill'}],who:0}]};
+  function lesSteps(k){return LES2[k].map(c=>({dur:8.2,p:[0,9,0],l:[0,1.5,-14],card:{tag:'Урок',title:c.title,icon:c.icon,text:c.text,keys:c.keys.map(q=>Object.assign({wait:true},q,{pi:lpi(q.pi)}))},
+    wait:{who:G.solo?G.soloPi:c.who,a:c.keys[0].a,timeout:4.8},done:()=>{LK.last.ok=true;}}));}
+  // цепочка: пропустили (ни один шаг не завершён) — остальные не показываем
+  function lessonChain(list,after){const k=list[0];LK.mark('k2b',k);const steps=lesSteps(k);let ok=false;steps.forEach(q=>{const d=q.done;q.done=(a,b)=>{ok=true;d(a,b);};});
+    FIN.k2les.last=k;LK.run(steps,{fov:47,end:()=>{if(ok&&list.length>1)later(0.3,()=>lessonChain(list.slice(1),after));else after();}});}
+  function lessonOnce(k,then){if(LK.seen('k2b',k)||FIN.k2les.auto===false||G.cine||LK.on){if(then)then();return;}lessonChain([k],then||(()=>{}));}
+  LK.regLevel('2-B',()=>{const ph=F.phase;lessonChain(ph===1?['whisk','pull']:ph===2?['horse']:['roles'],()=>{});},()=>F.phase>=1&&F.phase<=3&&!F.won&&!F.out);
   /* ---------- ролики ---------- */
   const play2=def=>{play(def);try{const cd=CINE.CD&&CINE.CD();if(cd&&cd.S===G.cine){cd.inserts=false;cd.cover=[];}}catch(err){}};   // без авто-врезок: крупный Водяной, врезка «по оси взгляда» попадала внутрь него
   function intro(){bb.style.display='block';OM.chop=0.25;HEROES.forEach((h,i)=>{placeOnGround(h,-4.5+i*3,4,1);h.face=Math.PI;});ko.g.visible=true;
@@ -344,13 +369,13 @@ build2B=function(){
       events:[{t:0.4,fn:()=>{V.set(e.k2,'roar','angry');FX.column(SOM.g.position.x,surf(),SOM.g.position.z,4,1,2);later(0.4,()=>{SOM.g.visible=false;});}},
         {t:1.6,fn:()=>{ISL.col.on=true;anim(2,k=>{ISL.g.position.y=-4+4*smooth(k);});FX.column(C.x,surf(),C.z,6,1.6,2.6);shakeAll(0.05,1.2);const from=e.pos.clone();anim(1.6,k=>{e.pos.lerpVectors(from,new V3(C.x,3.2,C.z),smooth(k));e.pos.y+=Math.sin(k*Math.PI)*2;});}},
         {t:3.6,fn:()=>{K2FX.lightning();s2Start();V.set(e.k2,'conduct','happy');}},{t:6.5,fn:()=>K2FX.lightning()}],
-      tick:(t,dt)=>{for(const H of S2.horses){H.tick(dt);}},end:()=>{if(F.phase!==2)s2Start();}});}
+      tick:(t,dt)=>{for(const H of S2.horses){H.tick(dt);}},end:()=>{if(F.phase!==2)s2Start();later(0.1,()=>{if(F.phase===2)lessonOnce('horse');});}});}
   function scene3(){const e=vod;e.dazeT=0;e.state='idle';S2.st='off';S2.horses.forEach(H=>{if(H.g.visible)FX.crown(H.g.position.clone().setY(surf()),1.2);H.g.visible=false;H.state='off';if(H.rider){H.rider.k2ride=null;H.rider=null;}});SH2.forEach(S=>{S.g.visible=false;S.ref.off=true;S.ref.hum=0;});   // табун рассыпается пеной
     play2({dur:9.5,fov:50,shots:[shot(0,[0,4,-3],[0,2,-14]),shot(4,[8,7,-5],[0,0,-14],[6,9,-2],[0,-1,-14],5)],
       says:[[0.3,2.8,'vod','Буль-буль… А ну-ка, угадайте, где я!'],[3.6,3.4,null,'<i>Омут закрутился воронкой — и Водяных стало трое.</i>',true],[7.2,2,'zven','Пелагея, Совиный взор! Прошка — рогатку!']],
       events:[{t:0.6,fn:()=>{OM.swirl=1;SFX.wave();anim(2,k=>{ISL.g.position.y=-4*smooth(k);});later(2,()=>{ISL.col.on=false;});const from=e.pos.clone();anim(1.4,k=>{e.pos.lerpVectors(from,new V3(C.x,-0.9,C.z),k);});}},
         {t:4,fn:()=>{s3Start();}},{t:5.5,fn:()=>K2FX.lightning()}],
-      end:()=>{if(F.phase!==3)s3Start();}});}
+      end:()=>{if(F.phase!==3)s3Start();later(0.1,()=>{if(F.phase===3)lessonOnce('roles');});}});}
   function scene4(){const e=vod;e.dazeT=0;e.state='idle';S3.st='off';S3.fakes.forEach(f=>{f.g.visible=false;});BUDS.forEach(B=>{B.g.visible=false;});S3.rafts.forEach(Rf=>{Rf.col.on=false;W.group.remove(Rf.g);W.cyls.splice(W.cyls.indexOf(Rf.col),1);});S3.rafts.length=0;markS.g.visible=false;
     vod.r=FOE.vodyanoy.r*1.3;
     play2({dur:12,fov:52,shots:[shot(0,[0,2.5,-2],[0,3,-16]),shot(3.8,[10,5,0],[0,6,-22],[8,6,2],[0,7,-22],4),shot(8.2,[5.5,2.2,0.5],[-2,0,-12])],

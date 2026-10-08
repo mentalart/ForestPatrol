@@ -12,6 +12,7 @@ window.FACE=(pi,p)=>{const h=U.act(pi);h.face=Math.atan2(p.x-h.pos.x,p.z-h.pos.z
 window.HIT=(pi,e,i,off)=>{const h=U.act(pi),o=off||1.9;const a=Math.atan2(h.pos.z-e.pos.z,h.pos.x-e.pos.x);if(STEP(pi,e.pos.x+Math.cos(a)*(e.r*0.5+o),e.pos.z+Math.sin(a)*(e.r*0.5+o),0.9)){REL(pi);FACE(pi,e.pos);if(i%9===pi*4)ZC.press(K2[pi].a);}};
 window.D2=()=>ZC.W.dbg2b();
 window.GUARD=pi=>{const h=U.act(pi),bo=ZC.W.bolts.find(b=>b.tgt===h&&!b.refl&&b.eta<0.9);ZC.hold(K2[pi].g,!!bo);return !!bo;};
+ZC.FIN.k2les=ZC.FIN.k2les||{};ZC.FIN.k2les.auto=false;
 ZC.startFrom(ZC.LV('2-B'));ZC.G.manual=true;ZC.tick(10);const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}
 U.cine(200);ZC.tick(5);const D=ZC.W.warp2b('boss');U.cine(300);ZC.tick(30);'phase='+ZC.W.flags.phase+' s1='+D2().S1.st+' scale='+D2().vod.s.toFixed(2)
 //@@ shot=k2bb_1.png
