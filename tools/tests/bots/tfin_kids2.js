@@ -17,8 +17,8 @@ chk(r5.slow===0.5,'6-я встреча ещё в замедлении: '+JSON.st
 chk(rm.slow===1,'Средний путь: 4-я встреча без замедления (как прежде): '+JSON.stringify(rm));chk(rh.slow===1,'Богатырский — как прежде: '+JSON.stringify(rh));
 chk(Math.abs(windE('yellow','easy',9).w-0.82)<0.01,'мир 2: замах Лёгкого 0,82');
 ZC.loadLevel(ZC.LV('3-1'));ZC.tick(20);for(let q=0;q<4&&ZC.G.cine;q++){ZC.skip();ZC.tick(5);}ZC.tick(30);chk(Math.abs(windE('yellow','easy',9).w-0.76)<0.01,'мир 3: замах Лёгкого 0,76');
-ZC.loadLevel(ZC.LV('4-1'));ZC.tick(20);for(let q=0;q<4&&ZC.G.cine;q++){ZC.skip();ZC.tick(5);}ZC.tick(30);const r4=windE('yellow','easy',2);chk(r4.slow===0.5&&Math.abs(r4.w-0.7)<0.01,'мир 4 — как в прототипе (замедление 3 встречи — n=0…2, замах 0,7): '+JSON.stringify(r4));
-chk(windE('yellow','easy',3).slow===1,'мир 4: 4-я встреча без замедления');
+ZC.loadLevel(ZC.LV('4-1'));ZC.tick(20);for(let q=0;q<4&&ZC.G.cine;q++){ZC.skip();ZC.tick(5);}ZC.tick(30);const r4=windE('yellow','easy',2);chk(r4.slow===0.5&&Math.abs(r4.w-0.9)<0.01,'мир 4 — ступень боссов (6 встреч в замедлении, замах 0,9): '+JSON.stringify(r4));
+chk(windE('yellow','easy',3).slow===0.5&&windE('yellow','easy',6).slow===1,'мир 4: замедление 6 встреч');
 ['slow '+[r3.slow,r5.slow,r6.slow,rm.slow,rh.slow].join('/')].concat(BAD)
 //@@
 // красный знак: подсказка «кувырок» и замедление, пока не удался первый кувырок (мир 2, Лёгкий путь)

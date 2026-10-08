@@ -34,6 +34,7 @@
   E.leave=()=>{const n=E.cur;if(n==null)return;K5.st=0;const L=OLD[n]?E.layer[n]:E.stage[n];if(L&&L.end)try{L.end();}catch(e){console.error('k5e end',e);}
     if(E.clock)E.clock.off();try{FIN.k5x.clear();}catch(e){}W.camFn=null;K5.listen=false;K5.fight=false;ES.fight=false;clearAdds(true);natReset();if(E.pageOff)E.pageOff();for(const k in ES)delete ES[k];};
   E.go=(n,o)=>{o=o||{};E.leave();for(const p of players){p.tipT=0;}E.cur=n;K5E.cur=n;try{K5E.badge&&K5E.badge();}catch(e){}F.k5e=n;applyFree(n);
+    if(n>=1&&G.flags.k5eAt!==n){G.flags.k5eAt=n;try{FIN.saveGame();}catch(e){}}   // точка возобновления: начало стадии
     for(let i=1;i<n;i++)if(E.done[i]||o.warp)E.sky.add(i,false);
     // прыжок к стадии: имена — как после частей Сказа (начало — после 3, помощник — после 7, Прошка — после 11)
     if(o.warp){G.flags.names=Object.assign(G.flags.names||{},n>=4?{potap:true}:{},n>=8?{yosha:true}:{},n>=12?{proshka:true}:{});}
@@ -44,7 +45,7 @@
     // небо по стадиям: гроза — только в стадии 8; на заре — светло
     {const ST={8:1,9:0.4,10:0.15,11:0.55,12:0.2};if(window.k5StormSet)k5StormSet(ST[n]||0,!OLD[n]);}};
   // стадия пройдена: строка встаёт золотом, через миг — переход
-  E.won=n=>{if(E.cur!==n||E.done[n]&&E.wonT===n)return;E.done[n]=true;E.wonT=n;K5.fight=false;ES.fight=false;K5.listen=false;if(E.clock)E.clock.off();
+  E.won=n=>{if(E.cur!==n||E.done[n]&&E.wonT===n)return;E.done[n]=true;E.wonT=n;K5.fight=false;if(n===12)G.flags.k5eAt=0;ES.fight=false;K5.listen=false;if(E.clock)E.clock.off();
     E.sky.add(n,true);SFX.horn&&SFX.horn();banner(K5L.LINES[n],'#ffd76a',3.2,'строка вернулась в сказку');K5L.hud.hide();E.log('won'+n);
     later(1.4,()=>{if(E.cur===n)E.after(n);});};
   E.after=n=>{switch(n){
@@ -77,7 +78,12 @@
   // состояние мира «после вступления»: Кощей у дуба, тетрадка на камне, купол (стадия 1)
   E.prep=()=>{W.anims.length=0;KA.reset();KS.g.visible=true;KS.g.position.copy(KP);KS.g.rotation.y=0;KS.armR.rotation.x=0;book.g.visible=true;book.g.userData.free=true;
     book.g.position.set(-3.5,1.0,-19);book.g.rotation.set(0,0,0);dome.visible=true;dome.scale.setScalar(1);gor.g.position.y=-0.6;gor.g.scale.y=0.75;W.clampR={x:C.x,z:C.z,r:R};Z.mode='lead';};
-  E.start=()=>{K5.auto=true;const n=K5E.startAt|0;K5E.startAt=0;   // прыжок к стадии действует один раз: обычный вход в уровень снова начинается с пролога
+  E.start=()=>{K5.auto=true;const n=K5E.startAt|0;K5E.startAt=0;   // прыжок к стадии действует один раз
+    // вход без прыжка: если в G.flags.k5eAt записана стадия (E.go), игрок выбирает «Продолжить с…» (начало этой стадии; пройденные — как после победы) или пролог
+    const sv=n===0?(G.flags.k5eAt|0):0;
+    if(sv>=1&&sv<=12&&!E.resumeAsked){E.resumeAsked=true;const act=sv<=3?'Акт I':sv<=7?'Акт II':'Акт III';
+      skazClouds({who:0,title:'Битва с Кощеем',sub:'Привал: сказ ждёт там, где остановились. Выбирает Игрок первый.',opts:['Продолжить с: '+act+' · '+String(K5E.NAMES[sv]).replace(/^\d+ · /,'')+' ('+sv+' из 12)','Начать сначала — с погони на Горыныче']},c=>{E.resumeAsked=false;
+        if(c===0){E.prep();for(let i=1;i<sv;i++)E.done[i]=true;E.go(sv,{warp:true});}else{G.flags.k5eAt=0;K5E.startAt=0;E.start();}});return;}
     if(n===0&&E.prologue){E.prologue(()=>{E.cine.intro(()=>{E.prep();E.go(1);});});return;}
     E.prep();if(n===1){E.cine.intro(()=>{E.prep();E.go(1);});return;}
     for(let i=1;i<n;i++)E.done[i]=true;E.go(n,{warp:true});};
