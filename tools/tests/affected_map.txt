@@ -94,7 +94,7 @@ zlataya_cep/build/levels/4-B/late_38_gor_friend.js @level:4-B tfin_gorend tfin_g
 zlataya_cep/build/levels/epi/late_39_epi_shadows.js @level:epi tfin_epitheatre tfin_episolo tepi
 
 # ---- модули релиза: меню, сохранения, заставка, звук ----
-zlataya_cep/build/late_40_music.js            tfin_menu tfin_save
+zlataya_cep/build/late_40_music.js            tfin_menu tfin_save tfin_audiolevel
 zlataya_cep/build/late_50_save.js             tfin_save tfin_dev tfin_menu
 zlataya_cep/build/late_60_title.js            tfin_menu tfin_splash
 zlataya_cep/build/late_70_menu.js             tfin_menu tfin_pads tfin_pads2 tfin_uisnd tfin_save tfin_dev
@@ -127,10 +127,10 @@ tools/playtest/*                              -
 playtest_sim/*                                -
 zlataya_cep/build/late_79b_readaloud.js       tfin_kids1 tfin_kids2 tfin_taskshort tfin_hints
 zlataya_cep/build/late_80_ui.js               tfin_menu tfin_cine
-zlataya_cep/build/late_81_sfx.js              tfin_cine tfin_uisnd
-zlataya_cep/build/late_91_voice.js            tfin_voice tfin_cine tfin_scooter tfin_uisnd
+zlataya_cep/build/late_81_sfx.js              tfin_cine tfin_uisnd tfin_audiolevel
+zlataya_cep/build/late_91_voice.js            tfin_voice tfin_cine tfin_scooter tfin_uisnd tfin_audiolevel
 zlataya_cep/build/late_91b_juice.js            @full tfin_juice
-zlataya_cep/build/late_91c_juice_world.js      @full tfin_juice
+zlataya_cep/build/late_91c_juice_world.js      @full tfin_juice tfin_audiolevel
 zlataya_cep/build/late_95_dev.js              tfin_dev tfin_devluko
 
 # ---- модули релиза: ролики, камера, видимость ----
