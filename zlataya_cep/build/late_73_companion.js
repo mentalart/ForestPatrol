@@ -52,7 +52,8 @@ function cmpFight(h,hh,near,T){
   if(!e)return;
   const dh=hd(e.pos,hh.pos);
   const wait=e.state==='broken'&&e.big&&!(e.finT>0)&&e.t<e.bdur-1.3&&dh<7&&!players[0].downed;   // Богатырский мах — вдвоём: первым ударит человек
-  if(!w){const [tx,tz]=cmpPos(e,h);cmpGoto(h,tx,tz,0.3);}
+  if(!w){const [tx,tz]=cmpPos(e,h);cmpGoto(h,tx,tz,0.3);
+    if(h.grounded&&h.blocked&&bd>h.d.range*0.9+e.r+0.4){CMP.bk=(CMP.bk||0)+1;if(CMP.bk>20&&!(CMP.jT>G.time-0.5)){CMP.jT=G.time;cmpTap('jump');}}else CMP.bk=0;}   // упёрся в ступеньку по пути к врагу — перепрыгнуть
   const reach=h.d.range*0.9+e.r,can=!w&&bd<=reach&&h.atkCd<=0&&h.rollT<=0&&!h.hang&&!h.knockT;
   if(can&&((open.includes(e)&&!wait)||(e.finT>0&&e.finBy!==1))){h.face=Math.atan2(e.pos.x-h.pos.x,e.pos.z-h.pos.z);cmpTap('attack');}}
 // ---- маршрут уровня: что бот делает на пути живого игрока вместо «идти за человеком» ----
@@ -82,11 +83,16 @@ function cmpThink(dt){cmpFree();
   if(p.downed){CMP.mode='down';CMP.downT+=dt;if(CMP.downT>0.9&&o&&!o._down&&!o.cling)cmpTap('swap');return;}   // рассыпался клубком — берёт второго героя
   CMP.downT=0;
   if(h.cling||h.hang)return;
+  // прилипала (2-2): на себе — два кувырка подряд; на друге — подойти и ударить
+  if(h.prilip){CMP.mode='shake';h.following=false;if(!(CMP.rollT>G.time-0.45)){CMP.rollT=G.time;cmpTap('roll');}return;}
+  if(hh.prilip&&hh.prilip.latched===hh&&!hh.cling){CMP.mode='unlatch';h.following=false;const d=hd(h.pos,hh.pos);
+    if(d>1.5){cmpGoto(h,hh.pos.x,hh.pos.z,1.0);return;}
+    h.face=Math.atan2(hh.pos.x-h.pos.x,hh.pos.z-h.pos.z);if(!(CMP.hitT>G.time-0.5)){CMP.hitT=G.time;cmpTap('attack');}return;}
   const T=TIMING[p.path]||TIMING.mid;
   const rs=CMP.step();                                                       // шаг маршрута с first:true идёт раньше общего боя (забег по мосту-руке, невидимый враг-носитель)
   if(rs&&rs.first){h.following=false;if(rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}}
   const near=W.enemies.filter(e=>cmpAlive(e)&&Math.abs(e.pos.y-h.pos.y)<2.6&&(e.tgt===h||hd(e.pos,h.pos)<8||(hd(e.pos,hh.pos)<8&&hd(e.pos,h.pos)<14)));
-  if(near.length){CMP.mode='fight';h.following=false;cmpFight(h,hh,near,T);return;}
+  if(near.length){CMP.mode='fight';h.following=false;if(o&&!o.following&&!o.cling&&hd(o.pos,h.pos)>22)cmpCall();cmpFight(h,hh,near,T);return;}   // второй герой далеко отстал — позвать
   if(hp.downed&&!hh.cling){CMP.mode='revive';h.following=false;cmpGoto(h,hh.pos.x,hh.pos.z,0.7);return;}   // друга надо подшить: постоять рядом секунду
   if(rs&&!rs.first){h.following=false;if(rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}}   // у уровня есть маршрут: ведёт он; шаг, которому делать нечего, возвращает 'follow'
   CMP.mode='follow';}
