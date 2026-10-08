@@ -94,7 +94,9 @@ if(!(U.act(0).pos.y>4.3))throw new Error('Прошка не на террасе:
 //@@
 // З3: Рак-Отшельник. Йоша (она уже на террасе) играет на гуслях у ракушки-музыкалки, Прошка бьёт пляшущего; Пробой — Потап вытягивает из раковины
 const D=ZC.W.dbg21(),B=D.HB.dbg(),G=D.DG;const r=[U.walkTo(0,-2,-265+G,5),U.walkTo(1,2,-265+G,5),WALK2([-3,-271+G],[2,-271+G],5)];let t=0;while(!ZC.G.cine&&t<200){ZC.tick(1);t++;}while(ZC.G.cine&&t<2000){ZC.tick(1);t++;}ZC.tick(20);
-if(D.HB.dbg().phase!==1)throw new Error('рак не вышел: '+D.HB.dbg().phase+' '+r.join());r.push(WALK2([-4.5,-312+G],[B.LP.x+0.7,B.LP.z+0.5],5));U.tap('Semicolon');ZC.tick(10);
+if(D.HB.dbg().phase!==1)throw new Error('рак не вышел: '+D.HB.dbg().phase+' '+r.join());
+const bb=document.getElementById('bossbar');if(bb.style.display!=='block'||!/^<b>Рак-Отшельник<\/b> · этап 1 \/ 2 · /.test(bb.innerHTML))throw new Error('нет полосы рака, этап 1: '+bb.style.display+' '+bb.innerHTML);
+for(const id of['hint0','hint1']){const h=document.getElementById(id);if(h&&h.style.display!=='none'&&h.textContent.trim()&&h.textContent.trim().split(/\s+/).length>10)throw new Error('подсказка длиннее 10 слов: '+h.textContent);}r.push(WALK2([-4.5,-312+G],[B.LP.x+0.7,B.LP.z+0.5],5));U.tap('Semicolon');ZC.tick(10);
 const LOG=[];let hits=0;for(let i=0;i<60*90&&D.HB.dbg().phase===1;i++){const e=D.HB.dbg().e;if(i%600===0)LOG.push((i/60)+':'+(e?e.state+'/'+e.dance:'-')+' '+U.act(0).kind+' '+U.act(0).pos.toArray().map(v=>v.toFixed(1))+' e='+(e?e.pos.toArray().map(v=>v.toFixed(1)):'-')+' hum='+B.LURE.hum.toFixed(1)+' p1='+U.act(1).kind+U.act(1).pos.toArray().map(v=>v.toFixed(1)));if(i%300===0){const h1=U.act(1);if(Math.hypot(h1.pos.x-B.LP.x,h1.pos.z-B.LP.z)>1.8)WALK2(null,[B.LP.x+0.7,B.LP.z+0.5],3);U.tap('Semicolon');}
   if(!e||!e.alive){ZC.tick(1);continue;}if(e.state==='broken')ACT(0,'potap');else if(U.act(0).kind==='potap'&&e.dance)ACT(0,'proshka');
   const h=U.act(0),dx=e.pos.x-h.pos.x,dz=e.pos.z-h.pos.z,d=Math.hypot(dx,dz),K=KEYS[0],far=d>2.6;ZC.hold(K.left,far&&dx<-0.3);ZC.hold(K.right,far&&dx>0.3);ZC.hold(K.up,far&&dz<-0.3);ZC.hold(K.down,far&&dz>0.3);
@@ -105,14 +107,14 @@ if(!(D.HB.dbg().phase>=1.5))throw new Error('рака не вытянули: pha
 'phase1 ok hits='+hits+' phase='+D.HB.dbg().phase
 //@@ shot=k21_hermit2.png
 // этап 2: рак без домика удирает — зажимаем с двух сторон, бьём, пока замер; песок отбиваем
-const D=ZC.W.dbg21();let st=0;for(let i=0;i<60*90&&D.HB.dbg().phase===2;i++){const e=D.HB.dbg().e;if(!e||!e.alive){ZC.tick(1);continue;}
+const D=ZC.W.dbg21();{const bb=document.getElementById('bossbar');if(bb.style.display!=='block'||!/этап 2 \/ 2 · /.test(bb.innerHTML))throw new Error('нет полосы рака, этап 2: '+bb.style.display+' '+bb.innerHTML);}let st=0;for(let i=0;i<60*90&&D.HB.dbg().phase===2;i++){const e=D.HB.dbg().e;if(!e||!e.alive){ZC.tick(1);continue;}
   for(const pi of[0,1]){const K=KEYS[pi],h=U.act(pi),sx=pi?2.3:-2.3,tx=e.pos.x+sx,tz=e.pos.z,dx=tx-h.pos.x,dz=tz-h.pos.z,far=Math.hypot(dx,dz)>0.5;
     ZC.hold(K.left,far&&dx<-0.25);ZC.hold(K.right,far&&dx>0.25);ZC.hold(K.up,far&&dz<-0.25);ZC.hold(K.down,far&&dz>0.25);
     if(ZC.W.bolts.some(b=>b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2))ZC.press(pi?'Period':'KeyG');
     if((e.dazeT>0||e.state==='broken')&&i%9===pi*4){h.face=Math.atan2(e.pos.x-h.pos.x,e.pos.z-h.pos.z);ZC.press(K.attack);}}
   if(e.dazeT>0)st++;ZC.tick(1);}
 for(const K of KEYS)[K.left,K.right,K.up,K.down].forEach(k=>ZC.hold(k,false));if(D.HB.dbg().phase<3)throw new Error('рака не поймали: phase='+D.HB.dbg().phase+' stunF='+st);
-let t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(30);if(!D.F.hermitWon||D.HB.dbg().weedCol.on)throw new Error('ворота не открыты после рака');'hermit friends stunF='+st
+let t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(30);if(!D.F.hermitWon||D.HB.dbg().weedCol.on)throw new Error('ворота не открыты после рака');if(document.getElementById('bossbar').style.display!=='none')throw new Error('полоса рака не скрыта после боя');'hermit friends stunF='+st
 //@@ shot=k21_hermit_home.png
 // ворота: звено и конец уровня
 const D=ZC.W.dbg21(),G=D.DG;const r=[WALK2([-0.5,-314+G],[2,-314+G],8),WALK2([-0.5,-320.6+G],[2,-318+G],6),WALK2([-1,-327+G],[2,-327+G],5)];ZC.tick(120);
