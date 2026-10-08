@@ -4,7 +4,7 @@
 // щитом зайчик в глаза; 3 — Потап у колокола (звонит сам), в вихрь — кем играешь, наклоны; 4 — Потап держит щит, Прошка — в золотой (в одиночку
 // настоящий жёлудь чуть светится и без взора); мах одним засчитан. Проверка: проходится одним игроком.
 window._errs=[];window.addEventListener('error',e=>_errs.push(String(e.message)));{const _ce=console.error;console.error=function(){_errs.push([...arguments].map(String).join(' ').slice(0,200));_ce.apply(console,arguments);};}
-ZC.setSolo(true);ZC.startFrom(ZC.LV('3-B'));ZC.G.manual=true;ZC.tick(10);U.nocine();ZC.tick(5);
+ZC.FIN.k3les={auto:false};ZC.setSolo(true);ZC.startFrom(ZC.LV('3-B'));ZC.G.manual=true;ZC.tick(10);U.nocine();ZC.tick(5);
 window.D=ZC.W.warp3b('boss1');ZC.tick(5);U.nocine();ZC.tick(30);window.H=ZC.HERO;window.IMM=()=>Object.values(H).forEach(h=>{h.iT=Math.max(h.iT,0.5);});
 window.ME=()=>U.me();window.FACE=p=>{const h=U.me();h.face=Math.atan2(p.x-h.pos.x,p.z-h.pos.z);};
 window.JUMP=()=>{const h=U.me();for(const w of D.waves){if(w.kind!=='low'&&w.kind!=='dark')continue;const d=Math.hypot(h.pos.x-w.src.x,h.pos.z-w.src.z)-w.r;if(d>0.4&&d<1.4&&h.grounded){ZC.press('Space');return true;}}return false;};

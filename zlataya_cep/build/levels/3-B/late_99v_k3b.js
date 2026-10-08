@@ -154,11 +154,11 @@ build3B=function(){
     if(da<db)return false;return (ax*bx+az*bz)/(da*db||1)>0.92;}
   function updateWaves(dt){for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.r+=dt*w.sp;w.Wv.set(w.src,w.r);w.Wv.tick(dt,w.src);if(w.r>R+1)w.Wv.fade(Math.max(0,1-(w.r-R-1)/2));
       for(const h of HEROES){if(!h.active||w.hit.has(h)||h.cling||h.k3ride||players[h.player].downed)continue;const d=Math.hypot(h.pos.x-w.src.x,h.pos.z-w.src.z);if(Math.abs(d-w.r)>0.55)continue;w.hit.add(h);const pi=h.player,air=h.pos.y>0.42;
-        if(w.kind==='low'){if(!air){hurt(h,w.src);if(!BS['jt'+pi]){BS['jt'+pi]=1;tip(pi,'Белая волна низкая — прыгни '+K(pi,'jump')+', как подкатит.',2.6);}}}
+        if(w.kind==='low'){if(!air){hurt(h,w.src);if(!BS['jt'+pi]){BS['jt'+pi]=1;tip(pi,'Белая волна — прыгни '+K(pi,'jump')+'!',2.6);}}}
         else if(w.kind==='dark'){if(air){}else if(h.lit){h.lit=false;featherFx(h);}else hurt(h,w.src);}
         else if(w.kind==='high'){if(behindPotap(h,w.src)||(h===T.potap&&h.guard)){FX.sparks(h.pos.clone().add(new V3(0,1.4,0)),5,0x9fd0ff);}
           else if(h.guard){shieldBlock(h);const dx=h.pos.x-w.src.x,dz=h.pos.z-w.src.z,dd=Math.hypot(dx,dz)||1;h.vel.x+=dx/dd*8;h.vel.z+=dz/dd*8;h.vel.y=3;h.knockT=0.3;}
-          else{hurt(h,w.src);if(!BS['ht'+pi]){BS['ht'+pi]=1;tip(pi,'Синяя волна высокая — встань в синюю тень за Потапом (щит '+K(0,'guard')+').',3);}}}}
+          else{hurt(h,w.src);if(!BS['ht'+pi]){BS['ht'+pi]=1;tip(pi,'Синяя волна — за щит Потапа '+K(0,'guard')+'!',3);}}}}
       if(w.r>R+3.2){w.Wv.del();waves.splice(i,1);}}}
   function clearWaves(){waves.forEach(w=>w.Wv.del());waves.length=0;}
   // синяя тень за широким щитом Потапа
@@ -197,8 +197,7 @@ build3B=function(){
   const P1=[2,3,4];
   function s1Start(){F.phase=1;S1.st='perch';S1.perch=3;S1.q=[];S1.cd=1.8;S1.inh=null;S1.bow=null;S1.sw=null;S1.bowDone=false;BS.half=false;const e=sol;e.embers=e.maxEmb=8;BS.lastEmb=8;BS.zap=0;e.setScale(1.5);e.dazeT=0;e.state='idle';
     SL.hat(e.k3,true);placeSol(perchOf(OAKS[S1.perch]));SL.set(e.k3,'idle','cocky');music('sol1');OAKS.forEach(O=>{O.tb=0;});
-    card('Этап 1 · Свист соловьиный','белая волна — прыгай · синяя — за щит Потапа · щёки дует — Йоша, воду в клюв!',p=>p===0?'Белая волна низкая — прыгай '+K(0,'jump')+'. Синяя высокая — Потап, щит '+K(0,'guard')+': кто за ним — стоит.<br>Веди Йошу под щитом к дубу, где сидит Соловей.':
-      'Соловей дует щёки — набирает воздух. Йоша, подойди к его дубу и плесни в клюв '+K(1,'skill')+'!<br>Белая волна — прыгай '+K(1,'jump')+', синяя — за Потапа.');}
+    card('Этап 1 · Свист соловьиный','Белая — прыгай, синяя — за щит',p=>p===0?'Белая — прыгай, синяя — щит '+K(0,'guard')+'!':'Йоша, плесни воды в клюв '+K(1,'skill')+'!',['wave','water']);}
   function s1Plan(){const p=['trill'];if(BS.half||Math.random()<0.4)p.push('trill2');p.push('inhale');if(BS.half&&!S1.bowDone)p.push('bow');else if(Math.random()<0.5)p.push('hop');if(BS.half&&S1.bowDone&&Math.random()<0.5)S1.bowDone=false;return p;}
   function chirps(d){for(let i=0;i<5;i++)later(i*d/5,()=>tone(1800+i*160,0.08,'sine',0.07,2400));}
   function s1Tick(dt){const e=sol,O=OAKS[S1.perch];
@@ -226,8 +225,8 @@ build3B=function(){
     const h=S.h,d=hd(h.pos,e.pos);if(h.guard){SFX.parry&&SFX.parry();key(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'Отбил!','#ffe08a');FX.sparks(h.pos.clone().add(new V3(0,1.2,0)),12,0xffe08a);zapAdd(0.34);winStart(2.2,'dazed');BS.cap=1;}
     else{if(d<6)hurt(h,e.pos);SL.set(e.k3,'laugh','cocky');}}
   // дуб кланяется: сперва Богатырский щит, потом крона клонится; Йоша поливает корни — ниже, хвост достать
-  function bowStart(){const O=OAKS[S1.perch];S1.bow={O,t:0,k:0,wet:SOLO(),hold:0,tug:false};S1.bowDone=true;sayS('Ах так?! Дубы — кланяйтесь!',2,'angry','roar');startCring(O.src);
-    if(!BS.bowTold){BS.bowTold=true;later(1.8,()=>{tip(1,'Дуб клонится! Йоша, полей корни '+K(1,'skill')+' — он поклонится ниже.',3.4);tip(0,'Дуб с Соловьём клонится — подбеги и дёрни его за хвост '+K(0,'attack')+'!',3.4);});}}
+  function bowStart(){if(!LK.seen('k3b','bow')&&FIN.k3les.auto!==false){S1.cd=99;lessonOnce('bow',()=>{if(F.phase===1){S1.cd=0;bowStart();}});return;}const O=OAKS[S1.perch];S1.bow={O,t:0,k:0,wet:SOLO(),hold:0,tug:false};S1.bowDone=true;sayS('Ах так?! Дубы — кланяйтесь!',2,'angry','roar');startCring(O.src);
+    if(!BS.bowTold){BS.bowTold=true;later(1.8,()=>{tip(1,'Йоша, полей корни '+K(1,'skill')+'!',3.4);tip(0,'Дёрни Соловья за хвост '+K(0,'attack')+'!',3.4);});}}
   function bowTick(dt){const B=S1.bow,O=B.O,e=sol;B.t+=dt;if(cring.on||B.t<1.8){placeSol(perchOf(O));return;}
     const tgt=B.wet?1:0.62;if(B.hold<=0||B.k<tgt-0.01){B.k=Math.min(tgt,B.k+dt*0.32);}
     if(B.k>=tgt-0.01){B.hold+=dt;}const lim=B.wet?(SOLO()?8:6):1.4;
@@ -244,8 +243,7 @@ build3B=function(){
   const SPOT=FX.spot();const owlMark=new THREE.Mesh(new THREE.TorusGeometry(1.2,0.08,6,30),MB(0xc8a0ff,{transparent:true,opacity:0,depthWrite:false}));owlMark.rotation.x=Math.PI/2;W.group.add(owlMark);
   function s2Start(){F.phase=2;S2.st='perch';S2.perch=3;S2.roarT=3.5;S2.hopCd=2;S2.tilt=0;S2.spotK=0;S2.spotOak=-1;S2.next=pickNext(3);BS.half=false;const e=sol;e.embers=e.maxEmb=8;BS.lastEmb=8;BS.zap=0;e.dazeT=0;e.state='idle';
     placeSol(perchOf(OAKS[3]));SL.set(e.k3,'idle','cocky');music('sol2');e.guardAll=()=>!(e.dazeT>0&&e.litNow)&&e.state!=='broken';e.guardText='во тьме не видно — посвети';
-    card('Этап 2 · Крик звериный','свет пера отрази щитом — «солнечный зайчик» ему в глаза · фиолетовая волна гасит перо — прыгай',p=>p===0?'Пусть друг зажжёт перо '+K(1,'item')+' и встанет рядом. Потап, подними щит '+K(0,'guard')+' и смотри на дуб с Соловьём —<br>зайчик побежит вверх по стволу. Добежит — Соловей ослепнет и упадёт: в свете пера бей!':
-      'Зажги перо '+K(1,'item')+' и встань рядом с Потапом — его щит отразит свет «зайчиком».<br>Совиный взор '+K(1,'skill')+' покажет, на какой дуб Соловей перескочит. Тени тают в свете, а удар '+K(1,'attack')+' их рассыпает.');}
+    card('Этап 2 · Крик звериный','Щитом отрази свет — зайчик!',p=>p===0?'Потап, щит '+K(0,'guard')+' — к Соловью!':'Зажги перо '+K(1,'item')+', встань рядом.',['spot']);}
   function pickNext(cur){const L=P2.filter(i=>i!==cur);return L[Math.floor(Math.random()*L.length)];}
   function s2Tick(dt){const e=sol;e.litNow=litAt(e.pos.x,e.pos.y+1.5,e.pos.z,0.8);
     if(S2.st==='perch'){const O=OAKS[S2.perch];placeSol(perchOf(O));S2.hopCd-=dt;
@@ -254,7 +252,7 @@ build3B=function(){
       spotTick(dt);
       if(S2.spotOak===S2.perch&&S2.spotK>=1){dazzle();}   // зайчик добежал — ослеп, даже если уже собрался перескочить
       else if(S2.tilt>0){S2.tilt-=dt;if(S2.tilt<=0){const ni=S2.next;S2.st='hop';SPOT.set(null,null,0);hopTo(OAKS[ni],false,()=>{S2.perch=ni;S2.st='perch';S2.next=pickNext(ni);S2.hopCd=BS.half?3.2:4.5;S2.spotK=0;});}}
-      else if(S2.spotOak===S2.perch){if(S2.spotK>(BS.half?0.35:0.5)&&S2.hopCd<=0){S2.tilt=0.9+tell();SL.set(e.k3,'idle','surprise');e.k3.st.look[1]=0.6;tone(900,0.3,'sine',0.08,1300);sayS('Фью? Кто там светит?',1.2);}}}
+      else if(S2.spotOak===S2.perch){if(S2.spotK>(BS.half?0.35:0.5)&&S2.hopCd<=0){S2.tilt=0.9+tell();SL.set(e.k3,'idle','surprise');e.k3.st.look[1]=0.6;tone(900,0.3,'sine',0.08,1300);sayS('Фью? Кто там светит?',1.2);lessonOnce('hop');}}}
     else if(S2.st==='down'){SPOT.set(null,null,0);if(!(e.dazeT>0)){e.spin.visible=false;S2.st='hop';sayS('Фью! Проморгался, прозрел!',1.8,'angry');const ni=pickNext(-1);later(0.8,()=>{if(F.phase!==2)return;hopTo(OAKS[ni],false,()=>{S2.perch=ni;S2.st='perch';S2.next=pickNext(ni);S2.hopCd=2.5;S2.spotK=0;S2.roarT=2;});});}}
     else SPOT.set(null,null,0);
     // Совиный взор: куда перескочит
@@ -270,7 +268,7 @@ build3B=function(){
     if(!BS.spotTold){BS.spotTold=1;SFX.ok();}}
   function dazzle(){const e=sol,O=OAKS[S2.perch];S2.st='fall';S2.spotK=0;SPOT.set(null,null,0);SL.set(e.k3,'blind','hurt');sayS('Ай, глаза! Зайчик!',1.6);key(solTop(),'Ослеп!','#fff2b0');FX.sparks(beak(),16,0xfff2b0);s2Fall();}
   function s2Fall(){const e=sol,O=OAKS[S2.perch];S2.st='fall';S2.tilt=0;tumble(at(O.a,8.6),0.9,()=>{if(F.phase!==2)return;S2.st='down';winStart(winDur()+1,'blind');later(1.4,()=>{if(sol&&sol.dazeT>0)SL.set(sol.k3,'dazed','hurt');});
-    if(!BS.litTold){BS.litTold=1;for(const pi of[0,1])tip(pi,'Соловей упал! Во тьме он — плоская тень: подойдите с горящим пером '+K(pi,'item')+' — станет пёстрым, бей '+K(pi,'attack')+'!',3.6);}});}
+    if(!BS.litTold){BS.litTold=1;for(const pi of[0,1])tip(pi,'Упал! Свети пером '+K(pi,'item')+', бей '+K(pi,'attack')+'!',3.6);}});}
   // звери-тени: бегут к свету; в свете медленнее и тают; удар — рассыпаются; коснулись — гасят перо и ранят
   function spawnBeasts(n){for(let i=0;i<n;i++){if(S2.beasts.filter(b=>b.alive).length>=3)break;const kinds=['wolf','lynx','bear'];const B=SL.beast(kinds[(S2.bn=(S2.bn||0)+1)%3]);const a=OAKS[S2.perch].a+(i-0.5)*0.5;const p=at(a,10.6);
     B.g.position.copy(p);B.alive=true;B.melt=0;B.k=0;B.pos=B.g.position;S2.beasts.push(B);FX.flies(p.clone().add(new V3(0,0.4,0)),6);
@@ -447,12 +445,29 @@ build3B=function(){
     if(BS.wiped&&!players[0].downed&&!players[1].downed)BS.wiped=false;
     BS.idleT+=dt;if(BS.idleT>28){BS.idleT=0;for(const p of[0,1])tip(p,W.k3hint?W.k3hint(p):'',4);}});
   function secondWind(){shakeAll(0.05,0.5);if(F.phase===1){sayS('Ах так?! Ну, держитесь!',1.8,'angry');}else if(F.phase===2){sayS('Р-р-р! Все звери — ко мне!',1.8,'angry','roar');
-      later(1.6,()=>{for(const p of[0,1])tip(p,p?'Поменяйтесь! Теперь светит первый игрок, а ты держи щит '+K(1,'guard')+' — зайчик поменьше, да тоже слепит.':'Поменяйтесь! Теперь ты зажги перо '+K(0,'item')+', а друг пусть держит щит.',4);});}
+      later(1.6,()=>{for(const p of[0,1])tip(p,p?'Меняйтесь! Теперь щит держишь ты '+K(1,'guard')+'.':'Меняйтесь! Теперь перо зажги ты '+K(0,'item')+'.',4);});}
     else if(F.phase===3){sayS('Фью-у! Быстрее, выше!',1.6,'angry');later(1.4,()=>{for(const p of[0,1])tip(p,'Теперь в вихрь — другой! Кто катался — к колоколу.',3.4);});}}
   function stageRestart(){const e=sol;clearWaves();cring.on=false;ringM.forEach(m=>{m.visible=false;});banner('Этап сначала!','#cfe8ff',2.4,'отметка у входа — и снова в гнездо');sayS(line('tease'),1.8,'cocky','laugh');
     if(F.phase===1){S1.bow=null;S1.inh=null;S1.sw=null;OAKS.forEach(O=>{O.tb=0;});s1Start();}else if(F.phase===2){clearBeasts();s2Start();}else if(F.phase===3){clearStorm();s3Start();}else if(F.phase===4){s4Start();}}
   // ---------- карточка этапа: баннер + одна подсказка на игрока ----------
-  function card(title,sub,tipFn){banner(title,'#d8b070',3,sub);BS.signT=3.9;W.k3hint=tipFn;BS.idleT=0;later(0.8,()=>{for(const p of[0,1])tip(p,tipFn(p),5.5);});}
+  function card(title,sub,tipFn,les){W.k3hint=tipFn;const go=()=>{if(sol&&F.phase>=1&&F.phase<=4&&!F.out){banner(title,'#d8b070',3,sub);BS.signT=3.9;BS.idleT=0;later(0.8,()=>{for(const p of[0,1])tip(p,tipFn(p),5.5);});}};
+    const todo=(les||[]).filter(k=>!LK.seen('k3b',k));if(!todo.length||FIN.k3les.auto===false){go();return;}later(0.1,()=>lessonChain(todo,go));}
+  /* ---------- уроки этапов 1–2 (общий шаблон FIN.lesson, late_79e_lesson.js): одна механика — один урок ≤ 25 с; пропуск — держать прыжок ---------- */
+  const LK=FIN.lesson;FIN.k3les=FIN.k3les||{auto:true};
+  const lpi=pi=>G.solo?G.soloPi:pi;
+  const LES={
+    wave:{title:'Синяя волна',icon:'shield',text:'Потап, держи щит — все за ним!',keys:[{pi:0,a:'guard',wait:true}],who:0},
+    water:{title:'Вода в клюв',icon:'blue',text:'Йоша, плесни воды в клюв!',keys:[{pi:1,a:'skill',wait:true}],who:1},
+    bow:{title:'Дуб клонится',icon:'blue',text:'Йоша, полей корни — дуб ниже!',keys:[{pi:1,a:'skill',wait:true}],who:1},
+    spot:{title:'Солнечный зайчик',icon:'yellow',text:'Пелагея, зажги перо — будет свет!',keys:[{pi:1,a:'item',wait:true}],who:1,text2:'Потап, щитом отрази свет — зайчик!',keys2:[{pi:0,a:'guard',wait:true}],who2:0},
+    hop:{title:'Совиный взор',icon:'yellow',text:'Пелагея, взор — куда он прыгнет?',keys:[{pi:1,a:'skill',wait:true}],who:1}};
+  const lesStep=(c,t,keys,who)=>({dur:11.6,p:[0,8,6],l:[0,3.5,-22],card:{tag:'Урок',title:c.title,icon:c.icon,text:t,keys:keys.map(k=>Object.assign({},k,{pi:lpi(k.pi)}))},wait:{who:G.solo?G.soloPi:who,a:keys[0].a,timeout:8},done:(s,auto)=>{LK.last.ok=true;}});
+  function lessonSteps(k){const c=LES[k];const a=[lesStep(c,c.text,c.keys,c.who)];if(c.text2)a.push(lesStep(c,c.text2,c.keys2,c.who2));return a;}
+  // цепочка уроков: пропустили (ни один шаг не завершён) — остальные не показываем
+  function lessonChain(list,after){const k=list[0];LK.mark('k3b',k);const steps=lessonSteps(k);let ok=false;steps.forEach(s=>{const d=s.done;s.done=(a,b)=>{ok=true;d(a,b);};});
+    FIN.k3les.last=k;LK.run(steps,{fov:47,end:()=>{if(ok&&list.length>1)later(0.3,()=>lessonChain(list.slice(1),after));else after();}});}
+  function lessonOnce(k,then){if(LK.seen('k3b',k)||FIN.k3les.auto===false){if(then)then();return;}lessonChain([k],then||(()=>{}));}
+  LK.regLevel('3-B',()=>{const ph=F.phase;lessonChain(ph===2?['spot','hop']:['wave','water'],()=>{});},()=>F.phase>=1&&F.phase<=2&&!F.won);
   /* ---------- ролики ---------- */
   const play2=def=>{play(def);try{const cd=CINE.CD&&CINE.CD();if(cd&&cd.S===G.cine){cd.inserts=false;cd.cover=[];}}catch(err){}};
   function intro(){bb.style.display='block';W.gateOpen&&W.gateOpen();HEROES.forEach((h,i)=>{placeOnGround(h,-3.6+i*2.4,C.z+R-3,0);h.face=Math.PI;h.following=false;});if(!sol)spawnSol();sol.state='idle';const O=OAKS[3];
