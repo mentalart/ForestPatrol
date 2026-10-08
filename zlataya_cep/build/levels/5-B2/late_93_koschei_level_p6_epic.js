@@ -61,7 +61,7 @@
     case 12:E.repka(()=>finale());break;}};                 // «Тянем-потянем», потом сцена «Цепь» и конец Сказа
   E.flow=k=>{const nx={intro:1,trans1:2,skaz1:4,trans2b:8,trans3:9,lift:12}[k];if(nx)E.go(nx);};
   E.oldWin=n=>{const e=EP[n];if(e)E.won(e);};
-  E.lose=(msg)=>{if(!ES.fight)return;ES.fight=false;const n=E.cur;E.fails[n]=(E.fails[n]||0)+1;const f=$('flash');if(f){f.style.transition='opacity .6s';f.style.opacity=1;}
+  E.lose=(msg)=>{if(!ES.fight)return;ES.fight=false;const n=E.cur;E.fails[n]=(E.fails[n]||0)+1;const f=$('flash');if(f)FIN.bossfx.flash(1,{in:0.6});
     say('zven',msg||'Сбился сказ — беда невелика:<br>Начнём сначала, с этого листка!',3.4,true);later(1.4,()=>{if(f)f.style.opacity=0;if(E.cur===n)E.go(n,{retry:true});});};
   E.log=t=>{(E.logs=E.logs||[]).push(t);};
   /* ---------- общий шаг: тики новых стадий, слоёв и Лукоморья ---------- */

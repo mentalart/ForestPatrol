@@ -101,7 +101,20 @@ zlataya_cep/build/late_60_title.js            tfin_menu tfin_splash
 zlataya_cep/build/late_70_menu.js             tfin_menu tfin_pads tfin_pads2 tfin_uisnd tfin_save tfin_dev
 zlataya_cep/build/late_71_pads.js             tfin_pads tfin_pads2 tfin_menu
 zlataya_cep/build/late_72_splash.js           tfin_splash tfin_uisnd tfin_menu tfin_splashclick
-zlataya_cep/build/late_73_companion.js        tfin_companion tfin_menu tfin_save tfin_pads
+zlataya_cep/build/late_73_companion.js        tfin_companion tfin_companion_p tfin_companion_11 tfin_companion_13 tfin_companion_14 tfin_companion_15 tfin_companion_1b tfin_companion_12 tfin_companion_21 tfin_companion_22 tfin_companion_23 tfin_companion_24 tfin_companion_25 tfin_companion_2b tfin_companion_2bboss tfin_companion_luko tfin_menu tfin_save tfin_pads
+zlataya_cep/build/levels/p/late_73b_companion_p.js    tfin_companion_p
+zlataya_cep/build/levels/1-1/late_73c_companion_11.js tfin_companion_11
+zlataya_cep/build/levels/1-2/late_73h_companion_12.js tfin_companion_12
+zlataya_cep/build/levels/1-3/late_73d_companion_13.js tfin_companion_13
+zlataya_cep/build/levels/2-1/late_73i_companion_21.js tfin_companion_21
+zlataya_cep/build/levels/2-2/late_73j_companion_22.js tfin_companion_22
+zlataya_cep/build/levels/2-3/late_73k_companion_23.js tfin_companion_23
+zlataya_cep/build/levels/2-4/late_73l_companion_24.js tfin_companion_24
+zlataya_cep/build/levels/2-5/late_73m_companion_25.js tfin_companion_25
+zlataya_cep/build/levels/2-B/late_73n_companion_2b.js tfin_companion_2b tfin_companion_2bboss
+zlataya_cep/build/levels/1-4/late_73e_companion_14.js tfin_companion_14
+zlataya_cep/build/levels/1-5/late_73f_companion_15.js tfin_companion_15
+zlataya_cep/build/levels/1-B/late_73g_companion_1b.js tfin_companion_1b
 zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tsolo tfin_taskshort smoke tfin_bossui
 zlataya_cep/build/late_74_kids_start.js       tfin_kids1 tfin_kids2 tfin_menu tfin_save tfin_dev tfin_pads2 smoke
 zlataya_cep/build/late_75_kids_w1.js          @level:p @level:1-1 @level:1-2 @level:1-3 @level:1-4 @level:1-5 @level:1-B @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 smoke
@@ -110,6 +123,7 @@ zlataya_cep/build/late_76b_cine_skip.js       tfin_kids2 tfin_cine smoke
 zlataya_cep/build/late_96_uilog.js             tfin_bossaudit tfin_hints tfin_cine tallobj smoke
 zlataya_cep/build/late_78_signals.js             tfin_signals smoke
 zlataya_cep/build/late_79c_taskshort.js       tfin_taskshort tfin_hints smoke
+zlataya_cep/build/late_79e_lesson.js          tfin_lesson tfin_boss4b tfin_gor4 tfin_gorsolo tfin_hintlayer tfin_menu
 tools/playtest/task_short.py                  tfin_taskshort
 tools/playtest/task_short_tpl.js              tfin_taskshort
 tools/playtest/*                              -
@@ -198,3 +212,4 @@ zlataya_cep/build/levels/3-1/late_99p_sky31.js @level:3-1 tfin_sky31 tfin_sky31s
 zlataya_cep/build/late_95b_warp.js              smoke tfin_warp
 tools/tests/cine_frames.js                    -
 tools/tests/bots/archive/*                    -
+zlataya_cep/build/late_84b_bossfx.js            tfin_flash tfin_k2bboss tk5e_smoke tfin_juice

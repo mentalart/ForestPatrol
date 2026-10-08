@@ -139,5 +139,5 @@ const NOW={};for(const n of names){const a=RES['720 '+n],b=RES['1080 '+n];if(!a)
   NOW[n]={tipMax:a.tips.max,tipAvg:a.tips.avg,font720:a.hintFontPct,font1080:b?b.hintFontPct:null,ov720:a.ovMax,ov1080:b?b.ovMax:null,flash:a.flash.perSec,shake:a.shake.max,shakePs:a.shake.perSec,hitstop:a.hitstop.max,calls:a.perf.callsP95,tris:a.perf.trisP95,fx:a.perf.fxMax,cine:a.cines.max};}
 window.NOWJ=JSON.stringify(NOW);
 const OUT=L.join('\n')+'\n--- шрифты окон HUD (мин. по подсказкам)\n'+hint.join('\n')+'\n--- перекрытия ≥10%\n'+ovl.join('\n')+'\n--- THR сейчас: '+NOWJ+'\n--- ошибки страницы: '+_errs.length+(_errs.length?' '+_errs.slice(0,3).join(' | '):'')+'\n'+(bad.length?bad.map(x=>'FAIL '+x).join('\n'):'bossaudit ok');
-if(bad.length){console.log(OUT);throw new Error(bad.length+' нарушений порогов: '+bad.slice(0,3).join(' | '));}
+if(bad.length){console.log(OUT);throw new Error(bad.length+' нарушений порогов: '+bad.map(x=>'FAIL '+x).join(' | '));}
 OUT

@@ -36,7 +36,7 @@
     FIN.k5e.lesson(FIN.k5e.cur,go);}   // перед боем — обучающая катсцена стадии (p6b); подсказок и карточек в бою нет
   // герой выбыл: клубок или рассыпался тот, кем играют; «Сбился сказ» — только когда выбыли все четверо (отзыв 4): пока цел второй герой — «Смена» и в бой
   const k5Down=h=>!!h._down||(h.active&&players[h.player].downed);
-  function stageLose(){if(!K5.fight)return;K5.fight=false;K5.fails[K5.st]++;K5.log.push('lose'+K5.st);const f=$('flash');if(f){f.style.transition='opacity .6s';f.style.opacity=1;}
+  function stageLose(){if(!K5.fight)return;K5.fight=false;K5.fails[K5.st]++;K5.log.push('lose'+K5.st);const f=$('flash');if(f)FIN.bossfx.flash(1,{in:0.6});
     say('zven','Сбился сказ — беда невелика:<br>Начнём сначала, с этого листка!',3.6,true);later(1.4,()=>{if(f)f.style.opacity=0;stageStart(K5.st,true);});}
   function stageWin(n){if(!K5.fight||K5.st!==n)return;K5.fight=false;clearAdds();natReset();RG.on=false;eye.visible=false;fring.visible=false;K5.log.push('win'+n);SFX.horn();
     FIN.k5e.oldWin(n);}
