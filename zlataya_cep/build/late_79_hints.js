@@ -122,7 +122,9 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
 // плашка пропуска — над субтитрами (X-10): по умолчанию выше двух строк, а если реплика длиннее — ещё выше
 function hnSkip(){const sk=$('skip'),sb=$('subs');if(!sk||!sb)return;sk.style.bottom='';
   if(getComputedStyle(sk).display==='none'||!hnVisible('subs'))return;
-  const S=sb.getBoundingClientRect(),K=sk.getBoundingClientRect();if(K.bottom>S.top-6)sk.style.bottom=(innerHeight-S.top+8)+'px';}
+  const S=sb.getBoundingClientRect();let K=sk.getBoundingClientRect();if(K.bottom>S.top-6){sk.style.bottom=(innerHeight-S.top+8)+'px';K=sk.getBoundingClientRect();}
+  // F-2f: карточка урока (крупный шрифт) задела плашку — плашка уходит под карточку, если там её не заденут субтитры
+  const ft=$('finTut');if(ft&&ft.classList.contains('on')){const F=ft.getBoundingClientRect();if(K.left<F.right&&F.left<K.right&&K.top<F.bottom&&F.top<K.bottom&&F.bottom+6+K.height<S.top-6)sk.style.bottom=(innerHeight-F.bottom-6-K.height)+'px';}}
 {const _ui=updateUI;updateUI=function(dt){_ui(dt);try{hnLayout();}catch(e){console.error('hints',e);}};}
 {const _st=showTitle;showTitle=function(){_st();HN.titleT=G.time;};}
 FIN.hints={layout:hnLayout,cover:hnCover,merge:hnMerge,fuzzy:hnFuzzy,split:hnSplit,pair:hnPair,short:hnShort,state:()=>({html:HN.html.slice(),shown:HN.shown.slice()})};   // для ботов
