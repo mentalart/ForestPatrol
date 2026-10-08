@@ -6,7 +6,7 @@
 //     заходит сбоку к «коре», на Богатырский мах ждёт удара человека; не безупречен — часть замахов только щитом, часть пропускает (CMP.skill);
 //   • упал человек — подходит «подшить»; упал сам — берёт второго героя; в окнах (Лукоморье, «Сказ») и в ритме повторяет за человеком; ролик пропускается, пока держишь прыжок.
 // Парные загадки уровней бот проходит по «маршруту уровня» (CMP.route, ниже): список шагов Игрока 2 с условием «выполнено» — свой модуль в папке уровня
-// (levels/p — пролог, levels/1-1 … 1-5 и 1-B — мир 1; в Лукоморье бот повторяет за человеком). Уровень без маршрута бот проходит «ведомым». Следующие миры — по маршруту на уровень.
+// (levels/p — пролог, levels/1-1 … 1-5 и 1-B — мир 1, levels/2-1 … 2-5 и 2-B — мир 2; в Лукоморье бот повторяет за человеком). Уровень без маршрута бот проходит «ведомым». Миры 3–5 — по маршруту на уровень.
 // Клавиатура: в этом режиме стрелки и M K L , . / ; работают как вторая половина клавиатуры Игрока 1 (WASD, пробел, F, G, Q, E, R, Shift, 1).
 const CMP={on:false,skill:0.85,mode:'idle',downT:0,tick:0};
 CMP.live=()=>CMP.on&&!G.solo;
@@ -34,12 +34,14 @@ function cmpOpen(e,h){if(e.guardAll&&e.guardAll())return false;
 function cmpPos(e,h){const dx=h.pos.x-e.pos.x,dz=h.pos.z-e.pos.z,d=Math.hypot(dx,dz)||1;
   if(e.shell&&typeof e.shell==='object'){const rx=Math.cos(e.face),rz=-Math.sin(e.face),side=(dx*rx+dz*rz)>=0?1:-1,dd=e.r+h.d.radius+0.7;return [e.pos.x+rx*side*dd,e.pos.z+rz*side*dd];}
   const want=e.r+Math.min(1.3,h.d.range*0.6);return [e.pos.x+dx/d*want,e.pos.z+dz/d*want];}
-function cmpFight(h,hh,near,T){
-  for(const e of W.enemies)if(e._cm&&e.state!=='wind')e._cm=null;
-  // защита — прежде всего
+// шары, летящие в героя: отбить в последний миг, только щитом или проспать — по CMP.skill (и в бою, и на шагах маршрута у боссов)
+function cmpBolts(h,T){
   for(const b of W.bolts){if(b.tgt!==h||b.refl)continue;if(b._cm===undefined)b._cm=cmpDice();
     if(b._cm==='parry'){if(b.left===null&&b.eta<Math.min(0.2,T.parry*0.8))cmpTap('guard');if(b.eta<0.6)cmpKey('guard',true);}
-    else if(b._cm==='shield'&&b.eta<0.6)cmpKey('guard',true);}
+    else if(b._cm==='shield'&&b.eta<0.6)cmpKey('guard',true);}}
+function cmpFight(h,hh,near,T){
+  for(const e of W.enemies)if(e._cm&&e.state!=='wind')e._cm=null;
+  cmpBolts(h,T);                                                             // защита — прежде всего
   const w=near.find(e=>e.state==='wind'&&e.tgt===h);
   if(w){const c=w._cm||(w._cm={m:cmpDice(),done:false}),left=w.wdur-w.t;
     if(w.sig==='red'){if(W.abil.roll&&c.m!=='asleep'&&!c.done&&left<0.22){c.done=true;cmpTap('roll');}}
