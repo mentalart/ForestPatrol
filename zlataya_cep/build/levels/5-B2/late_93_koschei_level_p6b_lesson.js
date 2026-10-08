@@ -126,6 +126,6 @@
         const pp=k?c.cam[2]:c.cam[0],ll=k?(c.cam[3]||c.cam[1]):c.cam[1];cam.fov=c.fov;cam.position.set(pp[0],pp[1],pp[2]);cam.lookAt(ll[0],ll[1],ll[2]);cam.updateMatrixWorld(true);cam.updateProjectionMatrix();
         pt.set(at[0],at[1],at[2]).project(cam);if(Math.abs(pt.x)>0.93||pt.y>0.9||pt.y<-0.62||pt.z>1)E.lessonWarn.push('кадр '+bi+' ('+c.t.toFixed(1)+' с, '+(k?'конец':'начало')+'): точка '+at.map(q=>q.toFixed(1))+' → x='+pt.x.toFixed(2)+' y='+pt.y.toFixed(2));}}}}
     if(!L.dur){fin();go();return;}
-    E.lessonOn=n;E.log('lesson'+n);
+    E.lessonOn=n;E.lessonSays=L.says;E.log('lesson'+n);
     play({dur:L.dur+0.3,fov:46,camK:3.2,shots:L.shots,says:L.says,events:L.evs,tick:L.ticks.length?(t,dt)=>{for(const f of L.ticks)f(t,dt);}:undefined,end:()=>{E.lessonOn=null;fin();go();}});
     const cd=CINE.CD&&CINE.CD();if(cd&&cd.S===G.cine){cd.inserts=false;cd.cover=[];cd.calm=true;}};

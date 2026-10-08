@@ -33,30 +33,13 @@
     L.put(po,-3.4,-6.2);L.put(pr,-1.2,-5.8);L.put(pe,1.2,-5.8);L.put(yo,3.4,-6.2);L.kos(KP.x,KP.z,0);
     L.beat(null,{cam:[[0,10,7.5],[-1.6,0.8,-14],[0,9,5.5],[-1.6,0.4,-13]],need:[H(-3.4,-6.2),H(3.4,-6.2),KPt],says:[['pelageya','Восемь чёрных свеч — смотрите! —<br>Купол держат. Погасите!']],
       ev:[0.9,1.2,1.5,1.8,2.1,2.4,2.7,3.0].map((t,i)=>[t,()=>k5Ring(candles[i].pos.clone().setY(0.2),0xb070ff,0.4,2.0,0.8)])});
-    L.beat(6.2,{cam:[[-7,8,-3],[-1.6,1.8,-18],[7,8,-3],[-1.6,1.8,-18]],need:[KPt,cq(2),cq(3),cq(7)],says:[['zven','Погаснут все восемь —',0.2,2.6],['zven','и купол лопнет!',2.7,2.4]],
-      ev:[...candles.map((c,i)=>[0.6+i*0.3,()=>out(i)]),[3.4,()=>{k5Flash(KS.g.position.clone().add(new V3(0,2,0)),0xffffff,5,0.5);k5Ring(new V3(KP.x,0.2,KP.z),0xc8a0ff,1,5,0.6);K5L.gold(KS.g.position.clone().add(new V3(0,2.5,0)),16);anim(0.55,k=>{dome.scale.setScalar(1+k*0.5);dome.children.forEach((m,i)=>{if(m.material)m.material.opacity=dop[i]*(1-k);});});SFX.horn();}],
-        [3.7,()=>{dome.visible=false;L.pose('recoil',{antic:0.1});}],[5.6,()=>{lightAll();domeBack();L.pose('idle');}]]});
-    // щит в последний миг: свеча плюётся каплей — капля возвращается и гасит свечу
-    L.beat(8.4,{cam:[[3.5,3.8,-7.5],[-5.6,1.5,-15.5]],need:[H(-4.6,-13),cq(2)],says:[['zven','Свеча плюётся синей каплей.',0.2,2.8],['zven','Щит '+kbd('guard')+' — в последний миг!',3.0,3.0],['zven','Капля вернётся — свеча погаснет!',5.2,2.9]],
-      ev:[[0,()=>{L.put(po,-4.6,-13.0);L.look(po,candles[2].pos);}],...L.parry(0.6,po,cp(2),{dur:2.6,back:1.1,col:0x3a80ff,then:()=>out(2)})]});
-    // вода Йоши
-    L.beat(3.8,{cam:[[-2,3.6,-8.5],[5.8,1.4,-16]],need:[H(4.6,-14.3),cq(3)],says:[['zven','Йоша гасит свечу водой — '+kbd('skill')+'.',0.2,3.4]],
-      ev:[[0,()=>{L.put(yo,4.6,-14.3);L.look(yo,candles[3].pos);}],[0.8,()=>{SFX.water();for(let i=0;i<7;i++)L.later(i*0.1+0.01,()=>L.orb(yo.pos.clone().add(new V3(0,1.3,0)),cp(3),0.55,{col:0x6ad0ff,r:0.13,dark:false,arc:0.9,on:i===6?()=>{out(3);L.ok(cp(3));}:null}));}]]});
-    // пять ударов
-    L.beat(4.2,{cam:[[5,2.8,0.5],[0,1.3,-3.8]],need:[H(0.6,-2.6),cq(4)],says:[['zven','Или бей её '+kbd('attack')+' — пять раз.',0.2,3.4]],
-      ev:[[0,()=>{L.put(pr,0.6,-2.6,Math.PI);}],...L.strikes(0.6,pr,candles[4].pos.clone().add(new V3(0,1.2,0)),5,0.5,(i)=>{candles[4].embers=4-i;if(i===4){out(4);L.ok(cp(4));}})]});
-    if(!G.solo)L.beat(7,{cam:[[0,6,-6],[0,1.8,-18]],need:[cq(2),cq(3),H(-5.4,-15.2)],says:[['zven','Свечи связаны парами.',0.2,2.4],['zven','Погасил одну — скорей гаси вторую,',2.7,2.2],['zven','пока первая не вспыхнула снова!',4.8,2.1]],
-      ev:[[0.6,()=>{L.thread(()=>cp(2),()=>cp(3),6);}],[1.2,()=>{L.put(po,-5.4,-15.2);}],[2.9,()=>out(2)],[5.2,()=>{out(3);k5Flash(new V3(0,2.4,-18.2),0xffd76a,3,0.4);K5L.gold(new V3(0,2.4,-18.2),14);}],[6.6,()=>lightAll()]]});
-    else L.beat(6,{cam:[[0,6,-6],[0,1.8,-18]],need:[cq(2),cq(3)],says:[['zven','Погасшая свеча зажжётся снова —',0.2,3.0],['zven','через полминуты. Успей обежать все!',3.2,2.7]],
-      ev:[[0.6,()=>out(2)],[3.2,()=>out(3)],[5.4,()=>{candleSet(candles[2],true);FX.sparkle(cp(2),10,0xb070ff);k5s('candleOn');}]]});
-    // молния в красный круг
-    L.beat(6.6,{cam:[[3,6,2],[-0.8,1.5,-15]],need:[H(0,-8.6),KPt],says:[['zven','Красный круг на земле —',0.2,2.4],['zven','сюда ударит молния. Выйди — кувырок '+kbd('roll')+'!',2.6,3.6]],
-      ev:[[0,()=>{L.put(pe,0,-8.6);L.put(yo,2.8,-6);KS.g.rotation.y=KF(pe.pos);}],[0.5,()=>L.pose('castR',{antic:0.2})],...L.dodge(0.7,pe,new V3(0,0,-8.6),1.7,1.7,new V3(-2.7,0,0.3))]});
-    // Кот-часы
-    L.beat(8,{cam:[[-6,4.5,-17],[0.5,2.8,-24.5],[-3,4.5,-17],[0.5,2.8,-24.5]],need:[[-1.6,3,KP.z],[-0.7,2.7,-24.6]],says:[['zven','Кот Учёный ходит по цепи.',0.2,2.6],['zven','Направо — песня: Кощей колдует.',2.9,2.6],['zven','Налево — сказка: Кощей слушает!',5.4,2.5]],
-      ev:[[0,()=>{L.kos(KP.x,KP.z,0);}],[2.9,()=>{anim(2.4,k=>RING.set(catA-k*0.9));L.pose('cast',{antic:0.2});k5s('cast');}],[3.8,()=>k5Gather(()=>kosHand(),0xc090ff,0.5,12,2)],
-        [5.4,()=>{anim(2.4,k=>RING.set(catA-0.9+k*1.4));L.pose('listen');}],[6.2,()=>FX.sparkle(KS.g.position.clone().add(new V3(0,4.6,0)),10,0xffe08a)]]});
-    L.beat(3.4,{cam:[[0,6,3],[0,1.5,-12]],need:[H(-3.4,-6.2),H(3.4,-6.2)],says:[['zven','Понятно? Тогда — в бой!',0.3,2.8]],ev:[[0.2,()=>{L.pose('idle');[po,pr,pe,yo].forEach((h,i)=>{L.put(h,-3.4+i*2.3,-6.2);L.emo(h,'cheer');});}]]});};
+    L.beat(4.8,{cam:[[-7,8,-3],[-1.6,1.8,-18],[7,8,-3],[-1.6,1.8,-18]],need:[KPt,cq(2),cq(3),cq(7)],says:[['zven','Погаснут все восемь — купол лопнет!',0.2,3.4]],
+      ev:[...candles.map((c,i)=>[0.4+i*0.2,()=>out(i)]),[2.2,()=>{k5Flash(KS.g.position.clone().add(new V3(0,2,0)),0xffffff,5,0.5);k5Ring(new V3(KP.x,0.2,KP.z),0xc8a0ff,1,5,0.6);K5L.gold(KS.g.position.clone().add(new V3(0,2.5,0)),16);anim(0.55,k=>{dome.scale.setScalar(1+k*0.5);dome.children.forEach((m,i)=>{if(m.material)m.material.opacity=dop[i]*(1-k);});});SFX.horn();}],
+        [2.5,()=>{dome.visible=false;L.pose('recoil',{antic:0.1});}],[3.9,()=>{lightAll();domeBack();L.pose('idle');}]]});
+    // одна механика урока: щит в последний миг — капля возвращается и гасит свечу (бить и поливать можно и так — узнаешь в бою)
+    L.beat(5.8,{cam:[[3.5,3.8,-7.5],[-5.6,1.5,-15.5]],need:[H(-4.6,-13),cq(2)],says:[['zven','Свеча плюётся каплей — щит '+kbd('guard')+' в последний миг!',0.2,2.8],['zven','Капля вернётся — свеча погаснет!',3.1,2.5]],
+      ev:[[0,()=>{L.put(po,-4.6,-13.0);L.look(po,candles[2].pos);}],...L.parry(0.6,po,cp(2),{dur:2.4,back:1.0,col:0x3a80ff,then:()=>out(2)})]});
+    L.beat(2.8,{cam:[[0,6,3],[0,1.5,-12]],need:[H(-3.4,-6.2),H(3.4,-6.2)],says:[['zven','Понятно? Тогда — в бой!',0.2,2.4]],ev:[[0.2,()=>{L.pose('idle');[po,pr,pe,yo].forEach((h,i)=>{L.put(h,-3.4+i*2.3,-6.2);L.emo(h,'cheer');});}]]});};
   /* ================= стадия 2 «Там леший бродит»: прежние ключи, искорка и природа + скованный Леший ================= */
   // Леший в чёрной цепи ведёт ряды ёлок поперёк поляны; две застёжки ошейника рвёт только Кощеева молния — заманить её к Лешему
   const LSH_IN=new V3(8.2,0,-8.6);
@@ -95,42 +78,16 @@
     const lockPop=i=>{const q=locks[i],f=q.g.position.clone();k5s('keyBreak');K5L.gold(f,12);k5Flash(f,0xffd76a,2,0.3);k5fx(0.7,k=>{q.g.position.set(f.x+q.s*k*1.6,f.y+Math.sin(k*3)*0.8-k*k*2,f.z);q.g.rotation.z=k*5;q.g.scale.setScalar(1.3*(1-k*0.6));},()=>{q.g.visible=false;});};
     const strike=(t0,h,sig,res)=>[[t0,()=>{KS.g.rotation.y=Math.atan2(h.pos.x-KS.g.position.x,h.pos.z-KS.g.position.z);L.sig(sig,1.5);L.pose('cast',{antic:0.2});}],[t0+1.1,()=>{L.guard(h,0.8);}],
       [t0+1.5,()=>{L.pose('point',{snap:true});SFX.parry();FX.sparks(hH(h).add(new V3(0,0.2,0.3)),14,0xffe08a);k5Flash(hH(h),0xffe08a,2.4,0.3);CINE.punch(-3);if(res)res();}]];
-    // 1. Леший в цепи кормит Кощея
-    L.beat(5.6,{cam:[[-4,7.5,-1.5],[4,1.8,-13]],need:[[8.2,2,-8.6],KPt],says:[['zven','Леший закован в чёрную цепь.',0.2,2.8],['zven','Пока он в цепи — Кощея не победить.',2.7,2.8]],
+    // одна механика урока: молния Кощея рвёт замки на цепи Лешего (зелёный круг — кувырок — свободен)
+    L.beat(4.4,{cam:[[-4,7.5,-1.5],[4,1.8,-13]],need:[[8.2,2,-8.6],KPt],says:[['zven','Леший закован в чёрную цепь.',0.2,2.8]],
       ev:[[0.4,()=>{LS.g.position.copy(LP0);LS.g.rotation.y=Math.atan2(C.x-LP0.x,C.z-LP0.z);locks.forEach(q=>{q.g.visible=true;q.g.position.copy(LS.g.position).add(new V3(q.s*0.9,4.0,0));});}],[0.8,()=>L.thread(lp,kt,5,0x9a60ff)],[1.2,()=>npcEm(LS,'droop')()]]});
-    // 2. молния рвёт застёжки
-    L.beat(9.6,{cam:[[2,5.5,2],[5,1.6,-10],[5,5.5,0],[5.5,1.8,-10]],need:[H(5.2,-8),[8.2,2,-8.6]],says:[['zven','Встань в зелёный круг у Лешего.',0.2,2.6],['zven','Кощей ударит молнией — уйди кувырком '+kbd('roll')+'!',2.9,3.4],['zven','Молния разобьёт застёжку на цепи.',6.4,2.9]],
+    L.beat(7.6,{cam:[[2,5.5,2],[5,1.6,-10],[5,5.5,0],[5.5,1.8,-10]],need:[H(5.2,-8),[8.2,2,-8.6]],says:[['zven','Встань в зелёный круг у Лешего.',0.2,2.6],['zven','Молния! Уйди кувырком '+kbd('roll')+'!',2.9,3.0]],
       ev:[[0,()=>{L.put(pe,5.3,-8.2);L.look(pe,LS.g.position);}],[0.1,()=>L.ring(LS.g.position,2.5,0x9fe070,3.2)],
         [2.6,()=>L.pose('castR',{antic:0.2})],...L.dodge(2.8,pe,new V3(5.3,0,-8.2),1.6,1.5,new V3(-2.4,0,1.2),q=>{L.bolt(q);lockPop(0);}),
-        [6.6,()=>{L.put(po,5.0,-8.6);L.look(po,LS.g.position);L.ring(LS.g.position,2.5,0x9fe070,2.6);L.pose('castR',{antic:0.2});}],...L.dodge(6.8,po,new V3(5.0,0,-8.6),1.6,1.5,new V3(-2.4,0,1.0),q=>{L.bolt(q);lockPop(1);}),
-        [8.9,()=>{K5L.gold(lp(),16);SFX.horn();npcEm(LS,'cheer')();}]]});
-    // 3. ряды ёлок
-    L.beat(6.2,{cam:[[0,6.5,0],[0,1.2,-11]],need:[H(0,-11),H(-6,-11)],says:[['zven','Леший гонит ёлки поперёк поляны.',0.2,2.6],['zven','Зелёная полоса — по ней побегут. Не стой!',2.9,3.0]],
-      ev:[[0,()=>{L.put(po,-2,-11.2);L.put(yo,2,-11.2);L.look(po,new V3(0,0,-20));L.look(yo,new V3(0,0,-20));}],[0.6,()=>{L.strip(-11.2,24,2.4,0x7aff9a,3.0);}],[1.4,()=>{L.walk(po,-2,-8.4,1);L.walk(yo,2,-8.4,1);}],
-        [3.4,()=>L.trees(-11.2,1,2.6)],[5.6,()=>L.ok(po)]]});
-    // 4. Леший свободен — ёлки на нашей стороне
-    L.beat(5,{cam:[[0,6,2],[3,1.8,-10]],need:[H(-2,-8)],says:[['zven','Леший свободен! «Ко мне!» '+kbd('call')+' —',0.2,2.4],['zven','ёлка встанет рядом и укроет.',2.5,2.3]],
+        [4.9,()=>{L.put(po,5.0,-8.6);L.look(po,LS.g.position);L.ring(LS.g.position,2.5,0x9fe070,2.6);L.pose('castR',{antic:0.2});}],...L.dodge(5.1,po,new V3(5.0,0,-8.6),1.6,1.5,new V3(-2.4,0,1.0),q=>{L.bolt(q);lockPop(1);}),
+        [6.9,()=>{K5L.gold(lp(),16);SFX.horn();npcEm(LS,'cheer')();}]]});
+    L.beat(4.4,{cam:[[0,6,2],[3,1.8,-10]],need:[H(-2,-8)],says:[['zven','Леший свободен! «Ко мне!» '+kbd('call')+' —',0.2,2.4],['zven','ёлка встанет рядом и укроет.',2.5,2.3]],
       ev:[[0,()=>{L.put(po,-2,-8.4);L.put(pe,2,-8.4);}],[0.3,()=>{const f=LS.g.position.clone(),to=FR.leshy.home;anim(1.4,k=>LS.g.position.lerpVectors(f,to,CE.inOutSine(k)));}],[1.0,()=>{k5s('stomp');L.sprucePop(po.pos.x-1.2,po.pos.z-1.4,3.6);L.sprucePop(pe.pos.x+1.2,pe.pos.z-1.4,3.6);}]]});
-    // 5. щит в последний миг, искорка
-    L.beat(11,{cam:[[-9,5,-7],[-1,1.8,-14.5]],need:[H(-3,-12),H(3,-12),[-1,2.6,-15.5]],says:[['zven','Кощей замахнулся — щит '+kbd('guard')+' в последний миг!',0.2,4.2],['zven','Отбил — и угольки спеси гаснут.',4.6,2.8],['zven','Отбил — и искра к другу мчит!<br>По очереди — спесь слетит!',7.0,3.9]],
-      ev:[[0,()=>{L.put(po,-3,-12);L.put(pe,3,-12);L.kos(-1,-16.5,0);pips.g.visible=true;}],...strike(0.6,po,'yellow',()=>{pips.out();L.pose('recoil',{antic:0});}),
-        [4.8,()=>L.orb(hH(po),hH(pe).add(new V3(0,0.6,0)),1.0,{col:0xffe08a,r:0.16,dark:false,arc:1.2,on:p=>{L.ok(p);}})],
-        ...strike(7.0,pe,'yellow',()=>{pips.out();pips.out();L.pose('recoil',{antic:0});})]});
-    // 6. красный — кувырок
-    L.beat(4.6,{cam:[[-8,4.5,-8],[-1,1.8,-14.5]],need:[H(-3,-12),[-1,2.6,-15.5]],says:[['zven','Красный зубец — щит не спасёт.',0.2,2.4],['zven','Кувырок '+kbd('roll')+'!',2.5,2.0]],
-      ev:[[0,()=>{L.kos(-1,-16.5,0);KS.g.rotation.y=Math.atan2(po.pos.x-KS.g.position.x,po.pos.z-KS.g.position.z);}],[0.4,()=>{L.sig('red',1.9);L.pose('cast',{antic:0.2});}],[1.9,()=>L.roll(po,-2.4,0.6,0.45)],[2.2,()=>{L.pose('point',{snap:true});SFX.miss();k5Ring(new V3(po.pos.x+2.4,0.2,po.pos.z-0.6),0xff5a4a,0.3,1.8,0.4);}],[2.9,()=>{L.ok(po);L.pose('idle');}]]});
-    // 7. летучий ключ
-    L.beat(8.8,{cam:[[-7,5.5,-2.5],[0.5,1.6,-11]],need:[H(2,-9.5),H(-2,-8.4)],says:[['zven','Друг в цепях — не зевай:<br>По замку бей, выручай!',0.2,3.9],['zven','Летучий ключ — сбей щитом, пока не упал.',4.4,3.2]],
-      ev:[[0,()=>{L.put(pe,2,-9.5);L.put(po,-2,-8.4);L.kos(-1,-17,0);}],[0.5,()=>{L.pose('cast',{antic:0.2});L.key(kt().add(new V3(0,1.6,0)),pe.pos.clone().add(new V3(0,3,0)),1.6,()=>{lockHero(pe);})}],
-        [2.6,()=>L.walk(po,0.9,-8.8,0.5)],...L.strikes(3.3,po,pe.pos.clone().add(new V3(0,1,0)),5,0.42),[5.6,()=>{if(K5.locks[pe.kind])unlock(K5.locks[pe.kind],po);}]]});
-    // 8. ветер и руки из земли
-    L.beat(10,{cam:[[-8,5,-3],[0,1.4,-9]],need:[H(-2,-9),H(2,-9)],says:[['zven','Ветер! Щит держи — не сдует!<br>Пусть Кощей сколько хочет дует!',0.2,4.9],['zven','Где земля трещит — не стой:<br>Схватит лапой костяной!',5.2,4.1]],
-      ev:[[0,()=>{L.put(po,-2,-9);L.put(pe,2,-9);L.look(po,new V3(2,0,-9));L.look(pe,new V3(2,0,-9));L.kos(-1,-16,0);}],[0.4,()=>L.pose('cast',{antic:0.2})],[0.6,()=>L.wind(new V3(1,0,0),3.6)],
-        [0.8,()=>{L.guard(po,3.4);const px=po.pos.x,qx=pe.pos.x;anim(3.2,k=>{const tt=k*3.2;po.pos.x=px+tt*0.12;pe.pos.x=qx+(tt<1.8?tt:1.8+(tt-1.8)*0.2);pe.vel.set(0,0,0);po.vel.set(0,0,0);});}],[2.6,()=>{L.guard(pe,1.8);}],
-        [5.6,()=>L.hand(new V3(-2,0,-9),1.0)],[6.4,()=>L.walk(po,-3.4,-8.4,0.5)],[7.6,()=>{L.ok(po);}]]});
-    // 9. спесь сбита — нить сказа
-    L.beat(7.6,{cam:[[-6,4,-8],[-1,2,-15.5],[5,4,-9],[-1,2,-15.5]],need:[H(-2.6,-14),H(0.6,-14),[-1,2.6,-16]],says:[['zven','Он без сил! Не мешкай, друг, —<br>Нитью сказа — вкруг да вкруг!',0.4,4.9],['zven','Оба — удар рядом с ним!',5.2,2.3]],
-      ev:[[0,()=>{L.put(po,-2.6,-14.6);L.put(pe,0.6,-14.6);L.kos(-1,-16.5,0);}],[0.2,()=>{pips.all();L.dizzy(4);}],[5.0,()=>{L.hit(po,KS.g.position);L.hit(pe,KS.g.position);}],[5.5,()=>{SFX.mah();L.bind();}]]});
   };
   // стадия 3 «Там лес и дол видений полны» — в своём модуле: late_93_koschei_level_p8b_stage3.js
   /* ================= ролики акта I ================= */

@@ -89,6 +89,8 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   [[0,O[0],SH[0]],[1,O[1],SH[1]],[2,S.o,shS]].forEach(([i,o,sh])=>{const c=cards[i];if(c&&o&&sh){c.head=sh;c.sh=true;c.rd=c.body===o;}});
   // баннер события («Вал догнал!», «Коршун!») висит по центру по нескольку секунд: общая карточка на это время сжимается в одну
   // строку (◆ первая фраза задачи), личная — если баннер её задевает; не поместилась и так — уступает баннеру место
+  // подсказка босса уступает баннеру место по высоте (F-2d): пока баннер виден, она стоит под ним, потом возвращается на своё (top из fin.css)
+  if(boss){const bb=bossOn&&hnVisible('banner')?$('banner').getBoundingClientRect():null;boss.style.top=bb?(bb.bottom+8)+'px':'';}
   const BR=hnVisible('banner')?$('banner').getBoundingClientRect():null;if(!BR)HN.cmp=[false,false,false];else HN.cmp[2]=true;
   // строка сжатой карточки: у общей — первая фраза задачи; у личной — первая своя фраза, которой нет у друга («Клещи 0 / 4.» у обоих)
   const line=i=>{const c=cards[i];if(i===2||!cards[1-i])return c.head||hnShort(c.body);const o=cards[1-i],had=new Set(hnSent((o.head?o.head+'<br>':'')+o.body).map(hnNorm));
