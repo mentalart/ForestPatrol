@@ -35,7 +35,7 @@ function build1B(){
     const top=new THREE.Mesh(new THREE.BoxGeometry(1.1,0.1,len),MAT.moss);top.position.copy(arm.position).add(new V3(0,0.55,0));top.lookAt(to.clone().add(new V3(0,0.55,0)));g.add(top);
     const rp={x0:from.x,z0:from.z,y0:0.02,y1:to.y,dx:(to.x-from.x)/Math.hypot(to.x-from.x,to.z-from.z),dz:(to.z-from.z)/Math.hypot(to.x-from.x,to.z-from.z),len:Math.hypot(to.x-from.x,to.z-from.z),w:0.75};W.ramps=W.ramps||[];W.ramps.push(rp);cols.push(rp);
     {const fx=sh.x*0.55,fz=sh.z-0.9,fl=Math.hypot(fx-to.x,fz-to.z);const fp={x0:to.x,z0:to.z,y0:to.y,y1:to.y,dx:(fx-to.x)/fl,dz:(fz-to.z)/fl,len:fl,w:0.9};W.ramps.push(fp);cols.push(fp);}   // площадка на плече
-    sh.c.on=true;sh.m.visible=true;ramp={g,cols,sh,t:9};banner('Рука на землю легла!','#b8e070',2,'беги по ней до плеча — да по макушке бей!');}
+    sh.c.on=true;sh.m.visible=true;ramp={g,cols,sh,t:9};banner('Рука на землю легла!','#b8e070',2,'беги по руке — бей по макушке!');}
   function dropRamp(){if(!ramp)return;ramp.cols.forEach(c=>{const i=W.ramps.indexOf(c);if(i>=0)W.ramps.splice(i,1);for(const q of HEROES)if(q.groundRef===c){q.groundRef=null;q.grounded=false;}});ramp.sh.c.on=false;ramp.sh.m.visible=false;W.group.remove(ramp.g);ramp=null;}
   const hands=[];
   function spawnHands(){for(const s of[-1,1]){const e=makeFoe('hand',s*4,-17,{leash:10,signals:[s<0?'yellow':'red'],scale:1});e.side=s;e.noKill=true;e.home.set(s*4,0,-17);
@@ -55,7 +55,7 @@ function build1B(){
     if(!best.real){best.state='gone';makeCones(best.pos,14);W.group.remove(best.m.g);SFX.crash();floatText(best.pos.clone().add(new V3(0,3,0)),'Шишки!','#e0c090');}
     else if(best.state==='fallen'){best.state='gone';F.round=(F.round||0)+1;SFX.finisher();G.hitstop=0.14;shakeAll(0.05,0.35);ringFx(best.pos,COL.gold,3.5);floatText(best.pos.clone().add(new V3(0,3.4,0)),'Нашли!','#ffd76a');
       for(let i=0;i<8;i++)spawnSpark(best.pos.clone().add(new V3(0,2,0)),[COL.gold,0x6ad0ff,0xff6a8a][i%3]);bark(best.m,'leshy',F.round<2?'Ай! Ну, это случайно, по оплошке.':'Ай! Нашли меня, ишь…',2);
-      later(1.0,()=>{doubles.forEach(d=>{if(d.state!=='gone'){makeCones(d.pos,8);W.group.remove(d.m.g);d.state='gone';}});if(F.round<2){later(1.4,()=>{spawnDoubles(5);addStakes(6);banner('Ещё круг!','#b8e070',2,'двойников на одного больше — и колышков столько же');});}else later(1.2,startPhase3);});}
+      later(1.0,()=>{doubles.forEach(d=>{if(d.state!=='gone'){makeCones(d.pos,8);W.group.remove(d.m.g);d.state='gone';}});if(F.round<2){later(1.4,()=>{spawnDoubles(5);addStakes(6);banner('Ещё круг!','#b8e070',2,'двойников и колышков больше');});}else later(1.2,startPhase3);});}
     else{const dx=h.pos.x-best.pos.x,dz=h.pos.z-best.pos.z,dd=Math.hypot(dx,dz)||1;h.vel.x=dx/dd*6;h.vel.z=dz/dd*6;h.vel.y=4;h.grounded=false;h.knockT=0.3;SFX.knock();floatText(best.pos.clone().add(new V3(0,3.2,0)),'Ха! Ищи-свищи!','#b8e070');}}};
   W.hittables.push(dblHit);
   W.hittables.push({pos:new V3(headPos.x,0,headPos.z),r:1.6,push:false,alive:()=>F.phase===1&&!!ramp,onHit:h=>{if(h.pos.y>4.5&&!G.cine)headHit(h);}});   // макушка — только с плеча
@@ -80,16 +80,16 @@ function build1B(){
     if(F.phase===3&&boss3&&boss3.alive){unravel(boss3);return true;}return false;};
   /* ---------- сюжет ---------- */
   function intro(){F.phase=0;play({dur:9,fov:50,shots:[shot(0,[0,3,2],[0,5,-24]),shot(4,[3,6,-12],[0,7,-24],[1.6,4.2,-16],[0,7.2,-24],3)],
-      says:[[0.5,3.2,null,'<i>Леший ростом с ель, борода — мох седой,</i><br><i>Вместо рук — коряги, голос — скрип ветвей над водой.</i>',true],[4.2,3,'leshy','Опять заблудились? Ну-ка, где я?']],
+      says:[[0.5,3.2,null,'<i>Леший ростом с ель, вместо рук — коряги.</i>',true],[4.2,3,'leshy','Опять заблудились? Ну-ка, где я?']],
       events:[{t:4,fn:()=>{for(let i=0;i<6;i++)tone(rand(140,220),0.14,'sawtooth',0.12,rand(80,120),i*0.1);}}],
-      end:()=>{F.phase=1;F.head=0;spawnHands();snapCams();banner('Фаза 1 · руки','#b8e070',2.4,'левая рука жёлтая — отбей · правая красная — кувырком');}});}
+      end:()=>{F.phase=1;F.head=0;spawnHands();snapCams();banner('Фаза 1 · руки','#b8e070',2.4,'жёлтая — щит · красная — кувырок');}});}
   function headHit(h){F.head++;SFX.finisher();G.hitstop=0.16;shakeAll(0.06,0.4);ringFx(headPos,COL.gold,3);floatText(headPos.clone().add(new V3(0,1,0)),'По макушке!','#ffd76a');
     for(let i=0;i<6;i++)spawnSpark(headPos.clone(),[COL.gold,0x6ad0ff,0xff6a8a][i%3]);bark(L,'leshy',['Ай!','Ой-ой! Макушка моя!','Ну всё, довольно, хватит!'][Math.min(2,F.head-1)],1.8);
     for(const q of HEROES)if(q.pos.y>4.5&&hd(q.pos,headPos)<5){q.vel.set(q.pos.x<0?-5:5,6,5);q.grounded=false;q.knockT=0.5;}
     dropRamp();hands.forEach(e=>{if(e.alive){e.state='idle';e.embers=e.maxEmb;e.t=0;}});
     if(F.head>=3){F.phase=1.5;hands.forEach(e=>unravel(e));later(1.2,()=>{play({dur:6,fov:50,shots:[shot(0,[0,4,0],[0,5,-22])],says:[[0.4,3,'leshy','Ах так? Нате вам — четыре Лешего, не счесть!']],
       events:[{t:3,fn:()=>{smokePuff();L.g.visible=false;}}],end:()=>{F.phase=2;F.round=0;spawnDoubles(4);addStakes(4);snapCams();
-        banner('Фаза 2 · двойники','#b8e070',2.6,'Совиный взор: у настоящего огонёк горит · струна по ногам — двойники запутаются');}});});}}
+        banner('Фаза 2 · двойники','#b8e070',2.6,'у настоящего тень и мох-следы');}});});}}
   function ending(){const T=HERO;dropRamp();carousel.visible=false;const lz=makeLeshy(1.3);lz.g.position.set(0,0.7,-16);lz.g.rotation.y=0;
     const st=addMesh(new THREE.CylinderGeometry(1.1,1.2,0.7,12),M(0x8a5a32),0,0.35,-16.1);
     play({dur:16,fov:48,shots:[shot(0,[0,3.4,-8],[0,3,-16]),shot(7.4,[2.4,2.2,-11],[0,3.6,-16]),shot(12,[-2,1.8,-8.6],[T.proshka.pos.x,1,T.proshka.pos.z])],
@@ -133,10 +133,10 @@ function build1B(){
     prompt(pi,'swap',()=>headOf(h()),()=>F.phase===3&&players[pi].blue>=1,'богатырский выход');
     prompt(pi,'item',()=>headOf(h()),()=>F.phase===2&&!W.threads.some(t=>t.owner===pi&&!t.ret&&!t.string)&&stakes2.some(s=>!s.used&&hd(s,h().pos)<9&&hd(s,h().pos)>2));}
   prompt(1,'skill',()=>headOf(T.pelageya),()=>F.phase===2&&T.pelageya.active&&W.owlT<=0&&players[1].owlCd<=0,'кто настоящий?');
-  W.tipZones.push({cond:()=>F.phase===1&&!!ramp,text:pi=>'Рука мостиком лежит — по ней на плечо беги<br>И по макушке ударь '+K(pi,'attack')+' — не сбейся с ноги!'},
-    {cond:()=>F.phase===2,text:pi=>'От колышка к колышку струну натяни '+K(pi,'item')+' — двойники в ногах запутаются.<br>Настоящего Совиный взор покажет — не ошибутся.'});
-  const ph1=pi=>O(()=>'Руки-коряги! Левая <i class="sg y"></i> — отбей щитом '+K(pi,'guard')+', правая <i class="sg r"></i> — кувырком '+K(pi,'roll')+'.<br>Рука оглушена — беги по ней, как по мостку, бегом.',()=>F.phase>1,()=>hands.filter(e=>e.alive).map(e=>e.g));
-  const ph2=pi=>O(pi?()=>'Двойники! Совиный взор '+K(1,'skill')+' — у настоящего огонёк.<br>Брось клубок '+K(1,'item')+' в колышек — струна запутает ноги, дружок.':()=>'Двойники! Брось клубок '+K(0,'item')+' в колышек — струна им ноги спутает.<br>Настоящий упадёт — бей '+K(0,'attack')+', пока не очухается!',
+  W.tipZones.push({cond:()=>F.phase===1&&!!ramp,text:pi=>'Беги по руке на плечо — бей '+K(pi,'attack')+' по макушке!'},
+    {cond:()=>F.phase===2,text:pi=>'Натяни струну между колышками '+K(pi,'item')+'.'});
+  const ph1=pi=>O(()=>'Отбей <i class="sg y"></i> щитом '+K(pi,'guard')+', <i class="sg r"></i> — кувырок '+K(pi,'roll')+'.',()=>F.phase>1,()=>hands.filter(e=>e.alive).map(e=>e.g));
+  const ph2=pi=>O(pi?()=>'Найди настоящего: Совиный взор '+K(1,'skill')+'. Клубок '+K(1,'item')+' — в колышек.':()=>'Брось клубок '+K(0,'item')+' в колышек. Упавшего бей '+K(0,'attack')+'!',
     ()=>F.phase>=3,()=>stakes2.map(s=>s.g));
   const ph3=pi=>O(()=>'Вместе! Кружок над обоими — щитом '+K(pi,'guard')+' в такт закройтесь. Кору бей сбоку.<br>Синяя полоска полна — смени героя '+K(pi,'swap')+'. Леший оглушён — бейте '+K(pi,'attack')+' вдвоём, без проволочек, без сроку.',()=>!!F.won,()=>boss3?[boss3.g]:[]);
   for(const pi of[0,1])W.objectives[pi]=[O('Леший-Путаник…',()=>F.phase>=1,()=>[L.g]),ph1(pi),ph2(pi),ph3(pi),O('Леший на пень садится…',()=>false,()=>[])];
