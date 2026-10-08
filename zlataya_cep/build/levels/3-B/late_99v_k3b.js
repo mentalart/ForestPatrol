@@ -50,6 +50,7 @@ build3B=function(){
   colBox(C.x-7,C.x-1.9,0,1.3,C.z+R-0.6,C.z+R+1.4,true);colBox(C.x+1.9,C.x+7,0,1.3,C.z+R-0.6,C.z+R+1.4,true);
   W.gateOpen=(h)=>{if(!gateCol.on)return;gateCol.on=false;SFX.brk();bark(h||T.potap,'potap','Эх, ухнем! Раздвинулись прутики!',2,true);const L=gate.children[0];FX.twigs(gate.position.clone().setY(1),10,new V3(0,0,1));
     FIN.k3fx.anim(0.7,k=>{L.scale.set(1-0.85*k,1,1);L.position.y=-k*0.4;});};
+  W.gateOn3b=()=>gateCol.on;   // для напарника-бота: калитка в ободе ещё закрыта?
   // добыча разбойника вдоль обода
   {const spots=[2.35,2.75,3.3,0.95,0.55,0.12,-0.25,-2.9];const ld=k3G(W.group,0,0,0);fk(ld,K=>{spots.forEach((a,i)=>{const r=rand(10.2,10.9),x=C.x+Math.cos(a)*r,z=C.z+Math.sin(a)*r,ry=rand(0,6.28),k=i%6;
       if(k===0){K.add(KP.cyl(0.38,0.42,0.42,10),hp(0x4a6ab0),tm(x,0.21,z,0.1,ry,0.3));K.add(KP.tor(0.44,0.1,4,12),hp(0xb08a54),tm(x+0.05,0.06,z,Math.PI/2+0.1,0,0));}            // шапка
