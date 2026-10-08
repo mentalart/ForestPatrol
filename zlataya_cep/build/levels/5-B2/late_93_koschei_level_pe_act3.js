@@ -140,7 +140,9 @@
   /* ---------- обучающая катсцена стадии 9: меч и око, серия, волна и прыжок, щитники, рог и знамёна, рубаки ---------- */
   E.LES[9]=L=>{const po=T.potap,pr=T.proshka,pe=T.pelageya,yo=T.yosha,H=(x,z)=>[x,0.9,z],pips=L.pips(6);pips.g.visible=false;let bonesL=[];
     const kface=h=>{KS.g.rotation.y=Math.atan2(h.pos.x-KS.g.position.x,h.pos.z-KS.g.position.z);};
-    L.on(()=>{eye.visible=false;banners.forEach(b=>{b.down=false;b.hp=3;b.pole.rotation.z=0;});for(const R of ES.rub||[])k5Del(R.g);ES.rub=[];bonesL.forEach(k5Del);bonesL=[];});
+    L.on(()=>{eye.visible=false;banners.forEach(b=>{b.down=false;b.hp=3;b.pole.rotation.z=0;});for(const R of ES.rub||[])k5Del(R.g);ES.rub=[];bonesL.forEach(k5Del);bonesL=[];
+      // выход витязей из моря начался вместе со стадией: пропуск урока обрывает его на полпути — ставим всех в строй
+      KN.forEach(n=>{if(n.home)n.g.position.copy(n.home);});VIT.forEach(b=>{if(b.home)b.g.position.copy(b.home);});});
     L.put(po,-2.6,-6.2);L.put(pr,-1,-5.8);L.put(pe,1,-5.8);L.put(yo,2.6,-6.2);KS.g.visible=true;KS.g.position.set(C.x,0,C.z-5);KS.g.rotation.y=0;
     const swing=(t0,h,sig)=>[[t0,()=>{kface(h);L.sig(sig||'yellow',1.5);L.pose('sword',{antic:0.2});k5s('warn');}],[t0+1.1,()=>L.guard(h,0.7)],[t0+1.45,()=>{L.pose('idle',{snap:true});k5s('swing');SFX.parry();FX.sparks(hH(h).add(new V3(0,0.2,0.3)),14,0xffe08a);k5Flash(hH(h),0xffe08a,2.4,0.3);CINE.punch(-3);}]];
     L.beat(6.6,{cam:[[-5,5.5,-1],[-1,1.6,-10.5]],need:[H(-2.6,-9),[-0.4,2.4,-12.4]],says:[['zven','Око выбрало героя — щит держи!',0.3,2.8],['zven','Второй — бей со спины!',3.5,2.6]],
