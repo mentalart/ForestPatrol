@@ -5,7 +5,8 @@
 //   • в бою (в пределах досягаемости моро́ков): сам держит щит, отбивает капли и замахи, кувыркается от красного зубца, бьёт, когда морок открыт,
 //     заходит сбоку к «коре», на Богатырский мах ждёт удара человека; не безупречен — часть замахов только щитом, часть пропускает (CMP.skill);
 //   • упал человек — подходит «подшить»; упал сам — берёт второго героя; в окнах (Лукоморье, «Сказ») и в ритме повторяет за человеком; ролик пропускается, пока держишь прыжок.
-// Чего бот пока не умеет: парных загадок уровней (ритуал «Избушка, повернись», передача яблочка, ракушки и т. п.) — это следующий этап, по уровням.
+// Парные загадки уровней бот проходит по «маршруту уровня» (CMP.route, ниже): список шагов Игрока 2 с условием «выполнено» — свой модуль в папке уровня
+// (levels/p/late_73b_companion_p.js — пролог, levels/1-1/late_73c_companion_11.js — 1-1). Уровень без маршрута бот проходит «ведомым». Следующие уровни — по одному маршруту на уровень.
 // Клавиатура: в этом режиме стрелки и M K L , . / ; работают как вторая половина клавиатуры Игрока 1 (WASD, пробел, F, G, Q, E, R, Shift, 1).
 const CMP={on:false,skill:0.85,mode:'idle',downT:0,tick:0};
 CMP.live=()=>CMP.on&&!G.solo;
@@ -54,13 +55,28 @@ function cmpFight(h,hh,near,T){
   if(!w){const [tx,tz]=cmpPos(e,h);cmpGoto(h,tx,tz,0.3);}
   const reach=h.d.range*0.9+e.r,can=!w&&bd<=reach&&h.atkCd<=0&&h.rollT<=0&&!h.hang&&!h.knockT;
   if(can&&((open.includes(e)&&!wait)||(e.finT>0&&e.finBy!==1))){h.face=Math.atan2(e.pos.x-h.pos.x,e.pos.z-h.pos.z);cmpTap('attack');}}
+// ---- маршрут уровня: что бот делает на пути живого игрока вместо «идти за человеком» ----
+// CMP.route(уровень, [{id, done(), run(h,hh,dt)}…]): шаги по порядку; текущий — первый, у которого done() ложно (выполненный шаг запоминается).
+// run ведёт active(1) стиком и тапами за кадр; пока шаг не выполнен, «ведомый» не включается. Шаг может ждать человека (run ничего не жмёт)
+// или вернуть 'follow' — пока делать нечего (ролик, бой не у него, не его этап), бот идёт за человеком.
+CMP.routes={};CMP.route=(lv,steps)=>{CMP.routes[lv]=steps.map(s=>({fin:false,...s}));};
+CMP.step=()=>{const r=CMP.routes[W.levelId];if(!r)return null;if(CMP.rw!==W){CMP.rw=W;CMP.wp=null;for(const s of r)s.fin=false;}   // новый заход в уровень — маршрут заново
+  for(const s of r){if(s.fin)continue;if(s.done()){s.fin=true;continue;}return s;}return null;};
+// взять героя kind (смена героя Игрока 2 раз в 0,6 с); true — он уже ведомый нами
+function cmpWant(kind){if(active(1).kind===kind)return true;if(!(CMP.swapT>G.time-0.6)){CMP.swapT=G.time;cmpTap('swap');}return false;}
+// позвать второго героя за собой (раз в 0,6 с, пока не идёт)
+function cmpCall(){const o=other(1);if(!o.following&&!o.cling&&!(CMP.callT>G.time-0.6)){CMP.callT=G.time;cmpTap('call');}}
+// пройти по точкам [[x,z]…] (массив — константа модуля: по нему бот помнит, на какой точке): true — дошёл до последней; другой герой начинает путь заново
+function cmpPath(h,pts,stop){if(!CMP.wp||CMP.wp.key!==pts||CMP.wp.kind!==h.kind)CMP.wp={key:pts,kind:h.kind,i:0};const w=CMP.wp;
+  while(w.i<pts.length-1&&Math.hypot(pts[w.i][0]-h.pos.x,pts[w.i][1]-h.pos.z)<0.7)w.i++;
+  const last=w.i===pts.length-1,s=last?(stop||0.35):0.5;return cmpGoto(h,pts[w.i][0],pts[w.i][1],s)<=s&&last;}
 // ход бота за кадр: решает, чем занят, и жмёт клавиши Игрока 2 — до шага мира
 function cmpThink(dt){cmpFree();
   const p=players[1],hp=players[0],h=active(1),hh=active(0),o=other(1);CMP.mode='idle';CMP.tick++;
   if(p.path!==hp.path)p.path=hp.path;                    // сложность — одна на двоих, как в одиночном режиме
   if(G.cine){const c=G.cine;if(c.skippable&&c.t>0.8&&btn(0,'jump'))cmpKey('jump',true);return;}   // ролик: держит прыжок вместе с человеком
   if(G.trans)return;
-  if(G.ui||W.custom||W.soloMirror||(W.rzt&&W.rzt.state==='count')){CMP.mode='mirror';cmpMirror();return;}
+  if(G.ui||W.custom||W.soloMirror){CMP.mode='mirror';cmpMirror();return;}
   if(p.downed){CMP.mode='down';CMP.downT+=dt;if(CMP.downT>0.9&&o&&!o._down&&!o.cling)cmpTap('swap');return;}   // рассыпался клубком — берёт второго героя
   CMP.downT=0;
   if(h.cling||h.hang)return;
@@ -68,6 +84,7 @@ function cmpThink(dt){cmpFree();
   const near=W.enemies.filter(e=>cmpAlive(e)&&Math.abs(e.pos.y-h.pos.y)<2.6&&(e.tgt===h||hd(e.pos,h.pos)<8||(hd(e.pos,hh.pos)<8&&hd(e.pos,h.pos)<14)));
   if(near.length){CMP.mode='fight';h.following=false;cmpFight(h,hh,near,T);return;}
   if(hp.downed&&!hh.cling){CMP.mode='revive';h.following=false;cmpGoto(h,hh.pos.x,hh.pos.z,0.7);return;}   // друга надо подшить: постоять рядом секунду
+  const rs=CMP.step();if(rs){h.following=false;if(rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}}   // у уровня есть маршрут: ведёт он; шаг, которому делать нечего, возвращает 'follow'
   CMP.mode='follow';}
 // шаг мира: сначала ход бота, потом — всё остальное
 {const _step=step;step=function(dt){if(CMP.live()&&G.state==='play')cmpThink(dt);_step(dt);};}
