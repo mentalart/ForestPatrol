@@ -10,7 +10,7 @@ window.FL=()=>ZC.W.flags;
 window.STEPS=(id,ready,seq,fin,warp)=>{GO(id);if(warp)warp();if(!WAIT(ready))throw new Error(id+': бой не начался '+"phase="+FL().phase+" won="+FL().won+" cine="+!!ZC.G.cine);const out=[];
   for(const [pre,ok] of seq){HK();if(!WAIT(ok))throw new Error(id+': после Ctrl+Alt+B нет перехода «'+pre+'»: '+"phase="+FL().phase+" won="+FL().won+" cine="+!!ZC.G.cine);out.push(pre);}
   if(fin&&!WAIT(fin))throw new Error(id+': нет конца боя');return id+': '+out.join(' → ')+(_errs.length?' | ОШИБКИ '+_errs.slice(0,2):'');};
-STEPS('1-B',()=>FL().phase===1&&!ZC.G.cine,[['фаза 2',()=>FL().phase===2&&!ZC.G.cine],['фаза 3',()=>FL().phase===3&&!ZC.G.cine],['круг 2',()=>{const s=ZC.FIN.k1b.s3;return s.round===2&&s.st==='run'&&!ZC.G.cine;}],['победа',()=>FL().won]])
+STEPS('1-B',()=>FL().phase===1&&!ZC.G.cine,[['фаза 2',()=>FL().phase===2&&!ZC.G.cine],['фаза 3',()=>FL().phase===3&&!ZC.G.cine],['круг 2',()=>{const s=ZC.FIN.k1b.s3;return s.round===2&&s.st==='run'&&!ZC.G.cine;}],['победа',()=>FL().won]],null,()=>{ZC.FIN.k1b.les.auto=false;})
 //@@
 STEPS('2-B',()=>FL().phase===1&&!ZC.G.cine,[['2',()=>FL().phase===2&&!ZC.G.cine],['3',()=>FL().phase===3&&!ZC.G.cine],['4',()=>FL().phase>=4&&!ZC.G.cine],['победа',()=>FL().won]],null,()=>ZC.W.warp2b('boss'))
 //@@
