@@ -14,7 +14,7 @@ tallobj
 # одиночный режим
 tsolo tsolo41 tsospot tso12long tso13 tso33 tso54 tso51
 # релиз: титул, меню, пауза, сохранения, клавиши разработчика, кино (final02), коллизии и арт (final03), обучение Горыныча, видимость героев, камера (final04)
-tfin_menu tfin_companion tfin_companion_p tfin_companion_11 tfin_companion_luko tfin_save tfin_dev tfin_devluko tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b tfin_occ tfin_cam tfin_kids1
+tfin_menu tfin_companion tfin_companion_p tfin_companion_11 tfin_companion_luko tfin_save tfin_dev tfin_devluko tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b tfin_occ tfin_cam tfin_kids1 tfin_kids2 tfin_taskshort
 # final05: джойстики в меню, переключение на живого героя, враги видимы (все виды и появившиеся позже), удар героев, бюджет отрисовок, пачки прозрачных стен, персонажи и враги (витрины)
 tfin_pads tfin_downswap tfin_foekinds tfin_foekinds1b tfin_foekinds2 tfin_foekinds2b tfin_foekinds3 tfin_foekinds4 tfin_foekinds5 tfin_foekinds6 tfin_foeidle tfin_slash tfin_budget tfin_fadebatch tfin_cast tfin_foecast
 # final06: озвучка всей игры; щиты героев (B) и удар Потапа со спины; пауза с джойстика на живом пути (курсор над меню); Лукоморье — стан и берег дальше от дуба; звук с первого нажатия, голос заставки, звуки меню; пролог — Прошка несёт самокат, падает, все смеются; большие «прозрачные стены» — кусками

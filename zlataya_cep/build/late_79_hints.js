@@ -79,10 +79,14 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   // подсказка, которая пересказывает задачу (свою, друга или общую), лишняя — задача уже на экране
   for(const pi of[0,1])if(T[pi]&&O.some(o=>o&&hnCover(T[pi],o)>=0.6))T[pi]='';
   // одинаковое у обоих — в общую карточку; тогда в личных остаётся только своё (подсказка без задачи или задача без подсказки)
+  const SH=[0,1].map(pi=>{const o=O[pi]&&W&&W.objectives&&W.objectives[pi]&&W.objectives[pi][players[pi].obj];return o&&o.short?o.short(pi):'';});
   let S={o:'',t:''};const po=hnPair(O[0],O[1]),pt=hnPair(T[0],T[1]);
   if(po){S.o=po.s;O=[po.a,po.b];}if(pt){S.t=pt.s;T=[pt.a,pt.b];}
   if(solo&&O[1-sp]&&O[sp]&&hnCover(O[1-sp],O[sp])>=0.8)O[1-sp]='';
+  // краткая формулировка задачи (o.short — таблица late_79c_taskshort.js): крупной строкой над полным текстом; у общей карточки — если у обоих одна
+  const shS=SH[0]&&SH[1]?(hnMerge(SH[0],SH[1])||SH[0]):SH[0]||SH[1];   // кнопки двух игроков в общей строке — парой «R / ;»
   const cards=[hnCard(O[0],T[0]),hnCard(O[1],T[1]),hnCard(S.o,S.t)];
+  [[0,O[0],SH[0]],[1,O[1],SH[1]],[2,S.o,shS]].forEach(([i,o,sh])=>{const c=cards[i];if(c&&o&&sh){c.head=sh;c.sh=true;c.rd=c.body===o;}});
   // баннер события («Вал догнал!», «Коршун!») висит по центру по нескольку секунд: общая карточка на это время сжимается в одну
   // строку (◆ первая фраза задачи), личная — если баннер её задевает; не поместилась и так — уступает баннеру место
   const BR=hnVisible('banner')?$('banner').getBoundingClientRect():null;if(!BR)HN.cmp=[false,false,false];else HN.cmp[2]=true;
@@ -90,7 +94,7 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   const line=i=>{const c=cards[i];if(i===2||!cards[1-i])return c.head||hnShort(c.body);const o=cards[1-i],had=new Set(hnSent((o.head?o.head+'<br>':'')+o.body).map(hnNorm));
     const own=hnSent((c.head?c.head+'<br>':'')+c.body).find(x=>!had.has(hnNorm(x)));return hnShort(own||c.head||c.body);};
   // три карточки: первого игрока, второго, общая; новая задача — карточка вспыхивает золотом
-  const render=(i,c)=>{const el=els[i],html=!c?'':HN.cmp[i]?'<div class="hn-body">'+line(i)+'</div>':(c.head?'<div class="hn-head">'+c.head+'</div>':'')+'<div class="hn-body">'+c.body+'</div>';
+  const render=(i,c)=>{const el=els[i],html=!c?'':HN.cmp[i]?'<div class="hn-body">'+line(i)+'</div>':(c.head?'<div class="hn-head'+(c.sh?' hn-short':'')+(c.rd?' hn-rd':'')+'">'+c.head+'</div>':'')+'<div class="hn-body">'+c.body+'</div>';
     const on=!!c;if(HN.html[i]!==html){const was=HN.html[i];HN.html[i]=html;if(on){el.innerHTML=html;const k=hnNorm(c.head||c.body);if(k!==HN.objK[i]){HN.objK[i]=k;if(was)HN.flash[i]=G.time;el.classList.remove('hn-pop');void el.offsetWidth;el.classList.add('hn-pop');}}}
     if(HN.shown[i]!==on){HN.shown[i]=on;el.classList.toggle('on',on);}
     el.classList.toggle('hn-cmp',on&&HN.cmp[i]);el.classList.toggle('hn-dim',!!(solo&&i===1-sp));el.classList.toggle('hn-new',G.time-HN.flash[i]<1.2);};
