@@ -87,3 +87,34 @@ const D=ZC.W.dbg21();const L=[];let last='';for(let i=0;i<60*120&&!(ZC.HERO.pela
   const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' '+D.GARD.state);last=m;}if(i%600===0)L.push((i/60).toFixed(0)+' '+pos(bot())+' '+D.GARD.state);}
 L.push('pel='+pos(ZC.HERO.pelageya),'yos='+pos(ZC.HERO.yosha),(ZC.HERO.pelageya.pos.y>4.2&&ZC.HERO.yosha.pos.y>4.2)?'garden ok':'FAIL garden');L
 //@@
+// Рак-Отшельник, этап 1: бот играет на ракушке-музыкалке, человек (Прошка) бьёт пляшущего рака, Потап тянет его из раковины
+const D=ZC.W.warp21('boss');ZC.tick(20);const G=D.DG,B=D.HB.dbg();
+put(me(),-2,-304);put(bot(),2,-304);put(ZC.HERO[bot().kind==='yosha'?'pelageya':'yosha'],3,-303);ZC.tick(10);
+let t=0;for(let q=0;q<3;q++){while(ZC.G.cine&&t<3000){ZC.skip();ZC.tick(5);t+=5;}ZC.tick(20);}
+const r=['phase='+D.HB.dbg().phase+' bot='+pos(bot())+' '+CO.mode];
+const LOG=[];let hits=0;for(let i=0;i<60*90&&D.HB.dbg().phase===1;i++){const e=D.HB.dbg().e;if(i%600===0)LOG.push((i/60)+':'+(e?e.state+'/'+e.dance:'-')+' '+U.act(0).kind+' hum='+B.LURE.hum.toFixed(1)+' bot='+pos(bot())+' '+CO.mode);
+  if(!e||!e.alive){ZC.tick(1);continue;}if(e.state==='broken')ACT(0,'potap');else if(U.act(0).kind==='potap'&&e.dance)ACT(0,'proshka');
+  const h=U.act(0),dx=e.pos.x-h.pos.x,dz=e.pos.z-h.pos.z,d=Math.hypot(dx,dz),K=KEYS[0],far=d>2.6;ZC.hold(K.left,far&&dx<-0.3);ZC.hold(K.right,far&&dx>0.3);ZC.hold(K.up,far&&dz<-0.3);ZC.hold(K.down,far&&dz>0.3);
+  const w=e.state==='wind'&&e.tgt===h;if(w){const left=e.wdur-e.t;if(e.sig==='red'&&left<0.2)ZC.press('ShiftLeft');else if(e.sig!=='red'&&left<0.16&&e.left===null)ZC.press('KeyG');}
+  if(!far&&(e.dance||e.state==='broken')&&i%10===0){h.face=Math.atan2(dx,dz);ZC.press('KeyF');hits++;}ZC.tick(1);}
+[KEYS[0].left,KEYS[0].right,KEYS[0].up,KEYS[0].down].forEach(k=>ZC.hold(k,false));
+t=0;while(ZC.G.cine&&t<3000){ZC.skip();ZC.tick(5);t+=5;}ZC.tick(20);
+r.push('phase='+D.HB.dbg().phase,'hits='+hits,'bot='+pos(bot())+' '+CO.mode,(D.HB.dbg().phase>=1.5)?'hermit1 ok':'FAIL hermit1');r.concat(LOG)
+//@@
+// этап 2: рак без домика удирает — человек зажимает слева (стоит в 2,3 м от рака), бот справа/в общем бою; песок отбиваем; поймали — новый домик
+const D=ZC.W.dbg21();let st=0;const L=[];let last='';
+for(let i=0;i<60*100&&D.HB.dbg().phase===2;i++){const e=D.HB.dbg().e;if(!e||!e.alive){ZC.tick(1);continue;}
+  {const pi=0,K=KEYS[pi],h=U.act(pi),sx=-2.3,tx=e.pos.x+sx,tz=e.pos.z,dx=tx-h.pos.x,dz=tz-h.pos.z,far=Math.hypot(dx,dz)>0.5;
+    ZC.hold(K.left,far&&dx<-0.25);ZC.hold(K.right,far&&dx>0.25);ZC.hold(K.up,far&&dz<-0.25);ZC.hold(K.down,far&&dz>0.25);
+    if(ZC.W.bolts.some(b=>b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2))ZC.press('KeyG');
+    if((e.dazeT>0||e.state==='broken')&&i%9===0){h.face=Math.atan2(e.pos.x-h.pos.x,e.pos.z-h.pos.z);ZC.press(K.attack);}}
+  if(e.dazeT>0)st++;ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' e='+e.pos.x.toFixed(1)+','+e.pos.z.toFixed(1));last=m;}}
+for(const K of KEYS)[K.left,K.right,K.up,K.down].forEach(k=>ZC.hold(k,false));
+let t=0;for(let q=0;q<4;q++){while(ZC.G.cine&&t<3000){ZC.skip();ZC.tick(5);t+=5;}ZC.tick(30);}
+L.push('phase='+D.HB.dbg().phase,'stunF='+st,'won='+D.F.hermitWon,D.F.hermitWon?'hermit2 ok':'FAIL hermit2');L
+//@@
+// ворота Китежа: человек идёт к звену и за ворота, бот следом; уровень пройден
+const D=ZC.W.dbg21();const L=[];L.push(U.walkTo(0,-0.5,-348,10),U.walkTo(0,0,-352,6),U.walkTo(0,-1,-361,8));
+let last='';for(let i=0;i<60*25&&!D.F.out;i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}}
+L.push('out='+!!D.F.out,'links='+ZC.W.links,'bot='+pos(bot()),'errs='+_errs.length+(_errs[0]?' '+_errs[0]:''),(D.F.out&&!_errs.length)?'2-1 ok':'FAIL 2-1');L
+//@@

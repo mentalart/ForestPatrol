@@ -80,7 +80,7 @@ CMP.route('2-1',[
     if(D.RZ.state==='high'){if(zoneAt(h)!==D.RZ){cmpGoto(h,6,-257,0.5);return;}k21Tide(h,D.RZ,'low');return;}
     cmpGoto(h,6,-257,0.5);}},
   // сад Китежа: Йоша поливает ростки на дне (когда Потап сыграл отлив), потом оба героя — по листьям лесенки на террасу
-  {id:'garden',done:()=>k21Top('pelageya')&&k21Top('yosha'),run:(h,hh)=>{k21b();const D=W.dbg21(),KS=D.KS,GA=D.GARD,DG=D.DG,Fl=W.flags;if(!Fl.grate||h.pos.z>-252)return 'follow';
+  {id:'garden',done:()=>(k21Top('pelageya')&&k21Top('yosha'))||W.dbg21().HB.dbg().phase>0,run:(h,hh)=>{k21b();const D=W.dbg21(),KS=D.KS,GA=D.GARD,DG=D.DG,Fl=W.flags;if(!Fl.grate||h.pos.z>-252)return 'follow';
     other(1).following=false;
     const pend=!(KS[0].grown&&KS[1].grown),dry=GA.state==='low'&&GA.t>=1,need=['yosha','pelageya'].filter(k=>!k21Top(k));
     const k=pend&&need.includes('yosha')?'yosha':(need.includes(h.kind)?h.kind:need[0]);if(!cmpWant(k))return;
@@ -94,4 +94,9 @@ CMP.route('2-1',[
     // лесенка правого ростка
     if(!bottom&&dry&&h.pos.y>-0.5&&h.pos.y<1.5&&h.pos.x>6){cmpPath(h,K21_STAIR,0.5);if(h.pos.y>-0.5)return;}
     k21Climb(h,KS[1],4,-294.4);}},
+  // Рак-Отшельник, этап 1: бот играет на ракушке-музыкалке (рак заслушался — пляшет), человек бьёт и вытягивает (Потап); в раковине рака не пробить
+  {id:'hermit1',first:true,done:()=>W.dbg21().HB.dbg().phase>=1.5,run:h=>{const B=W.dbg21().HB.dbg();if(B.phase!==1)return 'follow';
+    if(players[0].downed)return 'follow';
+    const lx=B.LP.x+0.7,lz=B.LP.z+0.5;if(Math.hypot(h.pos.x-lx,h.pos.z-lz)>0.9){cmpGoto(h,lx,lz,0.4);return;}
+    if(B.LURE.hum<2.5&&!(K21B.t>G.time-0.8)){K21B.t=G.time;cmpTap('item');}}},
 ]);
