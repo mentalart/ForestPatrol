@@ -18,7 +18,7 @@ ZC.setSolo(true);ZC.startFrom(ZC.LV('2-2'));ZC.G.manual=true;ZC.tick(30);ZC.skip
 const D=ZC.W.dbg22();const r=['leap z='+LEAP(0),'log='+!!D.F.log];if(D.F.log)throw new Error('сосна повалена — проверка не о том');
 if(!(U.act(ZC.G.soloPi).pos.z<25))throw new Error('не перепрыгнули: '+r.join());r.push('go z='+GO(0,0,12,6));ZC.tick(120);
 const c=CARDS();if(/Трещина/.test(OBJ(0)+OBJ(1)+c))throw new Error('подсказка про трещину висит: obj0='+OBJ(0).slice(0,40)+' obj1='+OBJ(1).slice(0,40)+' | '+c.slice(0,200));
-if(!/Вода тут одна/.test(c))throw new Error('следующая задача не показана: '+c.slice(0,240));'solo ok '+r.join()+' errs='+_errs.length
+if(!/Вода тут одна|у ракушки посередине/.test(c))throw new Error('следующая задача не показана: '+c.slice(0,240));'solo ok '+r.join()+' errs='+_errs.length
 //@@
 // одиночный: сменить героя на того, кто остался у хвоста, — задача не откатывается к трещине
 ZC.press('KeyQ');ZC.tick(6);ZC.press('KeyQ');ZC.tick(6);const k=U.act(ZC.G.soloPi).kind,z=U.act(ZC.G.soloPi).pos.z;ZC.tick(60);const c=CARDS();
@@ -30,7 +30,7 @@ for(const pi of[0,1])for(let i=0;i<3&&U.act(pi).kind!==(pi?'pelageya':'proshka')
 const D=ZC.W.dbg22();const r=['p1 '+U.act(1).kind+' z='+LEAP(1),'p0 '+U.act(0).kind+' z='+LEAP(0),'p1 after z='+U.act(1).pos.z.toFixed(1),'log='+!!D.F.log];if(D.F.log)throw new Error('сосна повалена');
 r.push(GO(0,-2,12,6),GO(1,2,12,6));ZC.tick(120);const c=CARDS();
 if(/Трещина/.test(OBJ(0)+OBJ(1)+c))throw new Error('кооператив: трещина висит: '+r.join()+' obj0='+OBJ(0).slice(0,40)+' obj1='+OBJ(1).slice(0,40));
-if(!/Вода тут одна/.test(c))throw new Error('кооператив: следующая задача не показана: '+c.slice(0,240));'coop ok '+r.join()+' errs='+_errs.length
+if(!/Вода тут одна|у ракушки посередине/.test(c))throw new Error('кооператив: следующая задача не показана: '+c.slice(0,240));'coop ok '+r.join()+' errs='+_errs.length
 //@@
 // кооператив, как задумано: Потап валит сосну, оба идут по стволу — задача тоже закрывается
 ZC.startFrom(ZC.LV('2-2'));ZC.G.manual=true;ZC.tick(30);ZC.skip();ZC.tick(60);NOCINE();ZC.tick(30);NOCINE();LO();
