@@ -1,6 +1,6 @@
 # Регресс релизной сборки zlataya_cep/zlataya_cep_final06.html: все боты прототипа и боты меню и сохранений
 # пролог, мир 1, хаб
-smoke tpjump t12n t12deep t12tat t12long t12chudo t12pond tfoes t13v t15n t1b tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine thub2 t11 thub9 thub9b thub9c
+smoke tpjump t12n t12deep t12tat t12long t12chudo t12pond tfoes t13v t15n t1b tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine tfin_k1bfull thub2 t11 thub9 thub9b thub9c
 # мир 2 (прежние t21 t2c t25c t22d t23f t24n t21x t22shot — только для прототипа: в релизе уровни мира 2 другие, их проверяют tfin_k2*)
 tdodge tfade tsplit thw2
 # мир 3
@@ -40,7 +40,7 @@ tfin_kidnap14
 # держит напев; уровни 2-1…2-Б вдвое длиннее — вдвоём и в одиночку
 tfin_kitezh_sea tfin_kitezh_water
 tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes tfin_k22 tfin_k22solo tfin_k22hint tfin_k23 tfin_k23solo
-tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo tfin_k2bmill tfin_k2bboss tfin_k2bbosssolo tfin_k3b tfin_k3bsolo tfin_k3bboss tfin_k3bbosssolo tfin_k3blesson tfin_yaga11
+tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo tfin_k2bmill tfin_k2bboss tfin_k2bbosssolo tfin_k2blesson tfin_k3b tfin_k3bsolo tfin_k3bboss tfin_k3bbosssolo tfin_k3blesson tfin_yaga11
 # final06: мир 3 — 3-1 «Сад молодильных яблок» и 3-2 «Облачные пастбища» втрое длиннее, с мини-боссами — вдвоём и в одиночку
 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor tfin_juice tfin_audiolevel
 # Ctrl+Alt+B — следующая стадия у всех боссов (late_95_dev.js, W.bossNext)
