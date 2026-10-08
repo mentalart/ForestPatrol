@@ -18,6 +18,8 @@ tools/tests/gpu_parity.py                     -
 tools/tests/regress_list_final07.txt          -
 tools/video/*                                 -
 tools/script/*                                -
+tools/boss_audit/*                             -
+tools/boss_audit/audio/*                       -
 tools/map.py                                  -
 tools/tests/grid.js                           -
 tools/tests/shot.js                           -
