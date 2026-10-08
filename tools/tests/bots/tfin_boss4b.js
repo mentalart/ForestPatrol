@@ -35,18 +35,19 @@ const r=[];const hint=document.getElementById('finBossHint');const ex=T4.h.cur?T
 const B=[{attack:'KeyF',guard:'KeyG',roll:'ShiftLeft',skill:'KeyE',item:'KeyR',swap:'KeyQ'},{attack:'Comma',guard:'Period',roll:'Slash',skill:'KeyL',item:'Semicolon',swap:'KeyK'}];
 if(ex.length){ZC.press(B[ex[0][0]][ex[0][1]]);}ZC.tick(2);r.push('expect='+JSON.stringify(ex),'ok='+hint.classList.contains('ok'),hint.innerText.includes('Молодец'));ZC.tick(90);r.push('hidden='+!hint.classList.contains('on'));r
 //@@ shot=fin_b4_s2_acorn.png wait=400
-// этап 2 (фаза выставлена напрямую): жёлудь — ждём и жмём; дальше никто не жмёт — ролик показывает приёмы сам и заканчивается
-const W=ZC.W;W.flags.phase=2;heads().forEach(e=>{e.state='idle';e.cd=2;});ZC.tick(2);const r=['tut='+T4.on,cardSt()];r.push(waitGo(10),cardSt());r
+// этап 2 — три коротких урока (≤ 25 с, одна механика). Урок 1 при входе в этап (фаза выставлена напрямую): жёлудь — ждём и жмём
+const W=ZC.W;W.flags.phase=2;heads().forEach(e=>{e.state='idle';e.cd=2;});ZC.tick(2);const r=['tut='+T4.on,cardSt()];r.push(waitGo(10),cardSt());window.len=()=>{let n=0;while(ZC.G.cine&&n<60*60){ZC.tick(1);n++;}return n/60;};r
 //@@ shot=fin_b4_s2_fire.png wait=400
-const r=[];ZC.press('KeyE');ZC.tick(30);r.push(cardSt(),'M='+heads()[1].state);r.push(waitGo(10),cardSt());r
-//@@ shot=fin_b4_s2_inhale.png wait=400
-// final06: большой вдох — оба держат щит (тянет к пасти слабее), в ролике видны струи воздуха к пастям
-const r=['streaks='+(ZC.FIN.gor4.demoT>0)];ZC.press('KeyG');ZC.press('Period');ZC.tick(2);r.push(cardSt());r.push(waitGo(10),cardSt());r
+const r=[];ZC.press('KeyE');ZC.tick(30);r.push(cardSt(),'M='+heads()[1].state);const s=len();r.push('lesson1 '+s.toFixed(1)+'s','ok='+(s<=25),'seen2='+JSON.stringify(ZC.G.flags.tut4b2),'tut='+T4.on);r
 //@@ shot=fin_b4_s2_water.png wait=400
-const r=[];ZC.tick(560);r.push(waitGo(12),cardSt());r
+// урок 2 (щит Потапа + вода Йоши) — никто не жмёт: ролик показывает сам, не дольше 25 с
+const r=[];heads().forEach(e=>{e.state='idle';e.cd=9;});ZC.ZCfn=0;ZC.FIN.boss4bLesson(2);ZC.tick(5);r.push(cardSt());const t0=ZC.G.time;const s=len();r.push('lesson2 auto '+s.toFixed(1)+'s','ok='+(s<=25),'seen2='+JSON.stringify(ZC.G.flags.tut4b2));r
+//@@ shot=fin_b4_s2_inhale.png wait=400
+// урок 3 (большой вдох + Совиный взор): оба держат щит, взор Пелагеи; без нажатий — не дольше 25 с
+const r=['streaks0='+(ZC.FIN.gor4.demoT>0)];heads().forEach(e=>{e.state='idle';e.cd=9;});ZC.FIN.boss4bLesson(3);ZC.tick(5);r.push(cardSt());r.push(waitGo(10),'streaks='+(ZC.FIN.gor4.demoT>0));ZC.press('KeyG');ZC.press('Period');ZC.tick(2);r.push(cardSt());r.push(waitGo(10),cardSt());const s=len();r.push('lesson3 '+s.toFixed(1)+'s','ok='+(s<=25),'seen2='+JSON.stringify(ZC.G.flags.tut4b2));r
 //@@
-const r=[];let n=0,seen=[];while(ZC.G.cine&&n<60*120){ZC.tick(1);n++;const s=cardSt();if(s!==seen[seen.length-1])seen.push(s);}
-r.push('auto end sec='+(n/60).toFixed(1),'autos='+seen.filter(s=>s.includes('Смотри')).length,'heads='+heads().map(e=>e.state).join(','),'seen='+JSON.stringify(ZC.G.flags.tut4b));r
+// все три урока: без нажатий (худший случай) каждый ≤ 25 с
+const r=[];for(const k of[1,2,3]){heads().forEach(e=>{e.state='idle';e.cd=9;});ZC.FIN.boss4bLesson(k);ZC.tick(3);const s=len();r.push('auto lesson'+k+'='+s.toFixed(1)+'s ok='+(s<=25));}r.push('tut='+T4.on,'heads='+heads().map(e=>e.state).join(','));r
 //@@ shot=fin_b4_s3_grab.png wait=400
 // этап 3: узда; «раз-два-три» (late_37) — три счёта, на каждый — умение обоих (порядок и промежуток любые); узда возвращается на место
 const W=ZC.W;const bp=W.grabs[0].pos().clone();window._home=[0,1].map(pi=>ZC.players[pi].heroes[ZC.players[pi].act].pos.clone());W.flags.phase=3;W.flags.stun=50;heads().forEach(e=>{e.state='broken';e.bdur=99;e._b=true;});ZC.tick(2);const r=['tut='+T4.on,cardSt()];

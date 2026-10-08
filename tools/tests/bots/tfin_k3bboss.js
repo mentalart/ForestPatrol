@@ -5,6 +5,7 @@
 // 3 шип: в вихрь — родео (наклоны против крена), петля — колокол на «БОМ»; шапку сорвали — окно
 // 4 полный свист: выдох — за щитом Потапа, вдох — Совиный взор и рогатка в золотой жёлудь; три голоса — общий мах; песня; конец уровня
 window._errs=[];window.addEventListener('error',e=>_errs.push(String(e.message)));{const _ce=console.error;console.error=function(){_errs.push([...arguments].map(String).join(' ').slice(0,200));_ce.apply(console,arguments);};}
+ZC.FIN.k3les={auto:false};   // уроки этапов 1–2 проверяет tfin_k3blesson
 ZC.startFrom(ZC.LV('3-B'));ZC.G.manual=true;ZC.tick(10);U.nocine();ZC.tick(5);
 window.D=ZC.W.warp3b('boss1');ZC.tick(5);U.nocine();ZC.tick(30);
 window.H=ZC.HERO;window.IMM=()=>Object.values(H).forEach(h=>{h.iT=Math.max(h.iT,0.5);});

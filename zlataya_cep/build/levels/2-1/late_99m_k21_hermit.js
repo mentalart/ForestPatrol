@@ -72,9 +72,9 @@ FIN.hermitBoss=function(o){const F=W.flags,z0=o.z0,z1=o.z1,X0=-10,X1=10,mid=(z0+
   // ---- этап 1 ----
   function spawn1(){const e=makeFoe('otshel',0,mid,{leash:14});HB.e=e;e.noKill=true;e.dance=false;e.dazeT=0;
     e.guardAll=()=>!e.dance&&e.state!=='broken'&&e.state!=='dying';e.darkGuard=()=>!e.dance;e.guardText='В раковине — не пробить! Сыграй на гуслях у ракушки-музыкалки — заслушается, выглянет';
-    e.onFinisher=h=>{if(h.kind!=='potap'){floatText(e.pos.clone().add(new V3(0,3.2,0)),'Потап — тяни его за клешню!','#ffd9a0');if(!F.hbPullTold){F.hbPullTold=true;for(const p of[0,1])tip(p,'Пробой! Вытянуть рака из раковины может только Потап — подойди им и бей '+K(p,'attack')+'.<br>Смени героя '+K(p,'swap')+'; далеко Потап — позови «Ко мне!» '+K(p,'call')+'.',3.8);}return;}pullOut(h);};
+    e.onFinisher=h=>{if(h.kind!=='potap'){floatText(e.pos.clone().add(new V3(0,3.2,0)),'Потап — тяни его за клешню!','#ffd9a0');if(!F.hbPullTold){F.hbPullTold=true;for(const p of[0,1])tip(p,'Пробой! Тяни рака Потапом — бей '+K(p,'attack')+'!',3.8);}return;}pullOut(h);};
     e.tick=(e,dt)=>{const near=hd(e.pos,LP)<22,ok=e.state!=='broken'&&e.state!=='dying'&&e.state!=='spawn';
-      if(LURE.hum>0&&near&&ok){if(!e.dance){e.dance=true;SFX.ok();floatText(e.pos.clone().add(new V3(0,3.4,0)),'Ой, музыка! Пляшу!','#ffe08a');if(!F.hbDanceTold){F.hbDanceTold=true;for(const p of[0,1])tip(p,'Заслушался! Пока играют гусли — рак выглянул и пляшет: бей '+K(p,'attack')+'!',3);}}
+      if(LURE.hum>0&&near&&ok){if(!e.dance){e.dance=true;SFX.ok();floatText(e.pos.clone().add(new V3(0,3.4,0)),'Ой, музыка! Пляшу!','#ffe08a');if(!F.hbDanceTold){F.hbDanceTold=true;for(const p of[0,1])tip(p,'Рак пляшет — бей '+K(p,'attack')+'!',3);}}
         e.dazeT=Math.max(e.dazeT,0.3);e.cd=Math.max(e.cd,1.0);e.face=angDamp(e.face,Math.atan2(LP.x-e.pos.x,LP.z-e.pos.z),3,dt);}
       else if(e.dance){e.dance=false;floatText(e.pos.clone().add(new V3(0,3.4,0)),'Хм! Опять шумите?','#ffb0a0');}
       if(e.state==='broken'&&!e.bset){e.bset=true;e.bdur=12;}if(e.state!=='broken')e.bset=false;};
@@ -100,7 +100,7 @@ FIN.hermitBoss=function(o){const F=W.flags,z0=o.z0,z1=o.z1,X0=-10,X1=10,mid=(z0+
           spawn2(at.x,at.z+0.4);HB.e.state='idle';HB.e.pos.y=0;HB.e.dazeT=2.5;}},
         {t:3.2,fn:()=>{const e2=HB.e;anim(2.6,k=>{e2.L.claws.forEach(c=>{c.g.rotation.x=-1.5;});e2.L.body.rotation.z=Math.sin(k*30)*0.05;});}}],
       end:()=>{HB.phase=2;banner('Рак без домика!','#ffb0a0',2.4,'удирает и стесняется: зажмите его с двух сторон, отбейте песок, а зароется — Совиный взор');
-        for(const p of[0,1])tip(p,'Рак удирает! Зажмите его с двух сторон — замрёт.<br>Песок отбей щитом '+K(p,'guard')+' в последний миг, а зароется — Совиный взор Пелагеи найдёт.',4.2);}});}
+        for(const p of[0,1])tip(p,'Зажмите рака с двух сторон — замрёт!',4.2);}});}
   // ---- этап 2 ----
   function unearth(e,txt){e.dug=false;e.g.visible=true;HB.mound.visible=false;burst(e.pos.clone().add(new V3(0,0.4,0)),0xd8c89a,10,2);if(txt)floatText(e.pos.clone().add(new V3(0,1.8,0)),txt,'#e8d8a8');}
   function stun(e,dur,txt){if(HB.stunCd>0||!e.alive||e.state==='broken')return;HB.stunCd=dur+0.8;e.dazeT=dur;e.dug=false;e.g.visible=true;HB.mound.visible=false;SFX.ok();
@@ -118,7 +118,7 @@ FIN.hermitBoss=function(o){const F=W.flags,z0=o.z0,z1=o.z1,X0=-10,X1=10,mid=(z0+
       // зарылся в песок
       if(e.dug){e.digT-=dt;if(e.digT<=0)unearth(e,'Вылез!');}
       else if(!(e.dazeT>0)&&e.state==='idle'){e.digCd-=dt;if(e.digCd<=0){e.dug=true;e.digT=5;e.digCd=rand(10,13);e.g.visible=false;HB.mound.visible=true;SFX.water();burst(e.pos.clone().add(new V3(0,0.4,0)),0xd8c89a,16,2.5);
-        floatText(e.pos.clone().add(new V3(0,1.4,0)),'Зарылся в песок!','#e8d8a8');if(!F.hbDigTold){F.hbDigTold=true;tip(1,'Рак зарылся! Совиный взор Пелагеи '+K(1,'skill')+' найдёт его под песком.',3.2);}}}
+        floatText(e.pos.clone().add(new V3(0,1.4,0)),'Зарылся в песок!','#e8d8a8');if(!F.hbDigTold){F.hbDigTold=true;tip(1,'Зарылся! Пелагея — Совиный взор '+K(1,'skill')+'!',3.2);}}}
       HB.mound.position.set(e.pos.x,0.05,e.pos.z);HB.mound.rotation.y+=dt*2;
       // удирает от ближнего: вбок и прочь, вдоль стенок арены
       if(h&&!(e.dazeT>0)&&e.state!=='broken'&&(e.state==='idle'||e.state==='recover')&&bd<7.5){const dx=e.pos.x-h.pos.x,dz=e.pos.z-h.pos.z,d=Math.hypot(dx,dz)||1;let vx=dx/d,vz=dz/d;
@@ -159,8 +159,23 @@ FIN.hermitBoss=function(o){const F=W.flags,z0=o.z0,z1=o.z1,X0=-10,X1=10,mid=(z0+
       events:[{t:0,fn:()=>{for(const q of HEROES){const a=G.solo?active(G.soloPi):active(q.player);if(q===a||(!G.solo&&q.active)||q.cling)continue;if(hd(q.pos,a.pos)>8||Math.abs(q.pos.y-a.pos.y)>1.5){q.kwHold=null;placeOnGround(q,clamp(a.pos.x+(q.kind==='potap'?1.4:-1.4),-9,9),a.pos.z+1.2,a.pos.y);q.following=true;}}}},   // отставшие (Потап с дна сада) — тут как тут
         {t:1.5,fn:()=>{SFX.thud();shakeAll(0.04,0.4);}},{t:4.2,fn:()=>{anim(1.2,k=>{e.outK=Math.sin(k*Math.PI)*0.7;});}}],
       end:()=>{HB.phase=1;banner('Рак-Отшельник!','#ffb07a',2.6,'в раковине его не пробить — а музыку он любит');
-        for(const p of[0,1])tip(p,'Раковину не пробить. Сыграй на гуслях '+K(p,'item')+' у ракушки-музыкалки — рак заслушается и выглянет.<br>Один играет — другой бьёт! В одиночку: сыграй и смени героя '+K(p,'swap')+' — оставленный доиграет.',4.6);}});}
-  W.updates.push(dt=>{LURE.hum=Math.max(0,LURE.hum-dt);
+        for(const p of[0,1])tip(p,'Играй на гуслях '+K(p,'item')+' у ракушки!',4.6);}});}
+  // единая полоса босса: «<b>Имя</b> · этап N / 2 · название»
+  const bb=$('bossbar');let bbOn=false;
+  function hermitBar(){const ph=HB.phase;
+    if(!G.cine&&ph>=1&&ph<3){const st=ph<2?1:2,h='<b>Рак-Отшельник</b> · этап '+st+' / 2 · '+(st===1?'заслушать и вытянуть':'поймать без домика');if(bb.innerHTML!==h)bb.innerHTML=h;bb.style.display='block';bbOn=true;}
+    else if(bbOn&&(ph>=3||ph===0)){bb.style.display='none';bbOn=false;}}
+  {const _ol=W.onLeave;W.onLeave=()=>{bb.style.display='none';bbOn=false;drCulled=false;DRM.length=0;if(_ol)_ol();};}
+  // нагрузка: оформление уровня (instanced, frustumCulled=false) рисуется на всю длину ≈ 400 — на арене держим только окно ±CULL_R вокруг неё (туман там уже глухой, far≈42)
+  const CULL_R=(z0-z1)/2+70,DRM=[];let drCulled=false;
+  function drawCull(on){if(on===drCulled)return;drCulled=on;
+    if(!DRM.length&&on)W.group.traverse(o=>{if(o.isInstancedMesh&&o.userData.dress)DRM.push({o,m:o.instanceMatrix.array.slice(),c:o.instanceColor?o.instanceColor.array.slice():null,n:o.count});});
+    for(const r of DRM){const o=r.o,A=o.instanceMatrix.array,C=o.instanceColor?o.instanceColor.array:null;
+      if(!on){A.set(r.m);if(C&&r.c)C.set(r.c);o.count=r.n;}
+      else{let k=0;const far=[];for(let i=0;i<r.n;i++){if(Math.abs(r.m[i*16+14]-mid)<=CULL_R){A.set(r.m.subarray(i*16,i*16+16),k*16);if(C&&r.c)C.set(r.c.subarray(i*3,i*3+3),k*3);k++;}}
+        o.count=k;}
+      o.instanceMatrix.needsUpdate=true;if(C)o.instanceColor.needsUpdate=true;}}
+  W.updates.push(dt=>{hermitBar();{const z=Math.min(active(0).pos.z,active(1).pos.z),y=Math.max(active(0).pos.z,active(1).pos.z);drawCull(y<z0+15&&z>z1-15);}LURE.hum=Math.max(0,LURE.hum-dt);
     if(HB.phase===0&&!G.cine&&[0,1].some(pi=>active(pi).pos.z<z0-3&&active(pi).pos.y>-1))introScene();
     if(HB.friend&&F.hermitWon){const t=G.time;HB.friend.g.rotation.y=Math.sin(t*1.2)*0.4;HB.friend.L.claws.forEach((c,i)=>{c.g.rotation.x=-0.8+Math.sin(t*4+i*Math.PI)*0.4;});}
     dome.userData.bell.rotation.z=Math.sin(G.time*2)*0.15;});

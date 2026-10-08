@@ -176,6 +176,8 @@ K5L.hud=(()=>{let el=null,last='';const H={};
     const bb=document.getElementById('bossbar');
     if(bb){if(n>0){const nm=String((K5E.NAMES||[])[n]||'').replace(/^\d+ · /,'');const bh='<b style="color:#ffd76a">Кощей</b> · стадия '+n+' / 12 · '+nm+' <span style="font-style:normal">⏳</span> <span class="seg"><i style="width:'+Math.round(Math.max(0,Math.min(1,k))*100)+'%;background:#c8a8ff"></i></span>';
         bb.style.cssText='display:block;border-color:#c8a8ff;font-size:22px';if(bb.innerHTML!==bh)bb.innerHTML=bh;}else bb.style.display='none';}
+    // строка — сразу под полосой стадии, а не поверх неё (у полосы шрифт 22px — она выше, чем рассчитано в стиле)
+    {const r=bb&&bb.style.display!=='none'?bb.getBoundingClientRect():null;el.style.marginTop=r&&r.height?'0':'44px';el.style.top=(r&&r.height?Math.round(r.bottom+6):10)+'px';}
     const html=(note?'<div style="font:600 22px system-ui;letter-spacing:1px;color:#c8a8ff;font-style:normal">'+note+'</div>':'')+
       '<span style="color:#ffd76a">'+t.slice(0,m)+'</span><span style="color:#3a1c58;-webkit-text-stroke:0.6px #a070e0;filter:blur(0.3px)">'+t.slice(m)+'</span>'+pips;
     if(html!==last){el.innerHTML=html;last=html;}};
