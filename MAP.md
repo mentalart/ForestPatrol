@@ -89,12 +89,12 @@
 | `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 6 | t25c tfin_companion_25 tfin_k25 tfin_k25solo tfoes tsospot |
 | `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase | 11 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
-| `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_75_kids_w1, late_76_kids_fight, late_99p_sky31 | 16 | t31 t31c tfin_art tfin_juice tfin_kids1 tfin_kids2 tfin_motylek tfin_sky31 tfin_sky31boss… |
-| `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32, late_99x_sky32_tut, late_99y_sky32_cine, late_99zd_sky32_fx, late_99ze_sky32_cam | 9 | t32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32cine tfin_sky32floor tfin_sky3… |
-| `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 2 | t33n tso33 |
-| `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | — | 2 | t34 tmenu3 |
-| `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | — | 1 | t35 |
-| `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 8 | t3bv tfin_bossbar tfin_hintlayer tfin_k3b tfin_k3bboss tfin_k3bbosssolo tfin_k3bsolo thw3b |
+| `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_75_kids_w1, late_76_kids_fight, late_99p_sky31 | 17 | t31 t31c tfin_art tfin_companion_31 tfin_juice tfin_kids1 tfin_kids2 tfin_motylek tfin_sk… |
+| `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32, late_99x_sky32_tut, late_99y_sky32_cine, late_99zd_sky32_fx, late_99ze_sky32_cam | 10 | t32 tfin_companion_32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32cine tfin_sk… |
+| `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 3 | t33n tfin_companion_33 tso33 |
+| `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | — | 3 | t34 tfin_companion_34 tmenu3 |
+| `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | — | 2 | t35 tfin_companion_35 |
+| `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 9 | t3bv tfin_bossbar tfin_companion_3b tfin_hintlayer tfin_k3b tfin_k3bboss tfin_k3bbosssolo… |
 | `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | — | 9 | t41v tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko thw4 tluko tsolo tsolo41 |
 | `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | — | 2 | t42v tfin_art |
 | `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | — | 1 | t43 |
@@ -227,6 +227,13 @@
 | `levels/2-4/late_73l_companion_24.js` | — | РЕЛИЗ final06 · 2-4 «В БРЮХЕ У КИТА»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
 | `levels/2-5/late_73m_companion_25.js` | — | РЕЛИЗ final06 · 2-5 «КИТЕЖ ЗВОНИТ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
 | `levels/2-B/late_73n_companion_2b.js` | — | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/w3/late_73o_companion_w3.js` | — | РЕЛИЗ final06 · МИР 3: ПОМОЩНИКИ НАПАРНИКА-БОТА — ПЕРО (СВЕТ И ТЬМА) И МОСТКИ |
+| `levels/3-1/late_73p_companion_31.js` | — | РЕЛИЗ final06 · 3-1 «САД МОЛОДИЛЬНЫХ ЯБЛОК»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/3-2/late_73q_companion_32.js` | — | РЕЛИЗ final06 · 3-2 «ОБЛАЧНЫЕ ПАСТБИЩА»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/3-3/late_73r_companion_33.js` | — | РЕЛИЗ final06 · 3-3 «СИРИН И АЛКОНОСТ»: НАПАРНИК-БОТ ПОЁТ ПАРТИЮ ИГРОКА 2 |
+| `levels/3-4/late_73s_companion_34.js` | — | РЕЛИЗ final06 · 3-4 «ЛЕТУЧИЙ КОРАБЛЬ»: НАПАРНИК-БОТ — ФОНАРЩИЦА |
+| `levels/3-5/late_73t_companion_35.js` | — | РЕЛИЗ final06 · 3-5 «ГУСИ-ЛЕБЕДИ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/3-B/late_73u_companion_3b.js` | — | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
 | `late_74_kids_start.js` | epi, luko | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · СТАРТ, УДОБСТВО, СОХРАННОСТЬ |
 | `late_75_kids_w1.js` | 1-1, 1-2, 1-3, 1-4, 1-5, 1-B, 2-1, 3-1, p | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · ПРАВКИ УРОВНЕЙ |
 | `late_76_kids_fight.js` | 1-1, 1-2, 2-1, 3-1 | РЕЛИЗ · ДЕТИ 7–11 · БОЙ: СИНЯЯ КАПЛЯ, «ЖАЛОСТЬ», КРАСНЫЙ ЗНАК |
@@ -415,11 +422,11 @@
 | `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 44 файлов |
+| `changes/` | 46 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 26 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 214 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 220 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
