@@ -99,10 +99,17 @@ zlataya_cep/build/late_70_menu.js             tfin_menu tfin_pads tfin_pads2 tfi
 zlataya_cep/build/late_71_pads.js             tfin_pads tfin_pads2 tfin_menu
 zlataya_cep/build/late_72_splash.js           tfin_splash tfin_uisnd tfin_menu tfin_splashclick
 zlataya_cep/build/late_73_companion.js        tfin_companion tfin_menu tfin_save tfin_pads
-zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tsolo smoke
-zlataya_cep/build/late_74_kids_start.js       tfin_kids1 tfin_menu tfin_save tfin_dev tfin_pads2 smoke
-zlataya_cep/build/late_75_kids_w1.js          @level:p @level:1-1 @level:1-2 @level:1-3 @level:1-4 @level:1-5 @level:1-B tfin_kids1 smoke
-zlataya_cep/build/late_79b_readaloud.js       tfin_kids1 tfin_hints
+zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tsolo tfin_taskshort smoke
+zlataya_cep/build/late_74_kids_start.js       tfin_kids1 tfin_kids2 tfin_menu tfin_save tfin_dev tfin_pads2 smoke
+zlataya_cep/build/late_75_kids_w1.js          @level:p @level:1-1 @level:1-2 @level:1-3 @level:1-4 @level:1-5 @level:1-B @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 smoke
+zlataya_cep/build/late_76_kids_fight.js       @level:1-1 @level:1-2 @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 tfin_foekinds smoke
+zlataya_cep/build/late_76b_cine_skip.js       tfin_kids2 tfin_cine smoke
+zlataya_cep/build/late_79c_taskshort.js       tfin_taskshort tfin_hints smoke
+tools/playtest/task_short.py                  tfin_taskshort
+tools/playtest/task_short_tpl.js              tfin_taskshort
+tools/playtest/*                              -
+playtest_sim/*                                -
+zlataya_cep/build/late_79b_readaloud.js       tfin_kids1 tfin_kids2 tfin_taskshort tfin_hints
 zlataya_cep/build/late_80_ui.js               tfin_menu tfin_cine
 zlataya_cep/build/late_81_sfx.js              tfin_cine tfin_uisnd
 zlataya_cep/build/late_91_voice.js            tfin_voice tfin_cine tfin_scooter tfin_uisnd

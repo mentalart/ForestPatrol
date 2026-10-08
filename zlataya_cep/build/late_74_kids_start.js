@@ -14,7 +14,7 @@ KIDS.isKidsLevel=i=>{const L=LEVELS[i];return !!L&&(KIDS.worlds.includes(L.world
 try{if(localStorage.getItem('zlatayaCep.settings.v1')===null){FIN.set.shakeK=0.5;FIN.set.flashK=0.5;}}catch(e){}
 const kidsRead=()=>FIN.set.readAloud!==false;
 // ---------- экран «Кто играет?» ----------
-const KIDS_PATHS={easy:['🦔 Ёжик','Лёгкий путь','больше времени на щит и кувырок, подсказки приходят быстрее'],mid:['🦊 Лисёнок','Средний путь','щит и кувырок вовремя — как в сказке'],hard:['🛡 Богатырь','Богатырский путь','для опытных: враги быстрее, окна короче']};
+const KIDS_PATHS={easy:['🦔 Ёжик','Лёгкий путь','больше времени на щит и кувырок, подсказки приходят быстрее'],mid:['🦊 Лисёнок','Средний путь','щит и кувырок вовремя — как в сказке'],hard:['🛡 Богатырь','Богатырский путь','для опытных: окна вдвое короче, враги быстрее']};
 function kidsSetupScreen(){const S=FIN.set,cyc=(pi,d)=>{cyclePath(pi);if(d<0)cyclePath(pi);},save=()=>{FIN.saveSettings();FIN.applySettings();};
   const pathItem=(pi,label)=>({label,val:()=>KIDS_PATHS[players[pi].path][0]+' · '+KIDS_PATHS[players[pi].path][1],sub:()=>KIDS_PATHS[players[pi].path][2],side:d=>cyc(pi,d)});   // ← → меняют путь; малышам — Ёжик, взрослым и подросткам — Лисёнок или Богатырь
   const p2=pathItem(1,'Путь игрока 2');Object.defineProperty(p2,'off',{get:()=>!!G.solo||FIN.co.on});
@@ -31,9 +31,9 @@ function kidsSetupScreen(){const S=FIN.set,cyc=(pi,d)=>{cyclePath(pi);if(d<0)cyc
   if(KIDS.debug&&!KIDS.force){_ng();return;}
   if(!KIDS.seen){KIDS.seen=true;players.forEach(p=>{p.path='easy';});if(G.solo||FIN.co.on)players[1].path=players[0].path;}
   finPush(kidsSetupScreen());};}
-// пауза: «Читать задачи вслух» вторым пунктом (в пологе и мире 1), чтобы выключить, не заходя в настройки; в ?debug скрыт, чтобы не сдвигать пункты для ботов
+// пауза: «Читать задачи вслух» вторым пунктом (в прологе и мире 1, а в других мирах — когда чтение включено), чтобы выключить, не заходя в настройки; в ?debug скрыт, чтобы не сдвигать пункты для ботов
 {const _ps=pauseScreen;pauseScreen=function(){const scr=_ps();
-  if(W&&W.kids&&(!KIDS.debug||KIDS.force))scr.items.splice(1,0,{label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>FIN.readAloud.toggle()});
+  if(W&&(W.kids||FIN.readAloud.all())&&(!KIDS.debug||KIDS.force))scr.items.splice(1,0,{label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>FIN.readAloud.toggle()});
   return scr;};}
 // версия на титуле
 {const _ot=FIN.openTitle;FIN.openTitle=function(first){_ot(first);const v=$('finVer');if(v)v.textContent='версия '+FIN.ver+' · '+KIDS.ver;};}
@@ -42,6 +42,7 @@ function kidsFullscreen(){try{if(document.fullscreenElement)document.exitFullscr
 addEventListener('fullscreenchange',()=>{if(FIN.menu)finDraw();});
 {const _ss=settingsScreen;settingsScreen=function(){const scr=_ss(),S=FIN.set,L=scr.items,k=L.findIndex(it=>it.label==='Джойстики местами'),save=()=>{FIN.saveSettings();FIN.applySettings();};
   const add=[{label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>FIN.readAloud.toggle()},
+    {label:'Читать во всех мирах',val:()=>FIN.readAloud.allLabel(),sub:'авто — если кто-то идёт Ёжиком или Лисёнком',side:d=>FIN.readAloud.cycleAll(d)},
     {label:'На весь экран',val:()=>document.fullscreenElement?'да':'нет',sub:'Esc выйдет из полного экрана',side:()=>kidsFullscreen()}];
   L.splice(k<0?L.length-1:k,0,...add);return scr;};}
 {const _cs=controlsScreen;controlsScreen=function(){const scr=_cs(),h0=scr.html;scr.html=()=>h0().replace('</table>','<tr><td>Повторить задачу вслух</td><td><kbd>H</kbd></td><td><kbd>H</kbd></td><td>'+padGlyph('help')+'</td></tr><tr><td>«Ко мне!» — ещё и ближе к рукам</td><td><kbd>T</kbd></td><td><kbd>Enter</kbd></td><td>—</td></tr></table>');return scr;};}
@@ -64,10 +65,18 @@ addEventListener('beforeunload',e=>{try{if(KIDS.debug||!W||!W.kids||G.state==='m
   if(q.last&&now-q.last<400){q.t+=now-q.last;if(q.t>4000){q.n++;q.sum+=now-q.last;}}q.last=now;
   if(q.n>=240){const ms=q.sum/q.n;q.done=true;if(ms>34&&FIN.set.quality!=='low'){FIN.set.quality=FIN.set.quality==='high'?'mid':'low';FIN.applyQuality();banner('Игре тяжело — картинка стала проще','#ffffff',2.6,'так она пойдёт плавнее · вернуть можно в «Настройки → Графика»');}}};}
 // ---------- числа для плейтеста: по уровням мира 1 — сколько раз упали, сколько просили «Повтори», сколько играли ----------
-KIDS.log={};KIDS.lv=()=>{const id=W&&W.levelId||'?';return KIDS.log[id]||(KIDS.log[id]={downs:0,help:0,read:0,sec:0,visits:0});};
-{const _ll2=loadLevel;loadLevel=function(i){_ll2(i);if(W&&W.kids)KIDS.lv().visits++;};}
-{const _st2=step;step=function(dt){_st2(dt);if(W&&W.kids&&G.state==='play'&&!G.cine&&!G.trans)KIDS.lv().sec+=dt;};}
+KIDS.log={};KIDS.lv=()=>{const id=W&&W.levelId||'?';return KIDS.log[id]||(KIDS.log[id]={downs:0,help:0,read:0,sec:0,visits:0,tasks:0,taskSec:0,taskMax:0,halo:0,ghost:0});};
+{const _ll2=loadLevel;loadLevel=function(i){_ll2(i);if(W&&W.levelId)KIDS.lv().visits++;};}   // счётчики — во всех мирах (раньше только W.kids): по ним сравниваем возрасты и миры на живом тесте
+{const _st2=step;step=function(dt){_st2(dt);if(W&&W.levelId&&G.state==='play'&&!G.cine&&!G.trans){KIDS.lv().sec+=dt;kidsTaskTick(dt);}};}
+// по задаче: сколько секунд от показа до выполнения, сколько раз зажглись ореол (20 с) и призрак (40 с)
+KIDS.tr=[null,null];
+function kidsTaskTick(dt){for(const pi of[0,1]){const p=players[pi];if(!W.objectives||!W.objectives[pi])continue;let t=KIDS.tr[pi];
+    if(!t||t.lvl!==W.levelId||t.obj!==p.obj){if(t&&t.lvl===W.levelId&&t.obj>=0&&t.obj<p.obj&&t.t>0.5){const l=KIDS.log[t.lvl];if(l){l.tasks++;l.taskSec+=t.t;l.taskMax=Math.max(l.taskMax,t.t);}}
+      t=KIDS.tr[pi]={lvl:W.levelId,obj:p.obj,t:0,halo:false,ghost:false};}
+    t.t+=dt;const l=KIDS.log[t.lvl];if(!l)continue;
+    if(!t.halo&&p.pulsed&&p.pulsed.length){t.halo=true;l.halo++;}
+    if(!t.ghost&&ghosts[pi].spec){t.ghost=true;l.ghost++;}}}
 KIDS.report=()=>{const o={ver:FIN.ver+' · '+KIDS.ver,paths:players.map(p=>p.path),solo:!!G.solo,readAloud:kidsRead(),quality:FIN.set.quality,levels:{}};
-  for(const id in KIDS.log){const l=KIDS.log[id];o.levels[id]={'минут':+(l.sec/60).toFixed(1),'упали':l.downs,'повтори':l.help,'прочитано':l.read,'заходов':l.visits};}
+  for(const id in KIDS.log){const l=KIDS.log[id];o.levels[id]={'минут':+(l.sec/60).toFixed(1),'упали':l.downs,'повтори':l.help,'прочитано':l.read,'заходов':l.visits,'задач':l.tasks,'сек на задачу':l.tasks?+(l.taskSec/l.tasks).toFixed(1):0,'дольше всего, с':+l.taskMax.toFixed(0),'ореол':l.halo,'призрак':l.ghost};}
   return JSON.stringify(o,null,1);};
 window.zlatayaReport=()=>KIDS.report();   // в консоли браузера (F12): zlatayaReport() — числа для плейтеста

@@ -1,0 +1,51 @@
+{
+  "_comment": "Модельные допущения о возрастных группах — НЕ измерения. Диапазоны взяты из общих представлений о развитии (время реакции с выбором из нескольких клавиш, скорость чтения, моторный разброс), подстроены под игровой контекст; каждый респондент получает случайное отклонение (make_roster.py). Меняйте числа здесь — прогоны пересчитаются (см. README, чувствительность).",
+  "groups": {
+    "7-8": {
+      "label": "7–8 лет", "survey": "7-8",
+      "rt": 0.80, "rtSd": 0.24, "timeSd": 0.19, "lapse": 0.20, "habitHold": 0.80,
+      "pParry": 0.04, "pRoll": 0.25, "learn": 0.014, "mash": 0.85, "moveErr": 0.38,
+      "nav": 1.9, "readCps": 3.0, "ctrlLiteracy": 0.35,
+      "patienceMin": 5, "confuseMean": 55, "pathProb": {"easy": 0.92, "mid": 0.08, "hard": 0.0},
+      "readAloudP": 0.8
+    },
+    "9-10": {
+      "label": "9–10 лет", "survey": "9-10",
+      "rt": 0.62, "rtSd": 0.19, "timeSd": 0.14, "lapse": 0.12, "habitHold": 0.55,
+      "pParry": 0.18, "pRoll": 0.50, "learn": 0.022, "mash": 0.62, "moveErr": 0.26,
+      "nav": 1.45, "readCps": 5.5, "ctrlLiteracy": 0.6,
+      "patienceMin": 8, "confuseMean": 42, "pathProb": {"easy": 0.55, "mid": 0.40, "hard": 0.05},
+      "readAloudP": 0.35
+    },
+    "11-13": {
+      "label": "11–13 лет", "survey": "11-13",
+      "rt": 0.50, "rtSd": 0.15, "timeSd": 0.105, "lapse": 0.07, "habitHold": 0.30,
+      "pParry": 0.42, "pRoll": 0.78, "learn": 0.03, "mash": 0.32, "moveErr": 0.16,
+      "nav": 1.15, "readCps": 9.0, "ctrlLiteracy": 0.85,
+      "patienceMin": 12, "confuseMean": 34, "pathProb": {"easy": 0.12, "mid": 0.63, "hard": 0.25},
+      "readAloudP": 0.05
+    },
+    "14+": {
+      "label": "14 лет и взрослые", "survey": "14plus",
+      "rt": 0.40, "rtSd": 0.12, "timeSd": 0.08, "lapse": 0.045, "habitHold": 0.16,
+      "pParry": 0.62, "pRoll": 0.90, "learn": 0.036, "mash": 0.15, "moveErr": 0.08,
+      "nav": 1.0, "readCps": 14.0, "ctrlLiteracy": 0.95,
+      "patienceMin": 15, "confuseMean": 28, "pathProb": {"easy": 0.10, "mid": 0.55, "hard": 0.35},
+      "readAloudP": 0.0
+    }
+  },
+  "gaming": {
+    "_comment": "множители по игровому опыту: 0 — почти не играет, 1 — иногда, 2 — регулярно/хардкор",
+    "rt":      {"0": 1.18, "1": 1.0, "2": 0.88},
+    "timeSd":  {"0": 1.25, "1": 1.0, "2": 0.82},
+    "pParry":  {"0": 0.45, "1": 1.0, "2": 1.35},
+    "pRoll":   {"0": 0.75, "1": 1.0, "2": 1.1},
+    "nav":     {"0": 1.25, "1": 1.0, "2": 0.88},
+    "lapse":   {"0": 1.4,  "1": 1.0, "2": 0.7}
+  },
+  "hintSeconds": {
+    "_comment": "через сколько секунд бездействия игра сама помогает с задачей (docs/27_kids_world1.md, wiki Мир-1): ореол цели / призрачный показ; в мире 1 — быстрее, в остальных — 20 / 40 с",
+    "world1": {"easy": [10, 20], "mid": [13, 27], "hard": [20, 40]},
+    "other":  {"easy": [20, 40], "mid": [20, 40], "hard": [20, 40]}
+  }
+}

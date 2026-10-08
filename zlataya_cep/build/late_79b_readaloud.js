@@ -5,13 +5,18 @@
 //    ключ текста без цифр и знаков (счётчик «мусора 3 / 10» не делает задачу новой), по первым 60 буквам. Повторов сама игра не делает.
 //  • H на клавиатуре или LB на джойстике — «Повтори»: прочитать всё, что сейчас на экране.
 //  • Кнопки в тексте не произносятся (они нарисованы рядом), знаки боя читаются словами: «жёлтый знак», «красный знак».
-//  • Включается и выключается в «Настройки → Читать задачи вслух» и на экране «Кто играет?»; работает на пролог и мир 1 (W.kids).
+//  • Включается и выключается в «Настройки → Читать задачи вслух» и на экране «Кто играет?»; работает на пролог и мир 1 (W.kids), а в остальных мирах —
+//    по пункту «Читать во всех мирах» (авто / да / нет; авто — если кто-то идёт Ёжиком или Лисёнком): запасной вариант, пока не записан голос.
 //  • Нет русского голоса — ничего не читает, и в настройках об этом сказано.
 const RA=FIN.readAloud={ok:false,voice:null,mock:null,q:[],cand:[null,null,null],said:{},gap:0,speaking:false,out:null};
 function raVoices(){try{const L=(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(v=>/^ru/i.test(v.lang));RA.voice=L.find(v=>v.localService)||L[0]||null;}catch(e){RA.voice=null;}RA.ok=!!RA.voice;}
 raVoices();try{if(window.speechSynthesis)speechSynthesis.onvoiceschanged=raVoices;}catch(e){}
 RA.status=()=>!window.speechSynthesis?'в этом браузере нет голоса':RA.mock?'голос: пробный':RA.ok?'голос: '+RA.voice.name:'русский голос не найден — вслух читать не будет';
 RA.can=()=>kidsRead()&&(RA.ok||!!RA.mock);
+// вне пролога и мира 1 вслух читает, если «Читать во всех мирах» = да, а при «авто» — когда кто-то идёт Ёжиком или Лисёнком (пока нет записанного голоса)
+RA.all=()=>{const v=FIN.set.readAloudAll;return v==null?players.some(p=>p.path==='easy'||p.path==='mid'):!!v;};
+RA.allLabel=()=>{const v=FIN.set.readAloudAll;return v==null?'авто':v?'да':'нет';};
+RA.cycleAll=d=>{const v=FIN.set.readAloudAll,L=[null,true,false],i=L.indexOf(v==null?null:v);FIN.set.readAloudAll=L[(i+(d<0?2:1))%3];FIN.saveSettings();FIN.applySettings();};
 RA.say=function(text,now){if(!text)return;if(!now)FIN.kids.lv().read++;if(RA.mock){RA.mock(text);return;}if(!RA.ok)return;
   try{if(now)speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.voice=RA.voice;u.lang=RA.voice.lang;u.rate=0.9;u.pitch=1.1;u.volume=Math.max(0,Math.min(1,FIN.set.vox!=null?FIN.set.vox:1));
     u.onend=u.onerror=()=>{RA.speaking=false;};RA.speaking=true;speechSynthesis.speak(u);}catch(e){RA.speaking=false;}};
@@ -21,7 +26,7 @@ RA.key=t=>String(t).toLowerCase().replace(/[0-9]+/g,'').replace(/[^a-zа-яё ]+
 RA.toggle=()=>{const S=FIN.set;S.readAloud=!kidsRead();FIN.saveSettings();FIN.applySettings();if(S.readAloud)RA.test();else RA.stop();};
 RA.stop=()=>{RA.q.length=0;RA.speaking=false;try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}};
 // текст карточки без кнопок: знаки боя — словами, пары «первый / второй» — только первый вариант
-function raText(html){if(!html)return '';const d=document.createElement('div');d.innerHTML=html;const b=d.querySelector('.hn-body')||d;
+function raText(html){if(!html)return '';const d=document.createElement('div');d.innerHTML=html;const b=d.querySelector('.hn-rd')||d.querySelector('.hn-body')||d;   // у задачи есть краткая строка (крупная, ≤ 12 слов) — читаем её, а не весь текст
   b.querySelectorAll('kbd,.pb,.hn-k2,.hn-p2,.hn-v2>i').forEach(e=>e.remove());
   b.querySelectorAll('i.sg').forEach(e=>{const c=e.className,w=/ y\b/.test(c)?'жёлтый знак':/ r\b/.test(c)?'красный знак':/ b\b/.test(c)?'синий знак':'знак';e.replaceWith(' '+w+' ');});
   b.querySelectorAll('br').forEach(e=>e.replaceWith(' '));
@@ -31,7 +36,7 @@ function raText(html){if(!html)return '';const d=document.createElement('div');d
 // слова идут через «Повтори»/автоповтор: показанные сейчас карточки (общая, потом личные)
 function raCards(){const out=[];if(typeof HN==='undefined')return out;for(const i of[2,0,1]){if(!HN.shown[i])continue;if(G.solo&&i<2&&i!==G.soloPi)continue;const t=raText(HN.html[i]);if(t)out.push({i,t});}return out;}
 function raTick(){
-  const live=W&&W.kids&&G.state==='play'&&!G.cine&&!G.trans&&!G.ui&&RA.can();
+  const live=W&&(W.kids||RA.all())&&G.state==='play'&&!G.cine&&!G.trans&&!G.ui&&RA.can();
   if(!live){if(RA.q.length||RA.speaking){RA.stop();}for(let i=0;i<3;i++)RA.cand[i]=null;return;}
   const now=performance.now(),cards=raCards(),busy=FIN.voxDuck<1||(typeof subT!=='undefined'&&subT>0.1);
   // «Повтори»
