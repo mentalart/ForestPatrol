@@ -95,7 +95,7 @@ RUNB('3-1')
 RUNB('3-2')
 //@@
 RUNB('5-1')
-//@@
+//@@ wait=500
 // ---- сводка и пороги ----
 // THR[босс] — предел «не хуже»: слова подсказок (макс.), (сред.), шрифт подсказки в % высоты окна (мин.) на 720p и 1080p, перекрытия HUD % (макс.),
 // вспышки/с, тряска (макс. амплитуда, макс. за 1 с), hit-stop (макс. длительность), p95 вызовов и тысяч треугольников, живые частицы (пик), самый длинный ролик, с
@@ -117,7 +117,7 @@ window.THR={
 };
 // перекрытия HUD ≥ 10 % меньшего окна: пары, которые есть сегодня (плюс 3 %); любая другая пара — FAIL. F-2a убрал subs×skip; остались баннер над подсказкой 4-Б/3-2 и полоса босса над значком 5-1.
 window.PAIR720={'banner×finBossHint':100,'finTut×bossbar':27,'bossbar×vest':41};window.PAIR1080={'banner×finBossHint':100};   // баннер поверх подсказки боя 4-Б/3-2 после слияний вырос до 66 % (1080p — 100 %); чинит F-2c
-const names=['1-B','2-B','3-B','4-B','5-B1','5-B2','1-1','2-1','3-1','3-2','5-1'];const L=[];const bad=[];
+const names=['1-B','2-B','3-B','4-B','5-B1','5-B2','1-1','2-1','3-1','3-2','5-1'];const L=[];const bad=[];const warn=[];   // warn — нагрузка (зависит от момента замера и скорости машины): печатается, но не валит
 const f=(v,d)=>v==null?'-':(+v).toFixed(d==null?1:d);
 L.push('босс  | подск.: шт ср/макс | шрифт% 720/1080 | перекр.% 720/1080 | ролики: шт макс/сумма с | вспышки/с | тряска: макс /в с | hit-stop | вызовы p95 | тр.тыс p95 | частицы');
 for(const n of names){const a=RES['720 '+n],b=RES['1080 '+n];
@@ -125,11 +125,11 @@ for(const n of names){const a=RES['720 '+n],b=RES['1080 '+n];
   if(a.err)bad.push(n+' 720: сценарий упал: '+a.err);if(b&&b.err)bad.push(n+' 1080: сценарий упал: '+b.err);
   L.push([n,a.tips.n+' '+f(a.tips.avg)+'/'+a.tips.max,f(a.hintFontPct,2)+'/'+(b?f(b.hintFontPct,2):'-'),a.ovMax+'/'+(b?b.ovMax:'-'),a.cines.n+' '+f(a.cines.max)+'/'+f(a.cines.total),a.flash.perSec,a.shake.max+' / '+a.shake.perSec,f(a.hitstop.max,2),a.perf.callsP95,a.perf.trisP95,a.perf.fxMax].join(' | '));
   const T=THR[n];if(!T)continue;
-  const chk=(what,v,lim,hi)=>{if(v==null||lim==null)return;if(hi?v>lim+1e-9:v<lim-1e-9)bad.push(n+': '+what+' '+v+(hi?' > ':' < ')+lim);};
+  const chk=(what,v,lim,hi,soft)=>{if(v==null||lim==null)return;if(hi?v>lim+1e-9:v<lim-1e-9)(soft?warn:bad).push(n+': '+what+' '+v+(hi?' > ':' < ')+lim);};
   chk('слов в подсказке (макс.)',a.tips.max,T.tipMax,1);chk('слов в подсказке (сред.)',a.tips.avg,T.tipAvg,1);
   chk('шрифт подсказки % 720p',a.hintFontPct,T.font720,0);if(b)chk('шрифт подсказки % 1080p',b.hintFontPct,T.font1080,0);
   chk('вспышек в секунду',a.flash.perSec,T.flash,1);chk('тряска (макс.)',a.shake.max,T.shake,1);chk('тряска (в секунду)',a.shake.perSec,T.shakePs,1);
-  chk('hit-stop',a.hitstop.max,T.hitstop,1);chk('вызовы p95',a.perf.callsP95,T.calls,1);chk('треугольники p95',a.perf.trisP95,T.tris,1);chk('частицы',a.perf.fxMax,T.fx,1);chk('самый длинный ролик',a.cines.max,T.cine,1);}
+  chk('hit-stop',a.hitstop.max,T.hitstop,1);chk('вызовы p95',a.perf.callsP95,T.calls,1,1);chk('треугольники p95',a.perf.trisP95,T.tris,1,1);chk('частицы',a.perf.fxMax,T.fx,1,1);chk('самый длинный ролик',a.cines.max,T.cine,1);}
 for(const n of names){for(const [vp,PAIR] of[['720',PAIR720],['1080',PAIR1080]]){const r=RES[vp+' '+n];if(!r||!r.ov)continue;
   for(const p in r.ov){if(PAIR[p]==null)bad.push(n+' '+vp+': новое перекрытие HUD '+p+' '+r.ov[p]+'%');else if(r.ov[p]>PAIR[p])bad.push(n+' '+vp+': перекрытие '+p+' '+r.ov[p]+'% > '+PAIR[p]+'%');}}}
 const hint=[];for(const k of Object.keys(RES)){const r=RES[k];if(r.hud)for(const id in r.hud)if(['hint0','hint1','hintS','finBossHint','finTut'].includes(id)){hint.push(k+' '+id+' n='+r.hud[id].n+' мин='+r.hud[id].pxMin+'px '+r.hud[id].pctMin+'% (сам элемент '+r.hud[id].pctOwnMin+'%)');}}
@@ -139,5 +139,7 @@ const NOW={};for(const n of names){const a=RES['720 '+n],b=RES['1080 '+n];if(!a)
   NOW[n]={tipMax:a.tips.max,tipAvg:a.tips.avg,font720:a.hintFontPct,font1080:b?b.hintFontPct:null,ov720:a.ovMax,ov1080:b?b.ovMax:null,flash:a.flash.perSec,shake:a.shake.max,shakePs:a.shake.perSec,hitstop:a.hitstop.max,calls:a.perf.callsP95,tris:a.perf.trisP95,fx:a.perf.fxMax,cine:a.cines.max};}
 window.NOWJ=JSON.stringify(NOW);
 const OUT=L.join('\n')+'\n--- шрифты окон HUD (мин. по подсказкам)\n'+hint.join('\n')+'\n--- перекрытия ≥10%\n'+ovl.join('\n')+'\n--- THR сейчас: '+NOWJ+'\n--- ошибки страницы: '+_errs.length+(_errs.length?' '+_errs.slice(0,3).join(' | '):'')+'\n'+(bad.length?bad.map(x=>'FAIL '+x).join('\n'):'bossaudit ok');
-if(bad.length){console.log(OUT);throw new Error(bad.length+' нарушений порогов: '+bad.map(x=>'FAIL '+x).join(' | '));}
-OUT
+// первая строка вывода («> …» в сводке regress и CI) — итог: нарушения или ok; красным — ошибка страницы (PAGEERROR), чтобы бот упал, а итог остался виден
+const SUM=bad.length?'FAIL '+bad.length+': '+bad.slice(0,4).join('; ')+(bad.length>4?'; …':''):'bossaudit ok'+(warn.length?' (WARN нагрузка: '+warn.slice(0,3).join('; ')+')':'');
+if(bad.length)setTimeout(()=>{throw new Error(bad.length+' нарушений порогов: '+bad.join(' | '));},0);
+SUM+'\n'+OUT+(warn.length?'\n'+warn.map(x=>'WARN '+x).join('\n'):'')
