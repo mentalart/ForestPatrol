@@ -102,6 +102,13 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
     el.classList.toggle('hn-cmp',on&&HN.cmp[i]);el.classList.toggle('hn-dim',!!(solo&&i===1-sp));el.classList.toggle('hn-new',G.time-HN.flash[i]<1.2);};
   cards.forEach((c,i)=>render(i,c));
   // места: карточка игрока — под его панелью (у первого — под «весточкой»), общая — под счётчиком звеньев (и под подсказкой босса)
+  // F-2e: полоса босса, «весточка» и карточка обучения — разные зоны: «весточка» и карточка урока уходят под полосу, если задели её
+  {const bb=$('bossbar'),vs=$('vest'),ft=$('finTut'),vis=e=>e&&getComputedStyle(e).display!=='none';
+    const hit=(a,b)=>a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
+    if(vs){vs.style.top='';if(vis(vs)&&vis(bb)){const B=bb.getBoundingClientRect();if(hit(vs.getBoundingClientRect(),B))vs.style.top=Math.round(B.bottom+6)+'px';}}
+    if(ft){ft.style.top='';if(ft.classList.contains('on')){const F=ft.getBoundingClientRect();let y=0;
+      for(const e of[bb,vs])if(vis(e)){const R=e.getBoundingClientRect();if(F.left<R.right&&R.left<F.right&&F.top<R.bottom+8&&R.top<F.bottom)y=Math.max(y,R.bottom+8);}
+      if(y)ft.style.top=Math.round(y)+'px';}}}
   const H0=$('hud0').getBoundingClientRect(),H1=$('hud1').getBoundingClientRect(),V=$('vest'),VR=V&&getComputedStyle(V).display!=='none'?V.getBoundingClientRect():null;
   let top0=Math.max(H0.bottom,VR?VR.bottom:0)+8,top1=H1.bottom+8;
   if(bossOn){const B=boss.getBoundingClientRect();if(12+els[0].offsetWidth>B.left-6)top0=Math.max(top0,B.bottom+8);if(innerWidth-12-els[1].offsetWidth<B.right+6)top1=Math.max(top1,B.bottom+8);}   // подсказка босса широкая — карточки игроков под ней
