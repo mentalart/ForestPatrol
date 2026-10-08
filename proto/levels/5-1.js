@@ -247,7 +247,7 @@ function build51(){
         {t:28.2,fn:()=>{const f=MR.g.position.clone();anim(0.8,k=>{MR.g.position.lerpVectors(f,pe.pos.clone().add(new V3(0,1.2,0)),k);MR.g.scale.setScalar(1-k*0.8);});}}],
       end:()=>{W.anims.length=0;if(!L1.taken)takeItem(L1,pr);MR.state='taken';MR.g.visible=false;toys.ham.position.set(-0.4,0.05,0.1);F.stage=F.meadowClear?'clew':'meadow';snapCams();later(0.6,()=>sayP('…ярус клубка. Знак — у корней.',2.4));}});}
   function likhoArrives(L,at,line){L.g.visible=true;L.R0=L.Rgeo;const to=at.clone(),from=to.clone().add(new V3(18,14,-6));L.pos.copy(from);SFX.whoosh();anim(1.2,k=>{L.pos.lerpVectors(from,to,smooth(k));L.pos.y+=Math.sin(k*Math.PI)*6;if(k>=1){SFX.crash();shake(0,0.25,0.4);shake(1,0.25,0.4);burst(to.clone().add(new V3(0,0.5,0)),0x8a7a5a,20,5);}});
-    later(1.3,()=>{bark(L,'likho','Ух! Ух-ху!',1.8);banner('Лихо Одноглазое','#e8d0a0',2.6,line);});}
+    later(1.3,()=>{bark(L,'likho','Ух! Ух-ху!',1.8);banner('Лихо Одноглазое','#e8d0a0',3.4,line);});}
   /* ---------- ролики части 3: пятая цепь, ловушка, шкуры, побег ---------- */
   function chainScene(){F.stage='chainCine';const L=likho2;L.mode='hold';L.noCatch=true;L.reach=null;
     play({dur:12.6,fov:46,camK:2.4,shots:[shot(0,[11,19,-106],[1,23.4,-95.4]),shot(5.2,[14,9,-112],[4,14,-108]),shot(8.6,[20,3,-124],[L.pos.x,3,L.pos.z])],
@@ -269,7 +269,7 @@ function build51(){
       tick:(t)=>{if(t<1.6)L.yaw=Math.atan2(22-from.x,-121-from.z);else if(t<3.8)L.yaw=Math.atan2(LOOKOUT.x-from.x,LOOKOUT.z-from.z);else L.yaw=Math.PI*0.5+Math.sin((t-3.8)*0.8)*1.2;L.g.rotation.y=L.yaw;},
       end:()=>{W.anims.length=0;L.pos.copy(LOOKOUT);L.g.scale.setScalar(L.s);L.ride=null;L.perch=null;L.noCatch=false;L.mode='sweep';L.turn=0.5;L.sweepDir=1;L.sweepPitch=-0.22;L.countEvery=8;L.countDur=4.6;L.countT=0;L.cd=2;
         HEROES.forEach(h=>skinOn(h));F.stage='escape';F.esc0=true;for(const pi of[0,1])other(pi).following=true;if(G.solo)for(const h of HEROES)if(h!==active(G.soloPi))h.following=true;snapCams();
-        banner('Побег в овечьих шкурах','#ffffff',2.6,'в стаде овец Лихо тебя не видит · иди только шагом · Лихо считает овец и сбивается — тогда перебегай к корням дуба');}});}
+        banner('Побег в овечьих шкурах','#ffffff',2.6,'Шагом в стаде — к корням дуба');}});}
   function escapeReset(){SFX.miss();banner('Лихо заметило!','#ffd0d0',1.8,'ещё раз — от первого стада, сначала');$('flash').style.opacity=0.6;later(0.3,()=>{$('flash').style.opacity=0;});
     flockA.k=0;flockA.pos.set(24,0,-138);flockB.k=0;flockB.pos.set(1,0,-127.8);HEROES.forEach((h,i)=>{placeOnGround(h,23.2+(i%2)*1.6,-138.6+Math.floor(i/2)*1.4,0);h.vel.set(0,0,0);h.face=-Math.PI/2;});for(const pi of[0,1]){other(pi).following=true;players[pi].cp.set(24,0,-138);}if(G.solo)for(const h of HEROES)if(h!==active(G.soloPi))h.following=true;likho2.cd=2;likho2.countT=0;}
   /* ---------- бой с Лихом: зеркальце → счёт овечек → колыбельная и щекотка ---------- */
@@ -291,7 +291,7 @@ function build51(){
         HEROES.forEach((h,i)=>{placeOnGround(h,-8.6+i*1.5,-124.6-(i%2)*0.4,0);faceTo(h,-3.5,-136);});
         if(!bRings.length){bRings.push(baitRing(-3.5,0,-125.4),baitRing(-11,0,-134.6),baitRing(3.4,0,-136.8));}
         F.stage='boss1';B.ph=1;B.refl=0;arenaOn();L.mode='watch';L.noCatch=false;L.idleLook=new V3(-3.5,0,-125);L.R0=16;L.turn=(Math.PI/2)/3;L.cd=2.5;snapCams();setBar();
-        banner('Лихо Одноглазое · фаза 1','#e8d0a0',3.4,'зеркальце: один — в золотое кольцо, второй — возьми зеркальце '+K(0,'item')+' / '+K(1,'item')+' и встань между ними спиной к Лиху');}});}
+        banner('Лихо Одноглазое · фаза 1','#e8d0a0',3.4,'Возьми зеркальце, встань спиной к Лиху');}});}
   function bossCatch(h){if(MR.holder===h){MR.holder=null;MR.state='stump';MR.rest.set(h.pos.x,h.pos.y+0.9,h.pos.z);floatText(h.pos.clone().add(new V3(0,2,0)),'Зеркальце упало','#e8f4ff');}
     likhoCatch(h,new V3(-3.5+rand(-2,2),0,-125));}
   const lookDot=(h,L)=>{const e=likhoEye(L),dx=e.x-h.pos.x,dz=e.z-h.pos.z,d=Math.hypot(dx,dz)||1;return (Math.sin(h.face)*dx+Math.cos(h.face)*dz)/d;};
@@ -324,7 +324,7 @@ function build51(){
       end:()=>{W.anims.length=0;L.pos.copy(LIKHO_SIT);L.yaw=0;sitPose(1);mouthK(0);HEROES.forEach(h=>{skinOn(h);h.logSide=undefined;});
         HEROES.forEach((h,i)=>{placeOnGround(h,-6.8+i*2.2,-128.8,0);faceTo(h,-3.5,-136);});
         F.stage='boss2';B.ph=2;B.count=0;B.lastT=G.time;B.lastBy=null;snapCams();setBar();
-        banner('Фаза 2 · считаем овечек','#ffffff',3.2,'прыгайте через бревно '+K(0,'jump')+' / '+K(1,'jump')+' по одному — Лихо считает · двое сразу — собьётся · нужно 8');}});}
+        banner('Фаза 2 · считаем овечек','#ffffff',3.4,'Прыгайте через бревно по очереди, 8 раз');}});}
   function mouthK(k){const mo=likho2.m.mouth;if(!mo.userData.s0)mo.userData.s0=mo.scale.clone();const s0=mo.userData.s0;mo.scale.set(s0.x*(1+k*0.35),s0.y*(1+k),s0.z);}
   function sitPose(k){const m=likho2.m;m.body.position.y=-0.75*k;m.legs.forEach(l=>{l.rotation.x=-1.2*k;l.position.y=0.65+0.25*k;l.position.z=0.35*k;});}
   const COUNT=['Одна овечка…','Две овечки…','Три…','Четыре…','Пять…','Шесть…','Семь…','Во-о-семь…'];
@@ -334,7 +334,7 @@ function build51(){
       const air=!h.grounded||G.time-(h.airT||-9)<0.8;   // прыгнул у бревна и перешагнул — тоже овечкаif(!air){floatText(h.pos.clone().add(new V3(0,1.4,0)),'Овечки прыгают!','#ffffff');continue;}
       const gap=G.time-B.lastT;if(gap<0.5&&B.lastBy===h)continue;
       if(gap<0.6&&B.lastBy&&B.lastBy!==h&&B.count>0){B.count=Math.max(0,B.count-2);B.lastT=G.time;B.lastBy=h;SFX.miss();bark(L,'likho','Ух? Две разом? Сбилось!',2);setBar();
-        if(!F.twoTold){F.twoTold=true;for(const q of[0,1])tip(q,'Прыгайте по очереди: сначала один, потом другой',2.6);}continue;}
+        if(!F.twoTold){F.twoTold=true;for(const q of[0,1])tip(q,'Прыгайте по очереди: сначала один, потом другой',3.4);}continue;}
       B.count++;B.lastT=G.time;B.lastBy=h;SFX.plate();say('likho',COUNT[B.count-1],1.6);floatText(likhoEye(L).clone().add(new V3(0,1.3,0)),String(B.count),'#fff2b0');burst(h.pos.clone().add(new V3(0,0.8,0)),0xffffff,8,2);setBar();
       if(B.count>=8){F.stage='boss2done';later(1.4,sleepScene);return;}}
     if(B.count>0&&G.time-B.lastT>(G.solo?9:7)){B.count--;B.lastT=G.time;B.lastBy=null;bark(L,'likho','Ух? Где овечки?',1.8);setBar();}}
@@ -346,7 +346,7 @@ function build51(){
       events:[{t:0.3,fn:()=>{anim(2.2,k=>{sleepPose(k);});}}],
       end:()=>{W.anims.length=0;sleepPose(1);addCoils();likho2.g.updateMatrixWorld(true);likho2.m.arms[0].paw.getWorldPosition(tv5);PAW3.set(tv5.x,0,tv5.z);
         tickSign3.x=PAW3.x+0.4;tickSign3.z=PAW3.z+1.2;tickSign3.g.position.set(tickSign3.x,0.03,tickSign3.z);F.stage='boss3';B.ph=3;B.sleep=0.8;B.claw=0;B.clawT=0;B.peekT=10;B.warn=0;B.peek=0;snapCams();setBar();
-        banner('Фаза 3 · не разбуди!','#c8d8ff',3.4,'гусли у головы '+K(0,'item')+' — колыбельная · перо у лапы — щекочи, витки цепи соскользнут · храп стих — замри!');}});}
+        banner('Фаза 3 · не разбуди!','#c8d8ff',3.4,'Играйте гуслями у головы, щекочите лапу пером');}});}
   function sleepPose(k){const m=likho2.m;m.lid.rotation.x=lerp(-1.25,1.1,k);m.head.rotation.x=0.45*k;m.head.rotation.z=0;const a=m.arms[0].a;a.rotation.z=lerp(-0.28,-0.55,k);a.rotation.x=lerp(0,-0.25,k);}
   function addCoils(){if(coils.length)return;const paw=likho2.m.arms[0].paw;for(let i=0;i<3;i++){const c=new THREE.Mesh(new THREE.TorusGeometry(0.5,0.09,6,16),M(0x3e3a46,{emissive:0x14121c,emissiveIntensity:0.3}));c.position.y=0.1-i*0.16;c.rotation.x=Math.PI/2;c.userData.noBatch=true;paw.add(c);coils.push(c);}}
   function sleepTick(dt){const L=likho2,m=L.m;
@@ -363,7 +363,7 @@ function build51(){
     else m.arms[0].a.rotation.y=0;
     // приоткрывает глаз: сначала храп стихает (1,2 с), потом 2,6 с смотрит — кто шевелится, тот будит
     if(!(B.warn>0)&&!(B.peek>0)){B.peekT-=dt;if(B.peekT<=0){B.warn=1.2;floatText(likhoEye(L).clone().add(new V3(0,1.2,0)),'…хр… хр…?','#ffd0d0');tone(220,0.3,'sine',0.12,180);
-      if(!F.peekTold){F.peekTold=true;for(const q of[0,1])tip(q,'Храп стих — сейчас Лихо приоткроет глаз. Замри!',2.6);}}}
+      if(!F.peekTold){F.peekTold=true;for(const q of[0,1])tip(q,'Храп стих — Лихо приоткроет глаз. Замри!',3.4);}}}
     if(B.warn>0){B.warn-=dt;if(B.warn<=0){B.warn=0;B.peek=2.6;B.peekHit.clear();L.yaw=rand(-0.5,0.5);SFX.red();}}
     if(B.peek>0){B.peek-=dt;m.lid.rotation.x=0.25;m.head.rotation.x=0.1;L.yaw+=Math.sin(G.time*1.4)*0.35*dt;L.g.rotation.y=L.yaw;L.pitch=-0.3;L.R=11;
       const e=likhoEye(L);L.cone.visible=true;L.cone.position.copy(e);L.cone.scale.setScalar(L.R/L.Rgeo*1.3);L.cone.lookAt(e.clone().add(likhoDir(L)));L.cone.material.opacity=0.2;L.cone.material.color.setHex(0xffc0a0);
@@ -376,7 +376,7 @@ function build51(){
   function wake(){F.stage='bossWake';B.wakeT=3.2;B.peek=0;B.warn=0;const L=likho2,m=L.m;m.lid.rotation.x=-1.25;m.head.rotation.x=0;SFX.crash();shakeAll(0.08,0.5);bark(L,'likho','УХ! Кто меня будит?!',2.2);
     for(const h of HEROES){if(hd(h.pos,L.pos)>9)continue;const dx=h.pos.x-L.pos.x,dz=h.pos.z-L.pos.z,d=Math.hypot(dx,dz)||1;h.vel.set(dx/d*6,5,dz/d*6);h.grounded=false;h.knockT=0.5;h.lit=false;}
     if(B.claw>0){const c=coils[B.claw-1];if(c){c.visible=true;c.position.y=0.1-(B.claw-1)*0.16;c.scale.setScalar(1);}B.claw--;}B.clawT=0;B.sleep=0;setBar();
-    for(const q of[0,1])tip(q,'Лихо проснулось! Колыбельная на гуслях у головы — и замри, когда оно приоткрывает глаз',3.2);}
+    for(const q of[0,1])tip(q,'Проснулось! Играй колыбельную, потом замри',3.4);}
   function lullaby5(pi){const h=active(pi),p=players[pi];if((p.gusCd||0)>0)return;p.gusCd=1.3;gusliFx(h,'high');lullaby([67,64,67,64,62,64,60],0.16,0,0.12);
     floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Баю-баюшки-баю…','#c8d8ff');if(F.stage!=='boss3')return;B.sleep=Math.min(1,B.sleep+0.2);setBar();
     for(let i=0;i<5;i++)later(i*0.2,()=>floatText(likhoEye(likho2).clone().add(new V3(rand(-0.8,0.8),0.6+i*0.2,0)),'♪','#c8d8ff'));}
@@ -394,13 +394,13 @@ function build51(){
           later(1.0,()=>{SFX.crash();shakeAll(0.08,0.4);burst(a.clone(),0xc8a060,16,4);});later(3.6,()=>{chestDown();SFX.crash();shakeAll(0.1,0.4);burst(CHEST_REST.clone().add(new V3(0,0.6,0)),0xc8a060,20,5);});}}],
       tick:(t)=>{const m=L.m;m.body.scale.set(1,1+Math.sin(t*1.6)*0.03,1);mouthK(Math.max(0,Math.sin(t*1.6))*1.2);},
       end:()=>{W.anims.length=0;chainOn=false;chestDown();F.stage='chest';F.lift=[-9,-9];snapCams();
-        banner('Сундук!','#ffd76a',2.6,G.solo?'подними крышку '+K(G.soloPi,'attack')+' — тихо, Лихо спит':'крышку поднимают вдвоём: оба у сундука — '+K(0,'attack')+' и '+K(1,'attack')+' разом · тихо, Лихо спит');}});}
+        banner('Сундук!','#ffd76a',3.4,G.solo?'Подними крышку '+K(G.soloPi,'attack')+' — тихо!':'Оба жмите '+K(0,'attack')+' и '+K(1,'attack')+' у сундука');}});}
   function chestDown(){if(F.chestDown)return;F.chestDown=true;chest.g.position.copy(CHEST_REST);chest.g.rotation.set(0,0.3,0);W.cyls.push({x:CHEST_REST.x,z:CHEST_REST.z,r:0.95,miny:-1,maxy:1.3,on:true});}
   // «Раз-два — взяли!»: удар у сундука — рука на крышке; у другого игрока — тоже в пределах 1,5 с, и крышка поднимается (в одиночном — сразу)
   function liftTry(h){if(F.stage!=='chest')return;const pi=h.player,now=G.time;if(now-F.lift[pi]<0.4)return;F.lift[pi]=now;
     anim(0.35,k=>{chest.lid.rotation.x=-Math.sin(k*Math.PI)*0.22;});SFX.knock();
     if(G.solo||now-F.lift[1-pi]<1.5){hareScene();return;}
-    floatText(CHEST_REST.clone().add(new V3(0,1.9,0)),'Тяжёлая! Вдвоём — разом','#ffe6a0');tip(1-pi,'Помоги поднять крышку: встань у сундука и нажми '+K(1-pi,'attack')+' вместе с другом',2.6);}
+    floatText(CHEST_REST.clone().add(new V3(0,1.9,0)),'Тяжёлая! Вдвоём — разом','#ffe6a0');tip(1-pi,'Встань у сундука, жми '+K(1-pi,'attack')+' вместе',3.4);}
   W.hittables.push({pos:CHEST_REST.clone().add(new V3(0,0.6,0)),r:1.3,push:false,alive:()=>F.stage==='chest'&&!G.cine,onHit:h=>liftTry(h)});
   function hareScene(){F.stage='hareCine';HEROES.forEach((h,i)=>{placeOnGround(h,-5.2+i*1.3,-124.9-(i%2)*0.5,0);faceTo(h,CHEST_REST.x,CHEST_REST.z);});
     play({dur:17.6,fov:48,camK:2.4,shots:[shot(0,[0.4,1.7,-123.6],[-2,0.7,-127.6]),shot(1.8,[2,2.1,-122.2],[-0.8,0.95,-126.6]),shot(4.8,[-5.6,1.8,-120.8],[-2.6,0.8,-125.6]),
@@ -413,7 +413,7 @@ function build51(){
         {t:2.5,fn:()=>{giveLink(CHEST_REST.clone().add(new V3(0,1.5,0)),T.proshka,1.6,1.2);}},
         {t:15,fn:()=>{const hr=F.hare;if(!hr)return;const p0=hr.g.position.clone();SFX.whoosh();anim(2.8,k=>{hr.g.position.set(p0.x+k*21,Math.abs(Math.sin(k*Math.PI*6))*1.3,p0.z-k*1.4);hr.g.rotation.y=Math.atan2(21,-1.4);hr.ears.forEach(e=>{e.rotation.x=Math.sin(k*40)*0.3;});});}}],
       tick:(t)=>{const m=likho2.m;m.body.scale.set(1,1+Math.sin(t*1.6)*0.03,1);mouthK(Math.max(0,Math.sin(t*1.6))*1.2);},
-      end:()=>{W.anims.length=0;flushGifts();F.out=true;chest.lid.rotation.x=-1.8;banner('Сундук открыт — заяц удрал!','#ffd76a',2.6,'в лавке у Векши — овечья шкура-плащ, загляни!');later(1.8,finishLevel);}});}
+      end:()=>{W.anims.length=0;flushGifts();F.out=true;chest.lid.rotation.x=-1.8;banner('Сундук открыт — заяц удрал!','#ffd76a',2.6,'Загляни к Векше — там шкура-плащ');later(1.8,finishLevel);}});}
   likho2.ctrl=(L,dt)=>{const m=L.m;
     if(F.stage==='boss1'){if(L.daze>0){L.daze-=dt;m.lid.rotation.x=1.1;m.arms[1].a.rotation.x=-2.2+Math.sin(G.time*9)*0.25;m.head.rotation.z=Math.sin(G.time*5)*0.2;L.cone.visible=false;L.fang.visible=false;
         if(L.daze<=0){m.lid.rotation.x=-1.25;m.arms[1].a.rotation.x=0;m.head.rotation.z=0;if(B.refl<3){L.goal=SPOTS[B.refl].clone();floatText(likhoEye(L).clone().add(new V3(0,1,0)),'Ух… где он?','#e8d0a0');}}return true;}
@@ -477,7 +477,7 @@ function build51(){
     else{MR.g.position.copy(MR.rest);MR.g.position.y+=Math.sin(G.time*2)*0.06;MR.g.rotation.set(0,G.time*0.8,0);MR.face.rotation.set(0,0,0);}
     MR.glow.material.opacity=damp(MR.glow.material.opacity,B.reflT>0?0.5:(!MR.holder&&F.stage==='boss1'?0.12:0),10,dt);}
   function pickMirror(pi){const h=active(pi);MR.holder=h;MR.state='held';SFX.latch();floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'Зеркальце!','#e8f4ff');
-    if(!F.mirTold){F.mirTold=true;tip(pi,'Повернись к Лиху спиной и встань у него на пути — пусть посмотрит на себя',3.2);}}
+    if(!F.mirTold){F.mirTold=true;tip(pi,'Встань спиной к Лиху, на линии взгляда',3.4);}}
   function dropMirror(pi){const h=MR.holder;MR.holder=null;MR.state='stump';MR.rest.set(h.pos.x,h.pos.y+0.9,h.pos.z);SFX.plate();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Положил зеркальце','#e8f4ff');}
   W.itemSign=pi=>{const h=active(pi);if(G.cine)return null;
     if(F.stage==='kite'&&signNear(h)===waveSign)return waveFn;
@@ -501,14 +501,14 @@ function build51(){
     if(F.stage==='meadow'||F.stage==='clew'){spawnMeadow();if(!F.meadowClear&&meadowFoes.every(e=>!e.alive)){F.meadowClear=true;SFX.ok();banner('Пугала распутаны!','#ffd76a',2,'дальше — к дубу, вперёд');if(F.stage==='meadow'&&F.hollow)F.stage='clew';}
       if(!F.hollow&&HEROES.some(h=>h.active&&(hd(h.pos,{x:-8.6,z:-14})<4.2||h.pos.z<-19)))hollowScene();
       if(F.stage==='meadow'&&F.hollow&&F.meadowClear)F.stage='clew';}
-    if(!F.likho1&&HEROES.some(h=>h.active&&h.pos.y>3&&h.pos.z<-30)&&lk1.open){F.likho1=true;F.stage='cross1';likhoArrives(likho1,new V3(-1.5,4.6,-45),'смотрит на ближайшего — оставь героя в кольце-приманке и у него за спиной ступай');}
+    if(!F.likho1&&HEROES.some(h=>h.active&&h.pos.y>3&&h.pos.z<-30)&&lk1.open){F.likho1=true;F.stage='cross1';likhoArrives(likho1,new V3(-1.5,4.6,-45),'Оставь героя в кольце-приманке, обойди сзади');}
     if(F.stage==='cross1'&&HEROES.some(h=>h.active&&inWellZone(h))){F.stage='well';}
     if(F.stage==='well'&&!F.likho2&&HEROES.every(h=>h.pos.z<-50||inWellZone(h))){F.likho2=true;likho1.g.visible=false;likho1.on=()=>false;}
     if(F.stage==='well'&&lk2.open)F.stage='pero';
     if(F.stage==='pero'&&lk3a.open&&lk3b.open&&!bridges){gateB.col.on=false;gateB.mesh.visible=false;gateVis.forEach(b=>{anim(0.8,k=>{b.position.y=10.8+k*6;b.rotation.z+=0.05;});later(0.8,()=>{b.visible=false;});});SFX.gate();
       bridges=[box(-7.8,-6.2,8.6,9,-86.2,-70,barkM),box(6.2,7.8,8.6,9,-86.2,-70,barkM)];banner('Ветви расплелись','#ffd76a',2.2,'верхушка дуба открыта · мостки корой обросли — своих кликните');F.stage='crown';
       later(2.6,()=>sayP('Тут написано… вон она, пятая цепь — чёрная. Уходит вниз, на поляну.',3.6));}
-    if(F.stage==='crown'&&HEROES.some(h=>h.active&&h.pos.z<-110&&h.pos.y<4)){F.stage='cross2';W.camX=42;likhoArrives(likho2,new V3(11,0,-129),'на поляне то же правило: приманка — и в обход, к горну у дальнего края, стороной');}
+    if(F.stage==='crown'&&HEROES.some(h=>h.active&&h.pos.z<-110&&h.pos.y<4)){F.stage='cross2';W.camX=42;likhoArrives(likho2,new V3(11,0,-129),'Приманка в кольце — и в обход стороной');}
     if(['cross2','forge','escape'].includes(F.stage))likho2.R0=F.stage==='forge'?13:F.stage==='escape'?16:19;
     if(F.stage==='cross2'&&HEROES.some(h=>h.active&&h.pos.x>21)){F.stage='forge';forgeFoes=[pugaloFoe(28.5,-119),pugaloFoe(30,-128.5)];banner('Пугала у горна — стерегут!','#ffd76a',2,'распутайте — и за ключом, скорей');}
     if(F.stage==='forge'&&forgeFoes&&!F.forgeClear&&forgeFoes.every(e=>!e.alive)){F.forgeClear=true;later(0.5,()=>sayP('…замок раскалён. Ключ — в горне.<br>Каждому — своя скважина, вот и весь секрет.',3.4));}

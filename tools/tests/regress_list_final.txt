@@ -8,7 +8,7 @@ t31 t31c t32 t33n t34 t35 thw3a thw3b tmenu3
 # мир 4, Лукоморье
 t41v t42v t43 tluko t44 t45 t4b thw4
 # мир 5, эпилог, Застава
-t51 t52 t53 t54 t5b1 t5b1solo t5b1cam tepi tlukoepi tlukopro tzast
+tfin_likho t51 t52 t53 t54 t5b1 t5b1solo t5b1cam tepi tlukoepi tlukopro tzast
 # задачи всех уровней
 tallobj
 # одиночный режим
