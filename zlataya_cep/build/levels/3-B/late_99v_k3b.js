@@ -89,7 +89,7 @@ build3B=function(){
   const arena={x:C.x,z:C.z+2,r:R-1,camActive:()=>!G.cine&&F.phase>=1};W.camZones.push(arena);
   bell(C.x,C.z+R-1.8,0);
   const bb=$('bossbar');bb.style.display='none';
-  let sg=$('solsign');if(!sg){sg=document.createElement('div');sg.id='solsign';sg.style.cssText='position:absolute;display:none;padding:7px 18px;border-radius:12px;border:3px solid #fff3c0;color:#fff;font:800 22px system-ui;white-space:nowrap;text-shadow:0 2px 3px rgba(0,0,0,0.6);box-shadow:0 6px 18px rgba(0,0,0,0.35);pointer-events:none;z-index:6';document.body.appendChild(sg);}
+  let sg=$('solsign');if(!sg){sg=document.createElement('div');sg.id='solsign';document.body.appendChild(sg);}
   W.onLeave=()=>{bb.style.display='none';sg.style.display='none';scene.background=BG0.clone();amb.intensity=AMB0;sun.intensity=SUN0;try{FIN.music.play(null);}catch(e){}try{FIN.U.wind.value=1;}catch(e){}};
   let sol=null;
   /* ---------- общее ---------- */
@@ -120,7 +120,10 @@ build3B=function(){
   /* ---------- табличка над Соловьём: одна строка — что делать сейчас ---------- */
   let sgKey='';const fl={txt:'',bg:'',t:0};
   function flash(txt,bg,dur){fl.txt=txt;fl.bg=bg;fl.t=dur||1.4;}
-  function showSign(txt,bg){if(!txt||G.cine||!sol||G.state!=='play'||G.ui||BS.signT>0){sg.style.display='none';return;}sg.style.display='block';const k=txt+'|'+bg;if(sgKey!==k){sgKey=k;sg.textContent=txt;sg.style.background=bg||'#3a2a6a';}
+  // табличка — карточка общего слоя (стиль #solsign в fin.css): не прописными, со значком героя; текст тот же
+  const signCase=t=>{let r=t.toLowerCase().replace(/^\s*\S/,c=>c.toUpperCase());r=r.replace(/йош|потап|соловь|звеныш/g,m=>m[0].toUpperCase()+m.slice(1));return r;};
+  const signHTML=t=>{const m=/йош/i.test(t)?'Й':/потап/i.test(t)?'П':'';return '<span class="ss-ico">'+(m||'◆')+'</span>'+signCase(t);};
+  function showSign(txt,bg){if(!txt||G.cine||!sol||G.state!=='play'||G.ui||BS.signT>0){sg.style.display='none';return;}sg.style.display='block';const k=txt+'|'+bg;if(sgKey!==k){sgKey=k;sg.innerHTML=signHTML(txt);sg.style.background=bg||'#3a2a6a';}
     const v=sol.pos.clone().add(new V3(0,sol.L.top*sol.s+0.8,0)).project(camS),Wd=innerWidth,H=innerHeight;let x=(v.x+1)/2*Wd,y=(1-v.y)/2*H;if(v.z>1){x=Wd/2;y=H*0.3;}
     x=clamp(x,Wd*0.3,Wd*0.7);y=clamp(y,H*0.2,H*0.6);sg.style.left=x.toFixed(0)+'px';sg.style.top=y.toFixed(0)+'px';sg.style.transform='translate(-50%,-100%) scale('+(fl.t>0?(1+0.05*Math.sin(G.time*14)).toFixed(3):1)+')';}
   function stateSign(){const e=sol;if(!e||F.phase<1||F.phase>4.6||F.won)return null;
