@@ -26,6 +26,14 @@ function k3bDef(K,h,D,noGuard){let jump=false,guard=false;
 // ступени подъёма по дубу-сторожу: [x, z, ждать ли свиста]
 const K3B_OAK=[[-7.2,44.4],[-6.6,42.2],[0,42,1],[7.4,42],[7.6,39],[0,39,1],[-7.4,39],[-7.6,36],[0,36,1],[7.4,36],[7.6,33],[0,33,1],[-7.4,33],[-8,30],[-8,10]];
 const K3B_ISL=[[-1.4,67.2],[1.2,63.9],[-1.2,60.6],[1.4,57.3]];
+// этап 3: уйти от падающего пера, красной полосы пике, не наступить на змея
+function k3bHaz(K,h,D){const S3=D.S3;
+  const away=(px,pz)=>{const dx=h.pos.x-px,dz=h.pos.z-pz,l=Math.hypot(dx,dz)||1;cmpGoto(h,h.pos.x+dx/l*3,h.pos.z+dz/l*3,0.1);};
+  for(const q of S3.darts){if(q.hit)continue;if(hd(q.spot,h.pos)<1.9){away(q.spot.x,q.spot.z);return true;}}
+  const dv=S3.dive;if(dv&&dv.t<dv.d+0.9){const ax=h.pos.x-dv.P0.x,az=h.pos.z-dv.P0.z,bx=dv.P1.x-dv.P0.x,bz=dv.P1.z-dv.P0.z,u=clamp((ax*bx+az*bz)/(bx*bx+bz*bz),0,1),px=ax-bx*u,pz=az-bz*u,ds=Math.hypot(px,pz);
+    if(ds<2.7){const l=ds||1;cmpGoto(h,h.pos.x+(ds<0.05?1:px/l)*3,h.pos.z+(ds<0.05?0:pz/l)*3,0.1);return true;}}
+  for(const S of S3.snakes){const hp=S.segs[0].position;if(hd(hp,h.pos)<3.4&&h.grounded)k3bTap(K,'jt',0.5,'jump');}
+  return false;}
 CMP.route('3-B',[
   // колода поперёк дорожки: откатывает Потап (человек); бот ждёт у колоды
   {id:'log',done:()=>{const R=k3bRD();return !R||R.bigLog.done||active(1).pos.z<149;},run:h=>{k3b();if(!cmpWant('yosha'))return;cmpGoto(h,0,156,0.6);}},
@@ -63,5 +71,47 @@ CMP.route('3-B',[
   {id:'rim',first:false,done:()=>{const R=k3bRD();return !R||R.introDone||W.flags.phase>=1;},run:h=>{k3b();if(!cmpWant('yosha'))return;
     // уступ-ветка (x −10…−6, z ≥ 8) и площадка у гнезда (x ≥ −6, z ≤ 8) сходятся углом (−6, 8): по ветке вниз до (−8, 10), потом по диагонали z + x = 2 — через угол
     if(h.pos.x<-5.8&&h.pos.z>8.0){if(h.pos.z>10.3&&h.pos.x<-7){cmpGoto(h,-8,10,0.1);return;}const tx=h.pos.x+1.0;cmpGoto(h,tx,2-tx,0.02);return;}
-    if(W.gateOn3b&&W.gateOn3b()){cmpGoto(h,0,2.8,0.5);return;}cmpGoto(h,0,-6,0.6);}}
+    if(W.gateOn3b&&W.gateOn3b()){cmpGoto(h,0,2.8,0.5);return;}cmpGoto(h,0,-6,0.6);}},
+  // ===== БОЙ =====
+  // этап 1 «Свист»: Йоша у дуба с Соловьём — на вдох плеснуть в клюв; Богатырский щит в долю; корни и хвост; упал — бить; посох — щитом
+  {id:'b1',first:true,done:()=>W.flags.phase>=1.5,run:h=>{const K=k3b(),D=k3bD();if(!D||D.F.phase!==1||G.cine||!D.sol)return 'follow';if(!cmpWant('yosha'))return;
+    const S1=D.S1,sol=D.sol,O=D.OAKS[S1.perch],B=S1.bow;
+    if(D.cring.on){k3bDef(K,h,D);return;}
+    if(S1.sw&&S1.sw.h===h){cmpKey('guard',true);return;}
+    if(sol.state==='broken'||(S1.st==='down'&&sol.dazeT>0)){k3bStrike(K,h,sol);k3bDef(K,h,D,true);return;}
+    if(B&&B.t>=1.8){const rt=B.O.root;
+      if(!B.wet){if(hd(h.pos,rt)>1.7)cmpGoto(h,rt.x,rt.z,1.2);else k3bTap(K,'sk',0.7,'skill');return;}
+      if(B.k>=0.85){const p=D.tailHit.pos;cmpGoto(h,p.x,p.z,0.9);if(hd(h.pos,p)<1.7){h.face=Math.atan2(p.x-h.pos.x,p.z-h.pos.z);k3bTap(K,'at',0.4,'attack');}return;}
+      cmpGoto(h,rt.x,rt.z,1.4);return;}
+    const sp=[K3B_C.x+Math.cos(O.a)*6.4,K3B_C.z+Math.sin(O.a)*6.4],I=S1.inh,waitSplash=!!I&&!I.wet&&I.t<0.9;
+    if(I&&!I.wet&&I.t>0.15&&hd(h.pos,O.src)<8.3)k3bTap(K,'sk',0.6,'skill');
+    k3bDef(K,h,D,waitSplash);if(hd(h.pos,{x:sp[0],z:sp[1]})>0.6)cmpGoto(h,sp[0],sp[1],0.4);}},
+  // этап 2 «Крик»: Йоша зажигает перо в центре гнезда, Пелагея рядом щитом «зайчик» на дуб с Соловьём; упал — Йоша (в свете) бьёт
+  {id:'b2',first:true,done:()=>W.flags.phase>=2.5,run:h=>{const K=k3b(),D=k3bD();if(!D||D.F.phase!==2||G.cine||!D.sol)return 'follow';
+    const S2=D.S2,sol=D.sol,Ye=HERO.yosha,Pe=HERO.pelageya,PL={x:1.2,z:K3B_C.z},PS={x:-0.9,z:K3B_C.z};
+    if(sol.state==='broken'||(S2.st==='down'&&sol.dazeT>0)){if(!cmpWant('yosha'))return;k3bStrike(K,h,sol);return;}
+    if(!Ye.lit||hd(Ye.pos,PL)>0.9){if(!cmpWant('yosha'))return;if(hd(h.pos,PL)>0.5)cmpGoto(h,PL.x,PL.z,0.35);else w3Lit(h,true);return;}
+    if(!cmpWant('pelageya')){Ye.following=false;return;}
+    Ye.following=false;const O=D.OAKS[S2.perch];
+    if(D.waves.length||D.cring.on){if(k3bDef(K,h,D))return;}
+    if(hd(h.pos,PS)>0.6){cmpGoto(h,PS.x,PS.z,0.4);return;}
+    h.face=Math.atan2(O.x-h.pos.x,O.z-h.pos.z);cmpKey('guard',true);}},
+  // этап 3 «Шип»: Пелагея в вихрь и верхом (наклон против крена); упал — бить; на полу уходит от пера, пике и змея
+  {id:'b3',first:true,done:()=>W.flags.phase>=3.5,run:h=>{const K=k3b(),D=k3bD();if(!D||D.F.phase!==3||G.cine||!D.sol)return 'follow';if(!cmpWant('pelageya'))return;
+    const S3=D.S3,sol=D.sol,Rd=S3.ride;
+    if(Rd&&Rd.h===h){if(Rd.bank)cmpKey(Rd.bank.dir<0?'left':'right',true);return;}
+    if(S3.lift||S3.st==='come')return;
+    if(sol.state==='broken'||(S3.st==='down'&&sol.dazeT>0)){k3bStrike(K,h,sol);return;}
+    if(k3bHaz(K,h,D))return;
+    if(D.cring.on||D.waves.length){if(k3bDef(K,h,D))return;}
+    cmpGoto(h,K3B_C.x,K3B_C.z,0.3);}},
+  // этап 4 «Полный свист»: вдох — Совиный взор (Прошка стреляет); выдох — щит (ветер вполсилы), прыжок через трель; сдулся — бить вместе
+  {id:'b4',first:true,done:()=>W.flags.phase>=5||!!W.flags.won,run:h=>{const K=k3b(),D=k3bD();if(!D||G.cine||!D.sol)return 'follow';const ph=D.F.phase;if(ph<4||ph>=5)return 'follow';if(!cmpWant('pelageya'))return;
+    const S4=D.S4,sol=D.sol;
+    if(ph===4.5){k3bStrike(K,h,sol);return;}
+    if(S4.st==='inhale'){if(W.owlT<=0&&players[1].owlCd<=0)k3bTap(K,'sk',0.8,'skill');return;}
+    k3bDef(K,h,D);cmpKey('guard',true);if(hd(h.pos,K3B_C)>1.5)cmpGoto(h,K3B_C.x,K3B_C.z,1.0);}},
+  // песня: Пелагея прыгает в долю (провалить нельзя)
+  {id:'song',first:true,done:()=>!!W.flags.out,run:h=>{const K=k3b(),S=W.song;if(!S||G.cine)return 'follow';if(!cmpWant('pelageya'))return;
+    if(K.sgS!==S){K.sgS=S;K.sg={};}for(let k=0;k<8;k++){if(K.sg[k])continue;if(S.t>=k*S.B-0.02){K.sg[k]=1;if(h.grounded)cmpTap('jump');}}}}
 ]);
