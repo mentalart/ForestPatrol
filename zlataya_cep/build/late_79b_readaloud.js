@@ -8,7 +8,7 @@
 //  • Включается и выключается в «Настройки → Читать задачи вслух» и на экране «Кто играет?»; работает на пролог и мир 1 (W.kids), а в остальных мирах —
 //    по пункту «Читать во всех мирах» (авто / да / нет; авто — если кто-то идёт Ёжиком или Лисёнком): запасной вариант, пока не записан голос.
 //  • Нет русского голоса — ничего не читает, и в настройках об этом сказано.
-const RA=FIN.readAloud={ok:false,voice:null,mock:null,q:[],cand:[null,null,null],said:{},gap:0,speaking:false,out:null};
+const RA=FIN.readAloud={ok:false,voice:null,mock:null,q:[],cand:[null,null,null,null,null,null],said:{},gap:0,speaking:false,out:null};
 function raVoices(){try{const L=(window.speechSynthesis?speechSynthesis.getVoices():[]).filter(v=>/^ru/i.test(v.lang));RA.voice=L.find(v=>v.localService)||L[0]||null;}catch(e){RA.voice=null;}RA.ok=!!RA.voice;}
 raVoices();try{if(window.speechSynthesis)speechSynthesis.onvoiceschanged=raVoices;}catch(e){}
 RA.status=()=>!window.speechSynthesis?'в этом браузере нет голоса':RA.mock?'голос: пробный':RA.ok?'голос: '+RA.voice.name:'русский голос не найден — вслух читать не будет';
@@ -34,10 +34,16 @@ function raText(html){if(!html)return '';const d=document.createElement('div');d
   if(t.length>170){t=t.slice(0,170);const k=Math.max(t.lastIndexOf('.'),t.lastIndexOf('!'),t.lastIndexOf('?'));t=k>60?t.slice(0,k+1):t.replace(/\s+\S*$/,'');}   // длинные реплики голос браузера обрывает
   return t;}
 // слова идут через «Повтори»/автоповтор: показанные сейчас карточки (общая, потом личные)
-function raCards(){const out=[];if(typeof HN==='undefined')return out;for(const i of[2,0,1]){if(!HN.shown[i])continue;if(G.solo&&i<2&&i!==G.soloPi)continue;const t=raText(HN.html[i]);if(t)out.push({i,t});}return out;}
+// карточки боссов (подсказка Горыныча, урок 4-Б, табличка Соловья) — тоже карточки слоя: индексы 3–5
+function raBoss(){const out=[];[[3,'finBossHint','.fh-title,.fh-text'],[4,'finTut','.ft-head,.ft-text'],[5,'solsign','']].forEach(([i,id,q])=>{const e=$(id);if(!e||!(e.classList.contains('on')||(id==='solsign'&&e.style.display==='block')))return;
+    const d=e.cloneNode(true);d.querySelectorAll('.ft-tag,.ft-ico,.ss-ico,.ft-skip,kbd,.pb,.fh-keys,.ft-keys').forEach(x=>x.remove());
+    const t=(q?[...d.querySelectorAll(q)].map(x=>x.textContent).join('. '):d.textContent).replace(/[◆✦✓]/g,' ').replace(/\s+/g,' ').replace(/\s+([,.!?:;])/g,'$1').replace(/([.!?])\./g,'$1').trim();if(t)out.push({i,t});});return out;}
+// урок 4-Б идёт в ролике (G.cine) — его карточку читаем и тогда
+const raTut=()=>{const e=$('finTut');return !!(e&&e.classList.contains('on'));};
+function raCards(){const out=[];if(typeof HN==='undefined')return out;for(const i of[2,0,1]){if(!HN.shown[i])continue;if(G.solo&&i<2&&i!==G.soloPi)continue;const t=raText(HN.html[i]);if(t)out.push({i,t});}return out.concat(raBoss());}
 function raTick(){
-  const live=W&&(W.kids||RA.all())&&G.state==='play'&&!G.cine&&!G.trans&&!G.ui&&RA.can();
-  if(!live){if(RA.q.length||RA.speaking){RA.stop();}for(let i=0;i<3;i++)RA.cand[i]=null;return;}
+  const live=W&&(W.kids||RA.all())&&G.state==='play'&&(!G.cine||raTut())&&!G.trans&&!G.ui&&RA.can();
+  if(!live){if(RA.q.length||RA.speaking){RA.stop();}for(let i=0;i<6;i++)RA.cand[i]=null;return;}
   const now=performance.now(),cards=raCards(),busy=FIN.voxDuck<1||(typeof subT!=='undefined'&&subT>0.1);
   // «Повтори»
   if(tap(0,'help')||tap(1,'help')){FIN.kids.lv().help++;RA.q.length=0;RA.gap=0;const L=cards.slice();if(L.length){RA.say(L[0].t,true);RA.q.push(...L.slice(1).map(c=>c.t));}return;}
@@ -45,7 +51,7 @@ function raTick(){
     if(!k)continue;if(!cd||cd.k!==k){RA.cand[c.i]={k,t0:now};continue;}
     if(now-cd.t0<700||busy)continue;
     if(!RA.said[k]){RA.said[k]=now;RA.q.push(c.t);}}   // один раз за игру
-  for(let i=0;i<3;i++)if(!cards.some(c=>c.i===i))RA.cand[i]=null;
+  for(let i=0;i<6;i++)if(!cards.some(c=>c.i===i))RA.cand[i]=null;
   if(RA.q.length&&!busy&&!RA.speaking&&now>RA.gap){const t=RA.q.shift();RA.say(t,false);RA.gap=now+1500;}}
 {const _ui=updateUI;updateUI=function(dt){_ui(dt);try{raTick();}catch(e){console.error('readaloud',e);}};}
 // пауза и меню — тишина

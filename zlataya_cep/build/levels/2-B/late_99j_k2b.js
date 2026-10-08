@@ -81,7 +81,7 @@ build2B=function(){
     vod.onReflect=b=>{const e=vod;FX.splash(e.pos.clone().add(new V3(0,e.L.top*e.s*0.7,0)),1.3);SFX.splash();zapAdd(SOLO()?0.5:0.34);};
     vod.onFinisher=h=>{if(F.phase===1){F.phase=1.5;BS.winHits=0;later(0.4,scene2);return;}if(F.phase===2){F.phase=2.5;later(0.4,scene3);return;}if(F.phase===3){F.phase=3.5;later(0.4,scene4);return;}
       if(F.phase===4.5&&!F.won){F.fin[h.player]=G.time;if(SOLO())F.fin[1-h.player]=G.time;SFX.finisher();ringFx(vod.pos,COL.gold,3);FX.crown(vod.pos.clone().setY(-1.9),1.2);
-        if(Math.abs(F.fin[0]-F.fin[1])<0.8)win();else if(!F.finTold){F.finTold=true;for(const pi of[0,1])tip(pi,'Ударьте '+K(pi,'attack')+' ОБА РАЗОМ — Богатырский мах!',3);}}};
+        if(Math.abs(F.fin[0]-F.fin[1])<0.8)win();else if(!F.finTold){F.finTold=true;for(const pi of[0,1])tip(pi,(SOLO()?'Бей ':'Ударьте вместе ')+K(pi,'attack')+' — Богатырский мах!',3);}}};
     vod.tick=(e,dt)=>{if(G.cine)return;if(e.state!=='broken'&&!(e.dazeT>0)){e.cd=Math.max(e.cd,1);if(e.state==='ready'||e.state==='wind')e.state='idle';}
       if(e.state==='broken'&&F.phase<5)e.t=Math.min(e.t,0.5);};   // пробой ждёт добивающего — не гаснет сам
     vod.k2post=(e)=>{const R2=e.k2;const h=live()[0];if(h){const a=Math.atan2(h.pos.x-e.pos.x,h.pos.z-e.pos.z)-e.face;R2.st.look[0]=clamp(Math.sin(a),-1,1);}};}
@@ -106,15 +106,14 @@ build2B=function(){
   const whiskMat=M(COL.gold,{emissive:0xffb000,emissiveIntensity:0});const whiskGlow=new THREE.Mesh(new THREE.SphereGeometry(0.32,10,8),whiskMat);whiskGlow.visible=false;W.group.add(whiskGlow);
   W.lifts.push({pos:whiskTip,active:()=>F.phase===1&&S1.st==='beached'&&S1.whisk,onLift:h=>{S1.st='pull';S1.t=0;S1.beat=-1;S1.puller=h;S1.anchor=h.pos.clone();SFX.latch();bark(h,'potap','Держу ус! Раз…',1.4,true);}});
   function s1Start(){F.phase=1;S1.st='circle';S1.t=0;S1.throwT=2.4;S1.lungeT=SOLO()?8:6.5;SOM.g.visible=true;vod.embers=vod.maxEmb=8;BS.lastEmb=8;BS.zap=0;vod.setScale(1.2);V.set(vod.k2,'ride','angry');music('vod1');
-    card(1,'Этап 1 · Сом-перевозчик','Водяной верхом на соме',p=>p===0?'Сом бросится на мель — Прошка, сбей ему ус из рогатки '+K(0,'skill')+';<br>Потап хватает ус '+K(0,'skill')+' — и «раз-два-три»! Позови Потапа поближе '+K(0,'call')+'.':
-      'Синий круг под тобой — летит шар: щит '+K(1,'guard')+' в последний миг — шар полетит в Водяного.<br>Красная дорожка — сом бросается: в сторону или кувырок '+K(1,'roll')+'.');}
+    card(1,'Этап 1 · Сом-перевозчик','Водяной верхом на соме',p=>p===0?'Бей рогаткой в ус '+K(0,'skill')+'!':'Синий круг — щит '+K(1,'guard')+' в последний миг!');}
   function s1Lunge(){const h=pick();let best=SHOAL[0],bd=1e9;for(const S of SHOAL){const d=Math.hypot(S.x-h.pos.x,S.z-h.pos.z);if(d<bd){bd=d;best=S;}}
     S1.sh=best;const dir=new V3(best.x-C.x,0,best.z-C.z).normalize();S1.b=new V3(best.x-dir.x*2.1,0,best.z-dir.z*2.1);S1.a=SOM.g.position.clone();S1.st='tele';S1.t=0;S1.dur=SOLO()?1.7:1.4;
     S1.lane=FX.lane(new V3(S1.a.x,0,S1.a.z),new V3(best.x,0,best.z),2.8,S1.dur,'red',surf());V.set(vod.k2,'grab','angry');sayV(Math.random()<0.5?'Поберегись!':'Н-но, сомушка!',1.2);
-    if(!F.lungeTold){F.lungeTold=true;for(const p of[0,1])tip(p,'Красная дорожка заполняется — сом сейчас бросится! В сторону или кувырок '+K(p,'roll')+'.<br>Бросился на мель — бьётся там: Прошка, рогатку в ус!',3.6);}}
+    if(!F.lungeTold){F.lungeTold=true;for(const p of[0,1])tip(p,'Красная дорожка — кувыркнись '+K(p,'roll')+'!',3.6);}}
   function s1Fall(zap){const e=vod;S1.st='stun';S1.t=0;const p=zap?SOM.g.position.clone():new V3(S1.sh.x+(C.x-S1.sh.x)*0.2,0,S1.sh.z+(C.z-S1.sh.z)*0.2);
     const from=e.pos.clone(),to=new V3(p.x,zap?-1.4:0.1,p.z);anim(0.9,k=>{e.pos.lerpVectors(from,to,k);e.pos.y+=Math.sin(k*Math.PI)*2.5;e.inner.rotation.x=k*Math.PI*2;});later(0.95,()=>{e.inner.rotation.x=0;});
-    winStart(SOLO()?9:6,4);V.set(e.k2,'dazed','hurt');SFX.crash();later(0.8,()=>{FX.crown(to.clone().setY(surf()),1.5);shakeAll(0.06,0.5);});key(p.clone().setY(4),zap?'Свалился с сома!':'Застрял на мели! Бейте!','#9fe6ff');
+    winStart(SOLO()?9:6,4);V.set(e.k2,'dazed','hurt');SFX.crash();later(0.8,()=>{FX.crown(to.clone().setY(surf()),1.5);shakeAll(0.06,0.5);});key(p.clone().setY(4),zap?'Свалился с сома!':(SOLO()?'Застрял на мели! Бей!':'Застрял на мели! Бейте!'),'#9fe6ff');
     if(!zap)sayV('Ой-ой! Борода в песке!',1.8,'hurt');}
   function s1Remount(){const e=vod;S1.st='remount';S1.t=0;const from=e.pos.clone();V.set(e.k2,'ride','angry');sayV(line('tease'),1.6);
     anim(1.0,k=>{const to=SOM.saddle.getWorldPosition(new V3());e.pos.lerpVectors(from,to,k);e.pos.y+=Math.sin(k*Math.PI)*2.2;});}
@@ -158,7 +157,7 @@ build2B=function(){
     vod.pos.set(C.x,3.2,C.z);vod.face=0;SH2.forEach(S=>{S.g.visible=true;S.ref.off=false;});music('vod2');FX.rain(true,{c:new V3(C.x,0,C.z)});OM.chop=0.7;
     if(!S2.horses.length)for(let i=0;i<4;i++){const H=V.horse();H.g.scale.setScalar(1.15);H.ang=i/4*Math.PI*2;H.lane=i%2;H.r=S2.ring[H.lane];S2.horses.push(H);}
     S2.horses.forEach(H=>{H.g.visible=true;H.frozen=0;H.state='run';});
-    card(2,'Этап 2 · Водяные кони','табун из волн скачет вокруг острова',p=>'Сыграй '+K(p,'item')+' у раковины на мели — ближний конь замрёт. Садится ДРУГОЙ: подпрыгни '+K(p,'jump')+' к коню —<br>он вынесет на остров. Там бей по короне '+K(p,'attack')+'! '+(SOLO()?'Одному: сыграл — смени героя '+K(p,'swap')+', оставленный держит коня.':'Потом — поменяйтесь.'));}
+    card(2,'Этап 2 · Водяные кони','табун из волн скачет вокруг острова',p=>SOLO()?'Сыграл '+K(p,'item')+' — смени героя '+K(p,'swap')+'!':'Играй '+K(p,'item')+' — конь замрёт, прыгай верхом!');}
   function s2Tame(ref,h){if(F.phase!==2)return;const S=SHOAL[ref.i];let best=null,bd=1e9;for(const H of S2.horses){if(H.state!=='run')continue;const p=H.g.position,d=Math.hypot(p.x-S.x,p.z-S.z);if(d<bd){bd=d;best=H;}}
     if(!best){key(new V3(S.x,3,S.z),'Все кони заняты','#cfe8ff');return;}const dx=(C.x-S.x)/8.6,dz=(C.z-S.z)/8.6;best.state='come';best.ref=ref;best.to=new V3(S.x+dx*3.1,0,S.z+dz*3.1);best.t=0;best.by=h;
     sayV('Эй! Чей это напев?!',1.6,'surprise');}
@@ -206,7 +205,7 @@ build2B=function(){
   function s3Who(slot){return slot===S3.real?{real:true,g:vod.g,pos:vod.pos}:S3.fakes.find(f=>f.slot===slot);}
   for(let i=0;i<3;i++)W.marks.push({pos:new V3(),slot:i,active(){const p=posSlot(this.slot);this.pos.set(p.x,1.8,p.z);return F.phase===3&&S3.st==='fight'&&!(vod.dazeT>0)&&vod.state!=='broken'&&!s3Popped(this.slot);},onHit(){s3Shot(this.slot);}});
   const s3Popped=slot=>{const f=S3.fakes.find(q=>q.slot===slot);return !!(f&&f.pop>0);};
-  function s3Shot(slot){if(slot===S3.real){S3.mark=SOLO()?8:6;s3Open(S3.mark,false);markS.g.visible=true;key(vod.pos.clone().add(new V3(0,4.5,0)),'Настоящий! Метка горит — бейте!','#ffd76a');sayV('Ай! Нашли меня…',1.6,'hurt');}
+  function s3Shot(slot){if(slot===S3.real){S3.mark=SOLO()?8:6;s3Open(S3.mark,false);markS.g.visible=true;key(vod.pos.clone().add(new V3(0,4.5,0)),(SOLO()?'Настоящий! Метка горит — бей!':'Настоящий! Метка горит — бейте!'),'#ffd76a');sayV('Ай! Нашли меня…',1.6,'hurt');}
     else{const f=S3.fakes.find(q=>q.slot===slot);if(!f)return;f.pop=3;f.g.visible=false;FX.column(f.g.position.x,surf(),f.g.position.z,4,1.1,1.2);key(f.g.position.clone().add(new V3(0,3,0)),'Отражение!','#cfe8ff');sayV('Ха-ха! Мимо — отражение!',1.6,'happy');}}
   function s3Open(dur,zap){winStart(dur,3);V.set(vod.k2,'dazed','hurt');if(zap){markS.g.visible=true;}}
   // бутоны кувшинок: живая вода Йоши — плот на двоих; воронка несёт его к отражениям
@@ -221,8 +220,7 @@ build2B=function(){
   function s3Start(){F.phase=3;S3.st='fight';S3.t=0;S3.ang=0;S3.shuffleT=9;S3.geyT=SOLO()?4:3;S3.throwT=4;vod.embers=vod.maxEmb=6;BS.lastEmb=6;BS.zap=0;vod.setScale(1.3);vod.r=1.2;V.set(vod.k2,'idle','happy');
     if(!S3.fakes.length)S3.fakes=[s3MkFake(0),s3MkFake(1)];S3.real=Math.floor(Math.random()*3);let k=0;for(let i=0;i<3;i++)if(i!==S3.real){S3.fakes[k].slot=i;S3.fakes[k].g.visible=true;S3.fakes[k].pop=0;k++;}
     BUDS.forEach(B=>{B.g.visible=true;B.cool=0;});OM.swirl=1;OM.chop=0.4;music('vod3');FX.rain(true,{c:new V3(C.x,0,C.z)});
-    card(3,'Этап 3 · Омут-зеркало','три отражения — настоящий один',p=>p===1?'Совиный взор '+K(1,'skill')+' — отражения станут прозрачной водой, а настоящий останется.<br>К середине не доплыть — Йоша, полей бутон '+K(1,'skill')+': кувшинка-плот на двоих!':
-      'Прошка, метни рогатку '+K(0,'skill')+' в настоящего — метка горит, все бьют '+K(0,'attack')+'.<br>К середине — только на кувшинке-плоту: воронка сама понесёт.');}
+    card(3,'Этап 3 · Омут-зеркало','три отражения — настоящий один',p=>p===1?'Йоша, полей бутон '+K(1,'skill')+' — вырастет плот!':'Метни рогатку '+K(0,'skill')+' в настоящего!');}
   function s3Geyser(){const h=pick();if(!h)return;const p=new V3(h.pos.x,0,h.pos.z),dur=SOLO()?1.5:1.2;FX.tele(p.x,surf(),p.z,1.5,dur,'red');
     const dome=new THREE.Mesh(K2_DOME_G,MB(0xcff4ff,{transparent:true,opacity:0.45,depthWrite:false}));dome.position.set(p.x,surf(),p.z);dome.scale.set(1,0.05,1);dome.userData.noBatch=dome.userData.noBatchL=true;W.group.add(dome);
     for(let i=0;i<10;i++)later(i*dur/10,()=>{FX.drop(new V3(p.x+rand(-0.9,0.9),surf()-0.3,p.z+rand(-0.9,0.9)),new V3(0,rand(1,2.4),0),0.08,{noRing:true,life:0.4});});
@@ -278,7 +276,7 @@ build2B=function(){
   function s4Start(){F.phase=4;S4.st='gap';S4.t=0;S4.ok=0;S4.wave=0;S4.beat=-1;music('vod4');FX.rain(false);beatHud.style.display='flex';
     // герои у колоколов: Игрок 1 — у левого, Игрок 2 — у правого (в одиночку оставленный у второго звонит сам)
     HEROES.forEach((h,i)=>{const B=BELL4[h.player];placeOnGround(h,B.x+(i%2?1.2:-1.2),B.z+1.8,-1.8);h.vel.set(0,0,0);h.following=false;});snapCams();
-    card(4,'Этап 4 · Великий вал','три волны — три удара колоколов',p=>'Средний колокол отбивает «раз — два — три». На «БОМ!» ударь свой колокол '+K(p,'attack')+' — круг сойдётся с кругом.<br>'+(SOLO()?'Одному: у второго колокола стоит оставленный — он звонит сам, в лад.':'Оба разом — и волна разобьётся о звон!')+' Три верных удара — вал расступится.');}
+    card(4,'Этап 4 · Великий вал','три волны — три удара колоколов',p=>'На «БОМ!» бей свой колокол '+K(p,'attack')+'!');}
   function s4NewWave(){S4.st='come';S4.t=0;S4.hit=[null,null];S4.strikeAt=G.time+S4.beatLen*4;S4.beat=-1;const VA=S4.roll||(S4.roll=FX.val(22,3.2,{alpha:0.85,debris:false}));VA.root.visible=true;VA.lip=0;
     V.set(vod.k2,'roar','angry');sayV(['Ва-а-ал!','Ещё волна!','Весь омут — на вас, держитесь!'][S4.wave]||'Ва-а-ал!',1.6);}
   function s4Tick(dt){const S=S4;S.t+=dt;const VA=S.roll;if(S.wall)S.wall.tick(dt);if(VA&&VA.root.visible)VA.tick(dt);
@@ -301,8 +299,8 @@ build2B=function(){
     if(S.ok>=3){S.st='done';later(1.0,sceneParting);}}
   function s4Miss(){const S=S4,VA=S.roll;S.st='crash';S.t=0;SFX.crash();SFX.wave();shakeAll(0.08,0.6);const L=HEROES.filter(h=>h.active&&!players[h.player].downed);
     for(const h of L){if(damageHero(h,{kind:'hazard',ref:{pos:new V3(h.pos.x,-2,h.pos.z-3)}})){h.vel.z=7;h.vel.y=4;}FX.splash(h.pos.clone(),1.2);}VA.root.visible=false;
-    key(new V3(C.x,1,BELL4[0].z),S.hit[0]==null&&S.hit[1]==null?'Не в лад! Ждите «БОМ!»':'Нужно оба колокола — разом!','#cfe8ff');sayV(line('tease'),1.6,'happy');
-    if(!F.s4Told){F.s4Told=true;for(const p of[0,1])tip(p,'Смотри на круг у своего колокола: сойдётся с кольцом — бей '+K(p,'attack')+'! На «БОМ!»',3);}}
+    key(new V3(C.x,1,BELL4[0].z),S.hit[0]==null&&S.hit[1]==null?'Не в лад! Ждите «БОМ!»':(SOLO()?'Не в лад — жди «БОМ!»':'Оба колокола — разом!'),'#cfe8ff');sayV(line('tease'),1.6,'happy');
+    if(!F.s4Told){F.s4Told=true;for(const p of[0,1])tip(p,'Круг сойдётся с кольцом — бей '+K(p,'attack')+'!',3);}}
   /* ---------- камера арены: дальше и ниже — виден горизонт и вал; окно уязвимости — короткий наезд ---------- */
   function arenaCam(){const a=G.solo?active(G.soloPi):active(0),b=G.solo?a:active(1),mid=new V3((a.pos.x+b.pos.x)/2,0,(a.pos.z+b.pos.z)/2);let look,off;
     if(F.phase>=4&&F.phase<4.5){look=new V3(lerp(C.x,mid.x,0.3),4.2,C.z-7);off=new V3(0,8.5,27);}
@@ -370,13 +368,13 @@ build2B=function(){
       events:[{t:0.3,fn:()=>{const Wl=S4.wall;if(Wl){const L=Wl.root;anim(2.4,k=>{L.scale.x=1+k*0.9;L.scale.y=Math.max(0.01,1-k);L.position.y=-2-k*3;},()=>{L.visible=false;});}FX.beam(new V3(C.x,-2,C.z-4),true);
           SFX.horn&&SFX.horn();for(let i=0;i<20;i++)later(i*0.08,()=>FX.splash(new V3(rand(-12,12),2,C.z-12+rand(-1,1)),1.8));}},
         {t:1.2,fn:()=>{const from=e.pos.clone();anim(2.2,k=>{e.setScale(lerp(3.0,1.4,smooth(k)));e.pos.lerpVectors(from,new V3(C.x,-2,C.z-1.5),smooth(k));});V.set(e.k2,'fish','surprise');}}],
-      end:()=>{F.phase=4.5;e.state='broken';e.t=0;e.bdur=999;e.embers=0;e.setScale(1.4);e.pos.set(C.x,-2,C.z-1.5);V.set(e.k2,'fish','surprise');banner('Общий удар!','#ffd76a',2.6,'ударьте '+K(0,'attack')+' и '+K(1,'attack')+' разом — Богатырский мах');
-        for(const p of[0,1])tip(p,'Водяной на дне хлопает губами! Подбегите и ударьте '+K(p,'attack')+' ОБА РАЗОМ.',4);}});}
+      end:()=>{F.phase=4.5;e.state='broken';e.t=0;e.bdur=999;e.embers=0;e.setScale(1.4);e.pos.set(C.x,-2,C.z-1.5);V.set(e.k2,'fish','surprise');banner('Общий удар!','#ffd76a',2.6,(SOLO()?'бей '+K(G.soloPi,'attack')+' — Богатырский мах':'ударьте '+K(0,'attack')+' и '+K(1,'attack')+' разом — Богатырский мах'));
+        for(const p of[0,1])tip(p,(SOLO()?'Водяной на дне — подбеги, бей '+K(p,'attack')+'!':'Водяной на дне — бейте '+K(p,'attack')+' разом!'),4);}});}
   // Ctrl+Alt+B (late_95_dev.js): следующая стадия босса — для проверки и показа; вернуть true, если перешли
   W.bossNext=()=>{if(G.cine||F.won)return false;const p=F.phase;
     if(p===1){F.phase=1.5;BS.winHits=0;later(0.4,scene2);return true;}if(p===2){F.phase=2.5;later(0.4,scene3);return true;}if(p===3){F.phase=3.5;later(0.4,scene4);return true;}
     if(p===4||p===4.5){win();return true;}return false;};
-  function win(){F.won=true;F.phase=5;SFX.horn();banner('Богатырский мах!','#ffd76a',2,'вместе — вдвое сильней');G.stats.bogatyr++;F.slow=0.9;shakeAll(0.09,0.8);K2FX.flash(1);try{CINE.moodFlash('#ffe08a',0.3,1.4);}catch(err){}
+  function win(){F.won=true;F.phase=5;SFX.horn();banner('Богатырский мах!','#ffd76a',2,SOLO()?'ты — сильнее воды':'вместе — вдвое сильней');G.stats.bogatyr++;F.slow=0.9;shakeAll(0.09,0.8);K2FX.flash(1);try{CINE.moodFlash('#ffe08a',0.3,1.4);}catch(err){}
     for(let i=0;i<12;i++){const a=i/12*Math.PI*2;later(i*0.04,()=>FX.crown(new V3(C.x+Math.cos(a)*rand(2,8),-1.9,C.z+Math.sin(a)*rand(2,8)),1.4));}FX.beam(null,false);
     BELL4.forEach(K4=>K4.B.ring());later(1.4,ending);}
   function ending(){const e=vod;bb.style.display='none';beatHud.style.display='none';FIN.music.play(null);
@@ -435,3 +433,10 @@ build2B=function(){
         BELL4.forEach(K4=>{K4.g.position.y=-2;});vod.setScale(3.0);vod.pos.set(C.x,-2,C.z-8.6);s4Start();}return W.dbg2b();}
     CH.warp(where);return W.dbg2b();};
   flushDecor();};
+// общие подсказки боя в 2-Б — короче (≤ 7 слов); в других уровнях тексты прежние
+{const _tp=tip;tip=function(pi,html,dur){if(W&&W.levelId==='2-B'&&typeof html==='string'){let m;
+    if(/^Колокольчик! Коль упадёшь/.test(html))html='Колокольчик — сюда вернёшься, если упадёшь.';
+    else if(m=/^Щит держит! А коль нажать (.*?) <b>/.exec(html))html='Щит '+m[1]+' в последний миг — удар назад!';
+    else if(m=/Синяя капля — защита (.*?), в последний миг/.exec(html))html='Синяя капля — щит '+m[1]+' в последний миг!';
+    else if(/^Друг клубком ниток/.test(html))html='Друг рассыпался — подойди, зашей!';}
+  return _tp(pi,html,dur);};}
