@@ -1,5 +1,5 @@
 /* ============================== РЕЛИЗ final06 · НАПАРНИК: БОТ ЗА ИГРОКА 2 ============================== */
-// Режим «С напарником» (главное меню → «Режим»): играем вдвоём, но за Игрока 2 (Пелагея и Йоша) — бот; человек — за Игрока 1 (Прошка и Потап).
+// Режим «С ИИ напарником» (главное меню → «Режим»): играем вдвоём, но за Игрока 2 (Пелагея и Йоша) — бот; человек — за Игрока 1 (Прошка и Потап).
 // Бот сидит на «втором месте» и жмёт те же клавиши Игрока 2, что и живой друг, — уровни об этом не знают и их править не нужно.
 //   • идёт за человеком: этим занят сам движок — тот же «ведомый», что в одиночном режиме (не сходит с краёв, прыгает через щели, подтягивается при застревании);
 //   • в бою (в пределах досягаемости моро́ков): сам держит щит, отбивает капли и замахи, кувыркается от красного зубца, бьёт, когда морок открыт,
@@ -10,6 +10,21 @@
 // Клавиатура: в этом режиме стрелки и M K L , . / ; работают как вторая половина клавиатуры Игрока 1 (WASD, пробел, F, G, Q, E, R, Shift, 1).
 const CMP={on:false,skill:0.85,mode:'idle',downT:0,tick:0};
 CMP.live=()=>CMP.on&&!G.solo;
+// Опыт напарника в бою (Настройки и пауза → «Напарник в бою»; запоминается в FIN.set.botLevel). Кто играет неумело, берёт Растеряшу — тогда бот тоже
+// побеждает не с первого раза. «Смекалка» — прежний бот, по умолчанию.
+//   skill — как встречает замахи (cmpDice: отбить в окне / только щитом / проспать);
+//   react — сколько секунд «присматривается» к открытому мороку, прежде чем ударить; miss — доля окон, которые бот упускает целиком;
+//   gap — пауза между его ударами.
+const CMP_LV=[
+  {id:'rast',name:'Растеряша',sub:'ещё учится: зевает замахи, мажет мимо, врагов побеждает не с первого раза',skill:0.55,react:0.5,miss:0.3,gap:0.6},
+  {id:'smek',name:'Смекалка',sub:'как раз вам под стать: что-то отобьёт, что-то прозевает',skill:0.85,react:0,miss:0,gap:0},
+  {id:'byv',name:'Бывалый',sub:'опытный боец: почти не пропускает замахи и сразу бьёт',skill:0.97,react:0,miss:0,gap:0}];
+CMP.levels=CMP_LV;
+CMP.level=()=>{const v=FIN.set.botLevel;return v===0||v===2?v:1;};
+CMP.lv=()=>CMP_LV[CMP.level()];
+CMP.setLevel=function(i){i=Math.max(0,Math.min(CMP_LV.length-1,i|0));FIN.set.botLevel=i;CMP.skill=CMP_LV[i].skill;FIN.saveSettings();};
+CMP.cycleLevel=d=>CMP.setLevel((CMP.level()+(d<0?CMP_LV.length-1:1))%CMP_LV.length);
+CMP.skill=CMP.lv().skill;
 const CMP_MAP={};for(const a in BIND[1])CMP_MAP[BIND[1][a]]=BIND[0][a];
 const CMP_HELD=new Set();
 const cmpKey=(a,on)=>{const c=BIND[1][a];if(on){down.add(c);CMP_HELD.add(c);}else{down.delete(c);CMP_HELD.delete(c);}};
@@ -23,6 +38,7 @@ function cmpGoto(h,x,z,stop){const dx=x-h.pos.x,dz=z-h.pos.z,d=Math.hypot(dx,dz)
 function cmpMirror(){for(const a in BIND[0]){const c=BIND[0][a];if(down.has(c)||PADS.down.has(c))cmpKey(a,true);if(pressed.has(c))cmpTap(a);}PADS.axes[1]=PADS.axes[0];}
 // как встретить замах: отбить в окне, только щитом или проспать — по CMP.skill
 const cmpDice=()=>{const r=Math.random(),s=CMP.skill;return r<s?'parry':r<s+(1-s)*0.65?'shield':'asleep';};
+CMP.dice=cmpDice;   // для ботов
 // чужих (привязанных к Игроку 1: учебные мороки пролога и т. п.) не трогает — они человеку
 const cmpAlive=e=>e.alive&&e.pi!==0&&e.state!=='spawn'&&e.state!=='dying'&&e.state!=='hide'&&(!e.g||e.g.visible!==false);
 // морок открыт для удара: пробит, оглушён, шатается после отбива, окно после кувырка, у «коры» — сбоку или сзади
@@ -57,7 +73,11 @@ function cmpFight(h,hh,near,T){
   if(!w){const [tx,tz]=cmpPos(e,h);cmpGoto(h,tx,tz,0.3);
     if(h.grounded&&h.blocked&&bd>h.d.range*0.9+e.r+0.4){CMP.bk=(CMP.bk||0)+1;if(CMP.bk>20&&!(CMP.jT>G.time-0.5)){CMP.jT=G.time;cmpTap('jump');}}else CMP.bk=0;}   // упёрся в ступеньку по пути к врагу — перепрыгнуть
   const reach=h.d.range*0.9+e.r,can=!w&&bd<=reach&&h.atkCd<=0&&h.rollT<=0&&!h.hang&&!h.knockT;
-  if(can&&((open.includes(e)&&!wait)||(e.finT>0&&e.finBy!==1))){h.face=Math.atan2(e.pos.x-h.pos.x,e.pos.z-h.pos.z);cmpTap('attack');}}
+  const L=CMP.lv();   // опыт: «присмотреться» к открытому мороку, иногда упустить окно, не частить ударами (у Смекалки и Бывалого — сразу)
+  for(const x of near)if(x!==e&&x._cx&&!open.includes(x)&&!(x.finT>0))x._cx=null;
+  let aware=true;
+  if(L.react||L.miss){const ok=open.includes(e)||e.finT>0;if(!ok)e._cx=null;else{const c=e._cx||(e._cx={t0:G.time,skip:Math.random()<L.miss,r:L.react*(0.6+0.8*Math.random())});aware=!c.skip&&G.time-c.t0>=c.r;}}
+  if(can&&aware&&G.time>=(CMP.nextHit||0)&&((open.includes(e)&&!wait)||(e.finT>0&&e.finBy!==1))){h.face=Math.atan2(e.pos.x-h.pos.x,e.pos.z-h.pos.z);cmpTap('attack');if(L.gap)CMP.nextHit=G.time+L.gap*(0.6+0.8*Math.random());}}
 // ---- маршрут уровня: что бот делает на пути живого игрока вместо «идти за человеком» ----
 // CMP.route(уровень, [{id, done(), run(h,hh,dt)}…]): шаги по порядку; текущий — первый, у которого done() ложно (выполненный шаг запоминается).
 // run ведёт active(1) стиком и тапами за кадр; пока шаг не выполнен, «ведомый» не включается. Шаг может ждать человека (run ничего не жмёт)
@@ -105,16 +125,22 @@ function cmpThink(dt){cmpFree();
   if(pi===1&&CMP.mode==='follow'&&CMP.live()){const h=active(1),o=other(1),s=G.solo,sp=G.soloPi;h.following=true;if(o&&!o._down&&!o.cling)o.following=true;
     G.solo=true;G.soloPi=0;try{_up(pi,dt);}finally{G.solo=s;G.soloPi=sp;}return;}
   _up(pi,dt);};}
-// включить / выключить; «Режим» в меню — вдвоём → один → с напарником
+// включить / выключить; «Режим» в меню — вдвоём → один → с ИИ напарником
 CMP.set=function(on){on=!!on;if(on===CMP.on)return;CMP.on=on;cmpFree();CMP.mode='idle';CMP.downT=0;
   if(on){if(G.solo)setSolo(false);PADS.swap=false;G.soloPi=0;players[1].path=players[0].path;}
   else for(const q of players[1].heroes)q.following=false;};
 CMP.index=()=>G.solo?1:CMP.on?2:0;
 CMP.cycle=function(d){const n=(CMP.index()+(d<0?2:1))%3;
   if(n===1){CMP.set(false);setSolo(true);}else{if(n===0)CMP.set(false);setSolo(false);if(n===2)CMP.set(true);}};
-CMP.label=()=>['вдвоём','один','с напарником'][CMP.index()];
+CMP.label=()=>['вдвоём','один','с ИИ напарником'][CMP.index()];
 {const _ss=setSolo;setSolo=function(on){if(on&&CMP.on)CMP.set(false);_ss(on);};}
 // стрелки и M K L , . / ; — вторая половина клавиатуры Игрока 1 (место Игрока 2 занято ботом)
 addEventListener('keydown',e=>{const m=CMP_MAP[e.code];if(!m||!e.isTrusted||!CMP.live()||G.state!=='play')return;down.delete(e.code);pressed.delete(e.code);down.add(m);if(!e.repeat)pressed.add(m);});
 addEventListener('keyup',e=>{const m=CMP_MAP[e.code];if(m&&e.isTrusted&&CMP.on)down.delete(m);});
+// меню: «Напарник в бою» (опыт бота) — в паузе под «Режим» (серый, пока играете не с ИИ) и в Настройках под «Сложностью»; в ?debug пауза без нового пункта, чтобы не сдвигать пункты ботам
+const cmpLvItem=()=>({label:'Напарник в бою',val:()=>CMP.live()?CMP.lv().name:'—',sub:()=>CMP.live()?CMP.lv().sub:'нужен режим «с ИИ напарником»',side:d=>{if(CMP.live())CMP.cycleLevel(d);}});
+{const _ps=pauseScreen;pauseScreen=function(){const scr=_ps(),k=scr.items.findIndex(it=>it.label==='Режим'),kk=FIN.kids;
+  if(k>=0&&!(kk&&kk.debug&&!kk.force)){const it=cmpLvItem();Object.defineProperty(it,'off',{get:()=>!CMP.live()});scr.items.splice(k+1,0,it);}return scr;};}
+{const _ss=settingsScreen;settingsScreen=function(){const scr=_ss();
+  if(CMP.live()){const k=scr.items.findIndex(it=>it.label==='Сложность');scr.items.splice(k<0?scr.items.length-1:k+1,0,cmpLvItem());}return scr;};}
 FIN.co=CMP;
