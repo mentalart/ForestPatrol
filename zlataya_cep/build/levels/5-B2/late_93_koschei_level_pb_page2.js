@@ -245,29 +245,15 @@
         k5Ring(new V3(X,lvl()+0.15,TOW.z),fake?0x6a2aa0:BC[i],1,15,2.0,0.5);if(!fake){const Gb=gold[i];Gb.lit=1;k5Pillar(Gb.p.clone(),BC[i],7,0.9,1.0);}else K5L.ink(B.g.getWorldPosition(new V3()),12);};
       const ringG=i=>{const B=gold[i];B.sw=1.6;bellSound(i,0.1);FX.sparkle(B.g.position.clone().add(new V3(0,0.4,0)),12,BC[i]);k5Ring(B.g.position.clone().setY(lvl()+0.08),BC[i],0.4,2.6,0.5,0.12);};
       L.put(po,X-1.8,6.4);L.put(pr,X-0.6,7.4);L.put(pe,X+0.6,7.4);L.put(yo,X+1.8,6.4);KS.g.position.copy(KZ);KS.g.rotation.set(0,0,0);KS.g.visible=true;
-      L.beat(6.6,{cam:[[X,12,19],[X,1.2,-2],[X,11,17],[X,0.4,-1]],need:[H(X-1.8,6.4),[X,5,-10.4],[X,2,-5.4]],says:[['zven','Подводный Китеж. Кощей — чёрный звонарь на колокольне.',0.2,3.6],['zven','Водяной прикован к ней тремя цепями.',3.9,2.6]],ev:[[1.2,()=>L.pose('proud')],[3.8,()=>{chains.forEach(c=>k5Flash(c.position.clone().add(new V3(0,1.6,0)),0x9a50ff,2,0.4));}]]});
-      // перекличка
-      L.beat(10.4,{cam:[[X,7,9],[X,3,-5]],need:[[X-7.5,1,-2.5],[X+7.5,1,-2.5],[X,5.5,-10.4]],says:[['zven','Кощей бьёт в колокола по порядку — запоминай!',0.2,3.4],['zven','Каждый удар — волна цвета колокола: прыгай!',3.8,3.2],['zven','А на дне золотой колокол того же цвета отзывается.',7.2,3.0]],
-        ev:[[0,()=>{L.put(po,X-3,3);L.put(pe,X+3,3);}],[1.0,()=>strike(0)],[2.4,()=>strike(2)],[3.8,()=>strike(1)],[2.2,()=>L.jump(po,1.5)],[3.6,()=>L.jump(pe,1.5)],[5.0,()=>L.jump(po,1.5)]]});
-      // ответ: гусли — прилив, звоним в том же порядке
-      L.beat(11,{cam:[[X,10,17],[X,0.8,2.5]],need:[H(X,7.4),[X-7.5,1,-2.5],[X+6,1,5.5]],says:[['zven','Гусли у раковины — '+kbd('item')+': прилив!',0.2,3.2],['zven','Золотые колокола всплывут — звони в том же порядке.',3.6,3.6],['zven','Верно — цепь лопнет!',7.6,2.6]],
+      // одна механика урока: перекличка — Кощей бьёт в колокола по порядку, ты зовёшь золотые в том же порядке (щуки, колокол сверху и Благовест — в бою)
+      L.beat(3.8,{cam:[[X,12,19],[X,1.2,-2],[X,11,17],[X,0.4,-1]],need:[H(X-1.8,6.4),[X,5,-10.4],[X,2,-5.4]],says:[['zven','Кощей — звонарь, Водяной в цепях.',0.2,3.4]],ev:[[1.0,()=>L.pose('proud')],[2.2,()=>{chains.forEach(c=>k5Flash(c.position.clone().add(new V3(0,1.6,0)),0x9a50ff,2,0.4));}]]});
+      L.beat(6.0,{cam:[[X,7,9],[X,3,-5]],need:[[X-7.5,1,-2.5],[X+7.5,1,-2.5],[X,5.5,-10.4]],says:[['zven','Колокола звонят по порядку — запоминай!',0.2,3.2]],
+        ev:[[0,()=>{L.put(po,X-3,3);L.put(pe,X+3,3);}],[0.8,()=>strike(0)],[1.8,()=>strike(2)],[2.8,()=>strike(1)],[1.6,()=>L.jump(po,1.5)],[2.6,()=>L.jump(pe,1.5)],[3.6,()=>L.jump(po,1.5)]]});
+      L.beat(7.0,{cam:[[X,10,17],[X,0.8,2.5]],need:[H(X,7.4),[X-7.5,1,-2.5],[X+6,1,5.5]],says:[['zven','Гусли '+kbd('item')+' — прилив!',0.2,2.4],['zven','Звони в том же порядке!',2.8,2.6]],
         ev:[[0,()=>{L.put(po,X-0.4,7.6);L.put(pe,X+4.5,2);L.put(pr,X-4.5,2);L.look(po,SHELL);}],[0.8,()=>{L.emo(po,'pride');tideUp(14);if(typeof gusliFx==='function')gusliFx(po,'high');}],
-          [4.8,()=>{L.walk(pe,X+5.6,3.4,0.5);L.walk(pr,X-6.4,-1.2,0.5);}],[5.6,()=>{L.hit(pr,gold[0].g.position);ringG(0);}],[6.4,()=>{L.hit(pe,gold[2].g.position);ringG(2);}],[7.2,()=>{L.hit(pr,gold[1].g.position);ringG(1);}],
-          [7.8,()=>{const mid=VOD.clone().add(new V3(0,2,0));K5L.gold(mid,22);k5s('keyBreak');chains[0].visible=false;SFX.ok();}]]});
-      // щуки
-      L.beat(7.4,{cam:[[X+9,5,10],[X-1,1.6,1]],need:[H(X-2,3),[X,3,-9]],says:[['zven','Со второй цепи — щуки! Красный круг — куда упадёт.',0.2,3.6],['zven','Ударь щуку на лету — она влетит в Кощея!',4.0,3.2]],
-        ev:[[0,()=>{L.put(pe,X-2,3);L.look(pe,new V3(X-7,0,6));chains[0].visible=false;tideUp(14);}],[0.4,()=>L.tele(new V3(X-2,0,3),1.5,1.5,0xff3a30)],[0.3,()=>{const m=pikeMesh();L.props.push(m);const f=new V3(X-10,lvl()-0.4,8),to=new V3(X-2,lvl()+1.0,3);k5s('whoosh');
-            anim(1.5,k=>{const q=f.clone().lerp(to,k);q.y=lerp(f.y,to.y,k)+Math.sin(k*Math.PI)*3.2;m.position.copy(q);m.lookAt(f.clone().lerp(to,Math.min(1,k+0.04)).setY(q.y));if(k>=0.62&&!m.userData.bat){m.userData.bat=1;L.hit(pe,q);SFX.parry();FX.sparks(q.clone(),10,0x9fe8ff);const bf=m.position.clone(),t2=KS.g.position.clone().add(new V3(0,1.8,0));anim(0.6,j=>{const w=bf.clone().lerp(t2,j);w.y+=Math.sin(j*Math.PI)*1.5;m.position.copy(w);m.rotation.z+=0.4;if(j>=1){k5Del(m);L.pose('recoil',{snap:true});FX.sparks(t2,12,0x9fe8ff);k5s('shatter');}});}});}],[2.2,()=>L.roll(pe,-0.5,2.2,0.4)]]});
-      // колокол сверху
-      L.beat(5.4,{cam:[[X+7,5.5,9],[X,1.4,2]],need:[H(X,3.5)],says:[['zven','Со третьей цепи Кощей роняет чёрный колокол —',0.2,3.2],['zven','уйди из красного круга!',3.4,1.8]],
-        ev:[[0,()=>{L.put(pe,X+0.5,3.5);L.pose('idle');}],[0.2,()=>{L.tele(new V3(X+0.5,0,3.5),1.7,1.3,0xff3a30,q=>{shakeAll(0.1,0.35);if(AUD.ready())AUD.bell(180,{v:0.1,d:1.4,wet:0.5});k5Ring(q.clone().setY(0.2),0x6a2aa0,0.5,5,0.6,0.3);});const B=kbell(A.g,0.8,0x1a1420,0x2a0a3a,0.3);B.drop=true;B.g.position.set(X+0.5,lvl()+12,3.5);L.props.push(B.g);L.pose('cast',{snap:true});
-            anim(1.3,k=>{B.g.position.y=lvl()+12-Math.max(0,(k*1.3-0.9)/0.4)*10.6;if(k>=1)B.g.position.y=lvl()+1.4;});L.later(3.4,()=>{k5Del(B.g);BELLS.splice(BELLS.indexOf(B),1);});}],[0.7,()=>L.roll(pe,-2.8,0.4,0.4)]]});
-      // Благовест
-      L.beat(10.8,{cam:[[X,12,19],[X,0.4,0],[X,12,19],[X,0.4,0.5]],need:[H(X-2,8),H(X+2,8),[X,4,2.4]],says:[['zven','Три цепи — Водяной свободен! Кощей бьёт в набат:',0.2,3.6],['zven','ползёт чёрная вода. Со дна встаёт Благовест —',3.9,3.2],['zven','бейте в него вдвоём разом '+kbd('attack')+' — три раза!',6.9,3.6]],
-        ev:[[0,()=>{chains.forEach(c=>{c.visible=false;});L.put(po,X-2,8);L.put(pe,X+2,8);L.put(pr,X-4,9.5);L.put(yo,X+4,9.5);L.look(po,BLAG);L.look(pe,BLAG);}],[0.6,()=>{L.pose('cast',{snap:true});k5s('quake');shakeAll(0.12,0.6);black.forEach(B=>{B.sw=2;B.gl.material.color.set(0x8a30d0);B.gl.material.opacity=1;L.later(0.7,()=>{B.gl.material.opacity=0;});});
-            ink.visible=true;inkU.uF.value=-14;ink.position.y=lvl()+0.06;anim(5,k=>{inkU.uF.value=-14+k*10;});}],
-          [3.6,()=>{blagG.visible=true;blagG.position.y=-8;K5L.gold(BLAG.clone().add(new V3(0,3,0)),24);anim(1.6,k=>{blagG.position.y=-8+8*CE.outBack(k);});}],
-          ...[7.4,8.6,9.8].map((t,i)=>[t,()=>{L.hit(po,BLAG);L.hit(pe,BLAG);blag.sw=2.4;SFX.mah();if(AUD.ready()){AUD.bell(262,{v:0.14,d:3,wet:0.7});}k5Ring(new V3(X,lvl()+0.15,BLAG.z),0xffd76a,0.5,13,1.2,0.5);K5L.gold(BLAG.clone().add(new V3(0,4,0)),16);const f=inkU.uF.value;anim(0.7,k=>{inkU.uF.value=f-3*k;});}])]});
+          [2.8,()=>{L.walk(pe,X+5.6,3.4,0.5);L.walk(pr,X-6.4,-1.2,0.5);}],[3.8,()=>{L.hit(pr,gold[0].g.position);ringG(0);}],[4.5,()=>{L.hit(pe,gold[2].g.position);ringG(2);}],[5.2,()=>{L.hit(pr,gold[1].g.position);ringG(1);}],
+          [5.8,()=>{const mid=VOD.clone().add(new V3(0,2,0));K5L.gold(mid,22);k5s('keyBreak');chains[0].visible=false;SFX.ok();}]]});
+      L.beat(2.6,{cam:[[X,12,19],[X,1.2,-2]],need:[[X,5,-10.4],[X,2,-5.4]],says:[['zven','Понятно? Тогда — в бой!',0.2,2.2]],ev:[[0.2,()=>{L.pose('idle');[po,pe].forEach(h=>L.emo(h,'cheer'));}]]});
     };
   }
   E.pageStage(5,2,{call:'Вторая страница — Подводный Китеж! Колокола молчат, Водяной в цепях.'});
