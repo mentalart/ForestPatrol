@@ -81,9 +81,9 @@ for(let i=0;i<60*120&&!F().out&&ZC.W.levelId==='1-2';i++){hbf();ZC.tick(1);const
 r.push(L.slice(-5).join(' | '),'bot='+pos(bot()),'me='+pos(me()),'en='+ZC.W.enemies.map(e=>e.kind+':'+e.state+':'+(e.alive?1:0)).join(','),'out='+!!F().out,'foes='+ZC.W.enemies.filter(e=>e.alive).length,'errs='+_errs.length+(_errs[0]?' '+_errs[0]:''),(F().out&&!_errs.length)?'1-2 ok':'FAIL 1-2');r
 //@@
 // человек стоит в стороне, друг не бросает: бот на гати сам бросает пролёты (с ожиданием), идёт по своим струнам, не дёргаясь вперёд-назад на метре от начала, бьёт Паутинников и выходит к избушке Цапли
-{const lvl=ZC.LV('1-2');ZC.startFrom(lvl);}ZC.G.manual=true;ZC.tick(30);window.W=ZC.W;window.H=ZC.HERO;CO.set(true);CO.skill=1;U.nocine();ZC.tick(30);
+for(let n=0;n<5&&!(ZC.W.levelId==='1-2'&&ZC.W.flags&&!ZC.W.flags.out);n++){ZC.tick(120);ZC.startFrom(ZC.LV('1-2'));ZC.G.manual=true;ZC.tick(30);}ZC.G.manual=true;window.W=ZC.W;window.H=ZC.HERO;CO.set(true);CO.skill=1;U.nocine();ZC.tick(30);
 window.put=(h,x,z,y)=>{h.pos.set(x,(y||0)+0.4,z);h.vel.set(0,0,0);h.following=false;};ZC.W.flags.noChudo=true;
 for(const k of['proshka','potap'])put(H[k],-1.2,-86.5);for(const k of['pelageya','yosha'])put(H[k],1.2,-86.5);ZC.tick(60);
 const L=[];let lp=null,still=0,worst=0;
 for(let i=0;i<60*120&&!(H.yosha.pos.z<-141);i++){ZC.tick(1);if(i%60===0){const p=bot().pos;if(lp&&Math.hypot(p.x-lp.x,p.z-lp.z)<0.4)still++;else{worst=Math.max(worst,still);still=0;}lp={x:p.x,z:p.z};}}
-worst=Math.max(worst,still);L.push('yosha='+pos(H.yosha),'longest stand='+worst+'s',(H.yosha.pos.z<-141&&worst<=14)?'gat alone ok':'FAIL gat alone');L
+worst=Math.max(worst,still);L.push('yosha='+pos(H.yosha),'longest stand='+worst+'s',(H.yosha.pos.z<-141&&worst<=14)?'gat alone ok':'FAIL gat alone');if(!(H.yosha.pos.z<-141&&worst<=14))throw new Error(L.join(' | '));L
