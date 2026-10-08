@@ -121,6 +121,7 @@ zlataya_cep/build/late_76_kids_fight.js       @level:1-1 @level:1-2 @level:2-1 @
 zlataya_cep/build/late_76b_cine_skip.js       tfin_kids2 tfin_cine smoke
 zlataya_cep/build/late_78_signals.js             tfin_signals smoke
 zlataya_cep/build/late_79c_taskshort.js       tfin_taskshort tfin_hints smoke
+zlataya_cep/build/late_79e_lesson.js          tfin_lesson tfin_boss4b tfin_gor4 tfin_gorsolo tfin_hintlayer tfin_menu
 tools/playtest/task_short.py                  tfin_taskshort
 tools/playtest/task_short_tpl.js              tfin_taskshort
 tools/playtest/*                              -
