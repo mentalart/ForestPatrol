@@ -173,10 +173,13 @@ K5L.hud=(()=>{let el=null,last='';const H={};
   H.show=(n,k,spes,max,note)=>{if(!el){el=document.createElement('div');el.id='k5eLine';el.style.cssText='position:fixed;left:50%;top:10px;transform:translateX(-50%);z-index:30;margin-top:44px;text-align:center;pointer-events:none;font:italic 700 clamp(15px,2.2vw,24px) Georgia,serif;text-shadow:0 2px 6px rgba(0,0,0,.6);max-width:92vw';document.body.appendChild(el);}
     el.style.display='block';const t=K5L.LINES[n]||'';const m=Math.round(t.length*Math.max(0,Math.min(1,k)));
     const pips=max?' <span style="font:600 13px system-ui;letter-spacing:2px;color:#ff9a3a;font-style:normal">'+'●'.repeat(Math.max(0,spes))+'<span style="opacity:.3">'+'●'.repeat(Math.max(0,max-spes))+'</span></span>':'';
-    const html='<div style="font:600 11px system-ui;letter-spacing:1px;color:#c8a8ff;text-transform:uppercase;font-style:normal">'+(n?'стадия '+n+' из 12':'пролог')+(note?' · '+note:'')+'</div>'+
+    const bb=document.getElementById('bossbar');
+    if(bb){if(n>0){const nm=String((K5E.NAMES||[])[n]||'').replace(/^\d+ · /,'');const bh='<b style="color:#ffd76a">Кощей</b> · стадия '+n+' / 12 · '+nm+' <span style="font-style:normal">⏳</span> <span class="seg"><i style="width:'+Math.round(Math.max(0,Math.min(1,k))*100)+'%;background:#c8a8ff"></i></span>';
+        bb.style.cssText='display:block;border-color:#c8a8ff;font-size:22px';if(bb.innerHTML!==bh)bb.innerHTML=bh;}else bb.style.display='none';}
+    const html=(note?'<div style="font:600 22px system-ui;letter-spacing:1px;color:#c8a8ff;font-style:normal">'+note+'</div>':'')+
       '<span style="color:#ffd76a">'+t.slice(0,m)+'</span><span style="color:#3a1c58;-webkit-text-stroke:0.6px #a070e0;filter:blur(0.3px)">'+t.slice(m)+'</span>'+pips;
     if(html!==last){el.innerHTML=html;last=html;}};
-  H.hide=()=>{if(el)el.style.display='none';last='';};return H;})();
+  H.hide=()=>{if(el)el.style.display='none';last='';const bb=document.getElementById('bossbar');if(bb&&bb.style.fontSize==='22px'){bb.style.display='none';bb.style.fontSize='';}};return H;})();
 // золотые строки над дубом: add(n) — строка встаёт со вспышкой
 K5L.sky=(oak)=>{const g=k5Prop(new THREE.Group());g.position.set(oak.x,0,oak.z);const S={g,lines:{},add(n,fx){if(S.lines[n])return;const s=K5L.textSpr(K5L.LINES[n],13,{col:'#ffe08a',glow:'#ffb030',stroke:'#5a3a08'});
     const i=Object.keys(S.lines).length;s.position.set(0,24-i*1.35,-3);g.add(s);S.lines[n]=s;if(fx){s.material.opacity=0;k5fx(1.2,k=>{s.material.opacity=k;s.scale.set(13*(0.6+0.4*k),13*(0.6+0.4*k)/8,1);});K5L.gold(s.getWorldPosition(new V3()),24);}}};return S;};

@@ -27,7 +27,7 @@ function build5B1(){
   const Z=makeZven();W.zven=Z;Z.pos.set(0,3,8);
   const bb=$('bossbar');W.onLeave=()=>{bb.style.display='none';};
   function setBar(){const k=clamp(F.t/TOT,0,1);const ph=F.t<P1D?'тени':F.t<P1D+P2D?'золото':'тетрадка';bb.style.display='block';bb.style.borderColor='#a0ffb8';
-    bb.innerHTML='<b style="color:#a0ffb8">Цель: выстоять</b><span class="seg" style="width:180px"><i style="width:'+Math.round(k*100)+'%;background:#a0ffb8"></i></span> <small style="opacity:.8">'+ph+'</small>';}
+    const pn=F.t<P1D?1:F.t<P1D+P2D?2:3;bb.innerHTML='<b style="color:#a0ffb8">Цель: выстоять</b> · '+pn+' / 3 · '+ph+' <span class="seg" style="width:180px"><i style="width:'+Math.round(k*100)+'%;background:#a0ffb8"></i></span>';}
   /* ---------- тени-двойники ---------- */
   const SH=[['proshka',0],['potap',0],['pelageya',1],['yosha',1]];const shadows=[];
   function spawnShadow(kind,pi){const a=rand(-0.8,0.8)+(pi?0.6:-0.6);const x=C.x+Math.sin(a)*8,z=C.z-Math.cos(a)*8;const e=dvoynikFoe(kind,x,z,{pi,leash:14});e.dv=true;burst(new V3(x,1,z),0x3a1a6a,14,3);SFX.whoosh();shadows.push({e,kind,pi,t:0});return e;}
@@ -35,7 +35,7 @@ function build5B1(){
   const mark=acornMesh(2.4);mark.visible=false;W.group.add(mark);const markPos=new V3(0.9,4.6,-29.6);mark.position.copy(markPos);let swing=null;
   W.marks.push({pos:markPos,active:()=>!!swing&&swing.state==='wind',onHit:()=>{swing=null;mark.visible=false;KS.armR.rotation.x=0;tone(1600,0.4,'sine',0.2,600);floatText(markPos.clone().add(new V3(0,1,0)),'Прервали мах!','#ffe08a');SFX.ok();F.cut=(F.cut||0)+1;}});
   const waveM=MB(0x2a1a3a,{transparent:true,opacity:0.8});const wave=new THREE.Mesh(new THREE.TorusGeometry(1,0.18,6,48),waveM);wave.rotation.x=Math.PI/2;wave.visible=false;W.group.add(wave);
-  function startSwing(){swing={state:'wind',t:0};mark.visible=true;SFX.yellow();banner('Длинный мах!','#ffe08a',1.6,'видишь жёлудь? Из рогатки '+K(0,'skill')+' стрельни в него');}
+  function startSwing(){swing={state:'wind',t:0};mark.visible=true;SFX.yellow();if(!F.cut)banner('Длинный мах!','#ffe08a',3.5,'Стрельни в жёлудь '+K(0,'skill'));else floatText(markPos.clone().add(new V3(0,1,0)),'Жёлудь!','#ffe08a');}
   function swingTick(dt){if(!swing)return;swing.t+=dt;if(swing.state==='wind'){KS.armR.rotation.x=-Math.min(2.2,swing.t*0.9);mark.position.y=markPos.y+Math.sin(G.time*6)*0.1;if(swing.t>3){swing.state='wave';swing.t=0;mark.visible=false;wave.visible=true;SFX.crash();}}
     else{const r=swing.t*11;wave.position.set(0,0.3,-29);wave.scale.setScalar(r);waveM.opacity=0.8*(1-swing.t/1.8);
       for(const h of HEROES){if(!h.active)continue;const d=hd(h.pos,{x:0,z:-29});if(Math.abs(d-r)<0.9&&h.pos.y<0.7&&h.iT<=0&&!h.waveHit){h.waveHit=true;const dx=h.pos.x,dz=h.pos.z+29,dl=Math.hypot(dx,dz)||1;h.vel.x=dx/dl*8;h.vel.z=dz/dl*8;h.vel.y=4;h.grounded=false;h.knockT=0.4;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ох! Мах','#c8b0ff');}}
@@ -51,14 +51,14 @@ function build5B1(){
       events:[{t:0.3,fn:()=>{HEROES.forEach((h,i)=>{const f=h.pos.clone();anim(5,k=>{h.pos.set(f.x,f.y,f.z-k*5);});});}},{t:16.4,fn:()=>{F.t=0;setBar();}}],
       tick:(t)=>{Z.pos.set(Math.sin(t)*0.6,2.6,8-t*1.4);},
       end:()=>{W.anims.length=0;F.stage='fight';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-6,0);h.face=Math.PI;});W.clampR={x:C.x,z:C.z,r:R};snapCams();setBar();Z.mode='lead';
-        SH.forEach(([k,pi])=>spawnShadow(k,pi));banner('Тени-двойники!','#c8b0ff',2.6,'дерутся, как мы · одной и той же защитой их не одолеть — меняй щит, отбив и кувырок');}});}
-  function toPhase2(){F.phase2=true;banner('Золото!','#ffd76a',2.6,'Кощей несобранные искры в слитки обращает · возьми клещами '+K(0,'item')+' — и в печь у стены');later(1,()=>say('zven','Слиток — в горн! Он снова станет искрами.',2.6,true));
+        SH.forEach(([k,pi])=>spawnShadow(k,pi));banner('Тени-двойники!','#c8b0ff',3.5,'Меняй щит, отбив, кувырок');}});}
+  function toPhase2(){F.phase2=true;banner('Золото!','#ffd76a',3.5,'Слиток клещами '+K(0,'item')+' — в печь');later(1,()=>say('zven','Слиток — в горн! Он снова станет искрами.',2.6,true));
     shadows.forEach(s=>{if(s.e.alive&&(s.kind==='potap'||s.kind==='yosha')){s.e.alive=false;s.dead=true;W.group.remove(s.e.g);burst(s.e.pos.clone().add(new V3(0,1,0)),0x3a1a6a,12,3);}});F.swingT=5;}
-  function toPhase3(){F.phase3=true;F.p3t=0;SFX.gate();shake(0,0.3,0.5);shake(1,0.3,0.5);
+  function toPhase3(){F.phase3=true;F.p3t=0;SFX.gate();shake(0,0.15,0.5);shake(1,0.15,0.5);
     shadows.forEach(s=>{if(s.e.alive){s.e.alive=false;W.group.remove(s.e.g);burst(s.e.pos.clone().add(new V3(0,1,0)),0x3a1a6a,12,3);}});shadows.length=0;
     W.hots.forEach(it=>{if(it.gold&&!it.gone){it.gone=true;if(it.carrier){it.carrier.carry=null;it.carrier=null;}W.group.remove(it.g);}});swing=null;mark.visible=false;wave.visible=false;
     KS.body.position.y=0;KS.body.rotation.x=0;KS.g.position.set(0,0,-28);KS.armR.rotation.x=-2.6;nIcon.g.visible=true;
-    banner('Кощей иглу подымает','#a0ffb8',3,'всё замерло · удары насквозь идут · закрываем Пелагею');later(1.2,()=>say('zven','Закройте Пелагею! Хоть немножко, хоть чуть!',2.4,true));
+    banner('Кощей иглу подымает','#a0ffb8',3.5,'Закрываем Пелагею');later(1.2,()=>say('zven','Закройте Пелагею! Хоть немножко, хоть чуть!',2.4,true));
     later(2,()=>{Z.mode='script';});}
   function takeBook(){F.stage='book';const pe=T.pelageya;nIcon.g.visible=false;const nb=makeNotebook();nb.g.scale.setScalar(0.9);nb.g.position.set(pe.pos.x+0.2,1.0,pe.pos.z+0.3);
     play({dur:17,fov:44,camK:2.2,shots:[shot(0,[pe.pos.x+3,2.4,pe.pos.z+3],[pe.pos.x,1.2,pe.pos.z]),shot(6.4,[pe.pos.x-2,2,pe.pos.z+4],[KS.g.position.x,2.6,KS.g.position.z]),shot(10.8,[0,3,4],[0,2.6,8])],
@@ -67,14 +67,14 @@ function build5B1(){
       events:[{t:0.3,fn:()=>{KS.g.position.set(pe.pos.x,0,pe.pos.z-1.1);KS.g.rotation.y=0;anim(0.8,k=>{KS.armR.rotation.x=-k*1.2;});later(1.6,()=>{anim(1,k=>{nb.g.position.lerpVectors(nb.g.position.clone(),KS.hand.getWorldPosition(new V3()),k);});});}},
         {t:4.2,fn:()=>{const f=KS.g.position.clone();KS.g.rotation.y=Math.PI;anim(5,k=>{KS.g.position.lerpVectors(f,new V3(0,0,9),k);nb.g.position.copy(KS.hand.getWorldPosition(new V3()));});}},
         {t:9.4,fn:()=>{KS.g.rotation.y=0;}},{t:14.4,fn:()=>{Z.pos.copy(pe.pos).add(new V3(0.4,0.8,0.2));}}],
-      end:()=>{W.anims.length=0;flushGifts();F.out=true;bb.style.display='none';G.flags.nameless=true;G.flags.names={};banner('Выстояли','#a0ffb8',2.6,'потеряна: тетрадка Пелагеи');later(2,finishLevel);}});}
+      end:()=>{W.anims.length=0;flushGifts();F.out=true;bb.style.display='none';G.flags.nameless=true;G.flags.names={};banner('Выстояли','#a0ffb8',3.5,'Потеряна тетрадка Пелагеи');later(2,finishLevel);}});}
   W.updates.push(dt=>{
     if(F.stage!=='fight'||G.cine)return;F.t+=dt;setBar();
     // тени возвращаются из темноты
     if(!F.phase3){for(const s of shadows){if(!s.e.alive&&!s.dead){s.t+=dt;if(s.t>(F.phase2?8:5)){s.t=0;const i=shadows.indexOf(s);shadows[i]={e:spawnShadow(s.kind,s.pi),kind:s.kind,pi:s.pi,t:0};shadows.pop();}}}}
     if(!F.said&&F.t>18){F.said=true;say('koschei','<i>(ни к кому не обращаясь)</i> Я вас читал. Все ваши сказки — на один лад.',3.6);later(3.8,()=>{const y=T.yosha;bark(y,'yosha','Не все, не все!',1.6);if(y.active){y.rollT=0.38;y.iT=0.42;y.rollDir.set(Math.sin(y.face),0,Math.cos(y.face));SFX.roll();}});}
     if(F.t>=P1D&&!F.phase2)toPhase2();
-    if(F.phase2&&!F.phase3){F.swingT-=dt;if(F.swingT<=0&&!swing){F.swingT=12;startSwing();}swingTick(dt);
+    if(F.phase2&&!F.phase3){if(!swing)F.swingT-=dt;if(F.swingT<=0&&!swing){F.swingT=12;startSwing();}swingTick(dt);
       // несобранные искры — в золото
       for(let i=W.sparks.length-1;i>=0;i--){const s=W.sparks[i];if(s.free>3&&W.hots.filter(q=>q.gold&&!q.gone).length<6){const p=s.m.position.clone();W.group.remove(s.m);W.sparks.splice(i,1);dropGold(p);}}
       F.goldT=(F.goldT||4)-dt;if(F.goldT<=0){F.goldT=9;if(W.hots.filter(q=>q.gold&&!q.gone).length<3)dropGold(new V3(C.x+rand(-7,7),5,C.z+rand(-6,6)));}}
@@ -93,9 +93,9 @@ function build5B1(){
     prompt(pi,'item',()=>headOf(h()),()=>!!heroCarry(h())&&hd(h().pos,fs.pos)<3,'в печь');}
   const mk=pi=>[
     O('Терем…',()=>F.stage!=='intro'&&F.stage!=='introCine',()=>[KS.g]),
-    O(()=>'Держитесь! Тени-двойники дерутся, как мы, и защиту запоминают.<br>Меняй приёмы: щит '+K(pi,'guard')+', отбив, кувырок '+K(pi,'roll')+' — пусть гадают.',()=>!!F.phase2,()=>shadows.filter(s=>s.e.alive&&s.pi===pi).map(s=>s.e.g)),
-    O(()=>'Золотой слиток клещами '+K(pi,'item')+' возьми — в печь у стены брось: искрами станет опять.<br>Видишь жёлудь на длинном замахе? Из рогатки Прошки '+K(0,'skill')+' стрельни — вот так стрелять!',()=>!!F.phase3,()=>{const g=W.hots.filter(it=>it.gold&&!it.gone).map(it=>it.g);return g.length?g:[forge.bag||KS.g];}),
-    O(()=>'Кощей иглу поднял — сейчас его не ранить.<br>Закройте Пелагею: Потап — щитом, Прошка стреляет, Йоша поливает — не оставить!',()=>F.stage==='book',()=>[T.pelageya.g]),
+    O(()=>'Меняй щит '+K(pi,'guard')+', отбив, кувырок '+K(pi,'roll')+' — тени гадают.',()=>!!F.phase2,()=>shadows.filter(s=>s.e.alive&&s.pi===pi).map(s=>s.e.g)),
+    O(()=>'Слиток клещами '+K(pi,'item')+' — в печь у стены.',()=>!!F.phase3,()=>{const g=W.hots.filter(it=>it.gold&&!it.gone).map(it=>it.g);return g.length?g:[forge.bag||KS.g];}),
+    O(()=>'Иглу поднял — закройте Пелагею!',()=>F.stage==='book',()=>[T.pelageya.g]),
     O('…',()=>false,()=>[])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.spawns=[[new V3(-3,0,10),new V3(-1,0,10)],[new V3(1,0,10),new V3(3,0,10)]];W.startAct=[0,0];

@@ -34,7 +34,7 @@ chk(ZC.W.levelId==='1-1'&&ZC.W.kids===true,'1-1: kids');
 ZC.loadLevel(ZC.LV('luko'));const L=KD.timing();chk(ZC.W.kids===false&&!ZC.W.tipMul&&L.easy.lead===0.7&&L.easy.broken===6&&L.easy.parry===0.35,'Лукоморье — как прежде: '+JSON.stringify(L.easy)+' tip='+ZC.W.tipMul);
 ZC.loadLevel(ZC.LV('2-1'));{const T2=KD.timing();chk(ZC.W.kids===false&&ZC.W.kidsK===0.8&&T2.easy.lead===0.82&&T2.easy.parry===0.38&&T2.easy.broken===8&&T2.mid.broken===4.6&&T2.mid.lead===0.5&&ZC.W.tipMul===2.2,'мир 2 — сход детских настроек (0,82 / 0,38 / 8 с, подсказки ×2,2): '+JSON.stringify(T2.easy)+' k='+ZC.W.kidsK+' tip='+ZC.W.tipMul);}
 ZC.loadLevel(ZC.LV('3-1'));{const T3=KD.timing();chk(ZC.W.kids===false&&ZC.W.kidsK===0.6&&T3.easy.lead===0.76&&T3.easy.parry===0.37&&T3.easy.broken===7&&ZC.W.tipMul===1.8,'мир 3 — ещё слабее (0,76 / 0,37 / 7 с, ×1,8): '+JSON.stringify(T3.easy)+' tip='+ZC.W.tipMul);}
-ZC.loadLevel(ZC.LV('4-1'));chk(ZC.W.kids===false&&!ZC.W.kidsK&&KD.timing().easy.lead===0.7&&KD.timing().easy.broken===6&&!ZC.W.tipMul,'мир 4 — как прежде');
+ZC.loadLevel(ZC.LV('4-1'));chk(ZC.W.kids===false&&ZC.W.kidsK===0.4&&KD.timing().easy.lead===0.9&&KD.timing().easy.broken===7&&ZC.W.tipMul===1.5,'мир 4 — ступень боссов (чтение/стрелка выключены, замах 0,9, подсказки ×1,5)');
 ZC.loadLevel(ZC.LV('p'));chk(KD.timing().easy.cost===0,'пролог: щит на Лёгком не тратит дух: cost='+KD.timing().easy.cost);ZC.loadLevel(ZC.LV('1-1'));chk(KD.timing().easy.cost===0.17,'1-1: цена щита прежняя: '+KD.timing().easy.cost);
 ZC.loadLevel(ZC.LV('1-3'));chk(ZC.W.kids===true&&KD.timing().easy.lead===0.9,'1-3 — мир 1');
 ZC.W.kids=ZC.W.kids;['kids='+ZC.W.kids].concat(BAD)

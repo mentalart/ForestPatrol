@@ -8,7 +8,7 @@ t31 t31c t32 t33n t34 t35 thw3a thw3b tmenu3
 # мир 4, Лукоморье
 t41v t42v t43 tluko t44 t45 t4b thw4
 # мир 5, эпилог, Застава
-t51 t52 t53 t54 t5b1 tepi tlukoepi tlukopro tzast
+tfin_likho t51 t52 t53 t54 t5b1 t5b1solo t5b1cam tepi tlukoepi tlukopro tzast
 # задачи всех уровней
 tallobj
 # одиночный режим
@@ -23,6 +23,7 @@ tfin_voice tfin_guard tfin_pads2 tfin_luko tfin_uisnd tfin_scooter tfin_splashcl
 tk5e_smoke tk5e_prolog tk5e_runner tk5e_s1 tk5e_leshy tk5e_s3 tk5e_p1 tk5e_p2 tk5e_p3 tk5e_p4 tk5e_s8 tk5e_s9 tk5e_s10 tk5e_s11 tk5e_s12 tk5e_fly tk5e_solo tk5e_flow tk5e_lesson tk5e_lesson2
 # подсказки: одна карточка на игрока, общая по центру, без повторов (late_79_hints.js)
 tfin_hints
+tfin_bossui
 tfin_gor4
 tfin_gorsolo
 tfin_uzda
