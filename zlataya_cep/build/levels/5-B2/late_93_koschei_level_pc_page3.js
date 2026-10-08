@@ -203,32 +203,16 @@
       L.on(()=>{orbFx.t=orbFx.dur;reset();});
       const loOk=(h,i)=>{setLight(h,i);k5s('keyBreak');K5L.gold(h.pos.clone().add(new V3(0,2,0)),10);};
       L.put(po,X-1.5,5.6);L.put(pr,X-0.5,6.4);L.put(pe,X+0.5,6.4);L.put(yo,X+1.5,5.6);KS.g.visible=true;KS.g.position.copy(KZ);KS.g.rotation.y=-0.5;
-      L.beat(7,{cam:[[X,15,21],[X,0.5,-1],[X,12,17],[X,1,-1]],need:[H(X-1.5,5.6),[X,2.6,CAGE.z],[BIRD[0].x,1.5,BIRD[0].z],[BIRD[1].x,1.5,BIRD[1].z],[SOL.x,2.5,SOL.z]],says:[['zven','Жар-птица заперта в золотой клетке над пропастью.',0.2,3.6],['zven','Замки откроет только свет птиц — и только разом!',4.0,3.0]],
-        ev:[[1.0,()=>{birds.forEach((b,i)=>k5Flash(b.g.position.clone().add(new V3(0,1.6,0)),LCOL[i],4,0.8));}],[3.0,()=>{locks.filter(q=>q.pair===1).forEach(q=>k5Flash(q.pos.clone(),LCOL[q.i],2.5,0.6));}]]});
-      // свет и мостики
-      L.beat(8.4,{cam:[[X,8,12],[X,0.8,3]],need:[H(X-9,1),H(X+9,1),[X,1,CAGE.z]],says:[['zven','Коснись Сирин — синий свет печали,',0.2,3.2],['zven','Алконоста — золотой свет радости.',3.2,2.8],['zven','Мостики к клетке твёрдые, пока рядом свет!',6.0,2.4]],
-        ev:[[0,()=>{L.put(po,X-8.4,2.6);L.put(pe,X+8.4,2.6);}],[0.8,()=>{L.walk(po,BIRD[0].x+1.4,BIRD[0].z+0.4,0.8);L.walk(pe,BIRD[1].x-1.4,BIRD[1].z+0.4,0.8);}],[1.9,()=>{loOk(po,0);loOk(pe,1);}],
-          [3.4,()=>{L.walk(po,X-3.4,CAGE.z+2.6,2.6);L.walk(pe,X+3.4,CAGE.z+2.6,2.6);}]]});
-      // замки разом
-      L.beat(6.4,{cam:[[X,7.5,7],[X,1.2,CAGE.z]],need:[[X-3,1,CAGE.z+2.6],[X+3,1,CAGE.z+2.6],[X,2.6,CAGE.z]],says:[['zven','Замки клетки — удар '+kbd('attack')+' разом,',0.2,2.8],['zven','каждый — своим светом: синим и золотым!',3.0,3.0]],
-        ev:[[0,()=>{L.put(po,X-3,CAGE.z+2.6);L.put(pe,X+3,CAGE.z+2.6);setLight(po,0);setLight(pe,1);}],[0.8,()=>{L.walk(po,X-1.6,CAGE.z+1.4,0.6);L.walk(pe,X+1.6,CAGE.z+1.4,0.6);}],[2.4,()=>{L.hit(po,locks[0].pos);L.hit(pe,locks[1].pos);locks.filter(q=>q.pair===1).forEach(q=>{FX.sparkle(q.pos.clone(),12,LCOL[q.i]);k5Flash(q.pos.clone(),LCOL[q.i],3,0.4);});}],
-          [3.2,()=>{locks.filter(q=>q.pair===1).forEach(q=>{const f=q.g.position.clone();k5fx(0.7,k=>{q.g.position.y=f.y-k*2;q.g.rotation.z=k*2;},()=>{q.g.visible=false;});});K5L.gold(CAGE.clone().add(new V3(0,2,0)),18);k5s('keyBreak');bars.forEach((b,i)=>{if(i%2)anim(0.6,k=>{b.position.y=2.0+k;b.scale.y=1-k*0.6;});});}]]});
-      // фонарь и свист
-      L.beat(9.4,{cam:[[X+7,5,9],[X,1.4,-4]],need:[H(X-1.6,-0.6),H(X+1.6,-0.6),[SOL.x,2.8,SOL.z]],says:[['zven','Кощей шарит фонарём: высветил — Соловей свистит против воли.',0.2,4.2],['zven','Синий свист — за щит Потапа '+kbd('guard')+' или за облачный камень!',4.6,4.2]],
-        ev:[[0,()=>{L.put(po,X-1.6,-0.6);L.put(pe,X+1.8,-1.2);L.look(po,SOL);L.look(pe,SOL);}],[0.4,()=>{lamp.visible=true;lamp.position.copy(KS.g.position).add(new V3(-0.9,1.5,0.8));spot.visible=beam.visible=true;const sp0=new V3(X+5,0.1,2),lampP=lamp.position.clone();
-            const fx=k5fx(2.6,k=>{const to=po.pos,x=lerp(sp0.x,to.x,CE.inOutSine(Math.min(1,k*1.4))),z=lerp(sp0.z,to.z,CE.inOutSine(Math.min(1,k*1.4)));spot.position.set(x,0.1,z);const bot=spot.position.clone();beam.position.copy(lampP).lerp(bot,0.5);beam.scale.y=lampP.distanceTo(bot);beam.quaternion.setFromUnitVectors(new V3(0,-1,0),bot.clone().sub(lampP).normalize());},()=>{spot.visible=beam.visible=false;lamp.visible=false;});L.on(()=>{fx.t=fx.dur;spot.visible=beam.visible=false;lamp.visible=false;});}],
-          [3.0,()=>{sset('inhale','angry');}],[4.3,()=>{sset('whistle','angry');k5s('gale');k5Ring(new V3(SOL.x,0.25,SOL.z),0x4a80ff,0.6,15,2.4,0.5);L.guard(po,2.4);L.later(1.3,()=>{L.roll(pe,0.2,2.8,0.45);});}],[7.6,()=>{sset('dazed','hurt');L.ok(po);}]]});
-      // ночь: тени
-      L.beat(7.4,{cam:[[X+3,8.5,11],[X+3.5,1,0.5]],need:[H(X-2,2),[X+9,1,3]],says:[['zven','Ночью свист — фиолетовый: гасит свет.',0.2,2.8],['zven','Тени крадут свет — бей тень, пока она в свете!',3.1,3.6]],
-        ev:[[0,()=>{L.put(po,X-2,2);L.put(pe,X+2,2);setLight(po,0);setLight(pe,1);L.look(po,new V3(X+9,0,3));}],[0.5,()=>{const s=shadowMake();L.add(s.g);s.g.position.set(X+9,0,3);const g=s.g;const f=g.position.clone();k5fx(2.2,k=>{g.position.lerpVectors(f,new V3(X-1.2,0,2.2),CE.inOutSine(Math.min(1,k)));g.rotation.y=Math.atan2(-1,0);s.arms.forEach((a,i)=>{a.rotation.x=Math.sin(G.time*6+i*3)*0.5;});},()=>{});
-            L.later(2.2,()=>{setLight(po,null);s.gl.material.color.set(LCOL[0]);s.gl.material.opacity=1;k5s('blink');K5L.ink(g.position.clone().add(new V3(0,1,0)),10);const g2=g.position.clone();anim(1.0,k=>{g.position.lerpVectors(g2,new V3(X-8,0,4),k);});
-              L.later(1.5,()=>{L.hit(pe,g.position);K5L.ink(g.position.clone().add(new V3(0,1,0)),20);k5s('shatter');k5Del(g);setLight(po,0);L.ok(po);});});}]]});
-      // рассвет, ветер, кольцо
-      L.beat(11,{cam:[[X,8.5,9],[X,1.6,-6],[X+3,9,6],[X,1.4,-7]],need:[H(X-2,-2),[SOL.x,2.8,SOL.z]],says:[['zven','Клетка открыта — рассвет! Соловей дует, и ветер сносит с облаков.',0.2,4.4],['zven','Прячься за облачный камень или щит Потапа; порыв — прыжок!',4.8,3.6],['zven','У Соловья — удар по кольцу на клюве разом, дважды!',8.2,2.8]],
-        ev:[[0,()=>{L.put(po,X-2,-2);L.put(pe,X+2.4,-3.0);setLight(po,null);setLight(pe,null);L.look(po,SOL);L.look(pe,SOL);}],[0.3,()=>{k5Flash(new V3(X,6,CAGE.z),0xffd8a0,8,1.0);K5L.gold(new V3(X,6,-1.3),30);const f=zh.g.position.clone();anim(1.6,k=>{zh.g.position.set(f.x,f.y+k*5,f.z);});}],
-          [1.2,()=>{sset('whistle','angry');L.wind(new V3(0,0,1),4.6);L.guard(po,4.2);const x0=pe.pos.x,z0=pe.pos.z;anim(4.4,k=>{const tt=k*4.4;pe.pos.z=z0+(tt<2?tt*0.1:0.2);pe.vel.set(0,0,0);});}],
-          [5.4,()=>{k5Ring(new V3(SOL.x,0.25,SOL.z),0xffffff,0.6,12,1.8,0.5);L.jump(po,1.6);L.jump(pe,1.6);}],
-          [6.8,()=>{L.walk(po,SOL.x-1.4,SOL.z+2.2,1.2);L.walk(pe,SOL.x+1.4,SOL.z+2.2,1.2);}],[8.8,()=>{L.hit(po,SOL);L.hit(pe,SOL);const p=new V3();ring.getWorldPosition(p);FX.sparks(p,12,0xffd76a);k5Flash(p,0xffd76a,3,0.4);}],[9.6,()=>{L.hit(po,SOL);L.hit(pe,SOL);const p=new V3();ring.getWorldPosition(p);ring.visible=false;K5L.gold(p,24);k5s('keyBreak');solChains.forEach(c=>{c.visible=false;});sset('cheer','neutral');}]]});
+      // одна механика урока: свет птиц открывает замки клетки — удар разом (фонарь и свист, тени, ветер и кольцо — в бою)
+      L.beat(4.2,{cam:[[X,15,21],[X,0.5,-1],[X,12,17],[X,1,-1]],need:[H(X-1.5,5.6),[X,2.6,CAGE.z],[BIRD[0].x,1.5,BIRD[0].z],[BIRD[1].x,1.5,BIRD[1].z],[SOL.x,2.5,SOL.z]],says:[['zven','Жар-птица заперта. Замки — только светом птиц!',0.2,3.8]],
+        ev:[[1.0,()=>{birds.forEach((b,i)=>k5Flash(b.g.position.clone().add(new V3(0,1.6,0)),LCOL[i],4,0.8));}],[2.4,()=>{locks.filter(q=>q.pair===1).forEach(q=>k5Flash(q.pos.clone(),LCOL[q.i],2.5,0.6));}]]});
+      L.beat(4.8,{cam:[[X,8,12],[X,0.8,3]],need:[H(X-9,1),H(X+9,1),[X,1,CAGE.z]],says:[['zven','Коснись Сирин — синий свет, Алконоста — золотой.',0.2,4.2]],
+        ev:[[0,()=>{L.put(po,X-8.4,2.6);L.put(pe,X+8.4,2.6);}],[0.6,()=>{L.walk(po,BIRD[0].x+1.4,BIRD[0].z+0.4,0.7);L.walk(pe,BIRD[1].x-1.4,BIRD[1].z+0.4,0.7);}],[1.5,()=>{loOk(po,0);loOk(pe,1);}],
+          [2.6,()=>{L.walk(po,X-3.4,CAGE.z+2.6,2.0);L.walk(pe,X+3.4,CAGE.z+2.6,2.0);}]]});
+      L.beat(4.4,{cam:[[X,7.5,7],[X,1.2,CAGE.z]],need:[[X-3,1,CAGE.z+2.6],[X+3,1,CAGE.z+2.6],[X,2.6,CAGE.z]],says:[['zven','Замки — удар '+kbd('attack')+' разом, своим светом!',0.2,3.4]],
+        ev:[[0,()=>{L.put(po,X-3,CAGE.z+2.6);L.put(pe,X+3,CAGE.z+2.6);setLight(po,0);setLight(pe,1);}],[0.5,()=>{L.walk(po,X-1.6,CAGE.z+1.4,0.5);L.walk(pe,X+1.6,CAGE.z+1.4,0.5);}],[1.6,()=>{L.hit(po,locks[0].pos);L.hit(pe,locks[1].pos);locks.filter(q=>q.pair===1).forEach(q=>{FX.sparkle(q.pos.clone(),12,LCOL[q.i]);k5Flash(q.pos.clone(),LCOL[q.i],3,0.4);});}],
+          [2.4,()=>{locks.filter(q=>q.pair===1).forEach(q=>{const f=q.g.position.clone();k5fx(0.7,k=>{q.g.position.y=f.y-k*2;q.g.rotation.z=k*2;},()=>{q.g.visible=false;});});K5L.gold(CAGE.clone().add(new V3(0,2,0)),18);k5s('keyBreak');bars.forEach((b,i)=>{if(i%2)anim(0.6,k=>{b.position.y=2.0+k;b.scale.y=1-k*0.6;});});}]]});
+      L.beat(2.6,{cam:[[X,7.5,7],[X,1.2,CAGE.z]],need:[[X,2.6,CAGE.z]],says:[['zven','Понятно? Тогда — в бой!',0.2,2.2]],ev:[[0.2,()=>{[po,pe].forEach(h=>L.emo(h,'cheer'));}]]});
     };
   }
   E.pageStage(6,3,{call:'Третья страница — Небесное царство! Там Жар-птица в клетке тужит.'});
