@@ -3,8 +3,11 @@
 // и вызовы say(кто,текст)/bark(герой,кто,текст). Текст, собранный в коде, раскрывается во все варианты, если он составлен из
 // строк: условия, случайный элемент списка, склейка, списки-константы. Для каждой реплики — уровень (по функции уровня),
 // а в роликах — время до следующей реплики (предел длины записи). Печатает JSON: {lines:[…], dynamic:[нераскрытые места]}.
+// Ключ --boss: дополнительно печатает «boss» — строки боссов, которых нет в игре репликами (tip / banner / O / card / key / sayV /
+// t4HintShow / floatText / реплики уроков L.beat): {src,lv,fn,line,text,voiced}; voiced — такая строка (без тегов) уже есть в lines.json. Кнопки K(p,'…') в тексте — «[кнопка]», нераскрытое — «‹…›».
+// Основной вывод (lines, dynamic) ключом не меняется.
 const fs=require('fs'),path=require('path'),acorn=require('acorn'),walk=require('acorn-walk');
-const HTML=process.argv[2]||path.join(__dirname,'..','..','zlataya_cep','zlataya_cep_final06.html');
+const BOSS=process.argv.includes('--boss');const HTML=process.argv.filter(a=>!a.startsWith('--'))[2]||path.join(__dirname,'..','..','zlataya_cep','zlataya_cep_final06.html');
 const html=fs.readFileSync(HTML,'utf8');const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);const src=scripts[scripts.length-1];
 const ast=acorn.parse(src,{ecmaVersion:'latest',locations:true});
 // функция уровня → id уровня
@@ -91,4 +94,38 @@ B5.forEach(b=>{man('pelageya',b+'…','5-B2','Сказ по памяти: нач
 [1,2,3,4].forEach(k=>man('rybka','Все вчетвером на кольца! Ещё '+k+', ещё!','2-3','невод'));
 ['…синее — щит держи, красное — упрись, не дрожи.','Синее — щит. Красное — упрись, держись.','Щит. Упрись.','Держи.'].forEach(t=>man('pelageya',t,'4-5','Потап держит мост'));
 const keep=new Set(['1540','1622','13304','1436','5838','6987','8223','8357','5491','5493']);   // сами say/play, отладка и места, перечисленные вручную выше   // сами say/play и отладка — не реплики
-process.stdout.write(JSON.stringify({lines:out,dynamic:dyn.filter(x=>!keep.has(String(x.line)))},null,1));
+
+// ---------- --boss: подсказки, подписи, карточки и реплики уроков боссов ----------
+const bossOut=[];
+if(BOSS){
+  // мягкое раскрытие текста: что не раскрылось — «‹…›», кнопка K(p,'x') — «[кнопка]»; не больше 3 вариантов
+  const flat=(n,d)=>{d=d||0;if(!n||d>8)return ['‹…›'];const s=(()=>{try{return strs(n);}catch(e){return null;}})();if(s&&s.length)return s.slice(0,3);
+    switch(n.type){
+      case 'BinaryExpression':if(n.operator==='+'){const a=flat(n.left,d+1),b=flat(n.right,d+1);const o=[];for(const x of a)for(const y of b)if(o.length<3)o.push(x+y);return o;}return ['‹…›'];
+      case 'TemplateLiteral':{let acc=[''];n.quasis.forEach((q,i)=>{acc=acc.map(a=>a+q.value.cooked);if(i<n.expressions.length){const e=flat(n.expressions[i],d+1);acc=acc.flatMap(a=>e.map(x=>a+x)).slice(0,3);}});return acc;}
+      case 'ConditionalExpression':return [...new Set(flat(n.consequent,d+1).concat(flat(n.alternate,d+1)))].slice(0,3);
+      case 'LogicalExpression':return flat(n.right,d+1);
+      case 'ArrowFunctionExpression':case 'FunctionExpression':return n.body.type==='BlockStatement'?['‹…›']:flat(n.body,d+1);
+      case 'CallExpression':{const c=n.callee;if(c.type==='Identifier'&&/^(K|kbd|kbd1|kbd2)$/.test(c.name))return ['[кнопка]'];
+        if(c.type==='MemberExpression'&&!c.computed&&c.property.name==='join'&&c.object.type==='ArrayExpression')return [c.object.elements.map(e=>flat(e,d+1)[0]).join(n.arguments[0]&&n.arguments[0].value||',')];return ['‹…›'];}
+    }return ['‹…›'];};
+  const CALLS={tip:[1],banner:[0,3],O:[0],OR:[4],card:[1,2,3],key:[1],sayV:[0],t4HintShow:[0,1],hint:[0],floatText:[1]};
+  const fnOf=anc=>{for(let i=anc.length-1;i>=0;i--){const a=anc[i];if(a.type==='FunctionDeclaration'&&a.id)return a.id.name;
+    if(a.type==='AssignmentExpression'&&a.left)return src.slice(a.left.start,a.left.end).slice(0,30);}return null;};
+  const lessonOf=anc=>{for(let i=anc.length-1;i>=0;i--){const a=anc[i];if(a.type==='AssignmentExpression'&&a.left.type==='MemberExpression'&&/^E\.LES/.test(src.slice(a.left.start,a.left.end)))return src.slice(a.left.start,a.left.end);}return null;};
+  const add=(srcName,anc,node,text,extra)=>{const t=String(text).replace(/\s+/g,' ').trim();if(!t||t==='‹…›')return;bossOut.push(Object.assign({src:srcName,lv:levelOf(anc),fn:fnOf(anc),line:node.loc.start.line,text:t},extra||{}));};
+  walk.fullAncestor(ast,(n,_s,anc)=>{
+    if(n.type==='CallExpression'&&n.callee.type==='Identifier'&&CALLS[n.callee.name]){const nm=n.callee.name;
+      CALLS[nm].forEach(k=>{const a=n.arguments[k];if(!a||(nm==='banner'&&k===3&&a.type==='Literal'&&!a.value))return;if(nm==='tip'&&a.type==='Literal'&&typeof a.value==='number')return;
+        flat(a).forEach(t=>add(nm+(nm==='banner'?(k===3?'.sub':''):nm==='card'?['','.title','.sub','.tip'][k]:''),anc,n,t));});}
+    // реплики уроков и роликов: L.beat(d,{say:[кто,текст],says:[[кто,текст],…]})
+    if(n.type==='CallExpression'&&n.callee.type==='MemberExpression'&&n.callee.property.name==='beat'&&n.arguments[1]&&n.arguments[1].type==='ObjectExpression'){
+      const lesson=lessonOf(anc);for(const p of n.arguments[1].properties){const key=p.key&&(p.key.name||p.key.value);
+        if(key==='say'&&p.value.type==='ArrayExpression'){const w=p.value.elements[0],t=p.value.elements[1];if(t)flat(t).forEach(x=>add('lesson',anc,n,x,{who:w&&w.type==='Literal'?w.value:'?',lesson}));}
+        if(key==='says'&&p.value.type==='ArrayExpression')for(const e of p.value.elements)if(e&&e.type==='ArrayExpression'&&e.elements[1])flat(e.elements[1]).forEach(x=>add('lesson',anc,n,x,{who:e.elements[0]&&e.elements[0].type==='Literal'?e.elements[0].value:'?',lesson}));}}
+  });
+}
+const res={lines:out,dynamic:dyn.filter(x=>!keep.has(String(x.line)))};
+if(BOSS){const stp=t=>String(t).replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim();
+  const cat=JSON.parse(fs.readFileSync(path.join(__dirname,'..','..','zlataya_cep','build','voice','lines.json'),'utf8')).lines;const have=new Set(cat.map(l=>stp(l.text)));
+  bossOut.forEach(b=>{b.voiced=have.has(stp(b.text));});out.forEach(b=>{b.voiced=have.has(stp(b.text));});res.boss=bossOut;}process.stdout.write(JSON.stringify(res,null,1));
