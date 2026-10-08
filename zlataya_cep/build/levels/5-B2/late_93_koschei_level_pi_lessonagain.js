@@ -1,7 +1,7 @@
-// ---- «Показать урок ещё раз» из паузы для акта I (F-8: FIN.lesson.regLevel; тот же пункт меню, что у 4-Б) ----
-// Стадии 1–3: стадия начинается заново (E.go с retry) и урок идёт снова — как при двух неудачах. Пролог: урок текущего отрезка.
+// ---- «Показать урок ещё раз» из паузы для актов I–II (F-8: FIN.lesson.regLevel; тот же пункт меню, что у 4-Б) ----
+// Стадии 1–7: стадия начинается заново (E.go с retry) и урок идёт снова — как при двух неудачах. Пролог: урок текущего отрезка.
 {const E=FIN.k5e,LEGN={forest:'pro',gorge:'pro_gorge',sea:'pro_sea',sky:'pro_sky',write:'pro_write',three:'pro_three'};
-  const key=()=>{const n=E.cur;if(n>=1&&n<=3)return n;if(n===0&&E.pro&&E.pro.on)return LEGN[E.pro.leg]||null;return null;};
+  const key=()=>{const n=E.cur;if(n>=1&&n<=7)return n;if(n===0&&E.pro&&E.pro.on)return LEGN[E.pro.leg]||null;return null;};
   E.lessonAgainKey=key;
   FIN.lesson.regLevel('5-B2',()=>{const k=key();if(k==null||!K5.auto)return;E.lessonN[k]=0;
     if(typeof k==='number')E.go(k,{retry:true});else E.lesson(k,()=>{});},
