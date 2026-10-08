@@ -101,11 +101,11 @@
 | `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | — | 2 | t44 tfoes |
 | `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | — | 2 | t45 tsospot |
 | `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 10 | t4b tfin_boss4b tfin_cam tfin_cine tfin_gor4 tfin_gorend tfin_gorsolo tfin_hintlayer tfin… |
-| `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51 | 3 | t51 tfoes tso51 |
+| `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51 | 4 | t51 tfin_likho tfoes tso51 |
 | `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | — | 1 | t52 |
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 1 | t53 |
 | `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | — | 2 | t54 tso54 |
-| `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | — | 1 | t5b1 |
+| `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | late_96c_k5b1_texts | 3 | t5b1 t5b1cam t5b1solo |
 | `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_93_koschei_level_p6_epic, late_93_koschei_level_ph_prologue, late_94_koschei_reset | 3 | t5b2 tk5e_resume tlukoepi |
 | `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
@@ -268,6 +268,7 @@
 | `late_95b_warp.js` | — | РЕЛИЗ · ДЛЯ БОТОВ И РАЗРАБОТКИ: ЕДИНАЯ ТЕЛЕПОРТАЦИЯ FIN.warp, ПОСЛЕДНИЙ РОЛИК FIN.lastCine |
 | `levels/p/late_96_prolog_scooter.js` | p | РЕЛИЗ final06 · ПРОЛОГ: ПРОШКА НЕСЁТ САМОКАТ ТИШКЕ |
 | `levels/p/late_96b_prolog_night.js` | p | РЕЛИЗ final06 · ПРОЛОГ: КОМНАТА ШТАБА, ОКНО В НОЧЬ, ПОГОНЯ КОЩЕЯ, ОЖИВШАЯ ТЕТРАДКА |
+| `levels/5-B1/late_96c_k5b1_texts.js` | 5-B1 | РЕЛИЗ · 5-Б1 «КОЩЕЙ В ТЕРЕМЕ» · короткие надписи (docs/34 5Б1-2) |
 | `levels/5-1/late_97_buyan51.js` | 5-1 | РЕЛИЗ final06 · 5-1 «СУНДУК НА ДУБЕ»: НОВЫЕ ЖИТЕЛИ ОСТРОВА В РОЛИКАХ |
 | `levels/4-B/late_98_gor_lava.js` | 4-B | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: АРЕНА ПО РЕФЕРЕНСУ, РЫК И ЛАВА, БОЛЬШОЙ ВДОХ, СЛАБОЕ МЕСТО |
 | `levels/1-3/late_99_kolobok_dance.js` | 1-3 | РЕЛИЗ final06 · 1-3 «КОЛОБОК»: ФИНАЛЬНАЯ ПЛЯСКА |
@@ -399,11 +400,11 @@
 | `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 37 файлов |
+| `changes/` | 40 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 26 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 194 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 197 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
