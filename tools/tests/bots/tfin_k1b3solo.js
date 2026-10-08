@@ -4,7 +4,7 @@
 // Строка «//@@ shot=…» относится к шагу под ней: кадр снимается после него.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(true);ZC.startFrom(ZC.LV('1-B'));ZC.G.manual=true;ZC.tick(10);const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}U.cine(200);ZC.tick(5);
-window.W=ZC.W;window.K=ZC.FIN.k1b;window.S=K.s3;W.bossNext();ZC.tick(60*3);ZC.skip();ZC.tick(60*3);const ph2=W.flags.phase;W.bossNext();ZC.tick(30);
+window.W=ZC.W;window.K=ZC.FIN.k1b;K.les.auto=false;window.S=K.s3;W.bossNext();ZC.tick(60*3);ZC.skip();ZC.tick(60*3);const ph2=W.flags.phase;W.bossNext();ZC.tick(30);
 window.wrap=a=>{while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a;};
 window.relAll=()=>{for(const q of U.K[0].B)ZC.hold(q,false);};
 window.runner=function(sec,until){const C=K.cur.C,pi=ZC.G.soloPi,pv={};let n=0;
