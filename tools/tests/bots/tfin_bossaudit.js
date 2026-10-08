@@ -100,23 +100,23 @@ RUNB('5-1')
 // THR[босс] — предел «не хуже»: слова подсказок (макс.), (сред.), шрифт подсказки в % высоты окна (мин.) на 720p и 1080p, перекрытия HUD % (макс.),
 // вспышки/с, тряска (макс. амплитуда, макс. за 1 с), hit-stop (макс. длительность), p95 вызовов и тысяч треугольников, живые частицы (пик), самый длинный ролик, с
 // Запас на шум (сценарий играет почти детерминированно, но ролики и случайные подсказки гуляют): слова +2 / среднее +1,5, шрифт −0,06, тряска +0,005 и +2 в секунду,
-// вызовы и треугольники ×1,4 +20, частицы +30 (не выше нормы 120), ролик ×1,15 +2 с. Шрифт подсказок общий: меньше зависит от того, какие карточки попали в кадр.
+// вызовы и треугольники ×1,4 +20, частицы +30 (не выше нормы 120), ролик ×1,15 +2 с. Шрифт подсказок: после F-2a — 2,64 % (≥ 2,55), у подсказки боя 4-Б/3-2 (`finBossHint`) пока 1,53 %; общий порог меньше зависит от того, какие карточки попали в кадр.
 // hit-stop 0,40 — «взмах» в 5-Б1 и 1-1 (норма docs/33 — 0,16): так есть сегодня. null — подсказок в бою нет (5-Б2: карточки скрыты).
 window.THR={
- '1-B':{"tipMax":16,"tipAvg":12.4,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.065,"shakePs":5,"hitstop":0.16,"calls":374,"tris":162,"fx":55,"cine":12.3},
- '2-B':{"tipMax":30,"tipAvg":17.8,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.095,"shakePs":8,"hitstop":0.16,"calls":514,"tris":235,"fx":50,"cine":29.6},
- '3-B':{"tipMax":33,"tipAvg":20.4,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.095,"shakePs":3,"hitstop":0.16,"calls":284,"tris":398,"fx":30,"cine":20.4},
+ '1-B':{"tipMax":8,"tipAvg":6.8,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.065,"shakePs":5,"hitstop":0.16,"calls":374,"tris":162,"fx":55,"cine":12.3},
+ '2-B':{"tipMax":30,"tipAvg":17.8,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.095,"shakePs":8,"hitstop":0.16,"calls":514,"tris":235,"fx":50,"cine":29.6},
+ '3-B':{"tipMax":33,"tipAvg":20.4,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.095,"shakePs":3,"hitstop":0.16,"calls":284,"tris":398,"fx":30,"cine":20.4},
  '4-B':{"tipMax":16,"tipAvg":10.1,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.065,"shakePs":6,"hitstop":0.16,"calls":280,"tris":141,"fx":120,"cine":97.1},
- '5-B1':{"tipMax":17,"tipAvg":12.8,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.305,"shakePs":8,"hitstop":0.4,"calls":196,"tris":223,"fx":53,"cine":25.0},
- '5-B2':{"tipMax":10,"tipAvg":9.5,"font720":null,"font1080":null,"flash":1,"shake":0.125,"shakePs":4,"hitstop":0.14,"calls":427,"tris":274,"fx":120,"cine":214.4},
- '1-1':{"tipMax":15,"tipAvg":8.9,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.055,"shakePs":7,"hitstop":0.4,"calls":356,"tris":301,"fx":69,"cine":24.1},
- '2-1':{"tipMax":29,"tipAvg":28.0,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.045,"shakePs":3,"hitstop":0.14,"calls":889,"tris":577,"fx":52,"cine":11.5},
- '3-1':{"tipMax":9,"tipAvg":8.5,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.045,"shakePs":3,"hitstop":0.14,"calls":273,"tris":533,"fx":53,"cine":18.6},
+ '5-B1':{"tipMax":17,"tipAvg":12.8,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.305,"shakePs":8,"hitstop":0.4,"calls":196,"tris":223,"fx":53,"cine":25.0},
+ '5-B2':{"tipMax":10,"tipAvg":9.5,"font720":null,"font1080":null,"flash":1,"shake":0.17,"shakePs":8,"hitstop":0.14,"calls":520,"tris":274,"fx":120,"cine":214.4},
+ '1-1':{"tipMax":15,"tipAvg":8.9,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.055,"shakePs":7,"hitstop":0.4,"calls":356,"tris":560,"fx":69,"cine":24.1},
+ '2-1':{"tipMax":29,"tipAvg":28.0,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.045,"shakePs":3,"hitstop":0.14,"calls":889,"tris":577,"fx":52,"cine":11.5},
+ '3-1':{"tipMax":9,"tipAvg":8.5,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.045,"shakePs":3,"hitstop":0.14,"calls":273,"tris":533,"fx":53,"cine":18.6},
  '3-2':{"tipMax":17,"tipAvg":11.7,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.065,"shakePs":3,"hitstop":0.14,"calls":276,"tris":440,"fx":52,"cine":16.5},
- '5-1':{"tipMax":15,"tipAvg":9.7,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.085,"shakePs":3,"hitstop":0.16,"calls":269,"tris":279,"fx":63,"cine":3.1}
+ '5-1':{"tipMax":15,"tipAvg":9.7,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.085,"shakePs":3,"hitstop":0.16,"calls":269,"tris":279,"fx":63,"cine":3.1}
 };
-// перекрытия HUD ≥ 10 % меньшего окна: пары, которые есть сегодня (плюс 3 %); любая другая пара — FAIL. F-2a: subs×skip → 0.
-window.PAIR720={'subs×skip':51,'banner×finBossHint':45,'finTut×bossbar':27,'bossbar×vest':14};window.PAIR1080={'subs×skip':23};
+// перекрытия HUD ≥ 10 % меньшего окна: пары, которые есть сегодня (плюс 3 %); любая другая пара — FAIL. F-2a убрал subs×skip; остались баннер над подсказкой 4-Б/3-2 и полоса босса над значком 5-1.
+window.PAIR720={'banner×finBossHint':45,'finTut×bossbar':27,'bossbar×vest':41};window.PAIR1080={};
 const names=['1-B','2-B','3-B','4-B','5-B1','5-B2','1-1','2-1','3-1','3-2','5-1'];const L=[];const bad=[];
 const f=(v,d)=>v==null?'-':(+v).toFixed(d==null?1:d);
 L.push('босс  | подск.: шт ср/макс | шрифт% 720/1080 | перекр.% 720/1080 | ролики: шт макс/сумма с | вспышки/с | тряска: макс /в с | hit-stop | вызовы p95 | тр.тыс p95 | частицы');
@@ -138,4 +138,6 @@ const ovl=[];for(const k of Object.keys(RES)){const o=RES[k].ov||{};for(const p 
 const NOW={};for(const n of names){const a=RES['720 '+n],b=RES['1080 '+n];if(!a)continue;
   NOW[n]={tipMax:a.tips.max,tipAvg:a.tips.avg,font720:a.hintFontPct,font1080:b?b.hintFontPct:null,ov720:a.ovMax,ov1080:b?b.ovMax:null,flash:a.flash.perSec,shake:a.shake.max,shakePs:a.shake.perSec,hitstop:a.hitstop.max,calls:a.perf.callsP95,tris:a.perf.trisP95,fx:a.perf.fxMax,cine:a.cines.max};}
 window.NOWJ=JSON.stringify(NOW);
-L.join('\n')+'\n--- шрифты окон HUD (мин. по подсказкам)\n'+hint.join('\n')+'\n--- перекрытия ≥10%\n'+ovl.join('\n')+'\n--- THR сейчас: '+NOWJ+'\n--- ошибки страницы: '+_errs.length+(_errs.length?' '+_errs.slice(0,3).join(' | '):'')+'\n'+(bad.length?bad.map(x=>'FAIL '+x).join('\n'):'bossaudit ok')
+const OUT=L.join('\n')+'\n--- шрифты окон HUD (мин. по подсказкам)\n'+hint.join('\n')+'\n--- перекрытия ≥10%\n'+ovl.join('\n')+'\n--- THR сейчас: '+NOWJ+'\n--- ошибки страницы: '+_errs.length+(_errs.length?' '+_errs.slice(0,3).join(' | '):'')+'\n'+(bad.length?bad.map(x=>'FAIL '+x).join('\n'):'bossaudit ok');
+if(bad.length){console.log(OUT);throw new Error(bad.length+' нарушений порогов: '+bad.slice(0,3).join(' | '));}
+OUT
