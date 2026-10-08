@@ -99,7 +99,7 @@ FIN.k2chase=function(KC){const F=W.flags,T=HERO,bank=KC.bank,rock=KC.rock,FX=FIN
   const reeds=new THREE.Group();reeds.position.set(0,1,RZ);reeds.visible=false;W.group.add(reeds);{const rm=M(0x6a9a3a);for(let i=0;i<34;i++){const c=addMesh(new THREE.ConeGeometry(0.08,rand(2.2,3.4),4),rm,rand(-1.5,1.5),1.4,rand(-0.9,0.9),reeds);c.rotation.z=rand(-0.15,0.15);}}
   const reedCol=colBox(-1.6,1.6,1,3.4,RZ-1,RZ+1,true);reedCol.on=false;
   W.waterTargets.push({pos:new V3(0,1,RZ-3.8),pri:1,active:()=>!F.reeds&&WV.on,onWater:()=>{F.reeds=true;F.reedT=SOLO()?9:7;reedCol.on=true;reeds.visible=true;reeds.scale.set(1,0.05,1);anim(0.9,k=>{reeds.scale.y=Math.max(0.05,k);});comb.visible=false;
-    SFX.grow();burst(new V3(0,2,RZ),0x9affb0,20,4);banner('Гребешок — и камыш стеной!','#9affb0',2,'как у Василисы Премудрой: вал в камыше завязнет');bark(HERO.yosha,'yosha','Гребешок за спину — лес стеной!',1.8,true);}});
+    SFX.grow();burst(new V3(0,2,RZ),0x9affb0,20,4);banner('Гребешок — и камыш стеной!','#9affb0',2,'вал в камыше завязнет');bark(HERO.yosha,'yosha','Гребешок за спину — лес стеной!',1.8,true);}});
   /* ---------- 8. ЛОДКА САДКО (протока z 64…34) и 9. ОБРЫВ (z 34…24) ---------- */
   const BZ0=63,BZ1=34;
   const chan=new THREE.Mesh(new THREE.PlaneGeometry(14,BZ0-BZ1+1),M(0x3a96aa,{transparent:true,opacity:0.78,emissive:0x0a4050,emissiveIntensity:0.45,depthWrite:false}));chan.rotation.x=-Math.PI/2;chan.position.set(0,0.4,(BZ0+BZ1)/2);chan.renderOrder=3;W.group.add(chan);
@@ -147,14 +147,14 @@ FIN.k2chase=function(KC){const F=W.flags,T=HERO,bank=KC.bank,rock=KC.rock,FX=FIN
       events:[{t:0.4,fn:()=>{VAL.root.visible=true;flood.visible=true;WV.z=220;anim(3.4,k=>{WV.z=220-k*9;placeVal(WV.z);});SFX.wave();tone(60,2.2,'sawtooth',0.16,40);shakeAll(0.05,1.4);}},
         {t:2.0,fn:()=>{for(let i=0;i<8;i++)later(i*0.12,()=>FX.splash(new V3(rand(-6,6),5,WV.z-1),1.4,new V3(0,0,-1)));}}],
       tick:(t,dt)=>{VAL.tick(dt);},
-      end:()=>{WV.on=true;WV.z=209;WV.hold=0.6;W.camYaw=Math.PI;snapCams();banner('Погоня!','#cff8ff',2.4,'вал за спиной — бегите вниз, к нам!');
-        for(const pi of[0,1])tip(pi,'Вал гонится! Не стой — он догоняет только того, кто медлит.<br>Дуб — Потап '+K0('skill')+', колесо мельницы — Потап держит, ручей и кувшинки — гусли '+K(pi,'item')+'.',4.6);}});};
+      end:()=>{WV.on=true;WV.z=209;WV.hold=0.6;W.camYaw=Math.PI;snapCams();banner('Погоня!','#cff8ff',2.4,(SOLO()?'вал за спиной — беги вниз!':'вал за спиной — бегите вниз!'));
+        for(const pi of[0,1])tip(pi,'Вал гонится — беги вниз, не стой!',4.6);}});};
   const K0=a=>K(0,a);
   // ---------- лодка: посадка, руль и вёсла, коряги, обрыв ----------
   const inBoat=h=>Math.abs(h.pos.x-boat.x)<1.5&&Math.abs(h.pos.z-boat.z)<2.4&&h.pos.y>0.2&&h.pos.y<2.6;
   function boatStart(){if(boat.on)return;boat.on=true;F.boat=1;F.reedsDown=true;reedCol.on=false;WV.mode='boat';WV.z=Math.max(WV.z,boat.z+9);boat.sp=2.5;
     const crew=HEROES.slice();boat.crew=crew;crew.forEach((h,i)=>{h.k2boat=boat.seats[i%4];h.vel.set(0,0,0);});
-    W.custom=(pi,h,dt,inp)=>{boatInput(pi,dt,inp);};SFX.wave();banner('Лодка Садко!','#9fe6ff',2.2,SOLO()?'влево-вправо — руль, '+K(G.soloPi,'item')+' — гребок':'Игрок 1 — руль (влево-вправо), Игрок 2 — вёсла-гусли '+K(1,'item'));
+    W.custom=(pi,h,dt,inp)=>{boatInput(pi,dt,inp);};SFX.wave();banner('Лодка Садко!','#9fe6ff',2.2,SOLO()?'влево-вправо — руль, '+K(G.soloPi,'item')+' — гребок':'Игрок 1 — руль, Игрок 2 — гребок '+K(1,'item'));
     bark(T.potap,'potap','В лодку! Садко, выручай!',1.8,true);}
   function boatInput(pi,dt,inp){if(!boat.on||boat.fly)return;const steer=SOLO()?pi===G.soloPi:pi===0,rower=SOLO()?pi===G.soloPi:pi===1;
     if(steer&&!inp.lock){const back=camBack(),rx=back.z;boat.want=clamp(inp.ix*(rx>=0?1:-1),-1,1);}   // камера лицом к героям: «вправо» на экране — влево по миру
