@@ -55,9 +55,9 @@ CMP.route('1-2',[
     if(!s||!W.threads.includes(s)){                                                              // струны на этом пролёте ещё нет
       if(Math.hypot(h.pos.x-st[0],h.pos.z-st[1])>0.45){cmpGoto(h,st[0],st[1],0.2);return;}      // вплотную к назначенной точке: колышек своей кочки ближе метра «не перехватит» бросок
       if(!K12.spT)K12.spT=G.time;                                                                // сначала даёт другу бросить, потом бросает сам (последний пролёт — «Игрока 2»: ждёт меньше)
-      if(G.time-K12.spT>(k===3?4:10)){h.face=Math.atan2(GS[k].x-h.pos.x,GS[k].z-h.pos.z);if(!(K12.t>G.time-1.2)){K12.t=G.time;cmpTap('item');}}return;}
+      if(G.time-K12.spT>(k===3?3:6)){h.face=Math.atan2(GS[k].x-h.pos.x,GS[k].z-h.pos.z);if(!(K12.t>G.time-1.2)){K12.t=G.time;cmpTap('item');}}return;}
     K12.spT=0;const end=k<3?k12Mid(GS,k):[GS[3].x-0.6,GS[3].z-1.2],a=k12At(s,0.6);
-    if(h.pos.z>a[1]+0.8&&Math.hypot(h.pos.x-s.sx,h.pos.z-s.sz)>1.2&&!(h.pos.y>0.3)){cmpGoto(h,st[0],st[1],0.5);return;}   // сойти на начало струны
+    if(h.groundRef!==s&&h.pos.z>a[1]+0.8&&Math.hypot(h.pos.x-s.sx,h.pos.z-s.sz)>1.2&&!(h.pos.y>0.3)){cmpGoto(h,st[0],st[1],0.5);return;}   // сойти на начало струны (не со струны: на ней бот шёл бы вперёд-назад ровно на 1,2 м от начала)
     if(Math.hypot(h.pos.x-a[0],h.pos.z-a[1])>0.7&&h.pos.z>a[1]){cmpGoto(h,a[0],a[1],0.4);return;}
     cmpGoto(h,end[0],end[1],0.4);}},
   // свадьба: Журавль идёт по струнам (их не трогать!), потом звено у избушки Цапли
