@@ -60,7 +60,7 @@ zlataya_cep/build/gpu/gpu_shaders.js          -
 zlataya_cep/build/gpu/gpu_late_*.js           -
 zlataya_cep/build/header.txt                  -
 zlataya_cep/build/fonts/*                     tfin_splash tfin_menu
-zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine tfin_hints
+zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine tfin_hints tfin_bossui
 zlataya_cep/build/fin_body.html               tfin_menu tfin_splash tfin_uisnd
 zlataya_cep/build/fin_early.js                @wide
 
@@ -101,7 +101,7 @@ zlataya_cep/build/late_70_menu.js             tfin_menu tfin_pads tfin_pads2 tfi
 zlataya_cep/build/late_71_pads.js             tfin_pads tfin_pads2 tfin_menu
 zlataya_cep/build/late_72_splash.js           tfin_splash tfin_uisnd tfin_menu tfin_splashclick
 zlataya_cep/build/late_73_companion.js        tfin_companion tfin_menu tfin_save tfin_pads
-zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tsolo tfin_taskshort smoke
+zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tsolo tfin_taskshort smoke tfin_bossui
 zlataya_cep/build/late_74_kids_start.js       tfin_kids1 tfin_kids2 tfin_menu tfin_save tfin_dev tfin_pads2 smoke
 zlataya_cep/build/late_75_kids_w1.js          @level:p @level:1-1 @level:1-2 @level:1-3 @level:1-4 @level:1-5 @level:1-B @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 smoke
 zlataya_cep/build/late_76_kids_fight.js       @level:1-1 @level:1-2 @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 tfin_foekinds smoke

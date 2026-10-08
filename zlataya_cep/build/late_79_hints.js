@@ -108,7 +108,12 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   if(bossOn)ts=Math.max(ts,boss.getBoundingClientRect().bottom);if(VR&&VR.right>innerWidth/2-els[2].offsetWidth/2-6)ts=Math.max(ts,VR.bottom);   // длинная «весточка» — общая карточка ниже неё
   els[2].style.top=(ts+8)+'px';
   els.forEach((el,i)=>{let y=false;if(BR&&HN.shown[i]){if(!HN.cmp[i]&&hnHit(el.getBoundingClientRect(),BR,4)){HN.cmp[i]=true;render(i,cards[i]);}y=hnHit(el.getBoundingClientRect(),BR,4);}
-    el.classList.toggle('hn-yield',y);});}
+    el.classList.toggle('hn-yield',y);});
+  hnSkip();}
+// плашка пропуска — над субтитрами (X-10): по умолчанию выше двух строк, а если реплика длиннее — ещё выше
+function hnSkip(){const sk=$('skip'),sb=$('subs');if(!sk||!sb)return;sk.style.bottom='';
+  if(getComputedStyle(sk).display==='none'||!hnVisible('subs'))return;
+  const S=sb.getBoundingClientRect(),K=sk.getBoundingClientRect();if(K.bottom>S.top-6)sk.style.bottom=(innerHeight-S.top+8)+'px';}
 {const _ui=updateUI;updateUI=function(dt){_ui(dt);try{hnLayout();}catch(e){console.error('hints',e);}};}
 {const _st=showTitle;showTitle=function(){_st();HN.titleT=G.time;};}
 FIN.hints={layout:hnLayout,cover:hnCover,merge:hnMerge,fuzzy:hnFuzzy,split:hnSplit,pair:hnPair,short:hnShort,state:()=>({html:HN.html.slice(),shown:HN.shown.slice()})};   // для ботов
