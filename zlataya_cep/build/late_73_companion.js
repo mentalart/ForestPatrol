@@ -24,7 +24,7 @@ function cmpMirror(){for(const a in BIND[0]){const c=BIND[0][a];if(down.has(c)||
 // как встретить замах: отбить в окне, только щитом или проспать — по CMP.skill
 const cmpDice=()=>{const r=Math.random(),s=CMP.skill;return r<s?'parry':r<s+(1-s)*0.65?'shield':'asleep';};
 // чужих (привязанных к Игроку 1: учебные мороки пролога и т. п.) не трогает — они человеку
-const cmpAlive=e=>e.alive&&e.pi!==0&&e.state!=='spawn'&&e.state!=='dying'&&e.state!=='hide'&&(!e.g||e.g.visible!==false);
+const cmpAlive=e=>e.alive&&!e.sleep&&e.pi!==0&&e.state!=='spawn'&&e.state!=='dying'&&e.state!=='hide'&&(!e.g||e.g.visible!==false);
 // морок открыт для удара: пробит, оглушён, шатается после отбива, окно после кувырка, у «коры» — сбоку или сзади
 function cmpOpen(e,h){if(e.guardAll&&e.guardAll())return false;
   if(e.state==='broken'||e.dazeT>0||(e.state==='stagger'&&!e.openHit)||e.open>0)return true;
@@ -93,8 +93,13 @@ function cmpThink(dt){cmpFree();
   const T=TIMING[p.path]||TIMING.mid;
   const rs=CMP.step();                                                       // шаг маршрута с first:true идёт раньше общего боя (забег по мосту-руке, невидимый враг-носитель)
   if(rs&&rs.first){h.following=false;if(rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}}
-  const near=W.enemies.filter(e=>cmpAlive(e)&&Math.abs(e.pos.y-h.pos.y)<2.6&&(e.tgt===h||hd(e.pos,h.pos)<8||(hd(e.pos,hh.pos)<8&&hd(e.pos,h.pos)<14)));
-  if(near.length){CMP.mode='fight';h.following=false;if(o&&!o.following&&!o.cling&&hd(o.pos,h.pos)>22)cmpCall();cmpFight(h,hh,near,T);return;}   // второй герой далеко отстал — позвать
+  const ig=CMP.ig||(CMP.ig=new Map());
+  const near=W.enemies.filter(e=>cmpAlive(e)&&Math.abs(e.pos.y-h.pos.y)<2.6&&(e.tgt===h||hd(e.pos,h.pos)<8||(hd(e.pos,hh.pos)<8&&hd(e.pos,h.pos)<14))&&!(ig.get(e)>G.time&&e.tgt!==h&&e.state==='idle'));
+  if(near.length){CMP.mode='fight';h.following=false;if(o&&!o.following&&!o.cling&&hd(o.pos,h.pos)>22)cmpCall();cmpFight(h,hh,near,T);   // второй герой далеко отстал — позвать
+    // упёрся по дороге к врагу (изгородь, стена): три секунды на месте вдали от него — этого (спокойного) врага не трогает 15 с, идёт за человеком
+    const fs=CMP.fs;if(!fs||Math.hypot(h.pos.x-fs.x,h.pos.z-fs.z)>0.4)CMP.fs={x:h.pos.x,z:h.pos.z,t:G.time};
+    else if(G.time-fs.t>3){CMP.fs=null;let e=null,bd=99;for(const x of near){const d=hd(x.pos,h.pos);if(d<bd){bd=d;e=x;}}if(e&&e.state==='idle'&&e.tgt!==h&&bd>h.d.range*0.9+e.r+0.3)ig.set(e,G.time+15);}
+    return;}
   if(hp.downed&&!hh.cling){CMP.mode='revive';h.following=false;cmpGoto(h,hh.pos.x,hh.pos.z,0.7);return;}   // друга надо подшить: постоять рядом секунду
   if(rs&&!rs.first){h.following=false;if(rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}}   // у уровня есть маршрут: ведёт он; шаг, которому делать нечего, возвращает 'follow'
   CMP.mode='follow';}
