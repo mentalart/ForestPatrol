@@ -5,13 +5,14 @@
 // В бою — живые подсказки: по событию (жёлудь над средней, сытая голова, огонь, одна голова уже в Пробое, проснулась, узда)
 // и по времени без успехов; стрелка над целью, мигающая кнопка, «✓ Молодец!» на правильное нажатие.
 // Логику боя модуль не меняет: во время роликов головы не нападают, после — всё возвращается как было.
-const T4={on:false,auto:true,card:null,hint:null,props:[],arrows:[],ph:-1,h:null};FIN.boss4b=T4;   // auto=false — без обучающих роликов (боты, меряющие вступление)
+const L4=FIN.lesson;
+const T4={auto:true,props:[],arrows:[],ph:-1,h:null,get on(){return L4.on;},set on(v){L4.on=v;},get card(){return L4.card;},get hint(){return L4.hint;}};FIN.boss4b=T4;   // on/card/hint — в общем шаблоне урока (late_79e_lesson.js)   // auto=false — без обучающих роликов (боты, меряющие вступление)
 const t4Heads=()=>W.enemies.filter(e=>e.kind==='golova').sort((a,b)=>a.idx-b.idx);
 const t4P=h=>h.pos.clone();
 const T4SPOT=new V3(0,1.4,-12.6);
-function t4Dom(){if(T4.card&&T4.card.isConnected)return;const mk=id=>{const d=document.createElement('div');d.id=id;document.body.appendChild(d);return d;};T4.card=mk('finTut');T4.hint=mk('finBossHint');}
+const t4Dom=()=>L4.dom();
 // ---------- значки ----------
-const T4I={
+const T4I=Object.assign(L4.icons,{
   heads:'<svg viewBox="0 0 64 64"><g stroke="#1e3a14" stroke-width="2.5"><path d="M10 50 Q14 30 20 26" fill="none" stroke="#4a8a3a" stroke-width="7"/><path d="M32 52 V24" fill="none" stroke="#4a8a3a" stroke-width="7"/><path d="M54 50 Q50 30 44 26" fill="none" stroke="#4a8a3a" stroke-width="7"/>'+
     '<ellipse cx="18" cy="22" rx="9" ry="8" fill="#6ab04c"/><ellipse cx="32" cy="16" rx="9" ry="8" fill="#6ab04c"/><ellipse cx="46" cy="22" rx="9" ry="8" fill="#6ab04c"/></g>'+
     '<circle cx="18" cy="10" r="4" fill="none" stroke="#ffd23a" stroke-width="2.5"/><path d="M29 3 q3 4 6 0" stroke="#5ab8ff" stroke-width="2.5" fill="none"/><path d="M42 11 l2 -5 l2 5 l2 -5" stroke="#ff5a4a" stroke-width="2.2" fill="none"/></svg>',
@@ -29,13 +30,8 @@ const T4I={
   tongs:'<svg viewBox="0 0 64 64"><path d="M14 58 L30 26 M50 58 L34 26" stroke="#5a6070" stroke-width="7" stroke-linecap="round"/><circle cx="32" cy="24" r="5" fill="#5a6070"/><path d="M24 16 Q32 2 40 16" stroke="#ff8a3a" stroke-width="6" fill="none" stroke-linecap="round"/></svg>',
   ring:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="20" fill="none" stroke="#ffd76a" stroke-width="7"/><circle cx="32" cy="32" r="28" fill="none" stroke="#ffd76a" stroke-width="2" stroke-dasharray="4 5"/></svg>',
   n123:'<svg viewBox="0 0 64 64"><circle cx="14" cy="32" r="11" fill="#ffd76a"/><circle cx="32" cy="32" r="11" fill="#ffb070"/><circle cx="50" cy="32" r="11" fill="#ff8a6a"/><g font-family="system-ui" font-weight="900" font-size="14" text-anchor="middle" fill="#3a2410"><text x="14" y="37">1</text><text x="32" y="37">2</text><text x="50" y="37">3</text></g></svg>',
-  go:'<svg viewBox="0 0 64 64"><path d="M10 32 H44 M32 16 L50 32 L32 48" stroke="#9ff0a8" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
-const T4WHO=[{n:'Игрок 1',c:'#e0784a'},{n:'Игрок 2',c:'#6cc4b8'}];
-function t4Keys(keys,got){if(!keys||!keys.length)return '';return '<div class="ft-keys">'+keys.map(k=>{const w=T4WHO[k.pi];const st=got&&got[k.pi]?'done':k.wait?'wait':'';
-  return '<span class="ft-key '+st+'">'+(G.solo?'':'<span class="ft-who" style="background:'+w.c+'">'+w.n+'</span>')+K(k.pi,k.a)+(k.label?' '+k.label:'')+'</span>';}).join('')+'</div>';}
-function t4CardHTML(c,got,st){return '<div class="ft-head"><span class="ft-tag">'+c.tag+'</span>'+c.title+'</div><div class="ft-body"><div class="ft-ico">'+(T4I[c.icon]||'')+'</div><div class="ft-text">'+c.text+'</div></div>'+
-  t4Keys(c.keys,got)+(st==='wait'?'<div class="ft-go">'+(c.go||'Нажми!')+'</div>':st==='ok'?'<div class="ft-go okt">'+(c.okText||'Получилось!')+'</div>':st==='auto'?'<div class="ft-go okt">Смотри — вот так!</div>':'')+'<div class="ft-skip">пропустить — оба держат прыжок</div>';}
-function t4Card(c,got,st){t4Dom();if(!c){T4.card.classList.remove('on','ok');return;}T4.card.innerHTML=t4CardHTML(c,got,st);T4.card.classList.add('on');T4.card.classList.toggle('ok',st==='ok');}
+  go:'<svg viewBox="0 0 64 64"><path d="M10 32 H44 M32 16 L50 32 L32 48" stroke="#9ff0a8" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'});
+const t4Keys=(k,g)=>L4.keys(k,g),t4Card=(c,g,st)=>L4.show(c,g,st);
 // ---------- реквизит роликов и подсказок ----------
 function t4Prop(o){o.userData.noBatch=true;o.userData.dress=true;o.traverse(q=>{q.userData.noBatch=true;q.userData.sty=true;q.castShadow=false;});W.group.add(o);T4.props.push(o);return o;}
 function t4Clear(){for(const o of T4.props)if(o.parent)o.parent.remove(o);T4.props.length=0;}
@@ -43,31 +39,11 @@ function t4Ring(col,r){const g=new THREE.Group();const m=new THREE.Mesh(new FIN.
 function t4Arrow(col){const g=new THREE.Group(),mt=MB(col,{transparent:true,opacity:0.95,depthTest:false,fog:false});const c=new THREE.Mesh(new FIN.orig.Cone(0.42,0.8,4),mt);c.rotation.x=Math.PI;c.renderOrder=10;g.add(c);
   const r=new THREE.Mesh(new FIN.orig.Torus(0.5,0.07,5,20),mt);r.rotation.x=Math.PI/2;r.position.y=0.62;r.renderOrder=10;g.add(r);g.userData.mat=mt;return g;}
 const t4HeadTop=e=>{const p=new V3();(e.L&&e.L.head?e.L.head:e.g).getWorldPosition(p);return p;};
-function t4Tap(pi,a){return G.solo?(tap(0,a)||tap(1,a)):tap(pi,a);}
-function t4Who(w){if(G.solo)return [G.soloPi];return w==='both'||w==='any'?[0,1]:[w];}
+const t4Tap=(pi,a)=>L4.tap(pi,a);
 function t4Broken(e,on){if(on){e.state='broken';e.t=0;e.bdur=99;e._b=true;}else{e.state='idle';e.t=0;e._b=false;e.embers=e.maxEmb||4;}}
-// ---------- движок интерактивного ролика ----------
-// шаг: {dur, p, l (камера), card:{tag,title,icon,text,keys,go,okText}, wait:{who,a,timeout,sync}, at (когда ждать), enter(s), done(s,auto), each(s,pi), update(s,u,dt)}
-function t4Run(steps,opt){opt=opt||{};T4.on=true;t4Dom();const hs=t4Heads();hs.forEach(e=>{e._cd4=e.cd;e.cd=99;});$('banner').style.opacity=0;
-  let T=0;const shots=[];for(const s of steps){s.t0=T;shots.push(shot(T,s.p,s.l,s.p2,s.l2,s.dur,s.cut!==false));T+=s.dur;}
-  const st={i:-1,wt:0};
-  play({dur:T+0.25,fov:opt.fov||47,camK:3.4,shots,
-    tick:(t,dt)=>{const i=t>=T?-1:steps.findIndex(s=>t>=s.t0&&t<s.t0+s.dur);
-      if(i!==st.i){st.i=i;if(i<0)return;const s=steps[i];s.got={};s.okAt=null;s.auto=false;s.first=null;st.wt=0;if(s.enter)s.enter(s);t4Card(s.card,s.got,s.wait?'':null);}
-      if(i<0)return;const s=steps[i];
-      if(s.wait&&s.okAt==null){const at=s.t0+(s.at!=null?s.at:0.8);if(t>=at){if(G.cine)G.cine.t=at;st.wt+=dt;if(st.wt<dt*1.5)t4Card(s.card,s.got,'wait');
-          const need=t4Who(s.wait.who);
-          for(const pi of need)if(!s.got[pi]&&t4Tap(pi,s.wait.a)){
-            if(s.wait.sync&&s.first!=null&&G.time-s.first>s.wait.sync){s.got={};s.first=null;floatText(t4P(active(pi)).add(new V3(0,2.2,0)),'Ещё раз — вместе, дружно!','#ffd9a0');SFX.miss();}
-            s.got[pi]=true;if(s.first==null)s.first=G.time;if(s.each)s.each(s,pi);tone(900+pi*200,0.08,'triangle',0.2);t4Card(s.card,s.got,'wait');}
-          if(s.wait.sync&&s.first!=null&&G.time-s.first>s.wait.sync&&!need.every(pi=>s.got[pi])){s.got={};s.first=null;t4Card(s.card,s.got,'wait');}
-          if(need.every(pi=>s.got[pi])){s.okAt=t;if(s.done)s.done(s,false);SFX.ok();t4Card(s.card,s.got,'ok');}
-          else if(st.wt>(s.wait.timeout||8)){s.okAt=t;s.auto=true;need.forEach(pi=>{s.got[pi]=true;});if(s.done)s.done(s,true);t4Card(s.card,s.got,'auto');}
-          // получилось — досматриваем результат ~2.6 с и дальше, без пустого ожидания
-          if(s.okAt!=null&&G.cine&&s.t0+s.dur-t>2.6)G.cine.t=s.t0+s.dur-2.6;}}
-      if(s.update)s.update(s,t-s.t0,dt);},
-    end:()=>{T4.on=false;t4Card(null);t4Clear();if(T4.h){T4.h.prog=G.time;T4.h.grace=G.time+3;}t4Heads().forEach(e=>{e.cd=e._cd4!=null&&e._cd4<50?e._cd4:1.5;});if(opt.end)opt.end();}});
-  const cd=CINE.CD&&CINE.CD();if(cd&&cd.S===G.cine){cd.inserts=false;cd.cover=[];cd.calm=true;}}
+// ---------- ролик этапа: движок — общий шаблон урока FIN.lesson.run (late_79e_lesson.js); здесь — головы Змея на время ролика ----------
+const T4HOOK={begin:()=>{t4Heads().forEach(e=>{e._cd4=e.cd;e.cd=99;});},cleanup:()=>{t4Clear();if(T4.h){T4.h.prog=G.time;T4.h.grace=G.time+3;}t4Heads().forEach(e=>{e.cd=e._cd4!=null&&e._cd4<50?e._cd4:1.5;});}};
+const t4Run=(steps,opt)=>L4.run(steps,Object.assign({},T4HOOK,opt));
 // общие кадры
 const C4={wide:[[0,7.8,10],[0,2.4,-9.5]],L:[[-9.8,3.4,-1.6],[-5.4,2.6,-9.6]],R:[[9.8,3.4,-1.6],[5.4,2.6,-9.6]],M:[[1.5,3.2,-2.6],[0,2.7,-10.8]],
   team:[[-1,2.6,5.5],[0,1.2,-3]],bridle:[[-2.2,3.1,6.2],[-6.6,0.9,2.4]],spot:[[3.2,3.2,-5.6],[0,1.6,-12.6]]};
@@ -146,10 +122,10 @@ function t4Stage3(){const gr=W.grabs[0];if(!gr)return;const bp=gr.pos(),saved=bp
 function t4Short(n){const txt={1:['Этап 1 · Три запала','heads','Жёлтый кружок — <b>щит</b>, красный зубец — <b>кувырок</b>, потом бей.<br>Левую и правую — <b>вместе</b>, за двенадцать секунд, дружней!'],
   2:['Этап 2 · Вдох','heads','Тянет к пасти — держи <b>щит</b>. Жёлудь — <b>рогатка Прошки</b>, огонь — <b>щит Потапа</b>, сытая — <b>вода Йоши</b>.<br><b>Взор Пелагеи</b> — слабое место: один удар, и Пробой!'],
   3:['Этап 3 · Узда','ring','Узду — <b>клещами вдвоём</b> к золотому ореолу на шее, и <b>умение трижды</b>, оба: раз, два, три!']}[n];
-  t4Run([t4S('wide',4.5,{tag:'Напоминание',title:txt[0],icon:txt[1],text:txt[2]})]);}
-function t4SeenSet(n){G.flags.tut4b=G.flags.tut4b||{};G.flags.tut4b[n]=true;}
-function t4Seen(n){return !!(G.flags.tut4b&&G.flags.tut4b[n]);}
+  L4.reminder(t4S('wide',4.5,{tag:'Напоминание',title:txt[0],icon:txt[1],text:txt[2]}),T4HOOK);}
+const t4SeenSet=n=>L4.mark('tut4b',n),t4Seen=n=>L4.seen('tut4b',n);
 FIN.boss4bStage=n=>{if(n===1)t4Stage1();else if(n===2)t4Stage2();else if(n===3)t4Stage3();};   // для ботов и отладки
+L4.regLevel('4-B',()=>FIN.boss4bStage(W.flags.phase),()=>W.flags.phase>=1&&W.flags.phase<=3);   // «Показать урок ещё раз» — полный урок текущего этапа
 // ---------- живые подсказки в бою ----------
 function t4HintShow(key,c,targets,expect,dur){const H=T4.h;if(!H)return;if(H.cur&&H.cur.key===key&&H.until>G.time)return;
   H.cur={key,c,expect:expect||[],got:{}};H.until=G.time+(dur||6);H.last=G.time;H.cd[key]=G.time;t4Dom();

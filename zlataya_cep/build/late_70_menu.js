@@ -95,10 +95,13 @@ const CREDITS='<h3>Златая цепь</h3><p>кооперативная ск�
   '<h3>Технологии</h3><p>Three.js r128 · © 2010–2021 Three.js Authors · лицензия MIT</p><p>шрифт Comfortaa · © The Comfortaa Project Authors · SIL Open Font License 1.1</p><p>звук и музыка синтезируются в браузере (Web Audio)</p>'+
   '<h3>Спасибо</h3><p>всем, кто играет вместе — с детьми, друзьями и бабушками</p><p style="margin-top:22px;font-style:italic">«Там русский дух… там Русью пахнет!»</p>';
 function creditsScreen(){return {head:'Титры',html:()=>'<div class="fin-credits"><div id="finCred">'+CREDITS+'</div></div>',items:[{label:'Назад',act:finBack}],credits:true};}
-function pauseScreen(){return {pause:true,items:[{label:'Продолжить',act:()=>hideMenu()},
+function pauseScreen(){const scr={pause:true,items:[{label:'Продолжить',act:()=>hideMenu()},
   {label:'Настройки',act:()=>finPush(settingsScreen())},{label:'Управление',act:()=>finPush(controlsScreen())},
   {label:'Режим',val:()=>FIN.co.label(),side:d=>FIN.co.cycle(d)},
-  {label:'Выйти в главное меню',sub:()=>G.hub?'пройденные уровни сохранены, этот уровень начнётся заново':'пролог начнётся заново',act:()=>{FIN.saveGame();finGo(()=>FIN.openTitle(true));}}],onBack:()=>hideMenu()};}
+  {label:'Выйти в главное меню',sub:()=>G.hub?'пройденные уровни сохранены, этот уровень начнётся заново':'пролог начнётся заново',act:()=>{FIN.saveGame();finGo(()=>FIN.openTitle(true));}}],onBack:()=>hideMenu()};
+  // «Показать урок ещё раз» — только если у уровня есть урок (FIN.lesson, late_79e_lesson.js)
+  if(FIN.lesson&&FIN.lesson.has())scr.items.splice(scr.items.length-1,0,{label:'Показать урок ещё раз',act:()=>{hideMenu();FIN.lesson.again();}});
+  return scr;}
 // ---------- открыть / закрыть ----------
 FIN.openTitle=function(first){G.state='menu';FIN.titleOn=true;document.body.classList.add('fin-title');$('menu').classList.add('hide');$('finPause').classList.add('fin-hide');$('finTitle').classList.remove('fin-hide');
   FIN.menuStack=[];finScreen(mainScreen());if(first)FIN.title.restart();$('finVer').textContent='версия '+FIN.ver;$('finHint').textContent='↑ ↓ — выбрать · ← → — изменить · Enter / Пробел / A — да · Esc / B — назад';

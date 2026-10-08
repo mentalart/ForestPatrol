@@ -123,6 +123,7 @@ zlataya_cep/build/late_78_signals.js             tfin_signals smoke
 zlataya_cep/build/late_79c_taskshort.js       tfin_taskshort tfin_hints smoke
 zlataya_cep/build/late_79d_help.js              tfin_help tfin_kids1 tfin_kids2 tfin_k1b tfin_k1b3 tfin_hints tfin_bossui smoke
 zlataya_cep/build/levels/1-B/late_99zd_k1b_help.js tfin_help tfin_k1b tfin_k1b3 tfin_k1bhands
+zlataya_cep/build/late_79e_lesson.js          tfin_lesson tfin_boss4b tfin_gor4 tfin_gorsolo tfin_hintlayer tfin_menu
 tools/playtest/task_short.py                  tfin_taskshort
 tools/playtest/task_short_tpl.js              tfin_taskshort
 tools/playtest/*                              -
