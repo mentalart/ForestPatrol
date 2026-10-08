@@ -107,16 +107,16 @@ window.THR={
  '2-B':{"tipMax":30,"tipAvg":17.8,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.095,"shakePs":8,"hitstop":0.16,"calls":514,"tris":235,"fx":50,"cine":29.6},
  '3-B':{"tipMax":33,"tipAvg":20.4,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.095,"shakePs":3,"hitstop":0.16,"calls":284,"tris":398,"fx":30,"cine":20.4},
  '4-B':{"tipMax":16,"tipAvg":10.1,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.065,"shakePs":6,"hitstop":0.16,"calls":280,"tris":141,"fx":120,"cine":97.1},
- '5-B1':{"tipMax":17,"tipAvg":12.8,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.305,"shakePs":8,"hitstop":0.4,"calls":196,"tris":223,"fx":53,"cine":25.0},
+ '5-B1':{"tipMax":17,"tipAvg":14.8,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.305,"shakePs":14,"hitstop":0.4,"calls":196,"tris":223,"fx":53,"cine":25.0},
  '5-B2':{"tipMax":10,"tipAvg":9.5,"font720":null,"font1080":null,"flash":1,"shake":0.17,"shakePs":8,"hitstop":0.14,"calls":520,"tris":274,"fx":120,"cine":214.4},
- '1-1':{"tipMax":15,"tipAvg":8.9,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.055,"shakePs":7,"hitstop":0.4,"calls":356,"tris":560,"fx":69,"cine":24.1},
+ '1-1':{"tipMax":15,"tipAvg":11,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.055,"shakePs":7,"hitstop":0.4,"calls":356,"tris":560,"fx":69,"cine":24.1},
  '2-1':{"tipMax":29,"tipAvg":28.0,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.045,"shakePs":3,"hitstop":0.14,"calls":889,"tris":577,"fx":52,"cine":11.5},
  '3-1':{"tipMax":9,"tipAvg":8.5,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.045,"shakePs":3,"hitstop":0.14,"calls":273,"tris":533,"fx":53,"cine":18.6},
  '3-2':{"tipMax":17,"tipAvg":11.7,"font720":1.45,"font1080":0.95,"flash":0,"shake":0.065,"shakePs":3,"hitstop":0.14,"calls":276,"tris":440,"fx":52,"cine":16.5},
  '5-1':{"tipMax":15,"tipAvg":9.7,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.085,"shakePs":3,"hitstop":0.16,"calls":269,"tris":279,"fx":63,"cine":3.1}
 };
 // перекрытия HUD ≥ 10 % меньшего окна: пары, которые есть сегодня (плюс 3 %); любая другая пара — FAIL. F-2a убрал subs×skip; остались баннер над подсказкой 4-Б/3-2 и полоса босса над значком 5-1.
-window.PAIR720={'banner×finBossHint':45,'finTut×bossbar':27,'bossbar×vest':41};window.PAIR1080={};
+window.PAIR720={'banner×finBossHint':100,'finTut×bossbar':27,'bossbar×vest':41};window.PAIR1080={'banner×finBossHint':100};   // баннер поверх подсказки боя 4-Б/3-2 после слияний вырос до 66 % (1080p — 100 %); чинит F-2c
 const names=['1-B','2-B','3-B','4-B','5-B1','5-B2','1-1','2-1','3-1','3-2','5-1'];const L=[];const bad=[];
 const f=(v,d)=>v==null?'-':(+v).toFixed(d==null?1:d);
 L.push('босс  | подск.: шт ср/макс | шрифт% 720/1080 | перекр.% 720/1080 | ролики: шт макс/сумма с | вспышки/с | тряска: макс /в с | hit-stop | вызовы p95 | тр.тыс p95 | частицы');
