@@ -12,7 +12,8 @@ const voiced=(who,text)=>{try{const e=FIN.vox&&FIN.vox.find&&FIN.vox.find(who,te
 {const f=floatText;floatText=function(pos,text,color){push('float',{text:strip(text),color});return f.apply(this,arguments);};}
 {const f=play;play=function(def){const sy=(def&&def.says||[]).map(s=>({t:s[0],d:s[1],who:s[2],text:strip(s[3]),v:voiced(s[2],s[3])}));push('play',{dur:def&&def.dur,says:sy,shots:(def&&def.shots||[]).length});return f.apply(this,arguments);};}
 {const f=prompt;prompt=function(pi,action,at,cond,note){push('prompt',{pi,action,note:strip(note)});return f.apply(this,arguments);};}
-{const f=shake;shake=function(pi,amp,dur){push('shake',{a:amp,d:dur,pi:pi});return f.apply(this,arguments);};}
+if(FIN.bossfx)FIN.bossfx.onshake=(pi,amp,dur)=>push('shake',{a:amp,d:dur,pi:pi});   // итоговая амплитуда (после потолка боссовых уровней)
+else{const f=shake;shake=function(pi,amp,dur){push('shake',{a:amp,d:dur,pi:pi});return f.apply(this,arguments);};}
 try{const ct=CINE.trauma;CINE.trauma=function(a){push('trauma',{a});return ct.apply(this,arguments);};}catch(e){}
 try{const fd=CINE.flashDip;CINE.flashDip=function(col,a){push('flashDip',{a:a||0.5,col});return fd.apply(this,arguments);};}catch(e){}
 let _hs=0,_fo=0;

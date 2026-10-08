@@ -160,35 +160,16 @@
       L.on(()=>{planks.forEach(P=>{P.t=0;plankSet(P,true);});bridle.visible=false;bridle.rotation.set(0,0,0);beatR.visible=true;belR.visible=!G.solo;gaze.material.opacity=0;halo.material.opacity=0;if(likho.lid)likho.lid.rotation.x=0.6;K5X.tint('rgba(80,10,0,.8)',0.4);if(bridleB)bridleB.g.visible=true;heatBar.scale.y=1.28;});
       const cyc=(per,fn,sec)=>k5fx(sec,(k,dt)=>{const ph=((k*sec)%per)/per;fn(ph);});
       L.put(po,X-3,4.5);L.put(pr,X-1,4.5);L.put(pe,X+1,4.5);L.put(yo,X+3,4.5);KS.g.visible=true;KS.g.position.copy(GOR).add(new V3(0,4.2,0.4));KS.g.rotation.y=0;bridle.visible=false;
-      L.beat(6.4,{cam:[[X,13,22],[X,0.5,-6],[X,11,19],[X,0.5,-8]],need:[H(X-3,4.5),H(X+3,4.5),[X,4,-20.5]],says:[['zven','Калинов мост над огненной Смородиной.',0.2,3.0],['zven','На том берегу — Горыныч в чёрной узде, Кощей верхом.',3.3,3.0]],
-        ev:[[1.0,()=>{k5Flash(GOR.clone().add(new V3(0,4,0)),0x9a50ff,5,0.8);}],[3.4,()=>L.pose('proud')]]});
-      // меха
-      L.beat(7,{cam:[[X+1,6.5,19],[X+5.6,1.4,10.4]],need:[H(X+5,10.4),[BELL4.x,1,BELL4.z]],says:[['zven','У кузни меха держат жар:',0.2,2.4],['zven','бей мех '+kbd('attack')+', когда кольцо сошлось!',2.7,3.2]],
-        ev:[[0,()=>{L.put(pe,X+5.2,10.4);L.look(pe,BELL4);L.put(po,X+2.6,11.6);L.look(po,ANV4);belR.visible=true;beatR.visible=false;}],[0.2,()=>{cyc(1.5,ph=>{belR.scale.setScalar(0.6+(1-ph)*2);belR.material.opacity=ph>0.86||ph<0.06?1:0.45;},6);}],
-          ...[1.5,3.0,4.5].map(t=>[t,()=>{L.hit(pe,BELL4);belTop.position.y=0.55;L.later(0.2,()=>{belTop.position.y=0.9;});FX.sparks(HEARTH.clone().add(new V3(0,1.4,0)),14,0xffa040);SFX.clink();}])]});
-      // молот в такт
-      L.beat(7.4,{cam:[[X+1,5.5,17],[X+3.6,1.4,11.6]],need:[H(X+2.6,11.6),[ANV4.x,1,ANV4.z]],says:[['zven','Жарко — бей по наковальне в такт: четыре раза!',0.2,3.6],['zven','Остыло — молот не считается: раздуй меха.',4.0,3.2]],
-        ev:[[0,()=>{L.put(po,X+2.4,11.6);L.look(po,ANV4);belR.visible=false;beatR.visible=true;beatR.material.color.set(0xffd76a);}],[0.2,()=>{cyc(0.8,ph=>{beatR.scale.setScalar(0.6+(1-ph)*2.2);beatR.material.opacity=ph>0.86||ph<0.06?1:0.5;},5.6);}],
+      // одна механика урока: кузня — бить в такт кольцу (меха раздувают жар, молот куёт узду); узда в клещах, огонь, Лихо, «разом» — в бою
+      L.beat(4.2,{cam:[[X,13,22],[X,0.5,-6],[X,11,19],[X,0.5,-8]],need:[H(X-3,4.5),H(X+3,4.5),[X,4,-20.5]],says:[['zven','Кощей взнуздал Горыныча. Скуём новую узду!',0.2,3.8]],ev:[[1.0,()=>{k5Flash(GOR.clone().add(new V3(0,4,0)),0x9a50ff,5,0.8);}],[2.4,()=>L.pose('proud')]]});
+      L.beat(4.8,{cam:[[X+1,6.5,19],[X+5.6,1.4,10.4]],need:[H(X+5,10.4),[BELL4.x,1,BELL4.z]],says:[['zven','Бей мех '+kbd('attack')+', когда кольцо сошлось!',0.2,3.8]],
+        ev:[[0,()=>{L.put(pe,X+5.2,10.4);L.look(pe,BELL4);L.put(po,X+2.6,11.6);L.look(po,ANV4);belR.visible=true;beatR.visible=false;}],[0.2,()=>{cyc(1.2,ph=>{belR.scale.setScalar(0.6+(1-ph)*2);belR.material.opacity=ph>0.86||ph<0.06?1:0.45;},4.8);}],
+          ...[1.2,2.4,3.6].map(t=>[t,()=>{L.hit(pe,BELL4);belTop.position.y=0.55;L.later(0.2,()=>{belTop.position.y=0.9;});FX.sparks(HEARTH.clone().add(new V3(0,1.4,0)),14,0xffa040);SFX.clink();}])]});
+      L.beat(5.5,{cam:[[X+1,5.5,17],[X+3.6,1.4,11.6]],need:[H(X+2.6,11.6),[ANV4.x,1,ANV4.z]],says:[['zven','Жарко — бей по наковальне в такт!',0.2,3.2],['zven','Остыло — раздуй меха.',3.5,1.9]],
+        ev:[[0,()=>{L.put(po,X+2.4,11.6);L.look(po,ANV4);belR.visible=false;beatR.visible=true;beatR.material.color.set(0xffd76a);}],[0.2,()=>{cyc(0.8,ph=>{beatR.scale.setScalar(0.6+(1-ph)*2.2);beatR.material.opacity=ph>0.86||ph<0.06?1:0.5;},4.8);}],
           ...[0.8,1.6,2.4,3.2].map(t=>[t,()=>{L.hit(po,ANV4);FX.sparks(ANV4.clone().add(new V3(0,1.3,0)),18,0xffd060);if(SFX.hammer)SFX.hammer();else SFX.clink();}]),
           [3.9,()=>{beatR.visible=false;bridle.visible=true;bridle.position.set(ANV4.x-1.6,0.25,ANV4.z-1.2);K5L.gold(bridle.position.clone().add(new V3(0,1,0)),16);SFX.ok();}]]});
-      // узда в клещах
-      L.beat(7,{cam:[[X-6,6.5,17],[X,1,8],[X-6,6.5,11],[X,1,2]],need:[],says:[['zven','Золотую узду несут двое клещами '+kbd('item')+' —',0.2,3.2],['zven','каждый за свой конец. Разошлись — уронили!',3.5,3.2]],
-        ev:[[0,()=>{L.put(po,X-1,10.6);L.put(pe,X+1,10.6);bridle.visible=true;}],[0.4,()=>{L.emo(po,'effort');L.emo(pe,'effort');}],
-          [1.0,()=>{const f=po.pos.z;const fx=k5fx(5.6,k=>{const z=f-k*8.4;po.pos.set(X-1,po.pos.y,z);pe.pos.set(X+1,pe.pos.y,z);po.vel.set(0,0,0);pe.vel.set(0,0,0);po.face=pe.face=Math.PI;bridle.position.set(X,po.pos.y+1.0,z);bridle.rotation.y=Math.PI/2;},()=>{});L.on(()=>{fx.t=fx.dur;});}]]});
-      // огонь по дорожкам
-      L.beat(7.6,{cam:[[X,8.5,14],[X,0.2,-2]],need:[H(X-2,2),H(X+2,2)],says:[['zven','Головы дышат огнём по дорожкам моста.',0.2,3.0],['zven','Красная дорожка заполняется — перейди на другую!',3.4,3.4]],
-        ev:[[0,()=>{L.put(po,X,2.4);L.put(pe,X+2,2.4);bridle.visible=true;bridle.position.set(X+1,po.pos.y+1.0,2.4);L.on(()=>{});}],[0.5,()=>{const ln=FIN.k2fx&&FIN.k2fx.lane(new V3(X,0.05,-14),new V3(X,0.05,8.4),1.9,1.6,'red');L.on(()=>{if(ln&&ln.cancel)ln.cancel();});k5s('pSoft');gor.necks&&gor.necks.forEach((n,i)=>{if(n&&n.rotation)n.rotation.z=i===1?0.3:0;});}],
-          [1.8,()=>{L.walk(po,X-2,2.4,0.6);L.walk(pe,X+2,2.4,0.1);}],[2.2,()=>{bridle.position.set(X,po.pos.y+1.0,2.4);}],
-          [2.2,()=>{k5s('strike');shakeAll(0.05,0.3);for(let i=0;i<14;i++)L.later(i*0.035+0.01,()=>{const p=new V3(X+rand(-0.5,0.5),0.4,-13+i*1.6);flameAt(p);});planks.forEach(P=>{if(P.li===1&&(P.j%3===1||P.j%4===0))burnP(P,99);});}],[4.4,()=>L.ok(po)]]});
-      // Лихо
-      L.beat(7,{cam:[[X+5,7.5,5],[X-3,0.4,-11]],need:[H(X-2,-2),[LIKHO.x,2,LIKHO.z]],says:[['zven','Лихо открывает глаз —',0.2,2.2],['zven','кто смотрит на него, тот засыпает!',2.5,2.8],['zven','Отвернись или встань за щит Потапа.',5.0,2.0]],
-        ev:[[0,()=>{L.put(po,X-2,-2);L.put(pe,X+1.4,-2);L.look(po,LIKHO);L.look(pe,LIKHO);}],[0.4,()=>{K5X.tint('rgba(80,20,120,.8)',0.55);const fx=k5fx(4.2,k=>{const kk=Math.min(1,k*4.2/1.6);if(likho.lid)likho.lid.rotation.x=lerp(0.6,-2.4,kk);gaze.position.copy(LIKHO).add(new V3(0,2.6,0));gaze.lookAt(X,0.8,-2);gaze.material.opacity=kk>=1?0.35+0.1*Math.sin(G.time*20):0.12*kk;},()=>{gaze.material.opacity=0;if(likho.lid)likho.lid.rotation.x=0.6;});L.on(()=>{fx.t=fx.dur;});}],
-          [2.2,()=>{L.emo(pe,'droop');k5s('blink');FX.sparkle(pe.pos.clone().add(new V3(0,2,0)),10,0xc8b8ff);}],[3.0,()=>{pe.face=Math.PI;L.guard(po,2.6);}]]});
-      // голова опустилась — разом
-      L.beat(9,{cam:[[X,10.5,-1],[X,2,-16.5]],need:[H(X-1.4,-12.4),H(X+1.4,-12.4),[X,3.4,-17.4]],says:[['zven','У горыныча голова дышит в круг — и опускается.',0.2,3.4],['zven','Над шеей — золотой ореол: ударьте разом '+kbd('attack')+'!',3.8,3.6],['zven','Чёрная узда долой, золотая — на место!',7.0,1.9]],
-        ev:[[0,()=>{L.put(po,X-1.4,-12.4);L.put(pe,X+1.4,-12.4);bridle.visible=true;bridle.position.set(X,po.pos.y+1.0,-12.4);bridle.rotation.y=Math.PI/2;}],[0.6,()=>{L.tele(new V3(X,0,-15.6),2.8,1.6,0xff3a30,c=>{k5s('strike');for(let i=0;i<12;i++)L.later(i*0.03+0.01,()=>flameAt(c.clone().add(new V3(rand(-2,2),0.3,rand(-2,2)))));});L.pose('cast',{antic:0.2});}],
-          [2.4,()=>L.roll(po,-0.4,1.6,0.35)],[3.0,()=>{po.pos.z=-12.4;}],[3.8,()=>{const fx=k5fx(3.2,()=>{halo.material.opacity=0.6+0.4*Math.sin(G.time*10);},()=>{halo.material.opacity=0;});L.on(()=>{fx.t=fx.dur;halo.material.opacity=0;});}],
-          [5.4,()=>{L.hit(po,HALO);L.hit(pe,HALO);}],[5.9,()=>{bridleB.break();k5Flash(HALO.clone(),0xffd76a,4,0.5);bridle.visible=false;SFX.mah();K5L.gold(HALO.clone(),22);}]]});
+      L.beat(2.6,{cam:[[X+1,5.5,17],[X+3.6,1.4,11.6]],need:[H(X+2.6,11.6)],says:[['zven','Понятно? Тогда — в бой!',0.2,2.2]],ev:[[0.2,()=>{[po,pe].forEach(h=>L.emo(h,'cheer'));}]]});
     };
   }
   E.pageStage(7,4,{call:'Четвёртая страница — Огненная Смородина! Горыныча Кощей взнуздал.'});

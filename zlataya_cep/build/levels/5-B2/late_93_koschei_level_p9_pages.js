@@ -16,13 +16,13 @@
   /* ---------- обучающая катсцена «дверь»: как войти на страницу (при первом входе на первую страницу) ---------- */
   E.LES.door=L=>{const hs=k5Heroes(),P=PAGES[1],S=P.pos.clone(),PG=P.g.position.clone(),H=(x,z)=>[x,0.9,z],fc=Math.atan2(PG.x-S.x,PG.z-S.z),two=hs.length>1;
     hs.forEach((h,i)=>{L.put(h,-4.4+i*1.5,-12.8+i*0.7);L.look(h,PG);});
-    L.beat(null,{cam:[[-1.5,6.5,-2],[-8,1.8,-11]],need:[...hs.map(h=>H(h.pos.x,h.pos.z)),[PG.x,2.4,PG.z]],says:[['zven','Вот она — первая страница сказки: Дремучий лес.',0.2],['zven','Там Яга заперта. Страница — как дверь в сказку!',null]]});
-    L.beat(null,{cam:[[-6.5,4.4,-5.2],[-12.2,1.2,-10]],need:[[S.x,0.5,S.z],[PG.x,2.4,PG.z]],
-      says:[['zven',two?'Встаньте вдвоём на золотой порог —':'Встань на золотой порог —',0.2],['zven','и страница откроется.',null]],
+    L.beat(3.2,{cam:[[-1.5,6.5,-2],[-8,1.8,-11]],need:[...hs.map(h=>H(h.pos.x,h.pos.z)),[PG.x,2.4,PG.z]],says:[['zven','Страница сказки — как дверь в сказку!',0.2,2.8]]});
+    L.beat(3.4,{cam:[[-6.5,4.4,-5.2],[-12.2,1.2,-10]],need:[[S.x,0.5,S.z],[PG.x,2.4,PG.z]],
+      says:[['zven',two?'Встаньте вдвоём на золотой порог!':'Встань на золотой порог!',0.2,2.8]],
       ev:[[0.3,()=>{L.ring(S,1.9,0xffd76a,6);}],[0.6,()=>hs.forEach((h,i)=>L.walk(h,S.x+(two?(i?0.8:-0.8):0)*Math.cos(fc),S.z-(two?(i?0.8:-0.8):0)*Math.sin(fc),2.4,fc))]]});
-    L.beat(3.4,{cam:[[-8.4,3.4,-6.8],[-12.4,1.6,-10]],need:[[S.x,0.9,S.z],[PG.x,2.4,PG.z]],
+    L.beat(3.0,{cam:[[-8.4,3.4,-6.8],[-12.4,1.6,-10]],need:[[S.x,0.9,S.z],[PG.x,2.4,PG.z]],
       says:[['zven',two?'Один не откроет — нужна пара!':'Шаг — и мы в сказке!',0.3,2.6]],
-      ev:[[0.2,()=>{hs.forEach(h=>L.ok(h));K5L.gold(PG.clone().add(new V3(0,2.4,0)),16);k5s('book');}],[1.6,()=>{k5Flash(PG.clone().setY(2.4),0xfff4c0,5,0.6);}]]});
+      ev:[[0.2,()=>{hs.forEach(h=>L.ok(h));K5L.gold(PG.clone().add(new V3(0,2.4,0)),16);k5s('book');}],[1.4,()=>{k5Flash(PG.clone().setY(2.4),0xfff4c0,5,0.6);}]]});
     return L;};
   /* ---------- стадия-страница: Лукоморье → порог → арена ---------- */
   E.pageStage=(n,w,o)=>{E.stage[n]={start(op){E.hub(n);W.clampR={x:C.x,z:C.z,r:16};K5.fight=false;liveBoss(false);KS.g.visible=false;dome.visible=false;candles.forEach(c=>{c.g.visible=false;});

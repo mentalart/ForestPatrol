@@ -4,7 +4,7 @@
 // круг 2 (быстрее) и финал (Леший с одним цветущим рогом, без гнезда и бороды; листопад, лешачата хлопают — колыбельная). Строка «//@@ shot=…» относится к шагу под ней: кадр снимается после него.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 window.calls=[];{const M=ZC.FIN.music,op=M.play.bind(M);M.play=n=>{calls.push(n===null?'null':n===''?'""':n);op(n);};}
-U.go();ZC.loadLevel(7);window.W=ZC.W;window.K=ZC.FIN.k1b;ZC.tick(30);window.L=K.cur.L;window.S=K.s3;
+U.go();ZC.loadLevel(7);window.W=ZC.W;window.K=ZC.FIN.k1b;K.les.auto=false;ZC.tick(30);window.L=K.cur.L;window.S=K.s3;
 'intro: cine='+!!ZC.G.cine+' emo='+L.k1.emo+' scale='+L.g.scale.x.toFixed(2)+' calls='+calls.join(',')
 //@@
 // вход: к 5 с глаза открыты и тема 1 включена; в конце — рост 2,2; строка Лешего прежняя

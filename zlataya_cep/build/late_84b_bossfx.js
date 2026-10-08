@@ -8,6 +8,8 @@
 //  • bossfx.shake(a,dur,o) — тряска через shake(): a ≤ 0,09, разово (o.once) ≤ 0,15; берёт максимум, не сумму; o.pi — игрок (по умолчанию оба).
 //  • bossfx.hitstop(t) — G.hitstop = max(…, min(t, 0,16)).
 //  • bossfx.tele(pose,fill,strike,window,o) — нормализованный телеграф {pose,fill,strike,window}: заливка ≥ o.min (0,5), окно ≥ o.win (0).
+//  • Потолки на боссовых уровнях и мини-боссах (bossfx.on()) действуют сами: shake() — ≤ 0,09, короткий толчок (≤ 0,5 с) ≤ 0,15; G.hitstop — сеттер с потолком 0,16 с.
+//    Множители «Тряска»/«Вспышки» (late_50 / flashK) остаются под обёрткой и продолжают действовать. bossfx.onshake(pi,a,d) — хук ботов: получает итоговую амплитуду.
 //  • bossfx.stat — счётчики для ботов: {flash,light,full,dropped,lastA}; bossfx.log — последние вспышки {t,a,full}.
 (function(){
   const B=FIN.bossfx={MAXSHAKE:0.09,MAXONCE:0.15,MAXHS:0.16,MAXPS:3,FULL_GAP:8,stat:{flash:0,light:0,full:0,dropped:0,lastA:0},log:[],_t:[],_full:-99};
@@ -28,4 +30,11 @@
   B.shake=(a,dur,o)=>{o=o||{};const m=o.once?B.MAXONCE:B.MAXSHAKE;a=Math.min(a||0,m);if(!(a>0))return 0;shake(o.pi==null?null:o.pi,a,dur==null?0.3:dur);return a;};
   B.hitstop=t=>{t=Math.min(t||0,B.MAXHS);if(t>0&&typeof G!=='undefined')G.hitstop=Math.max(G.hitstop||0,t);return t;};
   B.tele=(pose,fill,strike,win,o)=>{o=o||{};return {pose,fill:Math.max(fill||0,o.min==null?0.5:o.min),strike,window:Math.max(win||0,o.win||0)};};
+  // ——— потолки на боссовых уровнях: оборачиваем присваиванием, общий движок не трогаем ———
+  const MINI={'3-1':1,'3-2':1};
+  B.on=()=>{try{const L=LEVELS[G.levelIdx];return !!(L&&(L.boss||MINI[L.id]));}catch(e){return false;}};
+  B.capShake=(a,d)=>{if(!(a>0))return a;return Math.min(a,(d==null||d<=0.5)?B.MAXONCE:B.MAXSHAKE);};
+  {const _sh=shake;shake=function(pi,amp,dur){if(B.on())amp=B.capShake(amp,dur);if(B.onshake)B.onshake(pi,amp,dur);return _sh.call(this,pi,amp,dur);};}
+  B.raw=(pi,a,d)=>shake(pi,a,d);B.shAmp=()=>Math.max(rigs[0].shAmp,rigs[1].shAmp,shared.shAmp);   // для ботов: вызов «как из игры» и текущая амплитуда
+  {let hs=G.hitstop||0;Object.defineProperty(G,'hitstop',{configurable:true,enumerable:true,get(){return hs;},set(v){v=+v||0;if(v>B.MAXHS&&B.on()){B.stat.hsCut=(B.stat.hsCut||0)+1;v=B.MAXHS;}hs=v;}});}
 })();
