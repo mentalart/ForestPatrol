@@ -24,6 +24,7 @@ tools/map.py                                  -
 tools/tests/grid.js                           -
 tools/tests/shot.js                           -
 tools/tests/pw.js                             -
+tools/tests/run.js                            tfin_bossaudit smoke tallobj
 tools/tests/affected.py                       -
 tools/tests/affected_map.txt                  -
 tools/tests/layout_check.js                   -
@@ -119,6 +120,7 @@ zlataya_cep/build/late_74_kids_start.js       tfin_kids1 tfin_kids2 tfin_menu tf
 zlataya_cep/build/late_75_kids_w1.js          @level:p @level:1-1 @level:1-2 @level:1-3 @level:1-4 @level:1-5 @level:1-B @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 smoke
 zlataya_cep/build/late_76_kids_fight.js       @level:1-1 @level:1-2 @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 tfin_foekinds smoke
 zlataya_cep/build/late_76b_cine_skip.js       tfin_kids2 tfin_cine smoke
+zlataya_cep/build/late_96_uilog.js             tfin_bossaudit tfin_hints tfin_cine tallobj smoke
 zlataya_cep/build/late_78_signals.js             tfin_signals smoke
 zlataya_cep/build/late_79c_taskshort.js       tfin_taskshort tfin_hints smoke
 zlataya_cep/build/late_79d_help.js              tfin_help tfin_kids1 tfin_kids2 tfin_k1b tfin_k1b3 tfin_hints tfin_bossui smoke
