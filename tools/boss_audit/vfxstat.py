@@ -10,4 +10,4 @@ for lg in sys.argv[1:]:
             while ts[j]<t-1:j+=1
             m=max(m,i-j+1)
         return m
-    print(f"{os.path.basename(lg):22} T={T:6.1f}с shake={len(sh)} (макс a={max(sh) if sh else 0:.2f}, пик/с={peak('shake')}) hitstop={len(hs)} flash={c['flash']} (пик/с={peak('flash')})")
+    print(f"{os.path.basename(lg):22} T={T:6.1f}с shake={len(sh)} (макс a={max(sh) if sh else 0:.2f}, пик/с={peak('shake')}) hitstop={len(hs)} (макс {max(hs) if hs else 0:.2f}) flash={c['flash']} (пик/с={peak('flash')})")
