@@ -67,8 +67,8 @@ function cmpWant(kind){if(active(1).kind===kind)return true;if(!(CMP.swapT>G.tim
 // позвать второго героя за собой (раз в 0,6 с, пока не идёт)
 function cmpCall(){const o=other(1);if(!o.following&&!o.cling&&!(CMP.callT>G.time-0.6)){CMP.callT=G.time;cmpTap('call');}}
 // пройти по точкам [[x,z]…] (массив — константа модуля: по нему бот помнит, на какой точке): true — дошёл до последней; другой герой начинает путь заново
-function cmpPath(h,pts,stop){if(!CMP.wp||CMP.wp.key!==pts||CMP.wp.kind!==h.kind)CMP.wp={key:pts,kind:h.kind,i:0};const w=CMP.wp;
-  while(w.i<pts.length-1&&Math.hypot(pts[w.i][0]-h.pos.x,pts[w.i][1]-h.pos.z)<0.9)w.i++;
+function cmpPath(h,pts,stop,adv){if(!CMP.wp||CMP.wp.key!==pts||CMP.wp.kind!==h.kind)CMP.wp={key:pts,kind:h.kind,i:0};const w=CMP.wp;
+  while(w.i<pts.length-1&&Math.hypot(pts[w.i][0]-h.pos.x,pts[w.i][1]-h.pos.z)<(adv||0.9))w.i++;   // adv — допуск промежуточной точки (узкий мост — меньше)
   const last=w.i===pts.length-1,s=last?(stop||0.35):0.5;return cmpGoto(h,pts[w.i][0],pts[w.i][1],s)<=s&&last;}
 // ход бота за кадр: решает, чем занят, и жмёт клавиши Игрока 2 — до шага мира
 function cmpThink(dt){cmpFree();
@@ -83,10 +83,12 @@ function cmpThink(dt){cmpFree();
   CMP.downT=0;
   if(h.cling||h.hang)return;
   const T=TIMING[p.path]||TIMING.mid;
+  const rs=CMP.step();                                                       // шаг маршрута с first:true идёт раньше общего боя (забег по мосту-руке, невидимый враг-носитель)
+  if(rs&&rs.first){h.following=false;if(rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}}
   const near=W.enemies.filter(e=>cmpAlive(e)&&Math.abs(e.pos.y-h.pos.y)<2.6&&(e.tgt===h||hd(e.pos,h.pos)<8||(hd(e.pos,hh.pos)<8&&hd(e.pos,h.pos)<14)));
   if(near.length){CMP.mode='fight';h.following=false;cmpFight(h,hh,near,T);return;}
   if(hp.downed&&!hh.cling){CMP.mode='revive';h.following=false;cmpGoto(h,hh.pos.x,hh.pos.z,0.7);return;}   // друга надо подшить: постоять рядом секунду
-  const rs=CMP.step();if(rs){h.following=false;if(rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}}   // у уровня есть маршрут: ведёт он; шаг, которому делать нечего, возвращает 'follow'
+  if(rs&&!rs.first){h.following=false;if(rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}}   // у уровня есть маршрут: ведёт он; шаг, которому делать нечего, возвращает 'follow'
   CMP.mode='follow';}
 // шаг мира: сначала ход бота, потом — всё остальное
 {const _step=step;step=function(dt){if(CMP.live()&&G.state==='play')cmpThink(dt);_step(dt);};}
