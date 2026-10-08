@@ -36,7 +36,7 @@ const B=R('banner');const over=cardsOn().filter(id=>area(R(id),B)>6);chk(!!B,'б
 ['cards='+cardsOn(),'over='+over.join(','),'замечания: '+(BAD.join('; ')||'нет')]
 //@@ shot=bossui_bossbanner.png
 // F-2d: баннер и подсказка босса (#finBossHint) не перекрываются — подсказка встаёт под баннер и возвращается, когда он погас
-go('2-3');const fb=document.getElementById('finBossHint'),bn=document.getElementById('banner');
+go('2-3');let fb=document.getElementById('finBossHint');if(!fb){fb=document.createElement('div');fb.id='finBossHint';document.body.appendChild(fb);}const bn=document.getElementById('banner');
 fb.innerHTML='<div class="fh-title">Громовой Баран</div><div class="fh-text">Таран бежит на свет пера — замани его на камень</div>';fb.classList.add('on');
 bn.innerHTML='Увяз!<small>Бейте в свете! Потап — за рога! Шерсть мягкая — не бейте мимо</small>';bn.style.opacity=1;ZC.FIN.hints.layout();
 const FB=R('finBossHint'),BN=R('banner');chk(!!FB&&!!BN,'подсказка босса или баннер не видны');
