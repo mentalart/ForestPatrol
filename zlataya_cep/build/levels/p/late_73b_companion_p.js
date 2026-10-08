@@ -8,7 +8,7 @@ const PB_LOG=[[PB.logX,-19.6],[PB.logX,-30.5]],PB_SIDE=[[6.0,-33],[PB.rootAt[0],
 const pbF=()=>W.flags,pbOK=h=>h.pos.z<PB.farZ&&h.pos.y>-1;
 // «перешёл овраг» запоминается на заход в уровень (упавшего после перехода героя колокольчик вернёт назад — это не отмена)
 const PBS={w:null,past:{},go:false,first:null},pbPast=k=>{if(PBS.w!==W){PBS.w=W;PBS.past={};PBS.go=false;PBS.first=null;}return PBS.past[k]||(PBS.past[k]=pbOK(HERO[k]));};
-const pbPlate=(x,z)=>W.plates.find(q=>Math.abs(q.x-x)<0.1&&Math.abs(q.z-z)<0.1),pbGate=()=>W.gates.find(g=>g.link==='R');
+const pbPlate=(x,z)=>W.plates.find(q=>Math.abs(q.x-x)<0.1&&Math.abs(q.z-z)<0.1);
 const pbThru=()=>players[1].heroes.every(q=>q.pos.z<PB.thruZ);
 CMP.route('p',[
   {id:'spot',done:()=>pbF().spot[1]||pbF().stage!=='room',run:h=>{cmpGoto(h,PB.spot[0],PB.spot[1],0.3);}},
