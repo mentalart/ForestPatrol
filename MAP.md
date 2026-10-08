@@ -100,7 +100,7 @@
 | `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | — | 1 | t43 |
 | `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | — | 2 | t44 tfoes |
 | `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | — | 2 | t45 tsospot |
-| `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 10 | t4b tfin_boss4b tfin_cam tfin_cine tfin_gor4 tfin_gorend tfin_gorsolo tfin_hintlayer tfin… |
+| `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 11 | t4b tfin_boss4b tfin_cam tfin_cine tfin_gor4 tfin_gorend tfin_gorsolo tfin_hintlayer tfin… |
 | `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51 | 4 | t51 tfin_likho tfoes tso51 |
 | `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | — | 1 | t52 |
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 1 | t53 |
@@ -235,6 +235,7 @@
 | `late_79_hints.js` | — | РЕЛИЗ final06 · ПОДСКАЗКИ: ОДНА КАРТОЧКА НА ИГРОКА, БЕЗ ПОВТОРОВ |
 | `late_79b_readaloud.js` | — | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · ЗАДАЧИ ВСЛУХ |
 | `late_79c_taskshort.js` | — | РЕЛИЗ · КРАТКИЕ ФОРМУЛИРОВКИ ЗАДАЧ (≤ 12 слов, крупной строкой) |
+| `late_79e_lesson.js` | — | РЕЛИЗ · ОБЩИЙ ШАБЛОН УРОКА FIN.lesson (движок интерактивного ролика 4-Б, вынесен без смены поведения) |
 | `late_80_ui.js` | — | РЕЛИЗ · ИНТЕРФЕЙС: баннер события важнее ленты с названием уровня |
 | `late_81_sfx.js` | — | РЕЛИЗ · ЗВУК: ИНСТРУМЕНТЫ И ЗАНОВО ОЗВУЧЕННЫЕ ЭФФЕКТЫ РОЛИКОВ |
 | `late_82_cine_cam.js` | — | РЕЛИЗ · КИНО 1: РЕЖИССЁР И КАМЕРА РОЛИКОВ |
@@ -414,11 +415,11 @@
 | `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 43 файлов |
+| `changes/` | 44 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 26 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 213 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 214 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
