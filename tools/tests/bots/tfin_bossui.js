@@ -34,6 +34,15 @@ if(m1&&m2){for(const h of[720,1080]){const b=Math.min(Math.max(+m1[1],+m1[2]*h/1
 go('2-3');tipOn();const b=document.getElementById('banner');b.innerHTML='Вал догнал!<small>Беги вместе — держись правее</small>';b.style.opacity=1;ZC.FIN.hints.layout();
 const B=R('banner');const over=cardsOn().filter(id=>area(R(id),B)>6);chk(!!B,'баннер не виден');chk(over.length===0,'карточки под баннером: '+over);
 ['cards='+cardsOn(),'over='+over.join(','),'замечания: '+(BAD.join('; ')||'нет')]
+//@@ shot=bossui_bossbanner.png
+// F-2d: баннер и подсказка босса (#finBossHint) не перекрываются — подсказка встаёт под баннер и возвращается, когда он погас
+go('2-3');let fb=document.getElementById('finBossHint');if(!fb){fb=document.createElement('div');fb.id='finBossHint';document.body.appendChild(fb);}const bn=document.getElementById('banner');
+fb.innerHTML='<div class="fh-title">Громовой Баран</div><div class="fh-text">Таран бежит на свет пера — замани его на камень</div>';fb.classList.add('on');
+bn.innerHTML='Увяз!<small>Бейте в свете! Потап — за рога! Шерсть мягкая — не бейте мимо</small>';bn.style.opacity=1;ZC.FIN.hints.layout();
+const FB=R('finBossHint'),BN=R('banner');chk(!!FB&&!!BN,'подсказка босса или баннер не видны');
+const ob=area(FB,BN);chk(ob===0,'баннер × подсказка босса: '+ob.toFixed(0)+' px²');chk(FB&&FB.height/innerHeight>0.03,'подсказка босса ниже 3 % высоты');
+bn.style.opacity=0;ZC.FIN.hints.layout();const back=fb.style.top==='';chk(back,'подсказка босса не вернулась на место после баннера');fb.classList.remove('on');
+['banner×finBossHint px²='+ob.toFixed(0),'вернулась='+back,'замечания: '+(BAD.join('; ')||'нет')]
 //@@ shot=bossui_subs.png
 // плашка пропуска и субтитры: короткая и длинная (три строки) реплика
 go('2-3');const sb=document.getElementById('subs'),sk=document.getElementById('skip');let worst=0;
