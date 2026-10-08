@@ -4,7 +4,7 @@
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(true);ZC.startFrom(ZC.LV('3-2'));ZC.G.manual=true;ZC.tick(30);const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}
 const W=ZC.W,H=ZC.HERO;ZC.FIN.tut32.auto=false;ZC.FIN.warp('boss');ZC.tick(10);for(const h of Object.values(H)){h.following=false;h.lit=false;}
-U.toKind('proshka');U.goto(0,0,-307,5);ZC.tick(5);U.nocine();ZC.tick(10);const B=W.ram32;if(B.phase!==1)throw new Error('этап не 1: '+B.phase);'solo boss phase='+B.phase
+U.toKind('proshka');U.goto(0,0,-307,5);ZC.tick(5);U.nocine();ZC.tick(10);const B=W.ram32;if(B.phase!==1)throw new Error('этап не 1: '+B.phase);if(!W.camFn||!ZC.FIN.cam32.keys().length)throw new Error('камера боя не включилась (одиночка)');'solo boss phase='+B.phase+' cam D='+ZC.FIN.cam32.now().D.toFixed(1)
 //@@
 // этап 1 одним игроком: Йоша поливает, Q к Прошке (свет), стоим за стожком, увяз — бьём
 window.PREP=(S)=>{if(S.puffy)return true;U.toKind('yosha');const Y=ZC.HERO.yosha;for(let i=0;i<60*8&&!S.puffy&&S.gone<=0;i++){if(U.def(0,i)){ZC.tick(1);continue;}if(U.step(0,S.x+1.4,S.z+0.8,0.4)){U.rel(0);Y.face=Math.atan2(S.x-Y.pos.x,S.z-Y.pos.z);if(i%20===0)ZC.press('KeyE');}ZC.tick(1);}U.rel(0);return S.puffy;};
