@@ -61,7 +61,7 @@ zlataya_cep/build/gpu/gpu_shaders.js          -
 zlataya_cep/build/gpu/gpu_late_*.js           -
 zlataya_cep/build/header.txt                  -
 zlataya_cep/build/fonts/*                     tfin_splash tfin_menu
-zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine tfin_hints tfin_bossui
+zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine tfin_hints tfin_bossui tfin_tutfont
 zlataya_cep/build/fin_body.html               tfin_menu tfin_splash tfin_uisnd
 zlataya_cep/build/fin_early.js                @wide
 
