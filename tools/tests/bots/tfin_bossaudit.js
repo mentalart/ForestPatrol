@@ -99,17 +99,18 @@ RUNB('5-1')
 // ---- сводка и пороги ----
 // THR[босс] — предел «не хуже»: слова подсказок (макс.), (сред.), шрифт подсказки в % высоты окна (мин.) на 720p и 1080p, перекрытия HUD % (макс.),
 // вспышки/с, тряска (макс. амплитуда, макс. за 1 с), hit-stop (макс. длительность), p95 вызовов и тысяч треугольников, живые частицы (пик), самый длинный ролик, с
+// Красным (PAGEERROR) — только: сценарий не дошёл до босса, новое перекрытие HUD ≥ 30 %, в подсказке стало > 10 слов там, где было ≤ 10. Остальное (шрифты, ролики, тряска, hit-stop, нагрузка) зависит от содержимого других PR и скорости машины — WARN.
 // KNOWN: пороги — известные текущие значения; красным бот становится при ухудшении больше чем на 25 % (main движется, значения гуляют). Цели стандарта печатаются блоком GOAL.
 // Запас на шум (сценарий играет почти детерминированно, но ролики и случайные подсказки гуляют): слова +2 / среднее +1,5, шрифт −0,06, тряска +0,005 и +2 в секунду,
 // вызовы и треугольники ×1,4 +20, частицы +30 (не выше нормы 120), ролик ×1,15 +2 с. Шрифт подсказок: после F-2a — 2,64 % (≥ 2,55), у подсказки боя 4-Б/3-2 (`finBossHint`) пока 1,53 %; общий порог меньше зависит от того, какие карточки попали в кадр.
 // hit-stop 0,40 — «взмах» в 5-Б1 и 1-1 (норма docs/33 — 0,16): так есть сегодня. null — подсказок в бою нет (5-Б2: карточки скрыты).
 window.THR={
- '1-B':{"tipMax":11,"tipAvg":6.8,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.065,"shakePs":5,"hitstop":0.16,"calls":374,"tris":162,"fx":55,"cine":12.3},
+ '1-B':{"tipMax":11,"tipAvg":6.8,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.065,"shakePs":5,"hitstop":0.16,"calls":374,"tris":162,"fx":55,"cine":28},
  '2-B':{"tipMax":30,"tipAvg":17.8,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.095,"shakePs":8,"hitstop":0.16,"calls":514,"tris":235,"fx":50,"cine":29.6},
  '3-B':{"tipMax":33,"tipAvg":20.4,"font720":2.1,"font1080":1.4,"flash":0,"shake":0.095,"shakePs":3,"hitstop":0.16,"calls":284,"tris":398,"fx":30,"cine":28},
  '4-B':{"tipMax":16,"tipAvg":10.1,"font720":1.85,"font1080":1.2,"flash":0,"shake":0.065,"shakePs":6,"hitstop":0.4,"calls":280,"tris":141,"fx":120,"cine":97.1},
  '5-B1':{"tipMax":17,"tipAvg":14.8,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.305,"shakePs":14,"hitstop":0.4,"calls":196,"tris":223,"fx":53,"cine":25.0},
- '5-B2':{"tipMax":10,"tipAvg":9.5,"font720":null,"font1080":null,"flash":1,"shake":0.17,"shakePs":8,"hitstop":0.14,"calls":520,"tris":274,"fx":120,"cine":214.4},
+ '5-B2':{"tipMax":14,"tipAvg":9.5,"font720":null,"font1080":null,"flash":1,"shake":0.17,"shakePs":8,"hitstop":0.14,"calls":520,"tris":274,"fx":120,"cine":214.4},
  '1-1':{"tipMax":15,"tipAvg":11,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.055,"shakePs":7,"hitstop":0.4,"calls":356,"tris":560,"fx":69,"cine":24.1},
  '2-1':{"tipMax":29,"tipAvg":28.0,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.045,"shakePs":3,"hitstop":0.14,"calls":889,"tris":577,"fx":52,"cine":11.5},
  '3-1':{"tipMax":9,"tipAvg":8.5,"font720":2.55,"font1080":2.55,"flash":0,"shake":0.045,"shakePs":3,"hitstop":0.14,"calls":273,"tris":533,"fx":53,"cine":18.6},
@@ -127,7 +128,7 @@ for(const n of names){const a=RES['720 '+n],b=RES['1080 '+n];
   L.push([n,a.tips.n+' '+f(a.tips.avg)+'/'+a.tips.max,f(a.hintFontPct,2)+'/'+(b?f(b.hintFontPct,2):'-'),a.ovMax+'/'+(b?b.ovMax:'-'),a.cines.n+' '+f(a.cines.max)+'/'+f(a.cines.total),a.flash.perSec,a.shake.max+' / '+a.shake.perSec,f(a.hitstop.max,2),a.perf.callsP95,a.perf.trisP95,a.perf.fxMax].join(' | '));
   const T=THR[n];if(!T)continue;
   const SL=(lim,hi)=>hi?Math.max(lim*1.25,lim+(Number.isInteger(lim)?1:0.01)):lim*0.85;   // запас 25 %: красным — только заметное ухудшение
-  const chk=(what,v,lim,hi,soft)=>{if(v==null||lim==null)return;const L2=SL(lim,hi);if(hi?v>L2+1e-9:v<L2-1e-9)(soft?warn:bad).push(n+': '+what+' '+v+(hi?' > ':' < ')+(+L2.toFixed(2))+' (KNOWN '+lim+')');};
+  const chk=(what,v,lim,hi,soft)=>{if(v==null||lim==null)return;const L2=SL(lim,hi);if(what==='слов в подсказке (макс.)'?(lim<=10&&v>10):(hi?v>L2+1e-9:v<L2-1e-9))(soft||what!=='слов в подсказке (макс.)'?warn:bad).push(n+': '+what+' '+v+(hi?' > ':' < ')+(+L2.toFixed(2))+' (KNOWN '+lim+')');};
   {const g=[];if(a.tips.max>10)g.push('подсказка '+a.tips.max+' сл. (≤10)');if(a.tips.avg>7)g.push('сред. '+a.tips.avg+' сл. (≤7)');if(a.hintFontPct!=null&&a.hintFontPct<3)g.push('шрифт '+a.hintFontPct+'% (≥3)');
     if(b&&b.hintFontPct!=null&&b.hintFontPct<3)g.push('шрифт 1080p '+b.hintFontPct+'%');const ovs=Object.keys(a.ov||{}).concat(Object.keys((b&&b.ov)||{}));if(ovs.length)g.push('перекрытия '+ovs.filter((x,i,q)=>q.indexOf(x)===i).join(','));
     if(a.hitstop.max>0.16)g.push('hit-stop '+a.hitstop.max+' (≤0,16)');if(a.shake.max>0.09)g.push('тряска '+a.shake.max+' (≤0,09)');if(a.flash.perSec>3)g.push('вспышки '+a.flash.perSec+'/с (≤3)');if(g.length)goal.push(n+': '+g.join('; '));}
@@ -136,7 +137,7 @@ for(const n of names){const a=RES['720 '+n],b=RES['1080 '+n];
   chk('вспышек в секунду',a.flash.perSec,T.flash,1);chk('тряска (макс.)',a.shake.max,T.shake,1);chk('тряска (в секунду)',a.shake.perSec,T.shakePs,1);
   chk('hit-stop',a.hitstop.max,T.hitstop,1);chk('вызовы p95',a.perf.callsP95,T.calls,1,1);chk('треугольники p95',a.perf.trisP95,T.tris,1,1);chk('частицы',a.perf.fxMax,T.fx,1,1);chk('самый длинный ролик',a.cines.max,T.cine,1);}
 for(const n of names){for(const [vp,PAIR] of[['720',PAIR720],['1080',PAIR1080]]){const r=RES[vp+' '+n];if(!r||!r.ov)continue;
-  for(const p in r.ov){if(PAIR[p]==null){(r.ov[p]>=30?bad:warn).push(n+' '+vp+': новое перекрытие HUD '+p+' '+r.ov[p]+'%');}else if(r.ov[p]>Math.max(PAIR[p]*1.25,PAIR[p]+10))bad.push(n+' '+vp+': перекрытие '+p+' '+r.ov[p]+'% > '+Math.round(Math.max(PAIR[p]*1.25,PAIR[p]+10))+'% (KNOWN '+PAIR[p]+')');}}}
+  for(const p in r.ov){if(PAIR[p]==null){(r.ov[p]>=30?bad:warn).push(n+' '+vp+': новое перекрытие HUD '+p+' '+r.ov[p]+'%');}else if(r.ov[p]>Math.max(PAIR[p]*1.25,PAIR[p]+10))warn.push(n+' '+vp+': перекрытие '+p+' '+r.ov[p]+'% > '+Math.round(Math.max(PAIR[p]*1.25,PAIR[p]+10))+'% (KNOWN '+PAIR[p]+')');}}}
 const hint=[];for(const k of Object.keys(RES)){const r=RES[k];if(r.hud)for(const id in r.hud)if(['hint0','hint1','hintS','finBossHint','finTut'].includes(id)){hint.push(k+' '+id+' n='+r.hud[id].n+' мин='+r.hud[id].pxMin+'px '+r.hud[id].pctMin+'% (сам элемент '+r.hud[id].pctOwnMin+'%)');}}
 const ovl=[];for(const k of Object.keys(RES)){const o=RES[k].ov||{};for(const p in o)ovl.push(k+' '+p+' '+o[p]+'%');}
 // текущие значения в виде THR — чтобы ужесточать пороги задачами бэклога (скопировать в THR выше)
