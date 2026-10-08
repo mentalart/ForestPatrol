@@ -76,7 +76,7 @@
 | id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_96_prolog_scooter, late_96b_prolog_night | 7 | tfin_cine tfin_fadesplit tfin_kids1 tfin_prolog_night tfin_scooter tfin_voice tpjump |
-| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 11 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_kids1 tfin_luko thw3a thw3b thw4 tluko … |
+| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 12 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_kids1 tfin_luko thw3a thw3b thw4 tk5e_r… |
 | `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 28 | t11 tfin_art tfin_cam tfin_companion tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfi… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1, late_76_kids_fight | 1 | tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 2 | tfin_kids1 tfin_kids2 |
@@ -100,13 +100,13 @@
 | `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | — | 1 | t43 |
 | `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | — | 2 | t44 tfoes |
 | `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | — | 2 | t45 tsospot |
-| `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 8 | t4b tfin_boss4b tfin_cam tfin_cine tfin_gor4 tfin_gorend tfin_gorsolo tfin_uzda |
+| `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 9 | t4b tfin_boss4b tfin_cam tfin_cine tfin_gor4 tfin_gorend tfin_gorsolo tfin_kids45 tfin_uz… |
 | `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51 | 3 | t51 tfoes tso51 |
 | `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | — | 1 | t52 |
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 1 | t53 |
 | `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | — | 2 | t54 tso54 |
 | `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | — | 1 | t5b1 |
-| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_93_koschei_level_p6_epic, late_93_koschei_level_ph_prologue, late_94_koschei_reset | 2 | t5b2 tlukoepi |
+| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_93_koschei_level_p6_epic, late_93_koschei_level_ph_prologue, late_94_koschei_reset | 3 | t5b2 tk5e_resume tlukoepi |
 | `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
 | `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 2 | tfin_juice tzast |
@@ -218,6 +218,7 @@
 | `late_75_kids_w1.js` | 1-1, 1-2, 1-3, 1-4, 1-5, 1-B, 2-1, 3-1, p | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · ПРАВКИ УРОВНЕЙ |
 | `late_76_kids_fight.js` | 1-1, 1-2, 2-1, 3-1 | РЕЛИЗ · ДЕТИ 7–11 · БОЙ: СИНЯЯ КАПЛЯ, «ЖАЛОСТЬ», КРАСНЫЙ ЗНАК |
 | `late_76b_cine_skip.js` | — | РЕЛИЗ · РОЛИКИ: ПРОПУСК ОДНИМ ИГРОКОМ, «ОСТАЛОСЬ N С», ПРОПУСК ИЗ ПАУЗЫ |
+| `late_78_signals.js` | — | РЕЛИЗ · СЛОВАРЬ СИГНАЛОВ БОССОВ (FIN.signals) |
 | `late_79_hints.js` | — | РЕЛИЗ final06 · ПОДСКАЗКИ: ОДНА КАРТОЧКА НА ИГРОКА, БЕЗ ПОВТОРОВ |
 | `late_79b_readaloud.js` | — | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · ЗАДАЧИ ВСЛУХ |
 | `late_79c_taskshort.js` | — | РЕЛИЗ · КРАТКИЕ ФОРМУЛИРОВКИ ЗАДАЧ (≤ 12 слов, крупной строкой) |
@@ -395,13 +396,14 @@
 | `32_prompt_dlya_novoy_sessii.md` | Промт для новой сессии: работа с версией «по итогам симулированного плейтеста» |
 | `33_boss_standard.md` | 33. Боевая библия боссов «Златой цепи» (стандарт для 7–10 лет) |
 | `34_boss_audit.md` | 34. Аудит боссов «Златой цепи»: матрица, метрики, бэклог |
+| `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 28 файлов |
+| `changes/` | 34 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 26 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 188 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 192 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
