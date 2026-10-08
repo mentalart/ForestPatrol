@@ -68,7 +68,7 @@ function cmpWant(kind){if(active(1).kind===kind)return true;if(!(CMP.swapT>G.tim
 function cmpCall(){const o=other(1);if(!o.following&&!o.cling&&!(CMP.callT>G.time-0.6)){CMP.callT=G.time;cmpTap('call');}}
 // пройти по точкам [[x,z]…] (массив — константа модуля: по нему бот помнит, на какой точке): true — дошёл до последней; другой герой начинает путь заново
 function cmpPath(h,pts,stop){if(!CMP.wp||CMP.wp.key!==pts||CMP.wp.kind!==h.kind)CMP.wp={key:pts,kind:h.kind,i:0};const w=CMP.wp;
-  while(w.i<pts.length-1&&Math.hypot(pts[w.i][0]-h.pos.x,pts[w.i][1]-h.pos.z)<0.7)w.i++;
+  while(w.i<pts.length-1&&Math.hypot(pts[w.i][0]-h.pos.x,pts[w.i][1]-h.pos.z)<0.9)w.i++;
   const last=w.i===pts.length-1,s=last?(stop||0.35):0.5;return cmpGoto(h,pts[w.i][0],pts[w.i][1],s)<=s&&last;}
 // ход бота за кадр: решает, чем занят, и жмёт клавиши Игрока 2 — до шага мира
 function cmpThink(dt){cmpFree();
@@ -76,7 +76,9 @@ function cmpThink(dt){cmpFree();
   if(p.path!==hp.path)p.path=hp.path;                    // сложность — одна на двоих, как в одиночном режиме
   if(G.cine){const c=G.cine;if(c.skippable&&c.t>0.8&&btn(0,'jump'))cmpKey('jump',true);return;}   // ролик: держит прыжок вместе с человеком
   if(G.trans)return;
-  if(G.ui||W.custom||W.soloMirror){CMP.mode='mirror';cmpMirror();return;}
+  const cu=!!(W.custom||W.soloMirror),rt=!!CMP.routes[W.levelId];
+  if(G.ui||(cu&&!rt)){CMP.mode='mirror';cmpMirror();return;}           // окна и особые уровни (гусли, раннер): повторяет за человеком
+  if(cu){const rs=CMP.step();if(rs&&rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}CMP.mode='mirror';cmpMirror();return;}   // …если у особого уровня нет своего маршрута или шаг уступает
   if(p.downed){CMP.mode='down';CMP.downT+=dt;if(CMP.downT>0.9&&o&&!o._down&&!o.cling)cmpTap('swap');return;}   // рассыпался клубком — берёт второго героя
   CMP.downT=0;
   if(h.cling||h.hang)return;
