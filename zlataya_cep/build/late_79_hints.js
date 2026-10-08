@@ -107,7 +107,7 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
     const hit=(a,b)=>a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
     if(vs){vs.style.top='';if(vis(vs)&&vis(bb)){const B=bb.getBoundingClientRect();if(hit(vs.getBoundingClientRect(),B))vs.style.top=Math.round(B.bottom+6)+'px';}}
     if(ft){ft.style.top='';if(ft.classList.contains('on')){const F=ft.getBoundingClientRect();let y=0;
-      for(const e of[bb,vs])if(vis(e)){const R=e.getBoundingClientRect();if(F.left<R.right&&R.left<F.right&&F.top<R.bottom+8&&R.top<F.bottom)y=Math.max(y,R.bottom+8);}
+      for(const e of[bb,vs,$('banner')])if(vis(e)){const R=e.getBoundingClientRect();if(F.left<R.right&&R.left<F.right&&F.top<R.bottom+8&&R.top<F.bottom)y=Math.max(y,R.bottom+8);}
       if(y)ft.style.top=Math.round(y)+'px';}}}
   const H0=$('hud0').getBoundingClientRect(),H1=$('hud1').getBoundingClientRect(),V=$('vest'),VR=V&&getComputedStyle(V).display!=='none'?V.getBoundingClientRect():null;
   let top0=Math.max(H0.bottom,VR?VR.bottom:0)+8,top1=H1.bottom+8;
