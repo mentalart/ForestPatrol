@@ -121,6 +121,8 @@ zlataya_cep/build/late_76_kids_fight.js       @level:1-1 @level:1-2 @level:2-1 @
 zlataya_cep/build/late_76b_cine_skip.js       tfin_kids2 tfin_cine smoke
 zlataya_cep/build/late_78_signals.js             tfin_signals smoke
 zlataya_cep/build/late_79c_taskshort.js       tfin_taskshort tfin_hints smoke
+zlataya_cep/build/late_79d_help.js              tfin_help tfin_kids1 tfin_kids2 tfin_k1b tfin_k1b3 tfin_hints tfin_bossui smoke
+zlataya_cep/build/levels/1-B/late_99zd_k1b_help.js tfin_help tfin_k1b tfin_k1b3 tfin_k1bhands
 zlataya_cep/build/late_79e_lesson.js          tfin_lesson tfin_boss4b tfin_gor4 tfin_gorsolo tfin_hintlayer tfin_menu
 tools/playtest/task_short.py                  tfin_taskshort
 tools/playtest/task_short_tpl.js              tfin_taskshort
@@ -151,7 +153,7 @@ zlataya_cep/build/levels/5-B2/late_93_koschei_level_p5_finale.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p4_skaz.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p3_wind.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p2_storm.js @level:5-B2
-zlataya_cep/build/levels/5-B2/late_94_koschei_reset.js @level:5-B2
+zlataya_cep/build/levels/5-B2/late_94_koschei_reset.js @level:5-B2 tfin_bossnext
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_ph_prologue.js @level:5-B2 tk5e_prolog tk5e_runner tk5e_lesson tk5e_lesson2 tk5e_solo tk5e_flow
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p6_epic.js @level:5-B2 tfin_bossnext tk5e_prolog tk5e_flow tk5e_smoke
 zlataya_cep/build/levels/p/late_96_prolog_scooter.js @level:p
