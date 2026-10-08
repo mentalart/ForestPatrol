@@ -56,7 +56,7 @@
     const dark=new THREE.Color(0x2a2440),B=K5L.B;   // основа неба — тема стадии (K5L.B), без неё — фон уровня
     if(scene.background&&scene.background.isColor)scene.background.copy(B?B.bg:STORM.bg).lerp(dark,k*0.8);if(scene.fog&&(B||STORM.fog))scene.fog.color.copy(B?B.bg:STORM.fog).lerp(dark,k*0.75);
     amb.intensity=(B?B.ai:STORM.amb)*(1-0.45*k);sun.intensity=(B?B.si:STORM.sun)*(1-0.65*k);sun.color.copy(B?B.sc:STORM.sunC).lerp(new THREE.Color(0xb8a8ff),k*0.5);
-    if(k>0.5&&!G.cine){const s4=K5.st===4;K5.thT=(K5.thT==null?(s4?1.5:5):K5.thT)-dt;if(K5.thT<=0){K5.thT=s4?rand(1.7,3):rand(5,9);const f=$('flash');if(f&&FIN.set.flash!==false){f.style.transition='opacity .08s';f.style.opacity=s4?0.16:0.3;setTimeout(()=>{f.style.transition='opacity .5s';f.style.opacity=0;},90);}k5s('thunder');
+    if(k>0.5&&!G.cine){const s4=K5.st===4;K5.thT=(K5.thT==null?(s4?1.5:5):K5.thT)-dt;if(K5.thT<=0){K5.thT=s4?rand(1.7,3):rand(5,9);FIN.bossfx.flash(s4?0.16:0.3,{in:0.08,hold:0.09,out:0.5});k5s('thunder');
         // молния бьёт за краем поляны — красиво и не опасно; туча над ней вспыхивает; на этапе 4 — втрое чаще и ближе (отзыв 4)
         const a=rand(0,6.28),rr=s4?rand(13,19):rand(17,24),bp=new V3(C.x+Math.cos(a)*rr,0,C.z+Math.sin(a)*rr);k5Bolt(bp,0xd8b0ff);const cl=clouds.children[Math.floor(rand(0,clouds.children.length))];if(cl){cl.material.color.setHex(0xb8a0ff);later(0.25,()=>cl.material.color.setHex(0x2a2438));}}}
     // тучи мерцают изнутри

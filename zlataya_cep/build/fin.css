@@ -138,43 +138,46 @@ body.fin-cine #finVig{background:radial-gradient(ellipse at 50% 48%,rgba(0,0,0,0
 body.fin-cinegrade canvas{filter:saturate(1.1) contrast(1.05)}
 body.fin-gallery > *:not(#c){visibility:hidden!important}
 /* ---------- final04 · обучение боя с Горынычем и живые подсказки ---------- */
+#finTut,#finBossHint,#solsign{--hnf:clamp(16px,3.1vh,48px)}
 #finTut,#finBossHint{position:fixed;left:50%;pointer-events:none;color:#fff6e0;font-family:system-ui;opacity:0;transition:opacity .25s,transform .35s cubic-bezier(.2,1.5,.4,1)}
-#finTut{top:10.5vh;z-index:40;width:min(780px,88vw);transform:translate(-50%,-14px) scale(.95);padding:14px 20px 16px;border-radius:22px;
+#finTut{top:10.5vh;z-index:6;width:min(780px,88vw);transform:translate(-50%,-14px) scale(.95);padding:14px 20px 16px;border-radius:22px;
   background:linear-gradient(180deg,rgba(46,24,14,.94),rgba(26,14,10,.94));border:3px solid #ffd76a;box-shadow:0 12px 30px rgba(0,0,0,.45),0 0 0 7px rgba(255,215,106,.14)}
 #finTut.on{opacity:1;transform:translate(-50%,0) scale(1)}
 #finTut.ok{border-color:#7ee08a;box-shadow:0 12px 30px rgba(0,0,0,.45),0 0 0 7px rgba(126,224,138,.2)}
-.ft-head{display:flex;align-items:center;gap:12px;font:900 clamp(20px,2.4vw,30px)/1.15 system-ui}
-.ft-tag{font:800 13px system-ui;letter-spacing:.06em;text-transform:uppercase;padding:4px 11px;border-radius:999px;background:#ffd76a;color:#3a2410;white-space:nowrap}
+.ft-head{display:flex;align-items:center;gap:12px;font:900 calc(var(--hnf)*1.25*var(--fts))/1.15 system-ui}
+.ft-tag{font:800 calc(var(--hnf)*.8*var(--fts)) system-ui;text-transform:none;padding:4px 11px;border-radius:999px;background:#ffd76a;color:#3a2410;white-space:nowrap}
 .ft-body{display:flex;gap:16px;align-items:center;margin-top:10px}
 .ft-ico{flex:0 0 auto;width:clamp(58px,6vw,86px);height:clamp(58px,6vw,86px);border-radius:18px;background:rgba(255,255,255,.08);display:grid;place-items:center;animation:ftBob 1.6s ease-in-out infinite}
 .ft-ico svg{width:80%;height:80%}
-.ft-text{font:700 clamp(16px,1.7vw,22px)/1.4 system-ui}
+.ft-text{font:700 calc(var(--hnf)*var(--fts))/1.35 system-ui}
 .ft-text b{color:#ffe08a}
 .ft-keys{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}
-.ft-key{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:14px;background:rgba(255,255,255,.1);font:800 clamp(15px,1.5vw,20px) system-ui;border:2px solid transparent}
+.ft-key{display:inline-flex;align-items:center;gap:8px;padding:7px 13px;border-radius:14px;background:rgba(255,255,255,.1);font:800 calc(var(--hnf)*var(--fts)) system-ui;border:2px solid transparent}
 .ft-key.wait{border-color:#ffd76a;animation:ftPulse .9s ease-in-out infinite}
 .ft-key.done{border-color:#7ee08a;background:rgba(126,224,138,.2)}
 .ft-key.done::after{content:"✓";color:#7ee08a;font-weight:900}
-.ft-who{font:900 12px system-ui;padding:2px 8px;border-radius:8px;color:#1a1208}
-.ft-go{margin-top:10px;text-align:center;font:900 clamp(18px,2vw,26px) system-ui;color:#ffe08a;animation:ftPulse .8s ease-in-out infinite}
+.ft-who{font:900 calc(var(--hnf)*.7*var(--fts)) system-ui;padding:2px 8px;border-radius:8px;color:#1a1208}
+.ft-go{margin-top:10px;text-align:center;font:900 calc(var(--hnf)*1.1*var(--fts)) system-ui;color:#ffe08a;animation:ftPulse .8s ease-in-out infinite}
 .ft-go.okt{color:#9ff0a8;animation:none}
-.ft-skip{position:absolute;right:16px;bottom:7px;font:600 12px system-ui;opacity:.5}
-#finBossHint{top:100px;z-index:35;width:min(720px,90vw);transform:translate(-50%,-12px) scale(.94);padding:7px 12px;border-radius:18px;
+.ft-skip{position:absolute;right:16px;bottom:7px;font:600 calc(var(--hnf)*.7*var(--fts)) system-ui;opacity:.5}
+#finBossHint{top:100px;z-index:6;width:min(720px,90vw);transform:translate(-50%,-12px) scale(.94);padding:7px 12px;border-radius:18px;
   background:linear-gradient(180deg,rgba(30,18,40,.93),rgba(18,12,24,.93));border:3px solid #ffb070;box-shadow:0 8px 20px rgba(0,0,0,.4)}
 #finBossHint.on{opacity:1;transform:translate(-50%,0) scale(1)}
 #finBossHint.ok{border-color:#7ee08a}
 .fh-row{display:flex;align-items:center;gap:12px}
-#finBossHint .ft-ico{width:48px;height:48px;border-radius:14px}
+#finBossHint .ft-ico{width:calc(var(--hnf)*2*var(--fts));height:calc(var(--hnf)*2*var(--fts));border-radius:14px}
 .fh-main{flex:1 1 auto;min-width:0}
-.fh-title{display:flex;align-items:center;gap:9px;font:900 clamp(16px,1.6vw,20px)/1.2 system-ui}
-.fh-title .ft-tag{font-size:11px;padding:3px 9px}
-.fh-text{font:700 clamp(13px,1.2vw,15px)/1.35 system-ui;margin-top:3px;opacity:.95}.fh-text b{color:#ffe08a}
+.fh-title{display:flex;align-items:center;gap:9px;font:900 calc(var(--hnf)*var(--fts))/1.2 system-ui}
+.fh-title .ft-tag{padding:3px 9px}
+.fh-text{font:700 calc(var(--hnf)*var(--fts))/1.3 system-ui;margin-top:3px;opacity:.95}.fh-text b{color:#ffe08a}
 .fh-keys{flex:0 0 auto;display:flex;flex-direction:column;gap:5px;align-items:stretch}
-.fh-keys .ft-key{padding:4px 10px;font-size:clamp(13px,1.2vw,16px);border-radius:11px}
-.fh-ok{font:900 clamp(17px,1.7vw,22px) system-ui;color:#9ff0a8;padding:0 6px}
+.fh-keys .ft-key{padding:4px 10px;font-size:calc(var(--hnf)*var(--fts));border-radius:11px}
+.fh-ok{font:900 calc(var(--hnf)*var(--fts)) system-ui;color:#9ff0a8;padding:0 6px}
 @keyframes ftPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
 @keyframes ftBob{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-5px) rotate(3deg)}}
 body.fin-gallery #finTut,body.fin-gallery #finBossHint{display:none}
+#solsign{position:absolute;display:none;z-index:6;padding:7px 16px;border-radius:14px;border:3px solid #fff3c0;color:#fff;font:800 calc(var(--hnf)*var(--fts))/1.25 system-ui;white-space:nowrap;text-shadow:0 2px 3px rgba(0,0,0,.6);box-shadow:0 6px 18px rgba(0,0,0,.35);pointer-events:none}
+#solsign .ss-ico{display:inline-block;min-width:1.5em;height:1.5em;line-height:1.5em;margin-right:.45em;border-radius:50%;text-align:center;background:rgba(255,243,192,.95);color:#3a2410;font-weight:900;vertical-align:middle}
 /* final06: заставка — «Нажмите любую кнопку», пока браузер не разрешил звук */
 #finSplash .fs-gate{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,1.6vmin,18px);color:#fdf8ef;font-family:ZCComfortaa,system-ui,sans-serif;cursor:pointer;text-align:center;padding:0 16px}
 #finSplash.fs-gating .fs-gate{display:flex}

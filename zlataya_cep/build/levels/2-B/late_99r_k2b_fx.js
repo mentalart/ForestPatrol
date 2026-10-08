@@ -116,11 +116,11 @@ K2FX.rain=(on,o)=>{o=o||{};let R=K2FX.rainO;if(!R){const n=700,pos=new Float32Ar
     const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(pos,3));const m=new THREE.LineBasicMaterial({color:0xcfe4f0,transparent:true,opacity:0.45,depthWrite:false});
     const L=new THREE.LineSegments(g,m);L.frustumCulled=false;L.renderOrder=8;k2Add(L);R=K2FX.rainO={L,pos,vel,n,on:false,k:0,c:o.c||new V3(0,0,-14),box:o.box||[30,16,30],seeded:false};}
   R.on=on;if(o.c)R.c.copy(o.c);};
-K2FX.flash=(a)=>{if(!K2FX.flashL){const L=new THREE.DirectionalLight(0xdfe8ff,0);L.position.set(-10,30,-20);k2Add(L);K2FX.flashL=L;}K2FX.flashK=Math.max(K2FX.flashK||0,a==null?1:a);};
+K2FX.flash=(a,echo)=>{if(!K2FX.flashL){const L=new THREE.DirectionalLight(0xdfe8ff,0);L.position.set(-10,30,-20);k2Add(L);K2FX.flashL=L;}const v=FIN.bossfx?FIN.bossfx.light(a==null?1:a,{echo:echo}):(a==null?1:a);K2FX.flashK=Math.max(K2FX.flashK||0,v);};
 K2FX.lightning=(at)=>{if(!K2FX.flashL)K2FX.flash(0);const p=at||new V3(rand(-30,30),0,rand(-60,-35));const pts=[];let x=p.x,y=48,z=p.z;pts.push(new V3(x,y,z));while(y>p.y+4){x+=rand(-2.2,2.2);y-=rand(2.5,5);z+=rand(-1,1);pts.push(new V3(x,Math.max(y,p.y),z));}
   const g=new THREE.BufferGeometry().setFromPoints(pts);const bolt=new THREE.Line(g,new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:1}));bolt.renderOrder=9;k2Add(bolt);
   const glow=new THREE.Sprite(new THREE.SpriteMaterial({map:K2_SOFT,color:0xbfd8ff,transparent:true,opacity:0.8,depthWrite:false,fog:false}));glow.position.set(p.x,30,p.z);glow.scale.setScalar(40);k2Add(glow);
-  K2FX.flash(1);later(0.12,()=>K2FX.flash(0.8));K2FX.anim(0.45,k=>{bolt.material.opacity=k<0.3?1:Math.max(0,1-(k-0.3)/0.7);glow.material.opacity=0.8*(1-k);},()=>{k2Del(bolt);k2Del(glow);});
+  K2FX.flash(1);later(0.12,()=>K2FX.flash(0.8,true));K2FX.anim(0.45,k=>{bolt.material.opacity=k<0.3?1:Math.max(0,1-(k-0.3)/0.7);glow.material.opacity=0.8*(1-k)*(FIN.bossfx?FIN.bossfx.k():1);},()=>{k2Del(bolt);k2Del(glow);});
   try{CINE.moodFlash('#c8d8ff',0.16,0.6);}catch(e){}
   later(rand(0.4,0.9),()=>{if(FIN.aud){FIN.aud.nz({type:'lowpass',f0:400,f1:120,f2:60,d:2.4,v:0.22,a:0.02,q:0.5,wet:0.5});FIN.aud.thump({f0:70,f1:30,d:1.2,v:0.25});}else tone(50,1.6,'sawtooth',0.12,30);});};
 K2FX.beam=(pos,on)=>{let B=K2FX.beamO;if(!B||!B.m.parent){const m=new THREE.Mesh(new FIN.orig.Cylinder(1.6,7,46,24,1,true),new THREE.ShaderMaterial({uniforms:{uK:{value:0},uT:{value:0}},
