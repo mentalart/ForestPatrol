@@ -30,8 +30,8 @@ function jwLimitAll(){for(const k of Object.keys(SFX)){const o=SFX[k];if(typeof 
 
 /* ---------- звуки ---------- */
 const JWS={
-  bell(p){[0,2,4,7].forEach((n,i)=>jxBL(jxLad(n+7)/2,{v:0.06,d:1.4,at:i*0.13,wet:0.6,pan:p}));jxBL(jxLad(14)/2,{v:0.05,d:2.2,at:0.62,wet:0.7,pan:p});
-    for(let i=0;i<7;i++)jxOS({type:'triangle',f0:jxLad(i),d:0.5,v:0.03,at:0.05+i*0.045,wet:0.5,pan:p+(i-3)*0.08});jxTH({f0:90,f1:50,d:0.6,v:0.12});},
+  // колокольчик-закладка: тихое «динь-дилинь» для ребёнка — две чистые мягкие ноты (основная и квинта лада мира), без металлического дребезга и удара
+  bell(p){[0,4].forEach((n,i)=>{const f=jxLad(n+7)/2;jxOS({f0:f,d:0.95,v:0.032,a:0.03,at:i*0.16,wet:0.3,pan:p});jxOS({f0:f*2,d:0.5,v:0.007,a:0.03,at:i*0.16,wet:0.3,pan:p});});},
   sub(){jxTH({f0:62,f1:30,d:1.6,v:0.5});jxNZ({type:'lowpass',f0:220,f1:60,d:1.4,v:0.12,a:0.01});jxBL(jxLad(0)/4,{v:0.05,d:2.4,wet:0.7});},
   stinger(st){const b=st*2;[0,3,7].forEach((n,i)=>jxOS({type:'sawtooth',f0:jxLad(b+n)/2,d:0.55,v:0.035,lp:1800,lp1:600,at:i*0.02,wet:0.3}));
     jxTH({f0:120,f1:38,d:0.5,v:0.4});jxNZ({f0:400,f1:4000,d:0.45,v:0.07,q:0.9,a:0.3});jxBL(jxLad(b+7),{v:0.06,d:1.2,at:0.45,wet:0.5});},
@@ -72,7 +72,7 @@ JW.origBell=SFX.bell;
 SFX.bell=function(){let hit=null,pi=0;for(const b of W.bells){b._jwA=b._jwA||[false,false];for(const q of [0,1])if(b.act[q]&&!b._jwA[q]){hit=b;pi=q;}}
   for(const b of W.bells)b._jwA=b.act.slice();
   if(!hit||G.cine)return JW.origBell.apply(this,arguments);
-  const top=new V3(hit.x+0.55,hit.y+1.9,hit.z),p=jxPan(top,pi),fl=jxFl();JWS.bell(p);JW.calmT=1.8;jwCap('колокольчик-закладка',p);
+  const top=new V3(hit.x+0.55,hit.y+1.9,hit.z),p=jxPan(top,pi),fl=jxFl();JWS.bell(p);JW.calmT=1.2;jwCap('колокольчик-закладка',p);
   if(fl>0)jxSprite('dot',0xffe2a0,top.clone(),5.5*(0.6+0.4*fl),0.45,{op:0.9*fl,shape:'flash'});jxSprite('star',0xfff4c0,top.clone(),2.4,0.6,{spin:3});
   const g=new V3(hit.x,hit.y+0.08,hit.z);ringFx(g,COL.gold,3.2);later(0.18,()=>ringFx(g,0xfff2b0,4.6));
   if(FIN.fx){FIN.fx.sparkle(top,16,0xfff2b0);FIN.fx.stars(top,8,0xffd76a);}JW.bellGlow={b:hit,t:0};};
