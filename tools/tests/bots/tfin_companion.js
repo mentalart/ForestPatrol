@@ -2,7 +2,8 @@
 // релиз final06: бот-напарник за Игрока 2 (late_73_companion): «Режим» вдвоём → один → с напарником, следование, бой, подшивание, смена героя после падения.
 // Человек — Игрок 1 (клавиши WASD через U.*), бот сам жмёт клавиши Игрока 2.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
-window.CO=ZC.FIN.co;window.P=ZC.players;
+window.CO=ZC.FIN.co;window.P=ZC.players;CO.routes={};   // здесь — общее поведение (следование, бой, подшивание); маршруты уровней проверяют tfin_companion_p / _11
+
 window.me=()=>U.act(0);window.bot=()=>U.act(1);
 window.dist=()=>Math.hypot(me().pos.x-bot().pos.x,me().pos.z-bot().pos.z);
 window.lvl=()=>{ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(20);for(let q=0;q<3&&ZC.G.cine;q++){ZC.skip();ZC.tick(5);}ZC.tick(90);};

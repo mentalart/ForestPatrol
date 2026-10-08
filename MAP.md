@@ -75,20 +75,20 @@
 
 | id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
-| `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_96_prolog_scooter, late_96b_prolog_night | 7 | tfin_cine tfin_fadesplit tfin_kids1 tfin_prolog_night tfin_scooter tfin_voice tpjump |
-| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 12 | tfin_art tfin_cast tfin_devluko tfin_episolo tfin_kids1 tfin_luko thw3a thw3b thw4 tk5e_r… |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 28 | t11 tfin_art tfin_cam tfin_companion tfin_dev tfin_foecast tfin_foeidle tfin_foekinds tfi… |
-| `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1, late_76_kids_fight | 1 | tsospot |
-| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 2 | tfin_kids1 tfin_kids2 |
-| `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14 | 2 | tfin_kidnap14 tfin_kids2 |
-| `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_75_kids_w1 | 1 | thub2 |
-| `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine | 3 | tfin_k1b3solo tfin_post tsospot |
-| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 14 | t21 t21x tfin_art tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tfin_k21kelp tfin_k2… |
-| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99l_kitezh_magic_water | 8 | t22d t22shot tfin_k22 tfin_k22hint tfin_k22solo tfin_kids2 tfin_occ tfin_warp |
-| `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 3 | t23f tfin_k23 tfin_k23solo |
-| `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 3 | t24n tfin_k24 tfin_k24solo |
-| `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 5 | t25c tfin_k25 tfin_k25solo tfoes tsospot |
-| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase | 9 | t2c tfin_bossbar tfin_flash tfin_k2b tfin_k2bboss tfin_k2bbosssolo tfin_k2bmill tfin_k2bs… |
+| `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_96_prolog_scooter, late_96b_prolog_night | 8 | tfin_cine tfin_companion_p tfin_fadesplit tfin_kids1 tfin_prolog_night tfin_scooter tfin_… |
+| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 13 | tfin_art tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kids1 tfin_luko thw… |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 29 | t11 tfin_art tfin_cam tfin_companion tfin_companion_11 tfin_dev tfin_foecast tfin_foeidle… |
+| `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1, late_76_kids_fight | 2 | tfin_companion_12 tsospot |
+| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 3 | tfin_companion_13 tfin_kids1 tfin_kids2 |
+| `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14 | 3 | tfin_companion_14 tfin_kidnap14 tfin_kids2 |
+| `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_75_kids_w1 | 2 | tfin_companion_15 thub2 |
+| `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine | 4 | tfin_companion_1b tfin_k1b3solo tfin_post tsospot |
+| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 15 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tf… |
+| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99l_kitezh_magic_water | 9 | t22d t22shot tfin_companion_22 tfin_k22 tfin_k22hint tfin_k22solo tfin_kids2 tfin_occ tfi… |
+| `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 4 | t23f tfin_companion_23 tfin_k23 tfin_k23solo |
+| `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
+| `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 6 | t25c tfin_companion_25 tfin_k25 tfin_k25solo tfoes tsospot |
+| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase | 11 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_75_kids_w1, late_76_kids_fight, late_99p_sky31 | 16 | t31 t31c tfin_art tfin_juice tfin_kids1 tfin_kids2 tfin_motylek tfin_sky31 tfin_sky31boss… |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32, late_99x_sky32_tut, late_99y_sky32_cine, late_99zd_sky32_fx, late_99ze_sky32_cam | 9 | t32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32cine tfin_sky32floor tfin_sky3… |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 2 | t33n tso33 |
@@ -214,6 +214,19 @@
 | `late_71_pads.js` | — | РЕЛИЗ final05 · ДЖОЙСТИКИ В МЕНЮ: два джойстика, Start на паузе, нестандартные раскладки |
 | `late_72_splash.js` | — | РЕЛИЗ · ЗАСТАВКА СТУДИИ «АбадзехLAB · Лаборатория творчества» |
 | `late_73_companion.js` | — | РЕЛИЗ final06 · НАПАРНИК: БОТ ЗА ИГРОКА 2 |
+| `levels/p/late_73b_companion_p.js` | — | РЕЛИЗ final06 · ПРОЛОГ: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/1-1/late_73c_companion_11.js` | — | РЕЛИЗ final06 · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/1-3/late_73d_companion_13.js` | — | РЕЛИЗ final06 · 1-3 «КОЛОБОК»: НАПАРНИК-БОТ БЕЖИТ СВОЮ ДОРОЖКУ |
+| `levels/1-4/late_73e_companion_14.js` | — | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/1-5/late_73f_companion_15.js` | — | РЕЛИЗ final06 · 1-5 «КИКИМОРИНА ПРЯЛКА»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/1-B/late_73g_companion_1b.js` | — | РЕЛИЗ final06 · 1-Б «ЛЕШИЙ-ПУТАНИК»: НАПАРНИК-БОТ БЬЁТСЯ ЗА ИГРОКА 2 |
+| `levels/1-2/late_73h_companion_12.js` | — | РЕЛИЗ final06 · 1-2 «КИКИМОРИНО БОЛОТО»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/2-1/late_73i_companion_21.js` | — | РЕЛИЗ final06 · 2-1 «ГУСЛИ САДКО»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/2-2/late_73j_companion_22.js` | — | РЕЛИЗ final06 · 2-2 «РЫБА-КИТ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/2-3/late_73k_companion_23.js` | — | РЕЛИЗ final06 · 2-3 «НЕВОД»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/2-4/late_73l_companion_24.js` | — | РЕЛИЗ final06 · 2-4 «В БРЮХЕ У КИТА»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/2-5/late_73m_companion_25.js` | — | РЕЛИЗ final06 · 2-5 «КИТЕЖ ЗВОНИТ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/2-B/late_73n_companion_2b.js` | — | РЕЛИЗ final06 · 2-Б «ВОДЯНОЙ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
 | `late_74_kids_start.js` | epi, luko | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · СТАРТ, УДОБСТВО, СОХРАННОСТЬ |
 | `late_75_kids_w1.js` | 1-1, 1-2, 1-3, 1-4, 1-5, 1-B, 2-1, 3-1, p | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · ПРАВКИ УРОВНЕЙ |
 | `late_76_kids_fight.js` | 1-1, 1-2, 2-1, 3-1 | РЕЛИЗ · ДЕТИ 7–11 · БОЙ: СИНЯЯ КАПЛЯ, «ЖАЛОСТЬ», КРАСНЫЙ ЗНАК |
@@ -401,11 +414,11 @@
 | `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 40 файлов |
+| `changes/` | 43 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 26 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 197 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 213 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
