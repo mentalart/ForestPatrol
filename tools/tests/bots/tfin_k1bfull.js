@@ -7,6 +7,7 @@
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 U.go();ZC.loadLevel(7);ZC.tick(60*2);ZC.skip();ZC.tick(60*2);window.W=ZC.W;window.K=ZC.FIN.k1b;window.S=K.s3;window.LK=ZC.FIN.lesson;window.D=K.hide;
 window.skipCine=function(max){let n=0;while(ZC.G.cine&&!LK.on&&n<60*(max||40)){if(n%30===0)ZC.skip();ZC.tick(1);n++;}ZC.tick(20);};
+window.need=(c,msg)=>{if(!c)throw new Error('tfin_k1bfull: ожидалось «'+msg+'» | phase='+W.flags.phase+' head='+W.flags.head+' round='+W.flags.round+' st='+S.st+' S.round='+S.round+' laps='+S.laps.join('/')+' cine='+!!ZC.G.cine+' lesson='+LK.on+' errs='+window._errs.length);};
 'start: phase='+W.flags.phase+' lesson auto='+K.les.auto+' errs='+window._errs.length
 //@@
 // этап 1: руки-коряги — три трофея
@@ -14,13 +15,13 @@ window.cycle=function(){const W=ZC.W;let n=0;while(n<60*60&&!W.enemies.some(e=>e
   const e=W.enemies.find(e=>e.state==='broken');if(!e)return 'no break';const sh={x:e.side*2.4,z:-22.5};const h=U.act(0);const hx=e.pos.x,hz=e.pos.z;const lp=(a,b,t)=>a+(b-a)*t;
   U.walkTo(0,hx,hz+1.2,4);for(let k=1;k<=8;k++)U.walkTo(0,lp(hx,sh.x,k/8),lp(hz,sh.z,k/8),2);h.face=Math.atan2(0-h.pos.x,-24.2-h.pos.z);ZC.tick(1);ZC.press('KeyF');ZC.tick(24);
   return 'head='+W.flags.head;};
-window.toHead=function(n){const W=ZC.W,K=ZC.FIN.k1b;let g=0;while((W.flags.head||0)<n&&W.flags.phase===1&&g<8){ZC.tick(60);cycle();g++;}
+window.toHead=function(n){const W=ZC.W,K=ZC.FIN.k1b;let g=0;while((W.flags.head||0)<n&&W.flags.phase===1&&g<25){ZC.tick(60);cycle();g++;}
   const P=K.cur.L.parts;return 'head='+W.flags.head+' tries='+g+' lost='+JSON.stringify(K.cur.L.k1.lost)+' fly='+K.fly.length+' emo='+K.cur.L.k1.emo+' beard='+P.beard.visible;};
 toHead(1)
 //@@ shot=k1bfull_s1.png
-toHead(2)
+toHead(2)+(need(W.flags.head>=2,'второй трофей'),'')
 //@@
-const r=toHead(3);skipCine(30);r+' phase='+W.flags.phase
+const r=toHead(3);skipCine(30);need(W.flags.head>=3,'три трофея');ZC.tick(60*3);skipCine(30);need(W.flags.phase===2,'этап 2 после трёх трофеев');r+' phase='+W.flags.phase
 //@@
 // этап 2: двойники, ловушка со струной — два круга (как в tfin_k1bhide)
 ZC.tick(60*3);skipCine(30);'phase='+W.flags.phase+' doubles='+W.doubles.length
@@ -33,17 +34,15 @@ window.ph2=function(){const st=W.stakes.find(s=>!s.used);const h=U.act(0);U.walk
    ZC.tick(1);}
  ['KeyA','KeyD','KeyW','KeyS'].forEach(k=>ZC.hold(k,false));U.tap('KeyQ');
  return 'th='+th+' '+(n/60).toFixed(1)+'s round='+W.flags.round+' hits='+hits+' left='+W.doubles.filter(d=>d.state!=='gone').length;};
-const r0=ph2();r0+' phase='+W.flags.phase
-//@@
-ZC.tick(60*3);const r1=ph2();skipCine(30);r1+' phase='+W.flags.phase+' doubles='+W.doubles.filter(d=>d.state!=='gone').length
+let g2=0,r0='';while(W.flags.phase===2&&g2<8){r0+=ph2()+' | ';g2++;ZC.tick(60*3);skipCine(30);}need(W.flags.phase!==2,'конец этапа 2 за '+g2+' попыток');r0+' phase='+W.flags.phase+' tries='+g2
 //@@
 // этап 3: выход на хоровод — ролик пень/Леший пропускаем, дальше сам урок
-skipCine(30);let n=0;while(!LK.on&&n<60*8){ZC.tick(1);n++;}'phase='+W.flags.phase+' on='+S.on+' lesson on='+LK.on+' runs='+LK.runs+' stump='+(S.stump?'y':'n')+' errs='+window._errs.length
+skipCine(30);let n=0;while(!LK.on&&n<60*20){ZC.tick(1);n++;}need(LK.on,'урок Хоровода начался');'phase='+W.flags.phase+' on='+S.on+' lesson on='+LK.on+' runs='+LK.runs+' stump='+(S.stump?'y':'n')+' errs='+window._errs.length
 //@@ shot=k1bfull_lesson.png
 // урок «Хоровода»: шаг 1 «Скакалка» ждёт прыжка обоих; нажимают — «Получилось!»; шаг 2 «Тяни-потяни» ждёт удара обоих; всё ≤ 25 с
 window.card=()=>{const c=document.getElementById('finTut');return c&&c.classList.contains('on')?c:null;};
 window.cs=()=>{const c=card();if(!c)return '-';const g=c.querySelector('.ft-go');return (c.querySelector('.ft-head')||{}).innerText.replace(/\s+/g,' ').slice(0,40)+(g?' ['+g.innerText+']':'');};
-window.lt0=ZC.G.time;let n=0;while(n<60*5&&!(card()&&card().querySelector('.ft-go')))ZC.tick(1),n++;const a=cs(),still0=S.on;
+window.lt0=ZC.G.time;let n=0;while(n<60*5&&!(card()&&card().querySelector('.ft-go')))ZC.tick(1),n++;need(card()&&card().querySelector('.ft-go'),'карточка урока ждёт нажатия');const a=cs(),still0=S.on;
 ZC.tick(60);const a1=cs();ZC.press(U.K[0].j);ZC.press(U.K[1].j);ZC.tick(3);const a2=cs();
 'step1 '+a+' | after 1s '+a1+' | pressed → '+a2+' | game not started yet: '+(!still0)
 //@@ shot=k1bfull_lesson2.png
@@ -66,20 +65,23 @@ window.runner=function(sec,until,opt){opt=opt||{};const C=K.cur.C,pis=ZC.G.solo?
     ZC.tick(1);n++;}
   relAll();return n/60;};
 window.sum=()=>'st='+S.st+' round='+S.round+' laps='+S.laps.join('/')+' lapCount='+S.lapCount+' ropes='+S.ropes.length+' jumps='+S.jumps+' hits='+S.hits+' fails='+S.fails+' petals='+ZC.players.map(p=>p.petals).join('/');
-'phase2='+ph2+' phase='+W.flags.phase+' on='+S.on+' '+sum()+' lane='+!!S.lane+' boss='+(S.boss?S.boss.kind+':'+S.boss.state+' vis='+S.boss.g.visible:'-')+' L='+K.cur.L.g.visible+' ribbons='+S.rb.length
 window.wrap=a=>{while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a;};
 window.relAll=()=>{for(const k of U.K)for(const q of k.B)ZC.hold(q,false);};
 window.sum=()=>'st='+S.st+' round='+S.round+' laps='+S.laps.join('/')+' lapCount='+S.lapCount+' ropes='+S.ropes.length+' jumps='+S.jumps+' hits='+S.hits+' fails='+S.fails;
-ZC.players.forEach(p=>{p.petals=3;});const t=runner(90,()=>S.st!=='run');'run1 done after '+t.toFixed(1)+'s '+sum()
+// круг хоровода: бег до «Тяни-потяни» (кусками по 60 с игровых — запас на промахи), потом «Тяни-потяни» и мах вдвоём; при неудаче — повтор
+window.circuit=function(label){let t=0,g=0;while(S.st==='run'&&g<8){t+=runner(60,()=>S.st!=='run');g++;ZC.players.forEach(p=>{p.petals=3;});}
+  need(S.st!=='run',label+': витки (2 на героя) за '+g+' кусков бега');
+  const r0=S.round,w0=!!W.flags.won;let tries=0;
+  while(tries<8&&S.round===r0&&!W.flags.won){tries++;let n=0;while(S.st!=='pull'&&S.st!=='done'&&n<60*30){ZC.tick(1);n++;}if(W.flags.won)break;
+    n=0;while(S.st==='pull'&&S.pt<2.28&&n<60*6){ZC.tick(1);n++;}ZC.press(U.K[0].a);ZC.press(U.K[1].a);ZC.tick(3);
+    const C=K.cur.C,a0=U.act(0),a1=U.act(1);a0.pos.set(C.x+3.2,0,C.z);a1.pos.set(C.x-3.2,0,C.z);a0.vel.set(0,0,0);a1.vel.set(0,0,0);a0.face=Math.atan2(-3.2,0);a1.face=Math.atan2(3.2,0);ZC.tick(30);
+    ZC.press(U.K[0].a);ZC.press(U.K[1].a);ZC.tick(120);}
+  need(S.round>r0||W.flags.won,label+': «Тяни-потяни» и Богатырский мах за '+tries+' попыток');
+  return label+': бег '+t.toFixed(0)+'с, попыток мaха '+tries+' · '+sum();};
+ZC.players.forEach(p=>{p.petals=3;});circuit('круг 1')
 //@@ shot=k1bfull_pull.png
-const dtp=()=>{while(S.st==='pull'&&S.pt<2.28)ZC.tick(1);};dtp();ZC.press(U.K[0].a);ZC.press(U.K[1].a);ZC.tick(3);
-const C=K.cur.C,a0=U.act(0),a1=U.act(1);a0.pos.set(C.x+3.2,0,C.z);a1.pos.set(C.x-3.2,0,C.z);a0.vel.set(0,0,0);a1.vel.set(0,0,0);a0.face=Math.atan2(-3.2,0);a1.face=Math.atan2(3.2,0);ZC.tick(30);
-ZC.press(U.K[0].a);ZC.press(U.K[1].a);ZC.tick(120);'круг 1: round='+S.round+' st='+S.st+' bogatyr='+ZC.G.stats.bogatyr
-//@@
-ZC.tick(60*3);const t=runner(90,()=>S.st!=='run');'run2 done after '+t.toFixed(1)+'s '+sum()
+ZC.tick(60*4);need(S.st==='run','круг 2 начался');circuit('круг 2')
 //@@ shot=k1bfull_final.png
-const C=K.cur.C;while(S.st==='pull'&&S.pt<2.28)ZC.tick(1);ZC.press(U.K[0].a);ZC.press(U.K[1].a);ZC.tick(3);
-const a0=U.act(0),a1=U.act(1);a0.pos.set(C.x+3.2,0,C.z);a1.pos.set(C.x-3.2,0,C.z);a0.vel.set(0,0,0);a1.vel.set(0,0,0);a0.face=Math.atan2(-3.2,0);a1.face=Math.atan2(3.2,0);ZC.tick(30);
-ZC.press(U.K[0].a);ZC.press(U.K[1].a);ZC.tick(90);'победа: won='+!!W.flags.won+' st='+S.st+' hits='+S.hits+' fails='+S.fails+' bogatyr='+ZC.G.stats.bogatyr+' errs='+window._errs.length
+ZC.tick(60*2);need(W.flags.won,'победа (won)');'победа: won='+!!W.flags.won+' st='+S.st+' hits='+S.hits+' fails='+S.fails+' bogatyr='+ZC.G.stats.bogatyr+' errs='+window._errs.length
 //@@
-ZC.tick(60*3);ZC.skip();ZC.tick(60*3);ZC.skip();ZC.tick(60*3);'end: lvl='+ZC.W.levelId+' done='+JSON.stringify(ZC.G.done)+' errs='+window._errs.length+(window._errs.length?' '+window._errs[0]:'')
+let g=0;while(ZC.W.levelId==='1-B'&&g<10){ZC.tick(60*3);ZC.skip();g++;}need(ZC.W.levelId!=='1-B'&&ZC.G.done['1-B'],'выход с уровня и отметка 1-Б пройденным');'end: lvl='+ZC.W.levelId+' done='+JSON.stringify(ZC.G.done)+' errs='+window._errs.length+(window._errs.length?' '+window._errs[0]:'')
