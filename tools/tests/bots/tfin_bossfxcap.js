@@ -1,6 +1,6 @@
 //@@ wait=1500
 // релиз final06: потолки тряски и hit-stop на боссовых уровнях (late_84b_bossfx): shake() ≤ 0,09 (толчок ≤ 0,5 с — ≤ 0,15), G.hitstop ≤ 0,16;
-// «Тряска» 0 / 50 / 100 % продолжает действовать; вне боссов (1-1) потолков нет. Детерминированно через ZC.tick.
+// «Тряска» 0 / 50 / 100 % продолжает действовать; вне боссов (1-2) потолков нет. Детерминированно через ZC.tick.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 window.BF=ZC.FIN.bossfx;window.GOT=[];BF.onshake=(pi,a,d)=>GOT.push([a,d]);
 window.SETSH=k=>{ZC.FIN.set.shakeK=k;ZC.FIN.applySettings&&ZC.FIN.applySettings();};
@@ -16,7 +16,7 @@ JSON.stringify(R1)
 JSON.stringify(R2)
 //@@
 // вне боссов потолков нет
-ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(10);{ZC.G.hitstop=0.4;window.R3={on:BF.on(),hs:ZC.G.hitstop};}
+ZC.startFrom(ZC.LV('1-2'));ZC.G.manual=true;ZC.tick(10);{ZC.G.hitstop=0.4;window.R3={on:BF.on(),hs:ZC.G.hitstop};}
 JSON.stringify(R3)
 //@@
 const bad=[];

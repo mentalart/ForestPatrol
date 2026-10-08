@@ -32,7 +32,7 @@
   B.hitstop=t=>{t=Math.min(t||0,B.MAXHS);if(t>0&&typeof G!=='undefined')G.hitstop=Math.max(G.hitstop||0,t);return t;};
   B.tele=(pose,fill,strike,win,o)=>{o=o||{};return {pose,fill:Math.max(fill||0,o.min==null?0.5:o.min),strike,window:Math.max(win||0,o.win||0)};};
   // ——— потолки на боссовых уровнях: оборачиваем присваиванием, общий движок не трогаем ———
-  const MINI={'3-1':1,'3-2':1};
+  const MINI={'1-1':1,'3-1':1,'3-2':1};   // M-4b: Яга 1-1 — hit-stop «взмаха» 0,40 → 0,16
   B.on=()=>{try{const L=LEVELS[G.levelIdx];return !!(L&&(L.boss||MINI[L.id]));}catch(e){return false;}};
   B.capShake=(a,d)=>{if(!(a>0))return a;return Math.min(a,(d==null||d<=0.5)?B.MAXONCE:B.MAXSHAKE);};
   {const _sh=shake;shake=function(pi,amp,dur){if(B.on())amp=B.capShake(amp,dur);if(B.onshake)B.onshake(pi,amp,dur);return _sh.call(this,pi,amp,dur);};}
