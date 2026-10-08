@@ -55,7 +55,7 @@ FIN.k3road=function(KR){const F=W.flags,T=HERO,C=KR.C,FX=FIN.k3fx,FX2=FIN.k2fx,S
       if(sheltered(h)||ISL.some(I=>onIsle(h,I))){FX.sparks(h.pos.clone().add(new V3(0,1.2,0)),4,0xffffff);continue;}if(inGrass(h)){h.tangleT=2.4;key(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Трава оплела!','#b8e090');continue;}if(h.pos.y>Y+1.6&&h.pos.z>26&&h.pos.z<44&&!h.grounded)continue;
       if([0.7,1.4,2.1,2.8,3.5,4.2,4.9].some(d=>groundAt(h.pos.x,h.pos.z+d,h.pos.y+0.5,0.3).y<h.pos.y-9)){{h.knockT=0.25;h.vel.x*=0.2;h.vel.z*=0.2;key(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ух! Устоял!','#e8f2ff');continue;}}   // за спиной пропасть — не сдувает
       h.vel.z+=h.guard?4:8;h.vel.y=2.6;h.grounded=false;h.knockT=0.35;FX.down(h.pos.clone().add(new V3(0,0.8,0)),6);key(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ух, сдуло!','#e8f2ff');
-      if(!RD.pushTold){RD.pushTold=1;for(const pi of[0,1])tip(pi,'Свист сдувает! Как слышишь трель — встань за камень, за дерево или за щит Потапа '+K(0,'guard')+'.',3.6);}}
+      if(!RD.pushTold){RD.pushTold=1;for(const pi of[0,1])tip(pi,'Трель! Прячься за камень или щит '+K(0,'guard')+'.',3.6);}}
     if(R.r>(Math.max(...ctl().map(h=>h.pos.z))-C.z)+22){R.Wv.del();RD.wave=null;}}
   /* ---------- 1. ЗАКОЛОДЕЛА ДОРОЖКА (z 158…140): большая колода — Потап; колоды поменьше катятся на свист ---------- */
   const LOGM=[hp(0x7a5432),hp(0x5a3d22)];const bigLog=new THREE.Group();bigLog.position.set(0,Y,151.5);W.group.add(bigLog);fk(bigLog,K=>{K.add(KP.cyl(0.75,0.8,11.6,10),LOGM[0],tm(0,0.75,0,0,0,Math.PI/2),{noise:0.04});
@@ -110,7 +110,7 @@ FIN.k3road=function(KR){const F=W.flags,T=HERO,C=KR.C,FX=FIN.k3fx,FX2=FIN.k2fx,S
   function pillowStart(){const L=live().filter(h=>h.pos.z>GZ-6&&h.pos.z<GZ+14);if(!L.length)return;const h=L[Math.floor(Math.random()*L.length)];const D=DAU[Math.floor(Math.random()*3)];D.set('throw');later(0.5,()=>D.set('idle'));
     const spot=new V3(h.pos.x,Y,h.pos.z);const t=FX2.tele(spot.x,Y,spot.z,1.1,0.95,'red');const g=FIN.k3s.pillow();const from=D.g.position.clone().add(new V3(0,1,0));g.position.copy(from);
     const P={g,from,to:spot,t:0,dur:0.95,pos:g.position,dead:false,tele:t};P.mk={pos:P.pos,active:()=>!P.dead&&P.t>0.15,onHit:()=>{if(P.dead)return;P.dead=true;FX.down(P.pos.clone(),26);t.cancel();W.group.remove(g);key(P.pos.clone().add(new V3(0,0.6,0)),'Пух!','#ffffff');}};W.marks.push(P.mk);RD.pil.push(P);
-    if(!RD.pilTold){RD.pilTold=1;sayD('Батюшка не велел пускать! Вот вам подушкой!');tip(0,'Дочки кидаются подушками! Прошка сбивает их рогаткой '+K(0,'skill')+' на лету.',3.2);}}
+    if(!RD.pilTold){RD.pilTold=1;sayD('Батюшка не велел пускать! Вот вам подушкой!');tip(0,'Подушки! Прошка, сбей рогаткой '+K(0,'skill')+'.',3.2);}}
   const sayD=t=>say('dochki',t,2.4,true);
   function pillowsTick(dt){for(let i=RD.pil.length-1;i>=0;i--){const P=RD.pil[i];P.t+=dt;if(P.dead){RD.pil.splice(i,1);const j=W.marks.indexOf(P.mk);if(j>=0)W.marks.splice(j,1);continue;}const k=Math.min(1,P.t/P.dur);
       P.g.position.lerpVectors(P.from,P.to,k);P.g.position.y+=Math.sin(k*Math.PI)*3;P.g.rotation.set(k*5,k*3,0);
