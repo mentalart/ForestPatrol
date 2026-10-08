@@ -137,10 +137,14 @@ CMP.label=()=>['вдвоём','один','с ИИ напарником'][CMP.ind
 // стрелки и M K L , . / ; — вторая половина клавиатуры Игрока 1 (место Игрока 2 занято ботом)
 addEventListener('keydown',e=>{const m=CMP_MAP[e.code];if(!m||!e.isTrusted||!CMP.live()||G.state!=='play')return;down.delete(e.code);pressed.delete(e.code);down.add(m);if(!e.repeat)pressed.add(m);});
 addEventListener('keyup',e=>{const m=CMP_MAP[e.code];if(m&&e.isTrusted&&CMP.on)down.delete(m);});
-// меню: «Напарник в бою» (опыт бота) — в паузе под «Режим» (серый, пока играете не с ИИ) и в Настройках под «Сложностью»; в ?debug пауза без нового пункта, чтобы не сдвигать пункты ботам
-const cmpLvItem=()=>({label:'Напарник в бою',val:()=>CMP.live()?CMP.lv().name:'—',sub:()=>CMP.live()?CMP.lv().sub:'нужен режим «с ИИ напарником»',side:d=>{if(CMP.live())CMP.cycleLevel(d);}});
-{const _ps=pauseScreen;pauseScreen=function(){const scr=_ps(),k=scr.items.findIndex(it=>it.label==='Режим'),kk=FIN.kids;
-  if(k>=0&&!(kk&&kk.debug&&!kk.force)){const it=cmpLvItem();Object.defineProperty(it,'off',{get:()=>!CMP.live()});scr.items.splice(k+1,0,it);}return scr;};}
+// меню: «Напарник в бою» (опыт бота) — в паузе под «Режим», пока играете с ИИ напарником (появляется и исчезает вместе с режимом) и в Настройках под «Сложностью»;
+// в ?debug пауза без нового пункта, чтобы не сдвигать пункты ботам
+const cmpLvItem=()=>({label:'Напарник в бою',val:()=>CMP.lv().name,sub:()=>CMP.lv().sub,side:d=>CMP.cycleLevel(d)});
+{const _ps=pauseScreen;pauseScreen=function(){const scr=_ps(),mode=scr.items.find(it=>it.label==='Режим'),kk=FIN.kids;
+  if(mode&&!(kk&&kk.debug&&!kk.force)){const it=cmpLvItem(),side0=mode.side;
+    const sync=()=>{const has=scr.items.includes(it),live=CMP.live();if(live&&!has)scr.items.splice(scr.items.indexOf(mode)+1,0,it);else if(!live&&has)scr.items.splice(scr.items.indexOf(it),1);};
+    mode.side=d=>{side0(d);sync();};sync();}
+  return scr;};}
 {const _ss=settingsScreen;settingsScreen=function(){const scr=_ss();
   if(CMP.live()){const k=scr.items.findIndex(it=>it.label==='Сложность');scr.items.splice(k<0?scr.items.length-1:k+1,0,cmpLvItem());}return scr;};}
 FIN.co=CMP;

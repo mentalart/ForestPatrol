@@ -33,11 +33,17 @@ CO.set(true);CO.setLevel(0);chk(/«Растеряша»/.test(mode.sub()),'в г
 CO.setLevel(2);chk(/«Бывалый»/.test(mode.sub())&&/ИИ напарник/.test(mode.sub()),'имя обновилось: '+mode.sub());
 chk(mode.val()==='с ИИ напарником','значение «Режима»: '+mode.val());
 CO.set(false);ZC.start();
-lvl();ZC.menu('pause');
-let items=F.menu.items.map(i=>i.label),k=items.indexOf('Режим');chk(k>=0&&items[k+1]==='Напарник в бою','в паузе пункт идёт после «Режим»: '+items.join('|'));
-let it=F.menu.items[k+1];chk(it.off===true&&it.val()==='—','без ИИ напарника пункт серый: off='+it.off+' val='+it.val());
-CO.setLevel(1);CO.set(true);it=F.menu.items[k+1];chk(it.off===false&&it.val()==='Смекалка'&&/под стать/.test(it.sub()),'с ИИ напарником пункт живой: '+it.val()+' / '+it.sub());
+lvl();CO.setLevel(1);ZC.menu('pause');
+let items=F.menu.items.map(i=>i.label),k=items.indexOf('Режим');chk(k>=0&&items.indexOf('Напарник в бою')<0,'без ИИ напарника пункта в паузе нет: '+items.join('|'));
+// переключили «Режим» прямо в паузе — пункт появляется под ним, переключили обратно — исчезает
+const pm=F.menu.items[k];pm.side(1);chk(!F.menu.items.some(i=>i.label==='Напарник в бою'),'в одиночном режиме пункта нет');
+pm.side(1);chk(CO.live(),'режим переключён на ИИ напарника');
+items=F.menu.items.map(i=>i.label);chk(items[k]==='Режим'&&items[k+1]==='Напарник в бою','пункт появился под «Режимом»: '+items.join('|'));
+let it=F.menu.items[k+1];chk(it.val()==='Смекалка'&&/под стать/.test(it.sub()),'по умолчанию Смекалка: '+it.val()+' / '+it.sub());
 it.side(1);chk(CO.level()===2&&it.val()==='Бывалый','← → меняют уровень: '+CO.level()+' '+it.val());it.side(-1);it.side(-1);chk(CO.level()===0&&it.val()==='Растеряша','назад: '+CO.level());
+pm.side(1);chk(!CO.live()&&!F.menu.items.some(i=>i.label==='Напарник в бою'),'вернули «вдвоём» — пункт исчез');
+// пауза открыта, когда ИИ напарник уже играет: пункт сразу на месте
+ZC.start();CO.set(true);ZC.menu('pause');items=F.menu.items.map(i=>i.label);chk(items[items.indexOf('Режим')+1]==='Напарник в бою','при открытии паузы пункт уже есть: '+items.join('|'));
 // настройки: пункт под «Сложностью», когда играет бот
 F.menu.items.find(i=>i.label==='Настройки').act();
 const st=F.menu.items.map(i=>i.label),ks=st.indexOf('Сложность');chk(ks>=0&&st[ks+1]==='Напарник в бою','в настройках пункт под «Сложностью»: '+st.join('|'));
