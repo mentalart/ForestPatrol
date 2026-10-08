@@ -4,7 +4,7 @@
 // Проверки: витки по 2 на героя, ни одного касания при честных прыжках, скакалка задевает того, кто стоит, «не вместе» — счёт снова, мах не вдвоём — снова счёт.
 // Строка «//@@ shot=…» относится к шагу под ней: кадр снимается после него.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
-U.go();ZC.loadLevel(7);ZC.tick(60*2);ZC.skip();ZC.tick(60*2);window.W=ZC.W;window.K=ZC.FIN.k1b;window.S=K.s3;
+U.go();ZC.loadLevel(7);ZC.tick(60*2);ZC.skip();ZC.tick(60*2);window.W=ZC.W;window.K=ZC.FIN.k1b;K.les.auto=false;window.S=K.s3;
 W.bossNext();ZC.tick(60*3);ZC.skip();ZC.tick(60*3);const ph2=W.flags.phase;W.bossNext();ZC.tick(30);
 window.wrap=a=>{while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a;};
 window.relAll=()=>{for(const k of U.K)for(const q of k.B)ZC.hold(q,false);};
