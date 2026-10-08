@@ -156,6 +156,7 @@ zlataya_cep/build/levels/5-B2/late_93_koschei_level_p4_skaz.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p3_wind.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p2_storm.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_94_koschei_reset.js @level:5-B2 tfin_bossnext
+zlataya_cep/build/levels/5-B2/late_94b_k5e_budget.js @level:5-B2 tk5e_budget tfin_bossaudit
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_ph_prologue.js @level:5-B2 tk5e_prolog tk5e_runner tk5e_lesson tk5e_lesson2 tk5e_solo tk5e_flow
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p6_epic.js @level:5-B2 tfin_bossnext tk5e_prolog tk5e_flow tk5e_smoke
 zlataya_cep/build/levels/p/late_96_prolog_scooter.js @level:p
@@ -214,5 +215,5 @@ zlataya_cep/build/levels/3-1/late_99p_sky31.js @level:3-1 tfin_sky31 tfin_sky31s
 zlataya_cep/build/late_95b_warp.js              smoke tfin_warp
 tools/tests/cine_frames.js                    -
 tools/tests/bots/archive/*                    -
-zlataya_cep/build/late_84b_bossfx.js            tfin_flash tfin_bossfxcap tfin_gor4 tfin_boss4b tfin_k2bboss tfin_k3bboss t5b1 tk5e_smoke tfin_juice
+zlataya_cep/build/late_84b_bossfx.js            tfin_flash tfin_bossfxcap tfin_gor4 tfin_boss4b tfin_k2bboss tfin_k3bboss t5b1 tk5e_smoke tfin_juice tk5e_budget
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_pi_lessonagain.js @level:5-B2 tk5e_act1lessons tk5e_act2lessons tk5e_act3lessons tk5e_lesson
