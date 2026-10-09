@@ -78,7 +78,7 @@
   // состояние мира «после вступления»: Кощей у дуба, тетрадка на камне, купол (стадия 1)
   E.prep=()=>{W.anims.length=0;KA.reset();KS.g.visible=true;KS.g.position.copy(KP);KS.g.rotation.y=0;KS.armR.rotation.x=0;book.g.visible=true;book.g.userData.free=true;
     book.g.position.set(-3.5,1.0,-19);book.g.rotation.set(0,0,0);dome.visible=true;dome.scale.setScalar(1);gor.g.position.y=-0.6;gor.g.scale.y=0.75;W.clampR={x:C.x,z:C.z,r:R};Z.mode='lead';};
-  E.start=()=>{K5.auto=true;const n=K5E.startAt|0;K5E.startAt=0;   // прыжок к стадии действует один раз
+  E.start=()=>{K5.auto=true;const n=K5E.startAt|0,ar=!!K5E.arena;K5E.startAt=0;K5E.arena=false;   // прыжок к стадии действует один раз
     // вход без прыжка: если в G.flags.k5eAt записана стадия (E.go), игрок выбирает «Продолжить с…» (начало этой стадии; пройденные — как после победы) или пролог
     const sv=n===0?(G.flags.k5eAt|0):0;
     if(sv>=1&&sv<=12&&!E.resumeAsked){E.resumeAsked=true;const act=sv<=3?'Акт I':sv<=7?'Акт II':'Акт III';
@@ -86,12 +86,12 @@
         if(c===0){E.prep();for(let i=1;i<sv;i++)E.done[i]=true;E.go(sv,{warp:true});}else{G.flags.k5eAt=0;K5E.startAt=0;E.start();}});return;}
     if(n===0&&E.prologue){E.prologue(()=>{E.cine.intro(()=>{E.prep();E.go(1);});});return;}
     E.prep();if(n===1){E.cine.intro(()=>{E.prep();E.go(1);});return;}
-    for(let i=1;i<n;i++)E.done[i]=true;E.go(n,{warp:true});};
+    for(let i=1;i<n;i++)E.done[i]=true;E.go(n,{warp:true,arena:ar});};
   // Ctrl+Alt+B (late_95_dev.js): следующая глава битвы из двенадцати — прыжок прямо к ней, откуда бы ни нажали: из пролога (погоня на Горыныче),
   // посреди стадии, в ролике, в поездке домой или после засчитанной стадии. Уровень загружается заново на нужной главе (прежние — как пройденные);
   // на двенадцатой стадия засчитывается — дальше, как после настоящей победы. Вернуть название главы (для подсказки) или false.
   W.bossNext=()=>{const n=E.cur!=null?E.cur:(K5E.startAt|0);
     if(n>=12){if(E.cur!==12||G.cine||E.done[12]&&E.wonT===12)return false;E.won(12);return 'Конец битвы';}
-    K5E.goStage(n+1);return 'Глава '+(n+1)+' из 12 · '+String(K5E.NAMES[n+1]).replace(/^\d+ · /,'');};
+    K5E.goStage(n+1,true);return 'Глава '+(n+1)+' из 12 · '+String(K5E.NAMES[n+1]).replace(/^\d+ · /,'');};
   // для ботов и отладки
   W.dbg5e=()=>({E,ES,K5,KB,KS,F,candles,C,R,OAK,KP,ANV,stageStart,stageWin,heroesHome,clearAdds,k5Zone,K5L,V3,THREE,light:()=>({bg:scene.background.getHexString(),fog:scene.fog?scene.fog.color.getHexString()+' '+scene.fog.near.toFixed(0)+'-'+scene.fog.far.toFixed(0):'-',amb:amb.intensity.toFixed(2),sun:sun.intensity.toFixed(2),storm:(K5.storm||0).toFixed(2),vig:(document.getElementById('k5storm')||{style:{}}).style.opacity,filt:(renderer.domElement.style.filter||'')})});

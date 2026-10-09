@@ -28,8 +28,8 @@
   E.pageStage=(n,w,o)=>{E.stage[n]={start(op){E.hub(n);W.clampR={x:C.x,z:C.z,r:16};K5.fight=false;liveBoss(false);KS.g.visible=false;dome.visible=false;candles.forEach(c=>{c.g.visible=false;});
       E.pagesShow(true,false);ES.fight=false;ES.step='walk';ES.sill=0;heroesHome(n);ES.prog=0;
       if(op&&op.retry&&ES.retryIn){/* повтор — сразу в арену */}
-      E.music('ink');const P=PAGES[w];if(!E.saidPage||!E.saidPage[w]){E.saidPage=E.saidPage||{};E.saidPage[w]=true;later(0.6,()=>{if(w===1)E.lesson('door',()=>{});else if(o.call)say('zven',o.call,3.4,true);});}
-      if(op&&op.retry){ES.step='in';enterPage(n,w,true);}},
+      E.music('ink');const P=PAGES[w];if(!(op&&op.arena)&&(!E.saidPage||!E.saidPage[w])){E.saidPage=E.saidPage||{};E.saidPage[w]=true;later(0.6,()=>{if(w===1)E.lesson('door',()=>{});else if(o.call)say('zven',o.call,3.4,true);});}
+      if(op&&(op.retry||op.arena)){ES.step='in';enterPage(n,w,true);}},   // повтор и прыжок Ctrl+Alt+B — сразу в арену
     tick(dt){const P=PAGES[w];P.tick(dt);if(ES.step==='walk'){const hs=k5Heroes();const need=G.solo?1:2;const at=hs.filter(h=>hd(h.pos,P.pos)<1.9).length;
         P.sill.material.color.set(at>0?0xfff4c0:0xffd76a);if(at>=Math.min(need,hs.length)&&hs.length){ES.sill+=dt;if(ES.sill>0.6){ES.step='in';enterPage(n,w,false);}}else ES.sill=0;return;}
       if(ES.step==='fight'&&AR[w].tick)AR[w].tick(dt);},

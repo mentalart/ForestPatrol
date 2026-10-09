@@ -8,6 +8,7 @@ const K5E=FIN.k5e=Object.assign(FIN.k5e||{},{startAt:0,
 K5E.badge=()=>{};
 // реплики без записей: ролики, считающие время по длине записи, могут дать звуку пустое время — такие вызовы пропускаем
 {const AP=AudioParam.prototype;for(const f of ['exponentialRampToValueAtTime','linearRampToValueAtTime','setValueAtTime','setTargetAtTime']){const o=AP[f];AP[f]=function(v,t){if(!isFinite(v)||!isFinite(t))return this;return o.apply(this,arguments);};}}
-// перейти к стадии n (0 — пролог): уровень загружается заново и прыгает к стадии (боты и отладка; в игре уровень начинается с пролога)
-K5E.goStage=n=>{n=Math.max(0,Math.min(12,n|0));K5E.startAt=n;if(n===0)G.flags.k5eAt=0;try{HN.html=['','',''];HN.shown=[false,false,false];HN.objK=['','',''];}catch(e){}
+// перейти к стадии n (0 — пролог): уровень загружается заново и прыгает к стадии (боты и отладка; в игре уровень начинается с пролога);
+// arena — у страничных стадий 4–7 сразу в арену страницы, минуя Лукоморье и золотой порог (Ctrl+Alt+B)
+K5E.goStage=(n,arena)=>{n=Math.max(0,Math.min(12,n|0));K5E.startAt=n;K5E.arena=!!arena&&n>=4&&n<=7;if(n===0)G.flags.k5eAt=0;try{HN.html=['','',''];HN.shown=[false,false,false];HN.objK=['','',''];}catch(e){}
   const i=LV('5-B2');if(G.state==='play'&&W.levelId==='5-B2')loadLevel(i);else startFrom(i);};

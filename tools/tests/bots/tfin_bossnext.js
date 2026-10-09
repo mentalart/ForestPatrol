@@ -30,18 +30,21 @@ STEPS('5-B1',()=>FL().stage==='fight'&&!ZC.G.cine,[['золото',()=>FL().phas
   const log=['пролог → 1'];
   GO_(3);if(!READY(3))throw new Error('5-B2: стадия 3 не началась');
   E.won(3);ZC.tick(120);if(!ZC.G.cine&&E.cur===3){/* ролика ещё нет — не страшно: нажмём и так */}
-  for(let n=3;n<12;n++){HK();if(!READY(n+1))throw new Error('5-B2: после Ctrl+Alt+B на стадии '+n+' нет главы '+(n+1)+', cur='+E.cur+' cine='+!!ZC.G.cine);log.push(n+' → '+(n+1));}
+  for(let n=3;n<12;n++){HK();if(!READY(n+1))throw new Error('5-B2: после Ctrl+Alt+B на стадии '+n+' нет главы '+(n+1)+', cur='+E.cur+' cine='+!!ZC.G.cine);
+    // страничные стадии 4–7 — сразу в арену страницы (без Лукоморья и золотого порога)
+    if(n+1>=4&&n+1<=7&&!WAIT(()=>E.es.step==='fight'&&!ZC.G.cine&&!ZC.G.trans,60*60))throw new Error('5-B2: Ctrl+Alt+B на стадии '+n+' не привёл сразу в арену главы '+(n+1)+': step='+E.es.step+' fight='+E.es.fight);
+    log.push(n+' → '+(n+1)+((n+1>=4&&n+1<=7)?' (арена)':''));}
   HK();if(!WAIT(()=>E.done[12],60*30))throw new Error('5-B2: двенадцатая стадия не засчитана');log.push('12 → конец битвы');
   log.join(', ')+(_errs.length?' | ОШИБКИ '+_errs.slice(0,2):'')}
 //@@
-// 5-Б2: Ctrl+Alt+B в момент, когда бумажный лист перелистывания (после стадии 4) закрывает экран, — лист не остаётся поверх новой главы
+// 5-Б2: Ctrl+Alt+B в момент, когда бумажный лист перелистывания (после стадии 7) закрывает экран, — лист не остаётся поверх новой главы (глава 8 — не страница: нового листа при входе нет)
 // («уровень загрузился, но не стартует»); строка пролога стоит под полосой стадии, а не поверх неё.
 {const E=ZC.FIN.k5e,$$=id=>document.getElementById(id),TK=n=>{for(let i=0;i<n;i++){if(ZC.G.cine&&i%3===0)ZC.skip();ZC.tick(1);}};
-  E.goStage(4);ZC.G.manual=true;ZC.tick(20);TK(200);E.won(4);
+  E.goStage(7);ZC.G.manual=true;ZC.tick(20);TK(200);E.won(7);
   for(let i=0;i<60*4&&!($$('k5ePaper')&&$$('k5ePaper').style.opacity==='1');i++)TK(1);
-  const pp=$$('k5ePaper');if(!pp||pp.style.opacity!=='1')throw new Error('5-B2: бумажный лист не появился после стадии 4');
-  HK();TK(2);if(E.cur!==5)throw new Error('5-B2: после Ctrl+Alt+B нет главы 5, cur='+E.cur);
-  if(pp.style.opacity!=='0')throw new Error('5-B2: бумажный лист остался поверх главы 5 (opacity='+pp.style.opacity+')');
+  const pp=$$('k5ePaper');if(!pp||pp.style.opacity!=='1')throw new Error('5-B2: бумажный лист не появился после стадии 7');
+  HK();TK(2);if(E.cur!==8)throw new Error('5-B2: после Ctrl+Alt+B нет главы 8, cur='+E.cur);
+  if(pp.style.opacity!=='0')throw new Error('5-B2: бумажный лист остался поверх главы 8 (opacity='+pp.style.opacity+')');
   TK(60);const bar=$$('bossbar').getBoundingClientRect(),ln=$$('k5eLine').getBoundingClientRect();
   if($$('bossbar').style.display==='none'||$$('k5eLine').style.display==='none')throw new Error('5-B2: нет полосы стадии или строки пролога');
   if(ln.top<bar.bottom-0.5)throw new Error('5-B2: строка пролога наложилась на полосу стадии: полоса '+bar.top+'–'+bar.bottom+', строка с '+ln.top);
