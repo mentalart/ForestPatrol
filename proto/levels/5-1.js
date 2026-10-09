@@ -605,7 +605,7 @@ function build51(){
     if(n===5)return 'ok';
     B.refl=3;yawnScene();G.cine.skip();G.cine.t=G.cine.dur;G.cine.end();G.cine=null;if(n===6)return 'ok';
     B.count=8;sleepScene();G.cine.skip();G.cine.t=G.cine.dur;G.cine.end();G.cine=null;return 'ok';};
-  W.dbg51={chest,MR,KT,golova,swan,kite,belka,CR,HB,B,flockA,flockB,CHEST_REST};   // для ботов
+  W.dbg51={chest,MR,KT,golova,swan,kite,belka,CR,HB,B,flockA,flockB,CHEST_REST,lk1,lk2,lk3a,lk3b,lk4,RG,SK,well,LAND,likho1,likho2,lullSign,tickSign3,LOGZ,AR};   // для ботов
   W.onStart=()=>{intro();};
   flushDecor();}
 
