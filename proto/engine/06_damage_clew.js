@@ -7,7 +7,7 @@ function damageHero(h,src){if(!src||(src.kind!=='enemy'&&src.kind!=='hazard'))re
     if(src.ref.kind==='tat'){h.vel.x*=0.15;h.vel.z*=0.15;h.vel.y=2;h.knockT=0.15;}   // паутинник щиплет, а не отбрасывает
     if(src.ref.kind==='tyagun'){h.vel.x=-dx/d*4.5;h.vel.z=-dz/d*4.5;h.vel.y=2.5;h.knockT=0.28;floatText(h.pos.clone().add(new V3(0,h.d.height+1,0)),'Тянет!','#9fe6ff');}}
   floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),W.noPetals?'Ох!':'-1 лепесток','#ff9ab8');
-  if(p.petals===0){p.downed=true;p.downT=10;p.revT=0;h.guard=false;tip(1-p.i,'Друг клубком ниток рассыпался! Подойди, рядом постой —<br>Ты его и зашьёшь, дорогой.',3);}
+  if(p.petals===0){p.downed=true;p.downT=10;p.revT=0;h.guard=false;tip(1-p.i,'Друг клубком ниток рассыпался! Подойди — зашей.',3);}
   return true;}
 function updateDowned(pi,dt){const p=players[pi],h=active(pi);h.vel.x=damp(h.vel.x,0,8,dt);h.vel.z=damp(h.vel.z,0,8,dt);p.downT-=dt;
   // любой герой напарника стоит рядом секунду — клубок подшит, герой встаёт с двумя лепестками

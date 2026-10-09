@@ -129,7 +129,7 @@ function mimicSig(e,h,s){const P=players[h.player],hard=P.path==='hard';const L=
   if(e.mimic){if(hard){const last=(P.defLog||[]).slice(-1)[0];if(last&&last!==e.mimic.def){e.mimic=null;floatText(e.pos.clone().add(new V3(0,2.4,0)),'Сбился!','#d8f0ff');return s;}}
     else if(G.time>e.mimic.until){e.mimic=null;return s;}return e.mimic.sig;}
   if(L.length>=5&&L.every(x=>x===L[0])){const sig=L[0]==='g'?'red':'yellow';if(!e.signals.includes(sig))return s;P.defLog=[];e.mimic={def:L[0],sig,until:G.time+10};floatText(e.pos.clone().add(new V3(0,2.4,0)),'Перенял!','#ff9a8a');
-    if(!G.flags.mimicTold){G.flags.mimicTold=true;tip(h.player,'Тень твою защиту запомнила! Пять одинаковых подряд — '+(sig==='red'?'хватает красным: кувыркнись '+K(h.player,'roll')+'.<br>Меняй приёмы — не попадись.':'бьёт жёлтым: щитом '+K(h.player,'guard')+' закройся.<br>Меняй приёмы — не бойся.'),3.6);}return sig;}
+    if(!G.flags.mimicTold){G.flags.mimicTold=true;tip(h.player,'Тень запомнила! Пять одинаковых — '+(sig==='red'?'красный: кувыркнись '+K(h.player,'roll')+'.':'жёлтый: щит '+K(h.player,'guard')+'.'),3.6);}return sig;}
   return s;}
 function dvoynikFoe(kind,x,z,o){DV_KIND=kind;const e=makeFoe('dvoynik',x,z,Object.assign({leash:9},o||{}));e.pickSig=mimicSig;e.dvKind=kind;return e;}
 // хамелей: перенимает ближайший к себе знак — у клубка обычный, у гуслей плюётся каплями, у пера — тень (нужен свет рядом), у клещей раскалён (нужна вода)

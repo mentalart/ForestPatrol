@@ -334,7 +334,7 @@ build32=function(){
       case 'charge':{const st=B.speed*dt;e.pos.x+=B.dir.x*st;e.pos.z+=B.dir.z*st;e.face=Math.atan2(B.dir.x,B.dir.z);if(Math.random()<dt*20)burst(e.pos.clone().add(new V3(rand(-0.6,0.6),0.3,rand(-0.6,0.6))),0xffffff,2,2,0.8);
         for(const S of SB){if(S.gone>0)continue;if(hd(S,e.pos)<e.r+(S.puffy?1.05:0.75)){if(S.puffy){B.ai='stuck';B.t=0;B.stog=S;e.dazeT=soloK()?8:6;SFX.thud();shakeAll(0.05,0.4);burst(new V3(S.x,AY+1,S.z),0xffffff,24,4);
               floatText(e.pos.clone().add(new V3(0,3.4,0)),'Увяз в облаке!','#e8f4ff');B.embAt=e.embers;B.emit('stuck',{stog:S,dur:e.dazeT});if(!F.stuckTold){F.stuckTold=true;later(0.4,()=>say('zven',B.phase===3?'Увяз! Ведите Пушка — скорей!':'Увяз! В свете бейте — шерсть мягкая стала!',2.4,true));}}
-            else{stogScatter32(S,6);B.ai='bonk';B.t=0;B.dur=1.0;floatText(e.pos.clone().add(new V3(0,3.4,0)),'Разметал стожок!','#ffffff');SFX.crash();B.emit('dry',{stog:S});if(!F.dryTold){F.dryTold=true;for(const pi of[0,1])tip(pi,'Сухой стожок Баран разметал! Пусть Йоша польёт его живой водой '+K(1,'skill')+' — пухлый стожок его удержит.',3.4);}}
+            else{stogScatter32(S,6);B.ai='bonk';B.t=0;B.dur=1.0;floatText(e.pos.clone().add(new V3(0,3.4,0)),'Разметал стожок!','#ffffff');SFX.crash();B.emit('dry',{stog:S});if(!F.dryTold){F.dryTold=true;for(const pi of[0,1])tip(pi,'Стожок разметан! Йоша, полей живой водой '+K(1,'skill')+'.',3.4);}}
             break;}}
         if(B.ai!=='charge')break;
         for(const h of HEROES){if(!h.active||B.hitSet.has(h))continue;if(hd(h.pos,e.pos)>B.hitR||Math.abs(h.pos.y-e.pos.y)>1.8)continue;B.hitSet.add(h);
