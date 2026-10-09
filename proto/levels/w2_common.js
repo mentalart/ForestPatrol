@@ -43,7 +43,7 @@ function setWater(z,st,pi){if(z.state===st&&z.t>=1)return false;z.from=z.level;z
 function requestWater(z,pi,want){const h=active(pi);
   if(z.req){if(z.req.pi!==pi){z.req.t=Math.max(z.req.t,2);SFX.ok();floatText(h.pos.clone().add(new V3(0,h.d.height+0.7,0)),'Давай!',PCSS[pi]);}return;}
   z.req={pi,want,t:0};SFX.call();floatText(h.pos.clone().add(new V3(0,h.d.height+0.7,0)),want==='high'?'Прошу прилив!':'Прошу отлив!',PCSS[pi]);
-  if(!G.flags.reqTold){G.flags.reqTold=true;tip(1-pi,'Друг '+(want==='high'?'прилив':'отлив')+' просит. Через две секунды вода сменится сама.<br>Хочешь быстрей — сыграй и ты '+K(1-pi,'item')+', вот и вся недолга.',4);}}
+  if(!G.flags.reqTold){G.flags.reqTold=true;tip(1-pi,'Друг '+(want==='high'?'прилив':'отлив')+' просит: сыграй и ты '+K(1-pi,'item')+'!',4);}}
 function playGusli(pi){const p=players[pi],h=active(pi);if(p.downed||h.hang||h.cling)return;
   if(!W.abil.gusli){if(p.lockedTip<=0){p.lockedTip=4;tip(pi,W.gusliLocked||'Гусли Садко подарит — на площади у фонтана.',2.4);}return;}
   if((p.gusCd||0)>0)return;p.gusCd=0.7;

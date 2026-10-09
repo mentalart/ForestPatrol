@@ -13,7 +13,7 @@ function dsSwapOut(pi){const p=players[pi],h=active(pi),o=other(pi);
   if(active(pi)!==o){h._down=null;p.downed=true;p.downT=D.t;return false;}
   p.petals=3;h.following=false;h.vel.set(0,0,0);o.iT=Math.max(o.iT||0,1.2);
   floatText(o.pos.clone().add(new V3(0,o.d.height+0.7,0)),'Теперь я!',PCSS[pi]);
-  tip(pi,'Клубок друг подошьёт — ему постоять рядом надо.<br>Иль клубок сам у колокольчика соберётся — вот и отрада.',3);return true;}
+  tip(pi,'Клубок друг подошьёт — постой рядом.',3);return true;}
 {const _up=updatePlayer;updatePlayer=function(pi,dt){const p=players[pi];
   if(p.downed&&!G.cine&&!G.ui&&(!G.solo||pi===G.soloPi)&&tap(pi,'swap')){
     if(dsSwapOut(pi))dsEat(pi);

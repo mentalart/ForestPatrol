@@ -128,7 +128,7 @@ function updateThreads(dt){
       else{t.sx=hs.sx+hs.dx*hs.len;t.sz=hs.sz+hs.dz*hs.len;t.y=t.y2=hs.y;if(!hs.grow){t.waiting=false;glue(t,hs,new V3(t.sx,t.y,t.sz));}}}
     else if(t.grow){t.len=Math.min(t.max,t.len+32*dt);const tx=t.sx+t.dx*t.len,tz=t.sz+t.dz*t.len;
       for(const s of W.stakes){if(!t.grow)continue;if(Math.hypot(tx-s.x,tz-s.z)<1.0&&Math.hypot(s.x-t.sx,s.z-t.sz)>1.6&&s.y-t.y<4.5&&t.y-s.y<4.5){
-        if(s.thickOnly&&!t.thick){t.grow=false;tip(t.owner,'Тонкая нить сюда не достанет. Нужна толстая струна —<br>Её Потап с камня с медвежьей лапой натянет сполна.',2.6);break;}makeString(t,s);}}
+        if(s.thickOnly&&!t.thick){t.grow=false;tip(t.owner,'Нужна толстая струна — её натянет Потап.',2.6);break;}makeString(t,s);}}
       if(t.grow&&W.threadStop){const r=W.threadStop(t,tx,tz);if(r==='kill'){removeThread(t);continue;}if(r)t.grow=false;}
       if(t.grow)for(const b of W.boxes){if(b.on&&b.maxy>t.y+0.35&&b.miny<t.y+1&&tx>b.minx&&tx<b.maxx&&tz>b.minz&&tz<b.maxz){t.grow=false;break;}}
       if(t.grow)for(const c of W.cyls){if(c.on&&!c.mover&&c.maxy>t.y+0.35&&c.miny<t.y+1&&Math.hypot(tx-c.x,tz-c.z)<c.r){t.grow=false;break;}}

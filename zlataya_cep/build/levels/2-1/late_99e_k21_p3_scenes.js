@@ -22,7 +22,7 @@
         {t:4.4,fn:()=>{notes.forEach((s,i)=>{const h=HEROES[i],from=s.position.clone();anim(1.4,k=>{s.position.lerpVectors(from,h.pos.clone().add(new V3(0,h.d.height,0)),smooth(k));s.material.opacity=1-k*0.6;if(k>=1){W.group.remove(s);burst(h.pos.clone().add(new V3(0,h.d.height,0)),COL.gold,6,2);}});});}}],
       tick:(t)=>{sadko.head.rotation.x=0.12;sadko.body.rotation.z=Math.sin(t*2.2)*0.04;},
       end:()=>{notes.forEach(s=>W.group.remove(s));banner('Гусли Садко!','#ffd76a',2.8,'кнопка R или ; (на джойстике RB): вода подымется или опустится там, где стоишь');
-        for(const pi of[0,1])tip(pi,'Ракушка с лодочкой воду кажет: лодочка вверху — прилив, внизу — отлив.<br>Играй на гуслях '+K(pi,'item')+' — вот и весь мотив.',4.2);}});}
+        for(const pi of[0,1])tip(pi,'Лодочка вверху — прилив, внизу — отлив. Играй '+K(pi,'item')+'!',4.2);}});}
   W.waterTargets.push({pos:new V3(-5.9,0,-14.5),active:()=>F.stage==='sadko',onWater:()=>{giftScene();}});
   function bookScene(){F.stage='book';const T=HERO,pr=T.proshka;const umb=new THREE.Group();W.group.add(umb);umb.visible=false;
     addMesh(new THREE.CylinderGeometry(0.02,0.02,0.9,5),M(0x6a4a2a),0,-0.45,0,umb);const can=addMesh(new THREE.ConeGeometry(0.75,0.35,10),M(0x4f9a3a),0,0.05,0,umb);can.scale.set(0.2,1,0.2);
@@ -91,7 +91,7 @@
       for(const h of HEROES){if(!h.active||h.cling||h.sturgT)continue;if(Math.abs(h.pos.x-p.x)<3.2&&Math.abs(h.pos.z-p.z)<5){h.sturgT=1;h.vel.x-=3.2;h.vel.y=Math.max(h.vel.y,2.8);h.grounded=false;floatText(h.pos.clone().add(new V3(0,h.d.height+0.5,0)),'Ух! Течение!','#cff8ff');}}
       if(k>=1){S.g.visible=false;for(const h of HEROES)h.sturgT=0;}});
     later(5.8,()=>say('zven','Слышали? Напев Садко! Дзинь, дилинь — по очереди, а дон-дон — вместе!',4));
-    later(8.6,()=>{for(const p of[0,1])tip(p,'Звонкие плиты: встаньте на них по напеву Садко —<br>дзинь (жёлтая), дилинь (синяя), а дон-дон (розовая и зелёная) — вдвоём, разом!',4.4);});}
+    later(8.6,()=>{for(const p of[0,1])tip(p,'Плиты: дзинь, дилинь — по очереди, дон-дон — вдвоём.',4.4);});}
   function tuneDone(){TS.done=true;F.tune=true;[67,71,74,72].forEach((m,i)=>later(i*0.14,()=>gusli(m,0,0.24)));later(0.7,()=>{gusli(67,0,0.2);gusli(74,0,0.2);gusli(79,0,0.2);});
     for(const T of TUNE){T.lit=1;burst(new V3(T.x,1.4,T.z),T.c,14,4);}tuneCol.on=false;SFX.gate();SFX.ok();
     anim(2.2,k=>{tuneGate.position.y=4.6*smooth(k);tgBells.forEach((b,i)=>{b.rotation.z=Math.sin(k*30+i)*0.4*(1-k);});});
@@ -104,7 +104,7 @@
     const ok=i=>{const T=TUNE[i];T.lit=1;gusli(T.n,0,0.22);burst(new V3(T.x,1.2,T.z),T.c,10,3);ringFx(new V3(T.x,0.2,T.z),T.c,1.6);};
     const fail=()=>{TS.step=0;TS.t=0;TS.fails++;tone(233,0.5,'sawtooth',0.07,220);tone(247,0.5,'sawtooth',0.07,230);for(const T of TUNE){T.lit=0;burst(new V3(T.x,0.6,T.z),0xff6a6a,6,2,0.5);}
       floatText(new V3(0,2.8,-195),'Фальшь! Сначала: дзинь…','#ffb0a0');
-      if(TS.fails===2)for(const p of[0,1])tip(p,'Напев Садко: дзинь (жёлтая), дилинь (синяя) — по очереди,<br>а дон-дон (розовая и зелёная) — вместе, разом! В одиночку оставь героя на одной плите '+K(p,'swap')+'.',4.6);};
+      if(TS.fails===2)for(const p of[0,1])tip(p,'В одиночку: оставь героя на плите '+K(p,'swap')+'.',4.6);};
     if(TS.step>0){TS.t+=dt;if(TS.t>10){TS.step=0;TS.t=0;floatText(new V3(0,2.8,-195),'Напев стих — сначала!','#cfe8ff');}}
     const fr=TUNE.filter(T=>T.fresh).map(T=>T.i);
     if(TS.step===0){if(fr.includes(0)){ok(0);TS.step=1;TS.t=0;}else if(fr.length)fail();}

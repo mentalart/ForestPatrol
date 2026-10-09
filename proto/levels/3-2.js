@@ -44,7 +44,7 @@ function build32(){
     banner('Грозовые тучки!','#9fd0ff',2.4,'тучка искрит: синяя капля-молния — щит, в последний миг отбей назад · в свете тучка мягка');later(1.4,()=>say('zven','Свет — это оружие. Круг ходит с тобой!',2.6,true));}
   function trapArm(){F.trap='armed';bark(T.potap,'potap','Йоша, давай ко мне — довезу, не бойся.',2.6);}
   function trapFall(){F.trap='fell';meltCloud(C5);F.yoshaFloat=true;bark(T.yosha,'yosha','Я сам! Не мал, не слаб!',1.6);F.noCarry={minx:-12,maxx:12,miny:-3,maxy:2.5,minz:-40,maxz:-30.4};W.noCarry.push(F.noCarry);
-    later(2.5,()=>{tip(1,'Йоша внизу, на лугу. Назад путь долог — по облачной лестнице, мимо барашков.<br>Потап ждать не станет — не до шашек.',3.6);});}
+    later(2.5,()=>{tip(1,'Йоша внизу. Наверх — по облачной лестнице!',3.6);});}
   function trapRide(){F.trap='rode';later(0.4,()=>bark(T.yosha,'yosha','Ладно. На этот раз — вези.',2.4));}
   W.onPuff=(c)=>{if(!F.puffTold){F.puffTold=true;later(0.4,()=>bark(T.pelageya,'pelageya','Я поливаю — ты подымаешь!',2.2));}};
   W.updates.push(dt=>{
@@ -83,7 +83,7 @@ function build32(){
     O('Последнее облако — наверх, к звену!',()=>false,()=>[C6.g,L4.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>h.pos.y<-0.5&&h.pos.y>-6&&h.pos.z<-10&&h.pos.z>-17.5,text:pi=>'Нижний луг. Облачная лестница справа наверх ведёт.'},
-    {cond:(pi,h)=>h.pos.y<4&&h.pos.z<-30&&h.pos.z>-60&&h.pos.x<9,text:pi=>'Ты внизу, на лугу под обрывом. Наверх — по облачной лестнице справа, вперёд.'},
+    {cond:(pi,h)=>h.pos.y<4&&h.pos.z<-30&&h.pos.z>-60&&h.pos.x<9,text:pi=>'Ты внизу. Наверх — по лестнице справа!'},
     {cond:(pi,h)=>W.clouds.some(c=>h.groundRef===c&&!c.puffy&&c.meltT>9),text:pi=>'Облако мигает — сейчас растает! Прыгай иль спускайся!'});
   W.spawns=[[new V3(-2.6,0,5),new V3(-4.6,0,6)],[new V3(2.6,0,5),new V3(4.6,0,6)]];W.startAct=[0,0];
   W.pauseLine='Облачные пастбища: облако под горящим пером подымается, во тьме — опускается,<br>Поднятое за пятнадцать секунд тает. Живая вода Йоши облако пухлым делает.<br>А барашки к свету бегут — не отстают.';

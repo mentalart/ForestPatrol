@@ -4,7 +4,4 @@
 {const _bn=banner;banner=function(text,color,dur,sub){
   if(W&&W.levelId==='5-B1'&&text==='ПРОБОЙ!'){const F=W.flags;if(F.pryvSaid){sub='';dur=Math.min(dur||1.1,1.1);}else{F.pryvSaid=true;sub='Бей скорей!';dur=3.5;}}
   return _bn.call(this,text,color,dur,sub);};}
-// F-2h2: общая подсказка движка «Синяя полоска полна!…» (14 слов) появляется в 5-Б1 не в каждом прогоне — здесь короче (в других уровнях текст прежний)
-{const _tp=tip;tip=function(pi,html,dur){if(W&&W.levelId==='5-B1'&&typeof html==='string'){let m;
-    if(m=/^Синяя полоска полна! Смени героя (.*?) —/.exec(html))html='Полоска полна — смени героя '+m[1]+'!';}
-  return _tp(pi,html,dur);};}
+// F-2h3: общая подсказка «Полоска полна!…» сокращена в самом движке (proto/engine/05_foes_moroki.js) — обёртка tip здесь больше не нужна

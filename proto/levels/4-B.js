@@ -88,7 +88,7 @@ function build4B(){
       if(F.inhale>0){F.inhale-=dt;for(const s of W.sparks){s.free=Math.max(s.free,4.2);}}
       if(F.longInh>0){F.longInh-=dt;const e=heads[1];const hp=new V3();e.L.head.getWorldPosition(hp);markPos.copy(hp).add(new V3(0,0.2,0.9));mark.position.copy(markPos);mark.visible=true;mark.lookAt(camS.position);mark.scale.setScalar(1.1+0.2*Math.sin(G.time*10));
         if(F.longInh<=0){mark.visible=false;// не прервали — средняя дует огнём по всем
-          SFX.whoosh();floatText(e.pos.clone().add(new V3(0,3.4,0)),'ФУ-У-УХ!','#9fd0ff');for(const pi of[0,1]){const h=active(pi);if(!players[pi].downed&&!h.cling)spawnBolt(e,h);}if(!F.shieldTold){F.shieldTold=true;tip(0,'Средняя огнём дует! Потап, щитом '+K(0,'guard')+' закройся —<br>Он закроет всех за спиной, не бойся.',3.4);}}}
+          SFX.whoosh();floatText(e.pos.clone().add(new V3(0,3.4,0)),'ФУ-У-УХ!','#9fd0ff');for(const pi of[0,1]){const h=active(pi);if(!players[pi].downed&&!h.cling)spawnBolt(e,h);}if(!F.shieldTold){F.shieldTold=true;tip(0,'Средняя дует! Потап, щит '+K(0,'guard')+' — всех закроет.',3.4);}}}
       else mark.visible=false;}});
   /* ---------- рисунки кнопок и задачи ---------- */
   for(const pi of[0,1]){const h=()=>active(pi);
