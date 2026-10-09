@@ -51,3 +51,8 @@ K5B2_ST[3]=(h,hh,K,E)=>{const ES=E.es;if(!ES.fight)return 'follow';
   const sp=k5b2Ht(1.1)[0];if(sp&&ES.spinSt==='rest')return k5b2Strike(h,K,sp,0.35,1.5);                                                          // веретено замерло золотом — бить
   const mobs=k5b2Ht(1.0).filter(t=>hd(t.pos,h.pos)<7).sort((a,b)=>hd(a.pos,h.pos)-hd(b.pos,h.pos));if(mobs.length)return k5b2Strike(h,K,mobs[0],0.4,1.4);   // сошедшие мороки
   return 'follow';};
+// стадия 1: замок на цепи Кота-часов (пока Кот не пройдёт по кругу, замок держит часы) — сбить, если рядом никто не замахивается
+K5B2_ST[1]=(h,hh,K,E)=>{if(!FIN.k5.fight||!E.clock||!E.clock.live)return 'follow';
+  if(W.enemies.some(e=>e.alive&&e.state==='wind'&&e.tgt===h))return 'follow';
+  const lk=k5b2Ht(1.0)[0];if(!lk||hd(lk.pos,h.pos)>28)return 'follow';
+  return k5b2Strike(h,K,lk,0.4,1.4);};
