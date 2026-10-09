@@ -18,6 +18,7 @@
    const GP=new V3(),GV={x:0,y:0,sp:11,agreeT:0,fight:0,bump:0,rush:0,kick:0,boostOn:false},IN=[{x:0,y:0},{x:0,y:0}];
    let pg=null,HEADS=null,MIDH=null,sc=null,CL=null,LK=null,OAKW=null,DG=null,WV=null,CS=null,AURA=null;const decs=[],streaks=[],puffs=[];
    let pages=[],spires=[],crows=[],drops=[],fires=[],letters=[],hoops=[],rocks=[],orbs=[],bonuses=[];
+   E.proX=()=>({crows,drops,orbs,bonuses});   // для бота-напарника
    const GZ=[-380,-780];                                  // ущелье «Чернильная волна» — от и до (z)
    const LET='ЧЕРЕЗЛЕСАЧЕРЕЗМОРЯКОЛДУННЕСЁТБОГАТЫРЯ';
    // небо отрезка: фон и туман, цвет и сила рассеянного света, цвет и сила солнца
