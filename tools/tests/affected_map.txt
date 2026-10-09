@@ -24,6 +24,7 @@ tools/map.py                                  -
 tools/tests/grid.js                           -
 tools/tests/shot.js                           -
 tools/tests/pw.js                             -
+tools/tests/run.js                            tfin_bossaudit smoke tallobj
 tools/tests/affected.py                       -
 tools/tests/affected_map.txt                  -
 tools/tests/layout_check.js                   -
@@ -60,7 +61,7 @@ zlataya_cep/build/gpu/gpu_shaders.js          -
 zlataya_cep/build/gpu/gpu_late_*.js           -
 zlataya_cep/build/header.txt                  -
 zlataya_cep/build/fonts/*                     tfin_splash tfin_menu
-zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine tfin_hints tfin_bossui tfin_hintctl
+zlataya_cep/build/fin.css                     tfin_menu tfin_splash tfin_uisnd tfin_cine tfin_hints tfin_bossui tfin_hintctl tfin_tutfont
 zlataya_cep/build/fin_body.html               tfin_menu tfin_splash tfin_uisnd
 zlataya_cep/build/fin_early.js                @wide
 
@@ -94,7 +95,7 @@ zlataya_cep/build/levels/4-B/late_38_gor_friend.js @level:4-B tfin_gorend tfin_g
 zlataya_cep/build/levels/epi/late_39_epi_shadows.js @level:epi tfin_epitheatre tfin_episolo tepi
 
 # ---- модули релиза: меню, сохранения, заставка, звук ----
-zlataya_cep/build/late_40_music.js            tfin_menu tfin_save
+zlataya_cep/build/late_40_music.js            tfin_menu tfin_save tfin_audiolevel
 zlataya_cep/build/late_50_save.js             tfin_save tfin_dev tfin_menu
 zlataya_cep/build/late_60_title.js            tfin_menu tfin_splash
 zlataya_cep/build/late_70_menu.js             tfin_menu tfin_pads tfin_pads2 tfin_uisnd tfin_save tfin_dev tfin_botlevel
@@ -119,18 +120,22 @@ zlataya_cep/build/late_74_kids_start.js       tfin_kids1 tfin_kids2 tfin_menu tf
 zlataya_cep/build/late_75_kids_w1.js          @level:p @level:1-1 @level:1-2 @level:1-3 @level:1-4 @level:1-5 @level:1-B @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 smoke
 zlataya_cep/build/late_76_kids_fight.js       @level:1-1 @level:1-2 @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 tfin_foekinds smoke
 zlataya_cep/build/late_76b_cine_skip.js       tfin_kids2 tfin_cine smoke
+zlataya_cep/build/late_96_uilog.js             tfin_bossaudit tfin_hints tfin_cine tallobj smoke
 zlataya_cep/build/late_78_signals.js             tfin_signals smoke
 zlataya_cep/build/late_79c_taskshort.js       tfin_taskshort tfin_hints smoke
+zlataya_cep/build/late_79d_help.js              tfin_help tfin_kids1 tfin_kids2 tfin_k1b tfin_k1b3 tfin_hints tfin_bossui smoke
+zlataya_cep/build/levels/1-B/late_99zd_k1b_help.js tfin_help tfin_k1b tfin_k1b3 tfin_k1bhands
+zlataya_cep/build/late_79e_lesson.js          tfin_lesson tfin_boss4b tfin_gor4 tfin_gorsolo tfin_hintlayer tfin_menu
 tools/playtest/task_short.py                  tfin_taskshort
 tools/playtest/task_short_tpl.js              tfin_taskshort
 tools/playtest/*                              -
 playtest_sim/*                                -
 zlataya_cep/build/late_79b_readaloud.js       tfin_kids1 tfin_kids2 tfin_taskshort tfin_hints
 zlataya_cep/build/late_80_ui.js               tfin_menu tfin_cine
-zlataya_cep/build/late_81_sfx.js              tfin_cine tfin_uisnd
-zlataya_cep/build/late_91_voice.js            tfin_voice tfin_cine tfin_scooter tfin_uisnd
+zlataya_cep/build/late_81_sfx.js              tfin_cine tfin_uisnd tfin_audiolevel
+zlataya_cep/build/late_91_voice.js            tfin_voice tfin_cine tfin_scooter tfin_uisnd tfin_audiolevel
 zlataya_cep/build/late_91b_juice.js            @full tfin_juice
-zlataya_cep/build/late_91c_juice_world.js      @full tfin_juice
+zlataya_cep/build/late_91c_juice_world.js      @full tfin_juice tfin_audiolevel
 zlataya_cep/build/late_95_dev.js              tfin_dev tfin_devluko
 
 # ---- модули релиза: ролики, камера, видимость ----
@@ -150,7 +155,8 @@ zlataya_cep/build/levels/5-B2/late_93_koschei_level_p5_finale.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p4_skaz.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p3_wind.js @level:5-B2
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p2_storm.js @level:5-B2
-zlataya_cep/build/levels/5-B2/late_94_koschei_reset.js @level:5-B2
+zlataya_cep/build/levels/5-B2/late_94_koschei_reset.js @level:5-B2 tfin_bossnext
+zlataya_cep/build/levels/5-B2/late_94b_k5e_budget.js @level:5-B2 tk5e_budget tfin_bossaudit
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_ph_prologue.js @level:5-B2 tk5e_prolog tk5e_runner tk5e_lesson tk5e_lesson2 tk5e_solo tk5e_flow
 zlataya_cep/build/levels/5-B2/late_93_koschei_level_p6_epic.js @level:5-B2 tfin_bossnext tk5e_prolog tk5e_flow tk5e_smoke
 zlataya_cep/build/levels/p/late_96_prolog_scooter.js @level:p
@@ -172,7 +178,7 @@ zlataya_cep/build/levels/2-2/late_99f_k22_p2_stove.js @level:2-2 tfin_k22 tfin_k
 zlataya_cep/build/levels/2-3/late_99g_k23.js  @level:2-3 tfin_k23 tfin_k23solo
 zlataya_cep/build/levels/2-4/late_99h_k24.js  @level:2-4 tfin_k24 tfin_k24solo tfin_k23
 zlataya_cep/build/levels/2-5/late_99i_k25.js  @level:2-5 tfin_k25 tfin_k25solo
-zlataya_cep/build/levels/2-B/late_99j_k2b.js  @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
+zlataya_cep/build/levels/2-B/late_99j_k2b.js  @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo tfin_k2blesson
 zlataya_cep/build/levels/2-B/late_99q_k2b_vod.js @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
 zlataya_cep/build/levels/2-B/late_99r_k2b_fx.js @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
 zlataya_cep/build/levels/2-B/late_99s_k2b_chase.js @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
@@ -189,12 +195,12 @@ zlataya_cep/build/levels/luko/rep_30_luko.py  @level:luko tfin_col
 zlataya_cep/build/levels/p/rep_30_prolog.py   @level:p
 zlataya_cep/build/levels/1-3/rep_30_kolobok13.py @level:1-3
 zlataya_cep/build/levels/1-4/rep_30_leshy14.py @level:1-4
-zlataya_cep/build/levels/1-B/rep_30_leshy1b.py @level:1-B tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine tfin_bossnext
+zlataya_cep/build/levels/1-B/rep_30_leshy1b.py @level:1-B tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine tfin_bossnext tfin_k1bfull
 zlataya_cep/build/levels/1-B/late_99x_k1b_leshy.js @level:1-B tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine
 zlataya_cep/build/levels/1-B/late_99y_k1b_fx.js @level:1-B tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine
 zlataya_cep/build/levels/1-B/late_99z_k1b_hands.js @level:1-B tfin_k1b tfin_k1bhands
 zlataya_cep/build/levels/1-B/late_99za_k1b_hide.js @level:1-B tfin_k1b tfin_k1bhide
-zlataya_cep/build/levels/1-B/late_99zb_k1b_hoorovod.js @level:1-B tfin_k1b tfin_k1b3 tfin_k1b3solo tfin_bossnext
+zlataya_cep/build/levels/1-B/late_99zb_k1b_hoorovod.js @level:1-B tfin_k1b tfin_k1b3 tfin_k1b3solo tfin_bossnext tfin_k1bfull
 zlataya_cep/build/levels/1-B/late_99zc_k1b_cine.js @level:1-B tfin_k1b tfin_k1b3 tfin_k1bcine
 zlataya_cep/build/levels/epi/rep_30_epi.py    @level:epi tfin_epitheatre tfin_episolo
 zlataya_cep/build/levels/1-1/late_99n_yaga11.js @level:1-1 tfin_yaga11
@@ -209,4 +215,5 @@ zlataya_cep/build/levels/3-1/late_99p_sky31.js @level:3-1 tfin_sky31 tfin_sky31s
 zlataya_cep/build/late_95b_warp.js              smoke tfin_warp
 tools/tests/cine_frames.js                    -
 tools/tests/bots/archive/*                    -
-zlataya_cep/build/late_84b_bossfx.js            tfin_flash tfin_k2bboss tk5e_smoke tfin_juice
+zlataya_cep/build/late_84b_bossfx.js            tfin_flash tfin_bossfxcap tfin_gor4 tfin_boss4b tfin_k2bboss tfin_k3bboss t5b1 tk5e_smoke tfin_juice tk5e_budget
+zlataya_cep/build/levels/5-B2/late_93_koschei_level_pi_lessonagain.js @level:5-B2 tk5e_act1lessons tk5e_act2lessons tk5e_act3lessons tk5e_lesson

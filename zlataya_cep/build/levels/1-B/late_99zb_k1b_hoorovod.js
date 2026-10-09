@@ -29,7 +29,7 @@ K1S.start=function(){const c=K1B.cur,C=c.C,L=c.L;k1sReset();
   W.cyls.push({x:C.x,z:C.z,r:2.45,miny:-1,maxy:9,on:true});
   for(const pi of[0,1]){const h=active(pi),dx=h.pos.x-C.x,dz=h.pos.z-C.z,r=Math.hypot(dx,dz);if(r<4.2){const a=r<0.1?(pi?0.6:2.5):Math.atan2(dz,dx);h.pos.x=C.x+Math.cos(a)*4.4;h.pos.z=C.z+Math.sin(a)*4.4;h.vel.set(0,0,0);}}
   const b=k1sMakeBoss();K1S.solo=G.solo;K1S.win=({easy:0.9,mid:0.75,hard:0.6})[k1sPath()]||0.75;
-  const go=()=>K1S.begin();if(K1B.cine&&K1B.cine.s3intro)K1B.cine.s3intro(go);else{say('leshy','А ну-ка, закружу, заверчу!',2.2);go();}   // с роликом строку говорит он (late_99zc_k1b_cine.js)
+  const go=()=>K1S.lesson(()=>K1S.begin());if(K1B.cine&&K1B.cine.s3intro)K1B.cine.s3intro(go);else{say('leshy','А ну-ка, закружу, заверчу!',2.2);go();}   // с роликом строку говорит он (late_99zc_k1b_cine.js)
   return b;};
 // хоровод начался: дорожка, скакалка, ленты
 K1S.begin=function(){const c=K1B.cur;if(!c||K1S.on)return;const C=c.C;K1S.on=true;K1S.st='run';K1S.round=1;K1S.need=2;K1S.base=K1S.prog.slice();K1S.last=[null,null];
@@ -123,5 +123,41 @@ K1S.hint=function(pi){const i=k1sIdx(pi),lap=Math.min(K1S.need,K1S.laps[i]||0);
     if(m=/^Большой морок оглушён! Ударьте (.*?) оба разом/.exec(html))html='Бейте '+m[1]+' вдвоём — Богатырский мах!';
     else if(/^Увернулся — враг закружился!/.test(html))html='Враг закружился — бей, пока открыт!';
     else if(m=/^Синяя полоска полна! Смени героя (.*?) —/.exec(html))html='Полоска полна — смени героя '+m[1]+'!';
-    else if(/^Сейчас по нему не попасть/.test(html))html='Не попасть — сначала отбей его удар.';}
+    else if(/^Не попасть! Отбей/.test(html))html='Не попасть — сначала отбей его удар.';}
   return _tp(pi,html,dur);};}
+
+/* ---------- урок «Хоровода» (общий шаблон FIN.lesson, late_79e_lesson.js): одна механика — один шаг, всё ≤ 25 с; пропуск — держать прыжок ---------- */
+// Шаг 1 «Скакалка»: лиана пролетает — герой прыгает (нажми прыжок; не нажал за 8 с — герои прыгают сами). Шаг 2 «Тяни-потяни»: «РАЗ… ДВА… ТРИ!» с эхом-метрономом, оба жмут удар.
+// «Показать ещё раз» — LK.regLevel('1-B', …) (пауза и лестница подсказок F-3). Видели один раз — в этой игре не повторяем (G.flags.k1b[3]); FIN.k1b.les.auto=false — без урока (боты).
+const LK1=FIN.lesson,K1LES=K1B.les={auto:true,runs:0};
+LK1.icons.k1jump='<svg viewBox="0 0 64 64"><path d="M6 46 H58" stroke="#fff" stroke-width="6" stroke-linecap="round"/><circle cx="32" cy="22" r="8" fill="#ffd9a0" stroke="#7a4a10" stroke-width="3"/><path d="M32 30 V40 M24 46 L32 40 L40 46" stroke="#7a4a10" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M32 4 V10 M26 8 L32 2 L38 8" stroke="#fff" stroke-width="3" fill="none"/></svg>';
+LK1.icons.k1pull='<svg viewBox="0 0 64 64"><path d="M8 32 H26 M38 32 H56" stroke="#ffd76a" stroke-width="7" stroke-linecap="round"/><circle cx="32" cy="32" r="6" fill="#fff2b0" stroke="#c88a10" stroke-width="3"/></svg>';
+function k1lesInit(){const C=K1B.cur.C,pis=[0,1],again=K1S.on,sv={ropes:K1S.ropes.map(r=>r.R.g.visible),ys:[]};
+  K1S.ropes.forEach(r=>{r.R.g.visible=false;});
+  if(!again){const L=K1B.cur.L;L.g.visible=true;}
+  const lane=K1B.fx.lane(C,K1S_LANE,2.2,1),rope=K1B.fx.rope(C,K1S_ROPE,1),ang=[],y0=[];
+  // первый показ — герои встают на дорожку лицом к камере; повтор — остаются где были
+  pis.forEach(pi=>{const h=active(pi);if(!again){const a=pi?0.74:2.4;h.pos.x=C.x+Math.cos(a)*K1S_LANE;h.pos.z=C.z+Math.sin(a)*K1S_LANE;h.vel.set(0,0,0);h.face=Math.PI;}
+    ang[pi]=Math.atan2(h.pos.z-C.z,h.pos.x-C.x);y0[pi]=h.pos.y;});
+  const D={C,lane,rope,ang,y0,sv,th:-(ang[0]+1.8),w:1,t:0,hop:[-9,-9],pv:[null,null],again,beat:-1,pt:0};K1LES.D=D;return D;}
+function k1lesEnd(){const D=K1LES.D;if(!D)return;K1LES.D=null;
+  [0,1].forEach(pi=>{const h=active(pi);h.pos.y=D.y0[pi];});
+  D.lane.show&&D.lane.show(false);D.lane.g.visible=false;W.group.remove(D.rope.g);
+  K1S.ropes.forEach((r,i)=>{r.R.g.visible=D.sv.ropes[i]!==false;});}
+function k1lesHop(D,pi){if(G.time-D.hop[pi]>0.7)D.hop[pi]=G.time;}
+// скакалка крутится, герои прыгают в нужный миг (и по нажатию)
+function k1lesRope(D,dt){D.th+=D.w*dt;D.rope.set(D.th,D.w);const rha=-D.th;
+  [0,1].forEach(pi=>{const dn=k1sWrap(rha-D.ang[pi]);const pv=D.pv[pi];D.pv[pi]=dn;if(pv!=null&&dn>0&&dn<D.w*0.3&&pv>dn)k1lesHop(D,pi);
+    const k=(G.time-D.hop[pi])/0.65;active(pi).pos.y=D.y0[pi]+(k>=0&&k<=1?1.1*Math.sin(Math.PI*k):0);});}
+function k1lesSteps(){const D=k1lesInit(),cam={p:[D.C.x,10,D.C.z+16],l:[D.C.x,1.5,D.C.z]};
+  const s1=Object.assign({dur:11.6,card:{tag:'Урок',title:'Скакалка',icon:'k1jump',text:'Скакалка идёт — <b>прыгай</b>!',keys:[0,1].map(pi=>({pi,a:'jump',wait:true}))},
+    wait:{who:'both',a:'jump',timeout:8},each:(s,pi)=>k1lesHop(D,pi),update:(s,u,dt)=>k1lesRope(D,dt),done:()=>{K1LES.ok=true;}},cam);
+  const s2=Object.assign({dur:11.6,card:{tag:'Урок',title:'Тяни-потяни',icon:'k1pull',text:'Раз… два… ТРИ! Бейте <b>вместе</b>!',keys:[0,1].map(pi=>({pi,a:'attack',wait:true}))},
+    wait:{who:'both',a:'attack',timeout:8,sync:1.2},update:(s,u,dt)=>{k1lesRope(D,dt);D.pt+=dt;D.w*=Math.max(0,1-dt*0.4);   // эхо-метроном: раз · два · ТРИ · пауза
+      const n=Math.floor((D.pt-0.5)/0.7);if(n!==D.beat&&D.pt>=0.5){D.beat=n;const b=((n%5)+5)%5;if(b<3){try{tone([440,550,880][b],0.16,'triangle',0.1);}catch(e){}floatText(K1B.cur.L.g.position.clone().add(new V3(0,11.5+b*0.4,0)),['РАЗ…','ДВА…','ТРИ!'][b],b===2?'#ffd76a':'#fff3c0');}}}},cam);
+  return [s1,s2];}
+function k1lesRun(then){K1LES.runs++;K1LES.ok=false;const steps=k1lesSteps();
+  LK1.run(steps,{fov:47,end:()=>{k1lesEnd();if(then)then();}});}
+// перед первым кругом: после ролика этапа 3 (S.start → go)
+K1S.lesson=function(go){if(!K1LES.auto||LK1.seen('k1b',3)){go();return;}LK1.mark('k1b',3);later(0.25,()=>{if(!K1B.cur){go();return;}k1lesRun(go);});};
+LK1.regLevel('1-B',()=>{if(K1S.on)k1lesRun();},()=>!!K1B.cur&&K1S.on&&W.flags.phase===3&&(K1S.st==='run'||K1S.st==='pull'));

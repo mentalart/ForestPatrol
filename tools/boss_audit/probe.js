@@ -12,7 +12,8 @@ const voiced=(who,text)=>{try{const e=FIN.vox&&FIN.vox.find&&FIN.vox.find(who,te
 {const f=floatText;floatText=function(pos,text,color){push('float',{text:strip(text),color});return f.apply(this,arguments);};}
 {const f=play;play=function(def){const sy=(def&&def.says||[]).map(s=>({t:s[0],d:s[1],who:s[2],text:strip(s[3]),v:voiced(s[2],s[3])}));push('play',{dur:def&&def.dur,says:sy,shots:(def&&def.shots||[]).length});return f.apply(this,arguments);};}
 {const f=prompt;prompt=function(pi,action,at,cond,note){push('prompt',{pi,action,note:strip(note)});return f.apply(this,arguments);};}
-{const f=shake;shake=function(pi,amp,dur){push('shake',{a:amp,d:dur,pi:pi});return f.apply(this,arguments);};}
+if(FIN.bossfx)FIN.bossfx.onshake=(pi,amp,dur)=>push('shake',{a:amp,d:dur,pi:pi});   // итоговая амплитуда (после потолка боссовых уровней)
+else{const f=shake;shake=function(pi,amp,dur){push('shake',{a:amp,d:dur,pi:pi});return f.apply(this,arguments);};}
 try{const ct=CINE.trauma;CINE.trauma=function(a){push('trauma',{a});return ct.apply(this,arguments);};}catch(e){}
 try{const fd=CINE.flashDip;CINE.flashDip=function(col,a){push('flashDip',{a:a||0.5,col});return fd.apply(this,arguments);};}catch(e){}
 let _hs=0,_fo=0;
@@ -21,7 +22,8 @@ PR.sample=function(){
   try{updateUI(0.1);}catch(e){}
   for(const id of IDS){const el=document.getElementById(id);if(!el)continue;const cs=getComputedStyle(el);const op=parseFloat(cs.opacity);
     const shown=cs.display!=='none'&&cs.visibility!=='hidden'&&op>0.15;const txt=shown?strip(el.innerText||el.textContent):'';
-    if(PR.st[id]!==txt){PR.st[id]=txt;const r=txt?el.getBoundingClientRect():null;push('dom',{id,text:txt,rect:r?[r.left|0,r.top|0,r.width|0,r.height|0]:null,fs:txt?cs.fontSize:null});}}
+    const r0=txt?el.getBoundingClientRect():null,key=id==='finBossHint'&&r0?txt+'@'+(r0.top|0):txt;   // подсказка босса может сдвинуться под баннер при том же тексте (F-2d)
+    if(PR.st[id]!==key){PR.st[id]=key;const r=r0;push('dom',{id,text:txt,rect:r?[r.left|0,r.top|0,r.width|0,r.height|0]:null,fs:txt?cs.fontSize:null});}}
   const c=G.cine;if(!!c!==!!PR.cine){PR.cine=c?1:0;push(c?'cine+':'cine-',{dur:c&&c.dur});}
 };
 PR.perf=function(){const i=renderer.info;return {calls:i.render.calls,tri:i.render.triangles,geo:i.memory.geometries,fx:(FIN.fx&&FIN.fx.list&&FIN.fx.list.length)||0};};

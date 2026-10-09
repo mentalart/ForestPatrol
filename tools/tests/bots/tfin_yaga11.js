@@ -24,3 +24,9 @@ ZC.tick(150);'plan 6 foes='+ZC.W.enemies.filter(e=>e.alive).length
 let t=0;while(ZC.G.cine&&t<600){ZC.tick(1);t++;}ZC.tick(10);const W=ZC.W;
 if(W.flags.stage!=='fight')throw new Error('после ролика не бой: '+W.flags.stage);if(!W.enemies.some(e=>e.alive&&e.kind==='kiki'))throw new Error('кикиморок нет');
 if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'yaga11 ok stage='+W.flags.stage+' kiki='+W.enemies.filter(e=>e.alive).length+' errs=0'
+//@@
+// M-4b: подсказки боя с Ягой — не длиннее 7 слов (жёстко 10); озвучки у них нет (озвучены только реплики ролика)
+const words=h=>String(h).replace(/<[^>]*>/g,' ').split(/\s+/).filter(w=>/[A-Za-zА-Яа-яЁё0-9]/.test(w)).length;
+const seen=['Не попасть! Отбей G, потом бей F.','Колокольчик! Коль упадёшь — сюда вернёшься, не пропадёшь.','Солнышко вспыхнуло — защиту G жми!'].map(ZC.FIN.yaga11Tip);
+if(seen.some(x=>words(x)>7))throw new Error('подсказки Яги длиннее 7 слов: '+JSON.stringify(seen.map(words)));
+'yaga11 tips ok '+seen.map(words).join('/')

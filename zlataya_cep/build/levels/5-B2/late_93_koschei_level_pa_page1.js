@@ -159,33 +159,14 @@
       L.on(()=>{hut.g.position.copy(hp0);hut.g.rotation.copy(hr0);if(hut.house)hut.house.position.y=hy0;if(hut.door)hut.door.visible=false;stairs.visible=false;stepBox.forEach(b=>{b.on=false;});balBox.on=false;circles.forEach(c=>{c.visible=false;});ties.forEach(k5Del);KS.g.rotation.x=0;});
       const rfx=k5fx(999,()=>{if(KS.g.visible)roofAt();});L.on(()=>{rfx.t=rfx.dur;});
       L.put(po,X-4.2,-1.2);L.put(pr,X-2.2,-0.6);L.put(pe,X+2.2,-0.6);L.put(yo,X+4.2,-1.2);KS.g.visible=true;KS.g.rotation.y=Math.PI;roofAt();
-      // 1. что за стадия
-      L.beat(5.4,{cam:[[X,12,17],[X,1.5,-3],[X,9,13],[X,2,-3]],need:[H(X-4.2,-1.2),H(X+4.2,-1.2),[X,5,-4]],says:[['zven','Яга заперта в избушке без окон, без дверей.',0.2,3.0],['zven','Кощей погоняет избушку с крыши!',3.3,2.0]],ev:[[1.0,()=>{L.pose('point');}],[2.6,()=>{hut.legs&&hut.legs.forEach((l,i)=>{anim(1.2,k=>{l.rotation.x=Math.sin(k*20+i*Math.PI)*0.5;});});}]]});
-      // 2. разбег — в дуб
-      L.beat(9.4,{cam:[[X-1,9,10],[X-5.5,1.2,-5]],need:[H(X-7.2,-6),[O0.x,3,O0.z]],says:[['zven','Красная дорожка — избушка разбежится по ней.',0.2,3.4],['zven','Встань спиной к старому дубу и уйди вбок в последний миг —',3.8,3.4],['zven','избушка врежется и застрянет!',7.0,2.3]],
+      // одна механика урока: избушка бежит по красной дорожке — уйти вбок в последний миг, она врежется в дуб (остальное — в бою)
+      L.beat(3.6,{cam:[[X,12,17],[X,1.5,-3],[X,9,13],[X,2,-3]],need:[H(X-4.2,-1.2),H(X+4.2,-1.2),[X,5,-4]],says:[['zven','Яга в избушке — Кощей гонит её!',0.2,3.2]],ev:[[1.0,()=>{L.pose('point');}],[1.8,()=>{hut.legs&&hut.legs.forEach((l,i)=>{anim(1.2,k=>{l.rotation.x=Math.sin(k*20+i*Math.PI)*0.5;});});}]]});
+      L.beat(5.6,{cam:[[X-1,9,10],[X-5.5,1.2,-5]],need:[H(X-7.2,-6),[O0.x,3,O0.z]],says:[['zven','Избушка бежит по красной дорожке.',0.2,2.4],['zven','Уйди вбок в последний миг — в дуб!',2.7,2.8]],
         ev:[[0,()=>{L.put(po,X-7.2,-6.0);hut.g.position.set(X,0,-4);hut.g.rotation.y=Math.atan2(po.pos.x-X,po.pos.z+4);L.look(po,hut.g.position);}],
-          [0.8,()=>{const from=hut.g.position.clone(),to=new V3(O0.x+OAK_R+1.6,0,O0.z+0.4);const ln=FIN.k2fx&&FIN.k2fx.lane(from,to,2.6,2.2,'red');L.on(()=>{if(ln&&ln.cancel)ln.cancel();});k5s('pSoft');L.pose('cast',{antic:0.2});
-            L.later(2.4,()=>{const f=hut.g.position.clone();FX.dust(f,8,0x6a5a3a,1.5);anim(1.25,k=>{hut.g.position.lerpVectors(f,to,CE.inOutCubic(k));if(Math.random()<0.5)FX.dust(hut.g.position.clone(),1,0x6a5a3a);if(k>=1){shakeAll(0.14,0.5);k5s('stomp');FX.leaves&&FX.leaves(O0.clone().add(new V3(0,6,0)),26);FX.dust(to.clone(),20,0x6a5a3a,2);anim(0.5,q=>{hut.g.rotation.x=-0.25*Math.sin(Math.min(1,q)*Math.PI*0.5);});}});});}],
-          [4.0,()=>L.roll(po,0.4,2.6,0.4)],[5.6,()=>{k5fx(3,()=>{if(Math.random()<0.1)FX.stars&&FX.stars(hut.g.position.clone().add(new V3(0,roofY+0.6,0)),1,0xfff4a0);});}]]});
-      // 3. клубок на ноги
-      L.beat(7.4,{cam:[[X-5,4.4,1.5],[X-1.8,0.2,-4.2]],need:[H(X-3.0,-1.6),[X-2,0.5,-4.2]],says:[['zven','Застряла! Клубок '+kbd('item')+' — у ноги, нить от каждого:',0.2,3.8],['zven','избушка не сможет убежать.',4.2,2.6]],
-        ev:[[0,()=>{L.put(po,X-3.0,-1.6);L.put(pe,X+0.6,-1.6);L.look(po,legW(0));L.look(pe,legW(1));}],...[0,1,2,3].map(i=>[0.8+i*0.75,()=>{const li=i%2,m=new THREE.Mesh(tieM,tieMat);m.rotation.x=Math.PI/2;m.position.set(0,-0.6-Math.floor(i/2)*0.25-0.25,0);(hut.legs[li]||hut.g).add(m);ties.push(m);SFX.thwip&&SFX.thwip();K5L.gold(legW(li).add(new V3(0,1,0)),8);}]),
-          [4.6,()=>{if(hut.house){const y1=hut.house.position.y;anim(0.6,k=>{hut.house.position.y=y1-1.1*k;});}hut.g.rotation.x=0;k5s('stomp');FX.dust(hut.g.position.clone(),14,0x6a5a3a,1.8);}]]});
-      // 4. волна по земле
-      L.beat(4.6,{cam:[[X,7,9],[X,0.8,-3]],need:[H(X-1.6,-0.4),[X,3,-4]],says:[['zven','Прыгнула — по земле бежит волна.',0.2,2.6],['zven','Перепрыгни её!',2.9,1.6]],
-        ev:[[0,()=>{L.put(pe,X+1.6,-0.4);L.put(po,X-1.6,-0.4);if(hut.house)hut.house.position.y=hy0;ties.forEach(k5Del);ties.length=0;hut.g.position.set(X,0,-4);hut.g.rotation.set(0,0,0);}],[0.3,()=>{const f=0;anim(0.8,k=>{hut.g.position.y=Math.sin(k*Math.PI)*4;if(k>=1){hut.g.position.y=0;shakeAll(0.08,0.35);k5s('stomp');FX.dust(hut.g.position.clone(),22,0x6a5a3a,2.2);k5Ring(new V3(X,0.15,-4),0xff8a5a,0.6,9,1.4,0.5);}});}],[1.6,()=>{L.jump(pe,1.5);L.jump(po,1.5);}],[2.6,()=>L.ok(pe)]]});
-      // 5. «Повернись!»
-      L.beat(8.4,{cam:[[X+6,17,5],[X,0,-4.5]],fov:50,need:[H(X,-0.6),H(X,-7.4),[X,4,-4]],says:[['zven','Избушка села. Встаньте на золотые круги с двух сторон —',0.2,3.8],['zven','и ударьте разом '+kbd('attack')+'! Волков-сторожей — бей.',4.2,3.0],['zven','Повернулась!',7.1,1.2]],
-        ev:[[0,()=>{if(hut.house)hut.house.position.y=hy0-1.1;hut.g.position.set(X,0,-4);hut.g.rotation.set(0,0,0);L.put(po,X+3.4,-1.6);L.put(pe,X+3.4,-6.4);circles.forEach((c,i)=>{c.visible=true;c.position.set(X,0.07,i?-7.4:-0.6);});}],
-          [1.0,()=>{L.walk(po,X,-0.6,0.8,Math.PI);L.walk(pe,X,-7.4,0.8,0);}],[3.4,()=>{L.look(po,hut.g.position);L.look(pe,hut.g.position);}],[5.2,()=>{L.hit(po,hut.g.position);L.hit(pe,hut.g.position);circles.forEach(c=>FX.sparkle(c.position.clone().add(new V3(0,0.5,0)),8,0xffd76a));}],
-          [5.7,()=>{circles.forEach(c=>{c.visible=false;});const r0=hut.g.rotation.y,p0=hut.g.position.clone();anim(1.3,k=>{hut.g.rotation.y=r0+Math.PI*CE.inOutCubic(k);hut.g.position.lerpVectors(p0,HC,CE.inOutCubic(k));});k5s('reveal');}]]});
-      // 6. крыльцо и крыша
-      L.beat(10.2,{cam:[[X+3.5,8.5,8],[X+3.5,3,-6]],need:[[X+5.1,1.5,-2.6],[X+2.4,5,-9.6],[X,5,-5.5]],says:[['zven','Выросло крыльцо — по ступеням наверх, на галерею!',0.2,3.4],['zven','Бей Кощея на крыше '+kbd('attack')+'.',3.8,2.4],['zven','Капля сверху — щит в последний миг: она вернётся в него!',6.4,3.6]],
-        ev:[[0,()=>{hut.g.position.copy(HC);hut.g.rotation.set(0,Math.PI,0);if(hut.house)hut.house.position.y=hy0;if(hut.door)hut.door.visible=true;stairs.visible=true;stepBox.forEach(b=>{b.on=true;});balBox.on=true;L.put(po,X+6.6,-0.2);L.put(pe,X+8.2,1.2);K5L.gold(new V3(BALC[0],BALC[1],BALC[2]),20);pips.g.visible=true;}],
-          [0.5,()=>{const pts=[po.pos.clone(),...STEPS.map(q=>new V3(q[0],q[1],q[2])),new V3(BALC[0]+0.3,BALC[1],BALC[2])];anim(2.6,k=>{const u=k*(pts.length-1),i=Math.min(pts.length-2,Math.floor(u));po.pos.lerpVectors(pts[i],pts[i+1],u-i);po.vel.set(0,0,0);po.face=Math.atan2(pts[i+1].x-pts[i].x,pts[i+1].z-pts[i].z);});}],
-          [3.2,()=>{L.look(po,KS.g.position);}],
-          ...L.parry(4.6,po,KS.g.position.clone().add(new V3(0,1.8,0)),{dur:1.8,back:0.7,col:0x9a40ff,then:()=>{pips.out();L.pose('recoil',{snap:true});}}),
-          [7.6,()=>{L.hit(po,KS.g.position);pips.out();FX.sparks(KS.g.position.clone().add(new V3(0,2,0)),10,0xffd76a);}],[8.2,()=>{L.hit(po,KS.g.position);pips.out();FX.sparks(KS.g.position.clone().add(new V3(0,2,0)),10,0xffd76a);L.ok(po);}]]});
+          [0.8,()=>{const from=hut.g.position.clone(),to=new V3(O0.x+OAK_R+1.6,0,O0.z+0.4);const ln=FIN.k2fx&&FIN.k2fx.lane(from,to,2.6,1.8,'red');L.on(()=>{if(ln&&ln.cancel)ln.cancel();});k5s('pSoft');L.pose('cast',{antic:0.2});
+            L.later(1.8,()=>{const f=hut.g.position.clone();FX.dust(f,8,0x6a5a3a,1.5);anim(1.25,k=>{hut.g.position.lerpVectors(f,to,CE.inOutCubic(k));if(Math.random()<0.5)FX.dust(hut.g.position.clone(),1,0x6a5a3a);if(k>=1){shakeAll(0.14,0.5);k5s('stomp');FX.leaves&&FX.leaves(O0.clone().add(new V3(0,6,0)),26);FX.dust(to.clone(),20,0x6a5a3a,2);anim(0.5,q=>{hut.g.rotation.x=-0.25*Math.sin(Math.min(1,q)*Math.PI*0.5);});}});});}],
+          [3.4,()=>L.roll(po,0.4,2.6,0.4)],[4.4,()=>{k5fx(1.2,()=>{if(Math.random()<0.1)FX.stars&&FX.stars(hut.g.position.clone().add(new V3(0,roofY+0.6,0)),1,0xfff4a0);});}]]});
+      L.beat(2.6,{cam:[[X-1,9,10],[X-5.5,1.2,-5]],need:[[O0.x,3,O0.z]],says:[['zven','Понятно? Тогда — в бой!',0.2,2.2]],ev:[[0.2,()=>{L.pose('idle');[po,pe].forEach(h=>L.emo(h,'cheer'));}]]});
     };
   }
   E.pageStage(4,1,{});

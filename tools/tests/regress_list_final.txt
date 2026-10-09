@@ -1,6 +1,6 @@
 # Регресс релизной сборки zlataya_cep/zlataya_cep_final06.html: все боты прототипа и боты меню и сохранений
 # пролог, мир 1, хаб
-smoke tpjump t12n t12deep t12tat t12long t12chudo t12pond tfoes t13v t15n t1b tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine thub2 t11 thub9 thub9b thub9c
+smoke tpjump t12n t12deep t12tat t12long t12chudo t12pond tfoes t13v t15n t1b tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine tfin_k1bfull thub2 t11 thub9 thub9b thub9c
 # мир 2 (прежние t21 t2c t25c t22d t23f t24n t21x t22shot — только для прототипа: в релизе уровни мира 2 другие, их проверяют tfin_k2*)
 tdodge tfade tsplit thw2
 # мир 3
@@ -14,15 +14,15 @@ tallobj
 # одиночный режим
 tsolo tsolo41 tsospot tso12long tso13 tso33 tso54 tso51
 # релиз: титул, меню, пауза, сохранения, клавиши разработчика, кино (final02), коллизии и арт (final03), обучение Горыныча, видимость героев, камера (final04)
-tfin_menu tfin_companion tfin_companion_p tfin_companion_11 tfin_companion_12 tfin_companion_13 tfin_companion_21 tfin_companion_22 tfin_companion_23 tfin_companion_24 tfin_companion_25 tfin_companion_2b tfin_companion_2bboss tfin_companion_14 tfin_companion_15 tfin_companion_1b tfin_companion_luko tfin_save tfin_dev tfin_devluko tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b tfin_occ tfin_cam tfin_kids1 tfin_kids2 tfin_taskshort
+tfin_menu tfin_lesson tfin_companion tfin_companion_p tfin_companion_11 tfin_companion_12 tfin_companion_13 tfin_companion_21 tfin_companion_22 tfin_companion_23 tfin_companion_24 tfin_companion_25 tfin_companion_2b tfin_companion_2bboss tfin_companion_14 tfin_companion_15 tfin_companion_1b tfin_companion_luko tfin_save tfin_dev tfin_devluko tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b tfin_occ tfin_cam tfin_kids1 tfin_kids2 tfin_taskshort
 # final05: джойстики в меню, переключение на живого героя, враги видимы (все виды и появившиеся позже), удар героев, бюджет отрисовок, пачки прозрачных стен, персонажи и враги (витрины)
 tfin_pads tfin_downswap tfin_foekinds tfin_foekinds1b tfin_foekinds2 tfin_foekinds2b tfin_foekinds3 tfin_foekinds4 tfin_foekinds5 tfin_foekinds6 tfin_foeidle tfin_slash tfin_budget tfin_fadebatch tfin_cast tfin_foecast
 # final06: озвучка всей игры; щиты героев (B) и удар Потапа со спины; пауза с джойстика на живом пути (курсор над меню); Лукоморье — стан и берег дальше от дуба; звук с первого нажатия, голос заставки, звуки меню; пролог — Прошка несёт самокат, падает, все смеются; большие «прозрачные стены» — кусками
 tfin_voice tfin_guard tfin_pads2 tfin_luko tfin_uisnd tfin_scooter tfin_splashclick tfin_fadesplit tfin_fadelocal tfin_potap
 # final06: «Битва с Кощеем» 5-Б2 — пролог, двенадцать стадий, полёты домой, без подсказок, вдвоём и в одиночку (docs/28)
-tk5e_smoke tk5e_prolog tk5e_runner tk5e_s1 tk5e_leshy tk5e_s3 tk5e_p1 tk5e_p2 tk5e_p3 tk5e_p4 tk5e_s8 tk5e_s9 tk5e_s10 tk5e_s11 tk5e_s12 tk5e_fly tk5e_solo tk5e_flow tk5e_lesson tk5e_lesson2
+tk5e_smoke tk5e_prolog tk5e_runner tk5e_s1 tk5e_leshy tk5e_s3 tk5e_p1 tk5e_p2 tk5e_p3 tk5e_p4 tk5e_s8 tk5e_s9 tk5e_s10 tk5e_s11 tk5e_s12 tk5e_fly tk5e_solo tk5e_flow tk5e_lesson tk5e_lesson2 tk5e_act1lessons tk5e_act2lessons tk5e_act3lessons tk5e_budget
 # подсказки: одна карточка на игрока, общая по центру, без повторов (late_79_hints.js)
-tfin_hints
+tfin_hints tfin_help
 # подсказки: один раз за уровень, крестовина → убирает и ← показывает снова, «Текстовые подсказки: нет» (late_79_hints.js)
 tfin_hintctl
 # напарник: три уровня опыта (Растеряша / Смекалка / Бывалый), пункт «Напарник в бою», название режима «с ИИ напарником» (late_73_companion.js)
@@ -44,8 +44,8 @@ tfin_kidnap14
 # держит напев; уровни 2-1…2-Б вдвое длиннее — вдвоём и в одиночку
 tfin_kitezh_sea tfin_kitezh_water
 tfin_k21 tfin_k21solo tfin_k21kelp tfin_k21foes tfin_k22 tfin_k22solo tfin_k22hint tfin_k23 tfin_k23solo
-tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo tfin_k2bmill tfin_k2bboss tfin_k2bbosssolo tfin_k3b tfin_k3bsolo tfin_k3bboss tfin_k3bbosssolo tfin_yaga11
+tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo tfin_k2bmill tfin_k2bboss tfin_k2bbosssolo tfin_k2blesson tfin_k3b tfin_k3bsolo tfin_k3bboss tfin_k3bbosssolo tfin_k3blesson tfin_yaga11
 # final06: мир 3 — 3-1 «Сад молодильных яблок» и 3-2 «Облачные пастбища» втрое длиннее, с мини-боссами — вдвоём и в одиночку
-tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor tfin_juice
+tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor tfin_juice tfin_audiolevel
 # Ctrl+Alt+B — следующая стадия у всех боссов (late_95_dev.js, W.bossNext)
 tfin_bossnext

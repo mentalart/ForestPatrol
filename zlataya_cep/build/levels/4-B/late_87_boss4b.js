@@ -5,13 +5,14 @@
 // В бою — живые подсказки: по событию (жёлудь над средней, сытая голова, огонь, одна голова уже в Пробое, проснулась, узда)
 // и по времени без успехов; стрелка над целью, мигающая кнопка, «✓ Молодец!» на правильное нажатие.
 // Логику боя модуль не меняет: во время роликов головы не нападают, после — всё возвращается как было.
-const T4={on:false,auto:true,card:null,hint:null,props:[],arrows:[],ph:-1,h:null};FIN.boss4b=T4;   // auto=false — без обучающих роликов (боты, меряющие вступление)
+const L4=FIN.lesson;
+const T4={auto:true,props:[],arrows:[],ph:-1,h:null,get on(){return L4.on;},set on(v){L4.on=v;},get card(){return L4.card;},get hint(){return L4.hint;}};FIN.boss4b=T4;   // on/card/hint — в общем шаблоне урока (late_79e_lesson.js)   // auto=false — без обучающих роликов (боты, меряющие вступление)
 const t4Heads=()=>W.enemies.filter(e=>e.kind==='golova').sort((a,b)=>a.idx-b.idx);
 const t4P=h=>h.pos.clone();
 const T4SPOT=new V3(0,1.4,-12.6);
-function t4Dom(){if(T4.card&&T4.card.isConnected)return;const mk=id=>{const d=document.createElement('div');d.id=id;document.body.appendChild(d);return d;};T4.card=mk('finTut');T4.hint=mk('finBossHint');}
+const t4Dom=()=>L4.dom();
 // ---------- значки ----------
-const T4I={
+const T4I=Object.assign(L4.icons,{
   heads:'<svg viewBox="0 0 64 64"><g stroke="#1e3a14" stroke-width="2.5"><path d="M10 50 Q14 30 20 26" fill="none" stroke="#4a8a3a" stroke-width="7"/><path d="M32 52 V24" fill="none" stroke="#4a8a3a" stroke-width="7"/><path d="M54 50 Q50 30 44 26" fill="none" stroke="#4a8a3a" stroke-width="7"/>'+
     '<ellipse cx="18" cy="22" rx="9" ry="8" fill="#6ab04c"/><ellipse cx="32" cy="16" rx="9" ry="8" fill="#6ab04c"/><ellipse cx="46" cy="22" rx="9" ry="8" fill="#6ab04c"/></g>'+
     '<circle cx="18" cy="10" r="4" fill="none" stroke="#ffd23a" stroke-width="2.5"/><path d="M29 3 q3 4 6 0" stroke="#5ab8ff" stroke-width="2.5" fill="none"/><path d="M42 11 l2 -5 l2 5 l2 -5" stroke="#ff5a4a" stroke-width="2.2" fill="none"/></svg>',
@@ -29,13 +30,8 @@ const T4I={
   tongs:'<svg viewBox="0 0 64 64"><path d="M14 58 L30 26 M50 58 L34 26" stroke="#5a6070" stroke-width="7" stroke-linecap="round"/><circle cx="32" cy="24" r="5" fill="#5a6070"/><path d="M24 16 Q32 2 40 16" stroke="#ff8a3a" stroke-width="6" fill="none" stroke-linecap="round"/></svg>',
   ring:'<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="20" fill="none" stroke="#ffd76a" stroke-width="7"/><circle cx="32" cy="32" r="28" fill="none" stroke="#ffd76a" stroke-width="2" stroke-dasharray="4 5"/></svg>',
   n123:'<svg viewBox="0 0 64 64"><circle cx="14" cy="32" r="11" fill="#ffd76a"/><circle cx="32" cy="32" r="11" fill="#ffb070"/><circle cx="50" cy="32" r="11" fill="#ff8a6a"/><g font-family="system-ui" font-weight="900" font-size="14" text-anchor="middle" fill="#3a2410"><text x="14" y="37">1</text><text x="32" y="37">2</text><text x="50" y="37">3</text></g></svg>',
-  go:'<svg viewBox="0 0 64 64"><path d="M10 32 H44 M32 16 L50 32 L32 48" stroke="#9ff0a8" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
-const T4WHO=[{n:'Игрок 1',c:'#e0784a'},{n:'Игрок 2',c:'#6cc4b8'}];
-function t4Keys(keys,got){if(!keys||!keys.length)return '';return '<div class="ft-keys">'+keys.map(k=>{const w=T4WHO[k.pi];const st=got&&got[k.pi]?'done':k.wait?'wait':'';
-  return '<span class="ft-key '+st+'">'+(G.solo?'':'<span class="ft-who" style="background:'+w.c+'">'+w.n+'</span>')+K(k.pi,k.a)+(k.label?' '+k.label:'')+'</span>';}).join('')+'</div>';}
-function t4CardHTML(c,got,st){return '<div class="ft-head"><span class="ft-tag">'+c.tag+'</span>'+c.title+'</div><div class="ft-body"><div class="ft-ico">'+(T4I[c.icon]||'')+'</div><div class="ft-text">'+c.text+'</div></div>'+
-  t4Keys(c.keys,got)+(st==='wait'?'<div class="ft-go">'+(c.go||'Нажми!')+'</div>':st==='ok'?'<div class="ft-go okt">'+(c.okText||'Получилось!')+'</div>':st==='auto'?'<div class="ft-go okt">Смотри — вот так!</div>':'')+'<div class="ft-skip">пропустить — оба держат прыжок</div>';}
-function t4Card(c,got,st){t4Dom();if(!c){T4.card.classList.remove('on','ok');return;}T4.card.innerHTML=t4CardHTML(c,got,st);T4.card.classList.add('on');T4.card.classList.toggle('ok',st==='ok');}
+  go:'<svg viewBox="0 0 64 64"><path d="M10 32 H44 M32 16 L50 32 L32 48" stroke="#9ff0a8" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>'});
+const t4Keys=(k,g)=>L4.keys(k,g),t4Card=(c,g,st)=>L4.show(c,g,st);
 // ---------- реквизит роликов и подсказок ----------
 function t4Prop(o){o.userData.noBatch=true;o.userData.dress=true;o.traverse(q=>{q.userData.noBatch=true;q.userData.sty=true;q.castShadow=false;});W.group.add(o);T4.props.push(o);return o;}
 function t4Clear(){for(const o of T4.props)if(o.parent)o.parent.remove(o);T4.props.length=0;}
@@ -43,31 +39,11 @@ function t4Ring(col,r){const g=new THREE.Group();const m=new THREE.Mesh(new FIN.
 function t4Arrow(col){const g=new THREE.Group(),mt=MB(col,{transparent:true,opacity:0.95,depthTest:false,fog:false});const c=new THREE.Mesh(new FIN.orig.Cone(0.42,0.8,4),mt);c.rotation.x=Math.PI;c.renderOrder=10;g.add(c);
   const r=new THREE.Mesh(new FIN.orig.Torus(0.5,0.07,5,20),mt);r.rotation.x=Math.PI/2;r.position.y=0.62;r.renderOrder=10;g.add(r);g.userData.mat=mt;return g;}
 const t4HeadTop=e=>{const p=new V3();(e.L&&e.L.head?e.L.head:e.g).getWorldPosition(p);return p;};
-function t4Tap(pi,a){return G.solo?(tap(0,a)||tap(1,a)):tap(pi,a);}
-function t4Who(w){if(G.solo)return [G.soloPi];return w==='both'||w==='any'?[0,1]:[w];}
+const t4Tap=(pi,a)=>L4.tap(pi,a);
 function t4Broken(e,on){if(on){e.state='broken';e.t=0;e.bdur=99;e._b=true;}else{e.state='idle';e.t=0;e._b=false;e.embers=e.maxEmb||4;}}
-// ---------- движок интерактивного ролика ----------
-// шаг: {dur, p, l (камера), card:{tag,title,icon,text,keys,go,okText}, wait:{who,a,timeout,sync}, at (когда ждать), enter(s), done(s,auto), each(s,pi), update(s,u,dt)}
-function t4Run(steps,opt){opt=opt||{};T4.on=true;t4Dom();const hs=t4Heads();hs.forEach(e=>{e._cd4=e.cd;e.cd=99;});$('banner').style.opacity=0;
-  let T=0;const shots=[];for(const s of steps){s.t0=T;shots.push(shot(T,s.p,s.l,s.p2,s.l2,s.dur,s.cut!==false));T+=s.dur;}
-  const st={i:-1,wt:0};
-  play({dur:T+0.25,fov:opt.fov||47,camK:3.4,shots,
-    tick:(t,dt)=>{const i=t>=T?-1:steps.findIndex(s=>t>=s.t0&&t<s.t0+s.dur);
-      if(i!==st.i){st.i=i;if(i<0)return;const s=steps[i];s.got={};s.okAt=null;s.auto=false;s.first=null;st.wt=0;if(s.enter)s.enter(s);t4Card(s.card,s.got,s.wait?'':null);}
-      if(i<0)return;const s=steps[i];
-      if(s.wait&&s.okAt==null){const at=s.t0+(s.at!=null?s.at:0.8);if(t>=at){if(G.cine)G.cine.t=at;st.wt+=dt;if(st.wt<dt*1.5)t4Card(s.card,s.got,'wait');
-          const need=t4Who(s.wait.who);
-          for(const pi of need)if(!s.got[pi]&&t4Tap(pi,s.wait.a)){
-            if(s.wait.sync&&s.first!=null&&G.time-s.first>s.wait.sync){s.got={};s.first=null;floatText(t4P(active(pi)).add(new V3(0,2.2,0)),'Ещё раз — вместе, дружно!','#ffd9a0');SFX.miss();}
-            s.got[pi]=true;if(s.first==null)s.first=G.time;if(s.each)s.each(s,pi);tone(900+pi*200,0.08,'triangle',0.2);t4Card(s.card,s.got,'wait');}
-          if(s.wait.sync&&s.first!=null&&G.time-s.first>s.wait.sync&&!need.every(pi=>s.got[pi])){s.got={};s.first=null;t4Card(s.card,s.got,'wait');}
-          if(need.every(pi=>s.got[pi])){s.okAt=t;if(s.done)s.done(s,false);SFX.ok();t4Card(s.card,s.got,'ok');}
-          else if(st.wt>(s.wait.timeout||8)){s.okAt=t;s.auto=true;need.forEach(pi=>{s.got[pi]=true;});if(s.done)s.done(s,true);t4Card(s.card,s.got,'auto');}
-          // получилось — досматриваем результат ~2.6 с и дальше, без пустого ожидания
-          if(s.okAt!=null&&G.cine&&s.t0+s.dur-t>2.6)G.cine.t=s.t0+s.dur-2.6;}}
-      if(s.update)s.update(s,t-s.t0,dt);},
-    end:()=>{T4.on=false;t4Card(null);t4Clear();if(T4.h){T4.h.prog=G.time;T4.h.grace=G.time+3;}t4Heads().forEach(e=>{e.cd=e._cd4!=null&&e._cd4<50?e._cd4:1.5;});if(opt.end)opt.end();}});
-  const cd=CINE.CD&&CINE.CD();if(cd&&cd.S===G.cine){cd.inserts=false;cd.cover=[];cd.calm=true;}}
+// ---------- ролик этапа: движок — общий шаблон урока FIN.lesson.run (late_79e_lesson.js); здесь — головы Змея на время ролика ----------
+const T4HOOK={begin:()=>{t4Heads().forEach(e=>{e._cd4=e.cd;e.cd=99;});},cleanup:()=>{t4Clear();if(T4.h){T4.h.prog=G.time;T4.h.grace=G.time+3;}t4Heads().forEach(e=>{e.cd=e._cd4!=null&&e._cd4<50?e._cd4:1.5;});}};
+const t4Run=(steps,opt)=>L4.run(steps,Object.assign({},T4HOOK,opt));
 // общие кадры
 const C4={wide:[[0,7.8,10],[0,2.4,-9.5]],L:[[-9.8,3.4,-1.6],[-5.4,2.6,-9.6]],R:[[9.8,3.4,-1.6],[5.4,2.6,-9.6]],M:[[1.5,3.2,-2.6],[0,2.7,-10.8]],
   team:[[-1,2.6,5.5],[0,1.2,-3]],bridle:[[-2.2,3.1,6.2],[-6.6,0.9,2.4]],spot:[[3.2,3.2,-5.6],[0,1.6,-12.6]]};
@@ -95,29 +71,32 @@ function t4Stage1(){const H=t4Heads(),L=H[0],Mi=H[1],R=H[2];if(!L||!R)return;con
     t4S('M',4.4,{tag:'А средняя?',title:'Средняя синим плюётся',icon:'blue',text:'Синие капли <b>щитом отбивай</b>. Среднюю на следующем этапе оглушим, так и знай.'}),
     t4S('team',2.6,{tag:'Вперёд!',title:'Теперь — по-настоящему!',icon:'go',text:'Подсказки будут рядом. Удачи вам, богатыри!'},{enter:()=>{FX.confettiCam(30);SFX.ok();}})],
     {end:()=>{t4Broken(L,false);t4Broken(R,false);t4SeenSet(1);}});}
-// ---------- этап 2: вдох ----------
-function t4Stage2(){const H=t4Heads(),L=H[0],Mi=H[1],R=H[2];if(!Mi)return;const P=HERO.proshka,Po=HERO.potap,Y=HERO.yosha,Pe=HERO.pelageya;let ac=null,fb=null,glow=null;
+// ---------- этап 2: вдох — три коротких урока (≤ 25 с, одна механика), каждый перед тем, как механика понадобится ----------
+//  1) жёлудь Прошки в среднюю — при входе в этап; 2) щит Потапа от огня и вода Йоши сытой голове — при первом огне/сытой голове;
+//  3) большой вдох и Совиный взор — перед первым большим вдохом (или позже, если вдоха давно не было). Метки: G.flags.tut4b2 = {1,2,3}.
+function t4Stage2(k){k=k||1;const H=t4Heads(),L=H[0],Mi=H[1],R=H[2];if(!Mi)return;const P=HERO.proshka,Po=HERO.potap,Y=HERO.yosha,Pe=HERO.pelageya;let ac=null,fb=null,glow=null;
   const who=(h,pi,sw)=>h.active?'':' (переключись '+K(pi,'swap')+')';
-  t4Run([
-    t4S('wide',4,{tag:'Как победить',title:'Этап 2 из 3 · Вдох',icon:'heads',text:'Теперь оглушить надо <b>все три</b> головы разом.<br>У каждой — своя хитрость, у каждого героя — своё умение, сказом.'},{enter:()=>{sayP('Каждому — своё дело, своя стезя!',2);}}),
-    t4S('M',9,{tag:'Прошка',title:'Средняя вдыхает долго',icon:'acorn',text:'Средняя долго вдыхает — над ней <b>жёлудь</b> загорается.<br>Прошка, из <b>рогатки</b>'+who(P,0)+' стреляй — пусть подавится!',keys:[{pi:0,a:'skill',label:'рогатка',wait:true}],go:'Стреляй!',okText:'Кха-кха! ПРОБОЙ!'},
-      {wait:{who:0,a:'skill'},at:1.2,enter:()=>{ac=t4Prop(new THREE.Group());const a=acornMesh(2.4);ac.add(a);const r=t4Ring(0xffd76a,0.45);ac.add(r);},
+  const S2={1:[
+    t4S('M',8,{tag:'Прошка',title:'Стреляй в жёлудь',icon:'acorn',text:'Стреляй из <b>рогатки</b>'+who(P,0)+' в жёлудь над средней головой!',keys:[{pi:0,a:'skill',label:'рогатка',wait:true}],go:'Стреляй!',okText:'Кха-кха! ПРОБОЙ!'},
+      {wait:{timeout:5,who:0,a:'skill'},at:1.2,enter:()=>{sayP('Каждому — своё дело, своя стезя!',2);ac=t4Prop(new THREE.Group());const a=acornMesh(2.4);ac.add(a);const r=t4Ring(0xffd76a,0.45);ac.add(r);},
        update:()=>{if(ac&&ac.visible){const p=t4HeadTop(Mi);ac.position.copy(p).add(new V3(0,0.3,1.1));ac.children[1].lookAt(camS.position);ac.scale.setScalar(1+0.15*Math.sin(G.time*10));}},
-       done:()=>{P._skT=G.time;SFX.thwip&&SFX.thwip();const a=acornMesh(1.4);t4Prop(a);const from=t4P(P).add(new V3(0,1,0)),to=ac.position.clone();anim(0.35,k=>{a.position.lerpVectors(from,to,k);a.position.y+=Math.sin(k*Math.PI)*0.8;if(k>=1){a.visible=false;ac.visible=false;FX.stars(to,10);SFX.brk();t4Broken(Mi,true);floatText(to.clone().add(new V3(0,1,0)),'Кха-кха! ПРОБОЙ!','#ffe08a');}});}}),
-    t4S('M',8,{tag:'Все',title:'Большой вдох — тянет к пасти!',icon:'shield',text:'Средняя кричит «Вдо-о-ох!» — все головы втягивают воздух и тянут вас <b>к пасти</b>.<br>Держите <b>щит</b> — потянет в два-три раза слабее. Дотянет до пасти — «Ам!»',keys:[{pi:0,a:'guard',label:'щит',wait:true},{pi:1,a:'guard',label:'щит',wait:true}],go:'Щит!',okText:'Устояли!'},
-      {wait:{who:'both',a:'guard'},at:1.6,enter:()=>{if(FIN.gor4)FIN.gor4.demoT=8;},done:()=>{for(const pi of[0,1]){const h=active(pi);h._demoGuard=G.time+1.2;}SFX.shield();if(FIN.gor4)FIN.gor4.demoT=1.6;}}),
-    t4S('team',8,{tag:'Потап',title:'Огненный выдох',icon:'shield',text:'Средняя огнём дует! Потап, <b>широкий щит</b>'+who(Po,0)+' подними —<br>Он закрывает всех, кто за спиной, — смотри!',keys:[{pi:0,a:'guard',label:'широкий щит',wait:true}],go:'Щит!',okText:'Отбил!'},
-      {wait:{who:0,a:'guard'},at:1.4,enter:()=>{fb=t4Prop(new THREE.Mesh(new FIN.orig.Icosa(0.35,1),MB(0x6ad0ff,{transparent:true,opacity:0.95})));fb.position.copy(t4HeadTop(Mi));},
+       done:()=>{P._skT=G.time;SFX.thwip&&SFX.thwip();const a=acornMesh(1.4);t4Prop(a);const from=t4P(P).add(new V3(0,1,0)),to=ac.position.clone();anim(0.35,k=>{a.position.lerpVectors(from,to,k);a.position.y+=Math.sin(k*Math.PI)*0.8;if(k>=1){a.visible=false;ac.visible=false;FX.stars(to,10);SFX.brk();t4Broken(Mi,true);floatText(to.clone().add(new V3(0,1,0)),'Кха-кха! ПРОБОЙ!','#ffe08a');}});}})
+  ],2:[
+    t4S('team',7,{tag:'Потап',title:'Огонь — щит Потапа',icon:'shield',text:'Подними <b>широкий щит</b>'+who(Po,0)+' — он закроет всех.',keys:[{pi:0,a:'guard',label:'широкий щит',wait:true}],go:'Щит!',okText:'Отбил!'},
+      {wait:{timeout:5,who:0,a:'guard'},at:1.4,enter:()=>{fb=t4Prop(new THREE.Mesh(new FIN.orig.Icosa(0.35,1),MB(0x6ad0ff,{transparent:true,opacity:0.95})));fb.position.copy(t4HeadTop(Mi));},
        update:(s,u,dt)=>{if(fb&&fb.visible){const tg=t4P(Po).add(new V3(0,1.1,0.9)),d=tg.clone().sub(fb.position),L2=d.length();if(L2>1.6)fb.position.addScaledVector(d.normalize(),Math.min(L2-1.6,dt*9));fb.rotation.y+=dt*6;fb.scale.setScalar(1+0.2*Math.sin(G.time*12));}},
        done:()=>{Po._demoGuard=G.time+1;SFX.shield();if(fb){FX.sparks(fb.position,16,0x9fe0ff);fb.visible=false;}floatText(t4P(Po).add(new V3(0,2.4,0)),'Отбил!','#9fe0ff');}}),
-    t4S('R',8,{tag:'Йоша',title:'Сытая голова',icon:'drop',text:'Голова искр наелась и <b>светится</b> — удар её не берёт.<br>Йоша, потуши её <b>живой водой</b>'+who(Y,1)+' — вперёд!',keys:[{pi:1,a:'skill',label:'живая вода',wait:true}],go:'Полей!',okText:'Потушил!'},
-      {wait:{who:1,a:'skill'},at:1.2,enter:()=>{glow=t4Prop(t4Ring(0xff9a3a,1.1));},update:()=>{if(glow&&glow.visible){const p=t4HeadTop(R);glow.position.copy(p);glow.lookAt(camS.position);glow.scale.setScalar(1+0.12*Math.sin(G.time*8));}},
+    t4S('R',7,{tag:'Йоша',title:'Сытая голова светится',icon:'drop',text:'Полей её <b>живой водой</b>'+who(Y,1)+'!',keys:[{pi:1,a:'skill',label:'живая вода',wait:true}],go:'Полей!',okText:'Потушил!'},
+      {wait:{timeout:5,who:1,a:'skill'},at:1.2,enter:()=>{glow=t4Prop(t4Ring(0xff9a3a,1.1));},update:()=>{if(glow&&glow.visible){const p=t4HeadTop(R);glow.position.copy(p);glow.lookAt(camS.position);glow.scale.setScalar(1+0.12*Math.sin(G.time*8));}},
        done:()=>{Y._skT=G.time;SFX.water&&SFX.water();const p=t4HeadTop(R);FX.drops(p,16);FX.dust(p,8,0xdfe8ee);if(glow)glow.visible=false;t4Broken(R,true);floatText(p.clone().add(new V3(0,1.6,0)),'Потушил! ПРОБОЙ!','#9fe0ff');}}),
-    t4S('L',8,{tag:'Пелагея',title:'Совиный взор — слабое место',icon:'eye',text:'Пелагея, <b>Совиный взор</b>'+who(Pe,1)+' — и на голове засветится <b>чешуйка</b>.<br><b>Один удар</b> по ней — голова сразу в Пробое, даже сытая!',keys:[{pi:1,a:'skill',label:'Совиный взор',wait:true}],go:'Взор!',okText:'Слабое место — бей!'},
-      {wait:{who:1,a:'skill'},at:1,done:()=>{Pe._skT=G.time;if(FIN.gor4&&FIN.gor4.weakDemo)FIN.gor4.weakDemo(L,Pe);else{const p=t4HeadTop(L);FX.sparkle(p,14,0xe7c3ff);t4Broken(L,true);}}}),
-    t4S('wide',4,{tag:'Главное',title:'Все три — в Пробой, разом!',icon:'hit',text:'Как оглушены <b>все три</b> головы — Горыныч без сил.<br>Тогда — волшебная узда, чтоб он смирен был!'},{enter:()=>{t4Heads().forEach(e=>FX.stars(t4HeadTop(e),8));}}),
-    t4S('team',2.4,{tag:'Вперёд!',title:'Каждому — своё дело',icon:'go',text:'Жёлудь — Прошка, щит — Потап, вода — Йоша, взор — Пелагея: вот и лад!'},{enter:()=>{SFX.ok();}})],
-    {end:()=>{t4Heads().forEach(e=>{t4Broken(e,false);});t4SeenSet(2);}});}
+  ],3:[
+    t4S('M',7,{tag:'Все',title:'Вдох тянет к пасти',icon:'shield',text:'Держите <b>щит</b> — тянет слабее.',keys:[{pi:0,a:'guard',label:'щит',wait:true},{pi:1,a:'guard',label:'щит',wait:true}],go:'Щит!',okText:'Устояли!'},
+      {wait:{timeout:5,who:'both',a:'guard'},at:1.6,enter:()=>{if(FIN.gor4)FIN.gor4.demoT=8;},done:()=>{for(const pi of[0,1]){const h=active(pi);h._demoGuard=G.time+1.2;}SFX.shield();if(FIN.gor4)FIN.gor4.demoT=1.6;}}),
+    t4S('L',7,{tag:'Пелагея',title:'Совиный взор',icon:'eye',text:'Включи <b>взор</b>'+who(Pe,1)+' — и ударь по чешуйке!',keys:[{pi:1,a:'skill',label:'Совиный взор',wait:true}],go:'Взор!',okText:'Слабое место — бей!'},
+      {wait:{timeout:5,who:1,a:'skill'},at:1,done:()=>{Pe._skT=G.time;if(FIN.gor4&&FIN.gor4.weakDemo)FIN.gor4.weakDemo(L,Pe);else{const p=t4HeadTop(L);FX.sparkle(p,14,0xe7c3ff);t4Broken(L,true);}}}),
+  ]};
+  t4Run(S2[k]||S2[1],{end:()=>{t4Heads().forEach(e=>{t4Broken(e,false);});t4Mark2(k);}});}
+const t4Mark2=k=>{G.flags.tut4b2=G.flags.tut4b2||{};G.flags.tut4b2[k]=true;t4SeenSet(2);if(T4.h)T4.h.t2b=T4.h.t2||0;},t4Seen2=k=>!!(G.flags.tut4b2&&G.flags.tut4b2[k]);
 // ---------- этап 3: узда ----------
 function t4Stage3(){const gr=W.grabs[0];if(!gr)return;const bp=gr.pos(),saved=bp.clone();let ring=null;
   // герои показывают сами: подходят к узде с двух сторон и несут её к шее; в конце (на склейке) — обратно на свои места
@@ -146,10 +125,11 @@ function t4Stage3(){const gr=W.grabs[0];if(!gr)return;const bp=gr.pos(),saved=bp
 function t4Short(n){const txt={1:['Этап 1 · Три запала','heads','Жёлтый кружок — <b>щит</b>, красный зубец — <b>кувырок</b>, потом бей.<br>Левую и правую — <b>вместе</b>, за двенадцать секунд, дружней!'],
   2:['Этап 2 · Вдох','heads','Тянет к пасти — держи <b>щит</b>. Жёлудь — <b>рогатка Прошки</b>, огонь — <b>щит Потапа</b>, сытая — <b>вода Йоши</b>.<br><b>Взор Пелагеи</b> — слабое место: один удар, и Пробой!'],
   3:['Этап 3 · Узда','ring','Узду — <b>клещами вдвоём</b> к золотому ореолу на шее, и <b>умение трижды</b>, оба: раз, два, три!']}[n];
-  t4Run([t4S('wide',4.5,{tag:'Напоминание',title:txt[0],icon:txt[1],text:txt[2]})]);}
-function t4SeenSet(n){G.flags.tut4b=G.flags.tut4b||{};G.flags.tut4b[n]=true;}
-function t4Seen(n){return !!(G.flags.tut4b&&G.flags.tut4b[n]);}
-FIN.boss4bStage=n=>{if(n===1)t4Stage1();else if(n===2)t4Stage2();else if(n===3)t4Stage3();};   // для ботов и отладки
+  L4.reminder(t4S('wide',4.5,{tag:'Напоминание',title:txt[0],icon:txt[1],text:txt[2]}),T4HOOK);}
+const t4SeenSet=n=>L4.mark('tut4b',n),t4Seen=n=>L4.seen('tut4b',n);
+FIN.boss4bLesson=k=>{T4.l2=k;t4Stage2(k);};   // урок этапа 2 по номеру (1 жёлудь · 2 огонь и вода · 3 вдох и взор)
+FIN.boss4bStage=n=>{if(n===1)t4Stage1();else if(n===2)FIN.boss4bLesson(1);else if(n===3)t4Stage3();};   // для ботов и отладки
+L4.regLevel('4-B',()=>W.flags.phase===2?FIN.boss4bLesson(T4.l2||1):FIN.boss4bStage(W.flags.phase),()=>W.flags.phase>=1&&W.flags.phase<=3);   // «Показать урок ещё раз» — полный урок текущего этапа
 // ---------- живые подсказки в бою ----------
 function t4HintShow(key,c,targets,expect,dur){const H=T4.h;if(!H)return;if(H.cur&&H.cur.key===key&&H.until>G.time)return;
   H.cur={key,c,expect:expect||[],got:{}};H.until=G.time+(dur||6);H.last=G.time;H.cd[key]=G.time;t4Dom();
@@ -201,13 +181,20 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
     else if(bp&&near)t4Ctx('123',()=>t4HintShow('123',{tag:'Оба игрока',title:'Раз-два-три — вместе, дружно!',icon:'n123',text:'<b>Умение</b> — трижды, <b>оба</b>: на «раз», на «два», на «три»!',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],[[0,'skill',''],[1,'skill','']],5),6);}}
 function t4Ctx(key,fn,cd){const H=T4.h;if(H.cur&&H.until>G.time&&H.cur.key!=='g1'&&H.cur.key!=='g2'&&H.cur.key!=='g3'&&H.cur.key!=='h1'&&H.cur.key!=='h2')return;if(G.time-(H.cd[key]||-99)<(cd||6))return;fn();}
 function t4Cycle(list){const H=T4.h;if(H.cur)return;list[H.cycle%list.length]();H.cycle++;}
+// уроки 2 и 3 этапа 2 — на событии, перед тем как механика понадобится (огонь/сытая голова; большой вдох), с запасом по времени
+function t4Lessons2(dt){const F=W.flags,H=T4.h;if(!H||!T4.auto||F.phase!==2||G.cine||G.trans||T4.on||G.state!=='play'||G.time<(H.grace||0)||!t4Seen2(1))return;
+  H.t2=(H.t2||0)+dt;if(H.t2<4)return;const hs=t4Heads(),Mi=hs[1];if(!Mi)return;const G4h=FIN.gor4,pull=G4h&&G4h.pull>0;
+  const fire=W.bolts.some(b=>!b.refl&&b.from===Mi),sated=hs.some(e=>e.sat>0&&e.state!=='broken');
+  if(!t4Seen2(2)){if(fire||sated||H.t2>30)FIN.boss4bLesson(2);return;}
+  if(!t4Seen2(3)&&!pull&&!fire&&H.t2>(H.t2b||0)+6){FIN.boss4bLesson(3);}}
 // ---------- этапы: ролик сразу после смены фазы ----------
 {const _ll=loadLevel;loadLevel=function(i){_ll(i);T4.on=false;T4.ph=-1;T4.props.length=0;T4.arrows=[];if(T4.card)t4Card(null);if(T4.hint)T4.hint.classList.remove('on');
   T4.h=W&&W.levelId==='4-B'?{ph:0,nb:0,prog:0,last:-99,cd:{},cur:null,until:0,cycle:0,n:{y:0,r:0}}:null;};}
 {const _step=step;step=function(dt){_step(dt);if(!W||W.levelId!=='4-B')return;const F=W.flags;
   if(T4.auto&&!G.cine&&!G.trans&&F.phase!==T4.ph&&F.phase>=1&&F.phase<=3&&!T4.on){const n=F.phase,prev=T4.ph;T4.ph=n;
     if(!(n===2&&prev===3)){if(t4Seen(n))t4Short(n);else FIN.boss4bStage(n);}   // 3→2 (головы очнулись) — ролик не повторяем
-    if(T4.h){T4.h.prog=G.time;T4.h.ph=n;}}
+    if(T4.h){T4.h.prog=G.time;T4.h.ph=n;T4.h.t2=0;T4.h.t2b=0;}}
+  try{t4Lessons2(dt);}catch(e){console.error('boss4b lessons',e);}
   try{t4HintTick(dt);}catch(e){console.error('boss4b hint',e);}};}
 // пауза, меню и титул — карточки не поверх них
 {const _r=render;render=function(){_r();if(T4.card){const v=G.state==='play'&&!FIN.titleOn?'':'hidden';if(T4.card.style.visibility!==v){T4.card.style.visibility=v;T4.hint.style.visibility=v;}}};}

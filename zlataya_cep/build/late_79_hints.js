@@ -134,6 +134,8 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   const noh=!hnOn();if(HNS.noh!==noh){HNS.noh=noh;document.body.classList.toggle('fin-nohints',noh);}
   // баннер события («Вал догнал!», «Коршун!») висит по центру по нескольку секунд: общая карточка на это время сжимается в одну
   // строку (◆ первая фраза задачи), личная — если баннер её задевает; не поместилась и так — уступает баннеру место
+  // подсказка босса уступает баннеру место по высоте (F-2d): пока баннер виден, она стоит под ним, потом возвращается на своё (top из fin.css)
+  if(boss){const bb=bossOn&&hnVisible('banner')?$('banner').getBoundingClientRect():null;boss.style.top=bb?(bb.bottom+8)+'px':'';}
   const BR=hnVisible('banner')?$('banner').getBoundingClientRect():null;if(!BR)HN.cmp=[false,false,false];else HN.cmp[2]=true;
   // строка сжатой карточки: у общей — первая фраза задачи; у личной — первая своя фраза, которой нет у друга («Клещи 0 / 4.» у обоих)
   const line=i=>{const c=cards[i];if(i===2||!cards[1-i])return c.head||hnShort(c.body);const o=cards[1-i],had=new Set(hnSent((o.head?o.head+'<br>':'')+o.body).map(hnNorm));
@@ -145,6 +147,13 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
     el.classList.toggle('hn-cmp',on&&HN.cmp[i]);el.classList.toggle('hn-dim',!!(solo&&i===1-sp));el.classList.toggle('hn-new',G.time-HN.flash[i]<1.2);};
   cards.forEach((c,i)=>render(i,c));
   // места: карточка игрока — под его панелью (у первого — под «весточкой»), общая — под счётчиком звеньев (и под подсказкой босса)
+  // F-2e: полоса босса, «весточка» и карточка обучения — разные зоны: «весточка» и карточка урока уходят под полосу, если задели её
+  {const bb=$('bossbar'),vs=$('vest'),ft=$('finTut'),vis=e=>e&&getComputedStyle(e).display!=='none';
+    const hit=(a,b)=>a.left<b.right&&b.left<a.right&&a.top<b.bottom&&b.top<a.bottom;
+    if(vs){vs.style.top='';if(vis(vs)&&vis(bb)){const B=bb.getBoundingClientRect();if(hit(vs.getBoundingClientRect(),B))vs.style.top=Math.round(B.bottom+6)+'px';}}
+    if(ft){ft.style.top='';if(ft.classList.contains('on')){const F=ft.getBoundingClientRect();let y=0;
+      for(const e of[bb,vs,$('banner')])if(vis(e)){const R=e.getBoundingClientRect();if(F.left<R.right&&R.left<F.right&&F.top<R.bottom+8&&R.top<F.bottom)y=Math.max(y,R.bottom+8);}
+      if(y)ft.style.top=Math.round(y)+'px';}}}
   const H0=$('hud0').getBoundingClientRect(),H1=$('hud1').getBoundingClientRect(),V=$('vest'),VR=V&&getComputedStyle(V).display!=='none'?V.getBoundingClientRect():null;
   let top0=Math.max(H0.bottom,VR?VR.bottom:0)+8,top1=H1.bottom+8;
   if(bossOn){const B=boss.getBoundingClientRect();if(12+els[0].offsetWidth>B.left-6)top0=Math.max(top0,B.bottom+8);if(innerWidth-12-els[1].offsetWidth<B.right+6)top1=Math.max(top1,B.bottom+8);}   // подсказка босса широкая — карточки игроков под ней
@@ -157,8 +166,10 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   hnSkip();}
 // плашка пропуска — над субтитрами (X-10): по умолчанию выше двух строк, а если реплика длиннее — ещё выше
 function hnSkip(){const sk=$('skip'),sb=$('subs');if(!sk||!sb)return;sk.style.bottom='';
-  if(getComputedStyle(sk).display==='none'||!hnVisible('subs'))return;
-  const S=sb.getBoundingClientRect(),K=sk.getBoundingClientRect();if(K.bottom>S.top-6)sk.style.bottom=(innerHeight-S.top+8)+'px';}
+  if(getComputedStyle(sk).display==='none')return;
+  const sv=!!hnVisible('subs'),S=sv?sb.getBoundingClientRect():null;let K=sk.getBoundingClientRect();if(S&&K.bottom>S.top-6){sk.style.bottom=(innerHeight-S.top+8)+'px';K=sk.getBoundingClientRect();}
+  // F-2f: карточка урока (крупный шрифт) задела плашку — плашка уходит под карточку, если там её не заденут субтитры
+  const ft=$('finTut');if(ft&&ft.classList.contains('on')){const F=ft.getBoundingClientRect();if(K.left<F.right&&F.left<K.right&&K.top<F.bottom&&F.top<K.bottom&&F.bottom+6+K.height<(S?S.top-6:innerHeight-8))sk.style.bottom=(innerHeight-F.bottom-6-K.height)+'px';}}
 {const _ui=updateUI;updateUI=function(dt){_ui(dt);try{hnLayout();}catch(e){console.error('hints',e);}};}
 {const _st=showTitle;showTitle=function(){_st();HN.titleT=G.time;};}
 // крестовина: опрос джойстиков (каждые 8 мс) копит новые нажатия → / ←, а карточки разбирают их в кадре
