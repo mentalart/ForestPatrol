@@ -129,7 +129,7 @@ build31=function(){
   function apGone(a){if(a.state==='gone')return;a.state='gone';W.group.remove(a.g);if(a.holder){a.holder.apple31=null;a.holder=null;}const i=W.lights.indexOf(a.light);if(i>=0)W.lights.splice(i,1);
     const j=AP.list.indexOf(a);if(j>=0)AP.list.splice(j,1);if(a.tree&&a.tree.ap.apple===a){a.tree.ap.apple=null;a.tree.ap.regrow=soloK()?3:4;}if(a.king&&!F.kingHome)later(1.2,()=>{if(!F.kingHome&&!AP.list.some(q=>q.king))kingRespawn();});}
   function apHand(a,h){if(a.tree&&a.tree.ap.apple===a){a.tree.ap.apple=null;a.tree.ap.regrow=a.tree.ap.re||(soloK()?5:7);}a.tree=null;a.state='hand';a.holder=h;h.apple31=a;SFX.nut();
-    floatText(headOf(h),a.king?'Царь-яблоко!':'Яблочко в руках!','#ffe08a');if(!F.appleTold&&!a.king){F.appleTold=true;for(const pi of[0,1])tip(pi,'Молодильное яблочко! Поднеси его к старому — помолодеет.<br>Удар '+K(pi,'attack')+' — бросок вперёд: друг рядом поймает сам.',4);}}
+    floatText(headOf(h),a.king?'Царь-яблоко!':'Яблочко в руках!','#ffe08a');if(!F.appleTold&&!a.king){F.appleTold=true;for(const pi of[0,1])tip(pi,'Яблочко — к старому: помолодеет! Бросай '+K(pi,'attack')+' другу.',4);}}
   function apThrow(a,h){const fx=Math.sin(h.face),fz=Math.cos(h.face);let to=null,bd=9.5;
     const cand=[];for(const o of HEROES)if(o!==h&&!o.apple31)cand.push(o.pos);for(const g of AG)if(g.active()&&(g.accept?g.accept(a):!a.king))cand.push(g.pos);if(W.appleAim31)for(const p of W.appleAim31())cand.push(p);
     for(const p of cand){const dx=p.x-h.pos.x,dz=p.z-h.pos.z,d=Math.hypot(dx,dz);if(d<1||d>bd||Math.abs(p.y-h.pos.y)>3)continue;if((dx*fx+dz*fz)/d<0.82)continue;bd=d;to=new V3(p.x,p.y+0.6,p.z);}
@@ -273,7 +273,7 @@ build31=function(){
       tick:(t)=>{fb.head.rotation.x=t<14?0.3:0.1;fb.body.position.y=Math.sin(t*2)*0.02;},
       end:()=>{if(ghost){W.group.remove(ghost);ghost=null;}key.visible=false;W.anims.length=0;gifts.forEach(g=>W.group.remove(g));placeOnGround(pr,0.9,-2.2,0.3);W.abil.pero=true;F.stage='pero';
         banner('Перо Жар-птицы — жар-перо!','#ffb040',2.8,'кнопка R или ; (на джойстике RB) — зажечь иль погасить · свет помогает всем, кто рядом');
-        for(const pi of[0,1])tip(pi,'У каждого героя — своё перо. Золотые мостки лишь в свете видны —<br>Зажги перо '+K(pi,'item')+', и дорожки открыты, как днём, ясны.',4.2);}});}
+        for(const pi of[0,1])tip(pi,'У каждого своё перо: зажги '+K(pi,'item')+' — мостки видны.',4.2);}});}
   function openGate(){F.gateOpen=true;SFX.gate();SFX.ok();banner('Ворота сада отворились!','#ffe08a',2.4,'свет и тьма вместе — золотой мосток горит сам');
     L3.locked=false;L3.g.visible=true;burst(L3.pos.clone(),COL.gold,16,3);if(!F.bowlBark){F.bowlBark=true;later(0.8,()=>bark(T.pelageya,'pelageya','Как выключатель — щёлк, и свет!',2));}}
   let arena=null;
@@ -407,7 +407,7 @@ build31=function(){
   W.onAppleFly31=a=>{if(VB.phase!==2||a.king)return false;const e=VB.e;if(!e||!e.alive||hd(a.pos,e.pos)>1.9||Math.abs(a.pos.y-(e.pos.y+1.2))>2)return false;
     const open=VB.ai==='lungeTel'||VB.ai==='flapTel'||VB.ai==='recover'||e.dazeT>0;
     if(!open){if(!a.dodged){a.dodged=true;const s=Math.random()<0.5?-1:1,rx=Math.cos(e.face)*s,rz=-Math.sin(e.face)*s;e.pos.x=clamp(e.pos.x+rx*2,-10.5,10.5);e.pos.z=clamp(e.pos.z+rz*2,-490,-442);floatText(e.pos.clone().add(new V3(0,3,0)),'Кар! Мимо!','#cfd8dc');SFX.miss();
-        if(!F.dodgeTold){F.dodgeTold=true;for(const pi of[0,1])tip(pi,'Ворон увёртывается! Бросай, когда он замахнулся (красное или взмах) — или после промаха, пока открыт.',3.2);}}return false;}
+        if(!F.dodgeTold){F.dodgeTold=true;for(const pi of[0,1])tip(pi,'Бросай, когда ворон замахнулся или промахнулся.',3.2);}}return false;}
     apGone(a);VB.hits++;SFX.grow();shakeAll(0.04,0.3);for(let i=0;i<20;i++)later(i*0.03,()=>burst(e.pos.clone().add(new V3(rand(-1,1),1+rand(0,1.6),rand(-1,1))),0xffd76a,2,2,0.6));
     const s=1.2*(1-0.18*VB.hits);anim(0.6,k=>{e.inner.scale.setScalar(lerp(e.inner.scale.x,s,k));});floatText(e.pos.clone().add(new V3(0,3.2,0)),'Молодеет!','#ffe08a');
     if(VB.hits===1)later(0.4,()=>bark(e,'voron','Кар! Пёрышки… мягкие стали!',2.2));else if(VB.hits===2)later(0.4,()=>bark(e,'voron','Кар-р… что со мной? Я… маленький?!',2.4));else later(0.5,chickScene);
@@ -501,13 +501,13 @@ build31=function(){
     O(()=>F.boss?ravText(pi):'Светомосток — к колодцу живой воды.',()=>F.kingHome,()=>VB.phase===3?AP.list.filter(a=>a.king).map(a=>a.g).concat([fb.g]):VB.e&&VB.e.alive?[VB.e.g]:[]),
     O('Звено от Жар-птицы — возьми!',()=>false,()=>[L4.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
-  W.tipZones.push({cond:(pi,h)=>W.abil.pero&&h.pos.z<-46&&h.pos.z>-66&&h.pos.y>-1,text:pi=>'Коль перо сменишь стоя — провалишься! Прыгни '+K(pi,'jump')+' и жми '+K(pi,'item')+' в прыжке —<br>Приземлишься на нужный мосток, на верной дощечке.'},
-    {cond:(pi,h)=>h.pos.z<-78&&h.pos.z>-104&&Math.abs(h.pos.x)<3,text:pi=>'Перекрёсток: свет друга лиловые мостки рядом гасит.<br>Пропусти друга — потом ступай сам, всё и сладится.'},
-    {cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='motylek'&&!e.both&&hd(e.pos,h.pos)<8),text:pi=>'Мотылёк раскроется лишь в свете двух героев: два пера '+K(pi,'item')+' рядом зажгите.'+(G.solo?'<br>В одиночку: зажги перо, смени героя '+K(pi,'swap')+' — свет у оставленного не гаснет.':'')},
-    {cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='ten'&&hd(e.pos,h.pos)<6)&&!h.lit,text:pi=>'Тень плоская — удар насквозь идёт. Зажги перо '+K(pi,'item')+':<br>В свете тень настоящей станет — бей её, вперёд!'},
+  W.tipZones.push({cond:(pi,h)=>W.abil.pero&&h.pos.z<-46&&h.pos.z>-66&&h.pos.y>-1,text:pi=>'Меняй перо в прыжке: прыгни '+K(pi,'jump')+', жми '+K(pi,'item')+'.'},
+    {cond:(pi,h)=>h.pos.z<-78&&h.pos.z>-104&&Math.abs(h.pos.x)<3,text:pi=>'Свет друга гасит лиловые мостки — пропусти его.'},
+    {cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='motylek'&&!e.both&&hd(e.pos,h.pos)<8),text:pi=>'Мотылёк: зажгите два пера '+K(pi,'item')+' рядом.'+(G.solo?'<br>В одиночку: зажги перо, смени героя '+K(pi,'swap')+' — свет у оставленного не гаснет.':'')},
+    {cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='ten'&&hd(e.pos,h.pos)<6)&&!h.lit,text:pi=>'Тень плоская. Зажги перо '+K(pi,'item')+' — и бей!'},
     {cond:(pi,h)=>!F.bridge&&h.pos.z<-203&&h.pos.z>-208,text:pi=>'Мост трухлявый — не держит. Поднеси к нему молодильное яблочко — помолодеет!'},
-    {cond:(pi,h)=>!F.oak&&!!h.apple31&&h.pos.z<-240&&h.pos.z>-247,text:pi=>'С яблочком на лиловые мостки нельзя — оно светит, мостки гаснут.<br>Пусть друг без света встанет на островке — брось '+K(pi,'attack')+', он поймает.'+(G.solo?' В одиночку: поставь героя на островке, смени — и брось.':'')},
-    {cond:(pi,h)=>F.thiefRun&&!F.thieves&&h.pos.z<-372,text:pi=>'Тень убегает от света. Двумя светами с двух сторон — в угол, и коснись.'+(G.solo?'<br>Оставь героя со светом в проходе — тень к нему не сунется.':'')});
+    {cond:(pi,h)=>!F.oak&&!!h.apple31&&h.pos.z<-240&&h.pos.z>-247,text:pi=>'Яблочко гасит мостки — брось '+K(pi,'attack')+' другу.'+(G.solo?' В одиночку: поставь героя на островке, смени — и брось.':'')},
+    {cond:(pi,h)=>F.thiefRun&&!F.thieves&&h.pos.z<-372,text:pi=>'Тень бежит от света — зажмите двумя светами.'+(G.solo?'<br>Оставь героя со светом в проходе — тень к нему не сунется.':'')});
   W.spawns=[[new V3(-2.6,0,4.4),new V3(-4.4,0,5.6)],[new V3(2.6,0,4.4),new V3(4.4,0,5.6)]];W.startAct=[0,0];
   W.pauseLine='Сад молодильных яблок: кто яблочко откусит — тот помолодеет. Перо: RB зажигает и гасит; серые яблони от света оживают.<br>Ожившая яблоня роняет яблочко: поднеси к старому — помолодеет; удар — бросок другу.<br>Яблочко светится: лиловые мостки под ним гаснут. Стража просыпается от света и звона струн.';
   // для ботов: FIN.warp('gardener'|'bridge'|'pass'|'oak'|'guards'|'steps'|'thieves'|'boss')

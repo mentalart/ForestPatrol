@@ -115,7 +115,7 @@ function build11(){
     if(F.stage==='yard'&&!F.bye&&[0,1].every(pi=>active(pi).pos.z<-92)){F.bye=true;bark(yaga,'yaga','Помогли старухе — старуха добро не забудет.',2.6);later(0.2,()=>{yaga.g.position.set(0,1.1,-26.4);});}
     // грядки: наступил — вязнешь и выбираешься обратно на край; по нити — можно
     for(const h of HEROES){if(h.cling)continue;if(h.grounded&&inMud(h)){h.bedT=(h.bedT||0)+dt;if(h.bedT>0.3){h.bedT=0;placeOnGround(h,h.pos.x,h.pos.z>-44.5?-37.4:-51.6,0);SFX.knock();burst(h.pos.clone().add(new V3(0,0.3,0)),0x5a3a1e,8,2);
-        if(h.active)tip(h.player,F.stage==='yard'?'Грядку не топчи — Яга заругается!<br>Брось клубок '+K(h.player,'item')+' — по нити путь начинается.':'По грядке не пройти. Сперва клубок у Яги возьмите.',2.6);}}else h.bedT=0;}
+        if(h.active)tip(h.player,F.stage==='yard'?'Грядку не топчи — брось клубок '+K(h.player,'item')+'!':'По грядке не пройти. Сперва клубок у Яги возьмите.',2.6);}}else h.bedT=0;}
     // уборка двора
     if(F.stage==='clean'){
       for(const it of TR){if(it.state!=='ground')continue;for(const h of HEROES){if(!h.active||h.trash||players[h.player].downed)continue;if(hd(h.pos,it.g.position)<1.0&&h.pos.y<1.2){it.state='carry';it.by=h;h.trash=it;SFX.nut();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Подобрал!','#e0d0a0');break;}}}
@@ -173,10 +173,10 @@ function build11(){
     O(()=>'Лужа широка — одной нити мало.<br>Бросьте клубки ОБА у края '+K(1,'item')+' — твоя к другу пристала.',()=>active(1).pos.z<-88.5,()=>[pitMark],()=>({kind:active(1).kind,action:'walk',from:new V3(1,0,-62),to:new V3(1,0,-76)})),
     gateObj(1)]);
   W.tipZones.push({cond:(pi,h)=>F.stage==='clean'&&!!h.trash,text:pi=>'Мусор несёшь — неси в кучу у забора, не зевай!'},
-    {cond:(pi,h)=>F.stage==='clean'&&!!TRB.g&&(TRB.state==='ground'||TRB.state==='carry')&&hd(h.pos,TRB.g.position)<3,text:pi=>'Корыто тяжело. Встаньте рядышком вдвоём —<br>И в кучу несите его вдвоём.'},
+    {cond:(pi,h)=>F.stage==='clean'&&!!TRB.g&&(TRB.state==='ground'||TRB.state==='carry')&&hd(h.pos,TRB.g.position)<3,text:pi=>'Корыто тяжело — несите вдвоём!'},
     {cond:(pi,h)=>h.pos.z<-96&&h.pos.z>GZ&&!gateOpen(),text:pi=>'Встаньте двумя героями на две лапки — калитка откроется для всех.'},
-    {cond:(pi,h)=>F.stage==='yard'&&h.pos.z<-35.3&&h.pos.z>-38&&!W.threads.some(t=>t.owner===pi&&!t.ret),text:pi=>'По грядке пешком нельзя. Брось клубок '+K(pi,'item')+' —<br>И по нити иди, как по дощечке, вперёд.'},
-    {cond:(pi,h)=>F.stage==='yard'&&h.pos.z<-59&&h.pos.z>-63&&W.threads.some(t=>t.owner!==pi&&!t.ret),text:pi=>'Нить друга лежит — брось свою рядом:<br>Прицепится к кончику, как надо.'});
+    {cond:(pi,h)=>F.stage==='yard'&&h.pos.z<-35.3&&h.pos.z>-38&&!W.threads.some(t=>t.owner===pi&&!t.ret),text:pi=>'По грядке — только по нити: брось клубок '+K(pi,'item')+'.'},
+    {cond:(pi,h)=>F.stage==='yard'&&h.pos.z<-59&&h.pos.z>-63&&W.threads.some(t=>t.owner!==pi&&!t.ret),text:pi=>'Нить друга лежит — брось свою рядом.'});
   W.onGlue=()=>{F.glued=true;};
   W.spawns=[[new V3(-3.5,0,5),new V3(-5.5,0,6)],[new V3(3.5,0,5),new V3(5.5,0,6)]];W.startAct=[0,0];
   W.pauseLine='Звенышко в Дремучий лес ведёт.<br>У Яги клубок-путеводитель ждёт:<br>Куда бросишь — туда и катится,<br>Золотою нитью путь стелется.';

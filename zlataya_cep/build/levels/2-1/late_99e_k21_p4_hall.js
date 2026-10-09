@@ -10,7 +10,7 @@
     if(!F.kingMet&&!G.cine&&[0,1].some(pi=>active(pi).pos.z<K0-1&&active(pi).pos.z>K0-14)){F.kingMet=true;kingScene();}
     const live=F.kingMet&&!F.kingDone&&!G.cine;KD.on=live&&both;F.kingDance=KD.on;
     if(live&&one){KD.lonely-=dt;if(KD.lonely<=0){KD.lonely=4.5;floatText(new V3(0,6.2,TZ),'В два голоса! Один — скукота!','#9fe6ff');
-      if(!F.duoTold){F.duoTold=true;bark(king,'king','В два голоса, гусляры! Один — скукота!',2.6);for(const p of[0,1])tip(p,'Царь пляшет, только когда играют ОБА стула у трона — в два голоса.<br>В одиночку: сыграй у одного стула и смени героя '+K(p,'swap')+' — оставленный доиграет, а ты беги к другому.',4.4);}}}
+      if(!F.duoTold){F.duoTold=true;bark(king,'king','В два голоса, гусляры! Один — скукота!',2.6);for(const p of[0,1])tip(p,'Играйте оба стула. Один — смени героя '+K(p,'swap')+'.',4.4);}}}
     if(KD.on)KD.meter=Math.min(1,KD.meter+dt/22);else if(live)KD.meter=Math.max(KD.round/3,KD.meter-dt/90);
     const r=KD.meter>=2/3?2:KD.meter>=1/3?1:0;
     if(r>KD.round){KD.round=r;if(r===1){banner('Колено второе — вприсядку!','#9fe6ff',2.4,'волны то слева, то справа · жемчужинки с венца ловите — пляска пойдёт шибче');bark(king,'king','Вприсядку! Эх, раздайся, море!',2.2);}
@@ -25,7 +25,7 @@
     for(let i=WAV.length-1;i>=0;i--){const w=WAV[i],R0=w.R;w.R+=w.sp*dt;w.m.scale.set(w.R,1+0.12*Math.sin(G.time*9+i),w.R);w.m.material.opacity=0.75*Math.min(1,(16-w.R)/3);if(w.R>16||F.kingDone){W.group.remove(w.m);WAV.splice(i,1);continue;}
       for(const h of HEROES){if(h.cling||!h.active||h.pos.y>0.85)continue;const dx=h.pos.x,dz=h.pos.z-TZ,d=Math.hypot(dx,dz)||1;if(d<R0-0.5||d>w.R+0.5)continue;if(w.side&&dx*w.side<0)continue;if(G.time-(h.waveT||-9)<0.6)continue;
         h.waveT=G.time;h.vel.x=dx/d*6.5;h.vel.z=dz/d*6.5;h.vel.y=5.2;h.grounded=false;h.groundRef=null;SFX.splash();floatText(h.pos.clone().add(new V3(0,h.d.height+0.5,0)),'Волна! Прыгай!','#cff8ff');
-        if(!F.waveTold){F.waveTold=true;for(const p of[0,1])tip(p,'От пляски царя по палатам кольца-волны бегут — прыгай '+K(p,'jump')+' через них!<br>Сбило со стула — вернись и снова сыграй '+K(p,'item')+'.',3.8);}}}
+        if(!F.waveTold){F.waveTold=true;for(const p of[0,1])tip(p,'Кольца-волны — прыгай '+K(p,'jump')+'! Сбило — играй снова '+K(p,'item')+'.',3.8);}}}
     // жемчужинки с венца (со второго колена)
     if(KD.on&&KD.round>=1){KD.pearlT-=dt;if(KD.pearlT<=0){KD.pearlT=2.4;spawnPearl();}}
     for(let i=PRL.length-1;i>=0;i--){const q=PRL[i];q.t+=dt;if(q.t<1){q.m.position.lerpVectors(q.from,q.to,q.t);q.m.position.y+=Math.sin(q.t*Math.PI)*2.4;}else q.m.position.y=0.35+Math.abs(Math.sin((q.t-1)*5))*0.15;
@@ -103,9 +103,9 @@
       ()=>!!F.hermitWon,()=>{const e=HB.dbg().e;return e&&e.alive?[e.g]:[HB.dbg().lureShell.g];}),
     O('Ворота Китежа — бери звено, и в путь-дорогу!',()=>false,()=>[endLink.g])];
   for(const pi of[0,1])W.objectives[pi]=common(pi).concat(side(pi),late(pi));
-  W.tipZones.push({cond:(pi,h)=>h.grounded&&h.groundRef&&h.groundRef.water,text:pi=>'Ты плывёшь! Из воды высоко не выпрыгнуть.<br>Сыграй на гуслях '+K(pi,'item')+' — лодка всплывёт, подвезёт — не сгинуть.'},
+  W.tipZones.push({cond:(pi,h)=>h.grounded&&h.groundRef&&h.groundRef.water,text:pi=>'Ты плывёшь! Сыграй на гуслях '+K(pi,'item')+' — лодка всплывёт.'},
     {cond:(pi,h)=>h.pos.y<-1.5&&h.pos.z<-45&&h.pos.z>-52,text:pi=>'Отлив открыл подвал. На дне — орешек! Назад — по ступенькам.'},
-    {cond:(pi,h)=>SD[pi]&&SD[pi].inShaft(h)&&h.pos.y<-2,text:pi=>'Дно колодца. К сундуку подойди — сам откроется.<br>Наверх — прилив '+K(pi,'item')+' сыграй, и вода подымется.'});
+    {cond:(pi,h)=>SD[pi]&&SD[pi].inShaft(h)&&h.pos.y<-2,text:pi=>'Со дна — прилив '+K(pi,'item')+': вода поднимет.'});
   W.spawns=[[new V3(-3.5,0,5),new V3(-5.5,0,6)],[new V3(3.5,0,5),new V3(5.5,0,6)]];W.startAct=[0,0];
   W.pauseLine='Подводный Китеж. Гусли Садко: RB воду меняет там, где стоишь, —<br>Прилив лодки подымет, отлив подвалы откроет, глядишь.<br>Переливная улица: вода одна на двоих — Потап на заслонке держит.<br>Звонкие плиты — напев Садко; Морскому царю играйте в два голоса — запляшет; сад Китежа: Потап по дну, Йоша — лесенки растит;<br>Рак-Отшельник любит музыку — а домик ему нужен новый.<br>В Китеже молчать нельзя — запомни в голове.';
   W.onStart=()=>{later(0.8,()=>say('zven','Китеж! Под водою спит он. Дзинь — за мной!',2.6,true));};

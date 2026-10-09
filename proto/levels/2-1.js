@@ -120,9 +120,9 @@ function build21(){
     if(mkt.started&&!mkt.done&&mkt.list.every(e=>!e.alive)){mkt.done=true;mktGate.forceOpen=true;SFX.ok();banner('Отбились!','#ffffff',1.8,'дальше — раковины две');}
     if(!F.grate){const ok=LZ.state==='high'&&LZ.t>=1&&RZ.state==='low'&&RZ.t>=1;
       if(ok){F.grate=true;grateCol.on=false;SFX.gate();SFX.ok();anim(1.6,k=>{grate.position.y=3.8*smooth(k);});banner('Решётка поднялась!','#ffffff',2,'вместе получилось');}}});
-  W.tipZones.push({cond:(pi,h)=>[L1,L2,L3].some(z=>inZone(z,h,0)&&z.state==='low'&&h.pos.y<z.floor+0.4),text:pi=>'Стенка высока — не допрыгнуть никак.<br>Сыграй прилив '+K(pi,'item')+' — вода подымет на ступеньку, вот так.'},
+  W.tipZones.push({cond:(pi,h)=>[L1,L2,L3].some(z=>inZone(z,h,0)&&z.state==='low'&&h.pos.y<z.floor+0.4),text:pi=>'Стенка высока — сыграй прилив '+K(pi,'item')+'!'},
     {cond:(pi,h)=>inZone(LIFT,h,0)&&h.pos.y>6,text:pi=>'Колодец-лифт: сыграй отлив '+K(pi,'item')+' — вода опустит вниз.'},
-    {cond:(pi,h)=>mkt.started&&!mkt.done&&MP.state==='high'&&hd(h.pos,{x:0,z:-127})<7,text:pi=>'Щука в пруду. Сыграй отлив '+K(pi,'item')+' — на мели окажется,<br>Тут её и бей — пусть не кажется!'},
+    {cond:(pi,h)=>mkt.started&&!mkt.done&&MP.state==='high'&&hd(h.pos,{x:0,z:-127})<7,text:pi=>'Щука в пруду: сыграй отлив '+K(pi,'item')+' и бей!'},
     {cond:(pi,h)=>!F.grate&&h.pos.z<-141&&h.pos.z>-157,text:pi=>'Левой воде — прилив, правой — отлив. На таблички гляди!'});
   for(const pi of[0,1]){const h=()=>active(pi);
     prompt(pi,'item',()=>headOf(h()),()=>[L1,L2,L3].some(z=>inZone(z,h(),0.2)&&z.state==='low'&&h().pos.y<z.floor+0.5),'прилив — наверх');
@@ -148,7 +148,7 @@ function build21(){
         {t:17.6,fn:()=>{pe.parts.beak.visible=false;anim(0.6,k=>{pe.body.scale.set(1+0.12*k,1-0.12*k,1+0.12*k);});}}],
       tick:(t)=>{sadko.head.rotation.x=t<9?0.1:0.2;sadko.body.rotation.z=Math.sin(t*2)*0.03;},
       end:()=>{pe.parts.beak.visible=true;pe.body.scale.set(1,1,1);W.abil.gusli=true;F.stage='gusli';banner('Гусли Садко!','#ffd76a',2.8,'кнопка R или ; (на джойстике RB): вода подымется или опустится там, где стоишь');
-        for(const pi of[0,1])tip(pi,'Ракушка с лодочкой воду кажет: лодочка вверху — прилив, внизу — отлив.<br>Играй на гуслях '+K(pi,'item')+' — вот и весь мотив.',4.2);}});}
+        for(const pi of[0,1])tip(pi,'Лодочка вверху — прилив, внизу — отлив. Играй '+K(pi,'item')+'!',4.2);}});}
   W.waterTargets.push({pos:new V3(-5.9,0,-14.5),active:()=>F.stage==='sadko',onWater:()=>{giftScene();}});
   function bookScene(){F.stage='book';const T=HERO,pr=T.proshka;const umb=new THREE.Group();W.group.add(umb);umb.visible=false;
     addMesh(new THREE.CylinderGeometry(0.02,0.02,0.9,5),M(0x6a4a2a),0,-0.45,0,umb);const can=addMesh(new THREE.ConeGeometry(0.75,0.35,10),M(0x4f9a3a),0,0.05,0,umb);can.scale.set(0.2,1,0.2);
@@ -200,9 +200,9 @@ function build21(){
     O(()=>'Две раковины. На таблички гляди: левой — прилив, правой — отлив.<br>Сыграйте '+K(pi,'item')+' — каждый у своей, вот и весь мотив.',()=>!!F.grate,()=>[LZ.shell.g,RZ.shell.g]),
     O('Ворота Китежа — бери звено, и в путь-дорогу!',()=>false,()=>[endLink.g])];
   for(const pi of[0,1])W.objectives[pi]=common(pi).concat(side(pi),late(pi));
-  W.tipZones.push({cond:(pi,h)=>h.grounded&&h.groundRef&&h.groundRef.water,text:pi=>'Ты плывёшь! Из воды высоко не выпрыгнуть.<br>Сыграй на гуслях '+K(pi,'item')+' — лодка всплывёт, подвезёт — не сгинуть.'},
+  W.tipZones.push({cond:(pi,h)=>h.grounded&&h.groundRef&&h.groundRef.water,text:pi=>'Ты плывёшь! Сыграй на гуслях '+K(pi,'item')+' — лодка всплывёт.'},
     {cond:(pi,h)=>h.pos.y<-1.5&&h.pos.z<-45&&h.pos.z>-52,text:pi=>'Отлив открыл подвал. На дне — орешек! Назад — по ступенькам.'},
-    {cond:(pi,h)=>SD[pi]&&SD[pi].inShaft(h)&&h.pos.y<-2,text:pi=>'Дно колодца. К сундуку подойди — сам откроется.<br>Наверх — прилив '+K(pi,'item')+' сыграй, и вода подымется.'});
+    {cond:(pi,h)=>SD[pi]&&SD[pi].inShaft(h)&&h.pos.y<-2,text:pi=>'Со дна — прилив '+K(pi,'item')+': вода поднимет.'});
   W.spawns=[[new V3(-3.5,0,5),new V3(-5.5,0,6)],[new V3(3.5,0,5),new V3(5.5,0,6)]];W.startAct=[0,0];
   W.pauseLine='Подводный Китеж. Гусли Садко: RB воду меняет там, где стоишь, —<br>Прилив лодки подымет, отлив подвалы откроет, глядишь.<br>Дальше — шлюзы, колодец-лифт, торговые ряды, раковины две.<br>В Китеже молчать нельзя — запомни в голове.';
   W.onStart=()=>{later(0.8,()=>say('zven','Китеж! Под водою спит он. Дзинь — за мной!',2.6,true));};

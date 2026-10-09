@@ -71,7 +71,7 @@ function build1B(){
     if(hit[0]&&hit[1]){G.stats.shields++;SFX.horn();banner('Богатырский щит!','#ffd76a',1.8,'вместе, в лад');for(const pi of[0,1]){const h=active(pi);burst(h.pos.clone().add(new V3(0,1,0)),0xffffff,14,4);
         for(let i=0;i<4;i++)spawnSpark(h.pos.clone().add(new V3(rand(-1,1),1.4,rand(-1,1))),0x6ad0ff);}if(boss3&&boss3.alive)emberOut(boss3,2,'Богатырский щит!');}
     else for(const pi of[0,1]){const h=active(pi);if(players[pi].downed||h.cling)continue;if(cring.press[pi]!==null||h.guard)shieldBlock(h);else damageHero(h,{kind:'enemy',ref:boss3});
-      if(!hit[pi])tip(pi,'Удар по кругу! Кружок над обоими —<br>Щитом '+K(pi,'guard')+' закройтесь вместе, в такт, как стеною!',2.6);}
+      if(!hit[pi])tip(pi,'Удар по кругу! Щитом '+K(pi,'guard')+' — вместе!',2.6);}
     shakeAll(0.05,0.3);SFX.whoosh();}
   // Ctrl+Alt+B (релиз, late_95_dev.js): следующая фаза босса — для проверки и показа; вернуть true, если перешли
   W.bossNext=()=>{if(G.cine||F.won||F.phase<1)return false;
