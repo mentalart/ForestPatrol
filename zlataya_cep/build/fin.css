@@ -212,6 +212,9 @@ body.fin-gallery #finTut,body.fin-gallery #finBossHint{display:none}
 .hn-card.hn-dim.on{opacity:.55}
 .hn-card.hn-cmp{padding:5px 13px 6px}.hn-cmp .hn-body{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hn-cmp .hn-body::before{content:'◆ ';color:#e8b33a}   /* под баннером — одна строка */
 .hn-card.on.hn-yield{opacity:0;visibility:hidden;transition:opacity .2s,visibility 0s .2s}   /* баннер события поверх — карточка уступает */
+/* «Текстовые подсказки: нет» (пауза, настройки): карточки задач и подсказок, подсказка босса, урок 4-Б, табличка Соловья, надписи у кнопок в мире; сами значки кнопок остаются */
+body.fin-nohints #finTut{display:none!important}   /* значки кнопок над героями (.bub) ведёт late_79_hints.js, как подсказки */
+.hn-gone{display:none!important}   /* подсказка босса или табличка Соловья, убранные LB, таймером чтения или «Подсказки: выкл», пока не сменится текст */
 .hn-card.hn-new{box-shadow:0 0 0 3px rgba(255,210,90,.5),0 4px 14px rgba(0,0,0,.32)}
 .hn-card.hn-pop .hn-body{animation:hnPop .38s cubic-bezier(.2,1.5,.4,1)}
 @keyframes hnPop{0%{opacity:.2;transform:translateY(-5px)}100%{opacity:1;transform:none}}
@@ -222,3 +225,7 @@ body.fin-gallery #finTut,body.fin-gallery #finBossHint{display:none}
 .hn-v2 .hn-p1,.hn-v1.hn-p1{color:#ffbf97;text-decoration:underline 2px var(--p1);text-underline-offset:3px}
 .hn-v2 .hn-p2,.hn-v1.hn-p2{color:#8ff0e6;text-decoration:underline 2px var(--p2);text-underline-offset:3px}
 .hn-card kbd,.hn-card .pb{font-size:calc(var(--hnf)*var(--fts));line-height:1.5}
+/* ===== урок в прологе «подсказки — на кнопке» (levels/p/late_79t_hintteach.js): крупная карточка по центру, ниже середины экрана ===== */
+#hnTeach{left:50%;top:auto;bottom:22vh;max-width:min(64vw,880px);text-align:center;font-size:calc(var(--hnf)*var(--fts)*1.25);transform:translate(-50%,-6px);
+  box-shadow:0 0 0 3px rgba(255,210,90,.45),0 4px 14px rgba(0,0,0,.32)}
+#hnTeach.on{transform:translate(-50%,0)}

@@ -75,9 +75,9 @@
 
 | id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
-| `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_96_prolog_scooter, late_96b_prolog_night | 8 | tfin_cine tfin_companion_p tfin_fadesplit tfin_kids1 tfin_prolog_night tfin_scooter tfin_… |
+| `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_79t_hintteach, late_96_prolog_scooter, late_96b_prolog_night | 8 | tfin_cine tfin_companion_p tfin_fadesplit tfin_kids1 tfin_prolog_night tfin_scooter tfin_… |
 | `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 14 | tfin_art tfin_audiolevel tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kid… |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 30 | t11 tfin_art tfin_cam tfin_companion tfin_companion_11 tfin_dev tfin_foecast tfin_foeidle… |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 32 | t11 tfin_art tfin_botlevel tfin_cam tfin_companion tfin_companion_11 tfin_dev tfin_foecas… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1, late_76_kids_fight | 3 | tfin_bossfxcap tfin_companion_12 tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 3 | tfin_companion_13 tfin_kids1 tfin_kids2 |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14 | 3 | tfin_companion_14 tfin_kidnap14 tfin_kids2 |
@@ -256,6 +256,7 @@
 | `late_79c_taskshort.js` | — | РЕЛИЗ · КРАТКИЕ ФОРМУЛИРОВКИ ЗАДАЧ (≤ 12 слов, крупной строкой) |
 | `late_79d_help.js` | — | РЕЛИЗ · ЛЕСТНИЦА ПОДСКАЗОК ПРИ ПРОМАХАХ (FIN.help) |
 | `late_79e_lesson.js` | — | РЕЛИЗ · ОБЩИЙ ШАБЛОН УРОКА FIN.lesson (движок интерактивного ролика 4-Б, вынесен без смены поведения) |
+| `levels/p/late_79t_hintteach.js` | p | РЕЛИЗ final06 · ПРОЛОГ: УРОК «ПОДСКАЗКИ — НА КНОПКЕ» |
 | `late_80_ui.js` | — | РЕЛИЗ · ИНТЕРФЕЙС: баннер события важнее ленты с названием уровня |
 | `late_81_sfx.js` | — | РЕЛИЗ · ЗВУК: ИНСТРУМЕНТЫ И ЗАНОВО ОЗВУЧЕННЫЕ ЭФФЕКТЫ РОЛИКОВ |
 | `late_82_cine_cam.js` | — | РЕЛИЗ · КИНО 1: РЕЖИССЁР И КАМЕРА РОЛИКОВ |
@@ -439,11 +440,11 @@
 | `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 77 файлов |
+| `changes/` | 80 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 26 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 246 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 249 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

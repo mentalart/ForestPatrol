@@ -23,6 +23,10 @@ tfin_voice tfin_guard tfin_pads2 tfin_luko tfin_uisnd tfin_scooter tfin_splashcl
 tk5e_smoke tk5e_prolog tk5e_runner tk5e_s1 tk5e_leshy tk5e_s3 tk5e_p1 tk5e_p2 tk5e_p3 tk5e_p4 tk5e_s8 tk5e_s9 tk5e_s10 tk5e_s11 tk5e_s12 tk5e_fly tk5e_solo tk5e_flow tk5e_lesson tk5e_lesson2 tk5e_act1lessons tk5e_act2lessons tk5e_act3lessons tk5e_budget
 # подсказки: одна карточка на игрока, общая по центру, без повторов (late_79_hints.js)
 tfin_hints tfin_help
+# подсказки: один раз за уровень, крестовина → убирает и ← показывает снова, «Текстовые подсказки: нет» (late_79_hints.js)
+tfin_hintctl tfin_hintall tfin_hintteach
+# напарник: три уровня опыта (Растеряша / Смекалка / Бывалый), пункт «Напарник в бою», название режима «с ИИ напарником» (late_73_companion.js)
+tfin_botlevel
 tfin_bossui
 tfin_gor4
 tfin_gorsolo

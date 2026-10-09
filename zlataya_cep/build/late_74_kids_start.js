@@ -20,7 +20,7 @@ function kidsSetupScreen(){const S=FIN.set,cyc=(pi,d)=>{cyclePath(pi);if(d<0)cyc
   const p2=pathItem(1,'Путь игрока 2');Object.defineProperty(p2,'off',{get:()=>!!G.solo||FIN.co.on});
   const p1=pathItem(0,'Путь игрока 1');Object.defineProperty(p1,'label',{get:()=>G.solo||FIN.co.on?'Твой путь':'Путь игрока 1'});
   const items=[
-    {label:'Сколько вас?',val:()=>G.solo?'я один':FIN.co.on?'я и напарник-бот':'вдвоём',sub:()=>G.solo?'один игрок водит всех четверых героев по очереди':FIN.co.on?'за второго игрока играет бот: идёт следом, дерётся, подшивает':'двое: игрок 1 слева, игрок 2 справа',side:d=>FIN.co.cycle(d)},
+    {label:'Сколько вас?',val:()=>G.solo?'я один':FIN.co.on?'я и ИИ напарник':'вдвоём',sub:()=>G.solo?'один игрок водит всех четверых героев по очереди':FIN.co.on?'за второго игрока играет бот: идёт следом, дерётся, подшивает':'двое: игрок 1 слева, игрок 2 справа',side:d=>FIN.co.cycle(d)},
     p1,p2,
     {label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>FIN.readAloud.toggle()},
     {label:'Крупный текст',val:()=>S.ts>=1.3?'да':'нет',side:()=>{S.ts=S.ts>=1.3?1:1.3;save();}},
@@ -45,7 +45,7 @@ addEventListener('fullscreenchange',()=>{if(FIN.menu)finDraw();});
     {label:'Читать во всех мирах',val:()=>FIN.readAloud.allLabel(),sub:'авто — если кто-то идёт Ёжиком или Лисёнком',side:d=>FIN.readAloud.cycleAll(d)},
     {label:'На весь экран',val:()=>document.fullscreenElement?'да':'нет',sub:'Esc выйдет из полного экрана',side:()=>kidsFullscreen()}];
   L.splice(k<0?L.length-1:k,0,...add);return scr;};}
-{const _cs=controlsScreen;controlsScreen=function(){const scr=_cs(),h0=scr.html;scr.html=()=>h0().replace('</table>','<tr><td>Повторить задачу вслух</td><td><kbd>H</kbd></td><td><kbd>H</kbd></td><td>'+padGlyph('help')+'</td></tr><tr><td>«Ко мне!» — ещё и ближе к рукам</td><td><kbd>T</kbd></td><td><kbd>Enter</kbd></td><td>—</td></tr></table>');return scr;};}
+{const _cs=controlsScreen;controlsScreen=function(){const scr=_cs(),h0=scr.html;scr.html=()=>h0().replace('</table>','<tr><td>Убрать подсказку · показать снова · прочитать вслух</td><td><kbd>H</kbd></td><td><kbd>H</kbd></td><td>'+padGlyph('help')+'</td></tr><tr><td>«Ко мне!» — ещё и ближе к рукам</td><td><kbd>T</kbd></td><td><kbd>Enter</kbd></td><td>—</td></tr></table>');return scr;};}
 // кнопка «Повтори задачу»: H на клавиатуре, LB на джойстике (одна на двоих)
 BIND[0].help=BIND[1].help='KeyH';ALL.add('KeyH');KEYNAME.KeyH='H';PADG.help=['LB','T'];PADMAP.push([4,'help']);
 // «Ко мне!» — ещё и на T (игрок 1) и Enter (игрок 2): цифры 1 и 0 далеко от рук (только в игре, не в меню)

@@ -35,7 +35,7 @@ function raText(html){if(!html)return '';const d=document.createElement('div');d
   return t;}
 // слова идут через «Повтори»/автоповтор: показанные сейчас карточки (общая, потом личные)
 // карточки боссов (подсказка Горыныча, урок 4-Б, табличка Соловья) — тоже карточки слоя: индексы 3–5
-function raBoss(){const out=[];[[3,'finBossHint','.fh-title,.fh-text'],[4,'finTut','.ft-head,.ft-text'],[5,'solsign','']].forEach(([i,id,q])=>{const e=$(id);if(!e||!(e.classList.contains('on')||(id==='solsign'&&e.style.display==='block')))return;
+function raBoss(){const out=[];[[3,'finBossHint','.fh-title,.fh-text'],[4,'finTut','.ft-head,.ft-text'],[5,'solsign','']].forEach(([i,id,q])=>{const e=$(id);if(!e||e.classList.contains('hn-gone')||!(e.classList.contains('on')||(id==='solsign'&&e.style.display==='block')))return;
     const d=e.cloneNode(true);d.querySelectorAll('.ft-tag,.ft-ico,.ss-ico,.ft-skip,kbd,.pb,.fh-keys,.ft-keys').forEach(x=>x.remove());
     const t=(q?[...d.querySelectorAll(q)].map(x=>x.textContent).join('. '):d.textContent).replace(/[◆✦✓]/g,' ').replace(/\s+/g,' ').replace(/\s+([,.!?:;])/g,'$1').replace(/([.!?])\./g,'$1').trim();if(t)out.push({i,t});});return out;}
 // урок 4-Б идёт в ролике (G.cine) — его карточку читаем и тогда
