@@ -101,7 +101,7 @@ zlataya_cep/build/late_60_title.js            tfin_menu tfin_splash
 zlataya_cep/build/late_70_menu.js             tfin_menu tfin_pads tfin_pads2 tfin_uisnd tfin_save tfin_dev tfin_botlevel tfin_hintall
 zlataya_cep/build/late_71_pads.js             tfin_pads tfin_pads2 tfin_menu
 zlataya_cep/build/late_72_splash.js           tfin_splash tfin_uisnd tfin_menu tfin_splashclick
-zlataya_cep/build/late_73_companion.js        tfin_mapnav tfin_companion tfin_companion_p tfin_companion_11 tfin_companion_13 tfin_companion_14 tfin_companion_15 tfin_companion_1b tfin_companion_12 tfin_companion_21 tfin_companion_22 tfin_companion_23 tfin_companion_24 tfin_companion_25 tfin_companion_2b tfin_companion_2bboss tfin_companion_31 tfin_companion_luko tfin_menu tfin_save tfin_pads tfin_companion_32 tfin_companion_33 tfin_companion_34 tfin_companion_35 tfin_companion_3b tfin_companion_41 tfin_companion_42 tfin_companion_43 tfin_companion_44 tfin_companion_45 tfin_companion_4b tfin_botlevel tfin_hintall
+zlataya_cep/build/late_73_companion.js        tfin_mapnav tfin_companion tfin_companion_p tfin_companion_11 tfin_companion_13 tfin_companion_14 tfin_companion_15 tfin_companion_1b tfin_companion_12 tfin_companion_21 tfin_companion_22 tfin_companion_23 tfin_companion_24 tfin_companion_25 tfin_companion_2b tfin_companion_2bboss tfin_companion_31 tfin_companion_luko tfin_menu tfin_save tfin_pads tfin_companion_32 tfin_companion_33 tfin_companion_34 tfin_companion_35 tfin_companion_3b tfin_companion_41 tfin_companion_42 tfin_companion_43 tfin_companion_44 tfin_companion_45 tfin_companion_4b tfin_companion_52 tfin_companion_53 tfin_companion_54 tfin_companion_5b1 tfin_companion_51 tfin_botlevel tfin_hintall
 zlataya_cep/build/levels/p/late_73b_companion_p.js    tfin_companion_p
 zlataya_cep/build/levels/1-1/late_73c_companion_11.js tfin_companion_11
 zlataya_cep/build/levels/1-2/late_73h_companion_12.js tfin_companion_12
@@ -125,6 +125,11 @@ zlataya_cep/build/levels/4-3/late_73x_companion_43.js tfin_companion_43
 zlataya_cep/build/levels/4-4/late_73y_companion_44.js tfin_companion_44
 zlataya_cep/build/levels/4-5/late_73z_companion_45.js tfin_companion_45
 zlataya_cep/build/levels/4-B/late_73za_companion_4b.js tfin_companion_4b
+zlataya_cep/build/levels/5-2/late_73zb_companion_52.js tfin_companion_52
+zlataya_cep/build/levels/5-3/late_73zc_companion_53.js tfin_companion_53
+zlataya_cep/build/levels/5-4/late_73zd_companion_54.js tfin_companion_54
+zlataya_cep/build/levels/5-B1/late_73ze_companion_5b1.js tfin_companion_5b1
+zlataya_cep/build/levels/5-1/late_73zf_companion_51.js tfin_companion_51
 zlataya_cep/build/levels/1-4/late_73e_companion_14.js tfin_companion_14
 zlataya_cep/build/levels/1-5/late_73f_companion_15.js tfin_companion_15
 zlataya_cep/build/levels/1-B/late_73g_companion_1b.js tfin_companion_1b
