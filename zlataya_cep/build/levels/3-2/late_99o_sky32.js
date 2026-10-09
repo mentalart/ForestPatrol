@@ -120,7 +120,7 @@ function updRain32(R,dt){const en=!R.on||R.on();R.g.visible=en;const B=R.bow;if(
     if(!B.on){if(lightBehind32(R)){B.on=true;B.k=0;if(R.on)R.rain=Math.max(R.rain,rainDur32());SFX.flower();tone(1047,0.3,'sine',0.08);tone(1319,0.3,'sine',0.07,null,0.12);tone(1568,0.4,'sine',0.07,null,0.24);
         const mid=B.P(0.5,0);floatText(new V3(mid[0],mid[1]+0.8,mid[2]),'Радуга-дуга!','#ffe08a');for(let i=0;i<7;i++){const p=B.P(i/6,0);burst(new V3(p[0],p[1]+0.2,p[2]),BOW_COL32[i],6,2);}
         if(W.onBow)W.onBow(R);}
-      else if(!R.told&&R.rain<R.dur-1.6){R.told=true;for(const pi of[0,1])tip(pi,'Дождик идёт, а радуги нет: нужно <b>солнышко</b>.<br>Зажги перо '+K(pi,'item')+' рядом с тучкой — радуга и встанет.',3.4);}}
+      else if(!R.told&&R.rain<R.dur-1.6){R.told=true;for(const pi of[0,1])tip(pi,'Нужно солнышко: зажги перо '+K(pi,'item')+' рядом с тучкой.',3.4);}}
     if(R.rain<=0){R.rain=0;B.on=false;R.drops.forEach(d=>{d.visible=false;});floatText(new V3(R.x,R.y+3,R.z),'Дождик кончился','#cfe8ff');}}
   if(B.on){B.k=Math.min(1,B.k+dt/0.5);B.m.visible=true;B.mat.opacity=(R.rain<3&&Math.sin(G.time*14)>0?0.35:0.9)*B.k;}else{B.k=0;B.m.visible=false;}}
 // Ветер-Ветрило: облачное лицо с надутыми щеками; дует поперёк мостков (+x)
@@ -237,7 +237,7 @@ build32=function(){
     banner('Грозовые тучки!','#9fd0ff',2.4,'тучка искрит: синяя капля-молния — щит, в последний миг отбей назад · в свете тучка мягка');later(1.4,()=>say('zven','Свет пера — твоя защита: светлый круг с тобой идёт, не отстаёт!',2.6,true));}
   function trapArm(){F.trap='armed';bark(T.potap,'potap','Йоша, давай ко мне — довезу, не бойся.',2.6);}
   function trapFall(){F.trap='fell';meltCloud(C5);F.yoshaFloat=true;bark(T.yosha,'yosha','Я сам! Не мал, не слаб!',1.6);F.noCarry={minx:-12,maxx:12,miny:-3,maxy:2.5,minz:-40,maxz:-30.4};W.noCarry.push(F.noCarry);
-    later(2.5,()=>{tip(1,'Йоша внизу, на лугу. Назад путь долог — по облачной лестнице, мимо барашков.<br>Потап ждать не станет — не до шашек.',3.6);});}
+    later(2.5,()=>{tip(1,'Йоша внизу. Наверх — по облачной лестнице!',3.6);});}
   function trapRide(){F.trap='rode';later(0.4,()=>bark(T.yosha,'yosha','Ладно. На этот раз — вези.',2.4));}
   W.onPuff=(c)=>{if(!F.puffTold){F.puffTold=true;later(0.4,()=>bark(T.pelageya,'pelageya','Я поливаю — ты подымаешь!',2.2));}};
   flock.onBridge=()=>{if(!F.sheepTold){F.sheepTold=true;later(0.3,()=>bark(T.proshka,'proshka','Живой мост! Бегом, пока свет не погас!',2.4));}};
@@ -256,7 +256,7 @@ build32=function(){
       says:[[0.3,3.6,'zven','«Ветер, ветер! Ты могуч, ты гоняешь стаи туч!» Дзинь!'],[3.9,3.0,'veter','Ух! Стадо по небу разбрелось — собираю, гоняю! Берегитесь, малые, — сдую!'],
         [6.9,1.6,'potap','Меня не сдует.']],
       events:[{t:3.9,fn:()=>{WIND.st='blow';WIND.t=2.4;SFX.whoosh();}}],
-      end:()=>{F.stage='free';WIND.st='idle';WIND.t=2.5;snapCams();for(const pi of[0,1])tip(pi,'Ветер щёки надул — сейчас дунет! Прячься за Потапа или за стожок.<br>Потапа не сдвинет, и перо у него не задует.',4.2);}});}
+      end:()=>{F.stage='free';WIND.st='idle';WIND.t=2.5;snapCams();for(const pi of[0,1])tip(pi,'Ветер дунет! Прячься за Потапа или стожок.',4.2);}});}
   function sheltered(h){if(h.kind==='potap')return true;const P=T.potap;
     if(P.pos.x<h.pos.x&&h.pos.x-P.pos.x<3.2&&Math.abs(P.pos.z-h.pos.z)<1.4&&Math.abs(P.pos.y-h.pos.y)<1.6)return true;
     for(const S of SW)if(S.x<h.pos.x&&h.pos.x-S.x<2.8&&Math.abs(S.z-h.pos.z)<1.3&&Math.abs(S.y-h.pos.y)<1.6)return true;return false;}
@@ -410,7 +410,7 @@ build32=function(){
   /* ---------- Пушок: за светом, пружинка, прыжки через щели ---------- */
   function lambBounce(){if(LB.mode==='caught')return;const top=LB.pos.y+(LB.puffT>0?1.0:0.62);
     for(const h of HEROES){if(h.vel.y>-0.5||h.cling)continue;if(hd(h.pos,LB.pos)>(LB.puffT>0?1.0:0.8))continue;if(h.pos.y>top+0.3||h.pos.y<top-0.6)continue;
-      if(h.kind==='potap'&&!(LB.puffT>0)){if(!(h.lambSqT>G.time)){h.lambSqT=G.time+3;LB.sq=0.9;floatText(LB.pos.clone().add(new V3(0,1.3,0)),'Бе! Тяжело!','#f4f0ff');if(!F.potapLambTold){F.potapLambTold=true;tip(h.player,'Потапа маленький Пушок не держит. Пусть Йоша польёт его живой водой — распушится, станет пружинкой и для Потапа.',3.6);}}continue;}
+      if(h.kind==='potap'&&!(LB.puffT>0)){if(!(h.lambSqT>G.time)){h.lambSqT=G.time+3;LB.sq=0.9;floatText(LB.pos.clone().add(new V3(0,1.3,0)),'Бе! Тяжело!','#f4f0ff');if(!F.potapLambTold){F.potapLambTold=true;tip(h.player,'Пушок не держит Потапа — Йоша, полей его!',3.6);}}continue;}
       const v=LB.puffT>0?(h.kind==='potap'?14.6:15.6):12.4;h.vel.y=v;h.vel.x+=Math.sin(h.face)*1.6;h.vel.z+=Math.cos(h.face)*1.6;h.grounded=false;h.groundRef=null;h.coyote=0;h.pos.y=top+0.05;h.tossT=0.6;LB.sq=1;SFX.toss();tone(LB.puffT>0?520:700,0.15,'sine',0.08,LB.puffT>0?1040:1200);
       floatText(LB.pos.clone().add(new V3(0,1.4,0)),LB.puffT>0?'Пружинка!':'Скок!','#f4f0ff');if(!F.bounceTold&&LB.puffT>0){F.bounceTold=true;later(0.4,()=>bark(T.yosha,'yosha','Пушок — пружинка! Полью — и прыгай!',2.2));}}}
   function lambHop(to){const from=LB.pos.clone();LB.hop={from,to:to.clone(),t:0,dur:0.9};SFX.toss();floatText(from.clone().add(new V3(0,1.2,0)),'Скок-поскок!','#f4f0ff');}
@@ -506,11 +506,11 @@ build32=function(){
     O('Звено с радуги — возьми!',()=>false,()=>[L4.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>h.pos.y<-0.5&&h.pos.y>-6&&h.pos.z<-10&&h.pos.z>-17.5,text:pi=>'Нижний луг. Облачная лестница справа наверх ведёт.'},
-    {cond:(pi,h)=>h.pos.y<4&&h.pos.z<-30&&h.pos.z>-60&&h.pos.x<9,text:pi=>'Ты внизу, на лугу под обрывом. Наверх — по облачной лестнице справа, вперёд.'},
+    {cond:(pi,h)=>h.pos.y<4&&h.pos.z<-30&&h.pos.z>-60&&h.pos.x<9,text:pi=>'Ты внизу. Наверх — по лестнице справа!'},
     {cond:(pi,h)=>W.clouds.some(c=>h.groundRef===c&&!c.puffy&&c.meltT>9),text:pi=>'Облако мигает — сейчас растает! Прыгай иль спускайся!'},
-    {cond:(pi,h)=>F.lambFree&&h.pos.z<-121&&h.pos.z>-128.5&&h.pos.y<16,text:pi=>'Уступ высок. Пусть Пушок подбежит на свет пера, Йоша польёт его '+K(1,'skill')+' — и прыгайте на него '+K(pi,'jump')+'.'+(G.solo?'<br>В одиночку: оставь героя со светом у уступа — Пушок останется с ним.':'')},
+    {cond:(pi,h)=>F.lambFree&&h.pos.z<-121&&h.pos.z>-128.5&&h.pos.y<16,text:pi=>'Йоша поливает Пушка '+K(1,'skill')+' — прыгайте на него '+K(pi,'jump')+'.'+(G.solo?'<br>В одиночку: оставь героя со светом у уступа — Пушок останется с ним.':'')},
     {cond:(pi,h)=>h.kind==='yosha'&&W.rains.some(R=>R.tolst&&(!R.on||R.on())&&R.rain<=0&&hd(R,h.pos)<4),text:pi=>'Тучку-толстушку живой водой не пронять — её Потап выжмет '+K(0,'skill')+'.'},
-    {cond:(pi,h)=>F.herd&&!F.penned&&h.pos.z<-256&&h.pos.z>-294&&!h.lit,text:pi=>'Барашки бегут к свету пера '+K(pi,'item')+'. Зажги — и веди их в кошару.'+(G.solo?'<br>Кто в кошаре — там и останется.':'')});
+    {cond:(pi,h)=>F.herd&&!F.penned&&h.pos.z<-256&&h.pos.z>-294&&!h.lit,text:pi=>'Зажги перо '+K(pi,'item')+' — барашки пойдут в кошару.'+(G.solo?'<br>Кто в кошаре — там и останется.':'')});
   W.spawns=[[new V3(-2.6,0,5),new V3(-4.6,0,6)],[new V3(2.6,0,5),new V3(4.6,0,6)]];W.startAct=[0,0];
   W.pauseLine='Облачные пастбища: облако под горящим пером подымается, во тьме — опускается; поднятое за пятнадцать секунд тает.<br>Живая вода Йоши делает облако (и ягнёнка Пушка) пухлым. Барашки бегут к свету.<br>Ветер сдувает, но не Потапа; радуга встаёт, когда солнце позади, а дождик впереди.';
   // для ботов и разработки: FIN.warp('lamb'|'cliff'|'wind'|'rainbow'|'rainbow2'|'pen'|'boss')

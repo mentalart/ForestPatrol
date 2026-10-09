@@ -37,7 +37,7 @@ const kst=()=>(W&&W.kidsSt)||null;
 // упавший игрок: что с ним и что дальше
 {const _dh=damageHero;damageHero=function(h,src){const p=players[h.player],was=p.downed,r=_dh(h,src);
   if(!was&&p.downed)K1.lv().downs++;
-  if(W.kids&&!was&&p.downed){tip(h.player,'Ты отдыхаешь — не страшно!<br>Друг идёт на помощь, постоит рядом — и ты снова в бою.',3);floatText(h.pos.clone().add(new V3(0,h.d.height+0.9,0)),'Отдыхаю…','#ffd0e0');}
+  if(W.kids&&!was&&p.downed){tip(h.player,'Отдыхаешь — не страшно! Друг подойдёт на помощь.',3);floatText(h.pos.clone().add(new V3(0,h.d.height+0.9,0)),'Отдыхаю…','#ffd0e0');}
   return r;};}
 // стрелка над активным героем + быстрее подсказки
 const KARR=new Map();

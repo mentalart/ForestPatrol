@@ -245,9 +245,9 @@ FIN.k2chase=function(KC){const F=W.flags,T=HERO,bank=KC.bank,rock=KC.rock,FX=FIN
     prompt(pi,'attack',()=>headOf(h()),()=>!F.sluice&&hd(h().pos,{x:-1.9,z:FZ0-11})<2.2&&h().pos.y>2.5,'рычаг!');
     prompt(pi,'item',()=>headOf(h()),()=>boat.on&&!boat.fly&&(SOLO()?pi===G.soloPi:pi===1),'гребок!');}
   W.tipZones.push({cond:(pi,h)=>WV.on&&F.oak&&!CH.millDone&&!mill.held&&h.kind!=='potap'&&h.pos.z>MZ+1.8&&h.pos.z<MZ+5&&Math.abs(h.pos.x)<3.5,
-      text:pi=>SOLO()?'Колесо держит только Потап — смени героя '+K(pi,'swap')+' и встань Потапом в светящийся круг у тормоза '+K(pi,'skill')+'.':'Колесо держит Потап: пусть встанет в светящийся круг у тормоза справа и нажмёт '+K(0,'skill')+'.'},
+      text:pi=>SOLO()?'Нужен Потап: смени героя '+K(pi,'swap')+', встань в круг '+K(pi,'skill')+'.':'Потап — в светящийся круг у тормоза '+K(0,'skill')+'!'},
     {cond:(pi,h)=>WV.on&&h.pos.z>104&&h.pos.z<112&&h.pos.y<0.4,text:pi=>'Из ручья в отлив не выбраться. Прилив '+K(pi,'item')+' — и вверх!'},
-    {cond:(pi,h)=>WV.on&&h.pos.x>1.2&&h.pos.z<sluiceZ+3&&h.pos.z>sluiceZ&&!F.sluice,text:pi=>'Заслонку открывает рычаг на уступе слева — пусть друг дёрнет.<br>Или Прошка собьёт его из рогатки '+K(0,'skill')+'.'});
+    {cond:(pi,h)=>WV.on&&h.pos.x>1.2&&h.pos.z<sluiceZ+3&&h.pos.z>sluiceZ&&!F.sluice,text:pi=>'Дёрни рычаг слева или сбей рогаткой '+K(0,'skill')+'.'});
   const OB=[
     pi=>O(pi?()=>'Вал по пятам! Дуб поперёк тропы — Потап его поднимет. Беги следом!':()=>'Вал по пятам! Дуб поперёк тропы — Потап его поднимет '+K(0,'skill')+' (смени героя '+K(0,'swap')+').',()=>!!F.oak,()=>[oak]),
     pi=>O(()=>'Мельница: колесо крутится — не пройти. Потап — к тормозу справа от колеса (светится) '+K(0,'skill')+': лопасти встанут ступенями — беги по ним!<br>На том берегу встань на плиту — колесо удержишь для Потапа.',()=>!!CH.millDone,()=>[millG]),

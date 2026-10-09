@@ -22,7 +22,7 @@ if(!U.cine(200))throw new Error('нет ролика погони');ZC.tick(5);'
 const D=D2(),CH=D.CH,MZ=CH.MZ;if(!CH.warp('mill'))throw new Error('нет warp');ZC.tick(5);const r=[ACT(0,'potap'),ACT(1,'pelageya')];
 r.push(WALK2([[0,MZ+3.0],[-1,MZ+3.4]],6));ZC.tick(20);const ring=ZC.W.group.children.find(o=>o.geometry&&o.geometry.type==='RingGeometry'&&Math.abs(o.position.z-CH.millHold.z)<0.01);
 if(!ring||!ring.visible)throw new Error('круга у тормоза нет: '+st());if(CH.mill.held)throw new Error('колесо держится само: '+st());
-const tz=ZC.W.tipZones.find(z=>z.cond(1,U.act(1))),tp=tz?String(tz.text(1)):'';if(!tp.includes('Колесо держит Потап'))throw new Error('нет подсказки для Пелагеи: '+tp.slice(0,80));
+const tz=ZC.W.tipZones.find(z=>z.cond(1,U.act(1))),tp=tz?String(tz.text(1)):'';if(!(tp.includes('светящийся круг у тормоза')||tp.includes('встань в круг')))throw new Error('нет подсказки для Пелагеи: '+tp.slice(0,80));
 const dd=Math.hypot(U.act(0).pos.x-CH.millHold.x,U.act(0).pos.z-CH.millHold.z);if(dd<1.75||dd>2.3)throw new Error('Потап не у прохода: d='+dd.toFixed(2)+' '+r.join()+' '+st());
 U.tap('KeyE');ZC.tick(60);if(!CH.mill.potap||!CH.mill.held)throw new Error('колесо отпущено сразу: d='+dd.toFixed(2)+' '+st());if(ring.visible)throw new Error('круг не погас');
 r.push(WALK(0,4.5,MZ+4.5,4));ZC.tick(30);if(CH.mill.potap||CH.mill.held)throw new Error('ушёл — а колесо держится: '+st());

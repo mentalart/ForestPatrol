@@ -213,7 +213,7 @@ build5B2=function(){
       else{o.st='up';o.v=13;o.t=0;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'В небо!','#ffe08a');K5.log.push('orbup');}continue;}
     k5Del(o.g);K5.orbs.splice(i,1);FX.sparkle(o.p.clone(),8,0xb070ff);FX.sparks(o.p.clone(),14,0xb070ff);k5Flash(o.p.clone(),0xa060ff,2.6,0.3);
     if(h.guard){shieldBlock(h);floatText(h.pos.clone().add(new V3(0,h.d.height+1,0)),'в последний миг — отобьёшь!','#e0c8ff');continue;}
-    damageHero(h,{kind:'enemy',ref:{pos:o.p.clone()}});if(!K5.said.orbTip){K5.said.orbTip=true;tip(pi,'Тёмный шар — нажми щит '+K(pi,'guard')+' в самый последний миг: он полетит к другу!',3);}}}
+    damageHero(h,{kind:'enemy',ref:{pos:o.p.clone()}});if(!K5.said.orbTip){K5.said.orbTip=true;tip(pi,'Тёмный шар: щит '+K(pi,'guard')+' в последний миг!',3);}}}
   function ravenMake(){const hs=k5Heroes();if(!hs.length)return null;const a=rand(0,6.28);const x=C.x+Math.cos(a)*9,z=C.z+Math.sin(a)*9;const pi=G.solo?G.soloPi:hs[Math.floor(rand(0,hs.length))].player;
     const e=makeFoe('k5raven',x,z,{pi,leash:60});e.k5=true;e.noMove=true;e.state='idle';e.pos.y=4;e.cd=rand(2.5,4.5);e.k5a=a;e.home=C.clone();e.tick=(e,dt)=>ravenTick(e,dt);K5.adds.push(e);k5s('raven');
     // появляется из лиловой дымки; глаза — красные огоньки (видно, куда смотрит); пикирует — красная линия на землю и шлейф

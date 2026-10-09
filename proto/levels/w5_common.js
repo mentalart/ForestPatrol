@@ -19,7 +19,7 @@ function signMark(x,y,z,item,o){o=o||{};const g=new THREE.Group();g.position.set
   if(item==='pero')W.feat5=true;if(item==='kleshi')W.tong5=true;W.abil[item]=true;return s;}
 function signNear(h){let best=null,bd=1e9;for(const s of W.signs){if(s.on&&!s.on())continue;const d=hd(h.pos,s);if(d<s.r&&Math.abs(h.pos.y-s.y)<s.dy&&d<bd){bd=d;best=s;}}return best;}
 function useSign(pi){const h=active(pi),p=players[pi],s=signNear(h);if(heroCarry(h)){playTongs(pi);return;}   // горячее в клещах — положить можно где угодно
-  if(!s){if(p.lockedTip<=0){p.lockedTip=3;tip(pi,'Тут знака нет. На Буяне кнопка '+K(pi,'item')+' берёт ту вещь, чей знак на земле рядом нарисован.',2.8);}SFX.miss();return;}
+  if(!s){if(p.lockedTip<=0){p.lockedTip=3;tip(pi,'Кнопка '+K(pi,'item')+' берёт вещь по знаку рядом.',2.8);}SFX.miss();return;}
   s.flash=1;if(s.item==='clew')throwYarn(pi);else if(s.item==='gusli')playGusli(pi);else if(s.item==='pero')playFeather(pi);else playTongs(pi);}
 function updateSigns(dt){if(!W.signs.length)return;
   for(const s of W.signs){const en=!s.on||s.on();s.g.visible=en;if(!en)continue;const near=HEROES.some(h=>h.active&&hd(h.pos,s)<s.r&&Math.abs(h.pos.y-s.y)<s.dy);s.near=damp(s.near,near?1:0,5,dt);s.flash=Math.max(0,s.flash-dt*3);
@@ -137,7 +137,7 @@ const HAM_SIG={clew:['yellow'],gusli:['blue'],pero:['yellow'],kleshi:['yellow','
 function hameleyFoe(x,z,o){const e=makeFoe('hameley',x,z,Object.assign({leash:8},o||{}));e.def=Object.assign({},e.def);e.mode='';e.modeT=3;e.wet=false;e.litNow=false;
   const setMode=(nm,quiet)=>{e.mode=nm;e.wet=false;e.signals=HAM_SIG[nm];e.def.ranged=nm==='gusli';const c=SIGN_COL[nm];e.L.bm.color.setHex(c);e.L.bm.emissive.setHex(c);
     if(quiet)return;SFX.swap();burst(e.pos.clone().add(new V3(0,0.8,0)),c,12,2);floatText(e.pos.clone().add(new V3(0,1.8,0)),'Хамелей: '+SIGN_NAME[nm]+'!','#'+c.toString(16).padStart(6,'0'));
-    if(!W.flags.hameleyTold){W.flags.hameleyTold=true;for(const pi of[0,1])tip(pi,'Хамелей на знак, что рядом, похож — и слабое место у него меняется',3.2);}};
+    if(!W.flags.hameleyTold){W.flags.hameleyTold=true;for(const pi of[0,1])tip(pi,'Хамелей меняет слабое место у знака.',3.2);}};
   const nearest=()=>{let best=null,bd=1e9;for(const s of W.signs){if(s.on&&!s.on())continue;const d=hd(s,e.pos)+Math.abs(s.y-e.pos.y)*2;if(d<bd){bd=d;best=s;}}return best?best.item:'clew';};
   setMode('clew',true);   // выходит обычным — через 3 с перенимает ближайший знак (это и есть подсказка)
   const shut=()=>(e.mode==='pero'&&!e.litNow)||(e.mode==='kleshi'&&!e.wet);e.guardAll=()=>e.state!=='broken'&&shut();e.darkGuard=shut;
