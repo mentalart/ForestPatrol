@@ -54,7 +54,7 @@ function build35(){
   /* ---------- укрытия: просьба помощника → все четверо внутри за 8 секунд ---------- */
   const faces=new THREE.Group();W.group.add(faces);faces.visible=false;const faceM=HEROES.map(h=>{const m=new THREE.Mesh(new THREE.SphereGeometry(0.2,10,8),M(0x6a6a7a));m.position.x=(HEROES.indexOf(h)-1.5)*0.55;faces.add(m);return m;});
   const dome=new THREE.Mesh(new THREE.SphereGeometry(1,20,14,0,Math.PI*2,0,Math.PI/2),MB(0xc8e8a0,{transparent:true,opacity:0.14,depthWrite:false}));dome.visible=false;W.group.add(dome);
-  let SH=null;
+  let SH=null;W.shelter35=()=>SH;   // для напарника-бота: идёт ли сейчас укрытие
   function giveLink(it){it.locked=false;it.g.visible=true;burst(it.pos.clone(),COL.gold,14,3);const h=active(0),from=it.pos.clone();anim(1.0,k=>{if(it.taken)return;it.base=lerp(from.y,h.pos.y+1.1,k)+Math.sin(k*Math.PI)*1.2;it.pos.x=lerp(from.x,h.pos.x,k);it.pos.z=lerp(from.z,h.pos.z,k);if(k>=1)takeItem(it,h);});}
   const inside=(h,z0)=>hd(h.pos,z0)<z0.r&&Math.abs(h.pos.y)<1.2;
   function openShelter(z0,name,onDone){SH={z:z0,name,t:8,state:'count',onDone};faces.visible=true;faces.position.set(z0.x,3.4,z0.z);dome.visible=true;dome.position.set(z0.x,0,z0.z);dome.scale.set(z0.r,2,z0.r);

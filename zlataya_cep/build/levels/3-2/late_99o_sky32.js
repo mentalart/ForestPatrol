@@ -174,7 +174,7 @@ build32=function(){
   mostki('light',[[0,19.2,-179],[0,19.2,-188]],{w:2});
   cloudIsle(-6,6,-200,-188,19.2);bell(-3.5,-190,19.2);
   const VT=makeVeter32();VT.g.position.set(-13,25,-199);VT.g.lookAt(0,20,-168);
-  const WIND={st:'idle',t:3,zmin:-189,zmax:-147.5,streaks:[],blown:new Set()};
+  const WIND={st:'idle',t:3,zmin:-189,zmax:-147.5,streaks:[],blown:new Set()};W.wind32=WIND;
   {const sm=MB(0xffffff,{transparent:true,opacity:0.5,depthWrite:false});for(let i=0;i<16;i++){const s=new THREE.Mesh(new THREE.BoxGeometry(rand(2.5,4.5),0.05,0.05),sm);s.visible=false;s.userData.noBatch=true;W.group.add(s);WIND.streaks.push(s);}}
   /* ---------- И. Радуга-дуга ---------- */
   const R1=rainCloud32(-2.2,19.2,-198.8,{from:[0,19.2,-200],to:[0,19.2,-214],H:3.2,name:'r1'});
