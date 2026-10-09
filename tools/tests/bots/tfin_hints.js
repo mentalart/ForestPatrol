@@ -49,7 +49,7 @@ W.tipZones.unshift({cond:()=>true,text:pi=>'Невод держат двое н�
 const same=()=>{const a=document.getElementById('tip0').innerHTML,b=document.getElementById('tip1').innerHTML;return /ракушки/.test(a)&&H.merge(a,b)!==null;};
 for(let i=0;i<12&&!same();i++)ZC.sim(0.5);   // у игрока может быть своя подсказка поважнее (клубок, колокольчик) — дождаться, пока у обоих та же
 let C=cards();const one=C.filter(c=>/ракушки/.test(c.html));chk(same(),'у игроков так и не совпала подсказка');chk(one.length===1&&one[0].id==='hintS','одинаковая подсказка не в одной общей карточке: '+one.map(c=>c.id));chk(dups().length===0,'повторы: '+dups());
-W.tipZones[0].text=pi=>ot;ZC.sim(0.5);C=cards();chk(C.filter(c=>norm(c.html).includes(norm(ot).slice(0,40))).length===1,'подсказка-пересказ задачи видна отдельно');
+W.tipZones[0].text=pi=>ot;ZC.sim(0.5);C=cards();chk(C.filter(c=>norm(c.html).includes(norm(ot).slice(0,40))).length===(o0.short?0:1),'подсказка-пересказ задачи видна отдельно');   // у задачи есть краткая строка — в карточке она, а полного текста (его повторяла бы подсказка) нет
 W.tipZones.shift();ZC.sim(0.5);{const lv=document.getElementById('level');lv.style.transition='none';lv.style.opacity=0;}   // для кадра: в браузере без экрана заставка с именем уровня не успевает погаснуть
 ['shared tip='+one.length,'cards='+cards().map(c=>c.id)]
 //@@
