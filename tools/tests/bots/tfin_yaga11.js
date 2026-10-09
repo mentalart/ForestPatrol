@@ -27,6 +27,6 @@ if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'
 //@@
 // M-4b: подсказки боя с Ягой — не длиннее 7 слов (жёстко 10); озвучки у них нет (озвучены только реплики ролика)
 const words=h=>String(h).replace(/<[^>]*>/g,' ').split(/\s+/).filter(w=>/[A-Za-zА-Яа-яЁё0-9]/.test(w)).length;
-const seen=['Сейчас по нему не попасть. Сперва удар его отбей G, потом бей F.','Колокольчик! Коль упадёшь — сюда вернёшься, не пропадёшь.','Солнышко вспыхнуло — защиту G жми!'].map(ZC.FIN.yaga11Tip);
+const seen=['Не попасть! Отбей G, потом бей F.','Колокольчик! Коль упадёшь — сюда вернёшься, не пропадёшь.','Солнышко вспыхнуло — защиту G жми!'].map(ZC.FIN.yaga11Tip);
 if(seen.some(x=>words(x)>7))throw new Error('подсказки Яги длиннее 7 слов: '+JSON.stringify(seen.map(words)));
 'yaga11 tips ok '+seen.map(words).join('/')

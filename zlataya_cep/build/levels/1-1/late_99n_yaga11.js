@@ -45,7 +45,7 @@ FIN.yaga11=function(c){const {F,yaga,hut,spawnKiki,arena,puddles}=c;F.stage='yag
 /* ---------- M-4b (docs/34): подсказки боя с Ягой — ≤ 7 слов, кнопки в карточке не мельче текста (≥ 3 % высоты окна) ---------- */
 // Тексты общего движка и 1-2 в других уровнях прежние; озвучки у этих подсказок нет (озвучены только реплики ролика).
 FIN.yaga11Tip=html=>{let m;
-  if(m=/^Сейчас по нему не попасть\. Сперва удар его отбей (.*?), потом бей (.*?)\.$/.exec(html))return 'Отбей удар '+m[1]+' — потом бей '+m[2]+'!';
+  if(m=/^Не попасть! Отбей (.*?), потом бей (.*?)\.$/.exec(html))return 'Отбей удар '+m[1]+' — потом бей '+m[2]+'!';
   if(/^Колокольчик! Коль упадёшь/.test(html))return 'Колокольчик — упадёшь, сюда вернёшься.';
   return html;};
 {const _tp=tip;tip=function(pi,html,dur){if(W&&W.levelId==='1-1'&&typeof html==='string')html=FIN.yaga11Tip(html);return _tp(pi,html,dur);};}
