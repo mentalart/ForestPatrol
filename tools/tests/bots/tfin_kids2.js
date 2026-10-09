@@ -73,12 +73,13 @@ ZC.tick(70);chk(ZC.G.cine!==c0,'один держит 2 с — ролик про
 ZC.G.manual=true;ZC.startFrom(ZC.LV('1-3'));let cc=waitCine();ZC.tick(70);chk(!!cc&&ZC.G.cine===cc,'снова ролик');
 ZC.hold('Space',true);ZC.hold('KeyM',true);ZC.tick(75);chk(ZC.G.cine!==cc,'оба держат — пропущено за ~1 с');ZC.hold('Space',false);ZC.hold('KeyM',false);
 ZC.G.manual=true;ZC.startFrom(ZC.LV('1-4'));cc=waitCine();ZC.tick(70);
-if(cc&&cc.skippable){ZC.menu('pause');const M=ZC.FIN.menu,it=M&&M.items&&M.items[1];chk(it&&it.label==='Пропустить ролик','пункт паузы: '+(it&&it.label)+' / '+(M&&M.items.map(i=>i.label).join('|')));if(it&&it.act){it.act();ZC.tick(5);chk(ZC.G.cine!==cc,'«Пропустить ролик» из паузы сработал');}}
+if(cc&&cc.skippable){ZC.menu('pause');const M=ZC.FIN.menu,it=M&&M.items&&M.items.find(x=>x.label==='Пропустить ролик');chk(!!it,'пункт паузы: '+(it&&it.label)+' / '+(M&&M.items.map(i=>i.label).join('|')));if(it&&it.act){it.act();ZC.tick(5);chk(ZC.G.cine!==cc,'«Пропустить ролик» из паузы сработал');}}
 else chk(true,'(1-4: ролика нет — проверка паузы пропущена)');
 ['pause '+(cc&&cc.skippable)].concat(BAD)
 //@@
 // «Читать во всех мирах»: авто — Ёжик и Лисёнок; в мире 2 задачи читаются; в настройках пункт переключается; в паузе — пункт «Читать задачи вслух»
-window.SAID=[];const F=ZC.FIN,RA=F.readAloud,P=ZC.players;RA.mock=t=>SAID.push(t);F.set.readAloud=true;F.set.vox=0;delete F.set.readAloudAll;
+window.SAID=[];const F=ZC.FIN,RA=F.readAloud,P=ZC.players;RA.mock=t=>SAID.push(t);F.set.readAloud=true;F.set.vox=0;delete F.set.readAloudAll;F.set.hints=true;   // подсказки по умолчанию выключены (карточки скрыты) — для чтения вслух нужны включённые
+
 P[0].path='hard';P[1].path='hard';chk(RA.all()===false&&RA.allLabel()==='авто','авто, оба Богатыри — не читает: '+RA.all());P[1].path='mid';chk(RA.all()===true,'авто, есть Лисёнок — читает');P[0].path='easy';P[1].path='easy';
 RA.cycleAll(1);chk(F.set.readAloudAll===true&&RA.allLabel()==='да','авто → да');RA.cycleAll(1);chk(F.set.readAloudAll===false&&RA.allLabel()==='нет','да → нет');RA.cycleAll(1);chk(F.set.readAloudAll==null&&RA.allLabel()==='авто','нет → авто');
 const S=window.settingsScreen?null:null;

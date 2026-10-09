@@ -29,7 +29,7 @@ W.tipZones.shift();ZC.sim(0.5);ZC.players[0].tipT=0;for(let i=0;i<300;i++)F.ui(1
 ['card ok'].concat(BAD)
 //@@
 // чтение вслух читает короткую строку; отключение таблицы — полный текст как прежде
-window.SAID=[];F.readAloud.mock=t=>SAID.push(t);F.set.readAloud=true;F.set.vox=0;delete F.set.readAloudAll;const P=ZC.players;P[0].path='easy';P[1].path='easy';
+window.SAID=[];F.readAloud.said={};F.readAloud.mock=t=>SAID.push(t);F.set.readAloud=true;F.set.vox=0;delete F.set.readAloudAll;const P=ZC.players;P[0].path='easy';P[1].path='easy';
 ld('2-1');P[0].obj=2;P[1].obj=2;ZC.tick(30);ZC.sim(5);for(let i=0;i<300;i++)F.ui(1/60);
 chk(SAID.length>=1&&/Встань у чаши фонтана/.test(SAID.join(' '))&&!/Звено — на столбе/.test(SAID.join(' ')),'вслух — короткая строка: '+JSON.stringify(SAID));
 TS.off=true;window.SAID.length=0;F.readAloud.said={};P[0].obj=1;P[1].obj=1;ZC.tick(30);P[0].obj=2;P[1].obj=2;for(let i=0;i<300;i++)F.ui(1/60);

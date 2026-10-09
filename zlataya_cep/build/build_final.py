@@ -73,7 +73,20 @@ for e in VL:
         os.makedirs(os.path.join(PAGES,'voice'),exist_ok=True);import shutil;shutil.copyfile(f,os.path.join(PAGES,'voice',e['id']+'.mp3'));ve['src']='voice/'+e['id']+'.mp3'
     else:ve['b64']=base64.b64encode(open(f,'rb').read()).decode()
     vox.append(ve)
-voxjs='const VOX_LINES='+json.dumps(vox,ensure_ascii=False)+';\n';late=voxjs+late
+voxjs='const VOX_LINES='+json.dumps(vox,ensure_ascii=False)+';\n';
+# задачи и подсказки вслух (Silero «baya», tools/voice/read_tts.py): каталог voice/read/read.json и записи voice/read/<id>.mp3 → READ_LINES
+# (MP3 в base64; у записи ключ k — текст без цифр и знаков, по нему late_91d_readvoice.js находит запись для карточки)
+RD=os.path.join(VD,'read');rj=os.path.join(RD,'read.json');rdl=[]
+if os.path.exists(rj):
+    for e in json.load(open(rj,encoding='utf-8'))['lines']:
+        f=os.path.join(RD,e['id']+'.mp3')
+        if not (os.path.exists(f) and e.get('dur')):print('read: нет записи',e['id']);continue
+        re_={'id':e['id'],'k':e['key'],'dur':e['dur']}
+        if PAGES:
+            os.makedirs(os.path.join(PAGES,'voice','read'),exist_ok=True);import shutil;shutil.copyfile(f,os.path.join(PAGES,'voice','read',e['id']+'.mp3'));re_['src']='voice/read/'+e['id']+'.mp3'
+        else:re_['b64']=base64.b64encode(open(f,'rb').read()).decode()
+        rdl.append(re_)
+readjs='const READ_LINES='+json.dumps(rdl,ensure_ascii=False)+';\n';late=voxjs+readjs+late
 # защита: модуль не должен объявлять функцию с именем функции прототипа — в общей области видимости она молча подменит оригинал
 PF=set(re.findall(r'(?m)^function\s+([A-Za-z_$][\w$]*)\s*\(',s))
 MODS=[(f,rd(f)) for f in walk(r'(late_\d+.*|fin_early)\.js$')]
@@ -89,7 +102,7 @@ for mod in walk(r'rep_\d+.*\.py$'):
     exec(open(os.path.join(B,mod),encoding='utf-8').read())
 # у каждой озвученной реплики должна быть такая же строка в игре (после всех замен субтитров), иначе запись не прозвучит
 # (реплика, собранная в коде из кусков — например t+'…', — перечисляет эти куски в поле parts: в игре должен быть каждый)
-sg=s.replace(voxjs,'',1)   # код игры без самого каталога записей (в нём есть все тексты)
+sg=s.replace(voxjs,'',1).replace(readjs,'',1)   # код игры без самого каталога записей (в нём есть все тексты)
 miss=[e for e in VL if ("'"+e['text'].replace("'","\\'")+"'" not in sg) and not (e.get('parts') and all(p in sg for p in e['parts']))]
 for e in miss: print('VOICE LINE NOT FOUND ::',e['id'],e['text'])
 if miss: sys.exit('VOICE LINE NOT FOUND: '+str(len(miss)))
@@ -99,4 +112,4 @@ m=re.findall(r'<script>([\s\S]*?)</script>',s)
 chk=os.path.join(B,'.chk.js');open(chk,'w',encoding='utf-8').write(m[-1])
 r=subprocess.run(['node','--check',chk]);os.remove(chk)
 if r.returncode: sys.exit('syntax error')
-print('final ok',OUT,len(s),'voice lines',len(vox),'/',len(VL))
+print('final ok',OUT,len(s),'voice lines',len(vox),'/',len(VL),'read lines',len(rdl))
