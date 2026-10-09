@@ -138,7 +138,8 @@ body.fin-cine #finVig{background:radial-gradient(ellipse at 50% 48%,rgba(0,0,0,0
 body.fin-cinegrade canvas{filter:saturate(1.1) contrast(1.05)}
 body.fin-gallery > *:not(#c){visibility:hidden!important}
 /* ---------- final04 · обучение боя с Горынычем и живые подсказки ---------- */
-#finTut,#finBossHint,#solsign{--hnf:clamp(16px,3.1vh,48px)}
+:root{--hnf:clamp(16px,3.1vh,48px)}   /* F-2g: единый размер подсказок боссов — 3,1 % высоты окна (норма ≥ 3 %); карточки подсказок, урок, solsign берут его */
+#finTut,#finBossHint,#solsign{font-size:calc(var(--hnf)*var(--fts))}
 #finTut,#finBossHint{position:fixed;left:50%;pointer-events:none;color:#fff6e0;font-family:system-ui;opacity:0;transition:opacity .25s,transform .35s cubic-bezier(.2,1.5,.4,1)}
 #finTut{top:10.5vh;z-index:6;width:min(780px,88vw);transform:translate(-50%,-14px) scale(.95);padding:14px 20px 16px;border-radius:22px;
   background:linear-gradient(180deg,rgba(46,24,14,.94),rgba(26,14,10,.94));border:3px solid #ffd76a;box-shadow:0 12px 30px rgba(0,0,0,.45),0 0 0 7px rgba(255,215,106,.14)}
@@ -161,7 +162,7 @@ body.fin-gallery > *:not(#c){visibility:hidden!important}
 .ft-go.okt{color:#9ff0a8;animation:none}
 .ft-skip{position:absolute;right:16px;bottom:7px;font:600 calc(var(--hnf)*.7*var(--fts)) system-ui;opacity:.5}
 /* F-2f: всё в карточке урока — не мельче 3 % высоты окна (--hnf = 3,1vh): метка, имя игрока, клавиши, «пропустить» */
-#finTut .ft-tag,#finTut .ft-who,#finTut .ft-skip,#finTut kbd{font-size:calc(var(--hnf)*var(--fts))}
+#finTut .ft-tag,#finTut .ft-who,#finTut .ft-skip,#finTut kbd,#finBossHint .ft-tag,#finBossHint .ft-who,#finBossHint kbd{font-size:calc(var(--hnf)*var(--fts))}
 #finTut{padding:10px 20px 12px}#finTut .ft-body{margin-top:6px}#finTut .ft-keys{margin-top:8px}#finTut .ft-go{margin-top:6px}
 #finTut kbd{line-height:1.3;min-width:1.1em;padding:0 .4em}#finTut .ft-who{padding:1px 8px}#finTut .ft-skip{right:20px;top:14px;bottom:auto}
 #finBossHint{top:100px;z-index:6;width:min(720px,90vw);transform:translate(-50%,-12px) scale(.94);padding:7px 12px;border-radius:18px;
@@ -193,7 +194,7 @@ body.fin-gallery #finTut,body.fin-gallery #finBossHint{display:none}
 @keyframes fsGateB{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-10px) scale(1.06)}}
 /* ===== релиз: подсказки — одна карточка на игрока под его панелью, общая — по центру (late_79_hints.js) ===== */
 .tip,.obj{display:none!important}
-.hn-card{--hnf:clamp(16px,3.1vh,48px);position:absolute;z-index:6;top:96px;max-width:min(30vw,560px);min-width:150px;box-sizing:border-box;padding:8px 14px 9px;border-radius:14px;color:#fff6e6;text-align:left;
+.hn-card{position:absolute;z-index:6;top:96px;max-width:min(30vw,560px);min-width:150px;box-sizing:border-box;padding:8px 14px 9px;border-radius:14px;color:#fff6e6;text-align:left;
   font:700 calc(var(--hnf)*var(--fts))/1.3 system-ui,sans-serif;text-shadow:0 1px 2px rgba(0,0,0,.6);pointer-events:none;
   background:linear-gradient(180deg,rgba(34,22,48,.86),rgba(18,12,28,.8));box-shadow:0 4px 14px rgba(0,0,0,.32),inset 0 0 0 1px rgba(232,179,58,.16);
   opacity:0;visibility:hidden;transform:translateY(-6px);transition:opacity .25s,transform .3s cubic-bezier(.2,1.4,.4,1),box-shadow .4s,visibility 0s .25s}
@@ -220,4 +221,4 @@ body.fin-gallery #finTut,body.fin-gallery #finBossHint{display:none}
 .hn-v2 i{font-style:normal;opacity:.65;margin:0 3px}
 .hn-v2 .hn-p1,.hn-v1.hn-p1{color:#ffbf97;text-decoration:underline 2px var(--p1);text-underline-offset:3px}
 .hn-v2 .hn-p2,.hn-v1.hn-p2{color:#8ff0e6;text-decoration:underline 2px var(--p2);text-underline-offset:3px}
-.hn-card kbd,.hn-card .pb{font-size:calc(var(--hnf)*.85*var(--fts));line-height:1.5}
+.hn-card kbd,.hn-card .pb{font-size:calc(var(--hnf)*var(--fts));line-height:1.5}
