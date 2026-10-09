@@ -45,7 +45,7 @@ addEventListener('fullscreenchange',()=>{if(FIN.menu)finDraw();});
     {label:'Читать во всех мирах',val:()=>FIN.readAloud.allLabel(),sub:'авто — если кто-то идёт Ёжиком или Лисёнком',side:d=>FIN.readAloud.cycleAll(d)},
     {label:'На весь экран',val:()=>document.fullscreenElement?'да':'нет',sub:'Esc выйдет из полного экрана',side:()=>kidsFullscreen()}];
   L.splice(k<0?L.length-1:k,0,...add);return scr;};}
-{const _cs=controlsScreen;controlsScreen=function(){const scr=_cs(),h0=scr.html;scr.html=()=>h0().replace('</table>','<tr><td>Повторить задачу вслух</td><td><kbd>H</kbd></td><td><kbd>H</kbd></td><td>—</td></tr><tr><td>«Ко мне!» — ещё и ближе к рукам</td><td><kbd>T</kbd></td><td><kbd>Enter</kbd></td><td>—</td></tr></table>');return scr;};}
+{const _cs=controlsScreen;controlsScreen=function(){const scr=_cs(),h0=scr.html;scr.html=()=>h0().replace('</table>','<tr><td>Убрать подсказку · показать снова · прочитать вслух</td><td><kbd>H</kbd></td><td><kbd>H</kbd></td><td>'+padGlyph('help')+'</td></tr><tr><td>«Ко мне!» — ещё и ближе к рукам</td><td><kbd>T</kbd></td><td><kbd>Enter</kbd></td><td>—</td></tr></table>');return scr;};}
 // кнопка «Повтори задачу»: H на клавиатуре, LB на джойстике (одна на двоих)
 BIND[0].help=BIND[1].help='KeyH';ALL.add('KeyH');KEYNAME.KeyH='H';PADG.help=['LB','T'];PADMAP.push([4,'help']);
 // «Ко мне!» — ещё и на T (игрок 1) и Enter (игрок 2): цифры 1 и 0 далеко от рук (только в игре, не в меню)

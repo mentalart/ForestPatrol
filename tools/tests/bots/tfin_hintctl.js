@@ -117,16 +117,31 @@ PADSIM.list=[mkPad(0),mkPad(1)];'pads on'
   if(BAD.length)throw new Error(BAD.join(' · '));
   r.push('toggle ok','errs='+_errs.length);return r;})()
 //@@
-// 5) экран «Управление»: строка про LB
+// 5) экран «Управление»: строка про H и LB
 (async()=>{BAD.length=0;const F=ZC.FIN;F.kids.force=true;ZC.menu('pause');F.menu.items.find(i=>i.label==='Управление').act();
-  const h=F.menu.html();const ok=/Убрать подсказку/.test(h)&&/>LB</.test(h)&&!/✚→/.test(h);F.kids.force=false;ZC.start();
+  const h=F.menu.html();const ok=/Убрать подсказку/.test(h)&&/>LB</.test(h)&&/<kbd>H<\/kbd>/.test(h)&&!/✚→/.test(h);F.kids.force=false;ZC.start();
   if(!ok)throw new Error('в «Управлении» нет строки про LB: '+h.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').slice(0,400));
   return ['controls ok','errs='+_errs.length];})()
 //@@
+// 5б) клавиатурный H — то же действие: убирает, ещё раз — показывает последнюю; ZC.press('KeyH') (боты читалки) подсказки не трогает
+(async()=>{BAD.length=0;go('1-1');const r=[];untip(0);untip(1);tip(0,'Клавиатуре: нажми клавишу H, когда увидишь эту подсказку.');ZC.sim(1);
+  chk(vis().some(id=>/Клавиатуре/.test(txt(id))),'подсказка на экране');
+  ZC.press('KeyH');ZC.sim(0.5);chk(vis().some(id=>/Клавиатуре/.test(txt(id))),'ZC.press(KeyH) подсказку не убрал');
+  return ['h-bot ok','errs='+_errs.length].concat(BAD.length?[BAD.join(' · ')]:[]);})()
+//@@ key=KeyH
+(async()=>{BAD.length=0;ZC.sim(0.5);
+  chk(!vis().some(id=>/Клавиатуре/.test(txt(id))),'настоящее нажатие H убрало подсказку: '+vis().join(','));
+  return ['h-real hide '+(BAD.length?'FAIL '+BAD.join(' · '):'ok')];})()
+//@@ key=KeyH
+(async()=>{BAD.length=0;ZC.sim(0.5);
+  chk(vis().some(id=>/Клавиатуре/.test(txt(id))),'второе нажатие H показало последнюю: '+vis().join(','));
+  if(BAD.length)throw new Error(BAD.join(' · '));
+  return ['h-real show ok','errs='+_errs.length];})()
+//@@
 // 6) читалка вслух (late_79b): LB убирает подсказку и голос замолкает; LB ещё раз показывает и читает её
 (async()=>{BAD.length=0;go('1-1');const F=ZC.FIN,R=F.readAloud;window.SAID=[];R.mock=t=>SAID.push(t);F.set.readAloud=true;F.set.vox=0;F.set.readAloudAll=true;
-  untip(0);untip(1);tip(0,'Проверка голоса: позови друга колокольчиком возле старого колодца.');ZC.sim(1);await new Promise(r=>setTimeout(r,1000));ZC.sim(2);   // читалка ждёт 0,7 с реального времени
-  chk(vis().some(id=>/Проверка голоса/.test(txt(id))),'подсказка на экране');chk(SAID.some(t=>/Проверка голоса/.test(t)),'сама прочиталась: '+JSON.stringify(SAID));
+  untip(0);untip(1);tip(0,'Проверка голоса: позови друга колокольчиком возле старого колодца.');ZC.sim(2);
+  chk(vis().some(id=>/Проверка голоса/.test(txt(id))),'подсказка на экране');   // сама ли прочиталась — зависит от реплик героев на старте (читалка ждёт тишины); здесь проверяем LB
   const n0=SAID.length;await tapB(0,LB);ZC.sim(0.5);
   chk(!vis().some(id=>/Проверка голоса/.test(txt(id)))&&SAID.length===n0,'LB убрал подсказку и ничего не прочитал: '+vis().join(',')+' '+(SAID.length-n0));
   await tapB(0,LB);ZC.sim(1);

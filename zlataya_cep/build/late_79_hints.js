@@ -69,7 +69,7 @@ function hnCard(o,t){if(!t)return o?{head:'',body:o}:null;if(!o)return {head:'',
 // • Подсказка (tip, контекстные зоны) показывается один раз за уровень: исчезла — вернуться сама не может (сыграла роль «видел»). Ключ — текст без цифр и знаков,
 //   поэтому счётчик «3 / 10» не делает подсказку новой.
 // • Задача висит, пока её не сменят или не уберут, и после своей подсказки возвращается (она не подсказка, а «что делать»).
-// • LB джойстика — одна кнопка: на экране есть подсказки — убирает всё, что игрок видит (его карточки, подсказку босса, табличку Соловья); ничего не видно —
+// • LB джойстика и H на клавиатуре (одно действие «Повтори») — одна кнопка: на экране есть подсказки — убирает всё, что игрок видит (его карточки, подсказку босса, табличку Соловья); ничего не видно —
 //   показывает последнее виденное на 10 с, даже погасшее. «Читать задачи вслух» (late_79b) на том же LB читает показанное — так что «показать» ещё и повторяет голосом.
 //   В паузах, роликах и окнах нажатия не считаются; при «Текстовые подсказки: нет» LB только читает вслух, как раньше. (Крестовина не годится: она ещё и ведёт героя.)
 // • «Текстовые подсказки: нет» (пауза, настройки): класс fin-nohints на body прячет все надписи-подсказки (fin.css); чтение вслух — отдельный пункт.
@@ -101,7 +101,7 @@ function hnRecallLast(pis){let b=-1;
 const hnShownNow=pis=>pis.some(i=>HN.shown[i])||HN_LAYERS.some(id=>{const el=$(id);return !!el&&hnLayerOn(el)&&!el.classList.contains('hn-gone');});
 // нажатия LB, накопленные опросом джойстиков (в паузе опрос их не копит; кадр бывает долгим — нажатие не теряется): видно — убрать, не видно — показать последнее
 function hnEvents(off){const ev=HNS.ev.splice(0);if(off||!ev.length||!hnOn())return;
-  for(const e of ev){const pis=G.solo||(FIN.co&&FIN.co.live())?[0,1,2]:[e.pi,2];
+  for(const e of ev){const pis=e.pi<0||G.solo||(FIN.co&&FIN.co.live())?[0,1,2]:[e.pi,2];
     if(hnShownNow(pis)){hnDismiss(pis);if(FIN.readAloud&&FIN.readAloud.stop)FIN.readAloud.stop();}   // убрали — и голос замолчал
     else hnRecallLast(pis);}}
 // слои, которыми занимаются другие модули (подсказка босса, табличка Соловья): убранное возвращается, когда слой погас или текст сменился
@@ -179,18 +179,19 @@ function hnSkip(){const sk=$('skip'),sb=$('subs');if(!sk||!sb)return;sk.style.bo
 {const _st=showTitle;showTitle=function(){_st();HN.titleT=G.time;};}
 // LB (кнопка 4 стандартной раскладки — «Повтори», PADMAP в late_74): опрос джойстиков (каждые 8 мс) копит новые нажатия у каждого джойстика отдельно (код у обоих один — KeyH), карточки разбирают их в кадре
 HNS.lb=[false,false];
+// то же — на клавише H (клавиатурный «Повтори»: общая на двоих, поэтому убирает у обоих); настоящее нажатие, не ZC.press ботов
+addEventListener('keydown',e=>{if(e.code==='KeyH'&&!e.repeat&&e.isTrusted&&G.state==='play'&&!e.ctrlKey&&!e.altKey&&!e.metaKey){HNS.ev.push({pi:-1});if(HNS.ev.length>8)HNS.ev.shift();}});
 {const _pp=pollPads;pollPads=function(){_pp();const play=G.state==='play';
   for(let pi=0;pi<2;pi++){const gp=PADS.gp[pi],b=gp&&gp.buttons&&gp.buttons[4],on=!!b&&(b.pressed||b.value>0.5);
     if(on&&!HNS.lb[pi]&&play){HNS.ev.push({pi});if(HNS.ev.length>8)HNS.ev.shift();}HNS.lb[pi]=on;}};}
 // «Текстовые подсказки» — настройка (FIN.set.hints, по умолчанию да): пункт в паузе и в настройках
 HN.on=hnOn;HN.toggle=()=>{FIN.set.hints=!hnOn();FIN.saveSettings();FIN.applySettings();};
 {const _as=FIN.applySettings;FIN.applySettings=function(){_as();HNS.noh=!hnOn();document.body.classList.toggle('fin-nohints',HNS.noh);};}
-const hnItem=()=>({label:'Текстовые подсказки',val:()=>hnOn()?'да':'нет',sub:()=>hnOn()?'на джойстике LB — убрать подсказку, ещё раз — показать снова':'все надписи-подсказки скрыты; чтение вслух — отдельным пунктом',side:()=>HN.toggle()});
+const hnItem=()=>({label:'Текстовые подсказки',val:()=>hnOn()?'да':'нет',sub:()=>hnOn()?'LB на джойстике (H на клавиатуре) — убрать подсказку, ещё раз — показать снова':'все надписи-подсказки скрыты; чтение вслух — отдельным пунктом',side:()=>HN.toggle()});
 // в паузе — вторым пунктом после «Читать задачи вслух»; в ?debug скрыт, чтобы не сдвигать пункты ботам
 {const _ps=pauseScreen;pauseScreen=function(){const scr=_ps(),kk=FIN.kids;
   if(!(kk&&kk.debug&&!kk.force)){const k=scr.items.findIndex(it=>it.label==='Читать задачи вслух');scr.items.splice(k>=0?k+1:1,0,hnItem());}return scr;};}
 // в настройках — рядом с текстовыми («Размер текста»), на первом экране списка, а не в хвосте
 {const _ss=settingsScreen;settingsScreen=function(){const scr=_ss(),k=scr.items.findIndex(it=>it.label==='Размер текста');scr.items.splice(k>=0?k+1:Math.max(0,scr.items.length-1),0,hnItem());return scr;};}
-{const _cs=controlsScreen;controlsScreen=function(){const scr=_cs(),h0=scr.html;scr.html=()=>h0().replace('</table>','<tr><td>Убрать подсказку · показать снова (и прочитать вслух)</td><td>—</td><td>—</td><td>'+padGlyph('help')+'</td></tr></table>');return scr;};}
 FIN.hints={layout:hnLayout,cover:hnCover,merge:hnMerge,fuzzy:hnFuzzy,split:hnSplit,pair:hnPair,short:hnShort,state:()=>({html:HN.html.slice(),shown:HN.shown.slice()}),   // для ботов
   gate:HNS,dismiss:hnDismiss,recall:hnRecallLast,on:hnOn,toggle:HN.toggle};
