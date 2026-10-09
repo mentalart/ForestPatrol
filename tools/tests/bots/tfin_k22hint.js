@@ -5,7 +5,7 @@
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 window.NOCINE=()=>{for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}};
 window.OBJ=pi=>{const o=ZC.W.objectives[pi][ZC.players[pi].obj];return o?String(typeof o.text==='function'?o.text():o.text):'';};
-window.CARDS=()=>{ZC.sim(0.3);return ZC.FIN.hints.state().html.join(' ');};
+window.CARDS=()=>{for(const p of ZC.players)p.tipT=0;ZC.sim(0.3);return ZC.FIN.hints.state().html.join(' ');};   // разовая подсказка («Колокольчик!») показывается вместо задачи, а в ботах её таймер убывает только при обновлении интерфейса — сбросить
 window.KEYS=[{up:'KeyW',down:'KeyS',left:'KeyA',right:'KeyD',jump:'Space',swap:'KeyQ'},{up:'ArrowUp',down:'ArrowDown',left:'ArrowLeft',right:'ArrowRight',jump:'KeyM',swap:'KeyK'}];
 window.GO=(pi,x,z,max)=>{const K=KEYS[pi];for(let i=0;i<(max||8)*60;i++){const h=U.act(pi),dx=x-h.pos.x,dz=z-h.pos.z;if(Math.hypot(dx,dz)<0.45)break;ZC.hold(K.left,dx<-0.25);ZC.hold(K.right,dx>0.25);ZC.hold(K.up,dz<-0.25);ZC.hold(K.down,dz>0.25);ZC.tick(1);}
   [K.left,K.right,K.up,K.down].forEach(k=>ZC.hold(k,false));ZC.tick(1);return U.act(pi).pos.z.toFixed(1);};
