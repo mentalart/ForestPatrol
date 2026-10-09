@@ -21,6 +21,10 @@ function cmpAxes(dx,dz,k){const l=Math.hypot(dx,dz);if(l<1e-4){PADS.axes[1]={x:0
 function cmpGoto(h,x,z,stop){const dx=x-h.pos.x,dz=z-h.pos.z,d=Math.hypot(dx,dz);if(d>stop)cmpAxes(dx,dz,d>stop+0.8?1:0.5);return d;}
 // повторять за человеком (окна, ритм, особые уровни): те же клавиши и тот же стик
 function cmpMirror(){for(const a in BIND[0]){const c=BIND[0][a];if(down.has(c)||PADS.down.has(c))cmpKey(a,true);if(pressed.has(c))cmpTap(a);}PADS.axes[1]=PADS.axes[0];}
+// окна с одним общим выбором (карта-рушник, Застава, сказки, примерочная, грядка): их цикл слушает обоих игроков и двигает один и тот же выбор,
+// так что повтор бота удваивал бы каждое нажатие человека — миры и уровни на карте перескакивали через один, обновка в примерочной тут же снималась.
+// В этих окнах бот молчит; в окнах, где у каждого игрока свой выбор («Сказ», ковка), повторяет по-прежнему.
+const CMP_ONE_SEL=new Set(['map','zast','tales','dress','seed']);
 // как встретить замах: отбить в окне, только щитом или проспать — по CMP.skill
 const cmpDice=()=>{const r=Math.random(),s=CMP.skill;return r<s?'parry':r<s+(1-s)*0.65?'shield':'asleep';};
 // чужих (привязанных к Игроку 1: учебные мороки пролога и т. п.) не трогает — они человеку
@@ -81,7 +85,7 @@ function cmpThink(dt){cmpFree();
   if(G.cine){const c=G.cine;if(c.skippable&&c.t>0.8&&btn(0,'jump'))cmpKey('jump',true);return;}   // ролик: держит прыжок вместе с человеком
   if(G.trans)return;
   const cu=!!(W.custom||W.soloMirror),rt=!!CMP.routes[W.levelId];
-  if(G.ui||(cu&&!rt)){CMP.mode='mirror';cmpMirror();return;}           // окна и особые уровни (гусли, раннер): повторяет за человеком
+  if(G.ui||(cu&&!rt)){CMP.mode='mirror';if(!CMP_ONE_SEL.has(G.ui))cmpMirror();return;}           // окна и особые уровни (гусли, раннер): повторяет за человеком (кроме окон с общим выбором)
   if(cu){const rs=CMP.step();if(rs&&rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}CMP.mode='mirror';cmpMirror();return;}   // …если у особого уровня нет своего маршрута или шаг уступает
   if(p.downed){CMP.mode='down';CMP.downT+=dt;if(CMP.downT>0.9&&o&&!o._down&&!o.cling)cmpTap('swap');return;}   // рассыпался клубком — берёт второго героя
   CMP.downT=0;
