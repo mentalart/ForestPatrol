@@ -74,6 +74,7 @@ PR.report=function(){const L=PR.log,by=k=>L.filter(e=>e.k===k),r={};
   r.tips={n:tw.length,avg:tw.length?+(tw.reduce((a,b)=>a+b,0)/tw.length).toFixed(1):0,max:Math.max(0,...tw),over7:tw.filter(n=>n>7).length};
   const bw=by('banner').map(e=>words(e.text)+words(e.sub));r.banners={n:bw.length,max:Math.max(0,...bw)};
   const sw=by('say').map(e=>words(e.text));r.says={n:sw.length,max:Math.max(0,...sw)};
+  const pw=[].concat(...by('play').map(e=>(e.says||[]).map(words)));r.cineSays={n:pw.length,max:Math.max(0,...pw)};   // субтитры роликов (F-0b)
   r.cines={n:PR.cines.length,durs:PR.cines.map(c=>c.dur),max:Math.max(0,...PR.cines.map(c=>c.dur)),total:+PR.cines.reduce((a,c)=>a+c.dur,0).toFixed(1),skipped:PR.cines.filter(c=>c.skipped).length};
   const fl=by('flash').map(e=>e.t).concat(by('dip').filter(e=>e.a>=0.3).map(e=>e.t)).sort((a,b)=>a-b);
   r.flash={n:fl.length,perSec:perSec(fl)};
@@ -83,6 +84,7 @@ PR.report=function(){const L=PR.log,by=k=>L.filter(e=>e.k===k),r={};
   let fm=1e9,fpx=1e9;for(const id of HINTS)if(PR.hud[id]){fm=Math.min(fm,PR.hud[id].pctMin);fpx=Math.min(fpx,PR.hud[id].pxMin);}
   r.hintFontPct=fm===1e9?null:+fm.toFixed(2);r.hintFontPx=fpx===1e9?null:+fpx.toFixed(1);
   r.ov={};let ovm=0;for(const k in PR.ov){if(PR.ov[k].n>0){r.ov[k]=+PR.ov[k].max.toFixed(0);ovm=Math.max(ovm,PR.ov[k].max);}}r.ovMax=Math.round(ovm);
+  r.ovAny={};for(const k in PR.ov)if(PR.ov[k].max>=1)r.ovAny[k]=+PR.ov[k].max.toFixed(0);   // любое касание ≥ 1 % (для жёсткой проверки F-0b)
   const c=PR.pf.map(p=>p.calls),t=PR.pf.map(p=>p.tris/1000),f=PR.pf.map(p=>p.fx);
   r.perf={n:c.length,callsP95:pct(c,0.95),callsMax:Math.max(0,...c),trisP95:Math.round(pct(t,0.95)),trisMax:Math.round(Math.max(0,...t)),fxMax:Math.max(0,...f)};
   return r;};
