@@ -41,6 +41,7 @@ function raBoss(){const out=[];[[3,'finBossHint','.fh-title,.fh-text'],[4,'finTu
 // урок 4-Б идёт в ролике (G.cine) — его карточку читаем и тогда
 const raTut=()=>{const e=$('finTut');return !!(e&&e.classList.contains('on'));};
 function raCards(){const out=[];if(typeof HN==='undefined')return out;for(const i of[2,0,1]){if(!HN.shown[i])continue;if(G.solo&&i<2&&i!==G.soloPi)continue;const t=raText(HN.html[i]);if(t)out.push({i,t});}return out.concat(raBoss());}
+RA.cards=raCards;RA.text=raText;   // для ботов и сбора текстов озвучки (tools/voice/harvest_read.js)
 function raTick(){
   const live=W&&(W.kids||RA.all())&&G.state==='play'&&(!G.cine||raTut())&&!G.trans&&!G.ui&&RA.can();
   if(!live){if(RA.q.length||RA.speaking){RA.stop();}for(let i=0;i<6;i++)RA.cand[i]=null;return;}
