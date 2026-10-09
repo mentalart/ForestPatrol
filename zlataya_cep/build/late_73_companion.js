@@ -24,7 +24,8 @@ function cmpMirror(){for(const a in BIND[0]){const c=BIND[0][a];if(down.has(c)||
 // как встретить замах: отбить в окне, только щитом или проспать — по CMP.skill
 const cmpDice=()=>{const r=Math.random(),s=CMP.skill;return r<s?'parry':r<s+(1-s)*0.65?'shield':'asleep';};
 // чужих (привязанных к Игроку 1: учебные мороки пролога и т. п.) не трогает — они человеку
-const cmpAlive=e=>e.alive&&!e.sleep&&e.pi!==0&&e.state!=='spawn'&&e.state!=='dying'&&e.state!=='hide'&&(!e.g||e.g.visible!==false);
+CMP.ignore=null;                                                           // уровень может назвать врагов, к которым не подходят (ящерки на сваях над лавой): CMP.ignore=e=>…
+const cmpAlive=e=>e.alive&&!e.sleep&&e.pi!==0&&e.state!=='spawn'&&e.state!=='dying'&&e.state!=='hide'&&(!e.g||e.g.visible!==false)&&!(CMP.ignore&&CMP.ignore(e));
 // морок открыт для удара: пробит, оглушён, шатается после отбива, окно после кувырка, у «коры» — сбоку или сзади
 function cmpOpen(e,h){if(e.guardAll&&e.guardAll())return false;
   if(e.state==='broken'||e.dazeT>0||(e.state==='stagger'&&!e.openHit)||e.open>0)return true;
