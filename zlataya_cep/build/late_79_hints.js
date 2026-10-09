@@ -110,12 +110,18 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
       for(const e of[bb,vs,$('banner')])if(vis(e)){const R=e.getBoundingClientRect();if(F.left<R.right&&R.left<F.right&&F.top<R.bottom+8&&R.top<F.bottom)y=Math.max(y,R.bottom+8);}
       if(y)ft.style.top=Math.round(y)+'px';}}}
   const H0=$('hud0').getBoundingClientRect(),H1=$('hud1').getBoundingClientRect(),V=$('vest'),VR=V&&getComputedStyle(V).display!=='none'?V.getBoundingClientRect():null;
+  els[2].style.maxWidth='';   // ширину общей карточки каждый кадр считаем заново (ниже — по зазору между личными)
   let top0=Math.max(H0.bottom,VR?VR.bottom:0)+8,top1=H1.bottom+8;
   if(bossOn){const B=boss.getBoundingClientRect();if(12+els[0].offsetWidth>B.left-6)top0=Math.max(top0,B.bottom+8);if(innerWidth-12-els[1].offsetWidth<B.right+6)top1=Math.max(top1,B.bottom+8);}   // подсказка босса широкая — карточки игроков под ней
   els[0].style.top=top0+'px';els[1].style.top=top1+'px';
   let ts=Math.max(H0.bottom,H1.bottom);for(const id of['links','bossbar'])if($(id)&&getComputedStyle($(id)).display!=='none')ts=Math.max(ts,$(id).getBoundingClientRect().bottom);
   if(bossOn)ts=Math.max(ts,boss.getBoundingClientRect().bottom);if(VR&&VR.right>innerWidth/2-els[2].offsetWidth/2-6)ts=Math.max(ts,VR.bottom);   // длинная «весточка» — общая карточка ниже неё
   els[2].style.top=(ts+8)+'px';
+  // общая карточка не наезжает на личные: если задела хоть одну, её ширина — в зазор между личными (по центру экрана);
+  // зазор уже 200 px (невысокое или узкое окно: шрифт растёт от высоты, а ширина карточек — от ширины) — карточка встаёт под личные
+  if(HN.shown[2]){const sh=els[2],S0=sh.getBoundingClientRect(),own=[0,1].filter(i=>HN.shown[i]).map(i=>[i,els[i].getBoundingClientRect()]);
+    if(own.some(([i,r])=>hnHit(S0,r,6))){const cx=innerWidth/2,half=Math.min(...own.map(([i,r])=>i?r.left-cx:cx-r.right)),w=2*(half-8);
+      if(w>=200)sh.style.maxWidth=Math.floor(w)+'px';else sh.style.top=Math.round(Math.max(...own.map(([i,r])=>r.bottom))+8)+'px';}}
   els.forEach((el,i)=>{let y=false;if(BR&&HN.shown[i]){if(!HN.cmp[i]&&hnHit(el.getBoundingClientRect(),BR,4)){HN.cmp[i]=true;render(i,cards[i]);}y=hnHit(el.getBoundingClientRect(),BR,4);}
     el.classList.toggle('hn-yield',y);});
   hnSkip();}
