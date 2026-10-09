@@ -212,6 +212,10 @@ body.fin-gallery #finTut,body.fin-gallery #finBossHint{display:none}
 .hn-card.hn-dim.on{opacity:.55}
 .hn-card.hn-cmp{padding:5px 13px 6px}.hn-cmp .hn-body{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hn-cmp .hn-body::before{content:'◆ ';color:#e8b33a}   /* под баннером — одна строка */
 .hn-card.on.hn-yield{opacity:0;visibility:hidden;transition:opacity .2s,visibility 0s .2s}   /* баннер события поверх — карточка уступает */
+/* «Текстовые подсказки: нет» (пауза, настройки): карточки задач и подсказок, подсказка босса, урок 4-Б, табличка Соловья, надписи у кнопок в мире; сами значки кнопок остаются */
+body.fin-nohints #finTut,body.fin-nohints .bub small{display:none!important}
+body.fin-nohints .bub:not(:has(.pb,kbd,.stick)){display:none!important}   /* отдельным правилом: старый браузер без :has отбросил бы только его */
+.hn-gone{display:none!important}   /* подсказка босса или табличка Соловья, убранные LB, таймером чтения или «Подсказки: выкл», пока не сменится текст */
 .hn-card.hn-new{box-shadow:0 0 0 3px rgba(255,210,90,.5),0 4px 14px rgba(0,0,0,.32)}
 .hn-card.hn-pop .hn-body{animation:hnPop .38s cubic-bezier(.2,1.5,.4,1)}
 @keyframes hnPop{0%{opacity:.2;transform:translateY(-5px)}100%{opacity:1;transform:none}}

@@ -59,7 +59,7 @@ chk(e1.dodged===1,'Лёгкий: кувырок за 0,7 с до удара за
 // упавший игрок получает подсказку, друг — тоже; стрелка над активным героем
 const P=ZC.players,h0=P[0].heroes[P[0].act];P[0].path='easy';P[0].petals=1;P[0].tipT=0;P[1].tipT=0;P[0].downed=false;h0.iT=0;
 KD.dbgHurt(h0);ZC.tick(2);
-chk(P[0].downed===true,'лепестки кончились — упал');chk(/отдыхаешь/.test(P[0].tipHTML||'')&&P[0].tipT>6,'упавший получил подсказку на '+P[0].tipT+' с: '+(P[0].tipHTML||'').slice(0,40));
+chk(P[0].downed===true,'лепестки кончились — упал');chk(/отдыхаешь/i.test(P[0].tipHTML||'')&&P[0].tipT>6,'упавший получил подсказку на '+P[0].tipT+' с: '+(P[0].tipHTML||'').slice(0,40));
 chk(/рассыпался/.test(P[1].tipHTML||'')&&P[1].tipT>6,'друг получил подсказку на '+P[1].tipT+' с');
 P[0].downed=false;P[0].petals=3;ZC.tick(5);
 const arr=h=>h.g.children.find(c=>c.userData&&c.userData.kidsArrow),act0=P[0].heroes[P[0].act],off0=P[0].heroes.find(h=>h!==act0);
@@ -105,12 +105,12 @@ ZC.sim(0.2);chk(SAID.length===N0,'долгое «без успеха» не по
 // «Повтори» (H) — только по просьбе
 ZC.press('KeyH');ZC.sim(0.2);chk(SAID.length>N0,'«Повтори» (H) читает ещё раз: '+SAID.length+' из '+N0);
 const s1=SAID.length;ZC.FIN.set.readAloud=false;ZC.press('KeyH');ZC.sim(0.2);chk(SAID.length===s1,'выключено в настройках — молчит');ZC.FIN.set.readAloud=true;
-// меню паузы: вторым пунктом «Читать задачи вслух», стрелкой выключается и включается
-ZC.menu('pause');const PI=ZC.FIN.menu.items.map(i=>i.label);chk(PI[1]==='Читать задачи вслух'&&PI[0]==='Продолжить'&&PI.length===6,'пауза в мире 1: '+PI.join('|'));
-ZC.menuKey('ArrowDown');ZC.menuKey('ArrowRight');chk(ZC.FIN.set.readAloud===false,'в паузе выключили: '+ZC.FIN.set.readAloud);
+// меню паузы: вторым пунктом «Подсказки», третьим «Читать задачи вслух» — стрелкой выключается и включается
+ZC.menu('pause');const PI=ZC.FIN.menu.items.map(i=>i.label);chk(PI[1]==='Подсказки'&&PI[2]==='Читать задачи вслух'&&PI[0]==='Продолжить'&&PI.length===7,'пауза в мире 1: '+PI.join('|'));
+ZC.menuKey('ArrowDown');ZC.menuKey('ArrowDown');ZC.menuKey('ArrowRight');chk(ZC.FIN.set.readAloud===false,'в паузе выключили: '+ZC.FIN.set.readAloud);
 ZC.menuKey('ArrowRight');chk(ZC.FIN.set.readAloud===true,'в паузе включили');ZC.start();
 ZC.loadLevel(ZC.LV('luko'));ZC.G.manual=true;ZC.tick(5);const s2=SAID.length;ZC.press('KeyH');ZC.sim(0.3);chk(SAID.length===s2,'Лукоморье — молчит');
-ZC.menu('pause');const PL=ZC.FIN.menu.items.map(i=>i.label);chk(PL[1]==='Настройки'&&PL.length===5,'пауза в Лукоморье без нового пункта: '+PL.join('|'));ZC.start();
+ZC.menu('pause');const PL=ZC.FIN.menu.items.map(i=>i.label);chk(PL[1]==='Подсказки'&&PL[2]==='Настройки'&&!PL.includes('Читать задачи вслух')&&PL.length===6,'пауза в Лукоморье без «Читать задачи вслух»: '+PL.join('|'));ZC.start();
 ['said='+N0,JSON.stringify(SAID.slice(0,2))].concat(BAD)
 //@@
 // без ошибок в консоли и по итогам — ok
