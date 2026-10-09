@@ -1,7 +1,7 @@
 //@@ wait=900
 // релиз: краткие формулировки задач (late_79c_taskshort.js ← tools/playtest/task_short.py; карточка — late_79_hints.js, голос — late_79b_readaloud.js).
 // Проверки: во всех уровнях таблицы короткие строки легли на свои задачи (охрана «первые 9 знаков» не сработала), ≤ 12 слов, метки кнопок подставлены;
-// карточка показывает короткую строку крупно (hn-short) над полным текстом; чтение вслух читает короткую; в одиночном режиме и в паре — одно и то же.
+// карточка показывает короткую строку крупно (hn-short) вместо полного текста (под ней его нет); пока на экране подсказка, карточка — только она; чтение вслух читает короткую; в одиночном режиме и в паре — одно и то же.
 window.ERR=[];window.addEventListener('error',e=>ERR.push(String(e.message)));{const ce=console.error;console.error=(...a)=>{ERR.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 window.BAD=[];window.chk=(c,m)=>{if(!c)BAD.push(m);return c;};window.F=ZC.FIN;window.TS=F.taskShort;
 window.ld=id=>{if(ZC.G.state!=='play')ZC.startFrom(ZC.LV(id));else ZC.loadLevel(ZC.LV(id));ZC.G.manual=true;ZC.tick(6);for(let q=0;q<6&&ZC.G.cine;q++){ZC.skip();ZC.tick(3);}};
@@ -19,8 +19,13 @@ rep.join(' ')
 ld('2-1');const P=ZC.players,W=ZC.W;P[0].path='easy';P[1].path='easy';ZC.G.solo=false;P[0].obj=2;P[1].obj=2;ZC.sim(6);for(let i=0;i<240;i++)F.ui(1/60);
 const st=F.hints.state(),html=st.html.join(' | ');chk(/hn-short/.test(html)&&/Встань у чаши фонтана/.test(html),'карточка: короткая строка: '+html.slice(0,300));
 chk(/hn-head hn-short hn-rd"[^>]*>[^<]*<span class="hn-k2"/.test(html)||/hn-short hn-rd[^|]*hn-k2/.test(html),'общая карточка: кнопки обоих игроков парой «R / ;»: '+html.slice(0,260));
-chk(/hn-rd/.test(html),'полный текст — тот же, что под короткой: голос читает короткую');chk(/играй прилив/i.test(html),'«Играй прилив» в карточке');
+chk(/hn-rd/.test(html)&&!/hn-body/.test(st.html[2]),'в карточке только короткая строка, без полного текста под ней (голос читает её же): '+st.html[2].slice(0,300));chk(/играй прилив/i.test(html),'«Играй прилив» в карточке');
 P[1].obj=3;ZC.sim(2);for(let i=0;i<240;i++)F.ui(1/60);const st2=F.hints.state();chk(st2.html[0]&&/Встань у чаши/.test(st2.html[0])&&/Прошка/.test(st2.html[1]+st2.html[2]),'у игроков разные задачи — у каждого своя карточка: '+st2.html.join(' | ').slice(0,300));
+// подсказка и задача в одной карточке не соседствуют: пока есть подсказка — только она, ушла — снова краткая строка задачи
+P[0].obj=2;P[1].obj=3;ZC.sim(2);for(let i=0;i<240;i++)F.ui(1/60);
+W.tipZones.unshift({cond:pi=>pi===0,text:()=>'Подсказка про вал: держись правее.'});ZC.sim(0.5);for(let i=0;i<120;i++)F.ui(1/60);
+const h0=F.hints.state().html[0];chk(/держись правее/.test(h0)&&!/hn-head/.test(h0)&&!/Встань у чаши/.test(h0),'карточка с подсказкой: только подсказка, без задачи над ней: '+h0.slice(0,300));
+W.tipZones.shift();ZC.sim(0.5);ZC.players[0].tipT=0;for(let i=0;i<300;i++)F.ui(1/60);const h1=F.hints.state().html[0];chk(/hn-short/.test(h1)&&!/держись правее/.test(h1),'подсказка ушла — снова краткая строка задачи: '+h1.slice(0,300));
 ['card ok'].concat(BAD)
 //@@
 // чтение вслух читает короткую строку; отключение таблицы — полный текст как прежде

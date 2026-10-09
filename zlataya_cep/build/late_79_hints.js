@@ -2,8 +2,8 @@
 // Было: у каждого игрока два окна — подсказка сверху (tip0/tip1: tip() и contextTip) и задача снизу (obj0/obj1). Одинаковая задача
 // у обоих игроков висела дважды, подсказка часто пересказывала задачу, и на экране разом оказывалось до четырёх больших окон
 // (плюс «весточка», баннер, субтитры, подсказка босса). Стало:
-//  • у игрока одна карточка — под его панелью в углу экрана (как продолжение HUD): задача, а когда есть подсказка — подсказка,
-//    над ней коротко задача (первая фраза);
+//  • у игрока одна карточка — под его панелью в углу экрана (как продолжение HUD) — и в ней один текст: подсказка, пока она на экране,
+//    иначе задача (краткая строка, если она есть в таблице late_79c_taskshort.js, а не она и полный текст под ней);
 //  • одинаковое у обоих (с точностью до кнопок) — одна общая карточка по центру под счётчиком; кнопки обоих игроков — «R / ;»;
 //  • почти одинаковое (общее начало, разница в паре слов) — тоже одна, различия цветом игрока; разные роли остаются у каждого;
 //  • подсказка, которая пересказывает задачу (слова подсказки почти все есть в задаче), не показывается; задача, которую целиком
@@ -60,11 +60,10 @@ function hnShort(h){const t=hnText(h).replace(/\s+/g,' ').trim();const m=t.match
 function hnDom(){if(HN.els&&HN.els[0].isConnected)return HN.els;const par=$('tip0').parentNode;
   HN.els=['hint0','hint1','hintS'].map((id,i)=>{let d=$(id);if(!d){d=document.createElement('div');d.id=id;d.className='hn-card '+['hn-p1c','hn-p2c','hn-both'][i];
     d.innerHTML='<div class="hn-head"></div><div class="hn-body"></div>';par.appendChild(d);}return d;});return HN.els;}
-// карточка игрока: задача и подсказка → {head, body}
-function hnCard(o,t){if(!t)return o?{head:'',body:o}:null;if(!o)return {head:'',body:t};
-  if(hnCover(t,o)>=0.6)return {head:'',body:o};       // подсказка пересказывает задачу
-  if(hnCover(o,t)>=0.7)return {head:'',body:t};       // подсказка содержит всю задачу и больше
-  return {head:hnShort(o),body:t};}
+// карточка игрока: один текст — {head, body}. Подсказка («что делать здесь») главнее задачи, пока она на экране; нет подсказки —
+// задача: краткая строка (o.short, late_79c_taskshort.js), если она есть, иначе полный текст. Задача над подсказкой и полный текст
+// под краткой строкой не нужны — они пересказывали друг друга и съедали пол-экрана
+function hnCard(o,t,sh){if(t)return {head:'',body:t};if(!o)return null;return sh?{head:sh,body:'',sh:true,rd:true}:{head:'',body:o};}
 // видно ли окно: по заданному стилю (баннер гаснет переходом opacity — смотрим, к чему он идёт), иначе по вычисленному
 function hnVisible(id){const e=$(id);if(!e||!e.innerHTML.trim())return '';const cs=getComputedStyle(e);if(cs.display==='none')return '';return +(e.style.opacity!==''?e.style.opacity:cs.opacity)<0.1?'':e.innerHTML;}
 const hnHit=(r,q,m)=>Math.min(r.right,q.right)-Math.max(r.left,q.left)>-m&&Math.min(r.bottom,q.bottom)-Math.max(r.top,q.top)>-m;   // пересекаются или ближе m px
@@ -79,14 +78,15 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   // подсказка, которая пересказывает задачу (свою, друга или общую), лишняя — задача уже на экране
   for(const pi of[0,1])if(T[pi]&&O.some(o=>o&&hnCover(T[pi],o)>=0.6))T[pi]='';
   // одинаковое у обоих — в общую карточку; тогда в личных остаётся только своё (подсказка без задачи или задача без подсказки)
+  // краткая строка задачи (o.short — таблица late_79c_taskshort.js) вместо полного текста: одна на двоих (с точностью до кнопок) —
+  // общая карточка, кнопки в ней парой «R / ;»; у каждого своя (разные роли: «Левая голова» / «Правая голова») — общей карточки задачи нет
   const SH=[0,1].map(pi=>{const o=O[pi]&&W&&W.objectives&&W.objectives[pi]&&W.objectives[pi][players[pi].obj];return o&&o.short?o.short(pi):'';});
-  let S={o:'',t:''};const po=hnPair(O[0],O[1]),pt=hnPair(T[0],T[1]);
+  const shS=SH[0]&&SH[1]?hnMerge(SH[0],SH[1]):SH[0]||SH[1],shOwn=!!(SH[0]&&SH[1]&&shS===null);
+  let S={o:'',t:''};const po=shOwn?null:hnPair(O[0],O[1]),pt=hnPair(T[0],T[1]);
   if(po){S.o=po.s;O=[po.a,po.b];}if(pt){S.t=pt.s;T=[pt.a,pt.b];}
+  if(SH[0]&&SH[1]&&shS){S.o=S.o||O[0]||O[1];O=['',''];}   // одна краткая строка на двоих — одна общая карточка, даже если полные тексты не склеились
   if(solo&&O[1-sp]&&O[sp]&&hnCover(O[1-sp],O[sp])>=0.8)O[1-sp]='';
-  // краткая формулировка задачи (o.short — таблица late_79c_taskshort.js): крупной строкой над полным текстом; у общей карточки — если у обоих одна
-  const shS=SH[0]&&SH[1]?(hnMerge(SH[0],SH[1])||SH[0]):SH[0]||SH[1];   // кнопки двух игроков в общей строке — парой «R / ;»
-  const cards=[hnCard(O[0],T[0]),hnCard(O[1],T[1]),hnCard(S.o,S.t)];
-  [[0,O[0],SH[0]],[1,O[1],SH[1]],[2,S.o,shS]].forEach(([i,o,sh])=>{const c=cards[i];if(c&&o&&sh){c.head=sh;c.sh=true;c.rd=c.body===o;}});
+  const cards=[hnCard(O[0],T[0],SH[0]),hnCard(O[1],T[1],SH[1]),hnCard(S.o,S.t,shS)];   // у общей карточки краткая строка — если у обоих одна
   // баннер события («Вал догнал!», «Коршун!») висит по центру по нескольку секунд: общая карточка на это время сжимается в одну
   // строку (◆ первая фраза задачи), личная — если баннер её задевает; не поместилась и так — уступает баннеру место
   // подсказка босса уступает баннеру место по высоте (F-2d): пока баннер виден, она стоит под ним, потом возвращается на своё (top из fin.css)
@@ -96,7 +96,7 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   const line=i=>{const c=cards[i];if(i===2||!cards[1-i])return c.head||hnShort(c.body);const o=cards[1-i],had=new Set(hnSent((o.head?o.head+'<br>':'')+o.body).map(hnNorm));
     const own=hnSent((c.head?c.head+'<br>':'')+c.body).find(x=>!had.has(hnNorm(x)));return hnShort(own||c.head||c.body);};
   // три карточки: первого игрока, второго, общая; новая задача — карточка вспыхивает золотом
-  const render=(i,c)=>{const el=els[i],html=!c?'':HN.cmp[i]?'<div class="hn-body">'+line(i)+'</div>':(c.head?'<div class="hn-head'+(c.sh?' hn-short':'')+(c.rd?' hn-rd':'')+'">'+c.head+'</div>':'')+'<div class="hn-body">'+c.body+'</div>';
+  const render=(i,c)=>{const el=els[i],html=!c?'':HN.cmp[i]?'<div class="hn-body">'+line(i)+'</div>':(c.head?'<div class="hn-head'+(c.sh?' hn-short':'')+(c.rd?' hn-rd':'')+'">'+c.head+'</div>':'')+(c.body?'<div class="hn-body">'+c.body+'</div>':'');
     const on=!!c;if(HN.html[i]!==html){const was=HN.html[i];HN.html[i]=html;if(on){el.innerHTML=html;const k=hnNorm(c.head||c.body);if(k!==HN.objK[i]){HN.objK[i]=k;if(was)HN.flash[i]=G.time;el.classList.remove('hn-pop');void el.offsetWidth;el.classList.add('hn-pop');}}}
     if(HN.shown[i]!==on){HN.shown[i]=on;el.classList.toggle('on',on);}
     el.classList.toggle('hn-cmp',on&&HN.cmp[i]);el.classList.toggle('hn-dim',!!(solo&&i===1-sp));el.classList.toggle('hn-new',G.time-HN.flash[i]<1.2);};
