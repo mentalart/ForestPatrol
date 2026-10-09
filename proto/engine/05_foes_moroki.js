@@ -233,7 +233,7 @@ function foeDodge(e,h){G.stats.dodges++;(players[h.player].defLog=players[h.play
   const rx=Math.cos(e.face),rz=-Math.sin(e.face),side=((h.pos.x-e.pos.x)*rx+(h.pos.z-e.pos.z)*rz)>=0?1:-1,dd=e.r+h.d.radius+0.7;
   const nx=e.pos.x+rx*side*dd,nz=e.pos.z+rz*side*dd,g=groundAt(nx,nz,h.pos.y+STEP);if(g.y>h.pos.y-0.6){h.pos.x=nx;h.pos.z=nz;}h.face=Math.atan2(e.pos.x-h.pos.x,e.pos.z-h.pos.z);
   e.dazeT=3;e.state='recover';e.t=-2.2;e.left=null;floatText(e.pos.clone().add(new V3(0,e.L.top*e.s+1.0,0)),'Открыт! Бей!','#ffe36b');
-  const p=players[h.player];if(!p.dazeTaught){p.dazeTaught=true;tip(h.player,'Увернулся — враг закружился! Три секунды бей его '+K(h.player,'attack')+' сколько душе угодно!',2.8);}}
+  const p=players[h.player];if(!p.dazeTaught){p.dazeTaught=true;tip(h.player,'Увернулся — враг закружился! Бей '+K(h.player,'attack')+'!',2.8);}}
 function parryFoe(e,h){const pi=h.player;G.stats.parries++;(players[pi].defLog=players[pi].defLog||[]).push('g');SFX.parry();shake(pi,0.04,0.15);burst(e.pos.clone().add(new V3(0,1,0)).lerp(h.pos,0.5),COL.yellow,12,5);
   floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Отбил!','#ffe36b');const dx=e.pos.x-h.pos.x,dz=e.pos.z-h.pos.z,d=Math.hypot(dx,dz)||1;e.kx=dx/d;e.kz=dz/d;
   e.state='stagger';e.t=0;e.openHit=false;players[pi].staggerSeen++;spawnSpark(e.pos.clone().add(new V3(0,1.2,0)),0x6ad0ff);if(e.darkGuard&&e.darkGuard()){floatText(e.pos.clone().add(new V3(0,e.L.top*e.s+0.6,0)),e.guardText||'насквозь','#cfd8dc');return;}emberOut(e,1,'Отбив!');}
@@ -265,7 +265,7 @@ function enemyHit(e,h,air){if(!e.alive)return;
   const dazed=e.dazeT>0;const open=dazed||(e.state==='stagger'&&!e.openHit)||e.open>0||air||pw||(e.shell&&!e.shell[side]&&e.plateCd<=0)||(e.sideOpen&&(side==='l'||side==='r'||side==='b'));
   if(open){if(e.state==='stagger'&&!dazed)e.openHit=true;if(!dazed)e.open=0;e.plateCd=0.45;shake(h.player,0.03,0.12);burst(e.pos.clone().add(new V3(0,1,0)),0xffffff,6,3);emberOut(e,(air||pw)?2:1,air?'Сверху!':'Удар!');return;}
   SFX.clink();floatText(e.pos.clone().add(new V3(0,e.L.top*e.s+0.6,0)),'закрылся','#cfd8dc');const dx=e.pos.x-h.pos.x,dz=e.pos.z-h.pos.z,d=Math.hypot(dx,dz)||1;mMove(e,dx/d,dz/d,6,0.05);
-  const p=players[h.player];if(!p.closedTaught){p.closedTaught=true;tip(h.player,e.shell?'Спереди у него кора — так не пробить. Зайди сбоку иль сзади.<br>Красный зубец — кувыркнись, и окажешься сбоку, в засаде.':'Сейчас по нему не попасть. Сперва удар его отбей '+K(h.player,'guard')+', потом бей '+K(h.player,'attack')+'.',3);}}
+  const p=players[h.player];if(!p.closedTaught){p.closedTaught=true;tip(h.player,e.shell?'Спереди у него кора — так не пробить. Зайди сбоку иль сзади.<br>Красный зубец — кувыркнись, и окажешься сбоку, в засаде.':'Не попасть! Отбей '+K(h.player,'guard')+', потом бей '+K(h.player,'attack')+'.',3);}}
 function finisher(e,h){
   if(e.noKill){if(e.onFinisher)e.onFinisher(h);return;}
   if(e.big&&e.finT>0){if(e.finBy!==h.player){e.bogatyr=true;}return;}
@@ -327,7 +327,7 @@ function updateBolts(dt){for(let i=W.bolts.length-1;i>=0;i--){const b=W.bolts[i]
     if(b.left!==null&&b.left<=T.parry+0.05){SFX.parry();G.stats.parries++;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Отбил каплю!','#9fd0ff');
       const nb={...b,refl:true,t:0,g:dropMesh(COL.blue)};nb.g.scale.setScalar(0.7);nb.g.position.copy(b.p);nb.p=nb.g.position;W.group.add(nb.g);W.bolts.push(nb);continue;}
     if(h.guard){shieldBlock(h);continue;}
-    hitHero(b.from,h,'<i class="sg b"></i> Синяя капля — защита '+K(pi,'guard')+', в последний миг — отобьёшь назад.');}}}
+    hitHero(b.from,h,'<i class="sg b"></i> Синяя капля — защита '+K(pi,'guard')+', в последний миг!');}}}
 /* искры: летят к герою сами, если он ближе 3,5 м; несобранные за 4 с уплывают к ближнему мороку — он их «жуёт» */
 const SPARK_GEO=new THREE.SphereGeometry(0.1,8,6);
 function spawnSpark(p,color){const m=new THREE.Mesh(SPARK_GEO,MB(color,{transparent:true}));m.position.copy(p);W.group.add(m);
