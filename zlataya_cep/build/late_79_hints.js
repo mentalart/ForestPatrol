@@ -74,20 +74,21 @@ function hnCard(o,t,sh){if(t)return {head:'',body:t};if(!o)return null;return sh
 //   показывает то, что нужно сейчас (текущую задачу или подсказку, подсказку босса), а нет такого — последнее виденное; показанное уходит тем же таймером.
 //   «Читать задачи вслух» (late_79b) на том же LB читает показанное — так что «показать» ещё и повторяет голосом. В паузах, роликах и окнах нажатия не считаются.
 //   (Крестовина не годится: она ещё и ведёт героя.)
-// • «Подсказки: выкл» (пауза — вверху списка, настройки): новые подсказки сами не появляются; LB показывает нужную сейчас, LB или таймер её убирают.
+// • «Подсказки: выкл» (по умолчанию; пауза — вверху списка, настройки): новые подсказки сами не появляются; LB показывает нужную сейчас, LB или таймер её убирают.
 //   Класс fin-nohints на body прячет остальные надписи-подсказки (обучающая карточка, подписи пузырей — fin.css).
 const HNS={W:null,tk:['','',''],td:[false,false,false],pk:['','',''],pv:[false,false,false],seen:new Set(),last:[null,null,null],rc:[null,null,null],
-  vt:[null,null,null],ly:{},gt:0,dt:0,ev:[],noh:null};
+  vt:[null,null,null],ly:{},pr:new Map(),pgt:0,gt:0,dt:0,ev:[],taps:0,noh:null};
 const HN_LAYERS=['finBossHint','solsign'];
 const hnKey=h=>hnNorm(h).replace(/[0-9]+/g,'').replace(/\s+/g,' ').trim().slice(0,90);
 const hnCardKey=c=>c?hnKey((c.head||'')+' '+(c.body||'')):'';
-const hnOn=()=>FIN.set.hints!==false;
+// по умолчанию подсказки выключены (их показывает LB / H; в прологе этому учит late_79t_hintteach.js); в ?debug — включены, как ждут боты
+const hnOn=()=>FIN.set.hints!=null?FIN.set.hints!==false:!!(FIN.kids&&FIN.kids.debug);
 const hnLayerOn=el=>el.classList.contains('on')||(el.id==='solsign'&&el.style.display==='block');
 // сколько секунд читает надпись восьмилетний
 function hnReadT(h){const w=String(h||'').replace(/<[^>]*>/g,' ').split(/\s+/).filter(x=>/[0-9A-Za-zА-Яа-яЁё]/.test(x)).length;return Math.min(20,Math.max(5,2+0.75*w));}
 const hnCardText=c=>c?(c.head||'')+' '+(c.body||''):'';
 function hnBlip(up){try{tone(up?1175:784,0.07,'triangle',0.07);}catch(e){}}
-function hnReset(){HNS.W=W;HNS.tk=['','',''];HNS.td=[false,false,false];HNS.pk=['','',''];HNS.pv=[false,false,false];HNS.seen.clear();HNS.last=[null,null,null];HNS.rc=[null,null,null];HNS.vt=[null,null,null];HNS.ly={};}
+function hnReset(){HNS.W=W;HNS.tk=['','',''];HNS.td=[false,false,false];HNS.pk=['','',''];HNS.pv=[false,false,false];HNS.seen.clear();HNS.last=[null,null,null];HNS.rc=[null,null,null];HNS.vt=[null,null,null];HNS.ly={};HNS.pr=new Map();}
 // O, T — задачи и подсказки трёх карточек (первого, второго, общая); off — окно закрыто роликом или меню: состояние стоит.
 // Выключены подсказки — новая задача сразу убрана, подсказка не тратит свой «один раз» (показать — только LB)
 function hnGate(O,T,off){if(HNS.W!==W)hnReset();const oo=['','',''],tt=['','',''],on=hnOn();
@@ -101,6 +102,7 @@ function hnDismissCard(i){let any=false;if(HNS.tk[i]&&!HNS.td[i]){HNS.td[i]=true
 function hnDismiss(pis){let any=false;
   for(const i of pis)if(hnDismissCard(i))any=true;
   for(const id of HN_LAYERS){const L=HNS.ly[id];if(L&&!L.hid){L.hid=true;any=true;}}
+  for(const [pr,P] of HNS.pr)if(!P.hid&&pis.includes(pr.pi)){P.hid=true;any=true;}
   hnLayers(true);if(any)hnBlip(false);return any;}
 // показать снова: из карточек pis — все нужные сейчас (live: задачи и подсказки, которые есть, но убраны), иначе ту, что видели последней;
 // слои босса и Соловья, которые горят, но убраны, — тоже
@@ -109,11 +111,13 @@ function hnRecallLast(pis,live){const rc=i=>{const c=live&&live[i]||HNS.last[i].
   let n=0;if(live)for(const i of pis)if(live[i]&&!HN.shown[i]){rc(i);n++;}
   if(!n){let b=-1;for(const i of pis){if(!HNS.last[i]||HN.shown[i])continue;if(b<0||HNS.last[i].t>HNS.last[b].t)b=i;}if(b>=0){HNS.rc[b]={left:hnReadT(hnCardText(HNS.last[b].c)),k:''};n++;}}
   let any=n>0;for(const id of HN_LAYERS){const L=HNS.ly[id];if(L&&L.hid){L.hid=false;L.t=0;any=true;}}
+  for(const [pr,P] of HNS.pr)if(P.hid&&pis.includes(pr.pi)){P.hid=false;P.t=0;any=true;}
   hnLayers(true);if(any)hnBlip(true);return any;}
 // что игрок видит сейчас: карточки pis или слои босса / Соловья, не убранные
-const hnShownNow=pis=>pis.some(i=>HN.shown[i])||HN_LAYERS.some(id=>{const el=$(id),L=HNS.ly[id];return !!el&&hnLayerOn(el)&&!!L&&!L.hid;});
+const hnShownNow=pis=>pis.some(i=>HN.shown[i])||HN_LAYERS.some(id=>{const el=$(id),L=HNS.ly[id];return !!el&&hnLayerOn(el)&&!!L&&!L.hid;})||[...HNS.pr].some(([pr,P])=>!P.hid&&pis.includes(pr.pi));
 // нажатия LB, накопленные опросом джойстиков (в паузе опрос их не копит; кадр бывает долгим — нажатие не теряется): видно — убрать, не видно — показать
 function hnEvents(off,live){const ev=HNS.ev.splice(0);if(off||!ev.length)return;
+  HNS.taps+=ev.length;   // счётчик нажатий для урока в прологе
   for(const e of ev){const pis=e.pi<0||G.solo||(FIN.co&&FIN.co.live())?[0,1,2]:[e.pi,2];
     if(hnShownNow(pis)){hnDismiss(pis);if(FIN.readAloud&&FIN.readAloud.stop)FIN.readAloud.stop();}   // убрали — и голос замолчал
     else hnRecallLast(pis,live);}}
@@ -128,7 +132,7 @@ function hnLayers(tick,off){for(const id of HN_LAYERS){const el=$(id);if(!el)con
 function hnSwitch(){const noh=!hnOn();if(HNS.noh===noh)return;const first=HNS.noh===null;HNS.noh=noh;document.body.classList.toggle('fin-nohints',noh);if(first)return;
   HNS.rc=[null,null,null];HNS.vt=[null,null,null];
   for(let i=0;i<3;i++){HNS.td[i]=noh;HNS.pv[i]=false;if(!noh)HNS.pk[i]='';}   // pk — подсказка пройдёт через «один раз» заново
-  for(const id in HNS.ly){HNS.ly[id].hid=noh;HNS.ly[id].t=0;}hnLayers(true);}
+  for(const id in HNS.ly){HNS.ly[id].hid=noh;HNS.ly[id].t=0;}for(const P of HNS.pr.values()){P.hid=noh;P.t=0;}hnLayers(true);}
 // запомнить показанное, подставить «показать снова», убрать прочитанное
 function hnTrack(cards,mk,O3,T3,off){const live=mk(O3,T3);
   for(let i=0;i<3;i++){const r=HNS.rc[i];if(!r)continue;
@@ -220,7 +224,7 @@ addEventListener('keydown',e=>{if(e.code==='KeyH'&&!e.repeat&&e.isTrusted&&G.sta
 {const _pp=pollPads;pollPads=function(){_pp();const play=G.state==='play';
   for(let pi=0;pi<2;pi++){const gp=PADS.gp[pi],b=gp&&gp.buttons&&gp.buttons[4],on=!!b&&(b.pressed||b.value>0.5);
     if(on&&!HNS.lb[pi]&&play){HNS.ev.push({pi});if(HNS.ev.length>8)HNS.ev.shift();}HNS.lb[pi]=on;}};}
-// «Подсказки: вкл / выкл» — настройка (FIN.set.hints, по умолчанию вкл): пункт в паузе и в настройках
+// «Подсказки: вкл / выкл» — настройка (FIN.set.hints, по умолчанию выкл): пункт в паузе и в настройках
 HN.on=hnOn;HN.toggle=()=>{FIN.set.hints=!hnOn();FIN.saveSettings();FIN.applySettings();};
 {const _as=FIN.applySettings;FIN.applySettings=function(){_as();document.body.classList.toggle('fin-nohints',!hnOn());};}
 const hnItem=()=>({label:'Подсказки',val:()=>hnOn()?'вкл':'выкл',sub:()=>hnOn()?'подсказка уходит сама, когда её успеешь прочитать; LB (H на клавиатуре) — убрать, ещё раз — показать':'сами не появляются; LB (H на клавиатуре) — показать нужную сейчас, ещё раз — убрать',side:()=>HN.toggle()});
@@ -229,5 +233,17 @@ const hnItem=()=>({label:'Подсказки',val:()=>hnOn()?'вкл':'выкл'
   if(!(kk&&kk.debug&&!kk.force)){const k=scr.items.findIndex(it=>it.label==='Продолжить');scr.items.splice(k+1,0,hnItem());}return scr;};}
 // в настройках — рядом с текстовыми («Размер текста»), на первом экране списка, а не в хвосте
 {const _ss=settingsScreen;settingsScreen=function(){const scr=_ss(),k=scr.items.findIndex(it=>it.label==='Размер текста');scr.items.splice(k>=0?k+1:Math.max(0,scr.items.length-1),0,hnItem());return scr;};}
+// значки кнопок над героями (prompt() движка, updatePrompts в 07_props.js) — та же логика, что у подсказок: появился значок — при «вкл» виден
+// и уходит сам за время чтения (не меньше 5 с), при «выкл» сам не появляется; LB убирает и показывает его вместе с карточками своего игрока.
+// Значок, у которого условие погасло, забыт (HNS.pr — по объекту prompt); в ролике, паузе и окнах время стоит
+{const _up=updatePrompts;updatePrompts=function(){if(!W||!W.prompts)return _up();if(HNS.W!==W)hnReset();
+  const play=!G.cine&&!G.trans&&(!G.ui||G.ui==='forge')&&G.state==='play',dt=Math.min(1,Math.max(0,G.time-HNS.pgt));HNS.pgt=G.time;
+  const all=W.prompts,vis=[];
+  if(play)for(const pr of all){let c=false;try{c=!!pr.cond();}catch(e){}
+    if(!c){HNS.pr.delete(pr);continue;}
+    let P=HNS.pr.get(pr);if(!P)HNS.pr.set(pr,P={t:0,hid:!hnOn()});
+    if(!P.hid){const nt=typeof pr.note==='function'?pr.note():pr.note;if((P.t+=dt)>hnReadT(nt||''))P.hid=true;}
+    if(!P.hid)vis.push(pr);}
+  W.prompts=play?vis:all;try{_up();}finally{W.prompts=all;}};}
 FIN.hints={layout:hnLayout,cover:hnCover,merge:hnMerge,fuzzy:hnFuzzy,split:hnSplit,pair:hnPair,short:hnShort,state:()=>({html:HN.html.slice(),shown:HN.shown.slice()}),   // для ботов
   gate:HNS,dismiss:hnDismiss,recall:hnRecallLast,on:hnOn,toggle:HN.toggle,readT:hnReadT};

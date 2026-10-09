@@ -133,7 +133,7 @@ zlataya_cep/build/levels/5-1/late_73zf_companion_51.js tfin_companion_51
 zlataya_cep/build/levels/1-4/late_73e_companion_14.js tfin_companion_14
 zlataya_cep/build/levels/1-5/late_73f_companion_15.js tfin_companion_15
 zlataya_cep/build/levels/1-B/late_73g_companion_1b.js tfin_companion_1b
-zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tsolo tfin_taskshort smoke tfin_bossui tfin_hintctl tfin_hintall
+zlataya_cep/build/late_79_hints.js            tfin_hints tfin_menu tfin_cine tsolo tfin_taskshort smoke tfin_bossui tfin_hintctl tfin_hintall tfin_hintteach
 zlataya_cep/build/late_74_kids_start.js       tfin_kids1 tfin_kids2 tfin_menu tfin_save tfin_dev tfin_pads2 smoke tfin_hintctl tfin_hintall
 zlataya_cep/build/late_75_kids_w1.js          @level:p @level:1-1 @level:1-2 @level:1-3 @level:1-4 @level:1-5 @level:1-B @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 smoke
 zlataya_cep/build/late_76_kids_fight.js       @level:1-1 @level:1-2 @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 tfin_foekinds smoke
