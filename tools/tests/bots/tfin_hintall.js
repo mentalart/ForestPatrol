@@ -1,7 +1,7 @@
 //@@
 // @timeout=2400
 // релиз final06: подсказки и их управление работают на ВСЕХ уровнях игры (late_79_hints, late_73/74 — меню): на каждом уровне подсказка видна карточкой,
-// LB убирает и возвращает её, «Текстовые подсказки: нет» прячет всё, пункт есть в паузе и в Настройках; в одиночном режиме и с ИИ напарником — то же.
+// LB убирает и возвращает её, «Подсказки: выкл» прячет всё, LB показывает нужную и убирает, пункт есть в паузе и в Настройках; в одиночном режиме и с ИИ напарником — то же.
 // Уровень 5-Б2 сам отключает карточки (W.hintsOff: текст — только уроками), на нём проверяются меню и выключатель.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 window.H=ZC.FIN.hints;window.G=ZC.G;window.P=ZC.players;window.F=ZC.FIN;window.BAD=[];window.chk=(c,m)=>{if(!c)BAD.push(m);return c;};
@@ -22,12 +22,13 @@ window.level=async id=>{const W=ZC.W,off=!!(W.hintsOff&&W.hintsOff()),err=[];con
       await tapB(0,LB);ZC.sim(0.5);c(!has(TIP),'LB не убрал подсказку');
       await tapB(0,LB);ZC.sim(0.5);c(has(TIP),'LB не вернул подсказку');}
     // меню: пункт в паузе и в Настройках
-    F.kids.force=true;ZC.menu('pause');const L=F.menu.items.map(i=>i.label);c(L.includes('Текстовые подсказки'),'в паузе нет пункта: '+L.join('|'));
-    const st=F.menu.items.find(i=>i.label==='Настройки');if(st){st.act();const S=F.menu.items.map(i=>i.label),k=S.indexOf('Текстовые подсказки');c(k>=0&&k<8,'в настройках пункт не на первом экране: '+k);}
-    F.kids.force=false;ZC.start();ZC.sim(0.3);
+    F.kids.force=true;ZC.menu('pause');const L=F.menu.items.map(i=>i.label);c(L[1]==='Подсказки','в паузе пункт не вторым: '+L.join('|'));
+    const st=F.menu.items.find(i=>i.label==='Настройки');if(st){st.act();const S=F.menu.items.map(i=>i.label),k=S.indexOf('Подсказки');c(k>=0&&k<8,'в настройках пункт не на первом экране: '+k);}
+    F.kids.force=false;ZC.start();ZC.sim(5);   // после меню уровень может снова показать заставку с именем (4,2 с) — карточки и LB ждут её
     // выключатель: карточки и босс/урок/табличка скрыты, включили — вернулись
     if(!off){tipAll();ZC.sim(1);}
     H.toggle();ZC.sim(1);c(vis().length===0,'при «нет» видны карточки: '+vis().join(','));c(document.body.classList.contains('fin-nohints'),'нет класса fin-nohints');
+    if(!off){await tapB(0,LB);ZC.sim(0.5);c(has(TIP),'при «выкл» LB не показал подсказку');await tapB(0,LB);ZC.sim(0.5);c(!has(TIP),'при «выкл» LB не убрал подсказку');}
     H.toggle();ZC.sim(1);c(!document.body.classList.contains('fin-nohints'),'класс fin-nohints остался');
   }catch(e){err.push('исключение '+String(e).slice(0,120));}
   if(H.on()===false)H.toggle();F.kids.force=false;return err.length?id+': '+err.join('; '):null;};

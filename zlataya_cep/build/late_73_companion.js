@@ -6,7 +6,7 @@
 //     заходит сбоку к «коре», на Богатырский мах ждёт удара человека; не безупречен — часть замахов только щитом, часть пропускает (CMP.skill);
 //   • упал человек — подходит «подшить»; упал сам — берёт второго героя; в окнах (Лукоморье, «Сказ») и в ритме повторяет за человеком; ролик пропускается, пока держишь прыжок.
 // Парные загадки уровней бот проходит по «маршруту уровня» (CMP.route, ниже): список шагов Игрока 2 с условием «выполнено» — свой модуль в папке уровня
-// (levels/p — пролог, levels/1-1 … 1-5 и 1-B — мир 1, levels/2-1 … 2-5 и 2-B — мир 2, levels/3-1 … 3-5 и 3-B — мир 3 (общие помощники пера и мостков — levels/w3); в Лукоморье бот повторяет за человеком). Уровень без маршрута бот проходит «ведомым». Миры 4–5 — по маршруту на уровень.
+// (levels/p — пролог, levels/1-1 … 1-5 и 1-B — мир 1, levels/2-1 … 2-5 и 2-B — мир 2, levels/3-1 … 3-5 и 3-B — мир 3 (общие помощники пера и мостков — levels/w3), levels/4-1 … 4-5 и 4-B — мир 4; в Лукоморье бот повторяет за человеком). Уровень без маршрута бот проходит «ведомым». Мир 5 — по маршруту на уровень.
 // Клавиатура: в этом режиме стрелки и M K L , . / ; работают как вторая половина клавиатуры Игрока 1 (WASD, пробел, F, G, Q, E, R, Shift, 1).
 const CMP={on:false,skill:0.85,mode:'idle',downT:0,tick:0};
 CMP.live=()=>CMP.on&&!G.solo;
@@ -36,11 +36,16 @@ function cmpAxes(dx,dz,k){const l=Math.hypot(dx,dz);if(l<1e-4){PADS.axes[1]={x:0
 function cmpGoto(h,x,z,stop){const dx=x-h.pos.x,dz=z-h.pos.z,d=Math.hypot(dx,dz);if(d>stop)cmpAxes(dx,dz,d>stop+0.8?1:0.5);return d;}
 // повторять за человеком (окна, ритм, особые уровни): те же клавиши и тот же стик
 function cmpMirror(){for(const a in BIND[0]){const c=BIND[0][a];if(down.has(c)||PADS.down.has(c))cmpKey(a,true);if(pressed.has(c))cmpTap(a);}PADS.axes[1]=PADS.axes[0];}
+// окна с одним общим выбором (карта-рушник, Застава, сказки, примерочная, грядка): их цикл слушает обоих игроков и двигает один и тот же выбор,
+// так что повтор бота удваивал бы каждое нажатие человека — миры и уровни на карте перескакивали через один, обновка в примерочной тут же снималась.
+// В этих окнах бот молчит; в окнах, где у каждого игрока свой выбор («Сказ», ковка), повторяет по-прежнему.
+const CMP_ONE_SEL=new Set(['map','zast','tales','dress','seed']);
 // как встретить замах: отбить в окне, только щитом или проспать — по CMP.skill
 const cmpDice=()=>{const r=Math.random(),s=CMP.skill;return r<s?'parry':r<s+(1-s)*0.65?'shield':'asleep';};
 CMP.dice=cmpDice;   // для ботов
 // чужих (привязанных к Игроку 1: учебные мороки пролога и т. п.) не трогает — они человеку
-const cmpAlive=e=>e.alive&&!e.sleep&&e.pi!==0&&e.state!=='spawn'&&e.state!=='dying'&&e.state!=='hide'&&(!e.g||e.g.visible!==false);
+CMP.ignore=null;                                                           // уровень может назвать врагов, к которым не подходят (ящерки на сваях над лавой): CMP.ignore=e=>…
+const cmpAlive=e=>e.alive&&!e.sleep&&e.pi!==0&&e.state!=='spawn'&&e.state!=='dying'&&e.state!=='hide'&&(!e.g||e.g.visible!==false)&&!(CMP.ignore&&CMP.ignore(e));
 // морок открыт для удара: пробит, оглушён, шатается после отбива, окно после кувырка, у «коры» — сбоку или сзади
 function cmpOpen(e,h){if(e.guardAll&&e.guardAll())return false;
   if(e.state==='broken'||e.dazeT>0||(e.state==='stagger'&&!e.openHit)||e.open>0)return true;
@@ -100,7 +105,7 @@ function cmpThink(dt){cmpFree();
   if(G.cine){const c=G.cine;if(c.skippable&&c.t>0.8&&btn(0,'jump'))cmpKey('jump',true);return;}   // ролик: держит прыжок вместе с человеком
   if(G.trans)return;
   const cu=!!(W.custom||W.soloMirror),rt=!!CMP.routes[W.levelId];
-  if(G.ui||(cu&&!rt)){CMP.mode='mirror';cmpMirror();return;}           // окна и особые уровни (гусли, раннер): повторяет за человеком
+  if(G.ui||(cu&&!rt)){CMP.mode='mirror';if(!CMP_ONE_SEL.has(G.ui))cmpMirror();return;}           // окна и особые уровни (гусли, раннер): повторяет за человеком (кроме окон с общим выбором)
   if(cu){const rs=CMP.step();if(rs&&rs.run(h,hh,dt)!=='follow'){CMP.mode='route:'+rs.id;return;}CMP.mode='mirror';cmpMirror();return;}   // …если у особого уровня нет своего маршрута или шаг уступает
   if(p.downed){CMP.mode='down';CMP.downT+=dt;if(CMP.downT>0.9&&o&&!o._down&&!o.cling)cmpTap('swap');return;}   // рассыпался клубком — берёт второго героя
   CMP.downT=0;

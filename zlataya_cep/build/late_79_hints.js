@@ -2,8 +2,8 @@
 // Было: у каждого игрока два окна — подсказка сверху (tip0/tip1: tip() и contextTip) и задача снизу (obj0/obj1). Одинаковая задача
 // у обоих игроков висела дважды, подсказка часто пересказывала задачу, и на экране разом оказывалось до четырёх больших окон
 // (плюс «весточка», баннер, субтитры, подсказка босса). Стало:
-//  • у игрока одна карточка — под его панелью в углу экрана (как продолжение HUD): задача, а когда есть подсказка — подсказка,
-//    над ней коротко задача (первая фраза);
+//  • у игрока одна карточка — под его панелью в углу экрана (как продолжение HUD) — и в ней один текст: подсказка, пока она на экране,
+//    иначе задача (краткая строка, если она есть в таблице late_79c_taskshort.js, а не она и полный текст под ней);
 //  • одинаковое у обоих (с точностью до кнопок) — одна общая карточка по центру под счётчиком; кнопки обоих игроков — «R / ;»;
 //  • почти одинаковое (общее начало, разница в паре слов) — тоже одна, различия цветом игрока; разные роли остаются у каждого;
 //  • подсказка, которая пересказывает задачу (слова подсказки почти все есть в задаче), не показывается; задача, которую целиком
@@ -60,58 +60,86 @@ function hnShort(h){const t=hnText(h).replace(/\s+/g,' ').trim();const m=t.match
 function hnDom(){if(HN.els&&HN.els[0].isConnected)return HN.els;const par=$('tip0').parentNode;
   HN.els=['hint0','hint1','hintS'].map((id,i)=>{let d=$(id);if(!d){d=document.createElement('div');d.id=id;d.className='hn-card '+['hn-p1c','hn-p2c','hn-both'][i];
     d.innerHTML='<div class="hn-head"></div><div class="hn-body"></div>';par.appendChild(d);}return d;});return HN.els;}
-// карточка игрока: задача и подсказка → {head, body}
-function hnCard(o,t){if(!t)return o?{head:'',body:o}:null;if(!o)return {head:'',body:t};
-  if(hnCover(t,o)>=0.6)return {head:'',body:o};       // подсказка пересказывает задачу
-  if(hnCover(o,t)>=0.7)return {head:'',body:t};       // подсказка содержит всю задачу и больше
-  return {head:hnShort(o),body:t};}
-// ---- «один раз», «убрать», «показать снова» ----
+// карточка игрока: один текст — {head, body}. Подсказка («что делать здесь») главнее задачи, пока она на экране; нет подсказки —
+// задача: краткая строка (o.short, late_79c_taskshort.js), если она есть, иначе полный текст. Задача над подсказкой и полный текст
+// под краткой строкой не нужны — они пересказывали друг друга и съедали пол-экрана
+function hnCard(o,t,sh){if(t)return {head:'',body:t};if(!o)return null;return sh?{head:sh,body:'',sh:true,rd:true}:{head:'',body:o};}
+// ---- «один раз», «сама уходит», «убрать», «показать снова», «выкл» ----
 // • Подсказка (tip, контекстные зоны) показывается один раз за уровень: исчезла — вернуться сама не может (сыграла роль «видел»). Ключ — текст без цифр и знаков,
 //   поэтому счётчик «3 / 10» не делает подсказку новой.
-// • Задача висит, пока её не сменят или не уберут, и после своей подсказки возвращается (она не подсказка, а «что делать»).
-// • LB джойстика и H на клавиатуре (одно действие «Повтори») — одна кнопка: на экране есть подсказки — убирает всё, что игрок видит (его карточки, подсказку босса, табличку Соловья); ничего не видно —
-//   показывает последнее виденное на 10 с, даже погасшее. «Читать задачи вслух» (late_79b) на том же LB читает показанное — так что «показать» ещё и повторяет голосом.
-//   В паузах, роликах и окнах нажатия не считаются; при «Текстовые подсказки: нет» LB только читает вслух, как раньше. (Крестовина не годится: она ещё и ведёт героя.)
-// • «Текстовые подсказки: нет» (пауза, настройки): класс fin-nohints на body прячет все надписи-подсказки (fin.css); чтение вслух — отдельный пункт.
-const HNS={W:null,tk:['','',''],td:[false,false,false],pk:['','',''],pv:[false,false,false],seen:new Set(),last:[null,null,null],rc:[null,null,null],gone:{},ev:[],noh:null};
+// • Всё показанное (карточки игроков, подсказка босса, табличка Соловья) само уходит, когда его успел бы прочитать восьмилетний: hnReadT — 2 с «заметить»
+//   и по 0,75 с на слово (≈80 слов в минуту — чтение второклассника), не меньше 5 и не больше 20 с. Время идёт только пока надпись на экране (не в паузе и роликах).
+//   Ушла подсказка — на её месте задача (со своим временем); ушла и задача — вернётся сама, когда сменится.
+// • LB джойстика и H на клавиатуре (одно действие «Повтори») — одна кнопка: на экране есть подсказки — убирает всё, что игрок видит; ничего не видно —
+//   показывает то, что нужно сейчас (текущую задачу или подсказку, подсказку босса), а нет такого — последнее виденное; показанное уходит тем же таймером.
+//   «Читать задачи вслух» (late_79b) на том же LB читает показанное — так что «показать» ещё и повторяет голосом. В паузах, роликах и окнах нажатия не считаются.
+//   (Крестовина не годится: она ещё и ведёт героя.)
+// • «Подсказки: выкл» (пауза — вверху списка, настройки): новые подсказки сами не появляются; LB показывает нужную сейчас, LB или таймер её убирают.
+//   Класс fin-nohints на body прячет остальные надписи-подсказки (обучающая карточка, подписи пузырей — fin.css).
+const HNS={W:null,tk:['','',''],td:[false,false,false],pk:['','',''],pv:[false,false,false],seen:new Set(),last:[null,null,null],rc:[null,null,null],
+  vt:[null,null,null],ly:{},gt:0,dt:0,ev:[],noh:null};
 const HN_LAYERS=['finBossHint','solsign'];
 const hnKey=h=>hnNorm(h).replace(/[0-9]+/g,'').replace(/\s+/g,' ').trim().slice(0,90);
 const hnCardKey=c=>c?hnKey((c.head||'')+' '+(c.body||'')):'';
 const hnOn=()=>FIN.set.hints!==false;
 const hnLayerOn=el=>el.classList.contains('on')||(el.id==='solsign'&&el.style.display==='block');
+// сколько секунд читает надпись восьмилетний
+function hnReadT(h){const w=String(h||'').replace(/<[^>]*>/g,' ').split(/\s+/).filter(x=>/[0-9A-Za-zА-Яа-яЁё]/.test(x)).length;return Math.min(20,Math.max(5,2+0.75*w));}
+const hnCardText=c=>c?(c.head||'')+' '+(c.body||''):'';
 function hnBlip(up){try{tone(up?1175:784,0.07,'triangle',0.07);}catch(e){}}
-function hnReset(){HNS.W=W;HNS.tk=['','',''];HNS.td=[false,false,false];HNS.pk=['','',''];HNS.pv=[false,false,false];HNS.seen.clear();HNS.last=[null,null,null];HNS.rc=[null,null,null];HNS.gone={};}
-// O, T — задачи и подсказки трёх карточек (первого, второго, общая); off — окно закрыто роликом или меню: состояние стоит
-function hnGate(O,T,off){if(HNS.W!==W)hnReset();const oo=['','',''],tt=['','',''];
+function hnReset(){HNS.W=W;HNS.tk=['','',''];HNS.td=[false,false,false];HNS.pk=['','',''];HNS.pv=[false,false,false];HNS.seen.clear();HNS.last=[null,null,null];HNS.rc=[null,null,null];HNS.vt=[null,null,null];HNS.ly={};}
+// O, T — задачи и подсказки трёх карточек (первого, второго, общая); off — окно закрыто роликом или меню: состояние стоит.
+// Выключены подсказки — новая задача сразу убрана, подсказка не тратит свой «один раз» (показать — только LB)
+function hnGate(O,T,off){if(HNS.W!==W)hnReset();const oo=['','',''],tt=['','',''],on=hnOn();
   for(let i=0;i<3;i++){
-    if(!off){const ko=hnKey(O[i]);if(ko!==HNS.tk[i]){HNS.tk[i]=ko;HNS.td[i]=false;}
-      const kt=hnKey(T[i]);if(kt!==HNS.pk[i]){HNS.pk[i]=kt;HNS.pv[i]=false;if(kt){const sk=i+'|'+kt;if(!HNS.seen.has(sk)){HNS.seen.add(sk);HNS.pv[i]=true;}}}}
+    if(!off){const ko=hnKey(O[i]);if(ko!==HNS.tk[i]){HNS.tk[i]=ko;HNS.td[i]=!on;}
+      const kt=hnKey(T[i]);if(kt!==HNS.pk[i]){HNS.pk[i]=kt;HNS.pv[i]=false;if(kt&&on){const sk=i+'|'+kt;if(!HNS.seen.has(sk)){HNS.seen.add(sk);HNS.pv[i]=true;}}}}
     oo[i]=HNS.td[i]?'':O[i];tt[i]=HNS.pv[i]?T[i]:'';}
   return {o:oo,t:tt};}
 // убрать: pis — карточки, которые видит нажавший; true — что-то убрано
+function hnDismissCard(i){let any=false;if(HNS.tk[i]&&!HNS.td[i]){HNS.td[i]=true;any=true;}if(HNS.pv[i]){HNS.pv[i]=false;any=true;}if(HNS.rc[i]){HNS.rc[i]=null;any=true;}return any;}
 function hnDismiss(pis){let any=false;
-  for(const i of pis){if(HNS.tk[i]&&!HNS.td[i]){HNS.td[i]=true;any=true;}if(HNS.pv[i]){HNS.pv[i]=false;any=true;}if(HNS.rc[i]){HNS.rc[i]=null;any=true;}}
-  for(const id of HN_LAYERS){const el=$(id);if(el&&hnLayerOn(el)&&!el.classList.contains('hn-gone')){el.classList.add('hn-gone');HNS.gone[id]=hnKey(el.textContent);any=true;}}
-  if(any)hnBlip(false);return any;}
-// показать снова: из карточек pis — ту, что видели последней и сейчас не видна
-function hnRecallLast(pis){let b=-1;
-  for(const i of pis){if(!HNS.last[i]||HN.shown[i])continue;if(b<0||HNS.last[i].t>HNS.last[b].t)b=i;}
-  if(b<0)return false;for(let i=0;i<3;i++)HNS.rc[i]=null;HNS.rc[b]={until:G.time+10};hnBlip(true);return true;}
+  for(const i of pis)if(hnDismissCard(i))any=true;
+  for(const id of HN_LAYERS){const L=HNS.ly[id];if(L&&!L.hid){L.hid=true;any=true;}}
+  hnLayers(true);if(any)hnBlip(false);return any;}
+// показать снова: из карточек pis — все нужные сейчас (live: задачи и подсказки, которые есть, но убраны), иначе ту, что видели последней;
+// слои босса и Соловья, которые горят, но убраны, — тоже
+function hnRecallLast(pis,live){const rc=i=>{const c=live&&live[i]||HNS.last[i].c;HNS.rc[i]={left:hnReadT(hnCardText(c)),k:hnCardKey(c)};};
+  for(let i=0;i<3;i++)HNS.rc[i]=null;
+  let n=0;if(live)for(const i of pis)if(live[i]&&!HN.shown[i]){rc(i);n++;}
+  if(!n){let b=-1;for(const i of pis){if(!HNS.last[i]||HN.shown[i])continue;if(b<0||HNS.last[i].t>HNS.last[b].t)b=i;}if(b>=0){HNS.rc[b]={left:hnReadT(hnCardText(HNS.last[b].c)),k:''};n++;}}
+  let any=n>0;for(const id of HN_LAYERS){const L=HNS.ly[id];if(L&&L.hid){L.hid=false;L.t=0;any=true;}}
+  hnLayers(true);if(any)hnBlip(true);return any;}
 // что игрок видит сейчас: карточки pis или слои босса / Соловья, не убранные
-const hnShownNow=pis=>pis.some(i=>HN.shown[i])||HN_LAYERS.some(id=>{const el=$(id);return !!el&&hnLayerOn(el)&&!el.classList.contains('hn-gone');});
-// нажатия LB, накопленные опросом джойстиков (в паузе опрос их не копит; кадр бывает долгим — нажатие не теряется): видно — убрать, не видно — показать последнее
-function hnEvents(off){const ev=HNS.ev.splice(0);if(off||!ev.length||!hnOn())return;
+const hnShownNow=pis=>pis.some(i=>HN.shown[i])||HN_LAYERS.some(id=>{const el=$(id),L=HNS.ly[id];return !!el&&hnLayerOn(el)&&!!L&&!L.hid;});
+// нажатия LB, накопленные опросом джойстиков (в паузе опрос их не копит; кадр бывает долгим — нажатие не теряется): видно — убрать, не видно — показать
+function hnEvents(off,live){const ev=HNS.ev.splice(0);if(off||!ev.length)return;
   for(const e of ev){const pis=e.pi<0||G.solo||(FIN.co&&FIN.co.live())?[0,1,2]:[e.pi,2];
     if(hnShownNow(pis)){hnDismiss(pis);if(FIN.readAloud&&FIN.readAloud.stop)FIN.readAloud.stop();}   // убрали — и голос замолчал
-    else hnRecallLast(pis);}}
-// слои, которыми занимаются другие модули (подсказка босса, табличка Соловья): убранное возвращается, когда слой погас или текст сменился
-function hnLayers(){for(const id of HN_LAYERS){const el=$(id);if(el&&el.classList.contains('hn-gone')&&(!hnLayerOn(el)||hnKey(el.textContent)!==HNS.gone[id]))el.classList.remove('hn-gone');}}
-// запомнить показанное и подставить «показать снова»
-function hnTrack(cards,mk,O3,T3,off){
-  cards.forEach((c,i)=>{if(c)HNS.last[i]={c,k:hnCardKey(c),t:G.time};});
+    else hnRecallLast(pis,live);}}
+// слои, которыми занимаются другие модули (подсказка босса, табличка Соловья): новый текст — новая надпись (при «выкл» — сразу убранная),
+// горит дольше времени чтения — уходит; погас — забыт. tick — считать ли время (не в паузе и роликах)
+function hnLayers(tick,off){for(const id of HN_LAYERS){const el=$(id);if(!el)continue;
+  if(!hnLayerOn(el)){delete HNS.ly[id];el.classList.remove('hn-gone');continue;}
+  const k=hnKey(el.textContent);let L=HNS.ly[id];if(!L||L.k!==k)L=HNS.ly[id]={k,t:0,hid:!hnOn()};
+  if(tick===true||off||L.hid);else if((L.t+=HNS.dt)>hnReadT(el.textContent))L.hid=true;
+  el.classList.toggle('hn-gone',L.hid);}}
+// переключили вкл/выкл: выкл — всё на экране убрано; вкл — текущие задача, подсказка (если ещё не показывалась) и слои возвращаются
+function hnSwitch(){const noh=!hnOn();if(HNS.noh===noh)return;const first=HNS.noh===null;HNS.noh=noh;document.body.classList.toggle('fin-nohints',noh);if(first)return;
+  HNS.rc=[null,null,null];HNS.vt=[null,null,null];
+  for(let i=0;i<3;i++){HNS.td[i]=noh;HNS.pv[i]=false;if(!noh)HNS.pk[i]='';}   // pk — подсказка пройдёт через «один раз» заново
+  for(const id in HNS.ly){HNS.ly[id].hid=noh;HNS.ly[id].t=0;}hnLayers(true);}
+// запомнить показанное, подставить «показать снова», убрать прочитанное
+function hnTrack(cards,mk,O3,T3,off){const live=mk(O3,T3);
   for(let i=0;i<3;i++){const r=HNS.rc[i];if(!r)continue;
-    if(G.time>r.until||cards[i]){HNS.rc[i]=null;continue;}                 // время вышло или пришла новая подсказка
-    if(off)continue;const L=HNS.last[i];if(!L)continue;const live=mk(O3,T3)[i];cards[i]=live&&hnCardKey(live)===L.k?live:L.c;}}
+    if(cards[i]){HNS.rc[i]=null;continue;}                                      // пришла новая подсказка
+    if(off)continue;const c=live[i]||(HNS.last[i]&&HNS.last[i].c);if(!c){HNS.rc[i]=null;continue;}
+    if((r.left-=HNS.dt)<=0){HNS.rc[i]=null;continue;}                            // прочитали — уходит
+    cards[i]=c;}
+  if(off)return;
+  cards.forEach((c,i)=>{if(!c){HNS.vt[i]=null;return;}HNS.last[i]={c,k:hnCardKey(c),t:G.time};if(HNS.rc[i])return;
+    const k=hnCardKey(c);if(!HNS.vt[i]||HNS.vt[i].k!==k)HNS.vt[i]={k,t:0};
+    if((HNS.vt[i].t+=HNS.dt)>hnReadT(hnCardText(c))){if(HNS.pv[i])HNS.pv[i]=false;else hnDismissCard(i);HNS.vt[i]=null;cards[i]=null;}});}   // ушла подсказка — под ней задача со своим временем
 // видно ли окно: по заданному стилю (баннер гаснет переходом opacity — смотрим, к чему он идёт), иначе по вычисленному
 function hnVisible(id){const e=$(id);if(!e||!e.innerHTML.trim())return '';const cs=getComputedStyle(e);if(cs.display==='none')return '';return +(e.style.opacity!==''?e.style.opacity:cs.opacity)<0.1?'':e.innerHTML;}
 const hnHit=(r,q,m)=>Math.min(r.right,q.right)-Math.max(r.left,q.left)>-m&&Math.min(r.bottom,q.bottom)-Math.max(r.top,q.top)>-m;   // пересекаются или ближе m px
@@ -126,17 +154,19 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   // подсказка, которая пересказывает задачу (свою, друга или общую), лишняя — задача уже на экране
   for(const pi of[0,1])if(T[pi]&&O.some(o=>o&&hnCover(T[pi],o)>=0.6))T[pi]='';
   // одинаковое у обоих — в общую карточку; тогда в личных остаётся только своё (подсказка без задачи или задача без подсказки)
+  // краткая строка задачи (o.short — таблица late_79c_taskshort.js) вместо полного текста: одна на двоих (с точностью до кнопок) —
+  // общая карточка, кнопки в ней парой «R / ;»; у каждого своя (разные роли: «Левая голова» / «Правая голова») — общей карточки задачи нет
   const SH=[0,1].map(pi=>{const o=O[pi]&&W&&W.objectives&&W.objectives[pi]&&W.objectives[pi][players[pi].obj];return o&&o.short?o.short(pi):'';});
-  let S={o:'',t:''};const po=hnPair(O[0],O[1]),pt=hnPair(T[0],T[1]);
+  const shS=SH[0]&&SH[1]?hnMerge(SH[0],SH[1]):SH[0]||SH[1],shOwn=!!(SH[0]&&SH[1]&&shS===null);
+  let S={o:'',t:''};const po=shOwn?null:hnPair(O[0],O[1]),pt=hnPair(T[0],T[1]);
   if(po){S.o=po.s;O=[po.a,po.b];}if(pt){S.t=pt.s;T=[pt.a,pt.b];}
+  if(SH[0]&&SH[1]&&shS){S.o=S.o||O[0]||O[1];O=['',''];}   // одна краткая строка на двоих — одна общая карточка, даже если полные тексты не склеились
   if(solo&&O[1-sp]&&O[sp]&&hnCover(O[1-sp],O[sp])>=0.8)O[1-sp]='';
-  // краткая формулировка задачи (o.short — таблица late_79c_taskshort.js): крупной строкой над полным текстом; у общей карточки — если у обоих одна
-  const shS=SH[0]&&SH[1]?(hnMerge(SH[0],SH[1])||SH[0]):SH[0]||SH[1];   // кнопки двух игроков в общей строке — парой «R / ;»
   const SH3=[SH[0],SH[1],shS],O3=[O[0],O[1],S.o],T3=[T[0],T[1],S.t];
-  const mk=(oo,tt)=>{const cs=[0,1,2].map(i=>hnCard(oo[i],tt[i]));cs.forEach((c,i)=>{if(c&&oo[i]&&SH3[i]){c.head=SH3[i];c.sh=true;c.rd=c.body===oo[i];}});return cs;};
-  hnEvents(off);hnLayers();
+  const mk=(oo,tt)=>[0,1,2].map(i=>hnCard(oo[i],tt[i],oo[i]?SH3[i]:''));   // у общей карточки краткая строка — если у обоих одна
+  HNS.dt=Math.min(1,Math.max(0,G.time-HNS.gt));HNS.gt=G.time;   // время на экране: игровое (боты зовут updateUI раз в 0,5 с), скачок не больше 1 с
+  hnSwitch();hnEvents(off,mk(O3,T3));hnLayers(false,off);
   const gt=hnGate(O3,T3,off),cards=mk(gt.o,gt.t);hnTrack(cards,mk,O3,T3,off);
-  const noh=!hnOn();if(HNS.noh!==noh){HNS.noh=noh;document.body.classList.toggle('fin-nohints',noh);}
   // баннер события («Вал догнал!», «Коршун!») висит по центру по нескольку секунд: общая карточка на это время сжимается в одну
   // строку (◆ первая фраза задачи), личная — если баннер её задевает; не поместилась и так — уступает баннеру место
   // подсказка босса уступает баннеру место по высоте (F-2d): пока баннер виден, она стоит под ним, потом возвращается на своё (top из fin.css)
@@ -146,7 +176,7 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   const line=i=>{const c=cards[i];if(i===2||!cards[1-i])return c.head||hnShort(c.body);const o=cards[1-i],had=new Set(hnSent((o.head?o.head+'<br>':'')+o.body).map(hnNorm));
     const own=hnSent((c.head?c.head+'<br>':'')+c.body).find(x=>!had.has(hnNorm(x)));return hnShort(own||c.head||c.body);};
   // три карточки: первого игрока, второго, общая; новая задача — карточка вспыхивает золотом
-  const render=(i,c)=>{const el=els[i],html=!c?'':HN.cmp[i]?'<div class="hn-body">'+line(i)+'</div>':(c.head?'<div class="hn-head'+(c.sh?' hn-short':'')+(c.rd?' hn-rd':'')+'">'+c.head+'</div>':'')+'<div class="hn-body">'+c.body+'</div>';
+  const render=(i,c)=>{const el=els[i],html=!c?'':HN.cmp[i]?'<div class="hn-body">'+line(i)+'</div>':(c.head?'<div class="hn-head'+(c.sh?' hn-short':'')+(c.rd?' hn-rd':'')+'">'+c.head+'</div>':'')+(c.body?'<div class="hn-body">'+c.body+'</div>':'');
     const on=!!c;if(HN.html[i]!==html){const was=HN.html[i];HN.html[i]=html;if(on){el.innerHTML=html;const k=hnNorm(c.head||c.body);if(k!==HN.objK[i]){HN.objK[i]=k;if(was)HN.flash[i]=G.time;el.classList.remove('hn-pop');void el.offsetWidth;el.classList.add('hn-pop');}}}
     if(HN.shown[i]!==on){HN.shown[i]=on;el.classList.toggle('on',on);}
     el.classList.toggle('hn-cmp',on&&HN.cmp[i]);el.classList.toggle('hn-dim',!!(solo&&i===1-sp));el.classList.toggle('hn-new',G.time-HN.flash[i]<1.2);};
@@ -160,12 +190,18 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
       for(const e of[bb,vs,$('banner')])if(vis(e)){const R=e.getBoundingClientRect();if(F.left<R.right&&R.left<F.right&&F.top<R.bottom+8&&R.top<F.bottom)y=Math.max(y,R.bottom+8);}
       if(y)ft.style.top=Math.round(y)+'px';}}}
   const H0=$('hud0').getBoundingClientRect(),H1=$('hud1').getBoundingClientRect(),V=$('vest'),VR=V&&getComputedStyle(V).display!=='none'?V.getBoundingClientRect():null;
+  els[2].style.maxWidth='';   // ширину общей карточки каждый кадр считаем заново (ниже — по зазору между личными)
   let top0=Math.max(H0.bottom,VR?VR.bottom:0)+8,top1=H1.bottom+8;
   if(bossOn){const B=boss.getBoundingClientRect();if(12+els[0].offsetWidth>B.left-6)top0=Math.max(top0,B.bottom+8);if(innerWidth-12-els[1].offsetWidth<B.right+6)top1=Math.max(top1,B.bottom+8);}   // подсказка босса широкая — карточки игроков под ней
   els[0].style.top=top0+'px';els[1].style.top=top1+'px';
   let ts=Math.max(H0.bottom,H1.bottom);for(const id of['links','bossbar'])if($(id)&&getComputedStyle($(id)).display!=='none')ts=Math.max(ts,$(id).getBoundingClientRect().bottom);
   if(bossOn)ts=Math.max(ts,boss.getBoundingClientRect().bottom);if(VR&&VR.right>innerWidth/2-els[2].offsetWidth/2-6)ts=Math.max(ts,VR.bottom);   // длинная «весточка» — общая карточка ниже неё
   els[2].style.top=(ts+8)+'px';
+  // общая карточка не наезжает на личные: если задела хоть одну, её ширина — в зазор между личными (по центру экрана);
+  // зазор уже 200 px (невысокое или узкое окно: шрифт растёт от высоты, а ширина карточек — от ширины) — карточка встаёт под личные
+  if(HN.shown[2]){const sh=els[2],S0=sh.getBoundingClientRect(),own=[0,1].filter(i=>HN.shown[i]).map(i=>[i,els[i].getBoundingClientRect()]);
+    if(own.some(([i,r])=>hnHit(S0,r,6))){const cx=innerWidth/2,half=Math.min(...own.map(([i,r])=>i?r.left-cx:cx-r.right)),w=2*(half-8);
+      if(w>=200)sh.style.maxWidth=Math.floor(w)+'px';else sh.style.top=Math.round(Math.max(...own.map(([i,r])=>r.bottom))+8)+'px';}}
   els.forEach((el,i)=>{let y=false;if(BR&&HN.shown[i]){if(!HN.cmp[i]&&hnHit(el.getBoundingClientRect(),BR,4)){HN.cmp[i]=true;render(i,cards[i]);}y=hnHit(el.getBoundingClientRect(),BR,4);}
     el.classList.toggle('hn-yield',y);});
   hnSkip();}
@@ -184,14 +220,14 @@ addEventListener('keydown',e=>{if(e.code==='KeyH'&&!e.repeat&&e.isTrusted&&G.sta
 {const _pp=pollPads;pollPads=function(){_pp();const play=G.state==='play';
   for(let pi=0;pi<2;pi++){const gp=PADS.gp[pi],b=gp&&gp.buttons&&gp.buttons[4],on=!!b&&(b.pressed||b.value>0.5);
     if(on&&!HNS.lb[pi]&&play){HNS.ev.push({pi});if(HNS.ev.length>8)HNS.ev.shift();}HNS.lb[pi]=on;}};}
-// «Текстовые подсказки» — настройка (FIN.set.hints, по умолчанию да): пункт в паузе и в настройках
+// «Подсказки: вкл / выкл» — настройка (FIN.set.hints, по умолчанию вкл): пункт в паузе и в настройках
 HN.on=hnOn;HN.toggle=()=>{FIN.set.hints=!hnOn();FIN.saveSettings();FIN.applySettings();};
-{const _as=FIN.applySettings;FIN.applySettings=function(){_as();HNS.noh=!hnOn();document.body.classList.toggle('fin-nohints',HNS.noh);};}
-const hnItem=()=>({label:'Текстовые подсказки',val:()=>hnOn()?'да':'нет',sub:()=>hnOn()?'LB на джойстике (H на клавиатуре) — убрать подсказку, ещё раз — показать снова':'все надписи-подсказки скрыты; чтение вслух — отдельным пунктом',side:()=>HN.toggle()});
-// в паузе — вторым пунктом после «Читать задачи вслух»; в ?debug скрыт, чтобы не сдвигать пункты ботам
+{const _as=FIN.applySettings;FIN.applySettings=function(){_as();document.body.classList.toggle('fin-nohints',!hnOn());};}
+const hnItem=()=>({label:'Подсказки',val:()=>hnOn()?'вкл':'выкл',sub:()=>hnOn()?'подсказка уходит сама, когда её успеешь прочитать; LB (H на клавиатуре) — убрать, ещё раз — показать':'сами не появляются; LB (H на клавиатуре) — показать нужную сейчас, ещё раз — убрать',side:()=>HN.toggle()});
+// в паузе — вверху, сразу после «Продолжить»; в ?debug скрыт, чтобы не сдвигать пункты ботам
 {const _ps=pauseScreen;pauseScreen=function(){const scr=_ps(),kk=FIN.kids;
-  if(!(kk&&kk.debug&&!kk.force)){const k=scr.items.findIndex(it=>it.label==='Читать задачи вслух');scr.items.splice(k>=0?k+1:1,0,hnItem());}return scr;};}
+  if(!(kk&&kk.debug&&!kk.force)){const k=scr.items.findIndex(it=>it.label==='Продолжить');scr.items.splice(k+1,0,hnItem());}return scr;};}
 // в настройках — рядом с текстовыми («Размер текста»), на первом экране списка, а не в хвосте
 {const _ss=settingsScreen;settingsScreen=function(){const scr=_ss(),k=scr.items.findIndex(it=>it.label==='Размер текста');scr.items.splice(k>=0?k+1:Math.max(0,scr.items.length-1),0,hnItem());return scr;};}
 FIN.hints={layout:hnLayout,cover:hnCover,merge:hnMerge,fuzzy:hnFuzzy,split:hnSplit,pair:hnPair,short:hnShort,state:()=>({html:HN.html.slice(),shown:HN.shown.slice()}),   // для ботов
-  gate:HNS,dismiss:hnDismiss,recall:hnRecallLast,on:hnOn,toggle:HN.toggle};
+  gate:HNS,dismiss:hnDismiss,recall:hnRecallLast,on:hnOn,toggle:HN.toggle,readT:hnReadT};
