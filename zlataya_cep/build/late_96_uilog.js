@@ -21,7 +21,7 @@ PR.push=push;
 {const f=say;say=function(who,text,dur){push('say',{who,text:strip(text),dur});return f.apply(this,arguments);};}
 if(typeof sayP==='function'){const f=sayP;sayP=function(text,dur){push('say',{who:'pelageya',text:strip(text),dur:dur||2.8});return f.apply(this,arguments);};}
 {const f=floatText;floatText=function(pos,text){push('float',{text:strip(text)});return f.apply(this,arguments);};}
-{const f=shake;shake=function(pi,amp,dur){push('shake',{a:amp,d:dur,pi});return f.apply(this,arguments);};}
+{const f=shake;shake=function(pi,amp,dur){const B=FIN.bossfx;push('shake',{a:+(B&&B.on&&B.on()&&B.capShake?B.capShake(amp,dur):amp),d:dur==null?0.3:dur,pi});return f.apply(this,arguments);};}
 {const f=prompt;prompt=function(pi,action,at,cond,note){push('prompt',{pi,action,note:strip(note)});return f.apply(this,arguments);};}
 {const f=play;play=function(def){if(PR.on&&def)push('play',{dur:def.dur,says:(def.says||[]).map(s=>Array.isArray(s)?strip(s[3]):strip(s&&s.text)).filter(Boolean)});return f.apply(this,arguments);};}
 {const f=loadLevel;loadLevel=function(){PR._loadC=PR.c;return f.apply(this,arguments);};}
@@ -71,14 +71,16 @@ const pct=(a,p)=>{if(!a.length)return 0;const s=a.slice().sort((x,y)=>x-y);retur
 const perSec=(ts)=>{let m=0,j=0;for(let i=0;i<ts.length;i++){while(ts[i]-ts[j]>=1)j++;m=Math.max(m,i-j+1);}return m;};
 PR.report=function(){const L=PR.log,by=k=>L.filter(e=>e.k===k),r={};
   const tw=by('tip').map(e=>words(e.text));
-  r.tips={n:tw.length,avg:tw.length?+(tw.reduce((a,b)=>a+b,0)/tw.length).toFixed(1):0,max:Math.max(0,...tw),over7:tw.filter(n=>n>7).length};
+  r.tips={n:tw.length,avg:tw.length?+(tw.reduce((a,b)=>a+b,0)/tw.length).toFixed(1):0,max:Math.max(0,...tw),over7:tw.filter(n=>n>7).length,long:[...new Set(by('tip').filter(e=>words(e.text)>7).map(e=>words(e.text)+': '+e.text))].slice(0,12)};   // F-2h: тексты длиннее 7 слов — для разбора
   const bw=by('banner').map(e=>words(e.text)+words(e.sub));r.banners={n:bw.length,max:Math.max(0,...bw)};
   const sw=by('say').map(e=>words(e.text));r.says={n:sw.length,max:Math.max(0,...sw)};
   const pw=[].concat(...by('play').map(e=>(e.says||[]).map(words)));r.cineSays={n:pw.length,max:Math.max(0,...pw)};   // субтитры роликов (F-0b)
   r.cines={n:PR.cines.length,durs:PR.cines.map(c=>c.dur),max:Math.max(0,...PR.cines.map(c=>c.dur)),total:+PR.cines.reduce((a,c)=>a+c.dur,0).toFixed(1),skipped:PR.cines.filter(c=>c.skipped).length};
   const fl=by('flash').map(e=>e.t).concat(by('dip').filter(e=>e.a>=0.3).map(e=>e.t)).sort((a,b)=>a-b);
   r.flash={n:fl.length,perSec:perSec(fl)};
-  const sh=by('shake');r.shake={n:sh.length,max:+Math.max(0,...sh.map(e=>e.a)).toFixed(3),perSec:perSec(sh.map(e=>e.t)),trauma:+Math.max(0,...by('trauma').map(e=>e.a)).toFixed(2)};
+  const sh=by('shake');   // F-2h: a — итоговая амплитуда (после потолка bossfx), d — длительность; разовый толчок (≤ 0,5 с) ≤ 0,15 — норма, длительная тряска — ≤ 0,09
+  const shL=sh.filter(e=>!(e.d<=0.5)),shO=sh.filter(e=>e.d<=0.5);
+  r.shake={n:sh.length,max:+Math.max(0,...shL.map(e=>e.a)).toFixed(3),once:+Math.max(0,...shO.map(e=>e.a)).toFixed(3),perSec:perSec(sh.map(e=>e.t)),trauma:+Math.max(0,...by('trauma').map(e=>e.a)).toFixed(2)};
   const hs=by('hitstop');r.hitstop={n:hs.length,max:Math.max(0,...hs.map(e=>e.d))};
   r.hud={};for(const id in PR.hud){const h=PR.hud[id];r.hud[id]={n:h.n,pxMin:+h.pxMin.toFixed(1),pctMin:+h.pctMin.toFixed(2),pctOwnMin:+h.pctOwnMin.toFixed(2),h:h.h};}
   let fm=1e9,fpx=1e9;for(const id of HINTS)if(PR.hud[id]){fm=Math.min(fm,PR.hud[id].pctMin);fpx=Math.min(fpx,PR.hud[id].pxMin);}

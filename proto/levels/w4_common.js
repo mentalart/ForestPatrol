@@ -154,7 +154,7 @@ function heroW4(h,dt){const on4=W.world===4||W.tong5;
 /* ---------- мороки Мира 4: чугунный болван, жар-ящерка, змеёныш ---------- */
 // «противник подсматривает»: три одинаковые защиты подряд — меняет сигнал (щитовику — красный, кувыркуну — жёлтый)
 function peekSig(e,h,s){const L=(players[h.player].defLog||[]).slice(-3);if(L.length<3)return s;
-  if(L.every(x=>x==='g')&&e.signals.includes('red')&&s!=='red'){players[h.player].defLog=[];floatText(e.pos.clone().add(new V3(0,e.L.top*e.s+0.9,0)),'Подсмотрел!','#ff9a8a');if(!G.flags.peekTold){G.flags.peekTold=true;tip(h.player,'Враг подглядывает! Трижды подряд щитом закроешься — ударит красным.<br>Порой кувыркайся — будь опасным.',3.4);}return 'red';}
+  if(L.every(x=>x==='g')&&e.signals.includes('red')&&s!=='red'){players[h.player].defLog=[];floatText(e.pos.clone().add(new V3(0,e.L.top*e.s+0.9,0)),'Подсмотрел!','#ff9a8a');if(!G.flags.peekTold){G.flags.peekTold=true;tip(h.player,'Враг подглядывает! Не повторяйся — меняй приёмы.',3.4);}return 'red';}
   if(L.every(x=>x==='r')&&e.signals.includes('yellow')&&s!=='yellow'){players[h.player].defLog=[];floatText(e.pos.clone().add(new V3(0,e.L.top*e.s+0.9,0)),'Подсмотрел!','#ff9a8a');return 'yellow';}
   return s;}
 // чугунный болван в раскалённых латах: полил — латы темнеют на 10 секунд; клещами сорвать нагрудник — и бить

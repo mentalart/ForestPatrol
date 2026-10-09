@@ -5,7 +5,7 @@
 // следующие стадии — тем же переходом, что Ctrl+Alt+B (W.bossNext), ролики досматриваются до конца. Журнал интерфейса — PR из late_96_uilog.js
 // (подсказки, баннеры, реплики, ролики, тряска, вспышки, hit-stop, окна HUD, нагрузка). Дважды: окно 1280×720 (всё) и 1920×1080 (шрифты и перекрытия).
 // Печатает таблицу и проверяет нормы стандарта docs/33 п. 8 ЖЁСТКО (F-0b): слов в подсказке/реплике/субтитре ≤ 10, шрифт подсказок ≥ 3 % высоты окна, перекрытий HUD нет,
-// hit-stop ≤ 0,16, тряска ≤ 0,09, вспышек ≤ 3/с (тряска в секунду и число подсказок зависят от хода боя — только WARN). Где норма ещё нарушена — явный список KNOWN_EXCEPTIONS (значение, причина, строка docs/34): красным бот
+// hit-stop ≤ 0,16, тряска ≤ 0,09, вспышек ≤ 3/с (тряска в секунду и число подсказок зависят от хода боя — только WARN; разовый толчок ≤ 0,5 с — до 0,15). Где норма ещё нарушена — явный список KNOWN_EXCEPTIONS (значение, причина, строка docs/34): красным бот
 // становится только при ухудшении относительно исключения; исправили игру — удалить исключение (бот напомнит WARN-ом «исключение больше не нужно»). Нагрузка и длины
 // роликов зависят от машины — WARN (нагрузку закрывает tk5e_budget). Пустой уровень (нет подсказок, роликов) не ошибка. Сценарий, не добравшийся до босса, — FAIL.
 // Все жёсткие метрики считаются по игровому времени (ZC.tick), не по реальному — прогон детерминирован.
@@ -117,7 +117,7 @@ window.THR={
  '3-2':{"tipAvg":11.7,"calls":276,"tris":440,"fx":52,"cine":16.5},
  '5-1':{"tipAvg":9.7,"calls":269,"tris":279,"fx":63,"cine":3.1}
 };
-window.NORM={words:10,font:3,hitstop:0.16,shake:0.09,shakePs:5,flash:3};
+window.NORM={words:10,font:3,hitstop:0.16,shake:0.09,shakeOnce:0.15,shakePs:5,flash:3};
 // KNOWN_EXCEPTIONS: {boss, metric, vp, val, why, doc}. metric: 'words' (подсказки, реплики, субтитры — максимум), 'font' (% высоты окна, vp — окно),
 // 'ov:<пара>' (% перекрытия, vp), 'hitstop' | 'shake' | 'flash'. val — текущее значение: хуже него — FAIL; лучше нормы — WARN «исключение больше не нужно».
 const _FT='мелкий шрифт подсказок: карточка finTut 16 px / подсказка боя finBossHint 15,6 px, hint0/hintS 19 px = 2,64 % при 720p (норма 22 px); общий слой подсказок — F-2c';
@@ -140,10 +140,6 @@ window.KNOWN_EXCEPTIONS=[
  {boss:'3-2',metric:'font',vp:'1080',val:1.48,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
  {boss:'5-1',metric:'font',vp:'720',val:2.64,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
  {boss:'5-1',metric:'font',vp:'1080',val:2.63,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'4-B',metric:'words',vp:'*',val:13,why:'подсказка длиннее 10 слов (урок 4-Б)',doc:'docs/34 B4, X-7 (стр. 433)'},
- {boss:'5-B1',metric:'words',vp:'*',val:15,why:'подсказка боя 5-Б1 длиннее 10 слов',doc:'docs/34 B5 (5-Б1), X-3 (стр. 429)'},
- {boss:'5-B2',metric:'words',vp:'*',val:13,why:'подсказка 5-Б2 длиннее 10 слов (13)',doc:'docs/34 B6, X-7 (стр. 433)'},
- {boss:'3-2',metric:'words',vp:'*',val:15,why:'подсказка Барана длиннее 10 слов',doc:'docs/34 M-3b (Баран), F-2c (стр. 527)'},
  {boss:'1-B',metric:'subs',vp:'*',val:23,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'2-B',metric:'subs',vp:'*',val:19,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'3-B',metric:'subs',vp:'*',val:19,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
@@ -154,9 +150,6 @@ window.KNOWN_EXCEPTIONS=[
  {boss:'3-1',metric:'subs',vp:'*',val:17,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'3-2',metric:'subs',vp:'*',val:12,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'5-1',metric:'subs',vp:'*',val:17,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
- {boss:'5-B1',metric:'shake',vp:'*',val:0.15,why:'тряска «взмаха» 0,15 (норма 0,09; разово ≤ 0,15 допустимо только как толчок)',doc:'docs/34 F-4 (стр. 531)'},
- {boss:'5-B2',metric:'shake',vp:'*',val:0.14,why:'тряска шторма/провала 0,14 (норма 0,09)',doc:'docs/34 F-4 (стр. 531), X-9 (стр. 435)'},
- {boss:'4-B',metric:'ov:finBossHint×vest',vp:'720',val:24,why:'подсказка боя finBossHint перекрывает значок vest на 24 % (720p)',doc:'docs/34 F-2c (стр. 527)'}
 ];
 const names=['1-B','2-B','3-B','4-B','5-B1','5-B2','1-1','2-1','3-1','3-2','5-1'];const L=[];const bad=[];const warn=[];const note=[];
 const f=(v,d)=>v==null?'-':(+v).toFixed(d==null?1:d);
@@ -181,7 +174,8 @@ for(const n of names){const a=RES['720 '+n],b=RES['1080 '+n];
     CHECK(n,'font',vp,r.hintFontPct,NORM.font,0,0.06,'%','шрифт подсказок');
     for(const p in r.ov)CHECK(n,'ov:'+p,vp,r.ov[p],0,1,EX(n,'ov:'+p,vp)?3:0,'%','перекрытие HUD '+p+' (≥10 %)');
     CHECK(n,'hitstop',vp,r.hitstop.max,NORM.hitstop,1,0.005,' с','hit-stop');
-    CHECK(n,'shake',vp,r.shake.max,NORM.shake,1,0.005,'','тряска (макс.)');
+    CHECK(n,'shake',vp,r.shake.max,NORM.shake,1,0.005,'','тряска длительная (> 0,5 с)');
+    CHECK(n,'shakeOnce',vp,r.shake.once,NORM.shakeOnce,1,0.005,'','тряска разовая (≤ 0,5 с)');
     if(r.shake.perSec>NORM.shakePs)warn.push(n+' '+vp+': тряска '+r.shake.perSec+'/с > '+NORM.shakePs+' (норма 5/с; зависит от хода боя — не жёстко)');
     CHECK(n,'flash',vp,r.flash.perSec,NORM.flash,1,0,'/с','вспышки');}
   // --- мягкие (WARN): храповик по THR ---
@@ -194,7 +188,8 @@ const ovl=[];for(const k of Object.keys(RES)){const o=RES[k].ovAny||{};for(const
 const NOW={};for(const n of names){const a=RES['720 '+n],b=RES['1080 '+n];if(!a)continue;
   NOW[n]={tipMax:a.tips.max,tipAvg:a.tips.avg,says:a.says.max,cineSays:a.cineSays.max,font720:a.hintFontPct,font1080:b?b.hintFontPct:null,ov720:a.ovMax,ov1080:b?b.ovMax:null,flash:a.flash.perSec,shake:a.shake.max,shakePs:a.shake.perSec,hitstop:a.hitstop.max,calls:a.perf.callsP95,tris:a.perf.trisP95,fx:a.perf.fxMax,cine:a.cines.max};}
 window.NOWJ=JSON.stringify(NOW);
-const OUT=L.join('\n')+'\n--- шрифты окон HUD (мин. по подсказкам)\n'+hint.join('\n')+'\n--- перекрытия ≥1%\n'+ovl.join('\n')+'\n--- значения сейчас: '+NOWJ+'\n--- ошибки страницы: '+_errs.length+(_errs.length?' '+_errs.slice(0,3).join(' | '):'')+'\n'+(bad.length?bad.map(x=>'FAIL '+x).join('\n'):'bossaudit ok');
+const LONG=names.map(n=>{const a=RES['720 '+n];return a&&a.tips.long&&a.tips.long.length?n+': '+a.tips.long.join(' | '):null;}).filter(Boolean);
+const OUT=L.join('\n')+'\n--- подсказки длиннее 7 слов\n'+LONG.join('\n')+'\n--- шрифты окон HUD (мин. по подсказкам)\n'+hint.join('\n')+'\n--- перекрытия ≥1%\n'+ovl.join('\n')+'\n--- значения сейчас: '+NOWJ+'\n--- ошибки страницы: '+_errs.length+(_errs.length?' '+_errs.slice(0,3).join(' | '):'')+'\n'+(bad.length?bad.map(x=>'FAIL '+x).join('\n'):'bossaudit ok');
 // первая строка вывода («> …» в сводке regress и CI) — итог: нарушения или ok; красным — ошибка страницы (PAGEERROR), чтобы бот упал, а итог остался виден
 const SUM=bad.length?'FAIL '+bad.length+': '+bad.slice(0,4).join('; ')+(bad.length>4?'; …':''):'bossaudit ok'+(KNOWN_EXCEPTIONS.length?' (исключений '+KNOWN_EXCEPTIONS.length+')':'')+(warn.length?' (WARN нагрузка: '+warn.slice(0,3).join('; ')+')':'');
 if(bad.length)setTimeout(()=>{throw new Error(bad.length+' нарушений норм: '+bad.join(' | '));},0);
