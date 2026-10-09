@@ -89,7 +89,7 @@ PADSIM.list=[mkPad(0),mkPad(1)];'pads on'
   if(BAD.length)throw new Error(BAD.join(' · '));
   r.push('layers ok','errs='+_errs.length);return r;})()
 //@@
-// 4) «Подсказки: выкл»: настройка, пункты в паузе (вторым) и в Настройках (на первом экране списка); сами не появляются, LB показывает и убирает; надписи у кнопок скрыты, значки кнопок остаются, LB подсказки не трогает
+// 4) «Подсказки: выкл»: настройка, пункты в паузе (вторым) и в Настройках (на первом экране списка); сами не появляются, LB показывает и убирает — и карточки, и значки кнопок над героями
 (async()=>{BAD.length=0;go('1-1');const r=[],F=ZC.FIN;untip(0);untip(1);tip(0,'Первому: поймай светлячка за средний хвостик и держи.');ZC.sim(1);
   chk(H.on()&&vis().length>0&&!document.body.classList.contains('fin-nohints'),'по умолчанию подсказки включены');
   F.kids.force=true;ZC.menu('pause');
@@ -119,15 +119,20 @@ PADSIM.list=[mkPad(0),mkPad(1)];'pads on'
   chk(['finBossHint','solsign','finTut'].every(id=>getComputedStyle(document.getElementById(id)).display==='none'),'выкл: босс/табличка/урок сами не появились');
   await tapB(0,LB);ZC.sim(0.5);chk(getComputedStyle(bh).display!=='none'&&getComputedStyle(ss).display!=='none','выкл: LB показал подсказку босса и табличку');
   await tapB(0,LB);ZC.sim(0.5);chk(getComputedStyle(bh).display==='none'&&getComputedStyle(ss).display==='none','выкл: LB убрал подсказку босса и табличку');
-  // надписи у кнопок в мире: значок остаётся, текст прячется
-  const bubs=document.getElementById('bubs');const b1=document.createElement('div');b1.className='bub';b1.style.display='block';b1.innerHTML='<div class="inner"><span class="pb A">A</span><small>держи в полёте</small></div>';bubs.appendChild(b1);
-  const b2=document.createElement('div');b2.className='bub';b2.style.display='block';b2.innerHTML='<div class="inner"><small>просто подпись</small></div>';bubs.appendChild(b2);
-  chk(getComputedStyle(b1.querySelector('small')).display==='none'&&getComputedStyle(b1).display!=='none','значок кнопки остался, надпись скрыта');
-  chk(getComputedStyle(b2).display==='none','пузырь только с надписью скрыт');
-  b1.remove();b2.remove();
+  // значки кнопок над героями (prompt движка) при «выкл»: сами не появляются, LB показывает и прячет вместе с карточками
+  window.PRON=true;window.bubN=()=>[...document.querySelectorAll('#bubs .bub')].filter(b=>b.style.display!=='none'&&/проверка значка/.test(b.textContent)).length;
+  const pr1={pi:0,action:'jump',at:()=>P[0].heroes[P[0].act].pos.clone().add(new THREE.Vector3(0,2,0)),cond:()=>PRON,note:'проверка значка'};ZC.W.prompts.push(pr1);ZC.sim(0.5);
+  chk(bubN()===0,'выкл: значок над героем сам не появился');
+  await tapB(0,LB);ZC.sim(0.5);chk(bubN()===1,'выкл: LB показал значок над героем');
+  await tapB(0,LB);ZC.sim(0.5);chk(bubN()===0,'выкл: LB спрятал значок над героем');
   // включили обратно — подсказка босса вернулась; убрали босса — вернулась и текущая подсказка игрока
   H.toggle();ZC.sim(1);chk(H.on()&&getComputedStyle(bh).display!=='none','включили: подсказка босса вернулась');
   bh.remove();ss.remove();tu.remove();ZC.sim(1);chk(vis().some(id=>/пока подсказки выключены/.test(txt(id))),'включили: текущая подсказка вернулась: '+vis().map(id=>id+'='+txt(id)).join(' | '));
+  // при «вкл» значок виден и уходит сам за время чтения; LB его прячет; погасло условие и зажглось снова — новый значок
+  PRON=false;ZC.sim(0.5);PRON=true;ZC.sim(0.5);chk(bubN()===1,'вкл: значок над героем виден');
+  ZC.sim(H.readT('проверка значка')+1);chk(bubN()===0,'вкл: значок ушёл сам за время чтения');
+  PRON=false;ZC.sim(0.5);PRON=true;ZC.sim(0.5);chk(bubN()===1,'вкл: значок снова виден');await tapB(0,LB);ZC.sim(0.5);chk(bubN()===0,'вкл: LB спрятал значок');
+  ZC.W.prompts.splice(ZC.W.prompts.indexOf(pr1),1);
   if(BAD.length)throw new Error(BAD.join(' · '));
   r.push('toggle ok','errs='+_errs.length);return r;})()
 //@@
