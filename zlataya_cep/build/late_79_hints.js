@@ -69,8 +69,9 @@ function hnCard(o,t){if(!t)return o?{head:'',body:o}:null;if(!o)return {head:'',
 // • Подсказка (tip, контекстные зоны) показывается один раз за уровень: исчезла — вернуться сама не может (сыграла роль «видел»). Ключ — текст без цифр и знаков,
 //   поэтому счётчик «3 / 10» не делает подсказку новой.
 // • Задача висит, пока её не сменят или не уберут, и после своей подсказки возвращается (она не подсказка, а «что делать»).
-// • Крестовина джойстика: → убирает всё, что игрок видит сейчас (карточки, подсказку босса, табличку Соловья), ← показывает последнее виденное на 10 с.
-//   Крестовина ещё и ведёт героя — это штатно; в паузах, роликах и окнах нажатия не считаются.
+// • LB джойстика — одна кнопка: на экране есть подсказки — убирает всё, что игрок видит (его карточки, подсказку босса, табличку Соловья); ничего не видно —
+//   показывает последнее виденное на 10 с, даже погасшее. «Читать задачи вслух» (late_79b) на том же LB читает показанное — так что «показать» ещё и повторяет голосом.
+//   В паузах, роликах и окнах нажатия не считаются; при «Текстовые подсказки: нет» LB только читает вслух, как раньше. (Крестовина не годится: она ещё и ведёт героя.)
 // • «Текстовые подсказки: нет» (пауза, настройки): класс fin-nohints на body прячет все надписи-подсказки (fin.css); чтение вслух — отдельный пункт.
 const HNS={W:null,tk:['','',''],td:[false,false,false],pk:['','',''],pv:[false,false,false],seen:new Set(),last:[null,null,null],rc:[null,null,null],gone:{},ev:[],noh:null};
 const HN_LAYERS=['finBossHint','solsign'];
@@ -96,9 +97,13 @@ function hnDismiss(pis){let any=false;
 function hnRecallLast(pis){let b=-1;
   for(const i of pis){if(!HNS.last[i]||HN.shown[i])continue;if(b<0||HNS.last[i].t>HNS.last[b].t)b=i;}
   if(b<0)return false;for(let i=0;i<3;i++)HNS.rc[i]=null;HNS.rc[b]={until:G.time+10};hnBlip(true);return true;}
-// нажатия крестовины, накопленные опросом джойстиков (в паузе, роликах и окнах опрос их не копит; кадр бывает долгим — нажатие не теряется)
-function hnEvents(off){const ev=HNS.ev.splice(0);if(off||!ev.length)return;
-  for(const e of ev){const pis=G.solo||(FIN.co&&FIN.co.live())?[0,1,2]:[e.pi,2];if(e.a==='right')hnDismiss(pis);else hnRecallLast(pis);}}
+// что игрок видит сейчас: карточки pis или слои босса / Соловья, не убранные
+const hnShownNow=pis=>pis.some(i=>HN.shown[i])||HN_LAYERS.some(id=>{const el=$(id);return !!el&&hnLayerOn(el)&&!el.classList.contains('hn-gone');});
+// нажатия LB, накопленные опросом джойстиков (в паузе опрос их не копит; кадр бывает долгим — нажатие не теряется): видно — убрать, не видно — показать последнее
+function hnEvents(off){const ev=HNS.ev.splice(0);if(off||!ev.length||!hnOn())return;
+  for(const e of ev){const pis=G.solo||(FIN.co&&FIN.co.live())?[0,1,2]:[e.pi,2];
+    if(hnShownNow(pis)){hnDismiss(pis);if(FIN.readAloud&&FIN.readAloud.stop)FIN.readAloud.stop();}   // убрали — и голос замолчал
+    else hnRecallLast(pis);}}
 // слои, которыми занимаются другие модули (подсказка босса, табличка Соловья): убранное возвращается, когда слой погас или текст сменился
 function hnLayers(){for(const id of HN_LAYERS){const el=$(id);if(el&&el.classList.contains('hn-gone')&&(!hnLayerOn(el)||hnKey(el.textContent)!==HNS.gone[id]))el.classList.remove('hn-gone');}}
 // запомнить показанное и подставить «показать снова»
@@ -172,17 +177,20 @@ function hnSkip(){const sk=$('skip'),sb=$('subs');if(!sk||!sb)return;sk.style.bo
   const ft=$('finTut');if(ft&&ft.classList.contains('on')){const F=ft.getBoundingClientRect();if(K.left<F.right&&F.left<K.right&&K.top<F.bottom&&F.top<K.bottom&&F.bottom+6+K.height<(S?S.top-6:innerHeight-8))sk.style.bottom=(innerHeight-F.bottom-6-K.height)+'px';}}
 {const _ui=updateUI;updateUI=function(dt){_ui(dt);try{hnLayout();}catch(e){console.error('hints',e);}};}
 {const _st=showTitle;showTitle=function(){_st();HN.titleT=G.time;};}
-// крестовина: опрос джойстиков (каждые 8 мс) копит новые нажатия → / ←, а карточки разбирают их в кадре
-{const _pp=pollPads;pollPads=function(){const was=PADS.down;_pp();const now=PADS.down;
-  if(now!==was&&G.state==='play'&&!G.cine&&!G.ui)for(let pi=0;pi<2;pi++)if(PADS.gp[pi])for(const a of['right','left']){const c=BIND[pi][a];if(now.has(c)&&!was.has(c)){HNS.ev.push({pi,a});if(HNS.ev.length>8)HNS.ev.shift();}}};}
+// LB (кнопка 4 стандартной раскладки — «Повтори», PADMAP в late_74): опрос джойстиков (каждые 8 мс) копит новые нажатия у каждого джойстика отдельно (код у обоих один — KeyH), карточки разбирают их в кадре
+HNS.lb=[false,false];
+{const _pp=pollPads;pollPads=function(){_pp();const play=G.state==='play';
+  for(let pi=0;pi<2;pi++){const gp=PADS.gp[pi],b=gp&&gp.buttons&&gp.buttons[4],on=!!b&&(b.pressed||b.value>0.5);
+    if(on&&!HNS.lb[pi]&&play){HNS.ev.push({pi});if(HNS.ev.length>8)HNS.ev.shift();}HNS.lb[pi]=on;}};}
 // «Текстовые подсказки» — настройка (FIN.set.hints, по умолчанию да): пункт в паузе и в настройках
 HN.on=hnOn;HN.toggle=()=>{FIN.set.hints=!hnOn();FIN.saveSettings();FIN.applySettings();};
 {const _as=FIN.applySettings;FIN.applySettings=function(){_as();HNS.noh=!hnOn();document.body.classList.toggle('fin-nohints',HNS.noh);};}
-const hnItem=()=>({label:'Текстовые подсказки',val:()=>hnOn()?'да':'нет',sub:()=>hnOn()?'на джойстике: ✚→ убрать подсказку, ✚← показать снова':'все надписи-подсказки скрыты; чтение вслух — отдельным пунктом',side:()=>HN.toggle()});
+const hnItem=()=>({label:'Текстовые подсказки',val:()=>hnOn()?'да':'нет',sub:()=>hnOn()?'на джойстике LB — убрать подсказку, ещё раз — показать снова':'все надписи-подсказки скрыты; чтение вслух — отдельным пунктом',side:()=>HN.toggle()});
 // в паузе — вторым пунктом после «Читать задачи вслух»; в ?debug скрыт, чтобы не сдвигать пункты ботам
 {const _ps=pauseScreen;pauseScreen=function(){const scr=_ps(),kk=FIN.kids;
   if(!(kk&&kk.debug&&!kk.force)){const k=scr.items.findIndex(it=>it.label==='Читать задачи вслух');scr.items.splice(k>=0?k+1:1,0,hnItem());}return scr;};}
-{const _ss=settingsScreen;settingsScreen=function(){const scr=_ss(),k=scr.items.findIndex(it=>it.label==='Читать задачи вслух');scr.items.splice(k>=0?k+1:Math.max(0,scr.items.length-1),0,hnItem());return scr;};}
-{const _cs=controlsScreen;controlsScreen=function(){const scr=_cs(),h0=scr.html;scr.html=()=>h0().replace('</table>','<tr><td>Убрать подсказку · показать снова</td><td>—</td><td>—</td><td>'+padGlyph('right')+' '+padGlyph('left')+'</td></tr></table>');return scr;};}
+// в настройках — рядом с текстовыми («Размер текста»), на первом экране списка, а не в хвосте
+{const _ss=settingsScreen;settingsScreen=function(){const scr=_ss(),k=scr.items.findIndex(it=>it.label==='Размер текста');scr.items.splice(k>=0?k+1:Math.max(0,scr.items.length-1),0,hnItem());return scr;};}
+{const _cs=controlsScreen;controlsScreen=function(){const scr=_cs(),h0=scr.html;scr.html=()=>h0().replace('</table>','<tr><td>Убрать подсказку · показать снова (и прочитать вслух)</td><td>—</td><td>—</td><td>'+padGlyph('help')+'</td></tr></table>');return scr;};}
 FIN.hints={layout:hnLayout,cover:hnCover,merge:hnMerge,fuzzy:hnFuzzy,split:hnSplit,pair:hnPair,short:hnShort,state:()=>({html:HN.html.slice(),shown:HN.shown.slice()}),   // для ботов
   gate:HNS,dismiss:hnDismiss,recall:hnRecallLast,on:hnOn,toggle:HN.toggle};
