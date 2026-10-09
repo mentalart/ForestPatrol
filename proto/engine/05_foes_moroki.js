@@ -240,7 +240,7 @@ function parryFoe(e,h){const pi=h.player;G.stats.parries++;(players[pi].defLog=p
 function shieldBlock(h){const pi=h.player,p=players[pi];G.stats.shields++;(p.defLog=p.defLog||[]).push('g');SFX.shield();p.spirit=Math.max(0,p.spirit-timingOf(pi).cost);
   floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Щит!','#cfe8ff');burst(h.pos.clone().add(new V3(Math.sin(h.face)*0.7,h.d.height*0.5,Math.cos(h.face)*0.7)),0xffffff,6,3);
   if(p.spirit<=0.01){p.spiritLock=1;tip(pi,'Щит устал! Секунду защищаться нельзя.',1.8);}
-  else if(!p.shieldTaught){p.shieldTaught=true;tip(pi,'Щит держит! А коль нажать '+K(pi,'guard')+' <b>в самый последний миг</b> пред ударом —<br>Удар назад отобьёшь, да не даром!',3.4);}}
+  else if(!p.shieldTaught){p.shieldTaught=true;tip(pi,'Щит держит! Нажми '+K(pi,'guard')+' в последний миг — отобьёшь.',3.4);}}
 function oneSwoop(e,h){const pi=h.player;G.stats.mahs++;SFX.mah();G.hitstop=0.4;stitch();shake(pi,0.05,0.3);ringFx(e.pos,COL.gold,3);
   floatText(h.pos.clone().add(new V3(0,h.d.height+0.7,0)),'Одним махом!','#ffd76a');
   p7(pi);
@@ -265,7 +265,7 @@ function enemyHit(e,h,air){if(!e.alive)return;
   const dazed=e.dazeT>0;const open=dazed||(e.state==='stagger'&&!e.openHit)||e.open>0||air||pw||(e.shell&&!e.shell[side]&&e.plateCd<=0)||(e.sideOpen&&(side==='l'||side==='r'||side==='b'));
   if(open){if(e.state==='stagger'&&!dazed)e.openHit=true;if(!dazed)e.open=0;e.plateCd=0.45;shake(h.player,0.03,0.12);burst(e.pos.clone().add(new V3(0,1,0)),0xffffff,6,3);emberOut(e,(air||pw)?2:1,air?'Сверху!':'Удар!');return;}
   SFX.clink();floatText(e.pos.clone().add(new V3(0,e.L.top*e.s+0.6,0)),'закрылся','#cfd8dc');const dx=e.pos.x-h.pos.x,dz=e.pos.z-h.pos.z,d=Math.hypot(dx,dz)||1;mMove(e,dx/d,dz/d,6,0.05);
-  const p=players[h.player];if(!p.closedTaught){p.closedTaught=true;tip(h.player,e.shell?'Спереди у него кора — так не пробить. Зайди сбоку иль сзади.<br>Красный зубец — кувыркнись, и окажешься сбоку, в засаде.':'Не попасть! Отбей '+K(h.player,'guard')+', потом бей '+K(h.player,'attack')+'.',3);}}
+  const p=players[h.player];if(!p.closedTaught){p.closedTaught=true;tip(h.player,e.shell?'Спереди кора — зайди сбоку. Красный зубец — кувырок.':'Не попасть! Отбей '+K(h.player,'guard')+', потом бей '+K(h.player,'attack')+'.',3);}}
 function finisher(e,h){
   if(e.noKill){if(e.onFinisher)e.onFinisher(h);return;}
   if(e.big&&e.finT>0){if(e.finBy!==h.player){e.bogatyr=true;}return;}
@@ -344,6 +344,6 @@ function updateSparks(dt){for(let i=W.sparks.length-1;i>=0;i--){const s=W.sparks
     else{s.v.multiplyScalar(Math.exp(-2*dt));s.v.y+=s.t>0.6?1.4*dt:-6*dt;}}
   p.addScaledVector(s.v,dt);s.m.material.opacity=s.free>6?Math.max(0,1-(s.free-6)/2):1;if(s.free>8||p.y>18){W.group.remove(s.m);W.sparks.splice(i,1);}}}
 function collectSpark(s,h){G.stats.sparks++;W.sparksGot=(W.sparksGot||0)+1;SFX.spark();const p=players[h.player];if(s.color===0xff6a8a&&p.petals<3)p.petals++;
-  if(s.color===0x6ad0ff&&(W.abil.clew||W.abil.gusli||W.abil.pero||W.abil.kleshi)){p.blue=Math.min(1,p.blue+0.14);if(p.blue>=1&&!p.blueTold){p.blueTold=true;tip(h.player,'Синяя полоска полна! Смени героя '+K(h.player,'swap')+' —<br>Второй выбежит с богатырским ударом, вот так-то.',3.5);}}
+  if(s.color===0x6ad0ff&&(W.abil.clew||W.abil.gusli||W.abil.pero||W.abil.kleshi)){p.blue=Math.min(1,p.blue+0.14);if(p.blue>=1&&!p.blueTold){p.blueTold=true;tip(h.player,'Полоска полна! Смени героя '+K(h.player,'swap')+' — богатырский удар.',3.5);}}
   floatText(h.pos.clone().add(new V3(0,h.d.height+0.4,0)),'+искра','#fff6c0');}
 

@@ -168,7 +168,10 @@ for(const n of names){const a=RES['720 '+n],b=RES['1080 '+n];
   L.push([n,a.tips.n+' '+f(a.tips.avg)+'/'+a.tips.max,a.says.max+'/'+a.cineSays.max,f(a.hintFontPct,2)+'/'+(b?f(b.hintFontPct,2):'-'),a.ovMax+'/'+(b?b.ovMax:'-'),a.cines.n+' '+f(a.cines.max)+'/'+f(a.cines.total),a.flash.perSec,a.shake.max+' / '+a.shake.perSec,f(a.hitstop.max,2),a.perf.callsP95,a.perf.trisP95,a.perf.fxMax].join(' | '));
   // --- жёсткие нормы ---
   {const rr=[a,b].filter(r=>r&&!r.err);
-   CHECK(n,'words','*',Math.max(0,...rr.map(r=>r.tips.max)),NORM.words,1,0,'','слов в подсказке (макс.)');
+   {const wm=Math.max(0,...rr.map(r=>r.tips.max));
+    // F-2h3: при превышении — сам текст подсказки (до 80 знаков), чтобы лог CI сразу показывал виновника
+    const wl=[].concat(...rr.map(r=>r.tips.long||[])).filter(x=>parseInt(x,10)===wm)[0],wt=wl?' «'+wl.replace(/^\d+:\s*/,'').slice(0,80)+'»':'';
+    CHECK(n,'words','*',wm,NORM.words,1,0,'','слов в подсказке (макс.)'+(wm>NORM.words?wt:''));}
    CHECK(n,'subs','*',Math.max(0,...rr.map(r=>Math.max(r.says.max,r.cineSays.max))),NORM.words,1,0,'','слов в реплике/субтитре (макс.)');}
   for(const [vp,r] of[['720',a],['1080',b]]){if(!r||r.err)continue;
     CHECK(n,'font',vp,r.hintFontPct,NORM.font,0,0.06,'%','шрифт подсказок');

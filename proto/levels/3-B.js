@@ -48,8 +48,8 @@ function build3B(){
   function updateWaves(dt){for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.r+=dt*w.sp;w.m.scale.set(w.r,1,w.r);w.m.material.opacity*=w.r>R-1?0.9:1;
       for(const h of HEROES){if(!h.active||w.hit.has(h)||h.cling||players[h.player].downed)continue;const d=Math.hypot(h.pos.x-w.src.x,h.pos.z-w.src.z);if(Math.abs(d-w.r)>0.5)continue;w.hit.add(h);const pi=h.player;
         if(w.kind==='low'){if(h.pos.y>0.45){floatText(h.pos.clone().add(new V3(0,h.d.height+0.5,0)),'Перепрыгнул!','#ffe36b');}else{damageHero(h,{kind:'hazard',ref:{pos:w.src}});tip(pi,'Низкая белая волна — прыгни '+K(pi,'jump')+' через неё!',2.4);}}
-        else if(w.kind==='dark'){if(h.pos.y>0.45){floatText(h.pos.clone().add(new V3(0,h.d.height+0.5,0)),'Перепрыгнул!','#e0c8ff');}else if(h.lit){h.lit=false;featherFx(h);floatText(h.pos.clone().add(new V3(0,h.d.height+0.9,0)),'Перо погасло!','#c8b0ff');tip(pi,'Фиолетовая волна перо гасит. Прыгай '+K(pi,'jump')+' через неё — иль перо зажги опять '+K(pi,'item')+'.',2.8);}}
-        else if(w.kind==='high'){if(behindPotap(h,w.src)){floatText(h.pos.clone().add(new V3(0,h.d.height+0.5,0)),'За щитом широким!','#e0b27a');}else if(h.guard){shieldBlock(h);}else{damageHero(h,{kind:'hazard',ref:{pos:w.src}});tip(pi,'Высокая синяя волна <i class="sg b"></i> — в синюю тень за Потапом встань иль щитом '+K(pi,'guard')+' закройся!',2.6);}}}
+        else if(w.kind==='dark'){if(h.pos.y>0.45){floatText(h.pos.clone().add(new V3(0,h.d.height+0.5,0)),'Перепрыгнул!','#e0c8ff');}else if(h.lit){h.lit=false;featherFx(h);floatText(h.pos.clone().add(new V3(0,h.d.height+0.9,0)),'Перо погасло!','#c8b0ff');tip(pi,'Фиолетовая волна — прыгай '+K(pi,'jump')+' или зажги перо '+K(pi,'item')+'!',2.8);}}
+        else if(w.kind==='high'){if(behindPotap(h,w.src)){floatText(h.pos.clone().add(new V3(0,h.d.height+0.5,0)),'За щитом широким!','#e0b27a');}else if(h.guard){shieldBlock(h);}else{damageHero(h,{kind:'hazard',ref:{pos:w.src}});tip(pi,'Синяя волна — за Потапа или щит '+K(pi,'guard')+'!',2.6);}}}
       if(w.r>R+1){W.group.remove(w.m);waves.splice(i,1);}}}
   // синяя тень за широким щитом Потапа: туда прятаться от высокой волны
   const wedge=new THREE.Group();W.group.add(wedge);{const m=new THREE.Mesh(new THREE.CircleGeometry(3.4,24,-Math.PI/2-0.4,0.8),MB(0x7ab0ff,{transparent:true,opacity:0.3,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=0.07;m.renderOrder=2;wedge.add(m);wedge.userData.m=m;}wedge.visible=false;
@@ -104,7 +104,7 @@ function build3B(){
   const aim=markMesh(0.9);aim.visible=false;W.group.add(aim);
   function shotAcorn(A){if(!sol)return;
     if(!A.real){A.gone=5;A.g.visible=false;burst(A.pos.clone(),0xb08aff,12,3);SFX.miss();floatText(A.pos.clone().add(new V3(0,0.8,0)),'Пусто! Жёлудь-морок','#c8b0ff');F.puff=Math.min(0.95,F.puff+0.15);
-      bark({g:sol.g},'solovei','Хи-хи! Не тот, не тот!',1.6);if(!F.fakeTold){F.fakeTold=true;tip(0,'Жёлудь был ненастоящий! Пелагея совиным взором настоящий видит — золотом засветится он.',3.2);tip(1,'Прошка в ненастоящий жёлудь попал! Совиный взор '+K(1,'skill')+' включи — настоящий золотом засияет, как сон.',3.2);}return;}
+      bark({g:sol.g},'solovei','Хи-хи! Не тот, не тот!',1.6);if(!F.fakeTold){F.fakeTold=true;tip(0,'Жёлудь не тот! Взор Пелагеи покажет настоящий.',3.2);tip(1,'Не тот жёлудь! Совиный взор '+K(1,'skill')+' покажет настоящий.',3.2);}return;}
     F.puffing=false;F.puff=0;acorns.forEach(q=>{q.g.visible=false;});aim.visible=false;tone(1800,0.5,'sine',0.25,3000);floatText(sol.pos.clone().add(new V3(0,4.4,0)),'Пи-и-иск!','#ffe08a');
     const from=sol.pos.clone();sol.perch=false;F.onFloor=true;anim(0.9,k=>{sol.pos.lerpVectors(from,FLOOR,smooth(k));sol.pos.y=lerp(from.y,0,k)+Math.sin(k*Math.PI)*1.2;});
     later(0.95,()=>{if(F.phase!==4)return;sol.state='broken';sol.t=0;sol.bdur=7;sol.embers=0;F.fin=[-9,-9];SFX.brk();SFX.thud();banner('ПРОБОЙ!','#fff2b0',1.8,'смените героя '+K(0,'swap')+' / '+K(1,'swap')+' — и бейте вдвоём, разом!');});}
@@ -198,7 +198,7 @@ function build3B(){
     if(F.phase===2){F.dark=Math.min(1,(F.dark||0)+dt/1.5);amb.intensity=lerp(0.52,0.22,F.dark);sun.intensity=lerp(0.5,0.12,F.dark);
       F.sparkT-=dt;if(F.sparkT<=0){F.sparkT=4;const lit=HEROES.filter(h=>heroLight(h));if(lit.length){SFX.blue();floatText(e.pos.clone().add(new V3(0,4.2,0)),'Фью-ить!','#ffe08a');
         for(const h of lit)for(let i=0;i<lit.length;i++){const p=h.pos.clone().add(new V3(rand(-0.4,0.4),h.d.height+0.6,rand(-0.4,0.4)));spawnSpark(p,[COL.gold,0x6ad0ff,0xff6a8a][i%3]);const s=W.sparks[W.sparks.length-1];s.free=4.05;s.noLit=true;const dx=e.pos.x-p.x,dz=e.pos.z-p.z,dd=Math.hypot(dx,dz)||1;s.v.set(dx/dd*6,4,dz/dd*6);}
-        if(!F.sparkTold){F.sparkTold=true;tip(0,'Соловей искры тянет у того, у кого перо горит!<br>Лови искры тот, у кого перо погасло, — пусть не спит.',3.4);tip(1,'Одному — свет, другому — искры: у кого перо погасло, тот искры и лови,<br>Пока их Соловей не съел — не зевай, не лени.',3.4);}}}
+        if(!F.sparkTold){F.sparkTold=true;tip(0,'У кого перо погасло — лови искры!',3.4);tip(1,'Перо погасло — лови искры скорей!',3.4);}}}
       if(!e.perch&&e.state!=='broken'){F.dwT-=dt;if(F.dwT<=1.1&&!F.dwTold){F.dwTold=true;flash('ФИОЛЕТОВАЯ ВОЛНА — ПРЫГ!','#4a2a7a',1.1);}if(F.dwT<=0){F.dwT=7;F.dwTold=false;wave('dark');}}}
     else if(F.dark>0){F.dark=Math.max(0,F.dark-dt/1.5);amb.intensity=lerp(0.52,0.22,F.dark);sun.intensity=lerp(0.5,0.12,F.dark);}
     // стадия 3: буря — Соловей кружит в небе, перья-стрелы, пике, ветер; два колокола разом его оглушают

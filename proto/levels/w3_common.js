@@ -122,7 +122,7 @@ function updateClouds(dt){for(const c of W.clouds){
     c.g.position.y=c.y+Math.sin(G.time*1.3+c.x)*0.04;c.mat.emissive.setHex(lit?0xff9040:0x4a3a80);c.mat.emissiveIntensity=lit?0.32:0.14;
     c.mat.opacity=!c.puffy&&c.meltT>11?(Math.sin(G.time*16)>0?0.95:0.35):0.95;
     const P=HERO.potap;if(!c.puffy&&!P.cling&&hd(P.pos,c)<c.r&&P.pos.y<c.y+0.4&&P.pos.y>c.y-1.2&&P.vel.y<0&&!(W.flags.potapThru>0)){W.flags.potapThru=6;floatText(P.pos.clone().add(new V3(0,2.2,0)),'Провалился!','#e0b27a');
-      tip(P.player,'Облачко Потапа не выдержит. Пусть Йоша польёт его живой водой —<br>Станет пухлым, как перина, под ногой.',3);}}
+      tip(P.player,'Облачко Потапа не держит — Йоша, полей его!',3);}}
   if(W.flags.potapThru>0)W.flags.potapThru-=dt;}
 /* ---------- облачные барашки: бегут к ближайшему свету; горящее перо на холме — стадо складывается мостиком ---------- */
 function makeSheep(){const g=new THREE.Group();W.group.add(g);const wool=M(0xfaf8ff),dk=M(0x3a3448);
@@ -172,7 +172,7 @@ function updateGeese(dt){for(const q of W.geese){const en=!q.on||q.on();q.m.g.vi
     else if(q.state==='dive'){q.t+=dt;const h=q.prey,k=Math.min(1,q.t/0.6);q.pos.lerpVectors(q.from,h.pos.clone().add(new V3(0,h.d.height+0.3,0)),smooth(k));q.m.g.position.copy(q.pos);
       q.m.wings.forEach(w=>{w.wp.rotation.z=w.sd*0.9;});if(k>=1){q.state='carry';q.t=0;const p=players[h.player],kk=p.heroes.indexOf(h);h.lit=false;burst(h.pos.clone().add(new V3(0,0.8,0)),0xffffff,14,4);
         placeOnGround(h,p.cp.x+(kk?1.2:-0.4),p.cp.z,p.cp.y);h.iT=1.2;h.following=false;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Гусь к укрытию отнёс','#e8f4ff');
-        if(h.active)tip(h.player,'Гусь свет пера увидел! Под белым лучом лишь во тьме ходи.<br>Жди, пока гусь отвернётся, — и зажигай на три шага, не спеши.',3.2);G.stats.geese=(G.stats.geese||0)+1;}}
+        if(h.active)tip(h.player,'Гусь увидит свет! Жди, пока отвернётся.',3.2);G.stats.geese=(G.stats.geese||0)+1;}}
     else{q.t+=dt;const k=Math.min(1,q.t/1.2);q.m.g.position.y=lerp(q.pos.y,q.y,k);if(k>=1)q.state='fly';}}
   if(W.gooseCalm>0)W.gooseCalm-=dt;}
 /* ---------- шаг мира 3: свет, мостки, облака, барашки, гуси, яблони ---------- */

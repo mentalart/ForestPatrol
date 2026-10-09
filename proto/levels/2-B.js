@@ -104,8 +104,8 @@ function build2B(){
     prompt(pi,'swap',()=>headOf(h()),()=>F.phase===3&&players[pi].blue>=1,'богатырский выход');}
   prompt(0,'skill',()=>headOf(T.proshka),()=>F.phase===3&&bubble&&bubble.up&&T.proshka.active,'в жёлудь!');
   prompt(0,'swap',()=>headOf(T.proshka),()=>F.phase===3&&bubble&&bubble.up&&T.potap.active,'Прошка — рогатка');
-  W.tipZones.push({cond:()=>F.phase===2&&F.current>0,text:pi=>'Течение омут крутит! Встаньте на половины разные:<br>У одного прилив '+K(pi,'item')+', у другого отлив — вот и все дела праздные.'},
-    {cond:()=>F.phase===2&&F.current===0,text:pi=>'Течение встало — у Водяного голова кругом. Бей '+K(pi,'attack')+'!<br>Оставленные герои искры собирают — вот улов!'});
+  W.tipZones.push({cond:()=>F.phase===2&&F.current>0,text:pi=>'Один — прилив '+K(pi,'item')+', другой — отлив!'},
+    {cond:()=>F.phase===2&&F.current===0,text:pi=>'Течение встало — бей '+K(pi,'attack')+' Водяного!'});
   const ph1=pi=>O(()=>'Прилив: Водяной хвостом волну бьёт — <i class="sg b"></i> отбей её назад '+K(pi,'guard')+'.<br>Отлив '+K(pi,'item')+': на дне лежит он, ракушки сбиваются сбоку '+K(pi,'attack')+' — вот так бьют.',()=>F.phase>1,()=>vod?[vod.g]:[]);
   const ph2=pi=>O(()=>'Течение искры в пасть ему уносит! Воду разной сделайте:<br>На своей половине сыграй '+K(pi,'item')+', а друг — наоборот, проверьте.',()=>F.phase>2,()=>halves?halves.map(z=>z.shell.g):[]);
   const ph3=pi=>O(pi?()=>'Водяной весь омут пузырём поднял! Прошка его рогаткой собьёт.<br>Водяной оглушён — смени на Йошу '+K(1,'swap')+', и бейте '+K(1,'attack')+' вместе — вперёд!':()=>'Водяной весь омут пузырём поднял! Из рогатки '+K(0,'skill')+' в жёлудь стрельни.<br>Водяной оглушён — смени на Потапа '+K(0,'swap')+', и бейте '+K(0,'attack')+' вместе, одни!',()=>!!F.won,()=>bubble?[bubble.g]:[]);
