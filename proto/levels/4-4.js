@@ -76,7 +76,8 @@ function build44(){
   function bowlDone(w){if(w==='A'){F.bowlA=true;SFX.ok();later(0.8,()=>{gateA.openIt();banner('Чаша полна — ворота отворились!','#ffb070',2.4,'дальше — к чугунной двери, вперёд');});}
     else{F.bowlB=true;SFX.ok();chestB.lock=false;banner('Вторая чаша!','#ffb070',2,'сундук кузнецов отворился');}}
   /* ---------- плуг ---------- */
-  const PL=makePlow();W.PLOW=PL;const plow={by:null,pos:PL.g.position,share:new V3(),ang:0};PL.g.position.set(-3,0,-1);
+  const PL=makePlow();W.PLOW=PL;const plow={by:null,pos:PL.g.position,share:new V3(),ang:0};W.plowBy=()=>plow.by;   // для бота-напарника: кто держит плуг
+PL.g.position.set(-3,0,-1);
   const shareAt=()=>plow.share.set(PL.g.position.x-Math.sin(plow.ang)*1.2,0,PL.g.position.z-Math.cos(plow.ang)*1.2);shareAt();
   W.grabs.push({pos:()=>new V3(plow.share.x,0,plow.share.z),r:2.8,active:()=>!G.cine&&(plow.by===null||true),onGrab:(h)=>{
     if(plow.by===h){plow.by=null;SFX.plate();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Плуг стоит','#ffb070');return;}
