@@ -95,12 +95,12 @@
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | — | 3 | t34 tfin_companion_34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | — | 2 | t35 tfin_companion_35 |
 | `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 10 | t3bv tfin_bossbar tfin_companion_3b tfin_hintlayer tfin_k3b tfin_k3bboss tfin_k3bbosssolo… |
-| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | — | 9 | t41v tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko thw4 tluko tsolo tsolo41 |
-| `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | — | 2 | t42v tfin_art |
-| `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | — | 1 | t43 |
-| `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | — | 2 | t44 tfoes |
-| `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | — | 2 | t45 tsospot |
-| `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 12 | t4b tfin_boss4b tfin_bossfxcap tfin_cam tfin_cine tfin_gor4 tfin_gorend tfin_gorsolo tfin… |
+| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | — | 10 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko thw4 tluko tsolo ts… |
+| `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | — | 3 | t42v tfin_art tfin_companion_42 |
+| `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | — | 2 | t43 tfin_companion_43 |
+| `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | — | 3 | t44 tfin_companion_44 tfoes |
+| `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | — | 3 | t45 tfin_companion_45 tsospot |
+| `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 13 | t4b tfin_boss4b tfin_bossfxcap tfin_cam tfin_cine tfin_companion_4b tfin_gor4 tfin_gorend… |
 | `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51 | 4 | t51 tfin_likho tfoes tso51 |
 | `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | — | 1 | t52 |
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 1 | t53 |
@@ -152,9 +152,9 @@
 | `levels/3-B.js` | 260 | 3-Б «СОЛОВЕЙ-РАЗБОЙНИК» — босс мира 3 |
 | `levels/w4_common.js` | 253 | МИР 4 · ОГНЕННАЯ СМОРОДИНА: клещи, горячее, лава, корка, пар |
 | `levels/4-1.js` | 287 | МИР 4 · ОГНЕННАЯ СМОРОДИНА · 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА» |
-| `levels/4-2.js` | 211 | МИР 4 · 4-2 «РЕКА СМОРОДИНА» |
+| `levels/4-2.js` | 212 | МИР 4 · 4-2 «РЕКА СМОРОДИНА» |
 | `levels/4-3.js` | 154 | МИР 4 · 4-3 «ЭЙ, УХНЕМ» — на четверых |
-| `levels/4-4.js` | 167 | МИР 4 · 4-4 «ЗМИЕВЫ ВАЛЫ» |
+| `levels/4-4.js` | 168 | МИР 4 · 4-4 «ЗМИЕВЫ ВАЛЫ» |
 | `levels/4-5.js` | 181 | МИР 4 · 4-5 «КАЛИНОВ МОСТ» — кульминация мира, путь Потапа |
 | `levels/4-B.js` | 114 | 4-Б «ЗМЕЙ ГОРЫНЫЧ» — босс мира 4 |
 | `levels/w5_common.js` | 304 | МИР 5 · ОСТРОВ БУЯН: вещь по знаку, Лихо Одноглазое, овечьи… |
@@ -234,6 +234,12 @@
 | `levels/3-4/late_73s_companion_34.js` | — | РЕЛИЗ final06 · 3-4 «ЛЕТУЧИЙ КОРАБЛЬ»: НАПАРНИК-БОТ — ФОНАРЩИЦА |
 | `levels/3-5/late_73t_companion_35.js` | — | РЕЛИЗ final06 · 3-5 «ГУСИ-ЛЕБЕДИ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
 | `levels/3-B/late_73u_companion_3b.js` | — | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/4-1/late_73v_companion_41.js` | — | РЕЛИЗ final06 · 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/4-2/late_73w_companion_42.js` | — | РЕЛИЗ final06 · 4-2 «РЕКА СМОРОДИНА»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/4-3/late_73x_companion_43.js` | — | РЕЛИЗ final06 · 4-3 «ЭЙ, УХНЕМ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/4-4/late_73y_companion_44.js` | — | РЕЛИЗ final06 · 4-4 «ЗМИЕВЫ ВАЛЫ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/4-5/late_73z_companion_45.js` | — | РЕЛИЗ final06 · 4-5 «КАЛИНОВ МОСТ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/4-B/late_73za_companion_4b.js` | — | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
 | `late_74_kids_start.js` | epi, luko | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · СТАРТ, УДОБСТВО, СОХРАННОСТЬ |
 | `late_75_kids_w1.js` | 1-1, 1-2, 1-3, 1-4, 1-5, 1-B, 2-1, 3-1, p | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · ПРАВКИ УРОВНЕЙ |
 | `late_76_kids_fight.js` | 1-1, 1-2, 2-1, 3-1 | РЕЛИЗ · ДЕТИ 7–11 · БОЙ: СИНЯЯ КАПЛЯ, «ЖАЛОСТЬ», КРАСНЫЙ ЗНАК |
@@ -433,5 +439,5 @@
 | `screens/` | 26 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 232 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 238 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

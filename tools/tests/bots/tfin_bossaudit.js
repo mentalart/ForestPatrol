@@ -120,26 +120,7 @@ window.THR={
 window.NORM={words:10,font:3,hitstop:0.16,shake:0.09,shakeOnce:0.15,shakePs:5,flash:3};
 // KNOWN_EXCEPTIONS: {boss, metric, vp, val, why, doc}. metric: 'words' (подсказки, реплики, субтитры — максимум), 'font' (% высоты окна, vp — окно),
 // 'ov:<пара>' (% перекрытия, vp), 'hitstop' | 'shake' | 'flash'. val — текущее значение: хуже него — FAIL; лучше нормы — WARN «исключение больше не нужно».
-const _FT='мелкий шрифт подсказок: карточка finTut 16 px / подсказка боя finBossHint 15,6 px, hint0/hintS 19 px = 2,64 % при 720p (норма 22 px); общий слой подсказок — F-2c';
 window.KNOWN_EXCEPTIONS=[
- {boss:'1-B',metric:'font',vp:'720',val:2.22,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'1-B',metric:'font',vp:'1080',val:1.48,why:_FT+'; карточка 16 px не растёт с окном',doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'2-B',metric:'font',vp:'720',val:2.22,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'2-B',metric:'font',vp:'1080',val:1.48,why:_FT+'; карточка 16 px не растёт с окном',doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'3-B',metric:'font',vp:'720',val:2.22,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'3-B',metric:'font',vp:'1080',val:1.48,why:_FT+'; карточка 16 px не растёт с окном',doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'4-B',metric:'font',vp:'720',val:1.94,why:_FT+'; в 4-Б ещё 14 px',doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'4-B',metric:'font',vp:'1080',val:1.3,why:_FT+'; в 4-Б ещё 14 px',doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'5-B1',metric:'font',vp:'720',val:2.64,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'5-B1',metric:'font',vp:'1080',val:2.63,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'2-1',metric:'font',vp:'720',val:2.64,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'2-1',metric:'font',vp:'1080',val:2.63,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'3-1',metric:'font',vp:'720',val:2.64,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'3-1',metric:'font',vp:'1080',val:2.63,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'3-2',metric:'font',vp:'720',val:2.17,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'3-2',metric:'font',vp:'1080',val:1.48,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'5-1',metric:'font',vp:'720',val:2.64,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
- {boss:'5-1',metric:'font',vp:'1080',val:2.63,why:_FT,doc:'docs/34 X-2 (стр. 428), F-2c (стр. 527)'},
  {boss:'1-B',metric:'subs',vp:'*',val:23,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'2-B',metric:'subs',vp:'*',val:19,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'3-B',metric:'subs',vp:'*',val:19,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
