@@ -1,6 +1,7 @@
 //@@ wait=900
 // релиз final06: «Читать задачи вслух» — записанным голосом (late_91d_readvoice.js ← tools/voice/read_tts.py, голос Silero «baya»; тексты — harvest_read.js).
 // Проверки: записи в релизе (READ_LINES), у задач и подсказок-зон всех уровней есть запись (≥ 85%; текст без записи молчит),
+// карточки боссов (урок, подсказка боя, табличка Соловья) озвучены (tools/voice/boss_cards_init.js собирает их тексты из ботов);
 // голоса браузера (Web Speech, Microsoft Irina) в игре нет: speechSynthesis.speak не зовётся ни разу, в статусе нет «запасного» голоса,
 // чтение работает без русского голоса в системе, запись звучит и замолкает по RA.stop, при громкости «Голоса» 0 — тишина, у бота (RA.mock) текст
 // уходит в подмену, герой заговорил — чтение замолкает, счётчик «0 / 3» не делает задачу новой (тот же ключ).
@@ -23,6 +24,15 @@ for(const id of ZC.LEVELS.map(l=>l.id)){ld(id);const W=ZC.W,P=ZC.players;if(!W)c
   for(let pi=0;pi<2;pi++){(W.objectives[pi]||[]).forEach((o,j)=>{try{if(!o)return;const h=o.short?o.short(pi):(typeof o.text==='function'?o.text():o.text);if(h)test(RA.text('<div class="hn-rd">'+String(h)+'</div>'),'задача '+pi+'.'+j);}catch(e){BAD.push(id+' obj'+pi+'.'+j+': '+e.message);}});
     const hero=P[pi].heroes[P[pi].act];(W.tipZones||[]).forEach((z,zi)=>{try{const h=z.text(pi,hero);if(h)test(RA.text(String(h)),'зона '+zi);}catch(e){BAD.push(id+' zone'+zi+': '+e.message);}});}}
 window.COV={tot,hit,miss};F.set.readAloud=true;RA.stop();RA.said={};RA.q.length=0;chk(tot>300&&hit/tot>=0.85,'покрытие записями '+hit+'/'+tot+' ('+Math.round(100*hit/tot)+'%); без записи: '+miss.slice(0,5).join(' | '));
+// карточки боссов (урок #finTut, подсказка боя #finBossHint, табличка #solsign) тоже озвучены: текст, который соберёт raBoss, находится в каталоге
+const LS=F.lesson,show=(h)=>{const q=RA.cards().filter(c=>c.i>=3);return q.map(c=>c.t);};
+LS.show({tag:'Урок',title:'Синяя волна',icon:'',text:'Потап, держи щит — все за ним!'},{},null);const tut=show();
+chk(tut.length===1&&!!RV.find(tut[0]),'карточка урока (finTut) озвучена: '+JSON.stringify(tut));LS.show(null);
+LS.dom();LS.hint.innerHTML='<div class="fh-title">Тень-круг — уходи!</div><div class="fh-text">Кувырок из круга или щит!</div>';LS.hint.classList.add('on');const hnt=show();
+chk(hnt.length===1&&!!RV.find(hnt[0]),'подсказка боя (finBossHint) озвучена: '+JSON.stringify(hnt));LS.hint.classList.remove('on');LS.hint.innerHTML='';
+const SS=document.getElementById('solsign')||document.body.appendChild(Object.assign(document.createElement('div'),{id:'solsign'}));SS.textContent='Белая волна — прыг!';SS.style.display='block';const sgn=show();
+chk(sgn.length===1&&!!RV.find(sgn[0]),'табличка Соловья (solsign) озвучена: '+JSON.stringify(sgn));SS.style.display='none';SS.textContent='';
+chk(!!RV.find('Прошка щёлкает огонёк. Жди — тропка всплывёт сама.'),'задачи 1-2 (туман) озвучены');
 // запись звучит: RA.say → декодирование → источник на шине голосов
 window.T0='Привет! Я буду читать задачи вслух.';chk(!!RV.find(T0),'в каталоге есть проверочная фраза «Читать задачи вслух»');
 window.waitFor=(f,ms)=>new Promise(r=>{const t0=performance.now();(function tick(){if(f()||performance.now()-t0>(ms||4000))return r(f());setTimeout(tick,50);})();});
