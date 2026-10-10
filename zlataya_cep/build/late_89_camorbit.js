@@ -51,9 +51,9 @@ CAMO.effYaw=camEffYaw;
 {const _of=onFall;onFall=function(h){_of(h);if(h&&h.active){if(G.solo||G.splitTarget<0.5)camReturn(CAMO.s);else camReturn(CAMO.p[h.player]);}};}
 // ---------- поза: поворот вокруг точки взгляда + наклон + столкновения ----------
 const CUPV=new V3(0,1,0),COFF=new V3(),CSAVE=new V3();
-// доля пути от взгляда до камеры, свободная от стен (коробки уровня с видимым мешем)
+// доля пути от взгляда до камеры, свободная от стен (коробки уровня с видимым мешем; невидимые — если помечены camWall: стены с отдельной отрисовкой, 1-5)
 function camFree(L,off,dist){let t=1;const ix=Math.abs(off.x)>1e-6?1/off.x:1e6,iy=Math.abs(off.y)>1e-6?1/off.y:1e6,iz=Math.abs(off.z)>1e-6?1/off.z:1e6;
-  for(const b of W.boxes){if(!b.on||!b.mesh||b.maxy-b.miny<0.5)continue;
+  for(const b of W.boxes){if(!b.on||!(b.mesh||b.camWall)||b.maxy-b.miny<0.5)continue;
     let a=(b.minx-L.x)*ix,e=(b.maxx-L.x)*ix,tn=Math.min(a,e),tf=Math.max(a,e);
     a=(b.miny-L.y)*iy;e=(b.maxy-L.y)*iy;tn=Math.max(tn,Math.min(a,e));tf=Math.min(tf,Math.max(a,e));
     a=(b.minz-L.z)*iz;e=(b.maxz-L.z)*iz;tn=Math.max(tn,Math.min(a,e));tf=Math.min(tf,Math.max(a,e));
