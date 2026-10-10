@@ -49,3 +49,5 @@ tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo tfin_k2bmill t
 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor tfin_juice tfin_audiolevel
 # Ctrl+Alt+B — следующая стадия у всех боссов (late_95_dev.js, W.bossNext)
 tfin_bossnext
+# ромбик «это ты» над своим героем (движок, heroMarker)
+tfin_marker

@@ -81,7 +81,7 @@ function makeHero(kind){
   const h={kind,d,player:d.player,g,body:b.body,parts:b.parts,pos:new V3(),vel:new V3(),face:Math.PI,grounded:false,groundRef:null,lastGroundY:0,coyote:0,
    active:false,iT:0,guard:false,atkT:0,atkCd:0,skillCd:0,glide:false,rollAng:0,following:false,stuck:0,holding:false,held:false,knockT:0,blocked:false,walkT:0,moving:false,cling:false,clingBell:null,warned:false};
   h.markerMat=MB(PCOL[d.player],{transparent:true,opacity:1});
-  h.marker=new THREE.Mesh(new THREE.TorusGeometry(0.22,0.045,8,22),h.markerMat);h.marker.rotation.x=Math.PI/2;g.add(h.marker);
+  h.marker=new THREE.Mesh(new THREE.ConeGeometry(0.17,0.38,4),h.markerMat);h.marker.rotation.x=Math.PI;h.marker.castShadow=false;h.marker.visible=false;g.add(h.marker);h.mkT=0;h.mkA=0;h.mkIdle=0;   // ромбик «это ты»: только над своим героем, ненадолго
   h.shieldMat=MB(PCOL[d.player],{transparent:true,opacity:0.5,side:THREE.DoubleSide,depthWrite:false});
   h.shield=new THREE.Mesh(new THREE.CircleGeometry(d.shield,24),h.shieldMat);h.shield.position.set(0,d.height*0.5,d.radius+0.25);g.add(h.shield);
   const ag=new THREE.RingGeometry(0.5,d.range,20,1,-Math.PI/2-0.9,1.8);ag.rotateX(-Math.PI/2);
