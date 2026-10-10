@@ -11,16 +11,19 @@ window.FR=0;{const raf=window.requestAnimationFrame.bind(window);window.requestA
 window.polled=n=>new Promise(res=>{const f0=FR,t0=performance.now();const c=()=>{if(FR-f0>=n||performance.now()-t0>30000)res();else setTimeout(c,5);};c();});
 window.tapB=async(i,b)=>{const p=PADSIM.list[i];p.buttons[b].pressed=true;p.buttons[b].value=1;await polled(2);p.buttons[b].pressed=false;p.buttons[b].value=0;await polled(2);};
 window.LB=4;
+// LB — «видно — убрать, не видно — показать», и убирает он и значки кнопок над героями: значок мог появиться после первого нажатия,
+// тогда второе нажатие прячет его, а подсказку возвращает третье — нажимаем до трёх раз, пока подсказка не вернётся
+window.recall=async pi=>{for(let k=0;k<3&&!has(TIP);k++){await tapB(pi,LB);ZC.sim(0.5);}return has(TIP);};
 window.vis=()=>['hint0','hint1','hintS'].filter(id=>{const e=document.getElementById(id);return e&&e.classList.contains('on')&&getComputedStyle(e).display!=='none';});
 window.has=re=>vis().some(id=>re.test((document.getElementById(id).textContent||'')));
 window.TIP=/Проверка подсказки/;
 window.tipAll=()=>{const sp=G.solo?G.soloPi:0;P[sp].tipHTML='Проверка подсказки: сделай что-нибудь важное прямо сейчас.';P[sp].tipT=60;};
 window.load=id=>{ZC.setSolo(false);F.co.set(false);ZC.startFrom(ZC.LV(id));G.manual=true;ZC.tick(20);for(let k=0;k<4;k++){if(G.cine)ZC.skip();ZC.sim(0.5);}ZC.sim(3);};
-window.level=async id=>{const W=ZC.W,off=!!(W.hintsOff&&W.hintsOff()),err=[];const c=(ok,m)=>{if(!ok)err.push(m);};
-  try{load(id);tipAll();ZC.sim(1);
+window.level=async id=>{let off=false;const err=[];const c=(ok,m)=>{if(!ok)err.push(m);};
+  try{load(id);const W=ZC.W;off=!!(W.hintsOff&&W.hintsOff());tipAll();ZC.sim(1);   // «выкл» уровня — после загрузки: до неё ZC.W — мир прошлого уровня
     if(!off){c(has(TIP),'карточка с подсказкой не показалась ('+vis().join(',')+')');
       await tapB(0,LB);ZC.sim(0.5);c(!has(TIP),'LB не убрал подсказку');
-      await tapB(0,LB);ZC.sim(0.5);c(has(TIP),'LB не вернул подсказку');}
+      c(await recall(0),'LB не вернул подсказку');}
     // меню: пункт в паузе и в Настройках
     F.kids.force=true;ZC.menu('pause');const L=F.menu.items.map(i=>i.label);c(L[1]==='Подсказки','в паузе пункт не вторым: '+L.join('|'));
     const st=F.menu.items.find(i=>i.label==='Настройки');if(st){st.act();const S=F.menu.items.map(i=>i.label),k=S.indexOf('Подсказки');c(k>=0&&k<8,'в настройках пункт не на первом экране: '+k);}
@@ -28,7 +31,8 @@ window.level=async id=>{const W=ZC.W,off=!!(W.hintsOff&&W.hintsOff()),err=[];con
     // выключатель: карточки и босс/урок/табличка скрыты, включили — вернулись
     if(!off){tipAll();ZC.sim(1);}
     H.toggle();ZC.sim(1);c(vis().length===0,'при «нет» видны карточки: '+vis().join(','));c(document.body.classList.contains('fin-nohints'),'нет класса fin-nohints');
-    if(!off){await tapB(0,LB);ZC.sim(0.5);c(has(TIP),'при «выкл» LB не показал подсказку');await tapB(0,LB);ZC.sim(0.5);c(!has(TIP),'при «выкл» LB не убрал подсказку');}
+    if(!off){await tapB(0,LB);ZC.sim(0.5);c(vis().length>0,'при «выкл» LB не показал подсказку');   // показывает нужную сейчас (на боссе — его карточку, не тестовую фразу)
+      await tapB(0,LB);ZC.sim(0.5);c(vis().length===0,'при «выкл» LB не убрал подсказку');}
     H.toggle();ZC.sim(1);c(!document.body.classList.contains('fin-nohints'),'класс fin-nohints остался');
   }catch(e){err.push('исключение '+String(e).slice(0,120));}
   if(H.on()===false)H.toggle();F.kids.force=false;return err.length?id+': '+err.join('; '):null;};
@@ -44,8 +48,8 @@ PADSIM.list.length?'ready':'no pads'
 //@@
 // одиночный режим (любой джойстик убирает карточки героя, которым играешь) и с ИИ напарником (джойстик человека — все карточки)
 (async()=>{BAD.length=0;ZC.setSolo(true);ZC.startFrom(ZC.LV('1-1'));G.manual=true;ZC.tick(20);for(let k=0;k<4;k++){if(G.cine)ZC.skip();ZC.sim(0.5);}ZC.sim(3);tipAll();ZC.sim(1);
-  chk(has(TIP),'соло: подсказка видна');await tapB(1,LB);ZC.sim(0.5);chk(!has(TIP),'соло: LB второго джойстика убрал');await tapB(0,LB);ZC.sim(0.5);chk(has(TIP),'соло: LB первого вернул');
+  chk(has(TIP),'соло: подсказка видна');await tapB(1,LB);ZC.sim(0.5);chk(!has(TIP),'соло: LB второго джойстика убрал');chk(await recall(0),'соло: LB первого вернул');
   ZC.setSolo(false);F.co.set(true);ZC.startFrom(ZC.LV('1-1'));G.manual=true;ZC.tick(20);for(let k=0;k<4;k++){if(G.cine)ZC.skip();ZC.sim(0.5);}ZC.sim(3);tipAll();ZC.sim(1);
-  chk(has(TIP),'с ИИ напарником: подсказка видна');await tapB(0,LB);ZC.sim(0.5);chk(!has(TIP),'с ИИ напарником: LB убрал');await tapB(0,LB);ZC.sim(0.5);chk(has(TIP),'с ИИ напарником: LB вернул');
+  chk(has(TIP),'с ИИ напарником: подсказка видна');await tapB(0,LB);ZC.sim(0.5);chk(!has(TIP),'с ИИ напарником: LB убрал');chk(await recall(0),'с ИИ напарником: LB вернул');
   F.co.set(false);if(BAD.length)throw new Error(BAD.join(' · '));return ['solo/co ok','errs='+_errs.length];})()
 //@@

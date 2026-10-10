@@ -55,10 +55,11 @@ for(const id of['2-1','4-B','5-1']){go(id);const bb=document.getElementById('bos
 // окно бота 1280×720; на 1080p полоса и «весточка» — в px, карточка урока — по vh, расчёт hnLayout тот же
 ['замечания: '+(BAD.join('; ')||'нет'),'errs='+ERR.length+(ERR[0]?' '+ERR[0]:''),BAD.length===0&&ERR.length===0?'ok':'FAIL']
 //@@ shot=bossui_subs.png
-// плашка пропуска и субтитры: короткая и длинная (три строки) реплика
+// плашка пропуска и субтитры: короткая и длинная (три строки) реплика; плашка — в правом нижнем углу, над субтитрами только если задевает их
 go('2-3');const sb=document.getElementById('subs'),sk=document.getElementById('skip');let worst=0;
 for(const t of['<b>Звенышек:</b> Прыгай!','<b>Звенышек:</b> Слушай внимательно, Ёжик: когда Леший поднимает руку — прыгай через скакалку, а когда замахнётся вторая — береги бубенец и держись друга, вместе справитесь, ведь один в поле не воин!']){
   sb.innerHTML=t;sb.style.display='block';sk.style.display='flex';ZC.FIN.hints.layout();const S=R('subs'),K=R('skip');chk(!!S&&!!K,'субтитры или плашка не видны');
-  if(S&&K){const a=area(S,K);worst=Math.max(worst,a);chk(a===0,'плашка пропуска × субтитры: '+a.toFixed(0)+' px²');chk(K.bottom<=S.top,'плашка не над субтитрами');}}
+  if(S&&K){const a=area(S,K);worst=Math.max(worst,a);chk(a===0,'плашка пропуска × субтитры: '+a.toFixed(0)+' px²');
+    const wide=K.left<S.right+6&&S.left<K.right+6;chk(wide?K.bottom<=S.top:K.right>innerWidth-40&&K.bottom>innerHeight*0.8,wide?'плашка задевает субтитры по ширине — над ними':'плашка не мешает субтитрам — остаётся в правом нижнем углу ('+K.right.toFixed(0)+','+K.bottom.toFixed(0)+')');}}
 sb.style.display='none';sk.style.display='none';
 ['skip×subs px²='+worst.toFixed(0),'замечания: '+(BAD.join('; ')||'нет'),'errs='+ERR.length+(ERR[0]?' '+ERR[0]:''),BAD.length===0&&ERR.length===0?'ok':'FAIL']
