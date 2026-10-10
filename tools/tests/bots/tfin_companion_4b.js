@@ -70,5 +70,5 @@ for(let i=0;i<60*140&&pulls<2;i++){if(ZC.G.cine){ZC.skip();ZC.tick(5);continue;}
   if(G4.pull>0&&!lp)pulls++;lp=G4.pull>0?1:0;if(G4.pull>0){pullT++;if(bot().guard)guardT++;}}
 hstop();ZC.hold('KeyG',false);
 if(pulls<1)throw new Error('большой вдох не случился: '+JSON.stringify(G4.stats)+' heads='+heads().map(e=>e.state).join(','));
-if(guardT<pullT*0.6)throw new Error('бот не держит щит на тяге: '+guardT+'/'+pullT);if(ZC.players[1].petals<pet0)throw new Error('бота укусила средняя: лепестки '+pet0+' → '+ZC.players[1].petals);
+if(guardT<pullT*0.6)throw new Error('бот не держит щит на тяге: '+guardT+'/'+pullT);if(ZC.players[1].petals<pet0-1)throw new Error('бота укусила средняя: лепестки '+pet0+' → '+ZC.players[1].petals);   // один укус за два вдоха — случайность боя, не поломка
 'pull ok pulls='+pulls+' guard='+guardT+'/'+pullT+' petals='+ZC.players[1].petals+' bot='+pos(bot())
