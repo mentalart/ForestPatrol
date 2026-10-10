@@ -57,9 +57,11 @@ function auka14Setup(){const K14=W.k14;if(!K14||W.levelId!=='1-4')return;const F
   const domeRim=new THREE.Mesh(new THREE.TorusGeometry(1.5,0.06,6,28),MB(0x6ab0ff,{transparent:true,opacity:0.8}));domeRim.rotation.x=Math.PI/2;domeRim.visible=false;domeRim.castShadow=false;W.group.add(domeRim);
   const ringM=MB(0xffffff,{transparent:true,opacity:0.9});
   const T3=()=>TIMING[genPath()]||TIMING.mid,easy=()=>genPath()==='easy';
-  const live=()=>HEROES.filter(q=>q.active&&!players[q.player].downed&&!q.cling);
+  // в одиночке бьют только того, кем играешь: оставленный держит стену / пень и не отвечает на удары
+  const live=()=>G.solo?[active(G.soloPi)].filter(q=>!players[q.player].downed&&!q.cling):HEROES.filter(q=>q.active&&!players[q.player].downed&&!q.cling);
   const nearest=p=>{let b=null,bd=99;for(const q of live()){const d=hd(q.pos,p);if(d<bd){bd=d;b=q;}}return b;};
-  const foeSay=(t,c)=>floatText(A.e.pos.clone().add(new V3(0,2.4,0)),t,c||'#e8f8a0');
+  // выкрики Ауки — надпись над ним и голос (записи Piper в voice/lines.json, кроме вдоха «Ффф»)
+  const foeSay=(t,c)=>{floatText(A.e.pos.clone().add(new V3(0,2.4,0)),t,c||'#e8f8a0');if(t!=='Ффф-ф-ф…')say('auka',t,1.6);};
   // ---- Аука ----
   function spawnAuka(){const e=makeFoe('auka',CS.x,CS.z,{leash:30});A.e=e;e.noKill=true;e.noMove=true;e.dazeT=0;
     e.guardAll=()=>!(e.dazeT>0)&&e.state!=='broken'&&e.state!=='dying';
@@ -67,7 +69,7 @@ function auka14Setup(){const K14=W.k14;if(!K14||W.levelId!=='1-4')return;const F
     e.onReflect=b=>{if(A.ph!==1||!e.alive||e.state==='hide')return;e.dazeT=easy()?6:5;A.outT=Math.max(A.outT,e.dazeT+1);foeSay('Своё «ау» в ухо!','#9fd0ff');SFX.ok();if(!F.a14rf){F.a14rf=true;for(const p of[0,1])tip(p,'Оглушён! Бей '+K(p,'attack')+'!',3);}};
     e.onFinisher=h=>{if(A.ph===1)toPhase2();else if(A.ph===2)toPhase3();else if(A.ph===3)friendScene();};
     // окно: не больше трёх ударов, потом «Очухался!» (docs/33 п. 2)
-    e.tick=(e,dt)=>{if(A.ph!==1)e.cd=Math.max(e.cd,1);if(e.dazeT>0){if(A.emb0===undefined){A.emb0=e.embers;}if(A.emb0-e.embers>=3&&e.embers>0){e.dazeT=0;e.state='idle';e.t=0;e.cd=1.6;foeSay('Очухался!','#ffffff');if(A.ph===1)later(0.5,()=>{if(A.ph===1&&e.state!=='broken'&&e.state!=='hide')hideAuka(false);});}}else A.emb0=undefined;if(e.state==='broken'&&!e.bset){e.bset=true;e.bdur=Math.max(e.bdur,easy()?10:7);}if(e.state!=='broken')e.bset=false;};
+    e.tick=(e,dt)=>{e.pi=G.solo?G.soloPi:undefined;if(A.ph!==1)e.cd=Math.max(e.cd,1);if(e.dazeT>0){if(A.emb0===undefined){A.emb0=e.embers;}if(A.emb0-e.embers>=3&&e.embers>0){e.dazeT=0;e.state='idle';e.t=0;e.cd=1.6;foeSay('Очухался!','#ffffff');if(A.ph===1)later(0.5,()=>{if(A.ph===1&&e.state!=='broken'&&e.state!=='hide')hideAuka(false);});}}else A.emb0=undefined;if(e.state==='broken'&&!e.bset){e.bset=true;e.bdur=Math.max(e.bdur,easy()?10:7);}if(e.state!=='broken')e.bset=false;};
     e.post=(e,dt,k)=>{const L=e.L,t=G.time;if(!L.cheeks)return;const wind=A.ph===3&&A.windT>0,puff=wind?1+1.1*clamp(1-A.windT/A.windDur,0,1):e.dazeT>0?0.8:1;
       L.cheeks.forEach(c=>{c.scale.setScalar(puff+(wind?Math.sin(t*20)*0.05:0));});L.mouth.scale.set(1.2,wind?0.25:e.state==='wind'||A.leaf&&A.leaf.st==='tele'?1.3:0.5,0.4);
       L.ears.forEach((l,i)=>{l.rotation.x=Math.sin(t*3+i)*0.2;});L.hat.rotation.z=e.dazeT>0?Math.sin(t*9)*0.25:Math.sin(t*1.5)*0.05;
@@ -86,7 +88,7 @@ function auka14Setup(){const K14=W.k14;if(!K14||W.levelId!=='1-4')return;const F
   function answerCall(){if(A.ph!==1||A.e.state!=='hide')return;A.callT=G.time;const h=HL[A.real];h.markT=4;ringFx(new V3(h.x,1.3,h.z),COL.gold,2.4);floatText(new V3(h.x,3.4,h.z),'Ау!','#ffd76a');SFX.bell();
     HL.forEach((q,i)=>{if(i===A.real)return;later(0.9,()=>{if(A.ph!==1)return;floatText(new V3(q.x,3.2,q.z),'ау…','#aab4c0');ringFx(new V3(q.x,1.3,q.z),0x9aa4b0,1.4);});});
     if(!F.a14ans){F.a14ans=true;for(const p of[0,1])tip(p,'Золотом отозвался — там он! Беги к дуплу.',3.2);}}
-  function tickP1(dt){const e=A.e;if(e.state==='hide'){A.tauntT-=dt;if(A.tauntT<=0){A.tauntT=6;HL.forEach((q,i)=>later(i*0.18,()=>{if(A.ph===1&&A.e.state==='hide')floatText(new V3(q.x,3.2,q.z),'Ау!','#c8d8a0');}));tone(520,0.12,'triangle',0.05,620,0);tone(520,0.12,'triangle',0.04,620,0.25);}
+  function tickP1(dt){const e=A.e;if(e.state==='hide'){A.tauntT-=dt;if(A.tauntT<=0){A.tauntT=6;HL.forEach((q,i)=>later(i*0.18,()=>{if(A.ph===1&&A.e.state==='hide')floatText(new V3(q.x,3.2,q.z),'Ау!','#c8d8a0');}));say('auka','Ау!',0.9);}
         HL.forEach((q,i)=>{q.cool=Math.max(0,q.cool-dt);q.markT=Math.max(0,q.markT-dt);q.mark.visible=q.markT>0;if(q.mark.visible){q.mark.rotation.z+=dt*2;q.mark.position.y=3.6+Math.sin(G.time*4)*0.12;}
           for(const h of live()){if(hd(h.pos,new V3(q.mx,0,q.mz))>2.0)continue;if(i===A.real){popAuka();return;}if(q.cool<=0){q.cool=3;burst(new V3(q.mx,1.4,q.mz),0x6a8a3a,10,2);floatText(new V3(q.x,3.0,q.z),'Пусто! ау-ау…','#aab4c0');SFX.miss();}}});
         A.help+=dt;if(A.help>12&&G.time-A.callT>12){A.help=0;for(const p of[0,1])tip(p,'Аукни '+K(p,'call')+' — настоящий отзовётся!',3.4);}
@@ -112,7 +114,7 @@ function auka14Setup(){const K14=W.k14;if(!K14||W.levelId!=='1-4')return;const F
     if(L.t>=out*2+0.1||!e.alive){W.group.remove(L.g);W.group.remove(L.leaf);A.leaf=null;A.leafCd=easy()?6:4.5;}}
   // ---- этап 2: подголоски и сходящиеся стены ----
   function wallsShow(on){walls.forEach(w=>{w.x=w.sd*9.6;w.firs.forEach(f=>{f.m.ax=f.m.bx=w.x;f.m.az=f.m.bz=on?f.z:-300;});});}
-  function summon(n){const P=[[-2.6,-201],[2.6,-201],[0,-208.5],[-2.4,-208],[2.4,-208]];for(let i=0;i<n;i++){const p=P[(A.wave+i)%P.length];const e=makeFoe('leshonok',p[0],p[1],{leash:11,signals:i%3===2?['yellow','red']:i%2?['red']:['yellow']});A.lsh.push(e);}
+  function summon(n){const P=[[-2.6,-201],[2.6,-201],[0,-208.5],[-2.4,-208],[2.4,-208]];for(let i=0;i<n;i++){const p=P[(A.wave+i)%P.length];const e=makeFoe('leshonok',p[0],p[1],{leash:11,signals:i%3===2?['yellow','red']:i%2?['red']:['yellow']});e.tick=q=>{q.pi=G.solo?G.soloPi:undefined;};A.lsh.push(e);}
     A.wave++;foeSay('Подголоски, ко мне!');SFX.horn();}
   function tickP2(dt){const e=A.e;A.lsh=A.lsh.filter(q=>q.alive);
     // стены: стоят под взглядом; не глядят — идут к середине
@@ -145,10 +147,10 @@ function auka14Setup(){const K14=W.k14;if(!K14||W.levelId!=='1-4')return;const F
     if(A.stompN<2){A.stompN++;A.stompPose=easy()?1.2:0.9;A.cyc=A.stompPose+2.4;foeSay('Топ-топ!');SFX.yellow();
       if(!F.a14st){F.a14st=true;for(const p of[0,1])tip(p,'Белое кольцо по земле — прыгай '+K(p,'jump')+'!',3.6);}return;}
     A.stompN=0;A.windDur=easy()?3.6:genPath()==='hard'?2.6:3.1;A.windT=A.windDur;ES.forEach(s=>{s.call=-9;});foeSay('Ффф-ф-ф…','#9fd0ff');tone(300,A.windDur,'sine',0.04,600,0);
-    if(!F.a14wd){F.a14wd=true;for(const p of[0,1])tip(p,'Встаньте на два пня и аукните '+K(p,'call')+' разом! Или — за щит Потапа.',4.6);}}
+    if(!F.a14wd){F.a14wd=true;for(const p of[0,1])tip(p,G.solo?'Оставь героя на пне '+K(p,'swap')+', с другого пня аукни '+K(p,'call')+'!':'Встаньте на два пня и аукните '+K(p,'call')+' разом! Или — за щит Потапа.',4.6);}}
   function shielded(h){const P=T.potap;if(!P.active||players[0].downed||!P.guard)return false;const dx=P.pos.x-CS.x,dz=P.pos.z-CS.z,d=Math.hypot(dx,dz)||1,fx=Math.sin(P.face),fz=Math.cos(P.face);
     if((-dx*fx-dz*fz)/d<0.3)return false;if(h===P)return true;const hx=h.pos.x-P.pos.x,hz=h.pos.z-P.pos.z,hl=Math.hypot(hx,hz);return hl<2.2&&(hx*dx+hz*dz)/(hl*d||1)>0.2;}
-  const keeperOn=s=>HEROES.some(q=>!q.active&&!q.following&&hd(q.pos,s)<1.6);
+  const keeperOn=s=>HEROES.some(q=>(G.solo?q!==active(G.soloPi):!q.active)&&hd(q.pos,s)<1.6);   // оставленный на пне (зов его с места не снимает — см. doCall ниже)
   function echoCall(h){if(A.ph!==3||!(A.windT>0))return;const i=ES.findIndex(s=>hd(h.pos,s)<1.6);if(i<0)return;const s=ES[i],o=ES[1-i];s.call=G.time;ringFx(new V3(s.x,0.6,s.z),COL.gold,1.6);
     const both=G.time-o.call<0.8||keeperOn(o);if(!both){floatText(new V3(s.x,2.4,s.z),'Ау! …а второй?','#ffd76a');return;}
     if(keeperOn(o)){o.call=G.time;floatText(new V3(o.x,2.4,o.z),'Ау!','#ffd76a');}
@@ -163,25 +165,25 @@ function auka14Setup(){const K14=W.k14;if(!K14||W.levelId!=='1-4')return;const F
   function gather(at){for(const q of HEROES){if(q.cling)continue;const a=G.solo?active(G.soloPi):active(q.player);if(q===a)continue;if(hd(q.pos,a.pos)>8){placeOnGround(q,clamp(a.pos.x+(q.player?1.4:-1.4),-9,9),Math.min(a.pos.z+1.2,z0-1),0);q.following=true;}}}
   function introScene(){A.ph=0.5;AR.started=true;spawnAuka();hideAuka(true);const h=HL[A.real];
     play({dur:8.6,fov:46,shots:[shot(0,[0,3.4,z0-0.5],[0,1.4,mid],[0,2.6,mid+6],[0,1.4,mid],3.6),shot(3.8,[h.mx*0.4,2.0,h.mz+3.4],[h.x,1.3,h.z])],
-      says:[[0.3,3.2,null,'<i>Поляна, а вокруг — дуплистые пни. Из каждого — «Ау!»</i>',true],[4.0,3.6,'auka','Ау! Кто тут? Поиграем в прятки — найдёте?']],
+      says:[[0.3,3.2,null,'<i>Поляна, а вокруг — дуплистые пни. Из каждого — «Ау!»</i>',true],[3.9,4.1,'auka','Ау! Кто тут? Поиграем в прятки — найдёте?']],
       events:[{t:0,fn:()=>gather()},{t:1.2,fn:()=>{HL.forEach((q,i)=>later(i*0.25,()=>floatText(new V3(q.x,3.2,q.z),'Ау!','#c8d8a0')));}},
         {t:3.9,fn:()=>{const e=A.e;placeAuka(h.mx,h.mz,0);e.g.visible=true;e.state='idle';anim(1.2,k=>{e.g.position.y=-1.2+Math.sin(k*Math.PI)*1.2;});}},{t:7.6,fn:()=>{A.e.g.visible=false;A.e.state='hide';}}],
       end:()=>{A.ph=1;hideAuka(true);banner('Аука!','#c8e070',2.6,'прячется в дуплах — аукни, и настоящее отзовётся');A.help=0;setObj();}});}
   function toPhase2(){if(A.ph!==1)return;A.ph=1.5;const e=A.e;if(A.leaf){W.group.remove(A.leaf.g);W.group.remove(A.leaf.leaf);A.leaf=null;}HL.forEach(q=>{q.mark.visible=false;});
-    play({dur:6.2,fov:46,shots:[shot(0,[CS.x+3.6,2.6,CS.z+5],[CS.x,1.2,CS.z])],says:[[0.3,2.6,'auka','Ой-ой, нашли да ещё и стукнули!'],[3.1,2.8,'auka','Ах так? Подголоски, подпевай!']],
+    play({dur:6.2,fov:46,shots:[shot(0,[CS.x+3.6,2.6,CS.z+5],[CS.x,1.2,CS.z])],says:[[0.3,2.8,'auka','Ой-ой, нашли да ещё и стукнули!'],[3.2,2.8,'auka','Ах так? Подголоски, подпевай!']],
       events:[{t:0,fn:()=>{e.state='idle';e.g.visible=true;e.dazeT=0;const p0=e.pos.clone();anim(1.6,k=>{e.pos.set(lerp(p0.x,CS.x,k),0.55*k+Math.sin(k*Math.PI)*1.6,lerp(p0.z,CS.z,k));});}},
         {t:1.7,fn:()=>{placeAuka(CS.x,CS.z,0.55);SFX.thud();}},{t:3.2,fn:()=>{wallsShow(true);}}],
       end:()=>{A.ph=2;placeAuka(CS.x,CS.z,0.55);e.embers=6;e.maxEmb=6;e.state='idle';e.dazeT=0;wallsShow(true);A.wave=0;A.p2open=false;summon(3);
         banner('Подголоски!','#c8e070',2.6,'стены ёлок стоят, пока глядите — держите стену, распутывайте лешачат');setObj();}});}
   function toPhase3(){if(A.ph!==2)return;A.ph=2.5;const e=A.e;A.lsh.forEach(q=>{if(q.alive)unravel(q);});A.lsh=[];
-    play({dur:6.4,fov:46,shots:[shot(0,[CS.x-3.4,2.0,CS.z+4.6],[CS.x,1.4,CS.z])],says:[[0.3,2.8,'auka','Ну, держитесь! Как гаркну — до Лукоморья долетите!'],[3.4,2.6,'zven','На два пня встаньте — и аукните разом!']],
-      events:[{t:0,fn:()=>{anim(1.6,k=>{walls.forEach(w=>{w.x=w.sd*(Math.abs(w.x)+k*6);w.firs.forEach(f=>{f.m.ax=f.m.bx=w.x;});});});}},{t:1.8,fn:()=>{wallsShow(false);}},{t:3.4,fn:()=>{ES.forEach(s=>{s.ring.visible=true;});}}],
+    play({dur:8.4,fov:46,shots:[shot(0,[CS.x-3.4,2.0,CS.z+4.6],[CS.x,1.4,CS.z])],says:[[0.3,5.0,'auka','Ну, держитесь! Как гаркну — до Лукоморья долетите!'],[5.5,2.6,'zven','На два пня встаньте — и аукните разом!']],
+      events:[{t:0,fn:()=>{anim(1.6,k=>{walls.forEach(w=>{w.x=w.sd*(Math.abs(w.x)+k*6);w.firs.forEach(f=>{f.m.ax=f.m.bx=w.x;});});});}},{t:1.8,fn:()=>{wallsShow(false);}},{t:5.5,fn:()=>{ES.forEach(s=>{s.ring.visible=true;});}}],
       end:()=>{A.ph=3;wallsShow(false);e.embers=6;e.maxEmb=6;e.state='idle';e.dazeT=0;A.cyc=1.5;A.stompN=0;A.windT=0;ES.forEach(s=>{s.ring.visible=false;});
         banner('Большое «АУ!»','#9fd0ff',2.6,'белое кольцо — прыгай; надул щёки — аукните с двух пней разом или за щит Потапа');setObj();}});}
   function friendScene(){if(A.ph!==3)return;A.ph=3.5;const e=A.e,at=new V3(CS.x,0,CS.z);[A.ring,A.shout].forEach(q=>{if(q)W.group.remove(q.m);});A.ring=A.shout=null;
-    play({dur:15,fov:46,shots:[shot(0,[at.x+3.2,2.0,at.z+4.4],[at.x,1.0,at.z]),shot(5.2,[at.x-4,2.6,at.z+5.2],[at.x,1.2,at.z]),shot(10.4,[0,3.4,-209],[0,1.6,-216])],
-      says:[[0.3,3.4,'auka','<i>(всхлипывает)</i> Никто со мной не аукался… Все только блудили да боялись.'],[4.0,1.8,'pelageya','Ау, Аука!'],[5.6,1.8,'potap','Ау-у!'],
-        [7.2,3.0,'auka','Ой… ответили! Хи-хи! Ау-ау!'],[10.6,3.2,'auka','Пойдёмте, я выход покажу. Кто аукнет — того не брошу!']],
+    play({dur:15.4,fov:46,shots:[shot(0,[at.x+3.2,2.0,at.z+4.4],[at.x,1.0,at.z]),shot(5.2,[at.x-4,2.6,at.z+5.2],[at.x,1.2,at.z]),shot(10.4,[0,3.4,-209],[0,1.6,-216])],
+      says:[[0.3,3.6,'auka','<i>(всхлипывает)</i> Никто со мной не аукался… Все только блудили да боялись.'],[4.1,1.8,'pelageya','Ау, Аука!'],[5.6,1.8,'potap','Ау-у!'],
+        [7.2,3.0,'auka','Ой… ответили! Хи-хи! Ау-ау!'],[10.6,4.3,'auka','Пойдёмте, я выход покажу. Кто аукнет — того не брошу!']],
       events:[{t:0,fn:()=>{e.g.visible=true;e.state='idle';e.dazeT=0;placeAuka(at.x,at.z,0.55);const pl=[[-2.2,1.8],[2.2,1.8],[-1.2,3.0],[1.2,3.0]];HEROES.forEach((q,i)=>{placeOnGround(q,at.x+pl[i][0],at.z+pl[i][1],0);q.face=Math.atan2(at.x-q.pos.x,at.z-q.pos.z);});
           e.L.body.rotation.x=0.3;}},
         {t:4.0,fn:()=>{for(const q of HEROES)floatText(q.pos.clone().add(new V3(0,q.d.height+0.7,0)),'Ау!',PCSS[q.player]);SFX.call();}},
@@ -194,7 +196,8 @@ function auka14Setup(){const K14=W.k14;if(!K14||W.levelId!=='1-4')return;const F
   // ---- задачи и рамка ----
   function setObj(){for(const pi of[0,1]){const L=W.objectives[pi];const o=L.find(q=>q._k14fight)||L.find(q=>typeof q.text==='function'&&/Лешачата!/.test(q.text()));if(!o)continue;o._k14fight=true;
     o.text=()=>A.ph<1.5?'Аука прячется в дуплах. Аукни '+K(pi,'call')+' — настоящее дупло откликнется золотом.<br>Синий «ау-шар» отбей щитом '+K(pi,'guard')+' в последний миг, с красной дорожки — сойди!'
-      :A.ph<2.5?'Подголоски! Стены ёлок стоят, пока на них глядишь.<br>Один держит стену взглядом, другой распутывает лешачат.'
+      :A.ph<2.5?(G.solo?'Подголоски! Стены ёлок стоят, пока на них глядишь.<br>Оставь героя лицом к стене '+K(pi,'swap')+' — он её держит, а ты распутывай лешачат.':'Подголоски! Стены ёлок стоят, пока на них глядишь.<br>Один держит стену взглядом, другой распутывает лешачат.')
+      :G.solo?'Белое кольцо — прыгай '+K(pi,'jump')+'. Надул щёки — оставь героя на одном пне '+K(pi,'swap')+',<br>с другого пня аукни '+K(pi,'call')+' — оставленный аукнет вместе с тобой!'
       :'Белое кольцо — прыгай '+K(pi,'jump')+'. Надул щёки — встаньте на два пня и аукните '+K(pi,'call')+' разом!<br>Не успели — прячьтесь за Широкий щит Потапа.';
     o.targets=()=>A.ph===1?(A.e&&A.e.state!=='hide'?[A.e.g]:HL.filter(q=>q.markT>0).map(q=>q.g)):A.ph===2?A.lsh.filter(q=>q.alive).map(q=>q.g):A.ph===3?(A.windT>0?ES.map(s=>s.g):A.e?[A.e.g]:[]):[];}}
   const bb=$('bossbar');let bbOn=false;
@@ -205,12 +208,14 @@ function auka14Setup(){const K14=W.k14;if(!K14||W.levelId!=='1-4')return;const F
   W.updates.push(dt=>{bar();
     if(A.ph===0&&F.krugDone&&!G.cine&&[0,1].some(pi=>active(pi).pos.z<-194))introScene();
     if(A.ph===1)tickP1(dt);else if(A.ph===2)tickP2(dt);else if(A.ph===3)tickP3(dt);
-    if(A.friend){const f=A.friend;f.t+=dt;f.g.rotation.y=Math.sin(G.time*1.2)*0.5;f.L.arms[1].rotation.x=-2+Math.sin(G.time*6)*0.4;if(f.t>4){f.t=0;floatText(f.g.position.clone().add(new V3(0,2.2,0)),'Ау! Сюда!','#c8e070');}}});
+    if(A.friend){const f=A.friend;f.t+=dt;f.g.rotation.y=Math.sin(G.time*1.2)*0.5;f.L.arms[1].rotation.x=-2+Math.sin(G.time*6)*0.4;if(f.t>7){f.t=0;floatText(f.g.position.clone().add(new V3(0,2.2,0)),'Ау! Сюда!','#c8e070');if(!F.out)say('auka','Ау! Сюда!',1.2);}}});
   // соло: оставленный на пне-эхо — «держит» свой пень (аукнет сам); подсказка над ним
   W.tipZones.push({cond:(pi,h)=>A.ph===3&&A.windT>0&&ES.some(s=>hd(h.pos,s)<1.6),text:pi=>'Аукни '+K(pi,'call')+' — вместе со вторым пнём!'});
   A.dbg=()=>({ph:A.ph,e:A.e,HL,ES,walls,lsh:A.lsh,real:A.real,windT:A.windT,ring:A.ring,shout:A.shout,leaf:A.leaf});
   K14.auka=A;}
 {const _b14=build14;build14=function(){_b14.apply(this,arguments);try{auka14Setup();}catch(err){console.error('auka14',err);}};}
 // на поляне-петле и у Ауки кнопка зова — «Ау!»: над героем так и пишется (вместо «Ко мне!»)
+// и зов не снимает с места героев, оставленных на пне-эхо (в одиночке «Все ко мне!» звал бы и их — некому было бы аукнуть вторым)
 {const _dc=doCall;doCall=function(pi){const h=active(pi);if(!(W&&W.levelId==='1-4'&&W.k14&&h&&h.pos.z<-157))return _dc.apply(this,arguments);
-  const ft=floatText;floatText=function(p,t,c){return ft(p,t==='Ко мне!'||t==='Все ко мне, ко мне!'?'Ау!':t,c);};try{return _dc.apply(this,arguments);}finally{floatText=ft;}};}
+  const K14=W.k14,A=K14.auka,stumps=[K14.KG.stump].concat(A?A.dbg().ES:[]),keep=HEROES.filter(q=>(G.solo?q!==h:!q.active)&&!q.following&&stumps.some(s=>hd(q.pos,s)<1.6));
+  const ft=floatText;floatText=function(p,t,c){return ft(p,t==='Ко мне!'||t==='Все ко мне, ко мне!'?'Ау!':t,c);};try{return _dc.apply(this,arguments);}finally{floatText=ft;keep.forEach(q=>{q.following=false;});}};}
