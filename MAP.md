@@ -77,7 +77,7 @@
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_79t_hintteach, late_96_prolog_scooter, late_96b_prolog_night | 8 | tfin_cine tfin_companion_p tfin_fadesplit tfin_kids1 tfin_prolog_night tfin_scooter tfin_… |
 | `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 16 | tfin_art tfin_audiolevel tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kid… |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 34 | t11 tfin_art tfin_botlevel tfin_cam tfin_companion tfin_companion_11 tfin_dash tfin_dev t… |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 35 | t11 tfin_art tfin_botlevel tfin_cam tfin_companion tfin_companion_11 tfin_dash tfin_dev t… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1, late_76_kids_fight, late_79f_fog_hint12 | 3 | tfin_bossfxcap tfin_companion_12 tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 3 | tfin_companion_13 tfin_kids1 tfin_kids2 |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14, late_99zg_auka14 | 6 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14long tfin_kidnap14 tfin_kids2 |
@@ -130,11 +130,11 @@
 | `engine/09_hud_cine.js` | 112 | HUD / UI · ОБНОВЛЕНИЕ ГЕРОЕВ (визуал) · РОЛИКИ В ДВИЖКЕ (кадры, реплики, события; пропуск — оба дер… |
 | `levels/p_prologue.js` | 317 | УРОВЕНЬ: ПРОЛОГ «ЗВЕНЫШКО» |
 | `levels/w1_common.js` | 74 | ЖИТЕЛИ МИРА 1 И РЕКВИЗИТ (примитивы) |
-| `levels/1-1.js` | 185 | МИР 1 · ДРЕМУЧИЙ ЛЕС · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ» |
+| `levels/1-1.js` | 223 | МИР 1 · ДРЕМУЧИЙ ЛЕС · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ» |
 | `levels/1-2.js` | 517 | 1-2 «КИКИМОРИНО БОЛОТО» |
 | `levels/1-3.js` | 527 | 1-3 «КОЛОБОК» — гусельный уровень |
 | `levels/1-4.js` | 347 | 1-4 «ЛЕШИЙ ВОДИТ» |
-| `levels/1-5.js` | 491 | 1-5 «КИКИМОРИНА ПРЯЛКА» |
+| `levels/1-5.js` | 492 | 1-5 «КИКИМОРИНА ПРЯЛКА» |
 | `levels/1-B.js` | 147 | 1-Б «ЛЕШИЙ-ПУТАНИК» — босс мира 1 |
 | `levels/w2_common.js` | 217 | МИР 2 · ПОДВОДНЫЙ КИТЕЖ: гусли Садко, вода участков, всплыв… |
 | `levels/2-1.js` | 210 | МИР 2 · ПОДВОДНЫЙ КИТЕЖ · 2-1 «ГУСЛИ САДКО» |
@@ -454,5 +454,5 @@
 | `screens/` | 26 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 262 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 263 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

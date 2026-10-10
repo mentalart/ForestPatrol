@@ -77,7 +77,7 @@ function updateShared(dt){shakeUpd(shared,dt);
 function fightNear(dt){const a=active(0),b=active(1);let f=false;if(!W.noFightCam)for(const e of W.enemies){if(!e.alive||e.state==='hide'||e.noCam)continue;if(hd(e.pos,a.pos)<14||hd(e.pos,b.pos)<14){f=true;break;}}
   G.fightT=f?1.8:Math.max(0,(G.fightT||0)-dt);return G.fightT>0;}
 function decideSplit(dt){const fight=fightNear(dt);
-  if(G.cine&&G.cine.cam)G.splitTarget=0;else if(G.solo||activeCamZone()||W.camFn)G.splitTarget=0;else if(W.noSplit)G.splitTarget=0;else if(W.forceSplit)G.splitTarget=1;else if(fight)G.splitTarget=0;
+  if(G.cine&&G.cine.cam)G.splitTarget=0;else if(G.solo||activeCamZone()||W.camFn)G.splitTarget=0;else if(W.noSplit||(W.noSplitFn&&W.noSplitFn()))G.splitTarget=0;else if(W.forceSplit)G.splitTarget=1;else if(fight)G.splitTarget=0;
   else{const a=active(0),b=active(1),d=hd(a.pos,b.pos);if(G.splitTarget<0.5){if(d>8)G.splitTarget=1;}else if(d<6&&!occluded(a,b))G.splitTarget=0;}
   const rate=dt/0.5;G.split=G.split<G.splitTarget?Math.min(G.splitTarget,G.split+rate):Math.max(G.splitTarget,G.split-rate);}
 function snapCams(){for(const i of[0,1]){const h=active(i),r=rigs[i];r.look.set(h.pos.x,h.pos.y+1.1,h.pos.z);r.pos.copy(r.look).addScaledVector(camBack(),7.2);r.pos.y+=4;r.la.set(0,0,0);}
