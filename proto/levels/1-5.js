@@ -343,6 +343,9 @@ function build15(){
         {t:1.2,fn:()=>{const e=spawnBoss();SFX.keys();shakeAll(0.04,0.4);if(W.heap)anim(1.2,k=>{W.heap.scale.set(1-k,0.5*(1-k)+0.01,1-k);});}}],
       end:()=>{B.phase=1;B.atkCd=3;if(W.heap)W.heap.visible=false;banner('Веретенник!','#e8d8b0',2.4,'кокон не пробить — поймайте в паутинку');
         for(const pi of[0,1])tip(pi,'Встань в своё кольцо — клубок '+K(pi,'item')+' в колышек напротив!',4.4);}});}
+  // следующий этап (как у боссов, Ctrl+Alt+B; им же пользуется бот-аудитор tfin_bossaudit): этап 1 → этап 2 → победа
+  W.bossNext=()=>{if(G.cine||F.bossWon||!B.e||B.phase<1||B.phase===1.5)return false;hideTele();for(const d of B.decoys){if(d.alive)W.group.remove(d.g);d.alive=false;}B.decoys.length=0;
+    B.e.g.visible=true;if(B.e.state==='hide'){B.e.state='idle';B.e.hideUntil=null;}if(B.phase===1)toPhase2();else defeat();return true;};
   const bb=$('bossbar');let bbOn=false;
   function bossBar(){const ph=B.phase;if(!bb)return;
     if(!G.cine&&ph>=1&&ph<3){const st=ph<2?1:2,h='<b>Веретенник</b> · этап '+st+' / 2 · '+(st===1?'поймать в паутинку':'найти настоящее');if(bb.innerHTML!==h)bb.innerHTML=h;bb.style.display='block';bbOn=true;}
@@ -424,7 +427,8 @@ function build15(){
     // паутинка в овине подбрасывает прямо на следующий этаж; на повити — прямо вверх, чтобы ударить сверху
     if(!inBarn(h))return;const i=h.pos.y<2?0:h.pos.y<6?1:-1;if(i<0)return;const t=LAND[i],vy=h.vel.y,dy=t.y-h.pos.y,disc=vy*vy-2*GRAV*dy;if(disc<=0)return;const ft=(vy+Math.sqrt(disc))/GRAV;
     const tx=t.x+rand(-0.4,0.4),tz=t.z+rand(-0.4,0.4);h.vel.x=(tx-h.pos.x)/ft;h.vel.z=(tz-h.pos.z)/ft;h.aimT=ft+0.05;h.following=false;};
-  W.onString=t=>{const ss=W.threads.filter(q=>q.string&&!q.sag);if(ss.length===1&&!F.crossTold){F.crossTold=true;tip(1-t.owner,'Струна друга уж висит. Брось свою поперёк —<br>Где скрестятся — паутинка-батут, скок!',3);}};
+  W.onString=t=>{if(t.sz<-52.4)return;const ss=W.threads.filter(q=>q.string&&!q.sag);   // на повити — свои кольца-подсказки
+    if(ss.length===1&&!F.crossTold){F.crossTold=true;tip(1-t.owner,'Струна друга уж висит. Брось свою поперёк —<br>Где скрестятся — паутинка-батут, скок!',3);}};
   {const prev=W.onOwl;W.onOwl=h=>{if(prev)prev(h);if(B.mode==='decoy'){const r=B.decoys.find(q=>q.real&&q.alive);if(r)floatText(r.g.position.clone().add(new V3(0,4.4,0)),'Вот оно — настоящее!','#ffd76a');}};}
   function finale(at,e){const T=HERO,pr=T.proshka;if(players[0].act!==0)doSwap(0);const kx=clamp(at.x+2.6,-9,9),kz=clamp(at.z+2.2,-72,-56);
     play({dur:20,fov:48,shots:[shot(0,[at.x+3,10.4,at.z+7],[at.x,8,at.z]),shot(3.6,[at.x-3,9.2,at.z+5],[at.x,7.4,at.z]),shot(8.2,[kx-2.6,9.4,kz+3.8],[kx,8.4,kz]),shot(13.6,[kx-1.8,9.2,kz+3.2],[kx,8.6,kz])],
