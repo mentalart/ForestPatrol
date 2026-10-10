@@ -157,7 +157,8 @@ function build12(){
   for(let k=0;k<4;k++){const zs=k?ISL[k]-3:ISL[0],x=TRUE[k],fk={k,zs,x,open:false,lane:[],wisps:[],dry:null};forks.push(fk);
     const pts=[[x,zs-3.05],[x,zs-7.35],[x,zs-11.65]];
     pts.forEach(([px,pz],i)=>{const dry=DRY[k]&&i===1,g=new THREE.Group();g.position.set(px,-1.6,pz);W.group.add(g);
-      part(g,new THREE.CylinderGeometry(1.1,1.25,1.2,12),M(dry?0x6a5a3a:0x5d6b34),0,-0.6,0);for(let j=0;j<3;j++)part(g,new THREE.ConeGeometry(0.1,0.45,4),M(dry?0x8a7a4a:0x7a8a3a),rand(-0.6,0.6),0.15,rand(-0.6,0.6));
+      part(g,new THREE.CylinderGeometry(1.1,1.25,1.2,12),M(dry?0x5a4a30:0x5d6b34),0,-0.6,0);for(let j=0;j<3;j++)part(g,new THREE.ConeGeometry(0.1,0.45,4),M(dry?0x8a7a4a:0x7a8a3a),rand(-0.6,0.6),0.15,rand(-0.6,0.6));
+      if(dry){fk.dead=[];for(let j=0;j<6;j++){const a=j/6*Math.PI*2+0.4,c=part(g,new THREE.ConeGeometry(0.07,0.8,4),M(0x6a4a24),Math.sin(a)*0.8,0.3,Math.cos(a)*0.8);c.rotation.set(Math.cos(a)*0.55,0,-Math.sin(a)*0.55);c.userData.dead=true;fk.dead.push(c);}}   // сухие стебли торчат в стороны: кочка мёртвая
       dyn(g);const col={x:px,z:pz,r:1.25,miny:-3,maxy:-1.6,on:false};W.cyls.push(col);fk.lane.push({g,col,dry,top:0.3,cur:-1.6});if(dry)fk.dry=fk.lane[1];});
     for(const wx of[-6,0,6]){const g=new THREE.Group();g.position.set(wx,1.9,zs-7.35);W.group.add(g);const core=part(g,new THREE.SphereGeometry(0.2,10,8),wispMat(),0,0,0);
       const halo=part(g,new THREE.SphereGeometry(0.42,10,8),MB(0x9fe8ff,{transparent:true,opacity:0.22,depthWrite:false}),0,0,0);core.castShadow=halo.castShadow=false;dyn(g);
@@ -168,8 +169,12 @@ function build12(){
         else{w.gone=true;SFX.splash();tone(880,0.07,'square',0.08,1200);tone(1100,0.07,'square',0.08,1500,0.09);tone(990,0.08,'square',0.08,1300,0.18);
           burst(g.position.clone(),0x7ad06a,14,3);burst(new V3(wx,-0.3,zs-7.35),0x4a6a3a,10,2.5);floatText(g.position.clone().add(new V3(0,0.7,0)),'Хи-хи! Обманули!','#a8e090');g.visible=false;
           if(!F.wispTold){F.wispTold=true;later(0.5,()=>say('kiki','Хи-хи-хи! Мой огонёчек — прямо в трясинку манит!',2.6));}}}});}
-    if(fk.dry){const d=fk.dry;W.waterTargets.push({pos:new V3(d.col.x,0,d.col.z),pri:1.6,active:()=>fk.open&&d.dry,onWater:()=>{d.dry=false;SFX.grow();d.top=0.3;
-      d.g.children.forEach(c=>{if(c.material)c.material=M(c.geometry.type==='ConeGeometry'?0x7a8a3a:0x5d6b34);});burst(new V3(d.col.x,0.4,d.col.z),0x9fe6ff,14,4);floatText(new V3(d.col.x,1.4,d.col.z),'Кочка ожила!','#9fe6ff');}});}}
+    if(fk.dry){const d=fk.dry;{const dp=new THREE.Group();dp.position.set(d.col.x,1.5,d.col.z);W.group.add(dp);fk.drop=dp;   // голубая капля над мёртвой кочкой: «сюда — живая вода»
+      const dm=MB(0x9fe6ff);part(dp,new THREE.SphereGeometry(0.17,10,8),dm,0,0,0).castShadow=false;part(dp,new THREE.ConeGeometry(0.15,0.36,10),dm,0,0.26,0).castShadow=false;
+      part(dp,new THREE.SphereGeometry(0.4,10,8),MB(0x9fe6ff,{transparent:true,opacity:0.2,depthWrite:false}),0,0.06,0).castShadow=false;dp.scale.setScalar(1.5);dyn(dp);dp.visible=false;
+      W.updates.push(dt=>{dp.visible=fk.open&&d.dry;if(dp.visible){dp.position.y=1.5+Math.sin(G.time*3)*0.14;dp.rotation.y+=dt*2.2;}});}
+    W.waterTargets.push({pos:new V3(d.col.x,0,d.col.z),pri:1.6,active:()=>fk.open&&d.dry,onWater:()=>{d.dry=false;SFX.grow();d.top=0.3;
+      d.g.children.forEach(c=>{if(c.userData.dead){c.visible=false;return;}if(c.material)c.material=M(c.geometry.type==='ConeGeometry'?0x7a8a3a:0x5d6b34);});burst(new V3(d.col.x,0.4,d.col.z),0x9fe6ff,14,4);floatText(new V3(d.col.x,1.4,d.col.z),'Кочка ожила!','#9fe6ff');}});}}
   const fogMist=[];for(let i=0;i<26;i++){const m=new THREE.Mesh(new THREE.CircleGeometry(rand(1.8,3.2),14),MB(0xdfe8dc,{transparent:true,opacity:0.16,depthWrite:false}));
     m.rotation.x=-Math.PI/2;m.position.set(rand(-9.5,9.5),rand(0.2,1.2),rand(FOGZ[1]+1,FOGZ[0]-1));m.userData.ph=rand(0,6.28);m.castShadow=false;W.group.add(m);fogMist.push(m);}
   W.updates.push(dt=>{for(const m of fogMist){m.userData.ph+=dt*0.35;m.position.x+=Math.sin(m.userData.ph)*dt*0.3;m.material.opacity=0.12+0.07*Math.sin(m.userData.ph*1.6);}
@@ -353,9 +358,12 @@ function build12(){
   // новые участки: рогатка по огонькам и стреле, ковшик на засохшую кочку и завядшую кувшинку, Потап и колода
   const wispNear=h=>forks.some(fk=>!fk.open&&(fk.k===0||forks[fk.k-1].open)&&h.pos.z<fk.zs+3.6&&h.pos.z>fk.zs-0.6);
   const dryNear=h=>forks.some(fk=>fk.open&&fk.dry&&fk.dry.dry&&hd(h.pos,fk.dry.col)<5.5);
+  // зона перед засохшей кочкой: островок, с которого начинается тропа, и сама тропа до кочки — здесь уже пора звать Йошу (до кочки с острова 7,4 м — не допрыгнуть, не долить)
+  const dryZone=h=>forks.some(fk=>fk.open&&fk.dry&&fk.dry.dry&&h.grounded&&h.pos.z<fk.zs+3.4&&h.pos.z>fk.dry.col.z-2&&Math.abs(h.pos.x-fk.dry.col.x)<7.5);
   const arrowNear=h=>!FG.drop&&h.pos.z<-235&&h.pos.z>-241,lilyNear=h=>FG.sing&&!FG.lily&&hd(h.pos,PADS[6].col)<5.8,logNear=h=>RC.won&&RC.lift!=='done'&&RC.lift!=='busy'&&hd(h.pos,logPt)<3.4;
   prompt(0,'skill',()=>headOf(T.proshka),()=>T.proshka.active&&wispNear(T.proshka),'по огоньку!');prompt(0,'swap',()=>headOf(T.potap),()=>T.potap.active&&wispNear(T.potap));
-  prompt(1,'skill',()=>headOf(T.yosha),()=>T.yosha.active&&dryNear(T.yosha),'полей!');prompt(1,'swap',()=>headOf(T.pelageya),()=>T.pelageya.active&&dryNear(T.pelageya));
+  prompt(1,'skill',()=>headOf(T.yosha),()=>T.yosha.active&&dryNear(T.yosha),'полей!');prompt(1,'swap',()=>headOf(T.pelageya),()=>T.pelageya.active&&(dryNear(T.pelageya)||dryZone(T.pelageya)),'Йоша польёт');
+  prompt(1,'jump',()=>headOf(T.yosha),()=>T.yosha.active&&dryZone(T.yosha)&&!dryNear(T.yosha),'на первую кочку!');
   prompt(0,'skill',()=>headOf(T.proshka),()=>T.proshka.active&&arrowNear(T.proshka),'сбей стрелу!');prompt(0,'swap',()=>headOf(T.potap),()=>T.potap.active&&arrowNear(T.potap));
   prompt(1,'skill',()=>headOf(T.yosha),()=>T.yosha.active&&lilyNear(T.yosha),'полей!');prompt(1,'swap',()=>headOf(T.pelageya),()=>T.pelageya.active&&lilyNear(T.pelageya));
   prompt(0,'skill',()=>headOf(T.potap),()=>T.potap.active&&logNear(T.potap),'подними!');prompt(0,'swap',()=>headOf(T.proshka),()=>T.proshka.active&&RC.won&&RC.lift!=='done'&&T.proshka.pos.z<-312);
