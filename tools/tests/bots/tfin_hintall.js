@@ -19,8 +19,8 @@ window.has=re=>vis().some(id=>re.test((document.getElementById(id).textContent||
 window.TIP=/Проверка подсказки/;
 window.tipAll=()=>{const sp=G.solo?G.soloPi:0;P[sp].tipHTML='Проверка подсказки: сделай что-нибудь важное прямо сейчас.';P[sp].tipT=60;};
 window.load=id=>{ZC.setSolo(false);F.co.set(false);ZC.startFrom(ZC.LV(id));G.manual=true;ZC.tick(20);for(let k=0;k<4;k++){if(G.cine)ZC.skip();ZC.sim(0.5);}ZC.sim(3);};
-window.level=async id=>{const W=ZC.W,off=!!(W.hintsOff&&W.hintsOff()),err=[];const c=(ok,m)=>{if(!ok)err.push(m);};
-  try{load(id);tipAll();ZC.sim(1);
+window.level=async id=>{let off=false;const err=[];const c=(ok,m)=>{if(!ok)err.push(m);};
+  try{load(id);const W=ZC.W;off=!!(W.hintsOff&&W.hintsOff());tipAll();ZC.sim(1);   // «выкл» уровня — после загрузки: до неё ZC.W — мир прошлого уровня
     if(!off){c(has(TIP),'карточка с подсказкой не показалась ('+vis().join(',')+')');
       await tapB(0,LB);ZC.sim(0.5);c(!has(TIP),'LB не убрал подсказку');
       c(await recall(0),'LB не вернул подсказку');}
@@ -31,7 +31,8 @@ window.level=async id=>{const W=ZC.W,off=!!(W.hintsOff&&W.hintsOff()),err=[];con
     // выключатель: карточки и босс/урок/табличка скрыты, включили — вернулись
     if(!off){tipAll();ZC.sim(1);}
     H.toggle();ZC.sim(1);c(vis().length===0,'при «нет» видны карточки: '+vis().join(','));c(document.body.classList.contains('fin-nohints'),'нет класса fin-nohints');
-    if(!off){c(await recall(0),'при «выкл» LB не показал подсказку');await tapB(0,LB);ZC.sim(0.5);c(!has(TIP),'при «выкл» LB не убрал подсказку');}
+    if(!off){await tapB(0,LB);ZC.sim(0.5);c(vis().length>0,'при «выкл» LB не показал подсказку');   // показывает нужную сейчас (на боссе — его карточку, не тестовую фразу)
+      await tapB(0,LB);ZC.sim(0.5);c(vis().length===0,'при «выкл» LB не убрал подсказку');}
     H.toggle();ZC.sim(1);c(!document.body.classList.contains('fin-nohints'),'класс fin-nohints остался');
   }catch(e){err.push('исключение '+String(e).slice(0,120));}
   if(H.on()===false)H.toggle();F.kids.force=false;return err.length?id+': '+err.join('; '):null;};
