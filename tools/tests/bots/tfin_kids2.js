@@ -2,7 +2,7 @@
 // релиз: дети 7–11, этапы 0–2 и 7 плана docs/31 (late_74/75 — ступени и счётчики, late_76_kids_fight.js — бой, late_76b_cine_skip.js — ролики, late_79b — чтение во всех мирах).
 // Проверки: замедление знаков 6 встреч (не 3) на Лёгком пути в мирах 1–3, у Среднего и Богатырского — как прежде; красный знак не гаснет, пока не удался кувырок;
 // «жалость»: три щита подряд — морок выдыхается; синяя капля медленнее и с широким окном, не больше двух стрелков; ролик в паре пропускает и один (2 с);
-// «осталось N с» и пункт «Пропустить ролик» в паузе; «Читать во всех мирах» (авто/да/нет); счётчики по мирам.
+// плашка пропуска без слов и на 7 с после нажатия, пункт «Пропустить ролик» в паузе; «Читать во всех мирах» (авто/да/нет); счётчики по мирам.
 window.ERR=[];window.addEventListener('error',e=>ERR.push(String(e.message)));{const ce=console.error;console.error=(...a)=>{ERR.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 window.BAD=[];window.chk=(c,m)=>{if(!c)BAD.push(m);return c;};window.KD=ZC.FIN.kids;KD.force=true;
 window.kill=e=>{e.alive=false;const k=ZC.W.enemies.indexOf(e);if(k>=0)ZC.W.enemies.splice(k,1);e.g.visible=false;};
@@ -60,14 +60,33 @@ const w1=boltAt(0.46),w2=boltAt(0.62);
 chk(w1.parried===1,'щит за 0,46 с до удара — отбил (окно 0,486): '+JSON.stringify(w1));chk(w2.parried===0,'щит за 0,62 с — не отбил: '+JSON.stringify(w2));
 ['win '+JSON.stringify([w1,w2])].concat(BAD)
 //@@
-// ролик: в паре пропускает и один игрок, если держит прыжок 2 с; оба — 1 с; «осталось N с»; пункт «Пропустить ролик» в паузе
+// ролик: в паре пропускает и один игрок, если держит прыжок 2 с; оба — 1 с; пункт «Пропустить ролик» в паузе
 window.waitCine=()=>{for(let i=0;i<400&&!ZC.G.cine;i++)ZC.tick(1);return ZC.G.cine;};
 ZC.G.manual=true;ZC.startFrom(ZC.LV('1-3'));const c0=waitCine();chk(!!c0&&c0.skippable,'на старте 1-3 идёт ролик, его можно пропустить');
 ZC.tick(90);const t0=ZC.G.cine&&ZC.G.cine.dur-ZC.G.cine.t;chk(ZC.G.cine===c0&&t0>3.4,'ролик ещё идёт, осталось '+(t0&&t0.toFixed(1))+' с');
-ZC.FIN.ui(1/60);const sk=document.getElementById('skip');chk(sk&&sk.style.display!=='none'&&/осталось \d+ с/.test(sk.textContent),'панель пропуска: «'+(sk&&sk.textContent)+'»');
-ZC.hold('Space',true);ZC.tick(60);ZC.FIN.ui(1/60);chk(ZC.G.cine===c0,'один держит 1 с — ещё не пропущено');chk(/Друг хочет пропустить/.test(sk.textContent),'подпись «Друг хочет пропустить»: '+sk.textContent);
+ZC.FIN.ui(1/60);const sk=document.getElementById('skip');chk(sk&&sk.style.display==='none','плашка пропуска скрыта, пока не нажали прыжок');
+const skWords=()=>Array.from(sk.children).filter(e=>!/^k[01]$/.test(e.className)&&getComputedStyle(e).display!=='none').map(e=>e.textContent).join('');   // всё, кроме колпачков клавиш
+ZC.hold('Space',true);ZC.tick(60);ZC.FIN.ui(1/60);chk(ZC.G.cine===c0,'один держит 1 с — ещё не пропущено');chk(sk.style.display!=='none','после нажатия плашка видна');
+chk(skWords()===''&&!document.getElementById('skrem'),'на плашке нет слов (только клавиши, кружки, полоска): «'+skWords()+'»');
 ZC.tick(70);chk(ZC.G.cine!==c0,'один держит 2 с — ролик пропущен');ZC.hold('Space',false);
 ['skip1 '+(ZC.G.cine!==c0)].concat(BAD)
+//@@
+// плашка пропуска: видна, пока держат, и ещё 7 с после последнего нажатия; потом скрыта, пока не нажмут снова
+ZC.G.manual=true;ZC.startFrom(ZC.LV('1-3'));const cs=waitCine();ZC.tick(70);cs.dur=cs.t+60;   // ролик удлинён, чтобы пережить 7 с
+const sb=document.getElementById('skip'),shown=()=>{ZC.FIN.ui(1/60);return sb.style.display!=='none';};
+chk(ZC.FIN.cineSkip.vis===7,'плашка живёт 7 с: '+ZC.FIN.cineSkip.vis);chk(!shown(),'до нажатия плашки нет');
+ZC.hold('Space',true);ZC.tick(20);chk(shown(),'прыжок нажат — плашка есть');ZC.hold('Space',false);
+ZC.tick(60*6);chk(ZC.G.cine===cs&&shown(),'через 6 с после отпускания плашка ещё есть');
+ZC.tick(60*1.5);chk(ZC.G.cine===cs&&!shown(),'через 7,5 с после отпускания плашки нет');
+ZC.hold('KeyM',true);ZC.tick(20);chk(shown(),'нажал второй игрок — плашка снова есть');ZC.hold('KeyM',false);
+['bar '+(ZC.G.cine===cs)].concat(BAD)
+//@@
+// плашка пропуска в одиночном режиме: нет до нажатия, есть при нажатии
+ZC.setSolo(true);ZC.G.manual=true;ZC.startFrom(ZC.LV('1-3'));const co=waitCine();ZC.tick(70);co.dur=co.t+60;
+const sq=document.getElementById('skip'),shw=()=>{ZC.FIN.ui(1/60);return sq.style.display!=='none';};
+chk(!shw(),'соло: до нажатия плашки нет');
+ZC.hold('Space',true);ZC.tick(20);chk(ZC.G.cine===co&&shw(),'соло: прыжок нажат — плашка есть');ZC.hold('Space',false);
+const r=['solo bar '+(ZC.G.cine===co)].concat(BAD);ZC.setSolo(false);r
 //@@
 // оба держат — по-прежнему 1 с; пауза в ролике — «Пропустить ролик»
 ZC.G.manual=true;ZC.startFrom(ZC.LV('1-3'));let cc=waitCine();ZC.tick(70);chk(!!cc&&ZC.G.cine===cc,'снова ролик');
