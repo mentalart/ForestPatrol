@@ -1,6 +1,6 @@
 # Регресс релизной сборки zlataya_cep/zlataya_cep_final06.html: все боты прототипа и боты меню и сохранений
 # пролог, мир 1, хаб
-smoke tpjump t12n t12deep t12tat t12long t12chudo t12pond t12fogthread tfoes t13v t15n tfin_k15_rooms tfin_k15_boss t1b tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine tfin_k1bfull thub2 t11 thub9 thub9b thub9c tfin_k1bbridge tfin_k1bcoil
+smoke tpjump t12n t12deep t12tat t12long t12chudo t12pond t12fogthread tfoes t13v t15n tfin_k15_rooms tfin_k15_boss t1b tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine tfin_k1bfull thub2 t11 thub9 thub9b thub9c tfin_k1bbridge tfin_k1bcoil thub9d thub9e
 # мир 2 (прежние t21 t2c t25c t22d t23f t24n t21x t22shot — только для прототипа: в релизе уровни мира 2 другие, их проверяют tfin_k2*)
 tdodge tfade tsplit thw2
 # мир 3
@@ -49,3 +49,5 @@ tfin_k24 tfin_k24solo tfin_k25 tfin_k25solo tfin_k2b tfin_k2bsolo tfin_k2bmill t
 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor tfin_juice tfin_audiolevel
 # Ctrl+Alt+B — следующая стадия у всех боссов (late_95_dev.js, W.bossNext)
 tfin_bossnext
+# ромбик «это ты» над своим героем (движок, heroMarker)
+tfin_marker
