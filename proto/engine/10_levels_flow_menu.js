@@ -126,25 +126,25 @@ function menuHTML(mode){const row=(pi,a,t,later)=>'<tr'+(later?' class="later"':
       '<br><span style="opacity:.8">Звено сковано руками Прошки и держится словом Пелагеи. Кот Учёный идёт по цепи кругом — направо песнь заводит, налево сказку говорит. И первая сказка у него — наша. Лукоморье открыто: Кощей там, где его оставила сказка, в избе Кота — тетрадка с пятым Сказом, у Заставы ждут испытания богатырей.</span></div><div class="go">Enter или Start — гулять по Лукоморью</div>';}
   if(mode==='end'&&G.flags.w4done){const s=G.stats,m=Math.floor(G.playTime/60),sec=Math.floor(G.playTime%60),nuts=worldNuts(4),t=G.flags.skaz4;
     return top+'<h2 style="color:#ff9a50">Мир 4 «Огненная Смородина» пройден!</h2><div class="res">Звенья мира: '+worldLinks(4)+' / 20 · Орешки: '+nuts+' / 23 · Время: '+m+' мин '+sec+' с'+(s.skips?' · пропущено роликов: '+s.skips:'')+
-      (t?'<br>Сказ «Одно сердце»: <i>'+t[0]+'. И помог им '+t[1]+'. '+t[2]+'.</i>':'')+
+      (t?'<br>Сказ «Одно сердце»: <i>'+skazFull(t)+'</i>':'')+
       '<br>Щитов: '+s.shields+' · Отбивов: '+s.parries+' · «Одним махом»: '+s.mahs+' · Добивающих махов: '+s.finishers+' · Богатырских махов: '+s.bogatyr+
       '<br>Смен героя: '+s.swaps+' · Падений (без урона): '+s.falls+' · Подшили друга: '+s.revives+
       '<br><span style="opacity:.8">Горыныч в узде и по уговору возит нас. Головы рассказали про ученика Кота — мальчишку с молотом, который вырос и стал костью да ключами. Пелагея начала новую сказку: «Жил-был мальчишка, который хотел сочинять сказки…» — и остановилась. Цепь на дубе снова наполовину. Горыныч проснулся — на карте-рушнике открылся Мир 5 «Остров Буян».</span></div><div class="go">Enter или Start — вернуться на Лукоморье</div>';}
   if(mode==='end'&&G.flags.w3done){const s=G.stats,m=Math.floor(G.playTime/60),sec=Math.floor(G.playTime%60),nuts=worldNuts(3),t=G.flags.skaz3;
     return top+'<h2 style="color:#ffb060">Мир 3 «Небесное царство» пройден!</h2><div class="res">Звенья мира: '+worldLinks(3)+' / 20 · Орешки: '+nuts+' / 23 · Время: '+m+' мин '+sec+' с'+(s.skips?' · пропущено роликов: '+s.skips:'')+
-      (t?'<br>Сказ «Соловьиная песня»: <i>'+t[0]+'. И помог им '+t[1].replace(/^./,c=>c.toLowerCase())+'. '+t[2]+'.</i>':'')+
+      (t?'<br>Сказ «Соловьиная песня»: <i>'+skazFull(t)+'</i>':'')+
       '<br>Щитов: '+s.shields+' · Отбивов: '+s.parries+' · «Одним махом»: '+s.mahs+' · Добивающих махов: '+s.finishers+' · Богатырских махов: '+s.bogatyr+' · Перо зажигали: '+(s.feathers||0)+
       '<br>Смен героя: '+s.swaps+' · Падений (без урона): '+s.falls+' · Подшили друга: '+s.revives+' · Гуси уносили: '+(s.geese||0)+
       '<br><span style="opacity:.8">Соловей снова поёт — с ним запела Пелагея. А на празднике пришёл Кощей, порвал цепь на дубе и забрал Звенышко: «Сказок не будет». Дуб стоит голым, звенья у нас в горсти. Прошка сказал: «Скуём заново». На карте-рушнике открылся Мир 4 «Огненная Смородина» — уже без Звенышка.</span></div><div class="go">Enter или Start — вернуться на Лукоморье</div>';}
   if(mode==='end'&&G.flags.w2done){const s=G.stats,m=Math.floor(G.playTime/60),sec=Math.floor(G.playTime%60),nuts=worldNuts(2),t=G.flags.skaz2;
     return top+'<h2 style="color:#7ad0f0">Мир 2 «Подводный Китеж» пройден!</h2><div class="res">Звенья мира: '+worldLinks(2)+' / 20 · Орешки: '+nuts+' / 23 · Время: '+m+' мин '+sec+' с'+(s.skips?' · пропущено роликов: '+s.skips:'')+
-      (t?'<br>Сказ «Колокола Китежа»: <i>'+t[0]+'. И помог им '+t[1].replace(/^./,c=>c.toLowerCase())+'. '+t[2]+'.</i>':'')+
+      (t?'<br>Сказ «Колокола Китежа»: <i>'+skazFull(t)+'</i>':'')+
       '<br>Щитов: '+s.shields+' · Отбивов: '+s.parries+' · «Одним махом»: '+s.mahs+' · Добивающих махов: '+s.finishers+' · Богатырских махов: '+s.bogatyr+
       '<br>Смен героя: '+s.swaps+' · Падений (без урона): '+s.falls+' · Подшили друга: '+s.revives+' · Звенышко подтянуло оставленных: '+s.carries+
       '<br><span style="opacity:.8">Водяного убаюкали колокола Китежа. Йоша научился просить, Прошка молча отдал Пелагее звено, а Пелагея впервые рассказала Сказ сама — шёпотом. Цепь на дубе стала длиннее. На карте-рушнике открылся Мир 3 «Небесное царство».</span></div><div class="go">Enter или Start — вернуться на Лукоморье</div>';}
   if(mode==='end'&&G.flags.voiceDone){const s=G.stats,m=Math.floor(G.playTime/60),sec=Math.floor(G.playTime%60),nuts=W1.reduce((a,id)=>a+(G.nutsGot[id]||0),0),t=G.flags.skaz;
     return top+'<h2 style="color:#ffc93c">Мир 1 «Дремучий лес» пройден!</h2><div class="res">Звенья мира: '+worldLinks()+' / 19 · Орешки: '+nuts+' / 23 · Время: '+m+' мин '+sec+' с'+(s.skips?' · пропущено роликов: '+s.skips:'')+
-      (t?'<br>Сказ «Леший-проводник»: <i>'+t[0]+'. И помог им '+t[1].replace(/^./,c=>c.toLowerCase())+'. '+t[2]+'.</i>':'')+
+      (t?'<br>Сказ «Леший-проводник»: <i>'+skazFull(t)+'</i>':'')+
       '<br>Щитов: '+s.shields+' · Отбивов: '+s.parries+' · «Одним махом»: '+s.mahs+' · Добивающих махов: '+s.finishers+' · Богатырских махов: '+s.bogatyr+' · Нитей склеено: '+s.glue+
       '<br>Смен героя: '+s.swaps+' · Падений (без урона): '+s.falls+' · Подшили друга: '+s.revives+' · Звенышко подтянуло оставленных: '+s.carries+
       '<br><span style="opacity:.8">Кощей унёс голос Кота. Кот теперь мяукает, а следующие Сказы рассказывает Пелагея. На карте-рушнике открылся Мир 2 «Подводный Китеж».</span></div><div class="go">Enter или Start — вернуться на Лукоморье</div>';}
@@ -181,11 +181,11 @@ function startFrom(i){for(const k in G.stats)G.stats[k]=0;G.playTime=0;G.links=0
   players.forEach(p=>{p.enc={};p.shieldTaught=false;p.closedTaught=false;p.staggerSeen=0;p.blue=0;p.act=0;});
   const L=LEVELS[i];G.hub=i>=LV('1-1');if(i>=LV('luko'))G.links=1;if(i>LV('luko'))G.flags.map1=true;
   LEVELS.forEach((l,k)=>{if(l.world&&!l.boss&&k<i){G.done[l.id]=true;G.got[l.id]=l.links;G.nutsGot[l.id]=l.nuts;G.gems[l.id]=true;G.trips++;}if(l.world&&l.boss&&k<i&&l.id!=='5-B2')G.gems[l.id]=true;});
-  if(i>LV('1-B')){G.done['1-B']=true;G.flags.forged=true;G.flags.voiceDone=true;G.flags.coils=1;G.flags.w2intro=true;G.flags.map2=true;G.forgedW[1]=19;G.flags.skaz=['Жили-были звери во лесу','Леший со светлячком-огоньком','И стал Леший дорогу казать'];}
-  if(i>LV('2-B')){G.done['2-B']=true;G.flags.forged2=true;G.flags.w2done=true;G.flags.coils=2;G.flags.w3intro=true;G.flags.map3=true;G.forgedW[2]=20;G.flags.skaz2=['В граде, где все крепко спали','Рыба-кит, что издалёка подшивает','И кит корабли глотать не стал: зуб у него болеть перестал'];}
-  if(i>LV('3-B')){G.done['3-B']=true;G.flags.forged3=true;G.flags.w3done=true;G.flags.coils=3;G.flags.w4intro=true;G.flags.map4=true;G.forgedW[3]=20;G.flags.skaz3=['Над облаками темень легла','Жар-птица с пёрышком тёплым','И Соловей запел опять: с ним первым кто-то стал подпевать'];
+  if(i>LV('1-B')){G.done['1-B']=true;G.flags.forged=true;G.flags.voiceDone=true;G.flags.coils=1;G.flags.w2intro=true;G.flags.map2=true;G.forgedW[1]=19;G.flags.skaz=skazPick(1,0,0,0);}
+  if(i>LV('2-B')){G.done['2-B']=true;G.flags.forged2=true;G.flags.w2done=true;G.flags.coils=2;G.flags.w3intro=true;G.flags.map3=true;G.forgedW[2]=20;G.flags.skaz2=skazPick(2,2,1,0);}
+  if(i>LV('3-B')){G.done['3-B']=true;G.flags.forged3=true;G.flags.w3done=true;G.flags.coils=3;G.flags.w4intro=true;G.flags.map4=true;G.forgedW[3]=20;G.flags.skaz3=skazPick(3,0,0,1);
     G.flags.w4c=['4-1','4-2','4-4'].filter(id=>G.done[id]).length;}
-  if(i>LV('4-B')){G.done['4-B']=true;G.flags.forged4=true;G.flags.w4done=true;G.flags.coils=4;G.flags.w4c=3;G.flags.w5intro=true;G.flags.map5=true;G.forgedW[4]=20;G.flags.skaz4=['Три головы всё спорили — не сговорились','Демьян с молотом тяжёлым','И понял Змей: у трёх голов — одно сердце'];}
+  if(i>LV('4-B')){G.done['4-B']=true;G.flags.forged4=true;G.flags.w4done=true;G.flags.coils=4;G.flags.w4c=3;G.flags.w5intro=true;G.flags.map5=true;G.forgedW[4]=20;G.flags.skaz4=skazPick(4,0,0,1);}
   if(i>LV('5-3'))G.flags.sand=true;if(i>LV('5-4'))G.flags.zvenBack=true;
   if(i>LV('5-B1')){G.done['5-B1']=true;G.flags.forged5=true;G.forgedW[5]=15;G.flags.bezImen=true;G.flags.nameless=true;G.flags.names={};}
   if(i>LV('5-B2')){G.done['5-B2']=true;G.flags.w5done=true;G.flags.epiDone=i>LV('epi');G.flags.coils=5;G.flags.nameless=false;G.flags.names={potap:true,yosha:true,proshka:true,pelageya:true};G.flags.kotVoice=true;G.flags.ending=['slushat'];G.flags.claspQ=0.8;
@@ -208,7 +208,7 @@ function frame(now){requestAnimationFrame(frame);let dt=Math.min(0.05,(now-last)
   if(G.state==='play'&&G.manual){}else if(G.state==='play'){if(pressed.has('Escape')){showMenu('pause');}else{if(G.hitstop>0){G.hitstop-=dt;dt*=0.15;}step(dt);}}else menuInput();
   render();updateUI(Math.min(0.05,G.state==='play'?dt:0));pressed.clear();}
 hudInit();loadLevel(0);showMenu('menu');requestAnimationFrame(frame);
-window.ZC={G,players,loadLevel,HERO,get W(){return W;},step,completeLevel,finishLevel,goLevel,startFrom,LEVELS,LV,worldLinks,setSolo,menuKey(c){pressed.add(c);menuInput();pressed.clear();},
+window.ZC={G,players,loadLevel,HERO,SKAZ,skazTold,helperOf,get W(){return W;},step,completeLevel,finishLevel,goLevel,startFrom,LEVELS,LV,worldLinks,setSolo,menuKey(c){pressed.add(c);menuInput();pressed.clear();},
   sim(sec){const n=Math.round(sec*60);for(let i=0;i<n;i++){if(G.state!=='play')break;step(1/60);if(i%30===0)updateUI(1/60);pressed.clear();}render();updateUI(1/60);},
   start(){hideMenu();},menu:showMenu,tick(n){for(let i=0;i<(n||1);i++){step(1/60);pressed.clear();}},press(c){pressed.add(c);},hold(c,on){if(on)down.add(c);else down.delete(c);},skip(){if(G.cine){G.cine.skip();G.cine.t=G.cine.dur;}}};
 })();

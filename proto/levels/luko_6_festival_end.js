@@ -2,26 +2,26 @@
   function festival(){F.stage='fest';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-1.6,0);h.face=Math.PI;});snapCams();
     play({dur:7,fov:48,shots:[shot(0,[0,3,5],[0,1.2,-3])],says:[[0.4,3,null,'<i>Пелагея открывает тетрадку. Первый Сказ — сказку рассказываем мы сами.</i>',true],[3.6,3,'zven','Выбирайте: начало, помощник, конец!']],
       end:()=>skaz()});}
-  function skaz(){G.ui='skaz';const el=$('skaz');el.style.display='flex';
-    const steps=[{who:1,title:'Начало выбирает Игрок второй.',opts:['Жили-были звери во лесу','В некотором царстве, во дремучем лесу','Раз четверо друзей в лесу заплутали']},
-      {who:0,title:'Помощника выбирает Игрок первый.',opts:['Леший со светлячком-огоньком','Баба Яга с клубочком','Колобок с пружинкой волшебной']},
-      {who:2,title:'Конец — вместе: оба на одной строке, и оба жмите разом.',opts:['И стал Леший дорогу казать','И все воротились домой — к самовару, к чаю','И лес с тех пор тропинок не путал']}];
-    let st=0;const sel=[0,0,0],both=[0,0],ok=[false,false];
-    const draw=()=>{const s=steps[st];el.innerHTML='<div class="tet"><h2>Сказ · «Леший-проводник»</h2><div class="step">'+s.title+'</div>'+
-      s.opts.map((o,i)=>'<div class="opt'+((s.who<2?sel[st]===i:false)?' sel':'')+'">'+(s.who===2?[0,1].map(q=>both[q]===i?'<b style="color:'+PCSS[q]+'">'+(ok[q]?'●':'○')+'</b>':'<b></b>').join(''):'')+o+'</div>').join('')+
-      '<div class="hint">'+(s.who===2?'оба: '+K(0,'left')+K(0,'right')+' / '+K(1,'left')+K(1,'right')+' · '+K(0,'jump')+' + '+K(1,'jump'):K(s.who,'up')+K(s.who,'down')+' · '+K(s.who,'jump'))+'</div>'+
-      '<div class="tale">'+[steps[0].opts[sel[0]],st>0?'помощник — '+steps[1].opts[sel[1]]:''].filter(x=>x).join(' · ')+'</div></div>';};
-    draw();
-    G.uiTick=()=>{const s=steps[st];
-      if(s.who<2){const n=uiNav(UW(s.who));if(n.dy||n.dx){sel[st]=(sel[st]+(n.dy||n.dx)+3)%3;SFX.swap();draw();}if(tap(UW(s.who),'jump')){SFX.ok();st++;draw();}}
-      else{for(const q of[0,1]){const n=uiNav(q);if(n.dy||n.dx){both[q]=(both[q]+(n.dy||n.dx)+3)%3;ok[q]=false;SFX.swap();draw();}if(tap(q,'jump')){ok[q]=true;if(G.solo){ok[1-q]=true;both[1-q]=both[q];}SFX.plate();draw();}}
-        if(ok[0]&&ok[1]){if(both[0]===both[1]){sel[2]=both[0];SFX.ok();G.ui=null;G.uiTick=null;el.style.display='none';tell(steps.map((x,i)=>x.opts[sel[i]]));}
-          else{ok[0]=ok[1]=false;SFX.miss();banner('Конец — одной строкой!','#ffd0d0',1.4,'договоритесь — и нажмите вдвоём');draw();}}}};}
-  function tell(t){const T=HERO,pe=T.pelageya;G.flags.skaz=t;
-    play({dur:15,fov:46,shots:[shot(0,[3.4,1.9,-1.2],[2.3,1.6,-4.6]),shot(7.6,[-1.4,1.6,0.4],[pe.pos.x,0.9,pe.pos.z])],
-      says:[[0.4,3.4,'kot',t[0]+'.'],[3.9,3.4,'kot','И помог им в том '+t[1].replace(/^./,c=>c.toLowerCase())+'.'],[7.6,3.6,'kot',t[2]+'.'],[11.4,3.4,null,'<i>Кот нашу сказку сказывает своим голосом,</i><br><i>А Пелагея клювом шевелит вслед — тихо, волосом.</i>',true]],
-      tick:(tt)=>{pe.body.position.y=tt>0.4&&tt<11?Math.abs(Math.sin(tt*9))*0.04:0;kot.head.rotation.x=Math.sin(tt*2)*0.05;},
-      end:()=>{banner('Сказ «Леший-проводник»','#ffd76a',2.4,'весточка: помощник с вами в новый мир пойдёт');later(2.6,voiceScene);}});}
+  /* ---------- Сказы 1–4: рассказ — три двустишия; помощник оживает у дуба, у конца сказки на поляне появляется сувенир ---------- */
+  let skHelper=null;   // помощник последнего сказа: стоит у дуба до следующего сказа
+  {const redo=n=>mode===(n===1?'festival':'festival'+n);let ln=0;   // поляна сказок при входе: сувениры всех сказок и помощник последней
+    for(let n=1;n<=4;n++){if(!G.flags[SKFLAG[n]]||redo(n))continue;ln=n;const ei=skazEnding(n);if(ei>=0)skazSouvenir(n,ei,false);}
+    if(ln&&!G.flags.w5done)skHelper=skazMakeHelper(helperOf(ln));}
+  W.skz={get helper(){return skHelper;},get souv(){return skazSouv;}};   // для ботов
+  function skazTell(n,t,o){const S=SKAZ[n];G.flags[SKFLAG[n]]=t;const hk=helperOf(n),ei=skazEnding(n),[hx,hz]=SKAZ_HELPER_AT,[sx,sz]=SKAZ_SLOT[n],fly=['zhar','sirin','kit','rybka','yaga3'].includes(hk),T0=16.6;
+    play({dur:T0+(o.tail||3.4),fov:46,
+      shots:[o.shot0,shot(5.7,[hx+2.6,1.9,hz+3.8],[hx,fly?2.3:1.1,hz]),shot(11.2,[sx*0.7,2.3,sz+5.2],[sx,0.8,sz]),o.lastShot(T0)],
+      says:[[0.4,5,S.nar,S.pre+t[0]],[5.9,5,S.nar,S.pre+t[1]],[11.4,5,S.nar,S.pre+t[2]]].concat((o.closers||[]).map(c=>[T0+c[0],c[1],c[2],c[3],c[4]])),
+      events:[{t:5.7,fn:()=>{skazHelperOut(skHelper);skHelper=skazMakeHelper(hk);skazHelperIn(skHelper);SFX.ok();}},
+        {t:11.2,fn:()=>{if(ei>=0){skazSouvenir(n,ei,true);SFX.bell();}}}].concat((o.events||[]).map(e=>({t:T0+e.t,fn:e.fn}))),
+      tick:o.tick,
+      end:()=>{if(o.dropHelper){skazHelperOut(skHelper);skHelper=null;}o.end();}});}
+  function skaz(){skazChoose(1,tell);}
+  function tell(t){const pe=HERO.pelageya;
+    skazTell(1,t,{shot0:shot(0,[3.4,1.9,-1.2],[2.3,1.6,-4.6]),lastShot:T0=>shot(T0,[-1.4,1.6,0.4],[pe.pos.x,0.9,pe.pos.z]),
+      closers:[[0,3.4,null,'<i>Кот нашу сказку сказывает своим голосом,</i><br><i>А Пелагея клювом шевелит вслед — тихо, волосом.</i>',true]],tail:3.8,
+      tick:(tt)=>{pe.body.position.y=tt>0.4&&tt<16?Math.abs(Math.sin(tt*9))*0.04:0;kot.head.rotation.x=Math.sin(tt*2)*0.05;},
+      end:()=>{pe.body.position.y=0;banner('Сказ «Леший-проводник»','#ffd76a',2.4,'весточка: помощник с вами в новый мир пойдёт');later(2.6,voiceScene);}});}
   function voiceScene(){const T=HERO;const ko=makeKoschei();ko.g.position.set(-9,-0.2,-26);ko.g.visible=false;const coil=addCoil(0,false);
     const thread=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,1,6),MB(0xffd76a));thread.visible=false;W.group.add(thread);
     const kotHead=()=>{const v=new V3();kot.head.getWorldPosition(v);return v;};
