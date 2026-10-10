@@ -1,6 +1,6 @@
 //@@ wait=1500
 // релиз final06: 2-1 «Гусли Садко» вдвое длиннее (late_99e_k21.js) — новые участки вдвоём настоящими нажатиями:
-// Г2 «Переливная улица» (Потап на заслонке на дне, перелив: прилив у одного = отлив у другого, лодкой к террасе, верёвка — ворота друга),
+// Д «Шлюзы» (две ступени, рейки), Г2 «Переливная улица» (Потап на заслонке на дне, перелив: прилив у одного = отлив у другого, лодкой к террасе, верёвка — ворота друга),
 // Ж1 «Звонкая мостовая» (осётр напевает напев Садко; плиты: дзинь, дилинь — по очереди, дон-дон — вдвоём разом; стража ворот).
 // Ж2 «Палаты Морского царя» (два стула перед троном — пляска в два голоса, кольца-волны прыгаем, пляс-ракушки; оставленный доигрывает),
 // З2 «Сад Китежа» (Потап по дну до якоря и ракушки, отлив, оставленный держит; Йоша растит лесенки; подъём по листьям), ворота — уровень пройден.
@@ -36,28 +36,44 @@ ZC.startFrom(ZC.LV('2-1'));ZC.G.manual=true;ZC.tick(30);ZC.skip();ZC.tick(10);co
 const F=ZC.W.flags;F.stage='sadko';ZC.W.waterTargets.find(w=>w.active()).onWater();let t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(30);
 const d1=ZC.G.cine?ZC.G.cine.dur:0;if(Math.abs(d1-8.2)>0.01)throw new Error('нет сценки «напев Садко»: '+d1);ZC.skip();ZC.tick(5);if(!ZC.W.abil.gusli)throw new Error('гуслей нет');'tune scene ok'
 //@@
+// Д: шлюзы сразу за улицей — две ступени воды (прилив поднимает на следующую), сверху лестница вниз к Переливной; колодца-лифта больше нет.
+// Мерные рейки у каждой воды: поплавок на глади; рейка воды под героем с гуслями подсвечена.
+const D=ZC.W.warp21('locks');ZC.tick(20);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}ZC.tick(10);
+const GQ=ZC.FIN.k21Gauges.list;if(GQ.length<10)throw new Error('мерных реек мало: '+GQ.length);if(ZC.W.waters.some(z=>z.minx===-3&&z.maxx===3&&z.high===7.8))throw new Error('колодец-лифт остался');
+const L=ZC.W.waters.filter(z=>z.minx===-11&&z.maxx===11&&z.minz>=-96&&z.maxz<=-80).sort((a,b)=>b.minz-a.minz);if(L.length!==2)throw new Error('ступеней воды не две: '+L.length);
+const gq=z=>GQ.find(q=>q.z===z);const r=[];
+for(const pi of[0,1]){const K=KEYS[pi],J=pi?'KeyM':'Space',x=pi?4:-4,GD=pi?'Period':'KeyG';
+  const up=h=>{if(ZC.W.bolts.some(b=>b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2))ZC.press(GD);if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press(J);};
+  const go=(z,y)=>{let q='';for(let k=0;k<3&&!(U.act(pi).pos.z<z+0.6&&U.act(pi).pos.y>y);k++)q+=U.walkTo(pi,x,z,5,up)+';';return q;};
+  r.push(U.walkTo(pi,x,-84,6));if(L[0].state!=='high'){ZC.tick(10);if(!(gq(L[0]).glow>0.3))throw new Error('рейка под героем не подсвечена: '+gq(L[0]).glow);U.tap(K.item);ZC.tick(160);}
+  if(L[0].state!=='high'||Math.abs(gq(L[0]).fl.position.y-L[0].level)>0.2)throw new Error('прилив на ступени 1 / поплавок: '+L[0].state+' '+gq(L[0]).fl.position.y);
+  r.push(go(-92,2.4));ZC.tick(20);if(L[1].state!=='high'){U.tap(K.item);ZC.tick(160);}
+  r.push(go(-100,5));ZC.tick(10);if(!(U.act(pi).pos.y>5))throw new Error('не наверху шлюзов: '+pi+' '+r.join()+' '+U.act(pi).pos.toArray().map(v=>v.toFixed(2)));
+  r.push(U.walkTo(pi,x,-117,6));}
+if(!(U.act(0).pos.z<-116&&U.act(1).pos.z<-116&&U.act(0).pos.y<0.5))throw new Error('не спустились к Переливной: '+r.join());'locks ok '+r.join()
+//@@
 // Г2: Потап — на заслонку на дне левого канала (левый в отливе), Прошка играет прилив у левой ракушки
 const D=ZC.W.warp21('perel');ZC.tick(20);ZC.skip();for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}ZC.tick(10);
-if(!ACT(0,'potap'))throw new Error('нет Потапа');const r=[U.walkTo(0,-10.2,-80.2,5),U.walkTo(0,-10.2,-86,6),U.walkTo(0,-2.8,-95,8)];ZC.tick(20);
+if(!ACT(0,'potap'))throw new Error('нет Потапа');const r=[U.walkTo(0,-10.2,-120.2,5),U.walkTo(0,-10.2,-126,6),U.walkTo(0,-2.8,-135,8)];ZC.tick(20);
 if(!D.SLU.held())throw new Error('Потап не встал на заслонку: '+r.join()+' '+U.act(0).pos.toArray().map(v=>v.toFixed(2)));
-ACT(0,'proshka');ZC.tick(5);r.push(U.walkTo(0,-9.8,-79.4,8));U.tap('KeyR');ZC.tick(160);
+ACT(0,'proshka');ZC.tick(5);r.push(U.walkTo(0,-9.8,-119.4,8));U.tap('KeyR');ZC.tick(160);
 if(D.CL.state!=='high'||D.CR.state!=='low')throw new Error('перелив не сработал: '+D.CL.state+'/'+D.CR.state+' '+r.join());
 const py=ZC.HERO.potap.pos.y;if(py>-1.9)throw new Error('Потап всплыл: '+py.toFixed(2));'sluice ok potap y='+py.toFixed(2)+' '+r.join()
 //@@ shot=k21_perel_flow.png
 // Прошка: в воду, на лодку, на террасу, верёвка — открывает ворота Пелагеи
-const D=ZC.W.dbg21();const r=[U.walkTo(0,-8.3,-100,8),U.walkTo(0,-8.3,-104.5,4,(h)=>{if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');})];ZC.tick(30);
-r.push(U.walkTo(0,-8.3,-109.2,4,(h)=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}));ZC.tick(20);r.push(U.walkTo(0,-5.9,-110.4,3));ZC.tick(5);
+const D=ZC.W.dbg21();const r=[U.walkTo(0,-8.3,-140,8),U.walkTo(0,-8.3,-144.5,4,(h)=>{if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');})];ZC.tick(30);
+r.push(U.walkTo(0,-8.3,-149.2,4,(h)=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}));ZC.tick(20);r.push(U.walkTo(0,-5.9,-150.4,3));ZC.tick(5);
 ZC.HERO.proshka.face=Math.PI/2;U.tap('KeyF');ZC.tick(30);if(!D.ropes[0].pulled)throw new Error('левая верёвка не дёрнута: '+r.join()+' '+U.act(0).pos.toArray().map(v=>v.toFixed(2)));
 if(!D.PG[1].open)throw new Error('ворота Пелагеи не открылись');'left rope ok '+r.join()
 //@@
 // Пелагея: прилив справа (Потап на заслонке держит — левый уходит в отлив), на лодку, на террасу, верёвка — ворота Прошки;
 // в канале плавает щука — её каплю Пелагея отбивает щитом (SH)
 window.SH=pi=>h=>{if(ZC.W.bolts.some(b=>b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2))ZC.press(pi?'Period':'KeyG');};
-const D=ZC.W.dbg21();ACT(1,'pelageya');const r=[U.walkTo(1,9.8,-79.4,8)];U.tap('Semicolon');ZC.tick(160);if(D.CR.state!=='high'||D.CL.state!=='low')throw new Error('правый прилив не пошёл: '+D.CR.state);
-r.push(U.walkTo(1,8.3,-100,8,SH(1)),U.walkTo(1,8.3,-104.5,4,(h,i)=>{SH(1)(h);if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('KeyM');}));ZC.tick(30);
-r.push(U.walkTo(1,8.3,-109.2,4,(h)=>{SH(1)(h);if(h.grounded&&h.pos.y<3.1)ZC.press('KeyM');}));ZC.tick(20);r.push(U.walkTo(1,5.9,-110.4,3,SH(1)));ZC.tick(5);ZC.HERO.pelageya.face=-Math.PI/2;U.tap('Comma');ZC.tick(30);
+const D=ZC.W.dbg21();ACT(1,'pelageya');const r=[U.walkTo(1,9.8,-119.4,8)];U.tap('Semicolon');ZC.tick(160);if(D.CR.state!=='high'||D.CL.state!=='low')throw new Error('правый прилив не пошёл: '+D.CR.state);
+r.push(U.walkTo(1,8.3,-140,8,SH(1)),U.walkTo(1,8.3,-144.5,4,(h,i)=>{SH(1)(h);if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('KeyM');}));ZC.tick(30);
+r.push(U.walkTo(1,8.3,-149.2,4,(h)=>{SH(1)(h);if(h.grounded&&h.pos.y<3.1)ZC.press('KeyM');}));ZC.tick(20);r.push(U.walkTo(1,5.9,-150.4,3,SH(1)));ZC.tick(5);ZC.HERO.pelageya.face=-Math.PI/2;U.tap('Comma');ZC.tick(30);
 if(!D.ropes[1].pulled||!D.PG[0].open)throw new Error('правая верёвка/левые ворота: '+r.join()+' '+U.act(1).pos.toArray().map(v=>v.toFixed(2)));
-r.push(U.walkTo(0,-6,-114,5),U.walkTo(1,6,-114,5),U.walkTo(0,-6,-117.5,4),U.walkTo(1,6,-117.5,4));if(!(U.act(0).pos.z<-113&&U.act(1).pos.z<-113))throw new Error('не прошли ворота: '+r.join());'perelivnaya ok'
+r.push(U.walkTo(0,-6,-154,5),U.walkTo(1,6,-154,5),U.walkTo(0,-6,-157.5,4),U.walkTo(1,6,-157.5,4));if(!(U.act(0).pos.z<-153&&U.act(1).pos.z<-153))throw new Error('не прошли ворота: '+r.join());'perelivnaya ok'
 //@@ shot=k21_perel_done.png
 // Ж1: Звонкая мостовая — осётр пролетает и напевает; плиты: дзинь (Игрок 1), дилинь (Игрок 2), дон-дон — вдвоём разом; стража ворот — бой
 const D=ZC.W.warp21('tune');ZC.W.flags.sturg=false;ZC.tick(20);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}const r=[WALK2([-2,-184],[2,-184],4)];let t=0;while(!D.F.sturg&&t<300){ZC.tick(1);t++;}ZC.tick(60*9);
@@ -79,7 +95,7 @@ const D=ZC.W.warp21('garden'),G=D.DG;ZC.tick(20);for(let i=0;i<20&&ZC.G.cine;i++
 if(D.GARD.state!=='high')throw new Error('сад не залит');ACT(0,'potap');const r=[U.walkTo(0,8.2,-237.6+G,5),U.walkTo(0,8.2,-243+G,6),U.walkTo(0,4,-256.8+G,8)];ZC.tick(10);
 U.tap('KeyE');ZC.tick(60);if(!D.F.anchor)throw new Error('якорь не поднят: '+r.join()+' '+U.act(0).pos.toArray().map(v=>v.toFixed(2)));
 r.push(U.walkTo(0,0.6,-245.6+G,6));U.tap('KeyR');ZC.tick(20);if(D.GARD.state!=='low')throw new Error('отлив в саду не сыгран: '+D.GARD.state+' '+r.join());
-U.tap('KeyQ');ZC.tick(5);if(!ZC.HERO.potap.kwHold)throw new Error('оставленный Потап не держит отлив');ZC.tick(150);'garden low, potap holds '+r.join()
+U.tap('KeyQ');ZC.tick(5);if(!ZC.HERO.potap.kwHold)throw new Error('оставленный Потап не держит отлив');ZC.tick(10);{const R=ZC.HERO.potap.kwRing;if(!R||!R.s.visible)throw new Error('нет круга-таймера над оставленным Потапом');}ZC.tick(150);'garden low, potap holds '+r.join()
 //@@ shot=k21_garden_low.png
 // Йоша: вниз по ступеням, полить оба ростка; подъём по лесенке на террасу; через 10+15 с родник снова наполнит сад
 const D=ZC.W.dbg21(),G=D.DG;ACT(1,'yosha');const r=[U.walkTo(1,8.2,-237.6+G,5),U.walkTo(1,8.2,-243+G,6),U.walkTo(1,-4,-256.6+G,8)];ZC.HERO.yosha.face=Math.PI;U.tap('KeyL');ZC.tick(60);
@@ -118,6 +134,7 @@ let t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(30);if(!D.F.hermitWon||
 //@@ shot=k21_hermit_home.png
 // ворота: звено и конец уровня
 const D=ZC.W.dbg21(),G=D.DG;const r=[WALK2([-0.5,-314+G],[2,-314+G],8),WALK2([-0.5,-320.6+G],[2,-318+G],6),WALK2([-1,-327+G],[2,-327+G],5)];ZC.tick(120);
-'links='+ZC.W.links+' nuts='+ZC.W.nuts+' out='+!!ZC.W.flags.out+' state='+ZC.G.state+' lvl='+ZC.W.levelId+' '+r.join()
+let tg=0;const seen=!!ZC.W.flags.gateSeen||ZC.W.levelId!=='2-1';while(ZC.W.levelId==='2-1'&&!ZC.W.flags.out&&tg<1500){ZC.tick(1);tg++;}
+if(!seen)throw new Error('нет ролика у ворот Китежа');'links='+ZC.W.links+' nuts='+ZC.W.nuts+' out='+!!ZC.W.flags.out+' state='+ZC.G.state+' lvl='+ZC.W.levelId+' '+r.join()
 //@@
 if(!ZC.W.flags.out&&ZC.W.levelId==='2-1')throw new Error('уровень не пройден');if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'2-1 done errs=0'
