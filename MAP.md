@@ -76,7 +76,7 @@
 | id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_79t_hintteach, late_96_prolog_scooter, late_96b_prolog_night | 8 | tfin_cine tfin_companion_p tfin_fadesplit tfin_kids1 tfin_prolog_night tfin_scooter tfin_… |
-| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 14 | tfin_art tfin_audiolevel tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kid… |
+| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 15 | tfin_art tfin_audiolevel tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kid… |
 | `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 32 | t11 tfin_art tfin_botlevel tfin_cam tfin_companion tfin_companion_11 tfin_dev tfin_foecas… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1, late_76_kids_fight, late_79f_fog_hint12 | 3 | tfin_bossfxcap tfin_companion_12 tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 3 | tfin_companion_13 tfin_kids1 tfin_kids2 |
@@ -95,7 +95,7 @@
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | — | 3 | t34 tfin_companion_34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | — | 2 | t35 tfin_companion_35 |
 | `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 10 | t3bv tfin_bossbar tfin_companion_3b tfin_hintlayer tfin_k3b tfin_k3bboss tfin_k3bbosssolo… |
-| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | — | 10 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko thw4 tluko tsolo ts… |
+| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | — | 11 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast thw4 … |
 | `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | — | 3 | t42v tfin_art tfin_companion_42 |
 | `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | — | 2 | t43 tfin_companion_43 |
 | `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | — | 3 | t44 tfin_companion_44 tfoes |
@@ -169,7 +169,8 @@
 | `levels/luko_1_scene.js` | 176 | ЛУКОМОРЬЕ: пустой дуб, Кот Учёный, карта-рушник |
 | `levels/luko_2_worlds123.js` | 167 | — |
 | `levels/luko_3_worlds45.js` | 237 | — |
-| `levels/luko_4_zastava_forge_map.js` | 198 | — |
+| `levels/luko_3b_zastava_hill.js` | 131 | — |
+| `levels/luko_4_zastava_forge_map.js` | 196 | — |
 | `levels/luko_5_dress_garden.js` | 224 | — |
 | `levels/luko_6_festival_end.js` | 68 | — |
 | `engine/10_levels_flow_menu.js` | 214 | ПОТОК ИГРЫ |
@@ -442,11 +443,11 @@
 | `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 84 файлов |
+| `changes/` | 89 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 26 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 250 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 252 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
