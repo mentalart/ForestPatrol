@@ -11,7 +11,7 @@ const hudEls=[];
 function hudInit(){for(const pi of[0,1]){const el=$('hud'+pi);el.innerHTML='<div class="petals"><div class="petal"></div><div class="petal"></div><div class="petal"></div></div><div class="ports"></div><div class="yarn">'+KEYNAME[BIND[pi].item]+'</div><div class="blue"><i></i></div><span class="tag pathtag"></span><span class="down"></span>';
   const ports=el.querySelector('.ports');players[pi].heroes.forEach(h=>{const d=document.createElement('div');d.className='port';d.innerHTML=sil(h.kind,h.d.css)+'<span class="pn"></span>';ports.appendChild(d);});
   hudEls[pi]={el,petals:[...el.querySelectorAll('.petal')],ports:[...el.querySelectorAll('.port')],tag:el.querySelector('.pathtag'),yarn:el.querySelector('.yarn'),blue:el.querySelector('.blue'),blueI:el.querySelector('.blue i'),down:el.querySelector('.down'),cache:{}};}}
-const iconEls=[];for(let i=0;i<8;i++){const d=document.createElement('div');d.className='icon';d.innerHTML='<span class="s"></span><div class="lock">'+LOCK+'</div><div class="eye">'+EYE+'</div><div class="q">?</div>';$('icons').appendChild(d);iconEls.push({el:d,s:d.querySelector('.s'),lock:d.querySelector('.lock'),eye:d.querySelector('.eye'),q:d.querySelector('.q'),k:null});}
+const iconEls=[];for(let i=0;i<8;i++){const d=document.createElement('div');d.className='icon';d.innerHTML='<span class="s"></span><div class="lock">'+LOCK+'</div><div class="eye">'+EYE+'</div><div class="q">?</div><div class="dist"></div>';$('icons').appendChild(d);iconEls.push({el:d,s:d.querySelector('.s'),lock:d.querySelector('.lock'),eye:d.querySelector('.eye'),q:d.querySelector('.q'),d:d.querySelector('.dist'),dt:'',k:null});}
 const floats=[];
 function floatText(pos,text,color){const els=[0,1].map(()=>{const d=document.createElement('div');d.className='float';d.textContent=text;d.style.color=color||'#fff';$('floats').appendChild(d);return d;});floats.push({p:pos.clone(),t:0,life:1.3,els});
   if(floats.length>24){const f=floats.shift();f.els.forEach(e=>e.remove());}}
@@ -47,16 +47,23 @@ function updateUI(dt){
     if(on){const ph=S.state==='final'?((S.ft/S.B2)%1+1)%1:(typeof S.bph==='number'?S.bph:((S.t/S.B)%1+1)%1);bb.style.transform='translateY('+(-Math.sin(ph*Math.PI)*20).toFixed(1)+'px) scale('+(1+0.25*(S.pulse||0)).toFixed(2)+')';}}   // бубенец прыгает в долю
   // иконки героев вне кадра (замочек — держит плиту)
   let ii=0;const H=innerHeight;
-  if(!cine)for(const pane of PANES){for(const h of HEROES){if(h.cling)continue;const pr=project(new V3(h.pos.x,h.pos.y+h.d.height*0.6,h.pos.z),pane);
-      if(!pr.behind&&Math.abs(pr.x)<0.96&&Math.abs(pr.y)<0.93)continue;let x=pr.x,y=pr.y;if(pr.behind){x=-x;y=-Math.abs(y)-0.5;}
-      const s=Math.max(Math.abs(x)/0.86,Math.abs(y)/0.8,1);x/=s;y/=s;const ic=iconEls[ii++];if(!ic)break;
+  // раздельный экран: иконка — у края своей панели (и у линии раздела), у иконки напарника — сколько до него метров; позвал «Ко мне!» — его иконка пульсирует
+  if(!cine)for(const pane of PANES){for(const h of HEROES){if(h.cling)continue;const pr=project(new V3(h.pos.x,h.pos.y+h.d.height*0.6,h.pos.z),pane);let px,py;
+      if(!pane.poly){if(!pr.behind&&Math.abs(pr.x)<0.96&&Math.abs(pr.y)<0.93)continue;let x=pr.x,y=pr.y;if(pr.behind){x=-x;y=-Math.abs(y)-0.5;}
+        const s=Math.max(Math.abs(x)/0.86,Math.abs(y)/0.8,1);x/=s;y/=s;px=pane.x+(x*0.5+0.5)*pane.w;py=(1-(y*0.5+0.5))*H;}
+      else{let sx=pane.x+(pr.x*0.5+0.5)*pane.w,sy=(1-(pr.y*0.5+0.5))*H;if(!pr.behind&&paneHas(pane,sx,sy,6))continue;
+        if(pr.behind){sx=pane.x+(-pr.x*0.5+0.5)*pane.w;sy=(1-(-Math.abs(pr.y)-0.5)*0.5-0.5)*H;const dx=sx-pane.A[0],dy=sy-pane.A[1],l=Math.hypot(dx,dy)||1,k=4*Math.max(pane.w,H)/l;sx=pane.A[0]+dx*k;sy=pane.A[1]+dy*k;}
+        [px,py]=paneEdge(pane,sx,sy,Math.max(34,Math.min(pane.w,H)*0.07));}
+      const ic=iconEls[ii++];if(!ic)break;
       if(ic.k!==h.kind){ic.k=h.kind;ic.s.innerHTML=sil(h.kind,h.d.css);ic.el.style.borderColor=PCSS[h.player];}
-      ic.el.style.display='flex';ic.el.style.transform='translate('+(pane.x+(x*0.5+0.5)*pane.w).toFixed(1)+'px,'+((1-(y*0.5+0.5))*H).toFixed(1)+'px)';
+      const mate=!!pane.poly&&h.active&&h.player!==pane.pi,dm=mate?Math.round(hd(h.pos,active(pane.pi).pos))+' м':'';if(ic.dt!==dm){ic.dt=dm;ic.d.textContent=dm;ic.d.style.display=dm?'block':'none';ic.el.style.zIndex=dm?'2':'';}
+      const pu=mate&&SPLIT.glow&&SPLIT.glow.pi===h.player?1+0.3*SPLIT.glow.t*Math.abs(Math.sin(G.time*9)):1;
+      ic.el.style.display='flex';ic.el.style.transform='translate('+px.toFixed(1)+'px,'+py.toFixed(1)+'px)'+(pu>1?' scale('+pu.toFixed(3)+')':'');
       ic.el.style.opacity=h.active?1:0.7;ic.lock.style.display=h.held?'flex':'none';const watch=W.gaze&&!h.active&&!h.inRing&&h.firefly>0;ic.eye.style.display=watch?'flex':'none';if(watch)ic.eye.style.opacity=h.firefly<5&&Math.sin(G.time*14)<0?0.25:1;ic.q.style.display=h.inRing?'flex':'none';}}
   for(;ii<iconEls.length;ii++)iconEls[ii].el.style.display='none';
   for(let i=floats.length-1;i>=0;i--){const f=floats[i];f.t+=dt;f.p.y+=dt*0.9;const a=1-f.t/f.life;
     f.els.forEach((el,k)=>{const pane=PANES[k];if(!pane||a<=0){el.style.display='none';return;}const pr=project(f.p,pane);
-      if(pr.behind||Math.abs(pr.x)>1||Math.abs(pr.y)>1){el.style.display='none';return;}el.style.display='block';el.style.opacity=a;
+      if(pr.behind||(pane.poly?!paneHas(pane,pane.x+(pr.x*0.5+0.5)*pane.w,(1-(pr.y*0.5+0.5))*H,0):Math.abs(pr.x)>1||Math.abs(pr.y)>1)){el.style.display='none';return;}el.style.display='block';el.style.opacity=a;
       el.style.transform='translate('+(pane.x+(pr.x*0.5+0.5)*pane.w).toFixed(1)+'px,'+((1-(pr.y*0.5+0.5))*H).toFixed(1)+'px) translate(-50%,-50%)';});
     if(f.t>=f.life){f.els.forEach(e=>e.remove());floats.splice(i,1);}}
   updatePrompts();}

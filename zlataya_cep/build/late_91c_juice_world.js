@@ -81,7 +81,7 @@ SFX.bell=function(){let hit=null,pi=0;for(const b of W.bells){b._jwA=b._jwA||[fa
 JW.origCall=SFX.call;
 {const _dc=doCall;doCall=function(pi){JW.callPi=pi;try{return _dc.apply(this,arguments);}finally{JW.callPi=null;}};}
 SFX.call=function(){if(JW.callPi==null)return JW.origCall.apply(this,arguments);const pi=JW.callPi,h=active(pi);
-  const p=PANES.length>1?(pi?0.65:-0.65):jxPan(h.pos,pi);JWS.call(p,h.kind);jwCap('зов: '+(typeof HNAME!=='undefined'&&HNAME[h.kind]||'друг'),p);};
+  const p=PANES.length>1?panePan(pi)*1.3:jxPan(h.pos,pi);JWS.call(p,h.kind);jwCap('зов: '+(typeof HNAME!=='undefined'&&HNAME[h.kind]||'друг'),p);};
 
 /* ---------- удар вместе: аккорд; вибрация на удар, урон и замах на тебя ---------- */
 {const _eh=enemyHit;enemyHit=function(e,h){const emb=e&&e.embers;const r=_eh.apply(this,arguments);
@@ -115,8 +115,12 @@ function jwArrows(){const show=G.state==='play'&&!G.cine&&!G.solo&&!G.trans;
     const split=PANES.length>1,P=split?PANES[i]:PANES[0];if(!P||(!split&&i===1))continue;
     const tgts=split?[active(1-i)]:[active(0),active(1)];
     for(const t of tgts){if(players[t.player].downed)continue;const v=t.pos.clone().add(new V3(0,1,0)).project(P.cam);const behind=v.z>1;let x=v.x,y=v.y;if(behind){x=-x;y=-y;}
-      if(!behind&&Math.abs(x)<0.95&&Math.abs(y)<0.95)continue;const m=Math.max(Math.abs(x),Math.abs(y))||1;x/=m;y/=m;
-      const px=P.x+(x*0.9+1)/2*P.w,py=(1-(y*0.9+1)/2)*P.h,ang=Math.atan2(x,y);
+      let px,py,ang;
+      if(P.poly){let sx=P.x+(x*0.5+0.5)*P.w,sy=(1-(y*0.5+0.5))*P.h;if(!behind&&paneHas(P,sx,sy,P.w*0.025))continue;   // панель — часть экрана: край её, а не экрана
+        if(behind){const dx=sx-P.A[0],dy=sy-P.A[1],l=Math.hypot(dx,dy)||1,k=4*Math.max(P.w,P.h)/l;sx=P.A[0]+dx*k;sy=P.A[1]+dy*k;}
+        [px,py]=paneEdge(P,sx,sy,18);ang=Math.atan2(sx-P.A[0],P.A[1]-sy);}
+      else{if(!behind&&Math.abs(x)<0.95&&Math.abs(y)<0.95)continue;const m=Math.max(Math.abs(x),Math.abs(y))||1;x/=m;y/=m;
+        px=P.x+(x*0.9+1)/2*P.w;py=(1-(y*0.9+1)/2)*P.h;ang=Math.atan2(x,y);}
       el.style.display='block';el.style.borderBottomColor=PCSS[t.player];el.style.transform='translate('+(px-16)+'px,'+(py-15)+'px) rotate('+ang+'rad)';break;}}}
 
 /* ---------- музыка «спокойно / бой» и темы этапов босса ---------- */

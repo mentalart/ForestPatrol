@@ -36,7 +36,7 @@
 - **Риги:** `rigs[0]`, `rigs[1]` (свой у каждого игрока) и `shared` (общий).
   - `updateRig`: взгляд = герой + упреждение, камера = взгляд + `camBack()·7,2 м + 4 м`, x ограничен `W.camX`.
   - `updateShared`: кадр ролика, `W.camFn` (сценарные камеры раннера и полёта), боевые зоны `W.camZones`, середина пары.
-- **Сплит:** `decideSplit` (`G.split`, `G.splitTarget`).
+- **Сплит:** `decideSplit` (`G.split`, `G.splitTarget`); с final06 — объект `SPLIT`: линия, стороны, режимы, доля экрана (`docs/37_split_screen.md`).
 - **Отрисовка:** `composePose(src)` → `render()`. Общий экран рисуется камерой `camS`, сплит — `cams[0]` и `cams[1]` (со `setViewOffset` и переходом через `lerp`).
 - **Направление камеры:** `camBack()` = (sin `W.camYaw`, 0, cos `W.camYaw`). От него же считается ходьба в `updatePlayer`.
 - **Правый стик** прототип не читает (`PADS.gp[pi].axes[2..3]`).

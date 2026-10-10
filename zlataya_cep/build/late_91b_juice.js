@@ -13,8 +13,8 @@ const jxV=v=>v*JX.s.vol;
 const jxFl=()=>{const k=FIN.set.flashK;return k==null?(FIN.set.flash===false?0:1):k;};
 const JXKIND={potap:0.72,proshka:1,pelageya:1.12,yosha:1.32};
 const jxK=h=>(h&&JXKIND[h.kind])||1;
-// панорама: где источник на экране (в раздельном — ещё и чья половина)
-function jxPan(pos,pi){try{if(!pos||!PANES.length)return 0;const n=PANES.length,P=n>1?PANES[pi===1?1:0]:PANES[0];const v=pos.clone().project(P.cam);let x=clamp(v.x,-1,1)*0.55;if(n>1)x=x*0.5+(pi===1?0.4:-0.4);return clamp(x,-0.9,0.9);}catch(e){return 0;}}
+// панорама: где источник на экране (в раздельном камера панели проецирует на весь экран — место на экране и есть своя половина)
+function jxPan(pos,pi){try{if(!pos||!PANES.length)return 0;const n=PANES.length,P=n>1?PANES[pi===1?1:0]:PANES[0];const v=pos.clone().project(P.cam);let x=clamp(v.x,-1,1)*(n>1?0.75:0.55);return clamp(x,-0.9,0.9);}catch(e){return 0;}}
 // тон прототипа можно заглушить на время вызова исходного звука (чтобы сохранить его побочные действия)
 {const _tone=tone;tone=function(){if(JX.muteTone)return;return _tone.apply(this,arguments);};}
 const jxMuted=fn=>{JX.muteTone=true;try{return fn();}finally{JX.muteTone=false;}};
@@ -155,11 +155,13 @@ function jxHero(h,dt){const play=G.state==='play'&&!G.cine&&h.body&&h.body.visib
 {const _st=step;step=function(dt){_st(dt);try{jxTick(dt);}catch(e){console.error('juice tick',e);}};}
 function jxTick(dt){jxPartsTick(dt);JX.duckT=Math.max(0,JX.duckT-dt);
   for(const k in JXV){const v=JXV[k];if(v.a>0){v.a=Math.max(0,v.a-dt*1.6);}v.el.style.opacity=v.a.toFixed(3);}
+  // раздельный экран: кромка боли — по форме панели игрока (линия раздела бывает и наклонной, и горизонтальной)
+  [['l',0],['r',1]].forEach(([k,pi])=>{const v=JXV[k],cp=PANES.length>1?SPLD.e[pi]:'';if(v.cp!==cp){v.cp=cp;Object.assign(v.el.style,cp?{left:'0',width:'100%',clipPath:cp}:{left:pi?'50%':'0',width:'50%',clipPath:''});}});
   // последний лепесток
   for(const pi of [0,1]){const p=players[pi],E=hudEls[pi];if(!E)continue;const el=E.petals[0];
     const low=jxOn('lowpetal')&&G.state==='play'&&!G.cine&&p.petals===1&&!p.downed&&!W.noLose&&!W.noPetals&&!(G.solo&&pi===1);
     if(!low){if(p._jHB){p._jHB=0;p._jHBn=-1;el.style.transform='';el.style.filter='';}continue;}
-    if(!p._jHB)p._jHB=1.149;p._jHB+=dt;const ph=p._jHB%1.15,nb=Math.floor(p._jHB/1.15);if(nb!==p._jHBn){p._jHBn=nb;JXSND.heart(PANES.length>1?(pi?0.45:-0.45):0);}
+    if(!p._jHB)p._jHB=1.149;p._jHB+=dt;const ph=p._jHB%1.15,nb=Math.floor(p._jHB/1.15);if(nb!==p._jHBn){p._jHBn=nb;JXSND.heart(PANES.length>1?panePan(pi)*0.9:0);}
     const beat=Math.max(Math.exp(-ph*14),0.7*Math.exp(-Math.max(0,ph-0.19)*14)*(ph>0.19?1:0));el.style.transform='scale('+(1+0.35*beat).toFixed(3)+') rotate('+(Math.sin(G.time*18)*6*beat).toFixed(1)+'deg)';el.style.filter='drop-shadow(0 0 '+(8*beat).toFixed(1)+'px #ff6a9a)';}
   // клубок: распустился, сшивается, сшит
   for(const h of HEROES){const p=players[h.player];const down=!!h._down||(p.downed&&active(h.player)===h);const rev=h._down?(h._down.rev||0):(p.downed&&active(h.player)===h?p.revT:0);
