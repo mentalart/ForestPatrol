@@ -93,7 +93,7 @@ const S=D.lulShells,L=D.LS;ACT(0,'proshka');ACT(1,'pelageya');
 const SPOT=i=>[S[i].x*0.86,S[i].z+(i===2?-0.6:i===3?0.6:0)],ON=(pi,i)=>{const [x,z]=SPOT(i),h=U.act(pi);if(Math.hypot(h.pos.x-x,h.pos.z-z)<0.9&&Math.abs(h.pos.y-8.5)<0.6){REL(pi);return true;}STEP(pi,x,z,hh=>hh.grounded&&hh.pos.y<8.3);return false;};
 // куплет 1: волна дошла до круга — обе ракушки разом
 for(let i=0;i<60*90&&L.stage<2&&!ZC.G.cine;i++){for(const pi of[0,1]){if(ON(pi,pi)&&Math.abs(L.bt-0.7*L.per)<0.1&&ZC.G.time-S[pi].ref.press>1)ZC.press(KEYS[pi].item);}ZC.tick(1);}
-[0,1].forEach(REL);if(L.stage<2)throw new Error('куплет 1 не спет: строк '+L.lines+' spot='+JSON.stringify([0,1].map(SPOT))+' sh='+JSON.stringify(S.map(s=>[s.x,s.z]))+' bt='+L.bt+' per='+L.per+' '+U.st());r.push('v1 lines='+L.lines);
+[0,1].forEach(REL);if(L.stage<2)throw new Error('куплет 1 не спет: строк '+L.lines+' spot='+JSON.stringify([0,1].map(SPOT))+' sh='+JSON.stringify(S.map(s=>[s.x,s.z]))+' bt='+L.bt+' per='+L.per+' tb='+L.tb+' judged='+L.judged+' now='+ZC.G.time+' press='+JSON.stringify(D.LUL.map(l=>[l.press,l.hum]))+' refp='+JSON.stringify(S.map(s=>s.ref.press))+' kinds='+[0,1].map(pi=>U.act(pi).kind)+' '+U.st());r.push('v1 lines='+L.lines);
 // куплет 2: Пелагея — Совиный взор; звёздочки ловит Прошка прыжком
 for(let i=0;i<60*90&&L.stage<3&&!ZC.G.cine;i++){const vis=D.STARS.filter(q=>!q.got&&q.seen>0);if(!vis.length&&i%90===0)U.tap(KEYS[1].skill);
   const h=U.act(0),q=vis.sort((a,b)=>Math.hypot(a.g.position.x-h.pos.x,a.g.position.z-h.pos.z)-Math.hypot(b.g.position.x-h.pos.x,b.g.position.z-h.pos.z))[0];
