@@ -63,12 +63,12 @@ Object.assign(LUBOK,{
  zayac:LB('<rect x="0" y="0" width="300" height="150" fill="#f0f4d8"/><rect x="0" y="110" width="300" height="40" fill="#8ab04a"/><ellipse cx="150" cy="104" rx="20" ry="13" fill="#c8b8a0"/><path d="M144 92 L140 66 M156 92 L160 66" fill="none" stroke-width="5"/><circle cx="70" cy="96" r="12" fill="#ff9a66"/><circle cx="230" cy="94" r="14" fill="#e0b27a"/><circle cx="110" cy="70" r="10" fill="#d7a6ec"/><circle cx="196" cy="68" r="9" fill="#8fe0d4"/><path d="M70 96 L110 70 L196 68 L230 94 L150 128 Z" fill="none" stroke="#e0b040" stroke-width="2"/>'),
  yajco:LB('<rect x="0" y="0" width="300" height="150" fill="#3a2408"/><rect x="0" y="0" width="300" height="20" fill="#d8a840"/><rect x="0" y="130" width="300" height="20" fill="#d8a840"/><ellipse cx="150" cy="118" rx="44" ry="10" fill="#a02028"/><rect x="148" y="84" width="4" height="30" fill="#e8f0ff"/><rect x="220" y="80" width="30" height="40" fill="none" stroke="#141018" stroke-width="3"/><circle cx="235" cy="100" r="7" fill="#ffd23a"/><circle cx="60" cy="96" r="12" fill="#8fe0d4"/><path d="M72 96 Q140 90 222 98" fill="none" stroke="#7ad8ff" stroke-dasharray="4 4"/>')});
 function buildLukomorye(){
-  setTheme('sunset');sky('sunset');W.name='Лукоморье';W.sub='у лукоморья дуб зелёный…';W.camX=12;const F=W.flags;
+  setTheme('sunset');sky('sunset');W.name='Лукоморье';W.sub='у лукоморья дуб зелёный…';W.camX=22;const F=W.flags;
   const mode=G.done['1-B']&&!G.flags.voiceDone?'festival':G.done['2-B']&&!G.flags.w2done?'festival2':G.done['3-B']&&!G.flags.w3done?'festival3':G.done['4-B']&&!G.flags.w4done?'festival4':G.done['5-B1']&&!G.flags.bezImen?'bezimen':G.hub?'hub':'first';F.mode=mode;F.stage=mode==='first'?'fall':'free';
-  ground(-20,20,-19.5,12);ground(-20,20,-24,-19.5,0,MAT.sand,M(0xb89a6a));
-  wall(-20.2,-20,-24,12);wall(20,20.2,-24,12);wall(-20.2,20.2,12,12.2);wall(-20.2,20.2,-24.2,-24);
+  ground(-30,30,-19.5,12);ground(-30,30,-24,-19.5,0,MAT.sand,M(0xb89a6a));
+  wall(-30.2,-30,-24,12);wall(30,30.2,-24,12);wall(-30.2,30.2,12,12.2);wall(-30.2,-23.25,-24.2,-24);wall(-20.75,30.2,-24.2,-24);   // остров раздвинут до ±30 (углы у моря); в стене у воды — проход на причал Садко (x −23,25…−20,75)
   const sea=new THREE.Mesh(new THREE.PlaneGeometry(700,320),M(0x3a7fb0));sea.rotation.x=-Math.PI/2;sea.position.set(0,-0.45,-184);W.group.add(sea);
-  const foam=[];for(let i=0;i<4;i++){const f=addMesh(new THREE.BoxGeometry(44,0.05,0.25),MB(0xf4f8ff,{transparent:true,opacity:0.8}),0,-0.38,-25-i*1.6);f.castShadow=false;foam.push(f);}
+  const foam=[];for(let i=0;i<4;i++){const f=addMesh(new THREE.BoxGeometry(64,0.05,0.25),MB(0xf4f8ff,{transparent:true,opacity:0.8}),0,-0.38,-25-i*1.6);f.castShadow=false;foam.push(f);}
   const oak=makeOak(0,-7);
   // витки цепи на дубе: каждый скованный — золотой виток
   const coils=new THREE.Group();coils.position.set(0,0,-7);W.group.add(coils);
@@ -105,7 +105,7 @@ function buildLukomorye(){
   const motes=[];for(let i=0;i<18;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.05,6,5),MB(i%3?0xffe08a:0xfff8e0,{transparent:true,opacity:0.9}));W.group.add(m);motes.push({m,a:rand(0,6.3),r:rand(1.2,2.8),y:rand(0.8,4.6),s:rand(0.4,1)});}
   // каменная тропка от дуба к стану, ракушки и фонари-огоньки на берегу
   for(let z=-11.5;z>-19.8;z-=0.95)addMesh(new THREE.CylinderGeometry(rand(0.34,0.44),rand(0.36,0.46),0.06,9),M(0xb0a898),rand(-0.25,0.25),0.03,z).castShadow=false;
-  for(let i=0;i<14;i++){const x=rand(-18,18),z=rand(-23.6,-19.8);if(Math.abs(x)<3)continue;const sh=addMesh(new THREE.SphereGeometry(rand(0.1,0.17),8,6,0,Math.PI*2,0,Math.PI/2),M([0xf4d8c8,0xffc0b0,0xf0e8d8][i%3]),x,0.02,z);sh.scale.set(1,0.5,1.3);sh.rotation.y=rand(0,3);}
+  for(let i=0;i<14;i++){const x=rand(-28,28),z=rand(-23.6,-19.8);if(Math.abs(x)<3||Math.abs(x+22)<2)continue;const sh=addMesh(new THREE.SphereGeometry(rand(0.1,0.17),8,6,0,Math.PI*2,0,Math.PI/2),M([0xf4d8c8,0xffc0b0,0xf0e8d8][i%3]),x,0.02,z);sh.scale.set(1,0.5,1.3);sh.rotation.y=rand(0,3);}
   const lamps=[];for(const s of[-1,1]){addMesh(new THREE.CylinderGeometry(0.07,0.09,2.4,8),LM.red,s*3.3,1.2,-21.4);addMesh(new THREE.SphereGeometry(0.12,8,6),LM.gold,s*3.3,2.45,-21.4);const o=addMesh(new THREE.SphereGeometry(0.22,12,10),MB(0xffe08a,{transparent:true,opacity:0.95}),s*3.3,2.85,-21.4);lamps.push(o);W.cyls.push({x:s*3.3,z:-21.4,r:0.2,miny:-1,maxy:2.6,on:true});}
   {const gl=new THREE.PointLight(0xffc860,0.9,10,2);gl.position.set(0,3,-21.6);W.group.add(gl);}
   const rush=[loom];let loomSpin=0;
@@ -115,7 +115,7 @@ function buildLukomorye(){
     lamps.forEach((o,i)=>{o.scale.setScalar(1+0.08*Math.sin(G.time*4+i*2));});
     motes.forEach(q=>{q.a+=dt*q.s*(1+loomSpin*0.4);q.m.position.set(Math.cos(q.a)*q.r,q.y+Math.sin(G.time*2+q.a)*0.2,-22.6+Math.sin(q.a)*q.r*0.6);q.m.material.opacity=0.5+0.4*Math.sin(G.time*5+q.a*3);});
     if(unroll&&Math.random()<0.5)burst(new V3(rand(-1,1),2.3,-22.2),0xffd76a,2,2.2);});
-  edgeTrees(-14,12,-20,20);
+  edgeTrees(-14,12,-30,30);
   const Z=makeZven();W.zven=Z;Z.mode='script';Z.vis=true;Z.pos.set(0,9,3);
   W.zvenFree=true;W.zvenGoal=()=>{const a=active(0),b=active(1);return new V3((a.pos.x+b.pos.x)/2,2.4,(a.pos.z+b.pos.z)/2-2.4);};
   /* ---------- карта-рушник: пять миров вышиты картинками ---------- */
@@ -142,7 +142,7 @@ function buildLukomorye(){
       if(mute&&!G.flags.w3done){F.meow=(F.meow||6)-dt;if(F.meow<0&&HEROES.some(h=>hd(h.pos,kot.g.position)<4)){F.meow=rand(8,12);if(G.flags.w2done)bark(kot,'kot',['<i>(шёпотом)</i> …в некотором…','<i>(шёпотом)</i> …жар-птица…','<i>(шёпотом)</i> …перо…','<i>(шёпотом)</i> …соловей…'][Math.floor(rand(0,4))],1.8);else bark(kot,'kot','Мяу.',1.4);}}}
     kuz.arm.rotation.x=F.forging?0:Math.sin(G.time*1.2)*0.1;
     // у моря — карта-рушник (A)
-    if(F.stage==='free'&&!G.ui&&!F.rushnik){for(const pi of[0,1]){const h=active(pi);if(h.pos.z<-17.2&&tap(pi,'jump')){
+    if(F.stage==='free'&&!G.ui&&!F.rushnik){for(const pi of[0,1]){const h=active(pi);if(h.pos.z<-17.2&&Math.abs(h.pos.x)<17&&tap(pi,'jump')){
         if(mode==='first'){F.rushnik=true;SFX.whoosh();map.visible=true;anim(1.4,k=>{map.scale.z=Math.max(0.01,smooth(k));});later(1.5,mapScene);}
         else if(G.flags.voiceDone&&!G.flags.w2intro&&!G.flags.w2done){F.rushnik=true;w2Intro();}
         else if(G.flags.w2done&&!G.flags.w3intro&&!G.flags.w3done){F.rushnik=true;w3Intro();}
@@ -160,7 +160,7 @@ function buildLukomorye(){
       else if(curWorld()===1?G.flags.forged:curWorld()===2?G.flags.forged2:curWorld()===3?G.flags.forged3:curWorld()===4?G.flags.forged4:G.flags.forged5){bark(kuz,'kuzma',curWorld()===4?'Узда при вас — клещами её берите.':'Ворота настежь — в путь ступай.',1.8);}
       else{bark(kuz,'kuzma','Руки есть. А голова? Поглядим сперва.',2.4);tip(0,'Нечего пока ковать. '+(curWorld()===1?'К Лешему':curWorld()===2?'К Водяному':curWorld()===3?'К Соловью':curWorld()===4?'К Горынычу':'В терем')+' ворота открыть —<br>'+GATE(curWorld())+' звеньев мира надобно скрепить. Сейчас '+(G.forgedW[curWorld()]||0)+' / '+GATE(curWorld()),3);}}
     else if(F.stage==='free'&&!G.ui&&tap(1,'attack')&&hd(active(1).pos,anvil.position)<2.6)tip(1,'Ковать будет Прошка — ему молот под стать:<br>Это дело его — ему и ковать.',2);});
-  for(const pi of[0,1]){prompt(pi,'jump',()=>headOf(active(pi)),()=>F.stage==='free'&&!G.ui&&!F.rushnik&&active(pi).pos.z<-17.2,'карта');}
+  for(const pi of[0,1]){prompt(pi,'jump',()=>headOf(active(pi)),()=>F.stage==='free'&&!G.ui&&!F.rushnik&&active(pi).pos.z<-17.2&&Math.abs(active(pi).pos.x)<17,'карта');}
   prompt(0,'attack',()=>headOf(HERO.proshka),()=>F.stage==='free'&&!G.ui&&!F.forging&&HERO.proshka.active&&hd(HERO.proshka.pos,anvil.position)<2.2&&(pendingLinks()>0||coilPending()),()=>coilPending()?'чинить цепь':'ковать звенья');
   prompt(0,'attack',()=>new V3(8.6,2.2,0.6),()=>F.forging&&G.ui==='forge','в такт');
   const mapObj=pi=>O(()=>mode==='first'?'Лукоморье! Погуляйте на просторе.<br>Стан с рушником стоит у самого моря — подойди и нажми '+K(pi,'jump')+'.':'Стан у моря — '+K(pi,'jump')+(pendingLinks()>0?' · Прошку ждёт Кузьма со звеньями — '+K(0,'attack')+'<br>':' ·<br>')+'Векша, Кот, огород да Ряба — подойди и жми '+K(pi,'attack')+'.',()=>F.rushnik,()=>[rush[0]]);
