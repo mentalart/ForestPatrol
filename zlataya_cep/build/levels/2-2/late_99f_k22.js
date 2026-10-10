@@ -130,9 +130,14 @@ build22=function(){
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.gusli=true;W.fallY=-5;W.waterCol=0x2f86c8;W.waterOp=0.42;
   const grass=M(0x7ab060),skinSide=M(0x5a6a86),soil=M(0x6a4a2a),wood=M(0x9a6a3c);
   // море и облака
-  const sea=new THREE.Mesh(new THREE.PlaneGeometry(900,900),M(0x3a90c0,{transparent:true,opacity:0.92}));sea.rotation.x=-Math.PI/2;sea.position.set(0,-3.2,-200);W.group.add(sea);const SEA={y:-3.2,target:-3.2};
-  for(let i=0;i<34;i++){const c=new THREE.Group();c.position.set(rand(-90,90),rand(14,32),rand(-470,60));for(let k=0;k<4;k++)addMesh(new THREE.SphereGeometry(rand(2,4),10,8),MB(0xffffff,{transparent:true,opacity:0.85}),rand(-4,4),rand(-1,1),rand(-2,2),c).castShadow=false;W.group.add(c);}
-  const whale=makeWhale(560);const WY=-56.8;whale.g.position.set(0,WY,-200);   // кит длиной во весь уровень: спина — сразу под землёй деревни
+  // SEA.y — логический уровень моря (по нему считаются герои: −3,2 в покое, до +7 при нырянии); плоскость на экране — seaVis22(SEA.y): в покое −12, кит выступает из воды
+  const sea=new THREE.Mesh(new THREE.PlaneGeometry(2600,2600),M(0x3a90c0,{transparent:true,opacity:0.92}));sea.rotation.x=-Math.PI/2;sea.position.set(0,WH22.SEA0,-200);W.group.add(sea);const SEA={y:-3.2,target:-3.2};
+  {const ab=W.group.children.find(c=>c.geometry&&c.geometry.type==='PlaneGeometry'&&c.geometry.parameters.width===700&&Math.abs(c.position.y+12)<0.01);if(ab)ab.position.y=-70;}   // «бездна» ниже моря, не вровень с ним
+  scene.fog.near=60;scene.fog.far=260;   // кит виден не только вблизи (в ролике туман отодвигается — kitIntro)
+  // облака: места по зерну, вне путей камеры ролика (стороны и высота), чтобы не загораживали кита
+  {let sd=909;const rr=(a,b)=>{sd=(sd*16807)%2147483647;return a+(b-a)*sd/2147483647;};
+    for(let i=0;i<34;i++){const c=new THREE.Group();const side=i%2?1:-1;c.position.set(side*rr(80,300),rr(40,74),rr(-560,130));for(let k=0;k<4;k++)addMesh(new THREE.SphereGeometry(rr(2.5,5),10,8),MB(0xffffff,{transparent:true,opacity:0.85}),rr(-5,5),rr(-1,1),rr(-2.5,2.5),c).castShadow=false;W.group.add(c);}}
+  const whale=whale22();const WY=0;   // кит длиной во весь уровень (640 м): корпус по хребту уровня, море опущено — спина, хвост и голова видны
   wall(-10.2,-10,-100,46);wall(10,10.2,-100,46);wall(-10.2,10.2,46,46.2);wall(-10.2,-3.6,-100.2,-100);wall(3.6,10.2,-100.2,-100);wall(-10.2,-10,-424,-140);wall(10,10.2,-424,-140);wall(-10.2,10.2,-424.2,-424);
   const Z=makeZven();W.zven=Z;Z.pos.set(0,2.2,36);
   const hut=(minx,maxx,minz,maxz,top,roof)=>{const m=W.group.children.length;box(minx,maxx,0,top,minz,maxz,wood,{occ:false});const w=maxx-minx,d=maxz-minz;const rg=new THREE.ConeGeometry(Math.max(w,d)*0.62,1.1,4);rg.rotateY(Math.PI/4);

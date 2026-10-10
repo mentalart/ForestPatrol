@@ -72,7 +72,7 @@
   W.pauseLine='Рыба-кит дышит: вдох гудит, выдох трясёт спину. Вода одна на двоих — раковина посерёдке общая.<br>Хвост — сыр-бор; фонтан на выдохе до облаков; щука в ведре и печка Емели; частокол в боку — Потап тянет, Йоша лечит;<br>губа — кит зевает, держись у Потапа; между глаз — хоровод; в дубраве — грибы Совиным взором; на макушке — колыбельная в три куплета: в лад с волной, сонные звёздочки, четыре голоса.';
   W.onStart=()=>{later(0.6,kitIntro);};
   // для ботов: перенос к участку и состояние
-  W.dbg22=()=>({F,PZ,BUCK,PIKE_AT,STV,PL,stove,Z3,endLink,pathAt,WB,SEA,RIB,RB,PALS,BARN,plows,YW,DC,MUSH,GR,LUL,lulShells,FN,headEye,flankEye,fellP,LS,STARS,lullStage,lulRing});
+  W.dbg22=()=>({whale,sea,F,PZ,BUCK,PIKE_AT,STV,PL,stove,Z3,endLink,pathAt,WB,SEA,RIB,RB,PALS,BARN,plows,YW,DC,MUSH,GR,LUL,lulShells,FN,headEye,flankEye,fellP,LS,STARS,lullStage,lulRing});
   W.warp22=(where)=>{const order=['tail','yard','village','ride','ribs','lip','eyes','grove','head','crown'],after=w=>order.indexOf(where)>order.indexOf(w);
     if(after('tail')){F.log=true;logCol.on=true;fellP.cyl.on=false;fellP.g.position.set(0,0.15,30.4);fellP.g.rotation.x=-Math.PI/2;}
     if(after('yard')){F.mast=true;F.garden=true;G2.open=true;g2col.on=false;}
