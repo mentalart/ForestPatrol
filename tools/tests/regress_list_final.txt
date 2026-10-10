@@ -1,6 +1,6 @@
 # Регресс релизной сборки zlataya_cep/zlataya_cep_final06.html: все боты прототипа и боты меню и сохранений
 # пролог, мир 1, хаб
-smoke tpjump t12n t12deep t12tat t12long t12chudo t12pond t12fogthread tfoes t13v t15n t1b tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine tfin_k1bfull thub2 t11 thub9 thub9b thub9c
+smoke tpjump t12n t12deep t12tat t12long t12chudo t12pond t12fogthread tfoes t13v t15n tfin_k15_rooms tfin_k15_boss t1b tfin_k1b tfin_k1bhands tfin_k1bhide tfin_k1b3 tfin_k1b3solo tfin_k1bcine tfin_k1bfull thub2 t11 thub9 thub9b thub9c
 # мир 2 (прежние t21 t2c t25c t22d t23f t24n t21x t22shot — только для прототипа: в релизе уровни мира 2 другие, их проверяют tfin_k2*)
 tdodge tfade tsplit thw2
 # мир 3
@@ -8,17 +8,17 @@ t31 t31c t32 t33n t34 t35 thw3a thw3b tmenu3
 # мир 4, Лукоморье
 t41v t42v t43 tluko t44 t45 t4b thw4
 # мир 5, эпилог, Застава
-tfin_likho t51 t52 t53 t54 t5b1 t5b1solo t5b1cam tepi tlukoepi tlukopro tfin_mapnav tzast
+tfin_likho t51 t52 t53 t54 t5b1 t5b1solo t5b1cam tepi tlukoepi tlukopro thub_corners tfin_mapnav tzast
 # задачи всех уровней
 tallobj
 # одиночный режим
 tsolo tsolo41 tsospot tso12long tso13 tso33 tso54 tso51
 # релиз: титул, меню, пауза, сохранения, клавиши разработчика, кино (final02), коллизии и арт (final03), обучение Горыныча, видимость героев, камера (final04)
-tfin_menu tfin_lesson tfin_companion tfin_companion_p tfin_companion_11 tfin_companion_12 tfin_companion_13 tfin_companion_21 tfin_companion_22 tfin_companion_23 tfin_companion_24 tfin_companion_25 tfin_companion_2b tfin_companion_2bboss tfin_companion_31 tfin_companion_32 tfin_companion_33 tfin_companion_34 tfin_companion_35 tfin_companion_3b tfin_companion_41 tfin_companion_42 tfin_companion_43 tfin_companion_44 tfin_companion_45 tfin_companion_4b tfin_companion_52 tfin_companion_53 tfin_companion_54 tfin_companion_5b1 tfin_companion_51 tfin_companion_14 tfin_companion_15 tfin_companion_1b tfin_companion_luko tfin_save tfin_dev tfin_devluko tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b tfin_occ tfin_cam tfin_kids1 tfin_kids2 tfin_taskshort
+tfin_menu tfin_lesson tfin_companion tfin_companion_p tfin_companion_11 tfin_companion_12 tfin_companion_13 tfin_companion_21 tfin_companion_22 tfin_companion_23 tfin_companion_24 tfin_companion_25 tfin_companion_2b tfin_companion_2bboss tfin_companion_31 tfin_companion_32 tfin_companion_33 tfin_companion_34 tfin_companion_35 tfin_companion_3b tfin_companion_41 tfin_companion_42 tfin_companion_43 tfin_companion_44 tfin_companion_45 tfin_companion_4b tfin_companion_52 tfin_companion_53 tfin_companion_54 tfin_companion_5b1 tfin_companion_51 tfin_companion_5b2 tfin_companion_14 tfin_companion_15 tfin_companion_1b tfin_companion_luko tfin_save tfin_dev tfin_devluko tfin_cine tfin_splash tfin_col tfin_art tfin_boss4b tfin_occ tfin_cam tfin_kids1 tfin_kids2 tfin_taskshort
 # final05: джойстики в меню, переключение на живого героя, враги видимы (все виды и появившиеся позже), удар героев, бюджет отрисовок, пачки прозрачных стен, персонажи и враги (витрины)
 tfin_pads tfin_downswap tfin_foekinds tfin_foekinds1b tfin_foekinds2 tfin_foekinds2b tfin_foekinds3 tfin_foekinds4 tfin_foekinds5 tfin_foekinds6 tfin_foeidle tfin_slash tfin_budget tfin_fadebatch tfin_cast tfin_foecast
 # final06: озвучка всей игры; щиты героев (B) и удар Потапа со спины; пауза с джойстика на живом пути (курсор над меню); Лукоморье — стан и берег дальше от дуба; звук с первого нажатия, голос заставки, звуки меню; пролог — Прошка несёт самокат, падает, все смеются; большие «прозрачные стены» — кусками
-tfin_voice tfin_readvoice tfin_guard tfin_pads2 tfin_luko tfin_uisnd tfin_scooter tfin_splashclick tfin_fadesplit tfin_fadelocal tfin_potap
+tfin_voice tfin_readvoice tfin_guard tfin_pads2 tfin_luko tfin_lukozast tfin_uisnd tfin_scooter tfin_splashclick tfin_fadesplit tfin_fadelocal tfin_potap
 # final06: «Битва с Кощеем» 5-Б2 — пролог, двенадцать стадий, полёты домой, без подсказок, вдвоём и в одиночку (docs/28)
 tk5e_smoke tk5e_prolog tk5e_runner tk5e_s1 tk5e_leshy tk5e_s3 tk5e_p1 tk5e_p2 tk5e_p3 tk5e_p4 tk5e_s8 tk5e_s9 tk5e_s10 tk5e_s11 tk5e_s12 tk5e_fly tk5e_solo tk5e_flow tk5e_lesson tk5e_lesson2 tk5e_act1lessons tk5e_act2lessons tk5e_act3lessons tk5e_budget
 # подсказки: одна карточка на игрока, общая по центру, без повторов (late_79_hints.js)

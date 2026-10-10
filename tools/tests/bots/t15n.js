@@ -1,4 +1,4 @@
-U.go();ZC.loadLevel(6);ZC.tick(60*2);ZC.skip();ZC.tick(60*2);const r=[U.walkTo(0,0,-18,5),U.walkTo(1,1,-18,5)];const b=U.brawl(60);r.join(',')+' '+b+' | '+U.obj()
+U.go();ZC.loadLevel(6);ZC.tick(60*2);ZC.skip();ZC.tick(60*2);ZC.FIN.warp(0,1,0);ZC.tick(30);ZC.W.enemies.forEach(e=>{if(e.pos.z>20){e.alive=false;e.g.visible=false;}});const r=[U.walkTo(0,0,-18,5),U.walkTo(1,1,-18,5)];const b=U.brawl(60);r.join(',')+' '+b+' | '+U.obj()
 //@@
 window.throwTo=function(pi,x,y,z,sx,sz){const r=U.walkTo(pi,x,z,6);const h=U.act(pi);h.face=Math.atan2(sx-h.pos.x,sz-h.pos.z);ZC.tick(1);ZC.press(pi?'Semicolon':'KeyR');ZC.tick(40);return r;};
 window.webHop=function(pi,wx,wz){const h=U.act(pi);const r=U.walkTo(pi,wx+0.3,wz+0.3,6);ZC.press(pi?'KeyM':'Space');ZC.tick(80);return r+' y='+h.pos.y.toFixed(2);};

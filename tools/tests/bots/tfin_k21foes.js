@@ -41,4 +41,12 @@ const h=U.act(0);const c2=ZC.FIN.pearlClam(h.pos.x,h.pos.z-5,null,h.pos.y,{pi:0}
 const lid=c2.L.clamLid.rotation.x;const res=FIGHT(0,[c2],30);if(c2.alive&&c2.state!=='dying')throw new Error('Жемчужницу не одолели: '+res+' '+c2.state+' emb='+c2.embers);
 'clam reflect ok '+r.join()+' wind='+sawWind+' lid='+lid.toFixed(2)+' '+res
 //@@
+// одиночная игра: Прошка (игрок 0) заходит в правый канал Переливной улицы — щука охотится и на неё, а не только на героя игрока 2
+ZC.setSolo(true);ZC.startFrom(ZC.LV('2-1'));ZC.G.manual=true;ZC.tick(30);ZC.skip();ZC.tick(60);NOCINE();ZC.W.warp21('perel');ZC.tick(30);NOCINE();
+const p=ZC.W.enemies.find(e=>e.kind==='shchuka'&&e.alive&&e.home.z<-85&&e.home.z>-100);if(!p)throw new Error('нет щуки в канале');
+const h=U.act(ZC.G.soloPi);if(h.kind!=='proshka')throw new Error('в одиночке не Прошка: '+h.kind);h.pos.set(5.5,-2.2,-86);h.vel.set(0,0,0);
+let hunted=-1;for(let i=0;i<900&&hunted<0;i++){ZC.tick(1);if((p.state==='ready'||p.state==='wind')&&p.tgt===h)hunted=i;}
+if(hunted<0)throw new Error('щука не охотится на Прошку в своём канале: '+p.state+' d='+Math.hypot(p.pos.x-h.pos.x,p.pos.z-h.pos.z).toFixed(1)+' pi='+p.pi);
+'pike hunts solo hero t='+(hunted/60).toFixed(1)
+//@@
 if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'foes errs=0'
