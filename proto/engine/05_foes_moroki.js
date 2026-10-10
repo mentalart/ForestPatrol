@@ -195,7 +195,7 @@ function makeFoe(kind,x,z,o){o=o||{};const def=FOE[kind];const s=o.scale||1;
     part(sp,new THREE.ConeGeometry(0.07,0.22,6),sm,0,0.11,0);const c2=new THREE.ConeGeometry(0.07,0.22,6);c2.rotateX(Math.PI);part(sp,c2,sm,0,-0.11,0);}spin.visible=false;
   const br=new THREE.Mesh(new THREE.TorusGeometry(def.r*1.6,0.07,6,30),MB(0xfff2b0,{transparent:true,opacity:0.9}));br.rotation.x=Math.PI/2;br.position.y=0.1;br.visible=false;g.add(br);
   const satRim=new THREE.Mesh(new THREE.TorusGeometry(def.r*1.3,0.05,6,30),MB(0xff5a5a,{transparent:true,opacity:0.8}));satRim.rotation.x=Math.PI/2;satRim.position.y=0.3;satRim.visible=false;g.add(satRim);
-  const e={kind,def,g,body,inner,L,pos:g.position,baseY:o.y||0,pi:o.pi,harmless:!!o.harmless,tutorial:!!o.tutorial,big:!!def.big,face:o.face||0,r:def.r*s,s,state:'spawn',t:0,cd:rand(1.2,2.0),
+  const e={kind,def,g,body,inner,L,pos:g.position,baseY:o.y||0,pi:o.pi,own:o.own,harmless:!!o.harmless,tutorial:!!o.tutorial,big:!!def.big,face:o.face||0,r:def.r*s,s,state:'spawn',t:0,cd:rand(1.2,2.0),
     embers:n,maxEmb:n,alive:true,signals:o.signals||def.sig,sig:null,lastSig:null,sameCount:0,tgt:null,S,eyeMat,embersM:embers,spin,br,satRim,home:new V3(x,o.y||0,z),leash:o.leash||6,
     wdur:0.5,slow:1,left:null,openHit:false,open:0,flashT:0,bdur:4,kx:0,kz:0,shell:def.shell?{f:true,b:true,l:true,r:true}:null,plateCd:0,sat:0,finT:0,finBy:-1,onDeath:o.onDeath||null};
   W.enemies.push(e);return e;}

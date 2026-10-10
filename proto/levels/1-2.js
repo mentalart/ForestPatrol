@@ -326,7 +326,7 @@ function build12(){
     for(const h of HEROES){if(h.grounded&&h.pos.y<-0.3&&!h.cling){h.wetT=(h.wetT||0)+dt;h.extraY=-0.25;if(h.wetT>1.4){h.wetT=0;SFX.splash();toHummock(h);}}else{h.wetT=0;h.extraY=0;}}
     // мини-стычка: струна ко второму колышку простояла пустой — из-за кочки выходит Тать-Паутинник (один на обе дорожки)
     if(!tatS)for(const pi of[0,1]){const t=W.threads.find(q=>q.string&&!q.sag&&q.stake===S2[pi]);tatIdle[pi]=t&&!standingOn(t)&&players[pi].heroes.some(h=>h.pos.z>-22.5)?tatIdle[pi]+dt:0;   // пока кому-то ещё переходить
-      if(tatIdle[pi]>3){tatS=tatKit(tatFoe(lanes[pi]+0.2,-28.6,{leash:5,scale:1.3}));banner('Тать-Паутинник!','#ffd0a0',2.2,'грызёт пустую нить · встань на струну — он и сбежит');break;}}
+      if(tatIdle[pi]>3){tatS=tatKit(tatFoe(lanes[pi]+0.2,-28.6,{leash:5,scale:1.3,own:pi}));banner('Тать-Паутинник!','#ffd0a0',2.2,'грызёт пустую нить · встань на струну — он и сбежит');break;}}
     const thick=W.threads.find(t=>t.thick&&t.string&&!t.sag);
     if(thick&&HERO.yosha.groundRef===thick)yoshaThick=true;
     if(yoshaThick&&!F.sagged&&!F.thanks&&HERO.yosha.pos.z<-74.2&&HERO.yosha.grounded){F.thanks=true;bark(HERO.yosha,'yosha','Потап, ты не обернулся ни разу. Спасибо, друг.',2.8);}
