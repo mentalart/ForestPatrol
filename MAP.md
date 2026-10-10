@@ -171,7 +171,7 @@
 | `levels/luko_3_worlds45.js` | 237 | — |
 | `levels/luko_3b_zastava_hill.js` | 131 | — |
 | `levels/luko_4_zastava_forge_map.js` | 196 | — |
-| `levels/luko_4b_corners.js` | 481 | — |
+| `levels/luko_4b_corners.js` | 612 | — |
 | `levels/luko_5_dress_garden.js` | 224 | — |
 | `levels/luko_6_festival_end.js` | 68 | — |
 | `engine/10_levels_flow_menu.js` | 214 | ПОТОК ИГРЫ |
@@ -448,7 +448,7 @@
 | `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 100 файлов |
+| `changes/` | 101 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 26 файлов |

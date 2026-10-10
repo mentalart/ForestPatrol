@@ -3,7 +3,7 @@
   // Остров раздвинут до x ±30. У моря всё считается от берега: в релизе берег сдвинут к морю на W.shoreDZ (rep_30_luko.py).
   // Состояние — G.flags.lc: едет в сохранении вместе с флагами и сбрасывается «Новой игрой». Всё необязательно и на путь не влияет.
   {const SZ=-(W.shoreDZ||0),zS=-19.5+SZ,zW=-24+SZ,SEA=-0.45,PX=-22;
-  const LC=G.flags.lc=G.flags.lc||{};for(const k of['fish','beasts','seenT','dish','rd'])LC[k]=LC[k]||{};
+  const LC=G.flags.lc=G.flags.lc||{};for(const k of['fish','kg','beasts','seenT','dish','rd'])LC[k]=LC[k]||{};
   LC.bag=LC.bag||{fish:0,mush:0,berry:0};LC.kite=LC.kite||{best:0,n:0};
   const trip=G.trips||0;if(LC.trip!==trip){LC.trip=trip;LC.mushGot=[];LC.berryGot=[];}LC.mushGot=LC.mushGot||[];LC.berryGot=LC.berryGot||[];
   WHO.rusalka=WHO.rusalka||['Русалка','#8fe0c8'];WHO.veter=WHO.veter||['Ветер-Ветрило','#cfe8ff'];
@@ -24,15 +24,15 @@
   const RAD=Math.PI/180;
 
   /* ---------- данные ---------- */
-  const FISH=[{id:'yorsh',name:'Ёрш-ершишка',sz:0,col:0x9a8a4a,nuts:1,line:'Колючий, да свой: в Китеже дорогу кажет.'},
-    {id:'peskar',name:'Пескарь',sz:0,col:0xb8b0a0,nuts:1,line:'Премудрый: из-под коряги не высовывается.'},
-    {id:'karas',name:'Карась',sz:1,col:0xd8a840,nuts:2,line:'Золотистый, круглый — что пятак.'},
-    {id:'okun',name:'Окунь',sz:1,col:0x6a9a4a,nuts:2,line:'Полосатый, плавник колючий.'},
-    {id:'leshch',name:'Лещ',sz:1,col:0xc0b8a8,nuts:3,lv:'2-1',line:'Широкий да плоский — как блин на Масленицу.'},
-    {id:'shchuka',name:'Щука',sz:2,col:0x5a7a4a,nuts:4,line:'«По щучьему веленью…» — да это другая сказка!'},
-    {id:'som',name:'Сом-усач',sz:2,col:0x4a4a40,nuts:5,lv:'2-3',line:'Старый, мудрый — усами дно метёт.'},
-    {id:'osetr',name:'Осётр',sz:2,col:0x7a7a8a,nuts:6,lv:'2-B',line:'Царская рыба — в костяных щитках.'},
-    {id:'zolotaya',name:'Золотая рыбка',sz:3,col:0xffc930,lv:'2-3',line:'«Чего тебе надобно?» — спросит да желанье исполнит.'}];
+  const FISH=[{id:'yorsh',kg:[0.05,0.18],str:0.25,name:'Ёрш-ершишка',sz:0,col:0x9a8a4a,nuts:1,line:'Колючий, да свой: в Китеже дорогу кажет.'},
+    {id:'peskar',kg:[0.03,0.09],str:0.2,name:'Пескарь',sz:0,col:0xb8b0a0,nuts:1,line:'Премудрый: из-под коряги не высовывается.'},
+    {id:'karas',kg:[0.3,1.0],str:0.4,name:'Карась',sz:1,col:0xd8a840,nuts:2,line:'Золотистый, круглый — что пятак.'},
+    {id:'okun',kg:[0.2,0.9],str:0.45,name:'Окунь',sz:1,col:0x6a9a4a,nuts:2,line:'Полосатый, плавник колючий.'},
+    {id:'leshch',kg:[0.6,2.2],str:0.55,name:'Лещ',sz:1,col:0xc0b8a8,nuts:3,lv:'2-1',line:'Широкий да плоский — как блин на Масленицу.'},
+    {id:'shchuka',kg:[1.5,6],str:0.8,name:'Щука',sz:2,col:0x5a7a4a,nuts:4,line:'«По щучьему веленью…» — да это другая сказка!'},
+    {id:'som',kg:[3,12],str:0.95,name:'Сом-усач',sz:2,col:0x4a4a40,nuts:5,lv:'2-3',line:'Старый, мудрый — усами дно метёт.'},
+    {id:'osetr',kg:[4,15],str:1.0,name:'Осётр',sz:2,col:0x7a7a8a,nuts:6,lv:'2-B',line:'Царская рыба — в костяных щитках.'},
+    {id:'zolotaya',kg:[0.2,0.35],str:0.5,name:'Золотая рыбка',sz:3,col:0xffc930,lv:'2-3',line:'«Чего тебе надобно?» — спросит да желанье исполнит.'}];
   const RID=[['Сидит дед, во сто шуб одет.<br>Кто его раздевает — тот слёзы проливает.','Лук','Капуста','Репка'],
     ['Красна девица сидит в темнице,<br>а коса — на улице.','Морковка','Свёкла','Редиска'],
     ['Зимой и летом — одним цветом.','Ёлка','Берёза','Дуб'],
@@ -79,8 +79,9 @@
     for(const s of[-1,1])addMesh(new THREE.BoxGeometry(0.22,0.2,zS-zW+6.6),post,PX+s*0.9,0.08,(zS+zW-7.6)/2);
     for(let z=zW+0.2;z>=zW-7.1;z-=2.3)for(const s of[-1,1]){addMesh(new THREE.CylinderGeometry(0.14,0.16,3.3,7),post,PX+s*1.18,-0.95,z);addMesh(new THREE.CylinderGeometry(0.07,0.07,0.75,6),post,PX+s*1.22,0.65,z);}
     for(const s of[-1,1])addMesh(new THREE.BoxGeometry(0.08,0.08,7.4),post,PX+s*1.22,0.98,zW-3.45);addMesh(new THREE.BoxGeometry(2.5,0.08,0.08),post,PX,0.98,zW-7.1);
-    // фонарь в конце причала и доска «Рыбий альбом» у входа
-    addMesh(new THREE.CylinderGeometry(0.06,0.07,2.2,6),post,PX+1.22,1.1,zW-7.0);addMesh(new THREE.SphereGeometry(0.2,10,8),MB(0xffe08a,{transparent:true,opacity:0.9}),PX+1.22,2.3,zW-7.0).castShadow=false;
+    // фонарь у входа на причал (в конце он загораживал рыбалку), на краю — тумба с канатом; доска «Рыбий альбом» у входа
+    addMesh(new THREE.CylinderGeometry(0.06,0.07,2.2,6),post,PX+1.22,1.1,zW+0.2);addMesh(new THREE.SphereGeometry(0.2,10,8),MB(0xffe08a,{transparent:true,opacity:0.9}),PX+1.22,2.3,zW+0.2).castShadow=false;
+    addMesh(new THREE.CylinderGeometry(0.12,0.14,0.5,8),post,PX+0.9,0.55,zW-6.85);const rp=addMesh(new THREE.TorusGeometry(0.15,0.04,5,12),M(0xc8b080),PX+0.9,0.72,zW-6.85);rp.rotation.x=Math.PI/2;
     const bd=new THREE.Group();bd.position.set(PX-1.9,0,zS-0.7);bd.rotation.y=0.5;W.group.add(bd);addMesh(new THREE.CylinderGeometry(0.07,0.09,1.6,6),post,0,0.8,0,bd);
     addMesh(new THREE.BoxGeometry(1.3,0.7,0.07),M(0xc8a878),0,1.45,0.05,bd);for(let i=0;i<3;i++){const f=addMesh(new THREE.SphereGeometry(0.1,8,6),M([0xd8a840,0x6a9a4a,0x5a7a4a][i]),-0.38+i*0.38,1.47,0.1,bd);f.scale.set(1.6,0.8,0.4);}
     colBox(PX-1.2,PX+1.2,-3,0.3,zW-7.1,zS-0.4,false);
@@ -94,14 +95,6 @@
   const boat=new THREE.Group();boat.position.set(PX-3.3,SEA+0.05,zW-3.6);boat.rotation.y=0.25;W.group.add(boat);
   {const wd=M(0x8a5a32);addMesh(new THREE.BoxGeometry(1.1,0.36,2.4),wd,0,0.1,0,boat);const bw=new THREE.ConeGeometry(0.56,0.9,4);bw.rotateX(-Math.PI/2);bw.rotateZ(Math.PI/4);const b=addMesh(bw,wd,0,0.1,-1.62,boat);b.scale.set(1,0.48,1);
     addMesh(new THREE.BoxGeometry(1.0,0.06,0.3),M(0xb08050),0,0.3,0.2,boat);for(const s of[-1,1]){const o=addMesh(new THREE.BoxGeometry(0.06,0.06,1.7),M(0x6b4a2b),s*0.7,0.32,0.1,boat);o.rotation.y=s*0.35;}}
-  // поплавок, леска, удочка, рыбка
-  const flt=new THREE.Group();W.group.add(flt);addMesh(new THREE.SphereGeometry(0.11,10,8),M(0xd8302a,{emissive:0x601010,emissiveIntensity:0.3}),0,0.07,0,flt);addMesh(new THREE.SphereGeometry(0.1,10,8),M(0xf4f0e8),0,-0.05,0,flt);flt.visible=false;
-  const lineM=new THREE.Mesh(new THREE.CylinderGeometry(0.008,0.008,1,4),MB(0xf0f0f0));lineM.castShadow=false;W.group.add(lineM);lineM.visible=false;
-  const rodG=new THREE.CylinderGeometry(0.02,0.035,2.4,6);rodG.translate(0,1.2,0);const rod=new THREE.Mesh(rodG,M(0x8a6a3a));rod.castShadow=false;
-  function makeFish(f){const g=new THREE.Group();W.group.add(g);const s=[0.55,0.8,1.15,0.8][f.sz],m=M(f.col,f.id==='zolotaya'?{emissive:0xc08000,emissiveIntensity:0.6}:{});
-    const b=part(g,new THREE.SphereGeometry(0.2*s,10,8),m,0,0,0);b.scale.set(0.55,1,2.1);const t=new THREE.ConeGeometry(0.16*s,0.3*s,4);t.rotateX(-Math.PI/2);const tl=part(g,t,m,0,0,-0.5*s);tl.scale.set(0.3,1.2,1);
-    for(const x of[-1,1])part(g,new THREE.SphereGeometry(0.03*s,6,5),MAT.dark,x*0.1*s,0.06*s,0.28*s);if(f.id==='som')for(const x of[-1,1]){const w=part(g,new THREE.CylinderGeometry(0.008,0.008,0.4*s,4),MAT.dark,x*0.12*s,-0.04*s,0.42*s);w.rotation.x=1.2;w.rotation.z=x*0.5;}
-    return g;}
   let sadko=null;if(done('2-1')&&typeof makeSadko==='function'){try{sadko=makeSadko();sadko.g.position.set(PX+2.6,0,zS-1.5);sadko.g.rotation.y=-2.2;W.cyls.push({x:PX+2.6,z:zS-1.5,r:0.45,miny:-1,maxy:2,on:true});}catch(e){sadko=null;}}
 
   /* ---------- левый угол: ветла и русалка на ветвях ---------- */
@@ -229,7 +222,7 @@
     {id:'pushok',lv:'3-2',name:'Пушок-ягнёнок',where:'на лугу',line:'Облачный барашек — на пружинке прыг!',mk:()=>typeof makeSheep==='function'&&makeSheep(),aim:0.6,
       spots:[[-4,0,9.5],[-22,0,zS+15],[26.2,2.6,RZ-1.2]],tick:(o,t,p)=>{o.g.position.set(p.x,p.y+Math.max(0,Math.sin(t*3))*0.3,p.z);o.g.rotation.y=t*0.2;}},
     {id:'sirin',lv:'3-3',name:'Сирин',where:'на морском камне',line:'Запоёт — заслушаешься до вечера.',mk:()=>typeof makeSirin==='function'&&makeSirin('sirin'),aim:0.8,
-      spots:[[-9,1.4,zW-9],[PX+1.22,2.45,zW-7.0]],tick:(o,t,p)=>{o.g.position.set(p.x,p.y+Math.sin(t*1.4)*0.05,p.z);o.g.rotation.y=Math.atan2(TWX-p.x,TWZ-p.z);}},
+      spots:[[-9,1.4,zW-9],[TX,6.6,TZ]],tick:(o,t,p)=>{o.g.position.set(p.x,p.y+Math.sin(t*1.4)*0.05,p.z);o.g.rotation.y=Math.atan2(TWX-p.x,TWZ-p.z);}},
     {id:'gusi',lv:'3-5',name:'Гуси-лебеди',where:'в небе над морем',line:'Летят, крыльями машут — малышей не трогают больше.',mk:()=>{if(typeof makeGoose!=='function')return null;const g=new THREE.Group();W.group.add(g);const fl=[0,1,2].map(i=>{const q=makeGoose(0.8);g.add(q.g);q.g.position.set(i*1.6-1.6,i===1?0.6:0,i===1?-1.2:0);return q;});return {g,fl};},aim:0.3,
       spots:[[0,9,zW-22]],tick:(o,t,p)=>{const a=t*0.12;o.g.position.set(p.x+Math.cos(a)*18,p.y+Math.sin(t*0.5),p.z+Math.sin(a)*10);o.g.rotation.y=-a;}},
     {id:'gorynych',lv:'4-B',name:'Змей Горыныч',where:'высоко в небе',line:'Был грозой — стал другом: катает, кто попросит.',mk:()=>typeof makeGorynych==='function'&&makeGorynych(),aim:1.5,
@@ -240,68 +233,206 @@
   const beasts=[];BEASTS.forEach((b,i)=>{if(!beastOpen(b))return;let o=null;try{o=b.mk();}catch(e){o=null;}if(!o||!o.g)return;const s=b.spots[(trip+i)%b.spots.length];b.p=new V3(s[0],s[1],s[2]);b.o=o;o.g.position.copy(b.p);beasts.push(b);});
   const beastAim=b=>b.o.g.position.clone().add(new V3(0,b.aim,0));
 
-  /* ---------- рыбалка ---------- */
-  const FS={on:false};
+  /* ---------- рыбалка: тени рыб, прицельный заброс, поклёвки, вываживание на натяжении лески, подсачек, показ улова ---------- */
+  // Тени рыб плавают у причала всегда: мелочь — у самого причала, крупные — подальше, у Золотой рыбки (после 2-3) тень с блёстками.
+  // Заброс — кружком на воде; рыба подплывает, трогает поплавок и клюёт; подсечь можно только на поклёвке. Вываживание: держать удар —
+  // подматывать (леска натягивается), отпускать, когда звенит; рыба рвётся вбок — тянуть в другую сторону; прыжок рыбы — подсечь прыжком.
+  // У причала — подсачек в такт. Камера своя на каждую фазу.
+  const FS={on:false,ph:'off',aimD:5,aimX:0,T:0,St:1,D:0,lat:0,rd:0,lure:0,dipT:0};
   const fishOK=f=>!f.lv||done(f.lv);
-  function fishStart(pi){const h=active(pi);G.ui='fish';FS.on=true;FS.pi=pi;FS.h=h;FS.ph='cast';FS.t=0;FS.hits=0;FS.beat=-1;FS.fake=0;
-    placeOnGround(h,clamp(h.pos.x,PX-0.6,PX+0.6),Math.min(h.pos.z,zW-6.2),0.3);h.face=Math.PI;h.vel.set(0,0,0);h.following=false;
-    rod.position.set(0.3,heroHeight(h)*0.55,0.15);rod.rotation.set(0.7,0,0);h.g.add(rod);lineM.visible=true;flt.visible=true;FS.fp=new V3(PX+rand(-0.6,0.6),SEA,zW-9.6);
-    const tip0=new V3();rod.updateMatrixWorld(true);rod.localToWorld(tip0.set(0,2.4,0));const from=tip0.clone();anim(0.6,k=>{flt.position.lerpVectors(from,FS.fp,k);flt.position.y+=Math.sin(k*Math.PI)*1.2;});
-    later(0.6,()=>{if(!FS.on)return;FS.ph='wait';FS.t=rand(1.6,3.6);FS.fake=rand(0.5,1.2);SFX.water();burst(FS.fp,0xdff4ff,6,1.4);});SFX.whoosh();
-    if(sadko)bark(sadko,'sadko',['Рыба на песню идёт — подыграю!','Тихо… клюёт — тяни в лад!','Держи удочку крепче, гость!'][Math.floor(rand(0,3))],2);
-    W.camFn=()=>({pos:h.pos.clone().add(new V3(1.7,2.5,3.3)),look:FS.fp.clone().lerp(h.pos,0.4).add(new V3(0,0.5,0)),k:3});G.uiTick=fishTick;hud.style.display='block';hudFish('Ждём поклёвку… '+K(pi,'attack')+' — подсечь, когда поплавок нырнёт · '+K(pi,'guard')+' — смотать удочку');}
-  const hudFish=t=>{hud.innerHTML='<div style="position:absolute;left:0;right:0;bottom:22%;text-align:center">'+t+'</div>';};
-  function fishEnd(){FS.on=false;if(G.ui==='fish'){G.ui=null;G.uiTick=null;W.camFn=null;}if(rod.parent)rod.parent.remove(rod);lineM.visible=false;flt.visible=false;hudOff();if(FS.ring)FS.ring.visible=false;}
-  function fishTick(){const dt=1/60;if(!FS.on)return;const h=FS.h;if(FS.ph==='wait'||FS.ph==='bite')FS.t-=dt;const tip=new V3();rod.updateMatrixWorld(true);rod.localToWorld(tip.set(0,2.4,0));
-    if(both(q=>tap(q,'guard'))||pressed.has('Escape')){fishEnd();return;}
-    const hit=both(q=>tap(q,'attack'));
-    if(FS.ph==='wait'){FS.fake-=dt;let dip=0;if(FS.fake<0&&FS.fake>-0.18)dip=0.06;if(FS.fake<-0.18)FS.fake=rand(0.8,1.6);
-      flt.position.set(FS.fp.x,SEA+Math.sin(G.time*3)*0.025-dip,FS.fp.z);
-      if(hit){SFX.miss();floatText(FS.fp.clone().add(new V3(0,0.8,0)),'Рано! Рыбка спугнулась','#dddddd');FS.t=rand(1.4,3);}
-      if(FS.t<=0){FS.ph='bite';FS.t=0.8;SFX.water();burst(FS.fp,0xdff4ff,10,2);floatText(FS.fp.clone().add(new V3(0,0.9,0)),'Клюёт!','#ffe36b');hudFish('Клюёт! Жми '+K(FS.pi,'attack')+'!');}}
-    else if(FS.ph==='bite'){flt.position.set(FS.fp.x,SEA-0.22+Math.sin(G.time*20)*0.04,FS.fp.z);
-      if(hit){FS.ph='reel';FS.t=0;FS.beat=-1;FS.res=[];FS.pressed={};SFX.ok();
-        if(!FS.ring){FS.ring=new THREE.Mesh(new THREE.TorusGeometry(1,0.05,6,28),MB(COL.gold,{transparent:true,opacity:0.9}));FS.ring.rotation.x=Math.PI/2;FS.ring.castShadow=false;W.group.add(FS.ring);}
-        FS.ring.visible=true;hudFish((sadko?'Садко играет — ':'')+'тяни в лад: '+K(FS.pi,'attack')+', когда кольцо сожмётся к поплавку'+(G.solo?'':' · вдвоём можно'));}
-      else if(FS.t<=0){FS.ph='wait';FS.t=rand(1.6,3.2);SFX.miss();floatText(FS.fp.clone().add(new V3(0,0.8,0)),'Сорвалась!','#dddddd');hudFish('Ждём поклёвку… '+K(FS.pi,'attack')+' — подсечь');}}
-    else if(FS.ph==='reel'){const B=0.8;FS.t+=dt;const k=Math.floor(FS.t/B);
-      while(FS.beat<k&&FS.beat<3){FS.beat++;if(FS.beat>=1&&FS.beat<=3){const n=[67,71,74][FS.beat-1];if(sadko){gusli(n,0.0,0.18);}else tone(mf(n),0.3,'sine',0.12);}}
-      const next=[1,2,3].find(b=>!FS.pressed[b]&&FS.t<b*B+0.3);
-      flt.position.set(FS.fp.x,SEA-0.12+Math.sin(G.time*14)*0.05,FS.fp.z);
-      if(next!==undefined){const u=clamp((next*B-FS.t)/B,0,1);FS.ring.position.set(FS.fp.x,SEA+0.1,FS.fp.z);FS.ring.scale.setScalar(lerp(0.25,1.8,u));FS.ring.material.color.setHex(u<0.18?0xffffff:COL.gold);}
-      if(hit){const b=[1,2,3].find(x=>!FS.pressed[x]&&Math.abs(FS.t-x*B)<0.42);if(b!==undefined){const ok=Math.abs(FS.t-b*B)<=0.22;FS.pressed[b]=true;if(ok){FS.hits++;burst(FS.fp,0xffe060,10,3);FS.fp.lerp(new V3(PX,SEA,zW-7.4),0.3);}else SFX.clink();}}
-      for(const b of[1,2,3])if(!FS.pressed[b]&&FS.t>b*B+0.3)FS.pressed[b]=true;
-      if(FS.t>3*B+0.5){FS.ring.visible=false;fishLand();}}
-    lcLine(lineM,tip,flt.position.clone().add(new V3(0,0.1,0)));}
-  function fishLand(){const h=FS.h,n=FS.hits;FS.ph='done';
-    if(n===0){SFX.miss();floatText(FS.fp.clone().add(new V3(0,1,0)),'Ушла рыбка… в другой раз!','#dddddd');if(sadko)later(0.4,()=>bark(sadko,'sadko','Не беда — море большое.',1.6));later(1.0,fishEnd);return;}
-    const gold=n===3&&done('2-3')&&Math.random()<0.14+0.08*Math.min(3,LC.kind||0);
-    const pool=FISH.filter(f=>f.sz===n-1&&fishOK(f));const f=gold?FISH.find(q=>q.id==='zolotaya'):pool[Math.floor(Math.random()*pool.length)];
-    if(gold){goldFish();return;}
-    const first=!LC.fish[f.id];LC.fish[f.id]=(LC.fish[f.id]||0)+1;LC.bag.fish=Math.min(9,(LC.bag.fish||0)+1);
-    const fm=makeFish(f),from=FS.fp.clone(),to=h.pos.clone().add(new V3(0,heroHeight(h)+0.5,0));SFX.water();burst(from,0xdff4ff,14,3);
-    anim(0.7,k=>{fm.position.lerpVectors(from,to,k);fm.position.y+=Math.sin(k*Math.PI)*2;fm.rotation.x=k*Math.PI*2;});
-    later(0.75,()=>{anim(0.9,k=>{fm.rotation.z=Math.sin(k*20)*0.4;});SFX.ok();banner(f.name+'!','#ffd76a',2.2,(first?'новая рыба в альбоме · ':'')+'в лукошко для Яги · +'+f.nuts+' '+nutW(f.nuts));G.nutsHub=(G.nutsHub||0)+f.nuts;
-      if(f.id==='shchuka'&&first)later(0.6,()=>bark(h,h.kind,'Щука! Сейчас как скажет: «По щучьему веленью…»',2.4));else if(sadko)later(0.5,()=>bark(sadko,'sadko',n===3?'Вот это улов!':'Ладно поймана!',1.4));});
-    later(2.0,()=>{W.group.remove(fm);fishEnd();});}
+  const PE=new V3(PX,0.3,zW-6.4),PEZ=zW-7;   // где стоит рыбак; край причала
+  // высота волны: в релизе море качается шейдером (late_27_atmo.js, та же формула), в прототипе — ровное
+  const seaH=(x,z)=>{if(typeof ATMO!=='undefined'&&ATMO.ocean&&ATMO.ocean.parent&&typeof FIN!=='undefined'&&FIN.U){const t=FIN.U.time.value;
+    return ATMO.ocean.position.y+0.22*(Math.sin(x*0.8+t*1.5)*0.5+Math.sin(z*1.1-t*1.1)*0.35+Math.sin((x+z)*0.43+t*0.7)*0.45);}return SEA;};
+  const kgTxt=kg=>kg<1?Math.round(kg*100)*10+' г':String(Math.round(kg*10)/10).replace('.',',')+' кг';
+  // снасть: удилище из четырёх колен (гнётся от натяга), леска из двенадцати отрезков (провисает), поплавок, кружок прицела, круги на воде
+  const flt=new THREE.Group();W.group.add(flt);addMesh(new THREE.SphereGeometry(0.12,10,8),M(0xd8302a,{emissive:0x601010,emissiveIntensity:0.35}),0,0.08,0,flt);
+  addMesh(new THREE.SphereGeometry(0.11,10,8),M(0xf4f0e8),0,-0.05,0,flt);addMesh(new THREE.CylinderGeometry(0.014,0.014,0.24,4),M(0x2a1a10),0,0.25,0,flt);flt.visible=false;
+  const lineS=[];for(let i=0;i<12;i++){const m=new THREE.Mesh(new THREE.CylinderGeometry(0.01,0.01,1,4),MB(0xf6f6f6));m.castShadow=false;m.visible=false;W.group.add(m);lineS.push(m);}
+  const lineDraw=(a,b,sag)=>{const c=a.clone().lerp(b,0.5);c.y-=sag*2;let p0=a;for(let i=1;i<=12;i++){const u=i/12,p=a.clone().multiplyScalar((1-u)*(1-u)).addScaledVector(c,2*u*(1-u)).addScaledVector(b,u*u);lcLine(lineS[i-1],p0,p);lineS[i-1].visible=true;p0=p;}};
+  const lineOff=()=>lineS.forEach(m=>{m.visible=false;});
+  const rodG=new THREE.Group(),rodSeg=[];{let par=rodG;for(let i=0;i<4;i++){const s=new THREE.Group();s.position.y=i?0.64:0;par.add(s);const m=new THREE.Mesh(new THREE.CylinderGeometry(0.016-i*0.003,0.03-i*0.004,0.64,6),M(i%2?0x9a7a48:0x6b4a2b));m.position.y=0.32;m.castShadow=false;s.add(m);rodSeg.push(s);par=s;}
+    const rl=new THREE.Mesh(new THREE.CylinderGeometry(0.07,0.07,0.06,10),M(0x5a5a60));rl.rotation.z=Math.PI/2;rl.position.set(0.06,0.16,0);rodG.add(rl);FS.reelM=rl;}
+  const rodTip=()=>{rodSeg[3].updateWorldMatrix(true,false);return rodSeg[3].localToWorld(new V3(0,0.64,0));};
+  const rodPose=(pitch,bend)=>{rodG.rotation.x=pitch;for(let i=1;i<4;i++)rodSeg[i].rotation.x=bend*(0.1+i*0.09);};
+  const mark=new THREE.Group();W.group.add(mark);mark.visible=false;
+  for(const r of[0.55,0.18]){const m=new THREE.Mesh(new THREE.TorusGeometry(r,0.05,6,28),MB(0xffe36b,{transparent:true,opacity:0.9,depthWrite:false}));m.rotation.x=Math.PI/2;m.castShadow=false;mark.add(m);}
+  const RIP=[];for(let i=0;i<8;i++){const m=new THREE.Mesh(new THREE.TorusGeometry(1,0.035,4,28),MB(0xffffff,{transparent:true,opacity:0,depthWrite:false}));m.rotation.x=Math.PI/2;m.castShadow=false;m.visible=false;W.group.add(m);RIP.push({m,t:9,d:1,r:1,x:0,z:0});}
+  const ripple=(x,z,r,d)=>{const q=RIP.reduce((a,b)=>a.t/a.d>b.t/b.d?a:b);Object.assign(q,{x,z,t:0,d:d||0.9,r:r||1});q.m.visible=true;};
+  function makeFish(f,sc){const g=new THREE.Group();W.group.add(g);const s=sc||[0.55,0.8,1.15,0.8][f.sz],m=M(f.col,f.id==='zolotaya'?{emissive:0xc08000,emissiveIntensity:0.6}:{});
+    const b=part(g,new THREE.SphereGeometry(0.2*s,10,8),m,0,0,0);b.scale.set(0.55,1,2.1);part(g,new THREE.SphereGeometry(0.17*s,10,8),M(0xf0ece0),0,-0.05*s,0.02*s).scale.set(0.5,0.7,1.8);
+    const t=new THREE.ConeGeometry(0.17*s,0.32*s,4);t.rotateX(-Math.PI/2);part(g,t,m,0,0,-0.52*s).scale.set(0.25,1.3,1);part(g,new THREE.ConeGeometry(0.09*s,0.22*s,3),m,0,0.2*s,0).scale.set(0.3,1,1.6);
+    for(const x of[-1,1])part(g,new THREE.SphereGeometry(0.03*s,6,5),MAT.dark,x*0.1*s,0.06*s,0.3*s);
+    if(f.id==='som')for(const x of[-1,1]){const w=part(g,new THREE.CylinderGeometry(0.008,0.008,0.4*s,4),MAT.dark,x*0.12*s,-0.04*s,0.42*s);w.rotation.x=1.2;w.rotation.z=x*0.5;}
+    return g;}
+  const kgK=(f,kg)=>clamp((kg-f.kg[0])/(f.kg[1]-f.kg[0]+1e-6),0,1),fishScale=(f,kg)=>[0.55,0.8,1.15,0.75][f.sz]*(0.85+0.35*kgK(f,kg));
+  // тени рыб
+  const SH=[];
+  function shSpawn(near){const poolAll=FISH.filter(f=>fishOK(f)&&f.sz<3);let x,z;
+    if(near){const a=rand(0,6.28);x=clamp(near.x+Math.cos(a)*5.5,PX-8,PX+8);z=clamp(near.z+Math.sin(a)*5.5,zW-19.5,zW-8.6);}else{const d=rand(2.4,12);z=PEZ-d;x=PX+rand(-1,1)*Math.min(7.5,1.4+d*0.7);}
+    const d=PEZ-z,gold=done('2-3')&&Math.random()<0.05+0.03*Math.min(3,LC.kind||0);
+    const want=d<5?(Math.random()<0.75?0:1):d<8.5?[0,1,1,1,2][Math.floor(Math.random()*5)]:(Math.random()<0.65?2:1);
+    let pool=poolAll.filter(f=>f.sz===want);if(!pool.length)pool=poolAll.filter(f=>f.sz===0);
+    const f=gold?FISH.find(q=>q.id==='zolotaya'):pool[Math.floor(Math.random()*pool.length)],kg=f.kg[0]+(f.kg[1]-f.kg[0])*Math.pow(Math.random(),1.6);
+    const g=new THREE.Group();W.group.add(g);const m=MB(gold?0xb08a10:0x0a1a24,{transparent:true,opacity:0,depthWrite:false});
+    const b=new THREE.Mesh(new THREE.CircleGeometry(0.5,14),m);b.rotation.x=-Math.PI/2;b.scale.set(0.42,1,1);g.add(b);
+    const tl=new THREE.Mesh(new THREE.CircleGeometry(0.24,3),m);tl.rotation.x=-Math.PI/2;tl.rotation.z=-Math.PI/2;tl.position.z=-0.6;g.add(tl);g.userData={m,tl};
+    const s={g,f,kg,x,z,hd:near?Math.atan2(near.x-x,near.z-z):rand(0,6.28),sp:rand(0.4,0.8),st:'roam',t:rand(1,3),nib:0,a:0};g.scale.setScalar(fishScale(f,kg)*1.45);SH.push(s);return s;}
+  function shTick(dt){if(!hubMode)return;while(SH.length<4)shSpawn();
+    const fp=FS.on&&(FS.ph==='wait'||FS.ph==='bite')?FS.fp:null;FS.dipT=Math.max(0,FS.dipT-dt);
+    for(let i=SH.length-1;i>=0;i--){const s=SH[i];s.t-=dt;
+      if(s.st==='hook')continue;   // её ведёт вываживание
+      if(s.st==='roam'){s.a=Math.min(1,s.a+dt*0.7);if(s.t<0){s.t=rand(1.5,3.5);s.hd+=rand(-1.3,1.3);s.sp=rand(0.3,0.9);}
+        if(s.x<PX-8||s.x>PX+8||s.z<zW-19.5||s.z>zW-8.6)s.hd=Math.atan2(PX-s.x,zW-13-s.z);
+        if(fp&&!FS.taken){const d=Math.hypot(fp.x-s.x,fp.z-s.z),lure=FS.lure>0;if(d<(lure?6.5:3.4)&&Math.random()<dt*(lure?1.8:0.4)*(s.f.sz>=2?0.7:1)){s.st='come';FS.taken=s;}}}
+      else if(s.st==='come'){if(!fp||FS.taken!==s)s.st='roam';else{const dx=fp.x-s.x,dz=fp.z-s.z,d=Math.hypot(dx,dz);s.hd=Math.atan2(dx,dz);s.sp=d>1.5?1.1:0.45;if(d<0.6){s.st='nib';s.nib=1+Math.floor(Math.random()*3);s.t=rand(0.8,1.4);}}}
+      else if(s.st==='nib'){s.sp=0;s.hd+=dt*0.6;if(!fp||FS.taken!==s)s.st='roam';
+        else if(s.t<0){if(s.nib>0){s.nib--;s.t=rand(0.7,1.3);FS.dipT=0.18;ripple(fp.x,fp.z,0.7,0.6);tone(520,0.05,'triangle',0.08);}
+          else{s.st='bite';s.t=s.f.sz>=2?0.8:1.0;FS.ph='bite';SFX.water();burst(fp.clone(),0xdff4ff,12,2.2);ripple(fp.x,fp.z,1.6,1);ripple(fp.x,fp.z,1.0,0.7);fishMsg('Клюёт!','#ffe36b');}}}
+      else if(s.st==='bite'){if(FS.ph!=='bite'||FS.taken!==s)s.st='roam';
+        else if(s.t<0){s.st='flee';s.hd=Math.atan2(s.x-PE.x,s.z-PE.z);FS.taken=null;FS.ph='wait';FS.waitT=0;SFX.miss();fishMsg('Сорвалась!','#dddddd');}}
+      else if(s.st==='flee'){s.sp=4;s.a-=dt*1.2;if(s.a<=0){W.group.remove(s.g);SH.splice(i,1);continue;}}
+      s.x+=Math.sin(s.hd)*s.sp*dt;s.z+=Math.cos(s.hd)*s.sp*dt;
+      s.g.position.set(s.x,seaH(s.x,s.z)+0.05,s.z);s.g.rotation.y=s.hd;s.g.userData.m.opacity=(s.f.id==='zolotaya'?0.6:0.52)*s.a;s.g.userData.tl.position.x=Math.sin(G.time*(4+s.sp*6))*0.06;
+      if(s.f.id==='zolotaya'&&Math.random()<dt*2.5)burst(s.g.position.clone().add(new V3(0,0.06,0)),0xffd23a,1,0.6);}
+    for(const q of RIP){if(q.t>=q.d){q.m.visible=false;continue;}q.t+=dt;const k=q.t/q.d;q.m.position.set(q.x,seaH(q.x,q.z)+0.04,q.z);q.m.scale.setScalar(0.15+k*q.r);q.m.material.opacity=0.75*(1-k);}}
+  W.updates.push(shTick);
+  // интерфейс рыбалки: подсказки, натяжение лески, силы рыбы, куда рвётся
+  const $h=id=>document.getElementById(id);
+  function fishHud(){hud.style.display='block';hud.innerHTML=
+    '<div id="fhTop" style="position:absolute;left:0;right:0;top:12%;text-align:center;font-size:24px"></div>'+
+    '<div id="fhMsg" style="position:absolute;left:0;right:0;top:36%;text-align:center;font-size:32px;color:#ffe36b;transition:opacity .3s;opacity:0"></div>'+
+    '<div id="fhRun" style="position:absolute;left:0;right:0;bottom:27%;text-align:center;font-size:26px;color:#ffb09a"></div>'+
+    '<div id="fhG" style="position:absolute;right:6vw;top:24%;width:30px;height:38vh;border-radius:15px;background:linear-gradient(to top,#3a6ad0 0,#3a6ad0 28%,#3fa84a 28%,#3fa84a 86%,#d8302a 86%);box-shadow:0 0 0 3px #0008;display:none">'+
+      '<div id="fhT" style="position:absolute;left:-9px;right:-9px;bottom:0;height:7px;border-radius:4px;background:#fff;box-shadow:0 0 6px #000"></div><div style="position:absolute;top:-26px;left:-30px;right:-30px;text-align:center;font-size:14px">леска</div></div>'+
+    '<div id="fhS" style="position:absolute;right:calc(6vw - 42px);top:calc(24% + 38vh + 16px);width:114px;display:none"><div style="font-size:13px;text-align:center">силы рыбы</div>'+
+      '<div style="height:10px;border-radius:5px;background:#0006;overflow:hidden"><div id="fhSb" style="height:100%;width:100%;background:#ffb040"></div></div><div id="fhD" style="text-align:center;font-size:14px;margin-top:4px"></div></div>'+
+    '<div id="fhHint" style="position:absolute;left:0;right:0;bottom:21%;text-align:center;font-size:15px"></div>';}
+  const fishTop=t=>{const e=$h('fhTop');if(e&&e._t!==t){e._t=t;e.innerHTML=t;}},fishHint=t=>{const e=$h('fhHint');if(e&&e._t!==t){e._t=t;e.innerHTML=t;}};
+  const fishMsg=(t,c)=>{const e=$h('fhMsg');if(!e)return;e.innerHTML=t;e.style.color=c||'#ffe36b';e.style.opacity=1;FS.msgT=1.3;};
+  const fightUi=on=>{for(const id of['fhG','fhS']){const e=$h(id);if(e)e.style.display=on?'block':'none';}const r=$h('fhRun');if(r&&!on)r.innerHTML='';};
+  // камера: сверху-сзади при прицеле, сбоку на поплавок, наезд на поклёвке, за рыбой при вываживании, к воде у подсачека, в лицо с уловом
+  function fishCam(){const h=FS.h,fp=FS.fp||PE,sw=Math.sin(G.time*0.35)*0.35;
+    if(FS.ph==='aim'||FS.ph==='cast'){const mk=mark.position;return {pos:new V3(PE.x+1.3,6.2,PE.z+5.4),look:new V3(lerp(PE.x,mk.x,0.7),0,lerp(PE.z,mk.z,0.85)),k:3};}
+    if(FS.ph==='wait')return {pos:new V3(PE.x+2.6+sw,3.4,PE.z+3.0),look:fp.clone().lerp(PE,0.3).add(new V3(0,0.1,0)),k:2.2};
+    if(FS.ph==='bite')return {pos:fp.clone().add(new V3(1.4,1.5,2.8)),look:fp.clone(),k:5};
+    if(FS.ph==='fight'){const j=FS.T>0.86?(Math.random()-0.5)*0.12:0;return {pos:new V3(PE.x+1.6+FS.lat*0.25+j,3.0+j,PE.z+3.6),look:FS.fishP.clone().lerp(h.pos,0.35).add(new V3(0,0.4,0)),k:3};}
+    if(FS.ph==='net')return {pos:new V3(PE.x+1.9,2.3,PE.z+1.0),look:FS.fishP.clone(),k:3};
+    if(FS.ph==='show')return {pos:h.pos.clone().add(new V3(2.3,1.3,-1.0)),look:h.pos.clone().add(new V3(0,heroHeight(h)*0.85,0)),k:3};
+    return {pos:PE.clone().add(new V3(1.8,1.6,1.4)),look:fp.clone().add(new V3(0,0.4,0)),k:3};}
+  function fishStart(pi){const h=active(pi);G.ui='fish';Object.assign(FS,{on:true,pi,h,ph:'aim',t:0,taken:null,hook:null,lure:0,msgT:0,fp:null});
+    placeOnGround(h,PE.x,PE.z,0.3);h.face=Math.PI;h.vel.set(0,0,0);h.following=false;
+    rodG.position.set(0.26,heroHeight(h)*0.5,0.14);h.g.add(rodG);rodPose(0.75,0);mark.visible=true;flt.visible=true;fishHud();
+    HEROES.forEach(q=>{if(q.markerMat)q.markerMat.visible=false;});   // кольца-метки над героями не лезут в кадр рыбалки
+    if(sadko)bark(sadko,'sadko',['Рыба на песню идёт — подыграю!','Глянь на воду: тени — это рыба. Крупная — подальше.','Закидывай, где тень побольше!'][Math.floor(rand(0,3))],2.4);
+    if(!LC.fishTold){LC.fishTold=true;later(0.4,()=>tip(pi,'Тени в воде — это рыбы: мелочь у причала, крупные подальше.<br>Наведи кружок и закидывай '+K(pi,'attack')+'.',4));}
+    W.camFn=fishCam;G.uiTick=fishTick;}
+  function fishCleanup(){FS.on=false;FS.ph='off';HEROES.forEach(q=>{if(q.markerMat)q.markerMat.visible=true;});if(rodG.parent)rodG.parent.remove(rodG);lineOff();flt.visible=false;mark.visible=false;hudOff();if(FS.netR)FS.netR.visible=false;
+    if(FS.fm&&!FS.showFm){W.group.remove(FS.fm);FS.fm=null;}if(FS.hook){const s=FS.hook;s.x=FS.fishP.x;s.z=FS.fishP.z;s.st='flee';s.g.visible=true;FS.hook=null;}FS.taken=null;}
+  function fishEnd(){fishCleanup();if(G.ui==='fish'){G.ui=null;G.uiTick=null;W.camFn=null;}if(FS.h)FS.h.face=Math.PI;}
+  function fishTick(){const dt=1/60;if(!FS.on)return;FS.t+=dt;const pi=FS.pi;
+    if(FS.msgT>0){FS.msgT-=dt;if(FS.msgT<=0){const e=$h('fhMsg');if(e)e.style.opacity=0;}}
+    if((both(q=>tap(q,'guard'))||pressed.has('Escape'))&&FS.ph!=='show'){fishEnd();return;}
+    const hit=both(q=>tap(q,'attack'));let ax=0,ay=0;for(const q of[0,1]){const a=lcAxis(q);ax+=a.x;ay+=a.y;}ax=clamp(ax,-1,1);ay=clamp(ay,-1,1);
+    const tip=rodTip();
+    if(FS.ph==='aim'){FS.aimD=clamp(FS.aimD-ay*dt*4,2.5,11);const w=1+FS.aimD*0.7;FS.aimX=clamp(FS.aimX+ax*dt*4,-w,w);
+      const mx=PE.x+FS.aimX,mz=PEZ-FS.aimD;mark.position.set(mx,seaH(mx,mz)+0.05,mz);mark.rotation.y+=dt;mark.visible=true;
+      rodPose(0.75+Math.sin(G.time*2)*0.03,0);flt.visible=true;flt.position.copy(tip).add(new V3(0,-0.7,0));lineDraw(tip,flt.position.clone().add(new V3(0,0.3,0)),0);
+      fishTop('Наведи кружок на тень рыбы');fishHint(K(pi,'left')+K(pi,'right')+' — левее/правее · '+K(pi,'up')+K(pi,'down')+' — дальше/ближе · '+K(pi,'attack')+' — закинуть · '+K(pi,'guard')+' — смотать');
+      if(hit){FS.ph='cast';FS.t=0;FS.from=tip.clone();FS.to=mark.position.clone();SFX.whoosh();fishTop('');fishHint('');}}
+    else if(FS.ph==='cast'){const k=FS.t/0.75;   // замах назад — и бросок
+      rodPose(k<0.35?lerp(0.75,-0.5,smooth(k/0.35)):lerp(-0.5,1.05,smooth((k-0.35)/0.3)),k>0.35&&k<0.7?0.4:0);
+      if(k>0.45){const u=clamp((k-0.45)/0.55,0,1);flt.position.lerpVectors(FS.from,FS.to,u);flt.position.y+=Math.sin(u*Math.PI)*2.4;}
+      lineDraw(tip,flt.position.clone().add(new V3(0,0.25,0)),0.2);
+      if(k>=1){FS.ph='wait';FS.t=0;FS.waitT=0;FS.fp=FS.to.clone();mark.visible=false;SFX.water();burst(FS.fp.clone(),0xdff4ff,8,1.6);ripple(FS.fp.x,FS.fp.z,1.4,1.1);}}
+    else if(FS.ph==='wait'||FS.ph==='bite'){const s=FS.taken;FS.waitT+=dt;FS.lure=Math.max(0,FS.lure-dt);
+      const dip=FS.ph==='bite'?0.3+Math.sin(G.time*22)*0.05:FS.dipT>0?0.08:0;
+      flt.position.set(FS.fp.x+(FS.ph==='bite'?Math.sin(G.time*30)*0.03:0),seaH(FS.fp.x,FS.fp.z)+0.02-dip,FS.fp.z);
+      rodPose(1.0,FS.ph==='bite'?0.6:0.05);lineDraw(tip,flt.position.clone().add(new V3(0,0.25,0)),0.35);
+      if(FS.ph==='wait'){fishTop(s&&s.st==='nib'?'Трогает… не спеши!':'Ждём… смотри на поплавок');fishHint(K(pi,'jump')+' — подёргать поплавок, приманить · '+K(pi,'attack')+' — подсечь на поклёвке · '+K(pi,'guard')+' — смотать');
+        if(both(q=>tap(q,'jump'))&&FS.lure<=0.6){FS.lure=1.6;FS.dipT=0.12;ripple(FS.fp.x,FS.fp.z,0.9,0.7);tone(900,0.06,'sine',0.06);for(const q of SH)if(q.st==='roam'&&Math.hypot(q.x-FS.fp.x,q.z-FS.fp.z)<6.5)q.hd=Math.atan2(FS.fp.x-q.x,FS.fp.z-q.z);}
+        if(hit){if(s){s.st='flee';s.hd=Math.atan2(s.x-FS.fp.x,s.z-FS.fp.z);FS.taken=null;SFX.miss();fishMsg('Рано! Спугнули','#dddddd');}
+          else{FS.ph='aim';FS.t=0;fishMsg('Перезакинем…','#ffffff');}}
+        if(FS.waitT>14&&!FS.taken){FS.waitT=6;shSpawn(FS.fp);fishMsg('Плывёт кто-то…','#cfe8ff');}}   // долго не клюёт — подплывёт новая
+      else{fishTop('Клюёт! Жми '+K(pi,'attack')+'!');fishHint('');if(hit&&s)fightStart(s);}}
+    else if(FS.ph==='fight')fightTick(dt,ax,tip);
+    else if(FS.ph==='net')netTick(dt,hit,tip);
+    else if(FS.ph==='show')rodPose(0.4,0);}
+  function fightStart(s){if(FS.forceSp){const f=FISH.find(q=>q.id===FS.forceSp);if(f){s.f=f;s.kg=(f.kg[0]+f.kg[1])/2;}FS.forceSp=null;}   // forceSp — для ботов
+    Object.assign(FS,{ph:'fight',hook:s,T:0.5,St:1,D:Math.max(3.5,PEZ-FS.fp.z)+(s.f.sz>=1?rand(1.5,3)*s.f.str:0),bolt:0,lat:FS.fp.x-PE.x,rd:0,rdT:0.6,surge:0,leapT:rand(2.2,3.6),leap:0,over:0,t:0,tune:0,fishP:FS.fp.clone()});s.st='hook';s.g.visible=false;
+    FS.str=s.f.str*(0.75+0.5*kgK(s.f,s.kg));FS.fm=makeFish(s.f,fishScale(s.f,s.kg));
+    flt.visible=false;SFX.ok();shakeAll(0.02,0.15);burst(FS.fp.clone(),0xdff4ff,16,3);ripple(FS.fp.x,FS.fp.z,1.8,1);fishMsg('Подсечка! Есть!','#ffe36b');fightUi(true);
+    if(sadko)bark(sadko,'sadko',s.f.sz>=2?'Крупная! Веди её, не дёргай!':'Ну-ка, ну-ка — веди к причалу!',2);}
+  function fightTick(dt,ax,tip){const s=FS.hook,f=s.f,str=FS.str,reel=both(q=>btn(q,'attack')),pi=FS.pi;
+    // рыба: рвётся вбок, бросается, прыгает
+    if(FS.St>0){FS.rdT-=dt;if(FS.rdT<0){FS.rd=[-1,0,1,1,-1][Math.floor(Math.random()*5)];FS.rdT=rand(1.0,2.2);if(Math.random()<0.25+0.3*str){FS.surge=0.55;SFX.water();}}}else FS.rd=0;
+    const counter=FS.rd!==0&&ax*FS.rd<-0.3,same=FS.rd!==0&&ax*FS.rd>0.3;
+    let dT=reel?0.36+0.5*str:-0.6;if(FS.surge>0){FS.surge-=dt;dT+=1.3*str;}if(counter)dT-=0.35;if(same)dT+=0.2;
+    FS.T=clamp(FS.T+dT*dt,0,1);if(f.sz===0)FS.T=Math.min(FS.T,0.93);   // мелочь леску не порвёт
+    const green=FS.T>0.28&&FS.T<0.86;
+    FS.St=Math.max(0,FS.St-dt*((green?0.045:0.012)+(counter?0.05:0)+(reel&&green?0.03:0))/(0.55+str));
+    if(reel&&FS.T<0.97)FS.D-=dt*(0.95+(FS.St<=0?0.9:0))*(1-FS.T*0.35);else if(FS.St>0&&(FS.rd!==0||FS.surge>0))FS.D+=dt*0.8*str;
+    FS.bolt=Math.max(0,FS.bolt-dt);if(f.sz>=1&&FS.D<2.4&&FS.St>0.22&&FS.bolt<=0){FS.bolt=2.5;FS.D+=rand(2.5,4)*(0.6+str*0.5);FS.surge=0.6;FS.rd=Math.random()<0.5?-1:1;FS.rdT=1.2;SFX.water();fishMsg('Рванула от причала! Утоми её','#ff9a7a');}
+    FS.D=Math.min(FS.D,14);if(FS.St>0)FS.lat+=FS.rd*dt*(0.7+str)*(counter?0.25:1);const w=1+FS.D*0.7;FS.lat=clamp(FS.lat,-w,w);
+    if(FS.T>=0.995){FS.over+=dt;if(FS.over>0.8){fishSnap();return;}}else FS.over=Math.max(0,FS.over-dt*2);
+    if(f.sz>=1&&FS.St>0.1&&FS.leap<=0){FS.leapT-=dt;if(FS.leapT<0){FS.leapT=rand(3,5.2);FS.leap=1.0;FS.leapHit=false;SFX.water();fishMsg('Прыгнула! Жми '+K(pi,'jump')+'!','#9fe0ff');}}
+    if(FS.leap>0){FS.leap-=dt;if(!FS.leapHit&&FS.leap>0.12&&both(q=>tap(q,'jump'))){FS.leapHit=true;FS.St=Math.max(0,FS.St-0.22);FS.T=Math.max(0.3,FS.T-0.2);SFX.ok();fishMsg('Подсёк в прыжке!','#ffe36b');}}
+    // где рыба: у поверхности — спина и брызги; в прыжке — вся над водой
+    const fx=PE.x+FS.lat,fz=PEZ-FS.D,y0=seaH(fx,fz),fm=FS.fm,hd=Math.atan2(FS.rd*0.8,-1);FS.fishP.set(fx,y0,fz);
+    if(FS.leap>0){const k=1-FS.leap;fm.position.set(fx,y0+Math.sin(k*Math.PI)*(1.0+0.4*f.sz),fz);fm.rotation.set(-Math.cos(k*Math.PI)*1.1,hd,Math.sin(G.time*20)*0.3);if(FS.leap<0.06||FS.leap>0.94)burst(new V3(fx,y0,fz),0xdff4ff,8,2.4);}
+    else{fm.position.set(fx,y0-0.04,fz);fm.rotation.set(0.15,hd,Math.sin(G.time*14)*0.25);}
+    if(Math.random()<dt*(4+FS.T*6))burst(new V3(fx+rand(-0.2,0.2),y0+0.05,fz+rand(-0.2,0.2)),0xdff4ff,1,1.4);if(Math.random()<dt*2.2)ripple(fx,fz,0.9+f.sz*0.3,0.8);
+    // удилище гнётся, леска натянута; трещит катушка, звенит леска, Садко подыгрывает
+    rodPose(1.0-FS.T*0.25,0.25+FS.T*1.15);if(reel)FS.reelM.rotation.x+=dt*18;lineDraw(tip,new V3(fx,y0+0.05,fz),(1-FS.T)*0.5);
+    if(reel&&Math.random()<dt*14)tone(1700+Math.random()*200,0.02,'square',0.03);if(FS.T>0.86&&Math.random()<dt*8)tone(2600,0.05,'sine',0.05);
+    if(sadko){FS.tune-=dt;if(FS.tune<0){FS.tune=0.42;const TUNE=[67,69,71,74,71,69,67,64];FS.tn=((FS.tn||0)+1)%TUNE.length;gusli(TUNE[FS.tn],0,0.12);}}
+    $h('fhT').style.bottom='calc('+(FS.T*100).toFixed(1)+'% - 3px)';$h('fhSb').style.width=(FS.St*100).toFixed(0)+'%';$h('fhD').innerHTML='до рыбы '+String(FS.D.toFixed(1)).replace('.',',')+' м';
+    $h('fhRun').innerHTML=FS.rd&&FS.St>0?(FS.rd<0?'← рыба рвётся влево · тяни '+K(pi,'right'):'тяни '+K(pi,'left')+' · рыба рвётся вправо →'):'';
+    fishTop(FS.T>0.86?'<span style="color:#ff7a6a">Леска звенит — отпусти!</span>':FS.St<=0?'Устала! Подматывай!':f.sz>=2?'Крупная! Веди к причалу':'Веди к причалу');
+    fishHint('держи '+K(pi,'attack')+' — подматывать · отпусти, когда леска звенит · '+K(pi,'left')+K(pi,'right')+' — тянуть против рыбы'+(f.sz>=1?' · '+K(pi,'jump')+' — подсечь в прыжке':''));
+    if(FS.D<1.8&&(FS.St<=0.22||f.sz===0))netStart();}
+  function fishSnap(){const s=FS.hook;SFX.miss();tone(300,0.3,'sawtooth',0.08,120);fishMsg('Леска лопнула!','#ff7a6a');shakeAll(0.02,0.2);if(FS.fm){W.group.remove(FS.fm);FS.fm=null;}
+    if(s){s.x=FS.fishP.x;s.z=FS.fishP.z;s.st='flee';s.g.visible=true;s.hd=Math.atan2(s.x-PE.x,s.z-PE.z);}FS.hook=null;FS.taken=null;fightUi(false);
+    if(sadko)later(0.4,()=>bark(sadko,'sadko','Эх! Леска-то не железная — потише тяни.',2.2));FS.ph='aim';FS.t=0;mark.visible=true;flt.visible=true;}
+  function netStart(){FS.ph='net';FS.t=0;FS.netTry=0;fightUi(false);
+    if(!FS.netR){FS.netR=new THREE.Mesh(new THREE.TorusGeometry(1,0.06,6,28),MB(0xffe36b,{transparent:true,opacity:0.95,depthWrite:false}));FS.netR.rotation.x=Math.PI/2;FS.netR.castShadow=false;W.group.add(FS.netR);}
+    FS.netR.visible=true;fishMsg('Подсачек!','#ffe36b');}
+  function netTick(dt,hit,tip){const pi=FS.pi;FS.lat*=0.95;const fx=PE.x+FS.lat*0.9,fz=PEZ-1.6,y0=seaH(fx,fz),fm=FS.fm;FS.fishP.set(fx,y0,fz);
+    fm.position.set(fx,y0+Math.abs(Math.sin(G.time*9))*0.25,fz);fm.rotation.set(Math.sin(G.time*12)*0.5,Math.PI+Math.sin(G.time*5)*0.6,Math.sin(G.time*9)*0.6);if(Math.random()<dt*10)burst(new V3(fx,y0+0.1,fz),0xdff4ff,2,2);
+    rodPose(0.7,0.6);lineDraw(tip,fm.position.clone(),0.05);
+    const P=1.2,sc=lerp(1.7,0.25,(FS.t%P)/P);FS.netK=sc;FS.netR.position.set(fx,y0+0.06,fz);FS.netR.scale.setScalar(sc);FS.netR.material.color.setHex(sc<0.62?0xffffff:0xffe36b);
+    fishTop('Подсачек! Жми '+K(pi,'attack')+', когда кольцо сожмётся');fishHint(G.solo?'':'подсачек подставит любой из двоих');
+    if(hit){if(sc<0.62){FS.netR.visible=false;fishCatch();return;}SFX.clink();FS.netTry++;fishMsg('Мимо!','#dddddd');}
+    if(FS.t>P*2.9||FS.netTry>=3){FS.netR.visible=false;Object.assign(FS,{ph:'fight',D:3.6,St:Math.max(FS.St,0.3),T:0.4,rdT:0.3});fishMsg('Вырвалась! Ещё чуть-чуть','#ff9a7a');fightUi(true);}}
+  function fishCatch(){const s=FS.hook,f=s.f,h=FS.h,kg=s.kg,fm=FS.fm;FS.ph='show';FS.t=0;SH.splice(SH.indexOf(s),1);W.group.remove(s.g);FS.hook=null;FS.taken=null;lineOff();
+    const from=fm.position.clone(),to=h.pos.clone().add(new V3(0,heroHeight(h)+0.35,0));SFX.water();burst(from.clone(),0xdff4ff,18,3);h.face=Math.atan2(2.3,-1.0);
+    anim(0.6,k=>{fm.position.lerpVectors(from,to,smooth(k));fm.position.y+=Math.sin(k*Math.PI)*1.2;fm.rotation.set(0,Math.PI/2,k*Math.PI*2);});
+    if(f.id==='zolotaya'){later(0.7,()=>goldFish(fm));return;}
+    const rec=(LC.kg[f.id]||0)<kg,first=!LC.fish[f.id];LC.fish[f.id]=(LC.fish[f.id]||0)+1;if(rec)LC.kg[f.id]=Math.round(kg*100)/100;LC.bag.fish=Math.min(9,(LC.bag.fish||0)+1);
+    const n=f.nuts+(rec&&!first?1:0);G.nutsHub=(G.nutsHub||0)+n;FS.showFm=fm;
+    later(0.65,()=>{SFX.ok();if(typeof ACT!=='undefined'&&ACT.emote)ACT.emote(h,'joy');banner(f.name+' · '+kgTxt(kg),'#ffd76a',2.6,(first?'новая рыба в альбоме · ':rec?'рекорд! · ':'')+'в лукошко для Яги · +'+n+' '+nutW(n));
+      if(f.id==='shchuka'&&first)later(0.7,()=>bark(h,h.kind,'Щука! Сейчас как скажет: «По щучьему веленью…»',2.4));else if(sadko)later(0.6,()=>bark(sadko,'sadko',f.sz>=2?'Вот это улов! Хоть в Китеж вези!':rec?'Рекорд! В альбом запишу.':'Ладно поймана!',1.8));
+      anim(1.6,k=>{if(FS.showFm!==fm)return;fm.position.copy(h.pos).add(new V3(0,heroHeight(h)+0.35+Math.sin(k*Math.PI*3)*0.06,0));fm.rotation.set(0,Math.PI/2,Math.sin(k*30)*0.3);});});
+    later(2.6,()=>{W.group.remove(fm);if(FS.fm===fm)FS.fm=null;FS.showFm=null;if(!FS.on)return;FS.ph='aim';FS.t=0;mark.visible=true;flt.visible=true;h.face=Math.PI;fishTop('Ещё разок?');});}
   // Золотая рыбка: три желания на выбор (после «Невода», 2-3)
-  function goldFish(){const p=FS.fp.clone();let rb=null;try{rb=typeof makeRybka==='function'?makeRybka():null;}catch(e){rb=null;}
-    if(rb){rb.g.position.set(p.x,SEA-0.6,p.z);rb.g.scale.setScalar(0.7);rb.g.rotation.y=0;anim(0.8,k=>{rb.g.position.y=lerp(SEA-0.6,SEA+0.35,smooth(k));});}
-    SFX.bell();burst(p,0xffd23a,24,4);ringFx(p,COL.gold,2.4);LC.gold=(LC.gold||0)+1;LC.fish.zolotaya=(LC.fish.zolotaya||0)+1;
+  function goldFish(fm){W.group.remove(fm);if(FS.fm===fm)FS.fm=null;let rb=null;try{rb=typeof makeRybka==='function'?makeRybka():null;}catch(e){rb=null;}
+    const wp=new V3(PE.x+0.4,seaH(PE.x,PEZ-1.6),PEZ-1.6);FS.fp=wp;FS.ph='wish';
+    if(rb){rb.g.position.set(wp.x,wp.y-0.6,wp.z);rb.g.scale.setScalar(0.7);rb.g.rotation.y=0;anim(0.8,k=>{rb.g.position.y=lerp(wp.y-0.6,wp.y+0.35,smooth(k));});}
+    SFX.bell();burst(wp.clone(),0xffd23a,24,4);ringFx(wp.clone(),COL.gold,2.4);LC.gold=(LC.gold||0)+1;LC.fish.zolotaya=(LC.fish.zolotaya||0)+1;
     later(0.9,()=>{if(rb)bark(rb,'rybka','Отпусти ты, гость, меня в море — дорогой за себя дам откуп!',3);wishOpen(FS.pi,rb);});}
-  function wishOpen(pi,rb){if(rod.parent)rod.parent.remove(rod);lineM.visible=false;flt.visible=false;hudOff();FS.on=false;G.ui='wish';let sel=0;
+  function wishOpen(pi,rb){const wp=FS.fp.clone();fishCleanup();G.ui='wish';let sel=0;W.camFn=()=>({pos:PE.clone().add(new V3(1.8,1.6,1.4)),look:wp.clone().add(new V3(0,0.4,0)),k:3});
     const pick=()=>{const L=Object.keys(WEAR).filter(id=>!WEAR[id].earn&&!own(id)&&(!WEAR[id].lv||done(WEAR[id].lv))&&(WEAR[id].cost||99)<=15);return L.length?L[Math.floor(Math.random()*L.length)]:null;};
     const opts=['Орешков — полное лукошко!','Обновку из лавки Векши!','Ничего не надо — плыви, рыбка, на волю!'];
     const draw=()=>panel('<h2>Золотая рыбка</h2><div class="step">«Чего тебе надобно?»</div>'+opts.map((o,i)=>'<div class="opt'+(i===sel?' sel':'')+'">'+o+'</div>').join('')+'<div class="hint">'+navKeys(pi)+' — пожелать</div>');
     draw();G.uiTick=()=>{for(const q of[0,1]){const n=uiNav(q);if(n.dy){sel=(sel+n.dy+3)%3;SFX.swap();draw();}
-      if(tap(q,'jump')){lcClose();W.camFn=null;const P=p0=>(rb?rb.g.position:FS.fp).clone();
+      if(tap(q,'jump')){lcClose();W.camFn=null;if(FS.h)FS.h.face=Math.PI;const P=()=>(rb?rb.g.position:wp).clone();
         if(sel===0){lcNuts(10,P(),'Золотая рыбка');banner('Орешков — полное лукошко!','#ffd76a',2.2,'+10 '+nutW(10));}
         else if(sel===1){const id=pick();if(id){buyWard(id);banner('Обновка: '+WEAR[id].name+'!','#ffd76a',2.6,'уже в гардеробе — примерочная у лавки Векши');}else{lcNuts(10,P());banner('Всё у вас есть — вот орешки!','#ffd76a',2.2,'+10 '+nutW(10));}}
         else{LC.kind=(LC.kind||0)+1;lcNuts(3,P(),'доброе сердце');if(rb)bark(rb,'rybka','Добрая душа! Буду к вам чаще заплывать.',2.4);}
-        SFX.ok();if(rb)later(1.4,()=>{anim(0.8,k=>{rb.g.position.y=lerp(SEA+0.35,SEA-1.2,k);});burst(rb.g.position.clone(),0xffd23a,16,3);later(0.9,()=>W.group.remove(rb.g));});return;}}};}
+        SFX.ok();if(rb)later(1.4,()=>{anim(0.8,k=>{rb.g.position.y=lerp(wp.y+0.35,wp.y-1.2,k);});burst(rb.g.position.clone(),0xffd23a,16,3);later(0.9,()=>W.group.remove(rb.g));});return;}}};}
   function albumOpen(pi){G.ui='album';const L=FISH;
     panel('<h2>Рыбий альбом</h2><div class="step">Поймано рыб: '+L.reduce((a,f)=>a+(LC.fish[f.id]||0),0)+' · в лукошке для Яги: '+(LC.bag.fish||0)+'</div>'+
-      L.map(f=>{const n=LC.fish[f.id]||0;return '<div class="opt" style="justify-content:space-between'+(n?'':';opacity:.55')+'"><span>'+(n?'<b style="width:auto">'+f.name+'</b> — '+f.line:fishOK(f)?'??? · '+['мелкая — один раз в лад','средняя — два раза в лад','крупная — три раза в лад','редкая — в лад три раза, да с удачей'][f.sz]:'🔒 после «'+lvN(f.lv)+'»')+'</span><small>'+(n?'× '+n:'')+'</small></div>';}).join('')+
+      L.map(f=>{const n=LC.fish[f.id]||0;return '<div class="opt" style="justify-content:space-between'+(n?'':';opacity:.55')+'"><span>'+(n?'<b style="width:auto">'+f.name+'</b> — '+f.line:fishOK(f)?'??? · '+['мелкая — у самого причала','средняя — чуть подальше','крупная — далеко от причала, тень большая','тень с блёстками — редко'][f.sz]:'🔒 после «'+lvN(f.lv)+'»')+'</span><small>'+(n?'× '+n+(LC.kg[f.id]?' · рекорд '+kgTxt(LC.kg[f.id]):''):'')+'</small></div>';}).join('')+
       '<div class="hint">'+K(pi,'guard')+' / '+K(pi,'jump')+' — закрыть</div>');
     G.uiTick=()=>{if(both(q=>tap(q,'guard')||tap(q,'jump'))||pressed.has('Escape'))lcClose();};}
 
@@ -476,6 +607,6 @@
     const lab=(pos,dist,text,cond)=>prompt(pi,'label',()=>pos,()=>hubMode&&F.stage==='free'&&!G.ui&&hd(active(pi).pos,pos)<dist&&!lcAction(active(pi),pi)&&(!cond||cond()),text);
     lab(new V3(PX,2.4,zS-0.6),11,'Причал Садко · рыбалка');lab(new V3(RIDP.x,4.4,RIDP.z),10,'Русалка · загадки');lab(new V3(TWX,9.6,TWZ+1),12,'Вышка-дозор');
     lab(new V3(HX,7.2,HZ),11,'Избушка Яги · кухня');lab(new V3(27.4,6.6,RZ-1),10,'Скала Ветрила · воздушный змей');}
-  { const leave=W.onLeave;W.onLeave=()=>{if(FS.on)fishEnd();if(DZ2.on){DZ2.on=false;W.camFn=null;DZ2.h.g.visible=true;}if(CK.on){CK.on=false;W.camFn=null;}if(KT.on){KT.on=false;W.camFn=null;}hudOff();if(rod.parent)rod.parent.remove(rod);if(leave)leave();};}
-  W.lc={LC,FISH,RID,BEASTS,RECIPES,beasts,PX,zS,zW,SEA,TWB,RIDP,BOARD,HUTF,KIT_C,TOP,UPD,SPIRE,SPH,BUSH,MUSH,hutFront,onPier,lcAction,fishStart,FS,DZ2,CK,KT,EYE};   // для ботов
+  { const leave=W.onLeave;W.onLeave=()=>{if(FS.on)fishEnd();if(DZ2.on){DZ2.on=false;W.camFn=null;DZ2.h.g.visible=true;}if(CK.on){CK.on=false;W.camFn=null;}if(KT.on){KT.on=false;W.camFn=null;}hudOff();if(rodG.parent)rodG.parent.remove(rodG);if(leave)leave();};}
+  W.lc={LC,FISH,RID,BEASTS,RECIPES,beasts,PX,zS,zW,SEA,TWB,RIDP,BOARD,HUTF,KIT_C,TOP,UPD,SPIRE,SPH,BUSH,MUSH,hutFront,onPier,lcAction,fishStart,FS,SH,PE,PEZ,seaH,DZ2,CK,KT,EYE};   // для ботов
   }
