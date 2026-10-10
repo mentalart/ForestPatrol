@@ -8,19 +8,31 @@ U.until(()=>!ZC.G.cine&&ZC.W.flags.stage==='free',20);ZC.skip();ZC.tick(60);
 window.L=ZC.W.lc;window.P=(x,y,z)=>{const h=U.act(0);h.pos.set(x,y,z);h.vel.set(0,0,0);ZC.tick(4);return h;};window.nuts=()=>ZC.G.nutsHub||0;window.R={};
 [ZC.W.name,ZC.W.flags.mode,ZC.W.flags.stage,'beasts='+L.beasts.map(b=>b.id).join(','),'err='+__e.length]
 //@@
-// рыбалка: на краю причала — подсечь, когда клюёт, и три раза в лад (обычный улов — без Золотой рыбки: она ниже, отдельно)
-window.fish=()=>{P(L.PX,0.35,L.zW-6.4);const note=(L.lcAction(U.act(0),0)||{}).note;U.tap('KeyF');const r=['note='+note,'ui='+ZC.G.ui];r.push('bite '+U.until(()=>L.FS.ph==='bite',10));U.tap('KeyF');
-  for(const b of[1,2,3]){U.until(()=>L.FS.t>=b*0.8-0.03,4);U.tap('KeyF');}U.until(()=>L.FS.t>=2.85,3);const MR=Math.random;Math.random=()=>0.5;U.until(()=>L.FS.ph==='done',2);Math.random=MR;U.until(()=>ZC.G.ui!=='fish',6);ZC.tick(10);return r.concat(['ph='+L.FS.ph,'ui='+ZC.G.ui]);};
-const n0=nuts();const r=fish();const r2=fish();R.fish=Object.values(L.LC.fish).reduce((a,b)=>a+b,0);R.bag=L.LC.bag.fish;
-r.concat(r2,['fish='+JSON.stringify(L.LC.fish),'bag='+R.bag,'nuts+'+(nuts()-n0)])
-//@@ shot=hc_fish.png
-// снимок: снова закинули
-P(L.PX,0.35,L.zW-6.4);U.tap('KeyF');ZC.tick(150);'ph='+L.FS.ph
+// рыбалка: навести кружок на тень рыбы, приманить (прыжок), подсечь на поклёвке, вывести на натяге — держать удар, пока леска
+// не звенит, тянуть против рывков, подсекать в прыжке — и подсачек, когда кольцо сожмётся
+window.FS=L.FS;
+window.fCast=()=>{if(!FS.on){P(L.PE.x,0.35,L.PE.z);U.tap('KeyF');}const s=L.SH.filter(q=>q.st==='roam').sort((a,b)=>Math.hypot(a.x-L.PE.x,a.z-L.PEZ)-Math.hypot(b.x-L.PE.x,b.z-L.PEZ))[0];
+  if(s){FS.aimD=Math.min(11,Math.max(2.5,L.PEZ-s.z));FS.aimX=s.x-L.PE.x;}ZC.tick(2);U.tap('KeyF');return 'cast '+U.until(()=>FS.ph==='wait',3)+' d='+FS.aimD.toFixed(1);};
+window.fBite=force=>{let i=0;while(FS.ph!=='bite'&&i<60*40){if(FS.ph==='aim'){ZC.tick(2);U.tap('KeyF');}if(i%90===0&&FS.ph==='wait'&&!FS.taken)ZC.press('Space');ZC.tick(1);i++;}
+  if(FS.ph!=='bite')return 'bite TIMEOUT';if(force)FS.forceSp=force;U.tap('KeyF');return 'bite t='+(i/60).toFixed(1)+' ph='+FS.ph+' '+(FS.hook?FS.hook.f.id+' '+FS.hook.kg.toFixed(2):'');};
+window.fFight=max=>{let i=0;window.LEAPS=window.LEAPS||0;while(FS.ph==='fight'&&i<max){ZC.hold('KeyF',FS.T<0.7);ZC.hold('KeyA',FS.rd>0);ZC.hold('KeyD',FS.rd<0);if(FS.leap>0.3&&!FS.leapHit){ZC.press('Space');LEAPS++;}ZC.tick(1);i++;}
+  ZC.hold('KeyF',false);ZC.hold('KeyA',false);ZC.hold('KeyD',false);return 'fight '+(i/60).toFixed(1)+'s T='+FS.T.toFixed(2)+' St='+FS.St.toFixed(2)+' D='+FS.D.toFixed(1)+' ph='+FS.ph;};
+window.fNet=()=>{let i=0;while(FS.ph==='net'&&i<60*8){if(FS.netK<0.5)ZC.press('KeyF');ZC.tick(1);i++;}const r='net → '+FS.ph;U.until(()=>FS.ph==='aim'||ZC.G.ui==='wish',5);return r;};
+window.fishOne=()=>{const r=[fCast(),fBite()];for(let k=0;k<3&&FS.ph!=='net'&&FS.ph!=='show';k++){r.push(fFight(60*90));if(FS.ph==='aim')r.push(fCast(),fBite());}r.push(fNet());return r;};
+const n0=nuts();const r=fishOne().concat(fishOne());R.fish=Object.values(L.LC.fish).reduce((a,b)=>a+b,0);R.bag=L.LC.bag.fish;R.kg=Object.keys(L.LC.kg).length;
+r.concat(['fish='+JSON.stringify(L.LC.fish),'kg='+JSON.stringify(L.LC.kg),'bag='+R.bag,'leaps='+LEAPS,'nuts+'+(nuts()-n0),'ph='+FS.ph])
+//@@ shot=hc_fish_aim.png
+// снимок: прицел — кружок на воде, тени рыб
+ZC.tick(40);'ph='+FS.ph+' shadows='+L.SH.length
 //@@
-// Золотая рыбка (после 2-3): три раза в лад и удача — желание «орешков лукошко»
-U.until(()=>L.FS.ph==='bite',10);U.tap('KeyF');const MR=Math.random;Math.random=()=>0.01;
-for(const b of[1,2,3]){U.until(()=>L.FS.t>=b*0.8-0.03,4);U.tap('KeyF');}U.until(()=>L.FS.ph==='done',3);Math.random=MR;U.until(()=>ZC.G.ui==='wish',3);const r=['ui='+ZC.G.ui,(document.querySelector('#mapui h2')||{}).innerText];
-const n0=nuts();U.tap('Space');ZC.tick(120);R.gold=L.LC.gold||0;R.wish=nuts()-n0;r.concat(['gold='+R.gold,'wish nuts+'+R.wish,'ui='+ZC.G.ui])
+// Золотая рыбка (после 2-3): подсечь, вывести, подсачек — желание «орешков лукошко»
+const r=[fCast(),fBite('zolotaya'),fFight(150)];r
+//@@ shot=hc_fish_fight.png
+// снимок: вываживание — удилище согнуто, натяжение лески, силы рыбы
+ZC.tick(1);'T='+FS.T.toFixed(2)
+//@@
+const r=[fFight(60*90),fNet(),'ui='+ZC.G.ui,(document.querySelector('#mapui h2')||{}).innerText];const n0=nuts();U.tap('Space');ZC.tick(120);R.gold=L.LC.gold||0;R.wish=nuts()-n0;
+r.concat(['gold='+R.gold,'wish nuts+'+R.wish,'ui='+ZC.G.ui,'fishing='+FS.on])
 //@@
 // рыбий альбом у доски на входе
 P(L.BOARD.x+0.6,0.05,L.BOARD.z+0.6);U.tap('KeyF');const r=['ui='+ZC.G.ui,(document.querySelector('#mapui .step')||{}).innerText];R.album=ZC.G.ui==='album';U.tap('KeyG');ZC.tick(5);r.concat(['ui='+ZC.G.ui])
@@ -82,6 +94,6 @@ const n0=nuts();kiteSteer(2400);ZC.tick(30);R.kite=L.LC.kite.best;['rings='+L.KT
 //@@
 // сохранение: состояние углов едет в G.flags.lc
 ZC.G.hub=true;ZC.FIN.saveGame();const d=ZC.FIN.readSave(),lc=d&&d.G.flags&&d.G.flags.lc;R.save=!!lc&&Object.keys(lc.fish||{}).length>0&&Object.keys(lc.dish||{}).length>=2;
-const ok=R.fish>=2&&R.bag>=0&&R.gold>=1&&R.wish>=10&&R.album&&R.rid>=3&&R.ridNuts>=4&&R.beast>=1&&R.owl>=1&&R.book&&R.dish>=2&&R.berry>=2&&R.mush>=1&&R.nest&&R.kite>=3&&R.save&&__e.length===0;
+const ok=R.fish>=2&&R.kg>=1&&R.bag>=0&&R.gold>=1&&R.wish>=10&&R.album&&R.rid>=3&&R.ridNuts>=4&&R.beast>=1&&R.owl>=1&&R.book&&R.dish>=2&&R.berry>=2&&R.mush>=1&&R.nest&&R.kite>=3&&R.save&&__e.length===0;
 if(!ok)throw new Error('FAIL thub_corners '+JSON.stringify(R)+' err='+__e.join(';'));
 [JSON.stringify(R),'thub_corners ok']
