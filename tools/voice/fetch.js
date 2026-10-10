@@ -24,14 +24,16 @@ const FX={far:'highpass=f=320,lowpass=f=3000,aecho=0.8:0.6:70|140:0.32|0.18',
   dragon:'aecho=0.8:0.55:35|70:0.3|0.2,bass=g=4',                                         // головы Горыныча: раскатисто
   magic:'aecho=0.8:0.5:30|55:0.25|0.18,chorus=0.5:0.8:25|33:0.3|0.25:0.3|0.4:1.4|1.9,treble=g=2', // волшебные голоса
   hall:'aecho=0.8:0.45:60|110:0.18|0.1',                                                  // Кощей: холодный зал
-  crone:'vibrato=f=5.5:d=0.12'};                                                          // Баба Яга: старческое дрожание
+  crone:'vibrato=f=5.5:d=0.12',                                                           // Баба Яга: старческое дрожание
+  auka:'aecho=0.8:0.6:140|280:0.3|0.15,treble=g=2'};                                      // Аука: лесное эхо-перекличка
 const TRIM='silenceremove=start_periods=1:start_threshold=-42dB:start_silence=0.03,areverse,silenceremove=start_periods=1:start_threshold=-42dB:start_silence=0.06,areverse';
 const FORCE=process.argv.includes('--force');let done=0;
-for(const e of D.lines){if(ONLY.length&&!ONLY.includes(e.id))continue;if(!e.url){continue;}
+for(const e of D.lines){if(ONLY.length&&!ONLY.includes(e.id))continue;const piper=(D.cast[e.voice||e.who]||{}).engine==='piper';if(!e.url&&!piper){continue;}
   if(!FORCE&&!ONLY.length&&e.dur&&fs.existsSync(path.join(VD,e.id+'.mp3')))continue;   // готовые не переделываем (--force — все)
-  const ext=(e.url.match(/\.(mp3|wav|ogg|m4a)(\?|$)/)||[,'mp3'])[1],raw=path.join(RAW,e.id+'.'+ext);
-  if(!fs.existsSync(raw)){execFileSync('curl',['-sSfL','-m','60','-o',raw,e.url]);}
-  const who=e.voice||e.who,c=D.cast[who]||{},p=+c.pitch||0,r=Math.pow(2,p/12);
+  // silero:<голос> — wav уже синтезирован (tools/voice/silero_lines.py); Piper (tools/voice/piper_gen.py) — tools/voice/raw/<id>.wav; остальное — запись Higgsfield по ссылке
+  const sil=!piper&&e.url.startsWith('silero:'),ext=sil||piper?'wav':(e.url.match(/\.(mp3|wav|ogg|m4a)(\?|$)/)||[,'mp3'])[1],raw=path.join(RAW,e.id+'.'+ext);
+  if(!fs.existsSync(raw)){if(sil){console.log(e.id,'нет',raw,'— сначала tools/voice/silero_lines.py');continue;}if(piper){console.log(e.id,'нет',raw,'— сначала python3 tools/voice/piper_gen.py');continue;}execFileSync('curl',['-sSfL','-m','60','-o',raw,e.url]);}
+  const who=e.voice||e.who,c=D.cast[who]||{},p=e.pitch!==undefined?+e.pitch:(+c.pitch||0),r=Math.pow(2,p/12);   // pitch реплики важнее голоса (Silero звучит иначе, чем Eleven)
   // 1) обрезка и сдвиг тона — во временный wav, чтобы узнать длину
   const tmp=path.join(RAW,e.id+'.tmp.wav');
   const pitch=p?`,aresample=44100,asetrate=${(44100*r).toFixed(1)},aresample=44100,atempo=${(1/r).toFixed(5)}`:'';
