@@ -209,10 +209,10 @@ function hnLayout(){const els=hnDom(),cine=!!G.cine,lv=$('level'),title=G.time-H
   els.forEach((el,i)=>{let y=false;if(BR&&HN.shown[i]){if(!HN.cmp[i]&&hnHit(el.getBoundingClientRect(),BR,4)){HN.cmp[i]=true;render(i,cards[i]);}y=hnHit(el.getBoundingClientRect(),BR,4);}
     el.classList.toggle('hn-yield',y);});
   hnSkip();}
-// плашка пропуска — над субтитрами (X-10): по умолчанию выше двух строк, а если реплика длиннее — ещё выше
+// плашка пропуска — в правом нижнем углу (как в CSS); встаёт над субтитрами (X-10) только если задевает их по ширине: длинная реплика, узкое окно
 function hnSkip(){const sk=$('skip'),sb=$('subs');if(!sk||!sb)return;sk.style.bottom='';
   if(getComputedStyle(sk).display==='none')return;
-  const sv=!!hnVisible('subs'),S=sv?sb.getBoundingClientRect():null;let K=sk.getBoundingClientRect();if(S&&K.bottom>S.top-6){sk.style.bottom=(innerHeight-S.top+8)+'px';K=sk.getBoundingClientRect();}
+  const sv=!!hnVisible('subs'),S=sv?sb.getBoundingClientRect():null;let K=sk.getBoundingClientRect();if(S&&K.bottom>S.top-6&&K.left<S.right+6&&S.left<K.right+6){sk.style.bottom=(innerHeight-S.top+8)+'px';K=sk.getBoundingClientRect();}
   // F-2f: карточка урока (крупный шрифт) задела плашку — плашка уходит под карточку, если там её не заденут субтитры
   const ft=$('finTut');if(ft&&ft.classList.contains('on')){const F=ft.getBoundingClientRect();if(K.left<F.right&&F.left<K.right&&K.top<F.bottom&&F.top<K.bottom&&F.bottom+6+K.height<(S?S.top-6:innerHeight-8))sk.style.bottom=(innerHeight-F.bottom-6-K.height)+'px';}}
 {const _ui=updateUI;updateUI=function(dt){_ui(dt);try{hnLayout();}catch(e){console.error('hints',e);}};}
