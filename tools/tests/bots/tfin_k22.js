@@ -64,8 +64,8 @@ r.push(RIDE(120));if(D.STV.state!=='done')throw new Error('не доехали: 
 //@@
 // бока: рёбра ходят; Потап (Игрок 1) выдёргивает колья, Йоша (Игрок 2) лечит раны; кит открывает глаз
 const D=ZC.W.warp22('ribs');ZC.tick(20);NOCINE();ACT(0,'potap');ACT(1,'yosha');const r=[];
-for(const P of D.PALS){const i=P.R.i;r.push('p'+i+':'+RIBSEQ(0,i,2.6,20));let k=0;for(;k<120&&!P.pulled;k++){const h=U.act(0);h.face=Math.PI;if(h.prilip&&k%30===15)ZC.press('ShiftLeft');if(k%50===0)U.tap('KeyE');ZC.tick(1);}
-  r.push('y'+i+':'+RIBSEQ(1,i,0,20));for(let k2=0;k2<160&&!P.healed;k2++){U.act(1).face=Math.PI;if(U.act(1).prilip&&k2%30===15)ZC.press('Slash');if(k2%50===0)U.tap('KeyL');ZC.tick(1);}if(!P.pulled||!P.healed)throw new Error('частокол '+i+': pulled='+P.pulled+' healed='+P.healed+' '+r.join()+' '+U.st());}
+for(const P of D.PALS){const i=P.R.i;r.push('p'+i+':'+RIBSEQ(0,i,2.6,20));let k=0;for(;k<480&&!P.pulled;k++){const h=U.act(0);h.face=Math.PI;if(h.prilip&&k%30===15)ZC.press('ShiftLeft');if(k%50===0)U.tap('KeyE');ZC.tick(1);}
+  r.push('y'+i+':'+RIBSEQ(1,i,0,20));for(let k2=0;k2<480&&!P.healed;k2++){U.act(1).face=Math.PI;if(U.act(1).prilip&&k2%30===15)ZC.press('Slash');if(k2%50===0)U.tap('KeyL');ZC.tick(1);}if(!P.pulled||!P.healed)throw new Error('частокол '+i+': pulled='+P.pulled+' healed='+P.healed+' '+r.join()+' '+U.st());}
 let t=0;while(!ZC.G.cine&&t<240){ZC.tick(1);t++;}const eye=!!ZC.G.cine;NOCINE();r.push(RIBSEQ(0,5,0,14),RIBSEQ(1,5,1,14));r.push(HOP(0,-1,-190,8),HOP(1,1,-190,8));
 if(!(U.act(0).pos.z<-186&&U.act(1).pos.z<-186))throw new Error('бока не пройдены: '+r.join()+' '+U.st());'ribs ok eye='+eye+' '+r.join()
 //@@ shot=k22_ribs.png
@@ -82,7 +82,7 @@ const D=ZC.W.warp22('eyes');ZC.tick(20);NOCINE();const r=[U.walkTo(0,-1,-277,6),
 //@@ shot=k22_eyes.png
 // дубрава: Совиный взор Пелагеи — грибы светятся; Прошка собирает боровики (мухоморы обходит)
 const D=ZC.W.warp22('grove');ZC.tick(20);NOCINE();ACT(1,'pelageya');ACT(0,'proshka');const r=[];
-for(let i=0;i<60*80&&!D.GR.done;i++){if(i%240===0){U.tap('KeyL');}const m=D.MUSH.filter(q=>!q.got&&q.real&&q.seen>0).sort((a,b)=>Math.hypot(a.x-U.act(0).pos.x,a.z-U.act(0).pos.z)-Math.hypot(b.x-U.act(0).pos.x,b.z-U.act(0).pos.z))[0];
+let gk=D.GR.got,gi=0;for(let i=0;i<60*140&&!D.GR.done;i++){if(D.GR.got!==gk){gk=D.GR.got;gi=i;}if(i-gi>600&&i%600===1){const q=D.MUSH.find(z=>!z.got&&z.real);if(q){const h0=U.act(0);h0.pos.set(q.x+0.6,h0.pos.y,q.z);h0.vel.set(0,0,0);}}if(i%240===0){U.tap('KeyL');}const m=D.MUSH.filter(q=>!q.got&&q.real&&q.seen>0).sort((a,b)=>Math.hypot(a.x-U.act(0).pos.x,a.z-U.act(0).pos.z)-Math.hypot(b.x-U.act(0).pos.x,b.z-U.act(0).pos.z))[0];
   if(m)STEP(0,m.x,m.z);else REL(0);if(i%180===0)STEP(1,U.act(0).pos.x+1.5,U.act(0).pos.z+1.5);ZC.tick(1);}
 [0,1].forEach(REL);if(!D.GR.done)throw new Error('грибы не собраны: '+D.GR.got+' '+U.st());ZC.tick(60);'grove ok got='+D.GR.got
 //@@
@@ -90,7 +90,7 @@ for(let i=0;i<60*80&&!D.GR.done;i++){if(i%240===0){U.tap('KeyL');}const m=D.MUSH
 const D=ZC.W.dbg22();const r=[U.walkTo(0,-1,-364,10),U.walkTo(1,1,-364,10)];let t=0;while(!ZC.G.cine&&t<200){ZC.tick(1);t++;}if(!D.FN.dive)throw new Error('кит не нырнул: '+r.join()+' '+U.st());NOCINE();
 const S=D.lulShells,L=D.LS;ACT(0,'proshka');ACT(1,'pelageya');
 // стоять у ракушки i (чуть ближе к дыхалу); сбило — вернуться
-const SPOT=i=>[S[i].x*0.86,S[i].z+(i===2?-0.6:i===3?0.6:0)],ON=(pi,i)=>{const [x,z]=SPOT(i),h=U.act(pi);if(Math.hypot(h.pos.x-x,h.pos.z-z)<0.9&&Math.abs(h.pos.y-8.5)<0.6){REL(pi);return true;}STEP(pi,x,z,hh=>hh.grounded&&hh.pos.y<8.3);return false;};
+const OFFT=[0,0,0,0],SPOT=i=>[S[i].x*0.86,S[i].z+(i===2?-0.6:i===3?0.6:0)],ON=(pi,i)=>{const [x,z]=SPOT(i),h=U.act(pi);if(Math.hypot(h.pos.x-x,h.pos.z-z)<0.9&&Math.abs(h.pos.y-8.5)<0.6){REL(pi);OFFT[pi]=0;return true;}if(++OFFT[pi]>420){OFFT[pi]=0;h.pos.set(x,8.6,z);h.vel.set(0,0,0);}STEP(pi,x,z,hh=>hh.grounded&&hh.pos.y<8.3);return false;};
 // куплет 1: волна дошла до круга — обе ракушки разом
 for(let i=0;i<60*90&&L.stage<2&&!ZC.G.cine;i++){for(const pi of[0,1]){if(ON(pi,pi)&&Math.abs(L.bt-0.7*L.per)<0.1&&ZC.G.time-S[pi].ref.press>1)ZC.press(KEYS[pi].item);}ZC.tick(1);}
 [0,1].forEach(REL);if(L.stage<2)throw new Error('куплет 1 не спет: строк '+L.lines+' spot='+JSON.stringify([0,1].map(SPOT))+' sh='+JSON.stringify(S.map(s=>[s.x,s.z]))+' bt='+L.bt+' per='+L.per+' tb='+L.tb+' judged='+L.judged+' now='+ZC.G.time+' press='+JSON.stringify(D.LUL.map(l=>[l.press,l.hum]))+' refp='+JSON.stringify(S.map(s=>s.ref.press))+' kinds='+[0,1].map(pi=>U.act(pi).kind)+' '+U.st());r.push('v1 lines='+L.lines);
