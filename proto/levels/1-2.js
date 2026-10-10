@@ -181,7 +181,7 @@ function build12(){
 
   /* ====================== VI. «Царевна-лягушка»: стрела Ивана-царевича и кувшинки в лад ====================== */
   // Стрелу Ивана-царевича ветер закинул на сухую ольху. Прошка сбивает её из рогатки — Лягушка ловит стрелу и квакает в лад: кувшинки
-  // всплывают по очереди (одни — на «Ква!», другие — на «Ква-ква!»). Посередине кувшинка завяла (видна, но не держит) — Йоша оживляет её живой водой. Пруд глубокий: мимо кувшинки — плюх, и снова у колокольчика.
+  // всплывают по очереди (одни — на «Ква!», другие — на «Ква-ква!»). Посередине кувшинка завяла (видна, но не держит) — Йоша оживляет её живой водой. Пруд глубокий: мимо кувшинки — плюх, и снова у колокольчика (у берега или, если дошёл, на кувшинке у Лягушки).
   ground(-11,11,-240,-223.8);const pondBell=bell(-1.2,-225.8);
   // колокольчик у пруда звенит для каждого, кто вышел на берег пруда (даже мимо него): утонул в пруду — сюда, а не назад в туман
   W.updates.push(()=>{const b=pondBell;for(const pi of[0,1]){if(b.act[pi])continue;const h=active(pi);if(!(h.grounded&&h.pos.z<-227.5&&h.pos.z>-240&&h.pos.y>-0.2))continue;
@@ -198,7 +198,9 @@ function build12(){
   part(arrow,new THREE.ConeGeometry(0.07,0.22,5),M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.6}),0.78,0,0).rotation.z=-Math.PI/2;part(arrow,new THREE.BoxGeometry(0.24,0.12,0.02),M(0xe0e0e0),-0.66,0,0);dyn(arrow);
   // Лягушка на большой кувшинке
   const lilyMesh=(r,col)=>{const g=new THREE.Group();const m=part(g,new THREE.CylinderGeometry(r,r,0.1,14,1,false,0.35,Math.PI*2-0.35),M(col),0,-0.05,0);m.receiveShadow=true;return g;};
-  const bigLily=lilyMesh(1.8,0x4f8a3a);bigLily.position.set(6.0,0.06,-253);W.group.add(bigLily);W.cyls.push({x:6.0,z:-253,r:1.8,miny:-2,maxy:0.08,on:true});W.hummocks.push({x:6.0,z:-253,y:0.08});
+  const bigLily=lilyMesh(2.6,0x4f8a3a);bigLily.position.set(6.0,0.06,-253);W.group.add(bigLily);W.cyls.push({x:6.0,z:-253,r:2.6,miny:-2,maxy:0.08,on:true});W.hummocks.push({x:6.0,z:-253,y:0.08});
+  // колокольчик у Лягушки — на её кувшинке (за спиной у неё): упал в пруд после — возвращаешься сюда, а не на берег
+  const lilyBell=bell(7.2,-254.6,0.06);
   const FR=(()=>{const g=new THREE.Group();g.position.set(6.3,0.08,-253.4);g.rotation.y=-2.3;W.group.add(g);const body=new THREE.Group();g.add(body);const c=M(0x6ab04a),bl=M(0xd8e8a0);
     part(body,new THREE.SphereGeometry(0.42,12,10),c,0,0.34,0).scale.set(1.15,0.8,1.0);part(body,new THREE.SphereGeometry(0.3,10,8),bl,0,0.28,0.18).scale.set(1.1,0.7,0.7);
     for(const s of[-1,1]){part(body,new THREE.SphereGeometry(0.13,10,8),c,s*0.2,0.66,0.12);part(body,new THREE.SphereGeometry(0.07,8,6),M(0xfff3a0),s*0.22,0.7,0.2);part(body,new THREE.SphereGeometry(0.035,6,5),MAT.dark,s*0.23,0.71,0.26);
@@ -309,7 +311,7 @@ function build12(){
       Z.target.copy(tgt);Z.pos.lerp(tgt,1-Math.exp(-rate*dt));
       if(WD.stage!=='walk'&&!zvLead.told&&Z.pos.distanceTo(tgt)<0.5){zvLead.told=true;floatText(Z.pos.clone().add(new V3(0,0.8,0)),'Дзинь! Звено — тут!','#ffe08a');}}
     else if(zvLead.on){zvLead.on=false;Z.mode=zvLead.prev&&zvLead.prev!=='script'?zvLead.prev:'lead';}});
-  W.sw12={GS,forks,PADS,CR,CA,BS,FR,raceMat,flag,finStake,logPt,logCol,reedCol,wedLink,BN,arrow};   // для ботов
+  W.sw12={GS,forks,PADS,CR,CA,BS,FR,raceMat,flag,finStake,logPt,logCol,reedCol,wedLink,BN,arrow,lilyBell};   // для ботов
   /* ---------- стычка: пни-ворчуны и кикиморки на кочках ---------- */
   const arena={x:0,z:-336,r:9.5,started:false,cleared:false,hold:0,list:[]};arena.camActive=()=>arena.started&&(!arena.cleared||arena.hold>0);W.camZones.push(arena);
   const mounds=[[-6.5,-332],[6.5,-333],[-5,-341],[5.5,-340.5]];for(const[x,z]of mounds){addMesh(new THREE.CylinderGeometry(1.1,1.3,0.6,10),M(0x5d6b34),x,0.0,z);W.cyls.push({x,z,r:1.2,miny:-1,maxy:0.3,on:true});}
