@@ -59,6 +59,7 @@ def speak(text):
     """Что произносит голос: счётчики и значки убираются, числа — словами."""
     from num2words import num2words
     t = text.replace('·', '. ').replace('‹…›', ' ').replace('×', ' ')
+    t = re.sub(r'([.!?…])(?=[А-ЯЁ«])', r'\1 ', t)   # карточки боссов склеивают заголовок и текст без пробела («во сне.Подними») — голос глотает паузу
     t = re.sub(r'(\d+)\s*(?:с|сек)\b', lambda m: _fem(int(m.group(1))) + ' ' + _SEC(int(m.group(1))), t)   # «10 с»
     t = re.sub(r'(\d+)\s+(секунд[а-я]*)', lambda m: _fem(int(m.group(1))) + ' ' + _SEC(int(m.group(1))), t)   # «2 секунды»
     t = re.sub(r'(\d+)\s*%', lambda m: num2words(int(m.group(1)), lang='ru') + ' процентов', t)
