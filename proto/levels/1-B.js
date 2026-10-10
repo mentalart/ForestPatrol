@@ -28,15 +28,15 @@ function build1B(){
   const shoulders=[-1,1].map(s=>{const x=s*2.4,z=-23.3,y=5.6;const c={on:false};const m=addMesh(new THREE.BoxGeometry(1.8,0.3,1.8),MAT.moss,x,y-0.15,z);m.visible=false;return {x,y,z,c,m,s};});
   const headPos=new V3(0,7.4,-24.2);
   // руки-коряги: левая — жёлтая, правая — красная
-  let ramp=null;
-  function makeRamp(hand){if(ramp)dropRamp();const sh=shoulders[hand.side>0?1:0],from=new V3(hand.pos.x,0,hand.pos.z),to=new V3(sh.x,sh.y,sh.z+0.4);
+  const ramps=[];   // по мосту на руку: пробиты обе — легли оба моста
+  function makeRamp(hand){dropRamp(hand);const sh=shoulders[hand.side>0?1:0],from=new V3(hand.pos.x,0,hand.pos.z),to=new V3(sh.x,sh.y,sh.z+0.4);
     const n=18,cols=[],g=new THREE.Group();W.group.add(g);const len=from.distanceTo(to);
     const arm=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.75,len,8),M(0x3d5a2a));arm.position.copy(from).add(to).multiplyScalar(0.5);arm.quaternion.setFromUnitVectors(new V3(0,1,0),to.clone().sub(from).normalize());g.add(arm);
     const top=new THREE.Mesh(new THREE.BoxGeometry(1.1,0.1,len),MAT.moss);top.position.copy(arm.position).add(new V3(0,0.55,0));top.lookAt(to.clone().add(new V3(0,0.55,0)));g.add(top);
     const rp={x0:from.x,z0:from.z,y0:0.02,y1:to.y,dx:(to.x-from.x)/Math.hypot(to.x-from.x,to.z-from.z),dz:(to.z-from.z)/Math.hypot(to.x-from.x,to.z-from.z),len:Math.hypot(to.x-from.x,to.z-from.z),w:0.75};W.ramps=W.ramps||[];W.ramps.push(rp);cols.push(rp);
     {const fx=sh.x*0.55,fz=sh.z-0.9,fl=Math.hypot(fx-to.x,fz-to.z);const fp={x0:to.x,z0:to.z,y0:to.y,y1:to.y,dx:(fx-to.x)/fl,dz:(fz-to.z)/fl,len:fl,w:0.9};W.ramps.push(fp);cols.push(fp);}   // площадка на плече
-    sh.c.on=true;sh.m.visible=true;ramp={g,cols,sh,t:9};banner('Рука на землю легла!','#b8e070',2,'беги по руке — бей по макушке!');}
-  function dropRamp(){if(!ramp)return;ramp.cols.forEach(c=>{const i=W.ramps.indexOf(c);if(i>=0)W.ramps.splice(i,1);for(const q of HEROES)if(q.groundRef===c){q.groundRef=null;q.grounded=false;}});ramp.sh.c.on=false;ramp.sh.m.visible=false;W.group.remove(ramp.g);ramp=null;}
+    sh.c.on=true;sh.m.visible=true;ramps.push({g,cols,sh,hand,t:9});banner('Рука на землю легла!','#b8e070',2,'беги по руке — бей по макушке!');}
+  function dropRamp(hand){for(const r of ramps.slice()){if(hand&&r.hand!==hand)continue;r.cols.forEach(c=>{const i=W.ramps.indexOf(c);if(i>=0)W.ramps.splice(i,1);for(const q of HEROES)if(q.groundRef===c){q.groundRef=null;q.grounded=false;}});r.sh.c.on=false;r.sh.m.visible=false;W.group.remove(r.g);ramps.splice(ramps.indexOf(r),1);}}
   const hands=[];
   function spawnHands(){for(const s of[-1,1]){const e=makeFoe('hand',s*4,-17,{leash:10,signals:[s<0?'yellow':'red'],scale:1});e.side=s;e.noKill=true;e.home.set(s*4,0,-17);
       e.onBroken=()=>{makeRamp(e);};e.onFinisher=(h)=>{floatText(e.pos.clone().add(new V3(0,2,0)),'По руке — да к плечу!','#b8e070');};hands.push(e);}}
@@ -55,16 +55,16 @@ function build1B(){
     if(!best.real){best.state='gone';makeCones(best.pos,14);W.group.remove(best.m.g);SFX.crash();floatText(best.pos.clone().add(new V3(0,3,0)),'Шишки!','#e0c090');}
     else if(best.state==='fallen'){best.state='gone';F.round=(F.round||0)+1;SFX.finisher();G.hitstop=0.14;shakeAll(0.05,0.35);ringFx(best.pos,COL.gold,3.5);floatText(best.pos.clone().add(new V3(0,3.4,0)),'Нашли!','#ffd76a');
       for(let i=0;i<8;i++)spawnSpark(best.pos.clone().add(new V3(0,2,0)),[COL.gold,0x6ad0ff,0xff6a8a][i%3]);bark(best.m,'leshy',F.round<2?'Ай! Ну, это случайно, по оплошке.':'Ай! Нашли меня, ишь…',2);
-      later(1.0,()=>{doubles.forEach(d=>{if(d.state!=='gone'){makeCones(d.pos,8);W.group.remove(d.m.g);d.state='gone';}});if(F.round<2){later(1.4,()=>{spawnDoubles(5);addStakes(6);banner('Ещё круг!','#b8e070',2,'двойников и колышков больше');});}else later(1.2,startPhase3);});}
+      later(1.0,()=>{doubles.forEach(d=>{if(d.state!=='gone'||d===best){makeCones(d.pos,8);W.group.remove(d.m.g);d.state='gone';}});if(F.round<2){later(1.4,()=>{spawnDoubles(5);addStakes(6);banner('Ещё круг!','#b8e070',2,'двойников и колышков больше');});}else later(1.2,startPhase3);});}
     else{const dx=h.pos.x-best.pos.x,dz=h.pos.z-best.pos.z,dd=Math.hypot(dx,dz)||1;h.vel.x=dx/dd*6;h.vel.z=dz/dd*6;h.vel.y=4;h.grounded=false;h.knockT=0.3;SFX.knock();floatText(best.pos.clone().add(new V3(0,3.2,0)),'Ха! Ищи-свищи!','#b8e070');}}};
   W.hittables.push(dblHit);
-  W.hittables.push({pos:new V3(headPos.x,0,headPos.z),r:1.6,push:false,alive:()=>F.phase===1&&!!ramp,onHit:h=>{if(h.pos.y>4.5&&!G.cine)headHit(h);}});   // макушка — только с плеча
+  W.hittables.push({pos:new V3(headPos.x,0,headPos.z),r:1.6,push:false,alive:()=>F.phase===1&&ramps.length>0,onHit:h=>{if(h.pos.y>4.5&&!G.cine)headHit(h);}});   // макушка — только с плеча
   /* ---------- фаза 3: вместе ---------- */
   let boss3=null;const ringFxM=[0,1].map(()=>{const m=new THREE.Mesh(new THREE.TorusGeometry(1,0.08,6,32),MB(COL.yellow,{transparent:true,opacity:0.9}));m.visible=false;W.group.add(m);return m;});
   const ringSun=[0,1].map(()=>{const m=new THREE.Mesh(new THREE.SphereGeometry(0.24,12,10),M(COL.yellow,{emissive:COL.yellow,emissiveIntensity:1.3}));m.visible=false;W.group.add(m);return m;});
   const cring={on:false,t:0,next:6,press:[null,null]};W.cring=cring;
   W.onGuardTap=(pi,h)=>{if(cring.on&&cring.press[pi]===null)cring.press[pi]=cring.t;};
-  function startPhase3(){F.phase=3;carousel.visible=true;smokePuff();L.g.visible=false;boss3=makeFoe('leshyBoss',C.x,C.z-1,{leash:0.6});boss3.needBoth=true;boss3.onDeath=()=>{F.won=true;later(1.4,ending);};
+  function startPhase3(){F.phase=3;doubles.forEach(d=>{W.group.remove(d.m.g);d.state='gone';});carousel.visible=true;smokePuff();L.g.visible=false;boss3=makeFoe('leshyBoss',C.x,C.z-1,{leash:0.6});boss3.needBoth=true;boss3.onDeath=()=>{F.won=true;later(1.4,ending);};
     for(const t of W.threads.slice())if(t.string)removeThread(t);stakes2.forEach(s=>{W.group.remove(s.g);W.stakes.splice(W.stakes.indexOf(s),1);});stakes2=[];
     banner('Леший лес каруселью крутит!','#b8e070',2.6,'над обоими один кружок — щитом закройтесь вместе, в такт: Богатырский щит');say('leshy','А ну-ка, закружу, заверчу!',2.2);cring.next=4;}
   function ringStrike(){const win=TIMING[genPath()].parry;const hit=[0,1].map(pi=>cring.press[pi]!==null&&Math.abs(cring.press[pi]-1.3)<=win);
@@ -102,7 +102,7 @@ function build1B(){
   W.updates.push(dt=>{
     setBar();
     // руки: пока рука в Пробое — лежит мостком; вернулась — мостик убран
-    if(ramp){ramp.t-=dt;if(ramp.t<=0||!hands.some(e=>e.alive&&e.state==='broken')){if(ramp.t<=0||!HEROES.some(q=>q.pos.y>1&&q.groundRef&&ramp.cols.includes(q.groundRef)))dropRamp();}}
+    for(const r of ramps.slice()){r.t-=dt;if(r.t<=0||!(r.hand.alive&&r.hand.state==='broken')){if(r.t<=0||!HEROES.some(q=>q.pos.y>1&&q.groundRef&&r.cols.includes(q.groundRef)))dropRamp(r.hand);}}
     for(const e of hands){if(e.alive&&e.state==='broken'&&!e.rampDone){e.rampDone=true;e.bdur=Math.max(e.bdur,8);if(e.onBroken)e.onBroken();}if(e.state!=='broken')e.rampDone=false;}
     // удар по макушке — с плеча
     L.head.rotation.y=Math.sin(G.time*0.7)*0.3;L.body.rotation.z=Math.sin(G.time*0.5)*0.03;
@@ -129,11 +129,11 @@ function build1B(){
   for(const pi of[0,1]){const h=()=>active(pi);
     prompt(pi,'guard',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig!=='red'&&e.help)||(cring.on&&cring.t>0.7&&cring.press[pi]===null),cring.on?'вместе!':null);
     prompt(pi,'roll',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig==='red'&&e.help));
-    prompt(pi,'attack',()=>headOf(h()),()=>ramp&&h().pos.y>5&&hd(h().pos,headPos)<3.2,'по макушке');
+    prompt(pi,'attack',()=>headOf(h()),()=>ramps.length>0&&h().pos.y>5&&hd(h().pos,headPos)<3.2,'по макушке');
     prompt(pi,'swap',()=>headOf(h()),()=>F.phase===3&&players[pi].blue>=1,'богатырский выход');
     prompt(pi,'item',()=>headOf(h()),()=>F.phase===2&&!W.threads.some(t=>t.owner===pi&&!t.ret&&!t.string)&&stakes2.some(s=>!s.used&&hd(s,h().pos)<9&&hd(s,h().pos)>2));}
   prompt(1,'skill',()=>headOf(T.pelageya),()=>F.phase===2&&T.pelageya.active&&W.owlT<=0&&players[1].owlCd<=0,'кто настоящий?');
-  W.tipZones.push({cond:()=>F.phase===1&&!!ramp,text:pi=>'Беги по руке на плечо — бей '+K(pi,'attack')+' по макушке!'},
+  W.tipZones.push({cond:()=>F.phase===1&&ramps.length>0,text:pi=>'Беги по руке на плечо — бей '+K(pi,'attack')+' по макушке!'},
     {cond:()=>F.phase===2,text:pi=>'Натяни струну между колышками '+K(pi,'item')+'.'});
   const ph1=pi=>O(()=>'Отбей <i class="sg y"></i> щитом '+K(pi,'guard')+', <i class="sg r"></i> — кувырок '+K(pi,'roll')+'.',()=>F.phase>1,()=>hands.filter(e=>e.alive).map(e=>e.g));
   const ph2=pi=>O(pi?()=>'Найди настоящего: Совиный взор '+K(1,'skill')+'. Клубок '+K(1,'item')+' — в колышек.':()=>'Брось клубок '+K(0,'item')+' в колышек. Упавшего бей '+K(0,'attack')+'!',
