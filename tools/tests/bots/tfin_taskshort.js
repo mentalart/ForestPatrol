@@ -34,4 +34,4 @@ ld('2-1');P[0].obj=2;P[1].obj=2;ZC.tick(30);ZC.sim(5);for(let i=0;i<300;i++)F.ui
 chk(SAID.length>=1&&/Встань у чаши фонтана/.test(SAID.join(' '))&&!/Звено — на столбе/.test(SAID.join(' ')),'вслух — короткая строка: '+JSON.stringify(SAID));
 TS.off=true;window.SAID.length=0;F.readAloud.said={};P[0].obj=1;P[1].obj=1;ZC.tick(30);P[0].obj=2;P[1].obj=2;for(let i=0;i<300;i++)F.ui(1/60);
 chk(!/hn-short/.test(F.hints.state().html.join(' ')),'таблица выключена — карточки без короткой строки');TS.off=false;
-BAD.length||ERR.length?'FAIL '+BAD.join(' ; ')+' errs='+ERR.slice(0,3).join(' | '):'taskshort ok'
+if(BAD.length||ERR.length)throw new Error('taskshort: '+BAD.join(' ; ')+' errs='+ERR.slice(0,3).join(' | '));'taskshort ok'
