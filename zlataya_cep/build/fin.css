@@ -123,7 +123,7 @@ body.fin-title #ui{display:none}
 #level span{font-family:system-ui,sans-serif}
 #subs{font-size:calc(22px*var(--fts));background:linear-gradient(180deg,rgba(30,20,44,.86),rgba(18,12,28,.82));border:1px solid rgba(232,179,58,.25);border-radius:14px}
 .float{font-size:calc(21px*var(--fts))}
-#skip{font-size:calc(clamp(14px,2vh,28px)*var(--fts));bottom:calc(9vh + 120px);background:rgba(24,16,34,.75);border:1px solid rgba(232,179,58,.25)}
+#skip{font-size:calc(clamp(14px,2vh,28px)*var(--fts));background:rgba(24,16,34,.75);border:1px solid rgba(232,179,58,.25)}
 /* карточка итогов (конец мира, пролога) — в той же гамме */
 #menu{background:rgba(12,8,20,.78)}
 #card{background:linear-gradient(180deg,rgba(40,26,56,.97),rgba(24,16,36,.97))!important;border:3px solid var(--gold2)!important;border-radius:22px!important;box-shadow:0 12px 40px rgba(0,0,0,.5)}

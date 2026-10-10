@@ -166,7 +166,7 @@ build21=function(){
     const rope=addMesh(new THREE.CylinderGeometry(0.035,0.035,1.6,5),M(0xd8c090),0.3,1.6,0,g);const fl=addMesh(new THREE.BoxGeometry(0.7,0.45,0.03),M(s<0?PCOL[0]:PCOL[1]),0.42,2.4,0,g);return {g,rope,fl,pulled:false,s};});
   ropes.forEach((R,i)=>W.hittables.push({pos:new V3(R.s*5.2,4.2,-110.4),r:1.1,push:false,alive:()=>!R.pulled,onHit:h=>{if(h.pos.y<2.9)return;R.pulled=true;SFX.latch();SFX.ok();
     anim(0.7,k=>{R.rope.scale.y=1-0.5*k;R.fl.position.y=2.4-1.4*k;});openPG(1-i);banner(i?'Правая верёвка!':'Левая верёвка!','#ffffff',1.8,'открылись ворота '+(i?'левой':'правой')+' стороны — друга');}}));
-  const pkR=pike(6.4,-91,CR,-2.4,{pi:1});
+  const pkR=pike(6.4,-91,CR,-2.4,{});   // канал общий: охотится на любого героя в своей воде (с {pi:1} Прошку в одиночной игре не трогала)
   const nutCanal=nutItem(-10.1,-1.9,-99.5),nutTerrace=nutItem(10.2,3.75,-111.3);
   bell(-6,-114.4,1.6);bell(6,-114.4,1.6);
   /* ---------- Д. шлюзы Китежа: три ступени воды — прилив поднимает на следующую (дальше на 40 м) ---------- */
