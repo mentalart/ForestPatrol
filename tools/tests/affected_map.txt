@@ -156,6 +156,7 @@ zlataya_cep/build/late_91_voice.js            tfin_voice tfin_cine tfin_scooter 
 zlataya_cep/build/late_91b_juice.js            @full tfin_juice
 zlataya_cep/build/late_91c_juice_world.js      @full tfin_juice tfin_audiolevel
 zlataya_cep/build/late_91d_readvoice.js        tfin_readvoice tfin_kids1 tfin_kids2 tfin_taskshort tfin_hints tfin_voice
+zlataya_cep/build/late_91e_foe_death.js        tfin_foedeath tfin_juice tfin_foekinds tfin_foekinds1b tfin_foekinds2 tfin_foekinds2b tfin_foekinds3 tfin_foekinds4 tfin_foekinds5 tfin_foekinds6 tfoes
 zlataya_cep/build/late_95_dev.js              tfin_dev tfin_devluko
 
 # ---- модули релиза: ролики, камера, видимость ----
