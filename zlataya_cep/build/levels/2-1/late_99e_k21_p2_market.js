@@ -104,7 +104,7 @@
     if(!F.grate){const ok=LZ.state==='high'&&LZ.t>=1&&RZ.state==='low'&&RZ.t>=1;
       if(ok){F.grate=true;grateCol.on=false;SFX.gate();SFX.ok();anim(1.6,k=>{grate.position.y=3.8*smooth(k);});banner('Решётка поднялась!','#ffffff',2,'вместе получилось');}}
     // Переливная улица
-    if(!F.perelTold&&[0,1].some(pi=>active(pi).pos.z<-79&&active(pi).pos.z>-82)){F.perelTold=true;perelScene();}
+    if(!F.perelTold&&[0,1].some(pi=>active(pi).pos.z<-79+PZ&&active(pi).pos.z>-82+PZ)){F.perelTold=true;perelScene();}
     // Звонкая мостовая: осётр напевает напев; плиты по напеву
     if(!F.sturg&&!G.cine&&[0,1].some(pi=>active(pi).pos.z<-182.5&&active(pi).pos.z>-213)){F.sturg=true;sturgeonPass();}
     tuneTick(dt);
@@ -115,27 +115,27 @@
     if(GARD.state==='low'&&GARD.t>=1&&!G.cine){if(GARD.holdT<=0)F.gardT=(F.gardT||0)+dt;if(F.gardT>10){F.gardT=0;setWater(GARD,'high');banner('Родник опять наполнил сад!','#9fe6ff',1.8,'Потап — на дно, к ракушке; сменишь героя — оставленный подержит отлив');}}else F.gardT=0;
     if(!F.gardTold&&[0,1].some(pi=>active(pi).pos.z<-236.5+DG&&active(pi).pos.z>-240+DG)){F.gardTold=true;say('zven','Сад Китежа! Ракушка — на дне. Глубоко — только Потапу дойти!',3,true);}
     // Переливная: подсказка про Потапа, когда вода «не идёт»
-    if(!F.out&&[0,1].every(pi=>active(pi).pos.z<-158+D3)&&[0,1].some(pi=>active(pi).pos.z<-168+D3)){F.out=true;finishLevel();}});
-  W.tipZones.push({cond:(pi,h)=>[L1,L2,L3].some(z=>inZone(z,h,0)&&z.state==='low'&&h.pos.y<z.floor+0.4),text:pi=>'Стенка высока — сыграй прилив '+K(pi,'item')+'!'},
-    {cond:(pi,h)=>inZone(LIFT,h,0)&&h.pos.y>6,text:pi=>'Колодец-лифт: сыграй отлив '+K(pi,'item')+' — вода опустит вниз.'},
+    if(!F.perelLeftTold&&SLU.held()&&SLU.hero&&!kwControlled(SLU.hero)){F.perelLeftTold=true;
+      for(const p of[0,1])tip(p,'Оставленный герой остаётся на месте и делает своё: Потап держит заслонку.',3.6);}
+    if(!F.out&&!F.gateSeen&&!G.cine&&F.hermitWon&&[0,1].every(pi=>active(pi).pos.z<-158+D3)&&[0,1].some(pi=>active(pi).pos.z<-161+D3)){F.gateSeen=true;gateScene();}});
+  W.tipZones.push({cond:(pi,h)=>[L1,L2].some(z=>inZone(z,h,0)&&z.state==='low'&&h.pos.y<z.floor+0.4),text:pi=>'Стенка высока — сыграй прилив '+K(pi,'item')+'!'},
     {cond:(pi,h)=>mkt.started&&!mkt.done&&MP.state==='high'&&hd(h.pos,{x:0,z:-127+D})<7,text:pi=>'Сыграй отлив '+K(pi,'item')+' — створки раскроются.'},
     {cond:(pi,h)=>!F.grate&&h.pos.z<-141+D2&&h.pos.z>-157+D2,text:pi=>'Левой воде — прилив, правой — отлив. На таблички гляди!'},
-    {cond:(pi,h)=>h.pos.z<-80&&h.pos.z>-108&&!SLU.held(),text:pi=>'Поставь на заслонку Потапа '+K(0,'swap')+' — он удержит.'},
-    {cond:(pi,h)=>h.pos.z<-80&&h.pos.z>-108&&SLU.held(),text:pi=>'Прилив у тебя '+K(pi,'item')+', отлив — у друга.'},
+    {cond:(pi,h)=>h.pos.z<-80+PZ&&h.pos.z>-108+PZ&&!SLU.held(),text:pi=>'Поставь на заслонку Потапа '+K(0,'swap')+' — он удержит.'},
+    {cond:(pi,h)=>h.pos.z<-80+PZ&&h.pos.z>-108+PZ&&SLU.held(),text:pi=>'Прилив у тебя '+K(pi,'item')+', отлив — у друга.'},
     {cond:(pi,h)=>h.pos.z<K0&&h.pos.z>K0-37&&F.kingMet&&!F.kingDone,text:pi=>KD.on?'Царь пляшет! Кольца-волны — прыгай '+K(pi,'jump')+'. Сбило — вернись к стулу и сыграй '+K(pi,'item')+'.'+(KD.round>=1?'<br>Жемчужинки с венца подбирай — пляска пойдёт шибче!':''):'Играйте '+K(pi,'item')+' оба! Один — смени героя '+K(pi,'swap')+'.'},
     {cond:(pi,h)=>h.pos.z<-182&&h.pos.z>-212.6&&!TS.done&&F.sturg,text:pi=>'Плиты по напеву Садко: дзинь, дилинь, дон-дон!'},
     {cond:(pi,h)=>h.pos.z<-237+DG&&h.pos.z>-259+DG&&GARD.state==='high'&&h.kind!=='potap',text:pi=>pi?'Ракушка на дне — зови друга '+K(1,'call')+'.':'Ракушка на дне — Потап дойдёт: смени '+K(0,'swap')+'.'},
     {cond:(pi,h)=>h.pos.z<-237+DG&&h.pos.z>-259+DG&&GARD.state==='low',text:pi=>(KS.some(s=>!s.grown)?'Дно открыто! Йоша, полей ростки живой водой '+K(1,'skill')+' — вырастут лесенки.<br>':'')+'Родник наполнит сад через '+Math.max(0,Math.ceil(10-(F.gardT||0)))+' с. Наверх — с листа на лист!'});
   for(const pi of[0,1]){const h=()=>active(pi);
-    prompt(pi,'item',()=>headOf(h()),()=>[L1,L2,L3].some(z=>inZone(z,h(),0.2)&&z.state==='low'&&h().pos.y<z.floor+0.5),'прилив — наверх');
-    prompt(pi,'item',()=>headOf(h()),()=>inZone(LIFT,h(),0.2)&&LIFT.state==='high'&&h().pos.y>6,'отлив — вниз');
+    prompt(pi,'item',()=>headOf(h()),()=>[L1,L2].some(z=>inZone(z,h(),0.2)&&z.state==='low'&&h().pos.y<z.floor+0.5),'прилив — наверх');
     prompt(pi,'item',()=>headOf(h()),()=>mkt.started&&!mkt.done&&inZone(MP,h(),1.2)&&MP.state==='high','отлив — Жемчужница ахнет');
     prompt(pi,'item',()=>headOf(h()),()=>!F.grate&&inZone(LZ,h(),0.2)&&LZ.state==='low','прилив!');
     prompt(pi,'item',()=>headOf(h()),()=>!F.grate&&inZone(RZ,h(),0.2)&&RZ.state==='high','отлив!');
     prompt(pi,'item',()=>headOf(h()),()=>SLU.held()&&hd(h().pos,pi?CR.shell.g.position:CL.shell.g.position)<2&&(pi?CR:CL).state==='low','прилив — лодку к террасе');
     prompt(pi,'attack',()=>headOf(h()),()=>!ropes[pi].pulled&&h().pos.y>2.9&&hd(h().pos,ropes[pi].g.position)<2,'дёрни верёвку');
     prompt(pi,'item',()=>headOf(h()),()=>GARD.state==='high'&&inZone(GARD,h(),0)&&h().pos.y<-3,'отлив — открой дно');}
-  prompt(0,'swap',()=>headOf(HERO.potap),()=>!SLU.held()&&HERO.proshka.active&&active(0).pos.z<-78&&active(0).pos.z>-108,'Потапа — на заслонку');
+  prompt(0,'swap',()=>headOf(HERO.potap),()=>!SLU.held()&&HERO.proshka.active&&active(0).pos.z<-78+PZ&&active(0).pos.z>-108+PZ,'Потапа — на заслонку');
   prompt(0,'skill',()=>headOf(HERO.potap),()=>!F.anchor&&HERO.potap.active&&hd(HERO.potap.pos,{x:4,z:-258.3+DG})<2.3&&HERO.potap.pos.y<-3,'поднять якорь');
   prompt(1,'skill',()=>headOf(HERO.yosha),()=>HERO.yosha.active&&KS.some(s=>!s.grown&&hd(s,HERO.yosha.pos)<3&&Math.abs(HERO.yosha.pos.y-s.y)<2.2&&(s===KS[0]||F.anchor)),'живая вода — росток');
   /* ---------- сюжет ---------- */
