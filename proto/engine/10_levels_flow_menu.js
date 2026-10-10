@@ -60,7 +60,7 @@ function loadLevel(i){G.levelIdx=i;G.soloPi=0;applyOutfits();$('bossbar').style.
       h.rollT=0;h.hang=false;h.hurtT=0;h.power=null;h.firefly=25;h.hatOn=false;h.inRing=false;h.body.visible=true;h.g.scale.setScalar(1);h.lit=false;h.litK=0;h.hidden=false;h.noFeather=false;h.carry=null;h.heatK=0;if(h.skin){h.g.remove(h.skin);h.skin=null;}h.jumpK=null;h.inFlock=false;h.likhoSafe=false;
       h.face=W.spawnFace?W.spawnFace[pi][k]:Math.PI;const s=W.spawns[pi][k];placeOnGround(h,s.x,s.z,s.y||0);});
     const s0=W.spawns[pi][p.act];p.cp.set(s0.x,s0.y||0,s0.z);hideGhost(pi);}
-  G.split=0;G.splitTarget=0;G.cine=null;G.skipT=0;subT=0;bannerT=0;snapCams();$('flash').style.opacity=0;
+  G.split=0;G.splitTarget=0;Object.assign(SPLIT,{focus:null,share:0.5,o:0,hold:0,outT:0,leashT:0,glow:null});G.cine=null;G.skipT=0;subT=0;bannerT=0;snapCams();$('flash').style.opacity=0;
   if(G.state==='play')showTitle();
   if(W.zvenAway&&W.zven){const Z=W.zven;Z.shown=true;Z.vis=true;Z.summonT=Math.max(Z.summonT||0,2.6);const a=active(0).pos,b=active(1).pos;Z.pos.set((a.x+b.x)/2,a.y+2.4,(a.z+b.z)/2-2.5);}
   if(W.onStart)W.onStart();}

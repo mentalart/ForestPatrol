@@ -65,7 +65,8 @@ function hlpClear(pi){if(pi==null||(HLP.arrow&&HLP.arrow.pi===pi))HLP.arrow=null
 // смена уровня — чистая лестница и прежние окна TIMING (до загрузки: иначе поблажка осталась бы в базе)
 {const _ll=loadLevel;loadLevel=function(i){HLP.reset();_ll(i);};}
 // ход: таймеры, мигание, стрелка
-function hlpPos(p3){for(const pane of PANES){const pr=project(p3,pane);if(!pr.behind&&Math.abs(pr.x)<0.95&&Math.abs(pr.y)<0.92)return {x:pane.x+(pr.x*0.5+0.5)*pane.w,y:(1-(pr.y*0.5+0.5))*innerHeight};}return null;}
+function hlpPos(p3){for(const pane of PANES){const pr=project(p3,pane),x=pane.x+(pr.x*0.5+0.5)*pane.w,y=(1-(pr.y*0.5+0.5))*innerHeight;
+  if(!pr.behind&&(pane.poly?paneHas(pane,x,y,pane.w*0.025):Math.abs(pr.x)<0.95&&Math.abs(pr.y)<0.92))return {x,y};}return null;}
 const hlpLive=()=>HLP.on&&W&&G.state==='play'&&!G.cine&&!G.trans&&!G.ui;
 // таймеры — в шаге игры (идут и без отрисовки интерфейса)
 function hlpSim(dt){if(!hlpLive())return;
