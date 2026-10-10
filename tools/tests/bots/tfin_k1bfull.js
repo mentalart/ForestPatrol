@@ -39,10 +39,10 @@ let g2=0,r0='';while(W.flags.phase===2&&g2<8){r0+=ph2()+' | ';g2++;ZC.tick(60*3)
 // этап 3: выход на хоровод — ролик пень/Леший пропускаем, дальше сам урок
 skipCine(30);let n=0;while(!LK.on&&n<60*20){ZC.tick(1);n++;}need(LK.on,'урок Хоровода начался');'phase='+W.flags.phase+' on='+S.on+' lesson on='+LK.on+' runs='+LK.runs+' stump='+(S.stump?'y':'n')+' errs='+window._errs.length
 //@@ shot=k1bfull_lesson.png
-// урок «Хоровода»: шаг 1 «Скакалка» ждёт прыжка обоих; нажимают — «Получилось!»; шаг 2 «Тяни-потяни» ждёт удара обоих; всё ≤ 25 с
+// урок «Хоровода»: шаг 0 «Хоровод» идёт сам (≈9 с, без нажатий); шаг 1 «Скакалка» ждёт прыжка обоих; нажимают — «Получилось!»; шаг 2 «Тяни-потяни» ждёт удара обоих; всё ≤ 25 с
 window.card=()=>{const c=document.getElementById('finTut');return c&&c.classList.contains('on')?c:null;};
 window.cs=()=>{const c=card();if(!c)return '-';const g=c.querySelector('.ft-go');return (c.querySelector('.ft-head')||{}).innerText.replace(/\s+/g,' ').slice(0,40)+(g?' ['+g.innerText+']':'');};
-window.lt0=ZC.G.time;let n=0;while(n<60*5&&!(card()&&card().querySelector('.ft-go')))ZC.tick(1),n++;need(card()&&card().querySelector('.ft-go'),'карточка урока ждёт нажатия');const a=cs(),still0=S.on;
+window.lt0=ZC.G.time;let n=0;while(n<60*16&&!(card()&&card().querySelector('.ft-go')))ZC.tick(1),n++;need(card()&&card().querySelector('.ft-go'),'карточка урока ждёт нажатия');const a=cs(),still0=S.on;
 ZC.tick(60);const a1=cs();ZC.press(U.K[0].j);ZC.press(U.K[1].j);ZC.tick(3);const a2=cs();
 'step1 '+a+' | after 1s '+a1+' | pressed → '+a2+' | game not started yet: '+(!still0)
 //@@ shot=k1bfull_lesson2.png
