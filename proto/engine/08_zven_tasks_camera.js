@@ -77,7 +77,7 @@ function updateShared(dt){shakeUpd(shared,dt);
 /* ------------------------------ раздельный экран: когда делить, как делить ------------------------------
    Режим G.splitMode: 'auto' — делится, когда герои разошлись (дальше SPLIT.cfg.split по земле и высоте) или не влезают в кадр общей камеры;
    'together' — всегда общий, отставшего Звенышко подтягивает к другу; 'apart' — всегда раздельный. Ролик, сценарная камера (W.camFn),
-   боевая зона и W.noSplit — общий в любом режиме, W.forceSplit — раздельный. Бой рядом сводит экран, только если герои ближе SPLIT.cfg.fightMax.
+   боевая зона, W.noSplit и W.noSplitFn() — общий в любом режиме, W.forceSplit — раздельный. Бой рядом сводит экран, только если герои ближе SPLIT.cfg.fightMax.
    Раскладка G.splitLayout: 'auto' | 'vertical' | 'horizontal' | 'dynamic'. Линия раздела — нормаль SPLIT.n (экран, y вниз; от панели Игрока 1
    к панели Игрока 2) и сдвиг SPLIT.o от центра (px вдоль нормали). Прямая линия: стороны — по кадру общей камеры в миг разделения (кто левее
    или выше, у того левая или верхняя панель) и держатся до слияния; 'auto' на узком экране (меньше 1,25 : 1) — по горизонтали.
@@ -100,7 +100,7 @@ function splitFrame(){splCam.position.copy(shared.pos);splCam.up.set(0,1,0);splC
   let m=0;for(const pi of[0,1]){const h=active(pi);for(const y of[0.1,heroHeight(h)]){SPLV.set(h.pos.x,h.pos.y+y,h.pos.z).applyMatrix4(splCam.matrixWorldInverse);if(SPLV.z>-0.3)return 9;
     SPLV.applyMatrix4(splCam.projectionMatrix);m=Math.max(m,Math.abs(SPLV.x),Math.abs(SPLV.y));}}return m;}
 function decideSplit(dt){const fight=fightNear(dt),C=SPLIT.cfg,md=G.splitMode||'auto';SPLIT.hold=Math.max(0,SPLIT.hold-dt);let t=G.splitTarget;
-  if(G.cine&&G.cine.cam||G.solo||activeCamZone()||W.camFn||W.noSplit){t=0;SPLIT.outT=0;}
+  if(G.cine&&G.cine.cam||G.solo||activeCamZone()||W.camFn||W.noSplit||W.noSplitFn&&W.noSplitFn()){t=0;SPLIT.outT=0;}
   else if(W.forceSplit||md==='apart')t=1;
   else if(md==='together')t=0;
   else{const a=active(0),b=active(1),d=splitSep(a,b),fr=splitFrame(),near=fight&&hd(a.pos,b.pos)<C.fightMax;SPLIT.outT=fr>1?SPLIT.outT+dt:0;

@@ -76,14 +76,14 @@
 | id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
 | `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_79t_hintteach, late_96_prolog_scooter, late_96b_prolog_night | 8 | tfin_cine tfin_companion_p tfin_fadesplit tfin_kids1 tfin_prolog_night tfin_scooter tfin_… |
-| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 16 | tfin_art tfin_audiolevel tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kid… |
-| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 34 | t11 tfin_art tfin_botlevel tfin_cam tfin_companion tfin_companion_11 tfin_dash tfin_dev t… |
+| `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 17 | tfin_art tfin_audiolevel tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kid… |
+| `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 36 | t11 tfin_art tfin_botlevel tfin_cam tfin_companion tfin_companion_11 tfin_companion_cam t… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1, late_76_kids_fight, late_79f_fog_hint12 | 3 | tfin_bossfxcap tfin_companion_12 tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 3 | tfin_companion_13 tfin_kids1 tfin_kids2 |
-| `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14, late_99zg_auka14 | 6 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14long tfin_kidnap14 tfin_kids2 |
+| `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14, late_99zf_pea14, late_99zg_auka14 | 7 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14long tfin_kidnap14 tfin_kids2 thub9e |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_75_kids_w1 | 4 | tfin_companion_15 tfin_k15_boss tfin_k15_rooms thub2 |
-| `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zd_k1b_help | 4 | tfin_companion_1b tfin_k1b3solo tfin_post tsospot |
-| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit, late_99zg_k21_gauge | 17 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tf… |
+| `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zd_k1b_help | 6 | tfin_companion_1b tfin_companion_lesson tfin_k1b3solo tfin_post tfin_skaz tsospot |
+| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit, late_99zg_k21_gauge | 20 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tf… |
 | `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99l_kitezh_magic_water | 9 | t22d t22shot tfin_companion_22 tfin_k22 tfin_k22hint tfin_k22solo tfin_kids2 tfin_occ tfi… |
 | `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water | 4 | t23f tfin_companion_23 tfin_k23 tfin_k23solo |
 | `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
@@ -118,23 +118,23 @@
 
 | часть | строк | разделы |
 |---|---|---|
-| `head.html` | 445 | — |
+| `head.html` | 446 | — |
 | `engine/01_utils_input_sound.js` | 122 | УТИЛИТЫ · ВВОД · ДЖОЙСТИКИ (Gamepad API, стандартная раскладка, раскладка v4) · ЗВУК (placeholder) |
-| `engine/02_render_heroes.js` | 252 | РЕНДЕР / СЦЕНА · ГЕРОИ (осмысленные примитивы, умения по сценарию v4) |
+| `engine/02_render_heroes.js` | 259 | РЕНДЕР / СЦЕНА · ГЕРОИ (осмысленные примитивы, умения по сценарию v4) |
 | `engine/03_world_fx_collision.js` | 226 | МИР · FX · ПОЛУПРОЗРАЧНОСТЬ ТОГО, ЧТО ЗАСЛОНЯЕТ ГЕРОЕВ · КОЛЛИЗИИ |
 | `engine/04_physics_actions.js` | 156 | ФИЗИКА ГЕРОЯ · ДЕЙСТВИЯ ИГРОКОВ |
 | `engine/05_foes_moroki.js` | 349 | МОРОКИ (язык боя v4: сигнал → защита → запал гаснет → Пробо… |
 | `engine/06_damage_clew.js` | 172 | УРОН, КЛУБОК НИТОК И ПОДШИВАНИЕ (закон доброго дивана) · КЛУБОК-ПУТЕВОДИТЕЛЬ (RB): нить-тропка, нить к нити, струны … |
 | `engine/07_props.js` | 105 | ПРЕДМЕТЫ: звенья и золотые орешки · КОЛЫШКИ, КАМНИ С ЛАПОЙ, КОЧКИ · ВЗГЛЯД И ХОДЯЧИЕ ЁЛКИ (1-4) · ПЕНЬКИ «НА РАЗ-ДВА-ТРИ» · ПЛИТЫ, ВОРОТА, КОЛОКОЛЬЧИКИ · РИСУНОК КНОПКИ НАД ГЕРОЕМ |
 | `engine/08_zven_tasks_camera.js` | 197 | ЗВЕНЫШКО: проводник и подсказчик · ЗАДАЧИ, ПОДСКАЗКИ 20/40 с, ПРИЗРАК · КАМЕРА (демпфирование, lookahead, крен, тряска, слияние, ро… |
-| `engine/09_hud_cine.js` | 119 | HUD / UI · ОБНОВЛЕНИЕ ГЕРОЕВ (визуал) · РОЛИКИ В ДВИЖКЕ (кадры, реплики, события; пропуск — оба дер… |
+| `engine/09_hud_cine.js` | 129 | HUD / UI · ОБНОВЛЕНИЕ ГЕРОЕВ (визуал) · РОЛИКИ В ДВИЖКЕ (кадры, реплики, события; пропуск — оба дер… |
 | `levels/p_prologue.js` | 317 | УРОВЕНЬ: ПРОЛОГ «ЗВЕНЫШКО» |
 | `levels/w1_common.js` | 74 | ЖИТЕЛИ МИРА 1 И РЕКВИЗИТ (примитивы) |
-| `levels/1-1.js` | 185 | МИР 1 · ДРЕМУЧИЙ ЛЕС · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ» |
+| `levels/1-1.js` | 223 | МИР 1 · ДРЕМУЧИЙ ЛЕС · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ» |
 | `levels/1-2.js` | 519 | 1-2 «КИКИМОРИНО БОЛОТО» |
 | `levels/1-3.js` | 527 | 1-3 «КОЛОБОК» — гусельный уровень |
 | `levels/1-4.js` | 347 | 1-4 «ЛЕШИЙ ВОДИТ» |
-| `levels/1-5.js` | 491 | 1-5 «КИКИМОРИНА ПРЯЛКА» |
+| `levels/1-5.js` | 492 | 1-5 «КИКИМОРИНА ПРЯЛКА» |
 | `levels/1-B.js` | 147 | 1-Б «ЛЕШИЙ-ПУТАНИК» — босс мира 1 |
 | `levels/w2_common.js` | 217 | МИР 2 · ПОДВОДНЫЙ КИТЕЖ: гусли Садко, вода участков, всплыв… |
 | `levels/2-1.js` | 210 | МИР 2 · ПОДВОДНЫЙ КИТЕЖ · 2-1 «ГУСЛИ САДКО» |
@@ -166,14 +166,16 @@
 | `levels/5-B2.js` | 175 | МИР 5 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ» — финал без … |
 | `levels/epi.js` | 83 | ЭПИЛОГ — штаб-сосна, вечер: сказка без тетрадки |
 | `levels/zastava.js` | 90 | ЗАСТАВА ТРЁХ БОГАТЫРЕЙ — испытания на время для старших |
+| `levels/luko_0_skaz.js` | 140 | — |
 | `levels/luko_1_scene.js` | 176 | ЛУКОМОРЬЕ: пустой дуб, Кот Учёный, карта-рушник |
-| `levels/luko_2_worlds123.js` | 167 | — |
-| `levels/luko_3_worlds45.js` | 237 | — |
+| `levels/luko_2_worlds123.js` | 139 | — |
+| `levels/luko_3_worlds45.js` | 223 | — |
 | `levels/luko_3b_zastava_hill.js` | 131 | — |
-| `levels/luko_4_zastava_forge_map.js` | 196 | — |
+| `levels/luko_4_zastava_forge_map.js` | 205 | — |
 | `levels/luko_4b_corners.js` | 612 | — |
-| `levels/luko_5_dress_garden.js` | 224 | — |
-| `levels/luko_6_festival_end.js` | 68 | — |
+| `levels/luko_5_dress_garden.js` | 75 | — |
+| `levels/luko_5b_farm.js` | 415 | — |
+| `levels/luko_6_festival_end.js` | 69 | — |
 | `engine/10_levels_flow_menu.js` | 214 | ПОТОК ИГРЫ |
 | `tail.html` | 3 | — |
 
@@ -358,6 +360,7 @@
 | `levels/1-B/late_99zd_k1b_help.js` | 1-B | РЕЛИЗ final06 · 1-Б «ЛЕШИЙ-ПУТАНИК»: ЛЕСТНИЦА ПОДСКАЗОК (щит, кувырок) |
 | `levels/3-2/late_99zd_sky32_fx.js` | 3-2 | РЕЛИЗ final06 · 3-2: ГРОМОВОЙ БАРАН — ЭФФЕКТЫ, ЧЕСТНЫЕ ТЕЛЕГРАФЫ, ПОЛОСА БОССА, ЧИСТЫЙ ТЕКСТ |
 | `levels/3-2/late_99ze_sky32_cam.js` | 3-2 | РЕЛИЗ final06 · 3-2: ГРОМОВОЙ БАРАН — КАМЕРА БОЯ |
+| `levels/1-4/late_99zf_pea14.js` | 1-4 | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: ЧУДО-ГОРОШИНА ДЛЯ ЧУДО-ГРЯДКИ ЛУКОМОРЬЯ |
 | `levels/1-4/late_99zg_auka14.js` | 1-4 | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: МИНИ-БОСС «АУКА-ПЕРЕКЛИЧКА» |
 | `levels/2-1/late_99zg_k21_gauge.js` | 2-1 | РЕЛИЗ final06 · 2-1: МЕРНЫЕ РЕЙКИ У ВОДЫ — ГДЕ ПРИЛИВ, ГДЕ ОТЛИВ, КАКУЮ ВОДУ МЕНЯЮТ ГУСЛИ |
 
@@ -451,11 +454,11 @@
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `37_split_screen.md` | Экран на двоих: разбор референсов и новая система раздела |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 105 файлов |
+| `changes/` | 111 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 263 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 270 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

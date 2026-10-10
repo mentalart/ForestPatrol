@@ -52,20 +52,55 @@ function build11(){
   for(const[x,z,w,d]of[[0,-0.75,1.7,0.1],[0,0.75,1.7,0.1],[-0.8,0,0.1,1.5],[0.8,0,0.1,1.5]])addMesh(new THREE.BoxGeometry(w,0.5,d),M(0x7a5634),x,0.25,z,heapG);
   const pile=addMesh(new THREE.ConeGeometry(0.6,0.5,8),M(0x5a6a3a),0,0.2,0,heapG);pile.scale.setScalar(0.01);let heapN=0;W.cyls.push({x:HEAP.x,z:HEAP.z,r:0.85,miny:-1,maxy:0.5,on:true});
   const TR=[],TRB={g:null,state:'none'};
-  function trashMesh(kind){const g=new THREE.Group();
-    if(kind==='spoon'){const w=M(0xc89a5a);const st=addMesh(new THREE.CylinderGeometry(0.03,0.03,0.55,5),w,0,0.06,0,g);st.rotation.z=Math.PI/2;const b=addMesh(new THREE.SphereGeometry(0.1,8,6),w,0.3,0.06,0,g);b.scale.set(1.3,0.5,1);}
-    else if(kind==='tina'){for(let i=0;i<4;i++)addMesh(new THREE.SphereGeometry(rand(0.1,0.16),6,5),M(0x4f6a2a),rand(-0.12,0.12),0.09,rand(-0.12,0.12),g);}
-    else if(kind==='pot'){for(let i=0;i<3;i++){const p=addMesh(new THREE.BoxGeometry(0.2,0.06,0.16),M(0xb06a3a),rand(-0.15,0.15),0.06,rand(-0.15,0.15),g);p.rotation.y=rand(0,3);}}
-    else if(kind==='leaf'){for(let i=0;i<2;i++){const l=addMesh(new THREE.CircleGeometry(0.24,8),M(0x5a8a3a,{side:THREE.DoubleSide}),i*0.12,0.07+i*0.03,0,g);l.rotation.x=-Math.PI/2+0.2;}}
-    else{addMesh(new THREE.BoxGeometry(0.18,0.13,0.32),M(0xc8a860),0,0.07,0,g);}
-    return g;}
-  function startClean(){F.stage='clean';const spots=[[-7,-22],[7,-22],[-6.5,-31],[6.5,-31],[0,-16.5],[-3.8,-23.8],[4,-17.6],[-8.4,-17.4],[7.8,-28.8]],kinds=['spoon','tina','pot','leaf','lapot'];
-    spots.forEach(([x,z],i)=>{const g=trashMesh(kinds[i%5]);g.position.set(x,0,z);W.group.add(g);TR.push({g,state:'ground',by:null});later(i*0.08,()=>anim(0.5,k=>{g.position.y=Math.sin(k*Math.PI)*0.8;}));});
-    const tb=new THREE.Group();tb.position.set(5.6,0,-25.2);W.group.add(tb);addMesh(new THREE.BoxGeometry(1.7,0.35,0.8),M(0x8a5a32),0,0.18,0,tb);addMesh(new THREE.BoxGeometry(1.5,0.1,0.6),M(0x3a4a2a),0,0.34,0,tb);TRB.g=tb;TRB.state='ground';
+  /* мусор: у каждого — грязное пятно, мухи и зелёный вонючий дымок, а сам предмет узнаётся с первого взгляда (кость, огрызок, битый горшок, ведро, тряпка…) */
+  function trashFlies(g,n,r,h){const fl=[],st=[];
+    for(let i=0;i<n;i++){const m=addMesh(new THREE.SphereGeometry(0.045,5,4),MB(0x15110c),0,h,0,g);m.castShadow=false;fl.push({m,a:rand(0,6.28),r:rand(0.5,1)*r,s:rand(3,6)*(i%2?1:-1),h:h+rand(-0.1,0.2)});}
+    for(let i=0;i<3;i++){const m=addMesh(new THREE.SphereGeometry(0.2,7,5),MB(0x8fd04a,{transparent:true,opacity:0,depthWrite:false}),0,0.3,0,g);m.castShadow=false;st.push({m,ph:i/3,x:rand(-0.15,0.15)*r,z:rand(-0.15,0.15)*r});}
+    g.userData.fx={fl,st};}
+  function trashFx(g){const fx=g.userData.fx;if(!fx)return;const t=G.time;
+    for(const f of fx.fl){const a=f.a+t*f.s;f.m.position.set(Math.cos(a)*f.r,f.h+Math.sin(t*9+f.a)*0.06,Math.sin(a*1.3)*f.r);}
+    for(const s of fx.st){const k=(t*0.45+s.ph)%1;s.m.position.set(s.x+Math.sin(k*6+s.ph*9)*0.1,0.25+k*1.0,s.z);s.m.material.opacity=0.5*Math.sin(k*Math.PI);s.m.scale.setScalar(0.6+k*1.0);}}
+  function trashMesh(kind){const g=new THREE.Group(),mess=addMesh(new THREE.CircleGeometry(0.75,10),M(0x45331f),0,0.025,0,g);mess.rotation.x=-Math.PI/2;mess.scale.set(1.15,0.9,1);mess.castShadow=false;g.userData.mess=mess;
+    if(kind==='bone'){const w=M(0xf1e9cf);   // рыбий скелет: хребет, рёбра, голова с глазницей, хвост
+      addMesh(new THREE.BoxGeometry(0.95,0.05,0.06),w,0,0.07,0,g);
+      for(let i=-3;i<=3;i++){const r=addMesh(new THREE.BoxGeometry(0.04,0.035,0.36),w,i*0.11,0.07,0,g);r.rotation.y=i*0.12;}
+      const hd0=addMesh(new THREE.SphereGeometry(0.15,8,6),w,0.58,0.1,0,g);hd0.scale.set(1.3,0.8,1);addMesh(new THREE.SphereGeometry(0.04,6,5),M(0x1a1208),0.64,0.17,0.07,g);
+      const tl=addMesh(new THREE.ConeGeometry(0.2,0.3,3),w,-0.62,0.07,0,g);tl.rotation.z=-Math.PI/2;tl.scale.set(1,1,0.25);}
+    else if(kind==='core'){const a=new THREE.Group();a.position.set(0,0.3,0);a.rotation.z=1.25;g.add(a);   // яблочный огрызок: мякоть, красная кожура на концах, косточки
+      addMesh(new THREE.LatheGeometry([[0,0],[0.25,0.04],[0.28,0.14],[0.1,0.3],[0.1,0.5],[0.28,0.66],[0.25,0.76],[0,0.8]].map(([x,y])=>new THREE.Vector2(x,y)),10),M(0xefe0a8),0,-0.4,0,a);
+      for(const y of[-0.34,0.34]){const t=addMesh(new THREE.TorusGeometry(0.26,0.05,5,10),M(0xc8321e),0,y,0,a);t.rotation.x=Math.PI/2;}
+      addMesh(new THREE.CylinderGeometry(0.03,0.03,0.4,5),M(0x4a2e14),0,0.55,0,a);for(const[x,y]of[[0.1,-0.05],[-0.08,0.1]])addMesh(new THREE.SphereGeometry(0.035,5,4),M(0x1a1208),x,y,0.1,a);}
+    else if(kind==='pot'){const c=M(0xb4623a,{side:THREE.DoubleSide});   // горшок с выбитым боком и черепки вокруг
+      addMesh(new THREE.CylinderGeometry(0.34,0.24,0.42,10,1,true,0.4,4.2),c,0,0.21,0,g);const d=addMesh(new THREE.CircleGeometry(0.24,10),M(0x2a160c),0,0.03,0,g);d.rotation.x=-Math.PI/2;
+      for(let i=0;i<4;i++){const an=i*1.7+0.5,s=addMesh(i%2?new THREE.ConeGeometry(0.16,0.04,3):new THREE.BoxGeometry(0.24,0.035,0.17),c,Math.cos(an)*0.58,0.05,Math.sin(an)*0.5,g);s.rotation.set(rand(-0.2,0.2),rand(0,3),rand(-0.2,0.2));}}
+    else if(kind==='bucket'){const gr=M(0x6f7a80,{side:THREE.DoubleSide});   // дырявое ведро набок, дужка рядом
+      const b=addMesh(new THREE.CylinderGeometry(0.3,0.23,0.5,10,1,true),gr,0,0.3,0,g);b.rotation.z=Math.PI/2;const m=addMesh(new THREE.CircleGeometry(0.28,10),M(0x2e2a26),-0.2,0.3,0,g);m.rotation.y=-Math.PI/2;
+      const bd=addMesh(new THREE.TorusGeometry(0.29,0.025,4,12),M(0x3a3f44),-0.1,0.3,0,g);bd.rotation.y=Math.PI/2;
+      const hn=addMesh(new THREE.TorusGeometry(0.26,0.018,4,12,Math.PI),M(0x3a3f44),0.15,0.03,0.5,g);hn.rotation.x=Math.PI/2;}
+    else if(kind==='rag'){const cols=[0x8a6a96,0x6a4a76,0xa88fb0];   // драная тряпка с бахромой
+      for(let i=0;i<3;i++){const r=addMesh(new THREE.CircleGeometry(0.4-i*0.07,7),M(cols[i],{side:THREE.DoubleSide}),i*0.1-0.1,0.04+i*0.025,i*0.08,g);r.rotation.set(-Math.PI/2+rand(-0.15,0.15),0,rand(0,3));}
+      for(let i=0;i<4;i++){const f=addMesh(new THREE.BoxGeometry(0.04,0.015,0.25),M(0x8a6a96),0.35+i*0.06,0.04,-0.2+i*0.12,g);f.rotation.y=rand(-0.5,0.5);}}
+    else if(kind==='lapot'){   // стоптанный лапоть: плетёный башмак с верёвочками
+      const l=addMesh(new THREE.SphereGeometry(0.3,10,7),M(0xc9a35e),0,0.14,0,g);l.scale.set(1.5,0.5,0.8);
+      for(let i=-3;i<=3;i++){const s=addMesh(new THREE.BoxGeometry(0.035,0.03,0.4),M(0x8a6a34),i*0.12,0.25-Math.abs(i)*0.012,0,g);s.rotation.y=0.35;}
+      addMesh(new THREE.SphereGeometry(0.1,6,5),M(0xc9a35e),0.45,0.2,0,g);for(const z of[-1,1]){const t=addMesh(new THREE.BoxGeometry(0.4,0.02,0.02),M(0x2a1e12),-0.45,0.05,z*0.12,g);t.rotation.y=z*0.7;}}
+    else if(kind==='spoon'){const w=M(0xc89a5a);   // сломанная ложка: черпак и обломок ручки
+      const b=addMesh(new THREE.SphereGeometry(0.17,8,6),w,0.2,0.07,0,g);b.scale.set(1.3,0.45,1);const st=addMesh(new THREE.CylinderGeometry(0.035,0.035,0.5,5),w,-0.2,0.06,0,g);st.rotation.z=Math.PI/2;
+      const st2=addMesh(new THREE.CylinderGeometry(0.035,0.035,0.28,5),w,-0.55,0.06,0.3,g);st2.rotation.set(0,0.6,Math.PI/2);}
+    else{const c=addMesh(new THREE.SphereGeometry(0.3,9,7),M(0x8aa84a),0,0.24,0,g);c.scale.set(1,0.8,1);   // гнилая капуста с бурыми пятнами и оборванными листьями
+      for(let i=0;i<4;i++){const an=i*1.6;addMesh(new THREE.SphereGeometry(0.09,6,5),M(0x5a4a24),Math.cos(an)*0.2,0.3+i%2*0.08,Math.sin(an)*0.2,g);}
+      for(let i=0;i<3;i++){const l=addMesh(new THREE.CircleGeometry(0.22,7),M(0x6f8a3a,{side:THREE.DoubleSide}),Math.cos(i*2.1)*0.42,0.05,Math.sin(i*2.1)*0.42,g);l.rotation.x=-Math.PI/2;}}
+    trashFlies(g,3,0.55,0.75);return g;}
+  function startClean(){F.stage='clean';const spots=[[-7,-22],[7,-22],[-6.5,-31],[6.5,-31],[0,-16.5],[-3.8,-23.8],[4,-17.6],[-8.4,-17.4],[7.8,-28.8]],kinds=['bone','core','pot','bucket','rag','lapot','spoon','cabbage','bone'];
+    spots.forEach(([x,z],i)=>{const g=trashMesh(kinds[i%kinds.length]);g.scale.setScalar(1.35);g.position.set(x,0,z);W.group.add(g);TR.push({g,state:'ground',by:null});later(i*0.08,()=>anim(0.5,k=>{g.position.y=Math.sin(k*Math.PI)*0.8;}));});
+    const tb=new THREE.Group();tb.position.set(5.6,0,-25.2);W.group.add(tb);addMesh(new THREE.BoxGeometry(1.7,0.35,0.8),M(0x8a5a32),0,0.18,0,tb);addMesh(new THREE.BoxGeometry(1.5,0.1,0.6),M(0x2f2a18),0,0.34,0,tb);   // корыто с помоями: гнилые кочерыжки, кости торчком, мухи
+    for(let i=0;i<6;i++)addMesh(new THREE.SphereGeometry(rand(0.13,0.2),6,5),M([0x6f8a3a,0x4a3a22,0x9a7a3a][i%3]),-0.55+i*0.22,0.42,rand(-0.15,0.15),tb);
+    for(const[x,r]of[[-0.3,0.5],[0.35,-0.6]]){const bn=M(0xf1e9cf),b=addMesh(new THREE.CylinderGeometry(0.03,0.03,0.6,5),bn,x,0.6,0.1,tb);b.rotation.z=r;addMesh(new THREE.SphereGeometry(0.06,6,5),bn,x-Math.sin(r)*0.3,0.6+Math.cos(r)*0.3,0.1,tb);}
+    trashFlies(tb,5,0.9,0.95);TRB.g=tb;TRB.state='ground';
     later(0.6,()=>bark(yaga,'yaga','Ну? Сам себя мусор не уберёт!<br>Всё — в кучу у забора, вперёд!',2.8));}
   const cleanN=()=>TR.filter(t=>t.state==='done').length+(TRB.state==='done'?1:0);
-  function toHeap(g,done){const from=g.position.clone(),to=HEAP.clone().add(new V3(rand(-0.3,0.3),0.35+heapN*0.03,rand(-0.3,0.3)));anim(0.5,k=>{g.position.lerpVectors(from,to,k);g.position.y+=Math.sin(k*Math.PI)*1.2;
-      if(k>=1){W.group.remove(g);heapN++;pile.scale.setScalar(Math.min(1.4,0.3+heapN*0.12));SFX.thud();burst(HEAP.clone().add(new V3(0,0.6,0)),0x8a6a44,8,2);done();}});}
+  function toHeap(g,done,keep){const from=g.position.clone(),to=HEAP.clone().add(new V3(rand(-0.3,0.3),0.35+heapN*0.03,rand(-0.3,0.3)));anim(0.5,k=>{g.position.lerpVectors(from,to,k);g.position.y+=Math.sin(k*Math.PI)*1.2;
+      if(k>=1){if(keep){heapG.add(g);g.scale.setScalar(0.5);g.position.set(rand(-0.4,0.4),0.3+rand(0,0.25),rand(-0.4,0.4));g.rotation.set(rand(-0.4,0.4),rand(0,6.28),rand(-0.4,0.4));}else W.group.remove(g);heapN++;pile.scale.setScalar(Math.min(1.4,0.3+heapN*0.12));SFX.thud();burst(HEAP.clone().add(new V3(0,0.6,0)),0x8a6a44,8,2);done();}});}
   /* ---------- Калитка-упрямица: пускает, только если нажаты обе лапки; за ней — ещё две ---------- */
   const GZ=-107,wick=M(0x9a7a4a);
   for(const[a,b]of[[-11,-2.2],[2.2,11]]){box(a,b,0,2.0,GZ-0.25,GZ+0.25,wick,{occ:false});colBox(a,b,2.0,4.5,GZ-0.25,GZ+0.25,false);for(let x=a+0.3;x<b;x+=0.6)addMesh(new THREE.ConeGeometry(0.09,0.35,5),M(0x7a5a34),x,2.15,GZ);}
@@ -78,6 +113,7 @@ function build11(){
     const pm=M(0xffd76a,{emissive:0xb07a10,emissiveIntensity:0.2});for(let k=0;k<3;k++){const t=addMesh(new THREE.BoxGeometry(0.09,0.02,0.44),pm,Math.sin((k-1)*0.55)*0.2,0.13,0.1,g);t.rotation.y=(k-1)*0.55;}addMesh(new THREE.BoxGeometry(0.09,0.02,0.3),pm,0,0.13,-0.24,g);   // курья лапка
     return {g,x,z,pm,on:false};});
   let gOpen=0,gShut=0;const gateOpen=()=>gOpen>0.6,onPlate=h=>PL.some(p=>Math.hypot(h.pos.x-p.x,h.pos.z-p.z)<0.85);
+  W.noSplitFn=()=>F.stage==='yard'&&!F.out&&[0,1].every(pi=>active(pi).pos.z<-92);   // у калитки лапки в 11 м друг от друга: экран не делим — калитка и обе лапки в кадре
   W.clean11={TR,TRB,HEAP,PL,gateOpen:()=>gateOpen(),cleanN:()=>cleanN()};   // для проверки ботом
   const gateObj=pi=>O(()=>'Калитка ждёт две лапки разом: встань героем на лапку, смени '+K(pi,'swap')+' — второй встанет на другую.<br>Постойте вдвоём секунду — и калитка откроется насовсем.',
     ()=>!!F.out,()=>(endLink.taken?[]:[endLink.g]).concat(PL.map(p=>p.g)));
@@ -116,10 +152,12 @@ function build11(){
     // грядки: наступил — вязнешь и выбираешься обратно на край; по нити — можно
     for(const h of HEROES){if(h.cling)continue;if(h.grounded&&inMud(h)){h.bedT=(h.bedT||0)+dt;if(h.bedT>0.3){h.bedT=0;placeOnGround(h,h.pos.x,h.pos.z>-44.5?-37.4:-51.6,0);SFX.knock();burst(h.pos.clone().add(new V3(0,0.3,0)),0x5a3a1e,8,2);
         if(h.active)tip(h.player,F.stage==='yard'?'Грядку не топчи — брось клубок '+K(h.player,'item')+'!':'По грядке не пройти. Сперва клубок у Яги возьмите.',2.6);}}else h.bedT=0;}
+    // мусор: мухи и вонючий дымок вьются над каждым куском и над корытом
+    for(const it of TR)if(it.state!=='fly')trashFx(it.g);if(TRB.g&&TRB.state!=='fly'&&TRB.state!=='done')trashFx(TRB.g);
     // уборка двора
     if(F.stage==='clean'){
-      for(const it of TR){if(it.state!=='ground')continue;for(const h of HEROES){if(!h.active||h.trash||players[h.player].downed)continue;if(hd(h.pos,it.g.position)<1.0&&h.pos.y<1.2){it.state='carry';it.by=h;h.trash=it;SFX.nut();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Подобрал!','#e0d0a0');break;}}}
-      for(const h of HEROES){const it=h.trash;if(!it)continue;it.g.position.set(h.pos.x,h.pos.y+heroHeight(h)+0.3,h.pos.z);it.g.rotation.y+=dt*2;if(hd(h.pos,HEAP)<2.3){h.trash=null;it.state='fly';toHeap(it.g,()=>{it.state='done';});}}
+      for(const it of TR){if(it.state!=='ground')continue;for(const h of HEROES){if(!h.active||h.trash||players[h.player].downed)continue;if(hd(h.pos,it.g.position)<1.0&&h.pos.y<1.2){it.state='carry';it.by=h;h.trash=it;it.g.scale.setScalar(0.85);it.g.userData.mess.visible=false;SFX.nut();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Подобрал!','#e0d0a0');break;}}}
+      for(const h of HEROES){const it=h.trash;if(!it)continue;it.g.position.set(h.pos.x,h.pos.y+heroHeight(h)+0.3,h.pos.z);it.g.rotation.y+=dt*2;if(hd(h.pos,HEAP)<2.3){h.trash=null;it.state='fly';toHeap(it.g,()=>{it.state='done';},true);}}
       if(TRB.state==='ground'||TRB.state==='carry'){const a=[active(0),active(1)],bp=TRB.g.position,mid=new V3((a[0].pos.x+a[1].pos.x)/2,0,(a[0].pos.z+a[1].pos.z)/2);const ok=a.every(h=>!players[h.player].downed)&&(TRB.state==='carry'?hd(a[0].pos,a[1].pos)<(G.solo?9:5.5):G.solo?(a.some(h=>ctrl(h)&&hd(h.pos,bp)<1.9)&&hd(a[0].pos,a[1].pos)<9):a.every(h=>hd(h.pos,bp)<1.9));
         if(ok){if(TRB.state==='ground'){TRB.state='carry';SFX.latch();if(G.solo)for(const h of a)if(!ctrl(h)){h.following=true;h.stuck=0;}floatText(bp.clone().add(new V3(0,1.2,0)),'Взяли! Вместе!','#ffd76a');}
           bp.x=damp(bp.x,mid.x,14,dt);bp.z=damp(bp.z,mid.z,14,dt);bp.y=damp(bp.y,0.9,8,dt);TRB.g.rotation.y=Math.atan2(a[1].pos.x-a[0].pos.x,a[1].pos.z-a[0].pos.z)+Math.PI/2;
