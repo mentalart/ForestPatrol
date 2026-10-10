@@ -8,9 +8,9 @@ U.until(()=>!ZC.G.cine&&ZC.W.flags.stage==='free',20);ZC.skip();ZC.tick(60);
 window.L=ZC.W.lc;window.P=(x,y,z)=>{const h=U.act(0);h.pos.set(x,y,z);h.vel.set(0,0,0);ZC.tick(4);return h;};window.nuts=()=>ZC.G.nutsHub||0;window.R={};
 [ZC.W.name,ZC.W.flags.mode,ZC.W.flags.stage,'beasts='+L.beasts.map(b=>b.id).join(','),'err='+__e.length]
 //@@
-// рыбалка: на краю причала — подсечь, когда клюёт, и три раза в лад
+// рыбалка: на краю причала — подсечь, когда клюёт, и три раза в лад (обычный улов — без Золотой рыбки: она ниже, отдельно)
 window.fish=()=>{P(L.PX,0.35,L.zW-6.4);const note=(L.lcAction(U.act(0),0)||{}).note;U.tap('KeyF');const r=['note='+note,'ui='+ZC.G.ui];r.push('bite '+U.until(()=>L.FS.ph==='bite',10));U.tap('KeyF');
-  for(const b of[1,2,3]){U.until(()=>L.FS.t>=b*0.8-0.03,4);U.tap('KeyF');}U.until(()=>ZC.G.ui!=='fish',6);ZC.tick(10);return r.concat(['ph='+L.FS.ph,'ui='+ZC.G.ui]);};
+  for(const b of[1,2,3]){U.until(()=>L.FS.t>=b*0.8-0.03,4);U.tap('KeyF');}U.until(()=>L.FS.t>=2.85,3);const MR=Math.random;Math.random=()=>0.5;U.until(()=>L.FS.ph==='done',2);Math.random=MR;U.until(()=>ZC.G.ui!=='fish',6);ZC.tick(10);return r.concat(['ph='+L.FS.ph,'ui='+ZC.G.ui]);};
 const n0=nuts();const r=fish();const r2=fish();R.fish=Object.values(L.LC.fish).reduce((a,b)=>a+b,0);R.bag=L.LC.bag.fish;
 r.concat(r2,['fish='+JSON.stringify(L.LC.fish),'bag='+R.bag,'nuts+'+(nuts()-n0)])
 //@@ shot=hc_fish.png
@@ -83,4 +83,5 @@ const n0=nuts();kiteSteer(2400);ZC.tick(30);R.kite=L.LC.kite.best;['rings='+L.KT
 // сохранение: состояние углов едет в G.flags.lc
 ZC.G.hub=true;ZC.FIN.saveGame();const d=ZC.FIN.readSave(),lc=d&&d.G.flags&&d.G.flags.lc;R.save=!!lc&&Object.keys(lc.fish||{}).length>0&&Object.keys(lc.dish||{}).length>=2;
 const ok=R.fish>=2&&R.bag>=0&&R.gold>=1&&R.wish>=10&&R.album&&R.rid>=3&&R.ridNuts>=4&&R.beast>=1&&R.owl>=1&&R.book&&R.dish>=2&&R.berry>=2&&R.mush>=1&&R.nest&&R.kite>=3&&R.save&&__e.length===0;
-[JSON.stringify(R),'err='+__e.join(';'),ok?'thub_corners ok':'FAIL thub_corners']
+if(!ok)throw new Error('FAIL thub_corners '+JSON.stringify(R)+' err='+__e.join(';'));
+[JSON.stringify(R),'thub_corners ok']

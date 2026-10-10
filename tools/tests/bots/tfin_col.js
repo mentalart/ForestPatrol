@@ -16,5 +16,5 @@ const EXPECT='p=zgkzxx:52 luko=1rhy7t9:15 1-1=1sdpwwj:17 1-2=12ik6nh:36 1-3=px09
 // пролог — мебель штаба с коллизиями (сундук, бочонок, корзина, столик с рассадой, подзорная труба; late_96b)
 // мир 2 — уровни вдвое длиннее (late_99e…late_99j, docs/15_kitezh.md)
 // 2-Б — погоня ≈190 м и бой в четыре этапа: мели, остров, плоты, колокола (late_99j, late_99s, docs/23_vodyanoy_boss.md)
-const RELEASE={p:'cj1x5b:52',luko:'k4jn0a:25','5-B2':'gsazlt:67','2-1':'13q3gl9:199','2-2':'1eca5br:83','2-3':'1p3ohd:53','2-4':'1ki9wih:51','2-5':'9u122t:127','2-B':'xyr1nz:61','3-1':'6qp3bl:54','3-2':'1ns5tlk:32','3-B':'eejysl:28'};   // 3-1, 3-2: втрое длиннее (late_99p_sky31, late_99o_sky32)   // 5-Б2: восемь свечей (final06, правки по отзыву)
+const RELEASE={p:'cj1x5b:52',luko:'c2izoq:35','5-B2':'gsazlt:67','2-1':'13q3gl9:199','2-2':'1eca5br:83','2-3':'1p3ohd:53','2-4':'1ki9wih:51','2-5':'9u122t:127','2-B':'xyr1nz:61','3-1':'6qp3bl:54','3-2':'1ns5tlk:32','3-B':'eejysl:28','1-4':'12stj0h:36'};   // 3-1, 3-2: втрое длиннее (late_99p_sky31, late_99o_sky32)   // 5-Б2: восемь свечей (final06, правки по отзыву)
 const got=__col;if(EXPECT==='EXPECT'+'_TABLE')'эталон не задан';else{const E=EXPECT.split(' ').map(e=>{const id=e.split('=')[0];return RELEASE[id]?id+'='+RELEASE[id]:e;});const bad=got.filter((g,i)=>g!==E[i]);'col '+(bad.length?'DIFF '+bad.join(' '):'same='+got.length);}

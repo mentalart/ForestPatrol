@@ -50,6 +50,7 @@ levels/zastava.js
 levels/luko_1_scene.js
 levels/luko_2_worlds123.js
 levels/luko_3_worlds45.js
+levels/luko_3b_zastava_hill.js
 levels/luko_4_zastava_forge_map.js
 levels/luko_4b_corners.js
 levels/luko_5_dress_garden.js
