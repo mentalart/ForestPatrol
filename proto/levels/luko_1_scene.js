@@ -66,7 +66,7 @@ function buildLukomorye(){
   setTheme('sunset');sky('sunset');W.name='Лукоморье';W.sub='у лукоморья дуб зелёный…';W.camX=12;const F=W.flags;
   const mode=G.done['1-B']&&!G.flags.voiceDone?'festival':G.done['2-B']&&!G.flags.w2done?'festival2':G.done['3-B']&&!G.flags.w3done?'festival3':G.done['4-B']&&!G.flags.w4done?'festival4':G.done['5-B1']&&!G.flags.bezImen?'bezimen':G.hub?'hub':'first';F.mode=mode;F.stage=mode==='first'?'fall':'free';
   ground(-20,20,-19.5,12);ground(-20,20,-24,-19.5,0,MAT.sand,M(0xb89a6a));
-  wall(-20.2,-20,-24,12);wall(20,20.2,-24,12);wall(-20.2,20.2,12,12.2);wall(-20.2,20.2,-24.2,-24);
+  wall(-20.2,-20,-24,12);wall(20,20.2,-24,12);wall(-20.2,20.2,-24.2,-24);   // южный край и мыс Заставы — в buildZastavaHill
   const sea=new THREE.Mesh(new THREE.PlaneGeometry(700,320),M(0x3a7fb0));sea.rotation.x=-Math.PI/2;sea.position.set(0,-0.45,-184);W.group.add(sea);
   const foam=[];for(let i=0;i<4;i++){const f=addMesh(new THREE.BoxGeometry(44,0.05,0.25),MB(0xf4f8ff,{transparent:true,opacity:0.8}),0,-0.38,-25-i*1.6);f.castShadow=false;foam.push(f);}
   const oak=makeOak(0,-7);
