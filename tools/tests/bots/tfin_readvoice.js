@@ -1,15 +1,18 @@
 //@@ wait=900
 // релиз final06: «Читать задачи вслух» — записанным голосом (late_91d_readvoice.js ← tools/voice/read_tts.py, голос Silero «baya»; тексты — harvest_read.js).
-// Проверки: записи в релизе (READ_LINES), у задач и подсказок-зон всех уровней есть запись (≥ 85% — новые тексты без записи читает голос браузера),
-// чтение работает без русского голоса в системе, запись звучит и замолкает по RA.stop, при громкости «Голоса» 0 и у бота (RA.mock) — прежний путь,
-// текст без записи уходит на голос браузера, герой заговорил — чтение замолкает, счётчик «0 / 3» не делает задачу новой (тот же ключ).
+// Проверки: записи в релизе (READ_LINES), у задач и подсказок-зон всех уровней есть запись (≥ 85%; текст без записи молчит),
+// голоса браузера (Web Speech, Microsoft Irina) в игре нет: speechSynthesis.speak не зовётся ни разу, в статусе нет «запасного» голоса,
+// чтение работает без русского голоса в системе, запись звучит и замолкает по RA.stop, при громкости «Голоса» 0 — тишина, у бота (RA.mock) текст
+// уходит в подмену, герой заговорил — чтение замолкает, счётчик «0 / 3» не делает задачу новой (тот же ключ).
 window.ERR=[];window.addEventListener('error',e=>ERR.push(String(e.message)));{const ce=console.error;console.error=(...a)=>{ERR.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 window.BAD=[];window.chk=(c,m)=>{if(!c)BAD.push(m);return c;};
 window.F=ZC.FIN;window.RV=F.readVoice;window.RA=F.readAloud;
+window.WS=0;try{if(window.speechSynthesis){const sp=speechSynthesis.speak.bind(speechSynthesis);speechSynthesis.speak=u=>{WS++;return sp(u);};}}catch(e){}   // счётчик обращений к голосу браузера
 chk(RV&&RV.n>=600,'записей чтения: '+(RV&&RV.n));
 F.vox.audio();F.set.readAloud=true;F.set.readAloudAll=true;F.set.vox=1;RA.mock=null;
 chk(RA.can(),'читать можно без русского голоса в системе (есть записи): can='+RA.can()+' ok='+RA.ok);
-chk(/Байя/.test(RA.status()),'статус в настройках называет записанный голос: '+RA.status());
+chk(/Байя/.test(RA.status())&&!/запасн|Irina|Microsoft/i.test(RA.status()),'статус в настройках называет записанный голос, без запасного: '+RA.status());
+chk(RA.voice===undefined&&RA.ok===undefined,'голоса браузера в чтении нет (RA.voice, RA.ok)');
 chk(RV.key('Бегом по стрелкам (0 из 2). Скакалка — прыжок.')===RV.key('Бегом по стрелкам (1 из 2). Скакалка — прыжок.'),'счётчик не меняет ключ записи');
 // покрытие: задачи (краткая формулировка или полный текст) и подсказки-зоны всех уровней
 window.ld=id=>{if(ZC.G.state!=='play')ZC.startFrom(ZC.LV(id));else ZC.loadLevel(ZC.LV(id));ZC.G.manual=true;ZC.tick(6);for(let q=0;q<8&&ZC.G.cine;q++){ZC.skip();ZC.tick(3);}};
@@ -34,15 +37,16 @@ await waitFor(()=>RV.cur===null&&RA.speaking===false,6000);chk(RA.speaking===fal
 // длинная запись: RA.stop глушит её
 RA.say(LONG.k,true);const on=await waitFor(()=>!!RV.cur);chk(on&&RV.cur===LONG.id,'длинная запись звучит: cur='+RV.cur);
 RA.stop();chk(RV.cur===null&&RA.speaking===false,'RA.stop глушит запись: cur='+RV.cur+' speaking='+RA.speaking);
-// громкость «Голоса» 0 — запись не звучит (голос браузера с нулевой громкостью, как раньше)
+// громкость «Голоса» 0 — запись не звучит, и голос браузера не подменяет её
 const p0=RV.played;F.set.vox=0;RA.say(LONG.k,true);await new Promise(r=>setTimeout(r,500));chk(RV.cur===null&&RV.played===p0,'громкость 0: запись не звучит');RA.stop();F.set.vox=1;
-// бот (RA.mock) и текст без записи — прежний путь
+// бот (RA.mock): текст уходит в подмену
 window.SAID=[];RA.mock=t=>SAID.push(t);const p1=RV.played;RA.say(LONG.k,true);RA.say('Совсем новый текст без записи, которого нет в каталоге.',true);
-chk(SAID.length===2&&RV.played===p1,'при RA.mock чтение идёт прежним путём: '+JSON.stringify(SAID).slice(0,120));RA.mock=null;
-RA.say('Совсем новый текст без записи, которого нет в каталоге.',true);await new Promise(r=>setTimeout(r,300));chk(RV.cur===null,'текст без записи не берёт чужую запись');RA.stop();
+chk(SAID.length===2&&RV.played===p1,'при RA.mock текст уходит в подмену, запись не звучит: '+JSON.stringify(SAID).slice(0,120));RA.mock=null;
+RA.say('Совсем новый текст без записи, которого нет в каталоге.',true);await new Promise(r=>setTimeout(r,300));chk(RV.cur===null&&RA.speaking===false,'текст без записи молчит и не берёт чужую запись');RA.stop();
 // герой заговорил — чтение замолкает
 RA.say(LONG.k,true);const on2=await waitFor(()=>!!RV.cur);chk(on2,'чтение звучит перед репликой героя');
 const line=F.vox.lines.find(e=>e.who==='proshka'&&e.lv==='p');F.vox.say(line.who,line.text,2);
 await waitFor(()=>RV.cur===null,1500);chk(RV.cur===null,'герой заговорил — чтение замолкло: cur='+RV.cur);RA.stop();
+chk(WS===0,'голос браузера не звучал ни разу: speechSynthesis.speak вызван '+WS+' раз');
 return BAD.length||ERR.length?'FAIL '+BAD.join(' ; ')+' errs='+ERR.slice(0,3).join(' | '):'readvoice ok cover='+COV.hit+'/'+COV.tot+' played='+RV.played;
 })()
