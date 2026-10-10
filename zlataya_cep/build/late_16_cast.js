@@ -76,28 +76,70 @@ makeKot=function(){const R=buildKot(),o=castMake(R);const B=o.rig;const lids=['L
   const tail=[];for(let i=0;i<7;i++)tail.push(B['tail'+i]);B.armL.rotation.x=-0.12;B.armR.rotation.x=-0.12;
   return castReg(Object.assign(o,{head:B.head,lids,tail}),{hs:1.4});};
 
-/* ---------- Баба Яга: сгорбленная, в очках, красный платок в белый горошек, длинный нос, фартук; добрая-сердитая ---------- */
-const P_YSK=cc(0x8a6a8e,0x5e4462,0x3a283e),P_YJ=cc(0xa0764e,0x7a5234,0x4e3420);
+/* ---------- Баба Яга: сгорбленная (горб под шалью, голова вперёд на тонкой наклонной шее), в очках с дужками, красный платок в белый горошек,
+   нос крючком, подбородок-«кочерга», румяные щёки, морщинки, серьга; фартук с карманом и заплатами, пояс с ключами и связкой трав; добрая-сердитая ---------- */
+const P_YSK=cc(0x8a6a8e,0x5e4462,0x3a283e),P_YJ=cc(0xa0764e,0x7a5234,0x4e3420),P_YSH=cc(0x7cb88a,0x468a62,0x28583c),P_YHR=cc(0xf0ece6,0xc4c0ba,0x8c8884);
 function buildYaga(){const R=castRig(1.9,33),S=PAL.skins[2],RD=PAL.red;
-  R.bone('hips','root',0,0.6,0);R.bone('chest','hips',0,0.55,0.05);R.bone('neck','chest',0,0.36,0.1);R.bone('head','neck',0,0.17,-0.15);
-  R.part('hips',KP.lathe([[0,-0.6],[0.52,-0.6],[0.5,-0.42],[0.43,-0.15],[0.34,0.05],[0.27,0.14],[0,0.15]],9),P_YSK);R.part('hips',KP.tor(0.5,0.035,3,14),RD,tm(0,-0.55,0,Math.PI/2,0,0),{kN:0.3});
-  R.box('hips',0.46,0.62,0.06,PAL.white,tm(0,-0.25,0.37,-0.22,0,0),{b:0.015,s:0.1});R.box('hips',0.48,0.05,0.07,RD,tm(0,-0.55,0.44,-0.22,0,0),{b:0});   // фартук
-  for(let i=0;i<4;i++)R.part('hips',hIco(0.03),RD,tm(-0.15+i*0.1,-0.3+(i%2)*0.12,0.41-(i%2)*0.02),{s:0.1});
-  R.part('chest',KP.lathe([[0,-0.3],[0.26,-0.28],[0.28,-0.08],[0.25,0.1],[0.18,0.24],[0,0.28]],8),P_YJ,tm(0,0,0,0.2,0,0,1,1,0.85));R.part('chest',hSph(0.17,6,4),P_YJ,tm(0,0.1,-0.13,0,0,0,1.2,0.9,0.8));
-  R.part('neck',KP.cyl(0.08,0.1,0.22,6),S,tm(0,0,0));
-  R.part('chest',KP.cone(0.36,0.3,9),cc(0xb04a58,0x8a2e40,0x5a1a2a),tm(0,0.14,-0.03,0.2,0,0,1,1,0.85),{s:0});R.part('chest',KP.tor(0.34,0.02,3,14),PAL.gold,tm(0,0.0,-0.01,Math.PI/2+0.2,0,0,1,0.85,1),{kN:0.2});   // шаль на плечах с каймой
-  // голова: платок, нос крючком, подбородок, очки, седые пряди
-  R.part('head',hSph(0.24,8,6),S,tm(0,0,0,0,0,0,1.02,1.08,1));const nose=KP.cone(0.055,0.26,5);nose.rotateX(Math.PI/2+0.35);R.part('head',nose,S,tm(0,-0.03,0.3),{s:0.1});
-  R.part('head',hIco(0.03),cc(0xc88a70,0xa86a54,0x7a4a3a),tm(0.03,-0.07,0.36),{s:0});R.part('head',KP.cone(0.08,0.14,5),S,tm(0,-0.22,0.1,Math.PI+0.3,0,0),{s:0});
-  R.part('head',new FIN.orig.Sphere(0.28,9,4,0,Math.PI*2,0,Math.PI*0.56),RD,tm(0,0.035,-0.025,-0.12,0,0),{kN:0.3});
-  for(let i=0;i<9;i++){const a=i/9*Math.PI*2;R.part('head',hIco(0.022),PAL.white,tm(Math.sin(a)*0.23,0.14+Math.cos(a*2)*0.03,Math.cos(a)*0.2-0.03),{kN:0,s:0.3});}
-  R.part('head',KP.cone(0.09,0.2,4),RD,tm(0,-0.2,0.15,0.5,0,0));for(const s of[-1,1])R.part('head',KP.cone(0.05,0.2,3),RD,tm(s*0.08,-0.25,0.16,0.4,0,s*0.7),{s:-0.1});   // узел
-  for(const s of[-1,1])R.part('head',KP.cone(0.05,0.14,3),PAL.stone,tm(s*0.17,0.08,0.13,0.3,0,s*0.5),{s:0.3});
-  for(const[s,n]of[[1,'L'],[-1,'R']]){hEye(R,n,s*0.09,0.04,0.21,0.058,cc(0x9ac0e8,0x5a8ac0,0x2a5a90),{lid:S});hBrow(R,n,s*0.09,0.1,0.2,0.07,PAL.stone,-s*0.2);
+  // осанка: таз прямо, спина наклонена вперёд, шея ещё круче, голова вынесена вперёд (рост и высота глаз — как были: глаза ≈ 1,72 м)
+  R.bone('hips','root',0,0.6,0);R.bone('chest','hips',0,0.55,0.04);R.bone('neck','chest',0,0.33,0.1);R.bone('head','neck',0,0.2,0.1);
+  // юбка до пояса, подол-«зубцы», заплатки
+  R.part('hips',KP.lathe([[0,-0.6],[0.52,-0.6],[0.5,-0.42],[0.43,-0.15],[0.34,0.05],[0.27,0.18],[0.24,0.28],[0,0.3]],9),P_YSK);R.part('hips',KP.tor(0.5,0.035,3,14),RD,tm(0,-0.55,0,Math.PI/2,0,0),{kN:0.3});
+  for(let i=0;i<10;i++){const a=i/10*Math.PI*2+0.3;R.part('hips',KP.cone(0.05,0.1,3),P_YSK,tm(Math.sin(a)*0.5,-0.64,Math.cos(a)*0.5,Math.PI,0,0),{kN:0.1});}
+  [[1.15,-0.3,PAL.green],[-1.2,-0.18,PAL.yellow],[2.5,-0.33,PAL.blue],[-2.3,-0.22,PAL.pink],[3.3,-0.38,PAL.green]].forEach(([a,y,c])=>{const r=0.47-(y+0.15)*0.26;
+    R.box('hips',0.15,0.16,0.045,c,tm(Math.sin(a)*r,y,Math.cos(a)*r,0,a,0.12),{b:0.01,s:-0.1});});
+  const ar=y=>y<-0.15?0.5-(y+0.42)/0.27*0.07:y<0.05?0.43-(y+0.15)/0.2*0.09:0.34-(y-0.05)/0.13*0.07;   // радиус юбки на высоте y
+  R.part('hips',new THREE.LatheGeometry([[0.55,-0.58],[0.53,-0.42],[0.46,-0.15],[0.37,0.05],[0.33,0.13]].map(q=>new THREE.Vector2(q[0],q[1])),6,-0.62,1.24),PAL.white,null,{kN:0.2,s:0.1});   // фартук лежит на юбке
+  R.part('hips',new THREE.LatheGeometry([[0.56,-0.6],[0.555,-0.5]].map(q=>new THREE.Vector2(q[0],q[1])),6,-0.62,1.24),RD,null,{kN:0.3});
+  R.box('hips',0.19,0.17,0.03,PAL.yellow,tm(0,-0.34,ar(-0.34)+0.05,-0.26,0,0),{b:0.01,s:-0.1});R.box('hips',0.15,0.015,0.032,RD,tm(0,-0.275,ar(-0.275)+0.052,-0.26,0,0),{b:0});   // карман
+  for(let i=0;i<4;i++){const y=-0.5+(i%2)*0.1;R.part('hips',hIco(0.026),RD,tm(-0.15+i*0.1,y,ar(y)+0.05),{s:0.1});}
+  // пояс: красный кушак, пряжка, ключи слева, связка трав справа
+  R.part('hips',KP.tor(0.265,0.032,3,14),RD,tm(0,0.2,0,Math.PI/2,0,0),{kN:0.3});R.box('hips',0.07,0.06,0.03,PAL.gold,tm(0,0.2,0.29),{b:0.01,s:0.1});
+  R.part('hips',KP.tor(0.035,0.01,3,8),PAL.gold,tm(0.25,0.1,0.19,0.2,0.9,0),{kN:0.2});for(let i=0;i<2;i++)R.box('hips',0.014,0.1,0.012,PAL.gold,tm(0.27+i*0.03,0.02,0.225-i*0.02,0,0.5,0.1-i*0.2),{b:0});
+  R.part('hips',KP.cone(0.02,0.2,4),PAL.green,tm(-0.27,0.08,0.2,Math.PI,0,0.3),{kN:0.2});R.part('hips',KP.cone(0.02,0.2,4),PAL.moss,tm(-0.3,0.08,0.18,Math.PI,0,0.42),{kN:0.2});
+  R.part('hips',KP.cone(0.02,0.17,4),PAL.green,tm(-0.33,0.09,0.16,Math.PI,0,0.55),{kN:0.2});
+  R.part('hips',hIco(0.032),PAL.yellow,tm(-0.31,-0.05,0.2),{s:0.2});R.part('hips',hIco(0.03),PAL.pink,tm(-0.355,-0.05,0.175),{s:0.2});R.part('hips',hIco(0.03),PAL.yellow,tm(-0.4,-0.04,0.145),{s:0.2});
+  // спина: наклонена вперёд, на лопатках горб
+  R.part('chest',KP.lathe([[0,0],[0.22,0],[0.27,0.12],[0.3,0.32],[0.27,0.5],[0.2,0.64],[0,0.68]],8),P_YJ,tm(0,-0.42,0,0.32,0,0,1,1,0.85));
+  R.part('chest',hSph(0.17,7,5),P_YSH,tm(0,0.13,-0.15,0,0,0,1.2,0.95,1),{s:-0.05});   // горб
+  // шея: тонкая, от плеч вперёд-вверх под череп; воротник-шаль не даёт ей торчать
+  R.part('neck',KP.cyl(0.065,0.09,0.27,6),S,tm(0,0.095,0.05,0.46,0,0),{s:-0.1});
+  R.box('neck',0.02,0.2,0.02,S,tm(0.04,0.08,0.09,0.46,0,0.05),{b:0,s:-0.3});
+  // шаль на плечах: накрывает горб и плечи, спереди открыта; кайма и кисточки по подолу идут по её нижнему краю
+  const SM=tm(0,0.0,-0.06,0.12,0,0),SX=1.12,SY=0.88,SZ=0.95,SR=0.36,SP=Math.PI*0.62,sy=SR*SY*Math.cos(SP),sr=SR*Math.sin(SP);
+  R.part('chest',new FIN.orig.Sphere(SR,9,5,0,Math.PI*2,0,SP),P_YSH,SM.clone().multiply(tm(0,0,0,0,0,0,SX,SY,SZ)),{s:0,kN:0.3});
+  R.part('chest',KP.tor(sr,0.022,3,16),PAL.gold,SM.clone().multiply(tm(0,sy,0,Math.PI/2,0,0,SX,SZ,1)),{kN:0.2});
+  for(let i=0;i<12;i++){const a=i/12*Math.PI*2,v=new V3(Math.sin(a)*sr*SX,sy-0.03,Math.cos(a)*sr*SZ).applyMatrix4(SM);R.part('chest',KP.cone(0.022,0.09,3),PAL.gold,tm(v.x,v.y,v.z,Math.PI+Math.cos(a)*0.2,0,-Math.sin(a)*0.2),{kN:0.2,s:0.1});}
+  // бусы из ягод на груди
+  for(let i=0;i<7;i++){const a=(i/6-0.5)*1.9;R.part('chest',hIco(0.026),i%2?PAL.mush:PAL.yellow,tm(Math.sin(a)*0.22,0.22-Math.cos(a)*0.1-0.02,0.3+Math.cos(a)*0.06,0,0,0),{s:0.1});}
+  // ---------- голова ----------
+  R.part('head',hSph(0.24,8,6),S,tm(0,0,0,0,0,0,1.02,1.08,1));
+  for(const s of[-1,1]){R.part('head',hSph(0.055,6,4),S,tm(s*0.125,-0.03,0.175,0,0,0,1,0.7,0.55),{s:0.12});   // скулы
+    R.part('head',hSph(0.03,6,4),cc(0xe8a690,0xd08470,0xa05a4a),tm(s*0.135,-0.075,0.19,0,0,0,1,0.8,0.4),{s:-0.2,kN:0.1});   // румянец
+    R.part('head',hSph(0.06,6,4),S,tm(s*0.235,-0.02,-0.02,0,0,0,0.4,1,0.75),{s:0.05});   // ухо
+    R.box('head',0.009,0.009,0.2,PAL.night,tm(s*0.2,0.045,0.12,0,s*0.05,0),{b:0});}   // дужки очков
+  R.part('head',KP.tor(0.022,0.007,3,8),PAL.gold,tm(0.245,-0.07,-0.02,0,Math.PI/2,0),{kN:0});   // серьга
+  // нос крючком: основание вперёд-вниз, кончик загибается к губам; бородавка
+  const nose=KP.cone(0.052,0.2,5);R.part('head',nose,S,tm(0,0.005,0.268,1.85,0,0),{s:0.1});
+  R.part('head',KP.cone(0.04,0.11,5),S,tm(0,-0.06,0.352,Math.PI+0.4,0,0),{s:0.05});
+  R.part('head',hIco(0.022),cc(0xc88a70,0xa86a54,0x7a4a3a),tm(0.03,-0.03,0.305),{s:0});
+  // подбородок вперёд и вверх — «кочерга»
+  R.part('head',KP.cone(0.07,0.26,5),S,tm(0,-0.235,0.14,1.2,0,0),{s:0});
+  // платок: поднят над бровями, сзади ниже; горошек; узел под подбородком; седые пряди
+  R.part('head',new FIN.orig.Sphere(0.28,9,4,0,Math.PI*2,0,Math.PI*0.52),RD,tm(0,0.055,-0.04,-0.34,0,0),{kN:0.3});
+  for(let i=0;i<16;i++){const th=0.18+Math.sqrt((i+0.5)/16)*1.2,ph=i*2.4,r=0.292,x=Math.sin(th)*Math.sin(ph)*r,y=Math.cos(th)*r,z=Math.sin(th)*Math.cos(ph)*r;
+    const ca=Math.cos(-0.34),sa=Math.sin(-0.34);R.part('head',hIco(0.016),PAL.white,tm(x,0.055+y*ca-z*sa,-0.04+y*sa+z*ca),{kN:0,s:0.3});}
+  R.part('head',KP.cone(0.09,0.2,4),RD,tm(0,-0.26,0.1,0.5,0,0));for(const s of[-1,1])R.part('head',KP.cone(0.05,0.2,3),RD,tm(s*0.08,-0.3,0.12,0.4,0,s*0.7),{s:-0.1});   // узел
+  for(const s of[-1,1])for(let j=0;j<2;j++)R.part('head',KP.cone(0.013,0.1-j*0.015,3),P_YHR,tm(s*(0.205+j*0.01),0.06-j*0.05,0.1-j*0.04,0.2,0,s*(0.55+j*0.3)),{s:0.3});   // пряди из-под платка
+  // глаза, брови, очки
+  for(const[s,n]of[[1,'L'],[-1,'R']]){hEye(R,n,s*0.09,0.04,0.21,0.058,cc(0x9ac0e8,0x5a8ac0,0x2a5a90),{lid:S});hBrow(R,n,s*0.09,0.1,0.2,0.075,P_YHR,-s*0.2);
     R.part('head',KP.tor(0.075,0.012,3,12),PAL.night,tm(s*0.09,0.04,0.245),{kN:0});}R.box('head',0.05,0.01,0.01,PAL.night,tm(0,0.05,0.25),{b:0});
-  hMouth(R,0,-0.12,0.19,0.03);R.box('head',0.02,0.03,0.01,PAL.white,tm(0.012,-0.115,0.205),{b:0,s:0.5});   // один зуб
-  for(const[s,n]of[[1,'L'],[-1,'R']]){cArm(R,n,'chest',[s*0.28,0.18,0.02],0.3,0.28,0.07,0.06,P_YJ,P_YJ);R.part('hand'+n,hSph(0.06,6,4),S,tm(0,-0.02,0.01));for(let j=0;j<3;j++)R.part('hand'+n,KP.cone(0.018,0.08,4),S,tm((j-1)*0.025,-0.08,0.02,Math.PI+0.2,0,0));
-    R.part('hips',hSph(0.08,6,4),PAL.night,tm(s*0.14,-0.58,0.22,0,0,0,1,0.6,1.5),{s:-0.2});}
+  hMouth(R,0,-0.125,0.216,0.03);R.box('head',0.02,0.03,0.01,PAL.white,tm(0.012,-0.14,0.226),{b:0,s:0.5});   // рот и один зуб
+  // руки: узловатые пальцы
+  for(const[s,n]of[[1,'L'],[-1,'R']]){cArm(R,n,'chest',[s*0.27,0.15,0.17],0.3,0.28,0.07,0.06,P_YJ,P_YJ);R.part('shoulder'+n,hSph(0.085,6,4),P_YJ,tm(0,0.0,0));R.part('hand'+n,hSph(0.06,6,4),S,tm(0,-0.02,0.01));
+    for(let j=0;j<4;j++)R.part('hand'+n,KP.cone(0.014,0.085+(j===1||j===2?0.015:0),4),S,tm((j-1.5)*0.028,-0.085,0.02,Math.PI+0.2,0,(j-1.5)*0.12),{s:-0.1});
+    R.part('hand'+n,KP.cone(0.016,0.07,4),S,tm(s*0.055,-0.04,0.03,Math.PI-0.3,0,s*0.9),{s:-0.1});
+    // сапоги с загнутым носком
+    R.part('hips',hSph(0.08,6,4),PAL.night,tm(s*0.14,-0.58,0.22,0,0,0,1,0.6,1.5),{s:-0.2});R.part('hips',KP.cone(0.04,0.12,4),PAL.night,tm(s*0.14,-0.54,0.4,1.0,0,0),{s:-0.1});}
   return R;}
 makeYaga=function(){const R=buildYaga(),o=castMake(R),B=o.rig;B.armL.rotation.x=-0.35;B.armR.rotation.x=-0.35;B.elbowL.rotation.x=-0.5;B.elbowR.rotation.x=-0.5;B.shoulderL.rotation.z=0.12;B.shoulderR.rotation.z=-0.12;
   return castReg(Object.assign(o,{head:B.head}),{hs:1.1});};
