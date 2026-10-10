@@ -59,6 +59,7 @@ def speak(text):
     """Что произносит голос: счётчики и значки убираются, числа — словами."""
     from num2words import num2words
     t = text.replace('·', '. ').replace('‹…›', ' ').replace('×', ' ')
+    t = re.sub(r'([.!?…])(?=[А-ЯЁ«])', r'\1 ', t)   # карточки боссов склеивают заголовок и текст без пробела («во сне.Подними») — голос глотает паузу
     t = re.sub(r'(\d+)\s*(?:с|сек)\b', lambda m: _fem(int(m.group(1))) + ' ' + _SEC(int(m.group(1))), t)   # «10 с»
     t = re.sub(r'(\d+)\s+(секунд[а-я]*)', lambda m: _fem(int(m.group(1))) + ' ' + _SEC(int(m.group(1))), t)   # «2 секунды»
     t = re.sub(r'(\d+)\s*%', lambda m: num2words(int(m.group(1)), lang='ru') + ' процентов', t)
@@ -137,11 +138,16 @@ def main():
             wav = os.path.join(td, 'a.wav')
             model.save_wav(text=e['tts'], speaker=a.speaker, sample_rate=24000, put_accent=True, put_yo=True, audio_path=wav)
             mp3 = os.path.join(OUT, e['id'] + '.mp3')
-            # тишина по краям — долой, громкость −16 LUFS, MP3 моно 24 кГц 32 кбит/с
+            # тишина по краям — долой, громкость −16 LUFS, MP3 моно 24 кГц 32 кбит/с. Два прохода: на части записей связка areverse + loudnorm в одном
+            # фильтре зависает навсегда (ffmpeg спит), через промежуточный wav — нет; timeout не даёт зависнуть молча
             trim = 'silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.03,areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.05,areverse'
-            subprocess.run([FFMPEG, '-hide_banner', '-loglevel', 'error', '-y', '-i', wav, '-af', trim + ',loudnorm=I=-16:TP=-1.5:LRA=11,aresample=24000',
-                            '-ac', '1', '-ar', '24000', '-c:a', 'libmp3lame', '-b:a', '32k', mp3], check=True)
-            r = subprocess.run([FFMPEG, '-hide_banner', '-i', mp3, '-f', 'null', '-'], capture_output=True, text=True)
+            cut = os.path.join(td, 'cut.wav')
+            mp3 = os.path.join(OUT, e['id'] + '.mp3')
+            ff = [FFMPEG, '-nostdin', '-hide_banner', '-loglevel', 'error', '-y']
+            subprocess.run(ff + ['-i', wav, '-af', trim, '-c:a', 'pcm_s16le', cut], check=True, timeout=120)
+            subprocess.run(ff + ['-i', cut, '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11,aresample=24000', '-ac', '1', '-ar', '24000', '-c:a', 'libmp3lame', '-b:a', '32k', mp3],
+                           check=True, timeout=120)
+            r = subprocess.run([FFMPEG, '-nostdin', '-hide_banner', '-i', mp3, '-f', 'null', '-'], capture_output=True, text=True)
             m = re.findall(r'time=(\d+):(\d+):([\d.]+)', r.stderr)
             e['dur'] = round(int(m[-1][0]) * 3600 + int(m[-1][1]) * 60 + float(m[-1][2]), 2) if m else 0
         if i % 50 == 0:
