@@ -17,7 +17,8 @@ function updateDowned(pi,dt){const p=players[pi],h=active(pi);h.vel.x=damp(h.vel
   if(p.downed&&p.downT<=0){p.downed=false;p.petals=3;placeOnGround(h,p.cp.x,p.cp.z,p.cp.y);h.iT=2;tip(pi,'Снова в пути! Все лепестки на месте.',2);}}
 /* богатырский выход: синяя шкала полна — сам, сразу у обоих героев игрока (вторая шкала — следом, когда снова наполнится) */
 const POWER={potap:['Медвежья сила',12,'каждый удар ломает скорлупу'],proshka:['Меч-кладенец',12,'меч сам рубит ближних'],pelageya:['Вещий взор',10,'мороки вдвое медленнее'],yosha:['Живой родник',2,'всем по лепестку']};
-function bogatyrExit(pi){const p=players[pi];p.blue=0;SFX.horn();banner('Богатырский выход!',PCSS[pi],2.6,p.heroes.map(h=>h.d.name+' — «'+POWER[h.kind][0]+'»: '+POWER[h.kind][2]).join('<br>'));
+function bogatyrLeft(pi){const p=players[pi];let t=0;for(const h of p.heroes)if(h.power&&h.power.t>t)t=h.power.t;return p.exitDur?Math.min(1,t/p.exitDur):0;}   // доля оставшегося времени силы (0 — выхода нет)
+function bogatyrExit(pi){const p=players[pi];p.blue=0;p.exitDur=Math.max(...p.heroes.map(h=>POWER[h.kind][1]));SFX.horn();banner('Богатырский выход!',PCSS[pi],2.6,p.heroes.map(h=>h.d.name+' — «'+POWER[h.kind][0]+'»: '+POWER[h.kind][2]).join('<br>'));
   for(const h of p.heroes){const P=POWER[h.kind];h.power={t:P[1]};ringFx(h.pos,COL.gold,4);
     if(h.kind==='pelageya')G.slowFoes=P[1];
     if(h.kind==='yosha'){for(const q of players){q.petals=Math.min(3,q.petals+1);if(q.downed){q.downed=false;q.petals=2;active(q.i).iT=2;}}burst(h.pos.clone().add(new V3(0,1,0)),0x7ad8ff,24,6);}}}
