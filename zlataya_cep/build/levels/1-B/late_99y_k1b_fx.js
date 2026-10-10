@@ -99,7 +99,7 @@ K1F.rope=function(C,len,dir){const pv=new THREE.Group();pv.position.set(C.x,0.45
 /* ---------- ленты-нити: от рога Лешего к герою, провисают и колышутся ---------- */
 K1F.ribbon=function(getA,getB,col,o){o=o||{};const N=18,P=new Float32Array((N+1)*2*3),I=[];for(let i=0;i<N;i++){const k=i*2;I.push(k,k+1,k+2,k+1,k+3,k+2);}
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(P,3));g.setIndex(I);
-  const m=new THREE.Mesh(g,new THREE.MeshLambertMaterial({color:col,emissive:col,emissiveIntensity:0.3,side:THREE.DoubleSide}));m.frustumCulled=false;k1Add(m);
+  const m=new THREE.Mesh(g,new THREE.MeshLambertMaterial({color:col,emissive:col,emissiveIntensity:0.3,side:THREE.DoubleSide}));m.frustumCulled=false;m.userData.styNo=true;k1Add(m);   // styNo — см. K1F.coil
   const R={m,g,on:true,sag:o.sag==null?1.2:o.sag,w:o.w||0.26,ph:rand(0,6),update(){const A=getA(),B=getB(),t0=G.time;if(!A||!B)return;const dx=B.x-A.x,dz=B.z-A.z,h=Math.hypot(dx,dz)||1,sx=-dz/h,sz=dx/h;
       for(let i=0;i<=N;i++){const k=i/N,wave=Math.sin(k*Math.PI*2+t0*3+R.ph)*0.18*Math.sin(k*Math.PI),x=A.x+dx*k+sx*wave,y=A.y+(B.y-A.y)*k-R.sag*Math.sin(k*Math.PI),z=A.z+dz*k+sz*wave;
         P[i*6]=x-sx*R.w;P[i*6+1]=y;P[i*6+2]=z-sz*R.w;P[i*6+3]=x+sx*R.w;P[i*6+4]=y;P[i*6+5]=z+sz*R.w;}g.attributes.position.needsUpdate=true;g.computeVertexNormals();},
@@ -108,6 +108,36 @@ K1F.ribbon=function(getA,getB,col,o){o=o||{};const N=18,P=new Float32Array((N+1)
 K1F.wrap=function(C,n,col){const m=new THREE.Mesh(new THREE.TorusGeometry(1.62,0.1,6,30),new THREE.MeshLambertMaterial({color:col,emissive:col,emissiveIntensity:0.3}));m.rotation.x=Math.PI/2+0.08*(n%2?1:-1);m.position.set(C.x,2.4+n*0.34,C.z);k1Add(m);
   m.scale.setScalar(1.6);K1F.anim(0.35,k=>{m.scale.setScalar(1.6-0.6*k);},null);K1F.wraps.push(m);return m;};
 K1F.unwrap=function(){K1F.wraps.forEach(k1Del);K1F.wraps.length=0;};
+// лента-обмотка «Хоровода»: от героя (он бежит — лента тянется следом) на ствол Лешего и витками вверх, как по резьбе. Витки — сколько герой оббежал вперёд (назад бежит — лента сматывается);
+// уже намотанные витки лежат на месте, новый ложится сверху, у героя лента живая — волной бежит по длине. getHero → {x,y,z}; taut (0…1) — «Тяни-потяни»: лента стянута и светлее;
+// reel() — распутывание: витки сходят к герою за пару секунд. Узлы ленты — на сетке углов (шаг 0,2 рад), поэтому виток стоит на месте, пока герой бежит дальше.
+const k1Sm=(a,b,x)=>{const k=Math.min(1,Math.max(0,(x-a)/(b-a)));return k*k*(3-2*k);};
+K1F.coil=function(C,getHero,col,o){o=o||{};const NM=190,DA=0.2,PMAX=Math.PI*10,TAIL=0.6,P=new Float32Array((NM+1)*2*3),I=[];for(let i=0;i<NM;i++){const k=i*2;I.push(k,k+1,k+2,k+1,k+3,k+2);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.BufferAttribute(P,3));g.setIndex(I);
+  const mat=new THREE.MeshLambertMaterial({color:col,emissive:col,emissiveIntensity:0.35,side:THREE.DoubleSide}),m=new THREE.Mesh(g,mat);m.frustumCulled=false;m.userData.styNo=true;k1Add(m);   // styNo: общая «огранка» (late_22_synty.js) подменяет геометрию копией — лента перестала бы двигаться
+  const wr=a=>{while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a;};
+  const R={m,g,on:true,phi:0,A:null,lt:0,taut:0,tautTo:0,reeling:false,off:o.off==null?0.25:o.off,y0:o.y0==null?1.7:o.y0,w:o.w||0.22,ph:rand(0,6),
+    reel(){R.reeling=true;},
+    update(){const h=getHero();if(!h)return;const t=G.time,dx=h.x-C.x,dz=h.z-C.z,rh=Math.max(2.4,Math.hypot(dx,dz)),th=Math.atan2(dz,dx);
+      if(R.A==null){R.A=th;R.lt=th;}const d=wr(th-R.lt);R.lt=th;R.A+=d;
+      if(R.reeling)R.phi*=0.94;else if(Math.hypot(dx,dz)>2.2)R.phi=Math.min(PMAX,Math.max(0,R.phi+d));
+      R.taut+=(R.tautTo-R.taut)*0.15;mat.emissiveIntensity=0.35+0.55*R.taut;
+      const A=R.A,U=R.phi+TAIL,Uap=Math.min(0.95,U),fr=A-Math.floor(A/DA)*DA,fl=1-R.taut;let last=null;
+      for(let k=0;k<=NM;k++){let x,y,z,tx,tz,wy;
+        if(last&&last.end){x=last.x;y=last.y;z=last.z;tx=last.tx;tz=last.tz;wy=last.wy;}
+        else{const raw=k?fr+(k-1)*DA:0,end=raw>=U,u=end?U:raw,e=k1Sm(0,Uap,u),ang=A-u,
+            yc=R.y0+0.6*(U-u)/(Math.PI*2),                                    // чем старше виток, тем он ниже
+            yy=h.y+1.1+(yc-h.y-1.1)*e+Math.sin(u*14-t*6+R.ph)*0.09*fl*(1-e*0.6),
+            rt=(1.55+R.off+0.77*Math.exp(-(yc-1)*0.55))*(1-0.05*R.taut),                // ствол сужается кверху (замер: 2,2 м на высоте 1 м, 1,5 м на 5 м) + зазор 0,25 м; стянутая лента прижата
+            rr=rh+(rt-rh)*e+Math.sin(u*20-t*5+R.ph)*0.1*fl*(0.3+0.7*e)+Math.sin(u*7-t*3)*0.25*fl*(1-e);
+          x=C.x+Math.cos(ang)*rr;z=C.z+Math.sin(ang)*rr;y=yy;const wv=1-e;tx=-Math.sin(ang)*wv*R.w;tz=Math.cos(ang)*wv*R.w;wy=e*R.w;   // лежит плашмя у героя, на стволе — поясом
+          last={x,y,z,tx,tz,wy,end};}
+        P[k*6]=x-tx;P[k*6+1]=y-wy;P[k*6+2]=z-tz;P[k*6+3]=x+tx;P[k*6+4]=y+wy;P[k*6+5]=z+tz;}
+      g.attributes.position.needsUpdate=true;g.computeVertexNormals();},
+    remove(){R.on=false;k1Del(m);const i=K1F.ribbons.indexOf(R);if(i>=0)K1F.ribbons.splice(i,1);}};K1F.ribbons.push(R);return R;};
+// вспышка витка: колечко на стволе расходится и гаснет (вместо постоянного кольца — виток теперь виден на самой ленте)
+K1F.pulse=function(C,col,y){const m=new THREE.Mesh(new THREE.TorusGeometry(1.7,0.08,6,30),new THREE.MeshBasicMaterial({color:col,transparent:true,opacity:0.9,depthWrite:false}));m.rotation.x=Math.PI/2;m.position.set(C.x,y,C.z);k1Add(m);
+  K1F.anim(0.6,k=>{m.scale.setScalar(1+0.45*k);m.material.opacity=0.9*(1-k);},()=>k1Del(m));};
 /* ---------- фонарики на ёлках кольца ---------- */
 const K1_LAMPS=[0xfff0a0,0xff9fc0,0x9fd4ff,0xb8ff98,0xffc070];
 function k1Lamps(carousel){const arr=[];carousel.children.forEach((f,i)=>{const px=f.position.x,pz=f.position.z,len=Math.hypot(px,pz)||1,col=K1_LAMPS[i%K1_LAMPS.length];const g=new THREE.Group();g.position.set(-px/len*1.05,2.3,-pz/len*1.05);g.scale.setScalar(0);g.visible=false;f.add(g);
