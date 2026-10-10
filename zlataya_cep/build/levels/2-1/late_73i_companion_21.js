@@ -1,6 +1,6 @@
 /* ============================== РЕЛИЗ final06 · 2-1 «ГУСЛИ САДКО»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 ============================== */
 // Бот за Игрока 2 играет правую сторону улиц и всё, что в уровне делает «второй голос»: мёртвая вода для струны Садко (Йоша), прилив и отлив гуслями у воды, лодки к террасам,
-// верёвки, шлюзы, колодец-лифт, плиты напева, стул гусляра у трона, правая раковина, ростки сада (Йоша) и бой с Раком-Отшельником. Положения — из build/levels/2-1/late_99e_k21*.js.
+// шлюзы, верёвки Переливной улицы, плиты напева, стул гусляра у трона, правая раковина, ростки сада (Йоша) и бой с Раком-Отшельником. Положения — из build/levels/2-1/late_99e_k21*.js.
 const F21=()=>W.flags;
 const K21B={w:null,t:0,tide:0};
 const k21b=()=>{if(K21B.w!==W){K21B.w=W;K21B.t=0;K21B.tide=0;}return K21B;};
@@ -29,37 +29,32 @@ CMP.route('2-1',[
     if(zA.state!=='high'||zA.t<1){if(zA.state!=='high'&&zoneAt(h)!==zA){cmpGoto(h,6,-45,0.4);return;}k21Tide(h,zA,'high');return;}
     if(h.pos.y<boat.col.maxy-0.5&&!(h.groundRef&&h.groundRef.col===boat.col)){cmpGoto(h,4.2,-54,0.3);const d=Math.hypot(h.pos.x-4.2,h.pos.z+54);if(d<2.2&&h.grounded&&h.groundRef&&h.groundRef.water)cmpTap('jump');return;}
     cmpGoto(h,4.2,-61,0.3);if(h.grounded&&h.pos.z>-56.5&&h.pos.z<-55)cmpTap('jump');}},
-  // переливная улица: правый канал, лодка к террасе, верёвка открывает ворота друга; прилив/отлив — через заслонку, которую держит Потап; проходят оба героя
-  {id:'perel',done:()=>k21All(-115.5),run:k21Each(-115.5,(h,hh)=>{k21b();const D=W.dbg21(),CR=D.CR,R=D.ropes[1],PG1=D.PG[1];if(h.pos.z>-77)return 'follow';
-    if(h.pos.z<-108&&h.pos.x>1.2){                                                                            // терраса и лестница за воротами
-      if(!R.pulled){if(Math.hypot(h.pos.x-5.9,h.pos.z+110.4)>1.0){cmpGoto(h,5.9,-110.4,0.6);return;}
+  // шлюзы: две ступени воды — на каждой прилив поднимает на следующую; с верха — лестница вниз к Переливной (оба героя)
+  {id:'locks',done:()=>k21All(-115.5),run:k21Each(-115.5,(h,hh)=>{k21b();const Z=W.waters.filter(z=>z.minx===-11&&z.maxx===11&&z.minz>=-96&&z.maxz<=-80).sort((a,b)=>b.minz-a.minz);
+    if(h.pos.z>-74)return 'follow';
+    if(Z.length<2)return 'follow';
+    const z=h.pos.z,i=z>-88?0:z>-96?1:2;
+    if(i<2){const zn=Z[i];                                                                                    // ступень i: прилив, потом на следующую
+      if(h.pos.z>-81&&i===0&&zn.state!=='high'){cmpGoto(h,6,-82.5,0.4);return;}
+      if(zn.state!=='high'){if(zoneAt(h)!==zn){cmpGoto(h,6,-(84+8*i),0.5);return;}k21Tide(h,zn,'high');return;}
+      cmpGoto(h,6,-(92+8*i),0.4);if(h.grounded&&h.groundRef&&h.groundRef.water&&h.pos.y<zn.level-0.8)cmpTap('jump');return;}
+    cmpGoto(h,6,-117,0.4);})},                                                                                // с верха шлюзов — по лестнице вниз
+  // переливная улица (за шлюзами): правый канал, лодка к террасе, верёвка открывает ворота друга; прилив/отлив — через заслонку, которую держит Потап; проходят оба героя
+  {id:'perel',done:()=>k21All(-155.5),run:k21Each(-155.5,(h,hh)=>{k21b();const D=W.dbg21(),CR=D.CR,R=D.ropes[1],PG1=D.PG[1];if(h.pos.z>-117)return 'follow';
+    if(h.pos.z<-148&&h.pos.x>1.2){                                                                            // терраса и лестница за воротами
+      if(!R.pulled){if(Math.hypot(h.pos.x-5.9,h.pos.z+150.4)>1.0){cmpGoto(h,5.9,-150.4,0.6);return;}
         h.face=-Math.PI/2;if(!(K21B.t>G.time-0.7)){K21B.t=G.time;cmpTap('attack');}return;}              // верёвка: удар
-      if(!PG1.open){cmpGoto(h,6,-111.2,0.5);return;}cmpGoto(h,6,-118,0.4);return;}                           // ворота друга открыты — вниз по лестнице
-    const onWater=h.groundRef&&h.groundRef.water,inCR=h.pos.x>1.2&&h.pos.z<-80&&h.pos.z>-108;
+      if(!PG1.open){cmpGoto(h,6,-151.2,0.5);return;}cmpGoto(h,6,-158,0.4);return;}                           // ворота друга открыты — вниз по лестнице
+    const onWater=h.groundRef&&h.groundRef.water,inCR=h.pos.x>1.2&&h.pos.z<-120&&h.pos.z>-148;
     if(CR.state!=='high'||CR.t<1){                                                                            // нужен прилив справа
       if(CR.state==='high')return;                                                                            // вода ещё поднимается
-      if(!D.SLU.held()){if(!inCR)cmpGoto(h,6,-79.2,0.5);return;}                                              // заслонка не держится — ждёт Потапа
-      const hl=hh.pos.x<-1.2&&hh.pos.z<-80&&hh.pos.z>-110&&hh.pos.y<2.9&&hh.kind!=='potap';                  // друг плывёт слева — не отнимаем у него воду
+      if(!D.SLU.held()){if(!inCR)cmpGoto(h,6,-119.2,0.5);return;}                                             // заслонка не держится — ждёт Потапа
+      const hl=hh.pos.x<-1.2&&hh.pos.z<-118&&hh.pos.z>-150&&hh.pos.y<2.9&&hh.kind!=='potap';                 // друг слева (в канале или у его ракушки) — не отнимаем у него воду
       if(hl)return;
-      if(zoneAt(h)!==CR){cmpGoto(h,6,-79.2,0.4);return;}k21Tide(h,CR,'high');return;}
-    if(h.pos.z>-99.4){cmpGoto(h,8.3,-100,0.4);return;}                                                         // вплавь к лодке, на лодку, на террасу
-    if(onWater){cmpGoto(h,8.3,-104.5,0.3);if(h.grounded&&h.pos.z<-102.2)cmpTap('jump');return;}
-    cmpGoto(h,8.3,-109.2,0.3);if(h.grounded&&h.pos.y<3.1)cmpTap('jump');})},
-  // шлюзы: три ступени воды — на каждой прилив поднимает на следующую; колодец-лифт: отлив опускает вниз (оба героя)
-  {id:'locks',done:()=>k21All(-156.5),run:k21Each(-156.5,(h,hh)=>{k21b();const D=W.dbg21(),Z=W.waters.filter(z=>z.minx===-11&&z.maxx===11&&z.minz>=-144&&z.maxz<=-120).sort((a,b)=>b.minz-a.minz);
-    if(h.pos.z>-114)return 'follow';
-    if(Z.length<3)return 'follow';
-    const LF=W.waters.find(z=>z.minx===-3&&z.maxx===3&&z.minz===-156&&z.maxz===-150),z=h.pos.z;
-    const i=z>-128?0:z>-136?1:z>-144?2:3;
-    if(i<3){const zn=Z[i];                                                                                    // ступень i: прилив, потом на следующую
-      if(h.pos.z>-121&&i===0&&zn.state!=='high'){cmpGoto(h,6,-122.5,0.4);return;}
-      if(zn.state!=='high'){if(zoneAt(h)!==zn){cmpGoto(h,6,-(124+8*i),0.5);return;}k21Tide(h,zn,'high');return;}
-      cmpGoto(h,6,-(132+8*i)-(i===2?3:0),0.4);if(h.grounded&&h.groundRef&&h.groundRef.water&&h.pos.y<zn.level-0.8)cmpTap('jump');return;}
-    // на верху последней ступени: в колодец, отлив — вниз
-    if(!LF)return 'follow';
-    if(Math.hypot(h.pos.x,h.pos.z+153)>1.2&&h.pos.z>-150.5){cmpGoto(h,0,-153,0.5);return;}
-    if(LF.state==='high'&&h.pos.y>3){if(zoneAt(h)===LF)k21Tide(h,LF,'low');return;}
-    cmpGoto(h,0,-160,0.4);})},
+      if(zoneAt(h)!==CR){cmpGoto(h,6,-119.2,0.4);return;}k21Tide(h,CR,'high');return;}
+    if(h.pos.z>-139.4){cmpGoto(h,8.3,-140,0.4);return;}                                                        // вплавь к лодке, на лодку, на террасу
+    if(onWater){cmpGoto(h,8.3,-144.5,0.3);if(h.grounded&&h.pos.z<-142.2)cmpTap('jump');return;}
+    cmpGoto(h,8.3,-149.2,0.3);if(h.grounded&&h.pos.y<3.1)cmpTap('jump');})},
   // звонкая мостовая: плиты по напеву Садко — «дилинь» (вторая) после человека, потом «дон» (четвёртая) вместе с ним; пока не её очередь, стоит в стороне — чужая плита сбила бы напев
   {id:'tune',done:()=>W.dbg21().TS.done,run:h=>{const D=W.dbg21(),TS=D.TS,T=D.TUNE;if(h.pos.z>-183||!W.flags.sturg)return 'follow';
     other(1).following=false;

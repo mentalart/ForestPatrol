@@ -22,7 +22,7 @@
         {t:4.4,fn:()=>{notes.forEach((s,i)=>{const h=HEROES[i],from=s.position.clone();anim(1.4,k=>{s.position.lerpVectors(from,h.pos.clone().add(new V3(0,h.d.height,0)),smooth(k));s.material.opacity=1-k*0.6;if(k>=1){W.group.remove(s);burst(h.pos.clone().add(new V3(0,h.d.height,0)),COL.gold,6,2);}});});}}],
       tick:(t)=>{sadko.head.rotation.x=0.12;sadko.body.rotation.z=Math.sin(t*2.2)*0.04;},
       end:()=>{notes.forEach(s=>W.group.remove(s));banner('Гусли Садко!','#ffd76a',2.8,'кнопка R или ; (на джойстике RB): вода подымется или опустится там, где стоишь');
-        for(const pi of[0,1])tip(pi,'Лодочка вверху — прилив, внизу — отлив. Играй '+K(pi,'item')+'!',4.2);}});}
+        for(const pi of[0,1])tip(pi,'У воды — рейка: поплавок у синей метки — прилив, у жёлтой — отлив. Играй '+K(pi,'item')+'!',4.2);}});}
   W.waterTargets.push({pos:new V3(-5.9,0,-14.5),active:()=>F.stage==='sadko',onWater:()=>{giftScene();}});
   function bookScene(){F.stage='book';const T=HERO,pr=T.proshka;const umb=new THREE.Group();W.group.add(umb);umb.visible=false;
     addMesh(new THREE.CylinderGeometry(0.02,0.02,0.9,5),M(0x6a4a2a),0,-0.45,0,umb);const can=addMesh(new THREE.ConeGeometry(0.75,0.35,10),M(0x4f9a3a),0,0.05,0,umb);can.scale.set(0.2,1,0.2);
@@ -74,10 +74,35 @@
         book.scale.set(1,1,1);front.rotation.z=Math.PI*0.93;clasp.rotation.z=-1.6;spineDraw(1);stubs.forEach(st=>{st.rotation.y=0;st.position.x=-0.3;});}});}
   // Переливная улица: короткий показ — вода одна, заслонка на дне
   function perelScene(){const P=HERO.potap;
-    play({dur:9,fov:50,shots:[shot(0,[0,7.5,-76],[0,-1,-95]),shot(4.6,[-5,2.4,-88],[-2.8,-2,-95])],
+    play({dur:9,fov:50,shots:[shot(0,[0,7.5,-76+PZ],[0,-1,-95+PZ]),shot(4.6,[-5,2.4,-88+PZ],[-2.8,-2,-95+PZ])],
       says:[[0.3,4,'zven','Улица в два канала, а вода у них одна! Отольёшь у себя — у друга прибудет.'],[4.5,4.2,'zven','Да заслонка на дне закрыта. Тяжёлый нужен — чтоб не всплыл и держал!']],
-      events:[{t:5,fn:()=>{for(let i=0;i<3;i++)later(i*0.5,()=>ringFx(new V3(-2.8,-2.3,-95),0xffd9a0,1.6));}}],
+      events:[{t:5,fn:()=>{for(let i=0;i<3;i++)later(i*0.5,()=>ringFx(new V3(-2.8,-2.3,-95+PZ),0xffd9a0,1.6));}}],
       end:()=>{later(0.5,()=>bark(P,'potap','Тяжёлый? Это я. Как положено.',2,true));}});}
+  // ---------- ворота Китежа: награда за длинный путь ----------
+  // Водоросли срезаны — за аркой виден сам Китеж: башни и купола зажигаются один за другим, колокола вызванивают напев Садко
+  // (тот самый, что Китеж вспомнит в 2-5). Город — за стеной уровня, только для ролика (без тумана, как корабли в палатах).
+  function gateCity(){const g=new THREE.Group();g.visible=false;W.group.add(g);const wallC=MB(0x24485a,{fog:false}),win=MB(0xffe08a,{fog:false,transparent:true,opacity:0}),domes=[];
+    const tower=(x,z,r,h,ds)=>{const b=new THREE.Mesh(new THREE.CylinderGeometry(r*0.9,r,h,10),wallC);b.position.set(x,h/2-2,z);g.add(b);
+      const dm=MB(0x4a3a18,{fog:false});const on=new THREE.Mesh(new THREE.SphereGeometry(r*1.1,12,10),dm);on.scale.set(1,1.25,1);on.position.set(x,h-2+r*0.9,z);g.add(on);
+      const tip=new THREE.Mesh(new THREE.ConeGeometry(r*0.45,r*1.4,10),dm);tip.position.set(x,h-2+r*2.3,z);g.add(tip);
+      for(let i=0;i<3;i++){const w=new THREE.Mesh(new THREE.PlaneGeometry(r*0.35,r*0.6),win);w.position.set(x+(i-1)*r*0.5,h*0.55-2,z+r*0.92);g.add(w);}domes.push({dm,ds});};
+    [[-9,-370,1.6,9,0.6],[-5,-382,2.1,13,1.4],[0,-375,2.6,11,2.2],[5.5,-384,2.0,14,3.0],[9.5,-371,1.5,8,3.8],[-13,-392,1.8,12,4.4],[13,-394,1.9,13,5.0],[0,-398,3.2,18,5.6]].forEach(q=>tower(...q));
+    const rays=[0,1,2].map(i=>{const m=new THREE.Mesh(new THREE.ConeGeometry(4,40,16,1,true),MB(0xffe8a0,{transparent:true,opacity:0,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,fog:false}));
+      m.position.set((i-1)*9,18,-384);m.rotation.z=(i-1)*0.18;g.add(m);return m;});
+    g.traverse(c=>{c.userData.noBatch=true;c.castShadow=false;});return {g,domes,win,rays};}
+  function gateScene(){const T=HERO,C=gateCity(),gold=new THREE.Color(0xffd76a),dark=new THREE.Color(0x4a3a18);
+    const row=[[-2.6,-160.6],[-0.9,-161.2],[0.9,-161.2],[2.6,-160.6]];HEROES.forEach((h,i)=>{placeOnGround(h,row[i][0],row[i][1]+D3,0);h.face=Math.PI;});
+    if(!endLink.taken)takeItem(endLink,active(0));
+    play({dur:12.4,fov:54,shots:[shot(0,[0,4.6,-155.5+D3],[0,2.6,-167+D3]),shot(4.2,[0,2.0,-162.5+D3],[0,6,-200+D3],[0,2.8,-170+D3],[0,8.5,-205+D3],6.5)],
+      says:[[0.3,3.6,null,'<i>Расступились водоросли — а за воротами спит Китеж-град.</i>',true],[4.2,3.4,'zven','Слышите? Колокола напев Садко помнят!'],
+        [7.8,2.2,'proshka','Дошли! Вот он — Китеж!'],[10.1,2.2,'zven','Дзинь — дальше, в город!']],
+      events:[{t:0,fn:()=>{C.g.visible=true;SFX.gate();}},
+        {t:4.2,fn:()=>{FIN.SADKO_TUNE.forEach((m,i)=>later(i*0.6,()=>{gusli(m,0,0.24);gusli(m-12,0,0.18);SFX.bell();}));}},
+        {t:7.0,fn:()=>{for(let i=0;i<24;i++)later(i*0.05,()=>burst(new V3(rand(-4,4),rand(1,5),-158+D3),[0xffd23a,0x5ab8ff,0xff7ab0,0x6ad86a][i%4],3,3));SFX.ok();}},
+        {t:9.6,fn:()=>{for(const h of HEROES)if(ACT&&ACT.emote)ACT.emote(h,'joy');}}],
+      tick:(t)=>{for(const D of C.domes){const k=clamp((t-4.2-D.ds*0.55)/0.8,0,1);D.dm.color.copy(dark).lerp(gold,k);}
+        C.win.opacity=clamp((t-5)/3,0,1)*(0.8+0.2*Math.sin(t*9));C.rays.forEach((m,i)=>{m.material.opacity=clamp((t-6+i*0.4)/2,0,1)*0.16;m.rotation.y=t*0.1*(i-1);});},
+      end:()=>{W.group.remove(C.g);F.out=true;finishLevel();}});}
   // ---------- Звонкая мостовая: осётр, плиты, ворота ----------
   function noteFly(T,from){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:KW_NOTE_TEX,color:T.c,transparent:true,depthWrite:false}));s.scale.setScalar(0.7);s.raycast=()=>{};const a=from.clone();s.position.copy(a);W.group.add(s);
     const to=new V3(T.x,1.6,T.z);anim(1.1,k=>{s.position.lerpVectors(a,to,smooth(k));s.position.y+=Math.sin(k*Math.PI)*1.2;if(k>=1){W.group.remove(s);T.lit=1;burst(to,T.c,10,3);ringFx(new V3(T.x,0.2,T.z),T.c,1.8);}});}

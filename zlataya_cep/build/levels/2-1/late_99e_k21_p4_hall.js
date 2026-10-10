@@ -33,13 +33,23 @@
       if(got||q.t>8||F.kingDone){W.group.remove(q.m);PRL.splice(i,1);if(got&&!F.kingDone){KD.meter=Math.min(1,KD.meter+0.045);KD.pearls++;tone(1500,0.12,'sine',0.12,2100);burst(q.m.position.clone(),0xffffff,10,3);floatText(got.pos.clone().add(new V3(0,got.d.height+0.6,0)),'Жемчужинка! Пляска шибче!','#fff6d0');}}}
     if(live&&KD.meter>=1){F.kingDone=true;kingEnd();}
     for(const q of HD){const k=F.kingOpen?1:0;q.k=damp(q.k,k,3,dt);q.g.position.y=4.5*q.k;q.col.on=q.k<0.6;}}
-  function kingScene(){const T=HERO;
-    play({dur:11.2,fov:48,shots:[shot(0,[0,4.2,K0-18],[0,2.8,TZ]),shot(4.4,[4.2,2.8,TZ+9.5],[0,1.2,TZ+6.4],[0,3.2,TZ+10.5],[0,2,TZ+3],3)],
+  // после слов царя — показ «оставленный держит»: призрак-гусляр играет первый голос, герой сменён — оставленный играет сам (круг-таймер над ним),
+  // второй идёт ко второму стулу; заиграли оба — царь пляшет. Тот же круг потом над настоящими героями (late_99d_kitezh_water.js).
+  function kingScene(){const T=HERO,gh=[],RH={},sd=seats.map(s=>new V3(s.x,0,s.z+1.0));
+    const ghost=(kind,p)=>{const g=buildHeroMesh(kind,true).g;g.position.copy(p);g.rotation.y=Math.PI;W.group.add(g);gh.push(g);return g;};
+    play({dur:20,fov:48,shots:[shot(0,[0,4.2,K0-18],[0,2.8,TZ]),shot(4.4,[4.2,2.8,TZ+9.5],[0,1.2,TZ+6.4],[0,3.2,TZ+10.5],[0,2,TZ+3],3),shot(11.2,[0,3.6,TZ+15.5],[0,1.2,TZ+6.8])],
       says:[[0.3,3.8,null,'<i>В палатах на троне — Морской царь, борода из тины, на голове — венец.</i>',true],[4.3,4,'king','Гусли слышу! Сыграйте мне — попляшу! А не спляшу — дверей не открою!'],
-        [8.4,2.8,'king','Да в два голоса, у самого трона!']],
-      events:[{t:4.4,fn:()=>{for(const s of seats){ringFx(new V3(s.x,0.2,s.z),0xffe08a,2.2);later(0.4,()=>ringFx(new V3(s.x,0.2,s.z),0x9fe6ff,1.6));}}},{t:8.4,fn:()=>{king.arms[1].rotation.x=-0.8;}}],
-      tick:(t)=>{king.dance(false,1/60);king.head.rotation.y=Math.sin(t*1.5)*0.3;for(const s of seats)s.gm.emissiveIntensity=t>4.4?0.5+0.5*Math.sin(t*7):0.2;},
-      end:()=>{king.arms[1].rotation.x=0;banner('Пляска Морского царя!','#9fe6ff',2.6,'играйте ОБА у стульев перед троном — царь пляшет; волны-кольца — прыгай; пляс-ракушки над троном копят пляску');}});}
+        [8.4,2.8,'king','Да в два голоса, у самого трона!'],[12.4,3.4,'zven','Один у гуслей? Сыграй — и смени героя!'],[15.9,3.8,'zven','Оставленный играет сам, пока горит круг над ним!']],
+      events:[{t:4.4,fn:()=>{for(const s of seats){ringFx(new V3(s.x,0.2,s.z),0xffe08a,2.2);later(0.4,()=>ringFx(new V3(s.x,0.2,s.z),0x9fe6ff,1.6));}}},{t:8.4,fn:()=>{king.arms[1].rotation.x=-0.8;}},
+        {t:11.2,fn:()=>{king.arms[1].rotation.x=0;ghost('proshka',sd[0]);ghost('potap',sd[0].clone().add(new V3(1.1,0,0.4)));}},
+        {t:11.8,fn:()=>{[67,71,74,79].forEach((m,k)=>gusli(m,k*0.09,0.12));floatText(new V3(sd[0].x,2.6,sd[0].z),'Первый голос!','#ffe08a');}},
+        {t:12.8,fn:()=>{SFX.ok();burst(new V3(sd[0].x+1.1,1.2,sd[0].z+0.4),0xffffff,10,2);floatText(new V3(sd[0].x,3.1,sd[0].z),'Держу напев!','#ffe9a0');const R=FIN.kwRing(RH);R.s.visible=true;R.s.position.set(sd[0].x,2.3,sd[0].z);}},
+        {t:15.8,fn:()=>{[72,76,79,84].forEach((m,k)=>gusli(m,k*0.09,0.12));floatText(new V3(sd[1].x,2.6,sd[1].z),'Второй голос!','#ffe08a');for(let i=0;i<8;i++)burst(new V3(rand(-2,2),2.2,TZ+rand(-1,2)),[0xffd23a,0x5ab8ff,0xff7ab0,0x6ad86a][i%4],2,2,0.5);}}],
+      tick:(t)=>{king.dance(t>15.8,1/60,1);if(t<15.8)king.head.rotation.y=Math.sin(t*1.5)*0.3;for(const s of seats)s.gm.emissiveIntensity=t>4.4?0.5+0.5*Math.sin(t*7):0.2;
+        if(gh[1]&&t>12.8){const k=smooth(Math.min(1,(t-12.8)/2.8));gh[1].position.lerpVectors(sd[0].clone().add(new V3(1.1,0,0.4)),sd[1],k);gh[1].position.y=Math.abs(Math.sin(t*9))*0.08*(1-k);gh[1].rotation.y=k<1?Math.PI/2:Math.PI;}
+        if(RH.kwRing&&t>12.8)FIN.kwRingDraw(RH.kwRing,15-(t-12.8)*0.9,15);},
+      end:()=>{king.arms[1].rotation.x=0;king.head.rotation.y=0;for(const g of gh)W.group.remove(g);if(RH.kwRing)W.group.remove(RH.kwRing.s);
+        banner('Пляска Морского царя!','#9fe6ff',2.6,'играйте ОБА у стульев перед троном — царь пляшет; один — сыграй и смени героя: оставленный играет, пока горит круг');}});}
   function kingEnd(){const T=HERO;KD.on=false;for(const q of SEATREF)q.hum=0;
     const seatsAt=[[-3.6,TZ+7.6],[3.6,TZ+7.6],[-1.2,TZ+8.6],[1.2,TZ+8.6]];
     play({dur:15,fov:48,shots:[shot(0,[0,2.8,TZ+6.2],[0,2.6,TZ]),shot(3.3,[0,1.4,TZ+11],[0,24,TZ-3]),shot(7.1,[1.5,3.9,TZ+2.7],[0,3.7,TZ]),shot(9.6,[0,3.6,TZ+13],[0,2.4,K0-37],[0,3,TZ+9],[0,2.4,K0-37],3)],
@@ -87,14 +97,13 @@
     O(()=>'У каждого теперь гусли! Звено — на столбе фонтана.<br>Встань у чаши, сыграй прилив '+K(pi,'item')+': доски всплывут без обмана.',()=>fLink.taken||active(pi).pos.z<-29,()=>[fLink.g,fz.shell.g]),
     O(pi?'Терем-библиотека. Прошка книгу сказок нашёл толстую…':'Терем-библиотека. Прошка, книгу сказок открой.',()=>F.book,()=>[book])];
   const late=pi=>[
+    O(()=>'Шлюзы! Встань в воду и прилив '+K(pi,'item')+' сыграй — вода подымет на ступеньку.<br>Две ступеньки — и наверх, помаленьку.',()=>active(pi).pos.z<-103.5,()=>[L1,L2].filter(z=>inZone(z,active(pi),6)).map(z=>z.shell.g)),
     O(pi?()=>'Переливная улица! Вода в двух каналах одна — через заслонку на дне левого канала. Ждём: Потап её подержит.<br>Прилив у тебя '+K(1,'item')+' — отлив у друга. Лодкой — к террасе, дёрни верёвку: откроешь ворота ДРУГА.':
         ()=>'Переливная улица! Вода в двух каналах одна — через заслонку на дне левого канала.<br>Поставь на неё Потапа: он тяжёлый, не всплывёт и держит, даже оставленный. Прилив у тебя '+K(0,'item')+' — отлив у друга.<br>Лодкой — к террасе, дёрни верёвку: откроешь ворота ДРУГА.',
-      ()=>active(pi).pos.z<-113,()=>{const r=[];if(!SLU.held())r.push(SLU.g);if(!ropes[pi].pulled)r.push(ropes[pi].fl);if(!PG[pi].open)r.push(PG[pi].g);return r;}),
-    O(()=>'Шлюзы! Встань в воду и прилив '+K(pi,'item')+' сыграй — вода подымет на ступеньку.<br>Три ступеньки — и наверх, помаленьку.',()=>active(pi).pos.z<-104.2+D,()=>[L1,L2,L3].filter(z=>inZone(z,active(pi),6)).map(z=>z.shell.g)),
-    O(()=>'Колодец-лифт. Встань в воду, отлив '+K(pi,'item')+' сыграй —<br>Спустишься вниз, как на лифте, так и знай.',()=>active(pi).pos.z<-116.5+D&&active(pi).pos.y<1,()=>[LIFT.shell.g]),
+      ()=>active(pi).pos.z<-113+PZ,()=>{const r=[];if(!SLU.held())r.push(SLU.g);if(!ropes[pi].pulled)r.push(ropes[pi].fl);if(!PG[pi].open)r.push(PG[pi].g);return r;}),
     O(()=>'Торговые ряды! Раки щиплют красным — кувырком '+K(pi,'roll')+'.<br>Жемчужница в пруду: отлив '+K(pi,'item')+' — ахнет и раскроется, тут и бей.',()=>mkt.done,()=>mkt.list.filter(e=>e.alive).map(e=>e.g)),
     O(()=>'Звонкая мостовая! Встаньте на звонкие плиты по напеву Садко: дзинь, дилинь — по очереди,<br>а дон-дон — вдвоём, разом. Ворота сами запоют!',()=>!!F.tune,()=>TS.done?[]:TUNE.map(T=>T.g)),
-    O(()=>'Палаты Морского царя! Два стула гусляра — перед троном: играйте '+K(pi,'item')+' оба — царь пляшет в два голоса.<br>Кольца-волны от пляски — прыгай '+K(pi,'jump')+'; пляс-ракушки над троном копят пляску. Наплясается — двери отворит.',
+    O(()=>'Палаты Морского царя! Два стула гусляра — перед троном: играйте '+K(pi,'item')+' оба — царь пляшет в два голоса.<br>Один? Сыграй и смени героя '+K(pi,'swap')+' — оставленный играет, пока горит круг над ним. Кольца-волны — прыгай '+K(pi,'jump')+'.',
       ()=>!!F.kingOpen,()=>F.kingDone?HD.map(q=>q.g):seats.map(s=>s.g)),
     O(()=>'Две раковины. На таблички гляди: левой — прилив, правой — отлив.<br>Сыграйте '+K(pi,'item')+' — каждый у своей, вот и весь мотив.',()=>!!F.grate,()=>[LZ.shell.g,RZ.shell.g]),
     O(()=>'Сад Китежа. Ракушка — на дне, у родника: в приливе дойдёт только тяжёлый Потап — отлив '+K(pi,'item')+'.<br>Йоша польёт ростки '+K(1,'skill')+' — вырастут лесенки к террасе. Родник снова наполнит сад — пусть оставленный держит напев!',
@@ -110,14 +119,14 @@
   W.pauseLine='Подводный Китеж. Гусли Садко: RB воду меняет там, где стоишь, —<br>Прилив лодки подымет, отлив подвалы откроет, глядишь.<br>Переливная улица: вода одна на двоих — Потап на заслонке держит.<br>Звонкие плиты — напев Садко; Морскому царю играйте в два голоса — запляшет; сад Китежа: Потап по дну, Йоша — лесенки растит;<br>Рак-Отшельник любит музыку — а домик ему нужен новый.<br>В Китеже молчать нельзя — запомни в голове.';
   W.onStart=()=>{later(0.8,()=>say('zven','Китеж! Под водою спит он. Дзинь — за мной!',2.6,true));};
   // для ботов: перенос к участку
-  W.warp21=(where)=>{F.stage='street';F.book=true;W.abil.gusli=true;const P={perel:[-6,0,-78],locks:[0,0,-118],market:[0,0,-157],tune:[0,0,-182],dance:[0,0,K0-2],shells:[0,0,-219+S1],garden:[0,0,-235.5+DG],boss:[0,0,-267+DG],gate:[0,0,-311+DG]}[where];
-    const after=w=>['perel','locks','market','tune','dance','shells','garden','boss','gate'].indexOf(where)>['perel','locks','market','tune','dance','shells','garden','boss','gate'].indexOf(w);
+  W.warp21=(where)=>{F.stage='street';F.book=true;W.abil.gusli=true;const P={locks:[0,0,-78],perel:[-6,0,-78+PZ],market:[0,0,-157],tune:[0,0,-182],dance:[0,0,K0-2],shells:[0,0,-219+S1],garden:[0,0,-235.5+DG],boss:[0,0,-267+DG],gate:[0,0,-311+DG]}[where];
+    const ORD=['locks','perel','market','tune','dance','shells','garden','boss','gate'],after=w=>ORD.indexOf(where)>ORD.indexOf(w);
     if(after('market')){mkt.started=true;mkt.done=true;mktGate.forceOpen=true;}
     if(after('tune')){TS.done=true;F.tune=true;F.sturg=true;tuneCol.on=false;tuneGate.position.y=4.6;}
     if(after('dance')){F.kingMet=true;F.kingDone=true;F.kingOpen=true;}
     if(after('shells')){F.grate=true;grateCol.on=false;grate.position.y=3.8;}if(after('garden')){F.gardTold=true;}
     if(where==='gate'){F.hermitWon=true;HB.dbg().weedCol.on=false;HB.skip&&HB.skip();}
-    if(where!=='perel'){PG.forEach((q,i)=>openPG(i));F.perelTold=true;}if(where==='dance')F.kingMet=true;if(where==='tune')F.sturg=true;
+    if(after('perel')){PG.forEach((q,i)=>openPG(i));F.perelTold=true;}if(where==='dance')F.kingMet=true;if(where==='tune')F.sturg=true;
     HEROES.forEach((h,i)=>{placeOnGround(h,P[0]+(i%2?1.4:-1.4)+(i>1?3:0)*(P[0]<0?1:-1),P[2]+(i>1?0.6:0),P[1]);h.following=false;});for(const pi of[0,1])players[pi].cp.set(P[0],P[1],P[2]);snapCams();
     return W.dbg21();};
   W.dbg21=()=>({CL,CR,SLU,boatL,boatR,ropes,PG,KD,SEATREF,HD,seats,WAV,PRL,king,TUNE,TS,tuneCol,GARD,KS,anchor,LZ,RZ,mkt,endLink,HB,S1,DG,K0,TZ,F});

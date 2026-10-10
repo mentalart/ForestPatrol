@@ -3,7 +3,7 @@
 //   ракушка с лодочкой — прилив и отлив (как было); ракушка с рыбкой — течение: поток туда, куда смотрит герой (10 с);
 //   ракушка с колокольчиком — звон: колокол гудит 6 с, и пока гудит, невидимый Китеж (лестницы, мостки) виден и твёрд.
 // Перелив: две заводи через заслонку — воды в них одна на двоих: отлив у одного — прилив у другого. Закрыта заслонка — вода стоит.
-// Оставленный держит напев: сменил героя сразу после игры у раковины течения или звона — оставленный доигрывает 15 с (нотка над ним тает).
+// Оставленный держит напев: сменил героя сразу после игры у раковины течения или звона — оставленный доигрывает 15 с (над ним — круг-таймер с секундами).
 // Роли под водой: Потап тяжёлый — в «глубокой» воде (z.heavy) не всплывает, ходит по дну и держит заслонки; живая вода Йоши растит
 // водоросли-лесенки; Совиный взор Пелагеи показывает невидимый город и тайные течения; рогатка Прошки звонит в колокола издалека.
 const KW={currents:[],shells:[],ghosts:[],bells:[],rafts:[],sluices:[],seeds:[],whirls:[],links:[],owlT:0,linking:false};FIN.kw=KW;
@@ -11,12 +11,23 @@ const KW_AX={x:new V3(1,0,0),z:new V3(0,0,1)};
 // напев Садко (2-1 — Садко наигрывает, 2-5 — колокола Китежа поднимают ярусы по нему)
 FIN.SADKO_TUNE=[67,71,74,72];
 {const _ll=loadLevel;loadLevel=function(i){for(const k of['currents','shells','ghosts','bells','rafts','sluices','seeds','whirls','links'])KW[k]=[];KW.owlT=0;KW.linking=false;
-  for(const h of HEROES){h.kwHold=null;h.kwLast=null;if(h.kwNote){h.kwNote.visible=false;}}_ll(i);};}
+  for(const h of HEROES){h.kwHold=null;h.kwLast=null;kwHoldHide(h);}_ll(i);};}
 // ---------- нотка над героем, который держит напев ----------
 const KW_NOTE_TEX=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');x.font='bold 54px Georgia, serif';x.textAlign='center';x.textBaseline='middle';
   x.fillStyle='#fff6c8';x.strokeStyle='rgba(60,30,0,0.6)';x.lineWidth=4;x.strokeText('♪',32,34);x.fillText('♪',32,34);return new THREE.CanvasTexture(c);})();
 function kwNote(h){if(!h.kwNote){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:KW_NOTE_TEX,transparent:true,depthWrite:false,color:0xffe9a0}));s.scale.setScalar(0.62);s.renderOrder=9;s.raycast=()=>{};h.kwNote=s;}
   if(h.kwNote.parent!==W.group)W.group.add(h.kwNote);return h.kwNote;}
+// круг-таймер над оставленным: золотая дуга убывает, в середине — сколько секунд он ещё держит напев
+function kwRing(h){if(!h.kwRing){const c=document.createElement('canvas');c.width=c.height=128;const t=new THREE.CanvasTexture(c);
+    const s=new THREE.Sprite(new THREE.SpriteMaterial({map:t,transparent:true,depthWrite:false,depthTest:false}));s.renderOrder=10;s.raycast=()=>{};s.scale.setScalar(0.9);h.kwRing={s,c,t,q:-1};}
+  if(h.kwRing.s.parent!==W.group)W.group.add(h.kwRing.s);return h.kwRing;}
+function kwRingDraw(R,left,total){const q=Math.ceil(left*4);if(q===R.q)return;R.q=q;const x=R.c.getContext('2d'),k=clamp(left/total,0,1);x.clearRect(0,0,128,128);
+  x.fillStyle='rgba(16,28,48,0.6)';x.beginPath();x.arc(64,64,58,0,Math.PI*2);x.fill();
+  x.lineWidth=12;x.strokeStyle='rgba(255,255,255,0.2)';x.beginPath();x.arc(64,64,47,0,Math.PI*2);x.stroke();
+  x.lineCap='round';x.strokeStyle=k>0.34?'#ffd76a':'#ff8a5a';x.beginPath();x.arc(64,64,47,-Math.PI/2,-Math.PI/2+Math.PI*2*k);x.stroke();
+  x.fillStyle='#fff6d0';x.font='bold 48px Georgia, serif';x.textAlign='center';x.textBaseline='middle';x.fillText(String(Math.max(0,Math.ceil(left))),64,68);R.t.needsUpdate=true;}
+function kwHoldHide(h){if(h.kwNote)h.kwNote.visible=false;if(h.kwRing)h.kwRing.s.visible=false;}
+FIN.kwRing=kwRing;FIN.kwRingDraw=kwRingDraw;
 // ---------- раковины течения и звона ----------
 function kwShellMesh(x,z,y,kind,ry){const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=ry||0;W.group.add(g);
   addMesh(new THREE.CylinderGeometry(0.07,0.09,1.5,6),M(0xd8c8a8),0,0.75,0,g);
@@ -157,8 +168,8 @@ function kwPlay(pi,h,S){gusliFx(h,'high');h.kwLast={kind:S.kind,ref:S.ref,shell:
   const z0=W&&W.world===2?zoneAt(h):null,lv0=z0&&z0.state;_pg(pi);if(z0&&z0.state!==lv0)h.kwLast={kind:'tide',ref:z0,t:G.time,x:h.pos.x,z:h.pos.z};};}
 // ---------- оставленный держит напев ----------
 function kwLeave(h){const L=h.kwLast;if(!L||G.time-L.t>4||Math.hypot(h.pos.x-L.x,h.pos.z-L.z)>1.6)return;if(L.kind!=='current'&&L.kind!=='ring'&&L.kind!=='dance'&&!(L.kind==='tide'&&L.ref&&L.ref.kwHoldable))return;
-  h.kwHold={kind:L.kind,ref:L.ref,dir:L.dir||0,t:15,x:h.pos.x,z:h.pos.z};SFX.ok();floatText(h.pos.clone().add(new V3(0,h.d.height+0.9,0)),'Держу напев!','#ffe9a0');
-  if(!G.flags.kwHoldTold){G.flags.kwHoldTold=true;for(const p of[0,1])tip(p,'Оставленный герой держит напев 15 секунд — нотка над ним тает. Успевай!',3.4);}}
+  h.kwHold={kind:L.kind,ref:L.ref,dir:L.dir||0,t:15,t0:15,x:h.pos.x,z:h.pos.z};SFX.ok();floatText(h.pos.clone().add(new V3(0,h.d.height+0.9,0)),'Держу напев!','#ffe9a0');
+  if(!G.flags.kwHoldTold){G.flags.kwHoldTold=true;for(const p of[0,1])tip(p,'Оставленный играет сам, пока горит круг над ним — 15 секунд. Успевай!',3.4);}}
 {const _ds=doSwap;doSwap=function(pi){const h=active(pi);_ds(pi);if(W&&W.world===2&&active(pi)!==h)kwLeave(h);};}
 {const _ss=soloSwap;soloSwap=function(){const h=active(G.soloPi);_ss();if(W&&W.world===2&&active(G.soloPi)!==h&&h.active)kwLeave(h);};}
 function kwControlled(h){return h.active&&(!G.solo||h.player===G.soloPi);}
@@ -167,14 +178,15 @@ function kwControlled(h){return h.active&&(!G.solo||h.player===G.soloPi);}
 // ---------- шаг ----------
 function kwTick(dt){if(!W||W.world!==2)return;KW.owlT=Math.max(0,KW.owlT-dt);
   // напев оставленных
-  for(const h of HEROES){const H=h.kwHold;const n=h.kwNote;if(!H){if(n)n.visible=false;continue;}
-    if(kwControlled(h)||h.following||Math.hypot(h.pos.x-H.x,h.pos.z-H.z)>1.6||(h.active&&players[h.player].downed)){h.kwHold=null;if(n)n.visible=false;continue;}
-    H.t-=dt;if(H.t<=0){h.kwHold=null;if(n)n.visible=false;floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'Напев стих','#cfe8ff');continue;}
+  for(const h of HEROES){const H=h.kwHold;if(!H){kwHoldHide(h);continue;}
+    if(kwControlled(h)||h.following||Math.hypot(h.pos.x-H.x,h.pos.z-H.z)>1.6||(h.active&&players[h.player].downed)){h.kwHold=null;kwHoldHide(h);continue;}
+    H.t-=dt;if(H.t<=0){h.kwHold=null;kwHoldHide(h);floatText(h.pos.clone().add(new V3(0,h.d.height+0.8,0)),'Напев стих','#cfe8ff');continue;}
     if(H.kind==='current'){const C=H.ref;if(C.dir!==H.dir&&C.t<=0)kwSetCurrent(C,H.dir,h.player,true);if(C.dir===H.dir)C.t=Math.max(C.t,0.4);}
     else if(H.kind==='ring'||H.kind==='dance')H.ref.hum=Math.max(H.ref.hum,0.4);
     else if(H.kind==='tide')H.ref.holdT=0.4;
     h.kwNoteT=(h.kwNoteT||0)-dt;if(h.kwNoteT<=0){h.kwNoteT=1.4;gusli(H.kind==='ring'?79:74,0,0.05);}
-    const s=kwNote(h);s.visible=true;s.material.opacity=0.35+0.65*Math.min(1,H.t/15);s.position.set(h.pos.x+Math.sin(G.time*2)*0.12,h.pos.y+h.d.height+0.75+Math.sin(G.time*3)*0.08,h.pos.z);s.scale.setScalar(0.4+0.3*Math.min(1,H.t/15));}
+    const s=kwNote(h);s.visible=true;s.material.opacity=0.35+0.65*Math.min(1,H.t/15);s.position.set(h.pos.x+Math.sin(G.time*2)*0.12,h.pos.y+h.d.height+0.75+Math.sin(G.time*3)*0.08,h.pos.z);s.scale.setScalar(0.4+0.3*Math.min(1,H.t/15));s.position.x-=0.55;
+    const Rg=kwRing(h);Rg.s.visible=true;kwRingDraw(Rg,H.t,Math.max(H.t0||15,H.t));Rg.s.position.set(h.pos.x,h.pos.y+h.d.height+0.85,h.pos.z);}
   // течения
   for(const C of KW.currents){if(C.dir){C.t-=dt;if(C.t<=0){kwSetCurrent(C,0,null,true);floatText(new V3((C.rect.minx+C.rect.maxx)/2,kwSurfY(C)+1,(C.rect.minz+C.rect.maxz)/2),'Течение стихло','#cfe8ff');}}
     const on=C.dir!==0,y=kwSurfY(C);C.fx.position.y=y+0.06;const tgt=on?(C.hidden&&KW.owlT<=0?0.0:0.42):(C.hidden&&KW.owlT>0?0.18:0);const u=C.fx.material.uniforms;u.uO.value=damp(u.uO.value,tgt,5,dt);u.uDir.value=C.dir||1;
