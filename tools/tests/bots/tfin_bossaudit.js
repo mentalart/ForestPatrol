@@ -1,6 +1,6 @@
 //@@ wait=1500
 // релиз final06: бот-аудитор боссов (задача F-0, docs/34 §6.2; стандарт — docs/33 п. 8). По каждому боссу (1-Б, 2-Б, 3-Б, 4-Б, 5-Б1, 5-Б2) и мини-боссу
-// (Яга 1-1, Рак 2-1, Ворон 3-1, Баран 3-2, Лихо 5-1) гоняет короткий сценарий — вдвоём, герои неуязвимы, защита и удары по ближайшему врагу
+// (Яга 1-1, Веретенник 1-5, Рак 2-1, Ворон 3-1, Баран 3-2, Лихо 5-1) гоняет короткий сценарий — вдвоём, герои неуязвимы, защита и удары по ближайшему врагу
 // (приёмы из tfin_k1b*, tfin_k2bboss, tfin_k3bboss, tfin_boss4b, t5b1, tk5e_smoke, tfin_sky31boss, tfin_sky32boss, t51, tfin_k21, tfin_yaga11),
 // следующие стадии — тем же переходом, что Ctrl+Alt+B (W.bossNext), ролики досматриваются до конца. Журнал интерфейса — PR из late_96_uilog.js
 // (подсказки, баннеры, реплики, ролики, тряска, вспышки, hit-stop, окна HUD, нагрузка). Дважды: окно 1280×720 (всё) и 1920×1080 (шрифты и перекрытия).
@@ -38,6 +38,11 @@ window.SC={
  '5-B2':()=>{const o=document.getElementById('k5eStart');if(o)o.remove();load('5-B2',10);const E5=ZC.FIN.k5e;let n=0;
    for(const st of[0,1,2,3]){E5.goStage(st);ZC.G.manual=true;ZC.tick(30);CINE_OUT(0,3000);PLAY(14);if(E5.cur==null)throw new Error('нет стадии '+st);n++;}return n;},
  '1-1':()=>{load('1-1',30);if(ZC.G.cine){ZC.skip();ZC.tick(5);}ZC.tick(30);const W=ZC.W;W.rzt.state='done';W.rzt.onDone();CINE_OUT(600,4000);ZC.tick(10);if(W.flags.stage!=='fight')throw new Error('после ролика не бой: '+W.flags.stage);PLAY(40);return 1;},
+ '1-5':()=>{load('1-5',20);CINE_OUT(0,4000);ZC.tick(10);const F=ZC.W.flags;F.spFled=true;F.latch=true;ZC.FIN.warp(0,-56.5,7);ZC.tick(10);CINE_OUT(60,4000);ZC.tick(10);   // сразу на повить
+   const B=ZC.W.k15.B;if(B.phase<1)throw new Error('нет Веретенника: phase='+B.phase+' '+U.st());
+   // струны из колец у входа в колышки напротив — паутинка, чтобы бой шёл как задуман (рывок в паутинку, кокон слетает)
+   for(const pi of[0,1]){const G2=ZC.W.k15.AR_G[pi];U.goto(pi,G2.r.x,G2.r.z,6,0.3);const h=U.hero(pi);h.face=Math.atan2(G2.st.x-h.pos.x,G2.st.z-h.pos.z);ZC.press(U.K[pi].i);ZC.tick(40);}
+   return STAGES(2,22,1);},
  '2-1':()=>{load('2-1',20);ZC.W.warp21('boss');ZC.tick(20);CINE_OUT(0,2000);ZC.tick(10);const D=ZC.W.dbg21();
    U.walkTo(0,-2,-308,10);U.walkTo(1,2,-308,10);CINE_OUT(200,4000);ZC.tick(20);if(D.HB.dbg().phase<1)throw new Error('рак не вышел: phase='+D.HB.dbg().phase+' '+U.st());PLAY(45);return 1;},
  '3-1':()=>{load('3-1',20);U.nocine();ZC.tick(5);const H=ZC.HERO;ZC.FIN.warp('boss');ZC.tick(10);for(const h of Object.values(H)){h.following=false;h.lit=false;}
@@ -67,6 +72,8 @@ RUNB('5-B2')
 //@@
 RUNB('1-1')
 //@@
+RUNB('1-5')
+//@@
 RUNB('2-1')
 //@@
 RUNB('3-1')
@@ -91,6 +98,8 @@ RUNB('5-B2')
 //@@
 RUNB('1-1')
 //@@
+RUNB('1-5')
+//@@
 RUNB('2-1')
 //@@
 RUNB('3-1')
@@ -111,6 +120,7 @@ window.THR={
  '4-B':{"tipAvg":10.1,"calls":280,"tris":141,"fx":120,"cine":97.1},
  '5-B1':{"tipAvg":14.8,"calls":196,"tris":223,"fx":53,"cine":25.0},
  '5-B2':{"tipAvg":9.5,"calls":520,"tris":274,"fx":120,"cine":214.4},
+ '1-5':{"tipAvg":7.4,"calls":247,"tris":184,"fx":49,"cine":25.0},
  '1-1':{"tipAvg":11,"calls":356,"tris":560,"fx":69,"cine":24.1},
  '2-1':{"tipAvg":28.0,"calls":889,"tris":577,"fx":52,"cine":11.5},
  '3-1':{"tipAvg":8.5,"calls":273,"tris":533,"fx":53,"cine":18.6},
@@ -128,11 +138,12 @@ window.KNOWN_EXCEPTIONS=[
  {boss:'5-B1',metric:'subs',vp:'*',val:15,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'5-B2',metric:'subs',vp:'*',val:20,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'1-1',metric:'subs',vp:'*',val:14,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
+ {boss:'1-5',metric:'subs',vp:'*',val:15,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10): финальные реплики Кикиморы (озвучены, rep_20_subs)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'3-1',metric:'subs',vp:'*',val:17,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'3-2',metric:'subs',vp:'*',val:12,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
  {boss:'5-1',metric:'subs',vp:'*',val:17,why:'реплика/субтитр ролика длиннее 10 слов (норма субтитра ≤ 10)',doc:'docs/33 стр. 41; docs/34 X-7, X-8 (стр. 433–434)'},
 ];
-const names=['1-B','2-B','3-B','4-B','5-B1','5-B2','1-1','2-1','3-1','3-2','5-1'];const L=[];const bad=[];const warn=[];const note=[];
+const names=['1-B','2-B','3-B','4-B','5-B1','5-B2','1-1','1-5','2-1','3-1','3-2','5-1'];const L=[];const bad=[];const warn=[];const note=[];
 const f=(v,d)=>v==null?'-':(+v).toFixed(d==null?1:d);
 const EX=(boss,metric,vp)=>KNOWN_EXCEPTIONS.find(e=>e.boss===boss&&e.metric===metric&&(e.vp===vp||e.vp==='*'));
 const usedEx=new Set();

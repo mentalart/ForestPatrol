@@ -7,7 +7,7 @@
     const open=()=>gemsAvail()>=2||ZAST.some(z=>G.owned[z.id]);
     // --- земля мыса и стены по краю (южная стена хаба разрезана: мыс примыкает к лужайке)
     ground(-14,14,12,33.6);
-    wall(-20.2,-14,12,12.2);wall(14,20.2,12,12.2);wall(-14.2,-14,12,33.8);wall(14,14.2,12,33.8);wall(-14.2,14.2,33.6,33.8);
+    wall(-30.2,-14,12,12.2);wall(14,30.2,12,12.2);wall(-14.2,-14,12,33.8);wall(14,14.2,12,33.8);wall(-14.2,14.2,33.6,33.8);
     // склон: прыжок «в» склон снизу подхватывает на поверхность, а не проваливает внутрь холма
     const HILL={hill:true};
     W.surfs.push((x,z,reach,hh)=>{const y=hillH(x,z);if(y<0.002)return null;if(y<=reach+0.001)return {y,ref:HILL};return hh&&!hh.grounded&&hh.vel.y<=0.001&&y-hh.pos.y<1.7?{y,ref:HILL}:null;});

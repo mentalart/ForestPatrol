@@ -80,6 +80,12 @@ function build14(){
   const svStart=new THREE.Mesh(new THREE.TorusGeometry(0.6,0.07,8,26),svM);svStart.rotation.x=Math.PI/2;svStart.position.set(SV.sx,0.06,SV.sz);silver.add(svStart);
   nutItem(-5,1.0,-84,{owl:true});nutItem(3.8,1.0,-90,{owl:true});
   const leshy=makeLeshy(1.35);leshy.g.position.set(-13.5,0,-88);leshy.g.rotation.y=Math.PI/2-0.3;
+  const LH={x:8.4,z:-101.6};   // где Леший прячется: за настоящим проходом, в ёлках
+  function leshyHide(){if(F.leshyHid)return;F.leshyHid=0.5;const p0=leshy.g.position.clone();leshy.g.rotation.y=Math.PI;
+    anim(1.8,k=>{leshy.g.position.set(p0.x+Math.sin(k*Math.PI)*1.2,Math.abs(Math.sin(k*Math.PI*5))*0.5,lerp(p0.z,-100,k));});   // убегает в чащу вдоль опушки
+    later(1.0,()=>bark(leshy,'leshy','Ку-ку!',0.9));
+    later(1.8,()=>{anim(0.5,k=>{leshy.g.position.y=-k*4;});later(0.55,()=>{leshy.g.visible=false;leshy.g.position.set(LH.x,-2.9,LH.z);leshy.g.rotation.y=Math.PI*0.15;F.leshyHid=1;
+      banner('Леший спрятался!','#c8e0a0',2.6,'Совиный взор Пелагеи покажет и его, и тропу к нему — серебряную');});});}
   W.aimSnap=(h,ang)=>{if(!F.seenSilver||Math.hypot(h.pos.x-SV.sx,h.pos.z-SV.sz)>2.6)return null;let d=ang-SV.ang;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;return Math.abs(d)<0.7?SV.ang:null;};
   /* ---------- Г: «Друг за друга» — две тропки за низкой изгородью; ёлки одной тропки держит только взгляд с другой ---------- */
   const LN={z0:-102,z1:-126.5};
@@ -95,19 +101,32 @@ function build14(){
   nutItem(-8.9,0.6,-118.5);
   /* ---------- Д: «Хоровод ёлок» — три кольца кружат; ёлки заслоняют друг друга: под взглядом стоит ближнее кольцо ---------- */
   const HC={x:0,z:-142};const HQ=new THREE.Quaternion(),HE=new THREE.Euler(),HM=new THREE.Matrix4(),HP=new V3(),HS=new V3(),HOFF=[[0,0.6,0],[0,2.0,0],[0,3.1,0]];
-  const eyeG=new THREE.SphereGeometry(0.08,8,6),gapG=new THREE.TorusGeometry(0.55,0.07,6,22);
+  const eyeG=new THREE.SphereGeometry(0.08,8,6),gapG=new THREE.TorusGeometry(0.55,0.07,6,22),ribG=new THREE.BoxGeometry(0.1,0.22,1),archG=new THREE.TorusGeometry(1.15,0.13,6,18,Math.PI);
   function firRing(R,n,a0,w,s){const lm=M(0x2f6a3a,{emissive:0x000000}),tm=M(0x5a3d22),em=M(0xfff3a0,{emissive:0xffe070,emissiveIntensity:0.9}),cnt=n-1;
     const mk=(geo,mat,c)=>{const im=new THREE.InstancedMesh(geo,mat,c);im.castShadow=true;im.receiveShadow=true;im.frustumCulled=false;im.userData.noBatch=true;W.group.add(im);return im;};
     const r={R,n,a:a0,w,s,lm,ims:[mk(GEO.trunk,tm,cnt),mk(GEO.cone1,lm,cnt),mk(GEO.cone2,lm,cnt),mk(eyeG,em,cnt*2)],cols:[],hold:0,inGap:0,locked:false,bow:0,seen:false,moving:false};
-    for(let i=0;i<cnt;i++){const c={x:0,z:0,r:0.62,miny:-1,maxy:5,on:true,mover:true,dx:0,dz:0};W.cyls.push(c);r.cols.push(c);}
-    r.gap=new THREE.Mesh(gapG,MB(COL.gold,{transparent:true,opacity:0.75}));r.gap.rotation.x=Math.PI/2;r.gap.castShadow=false;W.group.add(r.gap);placeRing(r);return r;}
+    for(let i=0;i<cnt;i++){const c={x:0,z:0,r:0.5,miny:-1,maxy:5,on:false,mover:true,dx:0,dz:0};r.cols.push(c);}   // сквозь кольцо не пускает полоса (bandPush), не цилиндры
+    r.ribM=M(0xd84a3a,{emissive:0x401010,emissiveIntensity:0.5});r.rib=mk(ribG,r.ribM,cnt-1);r.rib.castShadow=false;   // ёлки держатся за руки: лента от ёлки к ёлке
+    r.gap=new THREE.Mesh(gapG,MB(COL.gold,{transparent:true,opacity:0.75}));r.gap.rotation.x=Math.PI/2;r.gap.castShadow=false;W.group.add(r.gap);
+    r.archM=M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.5});r.arch=new THREE.Group();W.group.add(r.arch);   // золотые воротца в проходе
+    {const a=new THREE.Mesh(archG,r.archM);a.position.y=1.5;r.arch.add(a);for(const sd of[-1,1]){const p=new THREE.Mesh(new THREE.CylinderGeometry(0.1,0.1,1.5,6),r.archM);p.position.set(sd*1.15,0.75,0);r.arch.add(p);
+      const l=new THREE.Mesh(new THREE.SphereGeometry(0.2,8,6),MB(0xfff2b0));l.position.set(sd*1.15,1.62,0);r.arch.add(l);}r.arch.traverse(c=>{c.userData.noBatch=true;c.castShadow=false;});}
+    placeRing(r);return r;}
   function placeRing(r){const cnt=r.n-1,st=Math.PI*2/r.n;
     for(let i=0;i<cnt;i++){const th=r.a+(i+1)*st,x=HC.x+Math.cos(th)*r.R,z=HC.z+Math.sin(th)*r.R,c=r.cols[i];c.dx=x-c.x;c.dz=z-c.z;c.x=x;c.z=z;
       HE.set(-r.bow*0.32,Math.atan2(-Math.cos(th),-Math.sin(th)),0,'YXZ');HQ.setFromEuler(HE);HS.setScalar(r.s);
       for(let p=0;p<3;p++){HP.set(HOFF[p][0],HOFF[p][1]*r.s,HOFF[p][2]).applyQuaternion(HQ);HP.x+=x;HP.z+=z;HM.compose(HP,HQ,HS);r.ims[p].setMatrixAt(i,HM);}
       for(let e=0;e<2;e++){HP.set((e?0.2:-0.2)*r.s,1.55*r.s,0.7*r.s).applyQuaternion(HQ);HP.x+=x;HP.z+=z;HM.compose(HP,HQ,HS);r.ims[3].setMatrixAt(i*2+e,HM);}}
-    r.ims.forEach(im=>{im.instanceMatrix.needsUpdate=true;});r.gap.position.set(HC.x+Math.cos(r.a)*r.R,0.06,HC.z+Math.sin(r.a)*r.R);}
-  const horo=[firRing(2.8,10,0.6,0.55,0.78),firRing(5.3,19,2.9,-0.36,0.8),firRing(7.8,28,4.8,0.25,0.82)];
+    for(let i=0;i<cnt-1;i++){const a=r.cols[i],b=r.cols[i+1],dx=b.x-a.x,dz=b.z-a.z;HP.set((a.x+b.x)/2,1.35*r.s-r.bow*0.25,(a.z+b.z)/2);HE.set(0,Math.atan2(dx,dz),0);HQ.setFromEuler(HE);HS.set(1,1,Math.hypot(dx,dz));HM.compose(HP,HQ,HS);r.rib.setMatrixAt(i,HM);}
+    r.rib.instanceMatrix.needsUpdate=true;
+    r.ims.forEach(im=>{im.instanceMatrix.needsUpdate=true;});r.gap.position.set(HC.x+Math.cos(r.a)*r.R,0.06,HC.z+Math.sin(r.a)*r.R);
+    r.arch.position.set(r.gap.position.x,0,r.gap.position.z);r.arch.rotation.y=Math.atan2(Math.cos(r.a),Math.sin(r.a));}
+  const horo=[firRing(2.4,9,0.6,0.55,0.76),firRing(5.2,19,2.9,-0.36,0.8),firRing(8.0,29,4.8,0.25,0.82)];
+  // сквозь кольцо (между ёлками, под лентой) не пройти никому — даже Йоше: полоса вдоль кольца, открыта только в воротцах
+  function bandPush(){for(const h of HEROES){if(h.cling||h.pos.y>3.2)continue;const dx=h.pos.x-HC.x,dz=h.pos.z-HC.z,rh=Math.hypot(dx,dz)||0.001;h._hr=h._hr||[];if(rh>10)continue;
+    for(let k=0;k<3;k++){const r=horo[k],w=0.45+h.d.radius;let da=Math.atan2(dz,dx)-r.a;while(da>Math.PI)da-=2*Math.PI;while(da<-Math.PI)da+=2*Math.PI;
+      const side=rh>r.R?1:-1,inB=Math.abs(rh-r.R)<w;if(!inB){h._hr[k]=side;continue;}if(Math.abs(da)*r.R<1.3-h.d.radius*0.5)continue;
+      const sd=h._hr[k]||side,nr=r.R+sd*w;h.pos.x=HC.x+dx/rh*nr;h.pos.z=HC.z+dz/rh*nr;const vr=(h.vel.x*dx+h.vel.z*dz)/rh;if(vr*sd<0){h.vel.x-=dx/rh*vr;h.vel.z-=dz/rh*vr;}}}}
   {const st=new THREE.Group();st.position.set(HC.x,0,HC.z);W.group.add(st);addMesh(new THREE.CylinderGeometry(0.6,0.7,0.5,14),M(0x8a5a32),0,0.25,0,st);   // пень посередине хоровода
     for(let i=0;i<6;i++){const a=i/6*Math.PI*2;addMesh(new THREE.SphereGeometry(0.1,8,6,0,Math.PI*2,0,Math.PI/2),M(0x9ad0ff,{emissive:0x5aa0ff,emissiveIntensity:1.1}),Math.cos(a)*0.85,0.02,Math.sin(a)*0.85,st);}}
   W.cyls.push({x:HC.x,z:HC.z,r:0.5,miny:-1,maxy:0.5,on:true});
@@ -204,7 +223,11 @@ function build14(){
     F.silver=sv;wF.forEach(m=>{m.silverLock=sv;});svM.opacity=Math.max(k*0.85,sv?0.35:0);silver.children.forEach((m,i)=>{m.position.y=0.04+Math.sin(G.time*3+i)*0.02;});
     if(W.owlT>0&&hd(active(1).pos,C)<14)F.seenSilver=true;
     leshy.head.rotation.y=Math.sin(G.time*0.6)*0.6;leshy.hands.forEach((hh,i)=>{hh.sh.rotation.x=Math.sin(G.time*1.3+i*2)*0.4-0.2;});
-    if(F.stage==='rescue'&&!F.leshyBark&&[0,1].some(pi=>active(pi).pos.z<-77)){F.leshyBark=true;bark(leshy,'leshy','Опять заблудились? Ну-ка, где я?',2.8);}
+    if(F.stage==='rescue'&&!F.leshyBark&&[0,1].some(pi=>active(pi).pos.z<-77)){F.leshyBark=true;bark(leshy,'leshy','Опять заблудились? Ну-ка, где я?',2.8);later(2.9,leshyHide);}
+    // Леший прячется: Совиный взор видит его — он выглядывает из-за ёлок за настоящим проходом; дошли — «нашли!», и он убегает
+    if(F.leshyHid===1){const seen=W.owlT>0;leshy.g.visible=seen;if(seen&&!F.leshySeen){F.leshySeen=true;floatText(new V3(LH.x,3.4,LH.z),'Вон он!','#e7c3ff');}
+      if([0,1].some(pi=>active(pi).pos.z<-99.8)){F.leshyHid=2;leshy.g.visible=true;bark(leshy,'leshy','Ай! Нашли меня, ишь!',2.2);const y0=leshy.g.position.y;
+        anim(0.6,k=>{leshy.g.position.y=y0*(1-k);});later(1.6,()=>{const x0=leshy.g.position.x;leshy.g.rotation.y=Math.PI/2;anim(1.4,k=>{leshy.g.position.x=x0+k*5;leshy.g.position.y=Math.abs(Math.sin(k*Math.PI*4))*0.4-k*k*6;});later(1.5,()=>{leshy.g.visible=false;});});}}
     if(!arena.started&&!arena.custom&&F.krugDone&&[0,1].every(pi=>active(pi).pos.z<-194)){spawnFight();}
     for(const e of arena.list)if(e.state==='idle'&&!e.g.visible)e.g.visible=true;
     if(arena.started&&!arena.cleared&&!arena.custom&&arena.list.every(e=>!e.alive)){arena.cleared=true;arena.hold=1.6;barrier.forceOpen=true;SFX.ok();banner('Лешачата распутаны!','#ffffff',1.8,'выход из леса открыт — ступайте');}
@@ -212,14 +235,14 @@ function build14(){
     if(arena.cleared&&!F.out&&[0,1].some(pi=>active(pi).pos.z<-219)){F.out=true;finishLevel();}});
   /* ---------- новые участки: логика ---------- */
   const inLane=h=>h.pos.z<LN.z0+0.5&&h.pos.z>LN.z1-0.5&&Math.abs(h.pos.x)>0.4;
-  function horoFinish(){if(F.horoDone)return;F.horoDone=true;SFX.gate();horo.forEach(r=>{r.locked=true;r.gap.visible=false;});
+  function horoFinish(){if(F.horoDone)return;F.horoDone=true;SFX.gate();horo.forEach(r=>{r.locked=true;r.gap.visible=false;r.arch.visible=false;r.ribM.color.setHex(0xffd76a);});
     anim(1.6,k=>{horo.forEach(r=>{r.bow=Math.max(r.bow,Math.min(1,k*2));r.R0=r.R0||r.R;r.R=r.R0+k*1.4;placeRing(r);});horoGateF.forEach((f,i)=>{f.g.position.x=f.x+(i?1:-1)*k*2.6;f.g.position.y=-k*3.4;});});
     later(0.4,()=>{horo.forEach(r=>r.cols.forEach(c=>{c.on=false;}));horoGate.on=false;});
     banner('Хоровод встал!','#ffd76a',2.2,'ёлки поклонились — проход дальше открыт');bark(T.pelageya,'pelageya','Глядите — кланяются! Вот вежливые ёлочки.',2.4);}
-  function lockRing(r){if(r.locked)return;r.locked=true;r.gap.material.opacity=0.35;SFX.latch();anim(0.6,k=>{r.bow=k*0.6;placeRing(r);});r.lm.emissive.setHex(0x806020);r.lm.emissiveIntensity=0.25;
+  function lockRing(r){if(r.locked)return;r.locked=true;r.gap.material.opacity=0.35;r.ribM.color.setHex(0xffd76a);r.ribM.emissive.setHex(0x806020);r.archM.emissiveIntensity=0.9;burst(r.arch.position.clone().setY(1.6),COL.gold,16,3);SFX.latch();anim(0.6,k=>{r.bow=k*0.6;placeRing(r);});r.lm.emissive.setHex(0x806020);r.lm.emissiveIntensity=0.25;
     const n=horo.filter(q=>q.locked).length;floatText(new V3(r.gap.position.x,2.4,r.gap.position.z),'Кольцо встало! '+n+' / 3','#ffd76a');}
   const kgFade=(fn)=>{const fd=$('fade');KG.busy=true;anim(0.3,k=>{fd.style.opacity=k;});later(0.32,()=>{fn();snapCams();anim(0.35,k=>{fd.style.opacity=1-k;});later(0.4,()=>{fd.style.opacity=0;KG.busy=false;});});};
-  function kgBackToStart(){HEROES.forEach((q,i)=>{if(!q.active&&!q.following&&hd(q.pos,KG.stump)<2.5)return;placeOnGround(q,[-3,-1.2,1.2,3][i],-159.2,0);q.face=Math.PI;q.vel.set(0,0,0);q.knockT=0;});
+  function kgBackToStart(){HEROES.forEach((q,i)=>{if((G.solo?q!==active(G.soloPi):!q.active)&&!q.following&&hd(q.pos,KG.stump)<2.5)return;placeOnGround(q,[-3,-1.2,1.2,3][i],-159.2,0);q.face=Math.PI;q.vel.set(0,0,0);q.knockT=0;});
     for(const t of W.threads.slice())if(t.sz<-157&&!t.string)removeThread(t);}
   function kgShow(){KG.notch.forEach((n,i)=>{n.visible=i<KG.loop;});kgW.forEach((m,i)=>{const on=i<KG.loop+(KG.loop>=2?1:0);m.az=m.bz=on?[-169,-174,-178.5][i]:-300;});
     kgLeshy.g.position.x=KG.loop%2?12.2:-12.2;kgLeshy.g.rotation.y=KG.loop%2?-Math.PI/2-0.4:Math.PI/2+0.4;}
@@ -249,19 +272,21 @@ function build14(){
       for(const s of src){const rs=Math.hypot(s.x-HC.x,s.z-HC.z);if(rs>13)continue;let best=null,bd=99;
         for(const r of horo){if(r.locked)continue;const d=Math.abs(r.R-rs);if(d>=bd)continue;if(r.cols.some(c=>gazeCovers(c,[s]))){best=r;bd=d;}}if(best)best.seen=true;}
       for(const r of horo){if(r.locked){r.moving=false;continue;}r.hold=r.seen?0.9:r.hold-dt;const fz=r.hold>0;r.moving=!fz;r.lm.emissive.setHex(fz?0x8fb8ff:0x000000);r.lm.emissiveIntensity=fz?0.35:0;
+        r.ribM.color.setHex(fz?0xbfe4ff:0xd84a3a);r.ribM.emissive.setHex(fz?0x3a6a9a:0x401010);r.archM.emissiveIntensity=fz?1.2+0.3*Math.sin(G.time*8):0.35;
         if(!fz){r.a+=r.w*dt;placeRing(r);}else r.cols.forEach(c=>{c.dx=0;c.dz=0;});
         let inG=false;for(const pi of[0,1]){const h=active(pi);const dx=h.pos.x-HC.x,dz=h.pos.z-HC.z,rh=Math.hypot(dx,dz);if(Math.abs(rh-r.R)>0.95)continue;let da=Math.atan2(dz,dx)-r.a;while(da>Math.PI)da-=2*Math.PI;while(da<-Math.PI)da+=2*Math.PI;
           if(Math.abs(da)*r.R<1.1)inG=true;
           else if(!fz&&h.knockT<=0&&!players[pi].downed)for(const c of r.cols){const ex=h.pos.x-c.x,ez=h.pos.z-c.z,d=Math.hypot(ex,ez);if(d<c.r+h.d.radius+0.12&&h.pos.y<3){const n=d>0.01?1/d:0;h.vel.x=ex*n*5.5;h.vel.z=ez*n*5.5;h.vel.y=4.5;h.grounded=false;h.knockT=0.4;SFX.knock();floatText(h.pos.clone().add(new V3(0,1.8,0)),'Хоровод толкнул!','#bfe8ff');break;}}}
-        r.inGap=fz&&inG?r.inGap+dt:0;if(r.inGap>0.45)lockRing(r);}
+        r.inGap=fz&&inG?r.inGap+dt:0;if(r.inGap>0.12)lockRing(r);}
+      bandPush();
       if([0,1].some(pi=>hd(active(pi).pos,HC)<1.9))horoFinish();
-      if(!F.horoIn&&[0,1].some(pi=>active(pi).pos.z<-131.5)){F.horoIn=true;banner('Хоровод ёлок','#fff6c8',2.8,'глядишь — стоит ближнее кольцо; встань в его проход — и оно встанет насовсем');}}
+      if(!F.horoIn&&[0,1].some(pi=>active(pi).pos.z<-131.5)){F.horoIn=true;banner('Хоровод ёлок','#fff6c8',2.8,'ёлки держатся за руки — не пролезть. Глянешь на кольцо — встанет: иди в золотые воротца');}}
     // Е: поляна-петля
     if(!F.krugDone){KG.lit=Math.max(0,KG.lit-dt);for(let i=0;i<4;i++)KG.grey[i]=Math.max(0,KG.grey[i]-dt);
       KG.lamp.forEach((L,i)=>{const g=KG.lit>0&&i===KG.tru,gr=KG.grey[i]>0;L.mat.color.setHex(g?0xffd76a:gr?0xb8c0c8:0x6a7a8a);L.mat.emissive.setHex(g?0xffb000:gr?0x606870:0x223040);L.mat.emissiveIntensity=g?1.3:0.6;L.g.scale.setScalar(g?1.25+0.1*Math.sin(G.time*10):1);});
       KG.ring.visible=!G.cine;KG.ring.scale.setScalar(1+0.08*Math.sin(G.time*4));
       // оставленный на пне герой аукает сам — так проходят поляну и в одиночку
-      KG.autoT-=dt;const keeper=HEROES.find(q=>!q.active&&!q.following&&hd(q.pos,KG.stump)<1.6);
+      KG.autoT-=dt;const keeper=HEROES.find(q=>(G.solo?q!==active(G.soloPi):!q.active)&&!q.following&&hd(q.pos,KG.stump)<1.6);
       if(keeper&&KG.autoT<=0&&!KG.busy&&[0,1].some(pi=>active(pi).pos.z<-163)){KG.autoT=4.4;floatText(keeper.pos.clone().add(new V3(0,keeper.d.height+0.7,0)),'Ау!',PCSS[keeper.player]);krugCall(keeper);}
       if(!KG.busy&&!G.cine)for(const pi of[0,1]){const h=active(pi);if(h.pos.z<KG.wz-0.8&&h.pos.z>-189){kgPass(h);break;}}
       if(!F.krugIn&&[0,1].some(pi=>active(pi).pos.z<-158.5)){F.krugIn=true;kgShow();banner('Леший водит по кругу','#fff6c8',2.8,'встань на пень-эхо и аукни — настоящий выход откликнется');}}
@@ -296,8 +321,8 @@ function build14(){
     ()=>active(pi).pos.z<-98,()=>[svStart],()=>({kind:active(pi).kind,action:'walk',from:new V3(SV.sx,0,SV.sz),to:new V3(SV.ex,0,SV.ez)}));
   const lanes=pi=>O(()=>'Две тропки за изгородью. Свою тропку не удержишь — ёлки держит взгляд с другой.<br>'+(G.solo?'Оставь героя лицом к другой тропке '+K(pi,'swap')+' — пусть держит, а ты беги.':'Разойдитесь и глядите друг на друга: один держит — другой бежит.'),
     ()=>active(pi).pos.z<LN.z1-0.5,()=>laneW.filter(L=>Math.abs(L.m.pos.z-active(pi).pos.z)<7).map(L=>L.m.g));
-  const horoO=pi=>O(()=>'Хоровод ёлок! Глядишь — стоит ближнее кольцо, а дальние за ним кружат.<br>Встань в проход замершего кольца — встанет насовсем ('+horo.filter(r=>r.locked).length+' / 3). Дойди до пня!',
-    ()=>!!F.horoDone,()=>horo.filter(r=>!r.locked).slice(-1).map(r=>r.gap));
+  const horoO=pi=>O(()=>'Хоровод ёлок! Ёлки держатся за руки — между ними не пролезть.<br>Глянь на кольцо — оно встанет; пройди в его золотые воротца ('+horo.filter(r=>r.locked).length+' / 3). Дойди до пня!',
+    ()=>!!F.horoDone,()=>horo.filter(r=>!r.locked).slice(-1).map(r=>r.arch));
   const krugO=pi=>O(()=>'Леший водит по кругу! Встань на пень-эхо и аукни '+K(pi,'call')+'.<br>Золотой огонёк — настоящий выход: беги туда, пока горит (поляна '+Math.min(3,KG.loop+1)+' / 3).',
     ()=>!!F.krugDone,()=>KG.lit>0?[KG.lamp[KG.tru].g]:[KG.ring]);
   const fight=pi=>O(()=>'Лешачата! Жёлтый кружок <i class="sg y"></i> — щитом '+K(pi,'guard')+' закройся,<br>Красный зубец <i class="sg r"></i> — кувыркнись '+K(pi,'roll')+', не бойся!',()=>arena.cleared,()=>arena.list.filter(e=>e.alive).map(e=>e.g));
