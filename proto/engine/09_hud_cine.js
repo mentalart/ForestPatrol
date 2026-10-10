@@ -73,6 +73,16 @@ function contextTip(pi){const h=active(pi),p=players[pi];
 
 /* ============================== ОБНОВЛЕНИЕ ГЕРОЕВ (визуал) ============================== */
 function tickHero(h,dt){['iT','atkT','atkCd','skillCd','knockT','rollT','rollCd','hurtT','tossT','aimT','gusT'].forEach(k=>{if(h[k]>0)h[k]=Math.max(0,h[k]-dt);});h.held=h.holding;h.holding=false;}
+/* Ромбик цвета игрока над героем, которым управляет человек (в одиночку — только над своим, не над героем помощника).
+   Загорается на W.markShow с (2,5) — в начале уровня, после ролика, после смены героя и после переноса (упал, вернули) —
+   и когда игрок стоит без дела дольше W.markIdle с (5); потом тает. Над запасными героями меток нет. */
+function heroMarker(h,dt){const me=ctrl(h)&&!h.cling&&!G.cine,show=W.markShow||2.5,m=h.marker;
+  if(h.mkW!==W||(me&&!h.mkMe)||(me&&h.mkP&&h.mkP.distanceToSquared(h.pos)>9))h.mkT=show;   // новый уровень, ролик кончился или герой сменился, перенос
+  h.mkW=W;h.mkMe=me;(h.mkP||(h.mkP=new V3())).copy(h.pos);
+  h.mkIdle=me&&!h.moving?h.mkIdle+dt:0;if(h.mkIdle>(W.markIdle||5))h.mkT=Math.max(h.mkT,0.4);
+  h.mkT=me?Math.max(0,h.mkT-dt):0;h.mkA=damp(h.mkA,h.mkT>0?1:0,h.mkT>0?10:5,dt);
+  m.visible=me&&h.mkA>0.02;if(!m.visible)return;
+  m.position.y=heroHeight(h)+0.85+Math.sin(G.time*4)*0.08;m.rotation.y+=dt*2;h.markerMat.opacity=h.mkA;m.scale.setScalar(0.6+0.4*h.mkA);}
 function animHero(h,dt){const g=h.g;g.position.copy(h.pos);g.rotation.y=h.face;const sp=Math.hypot(h.vel.x,h.vel.z);h.walkT+=dt*sp*(h.kind==='potap'?1.5:2.3);
   const b=h.body,p=players[h.player],f=Math.min(1,sp/3);
   const down=h.active&&p.downed;b.visible=!down&&!h.skin;h.yarn.visible=down;if(down){h.yarn.rotation.y+=dt*2;}
@@ -86,7 +96,7 @@ function animHero(h,dt){const g=h.g;g.position.copy(h.pos);g.rotation.y=h.face;c
   if(h.kind==='pelageya'){const spread=!h.grounded?(h.glide?1.45:0.8):0.12;h.parts.wings.forEach(w=>{w.rotation.z=damp(w.rotation.z,w.userData.s*spread,12,dt);const s=h.glide?1.6:1;w.scale.set(1,damp(w.scale.y,s,10,dt),damp(w.scale.z,s,10,dt));});}
   if(h.kind==='potap')h.parts.legs.forEach((l,i)=>{l.rotation.x=Math.sin(h.walkT+(i%2?Math.PI:0)+(i>1?Math.PI:0))*0.45*f;});
   if(h.kind==='proshka')h.parts.tail.rotation.y=Math.sin(G.time*5)*0.3;
-  h.marker.position.y=heroHeight(h)+0.45+(h.active?Math.sin(G.time*3)*0.06:0);if(h.active)h.marker.rotation.z+=dt*2.2;h.markerMat.opacity=h.active?1:0.35;h.marker.visible=!h.cling&&!G.cine;
+  heroMarker(h,dt);
   h.shield.visible=h.guard&&h.active;if(h.shield.visible)h.shieldMat.opacity=0.2+0.4*p.spirit;h.arc.visible=h.atkT>0;if(h.arc.visible)h.arcMat.opacity=h.atkT/0.28*0.7;
   h.clingRing.visible=h.active&&p.clingOffer&&!G.cine;if(h.clingRing.visible){h.clingRing.position.y=heroHeight(h)+1.0;h.clingRing.rotation.y+=dt*3;}
   const ffOn=W.gaze&&!h.active&&h.firefly>0&&!G.cine,ffk=Math.min(1,Math.max(0,h.firefly)/5);h.ff.visible=ffOn;h.ff.position.set(Math.sin(G.time*2)*0.2,heroHeight(h)+0.85,Math.cos(G.time*2)*0.2);h.ffMat.emissiveIntensity=2*ffk;h.ff.scale.setScalar(0.5+0.5*ffk);

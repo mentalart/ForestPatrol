@@ -1,7 +1,8 @@
 //@@
 // 1-2 «Кикиморино болото», пруд Царевны-лягушки: пруд глубокий — упал мимо кувшинки (или она ушла под воду) — сразу «Плюх!» и снова у колокольчика,
 // по воде не пропрыгать; колокольчик у пруда звенит для каждого, кто вышел на берег, даже мимо него; завядшая кувшинка видна на воде, но не держит,
-// пока Йоша не польёт её живой водой, — потом всплывает и держит всегда
+// пока Йоша не польёт её живой водой, — потом всплывает и держит всегда; на большой кувшинке Лягушки (шире — 2,6 м) свой колокольчик:
+// вышел на неё — звенит, упал в пруд — возвращается на кувшинку, а не на берег
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 U.go();ZC.loadLevel(3);ZC.tick(30);ZC.skip();ZC.tick(20);
 window.SW=()=>ZC.W.sw12;window.F=()=>ZC.W.flags;window.H=ZC.HERO;F().noChudo=true;
@@ -46,5 +47,15 @@ const P=H.proshka,f0=ZC.G.stats.falls;put(P,P6.col.x,P6.col.z,0.3);ZC.tick(90);R
 ['lily='+ly+' y='+P6.cur.toFixed(2)+' col='+P6.col.on,'stand='+R.stand,JSON.stringify(R),st()].join(' | ')
 //@@ shot=t12p_lily.png
 ZC.tick(2);
+//@@ shot=t12p_frog.png
+// колокольчик у Лягушки на её кувшинке: у самого края шире кувшинка держит; колокольчик звенит; упал в пруд — снова на кувшинке, не на берегу
+const S=SW(),B=S.lilyBell,P=H.proshka,p0=ZC.players[0],f0=ZC.G.stats.falls;
+put(P,6+2.4,-253.0,0.1);ZC.tick(40);
+R.lilyEdge=P.grounded&&P.pos.y>-0.1&&ZC.G.stats.falls===f0;
+R.lilyBell=!!B.act[0]&&Math.abs(p0.cp.x-B.x)<0.3&&Math.abs(p0.cp.z+253.4)<0.3&&p0.cp.y>-0.1;
+const f1=ZC.G.stats.falls;put(P,-6.5,-262,-0.2);let m=0;for(;m<40&&P.pos.x<0;m++)ZC.tick(1);ZC.tick(30);
+R.lilyBack=ZC.G.stats.falls===f1+1&&Math.hypot(P.pos.x-B.x,P.pos.z+253.4)<1.5&&P.pos.y>-0.1;
+put(P,5.0,-252.0,0.1);ZC.tick(20);
+['edge='+R.lilyEdge,'bell='+R.lilyBell+' cp='+p0.cp.x.toFixed(1)+','+p0.cp.z.toFixed(1),'back='+R.lilyBack+' at '+P.pos.x.toFixed(1)+','+P.pos.z.toFixed(1),JSON.stringify(R),st()].join(' | ')
 //@@
-const ok=R.bell&&R.wilt&&R.wiltFall&&R.water&&R.sink&&R.lily&&R.stand&&_errs.length===0;[JSON.stringify(R),'errs='+_errs.length,ok?'ok':'FAIL']
+const ok=R.bell&&R.wilt&&R.wiltFall&&R.water&&R.sink&&R.lily&&R.stand&&R.lilyEdge&&R.lilyBell&&R.lilyBack&&_errs.length===0;[JSON.stringify(R),'errs='+_errs.length,ok?'ok':'FAIL']
