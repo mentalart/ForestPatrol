@@ -25,7 +25,7 @@ function dsSwapOut(pi){const p=players[pi],h=active(pi),o=other(pi);
 soloSwap=function(){if(G._swT===G.time)return;G._swT=G.time;const pi0=G.soloPi,cur=active(pi0);if(cur.cling)return;const i=SOLO4.indexOf(cur.kind);
   for(let k=1;k<4;k++){const n=HERO[SOLO4[(i+k)%4]];if(!dsOk(n))continue;const q=n.player,pq=players[q];if(pq.downed&&q!==pi0)continue;
     if(q===pi0){if(W.noSwap&&W.noSwap(q))continue;if(pq.downed){if(dsSwapOut(q))return;continue;}
-      const full=pq.blue>=1&&(W.abil.clew||W.abil.gusli||W.abil.pero||W.abil.kleshi);doSwap(q);if(active(q)!==n)continue;if(full)bogatyrExit(q,n);return;}
+      doSwap(q);if(active(q)!==n)continue;return;}
     if(!cur._down&&!players[pi0].downed){cur.vel.x=0;cur.vel.z=0;cur.guard=false;cur.glide=false;}
     if(!n.active){if(active(q).cling||(W.noSwap&&W.noSwap(q)))continue;doSwap(q);if(active(q)!==n)continue;}
     else{G.stats.swaps++;SFX.swap();ringFx(n.pos,PCOL[q],1.6);}

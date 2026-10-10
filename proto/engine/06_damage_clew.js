@@ -15,12 +15,13 @@ function updateDowned(pi,dt){const p=players[pi],h=active(pi);h.vel.x=damp(h.vel
   if(near){p.revT+=dt;if(p.revT>=1){p.downed=false;p.petals=2;h.iT=2;G.stats.revives++;SFX.ok();floatText(h.pos.clone().add(new V3(0,1.6,0)),'Подшили!','#7ee08a');}}
   else p.revT=Math.max(0,p.revT-dt*0.5);
   if(p.downed&&p.downT<=0){p.downed=false;p.petals=3;placeOnGround(h,p.cp.x,p.cp.z,p.cp.y);h.iT=2;tip(pi,'Снова в пути! Все лепестки на месте.',2);}}
-/* богатырский выход: полная синяя шкала — Смена выпускает второго героя со своей силой */
-const POWER={potap:['Медвежья сила',6,'каждый удар ломает скорлупу'],proshka:['Меч-кладенец',6,'меч сам рубит ближних'],pelageya:['Вещий взор',5,'мороки вдвое медленнее'],yosha:['Живой родник',1,'всем по лепестку']};
-function bogatyrExit(pi,h){const p=players[pi],P=POWER[h.kind];p.blue=0;h.power={t:P[1]};SFX.horn();banner('Богатырский выход!',PCSS[pi],2,h.d.name+' — «'+P[0]+'»: '+P[2]);ringFx(h.pos,COL.gold,4);
-  if(h.kind==='pelageya')G.slowFoes=5;
-  if(h.kind==='yosha'){for(const q of players){q.petals=Math.min(3,q.petals+1);if(q.downed){q.downed=false;q.petals=2;active(q.i).iT=2;}}burst(h.pos.clone().add(new V3(0,1,0)),0x7ad8ff,24,6);}}
-function updatePowers(dt){G.slowFoes=Math.max(0,(G.slowFoes||0)-dt);for(const h of HEROES){if(!h.power||h.power.t<=0)continue;h.power.t-=dt;
+/* богатырский выход: синяя шкала полна — сам, сразу у обоих героев игрока (вторая шкала — следом, когда снова наполнится) */
+const POWER={potap:['Медвежья сила',12,'каждый удар ломает скорлупу'],proshka:['Меч-кладенец',12,'меч сам рубит ближних'],pelageya:['Вещий взор',10,'мороки вдвое медленнее'],yosha:['Живой родник',2,'всем по лепестку']};
+function bogatyrExit(pi){const p=players[pi];p.blue=0;SFX.horn();banner('Богатырский выход!',PCSS[pi],2.6,p.heroes.map(h=>h.d.name+' — «'+POWER[h.kind][0]+'»: '+POWER[h.kind][2]).join('<br>'));
+  for(const h of p.heroes){const P=POWER[h.kind];h.power={t:P[1]};ringFx(h.pos,COL.gold,4);
+    if(h.kind==='pelageya')G.slowFoes=P[1];
+    if(h.kind==='yosha'){for(const q of players){q.petals=Math.min(3,q.petals+1);if(q.downed){q.downed=false;q.petals=2;active(q.i).iT=2;}}burst(h.pos.clone().add(new V3(0,1,0)),0x7ad8ff,24,6);}}}
+function updatePowers(dt){G.slowFoes=Math.max(0,(G.slowFoes||0)-dt);if(!G.cine&&(W.abil.clew||W.abil.gusli||W.abil.pero||W.abil.kleshi))players.forEach((p,pi)=>{if(p.blue>=1)bogatyrExit(pi);});for(const h of HEROES){if(!h.power||h.power.t<=0)continue;h.power.t-=dt;
   if(h.kind==='proshka'&&h.active){h.power.cd=(h.power.cd||0)-dt;if(h.power.cd<=0){let best=null,bd=3.2;for(const e of W.enemies){if(!e.alive)continue;const d=hd(e.pos,h.pos);if(d<bd){bd=d;best=e;}}
     if(best){h.power.cd=0.45;h.face=Math.atan2(best.pos.x-h.pos.x,best.pos.z-h.pos.z);h.atkT=0.28;SFX.swish();enemyHit(best,h,false);}}}}}
 

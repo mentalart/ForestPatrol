@@ -130,7 +130,6 @@ function build1B(){
     prompt(pi,'guard',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig!=='red'&&e.help)||(cring.on&&cring.t>0.7&&cring.press[pi]===null),cring.on?'вместе!':null);
     prompt(pi,'roll',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig==='red'&&e.help));
     prompt(pi,'attack',()=>headOf(h()),()=>ramp&&h().pos.y>5&&hd(h().pos,headPos)<3.2,'по макушке');
-    prompt(pi,'swap',()=>headOf(h()),()=>F.phase===3&&players[pi].blue>=1,'богатырский выход');
     prompt(pi,'item',()=>headOf(h()),()=>F.phase===2&&!W.threads.some(t=>t.owner===pi&&!t.ret&&!t.string)&&stakes2.some(s=>!s.used&&hd(s,h().pos)<9&&hd(s,h().pos)>2));}
   prompt(1,'skill',()=>headOf(T.pelageya),()=>F.phase===2&&T.pelageya.active&&W.owlT<=0&&players[1].owlCd<=0,'кто настоящий?');
   W.tipZones.push({cond:()=>F.phase===1&&!!ramp,text:pi=>'Беги по руке на плечо — бей '+K(pi,'attack')+' по макушке!'},
@@ -138,7 +137,7 @@ function build1B(){
   const ph1=pi=>O(()=>'Отбей <i class="sg y"></i> щитом '+K(pi,'guard')+', <i class="sg r"></i> — кувырок '+K(pi,'roll')+'.',()=>F.phase>1,()=>hands.filter(e=>e.alive).map(e=>e.g));
   const ph2=pi=>O(pi?()=>'Найди настоящего: Совиный взор '+K(1,'skill')+'. Клубок '+K(1,'item')+' — в колышек.':()=>'Брось клубок '+K(0,'item')+' в колышек. Упавшего бей '+K(0,'attack')+'!',
     ()=>F.phase>=3,()=>stakes2.map(s=>s.g));
-  const ph3=pi=>O(()=>'Вместе! Кружок над обоими — щитом '+K(pi,'guard')+' в такт закройтесь. Кору бей сбоку.<br>Синяя полоска полна — смени героя '+K(pi,'swap')+'. Леший оглушён — бейте '+K(pi,'attack')+' вдвоём, без проволочек, без сроку.',()=>!!F.won,()=>boss3?[boss3.g]:[]);
+  const ph3=pi=>O(()=>'Вместе! Кружок над обоими — щитом '+K(pi,'guard')+' в такт закройтесь. Кору бей сбоку.<br>Синяя полоска полна — богатырский выход включится сам. Леший оглушён — бейте '+K(pi,'attack')+' вдвоём, без проволочек, без сроку.',()=>!!F.won,()=>boss3?[boss3.g]:[]);
   for(const pi of[0,1])W.objectives[pi]=[O('Леший-Путаник…',()=>F.phase>=1,()=>[L.g]),ph1(pi),ph2(pi),ph3(pi),O('Леший на пень садится…',()=>false,()=>[])];
   W.spawns=[[new V3(-2.5,0,-3.5),new V3(-4.5,0,-2.5)],[new V3(2.5,0,-3.5),new V3(4.5,0,-2.5)]];W.startAct=[0,0];
   W.pauseLine='Леший-Путаник: руки-коряги, четыре двойника да карусель.<br>Настоящего Совиный взор покажет, а двойников струна запутает в кудель.';
