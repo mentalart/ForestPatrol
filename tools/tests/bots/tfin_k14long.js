@@ -38,6 +38,11 @@ P.pos.set(0,0,HC.z+9.6);P.face=Math.PI;Q.pos.set(-9,0,HC.z+9.6);Q.face=0;const a
 const mv=hr.map((q,i)=>Math.abs(q.a-a0[i])>0.05);r.push('moving inner/mid/outer='+mv.join('/'));
 r.push(!mv[2]&&mv[1]&&mv[0]?'occlude ok':'FAIL occlude');r
 //@@
+// сквозь ленту хоровода не пролезть никому — даже маленькому Йоше: идёт к пню прямо (не воротцами) — остаётся снаружи
+const hr=K14().horo,HC=K14().HC,q=hr[2];U.toKind('yosha',1);const Y=U.act(1);const a=q.a+Math.PI;Y.pos.set(HC.x+Math.cos(a)*9.2,0,HC.z+Math.sin(a)*9.2);ZC.tick(2);
+for(let i=0;i<60*4;i++){for(const h of[U.act(0)])h.face=0;U.step(1,HC.x,HC.z,0.3);ZC.tick(1);}U.rel(1);const rh=Math.hypot(Y.pos.x-HC.x,Y.pos.z-HC.z);U.toKind('pelageya',1);
+['yosha rh='+rh.toFixed(2)+' (кольцо R='+q.R+')',rh>q.R?'band ok':'FAIL band']
+//@@
 // встать в проход кольца, пока оно замерло под взглядом друга — кольцо встаёт насовсем; так все три — и к пню
 const hr=K14().horo,HC=K14().HC,r=[];const P=U.act(0),Q=U.act(1);
 function lockOne(q){// Пелагея ждёт, пока проход кольца окажется против неё, и смотрит на кольцо; Прошка входит в проход
@@ -48,7 +53,8 @@ function lockOne(q){// Пелагея ждёт, пока проход кольц
     Q.pos.set(ox,0,oz);Q.face=Math.atan2(gx-ox,gz-oz);P.pos.set(gx,0,gz);P.vel.set(0,0,0);ZC.tick(1);}
   return q.locked;}
 for(const k of[2,1,0]){const ok=lockOne(hr[k]);r.push('ring'+k+' '+(ok?'locked':'NO'));}
-P.pos.set(HC.x+0.5,0,HC.z+3.4);U.goto(0,HC.x,HC.z+0.8,4,0.3);ZC.tick(30);
+{const q=hr[0],gx=HC.x+Math.cos(q.a)*(q.R+1.2),gz=HC.z+Math.sin(q.a)*(q.R+1.2);P.pos.set(gx,0,gz);ZC.tick(2);U.goto(0,HC.x+Math.cos(q.a)*0.9,HC.z+Math.sin(q.a)*0.9,4,0.3);ZC.tick(30);}   // к пню — через воротца внутреннего кольца
+
 r.push('horoDone='+!!F().horoDone,'link='+(K14().link4.taken?1:0),F().horoDone&&K14().link4.taken?'horo ok':'FAIL horo');r
 //@@
 // «Леший водит по кругу»: Пелагея на пне-эхо аукает, Прошка у проходов бежит к золотому огоньку; ложный проход — назад
