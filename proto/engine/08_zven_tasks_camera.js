@@ -74,7 +74,8 @@ function updateShared(dt){shakeUpd(shared,dt);
   else{const sep=hd(a.pos,b.pos),la=G.solo?rigs[G.soloPi].la.clone():rigs[0].la.clone().add(rigs[1].la).multiplyScalar(0.5);look=new V3(mid.x+la.x,mid.y+1.1,mid.z+la.z);dist=7.2+sep*0.8;hgt=4.0+sep*0.5;}
   const des=look.clone().addScaledVector(back,dist);des.y+=hgt;if(!z)des.x=clamp(des.x,-W.camX,W.camX);shared.pos.lerp(des,1-Math.exp(-3.5*dt));shared.look.lerp(look,1-Math.exp(-5*dt));
   const right=new V3(back.z,0,-back.x),lat=((a.vel.x+b.vel.x)*right.x+(a.vel.z+b.vel.z)*right.z)*0.5;shared.roll=damp(shared.roll,clamp(-lat*0.008,-0.05,0.05),3,dt);}
-function fightNear(dt){const a=active(0),b=active(1);let f=false;if(!W.noFightCam)for(const e of W.enemies){if(!e.alive||e.state==='hide'||e.noCam)continue;if(hd(e.pos,a.pos)<14||hd(e.pos,b.pos)<14){f=true;break;}}
+// личные враги (с pi — привязаны к игроку, с own — стоят на его дорожке) экран не склеивают: только общие, как на арене
+function fightNear(dt){const a=active(0),b=active(1);let f=false;if(!W.noFightCam)for(const e of W.enemies){if(!e.alive||e.state==='hide'||e.noCam||e.pi!==undefined||e.own!==undefined)continue;if(hd(e.pos,a.pos)<14||hd(e.pos,b.pos)<14){f=true;break;}}
   G.fightT=f?1.8:Math.max(0,(G.fightT||0)-dt);return G.fightT>0;}
 function decideSplit(dt){const fight=fightNear(dt);
   if(G.cine&&G.cine.cam)G.splitTarget=0;else if(G.solo||activeCamZone()||W.camFn)G.splitTarget=0;else if(W.noSplit)G.splitTarget=0;else if(W.forceSplit)G.splitTarget=1;else if(fight)G.splitTarget=0;
