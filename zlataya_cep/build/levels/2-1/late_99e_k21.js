@@ -7,7 +7,9 @@
 //      волны (прыгать в такт); сменил героя — оставленный доигрывает 15 с; у трона второй стул — чтобы прошёл и тот, кто играл.
 //   З2 «Сад Китежа» — родник наполняет сад; ракушка на дне, в приливе дойдёт только Потап; Йоша растит водоросли-лесенки к террасе;
 //      родник снова наполняет сад через 10 с — оставленный держит отлив напевом; на ростке — якорь, Потап поднимет.
-// Шлюзы, колодец-лифт, торговые ряды, две раковины и ворота — прежние, дальше по улице. Звеньев столько же (4), орешков больше.
+// Порядок участков: сначала прилив и отлив поодиночке (улица участков, шлюзы — две ступени), потом парное (Переливная улица — за шлюзами).
+// Колодец-лифт убран: «вода как лифт» уже есть в доме-колодце. Торговые ряды, две раковины и ворота — прежние. Звеньев 4.
+// У каждой воды — мерная рейка (late_99q_k21_gauge.js); у ворот — ролик «Китеж просыпается».
 {const L=LEVELS.find(l=>l.id==='2-1');if(L)L.nuts=12;}   // орешков на уровне стало больше — для списка уровней
 WHO.king=['Морской царь','#7ad8ff'];VOICE.king={f:110,w:'triangle',sp:0.13};
 // Морской царь: ростом с терем, борода из тины, венец, трезубец; пляшет вприсядку, когда играют гусли
@@ -139,54 +141,52 @@ build21=function(){
     bell(X(3.2),-45.2);bell(X(2.6),-61.6);
     SD.push({pi,s,X,zA,zB,lift,ch,boat2,door,pk,nutPit,nutRoof,inShaft:h=>h.pos.x*s>5.95&&h.pos.x*s<9.6&&h.pos.z<-63.4&&h.pos.z>-68.6});}
   const basinM=M(0x3e5e5a),stepM=M(0xd2c8ae),goldM=M(COL.gold,{emissive:0x806010,emissiveIntensity:0.4}),canM=M(0x3e5250);
-  /* ---------- Г2. Переливная улица: вода одна на две улицы, заслонка на дне — держит тяжёлый Потап ---------- */
+  /* ---------- Д. шлюзы Китежа: две ступени воды — прилив поднимает на следующую; сверху — лестница вниз ---------- */
+  // Шлюзы теперь сразу за улицей участков: прилив — одному, без друга. Третья ступень и колодец-лифт убраны (лифт уже был в доме-колодце):
+  // с верха шлюзов — простая лестница к Переливной улице.
+  ground(-11,11,-80,-76,0,pave);ground(-11,11,-88,-80,0,basinM);
+  box(-11,11,0,2.6,-96,-88,stepM);box(-11,11,0,5.2,-104,-96,stepM);
+  addMesh(new THREE.BoxGeometry(22,0.04,8),basinM,0,2.62,-92).receiveShadow=true;
+  for(const[y,z]of[[2.6,-88],[5.2,-96]])for(let x=-9;x<=9;x+=3)addMesh(new THREE.SphereGeometry(0.16,8,6),goldM,x,y+0.12,z+0.1);   // золотые шишечки по краю ступени
+  const L1=waterZone(-11,11,-88,-80,0,2.9,{shell:{x:-9.4,z:-80.6,y:0}});
+  const L2=waterZone(-11,11,-96,-88,2.6,5.5,{floor:2.6,shell:{x:9.4,z:-88.7,y:2.6}});
+  for(let i=0;i<10;i++){const z=rand(-95,-81),y=z>-88?0:2.6;const w=addMesh(new THREE.CylinderGeometry(0.05,0.08,rand(0.8,1.6),5),M(0x3f8a5a),rand(-10,10),y+0.5,z);w.rotation.z=rand(-0.3,0.3);}   // водоросли
+  pike(-5,-92,L2,2.6,{});
+  nutItem(8.5,5.9,-92.5);nutItem(-8,5.8,-100.5);bell(0,-78);
+  for(let i=0;i<12;i++)box(-11,11,0,4.8-0.4*i,-104.9-0.9*i,-104-0.9*i,stepM,{occ:false});   // лестница вниз с верха шлюзов
+  ground(-11,11,-116,-114.8,0,pave);
+  /* ---------- Г2. Переливная улица: вода одна на две улицы, заслонка на дне — держит тяжёлый Потап (за шлюзами, на 40 м дальше) ---------- */
   // два канала через стену; вода у них одна: прилив у одного — отлив у другого, пока Потап стоит на заслонке (он в глубокой воде не всплывает).
   // В конце каждого канала — терраса: в прилив лодка подвозит к ней. Верёвка на террасе открывает ворота ДРУГОЙ стороны.
-  ground(-11,11,-80,-76,0,pave);bell(0,-78);
-  {const dm=W.group.children.length;box(-1.2,1.2,-2.4,5.5,-116,-80,M(0xd0c8b0));for(let z=-82;z>-116;z-=4)addMesh(new THREE.CylinderGeometry(0.25,0.3,0.9,8),goldM,0,5.95,z);fadeable(since(dm));}
-  ground(-11,-1.2,-108,-80,-2.4,canM);ground(1.2,11,-108,-80,-2.4,canM);
-  for(const s of[-1,1])for(let i=0;i<7;i++){const x0=s<0?-11:9.4,x1=s<0?-9.4:11;box(x0,x1,-2.4,-0.3*(i+1),-80.6-i*0.6,-80-i*0.6,stone,{occ:false});}   // ступени в канал
+  const PZ=-40;
+  ground(-11,11,-80+PZ,-76+PZ,0,pave);bell(0,-78+PZ);
+  {const dm=W.group.children.length;box(-1.2,1.2,-2.4,5.5,-116+PZ,-80+PZ,M(0xd0c8b0));for(let z=-82;z>-116;z-=4)addMesh(new THREE.CylinderGeometry(0.25,0.3,0.9,8),goldM,0,5.95,z+PZ);fadeable(since(dm));}
+  ground(-11,-1.2,-108+PZ,-80+PZ,-2.4,canM);ground(1.2,11,-108+PZ,-80+PZ,-2.4,canM);
+  for(const s of[-1,1])for(let i=0;i<7;i++){const x0=s<0?-11:9.4,x1=s<0?-9.4:11;box(x0,x1,-2.4,-0.3*(i+1),-80.6-i*0.6+PZ,-80-i*0.6+PZ,stone,{occ:false});}   // ступени в канал
   // арка заслонки в стене (со стороны левого канала) — сквозь неё вода переливается
-  {const ag=W.group.children.length;addMesh(new THREE.BoxGeometry(0.08,1.4,1.8),M(0x10202a),-1.25,-1.7,-95);addMesh(new THREE.BoxGeometry(0.12,0.16,2.1),goldM,-1.27,-0.94,-95);
-    for(const dz of[-0.98,0.98])addMesh(new THREE.BoxGeometry(0.12,1.5,0.16),goldM,-1.27,-1.65,-95+dz);addMesh(new THREE.BoxGeometry(0.08,1.4,1.8),M(0x10202a),1.25,-1.7,-95);fadeable(since(ag));}
-  const CL=waterZone(-11,-1.2,-108,-80,-2.4,2.6,{floor:-2.4,start:'low',shell:{x:-10.3,z:-79.3,y:0}});CL.heavy=true;
-  const CR=waterZone(1.2,11,-108,-80,-2.4,2.6,{floor:-2.4,start:'high',shell:{x:10.3,z:-79.3,y:0}});CR.heavy=true;
-  const SLU=FIN.kwSluice(-2.8,-2.4,-95,{heavy:true,gate:{x:-1.32,z:-95,w:1.6,h:1.3,ry:Math.PI/2}});
-  FIN.kwLink(CL,CR,{open:()=>SLU.held(),via:new V3(0,-1.7,-95),closedText:'Заслонка на дне закрыта — воде некуда уйти. Потапа на неё поставь!'});
-  const boatL=floater(CL,-9.8,-6.8,-107.8,-103.6,0.7,{rest:-2.4,draft:0.5}),boatR=floater(CR,6.8,9.8,-107.8,-103.6,0.7,{rest:-2.4,draft:0.5});
+  {const ag=W.group.children.length;addMesh(new THREE.BoxGeometry(0.08,1.4,1.8),M(0x10202a),-1.25,-1.7,-95+PZ);addMesh(new THREE.BoxGeometry(0.12,0.16,2.1),goldM,-1.27,-0.94,-95+PZ);
+    for(const dz of[-0.98,0.98])addMesh(new THREE.BoxGeometry(0.12,1.5,0.16),goldM,-1.27,-1.65,-95+dz+PZ);addMesh(new THREE.BoxGeometry(0.08,1.4,1.8),M(0x10202a),1.25,-1.7,-95+PZ);fadeable(since(ag));}
+  const CL=waterZone(-11,-1.2,-108+PZ,-80+PZ,-2.4,2.6,{floor:-2.4,start:'low',shell:{x:-10.3,z:-79.3+PZ,y:0}});CL.heavy=true;
+  const CR=waterZone(1.2,11,-108+PZ,-80+PZ,-2.4,2.6,{floor:-2.4,start:'high',shell:{x:10.3,z:-79.3+PZ,y:0}});CR.heavy=true;
+  const SLU=FIN.kwSluice(-2.8,-2.4,-95+PZ,{heavy:true,gate:{x:-1.32,z:-95+PZ,w:1.6,h:1.3,ry:Math.PI/2}});
+  FIN.kwLink(CL,CR,{open:()=>SLU.held(),via:new V3(0,-1.7,-95+PZ),closedText:'Заслонка на дне закрыта — воде некуда уйти. Потапа на неё поставь!'});
+  const boatL=floater(CL,-9.8,-6.8,-107.8+PZ,-103.6+PZ,0.7,{rest:-2.4,draft:0.5}),boatR=floater(CR,6.8,9.8,-107.8+PZ,-103.6+PZ,0.7,{rest:-2.4,draft:0.5});
   // террасы, лестницы вниз и ворота на лестницах
-  box(-11,-1.2,-2.4,3.2,-112,-108,stepM);box(1.2,11,-2.4,3.2,-112,-108,stepM);
-  for(const s of[-1,1])for(let i=0;i<8;i++){const x0=s<0?-11:1.2,x1=s<0?-1.2:11;box(x0,x1,0,3.2-0.4*(i+1),-112.5-0.5*i,-112-0.5*i,stepM,{occ:false});}
-  for(const[y,z]of[[3.2,-108]])for(let x=-10;x<=10;x+=2.5)if(Math.abs(x)>1.5)addMesh(new THREE.SphereGeometry(0.16,8,6),goldM,x,y+0.12,z+0.1);
-  const rgate=s=>{const g=new THREE.Group();W.group.add(g);const x0=s<0?-11:1.2,x1=s<0?-1.2:11;for(let x=x0+0.4;x<x1;x+=0.7)addMesh(new THREE.BoxGeometry(0.12,3.2,0.12),goldM,x,4.8,-112.2,g);
-    addMesh(new THREE.BoxGeometry(x1-x0,0.16,0.16),goldM,(x0+x1)/2,6.3,-112.2,g);addMesh(new THREE.BoxGeometry(x1-x0,0.16,0.16),goldM,(x0+x1)/2,3.6,-112.2,g);return {g,col:colBox(x0,x1,3.2,6.4,-112.4,-112.0,false),open:false};};
+  box(-11,-1.2,-2.4,3.2,-112+PZ,-108+PZ,stepM);box(1.2,11,-2.4,3.2,-112+PZ,-108+PZ,stepM);
+  for(const s of[-1,1])for(let i=0;i<8;i++){const x0=s<0?-11:1.2,x1=s<0?-1.2:11;box(x0,x1,0,3.2-0.4*(i+1),-112.5-0.5*i+PZ,-112-0.5*i+PZ,stepM,{occ:false});}
+  for(const[y,z]of[[3.2,-108+PZ]])for(let x=-10;x<=10;x+=2.5)if(Math.abs(x)>1.5)addMesh(new THREE.SphereGeometry(0.16,8,6),goldM,x,y+0.12,z+0.1);
+  const rgate=s=>{const g=new THREE.Group();W.group.add(g);const x0=s<0?-11:1.2,x1=s<0?-1.2:11;for(let x=x0+0.4;x<x1;x+=0.7)addMesh(new THREE.BoxGeometry(0.12,3.2,0.12),goldM,x,4.8,-112.2+PZ,g);
+    addMesh(new THREE.BoxGeometry(x1-x0,0.16,0.16),goldM,(x0+x1)/2,6.3,-112.2+PZ,g);addMesh(new THREE.BoxGeometry(x1-x0,0.16,0.16),goldM,(x0+x1)/2,3.6,-112.2+PZ,g);return {g,col:colBox(x0,x1,3.2,6.4,-112.4+PZ,-112.0+PZ,false),open:false};};
   const PG=[rgate(-1),rgate(1)];
   const openPG=i=>{const q=PG[i];if(q.open)return;q.open=true;q.col.on=false;SFX.gate();anim(1.4,k=>{q.g.position.y=3.4*smooth(k);});};
-  const ropes=[-1,1].map(s=>{const x=s*5.2,g=new THREE.Group();g.position.set(x,3.2,-110.4);W.group.add(g);addMesh(new THREE.CylinderGeometry(0.1,0.12,2.6,6),M(0x6a4020),0,1.3,0,g);
+  const ropes=[-1,1].map(s=>{const x=s*5.2,g=new THREE.Group();g.position.set(x,3.2,-110.4+PZ);W.group.add(g);addMesh(new THREE.CylinderGeometry(0.1,0.12,2.6,6),M(0x6a4020),0,1.3,0,g);
     const rope=addMesh(new THREE.CylinderGeometry(0.035,0.035,1.6,5),M(0xd8c090),0.3,1.6,0,g);const fl=addMesh(new THREE.BoxGeometry(0.7,0.45,0.03),M(s<0?PCOL[0]:PCOL[1]),0.42,2.4,0,g);return {g,rope,fl,pulled:false,s};});
-  ropes.forEach((R,i)=>W.hittables.push({pos:new V3(R.s*5.2,4.2,-110.4),r:1.1,push:false,alive:()=>!R.pulled,onHit:h=>{if(h.pos.y<2.9)return;R.pulled=true;SFX.latch();SFX.ok();
+  ropes.forEach((R,i)=>W.hittables.push({pos:new V3(R.s*5.2,4.2,-110.4+PZ),r:1.1,push:false,alive:()=>!R.pulled,onHit:h=>{if(h.pos.y<2.9)return;R.pulled=true;SFX.latch();SFX.ok();
     anim(0.7,k=>{R.rope.scale.y=1-0.5*k;R.fl.position.y=2.4-1.4*k;});openPG(1-i);banner(i?'Правая верёвка!':'Левая верёвка!','#ffffff',1.8,'открылись ворота '+(i?'левой':'правой')+' стороны — друга');}}));
-  const pkR=pike(6.4,-91,CR,-2.4,{});   // канал общий: охотится на любого героя в своей воде (с {pi:1} Прошку в одиночной игре не трогала)
-  const nutCanal=nutItem(-10.1,-1.9,-99.5),nutTerrace=nutItem(10.2,3.75,-111.3);
-  bell(-6,-114.4,1.6);bell(6,-114.4,1.6);
-  /* ---------- Д. шлюзы Китежа: три ступени воды — прилив поднимает на следующую (дальше на 40 м) ---------- */
-  const D=-40;
-  ground(-11,11,-80+D,-76+D,0,pave);ground(-11,11,-88+D,-80+D,0,basinM);
-  box(-11,11,0,2.6,-96+D,-88+D,stepM);box(-11,11,0,5.2,-104+D,-96+D,stepM);
-  for(const[y,z]of[[2.62,-92+D],[5.22,-100+D]])addMesh(new THREE.BoxGeometry(22,0.04,8),basinM,0,y,z).receiveShadow=true;
-  for(const[y,z]of[[2.6,-88+D],[5.2,-96+D],[7.8,-104+D]])for(let x=-9;x<=9;x+=3)addMesh(new THREE.SphereGeometry(0.16,8,6),goldM,x,y+0.12,z+0.1);   // золотые шишечки по краю ступени
-  const L1=waterZone(-11,11,-88+D,-80+D,0,2.9,{shell:{x:-9.4,z:-80.6+D,y:0}});
-  const L2=waterZone(-11,11,-96+D,-88+D,2.6,5.5,{floor:2.6,shell:{x:9.4,z:-88.7+D,y:2.6}});
-  const L3=waterZone(-11,11,-104+D,-96+D,5.2,8.1,{floor:5.2,shell:{x:-9.4,z:-96.7+D,y:5.2}});
-  for(let i=0;i<14;i++){const z=rand(-103,-81)+D,y=z>-88+D?0:z>-96+D?2.6:5.2;const w=addMesh(new THREE.CylinderGeometry(0.05,0.08,rand(0.8,1.6),5),M(0x3f8a5a),rand(-10,10),y+0.5,z);w.rotation.z=rand(-0.3,0.3);}   // водоросли
-  pike(-5,-92+D,L2,2.6,{});pike(5,-100+D,L3,5.2,{});
-  nutItem(8.5,5.9,-92.5+D);nutItem(-8,8.5,-100.5+D);bell(0,-78+D);
-  /* ---------- Е. колодец-лифт: отлив опускает вниз, к торговым рядам ---------- */
-  box(-11,-3,0,7.8,-116+D,-104+D,stepM);box(3,11,0,7.8,-116+D,-104+D,stepM);box(-3,3,0,7.8,-110+D,-104+D,stepM);
-  ground(-3,3,-116+D,-110+D,0,basinM);
-  const LIFT=waterZone(-3,3,-116+D,-110+D,0,7.8,{start:'high',floor:0,shell:{x:3.7,z:-109.4+D,y:7.8},curb:false});
-  {const ag=W.group.children.length;for(const sd of[-1,1])box(sd*3.3-0.3,sd*3.3+0.3,7.8,11.2,-110.6+D,-110+D,stepM,{occ:false});addMesh(new THREE.BoxGeometry(7.2,0.6,0.7),stepM,0,11.4,-110.3+D);kdome(0,-110.3+D,0.35,11.7);fadeable(since(ag));}
-  bell(-6,-107+D,7.8);
+  const pkR=pike(6.4,-91+PZ,CR,-2.4,{});   // канал общий: охотится на любого героя в своей воде (с {pi:1} Прошку в одиночной игре не трогала)
+  const nutCanal=nutItem(-10.1,-1.9,-99.5+PZ),nutTerrace=nutItem(10.2,3.75,-111.3+PZ);
+  bell(-6,-114.4+PZ,1.6);bell(6,-114.4+PZ,1.6);
+  const D=-40;   // торговые ряды и всё, что дальше, — на прежних местах
   /* ---------- Ж. торговые ряды: раки и Жемчужница на дне пруда; отлив — она ахает и раскрывается ---------- */
   ground(-11,-3.5,-140+D,-116+D,0,pave);ground(3.5,11,-140+D,-116+D,0,pave);ground(-3.5,3.5,-123+D,-116+D,0,pave);ground(-3.5,3.5,-140+D,-131+D,0,pave);ground(-3.5,3.5,-131+D,-123+D,0,basinM);
   const MP=waterZone(-3.5,3.5,-131+D,-123+D,0,1.0,{floor:0,start:'high',shell:{x:-4.3,z:-122.4+D,y:0}});

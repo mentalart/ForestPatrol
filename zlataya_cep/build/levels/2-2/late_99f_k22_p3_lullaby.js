@@ -87,12 +87,13 @@
     for(const f of WB.hooks)f();}
   function breathTick(dt){if(G.cine)return;WB.t+=dt;const p=WB.per,t=WB.t%p,ph=t>p-2?'exhale':t>p-4.5?'inhale':'calm';
     if(ph!==WB.ph){WB.ph=ph;if(ph==='inhale')inhale();else if(ph==='exhale')exhale();}
-    WB.k=damp(WB.k,ph==='inhale'?1:0,ph==='inhale'?1.2:3.5,dt);whale.g.position.y=WY+WB.k*0.9;
+    WB.k=damp(WB.k,ph==='inhale'?1:0,ph==='inhale'?1.2:3.5,dt);
     WB.sway=damp(WB.sway,0,2.5,dt);if(Math.abs(WB.sway)>0.05)for(const h of HEROES){if(!h.active||h.cling||h.groundRef===STV.col)continue;h.pos.x=clamp(h.pos.x+WB.sway*dt,-9.6,9.6);}
     for(const P of WB.pines)P.top.rotation.z=Math.sin(G.time*1.3+P.g.position.z)*0.03+WB.k*0.12*Math.sin(G.time*3+P.g.position.x);}
   /* ---------- шаг нового пути ---------- */
   W.updates.push(dt=>{breathTick(dt);
-    SEA.y=damp(SEA.y,SEA.target,0.35,dt);sea.position.y=SEA.y-WB.k*0.5+(WB.ph==='exhale'?0.5:0)*Math.sin(G.time*3);
+    SEA.y=damp(SEA.y,SEA.target,0.35,dt);sea.position.y=seaVis22(SEA.y)-WB.k*1.5+(WB.ph==='exhale'?1.2:0)*Math.sin(G.time*3);   // на вдохе море отходит, кит поднимается; на выдохе — волна о бока
+    whale.g.position.y=WY+WB.k*0.7;whale.vis(G.time,WB.k,sea.position.y);if(ATMO.ocean)ATMO.ocean.position.y=sea.position.y+0.04;
     if(!FN.dive)SEA.target=-3.2;
     // рёбра ходят ходуном
     RB.t+=dt;for(const R of RIB){const s=Math.sin(RB.t/RB.per*Math.PI*2+R.i*Math.PI),z=R.z0+RB.A*s,y=0.3*RB.A/1.1*Math.cos(RB.t/RB.per*Math.PI*2+R.i*Math.PI);const dz=z-R.z,dy=y-R.y;R.z=z;R.y=y;
@@ -141,6 +142,6 @@
       for(const h of HEROES){if(!h.active||h.cling)continue;if(h.pos.y<SEA.y-0.15&&h.pos.z<-140){placeOnGround(h,rand(-6,6),-415,8.5);h.vel.set(0,0,0);SFX.splash();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Кит выплеснул на макушку!','#cfe8ff');}}}
     if(!F.out&&FN.done&&!G.cine&&[0,1].every(pi=>active(pi).pos.y>20)&&(endLink.taken||F.cloudT>4)){F.out=true;finishLevel();}
     if(FN.done&&!G.cine)F.cloudT=(F.cloudT||0)+dt;
-    whale.tail.rotation.x=Math.sin(G.time*0.5)*0.05+WB.k*0.08;});
+    });
   /* ---------- рисунки кнопок: просьба над раковиной видна обоим ---------- */
   const T=HERO,shellAt=z=>()=>z.shell.g.position.clone().add(new V3(0,2.6,0));
