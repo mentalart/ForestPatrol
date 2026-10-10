@@ -10,9 +10,9 @@ r.push(U.walkTo(0,-9.4,3.3,6));ZC.tick(3);U.tap('KeyF');ZC.tick(5);r.push('can='
 //@@ shot=h9_garden.png
 ZC.tick(1);
 //@@
-// Ряба: зерно, покормить, погладить, яички
+// Ряба: зерно, покормить, погладить (держать удар), яички
 const H=ZC.HERO;const r=[U.path(1,[[-5,-11],[-5.5,-1],[-5.5,5.2],[-9.4,5.6],[-9.4,7.4],[-11.1,7.4]],6)];U.tap('Comma');ZC.tick(5);r.push('grain='+!!U.act(1).grain);{const hp=ZC.W.group.children.find(o=>0);}r.push(U.walkTo(1,-9.4,8.6,6));
-const hen=ZC.W.group.children;r.push('hen0='+JSON.stringify({f:ZC.G.hen.food,j:ZC.G.hen.joy}));for(let i=0;i<4;i++){U.tap('Comma');ZC.tick(20);}r.push('hen='+JSON.stringify({f:ZC.G.hen.food,j:+ZC.G.hen.joy.toFixed(2)}));
+const hen=ZC.W.group.children;r.push('hen0='+JSON.stringify({f:ZC.G.hen.food,j:ZC.G.hen.joy}));U.tap('Comma');ZC.tick(20);const hp=ZC.W.farm.hen.g.position;r.push(U.walkTo(1,hp.x+0.8,hp.z,4));ZC.press('Comma');ZC.hold('Comma',true);ZC.tick(80);ZC.hold('Comma',false);ZC.tick(5);r.push('hen='+JSON.stringify({f:ZC.G.hen.food,j:+ZC.G.hen.joy.toFixed(2)}));
 r.push(U.walkTo(1,-11.2,10.6,6));U.tap('Comma');ZC.tick(40);r.push('eggs='+ZC.G.hen.eggs,'nutsHub='+ZC.G.nutsHub);r
 //@@ shot=h9_hen.png
 ZC.tick(1);
