@@ -61,7 +61,7 @@ function shakeAll(a,d){shake(null,a,d);}
 function shakeUpd(r,dt){if(r.shT>0){r.shT-=dt;r.shTick-=dt;if(r.shTick<=0){r.shTick=0.1;r.shOff.set(rand(-1,1),rand(-1,1),rand(-1,1)).normalize().multiplyScalar(r.shAmp*rand(0.6,1));}}else{r.shOff.multiplyScalar(0.8);r.shAmp=0;}}
 function updateRig(i,dt){const h=active(i),r=rigs[i],back=camBack();
   r.la.x=damp(r.la.x,clamp(h.vel.x*0.45,-2.5,2.5),2.2,dt);r.la.z=damp(r.la.z,clamp(h.vel.z*0.45,-2.5,2.5),2.2,dt);
-  const look=new V3(h.pos.x+r.la.x,h.pos.y+1.1,h.pos.z+r.la.z);const dist=7.2+(h.kind==='potap'?0.6:0),hgt=4.0;
+  const look=new V3(h.pos.x+r.la.x,h.pos.y+1.1,h.pos.z+r.la.z);const dist=7.2+SPLIT.rigK+(h.kind==='potap'?0.6:0),hgt=4.0+SPLIT.rigK*0.4;
   const des=look.clone().addScaledVector(back,dist);des.y+=hgt;des.x=clamp(des.x,-W.camX,W.camX);r.pos.lerp(des,1-Math.exp(-4.5*dt));r.look.lerp(look,1-Math.exp(-7*dt));
   const right=new V3(back.z,0,-back.x),lat=h.vel.x*right.x+h.vel.z*right.z;r.roll=damp(r.roll,clamp(-lat*0.012,-0.07,0.07),3,dt);shakeUpd(r,dt);}
 function activeCamZone(){for(const z of W.camZones)if(z.camActive())return z;return null;}
@@ -71,28 +71,127 @@ function updateShared(dt){shakeUpd(shared,dt);
   if(W.camFn){const c=W.camFn();shared.pos.lerp(c.pos,1-Math.exp(-(c.k||4)*dt));shared.look.lerp(c.look,1-Math.exp(-(c.k||4)*1.4*dt));shared.roll=damp(shared.roll,c.roll||0,3,dt);return;}
   const back=camBack(),a=G.solo?active(G.soloPi):active(0),b=G.solo?a:active(1),mid=new V3((a.pos.x+b.pos.x)/2,(a.pos.y+b.pos.y)/2,(a.pos.z+b.pos.z)/2);let look,dist,hgt;const z=activeCamZone();
   if(z){const zy=(z.y||0)+0.8;look=new V3(z.x,zy,z.z).lerp(new V3(mid.x,zy,mid.z),0.25);dist=z.r*1.05+4;hgt=z.r*0.85+3.5;}
-  else{const sep=hd(a.pos,b.pos),la=G.solo?rigs[G.soloPi].la.clone():rigs[0].la.clone().add(rigs[1].la).multiplyScalar(0.5);look=new V3(mid.x+la.x,mid.y+1.1,mid.z+la.z);dist=7.2+sep*0.8;hgt=4.0+sep*0.5;}
+  else{const sep=hd(a.pos,b.pos),la=G.solo?rigs[G.soloPi].la.clone():rigs[0].la.clone().add(rigs[1].la).multiplyScalar(0.5);look=new V3(mid.x+la.x,mid.y+1.1,mid.z+la.z);const sc=Math.min(sep,SPLIT.cfg.sepCap);dist=7.2+sc*0.8;hgt=4.0+sc*0.5;}
   const des=look.clone().addScaledVector(back,dist);des.y+=hgt;if(!z)des.x=clamp(des.x,-W.camX,W.camX);shared.pos.lerp(des,1-Math.exp(-3.5*dt));shared.look.lerp(look,1-Math.exp(-5*dt));
   const right=new V3(back.z,0,-back.x),lat=((a.vel.x+b.vel.x)*right.x+(a.vel.z+b.vel.z)*right.z)*0.5;shared.roll=damp(shared.roll,clamp(-lat*0.008,-0.05,0.05),3,dt);}
-function fightNear(dt){const a=active(0),b=active(1);let f=false;if(!W.noFightCam)for(const e of W.enemies){if(!e.alive||e.state==='hide'||e.noCam)continue;if(hd(e.pos,a.pos)<14||hd(e.pos,b.pos)<14){f=true;break;}}
-  G.fightT=f?1.8:Math.max(0,(G.fightT||0)-dt);return G.fightT>0;}
-function decideSplit(dt){const fight=fightNear(dt);
-  if(G.cine&&G.cine.cam)G.splitTarget=0;else if(G.solo||activeCamZone()||W.camFn)G.splitTarget=0;else if(W.noSplit||(W.noSplitFn&&W.noSplitFn()))G.splitTarget=0;else if(W.forceSplit)G.splitTarget=1;else if(fight)G.splitTarget=0;
-  else{const a=active(0),b=active(1),d=hd(a.pos,b.pos);if(G.splitTarget<0.5){if(d>8)G.splitTarget=1;}else if(d<6&&!occluded(a,b))G.splitTarget=0;}
-  const rate=dt/0.5;G.split=G.split<G.splitTarget?Math.min(G.splitTarget,G.split+rate):Math.max(G.splitTarget,G.split-rate);}
+/* ------------------------------ раздельный экран: когда делить, как делить ------------------------------
+   Режим G.splitMode: 'auto' — делится, когда герои разошлись (дальше SPLIT.cfg.split по земле и высоте) или не влезают в кадр общей камеры;
+   'together' — всегда общий, отставшего Звенышко подтягивает к другу; 'apart' — всегда раздельный. Ролик, сценарная камера (W.camFn),
+   боевая зона, W.noSplit и W.noSplitFn() — общий в любом режиме, W.forceSplit — раздельный. Бой рядом сводит экран, только если герои ближе SPLIT.cfg.fightMax.
+   Раскладка G.splitLayout: 'auto' | 'vertical' | 'horizontal' | 'dynamic'. Линия раздела — нормаль SPLIT.n (экран, y вниз; от панели Игрока 1
+   к панели Игрока 2) и сдвиг SPLIT.o от центра (px вдоль нормали). Прямая линия: стороны — по кадру общей камеры в миг разделения (кто левее
+   или выше, у того левая или верхняя панель) и держатся до слияния; 'auto' на узком экране (меньше 1,25 : 1) — по горизонтали.
+   'dynamic' (как в LEGO): линия поперёк направления между героями, сглажена и не дрожит от мелких поворотов; рисует её SPLIT.diag (модуль
+   релиза), без него — прямая. Повернул кто-то свою камеру правым стиком (SPLIT.orbitDev) — линия уходит к прямой: у камер разный «вперёд».
+   Доля экрана: splitFocus(pi,share,dur) — уровню (у кого своё событие); сама — бьётся только один из двоих: у него SPLIT.cfg.autoFocus. */
+const SPLIT={n:{x:1,y:0},tgt:0,o:0,share:0.5,focus:null,hold:0,outT:0,lay:'v',rigK:0.8,fov:64,leashT:0,mv:[0,0],ft:[0,0],glow:null,
+  diag:null,autoDyn:false,orbitDev:null,paneShadow:null,
+  cfg:{split:8,merge:6,dy:1.3,fightMax:16,sepCap:24,leash:18,autoFocus:0.6,dz:6*Math.PI/180}};
+function splitFocus(pi,share,dur){SPLIT.focus={pi,share:clamp(share||0.62,0.5,0.7),t:dur||3};}
+function fightNear(dt){const a=active(0),b=active(1);let fa=false,fb=false;
+  if(!W.noFightCam)for(const e of W.enemies){if(!e.alive||e.state==='hide'||e.noCam)continue;if(!fa&&hd(e.pos,a.pos)<14)fa=true;if(!fb&&hd(e.pos,b.pos)<14)fb=true;if(fa&&fb)break;}
+  SPLIT.ft[0]=fa?1.8:Math.max(0,SPLIT.ft[0]-dt);SPLIT.ft[1]=fb?1.8:Math.max(0,SPLIT.ft[1]-dt);
+  G.fightT=fa||fb?1.8:Math.max(0,(G.fightT||0)-dt);return G.fightT>0;}
+// «далеко» — по земле и по высоте: герой на уступе над другом тоже далеко
+function splitSep(a,b){return Math.hypot(hd(a.pos,b.pos),(a.pos.y-b.pos.y)*SPLIT.cfg.dy);}
+// влезают ли оба в кадр общей камеры: наибольшая |координата| ног и макушек на экране (за камерой — 9)
+const SPLV=new V3(),splCam=new THREE.PerspectiveCamera(55,1,0.1,320);
+function splitFrame(){splCam.position.copy(shared.pos);splCam.up.set(0,1,0);splCam.lookAt(shared.look);splCam.aspect=innerWidth/Math.max(1,innerHeight);splCam.updateProjectionMatrix();splCam.updateMatrixWorld();
+  let m=0;for(const pi of[0,1]){const h=active(pi);for(const y of[0.1,heroHeight(h)]){SPLV.set(h.pos.x,h.pos.y+y,h.pos.z).applyMatrix4(splCam.matrixWorldInverse);if(SPLV.z>-0.3)return 9;
+    SPLV.applyMatrix4(splCam.projectionMatrix);m=Math.max(m,Math.abs(SPLV.x),Math.abs(SPLV.y));}}return m;}
+function decideSplit(dt){const fight=fightNear(dt),C=SPLIT.cfg,md=G.splitMode||'auto';SPLIT.hold=Math.max(0,SPLIT.hold-dt);let t=G.splitTarget;
+  if(G.cine&&G.cine.cam||G.solo||activeCamZone()||W.camFn||W.noSplit||W.noSplitFn&&W.noSplitFn()){t=0;SPLIT.outT=0;}
+  else if(W.forceSplit||md==='apart')t=1;
+  else if(md==='together')t=0;
+  else{const a=active(0),b=active(1),d=splitSep(a,b),fr=splitFrame(),near=fight&&hd(a.pos,b.pos)<C.fightMax;SPLIT.outT=fr>1?SPLIT.outT+dt:0;
+    if(G.splitTarget<0.5){if(!near&&SPLIT.hold<=0&&(d>C.split||SPLIT.outT>0.5))t=1;}
+    else if(near)t=0;
+    else if(SPLIT.hold<=0&&d<C.merge&&fr<0.85&&!occluded(a,b))t=0;}
+  if(t!==G.splitTarget){G.splitTarget=t;SPLIT.hold=1;}
+  if(md==='together')splitLeash(dt);else SPLIT.leashT=0;
+  const rate=dt/0.5;G.split=G.split<G.splitTarget?Math.min(G.splitTarget,G.split+rate):Math.max(G.splitTarget,G.split-rate);
+  splitLayout(dt);}
+// «всегда вместе»: разошлись дальше SPLIT.cfg.leash — через 1,2 с того, кто стоит (меньше ходил последние секунды), переносит к другу
+function splitLeash(dt){for(const pi of[0,1]){const h=active(pi);SPLIT.mv[pi]=damp(SPLIT.mv[pi],Math.hypot(h.vel.x,h.vel.z),1.2,dt);}
+  const a=active(0),b=active(1),d=hd(a.pos,b.pos);
+  if(G.solo||G.cine||G.trans||W.camFn||G.state!=='play'||d<=SPLIT.cfg.leash){SPLIT.leashT=0;return;}
+  SPLIT.leashT+=dt;if(SPLIT.leashT<1.2)return;
+  const pi=SPLIT.mv[0]<=SPLIT.mv[1]?0:1,o=active(pi),h=active(1-pi);
+  if(players[pi].downed||o.cling||o.held||h.cling||!h.grounded||(W.pullMax&&d>W.pullMax)||pathBlocked(o.pos,h.pos))return;
+  SPLIT.leashT=0;teleportBehind(o,h);G.stats.carries++;floatText(o.pos.clone().add(new V3(0,o.d.height+0.6,0)),(W.world===4||W.vestPull?'Весточка подтянула!':'Звенышко подтянуло!'),'#ffd76a');}
+// направление от Игрока 1 к Игроку 2 на экране общей камеры (px, y вниз; без перспективы — для угла хватает). Камера — без поворота
+// правым стиком: при разделении все камеры сами возвращаются к нему, и стороны должны совпасть с тем, что будет на экране
+const SPLQ=new V3(),SPLR=new V3(),SPLU=new V3(),SPLF=new V3(),SPLY=new V3(0,1,0);
+function splitScr(){const a=active(0).pos,b=active(1).pos;SPLQ.set(b.x-a.x,b.y-a.y,b.z-a.z);SPLF.subVectors(shared.look,shared.pos).normalize();
+  SPLR.crossVectors(SPLF,SPLY).normalize();SPLU.crossVectors(SPLR,SPLF);return {x:SPLQ.dot(SPLR),y:-SPLQ.dot(SPLU)};}
+const angW=a=>Math.atan2(Math.sin(a),Math.cos(a));
+function splitLayout(dt){const L=G.splitLayout||'auto',C=SPLIT.cfg,Wd=innerWidth,H=Math.max(1,innerHeight),narrow=Wd/H<1.25,merged=G.split<0.01;
+  const lay=SPLIT.diag&&(L==='dynamic'||L==='auto'&&SPLIT.autoDyn)?'d':L==='horizontal'||L!=='vertical'&&narrow?'h':'v';SPLIT.lay=lay;
+  SPLIT.rigK=lay==='v'?0.8:0.4;SPLIT.fov=lay==='v'?64:lay==='h'?70:58;
+  const v=splitScr();let ang=Math.atan2(SPLIT.n.y,SPLIT.n.x),tgt;
+  if(lay==='d'){tgt=Math.hypot(v.x,v.y)>1e-3?Math.atan2(v.y,v.x):ang;
+    const dev=SPLIT.orbitDev?SPLIT.orbitDev():0,w=1-smooth((dev-0.26)/0.18);
+    if(w<1){const ax=narrow?(Math.sin(tgt)>=0?Math.PI/2:-Math.PI/2):(Math.cos(tgt)>=0?0:Math.PI);tgt=ax+angW(tgt-ax)*w;}}
+  else if(merged)tgt=lay==='v'?(v.x>=0?0:Math.PI):(v.y>=0?Math.PI/2:-Math.PI/2);   // стороны по кадру
+  else tgt=lay==='v'?(Math.cos(ang)>=0?0:Math.PI):(Math.sin(ang)>=0?Math.PI/2:-Math.PI/2);   // разделён — сторона прежняя
+  if(merged||!SPLIT.diag){ang=tgt;SPLIT.tgt=tgt;}
+  else{if(lay!=='d'||Math.abs(angW(tgt-SPLIT.tgt))>C.dz)SPLIT.tgt=tgt;ang+=angW(SPLIT.tgt-ang)*(1-Math.exp(-dt/0.3));if(lay!=='d'&&Math.abs(angW(SPLIT.tgt-ang))<0.002)ang=SPLIT.tgt;}
+  SPLIT.n.x=Math.cos(ang);SPLIT.n.y=Math.sin(ang);
+  let sh=0.5;   // доля Игрока 1
+  if(SPLIT.focus){SPLIT.focus.t-=dt;if(SPLIT.focus.t<=0)SPLIT.focus=null;else sh=SPLIT.focus.pi?1-SPLIT.focus.share:SPLIT.focus.share;}
+  else if(C.autoFocus&&G.split>0.5&&(SPLIT.ft[0]>0)!==(SPLIT.ft[1]>0))sh=SPLIT.ft[0]>0?C.autoFocus:1-C.autoFocus;
+  SPLIT.share+=(sh-SPLIT.share)*(1-Math.exp(-dt/0.5));SPLIT.o=(SPLIT.share-0.5)*(Math.abs(SPLIT.n.x)*Wd+Math.abs(SPLIT.n.y)*H);
+  if(SPLIT.glow){SPLIT.glow.t-=dt/1.2;if(SPLIT.glow.t<=0)SPLIT.glow=null;}}
 function snapCams(){for(const i of[0,1]){const h=active(i),r=rigs[i];r.look.set(h.pos.x,h.pos.y+1.1,h.pos.z);r.pos.copy(r.look).addScaledVector(camBack(),7.2);r.pos.y+=4;r.la.set(0,0,0);}
   const m=rigs[0].look.clone().add(rigs[1].look).multiplyScalar(0.5);shared.look.copy(m);shared.pos.copy(m).addScaledVector(camBack(),10);shared.pos.y+=6;}
 const dcam=new THREE.PerspectiveCamera(),poseS={pos:new V3(),quat:new THREE.Quaternion()},poseA={pos:new V3(),quat:new THREE.Quaternion()};
 function composePose(src,out){dcam.position.copy(src.pos).add(src.shOff);dcam.up.set(0,1,0);dcam.lookAt(src.look.x+src.shOff.x,src.look.y+src.shOff.y,src.look.z+src.shOff.z);dcam.rotateZ(src.roll);out.pos.copy(dcam.position);out.quat.copy(dcam.quaternion);}
+// PANES — панели кадра для интерфейса: {cam,x,w,h,pi,poly,A,box,real}. cam — камера проекции на весь экран (точка мира → px экрана:
+// pane.x+(ndc.x·0,5+0,5)·pane.w, (1−(ndc.y·0,5+0,5))·H), poly — многоугольник панели (null — общий экран), A — её центр (px),
+// box — рамка [x,y,w,h], real — камера, которой панель нарисована. Видна ли точка в панели — paneHas, край по лучу из центра — paneEdge.
 let PANES=[];
+const pcams=[new THREE.PerspectiveCamera(),new THREE.PerspectiveCamera()];
+// панель — часть экрана по одну сторону линии (s=−1 — Игрок 1, +1 — Игрок 2): многоугольник, рамка, центр тяжести
+function splitPoly(Wd,H,s,o){const n=SPLIT.n,cx=Wd/2,cy=H/2,f=p=>s*((p[0]-cx)*n.x+(p[1]-cy)*n.y-o),R=[[0,0],[Wd,0],[Wd,H],[0,H]],q=[];
+  for(let i=0;i<4;i++){const p=R[i],r=R[(i+1)%4],fp=f(p),fr=f(r);if(fp>=0)q.push(p);if((fp>=0)!==(fr>=0)){const t=fp/(fp-fr);q.push([p[0]+(r[0]-p[0])*t,p[1]+(r[1]-p[1])*t]);}}
+  let a=0,gx=0,gy=0,x0=Wd,y0=H,x1=0,y1=0;
+  for(let i=0;i<q.length;i++){const p=q[i],r=q[(i+1)%q.length],c=p[0]*r[1]-r[0]*p[1];a+=c;gx+=(p[0]+r[0])*c;gy+=(p[1]+r[1])*c;x0=Math.min(x0,p[0]);y0=Math.min(y0,p[1]);x1=Math.max(x1,p[0]);y1=Math.max(y1,p[1]);}
+  const c=Math.abs(a)>1e-6?[gx/(3*a),gy/(3*a)]:[cx,cy];x0=Math.floor(x0);y0=Math.floor(y0);
+  return {pts:q,c,box:[x0,y0,Math.ceil(x1)-x0,Math.ceil(y1)-y0]};}
+function paneDist(q,i,x,y){const a=q[i],b=q[(i+1)%q.length],ex=b[0]-a[0],ey=b[1]-a[1];return ((y-a[1])*ex-(x-a[0])*ey)/(Math.hypot(ex,ey)||1);}
+function paneHas(P,x,y,m){m=m||0;if(!P.poly)return x>=m&&x<=P.w-m&&y>=m&&y<=P.h-m;for(let i=0;i<P.poly.length;i++)if(paneDist(P.poly,i,x,y)<m)return false;return true;}
+function paneEdge(P,x,y,m){m=m||0;const ax=P.A[0],ay=P.A[1];let t=1;
+  if(P.poly)for(let i=0;i<P.poly.length;i++){const dA=paneDist(P.poly,i,ax,ay),dS=paneDist(P.poly,i,x,y);if(dS<m)t=Math.min(t,dA>m?(dA-m)/(dA-dS):0);}
+  else{const W2=P.w,H2=P.h;for(const [d0,d1] of[[ax,x],[W2-ax,W2-x],[ay,y],[H2-ay,H2-y]])if(d1<m)t=Math.min(t,d0>m?(d0-m)/(d0-d1):0);}
+  return [ax+(x-ax)*t,ay+(y-ay)*t];}
+// панорама звука панели: −0,5 — левая половина, 0,5 — правая (общий экран — 0)
+function panePan(pi){const P=PANES.length>1?PANES[pi]:null;return P&&P.poly?clamp(P.A[0]/P.w*2-1,-1,1):0;}
 function render(){const Wd=innerWidth,H=innerHeight;renderer.shadowMap.needsUpdate=true;
   const a=active(0).pos,b=active(1).pos,foc=G.cine&&G.cine.cam?shared.look:new V3((a.x+b.x)/2,0,(a.z+b.z)/2);sun.target.position.set(foc.x,0,foc.z);sun.position.copy(sun.target.position).add(W.sunOff);
   {const want=Math.round(clamp(hd(a,b)*0.6+16,18,40));const sc=sun.shadow.camera;if(sc.right!==want){sc.left=-want;sc.right=want;sc.top=want;sc.bottom=-want;sc.updateProjectionMatrix();}}
-  composePose(shared,poseS);const e=smooth(G.split);PANES=[];const fov=G.cine&&G.cine.cam?G.cine.fov:55;
+  composePose(shared,poseS);const e=smooth(G.split);PANES=[];const fov=G.cine&&G.cine.cam?G.cine.fov:55;let o=SPLIT.o;
   if(e<0.002){camS.position.copy(poseS.pos);camS.quaternion.copy(poseS.quat);camS.fov=fov;camS.aspect=Wd/H;camS.clearViewOffset();camS.updateProjectionMatrix();camS.updateMatrixWorld();
-    renderer.setViewport(0,0,Wd,H);renderer.setScissor(0,0,Wd,H);renderer.render(scene,camS);PANES.push({cam:camS,x:0,w:Wd,h:H});}
-  else for(let i=0;i<2;i++){composePose(rigs[i],poseA);const cam=cams[i];cam.position.lerpVectors(poseS.pos,poseA.pos,e);cam.quaternion.copy(poseS.quat).slerp(poseA.quat,e);
-    cam.fov=lerp(55,60,e);cam.aspect=Wd/H;const off=i===0?lerp(0,Wd/4,e):lerp(Wd/2,Wd/4,e);cam.setViewOffset(Wd,H,off,0,Wd/2,H);cam.updateProjectionMatrix();cam.updateMatrixWorld();
-    const x=i*Wd/2;renderer.setViewport(x,0,Wd/2,H);renderer.setScissor(x,0,Wd/2,H);renderer.render(scene,cam);PANES.push({cam,x,w:Wd/2,h:H});}
-  $('divider').style.opacity=e;$('edgeL').style.opacity=e;$('edgeR').style.opacity=e;$('mergebar').style.opacity=G.cine?0:1-e;}
+    renderer.setViewport(0,0,Wd,H);renderer.setScissor(0,0,Wd,H);renderer.render(scene,camS);PANES.push({cam:camS,x:0,w:Wd,h:H,pi:-1,poly:null,A:[Wd/2,H/2],box:[0,0,Wd,H],real:camS});}
+  else{const n=SPLIT.n,axis=Math.abs(n.x)>0.9999||Math.abs(n.y)>0.9999;
+    if(axis)o=Math.abs(n.x)>0.5?(Math.round(Wd/2+n.x*o)-Wd/2)*n.x:(Math.round(H/2+n.y*o)-H/2)*n.y;   // прямая линия — по целому пикселю
+    for(let i=0;i<2;i++){const P=splitPoly(Wd,H,i?1:-1,o),A=[lerp(Wd/2,P.c[0],e),lerp(H/2,P.c[1],e)];
+      composePose(rigs[i],poseA);const cam=cams[i];cam.position.lerpVectors(poseS.pos,poseA.pos,e);cam.quaternion.copy(poseS.quat).slerp(poseA.quat,e);
+      cam.fov=lerp(55,SPLIT.fov,e);cam.aspect=Wd/H;cam.updateMatrixWorld();
+      // в переходе центр панели едет из центра экрана в её центр тяжести: в начале обе половины — ровно кадр общей камеры
+      const pc=pcams[i];pc.position.copy(cam.position);pc.quaternion.copy(cam.quaternion);pc.fov=cam.fov;pc.near=cam.near;pc.far=cam.far;pc.aspect=Wd/H;
+      pc.setViewOffset(Wd,H,Wd/2-A[0],H/2-A[1],Wd,H);pc.updateProjectionMatrix();pc.updateMatrixWorld();
+      PANES.push({cam:pc,x:0,w:Wd,h:H,pi:i,poly:P.pts,A,box:P.box,real:cam});}
+    if(axis||!SPLIT.diag)for(const P of PANES){const bx=P.box,cam=P.real;cam.setViewOffset(Wd,H,bx[0]+Wd/2-P.A[0],bx[1]+H/2-P.A[1],bx[2],bx[3]);cam.updateProjectionMatrix();
+      if(SPLIT.paneShadow)SPLIT.paneShadow(P.pi);renderer.setViewport(bx[0],H-bx[1]-bx[3],bx[2],bx[3]);renderer.setScissor(bx[0],H-bx[1]-bx[3],bx[2],bx[3]);renderer.render(scene,cam);}
+    else SPLIT.diag(PANES,Wd,H,o);}
+  splitDom(e,Wd,H,o);}
+// линия раздела (толще, когда герои далеко; светится цветом позвавшего «Ко мне!») и рамки панелей
+const SPLD={dv:'',e:['','']};
+function splitDom(e,Wd,H,o){const dv=$('divider');dv.style.opacity=e;$('edgeL').style.opacity=e;$('edgeR').style.opacity=e;$('mergebar').style.opacity=G.cine?0:1-e;
+  if(e<0.002)return;const n=SPLIT.n,g=SPLIT.glow,w=6+Math.round(clamp((hd(active(0).pos,active(1).pos)-8)/30,0,1)*6);
+  const k=[(Wd/2+n.x*o).toFixed(1),(H/2+n.y*o).toFixed(1),w,Math.ceil(Math.hypot(Wd,H))+40,Math.atan2(n.y,n.x).toFixed(4),g?g.pi+':'+g.t.toFixed(2):''].join('|');
+  if(SPLD.dv!==k){SPLD.dv=k;const q=k.split('|');Object.assign(dv.style,{left:q[0]+'px',top:q[1]+'px',bottom:'auto',marginLeft:'0',width:q[2]+'px',height:q[3]+'px',
+    transform:'translate(-50%,-50%) rotate('+q[4]+'rad)',boxShadow:g?'0 0 '+Math.round(14+30*g.t)+'px '+Math.round(4+8*g.t)+'px '+PCSS[g.pi]:''});}
+  ['edgeL','edgeR'].forEach((id,i)=>{const P=PANES[i];if(!P||!P.poly)return;const cp='polygon('+P.poly.map(p=>Math.round(p[0])+'px '+Math.round(p[1])+'px').join(',')+')';
+    if(SPLD.e[i]!==cp){SPLD.e[i]=cp;Object.assign($(id).style,{left:'0',right:'auto',width:'100%',clipPath:cp});}});}
 
