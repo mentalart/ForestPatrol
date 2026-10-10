@@ -1,6 +1,6 @@
 //@@ wait=1500
 // релиз final06: напарник-бот проходит 2-1 «Гусли Садко» за Игрока 2 (Пелагея и Йоша, правая сторона улиц): мёртвая вода для Садко, фонтан, причал и дом-колодец,
-// переливная улица, шлюзы и колодец-лифт, торговые ряды, звонкая мостовая, палаты царя, сад Китежа, Рак-Отшельник, ворота. Человека (Игрок 1) играет скрипт.
+// шлюзы, переливная улица, торговые ряды, звонкая мостовая, палаты царя, сад Китежа, Рак-Отшельник, ворота. Человека (Игрок 1) играет скрипт.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
 window.CO=ZC.FIN.co;window.P=ZC.players;window.W=ZC.W;window.F=()=>ZC.W.flags;window.bot=()=>U.act(1);window.me=()=>U.act(0);window.H=ZC.HERO;
@@ -21,28 +21,28 @@ F().stage='walk2';F().book=true;put(me(),-3,-40);put(bot(),3,-45);const zA=W.wat
 const L=[];let last='';for(let i=0;i<60*40&&!(bot().pos.z<-60.3);i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' '+zA.state);last=m;}if(i%120===0)L.push((i/60).toFixed(0)+' '+pos(bot())+' lvl='+zA.level.toFixed(1));}
 L.push('bot='+pos(bot()),'other='+pos(ZC.HERO[bot().kind==='yosha'?'pelageya':'yosha']),(bot().pos.z<-60.3)?'dock ok':'FAIL dock');L
 //@@
+// шлюзы (сразу за улицей, две ступени, сверху лестница): оба героя бота проходят одни (человек стоит у начала)
+const D=ZC.W.warp21('locks');ZC.tick(20);for(let k=0;k<3;k++){let t=0;while(ZC.G.cine&&t<3000){ZC.skip();ZC.tick(5);t+=5;}ZC.tick(20);}
+put(me(),-8,-74);ACT(0,'proshka');put(bot(),5,-77);put(ZC.HERO[bot().kind==='yosha'?'pelageya':'yosha'],6,-77);ZC.tick(10);
+const L=[];let last='';for(let i=0;i<60*120&&!(ZC.HERO.pelageya.pos.z<-115.5&&ZC.HERO.yosha.pos.z<-115.5);i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}if(i%600===0)L.push((i/60).toFixed(0)+' '+pos(bot()));}
+L.push('pel='+pos(ZC.HERO.pelageya),'yos='+pos(ZC.HERO.yosha),(ZC.HERO.pelageya.pos.z<-115.5&&ZC.HERO.yosha.pos.z<-115.5)?'locks ok':'FAIL locks');L
+//@@
 // переливная улица: человек (Потап на заслонке, Прошка — прилив слева, лодка, верёвка), потом бот: прилив справа, лодка, верёвка, ворота
 const D=ZC.W.warp21('perel');ZC.tick(20);for(let k=0;k<3;k++){let t=0;while(ZC.G.cine&&t<3000){ZC.skip();ZC.tick(5);t+=5;}ZC.tick(20);}
-put(bot(),3,-76);if(CO.mode!=='follow')ZC.tick(5);
-const r=[];ACT(0,'potap');r.push(U.walkTo(0,-10.2,-80.2,5),U.walkTo(0,-10.2,-86,6),U.walkTo(0,-2.8,-95,8));ZC.tick(20);
+put(bot(),3,-116);if(CO.mode!=='follow')ZC.tick(5);
+const r=[];ACT(0,'potap');r.push(U.walkTo(0,-10.2,-120.2,5),U.walkTo(0,-10.2,-126,6),U.walkTo(0,-2.8,-135,8));ZC.tick(20);
 if(!D.SLU.held())throw new Error('Потап не встал на заслонку '+r.join()+' '+pos(me()));
-ACT(0,'proshka');ZC.tick(5);r.push(U.walkTo(0,-9.8,-79.4,8));r.push('kind='+me().kind+' z='+pos(me())+' CL='+D.CL.state+' zone='+(ZC.FIN.kwTest?'':''));U.tap('KeyR');ZC.tick(160);
+ACT(0,'proshka');ZC.tick(5);r.push(U.walkTo(0,-9.8,-119.4,8));r.push('kind='+me().kind+' z='+pos(me())+' CL='+D.CL.state+' zone='+(ZC.FIN.kwTest?'':''));U.tap('KeyR');ZC.tick(160);
 r.push('CL='+D.CL.state+' CR='+D.CR.state+' bot='+pos(bot())+' '+CO.mode);r
 //@@
 // Прошка — лодкой на левую террасу, верёвка; бот в это время ждёт
-const D=ZC.W.dbg21();const r=[U.walkTo(0,-8.3,-100,8),U.walkTo(0,-8.3,-104.5,4,(h)=>{if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');})];ZC.tick(30);
-r.push(U.walkTo(0,-8.3,-109.2,4,(h)=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}));ZC.tick(20);r.push(U.walkTo(0,-5.9,-110.4,3));ZC.tick(5);
+const D=ZC.W.dbg21();const r=[U.walkTo(0,-8.3,-140,8),U.walkTo(0,-8.3,-144.5,4,(h)=>{if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');})];ZC.tick(30);
+r.push(U.walkTo(0,-8.3,-149.2,4,(h)=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}));ZC.tick(20);r.push(U.walkTo(0,-5.9,-150.4,3));ZC.tick(5);
 ZC.HERO.proshka.face=Math.PI/2;U.tap('KeyF');ZC.tick(30);r.push('ropeL='+D.ropes[0].pulled,'PG1='+D.PG[1].open,'bot='+pos(bot())+' '+CO.mode,'CL='+D.CL.state+' CR='+D.CR.state);r
 //@@
 // бот: прилив справа, лодка, верёвка, ворота; человек ждёт на левой террасе
-const D=ZC.W.dbg21();const L=[];let last='';for(let i=0;i<60*70&&!(bot().pos.z<-116);i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' CR='+D.CR.state);last=m;}if(i%300===0)L.push((i/60).toFixed(0)+' '+pos(bot())+' CR='+D.CR.level.toFixed(1)+' CL='+D.CL.level.toFixed(1));}
-L.push('bot='+pos(bot()),'ropeR='+D.ropes[1].pulled,'PG0='+D.PG[0].open,'other='+pos(ZC.HERO[bot().kind==='yosha'?'pelageya':'yosha']),(bot().pos.z<-116)?'perel ok':'FAIL perel');L
-//@@
-// шлюзы и колодец-лифт: оба героя бота проходят одни (человек стоит у начала); потом человек повторяет за ботом
-const D=ZC.W.warp21('locks');ZC.tick(20);for(let k=0;k<3;k++){let t=0;while(ZC.G.cine&&t<3000){ZC.skip();ZC.tick(5);t+=5;}ZC.tick(20);}
-put(me(),-8,-114);ACT(0,'proshka');put(bot(),5,-117);put(ZC.HERO[bot().kind==='yosha'?'pelageya':'yosha'],6,-117);ZC.tick(10);
-const L=[];let last='';for(let i=0;i<60*120&&!(ZC.HERO.pelageya.pos.z<-156.5&&ZC.HERO.yosha.pos.z<-156.5);i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}if(i%600===0)L.push((i/60).toFixed(0)+' '+pos(bot()));}
-L.push('pel='+pos(ZC.HERO.pelageya),'yos='+pos(ZC.HERO.yosha),(ZC.HERO.pelageya.pos.z<-156.5&&ZC.HERO.yosha.pos.z<-156.5)?'locks ok':'FAIL locks');L
+const D=ZC.W.dbg21();const L=[];let last='';for(let i=0;i<60*70&&!(bot().pos.z<-156);i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' CR='+D.CR.state);last=m;}if(i%300===0)L.push((i/60).toFixed(0)+' '+pos(bot())+' CR='+D.CR.level.toFixed(1)+' CL='+D.CL.level.toFixed(1));}
+L.push('bot='+pos(bot()),'ropeR='+D.ropes[1].pulled,'PG0='+D.PG[0].open,'other='+pos(ZC.HERO[bot().kind==='yosha'?'pelageya':'yosha']),(bot().pos.z<-156)?'perel ok':'FAIL perel');L
 //@@
 // торговые ряды: раки и Жемчужница — бот (оба героя поочерёдно) справляется сам; человек стоит в стороне
 const D=ZC.W.warp21('market');ZC.tick(20);for(let k=0;k<3;k++){let t=0;while(ZC.G.cine&&t<3000){ZC.skip();ZC.tick(5);t+=5;}ZC.tick(20);}

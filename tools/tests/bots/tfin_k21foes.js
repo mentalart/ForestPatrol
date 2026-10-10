@@ -28,9 +28,9 @@ const rf=FIGHT(0,[cl],8);if(cl.alive&&cl.state!=='dying')throw new Error('не �
 ZC.tick(2);
 //@@
 // щука в правом канале Переливной улицы (охотится на Игрока 2, его канал): плавает над дном, движется; подплывает к герою; отбили каплю — оглушена, добили
-ZC.W.warp21('perel');ZC.tick(30);NOCINE();const p=ZC.W.enemies.find(e=>e.kind==='shchuka'&&e.alive&&e.home.z<-85&&e.home.z>-100);if(!p)throw new Error('нет щуки в канале: '+ZC.W.enemies.filter(e=>e.kind==='shchuka').map(e=>e.home.z.toFixed(0)).join());
+ZC.W.warp21('perel');ZC.tick(30);NOCINE();const p=ZC.W.enemies.find(e=>e.kind==='shchuka'&&e.alive&&e.home.z<-125&&e.home.z>-140);if(!p)throw new Error('нет щуки в канале: '+ZC.W.enemies.filter(e=>e.kind==='shchuka').map(e=>e.home.z.toFixed(0)).join());
 if(!p.swim)throw new Error('щука не плавает (swim)');const p0=p.pos.clone();ZC.tick(120);const moved=p.pos.distanceTo(p0);if(moved<0.3)throw new Error('щука стоит на месте: '+moved.toFixed(2));
-const h=U.act(p.pi||0);h.pos.set(4,-2.2,-84);h.vel.set(0,0,0);ZC.tick(10);const res=FIGHT(p.pi||0,[p],40);if(p.alive&&p.state!=='dying')throw new Error('щуку не одолели: '+res+' '+p.state+' y='+p.pos.y.toFixed(2)+' h='+h.pos.toArray().map(v=>v.toFixed(1)));
+const h=U.act(p.pi||0);h.pos.set(4,-2.2,-124);h.vel.set(0,0,0);ZC.tick(10);const res=FIGHT(p.pi||0,[p],40);if(p.alive&&p.state!=='dying')throw new Error('щуку не одолели: '+res+' '+p.state+' y='+p.pos.y.toFixed(2)+' h='+h.pos.toArray().map(v=>v.toFixed(1)));
 'pike swims moved='+moved.toFixed(2)+' '+res
 //@@ shot=k21_pike.png
 ZC.tick(2);
@@ -43,8 +43,8 @@ const lid=c2.L.clamLid.rotation.x;const res=FIGHT(0,[c2],30);if(c2.alive&&c2.sta
 //@@
 // одиночная игра: Прошка (игрок 0) заходит в правый канал Переливной улицы — щука охотится и на неё, а не только на героя игрока 2
 ZC.setSolo(true);ZC.startFrom(ZC.LV('2-1'));ZC.G.manual=true;ZC.tick(30);ZC.skip();ZC.tick(60);NOCINE();ZC.W.warp21('perel');ZC.tick(30);NOCINE();
-const p=ZC.W.enemies.find(e=>e.kind==='shchuka'&&e.alive&&e.home.z<-85&&e.home.z>-100);if(!p)throw new Error('нет щуки в канале');
-const h=U.act(ZC.G.soloPi);if(h.kind!=='proshka')throw new Error('в одиночке не Прошка: '+h.kind);h.pos.set(5.5,-2.2,-86);h.vel.set(0,0,0);
+const p=ZC.W.enemies.find(e=>e.kind==='shchuka'&&e.alive&&e.home.z<-125&&e.home.z>-140);if(!p)throw new Error('нет щуки в канале');
+const h=U.act(ZC.G.soloPi);if(h.kind!=='proshka')throw new Error('в одиночке не Прошка: '+h.kind);h.pos.set(5.5,-2.2,-126);h.vel.set(0,0,0);
 let hunted=-1;for(let i=0;i<900&&hunted<0;i++){ZC.tick(1);if((p.state==='ready'||p.state==='wind')&&p.tgt===h)hunted=i;}
 if(hunted<0)throw new Error('щука не охотится на Прошку в своём канале: '+p.state+' d='+Math.hypot(p.pos.x-h.pos.x,p.pos.z-h.pos.z).toFixed(1)+' pi='+p.pi);
 'pike hunts solo hero t='+(hunted/60).toFixed(1)

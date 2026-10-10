@@ -32,13 +32,13 @@ window.RJ=(h)=>{const D=ZC.W.dbg21();const d=Math.hypot(h.pos.x,h.pos.z-D.TZ);fo
 // Прошка — прилив слева, к террасе, верёвка
 window.SH=h=>{if(ZC.W.bolts.some(b=>b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2))ZC.press('KeyG');};
 const D=ZC.W.warp21('perel');ZC.tick(20);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}
-toKind('potap');const r=[go(-10.2,-80.2,5),go(-10.2,-86,6),go(-2.8,-95,8)];ZC.tick(20);if(!D.SLU.held())throw new Error('Потап не на заслонке: '+r.join()+' '+st());
-toKind('pelageya');r.push(go(3,-78.4,8,SH),go(8.3,-100,10,SH),go(8.3,-104.5,4,h=>{SH(h);if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');}),go(8.3,-109.2,4,h=>{SH(h);if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}),go(5.9,-110.4,3,SH));
+toKind('potap');const r=[go(-10.2,-120.2,5),go(-10.2,-126,6),go(-2.8,-135,8)];ZC.tick(20);if(!D.SLU.held())throw new Error('Потап не на заслонке: '+r.join()+' '+st());
+toKind('pelageya');r.push(go(3,-118.4,8,SH),go(8.3,-140,10,SH),go(8.3,-144.5,4,h=>{SH(h);if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');}),go(8.3,-149.2,4,h=>{SH(h);if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}),go(5.9,-150.4,3,SH));
 me().face=-Math.PI/2;U.tap('KeyF');ZC.tick(20);if(!D.ropes[1].pulled)throw new Error('Пелагея не дёрнула: '+r.join()+' '+st());
-toKind('proshka');r.push(go(-9.8,-79.4,10));U.tap('KeyR');ZC.tick(160);if(D.CL.state!=='high')throw new Error('левый прилив не пошёл: '+D.CL.state+' '+st());
-r.push(go(-8.3,-100,8),go(-8.3,-104.5,4,h=>{if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');}),go(-8.3,-109.2,4,h=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}),go(-5.9,-110.4,3));
+toKind('proshka');r.push(go(-9.8,-119.4,10));U.tap('KeyR');ZC.tick(160);if(D.CL.state!=='high')throw new Error('левый прилив не пошёл: '+D.CL.state+' '+st());
+r.push(go(-8.3,-140,8),go(-8.3,-144.5,4,h=>{if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');}),go(-8.3,-149.2,4,h=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}),go(-5.9,-150.4,3));
 me().face=Math.PI/2;U.tap('KeyF');ZC.tick(20);if(!D.ropes[0].pulled||!D.PG[0].open||!D.PG[1].open)throw new Error('ворота не открыты: '+r.join()+' '+st());
-r.push(go(-6,-117.5,6));toKind('pelageya');r.push(go(6,-117.5,6));if(!(H.proshka.pos.z<-113&&H.pelageya.pos.z<-113))throw new Error('не спустились: '+r.join());'perel solo ok'
+r.push(go(-6,-157.5,6));toKind('pelageya');r.push(go(6,-157.5,6));if(!(H.proshka.pos.z<-153&&H.pelageya.pos.z<-153))throw new Error('не спустились: '+r.join());'perel solo ok'
 //@@
 // Звонкая мостовая: Прошка — дзинь, дилинь, встаёт на розовый «дон» и остаётся; Потап — на зелёный «дон»: дон-дон разом
 const D=ZC.W.warp21('tune');ZC.W.flags.sturg=false;ZC.tick(20);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}toKind('proshka');const r=[go(-2,-184,4)];let t=0;while(!D.F.sturg&&t<300){ZC.tick(1);t++;}ZC.tick(60*9);
@@ -79,6 +79,6 @@ toKind('proshka');let st2=0;for(let i=0;i<60*120&&D.HB.dbg().phase===2;i++){cons
 rel();if(D.HB.dbg().phase<3)throw new Error('рака в одиночку не поймали: phase='+D.HB.dbg().phase+' stun='+st2+' '+st());t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(20);
 if(!D.F.hermitWon)throw new Error('нет победы над раком');'hermit solo ok hits='+hits+' stun='+st2
 //@@
-const D=ZC.W.dbg21(),G=D.DG;const r=[];r.push(go(0,-312+G,8));callAll();r.push(go(0,-323+G,6));ZC.tick(60);callAll();r.push(go(0,-324+G,4));ZC.tick(120);'end '+r.join()+' lvl='+ZC.W.levelId+' out='+!!ZC.W.flags.out
+const D=ZC.W.dbg21(),G=D.DG;const r=[];r.push(go(0,-312+G,8));callAll();r.push(go(0,-323+G,6));ZC.tick(60);callAll();r.push(go(0,-324+G,4));ZC.tick(120);let tg=0;while(ZC.W.levelId==='2-1'&&!ZC.W.flags.out&&tg<1500){ZC.tick(1);tg++;}'end '+r.join()+' lvl='+ZC.W.levelId+' out='+!!ZC.W.flags.out
 //@@
 if(ZC.W.levelId==='2-1'&&!ZC.W.flags.out)throw new Error('уровень не пройден: '+st());if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'2-1 solo done errs=0'
