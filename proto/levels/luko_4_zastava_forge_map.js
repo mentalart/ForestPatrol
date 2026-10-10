@@ -29,9 +29,7 @@
     for(let i=0;i<5;i++)addMesh(new THREE.SphereGeometry(0.22-i*0.02,10,8),M(0xc8642a),0,0.4+i*0.22,-0.35-Math.sin(i*0.6)*0.25,vek);
     addMesh(new THREE.BoxGeometry(1.4,0.8,0.6),M(0x8a5a32),0.9,0.4,0.5,vek);for(let i=0;i<5;i++)addMesh(new THREE.SphereGeometry(0.08,6,5),M(0xffc93c,{emissive:0xb07a10,emissiveIntensity:0.5}),0.4+i*0.25,0.86,0.5,vek);}
   W.cyls.push({x:7.9,z:5.4,r:0.6,miny:-1,maxy:1.6,on:true});
-  {const sg=new THREE.Group();sg.position.set(-17.5,0,7);W.group.add(sg);addMesh(new THREE.CylinderGeometry(0.08,0.1,2,6),M(0x6b4a2b),0,1,0,sg);const b=addMesh(new THREE.BoxGeometry(1.6,0.4,0.08),M(0x9a7a50),0.4,1.7,0,sg);b.rotation.z=0.08;
-    for(let i=0;i<6;i++)addMesh(new THREE.BoxGeometry(0.6,0.03,0.4),M(0xc8b080),-17.5-i*0.5,0.02,7.8+i*0.7);}
-  const ZASTAVA=new V3(-17.5,0,7);
+  const ZH=buildZastavaHill();W.zhill=ZH;   // Застава трёх богатырей — на холме южного мыса (luko_3b_zastava_hill.js); W.zhill — для ботов
   // украшения из лавки
   const decorBuilt={};
   function buildDecor(id){if(decorBuilt[id])return;decorBuilt[id]=true;
@@ -89,7 +87,7 @@
     {id:'dance',name:'Пляска Кота на цепи',cost:1},{id:'sunduk',lv:'5-1',name:'«Сундук на дубе»',lines:['У Буяна бел-горюч камень Алатырь лежит,<br>Четыре знака по нему бегут-бежит.','На дубе — сундук на пяти цепях: четыре с замками, а пятую держит Лихо Одноглазое.','Лихо не бьют — Лихо усыпляют. Не буди лихо, пока оно тихо!']},
     {id:'zayac',lv:'5-2',name:'«Заяц»',lines:['Зайца не догнать — зайца загоняют.','Встали четверо столбами в ряд,<br>А меж ними нити клубков летят.','А придумал, как быть, — самый малый, ёж.']},
     {id:'yajco',lv:'5-4',name:'«Яйцо»',lines:['В яйце — Кощеев бальный зал,<br>Золотой, вверх дном он стал.','«Калинка» играла, и в такт, в долю,<br>Пол переворачивался поневоле.','А в клетке из чёрных ниток Звенышко сидело —<br>И Йоша успел — вот какое дело!']},
-    {id:'zastava',name:'Испытанья Заставы — у знака Заставы ждут.',cost:2,locked:true}];
+    {id:'zastava',name:'Испытанья Заставы — у ворот Заставы ждут.',cost:2,locked:true}];
   function openTales(pi){G.ui='tales';let sel=0;const el=$('mapui');el.style.display='flex';const list=(skazTold().length||G.flags.skaz5?[{id:'book',name:'Наши сказки',book:true}]:[]).concat(TALES.filter(t=>!t.lv||G.done[t.lv]));
     const draw=()=>{el.innerHTML='<div class="tet"><h2>Кот Учёный · сказки-лубки</h2><div class="step">'+ICO_GEM+' Самоцветы: '+gemsAvail()+' <small style="opacity:.7">(самоцвет — за уровень, где собраны все звенья, и за каждого босса)</small></div>'+
       list.map((t,i)=>'<div class="opt'+(i===sel?' sel':'')+'" style="justify-content:space-between'+(t.locked?';opacity:.5':'')+'">'+(t.lv?'Сказка '+t.name:t.name)+'<small>'+(t.book?'читать':t.lv?(G.tales[t.id]?'смотреть снова':'1 самоцвет'):t.locked?'скоро':(t.cost+' самоцвет'))+'</small></div>').join('')+
@@ -128,7 +126,7 @@
         if(!tap(pi,'attack'))continue;
         if(nearNpc(h,vek.position)){dressOpen(pi,'shop');break;}
         if(nearNpc(h,kot.g.position,3.2)){openTales(pi);break;}
-        if(nearNpc(h,ZASTAVA,2.4)){openZastava(pi);break;}
+        if(ZH.near(h)){openZastava(pi);break;}
         if(G.flags.w5done&&nearNpc(h,new V3(-12,0,-1.6),2.2)){retellSkaz5(pi);break;}
         if(koschH&&nearNpc(h,koschH.g.position,2.4)){bark(koschH,'koschei',['Расскажи ещё — прошу.','Молоточек почти готов — ещё чуток.','Я слушаю. Сказывай.'][Math.floor(rand(0,3))],2);break;}}});
     const lab=(pi,pos,dist,text,cond)=>prompt(pi,'label',()=>pos(),()=>F.stage==='free'&&!G.ui&&hd(active(pi).pos,pos())<dist&&(!cond||cond()),text);
@@ -136,8 +134,8 @@
       lab(pi,()=>new V3(10.2,3.2,-0.6),9,'Кузьма · кузня',()=>!(hd(active(pi).pos,anvil.position)<2.2));
       lab(pi,()=>new V3(7.9,2.4,5.4),9,'Векша · лавка',()=>!nearNpc(active(pi),vek.position));
       lab(pi,()=>kot.g.position.clone().add(new V3(0,2.6,0)),9,'Кот Учёный · сказки',()=>!nearNpc(active(pi),kot.g.position,3.2));
-      lab(pi,()=>new V3(-17.5,2.6,7),8,'Застава · испытания богатырей');
-      prompt(pi,'attack',()=>headOf(active(pi)),()=>F.stage==='free'&&!G.ui&&nearNpc(active(pi),ZASTAVA,2.4),'испытания');
+      lab(pi,()=>ZH.label,16,()=>ZH.open()?'Застава · испытания богатырей':'Застава · ворота на засове: два самоцвета');
+      prompt(pi,'attack',()=>headOf(active(pi)),()=>F.stage==='free'&&!G.ui&&ZH.near(active(pi)),'испытания');
       prompt(pi,'attack',()=>headOf(active(pi)),()=>F.stage==='free'&&!G.ui&&nearNpc(active(pi),vek.position),'лавка Векши');
       prompt(pi,'attack',()=>headOf(active(pi)),()=>F.stage==='free'&&!G.ui&&nearNpc(active(pi),kot.g.position,3.2),'сказки Кота');}
   }
