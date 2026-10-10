@@ -28,6 +28,7 @@ U.rel(0);ZC.hold('KeyG',false);if(F.phase===1)throw new Error('этап 1 не �
 const D=D2(),F=ZC.W.flags,e=D.vod,S=D.S2,SH=D.SHOAL[1],SR=D.SH2[1];const dx=(0-SH.x)/8.6,dz=(-14-SH.z)/8.6;let rides=0,prevR=null,plays=0;const T0=ZC.G.time;U.toKind('proshka');
 for(let i=0;i<60*240&&F.phase===2;i++){if(S.rider!==prevR){if(S.rider)rides++;prevR=S.rider;}const h=U.me();if(i%120===0)window._lg=(window._lg||'')+' ['+((ZC.G.time-T0)|0)+' '+S.horses.map(H=>H.state[0]).join('')+' e'+e.embers+' '+h.kind[0]+(h.kwHold?'K':'')+' '+h.pos.x.toFixed(0)+','+h.pos.z.toFixed(0)+','+h.pos.y.toFixed(0)+' '+e.state[0]+(e.dazeT>0?'D':'')+(S.onIsl?'I':'')+']';
   if(h.k2ride){ZC.tick(1);continue;}
+  if(ZC.players[h.player].downed){if(i%20===0)ZC.press('KeyQ');ZC.tick(1);continue;}   // сбили: Q — к герою, которого не сбили (иначе стоять до подшивания 10–20 с)
   if(h.pos.y>2.5){if(e.dazeT>0||e.state==='broken'){U.rel(0);FACE(e.pos);if(i%9===0)ZC.press('KeyF');}ZC.tick(1);continue;}
   if(U.def(0,i)){ZC.tick(1);continue;}
   if((e.dazeT>0||e.state==='broken')&&e.pos.y<0){HIT(e,i);ZC.tick(1);continue;}

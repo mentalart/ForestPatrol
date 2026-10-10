@@ -398,6 +398,7 @@
 - **Карточки боссов** (урок `finTut`, подсказка боя `finBossHint`, табличка Соловья `solsign`) озвучены тоже — 90 записей (`kind: boss`). Их текст собирается в бою, поэтому
   `harvest_read.js` его не видит: `tools/voice/boss_cards_init.js` запоминает значения этих карточек во время прогона ботов (порядок — в шапке файла), строки `BCDUMP …`
   идут в тексты для `read_tts.py` как `{lv:'boss', kind:'boss', text}`. Новый урок или подсказка босса без записи молчит — тексты собрать заново и озвучить.
+- **Реплики героев тем же Silero** (без Higgsfield) — `tools/voice/silero_lines.py <файл> --model v4_ru.pt`: реплики из файла вида `tools/voice/pending/1-5.json` (`cast` — новые голоса, `lines` — `{id, lv, who, text, tts, max, silero?, pitch?, fx?}`) синтезируются в `tools/voice/raw/<id>.wav`, попадают в `lines.json` с `url: silero:<голос>` и проходят обычный `fetch.js` (обрезка, тон — `pitch` реплики важнее голоса, обработка `fx`, −16 LUFS). Голоса Silero: aidar, baya, kseniya, xenia, eugene.
 - **Не озвучено** (молчат): ремарки рассказчика в роликах; всё новое и изменённое, пока не прогнали `harvest_read.js` + `read_tts.py`.
 - **ffmpeg в `read_tts.py`** идёт в два прохода (обрезка тишины → громкость) с `-nostdin` и таймаутом: на части записей связка `areverse` + `loudnorm` в одном фильтре зависала навсегда.
 
