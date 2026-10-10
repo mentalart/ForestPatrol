@@ -6,7 +6,7 @@ window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push
 ZC.setSolo(false);ZC.startFrom(ZC.LV('3-2'));ZC.G.manual=true;ZC.tick(30);const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}
 ZC.FIN.tut32.auto=false;ZC.FIN.warp('boss');ZC.tick(10);for(const h of Object.values(ZC.HERO))h.following=false;U.goto(0,0,-307,5);
 window.WATCH=()=>{const bad=[];let n=0,prev=new Set();const an=a=>{while(a>Math.PI)a-=Math.PI*2;while(a<-Math.PI)a+=Math.PI*2;return a;};
-  for(let i=0;i<60*25&&ZC.G.cine;i++){ZC.tick(1);if(i%30!==29)continue;n++;const cd=typeof CINE!=="undefined"&&CINE.CD?CINE.CD():null;const cp=cd&&cd.S===ZC.G.cine&&cd.pose&&cd.pose.pos||ZC.G.cine.camPos;if(!cp)continue;window.CDN=(window.CDN||0)+(cd&&cd.S===ZC.G.cine?1:0);
+  for(let i=0;i<60*25&&ZC.G.cine;i++){ZC.tick(1);if(!ZC.G.cine)break;if(i%30!==29)continue;n++;const cd=typeof CINE!=="undefined"&&CINE.CD?CINE.CD():null;const cp=cd&&cd.S===ZC.G.cine&&cd.pose&&cd.pose.pos||ZC.G.cine.camPos;if(!cp)continue;window.CDN=(window.CDN||0)+(cd&&cd.S===ZC.G.cine?1:0);
     const cur=new Set();for(const h of Object.values(ZC.HERO)){const d=Math.hypot(h.pos.x-cp.x,h.pos.z-cp.z);if(d>18||!h.g.visible)continue;const to=Math.atan2(cp.x-h.pos.x,cp.z-h.pos.z),a=Math.abs(an(h.face-to));
       if(a>1.75&&ZC.G.cine.t>0.6){cur.add(h.kind);if(prev.has(h.kind))bad.push(h.kind+'@'+ZC.G.cine.t.toFixed(1)+':'+(a*57).toFixed(0)+'°');}}prev=cur;   // спиной два замера подряд (на склейке разворот занимает кадр)
     const bn=document.getElementById('banner');if(bn&&bn.style.opacity!==''&&+bn.style.opacity>0.05&&ZC.G.cine&&ZC.G.cine.t>0.8)bad.push('banner@'+ZC.G.cine.t.toFixed(1));
