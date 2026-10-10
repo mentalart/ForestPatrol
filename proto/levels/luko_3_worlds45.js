@@ -33,7 +33,7 @@
       tick:(t,dt)=>{for(const f of fly){const k=clamp((t-17.6)/f.d,0,1);f.r.position.lerpVectors(f.from,f.to,smooth(k));f.r.position.y=lerp(f.from.y,0.08,k*k)+Math.sin(k*Math.PI)*0.6;f.r.rotation.x+=k<1?0.2:0;}
         if(F.zvenCaught&&t<47.4){const hp=new V3();ko.hand.getWorldPosition(hp);Zv.pos.copy(hp);}},
       end:()=>{G.flags.w3done=true;F.stage='free';ko.g.visible=false;Zv.vis=false;if(nb3)W.group.remove(nb3.g);po.guard=false;
-        banner('Сказ «Соловьиная песня»','#ffd76a',2.6,'звенья мира при вас остаются · весточка: '+(G.flags.skaz3?G.flags.skaz3[1]:'Жар-птица'));later(3,()=>showMenu('end'));}});}
+        banner('Сказ «Соловьиная песня»','#ffd76a',2.6,'звенья мира при вас остаются · весточка: '+(G.flags.skaz3?VEST[helperOf(3)][0]:'Жар-птица'));later(3,()=>showMenu('end'));}});}
 
   /* ---------- Мир 4: без Звенышка — подсказки читает Пелагея; витки сращивают Демьяновыми клещами ---------- */
   const W4COIL=['4-1','4-2','4-4'];
@@ -129,25 +129,11 @@
         later(3,()=>{F.landed=true;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-16,0);h.face=Math.PI*0.8;});});}}],
       tick:(t)=>{if(!F.landed&&t<3){HEROES.forEach((h,i)=>{const o=new V3(...onBack[i]).multiplyScalar(0.75).applyEuler(g.rotation);h.pos.set(g.position.x+o.x,g.position.y+o.y,g.position.z+o.z);h.vel.set(0,0,0);});}},
       end:()=>{W.anims.length=0;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-1.6,0);h.face=Math.PI;});g.position.set(-10,0.4,-21);snapCams();skaz4();}});}
-  function skaz4(){G.ui='skaz';const el=$('skaz');el.style.display='flex';
-    const steps=[{who:0,title:'Начало выбирает Игрок первый.',opts:['Три головы всё спорили — не сговорились','У огненной реки кузня стояла','Жил-был медведь, что мост держал']},
-      {who:1,title:'Помощника выбирает Игрок второй.',opts:['Демьян с молотом тяжёлым','Кикимора с куделью крепкою','Леший со светлячками-огоньками']},
-      {who:2,title:'Конец — вместе: оба на одной строке, и оба жмите разом.',opts:['И понял Змей: у трёх голов — одно сердце','И по Калинову мосту опять ходят','И кузнецы от жара пробудились']}];
-    let st=0;const sel=[0,0,0],both=[0,0],ok=[false,false];
-    const draw=()=>{const s2=steps[st];el.innerHTML='<div class="tet"><h2>Сказ · «Одно сердце»</h2><div class="step">'+s2.title+'</div>'+
-      s2.opts.map((o,i)=>'<div class="opt'+((s2.who<2?sel[st]===i:false)?' sel':'')+'">'+(s2.who===2?[0,1].map(q=>both[q]===i?'<b style="color:'+PCSS[q]+'">'+(ok[q]?'●':'○')+'</b>':'<b></b>').join(''):'')+o+'</div>').join('')+
-      '<div class="hint">'+(s2.who===2?'оба: '+K(0,'left')+K(0,'right')+' / '+K(1,'left')+K(1,'right')+' · '+K(0,'jump')+' + '+K(1,'jump'):K(s2.who,'up')+K(s2.who,'down')+' · '+K(s2.who,'jump'))+'</div>'+
-      '<div class="tale">'+[steps[0].opts[sel[0]],st>0?'помощник — '+steps[1].opts[sel[1]]:''].filter(x=>x).join(' · ')+'</div></div>';};
-    draw();
-    G.uiTick=()=>{const s2=steps[st];
-      if(s2.who<2){const n=uiNav(UW(s2.who));if(n.dy||n.dx){sel[st]=(sel[st]+(n.dy||n.dx)+3)%3;SFX.swap();draw();}if(tap(UW(s2.who),'jump')){SFX.ok();st++;draw();}}
-      else{for(const q of[0,1]){const n=uiNav(q);if(n.dy||n.dx){both[q]=(both[q]+(n.dy||n.dx)+3)%3;ok[q]=false;SFX.swap();draw();}if(tap(q,'jump')){ok[q]=true;if(G.solo){ok[1-q]=true;both[1-q]=both[q];}SFX.plate();draw();}}
-        if(ok[0]&&ok[1]){if(both[0]===both[1]){sel[2]=both[0];SFX.ok();G.ui=null;G.uiTick=null;el.style.display='none';tell4(steps.map((x,i)=>x.opts[sel[i]]));}
-          else{ok[0]=ok[1]=false;SFX.miss();banner('Конец — одной строкой!','#ffd0d0',1.4,'договоритесь — и нажмите вдвоём');draw();}}}};}
+  function skaz4(){skazChoose(4,tell4);}
   let nb4=null;
-  function tell4(t){const pe=T.pelageya,pr=T.proshka;G.flags.skaz4=t;nb4=makeNotebook();nb4.g.scale.setScalar(0.9);nb4.g.position.set(pe.pos.x+0.1,0.95,pe.pos.z+0.3);
-    play({dur:15.6,fov:46,shots:[shot(0,[pe.pos.x+1.8,1.3,pe.pos.z+1.5],[pe.pos.x,0.9,pe.pos.z]),shot(8.4,[pr.pos.x-1.6,1.3,pr.pos.z+1.6],[pr.pos.x,0.9,pr.pos.z])],
-      says:[[0.3,3.6,'pelageya',t[0]+'…'],[4.1,3.6,'pelageya','И помог им в том '+t[1]+'.'],[7.9,4.2,'pelageya',t[2]+'.'],[12.2,3.2,null,'<i>Пелагея сказывает ровно, гладко —</i><br><i>Но глаз не отрывает от тетрадки.</i>',true]],
+  function tell4(t){const pe=T.pelageya,pr=T.proshka;nb4=makeNotebook();nb4.g.scale.setScalar(0.9);nb4.g.position.set(pe.pos.x+0.1,0.95,pe.pos.z+0.3);
+    skazTell(4,t,{shot0:shot(0,[pe.pos.x+1.8,1.3,pe.pos.z+1.5],[pe.pos.x,0.9,pe.pos.z]),lastShot:T0=>shot(T0,[pr.pos.x-1.6,1.3,pr.pos.z+1.6],[pr.pos.x,0.9,pr.pos.z]),
+      closers:[[0,3.2,null,'<i>Пелагея сказывает ровно, гладко —</i><br><i>Но глаз не отрывает от тетрадки.</i>',true]],tail:3.4,
       end:()=>{later(0.2,writeScene);}});}
   // «Жил-был мальчишка, который хотел сочинять сказки…» — ручка останавливается
   function writeScene(){G.ui='write';const el=$('skaz');el.style.display='flex';const txt='Жил-был мальчик — сказки сам сложить мечтал…';let n=0,tt=0,stopT=0;

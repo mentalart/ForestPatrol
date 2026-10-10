@@ -69,30 +69,16 @@
       end:()=>{F.forging=false;kuz.arm.rotation.x=0;kuz.arm.rotation.z=0;kot.body.rotation.y=0;kot.head.rotation.y=0;T.yosha.extraY=0;G.flags.forged2=true;}});}
   /* ---------- Сказ 2 «Колокола Китежа»: Кот без голоса — Пелагея рассказывает сама, шёпотом ---------- */
   function festival2(){F.stage='fest';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-1.6,0);h.face=Math.PI;});snapCams();
-    play({dur:7.6,fov:48,shots:[shot(0,[0,3,5],[0,1.2,-3])],says:[[0.4,3.6,null,'<i>Второй Сказ. Кот без голоса — сказывать некому.</i><br><i>Пелагея над тетрадкой сидит, думу думает…</i>',true],[4.1,3.2,'zven','Выбирайте: начало, помощник, конец!']],end:()=>skaz2()});}
-  function skaz2(){G.ui='skaz';const el=$('skaz');el.style.display='flex';
-    const steps=[{who:0,title:'Начало выбирает Игрок первый.',opts:['В граде, где все крепко спали','Под водой, во граде Китеже златом','Жил-был кит, корабли глотавший']},
-      {who:1,title:'Помощника выбирает Игрок второй.',opts:['Садко с гуслями звончатыми — в лад','Рыба-кит, что издалёка подшивает','Золотая рыбка — показ призрачный']},
-      {who:2,title:'Конец — вместе: оба на одной строке, и оба жмите разом.',opts:['И кит корабли глотать не стал: зуб у него болеть перестал','И Китеж снова звонит поутру','И Водяной под колокола засыпает']}];
-    let st=0;const sel=[0,0,0],both=[0,0],ok=[false,false];
-    const draw=()=>{const s2=steps[st];el.innerHTML='<div class="tet"><h2>Сказ · «Колокола Китежа»</h2><div class="step">'+s2.title+'</div>'+
-      s2.opts.map((o,i)=>'<div class="opt'+((s2.who<2?sel[st]===i:false)?' sel':'')+'">'+(s2.who===2?[0,1].map(q=>both[q]===i?'<b style="color:'+PCSS[q]+'">'+(ok[q]?'●':'○')+'</b>':'<b></b>').join(''):'')+o+'</div>').join('')+
-      '<div class="hint">'+(s2.who===2?'оба: '+K(0,'left')+K(0,'right')+' / '+K(1,'left')+K(1,'right')+' · '+K(0,'jump')+' + '+K(1,'jump'):K(s2.who,'up')+K(s2.who,'down')+' · '+K(s2.who,'jump'))+'</div>'+
-      '<div class="tale">'+[steps[0].opts[sel[0]],st>0?'помощник — '+steps[1].opts[sel[1]]:''].filter(x=>x).join(' · ')+'</div></div>';};
-    draw();
-    G.uiTick=()=>{const s2=steps[st];
-      if(s2.who<2){const n=uiNav(UW(s2.who));if(n.dy||n.dx){sel[st]=(sel[st]+(n.dy||n.dx)+3)%3;SFX.swap();draw();}if(tap(UW(s2.who),'jump')){SFX.ok();st++;draw();}}
-      else{for(const q of[0,1]){const n=uiNav(q);if(n.dy||n.dx){both[q]=(both[q]+(n.dy||n.dx)+3)%3;ok[q]=false;SFX.swap();draw();}if(tap(q,'jump')){ok[q]=true;if(G.solo){ok[1-q]=true;both[1-q]=both[q];}SFX.plate();draw();}}
-        if(ok[0]&&ok[1]){if(both[0]===both[1]){sel[2]=both[0];SFX.ok();G.ui=null;G.uiTick=null;el.style.display='none';tell2(steps.map((x,i)=>x.opts[sel[i]]));}
-          else{ok[0]=ok[1]=false;SFX.miss();banner('Конец — одной строкой!','#ffd0d0',1.4,'договоритесь — и нажмите вдвоём');draw();}}}};}
-  function tell2(t){const T=HERO,pe=T.pelageya;G.flags.skaz2=t;
-    play({dur:17.4,fov:46,shots:[shot(0,[pe.pos.x+1.8,1.3,pe.pos.z+1.5],[pe.pos.x,0.9,pe.pos.z]),shot(8.4,[3.8,2,-1.2],[2.3,1.7,-4.6]),shot(12.6,[0,4,6],[0,3.4,-7])],
-      says:[[0.3,3.6,'pelageya','<i>(шёпотом — еле слышно, но сама)</i> '+t[0]+'…'],[4.1,3.6,'pelageya','<i>(шёпотом)</i> И помог им в том '+t[1].replace(/^./,c=>c.toLowerCase())+'.'],[7.9,4.2,'pelageya','<i>(шёпотом)</i> '+t[2]+'.'],
-        [12.3,2.4,null,'<i>Кот, зажмурясь, слушает и мурлычет.</i>',true],[14.9,2.4,null,'<i>Кузьма цепь на дубе выше подымает.</i>',true]],
-      events:[{t:12.3,fn:()=>{kot.lids.forEach(l=>{l.rotation.x=1.3;});for(let i=0;i<6;i++)tone(70+(i%2)*6,0.4,'sawtooth',0.05,null,i*0.35);}},
-        {t:14.9,fn:()=>{const c=addCoil(Math.max(1,G.flags.coils||1),true);c.scale.setScalar(0.01);anim(1.4,k=>c.scale.setScalar(Math.max(0.01,smooth(k))));SFX.link();G.flags.coils=Math.max(2,G.flags.coils||0);}}],
-      tick:(tt)=>{pe.body.position.y=tt>0.3&&tt<12?Math.abs(Math.sin(tt*7))*0.02:0;},
-      end:()=>{kot.lids.forEach(l=>{l.rotation.x=-0.5;});pe.body.position.y=0;G.flags.w2done=true;F.stage='free';banner('Сказ «Колокола Китежа»','#ffd76a',2.4,'цепь на дубе длиннее стала · весточка: '+t[1]);later(2.6,()=>showMenu('end'));}});}
+    const pa=skazAcc(1);   // эхо: Пелагея вспоминает прошлую сказку, помощник которой ещё стоит на поляне
+    play({dur:pa?12:7.6,fov:48,shots:[shot(0,[0,3,5],[0,1.2,-3])].concat(pa?[shot(4.1,[-3.4,1.8,1.6],[SKAZ_HELPER_AT[0],1.1,SKAZ_HELPER_AT[1]])]:[]),says:[[0.4,3.6,null,'<i>Второй Сказ. Кот без голоса — сказывать некому.</i><br><i>Пелагея над тетрадкой сидит, думу думает…</i>',true]].concat(pa?[[4.1,4.2,'pelageya',SKAZ[2].pre+'Помнишь прошлую сказку? Про '+pa+'…']]:[],[[pa?8.5:4.1,3.2,'zven','Выбирайте: начало, помощник, конец!']]),end:()=>skaz2()});}
+  function skaz2(){skazChoose(2,tell2);}
+  function tell2(t){const T=HERO,pe=T.pelageya;
+    skazTell(2,t,{shot0:shot(0,[pe.pos.x+1.8,1.3,pe.pos.z+1.5],[pe.pos.x,0.9,pe.pos.z]),lastShot:T0=>shot(T0,[0,4,6],[0,3.4,-7]),
+      closers:[[0,2.4,null,'<i>Кот, зажмурясь, слушает и мурлычет.</i>',true],[2.6,2.4,null,'<i>Кузьма цепь на дубе выше подымает.</i>',true]],tail:3.2,
+      events:[{t:0,fn:()=>{kot.lids.forEach(l=>{l.rotation.x=1.3;});for(let i=0;i<6;i++)tone(70+(i%2)*6,0.4,'sawtooth',0.05,null,i*0.35);}},
+        {t:2.6,fn:()=>{const c=addCoil(Math.max(1,G.flags.coils||1),true);c.scale.setScalar(0.01);anim(1.4,k=>c.scale.setScalar(Math.max(0.01,smooth(k))));SFX.link();G.flags.coils=Math.max(2,G.flags.coils||0);}}],
+      tick:(tt)=>{pe.body.position.y=tt>0.3&&tt<16?Math.abs(Math.sin(tt*7))*0.02:0;},
+      end:()=>{kot.lids.forEach(l=>{l.rotation.x=-0.5;});pe.body.position.y=0;G.flags.w2done=true;F.stage='free';banner('Сказ «Колокола Китежа»','#ffd76a',2.4,'цепь на дубе длиннее стала · весточка: '+VEST[helperOf(2)][0]);later(2.6,()=>showMenu('end'));}});}
 
   const T=HERO;
   /* ---------- Мир 3: Пелагея читает по тетрадке, пантомима Кота (3 из 3), ролик рушника — Звенышко взлетает в вышитые облака ---------- */
@@ -124,27 +110,13 @@
       end:()=>{F.forging=false;kuz.head.rotation.y=0;G.flags.forged3=true;}});}
   /* ---------- Сказ 3 «Соловьиная песня»: Пелагея рассказывает вполголоса; Варя — начало, я — помощника ---------- */
   function festival3(){F.stage='fest';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-1.6,0);h.face=Math.PI;});snapCams();
-    play({dur:7.6,fov:48,shots:[shot(0,[0,3,5],[0,1.2,-3])],says:[[0.4,3.6,null,'<i>Третий Сказ. Пелагея тетрадку раскрыла —</i><br><i>Вполголоса сказывать будет, набравшись силы.</i>',true],[4.1,3.2,'zven','Выбирайте: начало, помощник, конец!']],end:()=>skaz3()});}
-  function skaz3(){G.ui='skaz';const el=$('skaz');el.style.display='flex';
-    const steps=[{who:1,title:'Начало выбирает Игрок второй.',opts:['Над облаками темень легла','В саду, где яблочки молодильные','Жил-был Соловей, что петь разучился']},
-      {who:0,title:'Помощника выбирает Игрок первый.',opts:['Жар-птица с пёрышком тёплым','Сирин и Алконост — песня складная','Баба Яга на ступе — долг платежом красен, дело ясно']},
-      {who:2,title:'Конец — вместе: оба на одной строке, и оба жмите разом.',opts:['И Соловей запел опять: с ним первым кто-то стал подпевать','И в саду снова светло стало','И гуси-лебеди домой воротились']}];
-    let st=0;const sel=[0,0,0],both=[0,0],ok=[false,false];
-    const draw=()=>{const s2=steps[st];el.innerHTML='<div class="tet"><h2>Сказ · «Соловьиная песня»</h2><div class="step">'+s2.title+'</div>'+
-      s2.opts.map((o,i)=>'<div class="opt'+((s2.who<2?sel[st]===i:false)?' sel':'')+'">'+(s2.who===2?[0,1].map(q=>both[q]===i?'<b style="color:'+PCSS[q]+'">'+(ok[q]?'●':'○')+'</b>':'<b></b>').join(''):'')+o+'</div>').join('')+
-      '<div class="hint">'+(s2.who===2?'оба: '+K(0,'left')+K(0,'right')+' / '+K(1,'left')+K(1,'right')+' · '+K(0,'jump')+' + '+K(1,'jump'):K(s2.who,'up')+K(s2.who,'down')+' · '+K(s2.who,'jump'))+'</div>'+
-      '<div class="tale">'+[steps[0].opts[sel[0]],st>0?'помощник — '+steps[1].opts[sel[1]]:''].filter(x=>x).join(' · ')+'</div></div>';};
-    draw();
-    G.uiTick=()=>{const s2=steps[st];
-      if(s2.who<2){const n=uiNav(UW(s2.who));if(n.dy||n.dx){sel[st]=(sel[st]+(n.dy||n.dx)+3)%3;SFX.swap();draw();}if(tap(UW(s2.who),'jump')){SFX.ok();st++;draw();}}
-      else{for(const q of[0,1]){const n=uiNav(q);if(n.dy||n.dx){both[q]=(both[q]+(n.dy||n.dx)+3)%3;ok[q]=false;SFX.swap();draw();}if(tap(q,'jump')){ok[q]=true;if(G.solo){ok[1-q]=true;both[1-q]=both[q];}SFX.plate();draw();}}
-        if(ok[0]&&ok[1]){if(both[0]===both[1]){sel[2]=both[0];SFX.ok();G.ui=null;G.uiTick=null;el.style.display='none';tell3(steps.map((x,i)=>x.opts[sel[i]]));}
-          else{ok[0]=ok[1]=false;SFX.miss();banner('Конец — одной строкой!','#ffd0d0',1.4,'договоритесь — и нажмите вдвоём');draw();}}}};}
-  function tell3(t){const pe=T.pelageya,pr=T.proshka;G.flags.skaz3=t;
-    play({dur:16.6,fov:46,shots:[shot(0,[pe.pos.x+1.8,1.3,pe.pos.z+1.5],[pe.pos.x,0.9,pe.pos.z]),shot(8.4,[pr.pos.x-1.6,1.3,pr.pos.z+1.6],[pr.pos.x,0.9,pr.pos.z]),shot(12.4,[0,3,4],[0,2.6,-6])],
-      says:[[0.3,3.6,'pelageya','<i>(вполголоса)</i> '+t[0]+'…'],[4.1,3.6,'pelageya','<i>(вполголоса)</i> И помог им в том '+t[1].replace(/^./,c=>c.toLowerCase())+'.'],[7.9,4.2,'pelageya','<i>(вполголоса)</i> '+t[2]+'.'],
-        [12.3,4,null,'<i>Прошка рядом сидит — и впервые не скучает,</i><br><i>Не зевает, а сказку слушает, внимает.</i>',true]],
-      tick:(tt)=>{pe.body.position.y=tt>0.3&&tt<12?Math.abs(Math.sin(tt*7))*0.02:0;},
+    const pa=skazAcc(2);
+    play({dur:pa?12:7.6,fov:48,shots:[shot(0,[0,3,5],[0,1.2,-3])].concat(pa?[shot(4.1,[-3.4,1.8,1.6],[SKAZ_HELPER_AT[0],1.1,SKAZ_HELPER_AT[1]])]:[]),says:[[0.4,3.6,null,'<i>Третий Сказ. Пелагея тетрадку раскрыла —</i><br><i>Вполголоса сказывать будет, набравшись силы.</i>',true]].concat(pa?[[4.1,4.2,'pelageya',SKAZ[3].pre+'Помнишь прошлую сказку? Про '+pa+'…']]:[],[[pa?8.5:4.1,3.2,'zven','Выбирайте: начало, помощник, конец!']]),end:()=>skaz3()});}
+  function skaz3(){skazChoose(3,tell3);}
+  function tell3(t){const pe=T.pelageya,pr=T.proshka;
+    skazTell(3,t,{shot0:shot(0,[pe.pos.x+1.8,1.3,pe.pos.z+1.5],[pe.pos.x,0.9,pe.pos.z]),lastShot:T0=>shot(T0,[pr.pos.x-1.6,1.3,pr.pos.z+1.6],[pr.pos.x,0.9,pr.pos.z]),
+      closers:[[0,4,null,'<i>Прошка рядом сидит — и впервые не скучает,</i><br><i>Не зевает, а сказку слушает, внимает.</i>',true]],tail:4.4,dropHelper:true,   // на пиру свои гости: Жар-птица, Соловей, Яга
+      tick:(tt)=>{pe.body.position.y=tt>0.3&&tt<16?Math.abs(Math.sin(tt*7))*0.02:0;},
       end:()=>{pe.body.position.y=0;later(0.3,feast3);}});}
   /* ---------- мнимая победа: настоящий праздник, третий виток, Кот шепчет вслух ---------- */
   let fb3=null,sv3=null,st3=null,nb3=null;

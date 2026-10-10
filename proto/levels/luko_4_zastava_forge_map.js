@@ -90,14 +90,14 @@
     {id:'zayac',lv:'5-2',name:'«Заяц»',lines:['Зайца не догнать — зайца загоняют.','Встали четверо столбами в ряд,<br>А меж ними нити клубков летят.','А придумал, как быть, — самый малый, ёж.']},
     {id:'yajco',lv:'5-4',name:'«Яйцо»',lines:['В яйце — Кощеев бальный зал,<br>Золотой, вверх дном он стал.','«Калинка» играла, и в такт, в долю,<br>Пол переворачивался поневоле.','А в клетке из чёрных ниток Звенышко сидело —<br>И Йоша успел — вот какое дело!']},
     {id:'zastava',name:'Испытанья Заставы — у знака Заставы ждут.',cost:2,locked:true}];
-  function openTales(pi){G.ui='tales';let sel=0;const el=$('mapui');el.style.display='flex';const list=TALES.filter(t=>!t.lv||G.done[t.lv]);
+  function openTales(pi){G.ui='tales';let sel=0;const el=$('mapui');el.style.display='flex';const list=(skazTold().length||G.flags.skaz5?[{id:'book',name:'Наши сказки',book:true}]:[]).concat(TALES.filter(t=>!t.lv||G.done[t.lv]));
     const draw=()=>{el.innerHTML='<div class="tet"><h2>Кот Учёный · сказки-лубки</h2><div class="step">'+ICO_GEM+' Самоцветы: '+gemsAvail()+' <small style="opacity:.7">(самоцвет — за уровень, где собраны все звенья, и за каждого босса)</small></div>'+
-      list.map((t,i)=>'<div class="opt'+(i===sel?' sel':'')+'" style="justify-content:space-between'+(t.locked?';opacity:.5':'')+'">'+(t.lv?'Сказка '+t.name:t.name)+'<small>'+(t.lv?(G.tales[t.id]?'смотреть снова':'1 самоцвет'):t.locked?'скоро':(t.cost+' самоцвет'))+'</small></div>').join('')+
+      list.map((t,i)=>'<div class="opt'+(i===sel?' sel':'')+'" style="justify-content:space-between'+(t.locked?';opacity:.5':'')+'">'+(t.lv?'Сказка '+t.name:t.name)+'<small>'+(t.book?'читать':t.lv?(G.tales[t.id]?'смотреть снова':'1 самоцвет'):t.locked?'скоро':(t.cost+' самоцвет'))+'</small></div>').join('')+
       (list.length<3?'<div class="tale">новые сказки — за пройденные уровни мира</div>':'')+'<div class="hint">'+K(pi,'up')+K(pi,'down')+' · '+K(pi,'jump')+' · '+K(pi,'guard')+' уйти</div></div>';};
     draw();if(G.flags.kotVoice)bark(kot,'kot','Садитесь! Расскажу — словами, своими, живыми!',2);else if(!G.flags.voiceDone)bark(kot,'kot','Садитесь. Лапами расскажу — как смогу.',1.8);else bark(kot,'kot','Мяу.',1.2);
     G.uiTick=()=>{for(const q of[0,1]){const n=uiNav(q);if(n.dy){sel=(sel+n.dy+list.length)%list.length;SFX.swap();draw();}
       if(tap(q,'guard')||pressed.has('Escape')){closePanel();return;}
-      if(tap(q,'jump')){const t=list[sel];if(t.locked){SFX.miss();return;}const cost=t.lv?(G.tales[t.id]?0:1):t.cost;if(gemsAvail()<cost){SFX.miss();tip(q,'Нужен самоцвет. А самоцвет дают тому,<br>Кто все звенья в уровне собрал — по одному.',2.6);return;}
+      if(tap(q,'jump')){const t=list[sel];if(t.book){SFX.ok();showBook(q);return;}if(t.locked){SFX.miss();return;}const cost=t.lv?(G.tales[t.id]?0:1):t.cost;if(gemsAvail()<cost){SFX.miss();tip(q,'Нужен самоцвет. А самоцвет дают тому,<br>Кто все звенья в уровне собрал — по одному.',2.6);return;}
         G.gemsSpent+=cost;SFX.bell();if(t.lv){G.tales[t.id]=true;showLubok(t);}else{closePanel();kotDance();}}}};}
   function showLubok(t){G.ui='lubok';const el=$('mapui');let i=0,tt=0;const svg=LUBOK[t.id]||'';
     const draw=()=>{el.innerHTML='<div class="lubok"><div style="font:900 22px Georgia,serif;color:#8a1a14;margin-bottom:8px">Сказка-лубок '+t.name+'</div>'+svg+'<div class="cap">'+t.lines[i]+'</div><div class="hint" style="font:600 13px system-ui;opacity:.7">'+(i+1)+' / '+t.lines.length+' · '+K(0,'jump')+' дальше</div></div>';};
@@ -105,6 +105,15 @@
     G.uiTick=()=>{tt+=1/60;kot.body.rotation.z=Math.sin(G.time*3)*0.12;kot.head.rotation.y=Math.sin(G.time*2)*0.4;
       if(tt>4.2||tap(0,'jump')||tap(1,'jump')){tt=0;i++;if(i>=t.lines.length||pressed.has('Escape')){closePanel();SFX.ok();return;}draw();SFX.flower();}
       if(tap(0,'guard')||tap(1,'guard')||pressed.has('Escape'))closePanel();};}
+  // «Наши сказки»: сказы, которые герои сложили сами (Сказы 1–4 и пятый — по памяти), по странице на сказ
+  function showBook(pi){G.ui='lubok';const el=$('mapui');el.style.display='flex';const pages=skazTold();if(G.flags.skaz5)pages.push(5);let i=0;
+    const draw=()=>{const n=pages[i];let title,body,foot;
+      if(n<5){const S=SKAZ[n],t=G.flags[SKFLAG[n]],ei=skazEnding(n);title='Наша сказка · «'+S.title+'»';body=t.slice(0,3).map(l=>'<p style="margin:8px 0;line-height:1.4">'+l+'</p>').join('');foot='помощник — '+VEST[helperOf(n)][0]+(ei>=0?' · '+SKAZ_TAGS[ei]:'');}
+      else{const t=G.flags.skaz5;title='Пятый Сказ · по памяти';body='<p style="margin:8px 0;line-height:1.4">'+t[0]+'…</p><p style="margin:8px 0;line-height:1.4">'+t[2]+'.</p>';foot='помощник — '+t[1];}
+      el.innerHTML='<div class="tet sk"><h2>'+title+'</h2><div style="text-align:center;font-family:Georgia,serif;font-size:17px">'+body+'</div><div class="tale">'+foot+'</div><div class="hint">'+(i+1)+' / '+pages.length+' · '+K(pi,'jump')+' дальше · '+K(pi,'guard')+' закрыть</div></div>';};
+    draw();
+    G.uiTick=()=>{if(tap(0,'guard')||tap(1,'guard')||pressed.has('Escape')){closePanel();return;}
+      if(tap(0,'jump')||tap(1,'jump')){i++;if(i>=pages.length){closePanel();SFX.ok();return;}draw();SFX.flower();}};}
   function kotDance(){SFX.ok();F.kotDance=4;banner('Кот на цепи пустился в пляс!','#ffd76a',2,'весь дуб звенит-поёт');SONG_C.forEach((l,i)=>later(i*0.26,()=>{gusli(l[0],0,0.14);}));}
   function closePanel(){G.ui=null;G.uiTick=null;$('mapui').style.display='none';}
   const nearNpc=(h,p,r)=>hd(h.pos,p)<(r||2.6)&&h.pos.y<1.5;
