@@ -3,7 +3,7 @@
 //  • набор значков (K5PIC.SVG) для шкалы полёта домой и летящего замка: K5PIC.one(имя, размер) — значок в HTML, K5PIC.h(список, размер) — строкой,
 //    K5PIC.spr(список, размер) — спрайтом в мире;
 //  • «тишина» (K5PIC.mute): на любой стадии не всплывают слова-указания, не рисуются кнопки над героями, у баннеров нет мелкой подписи-указания;
-//  • значок ⏭ вместо подписи пропуска ролика.
+//  • плашка пропуска ролика — без слов у всех (late_76b_cine_skip.js), отдельного значка не нужно.
 // Работает только в «Битве с Кощеем» (k5epic); остальная игра не меняется.
 const K5PIC={};FIN.k5pic=K5PIC;
 {const S=(b)=>'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'+b+'</svg>',ST='stroke="#2a1a10" stroke-width="3" stroke-linejoin="round"';
@@ -30,7 +30,6 @@ K5PIC.mute=()=>{const E=FIN.k5e;return k5On()&&!!(E&&E.noHint&&E.noHint());};
 {const _ft=floatText;floatText=function(pos,txt,col){if(k5On()&&typeof txt==='string'){const m=/^\s*([+-]?\d+)\s*лепест/i.exec(txt);if(m)return _ft.call(this,pos,m[1],col);   // «-1 лепесток» → «-1»
     if(K5PIC.mute()&&/[А-Яа-яЁё]/.test(txt))return;}   // слова не всплывают (числа — да)
   return _ft.apply(this,arguments);};}
-{const st=document.createElement('style');st.textContent='body.k5pic #skip>span:first-child{font-size:0;display:inline-block;width:46px;height:26px;background:url("data:image/svg+xml,'+encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 32"><path d="M4 4 L24 16 L4 28Z M26 4 L46 16 L26 28Z" fill="#fff4c0"/><rect x="49" y="4" width="7" height="24" rx="2" fill="#fff4c0"/></svg>')+'") center/contain no-repeat}';document.head.appendChild(st);}
 {const _hw=hudW2;hudW2=function(cine){const r=_hw.apply(this,arguments);const on=k5On();if(document.body.classList.contains('k5pic')!==on)document.body.classList.toggle('k5pic',on);if(on){const v=$('vest');if(v&&v.style.display!=='none')v.style.display='none';}return r;};}
 {const _up=updatePrompts;updatePrompts=function(){if(K5PIC.mute()){for(const b of document.querySelectorAll('#bubs .bub'))b.style.display='none';return;}return _up.apply(this,arguments);};}
 // баннеры: заголовок события оставляем, подпись-указание (мелкий текст) — убираем
