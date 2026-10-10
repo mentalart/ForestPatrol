@@ -39,6 +39,8 @@ CMP.route('1-4',[
     // бросает, когда на линии серебра (первые 10 м) нет ходячей ёлки: нить упирается в ёлку и до восьми метров не дорастает
     const a=Math.atan2(KM14_SV.ex-KM14_SV.sx,KM14_SV.ez-KM14_SV.sz),dx=Math.sin(a),dz=Math.cos(a);
     const clear=W.movers.every(m=>{const px=m.pos.x-h.pos.x,pz=m.pos.z-h.pos.z,u=px*dx+pz*dz;return u<0.5||u>10.5||Math.abs(px*dz-pz*dx)>1.6;});
+    // своя нить уже лежит: растёт — ждать; упёрлась в ёлку и не доросла до серебра (или это нить от ворот) — смотать
+    {const mine=W.threads.find(t=>t.owner===1&&!t.ret&&!t.string);if(mine){if(!mine.grow&&!(KM14.sv>G.time-0.9)){KM14.sv=G.time;cmpTap('item');}return;}}
     // ходун замер прямо на линии (его держит взгляд бота) — отвернуться, пока не уйдёт
     if(!clear){KM14.blk=(KM14.blk||0)+dt;if(KM14.blk>1.5)h.face=a+Math.PI;return;}KM14.blk=0;
     if(!(KM14.sv>G.time-0.9)){KM14.sv=G.time;cmpTap('item');}}},
@@ -47,11 +49,16 @@ CMP.route('1-4',[
   // «Друг за друга»: бот на другой тропке, чуть впереди друга, смотрит на его тропку — держит его ёлки; друг прошёл — следом (ведомый подтянется)
   {id:'lanes',first:true,done:()=>active(0).pos.z<-127.5&&active(1).pos.z<-127.5,run:(h,hh)=>{const K=W.k14;if(!K||hh.pos.z>K.LN.z0+1||hh.pos.z<K.LN.z1)return 'follow';
     const sd=hh.pos.x<0?1:-1,tz=Math.max(K.LN.z1+1,Math.min(K.LN.z0-0.5,hh.pos.z-2.5));if(cmpGoto(h,sd*1.3,tz,0.6)<=0.8)h.face=sd>0?-Math.PI/2:Math.PI/2;}},
-  // «Хоровод ёлок»: к проходу внешнего несвободного кольца (взгляд держит кольцо), шаг в проход — кольцо встаёт; так до пня
+  // «Хоровод ёлок»: к воротцам внешнего несвободного кольца (взгляд держит кольцо), шаг в воротца — кольцо встаёт; сквозь кольцо не пройти —
+  // к внутренним кольцам и к пню — через воротца уже вставших колец
   {id:'horo',done:()=>!!km14F().horoDone,run:h=>{const K=W.k14;if(!K)return 'follow';if(active(0).pos.z>-128&&h.pos.z>-128)return 'follow';
-    const HC=K.HC,r=K.horo.filter(q=>!q.locked).slice(-1)[0];if(!r){cmpGoto(h,HC.x,HC.z+0.8,0.3);return;}
-    const ra=Math.atan2(h.pos.z-HC.z,h.pos.x-HC.x),rh=Math.hypot(h.pos.x-HC.x,h.pos.z-HC.z);let da=r.a-ra;while(da>Math.PI)da-=2*Math.PI;while(da<-Math.PI)da+=2*Math.PI;
-    if(Math.abs(da)*r.R>1.0||rh>r.R+2.4){const a=ra+Math.sign(da)*Math.min(Math.abs(da),0.5),R=r.R+1.3;cmpGoto(h,HC.x+Math.cos(a)*R,HC.z+Math.sin(a)*R,0.3);}
+    const HC=K.HC,ra=Math.atan2(h.pos.z-HC.z,h.pos.x-HC.x),rh=Math.hypot(h.pos.x-HC.x,h.pos.z-HC.z),tgt=K.horo.filter(q=>!q.locked).slice(-1)[0],goal=tgt?tgt.R:0;
+    const side=k=>(h._hr&&h._hr[k])||(rh>K.horo[k].R?1:-1),blk=K.horo.filter((q,k)=>side(k)>0&&q.R>goal+0.1).sort((a,b)=>b.R-a.R)[0],r=blk||tgt;if(!r){cmpGoto(h,HC.x,HC.z+0.8,0.3);return;}
+    let da=r.a-ra;while(da>Math.PI)da-=2*Math.PI;while(da<-Math.PI)da+=2*Math.PI;
+    const P=k=>[HC.x+Math.cos(r.a)*(r.R+k),HC.z+Math.sin(r.a)*(r.R+k)],o=P(1.2),inB=Math.abs(rh-r.R)<1.0&&Math.abs(da)*r.R<0.9;
+    if(!inB&&(Math.abs(da)*r.R>0.9||rh>r.R+2.2)){const a=ra+Math.sign(da)*Math.min(Math.abs(da),0.5),R=r.R+1.2;cmpGoto(h,HC.x+Math.cos(a)*R,HC.z+Math.sin(a)*R,0.3);}
+    else if(!inB&&Math.hypot(h.pos.x-o[0],h.pos.z-o[1])>0.3)cmpGoto(h,o[0],o[1],0.2);   // сперва точно против воротец, потом — прямо в них
+    else if(r===blk){const q=P(-1.1);cmpGoto(h,q[0],q[1],0.25);}
     else{cmpGoto(h,HC.x+Math.cos(r.a)*r.R,HC.z+Math.sin(r.a)*r.R,0.25);h.face=Math.atan2(HC.x-h.pos.x,HC.z-h.pos.z)+0.9;}}},
   // «Леший водит по кругу»: бот на пне-эхо аукает, когда друг у проходов; друг сам на пне — бот бежит к золотому огоньку
   {id:'krug',done:()=>!!km14F().krugDone,run:(h,hh)=>{const K=W.k14;if(!K)return 'follow';const KG=K.KG;if(hh.pos.z>-157&&h.pos.z>-157)return 'follow';
