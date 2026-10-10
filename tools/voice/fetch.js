@@ -29,9 +29,9 @@ const TRIM='silenceremove=start_periods=1:start_threshold=-42dB:start_silence=0.
 const FORCE=process.argv.includes('--force');let done=0;
 for(const e of D.lines){if(ONLY.length&&!ONLY.includes(e.id))continue;if(!e.url){continue;}
   if(!FORCE&&!ONLY.length&&e.dur&&fs.existsSync(path.join(VD,e.id+'.mp3')))continue;   // готовые не переделываем (--force — все)
-  const ext=(e.url.match(/\.(mp3|wav|ogg|m4a)(\?|$)/)||[,'mp3'])[1],raw=path.join(RAW,e.id+'.'+ext);
-  if(!fs.existsSync(raw)){execFileSync('curl',['-sSfL','-m','60','-o',raw,e.url]);}
-  const who=e.voice||e.who,c=D.cast[who]||{},p=+c.pitch||0,r=Math.pow(2,p/12);
+  const sil=e.url.startsWith('silero:'),ext=sil?'wav':(e.url.match(/\.(mp3|wav|ogg|m4a)(\?|$)/)||[,'mp3'])[1],raw=path.join(RAW,e.id+'.'+ext);   // silero:<голос> — wav уже синтезирован (tools/voice/silero_lines.py)
+  if(!fs.existsSync(raw)){if(sil){console.log(e.id,'нет',raw,'— сначала tools/voice/silero_lines.py');continue;}execFileSync('curl',['-sSfL','-m','60','-o',raw,e.url]);}
+  const who=e.voice||e.who,c=D.cast[who]||{},p=e.pitch!==undefined?+e.pitch:(+c.pitch||0),r=Math.pow(2,p/12);   // pitch реплики важнее голоса (Silero звучит иначе, чем Eleven)
   // 1) обрезка и сдвиг тона — во временный wav, чтобы узнать длину
   const tmp=path.join(RAW,e.id+'.tmp.wav');
   const pitch=p?`,aresample=44100,asetrate=${(44100*r).toFixed(1)},aresample=44100,atempo=${(1/r).toFixed(5)}`:'';

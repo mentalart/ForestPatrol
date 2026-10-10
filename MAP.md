@@ -81,7 +81,7 @@
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_75_kids_w1, late_76_kids_fight, late_79f_fog_hint12 | 3 | tfin_bossfxcap tfin_companion_12 tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 3 | tfin_companion_13 tfin_kids1 tfin_kids2 |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_75_kids_w1, late_99b_kidnap14 | 3 | tfin_companion_14 tfin_kidnap14 tfin_kids2 |
-| `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_75_kids_w1 | 2 | tfin_companion_15 thub2 |
+| `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_75_kids_w1 | 4 | tfin_companion_15 tfin_k15_boss tfin_k15_rooms thub2 |
 | `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zd_k1b_help | 4 | tfin_companion_1b tfin_k1b3solo tfin_post tsospot |
 | `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit | 15 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tf… |
 | `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99l_kitezh_magic_water | 9 | t22d t22shot tfin_companion_22 tfin_k22 tfin_k22hint tfin_k22solo tfin_kids2 tfin_occ tfi… |
@@ -134,7 +134,7 @@
 | `levels/1-2.js` | 517 | 1-2 «КИКИМОРИНО БОЛОТО» |
 | `levels/1-3.js` | 527 | 1-3 «КОЛОБОК» — гусельный уровень |
 | `levels/1-4.js` | 205 | 1-4 «ЛЕШИЙ ВОДИТ» |
-| `levels/1-5.js` | 172 | 1-5 «КИКИМОРИНА ПРЯЛКА» |
+| `levels/1-5.js` | 482 | 1-5 «КИКИМОРИНА ПРЯЛКА» |
 | `levels/1-B.js` | 147 | 1-Б «ЛЕШИЙ-ПУТАНИК» — босс мира 1 |
 | `levels/w2_common.js` | 217 | МИР 2 · ПОДВОДНЫЙ КИТЕЖ: гусли Садко, вода участков, всплыв… |
 | `levels/2-1.js` | 210 | МИР 2 · ПОДВОДНЫЙ КИТЕЖ · 2-1 «ГУСЛИ САДКО» |
@@ -441,11 +441,11 @@
 | `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 84 файлов |
+| `changes/` | 86 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 26 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 250 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 252 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
