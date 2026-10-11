@@ -76,6 +76,15 @@ r.push('logs='+F().logs);chk(F().logs===3,'три бревна в срубе');r
 //@@ shot=t11long_terem.png
 ZC.tick(1);
 //@@
+// лесенка из чурбаков: с верха (4,4 м) Пелагея, планируя, долетает до лесов; Прошка (прыгает выше всех) — нет
+window.fly=(pi,kind)=>{const W=ZC.W,P=W.part11,K=U.K[pi],h=ZC.HERO[kind];U.toKind(kind,pi);put(h,P.STEPS.top.x,P.STEPS.top.z,4.45);ZC.tick(20);const y0=h.pos.y;
+  ZC.hold(K.B[2],true);ZC.tick(3);ZC.press(K.j);ZC.hold(K.j,true);ZC.tick(8);for(let i=0;i<180&&!h.grounded;i++)ZC.tick(1);ZC.hold(K.B[2],false);ZC.hold(K.j,false);ZC.tick(5);
+  return {y0:+y0.toFixed(1),y:+h.pos.y.toFixed(1),z:+h.pos.z.toFixed(1)};};
+F().logs=2;   // конёк пока не берётся (только подсказка) — подкидку Потапа проверяем следом
+const r=[],pe=fly(1,'pelageya'),pr=fly(0,'proshka');F().logs=3;r.push('pelageya '+JSON.stringify(pe),'proshka '+JSON.stringify(pr),'konek='+!!F().konek);chk(!F().konek,'конёк ещё не на крыше');
+chk(pe.y0>4.3&&pe.y>3.2&&pe.z<-230.4,'Пелагея долетела до лесов');chk(pr.y0>4.3&&pr.y<1,'Прошка с чурбаков до лесов не долетает');
+put(ZC.HERO.pelageya,-3,-226);r.concat(BAD)
+//@@
 // конёк: Прошка в круг у лесов, Потап сзади — подкинул; петушок кукарекает, вороны улетают, новоселье
 const W=ZC.W,P=P2(),H=ZC.HERO,r=[];U.toKind('proshka',0);put(H.proshka,P.TOSS.x,P.TOSS.z);put(H.potap,P.TOSS.x,P.TOSS.z+1.3);ZC.tick(20);U.toKind('potap',0);H.potap.face=Math.PI;ZC.tick(2);
 ZC.press('KeyE');ZC.tick(90);r.push('konek='+!!F().konek,pos(H.proshka),'links='+W.links+'/'+W.linkTotal);chk(F().konek,'конёк на крыше');

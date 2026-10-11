@@ -199,13 +199,18 @@ function build11(){
   const tmCol=colBox(TM.x-2.35,TM.x+2.35,0,2.4,TM.z-2.35,TM.z+2.35,true);
   // леса у теремка: на настил — только подкидкой Потапа; на настиле — конёк с петушком и звено
   {const fm=W.group.children.length;box(2.6,5.4,3.0,3.3,TM.z-1.4,TM.z+1.4,M(0x9a7a50));for(const[x,z]of[[2.75,-1.25],[5.25,-1.25],[2.75,1.25],[5.25,1.25]])addMesh(new THREE.CylinderGeometry(0.09,0.11,3.0,6),M(0x6b4a2b),x,1.5,TM.z+z);fadeable(since(fm));}
+  // лесенка из чурбаков (1,1 · 2,2 · 3,3 · 4,4 м) в 6,6 м перед лесами: с верха долетает только Пелагея, планируя (держи прыжок);
+  // Прошка, прыгающий выше всех, на высоте настила отсюда лишь в 6 м — до лесов не достанет
+  const STEPS={z0:-224.0,z1:-222.5,top:{x:5.3,z:-223.25}};
+  {const fm=W.group.children.length;[[9.0,10.4,1.1],[7.6,9.0,2.2],[6.2,7.6,3.3],[4.4,6.2,4.4]].forEach(([a,b,t],i)=>{box(a,b,0,t,STEPS.z0,STEPS.z1,M(i%2?0x8a5a32:0x9a6a3a));
+      const c=addMesh(new THREE.CylinderGeometry(Math.min(b-a,1.5)*0.45,Math.min(b-a,1.5)*0.45,0.04,12),M(0xe0c090),(a+b)/2,t+0.02,(STEPS.z0+STEPS.z1)/2);c.castShadow=false;});fadeable(since(fm));}
   const TOSS={x:4.0,z:-229.6};{const m=new THREE.Mesh(new THREE.RingGeometry(0.75,0.95,24),MB(0xffd76a,{transparent:true,opacity:0.55,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(TOSS.x,0.04,TOSS.z);W.group.add(m);}
   const KON={g:new THREE.Group()};KON.g.position.set(4.4,3.42,TM.z-0.6);W.group.add(KON.g);
   {const b=addMesh(new THREE.CylinderGeometry(0.12,0.12,2.4,7),M(0xb07a44),0,0.12,0,KON.g);b.rotation.x=Math.PI/2;const ck=new THREE.Group();ck.position.set(0,0.3,1.1);KON.g.add(ck);KON.cock=ck;   // конёк и петушок
     part(ck,new THREE.SphereGeometry(0.26,10,8),M(0xe8a030),0,0.2,0).scale.set(0.8,1,1.1);part(ck,new THREE.SphereGeometry(0.15,8,6),M(0xe8a030),0,0.48,0.16);part(ck,new THREE.ConeGeometry(0.05,0.14,4),M(0xffd040),0,0.46,0.34).rotation.x=Math.PI/2;
     for(let i=0;i<3;i++)part(ck,new THREE.ConeGeometry(0.05,0.14,4),M(0xd82a1a),0,0.62,0.08+i*0.07);for(let i=0;i<4;i++){const t=part(ck,new THREE.ConeGeometry(0.06,0.42,4),M([0x2a6a3a,0xd82a1a][i%2]),(i-1.5)*0.06,0.32,-0.3);t.rotation.x=-0.9+i*0.12;}}
   linkItem(4.0,3.95,TM.z+0.4);
-  const LOGS=[[-7.2,-214.5,0.3],[7.0,-217.2,-0.5],[-7.0,-224.5,0.9]].map(([x,z,ry])=>{const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;W.group.add(g);
+  const LOGS=[[-7.2,-214.5,0.3],[2.6,-213.6,-0.5],[-7.0,-224.5,0.9]].map(([x,z,ry])=>{const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=ry;W.group.add(g);
     const c=addMesh(new THREE.CylinderGeometry(0.22,0.22,2.6,8),logM[0],0,0.22,0,g);c.rotation.z=Math.PI/2;for(const s of[-1,1]){const e=addMesh(new THREE.CircleGeometry(0.21,8),M(0xe0c090),s*1.31,0.22,0,g);e.rotation.y=s*Math.PI/2;}
     return {g,state:'ground'};});
   nutItem(9.4,0.6,-238);
@@ -257,7 +262,7 @@ function build11(){
       if(q>=1){W.group.remove(L.g);L.state='done';const v=VEN[k];v.visible=true;anim(0.5,z=>{v.position.y=(1-z)*1.6;});SFX.thud();shakeAll(0.03,0.3);burst(to,0xb07a44,12,3);}});
     F.logs=k+1;tmCol.maxy=2.4+0.88*F.logs;cheer();
     if(F.logs===3){later(0.7,()=>{ROOF.visible=true;anim(0.6,z=>{ROOF.scale.set(1,z,1);});SFX.ok();banner('Сруб готов!','#ffd76a',2,'теперь конёк с петушком — на крышу');});
-      later(1.6,()=>bark(beast('lisa'),'lisa','Теперь конёк на крышу! Кто полегче — на леса, Потап подкинет!',3.0));}}
+      later(1.6,()=>bark(beast('lisa'),'lisa','Теперь конёк на крышу! Потап подкинет на леса — а совушка и с чурбаков долетит!',3.2));}}
   function konekUp(){F.konek=true;const from=KON.g.position.clone(),to=new V3(TM.x,6.95,TM.z);SFX.knot();
     anim(0.9,q=>{KON.g.position.lerpVectors(from,to,q);KON.g.position.y+=Math.sin(q*Math.PI)*1.5;KON.g.rotation.y=-q*Math.PI*2;
       if(q>=1){KON.g.rotation.y=0;burst(to,COL.gold,18,4);[0,0.25,0.5,0.8].forEach((d,i)=>later(d,()=>tone([520,660,780,990][i],0.18,'square',0.06,[560,700,820,1040][i])));
@@ -277,7 +282,7 @@ function build11(){
             q.p.set(DC.x+Math.cos(a)*3.6,Math.abs(Math.sin((t-8.6)*6+i))*0.35,DC.z+Math.sin(a)*3.6);if(q.o.face!==undefined)q.o.face=a+Math.PI;else q.o.g.rotation.y=-a;});}
         for(const h of HEROES)h.vel.set(0,0,0);},
       end:()=>{F.done=true;for(const h of HEROES)placeOnGround(h,h.pos.x,h.pos.z,0);banner('Теремок спасён!','#ffd76a',2.6,'вороны улетели к Кощею ни с чем — у зверей новоселье!');later(1.8,finishLevel);}});}
-  W.part11={RV,YB,APL,LG,PC,PCF,LOGS,TM,TOSS,KON,ybNut,SW,sheltered,hidden};   // для проверки ботом и напарника
+  W.part11={RV,YB,APL,LG,PC,PCF,LOGS,TM,TOSS,STEPS,KON,ybNut,SW,sheltered,hidden};   // для проверки ботом и напарника
   W.updates.push(dt=>{
     if(F.stage==='crows'||F.stage==='end')ravUpdate(dt);
     // яблоки: подбежал — съел; два съедено — яблонька опускает ветки
@@ -372,6 +377,7 @@ function build11(){
     prompt(pi,'guard',()=>headOf(active(pi)),()=>!!RV.dive&&RV.dive.h===active(pi)&&RV.dive.st!=='up','щит!');
     prompt(pi,'attack',()=>headOf(active(pi)),()=>F.stage==='crows'&&!F.shaken&&hd(active(pi).pos,YB)<2.8,'отряси!');
     prompt(pi,'item',()=>headOf(active(pi)),()=>F.stage==='crows'&&!W.threads.some(t=>t.owner===pi&&!t.ret)&&active(pi).pos.z<-188.4&&active(pi).pos.z>-192.2);}
+  prompt(1,'jump',()=>headOf(T.pelageya),()=>F.stage==='crows'&&F.logs>=3&&!F.konek&&T.pelageya.active&&T.pelageya.grounded&&T.pelageya.pos.y>4&&hd(T.pelageya.pos,STEPS.top)<1.6,'к лесам — держи!');
   prompt(0,'skill',()=>headOf(T.potap),()=>F.stage==='crows'&&F.logs>=3&&!F.konek&&T.potap.active&&hd(T.potap.pos,TOSS)<3.2&&HEROES.some(o=>o!==T.potap&&hd(o.pos,T.potap.pos)<2.4));
   prompt(0,'swap',()=>headOf(T.potap),()=>F.stage==='crows'&&F.logs>=3&&!F.konek&&T.proshka.active&&hd(T.proshka.pos,TOSS)<1.6&&hd(T.potap.pos,T.proshka.pos)<3);
   prompt(0,'skill',()=>headOf(T.potap),()=>F.stage==='yard'&&T.potap.active&&!roofLink.taken&&hd(T.potap.pos,{x:-6.7,z:-58})<5&&HEROES.some(o=>o!==T.potap&&hd(o.pos,T.potap.pos)<2.4));
@@ -394,7 +400,7 @@ function build11(){
     O('В дыму вороны не видят — бегом через воронью рощу!',()=>active(pi).pos.z<-187.5),
     O(()=>'Молочная речка, кисельные берега. Брось клубок '+K(pi,'item')+' —<br>по нити на тот берег!',()=>active(pi).pos.z<-205||!!F.tmHi),
     O(()=>'Теремок развалился! Брёвна вдвоём к срубу несите: '+F.logs+' / 3.',()=>F.logs>=3,()=>LOGS.filter(l=>l.state==='ground'||l.state==='carry').map(l=>l.g)),
-    O(pi?'Конёк с петушком — на крышу! Встань рядом с Потапом у лесов —<br>он подкинет на настил.':()=>'Конёк с петушком — на крышу! Прошкой встань в круг у лесов, рядом Потап,<br>смени '+K(0,'swap')+' на Потапа, жми '+K(0,'skill')+' — подкинет на настил!',()=>!!F.konek,()=>[KON.g]),
+    O(pi?()=>'Конёк с петушком — на крышу! Пелагеей по чурбакам наверх, прыгни к лесам<br>и держи '+K(1,'jump')+' — долетишь! Или встань рядом с Потапом — он подкинет.':()=>'Конёк с петушком — на крышу! Прошкой встань в круг у лесов, рядом Потап,<br>смени '+K(0,'swap')+' на Потапа, жми '+K(0,'skill')+' — подкинет! (Пелагея долетит с чурбаков.)',()=>!!F.konek,()=>[KON.g]),
     O('Новоселье в теремке!',()=>!!F.done)];
   W.objectives[0]=common(0).concat([
     O(()=>'Звено на крыше сарая! Прошкой рядом с Потапом встань,<br>Смени на Потапа, жми '+K(0,'skill')+' — он подкинет, только глянь!',()=>roofLink.taken||active(0).pos.z<-62.5,()=>[roofLink.g],()=>({kind:'proshka',action:'jump',from:new V3(-4.2,0,-58),to:new V3(-6,3.4,-58)})),
