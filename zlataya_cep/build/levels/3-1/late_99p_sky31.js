@@ -503,7 +503,7 @@ build31=function(){
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>W.abil.pero&&h.pos.z<-46&&h.pos.z>-66&&h.pos.y>-1,text:pi=>'Меняй перо в прыжке: прыгни '+K(pi,'jump')+', жми '+K(pi,'item')+'.'},
     {cond:(pi,h)=>h.pos.z<-78&&h.pos.z>-104&&Math.abs(h.pos.x)<3,text:pi=>'Свет друга гасит лиловые мостки — пропусти его.'},
-    {cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='motylek'&&!e.both&&hd(e.pos,h.pos)<8),text:pi=>'Мотылёк: зажгите два пера '+K(pi,'item')+' рядом.'+(G.solo?'<br>В одиночку: зажги перо, смени героя '+K(pi,'swap')+' — свет у оставленного не гаснет.':'')},
+    {cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='motylek'&&!e.both&&hd(e.pos,h.pos)<8),text:pi=>'Мотылёк: два пера '+K(pi,'item')+' — с двух сторон от него.'+(G.solo?'<br>В одиночку: зажги перо, смени героя '+K(pi,'swap')+' — и зайди с другой стороны.':'')},
     {cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='ten'&&hd(e.pos,h.pos)<6)&&!h.lit,text:pi=>'Тень плоская. Зажги перо '+K(pi,'item')+' — и бей!'},
     {cond:(pi,h)=>!F.bridge&&h.pos.z<-203&&h.pos.z>-208,text:pi=>'Мост трухлявый — не держит. Поднеси к нему молодильное яблочко — помолодеет!'},
     {cond:(pi,h)=>!F.oak&&!!h.apple31&&h.pos.z<-240&&h.pos.z>-247,text:pi=>'Яблочко гасит мостки — брось '+K(pi,'attack')+' другу.'+(G.solo?' В одиночку: поставь героя на островке, смени — и брось.':'')},
