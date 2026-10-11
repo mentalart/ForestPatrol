@@ -1,8 +1,8 @@
 //@@ wait=1500
 // релиз final06: напарник-бот проходит 1-4 «Леший водит» за Игрока 2: после «Пелагею увели» Йоша ползёт под корнями и поливает ёлку-замок; ведёт обоих героев
 // по тропе ёлок-ходунов; привязывает ёлки-ворота клубком у столба; на поляне Пелагея открывает Совиным взором серебряную тропу, нить ложится по серебру;
-// на двух тропках держит взглядом тропку человека; ставит кольца хоровода; аукает с пня-эхо на поляне-петле; помогает с Аукой; выход.
-// Человека (Игрок 1) играет скрипт: доходит до похищения, сбивает три шишки-замка рогаткой Прошки (встаёт на их следы), идёт по левой тропке, бегает к проходам петли, дерётся с Аукой.
+// на двух тропках держит взглядом тропку человека; ставит кольца хоровода; аукает с пня-эхо на поляне-петле; в перекличке с Аукой берёт чётные «ау»; выход.
+// Человека (Игрок 1) играет скрипт: доходит до похищения, сбивает три шишки-замка рогаткой Прошки (встаёт на их следы), идёт по левой тропке, бегает к проходам петли, поёт с Аукой нечётные «ау» перекличек.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
 window.CO=ZC.FIN.co;window.P=ZC.players;window.F=()=>ZC.W.flags;window.bot=()=>U.act(1);window.me=()=>U.act(0);
@@ -56,19 +56,14 @@ for(let i=0;i<60*150&&!F().krugDone;i++){const h=me();if(KG.busy){ZC.tick(1);con
   else if(KG.lit>0){const g=KG.gaps[KG.tru];if(h.pos.z>-184.8)U.step(0,g,-185.4,0.3);else U.step(0,g,-188.5,0.3);}else U.step(0,0,-182.5,0.5);ZC.tick(1);}
 U.rel(0);r.push('loop='+KG.loop,'t='+(ZC.G.time-t0).toFixed(0),'bot='+pos(bot())+' mode='+CO.mode,F().krugDone?'krug ok':'FAIL krug');r
 //@@
-// Аука: человек дерётся (отбивает «ау-шары», бьёт открытого, прыгает от кольца, на «АУ» встаёт на пень-эхо и аукает); бот — свои дела
-window.A=()=>ZC.W.k14.auka;const r=[];const t0=ZC.G.time;U.goto(0,0,-196,8);U.nocine();ZC.tick(5);
-for(let i=0;i<60*360&&!(ZC.W.k14.arena.cleared);i++){for(const h of Object.values(ZC.HERO))if(h.active)h.iT=Math.max(h.iT||0,0.5);if(ZC.G.cine){ZC.skip();ZC.tick(5);continue;}
-  const a=A(),e=a.e,D=a.dbg(),h=me();if(!e){ZC.tick(1);continue;}
-  if(D.ring&&h.grounded){const d=Math.hypot(h.pos.x,h.pos.z+205);if(d-D.ring.r>0.2&&d-D.ring.r<0.9)ZC.press('Space');}
-  const bo=ZC.W.bolts.find(b=>b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.18);if(bo)ZC.press('KeyG');
-  {const w=ZC.W.enemies.find(q=>q.alive&&q.state==='wind'&&q.tgt===h);if(w){const left=w.wdur-w.t;if(w.sig==='red'){if(left<0.2)ZC.press('ShiftLeft');}else if(left<0.16&&w.left===null)ZC.press('KeyG');}}
-  if(a.ph===1&&e.state==='hide'){const m=D.HL.find(q=>q.markT>0);if(m)U.step(0,m.mx,m.mz,0.6);else{U.rel(0);if(i%120===0)ZC.press('Digit1');}}
-  else if(a.ph===3&&a.windT>0){const s=D.ES.find(q=>Math.hypot(q.x-h.pos.x,q.z-h.pos.z)<Math.hypot(q.x-bot().pos.x,q.z-bot().pos.z))||D.ES[0];if(U.step(0,s.x,s.z,0.5)&&i%20===0)ZC.press('Digit1');}
-  else{const al=ZC.W.enemies.filter(q=>q.alive&&q.state!=='hide'&&q.state!=='spawn'&&q.g.visible!==false);let t=null,bd=99;for(const q of al){const d=Math.hypot(q.pos.x-h.pos.x,q.pos.z-h.pos.z);if(d<bd){bd=d;t=q;}}
-    if(!U.def(0,i)){if(t)U.hit(0,t,i);else U.rel(0);}}
-  ZC.tick(1);}
-U.rel(0);ZC.tick(5);U.nocine();r.push('ph='+A().ph,'t='+(ZC.G.time-t0).toFixed(0),'bot='+pos(bot())+' mode='+CO.mode,ZC.W.k14.arena.cleared?'auka ok':'FAIL auka ph='+A().ph+' emb='+(A().e&&A().e.embers));r
+// Аука-перекличка: человек поёт нечётные «ау» песенки (первое, третье…), бот — чётные (встаёт в круг нужного дупла и аукает)
+window.A=()=>ZC.W.k14.auka;const r=[];const t0=ZC.G.time;U.goto(0,0,-196,8);U.nocine();ZC.tick(5);let botN=0,myN=0,last=-1;
+for(let i=0;i<60*240&&!(ZC.W.k14.arena.cleared);i++){if(ZC.G.cine){ZC.skip();ZC.tick(5);continue;}
+  const a=A(),D=a.dbg(),h=me();
+  if(D.st==='play'&&D.pos!==last&&D.pos%2===1)botN++;
+  if(D.st==='play'&&D.pos%2===0){const q=D.HL[D.seq[D.pos]];if(U.step(0,q.mx,q.mz,0.5)){U.rel(0);if(i%40===0){ZC.press('Digit1');myN++;}}}else U.step(0,-2.4,-201.5,0.6);
+  last=D.st==='play'?D.pos:-1;ZC.tick(1);}
+U.rel(0);ZC.tick(5);U.nocine();r.push('ph='+A().ph,'my='+myN,'botTurns='+botN,'t='+(ZC.G.time-t0).toFixed(0),'bot='+pos(bot())+' mode='+CO.mode,ZC.W.k14.arena.cleared?'auka ok':'FAIL auka ph='+A().ph+' st='+A().dbg().st);r
 //@@
 // выход: ворота открыты — бот к выходу, уровень пройден
 const u=U.until(()=>F().out||ZC.W.levelId!=='1-4',40);
