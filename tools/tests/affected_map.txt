@@ -242,7 +242,7 @@ zlataya_cep/build/levels/3-2/late_99x_sky32_tut.js @level:3-2 tfin_sky32tut tfin
 zlataya_cep/build/levels/3-2/late_99y_sky32_cine.js @level:3-2 tfin_sky32cine tfin_sky32 tfin_sky32boss
 zlataya_cep/build/levels/3-2/late_99zd_sky32_fx.js @level:3-2 tfin_sky32fx tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut
 zlataya_cep/build/levels/3-2/late_99ze_sky32_cam.js @level:3-2 tfin_sky32fx tfin_sky32boss tfin_sky32bosssolo
-zlataya_cep/build/levels/3-1/late_99p_sky31.js @level:3-1 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo
+zlataya_cep/build/levels/3-1/late_99p_sky31.js @level:3-1 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky31cine
 zlataya_cep/build/late_95b_warp.js              smoke tfin_warp
 tools/tests/cine_frames.js                    -
 tools/tests/bots/archive/*                    -
