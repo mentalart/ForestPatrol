@@ -148,7 +148,7 @@ void main(){vec3 p=position;float lipK=smoothstep(0.35,0.62,aV)*(1.0-smoothstep(
   p.y*=1.0+(w+uPulse)*smoothstep(0.1,0.4,aV);p.z+=lipK*(uLip+sin(p.x*0.7+uT*1.7)*0.08);vV=aV;vX=p.x;vec4 wp=modelMatrix*vec4(p,1.0);vW=wp.xyz;vec4 mvPosition=viewMatrix*wp;gl_Position=projectionMatrix*mvPosition;
   #include <fog_vertex>
 }`;
-const K2_VAL_FS=`uniform float uT;uniform float uA;varying float vV;varying vec3 vW;varying float vX;
+const K2_VAL_FS=`uniform float uT;uniform float uA;uniform float uMagic;varying float vV;varying vec3 vW;varying float vX;
 #include <fog_pars_fragment>
 float hs(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.0-2.0*f);return mix(mix(hs(i),hs(i+vec2(1.0,0.0)),f.x),mix(hs(i+vec2(0.0,1.0)),hs(i+vec2(1.0,1.0)),f.x),f.y);}
@@ -159,6 +159,8 @@ void main(){vec3 n=normalize(cross(dFdx(vW),dFdy(vW)));vec3 V=normalize(cameraPo
   float lip=smoothstep(0.36,0.43,vV)*(1.0-smoothstep(0.55,0.63,vV));float toe=smoothstep(0.93,1.0,vV);float back=smoothstep(0.05,0.0,vV);
   float streak=smoothstep(0.62,0.8,vn(vec2(vX*3.0,vV*30.0-uT*4.0)))*smoothstep(0.62,0.85,vV)*0.35;
   float foam=clamp((lip*1.1+toe*0.7+back)*smoothstep(0.35,0.65,vn(vec2(vX*2.6+uT*0.7,vV*20.0+uT*1.5))+0.15)+streak,0.0,1.0);
+  float sp=smoothstep(0.84,0.97,vn(vec2(vX*2.2+uT*0.4,vV*26.0-uT*1.6)))*smoothstep(0.15,0.55,vV);
+  col=mix(col,col*vec3(0.85,1.0,1.1)+vec3(0.04,0.07,0.1),uMagic*0.5)+vec3(1.0,0.82,0.36)*sp*0.9*uMagic+vec3(0.9,0.72,0.3)*fr*0.25*uMagic;   // вода гуслей: золотые искры и кайма (c31)
   col=mix(col,vec3(0.95,1.0,1.0),foam);gl_FragColor=vec4(col,clamp(uA+foam*0.4+fr*0.2,0.0,1.0));
   #include <fog_fragment>
 }`;
@@ -166,7 +168,7 @@ K2FX.val=(Wd,Ht,o)=>{o=o||{};const P=K2_VAL_PROF,nx=o.nx||48,pos=[],av=[],idx=[]
   for(let i=0;i<=nx;i++){const x=-Wd/2+Wd*i/nx;for(const q of P){pos.push(x,q[1],q[0]);av.push(q[2]);}}
   const np=P.length;for(let i=0;i<nx;i++)for(let j=0;j<np-1;j++){const a=i*np+j,b=a+np;idx.push(a,b,a+1,a+1,b,b+1);}
   const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));g.setAttribute('aV',new THREE.Float32BufferAttribute(av,1));g.setIndex(idx);g.computeVertexNormals();
-  const U=THREE.UniformsUtils.merge([THREE.UniformsLib.fog,{uT:{value:0},uPulse:{value:0},uLip:{value:0},uA:{value:o.alpha||0.86}}]);
+  const U=THREE.UniformsUtils.merge([THREE.UniformsLib.fog,{uT:{value:0},uPulse:{value:0},uLip:{value:0},uA:{value:o.alpha||0.86},uMagic:{value:o.magic||0}}]);
   const mat=new THREE.ShaderMaterial({uniforms:U,vertexShader:K2_VAL_VS,fragmentShader:K2_VAL_FS,transparent:true,depthWrite:false,fog:true,side:THREE.DoubleSide});mat.extensions.derivatives=true;mat.userData.noOcc=true;
   const root=new THREE.Group();k2Add(root);const body=new THREE.Group();root.add(body);const mesh=new THREE.Mesh(g,mat);mesh.renderOrder=5;mesh.frustumCulled=false;body.add(mesh);const ZS=Ht*(o.depth||0.55);body.scale.set(1,Ht,ZS);
   // пена по гребню: шарики пены вдоль губы
@@ -179,13 +181,17 @@ K2FX.val=(Wd,Ht,o)=>{o=o||{};const P=K2_VAL_PROF,nx=o.nx||48,pos=[],av=[],idx=[]
       ()=>{const d=new THREE.Group();addMesh(new THREE.BoxGeometry(0.9,0.3,2.0),wood2,0,0,0,d);addMesh(new THREE.BoxGeometry(0.75,0.2,1.7),wood,0,0.15,0,d);addMesh(new THREE.ConeGeometry(0.45,0.7,4),wood2,0,0,1.3,d).rotation.x=Math.PI/2;return d;},
       ()=>{const d=new THREE.Group();addMesh(new THREE.CylinderGeometry(0.25,0.2,0.45,8),wood,0,0,0,d);addMesh(new THREE.TorusGeometry(0.25,0.03,4,10),iron,0,0.12,0,d).rotation.x=Math.PI/2;return d;}];
     const nd=Math.round(Wd/3.5);for(let i=0;i<nd;i++){const d=mk[i%3]();d.traverse(c=>{c.castShadow=false;});root.add(d);deb.push({d,x:-Wd/2+Wd*(i+0.5)/nd+rand(-0.8,0.8),ph:rand(0,6),sp:rand(0.6,1.4)});}}
+  // вода гуслей внутри вала (o.magic): золотые ноты плывут в толще (разбор мира 2, c31)
+  const notes=[];if(o.magic&&typeof KW_NOTE_TEX!=='undefined'){const nn=Math.round(Wd/1.4);for(let i=0;i<nn;i++){const s=new THREE.Sprite(new THREE.SpriteMaterial({map:KW_NOTE_TEX,transparent:true,depthWrite:false,color:0xffe08a,opacity:0.9}));
+    s.raycast=()=>{};s.renderOrder=7;root.add(s);notes.push({s,x:-Wd/2+Wd*(i+0.5)/nn+rand(-0.4,0.4),ph:rand(0,6),y:rand(0.25,0.75)});}}
   k2Dyn(root);
-  const VA={root,body,mesh,U,foam,fp,sh,deb,W:Wd,H:Ht,ZS,lip:0,pulse:0,t:rand(0,9),spray:o.spray!==false,
+  const VA={root,body,mesh,U,foam,fp,sh,deb,notes,W:Wd,H:Ht,ZS,lip:0,pulse:0,t:rand(0,9),spray:o.spray!==false,
     set(x,y,z,ry){root.position.set(x,y,z);if(ry!=null)root.rotation.y=ry;},
     tick(dt){VA.t+=dt;const t=VA.t;U.uT.value=t;VA.pulse=Math.sin(t*1.3)*0.06+Math.sin(t*0.53)*0.05;U.uPulse.value=VA.pulse;U.uLip.value=VA.lip+Math.sin(t*0.9)*0.25;
       const H=VA.H*(1+VA.pulse),zs=ZS,lipZ=(1.6+VA.lip+Math.sin(t*0.9)*0.25)*zs,lipY=0.96*H;
       for(let i=0;i<VA.fp.length;i++){const f=VA.fp[i];const b=Math.sin(t*3+f.ph);K2V1.set(f.x,lipY+b*0.18*zs*0.3,lipZ*0.82+Math.cos(t*2+f.ph)*0.15);K2Q.setFromAxisAngle(K2UP,t+f.ph);K2V2.setScalar(f.s*(0.85+0.3*b));K2M4.compose(K2V1,K2Q,K2V2);VA.foam.setMatrixAt(i,K2M4);}
       VA.foam.instanceMatrix.needsUpdate=true;sh.position.set(0,0.04-root.position.y+(VA.groundY!=null?VA.groundY:root.position.y),2.4*zs+H*0.5);
+      for(const q of VA.notes){q.s.position.set(q.x+Math.sin(t*0.6+q.ph)*0.4,H*q.y+Math.sin(t*1.8+q.ph)*0.3,0.7*zs+Math.cos(t+q.ph)*0.3);q.s.scale.setScalar(0.6+0.18*Math.sin(t*3+q.ph));}
       for(const q of VA.deb){q.d.position.set(q.x+Math.sin(t*0.4+q.ph)*0.6,H*0.98+Math.sin(t*2+q.ph)*0.25,0.6*zs+Math.sin(t*1.3+q.ph)*0.4);q.d.rotation.set(Math.sin(t*q.sp+q.ph)*0.6,t*0.3*q.sp,Math.cos(t*q.sp*0.8+q.ph)*0.5);}
       if(VA.spray&&root.visible&&Math.random()<dt*VA.W*1.2){const lx=rand(-VA.W/2,VA.W/2);K2V1.set(lx,lipY,lipZ).applyMatrix4(root.matrixWorld);K2V2.set(0,0,1).transformDirection(root.matrixWorld);
         K2FX.drop(K2V1,new V3(rand(-0.8,0.8),rand(1,3),0).addScaledVector(K2V2,rand(2,5)),rand(0.1,0.18),{noRing:true,life:1.4});if(Math.random()<0.25)K2FX.mist(K2V1,1,0.9);}}};

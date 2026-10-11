@@ -87,14 +87,16 @@ K1F.lane=function(C,r,w,dir){const tex=k1ArrowTex();tex.repeat.set(1,1);const gr
   const arrows=new THREE.Mesh(k1RingGeo(r-w/2,r+w/2,120,Math.round(2*Math.PI*r/2)),new THREE.MeshBasicMaterial({map:tex,transparent:true,depthWrite:false,side:THREE.DoubleSide}));arrows.renderOrder=6;grp.add(arrows);
   const glow=new THREE.Mesh(k1RingGeo(r-w/2-0.2,r+w/2+0.2,96,1),new THREE.MeshBasicMaterial({color:0xffd870,transparent:true,opacity:0.16,blending:THREE.AdditiveBlending,depthWrite:false,side:THREE.DoubleSide}));glow.position.y=-0.01;glow.renderOrder=5;grp.add(glow);
   const L={g:grp,tex,dir:dir||1,show(on){grp.visible=on!==false;}};K1F.lanes=K1F.lanes||[];K1F.lanes.push(L);return L;};
-/* ---------- скакалка: лиана с листьями и цветами, золотой веер впереди ---------- */
+/* ---------- скакалка: лиана с листьями и цветами; по словарю сигналов (docs/33) прыжок — белая низкая полоса поперёк пути:
+   белая полоса под лианой и бледный белый веер впереди (куда лиана придёт за 1,2 с). Опасность не золотая (было — золотой веер, 34 · 1Б-4) ---------- */
 K1F.rope=function(C,len,dir){const pv=new THREE.Group();pv.position.set(C.x,0.45,C.z);k1Add(pv);dir=dir||1;
   fk(pv,K=>{const n=20,step=(len-1.2)/n;for(let i=0;i<n;i++){const x=1.2+step*(i+0.5),y=Math.sin(i*0.9)*0.06,k=i/n;
       K.add(KP.cyl(0.11-0.02*k,0.13-0.02*k,step*1.15,5),i%2?K1C.moss:K1C.mossL,tm(x,y,0,0,0,Math.PI/2),{noise:0.015});
       if(i%2===0){K.add(hIco(0.2),i%4?K1C.leaf:K1C.leafD,tm(x,y+0.1,0.12*(i%4<2?1:-1),i,0,0,1,0.55,1),{s:0.1});}
       if(i%4===1){K.add(hIco(0.13),i%8===1?K1C.pink:i%8===5?K1C.yellow:K1C.white,tm(x,y+0.26,0.06),{s:0.2});K.add(hIco(0.05),K1C.orange,tm(x,y+0.34,0.1),{kN:0});}}
     K.add(hSph(0.3,6,4),K1C.barkL,tm(len-0.1,0,0,0,0,0,1.1,0.8,0.9),{noise:0.02});},{H:2});   // узел на конце
-  const sec=new THREE.Mesh(new THREE.CircleGeometry(len,24,0,0.8),k1TeleMats(0xffc83a,0.28));sec.rotation.x=-Math.PI/2;sec.position.y=-0.38;sec.scale.z=dir;pv.add(sec);sec.renderOrder=6;
+  const sec=new THREE.Mesh(new THREE.CircleGeometry(len,24,0,0.8),k1TeleMats(K1COL.white,0.16));sec.rotation.x=-Math.PI/2;sec.position.y=-0.38;sec.scale.z=dir;pv.add(sec);sec.renderOrder=6;
+  const strip=new THREE.Mesh(new THREE.PlaneGeometry(len-1.0,0.42),k1TeleMats(K1COL.white,0.62));strip.rotation.x=-Math.PI/2;strip.position.set((len+1.0)/2,-0.37,0);pv.add(strip);strip.renderOrder=7;   // полоса под лианой
   const R={g:pv,dir,sec,len,lead:1.2,th:0.8,set(angle,omega){pv.rotation.y=angle;const th=Math.max(0.05,Math.min(2.4,Math.abs(omega)*R.lead));if(Math.abs(th-R.th)>0.04){R.th=th;sec.geometry.dispose();sec.geometry=new THREE.CircleGeometry(len,24,0,th);}},show(on){pv.visible=on!==false;}};return R;};
 /* ---------- ленты-нити: от рога Лешего к герою, провисают и колышутся ---------- */
 K1F.ribbon=function(getA,getB,col,o){o=o||{};const N=18,P=new Float32Array((N+1)*2*3),I=[];for(let i=0;i<N;i++){const k=i*2;I.push(k,k+1,k+2,k+1,k+3,k+2);}

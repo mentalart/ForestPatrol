@@ -70,13 +70,13 @@ FIN.music=(()=>{let bus=null,cur=null,want=null,t0=0,vox=[],loops=0,vol=FIN.set.
   function begin(name){cur=name;vox=[];loops=0;if(!name)return;const T=TR[name];t0=AC.currentTime+0.12;
     T.v.forEach(v=>vox.push({v,beat:0,i:0,sq:0}));}
   function schedule(){if(!cur)return;const T=TR[cur],spb=60/T.bpm,now=AC.currentTime,until=now+0.25;
-    for(const x of vox){const v=x.v;let guard=0;
+    for(const x of vox){const v=x.v;let guard=0;const mute=!!(v.on&&!v.on());   // голос с условием on() молчит, пока условие ложно (2-5: голоса прибавляются с колоколами)
       while(t0+x.beat*spb<until&&guard++<64){const t=t0+x.beat*spb;const loop=Math.floor(x.beat/T.len);
-        if(v.drone){if(x.beat%T.len===0)INST.drone(hz(midi(T,v.drone[0],v.oct)),t,T.len*spb,v.vol);x.beat+=T.len;continue;}
-        if(v.drum){const s=v.drum,k=Math.round(x.beat*4)%s.length;if(s[k]==='x')INST[v.i](0,t,0.1,v.vol*(0.85+Math.random()*0.3));x.beat+=0.25;continue;}
-        if(v.arp){const ci=Math.floor((x.beat%T.len)/v.per)%v.arp.length,pi=Math.round((x.beat%v.per)/v.st)%v.pat.length;INST[v.i](hz(midi(T,v.arp[ci]+v.pat[pi],v.oct)),t,v.st*spb,v.vol*(pi===0?1.15:0.9));x.beat+=v.st;continue;}
+        if(v.drone){if(x.beat%T.len===0&&!mute)INST.drone(hz(midi(T,v.drone[0],v.oct)),t,T.len*spb,v.vol);x.beat+=T.len;continue;}
+        if(v.drum){const s=v.drum,k=Math.round(x.beat*4)%s.length;if(s[k]==='x'&&!mute)INST[v.i](0,t,0.1,v.vol*(0.85+Math.random()*0.3));x.beat+=0.25;continue;}
+        if(v.arp){const ci=Math.floor((x.beat%T.len)/v.per)%v.arp.length,pi=Math.round((x.beat%v.per)/v.st)%v.pat.length;if(!mute)INST[v.i](hz(midi(T,v.arp[ci]+v.pat[pi],v.oct)),t,v.st*spb,v.vol*(pi===0?1.15:0.9));x.beat+=v.st;continue;}
         const every=v.every||0,seqs=v.seq,sq=seqs[loop%seqs.length];if(every>1&&loop%every!==every-1){x.beat=(loop+1)*T.len;x.i=0;continue;}
-        const nt=sq[x.i%sq.length];if(nt[0]!==null){const f=hz(midi(T,nt[0],v.oct));INST[v.i](f,t,nt[1]*spb*0.95,v.vol*(0.9+Math.random()*0.15));
+        const nt=sq[x.i%sq.length];if(nt[0]!==null&&!mute){const f=hz(v.abs?nt[0]+(v.oct||0):midi(T,nt[0],v.oct));INST[v.i](f,t,nt[1]*spb*0.95,v.vol*(0.9+Math.random()*0.15));
           if(v.i==='pluck'&&nt[1]>=1&&Math.random()<0.25)INST.pluck(f,t+nt[1]*spb*0.5,nt[1]*spb*0.4,v.vol*0.6);}
         x.beat+=nt[1];x.i++;const sumB=sq.reduce((a,n)=>a+n[1],0);if(x.i>=sq.length){x.i=0;const blk=T.len%sumB<1e-6?sumB:Math.max(sumB,T.len);x.beat=Math.ceil((x.beat-1e-6)/blk)*blk;}}}}
   function pick(){if(FIN.titleOn)return 'title';if(!W||G.state==='menu')return cur;const L=LEVELS[G.levelIdx]||{};const S=W.song;

@@ -1,6 +1,7 @@
 /* ============================== РЕЛИЗ final06 · 2-5 «КИТЕЖ ЗВОНИТ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 ============================== */
 // Пелагея плывёт к колоколу на островке и «кричит» (скриптованная неудача), все в колодец — отлив, потом прилив наверх; низкая и двойная звонницы — своя, верхняя, на приливе (удар крылом);
-// мосты-призраки: звонит у колокола (гусли) в паре с человеком; Светлояр: Пелагея идёт по невидимым камням, пока человек на Феврониином; напев Садко — свои ноты; главный колокол — прыжок на «ТРИ».
+// мосты-призраки: звонит у колокола (гусли) в паре с человеком; Светлояр: Пелагея идёт по невидимым камням, пока человек на Феврониином; напев Садко — свои ноты;
+// стычка — на дне колодца (тягун: отлив, в иле — прилив и снова отлив); главный колокол — прилив и звон ладейного колокола для Потапа, потом прыжок на «ТРИ».
 // Положения — из proto/levels/2-5.js и build/levels/2-5/late_99i_k25.js.
 const K25={w:null,t:0,ow:0,wl:0,tide:0,sw:0,cr:0,bell:0,stp:null,go:false,lk:0,A:null};
 const k25=()=>{if(K25.w!==W){K25.w=W;K25.t=0;K25.ow=0;K25.wl=0;K25.tide=0;K25.sw=0;K25.cr=0;K25.bell=0;K25.stp=null;K25.go=false;K25.lk=0;K25.A=null;}return K25;};
@@ -9,14 +10,8 @@ const linkTaken25=()=>!!(W.items&&W.items.find(it=>it.taken&&Math.abs(it.pos.x+2
 const k25GW=()=>k25Z(-9,9,-26,-8);
 // вода зоны z должна быть want: сыграть гусли в зоне (раз в 0,9 с); true — уже такая и устоялась
 const k25Water=(h,z,want)=>{if(z.state===want)return z.t>=1;if(inZone(z,h,1.3)&&!(K25.tide>G.time-0.9)){K25.tide=G.time;cmpTap('item');}return false;};
-CMP.route('2-5',[
-  // колокол на островке: Пелагея плывёт к нему и «кричит» (не получается — ролик, колокол тонет вместе со звеном)
-  {id:'voice',done:()=>{const v=W.flags.voice;return v==='sunk'||v==='sinking'||!!W.flags.given;},run:h=>{k25();const F=W.flags;if(h.pos.z>8)return 'follow';
-    if(!cmpWant('pelageya'))return;
-    if(F.voice==='ready'){if(Math.hypot(h.pos.x,h.pos.z+17)<2.2&&!(K25.ow>G.time-1.2)){K25.ow=G.time;cmpTap('skill');}return;}
-    cmpGoto(h,0,-17,0.4);}},
-  // колодец: оба героя в воду (с островка — вплавь), отлив — на дно; звено со дна (его подымет и человек), после ролика — прилив наверх и в открытую решётку
-  {id:'well',done:()=>W.flags.given===true&&k25GW().state==='high'&&HERO.pelageya.pos.z<-27.5&&HERO.yosha.pos.z<-27.5,run:h=>{k25();const F=W.flags,GW=k25GW();if(F.voice!=='sunk'&&F.given!==true)return 'follow';
+// колодец: оба героя в воду (с островка — вплавь), отлив — на дно; звено со дна (его подымет и человек), после ролика — прилив наверх и в открытую решётку
+const K25W={id:'well',done:()=>W.flags.given===true&&k25GW().state==='high'&&HERO.pelageya.pos.z<-27.5&&HERO.yosha.pos.z<-27.5,run:h=>{k25();const F=W.flags,GW=k25GW();if(F.voice!=='sunk'&&F.given!==true)return 'follow';
     const inW=q=>q.pos.x>-9&&q.pos.x<9&&q.pos.z<-8&&q.pos.z>-26&&hd(q.pos,{x:0,z:-17})>2.5;
     if(F.given===true){                                                                                         // решётка открыта — прилив, наверх
       if(GW.state==='low'){if(h.pos.y<-4){k25Water(h,GW,'high');}else cmpGoto(h,0,-12,0.5);return;}
@@ -29,7 +24,25 @@ CMP.route('2-5',[
       k25Water(h,GW,'low');return;}
     // отлив: на дно, к звену
     if(h.pos.y>-4){cmpGoto(h,0,-13,0.5);return;}
-    if(!linkTaken25()){cmpGoto(h,-2.8,-23.2,0.3);}}},
+    if(!linkTaken25()){cmpGoto(h,-2.8,-23.2,0.3);}}};
+CMP.route('2-5',[
+  // колокол на островке: Пелагея плывёт к нему и «кричит» (не получается — ролик, колокол тонет вместе со звеном)
+  {id:'voice',done:()=>{const v=W.flags.voice;return v==='sunk'||v==='sinking'||!!W.flags.given;},run:h=>{k25();const F=W.flags;if(h.pos.z>8)return 'follow';
+    if(!cmpWant('pelageya'))return;
+    if(F.voice==='ready'){if(Math.hypot(h.pos.x,h.pos.z+17)<2.2&&!(K25.ow>G.time-1.2)){K25.ow=G.time;cmpTap('skill');}return;}
+    cmpGoto(h,0,-17,0.4);}},
+  // стычка на дне колодца (на спуске через город): тягун прячется под водой — отлив гуслями (на мели его бьют); зарылся в ил — прилив, потом снова отлив.
+  // Пока стычка не началась — ведёт шаг колодца (в воду, отлив, на дно). Остальное — общий бой
+  {id:'tyagun',first:true,done:()=>{const A=W.dbg25().arena;return !!A.cleared||W.flags.given===true;},run:(h,hh,dt)=>{k25();const D=W.dbg25(),A=D.arena;if(!A.started)return K25W.run(h,hh,dt);
+    const ty=W.enemies.find(e=>e.alive&&e.kind==='tyagun'),GW=k25GW();if(!ty)return 'follow';                     // тягуна нет — остальных берёт общий бой
+    if(!inZone(GW,h,0.2)){cmpGoto(h,-3,-13,0.6);return;}                                                         // назад в колодец, с друзьями
+    const want=ty.silt?'high':'low';
+    if(GW.state!==want&&GW.t>=1&&!(K25.tide>G.time-1.6)){K25.tide=G.time;cmpTap('item');return;}
+    if(ty.up&&GW.state==='low'&&h.pos.y<-7){const d=hd(h.pos,ty.pos);if(d>1.5){cmpGoto(h,ty.pos.x,ty.pos.z,1.1);return;}   // на мели — бить
+      h.face=Math.atan2(ty.pos.x-h.pos.x,ty.pos.z-h.pos.z);if(!(K25.t>G.time-0.45)){K25.t=G.time;cmpTap('attack');}return;}
+    if(W.enemies.some(e=>e.alive&&e!==ty))return 'follow';                                                       // пока тягун под водой — общий бой с остальными
+    if(GW.state==='low'&&h.pos.y<-7&&hd(h.pos,ty.pos)>4)cmpGoto(h,ty.pos.x*0.5,(ty.pos.z-17)*0.5,1);}},          // ждать рядом, пока тягун выйдет на мель
+  K25W,
   // низкая звонница, правая половина: прилив — доплыть до колокола на высоте и ударить крылом (левую — рогаткой Прошки в отлив — делает человек)
   {id:'tier1',done:()=>!!W.flags.b2,run:h=>{k25();const F=W.flags,R=k25Z(1,9,-44,-30);if(!R||F.given!==true||h.pos.z>-26||h.pos.z<-46)return 'follow';
     if(R.state!=='high'){if(!inZone(R,h,1.3)){cmpGoto(h,6,-29.2,0.4);return;}k25Water(h,R,'high');return;}
@@ -70,14 +83,14 @@ CMP.route('2-5',[
     const n=TN.i<2?1:3,S=D.TB[n].shells[0],x=S.x,z=S.z;
     if(Math.hypot(h.pos.x-x,h.pos.z-(z+0.5))>0.7){cmpGoto(h,x,z+0.5,0.3);return;}
     if(TN.i===n&&!(K25.t>G.time-0.8)){K25.t=G.time;cmpTap('item');}}},
-  // стычка у главного колокола: тягун прячется под водой — отлив гуслями (на мели его бьют); зарылся в ил — прилив, потом снова отлив; тягуна нет — прилив обратно (всплыть со дна к кругу под колоколом). Остальное — общий бой
-  {id:'tyagun',first:true,done:()=>{const A=W.dbg25().arena,MZ=k25Z(-6,6,-156,-146);return !!A.cleared&&!!MZ&&MZ.state==='high';},run:h=>{k25();const D=W.dbg25(),A=D.arena;if(!A.started)return 'follow';
-    const ty=W.enemies.find(e=>e.alive&&e.kind==='tyagun'),MZ=k25Z(-6,6,-156,-146);if(!MZ||!inZone(MZ,h,1.3))return 'follow';
-    const want=ty?(ty.silt?'high':'low'):'high';
-    if(MZ.state!==want&&MZ.t>=1&&!(K25.tide>G.time-1.6)){K25.tide=G.time;cmpTap('item');return;}
-    return 'follow';}},
+  // главный колокол, «три струны»: человек ведёт Потапа на ладью; бот — прилив в бассейне, потом звон у ладейного колокола, когда Потап у ладьи
+  {id:'raft',done:()=>!!W.flags.tongueSc,run:h=>{k25();const F=W.flags;if(!F.tune||h.pos.z>-143||h.pos.y<5)return 'follow';const D=W.dbg25(),MZ=D.MZ,P=HERO.potap;
+    if(MZ.state!=='high'){if(Math.hypot(h.pos.x+3.5,h.pos.z+145.4)>0.6){cmpGoto(h,-3.5,-145.4,0.3);return;}if(!(K25.tide>G.time-0.9)){K25.tide=G.time;cmpTap('item');}return;}
+    if(MZ.t<1)return;
+    if(Math.hypot(h.pos.x+7.6,h.pos.z+147.4)>0.6){cmpGoto(h,-7.6,-147.4,0.3);return;}
+    if(Math.hypot(P.pos.x-D.raft.x,P.pos.z-D.raft.z)<6&&P.pos.y>5&&D.RB.hum<2&&!(K25.bell>G.time-1.2)){K25.bell=G.time;cmpTap('item');}}},
   // главный колокол, язык повешен: все четверо на круг под колоколом (бот — на два свободных места, смена героя), на «ТРИ» — прыжок вместе
-  {id:'spots',done:()=>!!W.flags.bom||!!W.flags.bomWait,run:(h,hh)=>{k25();const D=W.dbg25(),F=W.flags,A=D.arena;if(!A.cleared||!F.tongueIn||h.pos.y<5)return 'follow';
+  {id:'spots',done:()=>!!W.flags.bom||!!W.flags.bomWait,run:(h,hh)=>{k25();const D=W.dbg25(),F=W.flags;if(!F.tongueIn||h.pos.y<5)return 'follow';
     const sp=D.spots,on=(s,q)=>Math.hypot(q.pos.x-s.x,q.pos.z-s.z)<0.7&&q.pos.y>6.3&&q.pos.y<9.5,o=other(1);other(1).following=false;
     const humOn=s=>HEROES.some(q=>q.player===0&&on(s,q)),oS=sp.find(s=>on(s,o)&&!humOn(s)),me=sp.find(s=>s!==oS&&on(s,h)&&!humOn(s));
     if(!me){const free=sp.filter(s=>s!==oS&&!humOn(s)).sort((a,b)=>Math.hypot(a.x-h.pos.x,a.z-h.pos.z)-Math.hypot(b.x-h.pos.x,b.z-h.pos.z))[0];if(free){cmpGoto(h,free.x,free.z,0.15);if(h.grounded&&h.blocked)cmpTap('jump');}return;}

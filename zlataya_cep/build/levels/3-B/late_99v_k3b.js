@@ -97,7 +97,8 @@ build3B=function(){
   const BS={zap:0,winHits:0,cap:3,lastEmb:0,idleT:0,half:false,zoom:0,signT:0};F.bs=BS;
   const live=()=>HEROES.filter(h=>h.active&&!h.cling&&!h.k3ride&&!players[h.player].downed);
   const pick=()=>{const L=live();return L[Math.floor(Math.random()*L.length)]||active(0);};
-  const tell=()=>(SOLO()||genPath()==='easy')?0.3:0;   // запас на телеграф: Лёгкий путь и одиночка
+  const tellE=()=>(SOLO()||genPath()==='easy')?0.3:0;   // запас Лёгкого пути и одиночки (окна, а не угрозы)
+  const tell=()=>tellE()+0.25;   // запас на телеграф угрозы: ≥ 1,0 с на всех путях, ≥ 1,2 с на Лёгком (docs/33 §6, 3Б-5); одиночка
   const winDur=()=>(SOLO()?7:5)+(genPath()==='easy'?1.5:0);
   const hurt=(h,p)=>{if(h.rollT>0||h.iT>0||h.k3ride)return false;return damageHero(h,{kind:'hazard',ref:{pos:p}});};
   const key=(p,text,col)=>ft(p.clone(),text,col||'#ffe9a0');
@@ -135,7 +136,7 @@ build3B=function(){
       if(S1.inh)return['ЩЁКИ ДУЕТ — ЙОША, В КЛЮВ!','#2a4a8a'];return null;}
     if(F.phase===2){if(S2.tilt>0)return['ПЕРЕСКОЧИТ!','#4a2a7a'];return['ЗАЙЧИК — ЩИТОМ ЕМУ В ГЛАЗА!','#4a2a7a'];}
     if(F.phase===3){if(S3.ride){const Rd=S3.ride;if(Rd.loop)return['ПЕТЛЯ — БЕЙ В КОЛОКОЛ НА «БОМ»!','#8a1a1a'];if(Rd.bank)return[Rd.bank.dir>0?'НАКЛОНИСЬ →':'← НАКЛОНИСЬ!','#8a6a10'];return['ДЕРЖИСЬ!','#3a4a7a'];}
-      if(S3.dive&&S3.dive.t<2.2)return['ПИКЕ — С КРАСНОЙ ПОЛОСЫ УЙДИ!','#8a1a1a'];return['В ВИХРЬ — ПОТАП ПОДКИНЕТ!','#3a4a7a'];}
+      if(S3.dive&&S3.dive.t<2.2)return['ПИКЕ — С КРАСНОЙ ПОЛОСЫ УЙДИ!','#8a1a1a'];if((S3.snUntil||0)>G.time)return['ЗМЕЙ — С КРАСНОЙ ДОРОЖКИ УЙДИ!','#8a1a1a'];return['В ВИХРЬ — ПОТАП ПОДКИНЕТ!','#3a4a7a'];}
     if(F.phase===4){if(S4.st==='inhale')return W.owlT>0?['ЗОЛОТОЙ ЖЁЛУДЬ — ОН НАСТОЯЩИЙ!','#8a6a10']:['КАКОЙ ЖЁЛУДЬ НАСТОЯЩИЙ?','#4a2a7a'];return['ВЫДОХ — ЗА ЩИТ ПОТАПА!','#2a4a8a'];}
     return null;}
   /* ---------- окно уязвимости, запал ---------- */
@@ -148,9 +149,11 @@ build3B=function(){
     if(F.phase===1)s1Fall('stun');else if(F.phase===2)s2Fall();else if(F.phase===3)s3Fall();}
   /* ---------- волны свиста ---------- */
   const waves=[];
-  function wave(kind,src,o){o=o||{};const h=kind==='high'?2.6:kind==='big'?3.4:0.6;const Wv=FX.wave(kind==='low'?'white':kind==='high'?'blue':kind==='dark'?'purple':'gold',h);
+  // подписи к звукам (свист, рык, шип): по настройке «Подписи к звукам», у Ёжика — сами, пока их не выключили (docs/33 §6, 3Б-6)
+  const cap=(t,pos)=>{try{const o=FIN.set.caps;if(!o&&!(o===undefined&&genPath()==='easy'))return;const p=typeof jxPan==='function'&&pos?jxPan(pos,0):null;FIN.set.caps=true;FIN.juiceW.cap(t,p);FIN.set.caps=o;}catch(e){}};
+  function wave(kind,src,o){o=o||{};const h=kind==='high'?2.6:kind==='big'?3.4:0.6;const Wv=FX.wave(kind==='low'||kind==='dark'?'white':kind==='high'?'blue':'yellow',h);   // словарь сигналов: белая низкая — прыжок (и рык), синяя высокая с куполом — за Потапа, жёлтая — щит вдвоём
     const q={kind,Wv,src:new V3(src.x,0,src.z),r:1.2,sp:(o.sp||8)+(BS.half?1.2:0),hit:new Set(o.skip||[])};Wv.set(q.src,q.r);waves.push(q);SFX.whoosh();
-    tone(kind==='low'?1500:kind==='dark'?520:kind==='high'?900:600,0.6,'sine',0.13,kind==='low'?2200:kind==='dark'?260:400);if(kind!=='low')FX.cl.tear(kind==='big'?1:0.45,kind==='big'?1.6:0.6);return q;}
+    cap(kind==='low'?'свист — прыгай':kind==='high'?'гул свиста — за щит Потапа':kind==='dark'?'звериный рык':'большой свист',src);if(kind==='high')tone(110,0.9,'triangle',0.16,90);else tone(kind==='low'?1500:kind==='dark'?520:600,0.6,'sine',0.13,kind==='low'?2200:kind==='dark'?260:400);if(kind!=='low')FX.cl.tear(kind==='big'?1:0.45,kind==='big'?1.6:0.6);return q;}
   function behindPotap(h,src){const P=T.potap;if(!P.active||!P.guard||players[0].downed||h===P)return false;const ax=h.pos.x-src.x,az=h.pos.z-src.z,bx=P.pos.x-src.x,bz=P.pos.z-src.z;const da=Math.hypot(ax,az),db=Math.hypot(bx,bz);
     if(da<db)return false;return (ax*bx+az*bz)/(da*db||1)>0.92;}
   function updateWaves(dt){for(let i=waves.length-1;i>=0;i--){const w=waves[i];w.r+=dt*w.sp;w.Wv.set(w.src,w.r);w.Wv.tick(dt,w.src);if(w.r>R+1)w.Wv.fade(Math.max(0,1-(w.r-R-1)/2));
@@ -163,7 +166,9 @@ build3B=function(){
       if(w.r>R+3.2){w.Wv.del();waves.splice(i,1);}}}
   function clearWaves(){waves.forEach(w=>w.Wv.del());waves.length=0;}
   // синяя тень за широким щитом Потапа
-  const wedge=new THREE.Group();W.group.add(wedge);{const m=new THREE.Mesh(new THREE.CircleGeometry(3.6,24,-Math.PI/2-0.4,0.8),MB(0x7ab0ff,{transparent:true,opacity:0.3,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=0.07;m.renderOrder=2;wedge.add(m);wedge.userData.m=m;}
+  const wedge=new THREE.Group();W.group.add(wedge);{const m=new THREE.Mesh(new THREE.CircleGeometry(3.6,24,-Math.PI/2-0.4,0.8),MB(0x7ab0ff,{transparent:true,opacity:0.3,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.y=0.07;m.renderOrder=2;wedge.add(m);wedge.userData.m=m;
+    // купол-тень (словарь сигналов: «за щит Потапа» — синий купол на земле)
+    const dm=new THREE.Mesh(new THREE.SphereGeometry(1.7,20,8,0,Math.PI*2,0,Math.PI/2),MB(0x7ab0ff,{transparent:true,opacity:0.18,depthWrite:false,side:THREE.DoubleSide}));dm.scale.y=0.75;dm.position.set(0,0.02,1.9);dm.renderOrder=2;wedge.add(dm);wedge.userData.dome=dm;}
   // Богатырский щит: самая большая волна по всему гнезду — щит вдвоём в одну долю
   const cring={on:false,t:0,press:[null,null],src:null};const ringM=[0,1].map(()=>{const m=new THREE.Mesh(new THREE.TorusGeometry(1,0.08,6,32),MB(COL.yellow,{transparent:true,opacity:0.9}));m.rotation.x=Math.PI/2;m.visible=false;W.group.add(m);return m;});
   W.onGuardTap=(pi,h)=>{if(cring.on&&cring.press[pi]===null)cring.press[pi]=cring.t;};
@@ -248,12 +253,12 @@ build3B=function(){
   function pickNext(cur){const L=P2.filter(i=>i!==cur);return L[Math.floor(Math.random()*L.length)];}
   function s2Tick(dt){const e=sol;e.litNow=litAt(e.pos.x,e.pos.y+1.5,e.pos.z,0.8);
     if(S2.st==='perch'){const O=OAKS[S2.perch];placeSol(perchOf(O));S2.hopCd-=dt;
-      S2.roarT-=dt;if(S2.roarT<=0){S2.roarT=BS.half?5:6.5;SL.set(e.k3,'roar','angry');const d=0.9+tell();tone(160,d,'sawtooth',0.07,90);flash('ФИОЛЕТОВЫЙ РЫК — ПРЫГ!','#4a2a7a',d+0.4);
+      S2.roarT-=dt;if(S2.roarT<=0){S2.roarT=BS.half?5:6.5;SL.set(e.k3,'roar','angry');const d=0.9+tell();tone(160,d,'sawtooth',0.07,90);flash('БЕЛАЯ ВОЛНА — ПРЫГ!','#4a2a7a',d+0.4);
         later(d,()=>{if(F.phase!==2||S2.st!=='perch')return;wave('dark',OAKS[S2.perch].src);spawnBeasts(BS.half?2:1);later(0.6,()=>{if(F.phase===2&&S2.st==='perch')SL.set(sol.k3,'idle','cocky');});});}
       spotTick(dt);
       if(S2.spotOak===S2.perch&&S2.spotK>=1){dazzle();}   // зайчик добежал — ослеп, даже если уже собрался перескочить
       else if(S2.tilt>0){S2.tilt-=dt;if(S2.tilt<=0){const ni=S2.next;S2.st='hop';SPOT.set(null,null,0);hopTo(OAKS[ni],false,()=>{S2.perch=ni;S2.st='perch';S2.next=pickNext(ni);S2.hopCd=BS.half?3.2:4.5;S2.spotK=0;});}}
-      else if(S2.spotOak===S2.perch){if(S2.spotK>(BS.half?0.35:0.5)&&S2.hopCd<=0){S2.tilt=0.9+tell();SL.set(e.k3,'idle','surprise');e.k3.st.look[1]=0.6;tone(900,0.3,'sine',0.08,1300);sayS('Фью? Кто там светит?',1.2);lessonOnce('hop');}}}
+      else if(S2.spotOak===S2.perch){if(S2.spotK>(BS.half?0.35:0.5)&&S2.hopCd<=0){S2.tilt=0.9+tellE();SL.set(e.k3,'idle','surprise');e.k3.st.look[1]=0.6;tone(900,0.3,'sine',0.08,1300);sayS('Фью? Кто там светит?',1.2);lessonOnce('hop');}}}
     else if(S2.st==='down'){SPOT.set(null,null,0);if(!(e.dazeT>0)){e.spin.visible=false;S2.st='hop';sayS('Фью! Проморгался, прозрел!',1.8,'angry');const ni=pickNext(-1);later(0.8,()=>{if(F.phase!==2)return;hopTo(OAKS[ni],false,()=>{S2.perch=ni;S2.st='perch';S2.next=pickNext(ni);S2.hopCd=2.5;S2.spotK=0;S2.roarT=2;});});}}
     else SPOT.set(null,null,0);
     // Совиный взор: куда перескочит
@@ -318,7 +323,7 @@ build3B=function(){
       Rd.loopT-=dt;if(Rd.loopT<=0&&Rd.banks<3){loopStart();}return;}
     const B=Rd.bank;B.t+=dt;e.k3.st.roll=-B.dir*0.6*Math.min(1,B.t/0.3);const x=inX(h.player);if(x*B.dir>0.5)B.ok=true;   // крен влево — жми вправо: dir — куда жать
     if(B.t>=B.dur){Rd.bank=null;e.k3.st.roll=0;if(B.ok){Rd.banks++;S3.banksKept=Rd.banks;SFX.ok();FX.feathers(h.pos.clone(),4);if(Rd.banks>=3){hatOff();return;}Rd.next=BS.half?rand(1.0,1.5):rand(1.4,2.0);}else throwOff();}}
-  function loopStart(){const Rd=S3.ride;Rd.loop={t:0,dur:1.3+tell()*1.5,done:false};SL.set(sol.k3,'whistle','angry');tone(400,Rd.loop.dur,'sawtooth',0.05,1600);BELL.ring.visible=true;sayS('А мёртвую петельку?!',1.4);
+  function loopStart(){const Rd=S3.ride;Rd.loop={t:0,dur:1.3+tellE()*1.5,done:false};SL.set(sol.k3,'whistle','angry');tone(400,Rd.loop.dur,'sawtooth',0.05,1600);BELL.ring.visible=true;sayS('А мёртвую петельку?!',1.4);
     if(!BS.loopTold){BS.loopTold=1;for(const pi of[0,1])tip(pi,'Петля — бей колокол '+K(pi,'attack')+' на «БОМ»!',3.4);}}
   function loopTick(dt){const Rd=S3.ride,L=Rd.loop;L.t+=dt;const u=clamp(L.t/L.dur,0,1);BELL.ring.scale.setScalar(lerp(2.4,0.4,u));BELL.ring.material.color.setHex(u>0.85?0xffffff:COL.gold);
     if(SOLO()&&!L.done&&L.t>=L.dur){const left=HEROES.find(q=>q!==active(G.soloPi)&&!q.k3ride&&Math.hypot(q.pos.x-BELL.x,q.pos.z-BELL.z)<3.6);if(left){bellOk(left);return;}}
@@ -339,14 +344,14 @@ build3B=function(){
   function s3Fall(){const e=sol;S3.st='fall';if(S3.ride){const h=S3.ride.h;h.k3ride=null;h.iT=2;S3.ride=null;}SL.set(e.k3,'dazed','hurt');tumble(at(rand(0,6.28),2.5),1.0,()=>{if(F.phase!==3)return;S3.st='down';winStart(winDur(),'dazed');});}
   // ветряной змей: красная дорожка, потом змей ползёт по ней
   function snakeStart(){const h=pick();const a=Math.atan2(h.pos.z-C.z,h.pos.x-C.x)+Math.PI+rand(-0.5,0.5);const A=at(a,R-0.8),dir=new V3(h.pos.x-A.x,0,h.pos.z-A.z).normalize(),B=A.clone().addScaledVector(dir,2*R-2);
-    const d=0.9+tell();FX2.lane(A,B,1.6,d,'red',0);SL.set(sol.k3,'hiss','angry');tone(2600,0.5,'sawtooth',0.03,1800);later(d,()=>{if(F.phase!==3)return;S3.snakes.push(mkSnake(A,B));});}
+    const d=0.9+tell();S3.snUntil=G.time+d+1.4;cap('змеиный шип',A);FX2.lane(A,B,1.6,d,'red',0);SL.set(sol.k3,'hiss','angry');tone(2600,0.5,'sawtooth',0.03,1800);later(d,()=>{if(F.phase!==3)return;S3.snakes.push(mkSnake(A,B));});}
   function mkSnake(A,B){const g=new THREE.Group();W.group.add(g);const m=new THREE.MeshBasicMaterial({color:0xd8ffe8,transparent:true,opacity:0.75,depthWrite:false});const segs=[];
     for(let i=0;i<9;i++){const s=new THREE.Mesh(KP.sph(1,7,5),m);s.scale.setScalar(0.32-i*0.025);g.add(s);segs.push(s);}const hd=new THREE.Mesh(KP.cone(0.32,0.7,6),m);hd.rotation.x=Math.PI/2;segs[0].add(hd);hd.position.z=0.5;hd.scale.setScalar(1/0.32);
     return {g,m,segs,A,B,u:0,len:A.distanceTo(B),hit:new Set(),dead:false};}
   function snakesTick(dt){for(let i=S3.snakes.length-1;i>=0;i--){const S=S3.snakes[i];S.u+=dt*12;const dir=new V3().subVectors(S.B,S.A).normalize(),side=new V3(-dir.z,0,dir.x);
       S.segs.forEach((s,k)=>{const u=Math.max(0,S.u-k*0.45);const p=S.A.clone().addScaledVector(dir,u).addScaledVector(side,Math.sin(u*1.1-G.time*6)*0.5);s.position.set(p.x,0.35,p.z);if(!k)s.lookAt(p.x+dir.x,0.35,p.z+dir.z);});
       if(Math.random()<dt*20)FX.part(S.segs[0].position.clone(),new V3(rand(-1,1),rand(1,2),rand(-1,1)),'leaf',Math.random()<0.5?0x7aa04a:0xc0a050,{life:0.8});
-      const hp=S.segs[0].position;for(const h of live()){if(S.hit.has(h))continue;if(Math.hypot(h.pos.x-hp.x,h.pos.z-hp.z)>0.9)continue;S.hit.add(h);if(h.pos.y>0.5)continue;if(h.guard){shieldBlock(h);continue;}hurt(h,hp);}
+      const hp=S.segs[0].position;for(const h of live()){if(S.hit.has(h))continue;if(Math.hypot(h.pos.x-hp.x,h.pos.z-hp.z)>0.9)continue;S.hit.add(h);hurt(h,hp);}   // красное — только уйти или кувырок: щит и прыжок не спасают (словарь сигналов)
       if(S.u>S.len+4){S.m.opacity-=dt*3;if(S.m.opacity<=0){W.group.remove(S.g);S3.snakes.splice(i,1);}}}}
   // перья-стрелы: красный круг под героем — сверху падает перо
   function dartStart(){const h=pick();if(!h)return;const d=0.8+tell();const spot=new V3(h.pos.x,0,h.pos.z);FX2.tele(spot.x,0,spot.z,1.2,d,'red');later(d-0.3,()=>{if(F.phase!==3||!sol)return;const f=featherMesh(2.2);W.group.add(f);const from=sol.pos.clone().add(new V3(0,1.5,0));
@@ -381,7 +386,7 @@ build3B=function(){
     if(S4.st==='exhale'){S4.t+=dt;const exDur=BS.half?4:3;FX.windSet('blow',1,src);F.tellHigh=0.3;if(e.k3.st.pose!=='whistle'&&e.k3.st.pose!=='roar')SL.set(e.k3,'whistle','angry');
       for(const h of live()){if(behindPotap(h,src)||(h===T.potap&&h.guard))continue;const dx=h.pos.x-src.x,dz=h.pos.z-src.z,d=Math.hypot(dx,dz)||1;const sp=h.guard?1.5:3.0;h.pos.x+=dx/d*sp*dt;h.pos.z+=dz/d*sp*dt;}
       if(!S4.trill&&S4.t>1.1){S4.trill=true;wave('low',src);}
-      if(S4.t>=exDur){S4.st='inhale';S4.t=0;S4.trill=false;S4.inCur=Math.max(1.2,1.6+tell()*2-S4.miss*0.2);S4.real=Math.floor(Math.random()*3);acorns.forEach(A=>{A.gone=0;});SL.set(e.k3,'inhale','angry');FX.windSet('pull',0.5,src);
+      if(S4.t>=exDur){S4.st='inhale';S4.t=0;S4.trill=false;S4.inCur=Math.max(1.2,1.6+tellE()*2-S4.miss*0.2);S4.real=Math.floor(Math.random()*3);acorns.forEach(A=>{A.gone=0;});SL.set(e.k3,'inhale','angry');FX.windSet('pull',0.5,src);
         tone(260,S4.inCur,'sine',0.08,700);players.forEach(p=>{p.owlCd=0;});}}   // во вдох Совиный взор всегда готов
     else if(S4.st==='inhale'){S4.t+=dt;FX.windSet('pull',0.5,src);for(const h of live()){const dx=src.x-h.pos.x,dz=src.z-h.pos.z,d=Math.hypot(dx,dz)||1;if(d>4){h.pos.x+=dx/d*1.3*dt;h.pos.z+=dz/d*1.3*dt;}}
       if(S4.t>=S4.inCur){S4.st='exhale';S4.t=0;acorns.forEach(A=>{A.g.visible=false;});aim.visible=false;floatText(e.pos.clone().add(new V3(0,e.L.top*e.s,0)),'ФЬЮ-У-У-УИТЬ!','#ffe08a');FX.cl.tear(1,1.4);shakeAll(0.04,0.4);}}
@@ -424,7 +429,7 @@ build3B=function(){
     for(const O of OAKS){O.bend=damp(O.bend,O.tb,O.tb>O.bend?3:7,dt);O.pv.rotation.x=O.bend*0.72+Math.sin(G.time*1.3+O.i)*0.015*(1+(WIND.k||0)*3);}
     // синяя тень за Потапом
     {const P=T.potap;const src=F.phase===4?BIG.src:OAKS[S1.perch].src;const on=(F.phase===1||F.phase===4)&&P.active&&!players[0].downed&&((F.tellHigh||0)>0||waves.some(w=>w.kind==='high')||(F.phase===4&&S4.st==='exhale'));wedge.visible=on;
-      if(on){wedge.position.set(P.pos.x,0,P.pos.z);wedge.rotation.y=Math.atan2(P.pos.x-src.x,P.pos.z-src.z);wedge.userData.m.material.opacity=P.guard?0.45:0.14+0.1*Math.sin(G.time*8);}}
+      if(on){wedge.position.set(P.pos.x,0,P.pos.z);wedge.rotation.y=Math.atan2(P.pos.x-src.x,P.pos.z-src.z);wedge.userData.m.material.opacity=P.guard?0.45:0.14+0.1*Math.sin(G.time*8);wedge.userData.dome.material.opacity=P.guard?0.26:0.1+0.06*Math.sin(G.time*8);}}
     F.tellHigh=Math.max(0,(F.tellHigh||0)-dt);
     // одиночка: сменил героя, пока Потап держал щит, — оставленный Потап держит его и дальше
     if(SOLO()){const P=T.potap;if(active(G.soloPi)===P){BS.pHold=P.guard;}else if(BS.pHold&&F.phase>=1&&F.phase<=4){P.guard=true;}else BS.pHold=false;}
@@ -446,8 +451,13 @@ build3B=function(){
   function secondWind(){shakeAll(0.05,0.5);if(F.phase===1){sayS('Ах так?! Ну, держитесь!',1.8,'angry');}else if(F.phase===2){sayS('Р-р-р! Все звери — ко мне!',1.8,'angry','roar');
       later(1.6,()=>{for(const p of[0,1])tip(p,p?'Меняйтесь! Теперь щит держишь ты '+K(1,'guard')+'.':'Меняйтесь! Теперь перо зажги ты '+K(0,'item')+'.',4);});}
     else if(F.phase===3){sayS('Фью-у! Быстрее, выше!',1.6,'angry');later(1.4,()=>{for(const p of[0,1])tip(p,'Теперь другой — в вихрь!',3.4);});}}
-  function stageRestart(){const e=sol;clearWaves();cring.on=false;ringM.forEach(m=>{m.visible=false;});banner('Этап сначала!','#cfe8ff',2.4,'отметка у входа — и снова в гнездо');sayS(line('tease'),1.8,'cocky','laugh');
-    if(F.phase===1){S1.bow=null;S1.inh=null;S1.sw=null;OAKS.forEach(O=>{O.tb=0;});s1Start();}else if(F.phase===2){clearBeasts();s2Start();}else if(F.phase===3){clearStorm();s3Start();}else if(F.phase===4){s4Start();}}
+  // оба рассыпались: этап продолжается с того же места — угольки, «второе дыхание» и голоса Соловья сохраняются (docs/33 §7, 3Б-4)
+  function stageRestart(){const e=sol;clearWaves();cring.on=false;ringM.forEach(m=>{m.visible=false;});banner('Сбились — снова в гнездо!','#cfe8ff',2.4,'угольки Соловья не вернулись');sayS(line('tease'),1.8,'cocky','laugh');
+    const keep={emb:e.embers,max:e.maxEmb,half:BS.half,voices:S4.voices,sc:e.s};BS.restarts=(BS.restarts||0)+1;
+    if(F.phase===1){S1.bow=null;S1.inh=null;S1.sw=null;OAKS.forEach(O=>{O.tb=0;});s1Start();}else if(F.phase===2){clearBeasts();s2Start();}else if(F.phase===3){clearStorm();s3Start();}else if(F.phase===4){s4Start();}
+    e.embers=keep.emb;e.maxEmb=keep.max;BS.lastEmb=keep.emb;BS.half=keep.half;
+    if(F.phase===4){S4.voices=keep.voices;for(let i=0;i<3;i++)SL.voice(e.k3,i,i>=3-keep.voices);e.setScale(keep.sc);}
+    for(const p of[0,1])if(players[p].downed)players[p].downT=Math.min(players[p].downT,4);}
   // ---------- карточка этапа: баннер + одна подсказка на игрока ----------
   function card(title,sub,tipFn,les){W.k3hint=tipFn;const go=()=>{if(sol&&F.phase>=1&&F.phase<=4&&!F.out){banner(title,'#d8b070',3,sub);BS.signT=3.9;BS.idleT=0;later(0.8,()=>{for(const p of[0,1])tip(p,tipFn(p),5.5);});}};
     const todo=(les||[]).filter(k=>!LK.seen('k3b',k));if(!todo.length||FIN.k3les.auto===false){go();return;}later(0.1,()=>lessonChain(todo,go));}
@@ -473,7 +483,8 @@ build3B=function(){
   LK.regLevel('3-B',()=>{const ph=F.phase;lessonChain(ph===4?['exhale','inhale']:ph===3?['vortex','rodeo']:ph===2?['spot','hop']:['wave','water'],()=>{});},()=>F.phase>=1&&F.phase<=4&&!F.won);
   /* ---------- ролики ---------- */
   const play2=def=>{play(def);try{const cd=CINE.CD&&CINE.CD();if(cd&&cd.S===G.cine){cd.inserts=false;cd.cover=[];}}catch(err){}};
-  function intro(){bb.style.display='block';W.gateOpen&&W.gateOpen();HEROES.forEach((h,i)=>{placeOnGround(h,-3.6+i*2.4,C.z+R-3,0);h.face=Math.PI;h.following=false;});if(!sol)spawnSol();sol.state='idle';const O=OAKS[3];
+  function intro(){if(!F.warped)G.flags.k3road=true;   // дорожку прошли — повтор уровня начнётся у гнезда (docs/38, b3-save)
+    bb.style.display='block';W.gateOpen&&W.gateOpen();HEROES.forEach((h,i)=>{placeOnGround(h,-3.6+i*2.4,C.z+R-3,0);h.face=Math.PI;h.following=false;});if(!sol)spawnSol();sol.state='idle';const O=OAKS[3];
     placeSol(perchOf(O,true));SL.set(sol.k3,'idle','cocky');const top=perchOf(O,true);
     play2({dur:14,fov:50,camK:2.6,shots:[shot(0,[0,7,4],[0,8,-30]),shot(4.4,[5.5,7.6,-12.5],[0,9.2,-26.5]),shot(7.6,[0,3.4,-6],[0,6,-24],[0,2.6,-4],[0,5.4,-24],3),shot(11.2,[7,9,2],[0,2,-16])],
       says:[[0.3,4,null,'<i>Соловей-Разбойник на семи дубах сидит, свитых гнездом,</i><br><i>И свистит так, что облака рвутся кругом.</i>',true],[4.6,2.6,'solovei','Фью-у-ить! Кто там звенит, кто спать не даёт?'],[7.6,2.6,'solovei','А ну — сдуло! Прочь, народ!'],[10.6,2.8,'zven','На табличку над ним глядите — там написано, что делать!']],
@@ -514,7 +525,7 @@ build3B=function(){
       end:()=>{startSong();}});}
   // песня с Соловьём: Пелагея прыгает в долю — Соловей подхватывает. Провалить нельзя
   const SG={on:false,t:0,k:-1,B:60/84,hits:0,judged:{}};W.song=null;
-  function startSong(){SG.on=true;SG.t=-4*SG.B;SG.k=-5;SG.hits=0;SG.judged={};W.song={t:SG.t,B:SG.B,show:true,state:'play',pulse:0};banner('Подпой, Пелагея!','#d7a6ec',2.4,'прыгай '+K(1,'jump')+' в такт — Соловей подпоёт, подхватит');
+  function startSong(){SG.on=true;SG.t=-4*SG.B;SG.k=-5;SG.hits=0;SG.judged={};W.song={t:SG.t,B:SG.B,show:true,state:'play',pulse:0};banner('Подпой, Пелагея!','#d7a6ec',2.4,'прыгай '+K(1,'jump')+' в такт — Соловей подпоёт, подхватит');later(0.3,()=>say('pelageya','Песня Сирин и Алконоста — «Во поле берёза»!',2.2,true));   // сквозной мотив мира: тот же напев, что в 3-3
     W.custom=(pi,h,dt,c)=>{for(const q of players[pi].heroes){q.vel.x=damp(q.vel.x,0,10,dt);q.vel.z=damp(q.vel.z,0,10,dt);}
       if(pi===1&&(tap(1,'jump')||SOLO()&&tap(G.soloPi,'jump'))&&h.grounded&&SG.on){h.vel.y=6.4;h.grounded=false;SFX.jump();const k=Math.round(SG.t/SG.B);if(k>=0&&k<8&&!SG.judged[k]){const d=SG.t-k*SG.B;const ok=Math.abs(d)<=(LADWIN[players[1].path]||0.1)+0.05+(W.ladBonus||0);SG.judged[k]=1;
         if(ok){SG.hits++;const m=BER[0][k][0];if(m)tone(mf(m+12),0.4,'sine',0.2);floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'В долю!','#e7c3ff');if(SG.hits>=3){const mm=BER[0][k][0];if(mm)tone(mf(mm),0.5,'triangle',0.16);}}
@@ -566,7 +577,9 @@ build3B=function(){
   for(const pi of[0,1])W.objectives[pi]=[...(RD?RD.objectives.map(f=>f(pi)):[]),O('Гнездо Соловья…',()=>F.phase>=1,()=>[]),...OF,O(pi?()=>'Соловей петь разучился. Подпой ему: прыгай '+K(1,'jump')+' в такт, от души.':'Соловей петь разучился…',()=>false,()=>[])];
   W.spawns=RD?RD.spawns:[[new V3(-3,0,4),new V3(-5,0,5)],[new V3(3,0,4),new V3(5,0,5)]];W.startAct=[0,0];
   W.pauseLine='Прямоезжая дорожка: свист издалека — прячься за укрытия и щит Потапа. Гнездо: свист соловьиный (вода в клюв, дуб кланяется), крик звериный («солнечный зайчик»),<br>шип змеиный (вихрь и родео, колокол на «БОМ»), полный свист (выдох — за щит, вдох — золотой жёлудь). Потом Соловью подпеть.';
-  W.onStart=()=>{later(0.4,()=>{if(F.warped)return;if(RD)RD.start();else intro();});};   // телепорт бота отменяет начало
+  W.onStart=()=>{later(0.4,()=>{if(F.warped)return;
+    if(RD&&G.flags.k3road){RD.skip();for(const pi of[0,1])players[pi].cp.set(C.x,0,C.z+R-3);intro();later(0.6,()=>tip(0,'Дорожку вы уже прошли — сразу к гнезду!',3.4));return;}
+    if(RD)RD.start();else intro();});};   // телепорт бота отменяет начало
   W.dbg3b=()=>({F,BS,S1,S2,S3,S4,sol,OAKS,BELL,NEST,acorns,waves,cring,RD,SPOT,tailHit,perchOf,choke,dazzle,hatOff,rideStart,throwOff,bellOk,s1Start,s2Start,s3Start,s4Start,intro,scene2,scene3,scene4,win,winStart,acornHit,bowStart});
   // для ботов: W.warp3b('boss'|'boss1'…'boss4'|участок подхода)
   W.warp3b=(where)=>{F.warped=true;if(where==='boss'){if(RD)RD.skip();intro();return W.dbg3b();}

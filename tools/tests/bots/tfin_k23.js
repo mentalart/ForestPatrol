@@ -14,7 +14,7 @@ ZC.startFrom(ZC.LV('2-3'));ZC.G.manual=true;ZC.tick(30);ZC.skip();ZC.tick(10);co
 //@@
 // рыбка: напев «Течение» — ролик длиннее, завал раздвигается, уровень не кончается
 const D=ZC.W.dbg23();D.F.task=3;D.fishEnd();const dur=ZC.G.cine?ZC.G.cine.dur:0;let t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(120);
-if(Math.abs(dur-20.4)>0.01)throw new Error('ролик рыбки: '+dur);if(D.F.task!==5||D.passCol.on)throw new Error('завал не раздвинулся: task='+D.F.task);if(ZC.W.flags.out)throw new Error('уровень кончился на рыбке');'fish ok link3='+D.link3.taken
+if(Math.abs(dur-26.6)>0.01)throw new Error('ролик рыбки: '+dur);if(D.F.task!==5||D.passCol.on)throw new Error('завал не раздвинулся: task='+D.F.task);if(ZC.W.flags.out)throw new Error('уровень кончился на рыбке');'fish ok link3='+D.link3.taken
 //@@
 // протока: Пелагея на плот; Прошка у ракушки лицом на юг играет течение и остаётся доигрывать; Потап — на плот
 const D=ZC.W.warp23('protoka');ZC.tick(20);ACT(0,'proshka');ACT(1,'pelageya');const r=[U.walkTo(1,0.4,-37.8,6),U.walkTo(0,-4.4,-34.4,6)];ZC.HERO.proshka.face=Math.PI;U.tap('KeyR');ZC.tick(4);
@@ -47,6 +47,7 @@ for(let i=0;i<60*70&&D.F.task<11;i++){const kz=D.KELP.find(k=>!k.gone);
   for(const pi of[0,1]){const h=U.act(pi);if(!kz&&D.RAFT3.z<-130.5){if(i%120===pi*60)r.push('shoal'+pi+':'+JUMPTO(pi,pi?1.2:-1.2,-137,5));continue;}
     if(h.groundRef!==D.RAFT3.col){if(i%40===pi*20)r.push('reboard'+pi+':'+JUMPTO(pi,D.RAFT3.x,D.RAFT3.z,4));continue;}
     if(kz&&Math.abs(kz.z-h.pos.z)<4.6){h.face=Math.PI;if(i%14===pi*7)ZC.press(KEYS[pi].attack);}}ZC.tick(1);}
+for(const pi of[0,1])if(U.act(pi).pos.z>-134)r.push('shoal'+pi+'+:'+JUMPTO(pi,pi?1.2:-1.2,-137,5));   // задача отмели включается по первому, кто сошёл: второй ещё на лодке — прыгает следом
 if(D.F.task<11)throw new Error('не доплыли: task='+D.F.task+' raft='+D.RAFT3.z.toFixed(1)+' kelp='+D.KELP.map(k=>k.gone?'x':k.hp).join('')+' '+r.slice(-6).join()+' '+U.st());'raft ok raft='+D.RAFT3.z.toFixed(1)+' '+r.slice(-4).join()
 //@@ shot=k23_shoal.png
 ZC.tick(20);'shoal: task='+ZC.W.dbg23().F.task

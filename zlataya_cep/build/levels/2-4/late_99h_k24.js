@@ -154,7 +154,7 @@ build24=function(){
     play({dur:10,fov:48,shots:[shot(0,[24.6,1.8,-53.6],[29,-1.2,-57.6]),shot(5,[20.4,3.4,-46],[26,0.4,-52])],
       says:[[0.3,3.6,null,'<i>Потап со дна подымает что-то тяжёлое, золотое…</i>',true],[4,3,'yosha','Язык от колокола! Вот что кит проглотил!'],[7.2,2.6,'zven','В Китеж его отнесём — пусть колокол заговорит!']],
       events:[{t:0.6,fn:()=>{anim(3.4,k=>{tongue.position.set(from.x,from.y+k*2.6,from.z);tongue.rotation.y=k*2;});SFX.grow();}},{t:4,fn:()=>{burst(tongue.position.clone(),COL.gold,24,4);}}],
-      end:()=>{tongue.visible=false;banner('Язык колокола найден!','#ffd76a',2.2,'кит больше не икает — теперь корабли на волю');}});}
+      end:()=>{tongue.visible=false;banner('Язык колокола найден!','#ffd76a',2.2,'Потап понесёт его к сердцу кита');}});}
   /* ---------- сюжет ---------- */
   const OUTZ=220;const outG=new THREE.Group();outG.position.set(0,0,OUTZ);W.group.add(outG);{const s=new THREE.Mesh(new THREE.PlaneGeometry(200,200),MB(0x2a7aa0));s.rotation.x=-Math.PI/2;s.position.y=-0.2;outG.add(s);
     const sb=new THREE.Mesh(new THREE.CylinderGeometry(6,7,0.6,20),M(0xe2c98f));sb.position.set(0,-0.1,6);outG.add(sb);}
@@ -178,7 +178,9 @@ build24=function(){
       end:()=>{bdrop.visible=true;banner('Пелагея в пузыре — беда!','#e7c3ff',2.2,'Йоша, тёмную каплю на пузыре полей — с уступа у сердца');}});}
   function freeScene(){F.freed=true;bdrop.visible=false;SFX.grow();burst(bdrop.position.clone(),0x9fe6ff,16,3);const pe=T.pelageya;
     anim(1.6,k=>{bub.scale.setScalar(1+0.3*k);bub.material.opacity=0.25*(1-k);pe.pos.set(6.8,5.2-k*1.0,-99.5);});
-    later(1.6,()=>{bub.visible=false;placeOnGround(pe,6.6,-99.5,4.2);banner('Пелагея свободна!','#e7c3ff',2,'теперь — к ресничкам: щекочите вдвоём!');bark(pe,'pelageya','Спасибо, Йоша, мой спаситель!',2);SFX.ok();});}
+    later(1.6,()=>{bub.visible=false;placeOnGround(pe,6.6,-99.5,4.2);banner('Пелагея свободна!','#e7c3ff',2,'теперь — к ресничкам: щекочите вдвоём!');bark(pe,'pelageya','Спасибо, Йоша, мой спаситель!',2);SFX.ok();
+      // дуга Пелагеи (c20): из пузыря её никто не слышал, кроме Йоши
+      later(2.6,()=>bark(pe,'pelageya','<i>(тихо)</i> Я звала… а голоса не слышно было.',2.6));later(5.4,()=>bark(T.yosha,'yosha','А я услышал. Шёпот — тоже голос.',2.6));});}
   function sneeze(){F.final=true;
     play({dur:16,fov:46,camK:3,shots:[shot(0,[0,3,-104],[0,3,-116]),shot(3,[0,5,OUTZ+18],[0,5,OUTZ-4]),shot(7.4,[-1.2,2.7,OUTZ+13],[1.4,0.6,OUTZ+6])],
       says:[[0.3,1.6,null,'<i>Кит нос морщит…</i>',true],[1.9,1,null,'<i>…и — апчхи!</i>',true],[7.6,3.2,null,'<i>Потап к Йоше подбегает, рот открывает — и слов не найдёт,</i><br><i>По спине хлопает так, что тот шариком катится вперёд.</i>',true],[11.4,2.6,'yosha','Я не один справился — я о помощи попросил.']],
@@ -249,16 +251,19 @@ build24=function(){
   const both=pi=>[
     O('Нас кит проглотил! Внутри — целый мир.<br>Бегите вглубь, к сердцу, — там и пир.',()=>active(pi).pos.z<-7,()=>[]),
     O(()=>'Перепонки под стук сердца «тук-тук» раскрываются.<br>Жди, как раскроется, — и беги! А пред тем она мигает, качается.',()=>active(pi).pos.z<-28,()=>MEMB.filter(m=>active(pi).pos.z>m.z).map(m=>m.g)),
-    pi?O(()=>gates[0].open?(F.ask?'Прошка в колокол звонит — ворота твои откроются!':'Твои ворота (справа) колокол Прошки откроет. Попроси: нажми '+K(1,'call')+'.'):'Желудочное озеро. У каждого — свои ворота, а открывает их друг. Жёлтая жилка — от колокола к твоим.<br>Больной красный клапан живой водой Йоши '+K(1,'skill')+' полей — ворота Прошки откроются, и ты с ним.',
+    pi?O(()=>gates[0].open?(F.ask?'Прошка в колокол звонит — ворота твои откроются!':'Твои ворота (справа) колокол Прошки откроет. Попроси: нажми '+K(1,'call')+'.'):'Желудочное озеро: свои ворота открывает друг.<br>Полей красный клапан живой водой Йоши '+K(1,'skill')+' — откроются ворота Прошки.',
         ()=>gates[1].open&&gates[0].open,()=>(gates[0].open?[]:[valve])):
-      O(()=>gates[1].open?'Ждём: твои ворота (слева) Йоша откроет — живой водой на клапан.':(F.ask?'Желудочное озеро. У каждого — свои ворота, а открывает их друг.<br>Йоша просит: из рогатки '+K(0,'skill')+' в колокол над озером стрельни — вот звук!':'Желудочное озеро. Колокол над озером ворота Йоши откроет, как попросит он. А твои откроет Йоша.<br>В отлив '+K(0,'item')+' к кораблю спуститься можно — там звено, и путь хороший.'),
+      O(()=>gates[1].open?'Ждём: твои ворота (слева) Йоша откроет — живой водой на клапан.':(F.ask?'Желудочное озеро. У каждого — свои ворота, а открывает их друг.<br>Йоша просит: из рогатки '+K(0,'skill')+' в колокол над озером стрельни — вот звук!':'Желудочное озеро: свои ворота открывает друг. Колокол над озером откроет ворота Йоши.<br>В отлив '+K(0,'item')+' — к кораблю за звеном.'),
         ()=>gates[1].open&&gates[0].open,()=>(F.ask&&!gates[1].open?[bmark]:[])),
-    O(()=>'За озером — завал. В восточной стене дверь: там залив, а в нём корабли, что кит проглотил.<br>Прилив '+K(pi,'item')+' — корабли всплывут, течение '+K(pi,'item')+' у ракушки с рыбкой — поплывут к горлу. Корабль на ребре — Потап снимет; на дне — что-то золотое!',
-      ()=>F.jamOpen,()=>{if(F.jamOpen)return [];const r=[];if(BAY.state==='low')r.push(BAY.shell.g);if(SHIPS[1].stuck)r.push(SHIPS[1].g);if(!F.tongue)r.push(tongue);r.push(...CB.shells.map(s=>s.g));return r;}),
+    // «Завал» — три шага, по карточке на шаг (разбор мира 2, c09), и четвёртая — Потап несёт язык колокола к сердцу (c27)
+    O(()=>'Завал! В восточной стене — дверь в залив кораблей.<br>Прилив '+K(pi,'item')+' — корабли всплывут.',()=>F.jamOpen||(BAY.state==='high'&&BAY.t>=1)||shipsOut(),()=>[BAY.shell.g]),
+    O(()=>'Корабль сел на ребро — Потап снимет его '+K(0,'skill')+'.<br>Течение '+K(pi,'item')+' у ракушки с рыбкой — корабли к горлу.',()=>F.jamOpen||shipsOut(),()=>(SHIPS[1].stuck?[SHIPS[1].g]:[]).concat(CB.shells.map(s=>s.g))),
+    O(()=>'На дне залива блестит золотое — Потап, подними '+K(0,'skill')+'!',()=>F.jamOpen||!!F.tongue,()=>[tongue]),
+    O(()=>'Потап несёт язык колокола — к сердцу кита!<br>Кислые лужи обходи.',()=>!!F.tongueHome||!!F.final,()=>[T.potap.g]),
     O(()=>'Зелёные лужи — кислый сок, обходи! Тинники медленны — щит и бей.<br>Пузырник надувается — Прошка, из рогатки в него, скорей!',()=>arena.cleared,()=>arena.list.filter(e=>e.alive).map(e=>e.g)),
     pi?O(()=>F.caught?'Пелагея в пузыре над уступом! Встань Йошей на розовый клапан, жди «тук» — на уступ подкинет.<br>Там тёмную каплю полей '+K(1,'skill')+' — пузырь и сгинет.':'Вперёд, к китову сердцу!',()=>F.freed,()=>F.caught?[bdrop]:[]):
       O(()=>F.caught?'Пузырь Пелагею унёс! Помоги Йоше: Потап подкинет его '+K(0,'skill')+' на уступ,<br>Иль Йоша на клапан встанет и «тук» подождёт — вот и весь уступ.':'Вперёд, к китову сердцу!',()=>F.freed,()=>F.caught?[bub]:[]),
-    O(()=>'Сердце кита сбилось с лада. Нотка твоего цвета долетит до сердца — гусли '+K(pi,'item')+' в долю! Нужно 11 из 16.',()=>RH.done||F.caught,()=>[heart]),
+    O(()=>'Сердце сбилось с лада! Нотка твоего цвета долетела — гусли '+K(pi,'item')+' в долю.<br><span style="color:#ff5a7a;letter-spacing:1px">'+'♥'.repeat(Math.min(RH.hits,RH.need))+'♡'.repeat(Math.max(0,RH.need-RH.hits))+'</span>',()=>RH.done||F.caught,()=>[heart]),
     O(()=>'Реснички в носу кита! Одну вместе разом ударьте '+K(pi,'attack')+' — кит поморщится.<br>Три реснички — и чихнёт, не удержится!',()=>!!F.final,()=>CIL.filter(c=>!c.done).map(c=>c.g)),
     O('Кит чихает…',()=>false,()=>[])];
   W.objectives[0]=both(0);W.objectives[1]=both(1);
@@ -271,7 +276,7 @@ build24=function(){
   FIN.kwPrompts();prompt(0,'skill',()=>headOf(T.potap),()=>T.potap.active&&((SHIPS[1].stuck&&BAY.level>BAY.floor+1.5&&hd(T.potap.pos,{x:SHIPS[1].x+1.6,z:-50})<2.3)||(!F.tongue&&hd(T.potap.pos,{x:29,z:-57.6})<2.3))&&T.potap.pos.y<-1,'поднять');
   for(const pi of[0,1]){const h=()=>active(pi);prompt(pi,'item',()=>headOf(h()),()=>inZone(BAY,h(),1.2)&&BAY.state==='low'&&!shipsOut(),'прилив — корабли всплывут');prompt(pi,'item',()=>headOf(h()),()=>RH.on,'в долю!');}
   // для ботов: перенос и состояние
-  W.dbg24=()=>({F,BAY,CB,SHIPS,tongue,jamCol,RH,HB,gates,arena,LAKE,rhStart,rhPress});
+  W.dbg24=()=>({F,BAY,CB,SHIPS,tongue,jamCol,RH,HB,gates,arena,LAKE,rhStart,rhPress,ACID});
   W.warp24=(where)=>{F.go=true;const P={bay:[8,0,-46],heart:[0,0,-87]}[where];gates.forEach((g,i)=>{if(!g.open){g.open=true;g.col.on=false;g.g.position.y=4.4;}});F.ask=true;
     if(where==='heart'){F.jamOpen=true;jamCol.on=false;arena.started=true;arena.cleared=true;doorCol.on=false;door.children.forEach(p=>p.scale.setScalar(0.1));SHIPS.forEach(R=>{R.out=true;R.g.visible=false;R.col.on=false;});F.tongue=true;tongue.visible=false;}
     HEROES.forEach((h,i)=>{placeOnGround(h,P[0]+(i%2?1.2:-1.2)*(i>1?2:1),P[2]+(i>1?0.8:0),P[1]);h.following=false;h.g.scale.setScalar(1);});for(const pi of[0,1])players[pi].cp.set(P[0],P[1],P[2]);snapCams();return W.dbg24();};
