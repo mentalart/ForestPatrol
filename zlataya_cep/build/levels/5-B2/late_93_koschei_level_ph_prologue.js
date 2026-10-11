@@ -1,6 +1,7 @@
 // ---- продолжение build5B2 (k5epic, часть ph): ПРОЛОГ «Через леса, через моря» — погоня на Горыныче за чёрной тучей Кощея ----
   // Управление — как в 5-3 «Утка»: у каждого игрока своя голова (Игрок 1 — левая, Игрок 2 — правая), Горыныч летит посерёдке;
-  // тянете в одну сторону дольше секунды — разгон. В одиночку игрок ведёт обе головы (W.soloMirror). Шесть отрезков (≈150 с):
+  // тянете в одну сторону дольше секунды — разгон. В одиночку игрок ведёт обе головы (W.soloMirror). Шесть отрезков (≈150 с) — на Богатырском пути;
+  // на Лёгком и Среднем — короткая реприза (≈50 с): «Через леса» и сразу «Раз-два-три!» (правила полёта уже показал 5-3):
   //   1 «Через леса» — золотые буквы из тетрадки и золотые обручи (рывок, обручи подряд — комбо), чернильные ели (красный столб —
   //     вырастет; облететь сбоку или поверху), стена елей — только поверху;
   //   2 «Чернильная волна» — ущелье: за спиной катится волна чернил; уйти можно только вместе (разгон) и сквозь обручи; скалы —
@@ -289,6 +290,9 @@
      letters=letters.filter(L=>{if(L.passed&&L.pt>0.5){k5Del(L.g);k5Del(L.spr);return false;}return true;});};
    /* ---------- отрезки ---------- */
    const LEGS=['forest','gorge','sea','sky','write','three'];
+   // короткая реприза (≈50 с): руль, разгон, головы и вороны уже выучены в 5-3 — после «Через леса» сразу «Раз-два-три!»; весь пролог (шесть отрезков) — на Богатырском пути
+   // или по флагу E.proFull (бот tk5e_prolog)
+   const proShort=()=>!(E.proFull||players.some(p=>p.path==='hard'));
    const legGorge=()=>{PRO.leg='gorge';PRO.th='gorge';WV.d=50;WV.out=false;WV.g.visible=true;WV.g.scale.y=1;banner('Чернильная волна!','#ffb070',2.4);
      later(0.4,()=>say('koschei','Чернила мои, за ними — залейте!',2.2));E.lesson('pro_gorge',()=>{});};
    const legSea=()=>{PRO.leg='sea';WV.out=true;WV.ot=0;K5L.ink(new V3(PX,8,GP.z+WV.d),30,3);PRO.wave=0;PRO.wT=1.2;PRO.th='sea';if(window.k5StormSet)k5StormSet(0.5);banner('Через моря!','#9fe0ff',2.4);
@@ -360,7 +364,7 @@
        p.s.material.rotation=Math.sin(G.time*3+p.ph)*0.3;if(Math.abs(p.s.position.z-f.z)<2.8&&Math.hypot(p.s.position.x-f.x,p.s.position.y-f.y)<3.9){p.dead=true;pageGot(p);}else if(p.s.position.z>GP.z+6)p.dead=true;}
      pages=pages.filter(p=>{if(p.dead)k5Del(p.s);return !p.dead;});
      hoopsTick(dt);spiresTick(dt);rocksTick();waveTick(dt);crowsTick(dt);orbsTick(dt);lettersTick(dt);bonusTick(dt);fxTick(dt);runHud();
-     if(PRO.leg==='forest'&&GP.z<GZ[0])legGorge();
+     if(PRO.leg==='forest'&&GP.z<GZ[0]){if(proShort())legThree();else legGorge();}
      if(PRO.leg==='gorge'&&GP.z<GZ[1])legSea();
      if(PRO.leg==='sea'){PRO.wT-=dt;const all=PRO.WV.length;if(PRO.wave<=all&&PRO.wT<=0&&crows.every(c=>!c.alive||c.leave)){if(PRO.wave<all)crowWave(PRO.WV[PRO.wave]);else leaderWave();PRO.wave++;PRO.wT=1.8;}
        if((PRO.wave>all&&crows.every(c=>!c.alive)&&GP.z<GZ[1]-300)||PRO.lt>75)legSky();}

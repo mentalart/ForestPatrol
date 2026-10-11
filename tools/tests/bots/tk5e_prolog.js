@@ -11,7 +11,7 @@ window._errs=[];window.addEventListener('error',e=>_errs.push(String(e.message))
 window.E5=ZC.FIN.k5e;window.CHK=s=>{if(_errs.length)throw new Error(s+' — ошибки: '+_errs.slice(0,4).join(' / '));return s;};
 window.KB=[{B:['KeyA','KeyD','KeyW','KeyS'],a:'KeyF',g:'KeyG',e:'KeyE'},{B:['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'],a:'Comma',g:'Period',e:'KeyL'}];
 window.RUN={legs:[],last:'',i:0};
-window.START=solo=>{ZC.setSolo(!!solo);E5.goStage(0);ZC.G.manual=true;ZC.tick(20);RUN.legs=[];RUN.last='';RUN.i=0;RUN.pis=solo?[0]:[0,1];return 'on='+E5.pro.on+' leg='+E5.pro.leg;};
+window.START=solo=>{ZC.setSolo(!!solo);E5.proFull=!window.PROSHORT;E5.goStage(0);ZC.G.manual=true;ZC.tick(20);RUN.legs=[];RUN.last='';RUN.i=0;RUN.pis=solo?[0]:[0,1];return 'on='+E5.pro.on+' leg='+E5.pro.leg;};
 // один кадр управления: куда рулить, когда стрелять, щит, «три»
 window.CTRL=()=>{const P=E5.pro,D=P.dbg(),GP=D.GP,PIS=RUN.pis,solo=PIS.length===1;RUN.i++;if(P.leg!==RUN.last){RUN.legs.push(P.leg+'@'+(RUN.i/60).toFixed(0)+'s');RUN.last=P.leg;}
   let tx=0,ty=(D.YL[0]+D.YL[1])/2;const ahead=(z,a,b)=>GP.z-z>(a==null?-3:a)&&GP.z-z<b;
@@ -76,3 +76,8 @@ ZC.tick(1);
 //@@
 // одним игроком: весь пролог и стадия 1
 START(true);FINISH({crows:3,orbs:4,clean:3,hoops:5})
+//@@
+// короткая реприза (Лёгкий и Средний путь): «Через леса» — и сразу «Раз-два-три!», без ущелья, моря, облаков и букв-стен; ≤ 90 с полёта
+window.PROSHORT=true;CHK(START(false));const P=E5.pro;const t0=ZC.G.time;const r=[FLY(()=>!P.on,60*120),'legs='+RUN.legs.join(','),'t='+(ZC.G.time-t0).toFixed(0)+'s'];REL();window.PROSHORT=false;E5.proFull=true;
+const okLegs=RUN.legs.some(x=>x.startsWith('forest'))&&RUN.legs.some(x=>x.startsWith('three'))&&RUN.legs.some(x=>x.startsWith('burn'))&&!RUN.legs.some(x=>/^(gorge|sea|sky|write)/.test(x));
+if(!okLegs||ZC.G.time-t0>95)throw new Error('реприза: '+r.join(' | '));CHK('реприза ok '+r.join(' | '))
