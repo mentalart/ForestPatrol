@@ -62,7 +62,7 @@ function addStatic(g,mat,o){const m=new THREE.Mesh(g,mat||KMAT.vc);m.receiveShad
 function ringPoints(B,n,r0,r1,floorY,R,avoid){const pts=[];let tries=0;const rs=B.rects;while(pts.length<n&&tries++<n*14){
     const x=B.minx-r1+R()*(B.maxx-B.minx+2*r1),z=B.minz-r1+R()*(B.maxz-B.minz+r1+Math.min(r1,10));
     const dx=Math.max(B.minx-x,0,x-B.maxx),dz=Math.max(B.minz-z,0,z-B.maxz),dist=Math.hypot(dx,dz);
-    if(inRects(rs,x,z,r0))continue;if(dist>r1)continue;if(blockedBy(x,z,1.2,floorY))continue;if(avoid&&avoid(x,z))continue;
+    if(inRects(rs,x,z,r0))continue;if(dist>r1)continue;if(blockedBy(x,z,1.2,floorY))continue;if(avoid&&avoid(x,z))continue;if(W.dressAvoid&&W.dressAvoid(x,z))continue;   // уровень просит: не в его провалах (вода, трясина)
     let near=1e9;for(const r of rs){const ddx=Math.max(r.minx-x,0,x-r.maxx),ddz=Math.max(r.minz-z,0,z-r.maxz);near=Math.min(near,Math.hypot(ddx,ddz));}pts.push({x,z,d:near});}
   return pts;}
 const DRESS_CFG={
