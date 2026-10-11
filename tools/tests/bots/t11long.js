@@ -1,7 +1,7 @@
 //@@
 // 1-1 вдвое длиннее (docs: вики «Мир-1-Дремучий-лес»): болото с чудом и лягушками вместо пруда, честная калитка (закрывается, если сойти с лапок),
-// за калиткой — вороны Кощея (круг, щит, «утащил»), яблонька, печка и дым над вороньей рощей, молочная речка, теремок (три бревна вдвоём,
-// конёк — подкидкой Потапа на леса), петушок прогоняет ворон, новоселье — уровень пройден с пятью звеньями.
+// за калиткой — вороны Кощея (красный круг: выбеги — промахнулся, стой или щит — «утащил»), стог-шалаш, ступа Яги и пыль над вороньей рощей,
+// ручей под лопухами, теремок (бревно Потап несёт один, два — вдвоём; конёк — подкидкой Потапа на леса), петушок прогоняет ворон, новоселье — уровень пройден с пятью звеньями.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(30);U.nocine();
 window.F=()=>ZC.W.flags;window.P2=()=>ZC.W.part11;window.BAD=[];window.chk=(c,m)=>{if(!c)BAD.push('FAIL '+m);return c;};
@@ -38,39 +38,43 @@ r.push('cine='+U.cine(200),'stage='+F().stage,'rav='+P2().RV.on);chk(F().stage==
 //@@ shot=t11long_crows.png
 ZC.tick(1);
 //@@
-// вороны: стоим на открытом месте — круг, пике; с щитом устоял; без щита — утащил к колокольчику
+// вороны: красный круг. Стоим — утащил; со щитом — всё равно утащил (щит от ворона не спасает); выбежали из круга, пока наливается, — промахнулся
 const W=ZC.W,R=P2().RV,H=ZC.HERO,r=[];put(U.act(0),-2,-124);put(U.act(1),2,-124);
-let blk=R.blocks;for(let i=0;i<60*20&&R.blocks===blk;i++){ZC.hold('KeyG',true);ZC.tick(1);}ZC.hold('KeyG',false);r.push('blocks='+R.blocks);
-const gr=R.grabs;for(let i=0;i<60*25&&R.grabs===gr;i++)ZC.tick(1);r.push('grabs='+R.grabs,pos(U.act(0)),pos(U.act(1)));
-chk(R.blocks>blk,'щит держит ворона');chk(R.grabs>gr,'ворон утаскивает');r.concat(BAD)
+const lockOn=max=>{for(let i=0;i<60*max;i++){if(R.dive&&R.dive.st==='lock')return true;ZC.tick(1);}return false;};
+let gr=R.grabs;for(let i=0;i<60*25&&R.grabs===gr;i++)ZC.tick(1);r.push('grabs='+R.grabs,'locks='+R.locks);chk(R.grabs>gr,'стоял в круге — утащил');ZC.tick(60*3);
+put(U.act(0),-2,-124);put(U.act(1),2,-124);gr=R.grabs;const bl=R.blocks;for(let i=0;i<60*25&&R.grabs===gr;i++){ZC.hold('KeyG',true);ZC.hold('Period',true);ZC.tick(1);}ZC.hold('KeyG',false);ZC.hold('Period',false);
+r.push('shield grabs='+(R.grabs-gr),'blocks='+(R.blocks-bl));chk(R.grabs>gr&&R.blocks>bl,'щит от ворона не спасает');ZC.tick(60*3);
+put(U.act(0),-2,-124);put(U.act(1),2,-124);const dg=R.dodges;let tries=0;
+for(;tries<4&&R.dodges===dg;tries++){if(!lockOn(25))break;const D=R.dive,pi=D.h.player,h=D.h;r.push('lock lt='+D.lt.toFixed(2)+' '+h.kind);
+  for(let i=0;i<40&&R.dive&&R.dive.st!=='up';i++){U.step(pi,h.pos.x+(pi?3:-3),h.pos.z,0.1);ZC.tick(1);}U.rel(0);U.rel(1);ZC.tick(60);}
+r.push('dodges='+(R.dodges-dg));chk(R.dodges>dg,'выбежал из красного круга — промахнулся');r.concat(BAD)
 //@@
-// яблонька: удар по стволу — яблоки; два съедено — ветки опустились, под ней ворон не достаёт
-const W=ZC.W,Y=P2().YB,r=[];put(U.act(0),Y.x-1.2,Y.z+1.0);put(U.act(1),Y.x+1.3,Y.z+1.6);ZC.tick(20);U.act(0).face=Math.atan2(Y.x-U.act(0).pos.x,Y.z-U.act(0).pos.z);ZC.press('KeyF');ZC.tick(70);
-r.push('shaken='+!!F().shaken);chk(F().shaken,'яблонька отрясена');
-const ap=P2().APL.filter(a=>a.down);r.push('apples down='+ap.length);if(ap[0])r.push(U.goto(0,ap[0].x,ap[0].z,6,0.3));if(ap[1])r.push(U.goto(1,ap[1].x,ap[1].z,6,0.3));ZC.tick(60);
-r.push('eaten='+F().apples,'hide='+!!F().appleHide,'nut fell='+P2().ybNut.base.toFixed(1));chk(F().appleHide,'яблонька укрыла');
-put(U.act(0),Y.x-0.8,Y.z+0.8);put(U.act(1),Y.x+0.8,Y.z-0.8);const g0=P2().RV.grabs+P2().RV.blocks+P2().RV.dodges;ZC.tick(60*8);r.push('under tree hits='+(P2().RV.grabs+P2().RV.blocks+P2().RV.dodges-g0));
-chk(P2().RV.grabs+P2().RV.blocks+P2().RV.dodges===g0,'под яблонькой ворон не пикирует');r.concat(BAD)
+// стог: удар — сено ложится шалашом; под шалашом ворон не пикирует; орешек падает со стожара
+const W=ZC.W,S=P2().HS,r=[];put(U.act(0),S.x-1.9,S.z+1.2);put(U.act(1),S.x+1.9,S.z+1.6);ZC.tick(20);U.act(0).face=Math.atan2(S.x-U.act(0).pos.x,S.z-U.act(0).pos.z);ZC.press('KeyF');ZC.tick(70);
+r.push('hit='+!!F().hayHit,'hide='+!!F().hayHide,'nut='+P2().hsNut.base.toFixed(1));chk(F().hayHide,'стог лёг шалашом');
+put(U.act(0),S.x-0.6,S.z+0.5);put(U.act(1),S.x+0.6,S.z-0.5);ZC.tick(5);const g0=P2().RV.grabs+P2().RV.dodges;ZC.tick(60*8);r.push('under hay hits='+(P2().RV.grabs+P2().RV.dodges-g0));
+chk(P2().RV.grabs+P2().RV.dodges===g0,'в шалаше ворон не пикирует');r.concat(BAD)
 //@@
-// печка: полено вдвоём — дым; роща в дыму — вороны не видят
-const W=ZC.W,L=P2().LG,PF=P2().PCF,r=[];const b=L.g.position;put(U.act(0),b.x-0.9,b.z);put(U.act(1),b.x+0.9,b.z);ZC.tick(20);r.push('log='+L.state);
-for(let i=0;i<60*14&&L.state==='carry';i++){U.step(0,PF.x-0.9,PF.z+0.3,0.3);U.step(1,PF.x+0.9,PF.z+0.3,0.3);ZC.tick(1);}U.rel(0);U.rel(1);ZC.tick(60);
-r.push('log='+L.state,'smoke='+!!F().smoke);chk(F().smoke,'печка растопилась');
-r.push(U.goto(0,PF.x,PF.z,4,0.4));ZC.tick(10);r.push('pies');
-put(U.act(0),-2,-172);put(U.act(1),2,-172);const g0=P2().RV.grabs+P2().RV.blocks+P2().RV.dodges;ZC.tick(60*6);r.push('smoke hits='+(P2().RV.grabs+P2().RV.blocks+P2().RV.dodges-g0));
-chk(P2().RV.grabs+P2().RV.blocks+P2().RV.dodges===g0,'в дыму ворон не пикирует');r.concat(BAD)
+// ступа Яги: Прошка не поднимет — только Потап (кнопка умения у ступы); ступа взлетает, пыль над рощей — вороны не видят
+const W=ZC.W,T=P2().ST,H=ZC.HERO,r=[];U.toKind('proshka',0);put(H.proshka,T.x+0.6,T.z+1.7);put(H.potap,T.x+3,T.z+3);ZC.tick(20);ZC.press('KeyE');ZC.tick(40);r.push('proshka stupa='+!!F().stupa);chk(!F().stupa,'Прошка ступу не поднимает');
+U.toKind('potap',0);put(H.potap,T.x+0.6,T.z+1.7);ZC.tick(20);ZC.press('KeyE');ZC.tick(30);r.push('potap stupa='+!!F().stupa);chk(F().stupa,'Потап поднял ступу');
+r.push(U.until(()=>F().dust,4),'dust='+!!F().dust);chk(F().dust,'пыль над рощей');ZC.tick(60*3);r.push('stupa fly t='+P2().STF.t.toFixed(1));
+put(U.act(0),-2,-172);put(U.act(1),2,-172);const g0=P2().RV.grabs+P2().RV.dodges;ZC.tick(60*6);r.push('dust hits='+(P2().RV.grabs+P2().RV.dodges-g0));
+chk(P2().RV.grabs+P2().RV.dodges===g0,'в пыли ворон не пикирует');U.toKind('proshka',0);r.concat(BAD)
 //@@ shot=t11long_smoke.png
 ZC.tick(1);
 //@@
-// молочная речка: клубок с кисельного берега — по нити на ту сторону, оба игрока
+// ручей: клубок с топкого берега — по нити на ту сторону, оба игрока
 const W=ZC.W,r=[];for(const pi of[0,1]){const x=pi?5:-5;   // дорожки врозь: рядом с нитью друга клубок пристегнулся бы к её кончику
 put(U.act(pi),x,-190.6);ZC.tick(10);U.act(pi).face=Math.PI;ZC.tick(2);ZC.press(U.K[pi].i);ZC.tick(50);
   const th=W.threads.find(t=>t.owner===pi&&!t.ret);r.push('th'+pi+'='+(th?th.len.toFixed(1):'none'));r.push(U.goto(pi,x,-206.5,10,0.4),pos(U.act(pi)));}
-chk(U.act(0).pos.z<-205&&U.act(1).pos.z<-205,'речку перешли по нити');ZC.tick(30);r.concat(BAD)
+chk(U.act(0).pos.z<-205&&U.act(1).pos.z<-205,'ручей перешли по нити');ZC.tick(30);r.concat(BAD)
 //@@
-// теремок: три бревна вдвоём к срубу
-const W=ZC.W,P=P2(),r=[];put(U.act(0),-2,-211);put(U.act(1),2,-211);r.push(U.until(()=>F().tmHi,3));ZC.tick(60*4);
-for(const L of P.LOGS){const b=L.g.position;put(U.act(0),b.x-0.9,b.z);put(U.act(1),b.x+0.9,b.z);ZC.tick(20);const s0=L.state;
+// теремок: первое бревно Потап несёт один, два других — вдвоём к срубу
+const W=ZC.W,P=P2(),H=ZC.HERO,r=[];put(U.act(0),-2,-211);put(U.act(1),2,-211);r.push(U.until(()=>F().tmHi,3));ZC.tick(60*4);
+{const L=P.LOGS[0],b=L.g.position;U.toKind('potap',0);put(H.potap,b.x-0.9,b.z);put(U.act(1),b.x+8,b.z-6);ZC.tick(20);r.push('potap '+L.state+' by='+(L.by&&L.by.kind));chk(L.state==='carry'&&L.by===H.potap,'Потап поднял бревно один');
+  for(let i=0;i<60*14&&L.state==='carry';i++){U.step(0,P.TM.x,P.TM.z+3.4,0.3);ZC.tick(1);}U.rel(0);ZC.tick(50);r.push('potap log '+L.state+' logs='+F().logs);chk(F().logs===1,'бревно Потапа в срубе');U.toKind('proshka',0);}
+for(const L of P.LOGS.slice(1)){const b=L.g.position;put(U.act(0),b.x-0.9,b.z);put(U.act(1),b.x+0.9,b.z);ZC.tick(20);const s0=L.state;
   for(let i=0;i<60*14&&L.state==='carry';i++){U.step(0,P.TM.x-1.0,P.TM.z+3.4,0.3);U.step(1,P.TM.x+1.0,P.TM.z+3.4,0.3);ZC.tick(1);}U.rel(0);U.rel(1);ZC.tick(50);r.push(s0+'>'+L.state);}
 r.push('logs='+F().logs);chk(F().logs===3,'три бревна в срубе');r.concat(BAD)
 //@@ shot=t11long_terem.png

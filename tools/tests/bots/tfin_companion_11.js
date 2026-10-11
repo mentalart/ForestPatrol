@@ -1,6 +1,6 @@
 //@@ wait=1500
 // релиз final06: напарник-бот проходит 1-1 «Избушка, повернись» за Игрока 2 (пеньки «раз-два-три», бой, мусор и корыто, грядки на нити, болото, калитка;
-// за калиткой — яблоко, полено вдвоём, молочная речка по своей нити, брёвна теремка вдвоём);
+// за калиткой — ручей по своей нити, брёвна теремка вдвоём; стог и ступу Яги делает человек);
 // человека (Игрок 1) играет скрипт настоящими клавишами — те же приёмы, что в t11.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 window.CO=ZC.FIN.co;window.P=ZC.players;window.F=()=>ZC.W.flags;window.bot=()=>U.act(1);window.me=()=>U.act(0);
@@ -65,21 +65,19 @@ r.push(U.until(()=>H.yosha.pos.z<-108.4&&H.pelageya.pos.z<-108.4,30),'bot heroes
 U.toKind('proshka',0);r.push(U.goto(0,-1.2,-104.6,10,0.3),U.goto(0,-1.2,-113.6,8,0.4));
 r.push(U.until(()=>F().out,10),'out='+!!F().out,'heroes='+Object.values(H).map(h=>h.kind[0]+h.pos.z.toFixed(0)).join(' '),F().out?'gate ok':'FAIL gate');r
 //@@
-// за калиткой: вороны прилетели (ролик пропускаем; в проверке напарника их пике выключены), яблонька — бот съедает яблоко, полено — вдвоём
+// за калиткой: вороны прилетели (ролик пропускаем; в проверке напарника их пике выключены); стог ворошит человек, ступу Яги поднимает его Потап
 const W=ZC.W,P=W.part11,H=ZC.HERO,r=[U.until(()=>ZC.G.cine,4)];U.nocine();ZC.tick(10);P.RV.cd=1e9;U.tap('Digit1');ZC.tick(5);
-const Y=P.YB;r.push(U.goto(0,Y.x-1.2,Y.z+1.1,20,0.3));me().face=Math.atan2(Y.x-me().pos.x,Y.z-me().pos.z);ZC.press('KeyF');ZC.tick(60);
-const ap=P.APL.filter(a=>a.down).sort((a,b)=>Math.hypot(a.x-me().pos.x,a.z-me().pos.z)-Math.hypot(b.x-me().pos.x,b.z-me().pos.z))[0];if(ap)r.push(U.goto(0,ap.x,ap.z,6,0.3));
-r.push(U.until(()=>F().appleHide,15),'apples='+F().apples,F().appleHide?'apple ok':'FAIL apple');
-const L=P.LG;r.push(U.goto(0,L.g.position.x-0.9,L.g.position.z,20,0.3));r.push(U.until(()=>L.state==='carry',15),'log='+L.state,'bot='+pos(bot()));
-for(let i=0;i<60*20&&L.state==='carry';i++){U.step(0,P.PCF.x-0.9,P.PCF.z+0.3,0.3);ZC.tick(1);}U.rel(0);
-r.push(U.until(()=>F().smoke,4),'smoke='+!!F().smoke,F().smoke?'log ok':'FAIL log');r
+const S=P.HS;r.push(U.goto(0,S.x-1.9,S.z+1.2,20,0.3));me().face=Math.atan2(S.x-me().pos.x,S.z-me().pos.z);ZC.press('KeyF');ZC.tick(60);
+r.push(U.until(()=>F().hayHide,6),F().hayHide?'hay ok':'FAIL hay');
+U.toKind('potap',0);const T=P.ST;r.push(U.goto(0,T.x+0.6,T.z+1.8,25,0.3));ZC.tick(5);ZC.press('KeyE');ZC.tick(20);
+r.push(U.until(()=>F().dust,4),'dust='+!!F().dust,'bot='+pos(bot()),F().dust?'stupa ok':'FAIL stupa');r
 //@@
-// воронья роща в дыму, молочная речка: человек — по своей нити слева, бот переводит обоих героев по своей справа
-const W=ZC.W,P=W.part11,H=ZC.HERO,r=[];r.push(U.goto(0,-2,-153,6,0.4),U.goto(0,-2,-160,6,0.4),U.goto(0,-5,-190.6,25,0.3));   // печку — обойтиme().face=Math.PI;
+// воронья роща в пыли, ручей: человек — по своей нити слева, бот переводит обоих героев по своей справа
+const W=ZC.W,P=W.part11,H=ZC.HERO,r=[];r.push(U.goto(0,-2,-153,6,0.4),U.goto(0,-2,-160,6,0.4),U.goto(0,-5,-190.6,25,0.3));   // ступу — обойтиme().face=Math.PI;
 for(let i=0;i<5&&!W.threads.some(t=>t.owner===0&&!t.ret&&t.sz<-185);i++){ZC.press('KeyR');ZC.tick(20);}ZC.tick(30);r.push(U.goto(0,-5,-206.6,12,0.3),'z='+me().pos.z.toFixed(1));
 r.push(U.until(()=>H.pelageya.pos.z<-205&&H.yosha.pos.z<-205,45),'bot heroes '+['pelageya','yosha'].map(k=>k[0]+H[k].pos.z.toFixed(0)).join(' '),(H.pelageya.pos.z<-205&&H.yosha.pos.z<-205)?'river ok':'FAIL river');
-if(H.potap.pos.z>-205){H.potap.pos.set(-4,0,-207.5);H.potap.vel.set(0,0,0);}   // Потапа человек перевёл бы сам — здесь проверяется бот
-r.push(pos(H.potap));r
+if(H.proshka.pos.z>-205){H.proshka.following=false;H.proshka.pos.set(-4,0,-207.5);H.proshka.vel.set(0,0,0);}   // второго героя человек перевёл бы сам — здесь проверяется бот
+U.toKind('proshka',0);ZC.tick(5);r.push(pos(H.proshka),pos(H.potap));r
 //@@
 // теремок: три бревна вдвоём (бот встаёт с другой стороны), конёк — подкидкой Потапа, новоселье
 const W=ZC.W,P=W.part11,H=ZC.HERO,r=[];r.push(U.goto(0,-2,-212,10,0.4),U.until(()=>F().tmHi,4));
