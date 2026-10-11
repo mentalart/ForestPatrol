@@ -65,10 +65,12 @@ build2B=function(){
     tired:['Уф… запыхался…','Ох, годы мои водяные…'],angry:['Ну, держитесь!','Всех перекупаю!','Сейчас как плесну!']};
   const line=k=>{const L=LINES[k];return L[Math.floor(Math.random()*L.length)];};
   // музыка по этапам (темы — в late_40_music: FIN.music.TR)
-  const MUS=()=>{try{const TR=FIN.music.TR;if(!TR||TR.vod1)return;const B=TR.boss;
-      TR.vod1=Object.assign({},B,{bpm:116,root:43});TR.vod2=Object.assign({},B,{bpm:124,root:45,v:B.v.concat([{i:'tamb',drum:'x.x.x.x.x.x.x.x.',vol:0.02}])});
-      TR.vod3=Object.assign({},B,{bpm:108,root:41,sc:'aeo',v:B.v.filter(v=>v.i!=='kick').concat([{i:'frame',drum:'x.....x.....x...',vol:0.04}])});
-      TR.vod4=Object.assign({},B,{bpm:75,root:45,v:B.v.concat([{i:'kick',drum:'x...x...x...x...',vol:0.12},{i:'frame',drum:'x.x.x.x.x.x.x.x.',vol:0.05}])});}catch(e){}};
+  // музыка этапов: громкость выровнена (разбор мира 2, c32) — в каждом этапе свой барабанный рисунок ВМЕСТО барабанов «босса», а не поверх них
+  const MUS=()=>{try{const TR=FIN.music.TR;if(!TR||TR.vod1)return;const B=TR.boss,mel=B.v.filter(v=>!v.drum),dr=(k,f,t)=>[{i:'kick',drum:k,vol:0.085},{i:'frame',drum:f,vol:0.04},{i:'tamb',drum:t,vol:0.022}];
+      TR.vod1=Object.assign({},B,{bpm:116,root:43,v:mel.concat(dr('x...x...x...x.x.','....x.......x...','..x...x...x...x.'))});
+      TR.vod2=Object.assign({},B,{bpm:124,root:45,v:mel.concat(dr('x...x...x...x.x.','....x.......x...','x.x.x.x.x.x.x.x.'))});
+      TR.vod3=Object.assign({},B,{bpm:108,root:41,sc:'aeo',v:mel.concat(dr('x.......x.......','x.....x.....x...','..x...x...x...x.'))});
+      TR.vod4=Object.assign({},B,{bpm:75,root:45,v:mel.concat(dr('x...x...x...x...','x.x.x.x.x.x.x.x.','....x.......x...'))});}catch(e){}};
   const music=n=>{MUS();try{FIN.music.play(n);}catch(e){}};
   // полоса босса: этап, сила, запал
   const setBar=()=>{if(bb.style.display!=='block')return;const e=vod,ph=Math.max(1,Math.min(4,Math.floor(F.phase||1)));const hp=e&&e.alive?Math.max(0,e.embers)/e.maxEmb:0;
@@ -320,10 +322,11 @@ S.lightT=(S.lightT==null?6:S.lightT)-dt;if(S.lightT<=0){S.lightT=rand(8,14);FX.l
     // эмоции по силе: злость → обида → усталость
     if(F.phase>=1&&F.phase<4&&!(e.dazeT>0)&&e.state!=='broken'){const k=e.embers/e.maxEmb;const st=e.k2.st;if(st.emo!=='surprise'&&st.emo!=='happy')st.emo=k>0.6?'angry':k>0.3?'hurt':'tired';}
     if(e.state==='broken'&&F.phase<4){V.set(e.k2,'dazed','tired');if(!F.brTold||F.brTold!==F.phase){F.brTold=F.phase;key(e.pos.clone().add(new V3(0,e.L.top*e.s+0.8,0)),'Пробой! Добивай!','#fff2b0');}}
-    // рассыпался клубком — подсказка этапа (одна на этап); вдвоём рассыпались разом — этап сначала (сила Водяного — как в начале этапа)
+    // рассыпался клубком — подсказка этапа (одна на этап); вдвоём рассыпались разом — назад к отметке, но прогресс этапа остаётся (разбор мира 2, c29):
+    // сила Водяного и раскрытые кувшинки не возвращаются, Водяной лишь приходит в себя
     for(const p of[0,1]){if(players[p].downed&&BS.downTold!==F.phase+':'+p&&W.k2hint){BS.downTold=F.phase+':'+p;tip(p,W.k2hint(p),5);}}
-    if(!SOLO()&&F.phase>=1&&F.phase<4&&players[0].downed&&players[1].downed&&!BS.wiped){BS.wiped=true;e.embers=e.maxEmb;BS.lastEmb=e.embers;BS.zap=0;e.dazeT=0;if(e.state==='broken')e.state='idle';
-      if(F.phase===2)V.resetFlowers(e.k2);banner('Этап сначала!','#cfe8ff',2.4,'отметка у входа — и снова в омут');sayV(line('tease'),1.8,'happy');}
+    if(!SOLO()&&F.phase>=1&&F.phase<4&&players[0].downed&&players[1].downed&&!BS.wiped){BS.wiped=true;BS.zap=0;e.dazeT=0;if(e.state==='broken')e.state='idle';
+      banner('Назад к отметке!','#cfe8ff',2.4,'сила Водяного не вернулась — снова в омут');sayV(line('tease'),1.8,'happy');}
     if(BS.wiped&&!players[0].downed&&!players[1].downed)BS.wiped=false;
     // долгая заминка — одна подсказка
     BS.idleT+=dt;if(BS.idleT>28){BS.idleT=0;for(const p of[0,1])tip(p,W.k2hint?W.k2hint(p):'',4);}});
@@ -411,7 +414,7 @@ S.lightT=(S.lightT==null?6:S.lightT)-dt;if(S.lightT<=0){S.lightT=rand(8,14);FX.l
         [11.6,3.6,null,'<i>А вдали над морем — золотые купола: Китеж-град слушает свой звон.</i>',true],[16.2,2.8,'yosha','<i>(шёпотом)</i> Тише. Пусть спит, не будите.'],[19.6,3.6,null,'<i>На скале перстень блеснул — и тонкая тень ушла.</i>',true]],
       events:[{t:0.6,fn:()=>{V.set(e.k2,'idle','tired');e.state='idle';const L=linkItem(e.pos.x,1,e.pos.z);const to=T.proshka.pos.clone();anim(1.2,k=>{L.base=1+Math.sin(k*Math.PI)*3;L.pos.x=lerp(e.pos.x,to.x,k);L.pos.z=lerp(e.pos.z,to.z,k);});later(1.3,()=>takeItem(L,T.proshka));}},
         {t:3.4,fn:()=>{V.set(e.k2,'yawn','tired');}},
-        {t:6.8,fn:()=>{for(let i=0;i<8;i++)later(i*0.9,()=>{tone(523*[1,0.84,0.75,0.84][i%4],1.6,'sine',0.22);tone(262,1.8,'sine',0.1);BELL4[i%3].B.ring();});lullaby(LUL1,0.55,0.4,0.12);
+        {t:6.8,fn:()=>{for(let i=0;i<8;i++)later(i*0.9,()=>{tone(mf(FIN.SADKO_TUNE[i%4]),1.6,'sine',0.22);tone(mf(FIN.SADKO_TUNE[0]-12),1.8,'sine',0.1);BELL4[i%3].B.ring();});lullaby(LUL1,0.55,0.4,0.12);
           setWater(zone,'high');OM.chop=0.05;OM.U.uDeep.value.set(0x2a7a8e);OM.U.uShal.value.set(0x7ad6d8);V.set(e.k2,'sleep','sleep');SOM.g.visible=true;somAt(new V3(C.x+4,0,C.z+2),2.2);SOM.roll=0;SOM.amp=0.5;
           anim(3,k=>{SOM.roll=Math.sin(k*Math.PI*2)*1.6;});}},
         {t:7,fn:()=>{for(let i=0;i<14;i++)later(1+i*0.6,()=>{FX.drop(e.pos.clone().add(new V3(0,3.4,0.8)),new V3(0,1.2,0.4),0.14,{noRing:true});if(i%4===0)ft(e.pos.clone().add(new V3(0,4.6,0)),'З-з-з…','#cfe8ff');});}},

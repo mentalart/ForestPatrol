@@ -33,9 +33,14 @@ for(const k of['proshka','potap','pelageya','yosha']){toKind(k);const [x,z]=spot
 for(const k of['proshka','potap','pelageya','yosha']){toKind(k);ZC.tick(45);U.tap('KeyR');ZC.tick(10);}
 if(!D.F.tune)throw new Error('напев не сложился: '+D.TN.i+' '+r.join()+' '+st());CINE(120);ZC.tick(20);if(D.mosC.on)throw new Error('ворота не ушли');'tune solo '+r.join()
 //@@
-// главный колокол: стычка, язык, вчетвером на «ТРИ» (в одиночку — одна кнопка)
-const D=ZC.W.dbg25(),F=D.F;const r=[go(-2,-146.4,8)];ZC.tick(30);if(!D.arena.started)throw new Error('стычка не началась: '+st());
-ZC.W.enemies.forEach(e=>{if(e.alive){e.alive=false;ZC.W.group.remove(e.g);}});ZC.tick(60);if(!CINE(300))throw new Error('нет ролика с языком');ZC.tick(20);
+// главный колокол: у колокола тихо (стычка была в колодце); «три струны» в одиночку — Пелагея: прилив и звон (оставлена доигрывать),
+// Потап — прыжок на ладью-призрак, течение к колоколу, шаг на круг — ролик с языком; вчетвером на «ТРИ» (в одиночку — одна кнопка)
+const D=ZC.W.dbg25(),F=D.F;const r=[go(-2,-146.4,8)];ZC.tick(30);if(ZC.W.enemies.some(e=>e.alive))throw new Error('у главного колокола враги: '+st());if(D.MZ.state!=='low')throw new Error('бассейн не пуст');
+toKind('pelageya');r.push(go(-6.6,-145.6,8));U.tap('KeyR');ZC.tick(260);if(D.MZ.state!=='high')throw new Error('прилив не сыгран: '+st());
+r.push(go(-7.6,-147.2,6));U.tap('KeyR');ZC.tick(4);if(!(D.RB.hum>0&&D.raft.col.on))throw new Error('ладейный колокол молчит: '+st());toKind('potap');
+r.push(go(3.2,-145.6,6));ZC.hold('KeyW',true);for(let i=0;i<40;i++){if(i===2)ZC.press('Space');ZC.tick(1);}ZC.hold('KeyW',false);ZC.tick(20);if(H.potap.groundRef!==D.raft.col)throw new Error('Потап не на ладье: '+st()+' hum='+D.RB.hum.toFixed(1));
+ZC.hold('KeyA',true);ZC.tick(4);ZC.hold('KeyA',false);U.tap('KeyR');ZC.tick(150);if(D.raft.x>0.1)throw new Error('ладья не доплыла: x='+D.raft.x.toFixed(2));
+r.push(go(0,-150.4,4));if(!CINE(300))throw new Error('нет ролика с языком: '+st());ZC.tick(20);
 const sp=[[0.88,-150.12],[-0.88,-150.12],[-0.88,-151.88],[0.88,-151.88]];const four=()=>[H.proshka,H.potap,H.pelageya,H.yosha].forEach((h,i)=>{h.pos.set(sp[i][0],6.7,sp[i][1]);h.vel.set(0,0,0);});four();ZC.tick(20);
 for(let s=0;s<3;s++){for(let i=0;i<300;i++){ZC.tick(1);if(F.cnt&&F.cnt.t>2.05&&F.cnt.t<2.2&&F.cnt.p[0]===null&&F.cnt.p[1]===null){ZC.press('Space');ZC.tick(1);break;}}r.push('sw='+(F.cnt&&F.cnt.sw));ZC.tick(80);four();ZC.tick(10);}
 if(!F.bomWait)throw new Error('не раскачали: '+r.join());ZC.tick(60*24);ZC.skip();ZC.tick(100);'bell solo '+r.join()
