@@ -78,6 +78,15 @@ const DIR=[
   {lv:'5-1',dur:13.4,cues:[[0.3,dPunch(-4)],[0.4,dTrauma(0.3)],[3.5,dEmo('yosha','fear')],[5.2,dEmo('proshka','pride')],[12.2,dAll('joy',0.06)]]},
   {lv:'5-1',dur:11,cues:[[3.6,dSlow(0.5,0.6)],[7.3,dTrauma(0.3)],[8.8,dMood(NIGHT,0.12)],[11,dEmo('pelageya','nod')]]},
   {lv:'5-1',dur:17.6,cues:[[1.1,dConf(40)],[1.2,dAll('surprise',0.06)],[4.8,dEmo('yosha','hop')],[9.4,dMood(WARM,0.12)],[13,dAll('nod',0.08)]]},
+  // 5-2: «Зайца не догнать — загоняют» (ёж умничает, Потап кивает); финал — подкидка, «апчхи!», утка в небо
+  {lv:'5-2',dur:14,mood:[WARM,0.1],cues:[[5.6,dEmo('yosha','pride')],[9.4,dEmo('potap','nod')],[11.6,dAll('joy',0.06)]]},
+  {lv:'5-2',dur:13,cues:[[0.4,dEmo('proshka','effort')],[4.6,dSlow(0.5,0.5)],[4.8,dDZ(0.2,0.9,1.1)],[6.8,dAll('surprise',0.06)],[10.2,dAll('joy',0.08)]]},
+  // 5-3: «у каждой головы свой хозяин»; утку берут зубами, яйцо ловит Пелагея
+  {lv:'5-3',dur:13,cues:[[4.4,dEmo('proshka','pride')],[6.5,dEmo('pelageya','nod')],[8.7,dAll('joy',0.06)]]},
+  {lv:'5-3',dur:15,mood:[WARM,0.12],cues:[[0.3,dSlow(0.6,0.6)],[5.4,dEmo('pelageya','surprise')],[9.6,dSpark(8,0xffd23a)],[10,dAll('cheer',0.06)]]},
+  // зеркальце (5-2, 5-3): Кощей один в тереме — холодный свет, медленный наезд
+  {lv:'5-2',dur:7.5,mood:[COLD,0.18],cues:[[3.9,dDZ(0.16,1.4,1.6)]]},
+  {lv:'5-3',dur:7.5,mood:[COLD,0.18],cues:[[3.9,dDZ(0.16,1.4,1.6)]]},
   // 5-4: Кощей забирает яйцо — «Моё»
   {lv:'5-4',dur:25,cues:[[8.8,dMood(COLD,0.2)],[9.4,dDZ(0.3,1.1,1.4)],[9.6,dAll('fear',0.08)]]},
   // 5-Б1: Кощей хочет прочитать книгу
