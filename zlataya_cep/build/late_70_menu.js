@@ -74,6 +74,7 @@ function settingsScreen(){const S=FIN.set,pct=v=>Math.round(v*100)+'%',step=(v,d
     {label:'Размер текста',val:()=>Math.round(S.ts*100)+'%',side:d=>{const i=TS.indexOf(S.ts);S.ts=TS[Math.max(0,Math.min(TS.length-1,(i<0?1:i)+d))];save();}},
     {label:'Тряска камеры',val:()=>pct(S.shakeK),side:d=>{S.shakeK=lvl3(S.shakeK,d);save();}},
     {label:'Вспышки',val:()=>pct(S.flashK),sub:'50 % — мягче и без мигания, 0 % — без вспышек',side:d=>{S.flashK=lvl3(S.flashK,d);save();}},
+    {label:'Сдвиг такта',val:()=>((S.lag||0)>0?'+':'')+(S.lag||0)+' мс',sub:'звук запаздывает (наушники, телевизор) — плюс; в ритм-уровнях нажатие судится с поправкой',side:d=>{S.lag=Math.max(-100,Math.min(200,(S.lag||0)+d*20));save();}},
     {label:'Подписи к звукам',val:()=>S.caps?'вкл':'выкл',sub:'«[бубенец справа]» внизу экрана',side:()=>{S.caps=!S.caps;save();}},
     {label:'Вибрация джойстика',val:()=>S.rumble!==false?'вкл':'выкл',side:()=>{S.rumble=S.rumble===false;save();}},
     {label:'Графика',val:()=>QN[S.quality],sub:'тени, чёткость, трава и цветы',side:d=>{const i=Q.indexOf(S.quality);S.quality=Q[Math.max(0,Math.min(2,i+d))];save();FIN.applyQuality();}}];

@@ -169,7 +169,7 @@ function panePan(pi){const P=PANES.length>1?PANES[pi]:null;return P&&P.poly?clam
 function render(){const Wd=innerWidth,H=innerHeight;renderer.shadowMap.needsUpdate=true;
   const a=active(0).pos,b=active(1).pos,foc=G.cine&&G.cine.cam?shared.look:new V3((a.x+b.x)/2,0,(a.z+b.z)/2);sun.target.position.set(foc.x,0,foc.z);sun.position.copy(sun.target.position).add(W.sunOff);
   {const want=Math.round(clamp(hd(a,b)*0.6+16,18,40));const sc=sun.shadow.camera;if(sc.right!==want){sc.left=-want;sc.right=want;sc.top=want;sc.bottom=-want;sc.updateProjectionMatrix();}}
-  composePose(shared,poseS);const e=smooth(G.split);PANES=[];const fov=G.cine&&G.cine.cam?G.cine.fov:55;let o=SPLIT.o;
+  composePose(shared,poseS);const e=smooth(G.split);PANES=[];const fov=G.cine&&G.cine.cam?G.cine.fov:W.camFov?W.camFov():55;let o=SPLIT.o;
   if(e<0.002){camS.position.copy(poseS.pos);camS.quaternion.copy(poseS.quat);camS.fov=fov;camS.aspect=Wd/H;camS.clearViewOffset();camS.updateProjectionMatrix();camS.updateMatrixWorld();
     renderer.setViewport(0,0,Wd,H);renderer.setScissor(0,0,Wd,H);renderer.render(scene,camS);PANES.push({cam:camS,x:0,w:Wd,h:H,pi:-1,poly:null,A:[Wd/2,H/2],box:[0,0,Wd,H],real:camS});}
   else{const n=SPLIT.n,axis=Math.abs(n.x)>0.9999||Math.abs(n.y)>0.9999;

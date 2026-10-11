@@ -219,6 +219,24 @@ function skazClouds(step,cb){G.ui='skaz';const el=$('skaz');el.style.display='fl
     if(ok[0]&&ok[1]){if(both[0]===both[1]){SFX.ok();G.ui=null;G.uiTick=null;el.style.display='none';cb([both[0]]);}
       else{const was=Math.ceil(10-diffT);diffT+=1/60;if(Math.ceil(10-diffT)!==was)draw();if(diffT>=10){SFX.ok();G.ui=null;G.uiTick=null;el.style.display='none';cb([both[0],both[1]]);}}}};}
 
+/* ---------- зеркальце из 5-1 в конце 5-2 и 5-3: короткое видение (≈7,5 с) — Кощей один в тереме; рамка зеркальца — овал поверх кадра ---------- */
+// терем строится один раз далеко в стороне (x=420), камера смотрит туда; по окончании — cb (обычно finishLevel)
+function mirrorVision(o,cb){const P=new V3(420,0,420);let set=W.mvSet;
+  if(!set){set=W.mvSet={};const g=new THREE.Group();g.position.copy(P);W.group.add(g);set.g=g;const fl=M(0x201a26),wl=M(0x120e18),gold=M(COL.gold,{emissive:0x806010,emissiveIntensity:0.45}),wood=M(0x5a3a1a);
+    addMesh(new THREE.BoxGeometry(16,0.2,16),fl,0,-0.1,0,g);addMesh(new THREE.BoxGeometry(16,9,0.4),wl,0,4.5,-5,g);for(const sd of[-1,1])addMesh(new THREE.BoxGeometry(0.4,9,16),wl,sd*6,4.5,0,g);
+    for(let i=0;i<10;i++){const x=-5+(i%5)*1.4,y=0.55+Math.floor(i/5)*1.15;addMesh(new THREE.BoxGeometry(1.2,1.0,1.4),wood,x,y,-4.1,g);addMesh(new THREE.BoxGeometry(1.24,0.12,1.44),gold,x,y+0.45,-4.1,g);}
+    addMesh(new THREE.BoxGeometry(2.4,0.8,1.8),M(0x1a1420),0,0.4,-2,g);addMesh(new THREE.BoxGeometry(2.4,3.6,0.4),M(0x1a1420),0,1.8,-2.8,g);
+    const K=makeKoschei();W.group.remove(K.g);g.add(K.g);K.g.position.set(0,0.35,-2.1);K.g.scale.setScalar(1.05);K.body.position.y=-0.75;K.body.rotation.x=-0.08;K.head.rotation.x=0.35;set.K=K;
+    const cd=addMesh(new THREE.CylinderGeometry(0.07,0.08,0.5,8),M(0xf4ecd8),1.6,0.25,-0.8,g);addMesh(new THREE.SphereGeometry(0.07,6,5),MB(0xffc860),1.6,0.58,-0.8,g);
+    const L=new THREE.PointLight(0xffc870,1.4,9,2);L.position.set(1.6,1.2,-0.6);g.add(L);set.L=L;}
+  let fr=document.getElementById('mvFrame');if(!fr){fr=document.createElement('div');fr.id='mvFrame';fr.style.cssText='position:fixed;inset:0;pointer-events:none;z-index:6;opacity:0;transition:opacity .6s;'+
+    'background:radial-gradient(ellipse 36% 44% at 50% 48%,rgba(0,0,0,0) 90%,rgba(200,138,58,.95) 91.5%,rgba(120,70,30,.97) 95%,rgba(18,12,22,.97) 96.5%)';document.body.appendChild(fr);}
+  const show=v=>{fr.style.opacity=v?'1':'0';};const K=set.K;
+  play({dur:7.5,fov:40,camK:2.2,shots:[shot(0,[P.x+0.4,1.6,P.z+4.2],[P.x,1.3,P.z-2],[P.x+0.2,1.5,P.z+3.2],[P.x,1.35,P.z-2],7.5)],
+    says:[[0.3,3.4,null,o.narr,true],[3.9,3.2,'koschei',o.line]],
+    events:[{t:0.05,fn:()=>show(true)},{t:3.9,fn:()=>{anim(1.2,k=>{K.head.rotation.x=0.35-k*0.3;K.head.rotation.y=Math.sin(k*Math.PI)*0.3;});}},{t:6.9,fn:()=>show(false)}],
+    tick:t=>{set.L.intensity=1.2+Math.sin(t*9)*0.15+Math.sin(t*23)*0.08;},
+    end:()=>{show(false);if(cb)cb();}});}
 /* ---------- 5-1: Лебедь, коршун-морок, Голова, белка и хрустальный дом, хрусталики, зеркальце Кощея, живая пятая цепь ---------- */
 // Лебедь («Сказка о царе Салтане»): белая, с золотым венцом, во лбу горит звезда
 function makeSwan5(){const g=new THREE.Group();W.group.add(g);const body=new THREE.Group();g.add(body);const wh=M(0xfbfbff),gr=M(0xe4e6f0),bk=M(0xf08a30),dk=MAT.dark,gold=M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.6});
