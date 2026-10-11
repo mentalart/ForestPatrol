@@ -1,11 +1,16 @@
 /* ============================== РЕЛИЗ final06 · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 ============================== */
 // Бот за Игрока 2 (late_73_companion) делает то, что делал бы живой игрок за Пелагею и Йошу: оба героя садятся на пеньки «с лапками» и на «ТРИ» жмут приём;
 // после кикиморок носит мусор в кучу у забора и берёт корыто вдвоём с человеком; кидает клубок на грядки и идёт по нити; у лужи кидает нить навстречу
-// нити друга; встаёт на лапку калитки и проходит с обоими героями. Бой с кикиморками ведёт общий бой бота. Положения — из proto/levels/1-1.js.
-const S11={w:null,v:{},thr:0,stump:{},dv:0,dt:0};
-const s11=(k,f)=>{if(S11.w!==W){S11.w=W;S11.v={};S11.thr=0;S11.stump={};S11.dv=0;S11.dt=0;}return S11.v[k]||(S11.v[k]=!!f());};   // «уже было»: запоминается на заход в уровень
+// нити друга; у калитки держит лапку и проходит по очереди (калитка открыта, только пока лапки нажаты); за калиткой съедает яблоко,
+// несёт полено и брёвна вдвоём с человеком, переходит молочную речку по своей нити; вороны Кощея его героев не хватают. Бой с кикиморками ведёт общий бой бота. Положения — из proto/levels/1-1.js.
+const S11={w:null,v:{},thr:0,stump:{},dv:0,dt:0,rx:0};
+const s11=(k,f)=>{if(S11.w!==W){S11.w=W;S11.v={};S11.thr=0;S11.stump={};S11.dv=0;S11.dt=0;S11.rx=0;}return S11.v[k]||(S11.v[k]=!!f());};   // «уже было»: запоминается на заход в уровень
 const s11F=()=>W.flags,s11Th=(h,pit)=>W.threads.find(t=>t.owner===1&&!t.ret&&!t.string&&t.hero===h&&(t.sz<-55)===!!pit);   // нить героя на грядках (pit=false) или у лужи (true)
 // кто из героев Игрока 2 ещё не перешёл z<zEnd: сначала ведомый нами, потом другой
+// нести вдвоём (полено у печки, брёвна теремка): несут — идёт рядом с человеком; человек подошёл к лежачему — встаёт с другой стороны
+function s11Carry(h,hh,list){if(s11F().stage!=='crows')return 'follow';const c=list.find(L=>L.state==='carry');if(c){cmpGoto(h,hh.pos.x,hh.pos.z,1.3);return;}
+  const L=list.filter(L=>L.state==='ground'&&hd(L.g.position,hh.pos)<4).sort((a,b)=>hd(a.g.position,hh.pos)-hd(b.g.position,hh.pos))[0];if(!L)return 'follow';
+  const p=L.g.position,sd=hh.pos.x<p.x?1:-1;cmpGoto(h,p.x+sd*0.9,p.z,0.3);}
 const s11Todo=(zEnd,tag)=>['yosha','pelageya'].filter(k=>!s11(tag+k,()=>HERO[k].pos.z<zEnd&&HERO[k].pos.y>-0.8));
 // кинуть клубок с места (раз в 0,8 с) — нить ляжет вперёд
 // нить ложится туда, куда смотрит герой: перед броском бот встаёт лицом вперёд (по ходу камеры), как поворачивался бы игрок
@@ -55,8 +60,26 @@ CMP.route('1-1',[
       if(Math.abs(h.pos.x-rx)>0.7&&h.pos.z>-62.3)cmpGoto(h,rx,-61.2,0.3);else cmpGoto(h,rx,-90,0.4);return;}
     if(Math.hypot(h.pos.x-1,h.pos.z+61.4)>0.5&&!th){cmpGoto(h,1,-61.4,0.3);return;}
     if(!th&&friend)s11Throw(h);}},
-  // калитка-упрямица: встать на свою лапку, подержать секунду вместе с человеком — и все четверо за калитку
-  {id:'gate',done:()=>!!s11F().out,run:(h,hh)=>{if(s11F().stage!=='yard')return 'follow';const P=W.clean11.PL[1];
-    if(!s11F().gateKept){cmpGoto(h,P.x,P.z,0.2);return;}
-    cmpCall();cmpGoto(h,1,-111,0.5);}},   // проход калитки — x от -2,2 до 2,2
+  // калитка-упрямица открыта, пока нажаты обе наружные или обе внутренние лапки. Йоша держит правую наружную, Пелагея проходит и встаёт на правую
+  // внутреннюю; снаружи остался Йоша — проходит, как только внутренние нажаты; оба внутри, а кто-то снаружи — держат обе внутренние
+  {id:'gate',done:()=>!!s11F().out,run:(h,hh)=>{if(s11F().stage!=='yard')return 'follow';const C=W.clean11,PL=C.PL,inn=PL[2].on&&PL[3].on;
+    const on=(k,P)=>Math.hypot(HERO[k].pos.x-P.x,HERO[k].pos.z-P.z)<0.8,outs=['pelageya','yosha'].filter(k=>HERO[k].pos.z>-108.2);
+    const stand=(k,P)=>{if(cmpWant(k))cmpGoto(h,P.x,P.z,0.2);};
+    const pass=k=>{if(!cmpWant(k))return;if(h.pos.z>-105.5&&(Math.abs(h.pos.x-1.2)>0.5||!C.gateOpen())){cmpGoto(h,1.2,-104.6,0.3);return;}cmpGoto(h,1.2,-113.6,0.4);};
+    if(outs.length===2){if(!on('yosha',PL[1])){stand('yosha',PL[1]);return;}if(C.gateOpen())pass('pelageya');else stand('pelageya',{x:2.6,z:-104.2});return;}
+    if(outs.length===1){const k=outs[0],i=k==='yosha'?'pelageya':'yosha';if(inn){pass(k);return;}if(!on(i,PL[3])){stand(i,PL[3]);return;}if(!on(k,PL[1]))stand(k,PL[1]);return;}
+    if(HEROES.some(q=>q.pos.z>-108.4)){if(!on('pelageya',PL[3]))stand('pelageya',PL[3]);else if(!on('yosha',PL[2]))stand('yosha',PL[2]);return;}
+    return 'follow';}},
+  // за калиткой: вороны бота не трогают (W.ravSkip); яблоко — съесть одно; полено и брёвна — нести вдвоём с человеком; речку — по своей нити
+  {id:'apple',done:()=>!!s11F().appleHide||HERO.pelageya.pos.z<-150,run:h=>{if(s11F().stage!=='crows'||!s11F().shaken)return 'follow';
+    const ap=W.part11.APL.filter(a=>a.down&&!a.eaten).sort((a,b)=>hd(a,h.pos)-hd(b,h.pos))[0];if(!ap)return 'follow';cmpGoto(h,ap.x,ap.z,0.25);}},
+  {id:'log',done:()=>!!s11F().smoke,run:(h,hh)=>s11Carry(h,hh,[W.part11.LG])},
+  {id:'river',done:()=>s11Todo(-205,'riv').length===0,run:(h,hh)=>{if(s11F().stage!=='crows'||hh.pos.z>-184)return 'follow';
+    const td=s11Todo(-205,'riv'),k=td.includes(h.kind)?h.kind:td[0];if(!cmpWant(k))return;const x=S11.rx||(S11.rx=hh.pos.x>0?-5:5);   // своя дорожка — подальше от нити друга
+    const th=W.threads.find(t=>t.owner===1&&!t.ret&&!t.string&&t.hero===h&&t.sz<-185);
+    if(!th){if(Math.hypot(h.pos.x-x,h.pos.z+190.8)>0.45){cmpGoto(h,x,-190.8,0.25);return;}s11Throw(h);return;}
+    if(th.grow&&th.len<13)return;cmpGoto(h,th.sx,-206.6,0.3);}},
+  {id:'logs',done:()=>s11F().logs>=3,run:(h,hh)=>s11F().tmHi?s11Carry(h,hh,W.part11.LOGS):'follow'},
 ]);
+// вороны Кощея (1-1) пикируют только на героев человека: бот от них не уворачивается
+{const _b11=build11;build11=function(){_b11.apply(this,arguments);W.ravSkip=h=>CMP.live()&&h.player===1;};}
