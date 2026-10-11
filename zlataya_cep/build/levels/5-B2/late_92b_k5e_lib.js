@@ -174,7 +174,7 @@ K5L.hud=(()=>{let el=null,last='';const H={};
     el.style.display='block';const t=K5L.LINES[n]||'';const m=Math.round(t.length*Math.max(0,Math.min(1,k)));
     const pips=max?' <span style="font:600 13px system-ui;letter-spacing:2px;color:#ff9a3a;font-style:normal">'+'●'.repeat(Math.max(0,spes))+'<span style="opacity:.3">'+'●'.repeat(Math.max(0,max-spes))+'</span></span>':'';
     const bb=document.getElementById('bossbar');
-    if(bb){if(n>0){const nm=String((K5E.NAMES||[])[n]||'').replace(/^\d+ · /,'');const bh='<b style="color:#ffd76a">Кощей</b> · стадия '+n+' / 12 · '+nm+' <span style="font-style:normal">⏳</span> <span class="seg"><i style="width:'+Math.round(Math.max(0,Math.min(1,k))*100)+'%;background:#c8a8ff"></i></span>';
+    if(bb){if(n>0){const nm=String((K5E.NAMES||[])[n]||'').replace(/^\d+ · /,'');const bh='<b style="color:#ffd76a">Кощей</b> · '+(K5E.stageLabel?K5E.stageLabel(n):'стадия '+n+' / 12')+' · '+nm+' <span style="font-style:normal">⏳</span> <span class="seg"><i style="width:'+Math.round(Math.max(0,Math.min(1,k))*100)+'%;background:#c8a8ff"></i></span>';
         bb.style.cssText='display:block;border-color:#c8a8ff;font-size:22px';if(bb.innerHTML!==bh)bb.innerHTML=bh;}else bb.style.display='none';}
     // строка — сразу под полосой стадии, а не поверх неё (у полосы шрифт 22px — она выше, чем рассчитано в стиле)
     {const r=bb&&bb.style.display!=='none'?bb.getBoundingClientRect():null;el.style.marginTop=r&&r.height?'0':'44px';el.style.top=(r&&r.height?Math.round(r.bottom+6):10)+'px';}
