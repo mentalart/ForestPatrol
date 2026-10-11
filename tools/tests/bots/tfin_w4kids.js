@@ -32,6 +32,7 @@ for(const [p,cool] of [['easy',30],['mid',25],['hard',20]]){setPath(p);ZC.startF
 const out=[];
 for(const [p,arm] of [['easy',14],['mid',12],['hard',10]]){setPath(p);ZC.startFrom(ZC.LV('4-4'));ZC.G.manual=true;ZC.tick(30);U.nocine();ZC.tick(5);
   const W=ZC.W;W.flags.stage='B';W.flags.doorOpen=true;const H=ZC.HERO;H.proshka.pos.set(0,0,-60.2);ZC.tick(5);let t=0;while(!W.enemies.length&&t<600){H.proshka.pos.set(0,0,-60.4);ZC.tick(1);t++;}
+  W.flags.drained=true;t=0;while(!W.flags.wave2&&t<300){ZC.tick(1);t++;}   // арена в две волны: болван и печник — после стока лавы
   const e=W.enemies.find(x=>x.kind==='bolvan'),pc=W.enemies.find(x=>x.kind==='pechnik');if(!e||!pc)throw new Error('нет арены 4-4: '+W.enemies.map(x=>x.kind));
   ZC.tick(60);const wt=W.waterTargets.find(w=>w.pos===e.pos&&w.onWater);wt.onWater();const a=e.coolT;
   const coal=W.hots[0];coal.heat=1;coal.gone=false;coal.carrier=null;coal.socket=null;coal.flying=false;coal.pos.set(pc.pos.x+0.4,pc.pos.y,pc.pos.z);ZC.tick(2);const f=pc.fed+2/60;

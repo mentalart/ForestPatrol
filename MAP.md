@@ -98,7 +98,7 @@
 | `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | late_99w4_41, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 13 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast tfin_… |
 | `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 6 | t42v tfin_art tfin_companion_42 tfin_w4help tfin_w4kids tso42 |
 | `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 4 | t43 tfin_companion_43 tfin_w4help tso43 |
-| `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 5 | t44 tfin_companion_44 tfin_w4kids tfoes tso44 |
+| `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 6 | t44 tfin_companion_44 tfin_w44 tfin_w4kids tfoes tso44 |
 | `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 5 | t45 tfin_companion_45 tfin_w45 tso45 tsospot |
 | `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava, late_99w4_help, late_99w4_rules, late_99w4_solo | 14 | t4b tfin_boss4b tfin_bossfxcap tfin_cam tfin_cine tfin_companion_4b tfin_gor4 tfin_gorend… |
 | `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51, late_97b_buyan51_chapters | 6 | t51 tfin_ch51 tfin_companion_51 tfin_likho tfoes tso51 |
@@ -154,7 +154,7 @@
 | `levels/4-1.js` | 293 | МИР 4 · ОГНЕННАЯ СМОРОДИНА · 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА» |
 | `levels/4-2.js` | 212 | МИР 4 · 4-2 «РЕКА СМОРОДИНА» |
 | `levels/4-3.js` | 156 | МИР 4 · 4-3 «ЭЙ, УХНЕМ» — на четверых |
-| `levels/4-4.js` | 174 | МИР 4 · 4-4 «ЗМИЕВЫ ВАЛЫ» |
+| `levels/4-4.js` | 211 | МИР 4 · 4-4 «ЗМИЕВЫ ВАЛЫ» |
 | `levels/4-5.js` | 186 | МИР 4 · 4-5 «КАЛИНОВ МОСТ» — кульминация мира, путь Потапа |
 | `levels/4-B.js` | 114 | 4-Б «ЗМЕЙ ГОРЫНЫЧ» — босс мира 4 |
 | `levels/w5_common.js` | 304 | МИР 5 · ОСТРОВ БУЯН: вещь по знаку, Лихо Одноглазое, овечьи… |
@@ -482,11 +482,11 @@
 | `40_kino_pravila.md` | Правила роликов (катсцен) — «Златая цепь» |
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 146 файлов |
+| `changes/` | 147 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 291 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 292 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

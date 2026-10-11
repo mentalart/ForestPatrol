@@ -39,6 +39,7 @@ const B=['KeyA','KeyD','KeyW','KeyS'];const rel=()=>B.forEach(k=>ZC.hold(k,false
 const mv=(x,z,stop)=>{const h=U.me();const dx=x-h.pos.x,dz=z-h.pos.z,far=Math.hypot(dx,dz)>stop;{const d=Math.hypot(dx,dz)||1;if(far&&h.grounded&&W.lavaCell(h.pos.x+dx/d*0.9,h.pos.z+dz/d*0.9))ZC.press('Space');}ZC.hold(B[0],far&&dx<-0.3);ZC.hold(B[1],far&&dx>0.3);ZC.hold(B[2],far&&dz<-0.3);ZC.hold(B[3],far&&dz>0.3);if(!far)h.face=Math.atan2(dx,dz);return !far;};
 const lg=[];
 as('yosha');inv();U.walkTo(1,0.5,-57,3,()=>inv());U.walkTo(1,0.5,-60.2,3,()=>inv());
+for(let i=0;i<60*6&&!W.flags.wave2;i++){inv();ZC.tick(1);}   // вторая волна арены — после стока лавы
 // болван: Йоша поливает латы, Прошка срывает нагрудник клещами
 for(let tries=0;tries<6;tries++){inv();const b=W.enemies.find(e=>e.alive&&e.kind==='bolvan');if(!b||b.armor==='off')break;
   if(b.armor==='hot'){as('yosha');for(let i=0;i<60*8&&b.armor==='hot';i++){inv();if(mv(b.pos.x,b.pos.z,2.2)&&Y.skillCd<=0)ZC.press('KeyE');ZC.tick(1);}rel();lg.push('w:'+b.armor+' me='+U.me().kind+' d='+Math.hypot(b.pos.x-Y.pos.x,b.pos.z-Y.pos.z).toFixed(1)+' cd='+Y.skillCd.toFixed(2)+' y='+Y.pos.y.toFixed(1)+' T['+W.waterTargets.filter(w=>w.active()).map(w=>(Math.hypot(w.pos.x-Y.pos.x,w.pos.z-Y.pos.z)).toFixed(1)).join(',')+']');}
