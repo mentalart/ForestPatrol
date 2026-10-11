@@ -88,7 +88,7 @@
 | `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water, late_99zj_k23_lake | 4 | t23f tfin_companion_23 tfin_k23 tfin_k23solo |
 | `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water, late_99zk_k24_heart | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99zl_k25_rise | 6 | t25c tfin_companion_25 tfin_k25 tfin_k25solo tfoes tsospot |
-| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase | 12 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
+| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase, late_99zm_k2b_storm | 13 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_75_kids_w1, late_76_kids_fight, late_99p_sky31 | 17 | t31 t31c tfin_art tfin_companion_31 tfin_juice tfin_kids1 tfin_kids2 tfin_motylek tfin_sk… |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32, late_99x_sky32_tut, late_99y_sky32_cine, late_99zd_sky32_fx, late_99ze_sky32_cam | 10 | t32 tfin_companion_32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32cine tfin_sk… |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 3 | t33n tfin_companion_33 tso33 |
@@ -370,6 +370,7 @@
 | `levels/2-3/late_99zj_k23_lake.js` | 2-3 | РЕЛИЗ final06 · 2-3: СХЕМА «КТО НА КАКОЙ КАМЕНЬ», ПОДСВЕТКА КАМНЕЙ, ЩУКИ В ПРОТОКЕ, ГЛАЗА ВОДЯНОГО, КИТЕЖ ВДАЛИ |
 | `levels/2-4/late_99zk_k24_heart.js` | 2-4 | РЕЛИЗ final06 · 2-4: ЯЗЫК КОЛОКОЛА НЕСЁТ ПОТАП, ЛУЖИ ДЫШАТ С СЕРДЦЕМ, КОРАБЛЬ С КУПОЛОМ, ГЛАЗА ВОДЯНОГО |
 | `levels/2-5/late_99zl_k25_rise.js` | 2-5 | РЕЛИЗ final06 · 2-5: КУПОЛА ЗАЖИГАЮТСЯ, СКАЛЫ ПО КРАЮ, ОТ СИНЕГО К ЗОЛОТУ, СВОЯ МУЗЫКА, РОЛИК ПОДЪЁМА КИТЕЖА |
+| `levels/2-B/late_99zm_k2b_storm.js` | 2-B | РЕЛИЗ final06 · 2-Б: ПОГОНЯ В ГРОЗОВОЙ ВЕЧЕР, КОНИ ДЕШЕВЛЕ В ОТРИСОВКЕ |
 | `levels/3-5/late_99zm_sky35.js` | 3-5 | РЕЛИЗ final06 · 3-5 «ГУСИ-ЛЕБЕДИ»: СТЕЛС С ПОДОЗРЕНИЕМ, РАЗНЫЕ ГУСИ, УКРЫТИЯ-ЗАДАЧИ, ПОГОНЯ НАД ПРОПАСТЬЮ (docs/38) |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
@@ -464,11 +465,11 @@
 | `38_world3_proposals.md` | 38. Мир 3 «Небесное царство»: комплексный разбор и предложения по всем уровням |
 | `39_world4_proposals.md` | 39. Мир 4 «Огненная Смородина»: комплексный разбор и предложения по всем уровням |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 125 файлов |
+| `changes/` | 126 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 275 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 276 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
