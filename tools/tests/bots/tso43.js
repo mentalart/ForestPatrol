@@ -5,18 +5,21 @@ window._errs=[];window.FAILS=[];window.FAILE=m=>{FAILS.push(String(m).slice(0,40
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
 ZC.setSolo(true);ZC.startFrom(ZC.LV('4-3'));ZC.G.manual=true;ZC.tick(60);ZC.skip();ZC.tick(5);U.nocine();
 window.H=ZC.HERO;window.st=()=>U.st()+' errs='+_errs.length+' '+_errs.join(' | ');
-window.lastK=-1;window.pullTick=()=>{const S=ZC.W.song;if(!S)return;const u=((S.t%2.6)+2.6)%2.6,k=Math.floor(S.t/2.6);if(u>1.2&&u<1.5&&k!==lastK){lastK=k;ZC.press('KeyE');}};
+window.lastK=-1;window.pullTick=()=>{const S=ZC.W.song;if(!S)return;const u=S.u,k=S.k;if(S.wait&&S.k!==window._ck){window._ck=S.k;ZC.press('KeyE');}if(u>1.2&&u<1.5&&k!==lastK){lastK=k;ZC.press('KeyE');}};
 'solo='+ZC.G.solo+' '+ZC.W.flags.stage+' me='+U.me().kind+' rings='+ZC.W.RINGS.map(r=>r.hero?r.hero.kind:'-').join(',')
 //@@
-// по берегу: «ух-нем» одной кнопкой — все четверо
-const W=ZC.W,F=W.flags;const b0=W.BARGE.z;
-for(let i=0;i<60*30;i++){if(!W.song)break;pullTick();ZC.tick(1);if(W.RINGS.some(r=>r.blocked))break;}
+// по берегу: все четверо — в кольца (Q по кругу), «ух-нем» одной кнопкой за всех; на мели — два «Рывка» подряд
+const W=ZC.W,F=W.flags;const b0=W.BARGE.z,R=W.RINGS;
+for(const [kind,ri] of [['proshka',2],['yosha',3]]){const r=U.toKind(kind)===kind?ri:-1;if(r<0)throw FAILE('не взять '+kind);U.walkTo(U.me().player,R[ri].x,R[ri].z,4);ZC.tick(5);}
+if(!R.every(r=>r.hero))throw FAILE('не все в кольцах: '+R.map(r=>r.hero?r.hero.kind:'-')+' '+st());
+for(let i=0;i<60*60;i++){if(!W.song)break;pullTick();ZC.tick(1);if(W.RINGS.some(r=>r.blocked))break;}
 if(!(W.BARGE.z<b0-4))throw FAILE('баржа не идёт: '+b0+'→'+W.BARGE.z.toFixed(1)+' '+st());
-'pull solo B='+W.BARGE.z.toFixed(1)+' links='+W.links
+if(!F.shoalOk)throw FAILE('мель не пройдена: B='+W.BARGE.z.toFixed(1)+' n='+F.shoalN+' '+st());
+'pull solo B='+W.BARGE.z.toFixed(1)+' links='+W.links+' shoal='+F.shoalOk+' k='+W.song.k
 //@@
 // брёвна: у кольца бревно — сменить на его героя (Q) и прыгнуть на «ух-нем»
 const W=ZC.W,F=W.flags;const log=[];lastK=-1;
-for(let i=0;i<60*120;i++){const S=W.song;if(!S)break;const u=((S.t%2.6)+2.6)%2.6,k=Math.floor(S.t/2.6);
+for(let i=0;i<60*120;i++){const S=W.song;if(!S)break;const u=S.u,k=S.k;
   const near=W.RINGS.filter(r=>r.hero&&(r.blocked||W.LOGS.some(L=>r.z>L.z+0.25&&r.z<L.z+0.9)));
   if(near.length&&u<0.9){const want=near[0].hero.kind;if(U.me().kind!==want){U.toKind(want);log.push('Q'+want[0]);continue;}}
   if(u>1.05&&u<1.4&&k!==lastK){lastK=k;if(near.some(r=>r.hero===U.me()))ZC.press('Space');ZC.tick(1);ZC.press('KeyE');log.push(k+':'+near.map(r=>r.i+r.hero.kind[0]).join(''));}

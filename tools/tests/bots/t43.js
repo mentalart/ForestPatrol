@@ -6,7 +6,7 @@ ZC.tick(1);
 const W=ZC.W,H=ZC.HERO,F=W.flags;const r2=[];const P=H.proshka,Y=H.yosha;
 r2.push(U.walkTo(0,-0.5,-9.2,3),U.walkTo(1,-2.3,-11.3,3));
 const log=[];let lastK=-1;
-for(let i=0;i<60*30;i++){const S=W.song;if(!S)break;const u=((S.t%2.6)+2.6)%2.6,k=Math.floor(S.t/2.6);
+for(let i=0;i<60*30;i++){const S=W.song;if(!S)break;const u=S.u,k=S.k;if(S.wait&&S.k!==window._ck){window._ck=S.k;ZC.press('KeyE');}
   if(u>1.2&&u<1.5&&k!==lastK){lastK=k;ZC.press('KeyE');ZC.press('KeyL');}
   if(i%156===0)log.push(ZC.W.links+'/'+RS());
   ZC.tick(1);}
@@ -17,7 +17,7 @@ ZC.tick(1);
 //@@
 const W=ZC.W,H=ZC.HERO,F=W.flags;const r3=[];const K1={jump:['Space','KeyM'],swap:['KeyQ','KeyK'],pull:['KeyE','KeyL']};
 const log=[];let lastK=-1;
-for(let i=0;i<60*60;i++){const S=W.song;if(!S)break;const u=((S.t%2.6)+2.6)%2.6,k=Math.floor(S.t/2.6);
+for(let i=0;i<60*120;i++){const S=W.song;if(!S)break;const u=S.u,k=S.k;if(S.wait&&S.k!==window._ck){window._ck=S.k;ZC.press('KeyE');}
   if(u>1.05&&u<1.4&&k!==lastK){lastK=k;
     const near=W.RINGS.filter(r=>r.blocked||W.LOGS.some(L=>r.z>L.z+0.25&&r.z<L.z+0.9));const sw=[false,false],jp=[false,false];
     for(const r of near){if(!r.hero)continue;const pi=r.hero.player;if(r.hero.active)jp[pi]=true;else sw[pi]=true;}
@@ -32,7 +32,7 @@ ZC.tick(1);
 const W=ZC.W,H=ZC.HERO,F=W.flags;const r4=[];const P=H.proshka,Y=H.yosha;
 if(U.act(0)!==P){U.tap('KeyQ');ZC.tick(2);}if(U.act(1)!==Y){U.tap('KeyK');ZC.tick(2);}
 let lastK=-1;const log=[];let trips=0;
-function pullTick(){const S=W.song;if(!S)return;const u=((S.t%2.6)+2.6)%2.6,k=Math.floor(S.t/2.6);if(u>1.2&&u<1.5&&k!==lastK){lastK=k;ZC.press('KeyE');ZC.press('KeyL');}}
+function pullTick(){const S=W.song;if(!S)return;const u=S.u,k=S.k;if(S.wait&&S.k!==window._ck){window._ck=S.k;ZC.press('KeyE');}if(u>1.2&&u<1.5&&k!==lastK){lastK=k;ZC.press('KeyE');ZC.press('KeyL');}}
 function goTick(pi,x,z,max){const B=pi?['ArrowLeft','ArrowRight','ArrowUp','ArrowDown']:['KeyA','KeyD','KeyW','KeyS'];const n=Math.round((max||6)*60);for(let i=0;i<n;i++){const h=U.act(pi);const dx=x-h.pos.x,dz=z-h.pos.z;ZC.hold(B[0],dx<-0.25);ZC.hold(B[1],dx>0.25);ZC.hold(B[2],dz<-0.25);ZC.hold(B[3],dz>0.25);if(Math.hypot(dx,dz)<0.45)break;pullTick();ZC.tick(1);}B.forEach(k=>ZC.hold(k,false));ZC.tick(1);}
 for(let t=0;t<6&&F.stage!=='end';t++){const pile=W.BARGE.z<-44?[-5.4,-56]:[-5.4,-44];
   goTick(0,pile[0]+1.2,pile[1],6);P.face=-Math.PI/2;ZC.tick(2);U.tap('KeyR');ZC.tick(3);const got=!!P.carry;

@@ -1,19 +1,18 @@
 /* ============================== РЕЛИЗ final06 · 4-3 «ЭЙ, УХНЕМ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 ============================== */
 // Положения — из proto/levels/4-3.js (W.RINGS, W.LOGS, W.BARGE, W.FIRE, W.FIRESOCK, W.song). Лямка на четверых: герои Игрока 2 встают в свободные кольца
-// (оставленный держит кольцо сам), на «ух-нем» бот жмёт «умение» по часам песни; у бревна кольцо проходит только прыгнувшим героем —
+// (оставленный держит кольцо сам), на «ух-нем» бот жмёт «умение» по часам песни (W.song.u — время такта: такт 2,3–2,9 с, ждёт запев Потапа); у бревна кольцо проходит только прыгнувшим героем —
 // бот прыгает активным и, поменявшись, оставленным. В гору без огня не идёт: активный герой бегает за углём из куч (клещи) и бросает в топку баржи с берега.
 const K43={w:null,k:-9,hit:false,jmp:0,swp:0,t:{}};
 CMP.k43=K43;
 const k43=()=>{if(K43.w!==W){Object.assign(K43,{w:W,k:-9,hit:false,jmp:0,swp:0,t:{}});}return K43;};
 const k43Tap=(K,k,gap,act)=>{if(!(K.t[k]>G.time-gap)){K.t[k]=G.time;cmpTap(act);return true;}return false;};
-const K43_C=2.6;
 // кольца, где стоит герой Игрока 2
 const k43Mine=()=>W.RINGS.filter(r=>r.hero&&r.hero.player===1);
 // кольцу вот-вот проходить бревно (за рывок лямка уходит до 4,5 м вперёд)
 const k43Log=r=>W.LOGS.some(L=>!L.gone&&r.z>L.z+0.25&&r.z<L.z+4.9);
 CMP.route('4-3',[
   {id:'pull',done:()=>['end'].includes(W.flags.stage)||!!W.flags.out,run:(h,hh)=>{const K=k43(),F=W.flags,S=W.song;if(G.cine||!S||!['pull','hill'].includes(F.stage))return 'follow';
-    const o=other(1),u=((S.t%K43_C)+K43_C)%K43_C,k=Math.floor(S.t/K43_C);
+    const o=other(1),u=S.u,k=S.k;
     if(k!==K.k){K.k=k;K.hit=false;K.jmp=0;K.swp=0;}
     const mine=k43Mine(),inRing=x=>mine.some(r=>r.hero===x),fireOut=W.FIRE.t<9;
     // ---- ухнем по часам песни ----

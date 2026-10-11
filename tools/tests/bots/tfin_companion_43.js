@@ -7,10 +7,11 @@ window.CO=ZC.FIN.co;window.bot=()=>U.act(1);window.me=()=>U.act(0);window.H=ZC.H
 window.pos=h=>h.kind+'@'+h.pos.x.toFixed(1)+','+h.pos.y.toFixed(1)+','+h.pos.z.toFixed(1)+(h.carry&&!h.carry.gone?'+'+h.carry.kind:'');
 window.RESET43=()=>{for(let t=0;t<4;t++){ZC.startFrom(ZC.LV('4-3'));ZC.G.manual=true;ZC.tick(30);if(ZC.W.levelId==='4-3')break;}ZC.skip();ZC.tick(10);U.nocine();ZC.tick(5);CO.set(true);CO.skill=1;ZC.tick(20);window.H=ZC.HERO;window._hk=-9;return F().stage;};
 // человек: на «ух-нем» жмёт умение, у брёвен прыгает активным или меняет героя (как t43)
-window.HUM=()=>{const W=ZC.W,S=W.song;if(!S)return;const u=((S.t%2.6)+2.6)%2.6,k=Math.floor(S.t/2.6);
+window.HUM=()=>{const W=ZC.W,S=W.song;if(!S)return;const u=S.u,k=S.k;
+  if(S.wait&&k!==window._ck){window._ck=k;ZC.press('KeyE');}   // запев: Потап — у Игрока 1
   if(u>1.05&&u<1.4&&k!==window._hk){window._hk=k;ZC.press('KeyE');
-    const near=W.RINGS.filter(r=>r.hero&&r.hero.player===0&&(r.blocked||W.LOGS.some(L=>!L.gone&&r.z>L.z+0.25&&r.z<L.z+4.9)));
-    if(near.some(r=>r.hero.active))ZC.press('Space');else if(near.length)ZC.press('KeyQ');}};
+    const bl=W.RINGS.filter(r=>r.hero&&r.hero.player===0&&r.blocked),near=W.RINGS.filter(r=>r.hero&&r.hero.player===0&&(r.blocked||W.LOGS.some(L=>!L.gone&&r.z>L.z+0.25&&r.z<L.z+4.9)));
+    if(bl.length){if(bl.some(r=>r.hero.active))ZC.press('Space');else ZC.press('KeyQ');}else if(near.some(r=>r.hero.active))ZC.press('Space');else if(near.length)ZC.press('KeyQ');}};
 RESET43();
 ['stage='+F().stage,'bot='+pos(bot()),'me='+pos(me()),CO.mode,!!CO.routes['4-3']]
 //@@

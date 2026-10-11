@@ -12871,6 +12871,237 @@
    "pitch": 1,
    "url": "silero:kseniya",
    "dur": 1.51
+  },
+  {
+   "id": "4-3_s01",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Эй,",
+   "tts": "Э-эй,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.67
+  },
+  {
+   "id": "4-3_s02",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Ещё разик,",
+   "tts": "Ещё разик,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.98
+  },
+  {
+   "id": "4-3_s03",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Ещё да раз,",
+   "tts": "Ещё да раз,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.96
+  },
+  {
+   "id": "4-3_s04",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Разовьём,",
+   "tts": "Разовьём,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.79
+  },
+  {
+   "id": "4-3_s05",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Мы берёзу,",
+   "tts": "Мы берёзу,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.93
+  },
+  {
+   "id": "4-3_s06",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Мы кудряву,",
+   "tts": "Мы кудряву,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.93
+  },
+  {
+   "id": "4-3_s07",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "По бережку,",
+   "tts": "По бережку,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.86
+  },
+  {
+   "id": "4-3_s08",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Идём-идём,",
+   "tts": "Идём, идём,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 1
+  },
+  {
+   "id": "4-3_s09",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Песню солнцу,",
+   "tts": "Песню солнцу,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 1
+  },
+  {
+   "id": "4-3_s10",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Мы поём,",
+   "tts": "Мы поё-ём,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.98
+  },
+  {
+   "id": "4-3_s11",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Ай-да, да,",
+   "tts": "Ай да, да,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.91
+  },
+  {
+   "id": "4-3_s12",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Ай-да,",
+   "tts": "А-ай да,",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.96
+  },
+  {
+   "id": "4-3_s13",
+   "lv": "4-3",
+   "who": "chorus",
+   "text": "Ух-нем!",
+   "tts": "У-ух нем!",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.72
+  },
+  {
+   "id": "4-3_s14",
+   "lv": "4-3",
+   "who": "chorus",
+   "text": "Раззудись!",
+   "tts": "Раззуди-ись!",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 1.03
+  },
+  {
+   "id": "4-3_s15",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Ух-нем!",
+   "tts": "Ух-нем!",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.6
+  },
+  {
+   "id": "4-3_s16",
+   "lv": "4-3",
+   "who": "proshka",
+   "text": "Ух-нем!",
+   "tts": "Ух-нем!",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.62
+  },
+  {
+   "id": "4-3_s17",
+   "lv": "4-3",
+   "who": "pelageya",
+   "text": "Ух-нем!",
+   "tts": "Ух-нем!",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.6
+  },
+  {
+   "id": "4-3_s18",
+   "lv": "4-3",
+   "who": "yosha",
+   "text": "Ух-нем!",
+   "tts": "Ух-нем!",
+   "url": "silero:song",
+   "pitch": 0,
+   "song": true,
+   "dur": 0.62
+  },
+  {
+   "id": "4-3_020",
+   "lv": "4-3",
+   "who": "potap",
+   "text": "Мель! Два рывка подряд — все разом!",
+   "tts": "Мель! Два рывка подряд — все разом!",
+   "max": 2.8,
+   "pitch": -1,
+   "url": "silero:baya",
+   "dur": 2.68
+  },
+  {
+   "id": "4-3_021",
+   "lv": "4-3",
+   "who": "pelageya",
+   "text": "Сошли с мели! Пошла, родимая!",
+   "tts": "Сошли с мели! Пошла, родимая!",
+   "max": 2.8,
+   "pitch": 1,
+   "url": "silero:kseniya",
+   "dur": 2.25
+  },
+  {
+   "id": "4-3_022",
+   "lv": "4-3",
+   "who": "proshka",
+   "text": "Ящерка на свае! Я её — рогаткой!",
+   "tts": "Ящерка на свае! Я её — рогаткой!",
+   "max": 2.6,
+   "pitch": 1,
+   "url": "silero:xenia",
+   "dur": 2.35
   }
  ]
 }

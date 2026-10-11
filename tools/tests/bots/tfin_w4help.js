@@ -7,7 +7,7 @@ window.BAD=[];window.chk=(c,m)=>{if(!c)BAD.push(m);return c;};window.H4=ZC.FIN.w
 //@@
 // 4-3: «ух-нем» раньше времени — три промаха: подсказка, подсказка со стрелкой, урок
 ZC.startFrom(ZC.LV('4-3'));ZC.G.manual=true;ZC.tick(30);U.nocine();ZC.G.flags.w4lessons=true;ZC.G.flags.w4l={song43:true};
-const S=()=>ZC.W.song,early=()=>{for(let i=0;i<200;i++){const u=((S().t%2.6)+2.6)%2.6;if(u<0.5)break;ZC.tick(1);}ZC.press('KeyE');ZC.tick(2);};
+const S=()=>ZC.W.song,early=()=>{for(let i=0;i<300;i++){const u=S().u;if(!S().wait&&S().k>=0&&u>0.05&&u<0.5)break;ZC.tick(1);}ZC.press('KeyE');ZC.tick(2);};
 const r=[];for(let k=0;k<3;k++){early();r.push(H4.lvl+(H4.arrow?'A':'')+(ZC.FIN.w4l.cur||''));ZC.tick(60*3.3);}
 chk(r[0].startsWith('1')&&!r[0].includes('A'),'4-3: ступень 1 — '+r[0]);chk(r[1].startsWith('2')&&r[1].includes('A'),'4-3: ступень 2 — '+r[1]);chk(r[2].includes('song43'),'4-3: ступень 3 — урок: '+r[2]);
 let t=0;while(ZC.FIN.w4l.cur&&t<60*40){ZC.tick(1);t++;}'4-3 '+r.join(' ')+' log='+H4.log.join(',')
@@ -29,7 +29,7 @@ const pe=ZC.HERO.pelageya;pe.pos.set(0,1.5,-2.8);pe.vel.set(0,-4,0);pe.glide=tru
 //@@
 // Сирин в 4-3: «ух-нем» засчитан чуть раньше окна
 ZC.startFrom(ZC.LV('4-3'));ZC.G.manual=true;ZC.tick(30);U.nocine();ZC.G.flags.w4l={song43:true};const W=ZC.W;W.ladBonus=0.04;const S=W.song;
-for(let i=0;i<400;i++){const u=((S.t%2.6)+2.6)%2.6;if(u>0.88&&u<0.95)break;ZC.tick(1);}const hk=W.skillHook(0,ZC.HERO.potap);const u=((S.t%2.6)+2.6)%2.6;
+for(let i=0;i<400;i++){const u=S.u;if(!S.wait&&S.k>=0&&u>0.88&&u<0.95)break;ZC.tick(1);}const hk=W.skillHook(0,ZC.HERO.potap);const u=S.u;
 const fl=W.RINGS.filter(r=>r.hero&&r.flash>0).length;chk(fl>0,'сирин: ранний «ух-нем» не засчитан u='+u.toFixed(2));'sirin u='+u.toFixed(2)+' flash='+fl
 //@@
 (BAD.length||_errs.length)?'FAIL tfin_w4help '+BAD.join(' || ')+' errs='+_errs.join(' | '):'tfin_w4help ok'

@@ -66,23 +66,55 @@ function build43(){
   // горячая куча угля на берегу у подножия горки и наверху
   const piles=[[-5.4,-44],[-5.4,-56]].map(([x,z])=>{const y=hillY(z);const g=new THREE.Group();g.position.set(x,y,z);W.group.add(g);for(let i=0;i<8;i++)addMesh(new THREE.DodecahedronGeometry(rand(0.2,0.34)),M(0xff7a20,{emissive:0xff4000,emissiveIntensity:0.9}),rand(-0.6,0.6),0.15,rand(-0.5,0.5),g);forgeZone(x,y,z,1.3);return {x,z,y};});
   const coals=[];piles.forEach(p=>{for(let i=0;i<2;i++)coals.push(hotItem('ugol',p.x+(i?0.5:-0.3),p.y,p.z+(i?-0.4:0.3),{name:'ugol'}));});
-  /* ---------- песня: «Эй, ухнем» — цикл 2,6 с: «Эй» — «ух-нем» (окно 1 с) ---------- */
-  const SG={on:false,t:0,C:2.6,k:-1,hit:[false,false],res:false,verse:0,rush:0};
-  const LINES=[['Эй, ухнем!','Эй, ухнем!','Ещё разик, ещё да раз!','Эй, ухнем!'],['Разовьём мы берёзу…','Разовьём мы кудряву…','Ай-да, да ай-да!','Эй, ухнем!'],['Мы по бережку идём…','Песню солнышку поём…','Эй, ухнем!','Эй, ухнем!'],['Ай-да, да ай-да, ай-да, да ай-да!','Ещё разик, ещё да раз!','Эй, ухнем!','Эй, ухнем!']];
-  function startSong(){SG.on=true;SG.t=-1.2;SG.k=-1;W.song={t:0,B:SG.C/2,show:true,state:'play',pulse:0};}
-  const inWin=()=>{const u=(((SG.t-songLag())%SG.C)+SG.C)%SG.C,b=(W.ladBonus||0)*4;return u>=1.0-b&&u<2.0+b;};   // весточка Сирин: окно шире (0,16 с с каждой стороны); songLag — «Сдвиг такта»
-  W.skillHook=(pi,h)=>{if(!SG.on||G.cine)return false;const mine=RINGS.filter(r=>r.hero&&r.hero.player===pi);if(!mine.length)return false;
-    if(inWin()){if(!SG.hit[pi]){SG.hit[pi]=true;mine.forEach(r=>{r.flash=1;});if(G.solo&&!SG.hit[1-pi]){const ot=RINGS.filter(r=>r.hero&&r.hero.player===1-pi);if(ot.length){SG.hit[1-pi]=true;ot.forEach(r=>{r.flash=1;});}}floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ух-нем!','#ffd76a');h.atkT=0.3;}}
+  /* ---------- песня: «Эй, ухнем» — такт: запев Потапа («Эй…») → «ух-нем» (окно 1 с, на Ёжике 1,2 с) → тяга ----------
+     темп по куплетам: начало 2,6 с, по ровному 2,3 с, в гору 2,9 с (тяжело) · три «Рывка» подряд — «Раззудись!»: три такта баржа идёт в полтора раза быстрее
+     перекличка (Лисёнок и Богатырь): игрок с Потапом сам запевает «Эй» своей кнопкой — такт ждёт его; не запел за 0,8 с — запев идёт сам. На Ёжике запев сам
+     голос (релиз, build/levels/4-3/late_99w4_song43.js): W.sing('solo', строка) — запев, 'chorus' — хор «ух-нем», 'hit' — голоса попавших героев, 'razz' */
+  const SG={on:false,u:0,k:-1,C:2.6,hit:[false,false],res:false,verse:0,rush:0,streak:0,razz:0,wait:0};
+  const LINES=[['Эй,','Эй,','Ещё разик,','Ещё да раз,'],['Разовьём,','Мы берёзу,','Разовьём,','Мы кудряву,'],['По бережку,','Идём-идём,','Песню солнцу,','Мы поём,'],['Ай-да, да,','Ай-да,','Ещё разик,','Ещё да раз,']];
+  const easyP=()=>genPath()==='easy';
+  const tempo=()=>F.stage==='hill'?2.9:SG.verse?2.3:2.6;
+  const wAdd=()=>(W.ladBonus||0)*4+(easyP()?0.1:0);   // весточка Сирин: окно шире на 0,16 с с каждой стороны; Ёжик — ещё на 0,1 с
+  const win0=()=>1.0-wAdd(),win1=()=>2.0+wAdd();
+  const caller=()=>!easyP()&&RINGS.some(r=>r.hero===T.potap)?T.potap.player:-1;   // кто запевает: игрок, у которого Потап (Потап в кольце)
+  function startSong(){SG.on=true;SG.u=-1.2;SG.k=-1;SG.wait=0;W.song={t:0,u:0,k:-1,C:SG.C,B:SG.C/2,bph:0,show:true,state:'play',pulse:0};}
+  const inWin=()=>{if(SG.wait>0||SG.k<0)return false;const u=SG.u-songLag();return u>=win0()&&u<win1();};   // songLag — «Сдвиг такта»
+  function sing(pi){SG.wait=0;const V=LINES[Math.min(LINES.length-1,SG.verse)],ln=V[SG.k%4];
+    floatText(T.potap.pos.clone().add(new V3(0,T.potap.d.height+1.1,0)),'♪ '+ln+' ух-нем!','#ffe7a0');tone(mf(45),0.5,'triangle',0.16);tone(mf(57),0.3,'sine',0.05);W.song.pulse=1;
+    if(W.sing)W.sing('solo',ln);if(pi!=null){T.potap.atkT=0.3;SG.called=(SG.called||0)+1;}}
+  function newCycle(){SG.res=false;SG.hit=[false,false];SG.w1=SG.w2=false;SG.C=tempo();if(caller()>=0)SG.wait=0.8;else sing();}
+  // Прошка вне лямки с рогаткой: мимо такта кнопка — выстрел по ящерке (4-3 гора), а не промах
+  const lizShot=h=>h===T.proshka&&!RINGS.some(r=>r.hero===h)&&LZ.on&&LZ.down<=0&&hd(h.pos,LZ)<14;
+  W.skillHook=(pi,h)=>{if(!SG.on||G.cine)return false;if(!inWin()&&lizShot(h))return false;
+    if(SG.wait>0){if(G.solo||pi===T.potap.player){sing(pi);floatText(T.potap.pos.clone().add(new V3(0,T.potap.d.height+0.6,0)),'Эй!','#ffe7a0');}return true;}
+    const mine=RINGS.filter(r=>r.hero&&r.hero.player===pi);if(!mine.length)return false;
+    if(inWin()){if(!SG.hit[pi]){SG.hit[pi]=true;mine.forEach(r=>{r.flash=1;});const who=mine.map(r=>r.hero.kind);
+        if(G.solo&&!SG.hit[1-pi]){const ot=RINGS.filter(r=>r.hero&&r.hero.player===1-pi);if(ot.length){SG.hit[1-pi]=true;ot.forEach(r=>{r.flash=1;who.push(r.hero.kind);});}}
+        floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ух-нем!','#ffd76a');h.atkT=0.3;if(W.sing)W.sing('hit',who);}}
     else{SFX.miss();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Рано — «ух-нем» подожди','#ffd0d0');}return true;};
-  function songTick(dt){SG.t+=dt;W.song.t=SG.t;W.song.pulse=Math.max(0,(W.song.pulse||0)-dt*4);const k=Math.floor(SG.t/SG.C);const u=SG.t-k*SG.C;
-    if(k>SG.k){SG.k=k;SG.res=false;SG.hit=[false,false];const V=LINES[Math.min(LINES.length-1,SG.verse)];floatText(T.potap.pos.clone().add(new V3(0,T.potap.d.height+1.1,0)),'♪ '+V[k%4],'#ffe7a0');tone(mf(45),0.5,'triangle',0.16);tone(mf(57),0.3,'sine',0.05);W.song.pulse=1;}
-    if(u>=1.0&&!SG.w1){SG.w1=true;tone(mf(50),0.35,'triangle',0.18);tone(mf(62),0.25,'sine',0.06);W.song.pulse=1;}
+  function songTick(dt){W.song.pulse=Math.max(0,(W.song.pulse||0)-dt*4);
+    if(SG.wait>0){SG.wait-=dt;if(SG.wait<=0)sing();}else SG.u+=dt;
+    if(SG.k<0?SG.u>=0:SG.u>=SG.C){SG.u=SG.k<0?0:SG.u-SG.C;SG.k++;newCycle();}
+    const u=SG.u;Object.assign(W.song,{t:SG.k*SG.C+u,u,k:SG.k,C:SG.C,B:SG.C/2,bph:((u/(SG.C/2))%1+1)%1,wait:SG.wait>0,w0:win0(),w1:win1()});   // u — время такта, C — длина такта (для ботов и подсказок)
+    if(SG.wait>0||SG.k<0)return;
+    if(u>=1.0&&!SG.w1){SG.w1=true;tone(mf(50),0.35,'triangle',0.18);tone(mf(62),0.25,'sine',0.06);W.song.pulse=1;if(W.sing)W.sing('chorus');}
     if(u>=1.5&&!SG.w2){SG.w2=true;tone(mf(50),0.45,'triangle',0.18);W.song.pulse=1;}
-    if(u<1.0){SG.w1=false;SG.w2=false;}
-    if(u>=2.0&&!SG.res){SG.res=true;resolvePull();}}
+    if(u>=Math.min(SG.C-0.02,win1()+songLag())&&!SG.res){SG.res=true;resolvePull();}}
+  /* ---------- мель (середина берега): баржа села — сойдёт только с двух «Рывков» подряд (на Ёжике — с двух любых) ---------- */
+  const SH=-11;{const g=new THREE.Group();g.position.set(BX,LY,SH-6.6);W.group.add(g);const sm=M(0x4a3a34);
+    for(let i=0;i<9;i++)addMesh(new THREE.DodecahedronGeometry(rand(0.4,0.9)),sm,rand(-2.2,2.2),rand(-0.1,0.25),rand(-1.6,1.6),g).rotation.set(rand(0,3),rand(0,3),0);
+    W.updates.push(dt=>{if(F.shoal&&!F.shoalOk&&Math.random()<dt*8)burst(new V3(BX+rand(-2,2),LY+0.3,SH-6.6+rand(-1.4,1.4)),0x8a8a90,2,1.6,0.8);});}
+  function shoalPull(n){if(!F.shoal){F.shoal=true;F.shoalN=0;SFX.knock();banner('Мель!','#ffb070',1.6,'два «Рывка» подряд — все четверо разом!');later(0.3,()=>bark(T.potap,'potap','Мель! Два рывка подряд — все разом!',2.8));return 0;}
+    if(n===4){F.shoalN++;if(F.shoalN>=2){F.shoalOk=true;SFX.whoosh();burst(new V3(BX,LY+0.6,SH-6.6),0xffb040,18,3);later(0.4,()=>sayP('Сошли с мели! Пошла, родимая!',2.8));return 2.6;}
+      floatText(new V3(BX,B.y+3,B.z),'Ещё рывок!','#ffd76a');return 0;}
+    if(!easyP())F.shoalN=0;floatText(new V3(BX,B.y+3,B.z),'Мель держит — все четверо разом!','#ffb070');return 0;}
   function resolvePull(){let n=0;for(const r of RINGS)if(r.hero&&SG.hit[r.hero.player])n++;
     let mv=[0,0.5,1.0,1.6,3.2][n];if(n===4){SFX.ok();banner('Рывок!','#ffd76a',0.9,'все четверо — «ух-нем», разом!');SG.rush++;if(!F.l1){F.l1=true;const it=linkItem(-1.4,1.3,B.z-15);W.linkTotal--;anim(1,k=>{it.base=B.y+2.6-k*0.4;});}}
     const fire=FIRE.t>0;if(fire)mv*=1.4;
+    if(n===4)SG.streak++;else SG.streak=0;
+    if(SG.streak>=3){SG.streak=0;SG.razz=3;banner('Раззудись!','#ffb040',1.4,'три рывка подряд — баржа идёт быстрее!');if(W.sing)W.sing('razz');}
+    if(SG.razz>0&&mv>0){SG.razz--;mv*=1.5;}
+    if(!F.shoalOk&&F.stage==='pull'){if(B.z<=SH+0.05)mv=shoalPull(n);else if(B.z-mv<SH)mv=B.z-SH;}
     if(B.z<H0+4&&!fire&&mv>0){mv=0;floatText(new V3(BX,B.y+3,B.z),'Без огня в гору не идёт — никак!','#ffb070');if(!F.hillTold){F.hillTold=true;sayP('…топка! Три уголька — полминуты подмоги.',3.2);}}
     // бревно: кольцо проходит, только если его герой прыгнул
     let blockAt=null;for(const r of RINGS)for(const L of LOGS){if(r.hero&&r.z>L.z+0.3&&r.z-mv<L.z+0.3){const h=r.hero;const jumped=h&&(!h.grounded||G.time-(h.airT||-9)<1.1||h.pos.y>L.top-0.05);
@@ -133,10 +165,33 @@ function build43(){
   const arcDots=[];for(let i=0;i<9;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.07,6,5),MB(0xffc860,{transparent:true,opacity:0.8,depthWrite:false}));m.visible=false;W.group.add(m);arcDots.push(m);}
   W.updates.push(()=>{let hh=null;for(const pi of[0,1]){const h=active(pi),it=heroCarry(h);if(it&&it.kind==='ugol'&&hd(h.pos,fireSock.pos)<9){hh=h;break;}}
     arcDots.forEach((m,i)=>{m.visible=!!hh&&F.stage==='hill';if(!m.visible)return;const u=(i+1)/10,a=hh.pos,b=fireSock.pos;m.position.set(lerp(a.x,b.x,u),lerp(a.y+1,b.y,u)+Math.sin(u*Math.PI)*1.6,lerp(a.z,b.z,u));m.material.opacity=0.4+0.4*Math.sin(G.time*8-i);});});
+  /* ---------- гора: ящерка на свае плюёт в того, кто несёт уголь (свечение 1,2 с — уголь выбит из клещей); Прошка сбивает её рогаткой ---------- */
+  const LZ={x:-8.6,z:-50,y:hillY(-50)+1.7,cd:4,down:0,on:false};{const lzM=M(0xe0602a,{emissive:0x802000,emissiveIntensity:0.4});LZ.mat=lzM;
+    const g=new THREE.Group();g.position.set(LZ.x,LZ.y,LZ.z);W.group.add(g);addMesh(new THREE.CylinderGeometry(0.42,0.6,3.4,8),rockM,0,-1.7,0,g);
+    const liz=new THREE.Group();liz.position.y=0.05;g.add(liz);LZ.liz=liz;const bd=part(liz,new THREE.SphereGeometry(0.3,10,8),lzM,0,0.25,0);bd.scale.set(0.8,0.6,1.4);part(liz,new THREE.SphereGeometry(0.2,10,8),lzM,0,0.4,0.4);
+    for(const s of[-1,1])part(liz,new THREE.SphereGeometry(0.06,6,5),MB(0xfff3a0),s*0.09,0.5,0.55);const tl=new THREE.ConeGeometry(0.1,0.7,6);tl.rotateX(-Math.PI/2);part(liz,tl,lzM,0,0.2,-0.6);
+    LZ.mk=markMesh(0.9);LZ.mk.position.set(LZ.x,LZ.y+1.3,LZ.z);LZ.mk.visible=false;W.group.add(LZ.mk);
+    W.marks.push({pos:new V3(LZ.x,LZ.y+0.5,LZ.z),active:()=>LZ.on&&LZ.down<=0,onHit:()=>{LZ.down=easyP()?14:10;LZ.cd=4;SFX.splash();burst(new V3(LZ.x,LZ.y+0.4,LZ.z),0xff6a20,14,3);floatText(new V3(LZ.x,LZ.y+1.6,LZ.z),'Сбил! Носи уголь!','#ffb070');
+      anim(0.6,k=>{liz.position.set(k*0.8,0.05+Math.sin(k*Math.PI)*0.8-k*1.6,0);liz.rotation.z=k*3;});}});W.LZ=LZ;}
+  function lizTick(dt){LZ.on=F.stage==='hill'&&!!F.fireTold;LZ.mk.visible=LZ.on&&LZ.down<=0;if(LZ.mk.visible){LZ.mk.lookAt(camS.position);LZ.mk.scale.setScalar(0.9+0.1*Math.sin(G.time*8));}
+    LZ.liz.scale.setScalar(1);LZ.mat.emissiveIntensity=0.4;
+    if(LZ.down>0){LZ.down-=dt;if(LZ.down<=0){LZ.liz.position.set(0,0.05,0);LZ.liz.rotation.z=0;burst(new V3(LZ.x,LZ.y+0.4,LZ.z),0xff8a30,8,2);}return;}
+    const tg=HEROES.find(h=>h.active&&heroCarry(h)&&heroCarry(h).kind==='ugol'&&hd(h.pos,LZ)<10);
+    if(!LZ.on||!tg){LZ.cd=Math.max(LZ.cd,1.6);return;}
+    LZ.liz.rotation.y=Math.atan2(tg.pos.x-LZ.x,tg.pos.z-LZ.z);LZ.cd-=dt;
+    if(LZ.cd<1.2){LZ.liz.scale.setScalar(1+0.25*Math.sin(G.time*30));LZ.mat.emissiveIntensity=1.4;if(!F.lizTold){F.lizTold=true;bark(T.proshka,'proshka','Ящерка на свае! Я её — рогаткой!',2.6);}}
+    if(LZ.cd>0)return;LZ.cd=easyP()?rand(8,10):rand(6,8);
+    const from=new V3(LZ.x,LZ.y+0.6,LZ.z),to=tg.pos.clone().addScaledVector(tg.vel,0.4).add(new V3(0,0.6,0));const b=new THREE.Mesh(new THREE.SphereGeometry(0.2,8,6),MB(0xffa030));W.group.add(b);SFX.whoosh();
+    anim(0.9,k=>{b.position.lerpVectors(from,to,k);b.position.y+=Math.sin(k*Math.PI)*1.4;if(k<1)return;W.group.remove(b);burst(to.clone(),0xff8a30,12,3);
+      if(G.cine||hd(tg.pos,to)>1.3||!heroCarry(tg))return;dropHot(tg,false);tg.knockT=0.2;SFX.knock();floatText(tg.pos.clone().add(new V3(0,tg.d.height+0.6,0)),'Уголь выбит!','#ffb070');F.lizHits=(F.lizHits||0)+1;});}
+  W.k43={SG,LZ,SH,caller,inWin};   // для ботов (tfin_w43)
+  W.updates.push(dt=>{if(!G.cine)lizTick(dt);bg.g.rotation.z=F.shoal&&!F.shoalOk?0.035*Math.sin(G.time*3.2):0;});
   /* ---------- рисунки кнопок ---------- */
   for(const pi of[0,1]){const h=()=>active(pi);
     prompt(pi,'skill',()=>headOf(h()),()=>SG.on&&RINGS.some(r=>r.hero&&r.hero.player===pi)&&inWin()&&!SG.hit[pi],'ух-нем!');
     prompt(pi,'jump',()=>headOf(h()),()=>RINGS.some(r=>r.hero===h()&&r.blocked),'прыгай через бревно');
+    prompt(pi,'skill',()=>headOf(T.potap),()=>SG.wait>0&&(G.solo?pi===0:T.potap.player===pi),'запевай «Эй»!');
+    prompt(pi,'skill',()=>headOf(h()),()=>!SG.wait&&!inWin()&&lizShot(h())&&LZ.cd<3,'рогатка — по ящерке');
     prompt(pi,'item',()=>headOf(h()),()=>{const it=heroCarry(h());return !!it&&hd(fireSock.pos,h().pos)<4.5;},'в печку');}
   /* ---------- задачи ---------- */
   const OR=(text,done,targets,ghost,read)=>{const o=O(text,done,targets,ghost);o.read=read;return o;};
@@ -149,6 +204,9 @@ function build43(){
   W.tipZones.push({cond:(pi,h)=>F.stage==='hill'&&!heroCarry(h)&&piles.some(p=>hd(h.pos,p)<2.2),text:pi=>'Горячий уголь: клещами '+K(pi,'item')+' — и в топку. На бегу можно бросить.'});
   W.tipZones.push({cond:(pi,h)=>F.stage==='pull'&&RINGS.some(r=>r.blocked&&r.hero&&!r.hero.active&&r.hero.player===pi),text:pi=>'У бревна оставленный герой: смени его '+K(pi,'swap')+' и прыгай '+K(pi,'jump')+'.'});
   W.tipZones.push({cond:(pi,h)=>F.stage==='hill'&&!heroCarry(h)&&RINGS.some(r=>r.hero===h),text:pi=>'Двое тянут лямку, двое носят уголь. Три уголька — полминуты огня.'});
+  W.tipZones.push({cond:(pi,h)=>F.shoal&&!F.shoalOk,text:pi=>RINGS.some(r=>!r.hero)?'Мель! Все четверо — в кольца, и два «Рывка» подряд.':'Мель! Два «Рывка» подряд — все четверо на «ух-нем».'});
+  W.tipZones.push({cond:(pi,h)=>SG.on&&caller()===pi&&!SG.called,text:pi=>'Ты — Потап: запевай «Эй» '+K(pi,'skill')+', остальные отвечают «ух-нем».'});
+  W.tipZones.push({cond:(pi,h)=>LZ.on&&LZ.down<=0&&h===T.proshka&&!heroCarry(h),text:pi=>'Ящерка на свае выбивает уголь. Рогатка '+K(pi,'skill')+' — по ней!'});
   W.spawns=[[new V3(-4.4,0,10),new V3(-5.6,0,11)],[new V3(-1.4,0,10),new V3(-0.2,0,11)]];W.startAct=[1,0];
   W.pauseLine='Эй, ухнем. В кольца на лямке встаньте (оставленный держит сам) —<br>И на «ух-нем» жмите RT вместе, по часам.<br>Брёвна — прыжок героя из кольца. В гору — лишь с огнём:<br>Уголь клещами в топку баржи — и пойдём!';
   W.onStart=()=>{later(0.4,intro);};
