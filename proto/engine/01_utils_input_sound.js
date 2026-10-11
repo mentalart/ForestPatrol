@@ -41,7 +41,8 @@ addEventListener('blur',()=>down.clear());
 const soloHears=pi=>pi===G.soloPi||!!(W&&W.soloMirror&&!G.ui);
 const btn=(pi,a)=>G.solo?(soloHears(pi)&&(down.has(BIND[0][a])||down.has(BIND[1][a])||PADS.down.has(BIND[0][a])||PADS.down.has(BIND[1][a]))):(down.has(BIND[pi][a])||PADS.down.has(BIND[pi][a]));
 const tap=(pi,a)=>G.solo?(soloHears(pi)&&(pressed.has(BIND[0][a])||pressed.has(BIND[1][a]))):pressed.has(BIND[pi][a]);
-const AUTO=pi=>G.solo&&pi!==G.soloPi;             // одиночный режим: за этого игрока «играет» помощник
+const AUTO=pi=>G.solo&&pi!==G.soloPi;
+const songLag=()=>(G&&G.songLag)||0;   // настройка «Сдвиг такта» (релиз): звук запаздывает на столько секунд — ритм-уровни судят нажатие с этой поправкой             // одиночный режим: за этого игрока «играет» помощник
 const ctrl=h=>G.solo?h===active(G.soloPi):h.active;   // этим героем сейчас управляет человек
 const UW=pi=>G.solo?G.soloPi:pi;                    // чей выбор в окне: в одиночку — всегда твой
 const ZAX={x:0,y:0};

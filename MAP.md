@@ -101,13 +101,13 @@
 | `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | — | 3 | t44 tfin_companion_44 tfoes |
 | `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | — | 3 | t45 tfin_companion_45 tsospot |
 | `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 13 | t4b tfin_boss4b tfin_bossfxcap tfin_cam tfin_cine tfin_companion_4b tfin_gor4 tfin_gorend… |
-| `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51, late_97b_buyan51_chapters | 6 | t51 tfin_ch51 tfin_companion_51 tfin_likho tfoes tso51 |
-| `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | late_97d_hare52 | 3 | t52 tfin_companion_52 tfin_hare52 |
-| `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | late_97e_duck53 | 3 | t53 tfin_companion_53 tfin_fly53 |
-| `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | late_97c_egg54_music, late_97f_koschei_motif | 3 | t54 tfin_companion_54 tso54 |
-| `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | late_96c_k5b1_texts, late_97f_koschei_motif | 5 | t5b1 t5b1cam t5b1solo tfin_companion_5b1 tfin_cover5b1 |
+| `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51, late_97b_buyan51_chapters, late_97g_buyan_nest | 6 | t51 tfin_ch51 tfin_companion_51 tfin_likho tfoes tso51 |
+| `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | late_97d_hare52, late_97g_buyan_nest | 3 | t52 tfin_companion_52 tfin_hare52 |
+| `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | late_97e_duck53, late_97g_buyan_nest | 4 | t53 tfin_companion_53 tfin_fly53 tfin_nest5 |
+| `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | late_97c_egg54_music, late_97f_koschei_motif, late_97g_buyan_nest | 4 | t54 tfin_companion_54 tfin_lag tso54 |
+| `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | late_96c_k5b1_texts, late_97f_koschei_motif, late_97g_buyan_nest | 5 | t5b1 t5b1cam t5b1solo tfin_companion_5b1 tfin_cover5b1 |
 | `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_93_koschei_level_p6_epic, late_93_koschei_level_ph_prologue, late_93_koschei_level_pi_lessonagain, late_94_koschei_reset, late_94b_k5e_budget, late_97f_koschei_motif | 3 | t5b2 tk5e_resume tlukoepi |
-| `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start, late_97f_koschei_motif | 3 | tepi tfin_episolo tfin_epitheatre |
+| `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start, late_97f_koschei_motif, late_97g_buyan_nest | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
 | `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 2 | tfin_juice tzast |
 | `z-a` | Застава · Алёша Попович: колокольная перекличка | `buildZast('a')` · `levels/zastava.js` | — | 1 | tzast |
@@ -119,7 +119,7 @@
 | часть | строк | разделы |
 |---|---|---|
 | `head.html` | 449 | — |
-| `engine/01_utils_input_sound.js` | 122 | УТИЛИТЫ · ВВОД · ДЖОЙСТИКИ (Gamepad API, стандартная раскладка, раскладка v4) · ЗВУК (placeholder) |
+| `engine/01_utils_input_sound.js` | 123 | УТИЛИТЫ · ВВОД · ДЖОЙСТИКИ (Gamepad API, стандартная раскладка, раскладка v4) · ЗВУК (placeholder) |
 | `engine/02_render_heroes.js` | 259 | РЕНДЕР / СЦЕНА · ГЕРОИ (осмысленные примитивы, умения по сценарию v4) |
 | `engine/03_world_fx_collision.js` | 226 | МИР · FX · ПОЛУПРОЗРАЧНОСТЬ ТОГО, ЧТО ЗАСЛОНЯЕТ ГЕРОЕВ · КОЛЛИЗИИ |
 | `engine/04_physics_actions.js` | 156 | ФИЗИКА ГЕРОЯ · ДЕЙСТВИЯ ИГРОКОВ |
@@ -309,6 +309,7 @@
 | `levels/5-B2/late_93_koschei_level_pg_final.js` | — | ---- продолжение build5B2 (k5epic, часть 16): СТАДИЯ 12, «ТЯНЕМ-ПОТЯНЕМ», ПРОЛОГ-ПОГОНЯ, тексты паузы ---- |
 | `levels/5-B2/late_93_koschei_level_ph_prologue.js` | 5-B2 | ---- продолжение build5B2 (k5epic, часть ph): ПРОЛОГ «Через леса, через моря» — погоня на Горыныче за чёрной тучей Коще… |
 | `levels/5-B2/late_93_koschei_level_pi_lessonagain.js` | 5-B2 | ---- «Показать урок ещё раз» из паузы для актов I–III (F-8: FIN.lesson.regLevel; тот же пункт меню, что у 4-Б) ---- |
+| `levels/5-B2/late_93_koschei_level_pj_route.js` | — | ---- продолжение build5B2 (часть pj): КОРОТКИЙ ПУТЬ ФИНАЛА — семь стадий вместо двенадцати ---- |
 | `levels/5-B2/late_93_koschei_level_pz_end.js` | — | ---- конец build5B2 (k5epic): части p6…py — битва в двенадцать стадий; здесь функция закрывается ---- |
 | `levels/5-B2/late_94_koschei_reset.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: СБРОС БОЯ ПРИ ЗАГРУЗКЕ УРОВНЯ |
 | `levels/5-B2/late_94b_k5e_budget.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: БЮДЖЕТ ОТРИСОВКИ (B6-c) |
@@ -324,6 +325,7 @@
 | `levels/5-2/late_97d_hare52.js` | 5-2 | РЕЛИЗ · 5-2 «ЗАЯЦ»: СВОЯ ТЕМА — ИГРИВАЯ «ЗАИНЬКА» |
 | `levels/5-3/late_97e_duck53.js` | 5-3 | РЕЛИЗ · 5-3 «УТКА»: ЗВУК ПОЛЁТА — БАРАБАНЫ, ВЕТЕР ПО СКОРОСТИ, ЛИНИИ СКОРОСТИ |
 | `late_97f_koschei_motif.js` | 5-4, 5-B1, 5-B2, epi | РЕЛИЗ · ЛЕЙТМОТИВ КОЩЕЯ: ТЕРЕМ (5-Б1), «МОЁ» (5-4), ЗЕРКАЛЬЦЕ (5-2, 5-3), ФИНАЛ (5-Б2), ЭПИЛОГ |
+| `late_97g_buyan_nest.js` | 5-1, 5-2, 5-3, 5-4, 5-B1, epi | РЕЛИЗ · МИР 5: ИНДИКАТОР-МАТРЁШКА «СУНДУК → ЗАЯЦ → УТКА → ЯЙЦО → ИГЛА» |
 | `levels/4-B/late_98_gor_lava.js` | 4-B | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: АРЕНА ПО РЕФЕРЕНСУ, РЫК И ЛАВА, БОЛЬШОЙ ВДОХ, СЛАБОЕ МЕСТО |
 | `levels/1-3/late_99_kolobok_dance.js` | 1-3 | РЕЛИЗ final06 · 1-3 «КОЛОБОК»: ФИНАЛЬНАЯ ПЛЯСКА |
 | `levels/1-4/late_99b_kidnap14.js` | 1-4, 1-B | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: ШАПКИ НА ГОЛОВАХ, ЁЛКИ УТАСКИВАЮТ ПЕЛАГЕЮ |
@@ -469,15 +471,16 @@
 | `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `37_split_screen.md` | Экран на двоих: разбор референсов и новая система раздела |
+| `38_mir5_razbor_i_plan.md` | 38. Мир 5 «Остров Буян» — разбор и план правок (октябрь 2026) |
 | `38_world3_proposals.md` | 38. Мир 3 «Небесное царство»: комплексный разбор и предложения по всем уровням |
 | `39_world4_proposals.md` | 39. Мир 4 «Огненная Смородина»: комплексный разбор и предложения по всем уровням |
 | `40_kino_pravila.md` | Правила роликов (катсцен) — «Златая цепь» |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 132 файлов |
+| `changes/` | 134 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 281 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 284 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

@@ -25,7 +25,7 @@ FIN.chapterList=function(){const d=FIN.readSave(),g=d?d.G:{},done=g.done||{},all
     out.push({i,id:l.id,name:l.name,world:l.world||0,open:ok,got:(g.got||{})[l.id]||0,links:l.links||0,nuts:(g.nutsGot||{})[l.id]||0,nutT:l.nuts||0,boss:!!l.boss,done:!!done[l.id]});});return out;};
 // ---------- настройки ----------
 FIN.saveSettings=()=>{try{localStorage.setItem(SET_KEY,JSON.stringify(FIN.set));}catch(e){}};
-FIN.applySettings=function(){const s=FIN.set;G.subs=!!s.subs;document.documentElement.style.setProperty('--fts',String(s.ts||1));s.shake=s.shakeK>=1;s.flash=s.flashK>0;document.body.classList.toggle('fin-noflash',s.flashK<=0);document.body.classList.toggle('fin-softflash',s.flashK>0&&s.flashK<1);
+FIN.applySettings=function(){const s=FIN.set;G.subs=!!s.subs;G.songLag=(+s.lag||0)/1000;document.documentElement.style.setProperty('--fts',String(s.ts||1));s.shake=s.shakeK>=1;s.flash=s.flashK>0;document.body.classList.toggle('fin-noflash',s.flashK<=0);document.body.classList.toggle('fin-softflash',s.flashK>0&&s.flashK<1);
   if(master)master.gain.value=0.22*s.sfx;if(FIN.music)FIN.music.setVol(s.mus);};
 FIN.shakeK=()=>FIN.set.shakeK!=null?FIN.set.shakeK:(FIN.set.shake?1:0.15);FIN.flashK=()=>FIN.set.flashK!=null?FIN.set.flashK:(FIN.set.flash?1:0);
 {const _sh=shake;shake=function(pi,amp,dur){_sh(pi,amp*FIN.shakeK(),dur);};}
