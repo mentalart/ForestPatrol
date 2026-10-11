@@ -98,7 +98,7 @@ function creditsScreen(){return {head:'Титры',html:()=>'<div class="fin-cre
 function pauseScreen(){const scr={pause:true,items:[{label:'Продолжить',act:()=>hideMenu()},
   {label:'Настройки',act:()=>finPush(settingsScreen())},{label:'Управление',act:()=>finPush(controlsScreen())},
   {label:'Режим',val:()=>FIN.co.label(),side:d=>FIN.co.cycle(d)},
-  {label:'Выйти в главное меню',sub:()=>G.hub?'пройденные уровни сохранены, этот уровень начнётся заново':'пролог начнётся заново',act:()=>{FIN.saveGame();finGo(()=>FIN.openTitle(true));}}],onBack:()=>hideMenu()};
+  {label:'Выйти в главное меню',sub:()=>G.hub?(G.resume&&W&&G.resume[W.levelId]?'пройденные уровни сохранены, этот — с колокольчика':'пройденные уровни сохранены, этот уровень начнётся заново'):'пролог начнётся заново',act:()=>{FIN.saveGame();finGo(()=>FIN.openTitle(true));}}],onBack:()=>hideMenu()};
   // «Показать урок ещё раз» — только если у уровня есть урок (FIN.lesson, late_79e_lesson.js)
   if(FIN.lesson&&FIN.lesson.has())scr.items.splice(scr.items.length-1,0,{label:'Показать урок ещё раз',act:()=>{hideMenu();FIN.lesson.again();}});
   return scr;}

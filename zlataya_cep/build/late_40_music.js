@@ -81,7 +81,8 @@ FIN.music=(()=>{let bus=null,cur=null,want=null,t0=0,vox=[],loops=0,vol=FIN.set.
         x.beat+=nt[1];x.i++;const sumB=sq.reduce((a,n)=>a+n[1],0);if(x.i>=sq.length){x.i=0;const blk=T.len%sumB<1e-6?sumB:Math.max(sumB,T.len);x.beat=Math.ceil((x.beat-1e-6)/blk)*blk;}}}}
   function pick(){if(FIN.titleOn)return 'title';if(!W||G.state==='menu')return cur;const L=LEVELS[G.levelIdx]||{};const S=W.song;
     if(S&&(S.state==='play'||S.state==='final'||S.state==='count'))return null;if(G.ui==='repka'||G.ui==='lubok')return cur;
-    if(L.id==='luko'||L.id==='p')return 'hub';if(L.id==='epi')return 'epi';if(L.boss)return 'boss';return ['hub','w1','w2','w3','w4','w5'][L.world||0]||'hub';}
+    if(L.id==='luko'||L.id==='p')return 'hub';if(L.id==='epi')return 'epi';if(L.boss)return 'boss';if(W.music&&TR[W.music])return W.music;   // своя тема уровня (мир 2: k21…k24)
+    return ['hub','w1','w2','w3','w4','w5'][L.world||0]||'hub';}
   return {TR,   // темы — уровни могут добавить свои (2-Б: vod1…vod4 по этапам боя)
     inst:INST,hz,midi,   // инструменты для песен ритм-уровней (5-4: «Калинка» — late_97c): INST.pluck(f,t,d,v)… звучат через шину музыки
     start(){if(!AC||started)return;started=true;bus=AC.createGain();bus.gain.value=0;bus.connect(AC.destination);noise=nb();},
