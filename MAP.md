@@ -91,7 +91,7 @@
 | `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase | 12 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_75_kids_w1, late_76_kids_fight, late_99p_sky31 | 17 | t31 t31c tfin_art tfin_companion_31 tfin_juice tfin_kids1 tfin_kids2 tfin_motylek tfin_sk… |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32, late_99x_sky32_tut, late_99y_sky32_cine, late_99zd_sky32_fx, late_99ze_sky32_cam | 10 | t32 tfin_companion_32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32cine tfin_sk… |
-| `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 3 | t33n tfin_companion_33 tso33 |
+| `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | late_99zo_sky33 | 4 | t33n tfin_companion_33 tfin_sky33 tso33 |
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | late_99zn_sky34 | 4 | t34 tfin_companion_34 tfin_sky34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | late_99zm_sky35 | 3 | t35 tfin_companion_35 tfin_sky35 |
 | `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 11 | t3bv tfin_bossbar tfin_companion_3b tfin_hintlayer tfin_k3b tfin_k3bacorn tfin_k3bboss tf… |
@@ -367,6 +367,7 @@
 | `levels/2-1/late_99zg_k21_gauge.js` | 2-1 | РЕЛИЗ final06 · 2-1: МЕРНЫЕ РЕЙКИ У ВОДЫ — ГДЕ ПРИЛИВ, ГДЕ ОТЛИВ, КАКУЮ ВОДУ МЕНЯЮТ ГУСЛИ |
 | `levels/3-5/late_99zm_sky35.js` | 3-5 | РЕЛИЗ final06 · 3-5 «ГУСИ-ЛЕБЕДИ»: СТЕЛС С ПОДОЗРЕНИЕМ, РАЗНЫЕ ГУСИ, УКРЫТИЯ-ЗАДАЧИ, ПОГОНЯ НАД ПРОПАСТЬЮ (docs/38) |
 | `levels/3-4/late_99zn_sky34.js` | 3-4 | РЕЛИЗ final06 · 3-4 «ЛЕТУЧИЙ КОРАБЛЬ»: ЭКИПАЖ, СКАЛЫ, ПРОРЕХИ, ВЕТРИЛО, ВОРОНА-КЛЮЧНИЦА (docs/38) |
+| `levels/3-3/late_99zo_sky33.js` | 3-3 | РЕЛИЗ final06 · 3-3 «СИРИН И АЛКОНОСТ»: НЕБО ПО ПЕСНЕ, ПТИЦЫ ОТВЕЧАЮТ, ПОДХВАТ, ПЕРЬЯ-ОЦЕНКИ, ИНСТРУМЕНТАЛ (docs/38) |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -460,11 +461,11 @@
 | `38_world3_proposals.md` | 38. Мир 3 «Небесное царство»: комплексный разбор и предложения по всем уровням |
 | `39_world4_proposals.md` | 39. Мир 4 «Огненная Смородина»: комплексный разбор и предложения по всем уровням |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 120 файлов |
+| `changes/` | 121 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 276 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 277 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
