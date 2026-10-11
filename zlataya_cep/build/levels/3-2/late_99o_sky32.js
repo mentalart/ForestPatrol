@@ -174,6 +174,7 @@ build32=function(){
   mostki('light',[[0,19.2,-179],[0,19.2,-188]],{w:2});
   cloudIsle(-6,6,-200,-188,19.2);bell(-3.5,-190,19.2);
   const VT=makeVeter32();VT.g.position.set(-13,25,-199);VT.g.lookAt(0,20,-168);
+  regNpc({g:LB.g,body:LB.body,head:LB.head},'pushok');regNpc({g:VT.g},'veter');   // говорящие в роликах: речь, эмоции, «лицом в кадр» (late_83)
   const WIND={st:'idle',t:3,zmin:-189,zmax:-147.5,streaks:[],blown:new Set()};W.wind32=WIND;
   {const sm=MB(0xffffff,{transparent:true,opacity:0.5,depthWrite:false});for(let i=0;i<16;i++){const s=new THREE.Mesh(new THREE.BoxGeometry(rand(2.5,4.5),0.05,0.05),sm);s.visible=false;s.userData.noBatch=true;W.group.add(s);WIND.streaks.push(s);}}
   /* ---------- И. Радуга-дуга ---------- */
@@ -241,21 +242,51 @@ build32=function(){
   function trapRide(){F.trap='rode';later(0.4,()=>bark(T.yosha,'yosha','Ладно. На этот раз — вези.',2.4));}
   W.onPuff=(c)=>{if(!F.puffTold){F.puffTold=true;later(0.4,()=>bark(T.pelageya,'pelageya','Я поливаю — ты подымаешь!',2.2));}};
   flock.onBridge=()=>{if(!F.sheepTold){F.sheepTold=true;later(0.3,()=>bark(T.proshka,'proshka','Живой мост! Бегом, пока свет не погас!',2.4));}};
+  /* ---------- режиссура роликов (общий слой late_86b_kino.js, правила — docs/40_kino_pravila.md) ---------- */
+  // Каждый ролик — мини-история из 4–9 шотов разной крупности; говорящий — лицом в кадр, слушатели повёрнуты к нему; эмоции,
+  // замедление на главном, свой звук (KSND) — метками cues (при пропуске не играют), состояние уровня — events.
+  const SN=KSND,E32=CINE.E,fc=KC.fcam,pl=KC.place,lambO={g:LB.g,head:LB.head};
+  // камера перед «лицом» по его направлению взгляда (Ветер повёрнут lookAt — берём ось +z в мире)
+  const fdir=(o,d,dy,side)=>(pose,u)=>{const P=o.g.getWorldPosition(new V3()),f=o.g.getWorldDirection(new V3()).setY(0).normalize();if(side){const c=Math.cos(side),s=Math.sin(side);f.set(f.x*c+f.z*s,0,-f.x*s+f.z*c);}
+    const dd=d*(1-0.08*E32.inOutSine(u));pose.pos.copy(P).addScaledVector(f,dd);pose.pos.y+=dy||0;pose.look.copy(P);};
+  const lambP=()=>LB.pos.clone().add(new V3(0,0.6,0));
   /* ---------- Е. Пушок: два света — нить тает ---------- */
-  function lambScene(){F.lambFree=true;F.stage='lamb';const hs=HEROES;hs.forEach((h,i)=>{placeOnGround(h,-2.4+i*1.6,-102.4,15);h.face=Math.PI;h.vel.set(0,0,0);});
-    play({dur:12.4,fov:46,shots:[shot(0,[3.2,16.6,-101.8],[0,15.6,-106]),shot(4.4,[-1.6,15.9,-104.2],[0,15.5,-106.2]),shot(8.4,[4.5,17.4,-99],[0,15.8,-110],[2.6,17.8,-100],[0,16.5,-118],3.6)],
+  // нить тает в тепле двух перьев → ягнёнок робко «Бе-е» → Пелагея в восторге → Звенышко: гром за облаками — его батюшка ищет → Прошка: доведём
+  function lambScene(){F.lambFree=true;F.stage='lamb';const lc=new V3(0,15.6,-106),pr=T.proshka,pe=T.pelageya;
+    pl(T.potap,-2.6,-102.2,15,lc);pl(pr,-0.9,-102.6,15,lc);pl(pe,0.9,-102.6,15,lc);pl(T.yosha,2.6,-102.2,15,lc);LB.face=0;
+    play({dur:14.8,fov:46,kino:true,mood:['#9a8cff',0.12],
+      shots:[KS(0,[2.6,16.8,-100.6],[0,15.6,-106],{move:'push',amp:1}),   // 1 из-за плеч: два пера греют грозовую нить
+        KS(2.9,[0.4,15.6,-104.3],[0,15.6,-106],{trk:fc(lambO,1.6,0.2,0.05,0.12),fov:-3}),   // 2 крупно: ягнёнок робко «Бе-е…»
+        KS(4.5,[1.4,16.4,-104],[0.9,16,-102.6],{trk:fc(pe,1.7,0.3,0.1,0.12),tr:'whip'}),   // 3 Пелагея: «Ягнёночек!»
+        KS(7.3,[0.6,16.6,-105.2],[0,16.2,-102.4],{move:'orbit',amp:0.8}),   // 4 обратный средний: герои, ягнёнок, над ними Звенышко
+        KS(9.8,[1.6,16.5,-98.6],[0,19.5,-160],{move:'push',amp:0.8,fov:-2}),   // 5 общий: гром за облаками — вдали вспышки
+        KS(12.9,[-0.4,16.3,-104.4],[-0.9,16,-102.6],{trk:fc(pr,1.8,0.3,0.1,0.12),tr:'whip'})],   // 6 Прошка: «Доведём!» — ягнёнок прыгает к нему
       says:[[0.3,2.8,null,'<i>От тепла двух перьев грозовая нить тает, как иней.</i>',true],[3.2,1.4,'pushok','Бе-е…'],[4.6,2.6,'pelageya','Ягнёночек! Облачный, как пушок.'],
-        [7.3,3.2,'zven','От стада отбился. Слышите, гром за облаками? Его батюшка ищет — вожак стада.'],[10.6,1.8,'proshka','Не бойся, Пушок, — доведём!']],
+        [7.4,5.4,'zven','От стада отбился. Слышите, гром за облаками? Его батюшка ищет — вожак стада.'],[13.0,1.9,'proshka','Не бойся, Пушок, — доведём!']],
       events:[{t:0.6,fn:()=>{const th=LB.thr;anim(2.2,k=>{th.children.forEach((t,i)=>{t.scale.setScalar(1+k*1.5);if(t.material&&!t.userData.batchMesh){t.material.opacity=1-k;t.material.transparent=true;}t.rotation.z+=0.05*(i+1);});if(k>=1)th.visible=false;});
           SFX.flower();burst(LB.pos.clone().add(new V3(0,0.6,0)),0xffe08a,18,3);}},
-        {t:3.2,fn:()=>{LB.sq=0.5;SFX.dzin();}},{t:10.6,fn:()=>{LB.sq=0.6;}}],
+        {t:3.2,fn:()=>{LB.sq=0.5;SFX.dzin();}},{t:9.9,fn:()=>{LB.scared=1.5;LB.face=Math.atan2(pe.pos.x-LB.pos.x,pe.pos.z-LB.pos.z);}},
+        {t:13.3,fn:()=>{const to=pr.pos.clone().add(new V3(0.9,0,-0.7));to.y=15;LB.hop={from:LB.pos.clone(),to,t:0,dur:0.55};LB.face=Math.atan2(pr.pos.x-to.x,pr.pos.z-to.z);}}],
+      cues:[[0.6,()=>{SN.magic(0,440);CINE.rimPulse(0.6);}],[2.6,()=>SN.snap(0)],[3.25,()=>SN.baa(0)],[3.4,KC.emo('pelageya','surprise')],[4.7,KC.emo('pelageya','joy')],[5.2,KC.emo('yosha','hop')],
+        [7.6,KC.all('tilt',0.1)],[9.95,()=>{SN.thunder(0,false);CINE.mood('#6f86ff',0.18);FX.sparkle(new V3(0,22,-150),6,0xbfe4ff);}],[10.1,KC.all('surprise',0.07)],[10.4,()=>SN.baa(0.1)],
+        [13.1,KC.emo('proshka','pride')],[13.4,()=>{SN.baa(0);SN.yay(0.3);CINE.mood('#ffc890',0.1);}],[13.9,KC.all('joy',0.1)]],
+      tick:(t)=>{if(t<9.9)LB.face=0;},
       end:()=>{LB.thr.visible=false;LB.mode='free';F.stage='free';snapCams();banner('Пушок с нами!','#f4f0ff',2.4,'ягнёнок бежит за светом пера · польёт Йоша — распушится');}});}
   /* ---------- З. Ветер-Ветрило: знакомство ---------- */
-  function windScene(){F.windSeen=true;F.stage='wind';
-    play({dur:8.6,fov:50,shots:[shot(0,[3,22.4,-146],[-8,24,-196],[1,22,-150],[-12,25,-199],5),shot(5,[-4,26,-182],[-13,25,-199])],
-      says:[[0.3,3.6,'zven','«Ветер, ветер! Ты могуч, ты гоняешь стаи туч!» Дзинь!'],[3.9,3.0,'veter','Ух! Стадо по небу разбрелось — собираю, гоняю! Берегитесь, малые, — сдую!'],
-        [6.9,1.6,'potap','Меня не сдует.']],
-      events:[{t:3.9,fn:()=>{WIND.st='blow';WIND.t=2.4;SFX.whoosh();}}],
+  // Звенышко читает Пушкина → Ветер надувает щёки (крупно) и дует → герои пригибаются за Потапа → «Меня не сдует»
+  function windScene(){F.windSeen=true;F.stage='wind';const po=T.potap,vt=new V3(-13,25,-199);
+    pl(po,0,-147.6,19.2,vt);pl(T.proshka,-0.9,-146.6,19.2,vt);pl(T.pelageya,0.9,-146.6,19.2,vt);pl(T.yosha,0.2,-145.9,19.2,vt);
+    play({dur:10.4,fov:50,kino:true,mood:['#bfe4ff',0.1],
+      shots:[KS(0,[3,22.4,-146],[-8,24,-196],{p2:[1,22,-150],l2:[-12,25,-199],dur:4.4,move:'none'}),   // 1 общий: проезд к облаку с лицом — Ветер-Ветрило
+        KS(4.4,[-9,25,-193],[-13,25,-199],{trk:fdir(VT,7.5,0.3,0.25),move:'none'}),   // 2 средний: Ветер говорит, надувает щёки
+        KS(6.6,[3.2,20.6,-149.5],[0,20,-146.8],{move:'truck',amp:1,fov:4}),   // 3 сбоку: порыв поперёк мостков, все — за Потапа
+        KS(8.3,[0.6,20.5,-149.4],[0,20.4,-147.6],{trk:fc(po,2.0,0.3,0.1,0.12),tr:'whip'})],   // 4 Потап: «Меня не сдует.»
+      says:[[0.3,4.3,'zven','«Ветер, ветер! Ты могуч, ты гоняешь стаи туч!» Дзинь!'],[4.7,3.4,'veter','Ух! Стадо по небу разбрелось — собираю, гоняю! Берегитесь, малые, — сдую!'],
+        [8.4,1.4,'potap','Меня не сдует.']],
+      events:[{t:6.6,fn:()=>{WIND.st='blow';WIND.t=2.4;SFX.whoosh();}}],
+      cues:[[0.4,()=>SN.gust(0,2.4)],[4.7,()=>{SN.puff(0);CINE.punch(-2);}],[5.6,()=>{if(VT.cheeks)VT.cheeks.forEach(c=>{const s0=c.scale.x;anim(0.8,k=>{c.scale.setScalar(s0*(1+0.6*Math.sin(Math.min(1,k*1.2)*Math.PI/2)));});later(1.0,()=>c.scale.setScalar(s0));});}],
+        [6.6,()=>{SN.gust(0,2.2);CINE.trauma(0.3);FX.speed(0.7);}],[6.8,KC.emo('proshka','flinch')],[6.9,KC.emo('pelageya','fear')],[7.0,KC.emo('yosha','fear')],[8.5,KC.emo('potap','pride')],[9.4,KC.all('laugh',0.1)]],
+      tick:(t)=>{const H=[T.proshka,T.pelageya,T.yosha];if(t>6.6&&t<8.3)H.forEach((h,i)=>{h.pos.x=lerp(h.pos.x,(i-1)*0.5,0.05);h.pos.z=lerp(h.pos.z,-146.4,0.05);});},
       end:()=>{F.stage='free';WIND.st='idle';WIND.t=2.5;snapCams();for(const pi of[0,1])tip(pi,'Ветер дунет! Прячься за Потапа или стожок.',4.2);}});}
   function sheltered(h){if(h.kind==='potap')return true;const P=T.potap;
     if(P.pos.x<h.pos.x&&h.pos.x-P.pos.x<3.2&&Math.abs(P.pos.z-h.pos.z)<1.4&&Math.abs(P.pos.y-h.pos.y)<1.6)return true;
@@ -291,13 +322,28 @@ build32=function(){
       s.pos.x=clamp(s.pos.x,-11.5,11.5);s.pos.z=clamp(s.pos.z,-293.5,-256.5);
       s.m.g.position.set(s.pos.x,s.pos.y+(d>0.1?Math.abs(Math.sin(G.time*12+i))*0.12:0),s.pos.z);s.m.g.rotation.y=s.face;s.m.legs.forEach((l,k)=>{l.rotation.x=d>0.1?Math.sin(G.time*14+k*Math.PI)*0.5:0;});});
     F.penCount=n;if(!F.penned&&n>=HERD.length){F.penned=true;later(0.6,veterScene);}}
-  function veterScene(){F.stage='veter';const hs=HEROES;hs.forEach((h,i)=>{placeOnGround(h,-3+i*2,-279,19.2);h.face=Math.PI;h.vel.set(0,0,0);});VT.g.position.set(-14,27,-292);VT.g.lookAt(0,20,-282);
-    play({dur:13,fov:48,shots:[shot(0,[6,23.4,-274],[0,20,-285]),shot(3.4,[4.2,21.6,-281.6],[-10,25.6,-290],[3.2,22.2,-282.4],[-11,26,-291],3.2),shot(6.7,[-6.8,24.6,-283],[-14,27,-292],[-7.6,25,-284.2],[-14,27,-292],2.9),shot(9.6,[0,24,-282],[0,21,-296],[0,25,-286],[0,23,-302],1.6),shot(11.2,[1.8,20.9,-284.6],[-0.4,20.3,-279.4],[1.2,21,-284],[-0.4,20.4,-279.2],1.8)],
+  // стадо в кошаре → Ветер подлетает и благодарит (лицом) → про вожака → вершина в грозе → Ветер сдувает тучу, лестница → Пушок и Пелагея
+  function veterScene(){F.stage='veter';const hs=HEROES,vc=new V3(-6,22,-288),pe=T.pelageya;hs.forEach((h,i)=>{pl(h,-3+i*2,-279,19.2,vc);});VT.g.position.set(-26,30,-300);VT.g.lookAt(0,20,-282);
+    const vfrom=VT.g.position.clone(),vto=new V3(-14,27,-292);
+    play({dur:14.6,fov:48,kino:true,mood:['#bfe4ff',0.1],
+      shots:[KS(0,[6,23.4,-274],[0,20,-285],{p2:[4.4,22.6,-276.5],l2:[-6,22.5,-288],dur:3.3,move:'none'}),   // 1 общий: девять барашков в кошаре, подлетает Ветер
+        KS(3.3,[-9,24,-286],[-14,27,-292],{trk:fdir(VT,7,-0.6,0.3),move:'none'}),   // 2 средний: Ветер благодарит
+        KS(6.6,[-10,25,-288],[-14,27,-292],{trk:fdir(VT,5.2,-0.3,-0.25),move:'none',tr:'whip'}),   // 3 ближе: «а вожак грозою обернулся»
+        KS(8.6,[0,24,-286],[0,26,-316],{move:'push',amp:1,fov:-4}),   // 4 вершина в грозе — «там он»
+        KS(9.9,[5,23,-283],[0,22,-300],{p2:[3.6,23.6,-284.5],l2:[0,22.6,-302],dur:1.8,move:'none'}),   // 5 Ветер сдувает тучу — растёт лестница
+        KS(11.2,[1.4,20.2,-281],[1,19.8,-280],{trk:fc(lambO,1.5,0.3,0.05,0.12),tr:'whip'}),   // 6 Пушок: «Бе-е!»
+        KS(12.4,[1.4,20.8,-281],[1,20.4,-279],{trk:fc(pe,1.9,0.35,0.1,0.12)})],   // 7 Пелагея: «твой папа гремит»
       says:[[0.3,2.8,null,'<i>Все девять барашков — в кошаре. Ветер подлетает поближе.</i>',true],[3.4,3.2,'veter','Ух, спасибо, малые! Я стадо по всему небу гонял — да только пуще разгонял.'],
-        [6.7,3.0,'veter','А вожак, Громовой Баран, грозою обернулся: сынка ищет — своих не узнаёт. Там он, на вершине.'],[9.8,1.6,'pushok','Бе-е!'],[11.4,1.6,'pelageya','Пушок, это твой папа гремит!']],
-      events:[{t:9.6,fn:()=>{SFX.whoosh();stormWall.on=false;anim(1.2,k=>{stormCurtain.position.x=k*16;stormCurtain.children.forEach(m=>{m.scale.multiplyScalar(0.985);});if(k>=1)stormCurtain.visible=false;});
-          W.ramps.push(rampR);rampM.visible=true;rampM.scale.set(1,1,0.05);anim(1.4,k=>{rampM.scale.z=Math.max(0.05,k);});burst(new V3(0,21,-298),0xffffff,20,4);}}],
-      end:()=>{F.stage='free';stormWall.on=false;stormCurtain.visible=false;if(W.ramps.indexOf(rampR)<0)W.ramps.push(rampR);rampM.visible=true;rampM.scale.set(1,1,1);snapCams();
+        [6.7,3.0,'veter','А вожак, Громовой Баран, грозою обернулся: сынка ищет — своих не узнаёт. Там он, на вершине.'],[11.3,1.1,'pushok','Бе-е!'],[12.5,1.8,'pelageya','Пушок, это твой папа гремит!']],
+      events:[{t:0,fn:()=>{anim(3.0,k=>{VT.g.position.lerpVectors(vfrom,vto,E32.outCubic(k));VT.g.position.y+=Math.sin(k*Math.PI)*1.5;VT.g.lookAt(0,20,-282);});}},
+        {t:10.0,fn:()=>{SFX.whoosh();stormWall.on=false;anim(1.2,k=>{stormCurtain.position.x=k*16;stormCurtain.children.forEach(m=>{m.scale.multiplyScalar(0.985);});if(k>=1)stormCurtain.visible=false;});
+          W.ramps.push(rampR);rampM.visible=true;rampM.scale.set(1,1,0.05);anim(1.4,k=>{rampM.scale.z=Math.max(0.05,E32.outBack(k));});burst(new V3(0,21,-298),0xffffff,20,4);}},
+        {t:10.4,fn:()=>{LB.hop={from:LB.pos.clone(),to:pe.pos.clone().add(new V3(0.9,0,-0.8)),t:0,dur:0.5};LB.face=Math.atan2(pe.pos.x-LB.pos.x,pe.pos.z+3-LB.pos.z);}}],
+      cues:[[0.2,()=>{SN.gust(0,2.6);SN.baa(0.6);SN.baa(1.3);}],[1.0,KC.all('joy',0.1)],[3.5,KC.all('nod',0.12)],[6.8,()=>{CINE.mood('#6f86ff',0.16);SN.thunder(1.6,false);}],[7.4,KC.all('surprise',0.08)],
+        [8.7,()=>{FX.sparkle(new V3(0,27,-316),8,0xbfe4ff);CINE.punch(-3);}],[10.0,()=>{SN.gust(0,1.4);SN.magic(0.6,392);CINE.trauma(0.25);CINE.mood('#ffd27a',0.12);}],[11.35,()=>SN.baa(0)],[10.6,KC.all('cheer',0.08)],
+        [12.6,KC.emo('pelageya','tilt')],[13.5,KC.emo('pelageya','nod')]],
+      tick:(t)=>{if(VT.cheeks)VT.cheeks.forEach(c=>{c.position.y=-0.45+(t>3.3&&t<9.8?Math.abs(Math.sin(t*9))*0.08:0);});},
+      end:()=>{VT.g.position.copy(vto);VT.g.lookAt(0,20,-282);F.stage='free';stormWall.on=false;stormCurtain.visible=false;if(W.ramps.indexOf(rampR)<0)W.ramps.push(rampR);rampM.visible=true;rampM.scale.set(1,1,1);snapCams();
         banner('Грозовая вершина','#9fd0ff',2.4,'облачная лестница — наверх, к Громовому Барану');}});}
   /* ---------- Л. Громовой Баран ---------- */
   function bossBar(){if(B.fxBar){B.fxBar(bb);return;}if(B.phase<1){bb.style.display='none';return;}bb.style.display='block';const e=B.e;const nm=['','Таран','Гроза','Пушок'][Math.min(3,Math.floor(B.phase))]||'';
@@ -305,7 +351,7 @@ build32=function(){
     bb.innerHTML='<b>Громовой Баран</b> · '+Math.max(1,Math.min(3,Math.floor(B.phase)))+' / 3 · '+nm+' <span class="seg"><i style="width:'+Math.round(hp*100)+'%"></i></span>';}
   function bossIntro(){F.boss=1;F.stage='bossIntro';gateCol.on=true;gateFx.visible=true;const hs=HEROES;hs.forEach((h,i)=>{placeOnGround(h,-3+i*2,-307,AY);h.face=Math.PI;h.vel.set(0,0,0);});
     putLamb(LAMB_HIDE.x,AY,LAMB_HIDE.z);LB.mode='hide';
-    const e=makeFoe('grombaran',0,-320,{y:AY,leash:40,scale:1.25});B.e=e;e.noKill=true;e.cd=99;e.face=0;e.maxEmb=e.embers;
+    const e=makeFoe('grombaran',0,-320,{y:AY,leash:40,scale:1.25});B.e=e;regNpc({g:e.g,head:e.L&&e.L.head},'baran');e.noKill=true;e.cd=99;e.face=0;e.maxEmb=e.embers;
     e.guardAll=()=>B.phase===3||(!e.litNow&&e.state!=='broken');e.darkGuard=()=>!e.litNow;e.guardText='шерсть грозовая — посвети пером!';
     e.tick=(e,dt)=>{e.litNow=litAt(e.pos.x,e.pos.y+1.2,e.pos.z,1.2);e.cd=99;ramAI(e,dt);};
     e.onFinisher=h=>{if(B.phase===1)toPhase2();else if(B.phase===2)toPhase3();};
@@ -314,10 +360,20 @@ build32=function(){
       const run=B.ai==='charge',paw=B.ai==='paw';L.legs.forEach((l,k)=>{l.rotation.x=run?Math.sin(G.time*22+k*Math.PI)*0.7:paw&&k<2?Math.max(0,Math.sin(G.time*14+k*Math.PI))*0.6:0;});
       L.head.rotation.x=paw?0.35:B.ai==='stuck'||B.ai==='bonk'?0.25+Math.sin(G.time*12)*0.15:0;L.horns.forEach(hg=>{hg.children.forEach(c=>{if(c.material&&c.material.emissive)c.material.emissiveIntensity=paw?0.6+0.5*Math.sin(G.time*20):0.35;});});};
     if(FIN.music)FIN.music.play('boss');B.emit('intro',{e});
-    play({dur:12.6,fov:48,shots:[shot(0,[0,25.4,-300],[0,23.6,-318]),shot(3.4,[4,24,-312],[0,24.4,-320]),shot(7.6,[-5,23.6,-309],[0,23.2,-306.4]),shot(9.8,[0,26,-302],[0,23,-316])],
+    // кран в грозу → Баран крупно снизу ревёт (dolly-zoom) → Пушок прячется → Йоша → Звенышко показывает пухлые стожки
+    const ramO={g:e.g,head:e.L&&e.L.head||e.g},ramC=new V3(0,AY+1.6,-320),yo=T.yosha;HEROES.forEach(h=>KC.face(h,ramC));
+    play({dur:13.8,fov:48,kino:true,mood:['#5a6ad0',0.18],
+      shots:[KS(0,[0,25.4,-300],[0,23.6,-318],{p2:[0,24.6,-304.5],l2:[0,24.2,-319],dur:3.4,move:'none'}),   // 1 кран в грозу: на вершине — баран в молниях
+        KS(3.4,[1.2,AY+1.1,-316.2],[0,AY+2,-320],{trk:fc(ramO,3.6,0.3,-0.5,0.14),fov:4}),   // 2 крупно снизу: «Где мой сынок?!»
+        KS(6.1,[0.6,AY+0.8,-305],[0,AY+0.6,-306.4],{trk:fc(lambO,1.4,0.35,0.05,0.12),tr:'whip'}),   // 3 Пушок прячется за героями
+        KS(7.7,[2.6,AY+1.3,-308.4],[3,AY+1,-307],{trk:fc(yo,1.6,-0.3,0.08,0.12)}),   // 4 Йоша: «Боится!»
+        KS(9.8,[0,AY+8.5,-299.5],[0,AY,-315],{p2:[0,AY+7.6,-301.5],l2:[0,AY,-316],dur:4.0,move:'none',fov:10})],   // 5 сверху: пухлые стожки по углам — куда встать
       says:[[0.3,3.0,null,'<i>На вершине — гроза. В середине её — огромный баран, шерсть искрит, рога горят.</i>',true],[3.5,2.6,'baran','Кто тут?! Где мой сынок?! Бе-е-е-е!'],
-        [6.3,1.4,'pushok','Бе…'],[7.8,2.0,'yosha','Пушок спрятался. Боится!'],[9.9,2.6,'zven','Он бежит на свет! Встаньте у пухлого стожка — и в сторону!']],
-      events:[{t:3.5,fn:()=>{SFX.crash();shakeAll(0.06,0.6);burst(e.pos.clone().add(new V3(0,2.4,0)),0x9fd0ff,24,5);B.emit('roar',{e});}},{t:6.3,fn:()=>{LB.sq=0.5;}}],
+        [6.3,1.4,'pushok','Бе…'],[7.8,2.1,'yosha','Пушок спрятался. Боится!'],[9.9,3.5,'zven','Он бежит на свет! Встаньте у пухлого стожка — и в сторону!']],
+      events:[{t:3.5,fn:()=>{SFX.crash();shakeAll(0.05,0.5);burst(e.pos.clone().add(new V3(0,2.4,0)),0x9fd0ff,24,5);B.emit('roar',{e});}},{t:6.3,fn:()=>{LB.sq=0.5;}}],
+      cues:[[0.2,()=>{SN.menace(0);SN.thunder(0.8,false);}],[1.6,()=>FX.sparkle(new V3(0,AY+3,-320),8,0xbfe4ff)],[3.5,()=>{SN.baa(0,true);SN.thunder(0.1,true);CINE.dollyZoom(0.2,0.8,0.8);CINE.trauma(0.35);CINE.mood('#4a5ac8',0.22);}],
+        [3.9,KC.all('fear',0.08)],[6.35,()=>SN.baa(0)],[7.9,KC.emo('yosha','tilt')],[9.9,()=>{for(const s of SB)FX.sparkle(new V3(s.x,AY+1.2,s.z),6,0xffe08a);CINE.rimPulse(0.6);}],[11.6,KC.all('nod',0.1)]],
+      tick:(t)=>{if(t>3.5&&t<5.2&&e.L&&e.L.head)e.L.head.rotation.x=-0.3*Math.sin((t-3.5)/1.7*Math.PI);LB.face=Math.atan2(0-LB.pos.x,-302-LB.pos.z);},
       end:()=>{B.phase=1;B.ai='graze';B.t=0;B.dur=2.2;F.stage='boss';snapCams();bossBar();B.emit('go',{n:1});
         banner('Громовой Баран · Таран','#9fd0ff',2.2,'бежит на свет пера — заманите его в пухлый стожок');}});}
   function pickTarget(){const c=targets();if(!c.length)return null;const e=B.e;const lit=c.filter(h=>heroLight(h));const L=lit.length?lit:c;let best=L[0],bd=1e9;for(const h of L){const d=hd(h.pos,e.pos);if(d<bd){bd=d;best=h;}}return best;}
@@ -352,11 +408,19 @@ build32=function(){
       if(e.state!=='broken')emberOut(e,2,'За рога!');if(!F.hornTold){F.hornTold=true;later(0.3,()=>bark(h,'potap','Взял быка… то есть барана — за рога!',2.4));}}});
   const hornLift=W.lifts[W.lifts.length-1];
   function stage32(z){HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,z,AY);h.face=Math.PI;h.vel.set(0,0,0);});$('banner').style.opacity=0;}
+  // Баран взмывает на тучу (камера ведёт его) → общий: туча, молнии → Звенышко: радуга — дорога (панорама по тучкам-дождевичкам)
   function toPhase2(){B.phase=1.5;laneDraw(false);const e=B.e;stage32(-308.5);e.dazeT=0;e.state='idle';e.t=0;if(B.stog){stogScatter32(B.stog,3);B.stog=null;}B.emit('toStorm',{});
-    play({dur:7.2,fov:50,shots:[shot(0,[0,26,-302],[0,24,-318],[0,27,-304],[0,29,-316],3),shot(3.2,[4.6,24.6,-314.2],[0,24.2,-308.4],[3.4,25.4,-314.6],[0,25.6,-309],4)],
-      says:[[0.4,2.4,'baran','Не дамся! Грому-у-у!'],[3.2,3.6,'zven','Тучей обернулся! Радуга — дорога наверх: дождик впереди, солнышко позади!']],
-      events:[{t:0.6,fn:()=>{const p0=e.pos.clone();SFX.crash();B.emit('rise',{});anim(1.6,k=>{e.pos.set(lerp(p0.x,ARC.x,k),lerp(AY,TOP.y+0.1,k)+Math.sin(k*Math.PI)*3,lerp(p0.z,ARC.z,k));});topG.visible=true;topG.scale.setScalar(0.1);anim(1.4,k=>{topG.scale.setScalar(Math.max(0.1,k));});}},
-        {t:2.4,fn:()=>{shakeAll(0.05,0.5);for(let i=0;i<3;i++)later(i*0.25,()=>{SFX.crash();});}}],
+    const eP=()=>e.pos.clone().add(new V3(0,1.6,0)),ramO={g:e.g,head:e.L&&e.L.head||e.g};
+    play({dur:9.0,fov:50,kino:true,mood:['#4a5ac8',0.2],
+      shots:[KS(0,[3.2,AY+1.6,-309.5],[0,AY+1.6,-316],{p2:[2.6,AY+3.6,-309],dur:2.2,trk:KC.look(eP,0.9),move:'none'}),   // 1 снизу: Баран взмывает — камера ведёт его
+        KS(2.2,[1.0,TOP.y+1.6,-313.4],[0,TOP.y+1.4,-316],{trk:fc(ramO,3.3,0.35,0.5,0.1),tr:'whip'}),   // 2 крупно: «Не дамся! Грому-у-у!» на туче
+        KS(3.4,[0,26,-302],[0,27.5,-316],{move:'pull',amp:1}),   // 3 общий: грозовая туча над ареной, молнии
+        KS(5.0,[0,AY+3.2,-306.5],[-8.4,AY+1.4,-317.8],{p2:[0.1,AY+3.2,-306.4],l2:[8.4,AY+1.4,-317.8],dur:3.6,move:'none'})],   // 4 панорама: тучка-дождевичок слева, тучка-толстушка справа — радуга
+      says:[[0.4,2.4,'baran','Не дамся! Грому-у-у!'],[3.2,5.3,'zven','Тучей обернулся! Радуга — дорога наверх: дождик впереди, солнышко позади!']],
+      events:[{t:0.4,fn:()=>{const p0=e.pos.clone();SFX.crash();B.emit('rise',{});anim(1.6,k=>{const q=E32.inOutCubic(k);e.pos.set(lerp(p0.x,ARC.x,q),lerp(AY,TOP.y+0.1,q)+Math.sin(k*Math.PI)*3,lerp(p0.z,ARC.z,q));});topG.visible=true;topG.scale.setScalar(0.1);anim(1.4,k=>{topG.scale.setScalar(Math.max(0.1,E32.outBack(k)));});}},
+        {t:3.4,fn:()=>{shakeAll(0.05,0.5);for(let i=0;i<3;i++)later(i*0.25,()=>{SFX.crash();});}}],
+      cues:[[0.4,()=>{SN.baa(0,true);SN.gust(0.2,1.2);CINE.trauma(0.25);}],[0.6,KC.all('surprise',0.07)],[2.3,()=>{SN.thunder(0,true);CINE.dutch(-0.07);later(1.2,()=>CINE.dutch(0));}],[3.5,()=>{SN.thunder(0,true);FX.sparkle(new V3(0,TOP.y,-316),10,0xfff6a0);}],
+        [3.6,KC.all('fear',0.07)],[5.2,()=>{SN.rain(0,1.6);FX.sparkle(new V3(-8.4,AY+1.6,-317.8),8,0x9fd0ff);}],[7.2,()=>{SN.magic(0,523);FX.sparkle(new V3(8.4,AY+1.6,-317.8),8,0xffe08a);CINE.rimPulse(0.7);}]],
       end:()=>{B.phase=2;topG.visible=true;topG.scale.setScalar(1);topCyl.on=true;e.pos.set(ARC.x,TOP.y,ARC.z);e.baseY=TOP.y;e.maxEmb=9;e.embers=9;e.state='idle';e.noMove=true;B.strikeT=2.4;B.stompT=-1;
         snapCams();bossBar();B.emit('go',{n:2});banner('Громовой Баран · Гроза','#9fd0ff',2.2,'тень-круг — уйди или щит · радуга — дорога наверх');}});}
   function strike(at){const s={at:at.clone(),t:0,dur:soloK()?1.55:1.25,done:false};const g=new THREE.Group();g.position.set(at.x,AY+0.06,at.z);W.group.add(g);g.userData.noBatch=true;
@@ -378,33 +442,58 @@ build32=function(){
         for(const h of onTop){if(!h.grounded){floatText(headOf(h),'Перепрыгнул!','#ffe36b');continue;}const dx=h.pos.x-ARC.x,dz=h.pos.z-ARC.z,d=Math.hypot(dx,dz)||1;h.vel.set(dx/d*8,7,dz/d*8);h.grounded=false;h.knockT=0.5;floatText(headOf(h),'Сдуло!','#bfe4ff');
           if(!F.stompTold){F.stompTold=true;for(const pi of[0,1])tip(pi,'Кольцо по туче бежит — прыгай '+K(pi,'jump')+', не то сдует!',2.6);}}}}
     else{B.stompT=-1;B.stompRing.visible=false;B.stompSaid=false;}}
+  // гроза иссякла: Баран падает (камера ведёт, удар — пыль) → растерян, крупно (голландский угол) → Пушок блеет → Пелагея: позови папу
   function toPhase3(){B.phase=2.5;const e=B.e;stage32(-309);B.emit('toLamb',{});B.strikes.forEach(s=>{W.group.remove(s.g);if(s.bolt)W.group.remove(s.bolt);});B.strikes.length=0;B.stompRing.visible=false;
-    play({dur:9.4,fov:48,shots:[shot(0,[0,27,-303],[0,26,-316]),shot(3.2,[5,24.4,-310],[0,23.2,-318]),shot(6.2,[2.8,24.2,-313.2],[-0.4,23.5,-307.6],[1.6,24.6,-313.8],[-0.6,23.6,-307.2],3.2)],
+    const eP=()=>e.pos.clone().add(new V3(0,1.4,0)),ramO={g:e.g,head:e.L&&e.L.head||e.g},pe=T.pelageya;e.face=0;
+    play({dur:10.6,fov:48,kino:true,mood:['#8a86d0',0.12],
+      shots:[KS(0,[4.6,AY+3.4,-307.5],[0,TOP.y,-316],{p2:[3.8,AY+2.2,-308.6],dur:2.0,trk:KC.look(eP,0.85),move:'none'}),   // 1 Баран валится с тучи — камера ведёт
+        KS(2.2,[1.4,AY+1.8,-314.6],[0,AY+2,-318],{trk:fc(ramO,3.4,0.3,-0.1,0.12),tr:'whip'}),   // 2 крупно: «Где я? Кто вы?!»
+        KS(6.1,[0.6,AY+0.8,-305],[0,AY+0.6,-306.4],{trk:fc(lambO,1.4,-0.35,0.05,0.12)}),   // 3 Пушок: «Бе-е-е!»
+        KS(7.5,[0.8,AY+1.4,-311],[1,AY+1,-309],{trk:fc(pe,1.8,0.3,0.1,0.12),tr:'whip'})],   // 4 Пелагея: «Позови папу!»
       says:[[0.3,2.6,null,'<i>Гроза иссякла — Баран падает на облако. Только на рогах чёрная нить держится.</i>',true],[3.3,2.6,'baran','Бе-е… Где я? Кто вы?! Не подходи!'],
-        [6.2,1.4,'pushok','Бе-е-е!'],[7.6,1.8,'pelageya','Он своих не узнаёт. Пушок, позови папу!']],
-      events:[{t:0.5,fn:()=>{const p0=e.pos.clone();anim(1.3,k=>{e.pos.set(p0.x,lerp(p0.y,AY,k*k),lerp(p0.z,-318,k));});topCyl.on=false;anim(1.4,k=>{topG.scale.setScalar(Math.max(0.05,1-k));if(k>=1)topG.visible=false;});
-          }},
-        {t:1.8,fn:()=>{SFX.thud();shakeAll(0.07,0.5);burst(new V3(0,AY+0.4,-318),0xffffff,30,5);B.emit('fall',{});}},{t:6.2,fn:()=>{LB.sq=0.6;}}],
-      end:()=>{B.phase=3;e.pos.set(0,AY,-318);e.baseY=AY;e.noMove=false;e.state='idle';e.maxEmb=6;e.embers=6;B.ai='graze';B.t=0;B.dur=1.6;topCyl.on=false;topG.visible=false;LB.mode='free';LB.scared=0;snapCams();bossBar();B.emit('go',{n:3});
+        [6.2,1.4,'pushok','Бе-е-е!'],[7.7,2.7,'pelageya','Он своих не узнаёт. Пушок, позови папу!']],
+      events:[{t:0.5,fn:()=>{const p0=e.pos.clone();anim(1.3,k=>{e.pos.set(p0.x,lerp(p0.y,AY,k*k),lerp(p0.z,-318,k));});topCyl.on=false;anim(1.4,k=>{topG.scale.setScalar(Math.max(0.05,1-k));if(k>=1)topG.visible=false;});}},
+        {t:1.8,fn:()=>{SFX.thud();shakeAll(0.06,0.4);burst(new V3(0,AY+0.4,-318),0xffffff,30,5);B.emit('fall',{});}},{t:6.2,fn:()=>{LB.sq=0.6;}}],
+      cues:[[0.5,()=>{SN.thunder(0,false);SN.gust(0,1.2);}],[1.8,()=>{SN.thud(0,0.16);CINE.trauma(0.4);CINE.hitstop(3);FX.dust(new V3(0,AY+0.05,-318),16,0xe8e4f8,1.5);FX.stars(new V3(0,AY+2.8,-318),7);}],[2.0,KC.all('flinch',0.07)],
+        [3.3,()=>{SN.baa(0,true);CINE.dutch(0.07);later(2.4,()=>CINE.dutch(0));}],[4.4,KC.all('tilt',0.1)],[6.25,()=>SN.baa(0)],[7.8,KC.emo('pelageya','nod')],[9.4,KC.emo('yosha','hop')]],
+      tick:(t)=>{if(t>3.3&&t<5.9&&e.L&&e.L.head)e.L.head.rotation.y=Math.sin(t*7)*0.35;LB.face=Math.atan2(0-LB.pos.x,-318-LB.pos.z);},
+      end:()=>{B.phase=3;e.pos.set(0,AY,-318);e.baseY=AY;e.noMove=false;e.state='idle';e.maxEmb=6;e.embers=6;B.ai='graze';B.t=0;B.dur=1.6;topCyl.on=false;topG.visible=false;LB.mode='free';LB.scared=0;if(e.L&&e.L.head)e.L.head.rotation.y=0;snapCams();bossBar();B.emit('go',{n:3});
         banner('Громовой Баран · Пушок','#f4f0ff',2.2,'подведите Пушка к батюшке, пока тот стоит');}});}
-  function finale(){F.won=true;F.stage='end';B.phase=4;laneDraw(false);const e=B.e;bossBar();B.emit('finale',{});
-    HEROES.forEach((h,i)=>{placeOnGround(h,-4+i*2.6,-310,AY);h.face=Math.PI;h.vel.set(0,0,0);});LB.puffT=0;LB.scared=0;putLamb(e.pos.x+Math.sin(e.face)*1.8,AY,e.pos.z+Math.cos(e.face)*1.8);
+  // Пушок прижимается к отцу → нить на рогах лопается (замедление, вспышка) → грозовая шерсть проливается дождём → «Сынок! Нашёлся…»
+  // → Пушок прыгает от радости → Ветер разгоняет тучи, встаёт большая радуга, стадо сбегается → «Стадо — вместе!» → звено с радуги
+  function finale(){F.won=true;F.stage='end';B.phase=4;laneDraw(false);const e=B.e;bossBar();B.emit('finale',{});const rc=new V3(e.pos.x,AY+1.6,e.pos.z);
+    HEROES.forEach((h,i)=>{pl(h,-4+i*2.6,-310,AY,rc);});LB.puffT=0;LB.scared=0;putLamb(e.pos.x+Math.sin(e.face)*1.8,AY,e.pos.z+Math.cos(e.face)*1.8);
     const sky0=scene.background.clone(),sky1=new THREE.Color(0x8a86d0);const bigBow=rainbow32([-16,AY-6,-336],[16,AY-6,-336],14,3.2);bigBow.m.renderOrder=1;
-    play({dur:20,fov:46,shots:[shot(0,[3.2,24,-313],[e.pos.x,AY+1.2,e.pos.z]),shot(5.2,[0,24.6,-309],[0,24,-320]),shot(9.6,[-6,25,-306],[0,26,-332],[-3,27,-305],[0,28,-336],4),shot(14.4,[2.4,24,-312],[0,23.6,-316])],
+    const ramO={g:e.g,head:e.L&&e.L.head||e.g},eP=()=>e.pos.clone().add(new V3(0,1.2,0)),l4=()=>L4.g.position;
+    play({dur:21.6,fov:46,kino:true,mood:['#ffc890',0.1],
+      shots:[KS(0,[3.2,AY+1.0,-313],[e.pos.x,AY+0.9,e.pos.z],{trk:(pose,u)=>{const a=lambP(),b=eP(),d=b.clone().sub(a).setY(0).normalize(),c=Math.cos(0.7),sn=Math.sin(0.7);
+            pose.pos.copy(a).addScaledVector(new V3(d.x*c+d.z*sn,0,-d.x*sn+d.z*c),3.0-0.3*u);pose.pos.y=AY+1.1;pose.look.copy(a).lerp(b,0.4);}}),   // 1 низко, со стороны отца: Пушок жмётся к нему
+        KS(2.1,[1.5,AY+2.6,-315],[e.pos.x,AY+2.4,e.pos.z],{trk:fc(ramO,2.6,0.5,0.1,0.15),fov:-4}),   // 2 крупно: нить на рогах лопается
+        KS(3.4,[5,AY+2.4,-312],[e.pos.x,AY+1.4,e.pos.z],{trk:KC.orbit(eP,6,1.4,0.9,-0.4,0.6)}),   // 3 облёт: грозовая шерсть проливается дождём
+        KS(5.2,[1.2,AY+2,-314.8],[e.pos.x,AY+2,e.pos.z],{trk:fc(ramO,3.2,0.2,0.0,0.12)}),   // 4 Баран узнал сынка: «Нашёлся…»
+        KS(8.3,[0.6,AY+0.8,-315],[0,AY+0.6,-316],{trk:fc(lambO,1.4,0.3,0.05,0.12),tr:'whip'}),   // 5 Пушок скачет от радости
+        KS(9.6,[-6,25,-306],[0,26,-332],{p2:[-3,27,-305],l2:[0,28,-336],dur:4,move:'none'}),   // 6 кран: Ветер, тучи врозь, большая радуга, стадо
+        KS(13.6,[0.2,AY+1.7,-313.2],[0,AY+1.1,-310],{move:'pull',amp:0.8,fov:4}),   // 7 герои: «Стадо — вместе!», конфетти
+        KS(15.6,[1.2,AY+2,-314.6],[e.pos.x,AY+2,e.pos.z],{trk:fc(ramO,3.4,0.25,0.1,0.1)}),   // 8 Баран благодарит
+        KS(19.4,[2.6,AY+2.2,-306.5],[0,AY+2,-312],{trk:KC.look(l4,0.8),move:'none',tr:'whip'})],   // 9 звено летит с радуги
       says:[[0.3,1.6,'pushok','Бе-е! Папа!'],[2.2,2.8,null,'<i>Баран опускает голову — и чёрная нить на рогах лопается.</i>',true],[5.3,2.8,'baran','Пушок?.. Сынок! Нашёлся… Гроза во мне гремела — своих не видел.'],
-        [8.4,1.4,'pushok','Бе-е-е!'],[9.9,3.0,'veter','Ветер, ветер, я могуч — да без друзей не разогнал бы туч!'],[13.2,1.8,'zven','Дзинь! Стадо — вместе!'],
-        [15.2,3.6,'baran','Спасибо, малые. Держите — с радуги звено. А тучи впредь пусть поят землю, а не пугают.']],
-      events:[{t:2.2,fn:()=>{SFX.rip();SFX.unravel();B.emit('snap',{e});e.L.thread.visible=false;for(let i=0;i<10;i++)spawnSpark(e.pos.clone().add(new V3(0,2.6,0.8)),[COL.gold,0x6ad0ff,0xff6a8a][i%3]);if(typeof CINE!=='undefined'&&CINE.flashDip)CINE.flashDip('#fff6d8',0.4);}},
+        [8.4,1.4,'pushok','Бе-е-е!'],[9.9,3.4,'veter','Ветер, ветер, я могуч — да без друзей не разогнал бы туч!'],[13.7,2.5,'zven','Дзинь! Стадо — вместе!'],
+        [15.7,3.6,'baran','Спасибо, малые. Держите — с радуги звено. А тучи впредь пусть поят землю, а не пугают.']],
+      events:[{t:2.2,fn:()=>{SFX.rip();SFX.unravel();B.emit('snap',{e});if(e.L&&e.L.thread)e.L.thread.visible=false;for(let i=0;i<10;i++)spawnSpark(e.pos.clone().add(new V3(0,2.6,0.8)),[COL.gold,0x6ad0ff,0xff6a8a][i%3]);}},
         {t:3.4,fn:()=>{const L=e.L;anim(2.2,k=>{L.storm.forEach((m,i)=>{m.position.y+=0.04;m.scale.multiplyScalar(0.97);});if(k>=1)L.storm.forEach(m=>{m.visible=false;});});L.storm.forEach(m=>{m.visible=true;});
           for(let i=0;i<4;i++)later(i*0.4,()=>{if(typeof FX!=='undefined'&&FX.drops)FX.drops(e.pos.clone().add(new V3(rand(-1,1),3,rand(-1,1))),14);});SFX.water();}},
-        {t:5.3,fn:()=>{LB.sq=0.8;}},
+        {t:5.3,fn:()=>{LB.sq=0.8;}},{t:8.4,fn:()=>{LB.hop={from:LB.pos.clone(),to:LB.pos.clone().add(new V3(0.6,0,0.5)),t:0,dur:0.45};}},
         {t:9.6,fn:()=>{VT.g.position.set(-12,32,-334);VT.g.lookAt(0,24,-316);WIND.st='blow';WIND.t=2.4;SFX.whoosh();bigBow.k=0;SFX.flower();
           HERD.forEach((s,i)=>{s.penned=false;s.flee=0;s.pos.set(rand(-2,2),AY,-300-rand(0,3));s.home=new V3(e.pos.x+Math.cos(i/9*Math.PI*2)*3,AY,e.pos.z+Math.sin(i/9*Math.PI*2)*3);s.tgt=s.home.clone();});F.herdHome=true;}},
-        {t:13.2,fn:()=>{if(typeof FX!=='undefined'&&FX.confetti)FX.confetti(new V3(0,AY+2,-314),40);SFX.ok();}},
-        {t:16.6,fn:()=>{L4.locked=false;L4.g.visible=true;const p1=new V3(0,AY+1.2,-312);L4.g.position.set(0,AY+12,-330);anim(2.2,k=>{L4.g.position.set(0,lerp(AY+12,p1.y,smooth(k))+Math.sin(k*Math.PI)*2,lerp(-330,p1.z,smooth(k)));});L4.pos.copy(p1);SFX.dzin();}}],
+        {t:13.7,fn:()=>{if(typeof FX!=='undefined'&&FX.confetti)FX.confetti(new V3(0,AY+2,-312),40);SFX.ok();}},
+        {t:18.6,fn:()=>{L4.locked=false;L4.g.visible=true;const p1=new V3(0,AY+1.2,-312);L4.g.position.set(0,AY+12,-330);anim(2.2,k=>{L4.g.position.set(0,lerp(AY+12,p1.y,E32.inOutCubic(k))+Math.sin(k*Math.PI)*2,lerp(-330,p1.z,E32.inOutCubic(k)));});L4.pos.copy(p1);SFX.dzin();}}],
+      cues:[[0.3,()=>{SN.baa(0);SN.baa(0.5);}],[2.1,()=>{CINE.slowmo(0.4,0.6);CINE.flashDip('#fff6d8',0.4);CINE.punch(-5);SN.snap(0.1);CINE.mood('#ffd27a',0.16);}],[2.6,KC.all('surprise',0.07)],[3.5,()=>SN.rain(0,2.4)],
+        [5.4,()=>SN.baa(0,true)],[6.4,KC.all('joy',0.1)],[8.45,()=>{SN.baa(0);SN.yay(0.2);}],[9.7,()=>{SN.gust(0,2.4);SN.magic(0.6,523);CINE.rimPulse(1);}],[10.4,()=>{for(let i=0;i<5;i++)SN.baa(i*0.35);}],
+        [11.0,KC.all('cheer',0.1)],[13.7,()=>{SN.fanfare(0);CINE.punch(-3);}],[13.8,KC.all('joy',0.08)],[15.8,KC.all('nod',0.15)],[18.7,()=>SN.magic(0,784)],[20.4,KC.emo('proshka','pride')]],
       tick:(t,dt)=>{scene.background.lerpColors(sky0,sky1,clamp((t-3)/6,0,1));scene.fog.color.copy(scene.background);if(t>9.6){bigBow.m.visible=true;bigBow.k=Math.min(1,(t-9.6)/1.5);bigBow.mat.opacity=0.75*bigBow.k;}
+        LB.face=Math.atan2(e.pos.x-LB.pos.x,e.pos.z-LB.pos.z);if(e.L&&e.L.head)e.L.head.rotation.x=t>2&&t<5.2?0.35:t>5.2&&t<8?0.2+Math.sin(t*3)*0.05:0;
         const h=HERD;if(F.herdHome)h.forEach((s,i)=>{const d=hd(s.pos,s.home);if(d>0.1){const k=Math.min(1,5*(dt||0.016)/d);s.pos.lerp(s.home,k);}s.m.g.position.set(s.pos.x,s.pos.y+(d>0.1?Math.abs(Math.sin(G.time*12+i))*0.12:0),s.pos.z);s.m.g.rotation.y=Math.atan2(e.pos.x-s.pos.x,e.pos.z-s.pos.z);});},
-      end:()=>{L4.locked=false;L4.g.visible=true;L4.g.position.set(0,AY+1.2,-312);L4.pos.copy(L4.g.position);gateCol.on=false;gateFx.visible=false;scene.background.copy(sky1);scene.fog.color.copy(sky1);
+      end:()=>{if(e.L&&e.L.head)e.L.head.rotation.x=0;L4.locked=false;L4.g.visible=true;L4.g.position.set(0,AY+1.2,-312);L4.pos.copy(L4.g.position);gateCol.on=false;gateFx.visible=false;scene.background.copy(sky1);scene.fog.color.copy(sky1);
         bigBow.m.visible=true;bigBow.mat.opacity=0.75;if(FIN.music)FIN.music.play(null);F.stage='link';snapCams();bb.style.display='none';
         banner('Стадо вместе!','#ffe08a',2.4,'звено с радуги — возьмите');}});}
   /* ---------- Пушок: за светом, пружинка, прыжки через щели ---------- */
