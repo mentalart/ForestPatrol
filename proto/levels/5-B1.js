@@ -1,6 +1,9 @@
 /* ============================== МИР 5 · 5-Б1 «КОЩЕЙ В ТЕРЕМЕ» — бой «выстоять», заранее объявленный проигрыш ============================== */
 // цель «Выстоять» вместо полоски босса · фаза 1: тени-двойники перенимают любимую защиту · фаза 2: несобранные искры — золото, клещами в горн; длинный мах с меткой-жёлудем — рогаткой
-// фаза 3: Кощей поднимает иглу — неуязвим; 30 секунд закрываем Пелагею; он забирает тетрадку: «Не бойся. Я её не порву. Я хочу прочитать.»
+// фаза 3: Кощей поднимает иглу — неуязвим; закрываем Пелагею: герой со щитом на его пути — Кощей идёт сквозь, как сквозь дым, но медленно, и время фазы стоит
+// (заслон — до 20 с сверх 30); он всё равно забирает тетрадку: «Не бойся. Я её не порву. Я хочу прочитать.» — но если закрывали ≥ 6 с, Пелагея успела вырвать
+// последнюю страницу (G.flags.b1page — Кощей вспомнит о ней в начале 5-Б2)
+// над тенью, что переняла защиту, — значок этой защиты; над героем — счётчик одинаковых защит подряд (3 из 5), пока тень не переняла
 function build5B1(){
   W.zvenAway=false;W.world=5;setTheme('terem');W.name='5-Б1 · Кощей в тереме';W.sub='Остров Буян · бой · цель — выстоять';W.camX=14;const F=W.flags;F.stage='intro';F.t=0;
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.noLose=true;W.fallY=-12;const T=HERO;const C=new V3(0,0,-16),R=12;
@@ -27,7 +30,17 @@ function build5B1(){
   const Z=makeZven();W.zven=Z;Z.pos.set(0,3,8);
   const bb=$('bossbar');W.onLeave=()=>{bb.style.display='none';};
   function setBar(){const k=clamp(F.t/TOT,0,1);const ph=F.t<P1D?'тени':F.t<P1D+P2D?'золото':'тетрадка';bb.style.display='block';bb.style.borderColor='#a0ffb8';
-    const pn=F.t<P1D?1:F.t<P1D+P2D?2:3;bb.innerHTML='<b style="color:#a0ffb8">Цель: выстоять</b> · '+pn+' / 3 · '+ph+' <span class="seg" style="width:180px"><i style="width:'+Math.round(k*100)+'%;background:#a0ffb8"></i></span>';}
+    const pn=F.t<P1D?1:F.t<P1D+P2D?2:3;bb.innerHTML='<b style="color:#a0ffb8">Цель: выстоять</b> · '+pn+' / 3 · '+ph+(F.phase3?' · закрыли '+Math.floor(F.cover||0)+' с':'')+' <span class="seg" style="width:180px"><i style="width:'+Math.round(k*100)+'%;background:#a0ffb8"></i></span>';}
+  /* ---------- значки: что тень переняла; сколько одинаковых защит подряд у героя ---------- */
+  function labelSprite(){const cv=document.createElement('canvas');cv.width=256;cv.height=72;const tx=new THREE.CanvasTexture(cv);const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:tx,transparent:true,depthTest:false}));sp.scale.set(2.4,0.68,1);sp.renderOrder=9;W.group.add(sp);sp.visible=false;
+    sp.userData={cv,tx,txt:''};sp.userData.set=(txt,col)=>{if(sp.userData.txt===txt+col)return;sp.userData.txt=txt+col;const c=cv.getContext('2d');c.clearRect(0,0,256,72);c.fillStyle='rgba(20,14,30,.72)';c.beginPath();if(c.roundRect)c.roundRect(4,6,248,60,26);else c.rect(4,6,248,60);c.fill();
+      c.fillStyle=col;c.font='bold 34px system-ui,sans-serif';c.textAlign='center';c.textBaseline='middle';c.fillText(txt,128,37);tx.needsUpdate=true;};return sp;}
+  const DEFN={g:'щит',r:'кувырок'},heroLbl=[labelSprite(),labelSprite()],shLbl=new Map();
+  function labelsTick(){const fight=F.stage==='fight'&&!F.phase3&&!G.cine;
+    for(const pi of[0,1]){const sp=heroLbl[pi],L=(players[pi].defLog||[]).slice(-5);let n=0;for(let i=L.length-1;i>=0&&L[i]===L[L.length-1];i--)n++;const h=active(pi);
+      sp.visible=fight&&n>=2&&n<5;if(sp.visible){sp.userData.set(DEFN[L[L.length-1]]+' ×'+n+' из 5',n>=4?'#ff9a8a':'#ffe08a');sp.position.set(h.pos.x,h.pos.y+h.d.height+1.5,h.pos.z);}}
+    for(const s0 of shadows){const e=s0.e;let sp=shLbl.get(e);if(!sp){sp=labelSprite();shLbl.set(e,sp);}sp.visible=fight&&e.alive&&!!e.mimic;if(sp.visible){sp.userData.set('переняла: '+DEFN[e.mimic.def],'#c8b0ff');sp.position.set(e.pos.x,e.pos.y+2.9,e.pos.z);}}
+    for(const [e,sp] of shLbl)if(!shadows.some(s0=>s0.e===e)){sp.visible=false;W.group.remove(sp);shLbl.delete(e);}}
   /* ---------- тени-двойники ---------- */
   const SH=[['proshka',0],['potap',0],['pelageya',1],['yosha',1]];const shadows=[];
   function spawnShadow(kind,pi){const a=rand(-0.8,0.8)+(pi?0.6:-0.6);const x=C.x+Math.sin(a)*8,z=C.z-Math.cos(a)*8;const e=dvoynikFoe(kind,x,z,{pi,leash:14});e.dv=true;burst(new V3(x,1,z),0x3a1a6a,14,3);SFX.whoosh();shadows.push({e,kind,pi,t:0});return e;}
@@ -67,7 +80,8 @@ function build5B1(){
       events:[{t:0.3,fn:()=>{KS.g.position.set(pe.pos.x,0,pe.pos.z-1.1);KS.g.rotation.y=0;anim(0.8,k=>{KS.armR.rotation.x=-k*1.2;});later(1.6,()=>{anim(1,k=>{nb.g.position.lerpVectors(nb.g.position.clone(),KS.hand.getWorldPosition(new V3()),k);});});}},
         {t:4.2,fn:()=>{const f=KS.g.position.clone();KS.g.rotation.y=Math.PI;anim(5,k=>{KS.g.position.lerpVectors(f,new V3(0,0,9),k);nb.g.position.copy(KS.hand.getWorldPosition(new V3()));});}},
         {t:9.4,fn:()=>{KS.g.rotation.y=0;}},{t:14.4,fn:()=>{Z.pos.copy(pe.pos).add(new V3(0.4,0.8,0.2));}}],
-      end:()=>{W.anims.length=0;flushGifts();F.out=true;bb.style.display='none';G.flags.nameless=true;G.flags.names={};banner('Выстояли','#a0ffb8',3.5,'Потеряна тетрадка Пелагеи');later(2,finishLevel);}});}
+      end:()=>{W.anims.length=0;flushGifts();F.out=true;bb.style.display='none';G.flags.nameless=true;G.flags.names={};const pg=(F.cover||0)>=6;G.flags.b1page=pg;G.flags.b1cover=Math.round(F.cover||0);
+        banner('Выстояли','#a0ffb8',3.5,pg?'тетрадку унёс — последняя страница у Пелагеи':'Потеряна тетрадка Пелагеи');if(pg)later(0.6,()=>bark(T.pelageya,'pelageya','Тут написано… последняя страница — у меня.',2.6));later(pg?3:2,finishLevel);}});}
   W.updates.push(dt=>{
     if(F.stage!=='fight'||G.cine)return;F.t+=dt;setBar();
     // тени возвращаются из темноты
@@ -79,11 +93,19 @@ function build5B1(){
       for(let i=W.sparks.length-1;i>=0;i--){const s=W.sparks[i];if(s.free>3&&W.hots.filter(q=>q.gold&&!q.gone).length<6){const p=s.m.position.clone();W.group.remove(s.m);W.sparks.splice(i,1);dropGold(p);}}
       F.goldT=(F.goldT||4)-dt;if(F.goldT<=0){F.goldT=9;if(W.hots.filter(q=>q.gold&&!q.gone).length<3)dropGold(new V3(C.x+rand(-7,7),5,C.z+rand(-6,6)));}}
     if(F.t>=P1D+P2D&&!F.phase3)toPhase3();
-    if(F.phase3){F.p3t+=dt;const pe=T.pelageya,left=Math.max(0.1,P3D-F.p3t);const kp=KS.g.position,dx=pe.pos.x-kp.x,dz=pe.pos.z-kp.z,d=Math.hypot(dx,dz);const sp=Math.max(0.25,(d-1.2)/left);
+    if(F.phase3){const pe=T.pelageya,kp=KS.g.position,dx=pe.pos.x-kp.x,dz=pe.pos.z-kp.z,d=Math.hypot(dx,dz);
+      // заслон: управляемый герой со щитом между Кощеем и Пелагеей, рядом с Кощеем
+      let blk=null;for(const h of HEROES){if(h===pe||!h.active||!h.guard)continue;const hx=h.pos.x-kp.x,hz=h.pos.z-kp.z,along=(hx*dx+hz*dz)/(d||1),side=Math.abs(hx*dz-hz*dx)/(d||1);if(along>-0.3&&along<d&&side<1.4&&Math.hypot(hx,hz)<2.4){blk=h;break;}}
+      if(blk&&(F.cover||0)<20){F.cover=(F.cover||0)+dt;if(Math.floor(F.cover)!==F.coverS){F.coverS=Math.floor(F.cover);floatText(blk.pos.clone().add(new V3(0,blk.d.height+0.8,0)),'Держим! '+F.coverS+' с','#a0ffb8');}
+        if(F.cover>=6&&!F.pageTold){F.pageTold=true;banner('Пелагея вырвала страницу!','#a0ffb8',2.6,'последнюю — Кощей её не унесёт');bark(pe,'pelageya','<i>(шёпотом)</i> Последнюю — себе.',2);}}
+      else F.p3t+=dt;
+      const left=Math.max(0.1,P3D-F.p3t);const sp=blk?0.3:Math.max(0.25,(d-1.2)/left);
       if(d>1.2){kp.x+=dx/d*sp*dt;kp.z+=dz/d*sp*dt;}KS.g.rotation.y=Math.atan2(dx,dz);KS.body.rotation.z=Math.sin(G.time*3)*0.03;nIcon.g.position.set(kp.x,5.6+Math.sin(G.time*2)*0.1,kp.z);nIcon.g.rotation.y+=dt;
       for(const h of HEROES)if(h!==pe&&hd(h.pos,kp)<1.2){floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'…насквозь, как дым','#a0ffb8');const ex=h.pos.x-kp.x,ez=h.pos.z-kp.z,el=Math.hypot(ex,ez)||1;h.pos.x+=ex/el*0.1;h.pos.z+=ez/el*0.1;}
       if(Math.floor(F.p3t)!==F.p3s){F.p3s=Math.floor(F.p3t);if(F.p3s%10===5)bark(T.potap,'potap',['Держу, держу!','Не пущу, не пущу…','Не пройдёт, не пройдёт…'][Math.floor(F.p3s/10)%3],1.4);}
       if(F.p3t>=P3D)takeBook();}});
+  W.updates.push(()=>labelsTick());
+  W.k5b1={heroLbl,shLbl,KS,shadows};   // для ботов
   function dropGold(p){const g=new V3(clamp(p.x,-10,10),0,clamp(p.z,-26,-6));const it=hotItem('zoloto',g.x,4,g.z,{noCool:true,coolable:false,respawn:false,gold:true});it.flying=true;anim(0.6,k=>{it.pos.y=4-k*4;if(k>=1){it.flying=false;SFX.plate();burst(it.pos.clone(),0xffd23a,8,2);}});}
   // удары по Кощею проходят сквозь
   W.onAttack=(pi,h)=>{if(hd(h.pos,KS.g.position)<2.4){floatText(KS.g.position.clone().add(new V3(0,3,0)),F.phase3?'Сквозь — игла':'Неуязвим — игла при нём','#a0ffb8');}};
@@ -95,7 +117,7 @@ function build5B1(){
     O('Терем…',()=>F.stage!=='intro'&&F.stage!=='introCine',()=>[KS.g]),
     O(()=>'Меняй щит '+K(pi,'guard')+', отбив, кувырок '+K(pi,'roll')+' — тени гадают.',()=>!!F.phase2,()=>shadows.filter(s=>s.e.alive&&s.pi===pi).map(s=>s.e.g)),
     O(()=>'Слиток клещами '+K(pi,'item')+' — в печь у стены.',()=>!!F.phase3,()=>{const g=W.hots.filter(it=>it.gold&&!it.gone).map(it=>it.g);return g.length?g:[forge.bag||KS.g];}),
-    O(()=>'Иглу поднял — закройте Пелагею!',()=>F.stage==='book',()=>[T.pelageya.g]),
+    O(()=>'Иглу поднял — закройте Пелагею! Щит '+K(pi,'guard')+' у него на пути — он идёт медленней.',()=>F.stage==='book',()=>[T.pelageya.g]),
     O('…',()=>false,()=>[])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.spawns=[[new V3(-3,0,10),new V3(-1,0,10)],[new V3(1,0,10),new V3(3,0,10)]];W.startAct=[0,0];

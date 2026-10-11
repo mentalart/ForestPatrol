@@ -7,7 +7,7 @@
 // MP3 моно 48 кбит/с, 24 кГц → zlataya_cep/build/voice/<id>.mp3 (готовые файлы пропускаются; --force — переделать все), длительность → поле dur. После — python3 zlataya_cep/build/build_final.py.
 const fs=require('fs'),path=require('path'),{execFileSync}=require('child_process');
 const ROOT=path.join(__dirname,'..','..'),VD=path.join(ROOT,'zlataya_cep','build','voice'),RAW=path.join(__dirname,'raw');
-const FF=process.env.FFMPEG||'/usr/local/lib/python3.11/dist-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2';
+const FF0='/usr/local/lib/python3.11/dist-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2',FF=process.env.FFMPEG||(fs.existsSync(FF0)?FF0:'ffmpeg');   // нет imageio-ffmpeg — ffmpeg из PATH
 const arg=k=>{const i=process.argv.indexOf(k);return i<0?null:process.argv[i+1];};
 const ONLY=(arg('--only')||'').split(',').filter(Boolean);
 const CAT=path.join(VD,'lines.json'),D=JSON.parse(fs.readFileSync(CAT,'utf8'));

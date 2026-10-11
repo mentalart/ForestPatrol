@@ -1,9 +1,10 @@
 /* ============================== РЕЛИЗ final06 · 2-1: МЕРНЫЕ РЕЙКИ У ВОДЫ — ГДЕ ПРИЛИВ, ГДЕ ОТЛИВ, КАКУЮ ВОДУ МЕНЯЮТ ГУСЛИ ============================== */
 // У каждой воды уровня (рядом с её ракушкой) — мерная рейка: синяя метка вверху — прилив, песочная внизу — отлив, поплавок держится
 // на нынешней глади. Вода, которую сейчас поменяют гусли героя (та, что под ним), подсвечена: рейка мигает золотом, поплавок крупнее.
-// У Переливной улицы рейки двух каналов ходят наоборот — видно, что вода одна. Только 2-1; механику воды модуль не меняет.
+// У Переливной улицы рейки двух каналов ходят наоборот — видно, что вода одна. Механику воды модуль не меняет.
+// Остальные уровни мира 2 зовут k21Gauges(true) из levels/w2/late_99zt_kw_gauges.js (там рейка и у воды без ракушки).
 const K21G={list:[]};
-function k21GaugeMesh(z){const s=z.shell.g.position,cx=(z.minx+z.maxx)/2;
+function k21GaugeMesh(z){const cx=(z.minx+z.maxx)/2,s=z.shell?z.shell.g.position:new V3(z.minx+0.4,0,z.maxz-0.4);   // воды без ракушки (мир 2, late_99zt) — рейка в ближнем углу
   let x=clamp(s.x,z.minx+0.3,z.maxx-0.3),zz=clamp(s.z,z.minz+0.3,z.maxz-0.3);if(Math.hypot(x-s.x,zz-s.z)<0.6)x+=x<cx?0.9:-0.9;
   const g=new THREE.Group();g.position.set(x,0,zz);W.group.add(g);
   const y0=z.floor,y1=z.high+0.5,poleM=M(0xf2ead6,{emissive:0x806010,emissiveIntensity:0});
@@ -16,8 +17,8 @@ function k21GaugeMesh(z){const s=z.shell.g.position,cx=(z.minx+z.maxx)/2;
   addMesh(new THREE.CylinderGeometry(0.03,0.03,0.3,5),M(0xffffff),0,0.18,0,fl);                                                   // поплавок
   g.traverse(c=>{c.userData.noBatch=true;});
   return {z,g,pole,poleM,hi,lo,hiM,loM,fl,glow:0};}
-function k21Gauges(){K21G.list=[];
-  for(const z of W.waters){if(!z.shell||z.noGusli||z.noGauge)continue;K21G.list.push(k21GaugeMesh(z));}
+function k21Gauges(any){K21G.list=[];
+  for(const z of W.waters){if((!z.shell&&!any)||z.noGusli||z.noGauge)continue;K21G.list.push(k21GaugeMesh(z));}
   W.updates.push(dt=>{const mine=new Set();if(W.abil.gusli)for(const pi of[0,1]){const h=active(pi);if(!h||players[pi].downed)continue;const z=zoneAt(h);if(z)mine.add(z);}
     for(const Gq of K21G.list){const z=Gq.z,hiOn=z.state==='high',k=Math.min(1,z.t);
       Gq.fl.position.y=z.level+0.05+Math.sin(G.time*2.4+Gq.g.position.z)*0.04;Gq.fl.rotation.z=Math.sin(G.time*1.7+Gq.g.position.x)*0.15;

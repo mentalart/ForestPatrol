@@ -131,7 +131,7 @@
       if(S.ph==='done')return;
       // огонь по дорожкам; капли лавы на доски
       if(S.ph!=='forge'){S.fireT-=dt;if(S.fireT<=0&&!S.fire&&S.ph==='carry'){S.fireT=G.solo?4.6:3.4;const hs=k5Heroes();const tgt=hs.find(h=>h.pos.z<8.5&&h.pos.z>-14);const li=tgt?LANES.reduce((b,x,i)=>Math.abs(tgt.pos.x-(X+x))<Math.abs(tgt.pos.x-(X+LANES[b]))?i:b,0):Math.floor(rand(0,3));fire(li);}
-        S.blobT-=dt;if(S.blobT<=0&&S.ph==='carry'){S.blobT=G.solo?5.5:3.8;const hs=k5Heroes().filter(h=>h.pos.z<8.5&&h.pos.z>-14);const h=hs[Math.floor(rand(0,hs.length))];if(h){const at=new V3(X+LANES[Math.floor(rand(0,3))],0,clamp(h.pos.z-rand(1,4),-13.5,7.5));
+        S.blobT-=dt;if(S.blobT<=0&&S.ph==='carry'&&!(E.lite&&E.lite())){S.blobT=G.solo?5.5:3.8;const hs=k5Heroes().filter(h=>h.pos.z<8.5&&h.pos.z>-14);const h=hs[Math.floor(rand(0,hs.length))];if(h){const at=new V3(X+LANES[Math.floor(rand(0,3))],0,clamp(h.pos.z-rand(1,4),-13.5,7.5));
             if(FIN.k2fx)FIN.k2fx.tele(at.x,0.02,at.z,1.0,1.3,'red');later(1.3,()=>{if(E.cur!==7)return;FX.sparks(at.clone().add(new V3(0,0.5,0)),14,0xff6a10);const P=planks.find(P=>Math.abs(P.m.position.x-at.x)<1&&Math.abs(P.m.position.z-at.z)<0.9);if(P)burnP(P,6);
               for(const q of k5Heroes())if(hd(q.pos,at)<1.1&&q.rollT<=0){k5Hurt(q,at);if(S.carry&&S.carry.indexOf(q)>=0)drop('Обожгло — уронили!');}});}}}
       // средняя голова: дышит в круг — опускается (ореол) — поднимается; пока поднята — боковые кусают
@@ -145,7 +145,7 @@
                 for(const q of k5Heroes()){const t=clamp(((q.pos.x-from.x)*(to.x-from.x)+(q.pos.z-from.z)*(to.z-from.z))/Math.max(0.01,from.distanceToSquared(to)),0,1);const px=from.x+(to.x-from.x)*t,pz=from.z+(to.z-from.z)*t;
                   if(Math.hypot(q.pos.x-px,q.pos.z-pz)<0.9&&q.rollT<=0){k5Hurt(q,from);if(S.carry&&S.carry.indexOf(q)>=0)drop('Укусила — уронили!');}}});}}}}
       // Лихо: веко поднимается 1,6 с, глаз открыт 1,2 с — кто смотрит в его сторону, засыпает
-      if(S.ph!=='forge')S.eyeT-=dt;if(S.eyeT<=0&&S.eye===0&&S.ph!=='forge'){S.eye=0.001;barkS({g:likho.g},'likho','Хр-р… кто тут?..',1.2,true);K5X.tint('rgba(80,20,120,.8)',0.55);}
+      if(S.ph!=='forge')S.eyeT-=dt;if(S.eyeT<=0&&S.eye===0&&S.ph!=='forge'&&!(E.lite&&E.lite())){S.eye=0.001;barkS({g:likho.g},'likho','Хр-р… кто тут?..',1.2,true);K5X.tint('rgba(80,20,120,.8)',0.55);}
       if(S.eye>0){S.eye+=dt;const k=Math.min(1,S.eye/1.6);if(likho.lid)likho.lid.rotation.x=lerp(0.6,-2.4,k);if(likho.iris&&likho.iris.material.emissive)likho.iris.material.emissiveIntensity=0.9+2*k;
         gaze.position.copy(LIKHO).add(new V3(0,2.6,0));gaze.lookAt(X,0.8,-2);gaze.material.opacity=k>=1?0.35+0.1*Math.sin(G.time*20):0.12*k;
         if(S.eye>=1.6&&!S.gaze){S.gaze=true;const po=k5Heroes().find(h=>h.kind==='potap'&&h.guard);for(const h of k5Heroes()){const dx=LIKHO.x-h.pos.x,dz=LIKHO.z-h.pos.z,d=Math.hypot(dx,dz)||1,dot=(Math.sin(h.face)*dx+Math.cos(h.face)*dz)/d;
