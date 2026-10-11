@@ -203,6 +203,8 @@ zlataya_cep/build/levels/2-2/late_99f_k22.js  @level:2-2 tfin_k22 tfin_k22solo t
 zlataya_cep/build/levels/2-2/late_99f_k22_p4_tasks.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
 zlataya_cep/build/levels/2-2/late_99f_k22_p3_lullaby.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
 zlataya_cep/build/levels/2-2/late_99f_k22_p2_stove.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
+zlataya_cep/build/levels/2-2/late_99f_k22_q_whale.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_art
+zlataya_cep/build/levels/2-2/late_99zi_k22_parts.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_warp
 zlataya_cep/build/levels/2-3/late_99g_k23.js  @level:2-3 tfin_k23 tfin_k23solo
 zlataya_cep/build/levels/2-4/late_99h_k24.js  @level:2-4 tfin_k24 tfin_k24solo tfin_k23
 zlataya_cep/build/levels/2-5/late_99i_k25.js  @level:2-5 tfin_k25 tfin_k25solo

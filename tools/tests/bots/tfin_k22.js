@@ -44,17 +44,17 @@ const D=ZC.W.dbg22();const n0=D.WB.n;let t=0,air=false;while(D.WB.n===n0&&t<1100
 //@@
 // золото в фонтане дыхания: прилив у фонтана — на выдохе кита блеснёт
 const W=ZC.W;W.flags.mast=true;W.flags.garden=true;const D0=W.dbg22();const Z3=D0.Z3;ZC.HERO.proshka.pos.set(0,0.3,-56);ZC.HERO.pelageya.pos.set(2,0.3,-56);ZC.HERO.potap.pos.set(-2,0.3,-56);ZC.HERO.yosha.pos.set(4,0.3,-56);ZC.tick(10);
-ACT(0,'proshka');ACT(1,'pelageya');ZC.tick(30);U.tap('KeyR');ZC.tick(20);U.tap('Semicolon');ZC.tick(200);const st1=Z3.state;let seen=false;for(let i=0;i<1100&&!seen;i++){ZC.tick(1);W.group.traverse(o=>{if(o.isMesh&&o.geometry.type==='OctahedronGeometry'&&o.visible&&o.position.y>3&&o.position.z>-70&&o.position.z<-50)seen=true;});}
+ACT(0,'proshka');ACT(1,'pelageya');ZC.tick(30);U.tap('KeyR');ZC.tick(200);const st1=Z3.state;let seen=false;for(let i=0;i<1100&&!seen;i++){ZC.tick(1);W.group.traverse(o=>{if(o.isMesh&&o.geometry.type==='OctahedronGeometry'&&o.visible&&o.position.y>3&&o.position.z>-70&&o.position.z<-50)seen=true;});}
 if(st1!=='high')throw new Error('фонтан не в приливе: '+st1+' '+U.st());if(!seen)throw new Error('в фонтане не блеснуло золото');'fountain gold ok'
 //@@
 // деревня: Совиный взор — ведро со щукой светится
 const D=ZC.W.warp22('village');ZC.tick(20);NOCINE();ACT(1,'pelageya');const r=[U.walkTo(1,2,-88,6)];U.tap('KeyL');ZC.tick(20);
 const b=D.BUCK[D.PIKE_AT];if(!(b.glow.material.opacity>0.2))throw new Error('ведро со щукой не светится: '+b.glow.material.opacity);'owl ok pike in '+D.PIKE_AT+' '+r.join()
 //@@
-// Потап поднимает не то ведро — окунь; пруд мелкий — щуку не выпустить; прилив вдвоём; выпускает щуку
+// Потап поднимает не то ведро — окунь; пруд мелкий — щуку не выпустить; прилив (вода обычная — играет один); выпускает щуку
 const D=ZC.W.dbg22(),wrong=D.BUCK.find(b=>!b.pike),pk=D.BUCK[D.PIKE_AT];ACT(0,'potap');const r=[U.walkTo(0,wrong.x+(wrong.x<0?1.3:-1.3),wrong.z,6)];U.tap('KeyE');ZC.tick(60);
 if(!wrong.tipped)throw new Error('не то ведро не опрокинулось');r.push(U.walkTo(0,pk.x+(pk.x<0?1.3:-1.3),pk.z,8));U.tap('KeyE');ZC.tick(20);if(D.F.pikeFree)throw new Error('щуку выпустили в мелкий пруд');
-r.push(U.walkTo(1,0.6,-84.2,6));U.tap('Semicolon');ZC.tick(20);U.tap('KeyR');ZC.tick(200);if(D.PZ.state!=='high')throw new Error('пруд не наполнили: '+D.PZ.state+' '+r.join()+' '+U.st());
+r.push(U.walkTo(1,0.6,-84.2,6));U.tap('Semicolon');ZC.tick(200);if(D.PZ.state!=='high')throw new Error('пруд не наполнили: '+D.PZ.state+' '+r.join()+' '+U.st());
 r.push(U.walkTo(0,pk.x+(pk.x<0?1.3:-1.3),pk.z,8));U.tap('KeyE');ZC.tick(10);if(!D.F.pikeFree||!ZC.G.cine)throw new Error('щука не выпущена: '+r.join()+' '+U.st());
 let t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}t=0;while(D.STV.state!=='wait'&&t<900){ZC.tick(1);t++;}if(D.STV.state!=='wait')throw new Error('печка не выехала: '+D.STV.state+' '+D.STV.x.toFixed(1)+','+D.STV.z.toFixed(1));'pike free, stove waits '+r.join()
 //@@ shot=k22_stove.png
