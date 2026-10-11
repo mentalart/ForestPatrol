@@ -92,7 +92,7 @@
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_75_kids_w1, late_76_kids_fight, late_99p_sky31 | 18 | t31 t31c tfin_art tfin_companion_31 tfin_juice tfin_kids1 tfin_kids2 tfin_motylek tfin_sk… |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32, late_99x_sky32_tut, late_99y_sky32_cine, late_99zd_sky32_fx, late_99ze_sky32_cam | 11 | t32 tfin_companion_32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32cine tfin_sk… |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 3 | t33n tfin_companion_33 tso33 |
-| `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | — | 3 | t34 tfin_companion_34 tmenu3 |
+| `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | late_99zn_ship34_wear | 3 | t34 tfin_companion_34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | late_99zm_sky35 | 3 | t35 tfin_companion_35 tfin_sky35 |
 | `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 11 | t3bv tfin_bossbar tfin_companion_3b tfin_hintlayer tfin_k3b tfin_k3bacorn tfin_k3bboss tf… |
 | `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | — | 11 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast thw4 … |
@@ -118,7 +118,7 @@
 
 | часть | строк | разделы |
 |---|---|---|
-| `head.html` | 446 | — |
+| `head.html` | 449 | — |
 | `engine/01_utils_input_sound.js` | 122 | УТИЛИТЫ · ВВОД · ДЖОЙСТИКИ (Gamepad API, стандартная раскладка, раскладка v4) · ЗВУК (placeholder) |
 | `engine/02_render_heroes.js` | 259 | РЕНДЕР / СЦЕНА · ГЕРОИ (осмысленные примитивы, умения по сценарию v4) |
 | `engine/03_world_fx_collision.js` | 226 | МИР · FX · ПОЛУПРОЗРАЧНОСТЬ ТОГО, ЧТО ЗАСЛОНЯЕТ ГЕРОЕВ · КОЛЛИЗИИ |
@@ -147,7 +147,7 @@
 | `levels/3-1.js` | 146 | МИР 3 · НЕБЕСНОЕ ЦАРСТВО · 3-1 «САД МОЛОДИЛЬНЫХ ЯБЛОК» |
 | `levels/3-2.js` | 92 | МИР 3 · НЕБЕСНОЕ ЦАРСТВО · 3-2 «ОБЛАЧНЫЕ ПАСТБИЩА» |
 | `levels/3-3.js` | 200 | МИР 3 · 3-3 «СИРИН И АЛКОНОСТ» — гусельный уровень |
-| `levels/3-4.js` | 166 | МИР 3 · 3-4 «ЛЕТУЧИЙ КОРАБЛЬ» |
+| `levels/3-4.js` | 358 | МИР 3 · 3-4 «ЛЕТУЧИЙ КОРАБЛЬ» |
 | `levels/3-5.js` | 164 | МИР 3 · 3-5 «ГУСИ-ЛЕБЕДИ» |
 | `levels/3-B.js` | 260 | 3-Б «СОЛОВЕЙ-РАЗБОЙНИК» — босс мира 3 |
 | `levels/w4_common.js` | 253 | МИР 4 · ОГНЕННАЯ СМОРОДИНА: клещи, горячее, лава, корка, пар |
@@ -375,6 +375,7 @@
 | `levels/2-5/late_99zl_k25_rise.js` | 2-5 | РЕЛИЗ final06 · 2-5: КУПОЛА ЗАЖИГАЮТСЯ, СКАЛЫ ПО КРАЮ, ОТ СИНЕГО К ЗОЛОТУ, СВОЯ МУЗЫКА, РОЛИК ПОДЪЁМА КИТЕЖА |
 | `levels/2-B/late_99zm_k2b_storm.js` | 2-B | РЕЛИЗ final06 · 2-Б: ПОГОНЯ В ГРОЗОВОЙ ВЕЧЕР, КОНИ ДЕШЕВЛЕ В ОТРИСОВКЕ |
 | `levels/3-5/late_99zm_sky35.js` | 3-5 | РЕЛИЗ final06 · 3-5 «ГУСИ-ЛЕБЕДИ»: ТУДА — ТИХО, ОБРАТНО — ПОГОНЯ (docs/40; прежний шаг — docs/38) |
+| `levels/3-4/late_99zn_ship34_wear.js` | 3-4 | РЕЛИЗ final06 · 3-4 «ЛЕТУЧИЙ КОРАБЛЬ»: КАПИТАНСКИЙ СВИСТОК |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -470,7 +471,7 @@
 | `40_35_gusi_proposals.md` | 40. 3-5 «Гуси-лебеди»: переработка геймплея — «туда тихо, обратно погоня» |
 | `40_kino_pravila.md` | Правила роликов (катсцен) — «Златая цепь» |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 129 файлов |
+| `changes/` | 130 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
