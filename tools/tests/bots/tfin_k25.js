@@ -43,9 +43,15 @@ if(!D.F.tune)throw new Error('напев не сложился: '+D.TN.i+' '+r.j
 //@@ shot=k25_tune.png
 ZC.tick(2);
 //@@
-// главный колокол: стычка (мороков — долой), Потап вешает язык; вчетвером на «ТРИ» — «Бом», Китеж выходит из воды
-const D=ZC.W.dbg25(),F=D.F,H=ZC.HERO;const r=[U.walkTo(0,-2,-146.4,8),U.walkTo(1,2,-146.4,8)];ZC.tick(30);if(!D.arena.started)throw new Error('стычка не началась: '+r.join()+' '+U.st());
-r.push(U.brawl(20));ZC.W.enemies.forEach(e=>{if(e.alive){e.alive=false;ZC.W.group.remove(e.g);}});ZC.tick(60);if(!CINE(300))throw new Error('нет ролика с языком');ZC.tick(20);if(!F.tongueIn)throw new Error('язык не повешен');
+// главный колокол: тихо (стычка — в колодце). «Три струны»: без звона течение заперто; Пелагея — прилив и звон у ладейного колокола,
+// Потап прыгает на ладью-призрак, течение к колоколу — ладья везёт его к кругу, шаг — ролик с языком; вчетвером на «ТРИ» — «Бом», ролик подъёма Китежа
+const D=ZC.W.dbg25(),F=D.F,H=ZC.HERO;const r=[U.walkTo(0,-2,-146.4,8),U.walkTo(1,2,-146.4,8)];ZC.tick(30);if(ZC.W.enemies.some(e=>e.alive))throw new Error('у главного колокола враги');if(D.MZ.state!=='low')throw new Error('бассейн не пуст');
+r.push(U.walkTo(1,-6.6,-145.6,6));U.tap('Semicolon');ZC.tick(260);if(D.MZ.state!=='high')throw new Error('прилив не сыгран: '+r.join());
+for(let i=0;i<3&&U.act(0).kind!=='potap';i++){U.tap('KeyQ');ZC.tick(6);}r.push(U.walkTo(0,3.2,-145.6,6));if(D.RC.lock()!=='Ладьи не видно — сперва звон!')throw new Error('течение без звона не заперто: '+D.RC.lock());
+r.push(U.walkTo(1,-7.6,-147.2,6));U.tap('Semicolon');ZC.tick(4);if(!(D.RB.hum>0&&D.raft.col.on))throw new Error('ладейный колокол молчит');
+ZC.hold('KeyW',true);for(let i=0;i<40;i++){if(i===2)ZC.press('Space');ZC.tick(1);}ZC.hold('KeyW',false);ZC.tick(20);if(H.potap.groundRef!==D.raft.col)throw new Error('Потап не на ладье: '+U.st());
+ZC.hold('KeyA',true);ZC.tick(4);ZC.hold('KeyA',false);U.tap('KeyR');ZC.tick(150);if(D.raft.x>0.1)throw new Error('ладья не доплыла: x='+D.raft.x.toFixed(2));
+r.push(U.walkTo(0,0,-150.4,4));if(!CINE(300))throw new Error('нет ролика с языком: '+r.join()+' '+U.st());ZC.tick(20);if(!F.tongueIn)throw new Error('язык не повешен');
 const sp=[[0.88,-150.12],[-0.88,-150.12],[-0.88,-151.88],[0.88,-151.88]];[H.proshka,H.potap,H.pelageya,H.yosha].forEach((h,i)=>{h.pos.set(sp[i][0],6.7,sp[i][1]);h.vel.set(0,0,0);});ZC.tick(20);
 for(let s=0;s<3;s++){for(let i=0;i<300;i++){ZC.tick(1);if(F.cnt&&F.cnt.t>2.05&&F.cnt.t<2.2&&F.cnt.p[0]===null){ZC.press('Space');ZC.press('KeyM');ZC.tick(1);break;}}r.push('sw='+(F.cnt&&F.cnt.sw));ZC.tick(80);
   [H.proshka,H.potap,H.pelageya,H.yosha].forEach((h,i)=>{h.pos.set(sp[i][0],6.7,sp[i][1]);h.vel.set(0,0,0);});ZC.tick(10);}
@@ -53,4 +59,4 @@ if(!F.bomWait)throw new Error('не раскачали: '+r.join());ZC.tick(80);
 //@@ shot=k25_bom.png
 ZC.tick(2);
 //@@
-ZC.tick(60*12);ZC.skip();ZC.tick(100);if(ZC.W.levelId==='2-5'&&!ZC.G.done['2-5'])throw new Error('уровень не пройден: '+U.st());if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'2-5 done errs=0'
+ZC.tick(60*12);if(!ZC.FIN.k25R.rise)throw new Error('нет ролика подъёма Китежа');ZC.skip();ZC.tick(100);if(ZC.W.levelId==='2-5'&&!ZC.G.done['2-5'])throw new Error('уровень не пройден: '+U.st());if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'2-5 done errs=0'
