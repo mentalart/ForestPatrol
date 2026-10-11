@@ -59,7 +59,6 @@ CMP.route('2-1',[
   {id:'tune',done:()=>W.dbg21().TS.done,run:h=>{const D=W.dbg21(),TS=D.TS,T=D.TUNE;if(h.pos.z>-183||!W.flags.sturg)return 'follow';
     other(1).following=false;
     if(TS.step===1){cmpGoto(h,T[1].x,T[1].z,0.25);return;}
-    if(TS.step===2){cmpGoto(h,T[3].x,T[3].z,0.25);return;}
     cmpGoto(h,7.5,-186.5,0.5);}},
   // палаты Морского царя: второй стул гусляра — играть каждые несколько секунд, прыгать через кольца-волны, сбило — вернуться и сыграть снова
   {id:'dance',done:()=>!!W.flags.kingDone,run:h=>{const D=W.dbg21(),Fl=W.flags;if(!Fl.kingMet||G.cine)return 'follow';
