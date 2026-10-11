@@ -6,7 +6,7 @@
 // оба удар рядом: стадия пройдена. Вдвоём и одним игроком.
 window._errs=[];window.addEventListener('error',e=>_errs.push(String(e.message)));{const _ce=console.error;console.error=function(){_errs.push([...arguments].map(String).join(' ').slice(0,300));_ce.apply(console,arguments);};}
 {const o=document.getElementById('k5eStart');if(o)o.remove();}
-window.E5=ZC.FIN.k5e;window.K5=ZC.FIN.k5;window.ES=E5.es;window.S3=E5.s3;
+window.E5=ZC.FIN.k5e;E5.fullStages=true;window.K5=ZC.FIN.k5;window.ES=E5.es;window.S3=E5.s3;
 window.CHK=s=>{if(_errs.length)throw new Error(s+' — ошибки: '+_errs.slice(0,4).join(' / '));return s;};
 window.KB=[{a:'KeyF',g:'KeyG',i:'KeyR'},{a:'Comma',g:'Period',i:'Semicolon'}];
 window.H=pi=>ZC.players[pi].heroes[ZC.players[pi].act];

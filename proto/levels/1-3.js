@@ -286,7 +286,7 @@ function build13(){W.soloMirror=true;
     if(c.lock||S.state==='stop'||S.state==='cine'){for(const q of players[pi].heroes){q.vel.x=damp(q.vel.x,0,10,dt);q.vel.z=damp(q.vel.z,0,10,dt);}active(pi).guard=false;return;}
     if(tap(pi,'swap'))doSwap(pi);const hh=active(pi),oo=other(pi);
     if(S.state==='final'){hh.vel.x=damp(hh.vel.x,0,10,dt);hh.vel.z=damp(hh.vel.z,0,10,dt);oo.vel.x=0;oo.vel.z=0;hh.face=angDamp(hh.face,Math.atan2(kol.g.position.x-hh.pos.x,kol.g.position.z-hh.pos.z),6,dt);
-      const act=a=>{if(!S.fin)return;const P=FST[S.fs];const j=judgeF(S.ft,pi,S.B2,1.7);const b=((j.k%P.n)+P.n)%P.n,top=hh.pos.clone().add(new V3(0,hh.d.height+0.6,0));
+      const act=a=>{if(!S.fin)return;const P=FST[S.fs];const j=judgeF(S.ft-songLag(),pi,S.B2,1.7);const b=((j.k%P.n)+P.n)%P.n,top=hh.pos.clone().add(new V3(0,hh.d.height+0.6,0));
         if(j.ok&&S.ft>-S.B2*0.5&&P.act(b)===a&&need13(P,b,pi)){S.fin[b][pi]=true;floatText(top,a==='C'?'Хлоп!':'В такт!',PCSS[pi]);}
         else if(j.ok&&S.ft>-S.B2*0.5)floatText(top,!need13(P,b,pi)?'теперь черёд друга':a==='J'?'теперь — хлопок щитом!':'сейчас прыжок!','#dddddd');
         else floatText(top,j.d<0?'рано':'поздно','#dddddd');};
@@ -309,11 +309,11 @@ function build13(){W.soloMirror=true;
         else{hh.vel.y=7.6;SFX.jump();gusli(55,0,0.12);floatText(hh.pos.clone().add(new V3(0,hh.d.height+0.7,0)),j.d<0?'рано':'поздно','#dddddd');combo(pi,false);
           teach(pi,'strMiss','На струну прыгай ровно тогда,<br>Когда бубенец наверху подскочит — да!');}}
       else{hh.vel.y=8.6;SFX.jump();}}
-    if(tap(pi,'guard')){const be=S.beasts.find(q=>q.pi===pi&&!q.res&&Math.abs(q.z-hh.pos.z)<3.6);if(be){const d=S.t-BT[be.k];if(Math.abs(d)<=winOf(pi))dance(pi,be);
+    if(tap(pi,'guard')){const be=S.beasts.find(q=>q.pi===pi&&!q.res&&Math.abs(q.z-hh.pos.z)<3.6);if(be){const d=S.t-songLag()-BT[be.k];if(Math.abs(d)<=winOf(pi))dance(pi,be);
       else{floatText(hh.pos.clone().add(new V3(0,hh.d.height+0.6,0)),d<0?'рано':'поздно','#dddddd');combo(pi,false);}}
       const f=S.foes.find(q=>q.pi===pi&&!q.res&&(q.type==='paw'||q.type==='hawk')&&Math.abs(S.t-BT[q.k])<0.5);
-      if(f){const d=S.t-BT[f.k];if(Math.abs(d)<=foeWin(pi))parry13(pi,f);else floatText(hh.pos.clone().add(new V3(0,hh.d.height+0.6,0)),(d<0?'рано':'поздно')+' — щит держи!','#dddddd');}
-      const du=S.foes.find(q=>q.type==='duo'&&!q.res&&Math.abs(S.t-BT[q.k])<0.5);if(du&&du.press[pi]===null)du.press[pi]=S.t-BT[du.k];}
+      if(f){const d=S.t-songLag()-BT[f.k];if(Math.abs(d)<=foeWin(pi))parry13(pi,f);else floatText(hh.pos.clone().add(new V3(0,hh.d.height+0.6,0)),(d<0?'рано':'поздно')+' — щит держи!','#dddddd');}
+      const du=S.foes.find(q=>q.type==='duo'&&!q.res&&Math.abs(S.t-BT[q.k])<0.5);if(du&&du.press[pi]===null)du.press[pi]=S.t-songLag()-BT[du.k];}
     if(tap(pi,'attack')){hh.atkT=Math.max(hh.atkT,0.2);const f=S.foes.find(q=>q.pi===pi&&q.res==='parry'&&S.t<q.cw);if(f)counter13(pi,f);else SFX.swish();}
     // препятствия
     const myLane=laneOf(pi,hh.pos.x);
@@ -371,7 +371,7 @@ function build13(){W.soloMirror=true;
         be.b.ring.visible=be.b.sun.visible=dtB<3&&dtB>-0.3;be.b.ring.scale.setScalar(lerp(0.3,2.0,clamp(dtB/2.5,0,1)));be.b.ring.rotation.x=Math.PI/2;be.b.ringM.color.setHex(Math.abs(dtB)<0.2?0xffffff:COL.yellow);
         be.b.sun.scale.setScalar(1+0.3*S.pulse);
         if(dtB<2.6&&dtB>2.4)teach(be.pi,'beast','Зверь выкатится на твою дорожку.<br>Жди, пока кружок станет точкой, — и щит '+K(be.pi,'guard')+' немножко!');
-        if(S.t>BT[be.k]+winOf(be.pi)+0.04&&S.state==='play'){S.tries[be.pi][be.ph]++;if(flying(be.pi)){be.res='gone';S.hits[be.pi][be.ph]++;}
+        if(S.t>BT[be.k]+winOf(be.pi)+0.04+Math.max(0,songLag())&&S.state==='play'){S.tries[be.pi][be.ph]++;if(flying(be.pi)){be.res='gone';S.hits[be.pi][be.ph]++;}
           else if(Math.abs(active(be.pi).pos.z-be.z)<3.5&&Math.abs(active(be.pi).pos.x-be.lx)<1.2)bump(be.pi,be);else be.res='gone';}}
       else{be.b.ring.visible=be.b.sun.visible=false;be.t+=dt;const s=be.pi?1:-1;
         if(be.res==='dance'){g.position.x=be.lx+s*Math.min(2.4,be.t*6);g.position.y=Math.abs(Math.sin(be.t*10))*0.4;be.b.body.rotation.y+=dt*9;}
@@ -400,7 +400,7 @@ function build13(){W.soloMirror=true;
         if(f.m.ring){f.m.ring.visible=f.m.sun.visible=!f.res&&dtB<3&&dtB>-0.3;f.m.ring.scale.setScalar(lerp(0.3,2.0,clamp(dtB/2.5,0,1)));f.m.ring.rotation.x=Math.PI/2;f.m.ringM.color.setHex(Math.abs(dtB)<0.2?0xffffff:COL.yellow);}
         f.mk.visible=!f.res&&dtB<3;f.mk.position.set(hh.pos.x,hh.pos.y+0.06,hh.pos.z);f.mk.scale.setScalar(lerp(0.55,2.2,clamp(dtB/3,0,1)));f.mk.material.opacity=Math.abs(dtB)<0.25?0.95:0.6;
         if(dtB<2.6&&dtB>2.4)teach(P,f.type,(f.type==='paw'?'Медведь замахнулся':'Коршун летит на тебя')+'! Кружок жёлтый сжимается —<br>Жми щит '+K(P,'guard')+', как станет маленьким, — удар отражается!');
-        if(!f.res&&S.t>BT[f.k]+foeWin(P)+0.04){if(btn(P,'guard')){f.res='block';S.tries[P][f.ph]++;S.hits[P][f.ph]++;floatText(hh.pos.clone().add(new V3(0,hh.d.height+0.7,0)),'Закрылся!','#cfe0ff');SFX.shield();}
+        if(!f.res&&S.t>BT[f.k]+foeWin(P)+0.04+Math.max(0,songLag())){if(btn(P,'guard')){f.res='block';S.tries[P][f.ph]++;S.hits[P][f.ph]++;floatText(hh.pos.clone().add(new V3(0,hh.d.height+0.7,0)),'Закрылся!','#cfe0ff');SFX.shield();}
           else{foeBad(P,f,f.type==='paw'?'Лапой!':'Клюнул!');}}}
       else if(f.type==='storm'){g.visible=true;f.bolts.forEach(b=>{b.visible=Math.sin(G.time*23+b.position.x)>0.2;});
         if(!f.res&&Math.abs(hh.pos.z-f.z)<0.8&&f.lanes.includes(laneOf(P,hh.pos.x))){foeBad(P,f,'Гром!');teach(P,'storm','Грозовая туча — облети её сторонкой '+K(P,'left')+K(P,'right')+'!');}
@@ -410,7 +410,7 @@ function build13(){W.soloMirror=true;
         const u=clamp(1-dtB,0,1);f.rings.forEach((q,pi)=>{const h=active(pi);q.visible=!f.res&&dtB<2.2;q.position.set(h.pos.x,h.pos.y+0.08,h.pos.z);q.scale.setScalar(lerp(2.2,0.5,clamp((2.2-dtB)/2.2,0,1)));q.material.color.setHex(Math.abs(dtB)<0.2?0xffffff:COL.yellow);});
         f.mk.visible=false;
         if(dtB<2.4&&dtB>2.2&&!f.told){f.told=true;floatText(g.position.clone().add(new V3(0,2.6,0)),f.air?'Вожак стаи!':'Волк-вожак!','#ffe08a');for(const pi of[0,1])teach(pi,'duo','Вожак! Кружки сжимаются у обоих —<br>Жмите щит '+K(pi,'guard')+' вместе, как станут малы, — вас двое!');}
-        if(!f.res&&S.t>BT[f.k]+Math.max(foeWin(0),foeWin(1))*1.2+0.05){const ok=[0,1].map(pi=>f.press[pi]!==null&&Math.abs(f.press[pi])<=foeWin(pi)*1.2);
+        if(!f.res&&S.t>BT[f.k]+Math.max(foeWin(0),foeWin(1))*1.2+0.05+Math.max(0,songLag())){const ok=[0,1].map(pi=>f.press[pi]!==null&&Math.abs(f.press[pi])<=foeWin(pi)*1.2);
           if(ok[0]&&ok[1]){f.res='ok';f.t=0;S.duos++;SFX.horn();banner('Богатырский щит!','#ffd76a',1.4,'вдвоём, в одну долю · каждому +5 искр');for(const pi of[0,1]){foeOk(pi,f,'Вместе!',5);burst(active(pi).pos.clone().add(new V3(0,1,0)),0xffffff,12,4);}}
           else{f.res='miss';f.t=0;for(const pi of[0,1]){if(ok[pi]){S.tries[pi][f.ph]++;S.hits[pi][f.ph]++;floatText(active(pi).pos.clone().add(new V3(0,2.2,0)),'Закрылся! Ждём друга — вместе, раз-два-три!','#cfe0ff');}else foeBad(pi,f,'Вместе — в одну долю, в лад!');}}}}}
     for(const e of eyes){e.userData.ph+=dt;e.visible=Math.sin(e.userData.ph*0.9)>-0.5;}

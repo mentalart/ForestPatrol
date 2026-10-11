@@ -68,7 +68,7 @@
     const C0={t:0,dur,parts:[]};for(let i=0;i<4;i++){if(ES.gone[i]||(ES.walk&&i!==ES.real))continue;if(i!==ES.real&&Math.random()<0.45)continue;C0.parts.push(mk(i));}ES.cast=C0;k5s('cast');
     if(AUD.ready())AUD.nz({type:'bandpass',f0:300,f1:900,d:dur,v:0.04,q:3,a:0.4});}
   function s3CastStop(done){const C0=ES.cast;if(!C0)return;ES.cast=null;for(const P of C0.parts){k5Del(P.g);}ES.castT=ES.walk?5:G.solo?8:6.5;try{KA.reset();}catch(e){}s3D.forEach(d=>{try{d.a&&d.a.reset();}catch(e){}});
-    if(done)s3Rain();else{floatText(kosTop(),'Слово сбито!','#ffe08a');k5s('keyBreak');E.log('s3word_broken');}}
+    if(done){if((E.lite&&E.lite())){if(ES.fogF)ES.fogF.set(0.7);later(6,()=>{if(E.cur===3&&ES.fogF)ES.fogF.set(0.45);});E.log('s3fogOnly');}else s3Rain();}/* лёгкий и средний путь — без чернильного дождя (pj) */else{floatText(kosTop(),'Слово сбито!','#ffe08a');k5s('keyBreak');E.log('s3word_broken');}}
   function s3CastTick(dt){const C0=ES.cast;if(!C0)return;C0.t+=dt;const k=Math.min(1,C0.t/C0.dur);
     for(const P of C0.parts){const B=s3Body(P.i);if(!B.m.g.visible){continue;}const top=B.m.g.position.clone().add(new V3(0,5.4,0));P.g.position.copy(top);
       const kk=P.fake?Math.min(k,0.45+0.1*Math.sin(G.time*3)):k;P.fill.scale.setScalar(Math.max(0.02,kk));P.rim.material.opacity=0.6+0.35*Math.abs(Math.sin(G.time*(6+k*14)));
@@ -159,7 +159,7 @@
       s3SpinTick(dt);s3TieTick(dt);s3WalkTick(dt);s3CastTick(dt);
       // подкидка Потапа: подброшенный рядом с телом на пне — сбил / лопнул
       if(!ES.down&&!ES.fly)for(const h of k5Heroes()){if(h.pos.y<1.8)continue;for(let i=0;i<4;i++){if(ES.gone[i])continue;const B=s3Body(i);if(!B.m.g.visible||(ES.walk&&!B.real)||hd(h.pos,B.m.g.position)>1.9)continue;if(i===ES.real)s3Down('Подкидка!');else s3Pop(i,'подкидкой — морок!');}}
-      if(ES.down){ES.winT-=dt;if(ES.winT<=0&&ES.spes>0){s3Up();if(ES.walkNext)s3WalkStart();}return;}
+      if(ES.down){ES.winT-=dt;if(ES.winT<=0&&ES.spes>0){s3Up();if(ES.walkNext&&!(E.lite&&E.lite()))s3WalkStart();}return;}
       if(K5.listen)return;   // сказка Кота: Кощей заслушался — не колдует
       if(!ES.cast){ES.castT-=dt;if(ES.castT<=0)s3CastStart();}
       ES.blobT-=dt;if(ES.blobT<=0){ES.blobT=(G.solo?3.4:2.4)*(ES.walk?1.3:1);const vis=[0,1,2,3].filter(i=>!ES.gone[i]&&s3Body(i).m.g.visible&&(!ES.walk||i===ES.real||Math.random()<0.3));if(vis.length)s3Throw(vis[Math.floor(rand(0,vis.length))]);}},

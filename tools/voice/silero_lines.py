@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Реплики героев бесплатным голосом Silero v4 (без Higgsfield): синтез → tools/voice/raw/<id>.wav → fetch.js (обрезка, тон, обработка, −16 LUFS).
 
-  python3 tools/voice/silero_lines.py tools/voice/pending/1-5.json --model v4_ru.pt
+  python3 tools/voice/silero_lines.py tools/voice/pending/<файл>.json --model v4_ru.pt   (озвученный файл после — удалить)
 
 Файл реплик: {"cast": {кто: {...новый голос...}}, "lines": [{id, lv, who, text, tts, max, silero?, pitch?, fx?}]}. Голос Silero — поле silero реплики
 или cast[who].silero (aidar, baya, kseniya, xenia, eugene). Реплики попадают в zlataya_cep/build/voice/lines.json с url «silero:<голос>» (fetch.js

@@ -201,7 +201,7 @@
   W.hittables.push({pos:new V3(),r:1.6,alive:()=>E.cur===10&&ES.fight&&ES.ph==='heart',onHit:h=>{const pi=h.player;if(h.pos.y<SHW.y-1)return;ES.hb[pi]=G.time;const both=G.solo||Math.abs(ES.hb[0]-ES.hb[1])<1.2;FX.sparks(heart.getWorldPosition(new V3()),12,0xffd060);
       if(both)heartBreak();else floatText(heart.getWorldPosition(new V3()).add(new V3(0,1.2,0)),'Вдвоём — разом!','#ffe08a');}});
   const heartHt=W.hittables[W.hittables.length-1];
-  function pileMake(c){if(E.cur!==10||!ES.fight)return;const g=k5Prop(new THREE.Group());g.position.set(c.x,0,c.z);const gm=M(COL.gold,{emissive:0x806010,emissiveIntensity:0.5});
+  function pileMake(c){if(E.cur!==10||!ES.fight||(E.lite&&E.lite()))return;const g=k5Prop(new THREE.Group());g.position.set(c.x,0,c.z);const gm=M(COL.gold,{emissive:0x806010,emissiveIntensity:0.5});
     const m=new THREE.Mesh(new THREE.ConeGeometry(1.5,0.7,12),gm);m.position.y=0.35;g.add(m);const r=new THREE.Mesh(new THREE.RingGeometry(1.5,1.65,32),k5Add(0xffd060,{opacity:0.7}));r.rotation.x=-Math.PI/2;r.position.y=0.05;g.add(r);
     g.scale.setScalar(0.01);anim(0.4,k=>g.scale.setScalar(Math.max(0.01,CE.outBack(k))));ES.piles.push({g,t:0});E.log('pile');}
   // ---- три пробоя (по отзыву: великана слишком легко победить) ----
@@ -272,7 +272,7 @@
             if(h.pos.y>0.7||h.rollT>0){ES.swHit.add(h);floatText(h.pos.clone().add(new V3(0,2,0)),'Перепрыгнул!','#9fe0ff');continue;}ES.swHit.add(h);k5Hurt(h,GC);const dx=h.pos.x-GC.x,dz=h.pos.z-GC.z,dd=Math.hypot(dx,dz)||1;h.vel.x+=dx/dd*6;h.vel.z+=dz/dd*6;h.knockT=0.35;}
           if(ES.swT<=0){ES.sw='rest';ES.swT=G.solo?9:7;gArmL.rotation.set(0,0,0);swArc.material.opacity=0;shakeAll(0.05,0.25);}}}
       // цепь-аркан: красная дорожка к герою; не ушёл — тянет к ногам, друг рубит
-      if(ES.ph!=='open'){const L=ES.las;if(!L){ES.lasT-=dt;if(ES.lasT<=0){const hs=k5Heroes().filter(h=>h.pos.y<1.5);if(hs.length){const h=hs[Math.floor(rand(0,hs.length))];const a=new V3(GC.x,0.5,GC.z+2.2),to=new V3(h.pos.x,0.5,h.pos.z);
+      if(ES.ph!=='open'&&!(E.lite&&E.lite())){const L=ES.las;if(!L){ES.lasT-=dt;if(ES.lasT<=0){const hs=k5Heroes().filter(h=>h.pos.y<1.5);if(hs.length){const h=hs[Math.floor(rand(0,hs.length))];const a=new V3(GC.x,0.5,GC.z+2.2),to=new V3(h.pos.x,0.5,h.pos.z);
               if(FIN.k2fx)FIN.k2fx.lane(a.clone().setY(0.05),to.clone().setY(0.05),1.3,G.solo?1.4:1.1,'red');ES.las={st:'aim',t:0,a,to,h};E.log('lassoAim');}else ES.lasT=2;}}
         else if(L.st==='aim'){L.t+=dt;if(L.t>=(G.solo?1.4:1.1)){const tgt=k5Heroes().find(x=>{const ab=L.to.clone().sub(L.a),ap=x.pos.clone().sub(L.a);ap.y=0;ab.y=0;const t=clamp(ap.dot(ab)/ab.lengthSq(),0,1);return hd(x.pos,L.a.clone().addScaledVector(ab,t))<0.9&&x.rollT<=0&&x.pos.y<1.2;});
             if(tgt){L.st='tied';L.h=tgt;L.hp=G.solo?3:2;lasso.visible=true;k5s('chain');floatText(tgt.pos.clone().add(new V3(0,2.2,0)),'Аркан!','#ff9ab8');E.log('lasso');}else{ES.las=null;ES.lasT=G.solo?11:9;}}}
