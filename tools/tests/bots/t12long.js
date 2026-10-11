@@ -122,9 +122,8 @@ r.push(U.walkTo(1,0,-311.0,8),U.walkTo(1,S.flag.position.x-0.6,S.flag.position.z
 r.push(U.walkTo(0,8.7,-311,8),U.walkTo(0,8.7,-296,8),U.walkTo(0,S.raceMat.position.x,S.raceMat.position.z,8));U.until(()=>RC.st==='run'||RC.won,3);ZC.tick(150);r.push('st='+RC.st+' won='+RC.won+' tries='+RC.tries);
 r.join(' ')+' | '+st()
 //@@
-// «подними-ка кобылу»: бесёнок не смог, Потап поднимает колоду — путь открыт, оброк орешками
-const S=SW(),RC=F().race;const r=[U.until(()=>RC.lift==='try',10)];r.push(U.walkTo(0,8.7,-296,8),U.walkTo(0,8.7,-311,8),U.walkTo(0,0,-315.8,8));
-if(U.act(0).kind!=='potap'){ZC.press('KeyQ');ZC.tick(10);}r.push(U.walkTo(0,0,-315.8,4));ZC.press('KeyE');ZC.tick(130);
+// обогнали — бесёнок сам откатывает колоду с дороги: путь открыт, оброк орешками (Потапу поднимать не нужно)
+const S=SW(),RC=F().race;const r=[U.until(()=>RC.lift==='done',12)];r.push(U.walkTo(0,8.7,-296,8),U.walkTo(0,8.7,-311,8),U.walkTo(0,0,-315.8,8));ZC.tick(30);
 r.push('lift='+RC.lift,'col off='+!S.logCol.on,'nuts out='+S.BN.map(n=>!n.locked).join(','));const n0=ZC.W.nuts;r.push(U.walkTo(0,S.BN[0].pos.x,S.BN[0].pos.z,6),U.walkTo(0,S.BN[1].pos.x,S.BN[1].pos.z,6));
 r.push('nuts +'+(ZC.W.nuts-n0));r.join(' ')+' | '+st()
 //@@

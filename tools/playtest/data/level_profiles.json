@@ -419,18 +419,18 @@
   "id": "1-1",
   "name": "1-1 · «Избушка, повернись»",
   "world": 1,
-  "n_obj": 10,
-  "words": 139,
-  "chars": 840,
-  "words_per_obj": 13.9,
-  "max_words": 22,
-  "long_word_share": 0.043,
-  "coop_obj": 4,
-  "key_obj": 6,
-  "swap_obj": 3,
-  "tip_zones": 5,
-  "prompts": 16,
-  "bells": 5,
+  "n_obj": 18,
+  "words": 240,
+  "chars": 1435,
+  "words_per_obj": 13.3,
+  "max_words": 24,
+  "long_word_share": 0.042,
+  "coop_obj": 5,
+  "key_obj": 10,
+  "swap_obj": 5,
+  "tip_zones": 10,
+  "prompts": 27,
+  "bells": 9,
   "objectives": [
    {
     "idx": 0,
@@ -463,7 +463,7 @@
     "keys": false,
     "keystrict": false,
     "swap": false,
-    "dt": 3.5
+    "dt": null
    },
    {
     "idx": 3,
@@ -474,7 +474,7 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 18.7
+    "dt": null
    },
    {
     "idx": 4,
@@ -485,7 +485,7 @@
     "keys": false,
     "keystrict": false,
     "swap": false,
-    "dt": 55.7
+    "dt": null
    },
    {
     "idx": 5,
@@ -496,7 +496,7 @@
     "keys": false,
     "keystrict": false,
     "swap": false,
-    "dt": 0.0
+    "dt": null
    },
    {
     "idx": 6,
@@ -507,7 +507,7 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 12.2
+    "dt": null
    },
    {
     "idx": 7,
@@ -518,7 +518,7 @@
     "keys": true,
     "keystrict": true,
     "swap": true,
-    "dt": 9.1
+    "dt": null
    },
    {
     "idx": 8,
@@ -529,65 +529,139 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 3.9
+    "dt": null
    },
    {
     "idx": 9,
-    "text": "Калитка ждёт две лапки разом: встань героем на лапку, смени Q — второй встанет на другую. Постойте вдвоём секунду — и калитка откроется насовсем.",
-    "words": 22,
-    "chars": 145,
+    "text": "Калитка открыта, пока лапки нажаты! Двое — на лапки снаружи, двое других проходят Q. Вошедшие встают на лапки внутри — и пропускают оставшихся.",
+    "words": 21,
+    "chars": 143,
     "coop": true,
     "keys": true,
     "keystrict": true,
     "swap": true,
     "dt": null
-   }
-  ],
-  "dt_known": 7,
-  "dt_mean": 14.7,
-  "cines": [
-   {
-    "dur": 19.2,
-    "says": 5,
-    "chars": 258
    },
    {
-    "dur": 12.5,
+    "idx": 10,
+    "text": "Вороны Кощея! Красный круг — сейчас спикирует: беги из круга!",
+    "words": 9,
+    "chars": 61,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 11,
+    "text": "Стог сена! Ударь F — сено шалашом ляжет: под шалашом ворон не углядит.",
+    "words": 12,
+    "chars": 70,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 12,
+    "text": "Ступа Яги в коряге застряла! Смени Q на Потапа, у ступы жми E — Потап её поднимет.",
+    "words": 16,
+    "chars": 82,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 13,
+    "text": "Пыль над рощей — вороны не видят! Бегом через воронью рощу!",
+    "words": 10,
+    "chars": 59,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 14,
+    "text": "Ручей, берега топкие. Брось клубок R — по нити на тот берег! Под лопухами ворон не видит.",
+    "words": 16,
+    "chars": 89,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 15,
+    "text": "Теремок развалился! Брёвна к срубу: Потап несёт один, другие — вдвоём. 0 / 3.",
+    "words": 12,
+    "chars": 77,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 16,
+    "text": "Конёк с петушком — на крышу! Прошкой встань в круг у лесов, рядом Потап, смени Q на Потапа, жми E — подкинет! (Пелагея долетит с чурбаков.)",
+    "words": 24,
+    "chars": 139,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": true,
+    "dt": null
+   },
+   {
+    "idx": 17,
+    "text": "Новоселье в теремке!",
+    "words": 3,
+    "chars": 20,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   }
+  ],
+  "dt_known": 0,
+  "dt_mean": null,
+  "cines": [
+   {
+    "dur": 7.6,
+    "says": 3,
+    "chars": 110
+   },
+   {
+    "dur": 12,
     "says": 5,
-    "chars": 298
+    "chars": 154
    }
   ],
   "n_cine": 2,
-  "cine_sec": 31.7,
-  "tips": 4,
-  "says": 5,
-  "banners": 7,
-  "say_chars": 307,
-  "tip_chars": 247,
-  "banner_chars": 403,
-  "encounters": [
-   {
-    "kinds": [
-     "kiki",
-     "kiki",
-     "kiki",
-     "kiki",
-     "kiki"
-    ],
-    "count": 1
-   }
-  ],
-  "foe_kinds": [
-   "kiki"
-  ],
+  "cine_sec": 19.6,
+  "tips": 6,
+  "says": 19,
+  "banners": 5,
+  "say_chars": 817,
+  "tip_chars": 437,
+  "banner_chars": 281,
+  "encounters": [],
+  "foe_kinds": [],
   "oracle": {
    "bots": [
-    "t11",
-    "tfin_luko"
+    "t11long"
    ],
-   "best": "t11",
+   "best": "t11long",
    "complete": true,
-   "sim_sec": 136.3,
+   "sim_sec": 112.3,
    "hits": 0
   },
   "cat": {
@@ -627,18 +701,18 @@
   "id": "1-2",
   "name": "1-2 · «Кикиморино болото»",
   "world": 1,
-  "n_obj": 14,
-  "words": 252,
-  "chars": 1531,
+  "n_obj": 13,
+  "words": 234,
+  "chars": 1438,
   "words_per_obj": 18.0,
   "max_words": 22,
-  "long_word_share": 0.067,
+  "long_word_share": 0.073,
   "coop_obj": 0,
-  "key_obj": 11,
-  "swap_obj": 3,
+  "key_obj": 10,
+  "swap_obj": 2,
   "tip_zones": 12,
-  "prompts": 28,
-  "bells": 12,
+  "prompts": 27,
+  "bells": 13,
   "objectives": [
    {
     "idx": 0,
@@ -660,7 +734,7 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 15.7
+    "dt": null
    },
    {
     "idx": 2,
@@ -671,7 +745,7 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 5.2
+    "dt": null
    },
    {
     "idx": 3,
@@ -682,7 +756,7 @@
     "keys": true,
     "keystrict": true,
     "swap": true,
-    "dt": 9.9
+    "dt": null
    },
    {
     "idx": 4,
@@ -693,7 +767,7 @@
     "keys": true,
     "keystrict": true,
     "swap": true,
-    "dt": 16.8
+    "dt": null
    },
    {
     "idx": 5,
@@ -704,7 +778,7 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 42.5
+    "dt": 56.4
    },
    {
     "idx": 6,
@@ -715,7 +789,7 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 46.6
+    "dt": 47.0
    },
    {
     "idx": 7,
@@ -748,7 +822,7 @@
     "keys": false,
     "keystrict": false,
     "swap": false,
-    "dt": 22.0
+    "dt": 36.8
    },
    {
     "idx": 10,
@@ -759,21 +833,10 @@
     "keys": false,
     "keystrict": false,
     "swap": false,
-    "dt": 11.5
+    "dt": 29.8
    },
    {
     "idx": 11,
-    "text": "Подними-ка «кобылу»-колоду! Смени на Потапа Q, подойди к колоде и жми E — Потап её и закинет!",
-    "words": 18,
-    "chars": 93,
-    "coop": false,
-    "keys": true,
-    "keystrict": true,
-    "swap": true,
-    "dt": 12.8
-   },
-   {
-    "idx": 12,
     "text": "Пень-ворчун в коре — спереди не пробить. Красный зубец — кувырком Shift вбок, и сбоку бить!",
     "words": 15,
     "chars": 91,
@@ -781,10 +844,10 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 30.2
+    "dt": 39.6
    },
    {
-    "idx": 13,
+    "idx": 12,
     "text": "Бери звено — и дальше, за Звенышком, вперёд!",
     "words": 7,
     "chars": 44,
@@ -795,17 +858,17 @@
     "dt": null
    }
   ],
-  "dt_known": 12,
-  "dt_mean": 23.6,
+  "dt_known": 7,
+  "dt_mean": 39.9,
   "cines": [],
   "n_cine": 0,
   "cine_sec": 0,
-  "tips": 18,
-  "says": 24,
-  "banners": 14,
-  "say_chars": 1291,
-  "tip_chars": 1375,
-  "banner_chars": 704,
+  "tips": 13,
+  "says": 18,
+  "banners": 11,
+  "say_chars": 980,
+  "tip_chars": 616,
+  "banner_chars": 539,
   "encounters": [
    {
     "kinds": [
@@ -834,17 +897,12 @@
   ],
   "oracle": {
    "bots": [
-    "t12chudo",
-    "t12deep",
-    "t12long",
-    "t12n",
-    "t12pond",
-    "tso12long"
+    "t12long"
    ],
    "best": "t12long",
    "complete": false,
-   "sim_sec": 288.2,
-   "hits": 12
+   "sim_sec": 279.1,
+   "hits": 6
   },
   "cat": {
    "order": 3,
@@ -885,16 +943,16 @@
   "name": "1-3 · «Колобок»",
   "world": 1,
   "n_obj": 7,
-  "words": 122,
-  "chars": 744,
-  "words_per_obj": 17.4,
-  "max_words": 26,
-  "long_word_share": 0.008,
-  "coop_obj": 3,
-  "key_obj": 5,
+  "words": 86,
+  "chars": 541,
+  "words_per_obj": 12.3,
+  "max_words": 20,
+  "long_word_share": 0.035,
+  "coop_obj": 1,
+  "key_obj": 3,
   "swap_obj": 0,
   "tip_zones": 0,
-  "prompts": 32,
+  "prompts": 42,
   "bells": 0,
   "objectives": [
    {
@@ -932,25 +990,25 @@
    },
    {
     "idx": 3,
-    "text": "Волчья чаща! Красный круг — на другую дорожку AD или кувырок Shift. Жёлтый — щит G в такт, потом бей F. Кабан — прыжок Пробел. Вожак — щит вдвоём, дружок.",
-    "words": 26,
-    "chars": 154,
-    "coop": true,
-    "keys": true,
-    "keystrict": true,
+    "text": "Волчья чаща! Знак над зверем подскажет кнопку.",
+    "words": 7,
+    "chars": 46,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
     "swap": false,
-    "dt": 16.6
+    "dt": 24.8
    },
    {
     "idx": 4,
-    "text": "Гуси-лебеди! Красная ворона — перелети на соседнюю тропку. Жёлтый коршун — щит G в такт и бей F. Туча — облети. Вожак — щит вдвоём, в охотку.",
-    "words": 24,
-    "chars": 141,
-    "coop": true,
-    "keys": true,
-    "keystrict": true,
+    "text": "Гуси-лебеди! Знак над птицей подскажет кнопку.",
+    "words": 7,
+    "chars": 46,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
     "swap": false,
-    "dt": 16.0
+    "dt": 24.0
    },
    {
     "idx": 5,
@@ -961,7 +1019,7 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 30.6
+    "dt": 30.7
    },
    {
     "idx": 6,
@@ -976,7 +1034,7 @@
    }
   ],
   "dt_known": 5,
-  "dt_mean": 19.8,
+  "dt_mean": 23.0,
   "cines": [
    {
     "dur": 5.2,
@@ -996,23 +1054,21 @@
   ],
   "n_cine": 3,
   "cine_sec": 39.7,
-  "tips": 11,
-  "says": 7,
+  "tips": 10,
+  "says": 15,
   "banners": 35,
-  "say_chars": 417,
-  "tip_chars": 904,
-  "banner_chars": 1656,
+  "say_chars": 553,
+  "tip_chars": 866,
+  "banner_chars": 1647,
   "encounters": [],
   "foe_kinds": [],
   "oracle": {
    "bots": [
-    "t13v",
-    "tfin_kolobok",
-    "tso13"
+    "t13v"
    ],
-   "best": "tfin_kolobok",
+   "best": "t13v",
    "complete": false,
-   "sim_sec": 135.6,
+   "sim_sec": 142.3,
    "hits": 0
   },
   "cat": {
@@ -1050,18 +1106,18 @@
   "id": "1-4",
   "name": "1-4 · «Леший водит»",
   "world": 1,
-  "n_obj": 9,
-  "words": 136,
-  "chars": 794,
-  "words_per_obj": 15.1,
+  "n_obj": 12,
+  "words": 203,
+  "chars": 1191,
+  "words_per_obj": 16.9,
   "max_words": 26,
-  "long_word_share": 0.059,
-  "coop_obj": 0,
+  "long_word_share": 0.054,
+  "coop_obj": 1,
   "key_obj": 4,
   "swap_obj": 1,
-  "tip_zones": 2,
-  "prompts": 14,
-  "bells": 5,
+  "tip_zones": 3,
+  "prompts": 16,
+  "bells": 8,
   "objectives": [
    {
     "idx": 0,
@@ -1142,6 +1198,39 @@
    },
    {
     "idx": 7,
+    "text": "Две тропки за изгородью. Свою тропку не удержишь — ёлки держит взгляд с другой. Разойдитесь и глядите друг на друга: один держит — другой бежит.",
+    "words": 23,
+    "chars": 144,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 8,
+    "text": "Хоровод ёлок! Ёлки держатся за руки — между ними не пролезть. Глянь на кольцо — оно встанет; пройди в его золотые воротца (0 / 3). Дойди до пня!",
+    "words": 25,
+    "chars": 144,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 9,
+    "text": "Леший водит по кругу! Встань на пень-эхо и аукни 1. Золотой огонёк — настоящий выход: беги туда, пока горит (поляна 1 / 3).",
+    "words": 22,
+    "chars": 123,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 10,
     "text": "Лешачата! Жёлтый кружок — щитом G закройся, Красный зубец — кувыркнись Shift, не бойся!",
     "words": 12,
     "chars": 87,
@@ -1152,10 +1241,10 @@
     "dt": null
    },
    {
-    "idx": 8,
-    "text": "Бери звено — и прочь из леса, за Звенышком!",
-    "words": 8,
-    "chars": 43,
+    "idx": 11,
+    "text": "Прочь из леса — за Звенышком!",
+    "words": 5,
+    "chars": 29,
     "coop": false,
     "keys": false,
     "keystrict": false,
@@ -1228,21 +1317,54 @@
   "id": "1-5",
   "name": "1-5 · «Кикиморина прялка»",
   "world": 1,
-  "n_obj": 5,
-  "words": 79,
-  "chars": 482,
-  "words_per_obj": 15.8,
+  "n_obj": 11,
+  "words": 139,
+  "chars": 873,
+  "words_per_obj": 12.6,
   "max_words": 21,
-  "long_word_share": 0.025,
-  "coop_obj": 2,
-  "key_obj": 3,
+  "long_word_share": 0.05,
+  "coop_obj": 5,
+  "key_obj": 6,
   "swap_obj": 0,
-  "tip_zones": 2,
-  "prompts": 12,
-  "bells": 3,
+  "tip_zones": 3,
+  "prompts": 22,
+  "bells": 8,
   "objectives": [
    {
     "idx": 0,
+    "text": "Кикиморки-прядильщицы! Жёлтый кружок — щит G, потом бей F.",
+    "words": 9,
+    "chars": 58,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 1,
+    "text": "Мотовило: кто тяжелей — тот вниз, другой — вверх, на полати. Потап тяжёлый! Наверху — клубок R на мотовило: подтянет друга.",
+    "words": 18,
+    "chars": 123,
+    "coop": true,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 2,
+    "text": "Ткацкий стан: один — на подножку, второй — клубок R в зев. Полотно-мост: 0 / 5.",
+    "words": 14,
+    "chars": 79,
+    "coop": false,
+    "keys": true,
+    "keystrict": true,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 3,
     "text": "Нитяные мороки! Жёлтый кружок — щит. Синяя капля — отбей назад. Красный зубец — кувырок, и никаких преград.",
     "words": 15,
     "chars": 107,
@@ -1253,7 +1375,7 @@
     "dt": null
    },
    {
-    "idx": 1,
+    "idx": 4,
     "text": "Встань в своё кольцо — там герой твой нарисован — и клубок R в колышек брось. Струна друга поперёк ляжет — вот и сошлось.",
     "words": 21,
     "chars": 121,
@@ -1261,10 +1383,10 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 11.4
+    "dt": null
    },
    {
-    "idx": 2,
+    "idx": 5,
     "text": "Встань в своё кольцо — там герой твой нарисован — и клубок R в колышек брось. Струна друга поперёк ляжет — вот и сошлось.",
     "words": 21,
     "chars": 121,
@@ -1272,21 +1394,54 @@
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 19.9
+    "dt": null
    },
    {
-    "idx": 3,
-    "text": "Чердак, а тут пять мороков! С паутинки прыгни, в полёте ударь F — Сверху гаснут сразу два огонька, будь уверен, друг.",
-    "words": 20,
-    "chars": 117,
+    "idx": 6,
+    "text": "Веретено удрало на повить! За ним — в дверь на чердаке.",
+    "words": 10,
+    "chars": 55,
+    "coop": false,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 7,
+    "text": "Сторожевые нити не видны! Пелагея — Совиный взор L. Низкую нить перепрыгни Пробел, высокую обойди.",
+    "words": 14,
+    "chars": 98,
     "coop": false,
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 26.1
+    "dt": null
    },
    {
-    "idx": 4,
+    "idx": 8,
+    "text": "Засов! Встаньте вдвоём на обе плиты у двери.",
+    "words": 8,
+    "chars": 44,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 9,
+    "text": "Повить! Веретенник прячется в кудели — входите оба.",
+    "words": 7,
+    "chars": 51,
+    "coop": true,
+    "keys": false,
+    "keystrict": false,
+    "swap": false,
+    "dt": null
+   },
+   {
+    "idx": 10,
     "text": "Веретено падает…",
     "words": 2,
     "chars": 16,
@@ -1297,8 +1452,8 @@
     "dt": null
    }
   ],
-  "dt_known": 3,
-  "dt_mean": 19.1,
+  "dt_known": 0,
+  "dt_mean": null,
   "cines": [
    {
     "dur": 13,
@@ -1306,32 +1461,24 @@
     "chars": 222
    },
    {
-    "dur": 21,
-    "says": 4,
-    "chars": 310
+    "dur": 7.4,
+    "says": 2,
+    "chars": 78
    }
   ],
   "n_cine": 2,
-  "cine_sec": 34,
-  "tips": 7,
+  "cine_sec": 20.4,
+  "tips": 5,
   "says": 5,
-  "banners": 3,
-  "say_chars": 212,
-  "tip_chars": 457,
-  "banner_chars": 188,
+  "banners": 4,
+  "say_chars": 218,
+  "tip_chars": 244,
+  "banner_chars": 204,
   "encounters": [
    {
     "kinds": [
-     "thread",
-     "thread"
-    ],
-    "count": 1
-   },
-   {
-    "kinds": [
-     "thread",
-     "thread",
-     "thread",
+     "kiki",
+     "kiki",
      "thread",
      "thread"
     ],
@@ -1339,17 +1486,17 @@
    }
   ],
   "foe_kinds": [
+   "kiki",
    "thread"
   ],
   "oracle": {
    "bots": [
-    "t15n",
-    "thub2"
+    "t15n"
    ],
-   "best": "thub2",
-   "complete": true,
-   "sim_sec": 0.9,
-   "hits": 3
+   "best": "t15n",
+   "complete": false,
+   "sim_sec": 56.0,
+   "hits": 1
   },
   "cat": {
    "order": 6,
@@ -1383,11 +1530,11 @@
   "name": "1-Б · «Леший-Путаник»",
   "world": 1,
   "n_obj": 5,
-  "words": 63,
-  "chars": 397,
-  "words_per_obj": 12.6,
-  "max_words": 20,
-  "long_word_share": 0.048,
+  "words": 33,
+  "chars": 198,
+  "words_per_obj": 6.6,
+  "max_words": 14,
+  "long_word_share": 0.03,
   "coop_obj": 0,
   "key_obj": 3,
   "swap_obj": 0,
@@ -1404,40 +1551,40 @@
     "keys": false,
     "keystrict": false,
     "swap": false,
-    "dt": 9.0
+    "dt": null
    },
    {
     "idx": 1,
-    "text": "Руки-коряги! Левая — отбей щитом G, правая — кувырком Shift. Рука оглушена — беги по ней, как по мостку, бегом.",
-    "words": 18,
-    "chars": 111,
+    "text": "Отбей щитом G, — кувырок Shift.",
+    "words": 5,
+    "chars": 31,
     "coop": false,
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 0.1
+    "dt": 30.4
    },
    {
     "idx": 2,
-    "text": "Двойники прячутся! У настоящего — тень и мох-следы. Брось клубок R в колышек — настоящий упадёт: бей F, пока не очухался!",
-    "words": 20,
-    "chars": 121,
+    "text": "Брось клубок R в колышек. Упавшего бей F!",
+    "words": 8,
+    "chars": 41,
     "coop": false,
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 6.0
+    "dt": 27.0
    },
    {
     "idx": 3,
-    "text": "Хоровод! Бегом по стрелкам вокруг Лешего — ленты наматываются (0 / 2). Скакалка — прыжок Пробел иль кувырок Shift, и беги дальше!",
-    "words": 19,
-    "chars": 129,
+    "text": "Бегом по стрелкам вокруг Лешего — ленты его обматывают (0 из 2). Скакалка — прыжок Пробел.",
+    "words": 14,
+    "chars": 90,
     "coop": false,
     "keys": true,
     "keystrict": true,
     "swap": false,
-    "dt": 3.0
+    "dt": null
    },
    {
     "idx": 4,
@@ -1451,13 +1598,13 @@
     "dt": null
    }
   ],
-  "dt_known": 4,
-  "dt_mean": 4.5,
+  "dt_known": 2,
+  "dt_mean": 28.7,
   "cines": [
    {
-    "dur": 9,
-    "says": 2,
-    "chars": 145
+    "dur": 14,
+    "says": 3,
+    "chars": 156
    },
    {
     "dur": 6,
@@ -1470,30 +1617,30 @@
     "chars": 26
    },
    {
-    "dur": 16,
-    "says": 2,
-    "chars": 176
+    "dur": 32.9,
+    "says": 0,
+    "chars": 0
    }
   ],
   "n_cine": 4,
-  "cine_sec": 37.6,
-  "tips": 19,
-  "says": 11,
-  "banners": 12,
-  "say_chars": 442,
-  "tip_chars": 1206,
-  "banner_chars": 737,
+  "cine_sec": 59.5,
+  "tips": 9,
+  "says": 9,
+  "banners": 7,
+  "say_chars": 260,
+  "tip_chars": 412,
+  "banner_chars": 368,
   "encounters": [
-   {
-    "kinds": [
-     "leshyBoss"
-    ],
-    "count": 2
-   },
    {
     "kinds": [
      "hand",
      "hand"
+    ],
+    "count": 1
+   },
+   {
+    "kinds": [
+     "leshyBoss"
     ],
     "count": 1
    }
@@ -1504,18 +1651,12 @@
   ],
   "oracle": {
    "bots": [
-    "t1b",
-    "tfin_k1b",
-    "tfin_k1b3",
-    "tfin_k1b3solo",
-    "tfin_k1bcine",
-    "tfin_k1bhands",
-    "tfin_k1bhide"
+    "t1b"
    ],
-   "best": "tfin_k1b3solo",
-   "complete": true,
-   "sim_sec": 63.1,
-   "hits": 28
+   "best": "t1b",
+   "complete": false,
+   "sim_sec": 215.9,
+   "hits": 16
   },
   "cat": {
    "order": 7,
