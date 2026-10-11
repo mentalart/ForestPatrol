@@ -47,7 +47,9 @@ if(F.stage!=='run')throw FAILE('переход не засчитан: '+F.stage+
 //@@
 // бег Потапа: Йоша сращивает треснувшие доски, потом сам Потап бежит до лозы
 const W=ZC.W,F=W.flags,Y=H.yosha,SEC=W.SEC;const r=[];
-as('yosha');r.push(U.walkTo(1,0.3,-49.2,4));Y.face=0;ZC.tick(2);U.tap('KeyE');ZC.tick(60);r.push(U.walkTo(1,0.3,-42.5,4));Y.face=0;ZC.tick(2);U.tap('KeyE');ZC.tick(60);
+as('yosha');// все треснувшие доски перед Потапом (капли могли прожечь и другие стыки): от ближней к Йоше
+  for(const S of SEC.filter(S=>!S.ok&&!S.span).sort((a,b)=>a.z1-b.z1)){r.push(U.walkTo(1,0.3,S.z1-0.7,6));Y.face=0;ZC.tick(2);while(Y.skillCd>0)ZC.tick(1);U.tap('KeyE');ZC.tick(60);if(!S.ok){U.tap('KeyE');ZC.tick(60);}}
+  
 r.push('fixed='+SEC.map(S=>S.ok?'+':'-').join(''));r.push(U.walkTo(1,0.3,-50,4),U.walkTo(1,0.3,-53.2,4));
 as('potap');r.push(U.walkTo(0,0,-49,25));
 if(!(F.vine||ZC.G.cine))throw FAILE('Потап не добежал: '+F.stage+' '+r.join()+' '+st());

@@ -50,7 +50,9 @@ const W=ZC.W,H=ZC.HERO,F=W.flags;const r5=[F.stage];const Y=H.yosha,Po=H.potap,S
 for(let i=0;i<60*30&&F.stage==='hold';i++){ZC.hold('KeyG',W.HD.drops.some(d=>d.t>d.dur-0.3));ZC.tick(1);}ZC.hold('KeyG',false);r5.push(F.stage,'HDt='+W.HD.t.toFixed(1));
 r5.push('cracked='+SEC.map(S=>S.ok?'+':'-').join(''));
 if(U.act(1)!==Y){U.tap('KeyK');ZC.tick(3);}
-r5.push(U.walkTo(1,0.3,-49.2,4));Y.face=0;ZC.tick(2);U.tap('KeyL');ZC.tick(60);r5.push(U.walkTo(1,0.3,-42.5,4));Y.face=0;ZC.tick(2);U.tap('KeyL');ZC.tick(60);r5.push('fixed='+SEC.map(S=>S.ok?'+':'-').join(''));
+// все треснувшие доски перед Потапом (капли могли прожечь и другие стыки): от ближней к Йоше
+  for(const S of SEC.filter(S=>!S.ok&&!S.span).sort((a,b)=>a.z1-b.z1)){r5.push(U.walkTo(1,0.3,S.z1-0.7,6));Y.face=0;ZC.tick(2);while(Y.skillCd>0)ZC.tick(1);U.tap('KeyL');ZC.tick(60);if(!S.ok){U.tap('KeyL');ZC.tick(60);}}
+  r5.push('fixed='+SEC.map(S=>S.ok?'+':'-').join(''));
 r5.push(U.walkTo(1,0.3,-50,4),U.walkTo(1,0.3,-53.2,4));
 const tr=[];r5.push(U.walkTo(0,0,-49,25,(h,i)=>{if(i%60===0)tr.push(h.pos.z.toFixed(1));}),tr.join(','),F.stage,!!ZC.G.cine);r5
 //@@ shot=w45e.png
