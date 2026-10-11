@@ -25,7 +25,7 @@ function build15(){
     WHO.vereten=['Веретенник','#e8d8b0'];VOICE.vereten={f:120,w:'triangle',sp:0.12};
     const _fl=foeLook;foeLook=function(kind,inner,def){return def.look==='vereten'?veretenLook(inner):_fl(kind,inner,def);};}
   W.zvenAway=true;   // Звенышко улетает вперёд и появляется, только когда нужно
-  setTheme('barn');W.name='1-5 · «Кикиморина прялка»';W.sub='Дремучий лес · подворье Кикиморы · паутинка крест-накрест';W.camX=10;const F=W.flags;
+  setTheme('barn');W.name='1-5 · «Кикиморина прялка»';W.sub='Дремучий лес · подворье Кикиморы · паутинка крест-накрест';W.camX=10;W.camZMax=50.1;const F=W.flags;   // камера не уходит за заднюю стену сеней (иначе на старте смотрит сквозь неё)
   W.abil.clew=true;W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.threadLife=10;
   const floorM=M(0x9a7a50),sideM=M(0x6a5030),plank=M(0x7a5634),wm=M(0x6a4a2a),wd=M(0x4a3218);
   const walls=[];const wall=(a,b,c,d,e,f)=>{const r=box(a,b,c,d,e,f,wm,{occ:false});r.col.camWall=true;walls.push(r.mesh);return r;};
