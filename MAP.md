@@ -24,6 +24,10 @@
   прототипом: функции прототипа оборачивают присваиванием (`step=function(dt){_step(dt);…}`, `build5B2=function(){…}`),
   но не объявляют функций с теми же именами (сборка проверяет). Части уровня, закрытые в его функции, модулю отдают через
   замену в `rep_30_<уровень>.py` (`W.epiL={…}` — `rep_30_epi.py`, `W.gor4L={…}` — `rep_30_gor4b.py`).
+- **Мир 2 «Подводный Китеж» — источник правды в релизных модулях**: `zlataya_cep/build/levels/2-*/` и общий код мира
+  `levels/w2/` (вода гуслей, рейки, музыка уровней, сохранение на колокольчиках). Прототип `proto/levels/2-*.js` и `w2_common.js`
+  заморожен: релизные модули заменяют `build21…build2B` целиком (`late_99e…late_99j`), правки мира 2 в прототип не вносят (правило «две папки» к миру 2 не относится), разбор и боты —
+  только по релизу. Разбор мира и выбранные правки — `docs/15`, `docs/17`, `docs/19` и журнал `docs/changes/`.
 - **final07 (WebGPU) снят** — актуален final06. `build/gpu/`, `build_final.py --gpu`, `regress_list_final07.txt`, `tfin_gpu`/`tfin_post`
   заморожены (`docs/18_webgpu.md` — для истории): не собирать, шейдеры для WebGPU не переводить, ботов final07 не гонять.
 - **Боты** — `tools/tests/` (`README.md` там): шаги через `//@@ [shot=имя.png] [wait=мс]`; `tools/tests/run_one.sh бот [html]`;
@@ -83,12 +87,12 @@
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99b_kidnap14, late_99zf_pea14, late_99zg_auka14 | 7 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14long tfin_kidnap14 tfin_kids2 thub9e |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1 | 5 | tfin_ch1 tfin_companion_15 tfin_k15_boss tfin_k15_rooms thub2 |
 | `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zd_k1b_help | 6 | tfin_companion_1b tfin_companion_lesson tfin_k1b3solo tfin_post tfin_skaz tsospot |
-| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit, late_99zg_k21_gauge, late_99zh_k21_calm | 20 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tf… |
-| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99f_k22_q_whale, late_99l_kitezh_magic_water, late_99zi_k22_parts | 9 | t22d t22shot tfin_companion_22 tfin_k22 tfin_k22hint tfin_k22solo tfin_kids2 tfin_occ tfi… |
-| `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water, late_99zj_k23_lake | 4 | t23f tfin_companion_23 tfin_k23 tfin_k23solo |
-| `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water, late_99zk_k24_heart | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
-| `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99zl_k25_rise | 6 | t25c tfin_companion_25 tfin_k25 tfin_k25solo tfoes tsospot |
-| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase, late_99zm_k2b_storm | 13 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
+| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit, late_99zg_k21_gauge, late_99zh_k21_calm, late_99zt_kw_gauges, late_99zu_kw_resume, late_99zv_kw_music | 21 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tf… |
+| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99f_k22_q_whale, late_99l_kitezh_magic_water, late_99zi_k22_parts, late_99zt_kw_gauges, late_99zu_kw_resume, late_99zv_kw_music | 10 | t22d t22shot tfin_companion_22 tfin_k22 tfin_k22hint tfin_k22solo tfin_kids2 tfin_kwres t… |
+| `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water, late_99zj_k23_lake, late_99zt_kw_gauges, late_99zv_kw_music | 4 | t23f tfin_companion_23 tfin_k23 tfin_k23solo |
+| `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water, late_99zk_k24_heart, late_99zt_kw_gauges, late_99zv_kw_music | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
+| `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99zl_k25_rise, late_99zt_kw_gauges | 6 | t25c tfin_companion_25 tfin_k25 tfin_k25solo tfoes tsospot |
+| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase, late_99zm_k2b_storm, late_99zt_kw_gauges | 13 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_75_kids_w1, late_76_kids_fight, late_99p_sky31 | 18 | t31 t31c tfin_art tfin_companion_31 tfin_juice tfin_kids1 tfin_kids2 tfin_motylek tfin_sk… |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32, late_99x_sky32_tut, late_99y_sky32_cine, late_99zd_sky32_fx, late_99ze_sky32_cam | 11 | t32 tfin_companion_32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32cine tfin_sk… |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 3 | t33n tfin_companion_33 tso33 |
@@ -384,6 +388,9 @@
 | `levels/2-B/late_99zm_k2b_storm.js` | 2-B | РЕЛИЗ final06 · 2-Б: ПОГОНЯ В ГРОЗОВОЙ ВЕЧЕР, КОНИ ДЕШЕВЛЕ В ОТРИСОВКЕ |
 | `levels/3-5/late_99zm_sky35.js` | 3-5 | РЕЛИЗ final06 · 3-5 «ГУСИ-ЛЕБЕДИ»: ТУДА — ТИХО, ОБРАТНО — ПОГОНЯ (docs/40; прежний шаг — docs/38) |
 | `levels/3-4/late_99zn_ship34_wear.js` | 3-4 | РЕЛИЗ final06 · 3-4 «ЛЕТУЧИЙ КОРАБЛЬ»: КАПИТАНСКИЙ СВИСТОК |
+| `levels/w2/late_99zt_kw_gauges.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: МЕРНЫЕ РЕЙКИ У КАЖДОЙ ВОДЫ ГУСЛЕЙ — НЕ ТОЛЬКО В 2-1 |
+| `levels/w2/late_99zu_kw_resume.js` | 2-1, 2-2 | РЕЛИЗ final06 · МИР 2: СОХРАНЕНИЕ НА КОЛОКОЛЬЧИКАХ В ДЛИННЫХ УРОВНЯХ 2-1 И 2-2 |
+| `levels/w2/late_99zv_kw_music.js` | 2-1, 2-2, 2-3, 2-4 | РЕЛИЗ final06 · МИР 2: СВОЯ МУЗЫКА У КАЖДОГО УРОВНЯ, НАПЕВ САДКО — ЛЕЙТМОТИВ |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -481,11 +488,11 @@
 | `40_kino_pravila.md` | Правила роликов (катсцен) — «Златая цепь» |
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 146 файлов |
+| `changes/` | 147 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 287 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 288 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

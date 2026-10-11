@@ -4,6 +4,8 @@
 // карточка показывает короткую строку крупно (hn-short) вместо полного текста (под ней его нет); пока на экране подсказка, карточка — только она; чтение вслух читает короткую; в одиночном режиме и в паре — одно и то же.
 window.ERR=[];window.addEventListener('error',e=>ERR.push(String(e.message)));{const ce=console.error;console.error=(...a)=>{ERR.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 window.BAD=[];window.chk=(c,m)=>{if(!c)BAD.push(m);return c;};window.F=ZC.FIN;window.TS=F.taskShort;
+// задача по смыслу, а не по номеру (разбор мира 2, c35): номер задачи, в тексте которой есть эти слова (регистр не важен)
+window.OI=(pi,w)=>{const k=w.toLowerCase(),T=o=>String(typeof o.text==='function'?o.text():o.text).replace(/<[^>]*>/g,' ').toLowerCase();const i=ZC.W.objectives[pi].findIndex(o=>o&&T(o).includes(k));if(i<0)throw new Error('нет задачи «'+w+'» у игрока '+pi);return i;};
 window.ld=id=>{if(ZC.G.state!=='play')ZC.startFrom(ZC.LV(id));else ZC.loadLevel(ZC.LV(id));ZC.G.manual=true;ZC.tick(6);for(let q=0;q<6&&ZC.G.cine;q++){ZC.skip();ZC.tick(3);}};
 const ids=Object.keys(TS.table),rep=[];
 for(const id of ids){ld(id);const rows=TS.table[id].length;chk(TS.applied>=rows&&TS.skipped.length===0,id+': применено '+TS.applied+' из '+rows+' строк'+(TS.skipped.length?', не легли: '+TS.skipped.join(','):''));
@@ -15,14 +17,14 @@ for(const id of ids){ld(id);const rows=TS.table[id].length;chk(TS.applied>=rows&
   rep.push(id+':'+TS.applied+'/'+rows);}
 rep.join(' ')
 //@@
-// игрок 1 на 2-1 задаче 2 («Играй прилив…») — карточка с короткой строкой; кнопки игроков разные
-ld('2-1');const P=ZC.players,W=ZC.W;P[0].path='easy';P[1].path='easy';ZC.G.solo=false;P[0].obj=2;P[1].obj=2;ZC.sim(6);for(let i=0;i<240;i++)F.ui(1/60);
-const st=F.hints.state(),html=st.html.join(' | ');chk(/hn-short/.test(html)&&/Играй прилив/.test(html),'карточка: короткая строка: '+html.slice(0,300));
+// игрок 1 на 2-1 на задаче «У каждого теперь гусли» — карточка с короткой строкой; кнопки игроков разные
+ld('2-1');const P=ZC.players,W=ZC.W;P[0].path='easy';P[1].path='easy';ZC.G.solo=false;P[0].obj=OI(0,'у каждого');P[1].obj=OI(1,'у каждого');ZC.sim(6);for(let i=0;i<240;i++)F.ui(1/60);
+const st=F.hints.state(),html=st.html.join(' | ');chk(/hn-short/.test(html)&&/Встань у чаши фонтана/.test(html),'карточка: короткая строка: '+html.slice(0,300));
 chk(/hn-head hn-short hn-rd"[^>]*>[^<]*<span class="hn-k2"/.test(html)||/hn-short hn-rd[^|]*hn-k2/.test(html),'общая карточка: кнопки обоих игроков парой «R / ;»: '+html.slice(0,260));
 chk(/hn-rd/.test(html)&&!/hn-body/.test(st.html[2]),'в карточке только короткая строка, без полного текста под ней (голос читает её же): '+st.html[2].slice(0,300));chk(/играй прилив/i.test(html),'«Играй прилив» в карточке');
-P[1].obj=3;ZC.sim(2);for(let i=0;i<240;i++)F.ui(1/60);const st2=F.hints.state();chk(st2.html[0]&&/Играй прилив/.test(st2.html[0])&&/hn-short/.test(st2.html[1]+st2.html[2])&&!/Играй прилив/.test(st2.html[1]+st2.html[2]),'у игроков разные задачи — у каждого своя карточка: '+st2.html.join(' | ').slice(0,300));
+P[1].obj=OI(1,'причал');ZC.sim(2);for(let i=0;i<240;i++)F.ui(1/60);const st2=F.hints.state();chk(st2.html[0]&&/Встань у чаши/.test(st2.html[0])&&/hn-short/.test(st2.html[1]+st2.html[2])&&!/Встань у чаши/.test(st2.html[1]+st2.html[2]),'у игроков разные задачи — у каждого своя карточка: '+st2.html.join(' | ').slice(0,300));
 // подсказка и задача в одной карточке не соседствуют: пока есть подсказка — только она, ушла — снова краткая строка задачи
-P[0].obj=2;P[1].obj=3;ZC.sim(2);for(let i=0;i<240;i++)F.ui(1/60);
+P[0].obj=OI(0,'у каждого');P[1].obj=OI(1,'причал');ZC.sim(2);for(let i=0;i<240;i++)F.ui(1/60);
 W.tipZones.unshift({cond:pi=>pi===0,text:()=>'Подсказка про вал: держись правее.'});ZC.sim(0.5);for(let i=0;i<120;i++)F.ui(1/60);
 const h0=F.hints.state().html[0];chk(/держись правее/.test(h0)&&!/hn-head/.test(h0)&&!/Играй прилив/.test(h0),'карточка с подсказкой: только подсказка, без задачи над ней: '+h0.slice(0,300));
 W.tipZones.shift();ZC.sim(0.5);ZC.players[0].tipT=0;for(let i=0;i<300;i++)F.ui(1/60);const h1=F.hints.state().html[0];chk(/hn-short/.test(h1)&&!/держись правее/.test(h1),'подсказка ушла — снова краткая строка задачи: '+h1.slice(0,300));
@@ -30,8 +32,8 @@ W.tipZones.shift();ZC.sim(0.5);ZC.players[0].tipT=0;for(let i=0;i<300;i++)F.ui(1
 //@@
 // чтение вслух читает короткую строку; отключение таблицы — полный текст как прежде
 window.SAID=[];F.readAloud.said={};F.readAloud.mock=t=>SAID.push(t);F.set.readAloud=true;F.set.vox=0;delete F.set.readAloudAll;const P=ZC.players;P[0].path='easy';P[1].path='easy';
-ld('2-1');P[0].obj=1;P[1].obj=1;ZC.tick(30);for(let i=0;i<120;i++)F.ui(1/60);SAID.length=0;F.readAloud.said={};if(F.readAloud.stop)F.readAloud.stop();F.readAloud.speaking=false;F.readAloud.q.length=0;P[0].obj=2;P[1].obj=2;ZC.tick(30);ZC.sim(5);{const t0=performance.now();while(performance.now()-t0<3000&&!SAID.length)F.ui(1/60);}   // чтение ждёт 0,7 с настоящего времени
-chk(SAID.length>=1&&/Играй прилив/.test(SAID.join(' '))&&!/Звено — на столбе/.test(SAID.join(' ')),'вслух — короткая строка: '+JSON.stringify(SAID)+' cine='+!!ZC.G.cine+' can='+F.readAloud.can()+' cards='+JSON.stringify(F.readAloud.cards().map(c=>c.t.slice(0,30)))+' said='+Object.keys(F.readAloud.said).length+' q='+F.readAloud.q.length+' sp='+F.readAloud.speaking+' st='+ZC.G.state);
-TS.off=true;window.SAID.length=0;F.readAloud.said={};P[0].obj=1;P[1].obj=1;ZC.tick(30);P[0].obj=2;P[1].obj=2;for(let i=0;i<300;i++)F.ui(1/60);
+ld('2-1');P[0].obj=OI(0,'порвалась');P[1].obj=OI(1,'порвалась');ZC.tick(30);for(let i=0;i<120;i++)F.ui(1/60);SAID.length=0;F.readAloud.said={};if(F.readAloud.stop)F.readAloud.stop();F.readAloud.speaking=false;F.readAloud.q.length=0;P[0].obj=OI(0,'у каждого');P[1].obj=OI(1,'у каждого');ZC.tick(30);ZC.sim(5);{const t0=performance.now();while(performance.now()-t0<3000&&!SAID.length)F.ui(1/60);}   // чтение ждёт 0,7 с настоящего времени
+chk(SAID.length>=1&&/Встань у чаши фонтана/.test(SAID.join(' '))&&!/Звено — на столбе/.test(SAID.join(' ')),'вслух — короткая строка: '+JSON.stringify(SAID)+' cine='+!!ZC.G.cine+' can='+F.readAloud.can()+' cards='+JSON.stringify(F.readAloud.cards().map(c=>c.t.slice(0,30)))+' said='+Object.keys(F.readAloud.said).length+' q='+F.readAloud.q.length+' sp='+F.readAloud.speaking+' st='+ZC.G.state);
+TS.off=true;window.SAID.length=0;F.readAloud.said={};P[0].obj=OI(0,'порвалась');P[1].obj=OI(1,'порвалась');ZC.tick(30);P[0].obj=OI(0,'у каждого');P[1].obj=OI(1,'у каждого');for(let i=0;i<300;i++)F.ui(1/60);
 chk(!/hn-short/.test(F.hints.state().html.join(' ')),'таблица выключена — карточки без короткой строки');TS.off=false;
 BAD.length||ERR.length?'FAIL '+BAD.join(' ; ')+' errs='+ERR.slice(0,3).join(' | '):'taskshort ok'
