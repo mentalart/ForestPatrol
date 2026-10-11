@@ -86,7 +86,7 @@
 | `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit, late_99zg_k21_gauge, late_99zh_k21_calm | 20 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tf… |
 | `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99f_k22_q_whale, late_99l_kitezh_magic_water, late_99zi_k22_parts | 9 | t22d t22shot tfin_companion_22 tfin_k22 tfin_k22hint tfin_k22solo tfin_kids2 tfin_occ tfi… |
 | `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water, late_99zj_k23_lake | 4 | t23f tfin_companion_23 tfin_k23 tfin_k23solo |
-| `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
+| `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water, late_99zk_k24_heart | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water | 6 | t25c tfin_companion_25 tfin_k25 tfin_k25solo tfoes tsospot |
 | `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase | 12 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_75_kids_w1, late_76_kids_fight, late_99p_sky31 | 17 | t31 t31c tfin_art tfin_companion_31 tfin_juice tfin_kids1 tfin_kids2 tfin_motylek tfin_sk… |
@@ -368,6 +368,7 @@
 | `levels/2-1/late_99zh_k21_calm.js` | 2-1 | РЕЛИЗ final06 · 2-1: ТИШЕ БОЙ НА СРЕДНЕМ, ГЛАЗА ВОДЯНОГО, РИФ ПО КРАЮ, КУПОЛА КИТЕЖА ВДАЛИ |
 | `levels/2-2/late_99zi_k22_parts.js` | 2-2 | РЕЛИЗ final06 · 2-2: ТРИ ЧАСТИ КИТА — КОЛОКОЛЬЧИКИ И СМОТРОВЫЕ, КУПОЛА КИТЕЖА ПОД ВОДОЙ, КУПЛЕТ ПЕЛАГЕИ |
 | `levels/2-3/late_99zj_k23_lake.js` | 2-3 | РЕЛИЗ final06 · 2-3: СХЕМА «КТО НА КАКОЙ КАМЕНЬ», ПОДСВЕТКА КАМНЕЙ, ЩУКИ В ПРОТОКЕ, ГЛАЗА ВОДЯНОГО, КИТЕЖ ВДАЛИ |
+| `levels/2-4/late_99zk_k24_heart.js` | 2-4 | РЕЛИЗ final06 · 2-4: ЯЗЫК КОЛОКОЛА НЕСЁТ ПОТАП, ЛУЖИ ДЫШАТ С СЕРДЦЕМ, КОРАБЛЬ С КУПОЛОМ, ГЛАЗА ВОДЯНОГО |
 | `levels/3-5/late_99zm_sky35.js` | 3-5 | РЕЛИЗ final06 · 3-5 «ГУСИ-ЛЕБЕДИ»: СТЕЛС С ПОДОЗРЕНИЕМ, РАЗНЫЕ ГУСИ, УКРЫТИЯ-ЗАДАЧИ, ПОГОНЯ НАД ПРОПАСТЬЮ (docs/38) |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
@@ -462,7 +463,7 @@
 | `38_world3_proposals.md` | 38. Мир 3 «Небесное царство»: комплексный разбор и предложения по всем уровням |
 | `39_world4_proposals.md` | 39. Мир 4 «Огненная Смородина»: комплексный разбор и предложения по всем уровням |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 123 файлов |
+| `changes/` | 124 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
