@@ -1,7 +1,7 @@
 //@@
 // 4-2 «Река Смородина» в одиночном режиме: путь t42v одним игроком (U.soloAdapt — героя берёт по Q, как человек) и проверка,
 // что «Все ко мне!» подтягивает друзей через лаву (late_99w4_solo).
-window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
+window._errs=[];window.FAILS=[];window.FAILE=m=>{FAILS.push(String(m).slice(0,400));return new Error(m);};window.addEventListener('error',e=>FAILS.push(String(e.message).slice(0,300)));{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(true);U.soloAdapt();
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();ZC.startFrom(ZC.LV('4-2'));ZC.G.manual=true;ZC.tick(60);const W=ZC.W,H=ZC.HERO;const r=[W.name,!!ZC.G.cine];ZC.skip();ZC.tick(5);r.push(W.flags.stage,U.st(),U.obj(),'lavas='+W.lavas.length);r
 //@@ shot=w42a.png
@@ -20,7 +20,7 @@ ZC.tick(1);
 // одиночка: Йоша на том берегу ручья — «Все ко мне!»; друзья подтягиваются через лаву
 const W=ZC.W,H=ZC.HERO;const Y=H.yosha;const before=['proshka','potap','pelageya'].map(k=>H[k].pos.z.toFixed(1)).join(',');
 U.toKind('yosha');U.tap('Digit1');let t=0;while(t<60*14&&!['proshka','potap','pelageya'].every(k=>H[k].pos.z<-6.5)){ZC.tick(1);t++;}
-if(!['proshka','potap','pelageya'].every(k=>H[k].pos.z<-6.5))throw new Error('друзья не подтянулись через ручей: '+before+' → '+U.st());
+if(!['proshka','potap','pelageya'].every(k=>H[k].pos.z<-6.5))throw FAILE('друзья не подтянулись через ручей: '+before+' → '+U.st());
 'pull solo t='+(t/60).toFixed(1)+' '+before+' → '+['proshka','potap','pelageya'].map(k=>H[k].pos.z.toFixed(1)).join(',')
 //@@
 // заводь и бурлящая струя: Йоша делает корку в заводи; Прошка несёт и перекладывает
@@ -71,7 +71,7 @@ r5.push(U.walkTo(1,0,-40.8,3));ZC.tick(90);r5.push(U.st());r5.push(U.walkTo(1,0,
 //@@
 // одиночка: Йоша за разливом — «Все ко мне!», друзья подтягиваются к лавопаду
 const W=ZC.W,H=ZC.HERO;U.toKind('yosha');U.tap('Digit1');let t=0;while(t<60*14&&!['proshka','potap','pelageya'].every(k=>H[k].pos.z<-38)){ZC.tick(1);t++;}
-if(!['proshka','potap','pelageya'].every(k=>H[k].pos.z<-38))throw new Error('друзья не подтянулись за разлив: '+U.st());
+if(!['proshka','potap','pelageya'].every(k=>H[k].pos.z<-38))throw FAILE('друзья не подтянулись за разлив: '+U.st());
 'pull2 solo t='+(t/60).toFixed(1)
 //@@
 // лавопад: ролик; Йоша спускается по каскаду, Прошка сбивает ящерку рогаткой
@@ -110,4 +110,4 @@ U.tap('KeyQ');ZC.tick(3);r.push(U.path(0,[[1.2,-64.6],[1.2,-69.6],[1.2,-72]],8),
 ZC.tick(300);
 //@@
 U.tap('Digit1');{let t=0;while(t<60*14&&!ZC.G.cine&&!ZC.W.flags.out){ZC.tick(1);t++;}}
-ZC.tick(500);ZC.skip();ZC.tick(300);ZC.skip();ZC.tick(300);const ok=ZC.G.done['4-2']&&!_errs.length;(ok?'tso42 ok ':'FAIL tso42 ')+[ZC.W.levelId,ZC.G.done['4-2'],ZC.G.got['4-2'],'swaps='+U.soloSwaps,'errs='+_errs.length].join(' ')
+ZC.tick(500);ZC.skip();ZC.tick(300);ZC.skip();ZC.tick(300);const ok=ZC.G.done['4-2']&&!_errs.length&&!FAILS.length;(ok?'tso42 ok ':'FAIL tso42 '+FAILS.join(' || ')+' ')+[ZC.W.levelId,ZC.G.done['4-2'],ZC.G.got['4-2'],'swaps='+U.soloSwaps,'errs='+_errs.length].join(' ')

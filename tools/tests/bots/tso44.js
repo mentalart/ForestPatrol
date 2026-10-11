@@ -1,11 +1,11 @@
 //@@
 // 4-4 «Змиевы валы» в одиночном режиме (клавиши Игрока 1, Q — по кругу): плуг к чаше, дверь — Потап плечом, сток в яму,
 // арена одним героем за раз: болван — Йоша поливает, Прошка срывает латы; печник — уголь клещами; змеёныши на сухом.
-window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
+window._errs=[];window.FAILS=[];window.FAILE=m=>{FAILS.push(String(m).slice(0,400));return new Error(m);};window.addEventListener('error',e=>FAILS.push(String(e.message).slice(0,300)));{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
 ZC.setSolo(true);ZC.startFrom(ZC.LV('4-4'));ZC.G.manual=true;ZC.tick(60);ZC.skip();ZC.tick(5);U.nocine();
 window.H=ZC.HERO;window.st=()=>U.st()+' errs='+_errs.length+' '+_errs.join(' | ');
-window.as=k=>{const r=U.toKind(k);if(r!==k)throw new Error('не взять '+k+': '+U.me().kind+' '+st());return r;};
+window.as=k=>{const r=U.toKind(k);if(r!==k)throw FAILE('не взять '+k+': '+U.me().kind+' '+st());return r;};
 'solo='+ZC.G.solo+' '+ZC.W.flags.stage+' me='+U.me().kind
 //@@
 const W=ZC.W,F=W.flags;const r2=[];const P=H.proshka;as('proshka');
@@ -13,7 +13,7 @@ r2.push(U.walkTo(0,-3,-3.2,3));P.face=0;ZC.tick(2);U.tap('KeyR');ZC.tick(3);
 r2.push(U.path(0,[[-4.2,-4.5],[-5.2,-6.5],[-5.2,-9],[-3,-12],[-1.5,-15.5],[-1.2,-17.5],[2.5,-17.5],[4.5,-20],[6,-22.8],[6,-26]],4));ZC.tick(30);U.tap('KeyR');ZC.tick(3);
 const row=z=>{let s='';for(let x=-9.5;x<10;x++){const v=W.furrowAt(x,z);s+=v<0?'?':v===0?' ':v===10?'.':v===20?'#':v===21?'~':'x';}return s;};
 const g=[];for(let z=-4.5;z>-27;z-=1)g.push(row(z));r2.push(g.join('|'));
-ZC.tick(60*14);const g2=[];for(let z=-4.5;z>-27;z-=1)g2.push(row(z));if(!F.bowlA)throw new Error('чаша не полна: '+g2.join('|'));'bowlA solo'
+ZC.tick(60*14);const g2=[];for(let z=-4.5;z>-27;z-=1)g2.push(row(z));if(!F.bowlA)throw FAILE('чаша не полна: '+g2.join('|'));'bowlA solo'
 //@@
 const W=ZC.W,F=W.flags;const r3=[];const P=H.proshka;as('proshka');
 const tr=[];r3.push(U.st(),U.walkTo(0,0,-28,4,(h,i)=>{if(i%15===0)tr.push(h.pos.x.toFixed(1)+','+h.pos.y.toFixed(1)+','+h.pos.z.toFixed(1)+F.stage);}),tr.join(' '),U.walkTo(0,0,-32.5,4,(h,i)=>{if(i%5===0)tr.push(h.pos.x.toFixed(1)+','+h.pos.y.toFixed(1)+','+h.pos.z.toFixed(1)+F.stage+(ZC.G.cine?'C':''));}),tr.join(' '),U.st(),F.stage,'plow='+W.PLOW.g.position.x.toFixed(1)+','+W.PLOW.g.position.z.toFixed(1));
@@ -22,7 +22,7 @@ r3.push(U.path(0,[[2,-35.6],[7.6,-35.6],[7.6,-37.6],[1,-40],[-5,-42.5],[-5,-48],
 const row=z=>{let s='';for(let x=-9.5;x<10;x++){const v=W.furrowAt(x,z);s+=v<0?'?':v===0?' ':v===10?'.':v===20?'#':v===21?'~':'x';}return s;};
 ZC.tick(60*14);const g2=[];for(let z=-31.5;z>-57;z-=1)g2.push(row(z));r3.push(g2.join('|'),'heat='+F.doorHeat.toFixed(2));
 // Потап — плечом
-as('potap');H.potap.pos.set(0,0,-55.6);H.potap.vel.set(0,0,0);ZC.tick(3);r3.push(U.walkTo(0,0,-56.1,2));H.potap.face=Math.PI;U.tap('KeyF');ZC.tick(40);if(!F.doorOpen)throw new Error('дверь не открыта: heat='+F.doorHeat.toFixed(2)+' '+st());'door solo'
+as('potap');H.potap.pos.set(0,0,-55.6);H.potap.vel.set(0,0,0);ZC.tick(3);r3.push(U.walkTo(0,0,-56.1,2));H.potap.face=Math.PI;U.tap('KeyF');ZC.tick(40);if(!F.doorOpen)throw FAILE('дверь не открыта: heat='+F.doorHeat.toFixed(2)+' '+st());'door solo'
 //@@
 const W=ZC.W,F=W.flags;const r4=[];const P=H.proshka,Y=H.yosha;
 as('yosha');Y.pos.set(1.5,0,-56);as('proshka');P.pos.set(0,0,-56);P.vel.set(0,0,0);ZC.tick(3);
@@ -31,7 +31,7 @@ r4.push(U.walkTo(0,0,-60.2,3),F.stage,'foes='+W.enemies.length,'plow='+W.PLOW.g.
 r4.push(U.walkTo(0,-4,-62.4,3,()=>HEROES_()));P.face=0;ZC.tick(2);U.tap('KeyR');ZC.tick(3);
 r4.push(U.path(0,[[-6.6,-62.4],[-6.6,-61.6],[9,-61.6]],4));HEROES_();ZC.tick(20);U.tap('KeyR');
 const row=z=>{let s='';for(let x=-9.5;x<10;x++){const v=W.furrowAt(x,z);s+=v<0?'?':v===0?' ':v===10?'.':v===20?'#':v===21?'~':'x';}return s;};
-for(let i=0;i<60*10;i++){HEROES_();ZC.tick(1);}const g=[];for(let z=-59.5;z>-78;z-=1)g.push(row(z));if(!F.drained)throw new Error('лава не ушла в яму: '+g.join('|'));'drained solo foes='+W.enemies.length
+for(let i=0;i<60*10;i++){HEROES_();ZC.tick(1);}const g=[];for(let z=-59.5;z>-78;z-=1)g.push(row(z));if(!F.drained)throw FAILE('лава не ушла в яму: '+g.join('|'));'drained solo foes='+W.enemies.length
 //@@
 // арена одним героем за раз
 const W=ZC.W,F=W.flags;const r5=[];const P=H.proshka,Y=H.yosha;const inv=()=>['proshka','potap','pelageya','yosha'].forEach(n=>{H[n].iT=99;});
@@ -58,10 +58,10 @@ for(let i=0;i<60*90&&W.enemies.some(e=>e.alive);i++){inv();const h=U.me();let e=
   if(i%300===0)r5.push('['+(i/60)+'s me='+h.kind+'@'+h.pos.x.toFixed(1)+','+h.pos.z.toFixed(1)+' e='+e.kind+':'+e.state+':'+e.embers+'@'+e.pos.x.toFixed(1)+','+e.pos.z.toFixed(1)+' tgt='+(e.tgt&&e.tgt.kind)+' hot='+!!e.hot+']');
   if(!U.def(0,i)){if(mv(e.pos.x,e.pos.z,1.3)&&i%9===0)ZC.press('KeyF');}ZC.tick(1);}
 rel();
-if(!F.cleared)throw new Error('арена не очищена: '+r5.join(' ')+' '+W.enemies.filter(e=>e.alive).map(e=>e.kind+':'+e.state+':'+e.embers).join(','));
+if(!F.cleared)throw FAILE('арена не очищена: '+r5.join(' ')+' '+W.enemies.filter(e=>e.alive).map(e=>e.kind+':'+e.state+':'+e.embers).join(','));
 'arena solo '+r5.join(' ')
 //@@
 ZC.tick(200);[ZC.W.flags.stage,!!ZC.G.cine]
 //@@
 ZC.tick(500);ZC.tick(400);ZC.skip();ZC.tick(300);ZC.skip();ZC.tick(300);
-const ok=ZC.G.done['4-4']&&!_errs.length;(ok?'tso44 ok ':'FAIL tso44 ')+[ZC.W.levelId,ZC.G.done['4-4'],ZC.G.got['4-4'],'errs='+_errs.length]
+const ok=ZC.G.done['4-4']&&!_errs.length&&!FAILS.length;(ok?'tso44 ok ':'FAIL tso44 '+FAILS.join(' || ')+' ')+[ZC.W.levelId,ZC.G.done['4-4'],ZC.G.got['4-4'],'errs='+_errs.length]
