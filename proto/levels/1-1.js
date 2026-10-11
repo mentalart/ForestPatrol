@@ -319,6 +319,15 @@ function build11(){
         for(const h of HEROES)h.vel.set(0,0,0);},
       end:()=>{F.done=true;for(const h of HEROES)placeOnGround(h,h.pos.x,h.pos.z,0);banner('Теремок спасён!','#ffd76a',2.6,'вороны улетели к Кощею ни с чем — у зверей новоселье!');later(1.8,finishLevel);}});}
   W.part11={RV,HS,ST,STF,LOGS,TM,TOSS,STEPS,KON,hsNut,SW,sheltered,hidden};   // для проверки ботом и напарника
+  // перескок к главе 2 «За калиткой» (сохранение внутри уровня — late_97w_w1_chapters.js — и боты): двор прибран, клубки розданы, калитка пройдена,
+  // избушка повёрнута; дальше — прилёт ворон своим ходом (ролик через 0,6 с: задачи двора успевают закрыться)
+  W.warp11=where=>{if(where!=='gate')throw new Error('warp11: '+where);
+    W.rzt.state='done';turn.on=true;turn.done=true;hut.g.rotation.y=0;hut.house.position.y=1.1;hut.legs.forEach(l=>{l.scale.y=0.5;l.position.y=1.1;l.rotation.x=0;});
+    arena.started=true;arena.cleared=true;arena.hold=0;arena.list.forEach(e=>{e.alive=false;if(e.g)e.g.visible=false;});
+    TR.forEach(t=>{t.state='done';if(t.g)t.g.visible=false;});if(TRB.g){TRB.state='done';TRB.g.visible=false;}F.cleanDone=true;
+    yaga.g.visible=true;hut.inner.visible=true;yaga.g.position.set(0,1.1,-26.4);W.abil.clew=true;W.abil.toss=true;F.glued=true;F.bye=true;F.out=true;F.gateTold=true;F.stage='yard';
+    HEROES.forEach((h,i)=>{placeOnGround(h,[-3,-1,1,3][i],-114.5,0);h.following=false;h.vel.set(0,0,0);});for(const pi of[0,1])players[pi].cp.set(0,0,-114.5);
+    snapCams();later(0.6,crowsArrive);};
   W.updates.push(dt=>{
     if(F.stage==='crows'||F.stage==='end')ravUpdate(dt);
     // ступа Яги: полёт над рощей, клубы пыли за помелом; пелена над рощей

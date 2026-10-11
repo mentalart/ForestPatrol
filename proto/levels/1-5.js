@@ -480,6 +480,16 @@ function build15(){
     {cond:(pi,h)=>W.owlT>0&&!F.cut&&!F.spFled,text:pi=>'Серебром старая сказочная нить светится — у крюка на галерее.<br>Разрежь её ударом '+K(pi,'attack')+' — да поскорее!'},
     {cond:()=>B.mode==='aim',text:pi=>pi?'Веретенник разгоняется! Красная дорожка — кувырок '+K(1,'roll')+' в сторону.':'Веретенник разгоняется! Прошка — рогаткой '+K(0,'skill')+' в острие: споткнётся!'});
   W.k15={aFoes,floorFoes,PL,LIFT,reel,LOOM,treadleCol,spotRing,WIRES,plates,ARS,AR_G,B,weightOn,inBarn,inArena};   // для напарника-бота и ботов проверки
+  // перескок к главе (сохранение внутри уровня — late_97w_w1_chapters.js — и боты), к колокольчику комнаты:
+  //   'ovin' — мотовило и полотно-мост позади, кикиморки в сенях побеждены; 'dry' — ещё и старая нить перерезана, веретено удрало на повить;
+  //   'boss' — ещё и засов открыт: герои на повити, бой с Веретенником начинается сам
+  W.warp15=where=>{const R={ovin:[3,0,2],dry:[-9.4,7,-36.4],boss:[-4.2,7,-54]}[where];if(!R)throw new Error('warp15: '+where);G.cine=null;F.stage='play';
+    const gone=L=>{L.started=true;L.list.forEach(e=>{e.alive=false;if(e.g)e.g.visible=false;});};
+    gone(aFoes);F.liftDone=true;LOOM.n=LOOM.max;setCloth();F.loomDone=true;F.loomFoe=true;
+    if(where!=='ovin'){gone(floorFoes);F.pullOn=true;F.cut=true;old.visible=false;F.spFled=true;F.warn=false;F.pullT=0;kiki.spindle.visible=false;yarn.visible=false;flySp.visible=false;}
+    if(where==='boss'&&!F.latch){F.latch=true;F.plateTold=true;gateTo(true);}
+    HEROES.forEach((h,i)=>{placeOnGround(h,clamp(R[0]-1.8+i*1.2,-10.6,10.6),R[2],R[1]);h.following=false;h.vel.set(0,0,0);});
+    for(const pi of[0,1])players[pi].cp.set(R[0],R[1],R[2]);snapCams();};
   W.zvenGoal=()=>{const a=acts().reduce((m,h)=>h.pos.z<m.pos.z?h:m);return new V3(clamp(a.pos.x,-9,9),a.pos.y+2.4,a.pos.z-2.5);};W.zvenFree=true;
   bell(-9,46);bell(-9.4,30.2,4.4);bell(9,26,4.4);bell(-9.4,-36.4,7);bell(-4.2,-54,7);
   W.spawns=[[new V3(-2.5,0,46),new V3(-4.5,0,47)],[new V3(2.5,0,46),new V3(4.5,0,47)]];W.startAct=[0,0];

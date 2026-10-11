@@ -143,6 +143,7 @@ zlataya_cep/build/late_75_kids_w1.js          @level:p @level:1-1 @level:1-2 @le
 zlataya_cep/build/late_76_kids_fight.js       @level:1-1 @level:1-2 @level:2-1 @level:3-1 tfin_kids1 tfin_kids2 tfin_foekinds smoke
 zlataya_cep/build/late_76b_cine_skip.js       tfin_kids2 tfin_cine smoke
 zlataya_cep/build/late_96_uilog.js             tfin_bossaudit tfin_hints tfin_cine tallobj smoke
+zlataya_cep/build/late_97w_w1_chapters.js     tfin_ch1 tfin_save
 zlataya_cep/build/late_78_signals.js             tfin_signals smoke
 zlataya_cep/build/late_79c_taskshort.js       tfin_taskshort tfin_hints smoke
 zlataya_cep/build/late_79d_help.js              tfin_help tfin_kids1 tfin_kids2 tfin_k1b tfin_k1b3 tfin_hints tfin_bossui smoke tfin_companion_lesson

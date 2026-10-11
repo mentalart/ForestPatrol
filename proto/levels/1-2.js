@@ -333,6 +333,14 @@ function build12(){
       if(WD.stage!=='walk'&&!zvLead.told&&Z.pos.distanceTo(tgt)<0.5){zvLead.told=true;floatText(Z.pos.clone().add(new V3(0,0.8,0)),'Дзинь! Звено — тут!','#ffe08a');}}
     else if(zvLead.on){zvLead.on=false;Z.mode=zvLead.prev&&zvLead.prev!=='script'?zvLead.prev:'lead';}});
   W.sw12={GS,forks,PADS,CR,CA,BS,FR,raceMat,flag,finStake,logPt,logCol,reedCol,wedLink,BN,arrow,lilyBell};   // для ботов
+  // перескок к главе 2 «Туман» (сохранение внутри уровня — late_97w_w1_chapters.js — и боты): Журавль и Цапля поженились, камыши расступились,
+  // звено свадьбы лежит у избушки Цапли (если было взято до сохранения — его вернёт глава); герои — у колокольчика перед туманом
+  W.warp12=where=>{if(where!=='fog')throw new Error('warp12: '+where);G.cine=null;
+    Object.assign(WD,{stage:'done',told:true,sang:true,left:0,seg:GS.length,leg:'go',u:0});CR.pos.set(3.0,0,-145.0);CA.pos.set(4.3,0,-145.2);
+    reedCol.on=false;reeds.forEach(r=>{const k=r.position.x<0?1:-1;r.rotation.z=k*1.3;r.position.y=-0.6;});
+    if(wedLink.locked){wedLink.locked=false;wedLink.g.visible=true;wedLink.pos.set(3.0,1.2,-147.6);wedLink.base=1.2;}
+    HEROES.forEach((h,i)=>{placeOnGround(h,[-3,-1,1,3][i],-147,0);h.following=false;h.vel.set(0,0,0);});for(const pi of[0,1])players[pi].cp.set(-1.2,0,-143.2);
+    snapCams();};
   /* ---------- стычка: пни-ворчуны и кикиморки на кочках ---------- */
   const arena={x:0,z:-336,r:9.5,started:false,cleared:false,hold:0,list:[]};arena.camActive=()=>arena.started&&(!arena.cleared||arena.hold>0);W.camZones.push(arena);
   const mounds=[[-6.5,-332],[6.5,-333],[-5,-341],[5.5,-340.5]];for(const[x,z]of mounds){addMesh(new THREE.CylinderGeometry(1.1,1.3,0.6,10),M(0x5d6b34),x,0.0,z);W.cyls.push({x,z,r:1.2,miny:-1,maxy:0.3,on:true});}
