@@ -25,7 +25,8 @@ function leshMesh23(){const g=new THREE.Group();W.group.add(g);const m=M(0xd0c8a
   for(const s of[-1,1])part(g,new THREE.SphereGeometry(0.07,6,5),MAT.dark,s*0.17,0.25,0.75);const t=part(g,new THREE.ConeGeometry(0.4,0.5,4),m,0,0,-1.0);t.rotation.x=-Math.PI/2;t.scale.set(0.2,1,1);
   if(typeof regNpc==='function')regNpc({g,body:g},'leshch');return {g};}
 build23=function(){
-  W.zvenAway=true;W.world=2;W.bubbles=false;setTheme('sea');sky('day');W.name='2-3 · «Невод»';W.sub='Подводный Китеж · на четверых · невод из клубков · напев «Течение» · к Рыбе-киту';W.camX=12;const F=W.flags;F.task=1;
+  W.zvenAway=true;W.world=2;W.bubbles=false;setTheme('sunset');sky('sunset');   // вечернее озеро (разбор мира 2, c24)
+  W.name='2-3 · «Невод»';W.sub='Подводный Китеж · на четверых · невод из клубков · напев «Течение» · к Рыбе-киту';W.camX=12;const F=W.flags;F.task=1;
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.gusli=true;W.abil.clew=false;W.fallY=-7;W.waterCol=0x2f86c8;W.waterOp=0.42;
   const sand=M(0xe2c98f),rock=M(0x8a8680),dark=M(0x3a4a50);
   const sea=new THREE.Mesh(new THREE.PlaneGeometry(600,600),M(0x3a90c0));sea.rotation.x=-Math.PI/2;sea.position.set(0,-2.6,-90);W.group.add(sea);
@@ -63,7 +64,7 @@ build23=function(){
   const z2=waterZone(-12,12,-24.6,-17.4,-3,-0.15,{floor:-3,shell:{x:6,z:-16.7,y:0},op:0.42});
   const N1=makeNet([[-10.5,-4.5],[-3.5,-4.5],[-10.5,-11.5],[-3.5,-11.5]],z1,{minx:-9.8,maxx:-4.2,minz:-10.8,maxz:-5.2},{need:3,fuse:true,id:1});
   const N2=makeNet([[-3.4,-16.7],[3.4,-16.7],[-3.4,-25.3],[3.4,-25.3]],z2,{minx:-3.4,maxx:3.4,minz:-25,maxz:-17},{need:3,id:2});
-  const N3=makeNet([[3.9,-4.1],[5.8,-4.1],[7.7,-4.1],[9.6,-4.1]],z3,{minx:4.2,maxx:9.8,minz:-10.8,maxz:-5.2},{need:4,order:true,id:3});
+  const N3=makeNet([[3.9,-4.1],[5.8,-4.1],[7.7,-4.1],[9.6,-4.1]],z3,{minx:4.2,maxx:9.8,minz:-10.8,maxz:-5.2},{need:1,order:true,id:3});   // кольца рыбки обходит один герой (c26)
   // улов: сундук на дне первой заводи; золотая рыбка — в водорослях третьей
   const ch=chest(-6.4,-2.4,-8,{});ch.g.position.y=-2.4;ch.lock=true;let hauled=false;
   const netRef={net:true};const chasmNC={minx:-12,maxx:12,miny:-10,maxy:12,minz:-24.6,maxz:-17.4};W.noCarry.push(chasmNC);   // через пропасть «Звенышко подтянуло» не переносит
@@ -120,8 +121,9 @@ build23=function(){
       says:[[0.3,4,null,'<i>У самого синего моря старик сидит —</i><br><i>Невод чинит, а в неводе — дыра на дыре, только нить.</i>',true],[4.5,3.4,'rybka','Вытащите меня — звено отдам вам, право!'],[8.4,3.4,'zven','Видите четыре камня со знаком клубка?<br>Встань у камня, брось клубок — пусть летит издалека!']],
       tick:(t)=>{st.arms.forEach((a,i)=>{a.rotation.x=Math.sin(t*4+i)*0.3;});fish.g.position.y=-2.0+Math.sin(t*2)*0.1;}});}
   function fishEnd(){const T=HERO;F.task=4;N3.done=true;
-    play({dur:20.4,fov:46,shots:[shot(0,[2.4,2.8,-1.6],[7,0.2,-8]),shot(6.2,[-5,2.2,7],[-8.2,1,3.6]),shot(9.6,[0,6,4],[0,0,-8])],
-      says:[[0.3,3,'rybka','Спасибо! Звено — ваше, берите.'],[3.4,2.8,'rybka','А невод из ваших ниток — крепче всех, скажу вам вправду.'],[6.4,2.8,'starik','Ну вот. И чинить не надо, старуха не заругает.'],[9.6,3,null,'<i>Звено — в копилку. Кит у берега ждёт.</i>',true],[12.8,3.8,'rybka','А за свободу — вторая струна вам: напев «Течение». Ракушка с рыбкой — и вода побежит, куда скажете.'],[16.8,3.4,'rybka','А язык колокола Китежа Рыба-кит проглотил — у него в брюхе и ищите.']],
+    play({dur:26.6,fov:46,shots:[shot(0,[2.4,2.8,-1.6],[7,0.2,-8]),shot(6.2,[-5,2.2,7],[-8.2,1,3.6]),shot(9.6,[0,6,4],[0,0,-8]),shot(20.2,[2.4,2.8,-1.6],[7,0.2,-8])],
+      says:[[0.3,3,'rybka','Спасибо! Звено — ваше, берите.'],[3.4,2.8,'rybka','А невод из ваших ниток — крепче всех, скажу вам вправду.'],[6.4,2.8,'starik','Ну вот. И чинить не надо, старуха не заругает.'],[9.6,3,null,'<i>Звено — в копилку. Кит у берега ждёт.</i>',true],[12.8,3.8,'rybka','А за свободу — вторая струна вам: напев «Течение». Ракушка с рыбкой — и вода побежит, куда скажете.'],[16.8,3.4,'rybka','А язык колокола Китежа Рыба-кит проглотил — у него в брюхе и ищите.'],
+        [20.4,2.8,'pelageya','<i>(шёпотом)</i> Рыбка… а можно — чтобы меня слышали?'],[23.3,3.2,'rybka','Это желанье не моё, девочка. Его ты сама исполнишь.']],   // дуга Пелагеи (c20)
       events:[{t:1.0,fn:()=>{const L=link3;L.locked=false;L.g.visible=true;anim(0.8,k=>{L.base=0.6+k*0.6;});later(1.4,()=>takeItem(L,HERO.pelageya));}},{t:3.6,fn:()=>{anim(2,k=>{fish.g.position.y=0.2-k*2.6;});}}],
       tick:(t)=>{st.arms.forEach((a,i)=>{a.rotation.x=0.4+Math.sin(t*3+i)*0.2;});},end:()=>{openSouth();}});}
   W.updates.push(dt=>{
@@ -132,7 +134,7 @@ build23=function(){
       if(S.set&&S.thread.visible){const to=new V3(S.net.c.x,S.net.y+0.1,S.net.c.z),from=new V3(S.x,0.3,S.z);S.thread.position.copy(from);S.thread.lookAt(to);S.thread.scale.z=from.distanceTo(to);}}
     for(const N of nets){N.held=N.corners.filter(c=>c.set&&c.hero).length;N.tight=N.formed&&N.held>=N.need;const want=(N.tight||N.perm)?Math.max(N.zone.level,N.zone.floor):N.zone.floor;
       const was=N.y;N.y=damp(N.y,want,N.tight||N.perm?6:2.5,dt);N.grid.position.y=N.y+0.05;N.grid.scale.y=1;N.grid.children.forEach((c,i)=>{c.position.y=(N.tight||N.perm)?0:Math.sin(i*1.3+G.time)*0.08;});
-      if(N.formed&&!N.done&&N.zone.state==='high'&&!(N.tight||N.perm)&&N.zone.t>=1&&!N.sagTold){N.sagTold=true;banner('Невод провисает!','#ffd0d0',1.8,N.id===3?'рыбку подымет лишь невод, что держат все четверо':'углов меньше трёх — невод провиснет, и улов уйдёт на дно');}
+      if(N.formed&&!N.done&&N.zone.state==='high'&&!(N.tight||N.perm)&&N.zone.t>=1&&!N.sagTold){N.sagTold=true;banner('Невод провисает!','#ffd0d0',1.8,N.id===3?'встань на кольцо — держи невод, и прилив':'углов меньше трёх — невод провиснет, и улов уйдёт на дно');}
       if(N.zone.state==='low')N.sagTold=false;}
     // улов 1: сундук поднимается в неводе и едет на берег
     if(!hauled){ch.g.position.y=N1.y;ch.pos.y=N1.y;if(N1.y>-0.55){hauled=true;N1.done=true;SFX.ok();banner('Сундук в неводе — улов!','#ffd76a',1.6,'тянем на берег, тянем');const from=ch.g.position.clone(),to=new V3(-7,0,-3.4);
@@ -276,29 +278,29 @@ build23=function(){
     prompt(pi,'item',()=>headOf(h()),()=>{const S=onStone(h());return !!S&&!S.set&&(!S.net.order||S.net.next===S.num);},'клубок к серединке');
     prompt(pi,'swap',()=>headOf(other(pi)),()=>{const S=onStone(h());return !!S&&S.set&&!onStone(other(pi))&&!(F.task===2&&pi===1&&T.yosha.active);},'второй — на другой камень');
     prompt(pi,'item',()=>headOf(h()),()=>{const S=onStone(h());return !!S&&S.set&&S.net.formed&&S.net.zone.state==='low'&&S.net.held>=S.net.need;},'прилив!');
-    prompt(pi,'call',()=>headOf(h()),()=>{const S=onStone(h());return !!S&&S.set&&S.net===N3&&N3.corners.filter(c=>c.set).length<4&&!players[1-pi].heroes.some(q=>onStone(q));},'позови друга');}
+}
   prompt(1,'skill',()=>headOf(T.yosha),()=>N1.laid&&!N1.formed&&T.yosha.active&&hd(T.yosha.pos,{x:-7,z:-8})<4.5,'мёртвая вода');
   prompt(1,'swap',()=>headOf(T.yosha),()=>N1.laid&&!N1.formed&&T.pelageya.active,'Йоша');
   prompt(1,'jumpHold',()=>headOf(T.pelageya),()=>F.task===2&&T.pelageya.active&&T.pelageya.pos.y>2.8&&!N2.corners[2].set&&!N2.corners[3].set,'лети за пропасть');
   /* ---------- задачи ---------- */
-  const t1=pi=>O(()=>'Первое дело — сундук на дне. Видишь четыре камня со знаком клубка?<br>Встань на камень, брось клубок '+K(pi,'item')+' к середине. У каждого — два героя: сменяй '+K(pi,'swap')+' слегка.',()=>N1.laid,()=>N1.corners.filter(c=>!c.set).map(c=>c.g));
-  const t1b=pi=>O(pi?()=>'Нити встретились! Йоша, мёртвой водой '+K(1,'skill')+' серёдку полей —<br>Нити срастутся в сеть, скорей!':'Нити встретились! Сейчас Йоша их мёртвой водой срастит…',()=>N1.formed,()=>[ch.g]);
-  const t1c=pi=>O(()=>'Держите углы невода (хоть три) и прилив '+K(pi,'item')+' — вот и всё:<br>Невод всплывёт, и сундук с собой унесёт.',()=>ch.open||F.task>1,()=>[z1.shell.g,ch.g]);
-  const t2=pi=>O(pi?()=>'Второе: звено над течением висит. Пелагеей на утёс, прыгни, держи '+K(1,'jump')+' — к дальнему камню перелетишь.<br>Три угла да прилив — невод станет мостом, и к звену Йоша дойдёт, глядишь.':()=>'Второе: звено над течением висит. Героев на ближние камни поставь, клубки '+K(0,'item')+' бросай.<br>Три угла да прилив — невод станет мостом, так и знай.',
+  // задачи: одна карточка — одно действие, полный текст ≤ 20 слов (разбор мира 2, c09)
+  const t1=pi=>O(()=>'Сундук на дне. Встань на камень с клубком, брось клубок '+K(pi,'item')+' к середине.<br>Смени героя '+K(pi,'swap')+' — и на следующий камень.',()=>N1.laid,()=>N1.corners.filter(c=>!c.set).map(c=>c.g));
+  const t1b=pi=>O(pi?()=>'Нити встретились! Йоша, полей серёдку мёртвой водой '+K(1,'skill')+' — нити срастутся.':'Нити встретились! Сейчас Йоша их мёртвой водой срастит…',()=>N1.formed,()=>[ch.g]);
+  const t1c=pi=>O(()=>'Держите три угла и сыграйте прилив '+K(pi,'item')+' — невод поднимет сундук.',()=>ch.open||F.task>1,()=>[z1.shell.g,ch.g]);
+  const t2=pi=>O(pi?()=>'Звено над течением. Пелагеей — на утёс, прыгни и держи '+K(1,'jump')+':<br>перелетишь к дальнему камню.':()=>'Звено над течением. Поставь героев на ближние камни, брось клубки '+K(0,'item')+'.<br>Три угла и прилив — невод станет мостом.',
     ()=>F.task>2,()=>N2.corners.filter(c=>!c.set).map(c=>c.g).concat([link2.g]));
-  const t3=pi=>O(()=>{const set=N3.corners.filter(c=>c.set).length,held=N3.corners.filter(c=>c.hero).length;
-    if(set<4)return 'Золотая рыбка! Пред ней четыре кольца в ряд.<br>Встань на кольцо «'+N3.next+'», брось клубок '+K(pi,'item')+'. По порядку: 1, 2, 3, 4 — как велят.';
-    if(held<4)return 'Невод готов! Все четыре героя — на кольца: '+held+' / 4.<br>Смени '+K(pi,'swap')+' — веди второго героя на свободное кольцо, как по струнке.';
-    return 'Все четверо на кольцах! Прилив '+K(pi,'item')+' сыграй —<br>Невод рыбку подымет, так и знай!';},()=>F.task>3,()=>N3.corners.filter(c=>!c.set||!c.hero).map(c=>c.g).concat([fish.g]));
-  const tP=pi=>O(()=>'Рыбка подарила напев «Течение»! Протока — на юге, за скалой.<br>Ракушка с рыбкой на причале: сыграй '+K(pi,'item')+' — вода побежит, куда смотришь, и плот поплывёт. Сменишь героя — оставленный доиграет.',
+  const t3=pi=>O(()=>{const set=N3.corners.filter(c=>c.set).length;
+    if(set<4)return 'Золотая рыбка! Встань на кольцо «'+N3.next+'», брось клубок '+K(pi,'item')+'.<br>По порядку: 1, 2, 3, 4.';
+    return 'Невод готов! Стой на кольце и сыграй прилив '+K(pi,'item')+' — невод поднимет рыбку.';},()=>F.task>3,()=>N3.corners.filter(c=>!c.set).map(c=>c.g).concat([fish.g]));
+  const tP=pi=>O(()=>'Напев «Течение»! Протока — на юге. Сыграй '+K(pi,'item')+' у ракушки с рыбкой:<br>вода побежит, куда смотришь, и плот поплывёт.',
       ()=>WH.met||F.task>=6,()=>[RAFT.g].concat(C1.shells.map(s=>s.g)));
-  const tW=pi=>O(pi?()=>'Водоворот держит плот! Кто-то воду крутит. Совиный взор '+K(1,'skill')+' покажет тайное течение — на уступе у стены.<br>Сыграй его '+K(1,'item')+' — водоворот распадётся.':
-      ()=>'Водоворот держит плот! Кто-то воду крутит. Пелагея Совиным взором покажет тайное течение — на уступе у стены.<br>Сыграй его '+K(0,'item')+' — водоворот распадётся.',()=>F.task>=6,()=>C2.off?[whirl.m]:C2.shells.map(s=>s.g));
-  const tY=pi=>O(()=>'Ёрш Ершович в озере озорует! Невод поперёк озера держат двое на камнях — и оставленные держат.<br>Двое у раковин — течения навстречу '+K(pi,'item')+': одно течение ёрш проскочит, два — зажмут его посредине.',()=>F.task>=7,()=>NS.filter(s=>!s.hero).map(s=>s.g).concat([yorsh.g]));
-  const tR=pi=>O(()=>'Ёрш проводит к Рыбе-киту! Лодка старика — у причала: все в лодку '+K(pi,'jump')+'.<br>Ракушка с рыбкой на причале: сыграй «Течение» '+K(pi,'item')+' — и запрыгивай, пока лодка не уплыла. Сменишь героя — оставленный доиграет.',
+  const tW=pi=>O(pi?()=>'Водоворот держит плот! Совиный взор '+K(1,'skill')+' покажет тайное течение у стены.<br>Сыграй его '+K(1,'item')+'.':
+      ()=>'Водоворот держит плот! Пелагея Совиным взором найдёт тайное течение у стены.<br>Сыграй его '+K(0,'item')+'.',()=>F.task>=6,()=>C2.off?[whirl.m]:C2.shells.map(s=>s.g));
+  const tY=pi=>O(()=>'Ёрш в озере! Двое держат невод на камнях.<br>Двое у раковин — течения навстречу '+K(pi,'item')+': зажмут ерша.',()=>F.task>=7,()=>NS.filter(s=>!s.hero).map(s=>s.g).concat([yorsh.g]));
+  const tR=pi=>O(()=>'Лодка старика — у причала. Сыграй «Течение» '+K(pi,'item')+' у ракушки<br>и прыгай в лодку '+K(pi,'jump')+', пока не уплыла.',
       ()=>F.task>=10,()=>[RAFT3.g].concat(C3.shells.map(s=>s.g)));
-  const tK=pi=>O(()=>'Заросли водорослей поперёк протока — лодку не пускают, вплавь не пролезть.<br>Руби '+K(pi,'attack')+' с носа лодки — и течение понесёт дальше, к отмели.',()=>F.task>=11,()=>KELP.filter(K=>!K.gone).map(K=>K.g).concat([RAFT3.g]));
-  const tT=pi=>O(()=>'Рыба-кит спит, пасть на замке, — а язык колокола у него в брюхе. Ёрш шепчет: зевнёт, коль усы пощекотать!<br>Все четыре разом: нижние — удар '+K(pi,'attack')+', верхние — рогатка Прошки '+K(0,'skill')+'. Храпнёт — отходи в сторону!',
+  const tK=pi=>O(()=>'Заросли поперёк протока! Руби их '+K(pi,'attack')+' с носа лодки.<br>Щуки Водяного плюются — отбивай щитом '+K(pi,'guard')+'.',()=>F.task>=11,()=>KELP.filter(K=>!K.gone).map(K=>K.g).concat([RAFT3.g]));
+  const tT=pi=>O(()=>'Пасть кита на замке, а язык колокола — в брюхе. Пощекочите усы — зевнёт!<br>Нижние — удар '+K(pi,'attack')+', верхние — рогатка Прошки '+K(0,'skill')+'.',
       ()=>F.task>=12,()=>WHI.filter(S=>S.t<=0).map(S=>S.ball));
   const tM=pi=>O(()=>'Кит зевает! Все — в пасть, за языком колокола!',()=>false,()=>[maw]);
   for(const pi of[0,1])W.objectives[pi]=[t1(pi),t1b(pi),t1c(pi),t2(pi),t3(pi),tP(pi),tW(pi),tY(pi),O('Рыбий суд…',()=>F.task>=9,()=>[]),tR(pi),tK(pi),tT(pi),tM(pi)];

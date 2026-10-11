@@ -126,7 +126,7 @@ function stoveMesh22(){const g=new THREE.Group();W.group.add(g);const wh=M(0xf4e
   for(let i=0;i<6;i++)addMesh(new THREE.BoxGeometry(0.18,0.18,0.02),M([0x3a7ac0,0xc0302a,0xe0a020][i%3]),-1.0+i*0.4,0.12,1.71,body);   // изразцы
   g.traverse(c=>{c.userData.noBatch=true;});return {g,body,chim:sm,face};}
 build22=function(){
-  W.zvenAway=true;W.world=2;W.bubbles=false;setTheme('sea');sky('day');W.name='2-2 · «Чудо-юдо Рыба-кит»';W.sub='Подводный Китеж · кит дышит · одна вода на двоих · по щучьему велению';W.camX=10;const F=W.flags;W.k22=true;W.wade=h=>h.prilip?0.55:1;
+  W.zvenAway=true;W.world=2;W.bubbles=false;setTheme('sea');sky('day');W.name='2-2 · «Чудо-юдо Рыба-кит»';W.sub='Подводный Китеж · кит дышит · перелив через заслонку · по щучьему велению';W.camX=10;const F=W.flags;W.k22=true;W.wade=h=>h.prilip?0.55:1;
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.gusli=true;W.fallY=-5;W.waterCol=0x2f86c8;W.waterOp=0.42;
   const grass=M(0x7ab060),skinSide=M(0x5a6a86),soil=M(0x6a4a2a),wood=M(0x9a6a3c);
   // море и облака
@@ -167,7 +167,7 @@ build22=function(){
   const n1=nutItem(-7.6,-1.3,-12);
   hut(-9.6,-5,-21.6,-17.5,2.9,0xc86a4a);hut(5,9.6,-13.6,-10,2.9,0xc8a04a);const n2=nutItem(7.3,3.4,-11.8);
   box(-10,10,0,2.3,-23.2,-22.2,wood,{occ:false});for(let x=-9.6;x<10;x+=0.8)addMesh(new THREE.ConeGeometry(0.1,0.3,4),wood,x,2.45,-22.7);
-  const Z1=waterZone(-10,10,-22.2,-7,0,2.6,{shared:true,shell:{x:0,z:-7.6,y:0}});
+  const Z1=waterZone(-10,10,-22.2,-7,0,2.6,{shell:{x:0,z:-7.6,y:0}});
   bell(0,-24.8);
   /* ---------- 2. огород и мачта: нужен порядок ---------- */
   ground(-10,10,-52,-24,0,grass,skinSide);
@@ -182,7 +182,7 @@ build22=function(){
   beds(-9.5,-2,-33,-27.5);beds(-9.4,-1.5,-49.5,-46);
   const jug=new THREE.Group();jug.position.set(-3.2,0,-43);W.group.add(jug);addMesh(new THREE.CylinderGeometry(0.32,0.42,0.9,12),M(0xb8703a),0,0.45,0,jug);addMesh(new THREE.CylinderGeometry(0.2,0.28,0.3,12),M(0xb8703a),0,1.05,0,jug);
   const jugNut=nutItem(-3.2,0.5,-43);jugNut.locked=true;jugNut.g.visible=false;
-  W.lifts.push({pos:new V3(-3.2,0,-43),active:()=>!F.jug&&Z2.level<=Z2.floor+0.3,onLift:(h)=>{F.jug=true;SFX.toss();anim(0.8,k=>{jug.position.y=Math.sin(k*Math.PI)*1.6;jug.rotation.z=k*2.4;jug.position.x=-3.2+k*1.2;});
+  W.lifts.push({pos:new V3(-3.2,0,-43),active:()=>!F.jug&&ZL.level<=ZL.floor+0.3,onLift:(h)=>{F.jug=true;SFX.toss();anim(0.8,k=>{jug.position.y=Math.sin(k*Math.PI)*1.6;jug.rotation.z=k*2.4;jug.position.x=-3.2+k*1.2;});
     later(0.4,()=>{jugNut.locked=false;jugNut.g.visible=true;});bark(h,'potap','Тяжёлый! Как… э-э… как положено.',2);}});
   // Игроку 2: стена огорода — лаз у самой земли (в отлив Йоша пролезет), за стеной калитка; бочка, из которой прилив поднимет орешек
   box(1.2,5,0,3.6,-38,-37,wood);box(6,10,0,3.6,-38,-37,wood);box(5,6,0.8,3.6,-38,-37,wood);
@@ -191,18 +191,25 @@ build22=function(){
   const gardenLink=linkItem(4,1.1,-48.8);
   const barrel=new THREE.Group();barrel.position.set(4.2,0,-30.5);W.group.add(barrel);barrelMesh(barrel,1.6,1.8,1.6);W.cyls.push({x:4.2,z:-30.5,r:0.8,miny:-1,maxy:1.8,on:true});
   hut(7,9.6,-33,-28,3.3,0xc86a4a);
-  const Z2=waterZone(-10,10,-50,-25.5,0,3.0,{shared:true,shell:{x:0,z:-25.2,y:0}});
-  const barrelNut=floatItem(nutItem(4.2,0.5,-30.5),Z2,0.45);
+  // перелив (разбор мира 2, c07): вместо общей воды с «просьбой» — две грядки-заводи по сторонам частокола, вода одна на двоих через заслонку,
+  // как на Переливной улице 2-1. Потап держит заслонку; прилив у одного — отлив у другого. Слева сперва отлив (мачте нужен прилив), справа прилив (лазу нужен отлив):
+  // один перелив — и обоим хорошо; обратный перелив — бонус: кувшин на дне слева и орешек из бочки справа.
+  const ZL=waterZone(-10,-0.5,-50,-25.5,0,3.0,{start:'low',shell:{x:-1.4,z:-25.2,y:0}});ZL.heavy=true;
+  const ZR=waterZone(0.5,10,-50,-25.5,0,3.0,{start:'high',shell:{x:1.4,z:-25.2,y:0}});
+  const SLU2=FIN.kwSluice(-1.7,0,-29,{heavy:true,gate:{x:-0.56,z:-29,w:1.6,h:1.3,ry:Math.PI/2}});
+  FIN.kwLink(ZL,ZR,{open:()=>SLU2.held(),via:new V3(0,0.6,-29),closedText:'Заслонка закрыта — воде некуда уйти. Потапа на неё поставь!'});
+  const Z2=ZL;
+  const barrelNut=floatItem(nutItem(4.2,0.5,-30.5),ZR,0.45);
   const G2={open:false};const gm=W.group.children.length;const g2col=colBox(-10,10,0,3.4,-51.2,-50.4);const g2=new THREE.Group();W.group.add(g2);
   for(let x=-9.5;x<10;x+=1.0)addMesh(new THREE.BoxGeometry(0.8,3.2,0.3),wood,x,1.6,-50.8,g2);addMesh(new THREE.BoxGeometry(20,0.2,0.4),M(0x5a3214),0,2.6,-50.8,g2);fadeable(g2);
-  const crabs=[crab(-7,-30,Z2,{pi:0}),crab(-3.8,-31.5,Z2,{pi:0}),crab(-6,-47.5,Z2,{pi:0}),crab(6,-42,Z2,{pi:1}),crab(3.2,-45.5,Z2,{pi:1})];
+  const crabs=[crab(-7,-30,ZL,{pi:0}),crab(-3.8,-31.5,ZL,{pi:0}),crab(-6,-47.5,ZL,{pi:0}),crab(6,-42,ZR,{pi:1}),crab(3.2,-45.5,ZR,{pi:1})];
   const inBeds=e=>(e.pos.x>-9.6&&e.pos.x<-1.9&&((e.pos.z<-27.4&&e.pos.z>-33.1)||(e.pos.z<-45.9&&e.pos.z>-49.6)))||(e.pos.x>1.7&&e.pos.z<-39.9&&e.pos.z>-48.1);
   crabs.forEach(e=>{e.beds=inBeds;});
   bell(-3,-26.6);bell(3,-26.6);
   /* ---------- 3. дыхание кита: фонтан в прилив — до облаков ---------- */
   ground(-10,10,-72,-52,0,grass,skinSide);bell(0,-52.8);
   hut(-9.6,-6.4,-60,-56.5,2.9,0xc8a04a);hut(6.4,9.6,-66,-62.5,2.9,0xc86a4a);const n5=nutItem(8,3.45,-64.2);
-  const Z3=waterZone(-10,10,-68,-54,0,2.6,{shared:true,shell:{x:0,z:-53.7,y:0}});
+  const Z3=waterZone(-10,10,-68,-54,0,2.6,{shell:{x:0,z:-53.7,y:0}});
   const BH={x:0,z:-61};addMesh(new THREE.CylinderGeometry(1.2,1.4,0.12,18),M(0x2a3040),BH.x,0.03,BH.z).receiveShadow=true;const bhr=addMesh(new THREE.TorusGeometry(1.35,0.12,8,24),skinSide,BH.x,0.1,BH.z);bhr.rotation.x=Math.PI/2;
   const col=new THREE.Mesh(new THREE.CylinderGeometry(0.9,1.3,1,16,1,true),MB(0xe8f8ff,{transparent:true,opacity:0.55,side:THREE.DoubleSide,depthWrite:false}));col.position.set(BH.x,0,BH.z);col.visible=false;W.group.add(col);
   const bubs=[0,1].map(i=>{const m=new THREE.Mesh(new THREE.SphereGeometry(0.5,14,10),MB(0xe8fcff,{transparent:true,opacity:0.6,depthWrite:false}));m.position.set(BH.x-0.8+i*1.6,6.4+i*0.5,BH.z);W.group.add(m);return m;});
@@ -219,7 +226,7 @@ build22=function(){
     const r=addMesh(rg,M(roof||0xc8a04a),(minx+maxx)/2,4.5+top+0.55,(minz+maxz)/2);r.scale.set(w/Math.max(w,d),0.35,d/Math.max(w,d));fadeable(since(m));};
   hut2(-9.8,-5.8,-84,-79,3.0,0xc86a4a);addMesh(new THREE.BoxGeometry(1.6,2.2,0.08),M(0x3a2a1a),-7.8,5.6,-84.05);   // изба Емели: дверь
   hut2(6,9.6,-99,-95.4,2.8,0xc8a04a);const nutHut=nutItem(7.8,8.1,-97.2);
-  const PZ=waterZone(-4,4,-95,-85,2.4,4.3,{shared:true,floor:2.4,shell:{x:0,z:-84.4,y:4.5}});
+  const PZ=waterZone(-4,4,-95,-85,2.4,4.3,{floor:2.4,shell:{x:0,z:-84.4,y:4.5}});
   const LILY=[];for(let i=0;i<6;i++){const lp=addMesh(new THREE.CylinderGeometry(rand(0.35,0.55),rand(0.35,0.55),0.04,10),M(0x4f9a3a),rand(-1.6,3.4),2.45,rand(-90.6,-85.6));lp.castShadow=false;lp.userData.noBatch=true;LILY.push(lp);}   // кувшинки
   const PIKE_AT=Math.floor(Math.random()*3);
   const BUCK=[[-6.6,-87.6],[-6.6,-91.8],[6.6,-89.8]].map(([x,z],i)=>{const g=new THREE.Group();g.position.set(x,4.5,z);W.group.add(g);const wd=M(0x9a6a3c),ir=M(0x5a5a62);

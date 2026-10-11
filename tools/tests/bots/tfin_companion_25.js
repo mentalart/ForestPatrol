@@ -1,6 +1,6 @@
 //@@ wait=1500
-// релиз final06: напарник-бот проходит 2-5 «Китеж звонит» за Игрока 2 (Пелагея и Йоша): колокол на островке, колодец, нижняя и двойная звонницы, мосты-призраки, Светлояр, напев Садко,
-// стычка и главный колокол. Человека (Игрок 1) играет скрипт.
+// релиз final06: напарник-бот проходит 2-5 «Китеж звонит» за Игрока 2 (Пелагея и Йоша): колокол на островке, колодец со стычкой на дне, нижняя и двойная звонницы, мосты-призраки, Светлояр, напев Садко,
+// «три струны» у главного колокола (прилив и звон) и сам колокол. Человека (Игрок 1) играет скрипт.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
 window.CO=ZC.FIN.co;window.P=ZC.players;window.W=ZC.W;window.F=()=>ZC.W.flags;window.bot=()=>U.act(1);window.me=()=>U.act(0);window.H=ZC.HERO;
@@ -19,11 +19,13 @@ ZC.startFrom(ZC.LV('2-5'));ZC.G.manual=true;ZC.tick(30);ZC.skip();ZC.tick(60);NO
 const L=[];let last='';for(let i=0;i<60*40&&F().voice!=='sinking'&&F().voice!=='sunk';i++){ZC.tick(1);const m=CO.mode+'/'+F().voice;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}}
 L.push('voice='+F().voice,'bot='+pos(bot()),(F().voice==='sinking'||F().voice==='sunk')?'voice ok':'FAIL voice');L
 //@@
-// колодец: бот сам — оба героя в воду, отлив, на дно, звено (человек стоит на площади); ролик; прилив; наверх к решётке
+// колодец: бот сам — оба героя в воду, отлив, на дно; там стычка (пузырников и щук скрипт убирает, тягуна бот сажает на мель отливом — его добивает человек); звено (человек стоит на площади); ролик; прилив; наверх к решётке
 let t=0;while(ZC.G.cine&&t<4000){ZC.skip();ZC.tick(5);t+=5;}ZC.tick(30);
 const GW=ZC.W.waters.find(z=>z.minx===-9&&z.maxx===9&&z.minz===-26&&z.maxz===-8);const L=['voice='+F().voice+' GW='+GW.state];let last='';
-for(let i=0;i<60*70&&!(F().given===true&&GW.state==='high'&&H.pelageya.pos.z<-27.2&&H.yosha.pos.z<-27.2);i++){ZC.tick(1);if(ZC.G.cine){let t0=0;while(ZC.G.cine&&t0<4000){ZC.skip();ZC.tick(5);t0+=5;}}const m=CO.mode+'/'+GW.state+'/'+F().given;if(m!==last||i%450===0){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' oth='+pos(other()));last=m;}}
-L.push('given='+F().given,'GW='+GW.state,'pel='+pos(H.pelageya),'yos='+pos(H.yosha),(F().given===true&&H.pelageya.pos.z<-27.2&&H.yosha.pos.z<-27.2)?'well ok':'FAIL well');L
+const DW=ZC.W.dbg25();let kk=false;
+for(let i=0;i<60*90&&!(F().given===true&&GW.state==='high'&&H.pelageya.pos.z<-27.2&&H.yosha.pos.z<-27.2);i++){ZC.tick(1);if(DW.arena.started&&!kk){kk=true;L.push('arena '+(i/60).toFixed(0)+'s');ZC.W.enemies.forEach(e=>{if(e.alive&&e.kind!=='tyagun'){e.alive=false;ZC.W.group.remove(e.g);}});}
+  if(kk){const ty=ZC.W.enemies.find(e=>e.alive&&e.kind==='tyagun');if(ty&&ty.up){L.push('tyagun up '+(i/60).toFixed(0)+'s');ty.alive=false;ZC.W.group.remove(ty.g);}}if(ZC.G.cine){let t0=0;while(ZC.G.cine&&t0<4000){ZC.skip();ZC.tick(5);t0+=5;}}const m=CO.mode+'/'+GW.state+'/'+F().given;if(m!==last||i%450===0){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' oth='+pos(other()));last=m;}}
+L.push('arena='+DW.arena.started+'/'+DW.arena.cleared,'given='+F().given,'GW='+GW.state,'pel='+pos(H.pelageya),'yos='+pos(H.yosha),(F().given===true&&H.pelageya.pos.z<-27.2&&H.yosha.pos.z<-27.2)?'well ok':'FAIL well');L
 //@@
 // низкая звонница: человек — отлив слева и рогатка Прошки (F.b1); бот — прилив справа, вплавь к колоколу, удар (F.b2); ступени растут
 const L1=ZC.W.waters.find(z=>z.minx===-9&&z.maxx===-1&&z.minz===-44&&z.maxz===-30),R1=ZC.W.waters.find(z=>z.minx===1&&z.maxx===9&&z.minz===-44&&z.maxz===-30);
@@ -68,15 +70,19 @@ r.push('i2='+D.TN.i);r.push(U.walkTo(0,-5,-127.3+0.4,6));U.tap('KeyR');ZC.tick(1
 for(let i=0;i<60*8&&!F().tune;i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}}
 r.push('tune='+F().tune,'bot='+pos(bot()),F().tune?'tune ok':'FAIL tune');r.concat(L)
 //@@
-// главный колокол: стычка (бот и человек вместе), язык повешен (ролик), все четверо на круг, на «ТРИ» — прыжок; Китеж выходит из воды
+// главный колокол: у колокола тихо; «три струны» — ладья везёт Потапа с языком (ролик), все четверо на круг, на «ТРИ» — прыжок; Китеж выходит из воды
 window.FLOG=[];window.FIGHT1=(max)=>{const n=Math.round((max||30)*60);for(let i=0;i<n;i++){if(i%300===0)FLOG.push((i/60)+'s me='+pos(U.act(0))+' bot='+pos(bot())+' '+CO.mode+' en='+ZC.W.enemies.filter(e=>e.alive).map(e=>e.kind+':'+e.state+':'+(e.inf||0).toFixed(1)+'@'+e.pos.x.toFixed(0)+','+e.pos.z.toFixed(0)).join(' '));const alive=ZC.W.enemies.filter(e=>e.alive&&e.state!=='dying');if(!alive.length){REL(0);return 'cleared t='+(i/60).toFixed(1);}
   const h=U.act(0);let e=null,bd=99;for(const x of alive){const d=Math.hypot(x.pos.x-h.pos.x,x.pos.z-h.pos.z);if(d<bd){bd=d;e=x;}}const dx=e.pos.x-h.pos.x,dz=e.pos.z-h.pos.z,K=KEYS[0];
   const far=bd>1.6+e.r;ZC.hold(K.left,far&&dx<-0.3);ZC.hold(K.right,far&&dx>0.3);ZC.hold(K.up,far&&dz<-0.3);ZC.hold(K.down,far&&dz>0.3);
   if(ZC.W.bolts.some(b=>b.tgt===h&&!b.refl&&b.left===null&&b.eta<0.2))ZC.press('KeyG');const w=alive.find(x=>x.state==='wind'&&x.tgt===h);if(w){const left=w.wdur-w.t;if(w.sig==='red'){if(left<0.2)ZC.press('ShiftLeft');}else if(left<0.16&&w.left===null)ZC.press('KeyG');}
   if(!far&&((e.state==='stagger'&&!e.openHit)||e.state==='broken'||e.open>0||e.dazeT>0)&&i%9===0){h.face=Math.atan2(dx,dz);ZC.press('KeyF');}
   if(h.kind==='proshka'&&alive.some(x=>x.kind==='puzyr'&&x.inf>0.2)&&i%20===0)ZC.press('KeyE');ZC.tick(1);}REL(0);return 'TIMEOUT '+ZC.W.enemies.filter(e=>e.alive).map(e=>e.kind+':'+e.state).join();};
-const D=ZC.W.warp25('bell'),F0=D.F;ZC.tick(20);NOCINE();CO.routes['2-5'].forEach(s=>{s.fin=false;});put(me(),-1,-148,6);put(bot(),1,-148,6);put(other(),2,-147.5,6);ZC.tick(10);ACT(0,'proshka');
-const r=['arena='+D.arena.started];r.push(FIGHT1(60));r.push('cleared='+D.arena.cleared,'bot='+pos(bot())+' '+CO.mode,'alive='+ZC.W.enemies.filter(e=>e.alive).map(e=>e.kind).join());r
+// главный колокол, «три струны»: человек ведёт Потапа к ладье-призраку; бот играет прилив в бассейне и звонит в ладейный колокол; Потап — на ладью, течение, на круг
+const D=ZC.W.warp25('bell'),F0=D.F;ZC.tick(20);NOCINE();CO.routes['2-5'].forEach(s=>{s.fin=false;});ACT(0,'potap');put(me(),-1,-145.2,6);put(bot(),-4,-144.6,6);put(other(),-5,-144.6,6);ZC.tick(10);
+ZC.tick(60);NOCINE();ZC.tick(10);const r=['MZ='+D.MZ.state];r.push(U.walkTo(0,3.2,-145.3,6));let w=0;for(;w<60*40&&!(D.RB.hum>1&&D.MZ.level>6.2);w++)ZC.tick(1);r.push('ready '+(w/60).toFixed(1)+'s hum='+D.RB.hum.toFixed(1)+' MZ='+D.MZ.state+' bot='+pos(bot())+' '+CO.mode);
+ZC.hold('KeyW',true);for(let i=0;i<40;i++){if(i===2)ZC.press('Space');ZC.tick(1);}ZC.hold('KeyW',false);ZC.tick(20);r.push('aboard='+(H.potap.groundRef===D.raft.col));
+ZC.hold('KeyA',true);ZC.tick(4);ZC.hold('KeyA',false);ZC.press('KeyR');ZC.tick(150);r.push('raftX='+D.raft.x.toFixed(2));r.push(U.walkTo(0,0,-150.4,4));const c=CINE(300);
+r.push('tongue='+!!F0.tongueSc,c&&F0.tongueSc?'raft ok':'FAIL raft');r
 //@@
 // главный колокол: язык повешен; человек ставит Прошку и Потапа на два места круга, бот — своих на два других (смена героя); на «ТРИ» — прыжок вместе; три раската — «Бом»
 const D=ZC.W.dbg25(),F0=D.F;F0.tongueIn=true;ZC.tick(60);const MZ=ZC.W.waters.find(z=>z.minx===-6&&z.maxx===6&&z.minz===-156&&z.maxz===-146);const r=['MZ='+MZ.state];

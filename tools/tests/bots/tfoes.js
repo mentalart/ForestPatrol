@@ -26,11 +26,15 @@ r.push('fed '+t0+' fed='+p.fed.toFixed(1)+' guard='+p.guardAll()+' sig='+p.signa
 //@@ shot=nf_pech.png
 ZC.tick(1);
 //@@
-ZC.startFrom(ZC.LV('2-5'));ZC.G.manual=true;ZC.tick(30);const F=ZC.W.flags;const H=ZC.HERO;F.voice='sunk';F.given=true;F.b1=F.b2=F.b3=true;
-// релиз final06: в 2-5 главный колокол дальше по городу на 68 м (late_99i_k25.js) — туда переносит warp25('bell')
-const REL=!!ZC.W.warp25;if(REL){ZC.W.warp25('bell');ZC.tick(5);}const DZ=REL?-68:0;
-H.proshka.pos.set(-3,6,-76.8+DZ);H.pelageya.pos.set(3,6,-76.8+DZ);H.potap.pos.set(-4,6,-76.6+DZ);H.yosha.pos.set(4,6,-76.6+DZ);ZC.tick(40);const t=ZC.W.enemies.find(e=>e.kind==='tyagun');const MZ=ZC.W.waters.find(z=>z.minx===-6&&z.maxx===6&&z.minz===-88+DZ);
-ZC.W.enemies.filter(e=>e.kind!=='tyagun').forEach(e=>{e.alive=false;ZC.W.group.remove(e.g);});const r=['high: guard='+t.guardAll()+' up='+t.up+' y='+t.pos.y.toFixed(2)];U.walkTo(0,-4,-79.5+DZ,3);U.tap('KeyR');ZC.tick(150);r.push('low: state='+MZ.state+' up='+t.up+' guard='+t.guardAll()+' y='+t.pos.y.toFixed(2)+' side='+t.sideOpen);r
+// релиз final06: Тягун — в стычке на дне колодца 2-5 (разбор мира 2, c14, late_99i_k25.js): отлив гуслями у ракушки — герои на дне, стычка
+// начинается; на мели (отлив) Тягун открыт, приливом уходит под воду и неуязвим
+ZC.startFrom(ZC.LV('2-5'));ZC.G.manual=true;ZC.tick(30);for(let q=0;q<10&&ZC.G.cine;q++){ZC.skip();ZC.tick(3);}
+const F=ZC.W.flags,H=ZC.HERO,GW=ZC.W.dbg25().GW;F.voice='sunk';F.given=false;H.proshka.pos.set(-7.2,0.2,-9.2);ZC.tick(10);U.tap('KeyR');ZC.tick(240);
+[[-3,-14],[3,-14],[-3,-19],[3,-19]].forEach((s,i)=>{const h=[H.proshka,H.pelageya,H.potap,H.yosha][i];h.pos.set(s[0],-8.5,s[1]);h.vel.set(0,0,0);});ZC.tick(60);
+const t=ZC.W.enemies.find(e=>e.kind==='tyagun');if(!t)throw new Error('нет Тягуна в колодце: GW='+GW.state+' y='+H.proshka.pos.y.toFixed(1));
+ZC.W.enemies.filter(e=>e.kind!=='tyagun').forEach(e=>{e.alive=false;ZC.W.group.remove(e.g);});ZC.tick(30);
+const r=['low: state='+GW.state+' up='+t.up+' guard='+t.guardAll()+' y='+t.pos.y.toFixed(2)+' side='+t.sideOpen];
+U.tap('KeyR');ZC.tick(240);r.push('high: state='+GW.state+' guard='+t.guardAll()+' up='+t.up+' y='+t.pos.y.toFixed(2));r
 //@@ shot=nf_tyag.png
 ZC.tick(1);
 //@@

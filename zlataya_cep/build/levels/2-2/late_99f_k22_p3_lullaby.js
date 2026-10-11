@@ -88,7 +88,9 @@
   function breathTick(dt){if(G.cine)return;WB.t+=dt;const p=WB.per,t=WB.t%p,ph=t>p-2?'exhale':t>p-4.5?'inhale':'calm';
     if(ph!==WB.ph){WB.ph=ph;if(ph==='inhale')inhale();else if(ph==='exhale')exhale();}
     WB.k=damp(WB.k,ph==='inhale'?1:0,ph==='inhale'?1.2:3.5,dt);
-    WB.sway=damp(WB.sway,0,2.5,dt);if(Math.abs(WB.sway)>0.05)for(const h of HEROES){if(!h.active||h.cling||h.groundRef===STV.col)continue;h.pos.x=clamp(h.pos.x+WB.sway*dt,-9.6,9.6);}
+    WB.sway=damp(WB.sway,0,2.5,dt);if(Math.abs(WB.sway)>0.05)for(const h of HEROES){if(!h.active||h.cling||h.groundRef===STV.col)continue;
+      // снос на выдохе: на рёбрах (бока кита) — нет, там и так прыгать в лад; на Лёгком пути — вдвое слабее (разбор мира 2, c28)
+      if(h.pos.z<-144&&h.pos.z>-188)continue;const kp=players[h.player]&&players[h.player].path==='easy'?0.5:1;h.pos.x=clamp(h.pos.x+WB.sway*kp*dt,-9.6,9.6);}
     for(const P of WB.pines)P.top.rotation.z=Math.sin(G.time*1.3+P.g.position.z)*0.03+WB.k*0.12*Math.sin(G.time*3+P.g.position.x);}
   /* ---------- шаг нового пути ---------- */
   W.updates.push(dt=>{breathTick(dt);
@@ -133,7 +135,7 @@
         break;}}
     if(!GR.done&&GR.got>=GR.need){GR.done=true;F.grove=true;say('devica','Ой, сколько грибочков! Спасибо! Кит, пусти их — усы подними!',3.4);SFX.gate();anim(2,k=>{curtain.position.y=7*smooth(k);});curtCol.on=false;banner('Грибы собраны!','#ffd76a',2,'кит поднял усы — путь к голове открыт');}
     if(!F.groveTold&&[0,1].some(pi=>active(pi).pos.z<-306&&active(pi).pos.z>-312)){F.groveTold=true;say('devica','Грибы прячутся — не видать! Совиным бы глазом поискать…',3.2);
-      for(const p of[0,1])tip(p,'Грибы видны Совиным взором Пелагеи '+K(1,'skill')+' — светятся. Собери пять боровиков.<br>Красный с белыми точками — мухомор… да это прилипала!',4.4);}
+      for(const p of[0,1])tip(p,'Грибы видны Совиным взором Пелагеи '+K(1,'skill')+' — светятся. Собери четыре боровика.<br>Красный с белыми точками — мухомор… да это прилипала!',4.4);}
     girls.forEach((g,i)=>{g.body.rotation.x=Math.sin(G.time*1.4+i)*0.25+0.2;});
     // голова: кит ныряет — море подымается; колыбельная в два голоса
     if(!FN.dive&&F.grove&&!G.cine&&[0,1].some(pi=>active(pi).pos.z<-362))diveScene();
@@ -143,5 +145,5 @@
     if(!F.out&&FN.done&&!G.cine&&[0,1].every(pi=>active(pi).pos.y>20)&&(endLink.taken||F.cloudT>4)){F.out=true;finishLevel();}
     if(FN.done&&!G.cine)F.cloudT=(F.cloudT||0)+dt;
     });
-  /* ---------- рисунки кнопок: просьба над раковиной видна обоим ---------- */
+  /* ---------- рисунки кнопок над головой ---------- */
   const T=HERO,shellAt=z=>()=>z.shell.g.position.clone().add(new V3(0,2.6,0));

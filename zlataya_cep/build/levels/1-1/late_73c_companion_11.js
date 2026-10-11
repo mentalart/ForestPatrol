@@ -1,13 +1,13 @@
 /* ============================== РЕЛИЗ final06 · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 ============================== */
 // Бот за Игрока 2 (late_73_companion) делает то, что делал бы живой игрок за Пелагею и Йошу: оба героя садятся на пеньки «с лапками» и на «ТРИ» жмут приём;
 // после кикиморок носит мусор в кучу у забора и берёт корыто вдвоём с человеком; кидает клубок на грядки и идёт по нити; у лужи кидает нить навстречу
-// нити друга; у калитки держит лапку и проходит по очереди (калитка открыта, только пока лапки нажаты); за калиткой съедает яблоко,
-// несёт полено и брёвна вдвоём с человеком, переходит молочную речку по своей нити; вороны Кощея его героев не хватают. Бой с кикиморками ведёт общий бой бота. Положения — из proto/levels/1-1.js.
+// нити друга; у калитки держит лапку и проходит по очереди (калитка открыта, только пока лапки нажаты); за калиткой (стог
+// и ступу Яги делает человек: ступу поднимает только его Потап) переходит ручей по своей нити и носит брёвна вдвоём с человеком; вороны Кощея его героев не хватают. Бой с кикиморками ведёт общий бой бота. Положения — из proto/levels/1-1.js.
 const S11={w:null,v:{},thr:0,stump:{},dv:0,dt:0,rx:0};
 const s11=(k,f)=>{if(S11.w!==W){S11.w=W;S11.v={};S11.thr=0;S11.stump={};S11.dv=0;S11.dt=0;S11.rx=0;}return S11.v[k]||(S11.v[k]=!!f());};   // «уже было»: запоминается на заход в уровень
 const s11F=()=>W.flags,s11Th=(h,pit)=>W.threads.find(t=>t.owner===1&&!t.ret&&!t.string&&t.hero===h&&(t.sz<-55)===!!pit);   // нить героя на грядках (pit=false) или у лужи (true)
 // кто из героев Игрока 2 ещё не перешёл z<zEnd: сначала ведомый нами, потом другой
-// нести вдвоём (полено у печки, брёвна теремка): несут — идёт рядом с человеком; человек подошёл к лежачему — встаёт с другой стороны
+// нести вдвоём (брёвна теремка; Потап человека несёт и один): несут — идёт рядом с человеком; человек подошёл к лежачему — встаёт с другой стороны
 function s11Carry(h,hh,list){if(s11F().stage!=='crows')return 'follow';const c=list.find(L=>L.state==='carry');if(c){cmpGoto(h,hh.pos.x,hh.pos.z,1.3);return;}
   const L=list.filter(L=>L.state==='ground'&&hd(L.g.position,hh.pos)<4).sort((a,b)=>hd(a.g.position,hh.pos)-hd(b.g.position,hh.pos))[0];if(!L)return 'follow';
   const p=L.g.position,sd=hh.pos.x<p.x?1:-1;cmpGoto(h,p.x+sd*0.9,p.z,0.3);}
@@ -70,12 +70,12 @@ CMP.route('1-1',[
     if(outs.length===1){const k=outs[0],i=k==='yosha'?'pelageya':'yosha';if(inn){pass(k);return;}if(!on(i,PL[3])){stand(i,PL[3]);return;}if(!on(k,PL[1]))stand(k,PL[1]);return;}
     if(HEROES.some(q=>q.pos.z>-108.4)){if(!on('pelageya',PL[3]))stand('pelageya',PL[3]);else if(!on('yosha',PL[2]))stand('yosha',PL[2]);return;}
     return 'follow';}},
-  // за калиткой: вороны бота не трогают (W.ravSkip); яблоко — съесть одно; полено и брёвна — нести вдвоём с человеком; речку — по своей нити
-  {id:'apple',done:()=>!!s11F().appleHide||HERO.pelageya.pos.z<-150,run:h=>{if(s11F().stage!=='crows'||!s11F().shaken)return 'follow';
-    const ap=W.part11.APL.filter(a=>a.down&&!a.eaten).sort((a,b)=>hd(a,h.pos)-hd(b,h.pos))[0];if(!ap)return 'follow';cmpGoto(h,ap.x,ap.z,0.25);}},
-  {id:'log',done:()=>!!s11F().smoke,run:(h,hh)=>s11Carry(h,hh,[W.part11.LG])},
+  // за калиткой: вороны бота не трогают (W.ravSkip); стог и ступу делает человек; брёвна — вдвоём с человеком; ручей — по своей нити
   {id:'river',done:()=>s11Todo(-205,'riv').length===0,run:(h,hh)=>{if(s11F().stage!=='crows'||hh.pos.z>-184)return 'follow';
-    const td=s11Todo(-205,'riv'),k=td.includes(h.kind)?h.kind:td[0];if(!cmpWant(k))return;const sd=S11.rx||(S11.rx=hh.pos.x>0?-1:1),x=sd*(h.kind==='yosha'?5:7.5);   // подальше от нити друга; у каждого героя своя дорожка (как на грядках)
+    const td=s11Todo(-205,'riv'),k=td.includes(h.kind)?h.kind:td[0];
+    // второй герой ждёт на берегу: за рощей бот звал его «Ко мне!» — шёл бы следом мимо нити и падал в ручей
+    for(const q of['pelageya','yosha'])if(q!==k&&HERO[q].pos.z>-189&&HERO[q].following){HERO[q].following=false;HERO[q].stuck=0;}
+    if(!cmpWant(k))return;const sd=S11.rx||(S11.rx=hh.pos.x>0?-1:1),x=sd*(h.kind==='yosha'?5:7.5);   // подальше от нити друга; у каждого героя своя дорожка (как на грядках)
     const th=W.threads.find(t=>t.owner===1&&!t.ret&&!t.string&&t.hero===h&&t.sz<-185);
     if(!th){if(Math.hypot(h.pos.x-x,h.pos.z+190.8)>0.45){cmpGoto(h,x,-190.8,0.25);return;}s11Throw(h);return;}
     if(th.grow&&th.len<13)return;cmpGoto(h,th.sx,-206.6,0.3);}},

@@ -1,13 +1,12 @@
 /* ============================== РЕЛИЗ final06 · 2-2 «РЫБА-КИТ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 ============================== */
-// Вода на хребте кита общая: ракушка посередине — «просьба»; через две секунды вода сменится у обоих (пока никто не прыгает над участком). Бот просит воду, только когда она нужна и друг
-// уже ничего не просит; пока просьба висит — стоит смирно (прыжок «ведомого» в зоне задерживает смену воды). Положения — из build/levels/2-2/late_99f_k22*.js.
+// Вода на хребте кита — обычная: гусли меняют воду там, где стоишь. В огороде — перелив: две заводи по сторонам частокола, вода одна на двоих, пока Потап держит заслонку.уг
+// Бот играет воду сам, только когда она ему нужна и друг не плывёт в этой воде. Положения — из build/levels/2-2/late_99f_k22*.js.
 const K22={w:null,t:0,tide:0,ow:0,sw:0};
 const k22=()=>{if(K22.w!==W){K22.w=W;K22.t=0;K22.tide=0;K22.ow=0;K22.sw=0;}return K22;};
-const k22Z=(a,b)=>W.waters.find(z=>z.shared&&z.minz===a&&z.maxz===b);
-// вода зоны z должна быть want: просит (если никто не просит), ускоряет просьбу друга; true — уже такая и устоялась
-const k22Water=(h,z,want)=>{if(z.state===want&&!z.req)return z.t>=1;
-  if(z.req){if(z.req.pi!==1&&z.req.want===want&&!(K22.tide>G.time-0.8)){K22.tide=G.time;cmpTap('item');}return false;}      // просит друг то же самое — «Давай!»
-  if(inZone(z,h,1.3)&&!(K22.tide>G.time-0.9)){K22.tide=G.time;cmpTap('item');}return false;};
+const k22Z=(a,b,x)=>W.waters.find(z=>z.minz===a&&z.maxz===b&&(x===undefined||(x>z.minx&&x<z.maxx)));
+// вода зоны z должна быть want: стоит в воде — играет сам; true — уже такая и устоялась
+const k22Water=(h,z,want)=>{if(z.state===want)return z.t>=1;
+  if(zoneAt(h)===z&&!(K22.tide>G.time-0.9)){K22.tide=G.time;cmpTap('item');}return false;};
 // оба героя Игрока 2 дальше линии z (идёт на юг: меньше z) / шаг для того, кто ещё не прошёл; активный — первым
 const k22Past=z=>HERO.pelageya.pos.z<z&&HERO.yosha.pos.z<z;
 const k22Each=(z,fn)=>(h,hh,dt)=>{const need=['pelageya','yosha'].filter(k=>HERO[k].pos.z>=z);if(!need.length)return 'follow';const k=need.includes(h.kind)?h.kind:need[0];if(!cmpWant(k))return;return fn(h,hh,dt);};
@@ -17,25 +16,26 @@ const K22_CLOUD=[[0.6,-64.3],[3,-69.6],[3,-75.5]];
 CMP.route('2-2',[
   // забор: прилив — вплавь через забор (вода общая)
   {id:'fence',done:()=>k22Past(-24),run:k22Each(-24,(h,hh)=>{k22();const Z=k22Z(-22.2,-7);if(!Z||h.pos.z>3)return 'follow';
-    if(!(Z.state==='high'&&Z.t>=1)){if(Z.state==='high'||Z.req)k22Water(h,Z,'high');else if(inZone(Z,h,1.3))k22Water(h,Z,'high');else cmpGoto(h,0,-8.5,0.5);return;}
+    if(!(Z.state==='high'&&Z.t>=1)){if(Z.state==='high')return;if(zoneAt(h)===Z)k22Water(h,Z,'high');else cmpGoto(h,0,-8.5,0.5);return;}
     cmpGoto(h,0,-27,0.4);})},
-  // огород: в отлив Йоша пролезает в лаз у земли и встаёт на плиту-калитку; дальше — за человеком (ворота откроются, как друг сделает мачту; Пелагею «подтянет» ведомый)
-  {id:'yard',done:()=>!!W.flags.garden,run:(h,hh)=>{k22();const Z=k22Z(-50,-25.5),Fl=W.flags;if(!Z||h.pos.z>-24)return 'follow';
+  // огород: перелив — пока Потап на заслонке, отлив у бота = прилив у друга (ему к мачте); в отлив Йоша пролезает в лаз у земли и встаёт на плиту-калитку
+  {id:'yard',done:()=>!!W.flags.garden,run:(h,hh)=>{k22();const Z=k22Z(-50,-25.5,5),Fl=W.flags;if(!Z||h.pos.z>-24)return 'follow';
     if(!cmpWant('yosha'))return;
-    if(!(Z.state==='low'&&Z.t>=1&&!Z.req)){const hm=hh.pos.x<0.5&&hh.pos.z<-25&&!Fl.mast;if(hm&&Z.state==='high')return;                // друг плывёт к мачте — не отнимаем воду
-      k22Water(h,Z,'low');return;}
+    if(!(Z.state==='low'&&Z.t>=1)){if(Z.state==='low')return;
+      if(!(Z.kwLink&&Z.kwLink.open())){if(h.pos.x<1.2||h.pos.z<-36)cmpGoto(h,4,-30,0.5);return;}                          // ждём Потапа на заслонке
+      if(zoneAt(h)!==Z){cmpGoto(h,4,-30,0.5);return;}k22Water(h,Z,'low');return;}
     cmpPath(h,K22_HOLE,0.4,0.6);}},
   // фонтан дыхания: прилив у ракушки, встать на дыру на выдохе — до облаков; с облака на облако и на горб кита (по очереди оба героя)
   {id:'fountain',done:()=>k22Past(-72),run:k22Each(-72,(h,hh)=>{k22();const D=W.dbg22(),Z=D.Z3;if(h.pos.z>-52&&h.pos.y<6)return 'follow';
     if(h.pos.y>6.4){cmpPath(h,K22_CLOUD,0.5,0.8);return;}                                                     // на облаке: дальше по облакам
-    if(Z.state!=='high'||Z.req){if(Z.state==='high')return;if(!inZone(Z,h,1.3)){cmpGoto(h,0,-56,0.5);return;}k22Water(h,Z,'high');return;}
+    if(Z.state!=='high'){if(zoneAt(h)!==Z){cmpGoto(h,0,-56,0.5);return;}k22Water(h,Z,'high');return;}
     if(Z.t<1)return;
     cmpGoto(h,0,-61,0.35);})},
   // деревня: Совиный взор Пелагеи показывает человеку ведро со щукой; пруд общий — бот просит прилив (щуку выпустят только в полный пруд)
   {id:'village',done:()=>!!W.flags.pikeFree,run:(h,hh)=>{k22();const D=W.dbg22(),PZ=D.PZ;if(h.pos.z>-72||h.pos.y<4)return 'follow';
     const near=D.BUCK.some(b=>!b.tipped&&hd(b,hh.pos)<7);
     if(near&&hh.kind==='potap'&&W.owlT<=0){if(!cmpWant('pelageya'))return;if(!(K22.ow>G.time-1.2)){K22.ow=G.time;cmpTap('skill');}return;}   // Потап у вёдер — подсветить щуку
-    if(PZ.state!=='high'||PZ.req){if(PZ.state==='high'&&!PZ.req)return;if(!inZone(PZ,h,1.2)){cmpGoto(h,0,-84.7,0.3);return;}k22Water(h,PZ,'high');return;}
+    if(PZ.state!=='high'){if(zoneAt(h)!==PZ){cmpGoto(h,0,-84.7,0.3);return;}k22Water(h,PZ,'high');return;}
     return 'follow';}},
   // печка Емели: оба в сборе — вскочить; волна — щит; смыло — догнать и вскочить; раки на дороге — общий бой
   {id:'stove',done:()=>W.flags.stove==='done',run:h=>{const S=W.dbg22().STV;if(S.state!=='wait'&&S.state!=='ride')return 'follow';
@@ -60,7 +60,7 @@ CMP.route('2-2',[
     if(!cmpWant('pelageya'))return;
     if(W.owlT<=0.8&&!(K22.ow>G.time-1.5)){K22.ow=G.time;cmpTap('skill');return;}
     const m=D.MUSH.filter(q=>!q.got&&q.real&&q.seen>0).sort((a,b)=>hd(a,h.pos)-hd(b,h.pos))[0];
-    if(m&&hd(m,h.pos)<16){cmpGoto(h,m.x,m.z,0.3);return;}
+    if(m&&hd(m,h.pos)<30){cmpGoto(h,m.x,m.z,0.3);return;}
     return 'follow';}},
   // макушка: колыбельная в три куплета. 1 — играть у своей ракушки, когда волна дошла до круга; 2 — Совиный взор Пелагеи и звёздочки прыжком; 3 — четыре голоса: сыграл и сменил героя
   // (оставленный держит напев 15 с), второй герой играет вторую ракушку; кончается напев — вернуться к тому, чей напев стихает
