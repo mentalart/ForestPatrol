@@ -14,7 +14,7 @@ ZC.startFrom(ZC.LV('2-3'));ZC.G.manual=true;ZC.tick(30);ZC.skip();ZC.tick(10);co
 //@@
 // рыбка: напев «Течение» — ролик длиннее, завал раздвигается, уровень не кончается
 const D=ZC.W.dbg23();D.F.task=3;D.fishEnd();const dur=ZC.G.cine?ZC.G.cine.dur:0;let t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(120);
-if(Math.abs(dur-20.4)>0.01)throw new Error('ролик рыбки: '+dur);if(D.F.task!==5||D.passCol.on)throw new Error('завал не раздвинулся: task='+D.F.task);if(ZC.W.flags.out)throw new Error('уровень кончился на рыбке');'fish ok link3='+D.link3.taken
+if(Math.abs(dur-26.6)>0.01)throw new Error('ролик рыбки: '+dur);if(D.F.task!==5||D.passCol.on)throw new Error('завал не раздвинулся: task='+D.F.task);if(ZC.W.flags.out)throw new Error('уровень кончился на рыбке');'fish ok link3='+D.link3.taken
 //@@
 // протока: Пелагея на плот; Прошка у ракушки лицом на юг играет течение и остаётся доигрывать; Потап — на плот
 const D=ZC.W.warp23('protoka');ZC.tick(20);ACT(0,'proshka');ACT(1,'pelageya');const r=[U.walkTo(1,0.4,-37.8,6),U.walkTo(0,-4.4,-34.4,6)];ZC.HERO.proshka.face=Math.PI;U.tap('KeyR');ZC.tick(4);

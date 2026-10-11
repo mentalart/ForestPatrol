@@ -45,11 +45,13 @@ function k21Eyes(x,y,z){const g=new THREE.Group();g.position.set(x,y,z);g.rotati
 function k21Calm(){K21C.eyes=[];
   k21Reef(-358,8);k21Skyline(-360,8);
   for(const[x,y,z]of[[-16.4,1.4,-40],[16.4,2.2,-150],[-16.4,1.8,-262]])K21C.eyes.push(k21Eyes(x,y,z));
-  W.updates.push(dt=>{for(const E of K21C.eyes){let near=99;for(const pi of[0,1]){const h=active(pi);if(h)near=Math.min(near,Math.abs(h.pos.z-E.g.position.z));}
-    if(near<7)E.away=4;E.away=Math.max(0,E.away-dt);                                                              // заметил героя рядом — нырнул на 4 с
+  W.updates.push(dt=>vodEyesTick(K21C.eyes,dt));}
+// общий шаг глаз Водяного (2-1, 2-3, 2-4): видны, когда герой в 7…32 м по z; подошёл ближе — нырнул на 4 с; моргают
+function vodEyesTick(list,dt){for(const E of list){let near=99;for(const pi of[0,1]){const h=active(pi);if(h)near=Math.min(near,Math.abs(h.pos.z-E.g.position.z));}
+    if(near<7)E.away=4;E.away=Math.max(0,E.away-dt);
     const want=near<32&&E.away<=0?1:0;E.vis=damp(E.vis,want,want?0.8:5,dt);
     E.bt-=dt;if(E.bt<=0){E.blink-=dt;if(E.blink<=0){E.bt=0.16;E.blink=rand(2.5,6);}}
     const open=E.bt>0?0.12:1;for(const e of E.eyes)e.scale.y=0.8*open;
-    E.em.opacity=E.vis*(0.75+0.25*Math.sin(G.time*1.3));E.pu.opacity=E.vis;E.g.position.y+=Math.sin(G.time*0.7+E.g.position.z)*0.002;}});}
+    E.em.opacity=E.vis*(0.75+0.25*Math.sin(G.time*1.3));E.pu.opacity=E.vis;E.g.position.y+=Math.sin(G.time*0.7+E.g.position.z)*0.002;}}
 FIN.k21Calm=K21C;
 {const _b=build21;build21=function(){_b();try{k21Calm();}catch(err){console.error('k21 calm',err);}};}
