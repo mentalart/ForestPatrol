@@ -55,7 +55,7 @@ build34=function(){
       events:[{t:0.3,fn:()=>{SFX.grow();for(let i=0;i<10;i++)later(i*0.12,()=>burst(new V3(S.x+rand(-1.8,1.8),S.y+rand(2.5,6),S.z-0.4),0xffe0a0,4,2));}}],
       tick:(t)=>{S.y=smooth(clamp((t-4)/7,0,1))*3;ship.sailMat.emissiveIntensity=Math.min(1,t/3)*0.9;},
       end:()=>{S.y=3;placeShipCols();aboard();F.stage='fly';F.launched=true;S.speed=0;banner('Летучий корабль!','#ffd76a',2.6,'перо в фонаре горит — летим · корабль кренится, где тяжелее');
-        tip(0,'Потап тяжёл, как трое! Встанет у борта — корабль наклонится.<br>Переводи его от борта к борту — пусть корабль ровно помчится.',4);tip(1,'Пелагея держит фонарь. А ты за Йошу играй '+K(1,'swap')+' — так и знай.',3.4);}});}
+        tip(0,'Потап тяжёл: где он — туда крен.',4);say('zven','Потап тяжёл, как трое: где он встанет — туда и крен!',2.8,true);tip(1,'Смени на Йошу '+K(1,'swap')+': Пелагея светит.',3.4);}});}
   // крыло ломается: Прошка прибивает вёдра в такт (кольцо у борта сжалось — удар), Потап держит мачту; вёдра всё равно улетают
   const WG={on:false,t:0,n:0,ring:null,buckets:[],idle:0};
   function wingScene(){F.stage='wing';WG.on=true;WG.t=0;WG.n=0;WG.idle=0;SFX.whoosh();shakeAll(0.05,0.8);S.kick=0.55;
@@ -94,7 +94,7 @@ build34=function(){
       c.S.sig.visible=true;c.S.sr.visible=true;c.S.sy.visible=c.S.sb.visible=false;c.S.tRing.visible=true;c.S.tRing.scale.setScalar(lerp(1.9,0.44,clamp(c.grabT/2.2,0,1)));c.S.halo.material.color.setHex(COL.red);
       if(c.grabT>=2.2){const hp=holder?players[holder.player]:null;F.grabber=null;c.noMove=false;c.flying=false;c.pos.y=deckY(c.pos.x);
         if(holder&&hp.spirit>0.45){hp.spirit-=0.45;SFX.shield();burst(holder.pos.clone().add(new V3(0,0.9,0)),0xffffff,10,3);floatText(holder.pos.clone().add(new V3(0,holder.d.height+0.6,0)),'Щит — у фонаря!','#cfe8ff');
-          if(hp.spirit<0.5)tip(holder.player,'Щит у Пелагеи вот-вот устанет — гоните ворон от фонаря!',3);}
+          if(hp.spirit<0.5)tip(holder.player,'Гоните ворон от фонаря!',3);}
         else{S.grab=5;if(holder)holder.lit=false;SFX.crash();floatText(lan.clone().add(new V3(0,1.2,0)),'Фонарь погас!','#ff8a7a');banner('Ворона перо выбила!','#ff8a7a',2.2,'фонарь погас — корабль падает · встань у фонаря да перо зажги опять');}}}}
   W.onFirstUnravel=()=>{later(0.5,()=>bark(T.potap,'potap','Кыш! С палубы, прочь!',1.8));};
   /* ---------- шаг корабля ---------- */
@@ -140,7 +140,7 @@ build34=function(){
       if(g.t>=g.dur){F.gustA=null;gRing.visible=false;const P=T.potap,ok=P.active&&P.guard&&hd(P.pos,{x:S.x,z:S.z-0.5})<1.9;
         if(ok){SFX.shield();SFX.ok();floatText(P.pos.clone().add(new V3(0,2.4,0)),'Удержал мачту!','#ffe36b');burst(P.pos.clone().add(new V3(0,1.2,0)),0xffffff,12,3);if(F.stage==='hold')F.gusts++;}
         else{SFX.whoosh();shakeAll(0.05,0.4);const sd=Math.random()<0.5?-1:1;S.kick=sd*0.45;for(const pi of[0,1]){const h=active(pi);if(onDeck(h.pos)&&!(h.kind==='potap'&&h.guard)){h.vel.x=sd*2.6;h.vel.y=2.8;h.grounded=false;h.knockT=0.35;}}
-          floatText(new V3(S.x,S.y+3,S.z),'Порыв!','#ffd76a');tip(0,'Порыв ветра! Потап, в жёлтый кружок у мачты встань —<br>И щитом '+K(0,'guard')+' закройся, как стена, как грань.',2.6);if(F.stage==='hold')F.gusts+=0.5;}}}
+          floatText(new V3(S.x,S.y+3,S.z),'Порыв!','#ffd76a');tip(0,'Потап — в кружок, щит '+K(0,'guard')+'!',2.6);if(F.stage==='hold')F.gusts+=0.5;}}}
     else gRing.visible=false;
     if(F.stage==='fly'&&S.z<-232&&F.wave===0)spawnCrows(3);
     if(F.wave===1&&crows.every(e=>!e.alive)&&!F.w2){F.w2=true;later(1.4,()=>K34.start());}
@@ -175,10 +175,12 @@ build34=function(){
   W.tipZones.push({cond:(pi,h)=>F.launched&&!S.lit&&!F.landed,text:pi=>'Фонарь погас — корабль падает! Встань героем с пером у мачты и зажги '+K(pi,'item')+' — скорей!'},
     {cond:(pi,h)=>h.groundRef&&h.groundRef.tile,text:pi=>'Золотой мосток горит, пока фонарь корабля рядом. Хватай звено — и назад, скорей!'});
   W.spawns=[[new V3(-2,0,6),new V3(-3.8,0,7.4)],[new V3(2,0,6),new V3(3.8,0,7.4)]];W.startAct=[0,0];
-  W.pauseLine='Летучий корабль: перо в фонаре — летим; у руля на корме — мимо скал; Потап за троих весит — крен у уступов.<br>Порыв — Потап у мачты щит держит; прореха в парусе — Йоша поливает; свет на корме — Ветрило дует.<br>Ключница цепью тянет — бейте золотые звенья.';
+  W.pauseLine=K(1,'item')+' перо в фонаре — летим · у руля — мимо скал.<br>'+K(0,'swap')+' Потап к борту — крен у уступов · '+K(0,'guard')+' порыв — щит у мачты.<br>'+K(1,'skill')+' прореха — Йоша поливает · '+K(0,'attack')+' цепь — бейте звенья.';
   W.onStart=()=>{later(0.8,()=>say('zven','Дайте ему перо. У мачты фонарь!',2.6,true));};
 
   /* ==================== РЕЛИЗ: посты экипажа, скалы, прорехи, Ветрило, Ключница, высота, камера ==================== */
+  // тёплое пятно фонаря на палубе (цветовой ключ 3-4 — лунная ночь и тёплый свет), скрип досок по крену, гул ветра по скорости
+  const lanDisc=lightDisc(new V3(),3.4,()=>S.lit&&!F.landed);lanDisc.material.opacity=0.16;let creakT=0,windT=0,rollPrev=0;
   // руль на корме: кто у руля — ведёт корабль вбок (влево-вправо); без рулевого корабль медленно идёт посередине
   const HELM={lx:0,lz:3.3};{const g=new THREE.Group();g.position.set(HELM.lx,0,HELM.lz);ship.g.add(g);addMesh(new THREE.CylinderGeometry(0.1,0.12,1.1,8),M(0x5a3a1a),0,0.55,0,g);
     const wh=new THREE.Group();wh.position.set(0,1.15,0);g.add(wh);addMesh(new THREE.TorusGeometry(0.42,0.05,6,20),M(0x8a5a2a),0,0,0,wh);for(let i=0;i<4;i++){const sp=addMesh(new THREE.BoxGeometry(0.06,0.95,0.06),M(0x6a4a2a),0,0,0,wh);sp.rotation.z=i*Math.PI/4;}HELM.wh=wh;}
@@ -263,6 +265,9 @@ build34=function(){
     else if(W.camFn===cam34)W.camFn=null;
     // шёрстка Тишки
     if(F.landed&&!F.furTold&&HEROES.some(h=>h.active&&hd(h.pos,{x:1.1,z:-325.6})<3.2)){F.furTold=true;say('yosha','Это ж Тишкина шёрстка! Гуси его унесли…',2.8,true);}
+    lanDisc.position.set(S.x,deckY(S.x)+0.08,S.z+0.05);lanDisc.rotation.z=0;
+    if(flyingNow&&!G.cine){const dr=Math.abs(S.roll-rollPrev);rollPrev=S.roll;creakT-=dt;if(dr>0.004&&creakT<=0){creakT=0.35+Math.random()*0.3;tone(90+Math.abs(S.roll)*120,0.18,'sawtooth',0.025+Math.min(0.04,dr*3),70);}
+      windT-=dt;if(S.speed>0.4&&windT<=0){windT=1.6;tone(180+S.speed*40,1.4,'sine',0.012+S.speed*0.006,140+S.speed*30);}}
     wingTick(dt);});
   prompt(0,'label',()=>new V3(S.x+HELM.lx,S.y+2.2,S.z+HELM.lz),()=>F.launched&&!F.landed&&PIL.some(P=>!P.done&&S.z-P.z<18)&&!HELM.h,'руль!');
   for(const pi of[0,1]){prompt(pi,'label',()=>headOf(active(pi)),()=>HELM.h===active(pi)&&PIL.some(P=>!P.done&&S.z-P.z<18),(()=>{const P=PIL.find(P=>!P.done);return P?(P.x<0?'руль вправо →':'← руль влево'):'';}));

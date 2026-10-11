@@ -33,14 +33,16 @@ function sus35Update(dt){const T35=sus35T();
       if(seen){if(q.susH!==seen){q.susH=seen;}q.sus=(q.sus||0)+dt/T35;if(!q.susSnd){q.susSnd=1;tone(660,0.12,'square',0.06,880);}
         if(q.sus>=1){q.sus=0;q.susSnd=0;q.peak=0;gooseGrab(q,seen);}else q.peak=Math.max(q.peak||0,q.sus);}
       else{if(q.sus>0){q.sus=Math.max(0,q.sus-dt*1.4);if(q.sus===0){if((q.peak||0)>0.3){floatText(q.pos.clone().add(new V3(0,1.2,0)),'Показалось…','#e8f4ff');}q.peak=0;q.susSnd=0;}}}
-      const k=q.sus||0;q.m.head.rotation.x=k*0.7;q.exM.color.setHex(k<0.5?0xffffff:k<0.8?0xffb040:0xff5a3a);q.ex.position.set(x,y+1.25,z);q.ex.scale.setScalar(0.6+k*0.9);q.ex.lookAt(camS.position);
+      const k=q.sus||0;q.m.head.rotation.x=k*0.7;if(q.m.brows)q.m.brows.forEach(b=>{b.rotation.z=-b.userData.sd*k*0.7;});q.exM.color.setHex(k<0.5?0xffffff:k<0.8?0xffb040:0xff5a3a);q.ex.position.set(x,y+1.25,z);q.ex.scale.setScalar(0.6+k*0.9);q.ex.lookAt(camS.position);
       q.foot.material.color.setHex(k<0.05?0xf0f8ff:k<0.6?0xffd890:0xff9a70);q.foot.material.opacity=0.28+k*0.3;q.ring.material.color.setHex(k<0.05?0xffffff:0xffb040);}
     else if(q.state==='dive'){q.t+=dt;const h=q.prey,k=Math.min(1,q.t/0.6);q.pos.lerpVectors(q.from,h.pos.clone().add(new V3(0,h.d.height+0.3,0)),smooth(k));q.m.g.position.copy(q.pos);
       q.m.wings.forEach(w=>{w.wp.rotation.z=w.sd*0.9;});if(k>=1){q.state='carry';q.t=0;const p=players[h.player],kk=p.heroes.indexOf(h);h.lit=false;burst(h.pos.clone().add(new V3(0,0.8,0)),0xffffff,14,4);
         placeOnGround(h,p.cp.x+(kk?1.2:-0.4),p.cp.z,p.cp.y);h.iT=1.2;h.following=false;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Гусь к укрытию отнёс','#e8f4ff');
         if(h.active)tip(h.player,'Гусь увидел свет! Гаси, пока «!» не вырос.',3.2);G.stats.geese=(G.stats.geese||0)+1;}}
     else{q.t+=dt;const k=Math.min(1,q.t/1.2);q.m.g.position.y=lerp(q.pos.y,q.y,k);if(k>=1)q.state=q.kind==='sleep'?'sleep':'fly';}}
-  if(W.gooseCalm>0)W.gooseCalm-=dt;}
+  if(W.gooseCalm>0)W.gooseCalm-=dt;
+  // слой напряжения: чем выше «!» у какого-нибудь гуся, тем чаще глухой стук
+  {let mx=0;for(const q of W.geese)if(q.state==='fly'&&(!q.on||q.on()))mx=Math.max(mx,q.sus||0);SUS35.beat=(SUS35.beat||0)-dt;if(mx>0.08&&SUS35.beat<=0){SUS35.beat=lerp(0.75,0.28,mx);tone(70+mx*30,0.16,'sine',0.05+mx*0.07,55);}}}
 {const _ug=updateGeese;updateGeese=function(dt){if(!W.sus35)return _ug(dt);sus35Update(dt);};}
 
 build35=function(){
@@ -129,7 +131,7 @@ build35=function(){
     if(!SH)return;const z0=SH.z;const inn=HEROES.map(h=>inside(h,z0)&&(SH.need!=='potap'||SH.held||h===T.potap));HEROES.forEach((h,i)=>{if(inn[i]&&!h.hidden){h.hidden=true;floatText(h.pos.clone().add(new V3(0,h.d.height+0.5,0)),'спрятался','#c8e8a0');}faceM[i].material.color.setHex(inn[i]?[0xe0784a,0xc08a48,0xb67ccc,0x6cc4b8][i]:0x5a5a6a);});
     faces.lookAt(G.split>0.5?cams[0].position:camS.position);
     if(SH.state==='count'){SH.t-=dt;if(inn.every(x=>x)||SH.t<=0){HEROES.forEach((h,i)=>{if(!inn[i]){const a=i/4*Math.PI*2;placeOnGround(h,z0.x+Math.cos(a)*1.2,z0.z+Math.sin(a)*1.2,0);h.hidden=true;burst(h.pos.clone().add(new V3(0,1,0)),0xffffff,10,3);floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Гусь принёс!','#e8f4ff');}});
-        SH.state='pass';SH.t=3.6;flyover(z0);if(!inn.every(x=>x)&&!F.ferryTold){F.ferryTold=true;tip(0,'Кто не успел спрятаться — того гусь назад отнесёт.<br>Кто спрятался — на месте остаётся, вот.',3);}}}
+        SH.state='pass';SH.t=3.6;flyover(z0);if(!inn.every(x=>x)&&!F.ferryTold){F.ferryTold=true;tip(0,'Не успел спрятаться — гусь отнесёт назад.',3);}}}
     else if(SH.state==='pass'){SH.t-=dt;W.gooseCalm=0.5;if(SH.t<=0){HEROES.forEach(h=>{h.hidden=false;});faces.visible=false;dome.visible=false;const d=SH.onDone;SH=null;SFX.ok();if(d)d();}}}
   /* ---------- сюжет ---------- */
   function tishScene(){F.stage='tish';const Y=T.yosha;
@@ -192,7 +194,7 @@ build35=function(){
     // колыбельная — на последнем островке перед лиловым мостком
     if(F.final&&!F.lullaby&&F.stage==='final'&&HEROES.some(h=>h.active&&h.pos.z<-179.2&&h.pos.z>-190))lullaby35();
     // Тишку подбирает Йоша
-    if(F.stage==='walk'&&HEROES.some(h=>h.active&&hd(h.pos,{x:0,z:-45})<5)){if(T.yosha.active&&hd(T.yosha.pos,{x:0,z:-45})<1.8)tishScene();else if(!F.tishTip){F.tishTip=true;bark(tish,'tishka','Йоша! Я тут, я тут!',2);tip(1,'Тишку Йоша заберёт — на спину посадит.<br>Смени на Йошу '+K(1,'swap')+' — к гнезду иди, всё сладит.',3.2);}}
+    if(F.stage==='walk'&&HEROES.some(h=>h.active&&hd(h.pos,{x:0,z:-45})<5)){if(T.yosha.active&&hd(T.yosha.pos,{x:0,z:-45})<1.8)tishScene();else if(!F.tishTip){F.tishTip=true;bark(tish,'tishka','Йоша! Я тут, я тут!',2);tip(1,'Смени на Йошу '+K(1,'swap')+' — к Тишке!',3.2);}}
     // печка
     if(F.stage==='chase'&&!F.pie&&!F.ate&&!F.refused){const first=HEROES.find(h=>h.active&&hd(h.pos,{x:0,z:-65})<3.2);if(first)pieOffer(first);}
     if(F.pie){const p=F.pie;p.t-=dt;pech.pie.position.y=1.5+Math.sin(G.time*4)*0.05;if(p.t<=0||hd(p.h.pos,{x:0,z:-65})>6||!p.h.active)pieRefuse();}
@@ -241,7 +243,7 @@ build35=function(){
     {cond:(pi,h)=>F.final&&!F.lullaby&&h.pos.z<-152&&(W.abyss35||[]).some(([t,z0])=>t==='shadow'&&h.pos.z>z0&&h.pos.z<z0+2.4&&h.lit),text:pi=>'Впереди лиловый мосток — погаси перо '+K(pi,'item')+'!'},
     {cond:(pi,h)=>F.final&&!F.lullaby&&h.pos.z<-152&&(W.abyss35||[]).some(([t,z0])=>t==='light'&&h.pos.z>z0&&h.pos.z<z0+2.4&&!h.lit),text:pi=>'Впереди золотой мосток — зажги перо '+K(pi,'item')+'!'});
   W.spawns=[[new V3(-2.6,0,4.6),new V3(-4.4,0,5.8)],[new V3(2.6,0,4.6),new V3(4.4,0,5.8)]];W.startAct=[0,0];
-  W.pauseLine='Гуси-лебеди Тишку унесли. Гуси свет пера видят: под белым лучом — лишь во тьме ходи.<br>Укрытия прячут: просьбу исполните — и вчетвером за восемь секунд спрячьтесь, поди.<br>От угощенья не отказывайтесь — в сказке так водится.<br>Над пропастью: на золотом мостке перо гори, на лиловом — гаси.';
+  W.pauseLine=K(0,'item')+' в луче гуся — погаси перо, пока «!» не вырос.<br>'+K(0,'skill')+' укрытия: просьбу исполни — и все внутрь.<br>'+K(0,'item')+' над пропастью: золотой — гори, лиловый — гаси.';
   W.onStart=()=>{play({dur:8.4,fov:48,shots:[shot(0,[0,3,8],[0,6,-13]),shot(4,[4,2,0],[0,1,-45])],
     says:[[0.3,3.6,null,'<i>Гуси-лебеди бельчонка Тишку унесли —</i><br><i>Того, что колыбельную забыл вдали.</i>',true],[4.2,3.6,'zven','Гуси видят свет. Тише… Где темно — идём смело.',true]],
     end:()=>{F.stage='walk';snapCams();later(0.6,()=>{say('zven','Тут свет нас выдаёт — гасите перья!',2.6,true);banner('Свет выдаёт!','#e8f4ff',2.4,'в луче гуся — гаси перо, пока «!» не вырос');});}});};

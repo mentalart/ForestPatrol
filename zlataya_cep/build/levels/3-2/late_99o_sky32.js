@@ -134,7 +134,7 @@ function makeVeter32(){const g=new THREE.Group();W.group.add(g);const wm=M(0xeef
 build32=function(){
   W.zvenAway=true;W.world=3;setTheme('heaven');W.name='3-2 · «Облачные пастбища»';W.sub='Небесное царство · тёплый свет поднимает облака · Пушок, Ветер-Ветрило и Громовой Баран';W.camX=14;const F=W.flags;F.stage='walk';
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.pero=true;W.fallY=-16;W.k32=true;
-  scene.background=new THREE.Color(0x4a4488);scene.fog=new THREE.Fog(0x4a4488,30,110);amb.intensity=0.56;
+  scene.background=new THREE.Color(0x7a8ccc);scene.fog=new THREE.Fog(0x7a8ccc,30,110);amb.intensity=0.6;   /* цветовой ключ 3-2 — дневная пастель, к бою — свинцовая гроза (docs/38) */
   heavenDecor(-345,20,{sunCol:0xffa070,sunY:10});const T=HERO;
   /* ---------- А. нижнее пастбище: облако любит тепло (прежнее) ---------- */
   cloudIsle(-9,9,-10,8,0);bell(-3,3);
@@ -417,7 +417,7 @@ build32=function(){
   function updLamb(dt){const L=LB;L.sq=Math.max(0,L.sq-dt*3);L.puffT=Math.max(0,L.puffT-dt);L.scared=Math.max(0,L.scared-dt);
     if(L.mode==='caught'){L.body.position.y=Math.abs(Math.sin(G.time*20))*0.02;L.thr.rotation.y+=dt;
       const lit=HEROES.filter(h=>heroLight(h)&&hd(h.pos,L.pos)<4.5&&Math.abs(h.pos.y-L.pos.y)<2).length;if(lit>=2&&!G.cine&&!F.lambFree)lambScene();
-      else if(lit===1&&!F.lambOneTold){F.lambOneTold=true;for(const pi of[0,1])tip(pi,'Нить толстая — одного пера мало. Зажгите рядом два пера'+(G.solo?': зажги, смени героя '+K(pi,'swap')+' и зажги второе.':'.'),3.4);}}
+      else if(lit===1&&!F.lambOneTold){F.lambOneTold=true;for(const pi of[0,1])tip(pi,G.solo?'Зажги, смени героя '+K(pi,'swap')+', зажги второе.':'Зажгите рядом два пера.',3.4);}}
     else if(L.hop){const H=L.hop;H.t+=dt;const k=Math.min(1,H.t/H.dur);L.pos.lerpVectors(H.from,H.to,k);L.pos.y+=Math.sin(k*Math.PI)*Math.max(2,Math.abs(H.to.y-H.from.y)+1.5);if(k>=1){L.pos.copy(H.to);L.hop=null;L.sq=0.6;}}
     else if(!G.cine){let tgt=null,sp=3.4,stop=2.2;
       if(L.mode==='hide'||(L.scared>0&&inArena(L.pos))){tgt=LAMB_HIDE;sp=5;stop=0.3;}
@@ -459,7 +459,7 @@ build32=function(){
     if(!F.boss&&F.penned&&!G.cine&&[0,1].some(pi=>inArena(active(pi).pos)&&active(pi).pos.z<-305.2))bossIntro();
     if(B.phase>=1&&B.phase<4){updStrikes(dt);bossBar();const e=B.e;
       if(B.phase===3&&e&&!G.cine&&LB.mode==='free'&&!LB.hop&&LB.scared<=0&&hd(LB.pos,e.pos)<e.r+1.5&&B.ai!=='paw'&&B.ai!=='charge')finale();
-      const dark=B.phase===2?1:B.phase===1?0.6:0.3;scene.background.lerp(new THREE.Color(0x2a2a52).lerp(new THREE.Color(0x4a4488),1-dark),dt*1.5);scene.fog.color.copy(scene.background);}
+      const dark=B.phase===2?1:B.phase===1?0.6:0.3;scene.background.lerp(new THREE.Color(0x2a2a52).lerp(new THREE.Color(0x7a8ccc),1-dark),dt*1.5);scene.fog.color.copy(scene.background);}
     if(F.stage==='link'&&L4.taken&&!F.out){F.out=true;later(0.6,()=>{banner('Облачные пастбища','#ffe08a',2.4,'в лавке у Векши — тулупчик-облачко, загляни!');later(1.8,finishLevel);});}});
   /* ---------- рисунки кнопок ---------- */
   const onC=(h,c)=>h.groundRef===c;

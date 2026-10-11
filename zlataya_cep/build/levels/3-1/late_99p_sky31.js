@@ -448,7 +448,7 @@ build31=function(){
     if(!F.fight&&F.gateOpen&&[0,1].some(pi=>active(pi).pos.z<-125.4&&active(pi).pos.z>-152))spawnAlleys();
     if(F.fight&&!F.cleared&&arena.every(e=>!e.alive)){F.cleared=true;SFX.ok();banner('Аллеи чисты!','#ffe08a',2,'две яблони у выхода — обе оживите');}
     if(!F.garden&&T2.revived&&T3.revived){F.garden=true;SFX.grow();banner('Сад ожил!','#ffe08a',2.4,'светомосток — в глубь сада');hedgeM.color.setHex(0x4f8a3a);}
-    {const k=W.trees.filter(t=>t.revived).length/W.trees.length;const c=new THREE.Color(0x3a3470).lerp(new THREE.Color(0x7a78c0),k);if(VB.phase>=1&&!F.won)c.lerp(new THREE.Color(0x2a2448),0.5);if(F.stage!=='end'&&F.stage!=='link'){scene.background.copy(c);scene.fog.color.copy(c);}amb.intensity=0.52+0.2*k;}
+    {const k=W.trees.filter(t=>t.revived).length/W.trees.length;const c=new THREE.Color(0x3a3470).lerp(new THREE.Color(0xc08a8c),k);sun.color.setHex(0xd8c8ff).lerp(new THREE.Color(0xffc890),k);   /* цветовой ключ 3-1 — сад оживает в золотой закат (docs/38) */if(VB.phase>=1&&!F.won)c.lerp(new THREE.Color(0x2a2448),0.5);if(F.stage!=='end'&&F.stage!=='link'){scene.background.copy(c);scene.fog.color.copy(c);}amb.intensity=0.52+0.2*k;}
     if(!F.metGardener&&!G.cine&&F.garden&&[0,1].some(pi=>active(pi).pos.z<-176&&active(pi).pos.z>-196))gardenerScene();
     updApples(dt);
     if(!F.guards&&[0,1].some(pi=>active(pi).pos.z<-286))guardSpawn();
