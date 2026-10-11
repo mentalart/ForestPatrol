@@ -100,7 +100,7 @@
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | late_99zm_sky35 | 3 | t35 tfin_companion_35 tfin_sky35 |
 | `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 11 | t3bv tfin_bossbar tfin_companion_3b tfin_hintlayer tfin_k3b tfin_k3bacorn tfin_k3bboss tf… |
 | `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | late_99w4_41, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 13 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast tfin_… |
-| `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 6 | t42v tfin_art tfin_companion_42 tfin_w4help tfin_w4kids tso42 |
+| `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 7 | t42v tfin_art tfin_companion_42 tfin_w42 tfin_w4help tfin_w4kids tso42 |
 | `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo, late_99w4_song43 | 5 | t43 tfin_companion_43 tfin_w43 tfin_w4help tso43 |
 | `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 6 | t44 tfin_companion_44 tfin_w44 tfin_w4kids tfoes tso44 |
 | `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 5 | t45 tfin_companion_45 tfin_w45 tso45 tsospot |
@@ -156,7 +156,7 @@
 | `levels/3-B.js` | 260 | 3-Б «СОЛОВЕЙ-РАЗБОЙНИК» — босс мира 3 |
 | `levels/w4_common.js` | 253 | МИР 4 · ОГНЕННАЯ СМОРОДИНА: клещи, горячее, лава, корка, пар |
 | `levels/4-1.js` | 293 | МИР 4 · ОГНЕННАЯ СМОРОДИНА · 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА» |
-| `levels/4-2.js` | 212 | МИР 4 · 4-2 «РЕКА СМОРОДИНА» |
+| `levels/4-2.js` | 232 | МИР 4 · 4-2 «РЕКА СМОРОДИНА» |
 | `levels/4-3.js` | 214 | МИР 4 · 4-3 «ЭЙ, УХНЕМ» — на четверых |
 | `levels/4-4.js` | 211 | МИР 4 · 4-4 «ЗМИЕВЫ ВАЛЫ» |
 | `levels/4-5.js` | 186 | МИР 4 · 4-5 «КАЛИНОВ МОСТ» — кульминация мира, путь Потапа |
@@ -175,7 +175,7 @@
 | `levels/luko_2_worlds123.js` | 139 | — |
 | `levels/luko_3_worlds45.js` | 223 | — |
 | `levels/luko_3b_zastava_hill.js` | 131 | — |
-| `levels/luko_4_zastava_forge_map.js` | 205 | — |
+| `levels/luko_4_zastava_forge_map.js` | 206 | — |
 | `levels/luko_4b_corners.js` | 612 | — |
 | `levels/luko_5_dress_garden.js` | 75 | — |
 | `levels/luko_5b_farm.js` | 415 | — |
@@ -496,11 +496,11 @@
 | `40_kino_pravila.md` | Правила роликов (катсцен) — «Златая цепь» |
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 156 файлов |
+| `changes/` | 157 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 300 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 301 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

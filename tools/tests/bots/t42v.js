@@ -14,7 +14,7 @@ r2.push(U.st());ZC.tick(60);r2.push(U.st());r2
 ZC.tick(1);
 //@@
 // заводь и бурлящая струя: Йоша делает корку в заводи; Прошка несёт и перекладывает
-const W=ZC.W,H=ZC.HERO,F=W.flags;const r3=[];const Y=H.yosha,P=H.proshka;W.enemies.forEach(e=>{e.cd=1e9;});
+const W=ZC.W,H=ZC.HERO,F=W.flags;const r3=[];const Y=H.yosha,P=H.proshka;W.enemies.forEach(e=>{e.cd=1e9;});(W.k42.spitters||[]).forEach(s=>{if(s.cond())s.down=60;});   // ящерки берега здесь не проверяются
 P.pos.set(0,0,-8.5);P.vel.set(0,0,0);ZC.tick(3);
 r3.push(U.walkTo(1,2.5,-9.5,3));Y.face=Math.PI/2;ZC.tick(2);U.tap('KeyL');ZC.tick(40);r3.push('crusts='+W.crusts.filter(c=>!c.gone).map(c=>c.x.toFixed(1)+','+c.z.toFixed(1)).join(' '));
 // Йоша пробует на струе
