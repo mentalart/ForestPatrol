@@ -8335,17 +8335,6 @@
    "dur": 6.12
   },
   {
-   "id": "1-2_019",
-   "lv": "1-2",
-   "who": "potap",
-   "text": "Как Илья Муромец… э-э… кобылку — на плечо!",
-   "tts": "Как Илья Муромец… э-э… кобылку — на плечо!",
-   "max": 3.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145113_bc73e6b5-b6ec-4ee8-954f-b2a58863c989.mp3",
-   "job": "bc73e6b5-b6ec-4ee8-954f-b2a58863c989",
-   "dur": 3.61
-  },
-  {
    "id": "1-2_020",
    "lv": "1-2",
    "who": "bes",
@@ -8421,28 +8410,6 @@
    "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145112_b5226c74-496f-4197-8f14-e90f6ee578b5.mp3",
    "job": "b5226c74-496f-4197-8f14-e90f6ee578b5",
    "dur": 4.56
-  },
-  {
-   "id": "1-2_027",
-   "lv": "1-2",
-   "who": "bes",
-   "text": "Ладно! А мою кобылку-колоду поднимешь? Я вот — у-у-ух!..",
-   "tts": "Ладно! А мою кобылку-колоду поднимешь? Я вот — у-у-ух!..",
-   "max": 4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145113_8d8b0528-03f6-4fb0-adaf-5f864ae0e70d.mp3",
-   "job": "8d8b0528-03f6-4fb0-adaf-5f864ae0e70d",
-   "dur": 4.01
-  },
-  {
-   "id": "1-2_028",
-   "lv": "1-2",
-   "who": "bes",
-   "text": "Не-е… тяжела. Ну-ка вы попробуйте — силач у вас есть?",
-   "tts": "Не-е… тяжела. Ну-ка вы попробуйте — силач у вас есть?",
-   "max": 3.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145855_ff68e919-1e5d-449a-b2ac-7efb34d2bf49.mp3",
-   "job": "ff68e919-1e5d-449a-b2ac-7efb34d2bf49",
-   "dur": 3.81
   },
   {
    "id": "1-2_029",

@@ -2,6 +2,10 @@
 // развитие клубка: струна на колышке · кувырок (LT) · пень-ворчун: скорлупа и красный сигнал · путь Потапа, шаг 1
 function build12(){
   W.zvenAway=true;   // Звенышко улетает вперёд и появляется, только когда нужно
+  // «открытки»: на входе в каждую сказку (Журавль и Цапля, огоньки Кикиморы, Царевна-лягушка, бесёнок Балды) камера на 3,6 с показывает её сверху.
+  // Это не ролик: игра идёт, кнопки работают, просто экран один и камера смотрит туда, куда идти. Ролик или другая сценарная камера — открытку пропускаем
+  function postcard(pos,look){if(W.camFn||G.cine)return;const P=new V3(pos[0],pos[1],pos[2]),L=new V3(look[0],look[1],look[2]),fn=()=>({pos:P,look:L,k:2.4});W.camFn=fn;
+    later(3.6,()=>{if(W.camFn===fn)W.camFn=null;});}
   setTheme('swamp');W.name='1-2 · «Кикиморино болото»';W.sub='Дремучий лес · струна на колышке';W.camX=9;const F=W.flags;
   W.abil.clew=true;W.abil.toss=true;W.abil.roll=true;W.threadLife=5;W.fallY=-2.4;W.sagY=-0.5;
   const ZE=-353;   // уровень в 3,2 раза длиннее прежнего: после толстой струны — Журавль и Цапля, огоньки, Царевна-лягушка, бесёнок Балды, стычка у ворот
@@ -83,7 +87,10 @@ function build12(){
   const WD={stage:'ask',seg:0,leg:'go',u:0,told:false,nag:0,cut:0,left:3};F.wed=WD;   // во флагах — только простые значения
   // Тать-Паутинник на болоте — заметный: крупнее, тёмно-фиолетовый с серебряными нитями, красные глаза, светящийся круг под ним и красный ромб над
   // головой (виден издалека); оранжевые искры над ним — сколько ударов осталось
-  const tatKit=e=>{e.inner.traverse(o=>{if(!o.isMesh)return;const c=o.material.color.getHex();
+  // Лёгкий путь (docs/31 п. 2.4: у 7–8 лет Паутинник — тяжелейшая рукопашная пара, ~5 попаданий за бой): только жёлтый знак (щит),
+  // без красного (кувырок в 1-2 только вводится — пень-ворчун учит его отдельно), и два уголька вместо трёх
+  const tatKit=e=>{if(genPath()==='easy'){e.signals=['yellow'];e.embers=e.maxEmb=Math.min(e.embers,2);}
+    e.inner.traverse(o=>{if(!o.isMesh)return;const c=o.material.color.getHex();
       if(c===0x5a4a3a)o.material=M(0x6a2a86,{emissive:0x3a0a50,emissiveIntensity:0.55});else if(c===0x9a8660)o.material=M(0xe8e8ff,{emissive:0x9090c0,emissiveIntensity:0.7});else if(c===0x2a2018)o.material=M(0x1a1020);});
     e.eyeMat.color.setHex(0xff3030);e.eyeMat.emissive.setHex(0xff2020);
     const ring=new THREE.Mesh(new THREE.TorusGeometry(e.r*1.9,0.07,6,32),MB(0xff5a2a,{transparent:true,opacity:0.8,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.position.y=0.08;e.g.add(ring);
@@ -104,7 +111,7 @@ function build12(){
   W.updates.push(dt=>{birdAnim(CR,dt);birdAnim(CA,dt);
     {const n=GT.filter(e=>e.alive).length;if(GT.length&&n<WD.left){WD.left=n;SFX.ok();banner(n?'Паутинник побеждён!':'Гать чиста!','#e0b0ff',2.0,n?'осталось '+n:'все Паутинники побеждены');}
       gatHiss-=dt;if(n&&gatHiss<=0){const e=GT.find(q=>q.alive&&!q.chew&&HEROES.some(h=>h.active&&hd(h.pos,q.pos)<10));if(e){gatHiss=rand(3,5);floatText(e.pos.clone().add(new V3(0,2.4,0)),['Ш-ш-ш! Не пущу!','Моя гать!','Ш-ш! Перегрызу!'][Math.floor(rand(0,3))],'#e0b0ff');}}}
-    if(WD.stage==='ask'){if(!WD.told&&HEROES.some(h=>h.active&&h.pos.z<-80)){WD.told=true;bark(CR,'zhuravl','Ох, болото широкое — семь вёрст! Отнесите Цапле моё сватовство!',3.2);later(1.0,spawnGat);}
+    if(WD.stage==='ask'){if(!WD.told&&HEROES.some(h=>h.active&&h.pos.z<-80)){WD.told=true;postcard([6,9,-76],[0,1,-118]);bark(CR,'zhuravl','Ох, болото широкое — семь вёрст! Отнесите Цапле моё сватовство!',3.2);later(1.0,spawnGat);}
       if(HEROES.some(h=>h.active&&h.grounded&&h.pos.z<-140.2&&h.pos.z>-156)){WD.stage='carry';
         bark(CA,'caplya','Сватается? А пусть сам ко мне придёт — по струночке, ножек не замочив!',3.4);
         later(4.6,()=>{if(WD.left>0){WD.stage='blocked';say('zhuravl','Паутинники на гати — ноги мне запутают! Прогоните их всех — тогда пойду.',4.6);}
@@ -177,6 +184,17 @@ function build12(){
       d.g.children.forEach(c=>{if(c.userData.dead){c.visible=false;return;}if(c.material)c.material=M(c.geometry.type==='ConeGeometry'?0x7a8a3a:0x5d6b34);});burst(new V3(d.col.x,0.4,d.col.z),0x9fe6ff,14,4);floatText(new V3(d.col.x,1.4,d.col.z),'Кочка ожила!','#9fe6ff');}});}}
   const fogMist=[];for(let i=0;i<26;i++){const m=new THREE.Mesh(new THREE.CircleGeometry(rand(1.8,3.2),14),MB(0xdfe8dc,{transparent:true,opacity:0.16,depthWrite:false}));
     m.rotation.x=-Math.PI/2;m.position.set(rand(-9.5,9.5),rand(0.2,1.2),rand(FOGZ[1]+1,FOGZ[0]-1));m.userData.ph=rand(0,6.28);m.castShadow=false;W.group.add(m);fogMist.push(m);}
+  // Кикимора в тумане — сквозная линия мира: здесь она водит огоньки (её «Хи-хи-хи!» — на первом ложном огоньке), в 1-5 прядёт под ключом,
+  // потом мирится. Стоит на кочке у края тумана, за пеленой; на поясе — золотой ключ (тот самый). Машет веретеном — огоньки мигают;
+  // все тропки открыты — уходит в трясину. Подходить к ней незачем: она — открытка, а не задача
+  const KK=makeKikimora(),KZ=(FOGZ[0]+FOGZ[1])/2-4;KK.g.position.set(-9.4,0.3,KZ);KK.g.rotation.y=Math.PI/2;KK.g.scale.setScalar(1.15);
+  addMesh(new THREE.CylinderGeometry(1.0,1.3,0.6,10),M(0x4a5a2a),-9.4,0,KZ);
+  part(KK.body,new THREE.TorusGeometry(0.12,0.035,6,14),M(COL.gold,{emissive:0xffb000,emissiveIntensity:0.9}),0.34,0.9,0.4);
+  KK.g.traverse(o=>{o.userData.noBatch=true;});
+  W.updates.push(dt=>{if(!KK.g.visible)return;const t=G.time;
+    if(!forks.every(f=>f.open)){KK.body.rotation.z=Math.sin(t*2.2)*0.12;KK.spindle.rotation.y+=dt*3;KK.spindle.position.y=1.1+Math.sin(t*4)*0.15;KK.head.rotation.y=Math.sin(t*0.8)*0.5;}
+    else if(!F.kkGone){F.kkGone=true;SFX.splash();anim(1.4,k=>{KK.g.position.y=0.3-k*2.8;KK.body.rotation.z=Math.sin(k*20)*0.2*(1-k);});later(1.5,()=>{KK.g.visible=false;});}
+    if(!F.pcFog&&HEROES.some(h=>h.active&&h.pos.z<FOGZ[0]+4)){F.pcFog=true;postcard([-2,8,FOGZ[0]+6],[-6,1,KZ]);}});
   W.updates.push(dt=>{for(const m of fogMist){m.userData.ph+=dt*0.35;m.position.x+=Math.sin(m.userData.ph)*dt*0.3;m.material.opacity=0.12+0.07*Math.sin(m.userData.ph*1.6);}
     for(const fk of forks){for(const w of fk.wisps){if(w.gone&&!(w.real&&fk.open))continue;w.ph+=dt;
         if(w.real&&fk.open){const tz=fk.zs-16.2;w.g.position.lerp(new V3(fk.x*0.5,1.6,tz),1-Math.exp(-2*dt));}else w.g.position.set(w.base.x+Math.sin(w.ph*1.3)*0.35,w.base.y+Math.sin(w.ph*2.1)*0.22,w.base.z);
@@ -233,7 +251,7 @@ function build12(){
     // мимо кувшинки (или кувшинка ушла под воду) — плюх: пруд глубокий, сразу назад к колокольчику; по воде не пропрыгать
     for(const h of HEROES){if(h.pos.z<-240&&h.pos.z>-277&&Math.abs(h.pos.x)<11.2&&h.pos.y<-0.3&&!h.cling){const at=new V3(h.pos.x,-0.3,h.pos.z);SFX.splash();burst(at,0x6a9a6a,12,3);
       const W6=PADS[6];floatText(at.clone().add(new V3(0,1.2,0)),W6.wil&&hd(h.pos,W6.col)<1.4?'Завяла — не держит! Полей живой водой':'Плюх!','#9fd8a0');onFall(h);}}
-    if(!FG.told&&HEROES.some(h=>h.active&&h.pos.z<-230)){FG.told=true;bark(FR,'lyagushka','Ква-а… Стрелу Ивана-царевича ветер на сухую ольху закинул. Без неё не поётся!',3.6);}
+    if(!FG.told&&HEROES.some(h=>h.active&&h.pos.z<-230)){FG.told=true;postcard([5,6.5,-226],[0,0.5,-254]);bark(FR,'lyagushka','Ква-а… Стрелу Ивана-царевича ветер на сухую ольху закинул. Без неё не поётся!',3.6);}
     const T=3.0;let beat=-1;if(FG.sing){FG.t+=dt;const s=Math.sin(FG.t*Math.PI*2/T);beat=s>0?0:1;
       if(beat!==FG.beat){FG.beat=beat;tone(beat?150:190,0.12,'square',0.1,beat?100:130);if(beat)tone(150,0.1,'square',0.09,100,0.18);FR.body.scale.set(1.1,0.85,1.1);FR.throat.scale.setScalar(1.8);
         floatText(FR.pos.clone().add(new V3(0,1.3,0)),beat?'Ква-ква!':'Ква!','#b8f0a0');}}
@@ -246,7 +264,7 @@ function build12(){
   /* ====================== VII. «Сказка о попе и о работнике его Балде» (Пушкин): бесёнок, бег вокруг омута и кобыла ====================== */
   // Струны мутят омут — выскакивает бесёнок: «Обгони меня вокруг омута!» Бегом его не обогнать. Как у Балды с двумя зайцами: пока он бежит
   // кругом, «братишка» уже ждёт у финиша — перекинь струну через омут (или пусть друг заранее встанет у флажка). Потом «подними-ка кобылу»:
-  // бесёнок не может, а Потап поднимает колоду-кобылу — путь открыт, бесёнок платит оброк орешками.
+  // обогнали — бесёнок сам откатывает колоду с дороги и платит оброк орешками (одна мысль — хитрость Балды; «подними кобылу» убрано: две сцены на одну мысль)
   ground(-11,11,-298,-277);ground(-11,-6.5,-310,-298);ground(6.5,11,-310,-298);bell(-1.5,-283.4);
   const omut=new THREE.Mesh(new THREE.PlaneGeometry(13,12),M(0x0d1a1c));omut.rotation.x=-Math.PI/2;omut.position.set(0,-0.42,-304);W.group.add(omut);
   const swirl=[];for(let i=0;i<3;i++){const m=new THREE.Mesh(new THREE.TorusGeometry(1.2+i*1.3,0.05,6,32),MB(0x4a7a7a,{transparent:true,opacity:0.35,depthWrite:false}));m.rotation.x=-Math.PI/2;m.position.set(0,-0.38,-304);W.group.add(m);dyn(m);swirl.push(m);}
@@ -273,16 +291,16 @@ function build12(){
     for(const s of[-1,1]){const st=part(LG,new THREE.CylinderGeometry(1.15,1.25,0.25,10),M(0x8a6a4a),s*10.85,0.95,0);st.rotation.z=Math.PI/2;}dyn(LG);}
   const logCol=colBox(-11,11,0,4.4,-318.7,-317.3,false);
   const logPt=new V3(0,0,-316.9);
-  W.lifts.push({pos:logPt,active:()=>RC.won&&RC.lift!=='done'&&RC.lift!=='busy',onLift:h=>{RC.lift='busy';SFX.toss();h.atkT=0.4;bark(h,'potap','Как Илья Муромец… э-э… кобылку — на плечо!',2.6);
-    const p0=LG.position.clone();anim(1.6,k=>{if(k<0.45){const q=k/0.45;LG.position.set(lerp(p0.x,h.pos.x*0.3,q),q*2.4,lerp(p0.z,-317.0,q));LG.rotation.x=q*0.2;}
-      else{const q=(k-0.45)/0.55;LG.position.set(lerp(h.pos.x*0.3,13.5,q),2.4+Math.sin(q*Math.PI)*1.6-q*3.4,lerp(-317.0,-322,q));LG.rotation.z=q*1.2;}
+  function rollLog(){if(RC.lift==='busy'||RC.lift==='done')return;RC.lift='busy';SFX.toss();BS.pos.set(-3,0,-316.3);BS.g.rotation.y=Math.PI;
+    const p0=LG.position.clone();anim(1.6,k=>{LG.position.set(lerp(p0.x,13.5,k),Math.sin(k*Math.PI)*0.8-k*k*3.4,lerp(p0.z,-322,k));LG.rotation.x=-k*6;
+      BS.pos.x=lerp(-3,4,k);BS.arms.forEach(a=>{a.rotation.x=-1.6+Math.sin(k*30)*0.3;});
       if(k>=1){RC.lift='done';logCol.on=false;SFX.crash();burst(new V3(10,0.4,-321),0x8a6a4a,20,4);RC.nutsOut=true;
-        later(2.1,()=>bark(BS,'bes','Сдаюсь, сдаюсь! Вот вам оброк — орешки за три года вперёд!',3.0));BN.forEach((n,i)=>{n.locked=false;n.g.visible=true;const a=n.pos.clone();anim(0.7,q=>{n.pos.set(lerp(BS.pos.x,a.x,q),1.0+Math.sin(q*Math.PI)*1.6,lerp(BS.pos.z,a.z,q));});});}});}});
+        later(0.6,()=>bark(BS,'bes','Сдаюсь, сдаюсь! Вот вам оброк — орешки за три года вперёд!',3.0));BN.forEach((n,i)=>{n.locked=false;n.g.visible=true;const a=n.pos.clone();anim(0.7,q=>{n.pos.set(lerp(BS.pos.x,a.x,q),1.0+Math.sin(q*Math.PI)*1.6,lerp(BS.pos.z,a.z,q));});});}});}
   const BN=[nutItem(-2.0,0.9,-314.6),nutItem(2.0,0.9,-314.6)];BN.forEach(n=>{n.locked=true;n.g.visible=false;n.base=0.9;});
   W.camZones.push({x:1.5,z:-303,r:10.5,camActive:()=>RC.st==='count'||RC.st==='run'});
   const atFinish=()=>HEROES.some(h=>!(h.active&&players[h.player].downed)&&hd(h.pos,flag.position)<2.4&&h.pos.y>-0.4&&h.pos.z<-310.2);
   W.updates.push(dt=>{BS.ph+=dt;swirl.forEach((m,i)=>{m.rotation.z+=dt*(0.4+i*0.25)*(RC.st==='run'?3:1);});
-    const near=HEROES.some(h=>h.active&&h.pos.z<-287&&h.pos.z>-300);if(!RC.told&&near){RC.told=true;SFX.splash();burst(new V3(0,0,-301),0x4a7a7a,16,3);
+    const near=HEROES.some(h=>h.active&&h.pos.z<-287&&h.pos.z>-300);if(!RC.told&&near){RC.told=true;postcard([-5,7.5,-284],[2,0.4,-304]);SFX.splash();burst(new V3(0,0,-301),0x4a7a7a,16,3);
       bark(BS,'bes','Кто тут наш омут струнами морщит? Обгони меня кругом омута — тогда пропущу! Встань на кружок — и побежали!',4.2);}
     const sh=HEROES.find(h=>h.active&&hd(h.pos,raceMat.position)<1.0&&Math.abs(h.pos.y)<0.5),on=!!sh;
     if(RC.st==='idle'&&!RC.won&&RC.told&&on&&!RC.onMat){RC.st='count';RC.t=0;raceStarter=sh;raceHome();say('bes','Раз… два… ТРИ!',1.6);}
@@ -296,9 +314,7 @@ function build12(){
         if(RC.tries>=1){F.raceHint=true;}}}
     else if(RC.st==='lost'){RC.t+=dt;if(RC.t>2.4){RC.st='idle';raceHome();}}
     if(RC.st==='won'&&!RC.saidWon){RC.saidWon=true;SFX.ok();BS.legs.forEach(l=>{l.rotation.x=0;});
-      bark(BS,'bes','Как?! Ты уже тут?! Ох, у вас, видать, братишка есть — как у того Балды…',3.4);later(4.8,()=>{BS.pos.set(-3,0,-316.3);BS.g.rotation.y=Math.PI;RC.lift='bes';
-        bark(BS,'bes','Ладно! А мою кобылку-колоду поднимешь? Я вот — у-у-ух!..',3.0);});
-      later(9.2,()=>{RC.lift='try';bark(BS,'bes','Не-е… тяжела. Ну-ка вы попробуйте — силач у вас есть?',2.8);});
+      bark(BS,'bes','Как?! Ты уже тут?! Ох, у вас, видать, братишка есть — как у того Балды…',3.4);later(3.8,rollLog);
       banner('Обогнали бесёнка!','#ffd9a0',2.4,'как Балда — с братишкой');}
     if(RC.lift==='bes'){BS.arms.forEach(a=>{a.rotation.x=-2.6;});BS.body.position.y=Math.abs(Math.sin(BS.ph*30))*0.05;LG.rotation.x=Math.sin(BS.ph*30)*0.01;}
     else if(RC.lift==='try'||RC.lift==='done'){BS.arms.forEach(a=>{a.rotation.x=lerp(a.rotation.x,0,0.1);});}
@@ -360,13 +376,12 @@ function build12(){
   const dryNear=h=>forks.some(fk=>fk.open&&fk.dry&&fk.dry.dry&&hd(h.pos,fk.dry.col)<5.5);
   // зона перед засохшей кочкой: островок, с которого начинается тропа, и сама тропа до кочки — здесь уже пора звать Йошу (до кочки с острова 7,4 м — не допрыгнуть, не долить)
   const dryZone=h=>forks.some(fk=>fk.open&&fk.dry&&fk.dry.dry&&h.grounded&&h.pos.z<fk.zs+3.4&&h.pos.z>fk.dry.col.z-2&&Math.abs(h.pos.x-fk.dry.col.x)<7.5);
-  const arrowNear=h=>!FG.drop&&h.pos.z<-235&&h.pos.z>-241,lilyNear=h=>FG.sing&&!FG.lily&&hd(h.pos,PADS[6].col)<5.8,logNear=h=>RC.won&&RC.lift!=='done'&&RC.lift!=='busy'&&hd(h.pos,logPt)<3.4;
+  const arrowNear=h=>!FG.drop&&h.pos.z<-235&&h.pos.z>-241,lilyNear=h=>FG.sing&&!FG.lily&&hd(h.pos,PADS[6].col)<5.8;
   prompt(0,'skill',()=>headOf(T.proshka),()=>T.proshka.active&&wispNear(T.proshka),'по огоньку!');prompt(0,'swap',()=>headOf(T.potap),()=>T.potap.active&&wispNear(T.potap));
   prompt(1,'skill',()=>headOf(T.yosha),()=>T.yosha.active&&dryNear(T.yosha),'полей!');prompt(1,'swap',()=>headOf(T.pelageya),()=>T.pelageya.active&&(dryNear(T.pelageya)||dryZone(T.pelageya)),'Йоша польёт');
   prompt(1,'jump',()=>headOf(T.yosha),()=>T.yosha.active&&dryZone(T.yosha)&&!dryNear(T.yosha),'на первую кочку!');
   prompt(0,'skill',()=>headOf(T.proshka),()=>T.proshka.active&&arrowNear(T.proshka),'сбей стрелу!');prompt(0,'swap',()=>headOf(T.potap),()=>T.potap.active&&arrowNear(T.potap));
   prompt(1,'skill',()=>headOf(T.yosha),()=>T.yosha.active&&lilyNear(T.yosha),'полей!');prompt(1,'swap',()=>headOf(T.pelageya),()=>T.pelageya.active&&lilyNear(T.pelageya));
-  prompt(0,'skill',()=>headOf(T.potap),()=>T.potap.active&&logNear(T.potap),'подними!');prompt(0,'swap',()=>headOf(T.proshka),()=>T.proshka.active&&RC.won&&RC.lift!=='done'&&T.proshka.pos.z<-312);
   /* ---------- задачи ---------- */
   const lane=pi=>[
     O(()=>'Болото! Простая нить за пять секунд тонет.<br>Брось клубок '+K(pi,'item')+' в колышек с ленточкой — струна не утонет, пока не смотаешь, не тронет.',()=>active(pi).pos.z<-15.4,()=>[S1[pi].g],()=>({kind:active(pi).kind,action:'walk',from:new V3(lanes[pi],0,-5.8),to:new V3(lanes[pi]+0.4,0.75,-14)})),
@@ -389,8 +404,7 @@ function build12(){
       ()=>active(pi).pos.z<-277.5||(pi?FG.lily:FG.sing),()=>pi?[PADS[6].g]:[arrow]),
     O(()=>'Прыгай по кувшинкам в лад: на «Ква!» всплывают одни, на «Ква-ква!» — другие.<br>Пруд глубокий: промахнулся — плюх, и снова у колокольчика.',()=>active(pi).pos.z<-277.5,()=>PADS.filter(P=>P.cur>-0.3).map(P=>P.g)),
     O(()=>F.raceHint?'Ногами бесёнка не обогнать! Как Балда с двумя зайцами: перекинь струну '+K(pi,'item')+' через омут к флажку<br>(или пусть друг заранее у флажка встанет) — и снова на кружок!':'Бесёнок зовёт наперегонки вокруг омута!<br>Встань на кружок у омута — и беги к флажку на том берегу.',
-      ()=>RC.won,()=>[raceMat,flag,finStake.g]),
-    O(pi?()=>'Бесёнок хвастает «кобылой»-колодой. Силач у нас есть —<br>пусть Потап её поднимет!':()=>'Подними-ка «кобылу»-колоду! Смени на Потапа '+K(0,'swap')+',<br>подойди к колоде и жми '+K(0,'skill')+' — Потап её и закинет!',()=>RC.lift==='done',()=>[LG])];
+      ()=>RC.won,()=>[raceMat,flag,finStake.g])];
   W.objectives[0]=lane(0).concat([branch(0),
     O(()=>'Дальше — трясина глубока. На Потапа смени,<br>Встань на камень с медвежьей лапой, брось клубок '+K(0,'item')+' — толстую струну натяни.',()=>W.threads.some(t=>t.thick&&t.string)||active(0).pos.z<-74,()=>[stone.g],()=>({kind:'potap',action:'walk',from:new V3(2,0,-55),to:new V3(0,0.22,-58.6)})),
     O(()=>'Потап, стой, не оборачивайся — пусть друзья пройдут!<br>Потом Прошку возьми '+K(0,'swap')+', перейди и Потапа кликни '+K(0,'call')+' — тут как тут.',()=>players[0].heroes.every(h=>h.pos.z<-74),()=>[ST.g])].concat(NEW(0),[
