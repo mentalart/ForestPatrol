@@ -40,9 +40,9 @@ r.push(go(-8.3,-140,8),go(-8.3,-144.5,4,h=>{if(h.grounded&&h.groundRef&&h.ground
 me().face=Math.PI/2;U.tap('KeyF');ZC.tick(20);if(!D.ropes[0].pulled||!D.PG[0].open||!D.PG[1].open)throw new Error('ворота не открыты: '+r.join()+' '+st());
 r.push(go(-6,-157.5,6));toKind('pelageya');r.push(go(6,-157.5,6));if(!(H.proshka.pos.z<-153&&H.pelageya.pos.z<-153))throw new Error('не спустились: '+r.join());'perel solo ok'
 //@@
-// Звонкая мостовая: Прошка — дзинь, дилинь, встаёт на розовый «дон» и остаётся; Потап — на зелёный «дон»: дон-дон разом
+// Звонкая мостовая: Прошка — дзинь, потом дилинь (две плиты по очереди)
 const D=ZC.W.warp21('tune');ZC.W.flags.sturg=false;ZC.tick(20);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}toKind('proshka');const r=[go(-2,-184,4)];let t=0;while(!D.F.sturg&&t<300){ZC.tick(1);t++;}ZC.tick(60*9);
-const T=D.TUNE;r.push(go(T[0].x,T[0].z,6));ZC.tick(15);r.push(go(T[1].x,T[1].z,6));ZC.tick(15);r.push(go(T[2].x,T[2].z,6));ZC.tick(10);toKind('potap');r.push(go(0,-195,6),go(T[3].x,T[3].z,6));ZC.tick(30);
+const T=D.TUNE;r.push(go(T[0].x,T[0].z,6));ZC.tick(15);r.push(go(T[1].x,T[1].z,6));ZC.tick(30);
 if(!D.TS.done)throw new Error('напев в одиночку не сложился: step='+D.TS.step+' fails='+D.TS.fails+' '+r.join()+' '+st());ZC.tick(60);const f=SBRAWL(30,D.TS.guard||[]);'tune solo ok '+r.join()+' '+f
 //@@
 // палаты: два стула перед троном — Прошка играет у левого и остаётся доигрывать; Потап — у правого; дальше по очереди подыгрывают, прыгая через кольца
