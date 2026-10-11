@@ -297,6 +297,8 @@ for _lv,_rows in {
 '4-2':{6:'Как Прошка собьёт плиту — сразу поливай {skill} у протоки. Шесть секунд!'},
 }.items(): SHORT_P2.setdefault(_lv,{}).update(_rows)
 
+# мир 4: полные тексты задач сами не длиннее 12 слов (docs/39, P0.2) — короткие строки не нужны
+for _lv in ('4-1','4-2','4-3','4-4','4-5','4-B'):SHORT.pop(_lv,None);SHORT_P2.pop(_lv,None)
 TOKENS={'item','skill','attack','guard','roll','jump','swap','call'}
 def words(t): return [w for w in re.sub(r'\{\w+\}','',t).split() if re.search(r'[A-Za-zА-Яа-яЁё0-9]',w)]
 def guard(t):

@@ -95,11 +95,11 @@
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | — | 3 | t34 tfin_companion_34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | — | 2 | t35 tfin_companion_35 |
 | `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 10 | t3bv tfin_bossbar tfin_companion_3b tfin_hintlayer tfin_k3b tfin_k3bboss tfin_k3bbosssolo… |
-| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | late_99w4_solo | 12 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast thw4 … |
-| `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | late_99w4_solo | 4 | t42v tfin_art tfin_companion_42 tso42 |
-| `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | late_99w4_solo | 3 | t43 tfin_companion_43 tso43 |
-| `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | late_99w4_solo | 4 | t44 tfin_companion_44 tfoes tso44 |
-| `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | late_99w4_solo | 4 | t45 tfin_companion_45 tso45 tsospot |
+| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | late_99w4_kids, late_99w4_solo | 13 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast tfin_… |
+| `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | late_99w4_kids, late_99w4_solo | 5 | t42v tfin_art tfin_companion_42 tfin_w4kids tso42 |
+| `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | late_99w4_kids, late_99w4_solo | 3 | t43 tfin_companion_43 tso43 |
+| `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | late_99w4_kids, late_99w4_solo | 5 | t44 tfin_companion_44 tfin_w4kids tfoes tso44 |
+| `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | late_99w4_kids, late_99w4_solo | 4 | t45 tfin_companion_45 tso45 tsospot |
 | `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava, late_99w4_solo | 13 | t4b tfin_boss4b tfin_bossfxcap tfin_cam tfin_cine tfin_companion_4b tfin_gor4 tfin_gorend… |
 | `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51, late_97b_buyan51_chapters | 6 | t51 tfin_ch51 tfin_companion_51 tfin_likho tfoes tso51 |
 | `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | — | 2 | t52 tfin_companion_52 |
@@ -151,11 +151,11 @@
 | `levels/3-5.js` | 164 | МИР 3 · 3-5 «ГУСИ-ЛЕБЕДИ» |
 | `levels/3-B.js` | 260 | 3-Б «СОЛОВЕЙ-РАЗБОЙНИК» — босс мира 3 |
 | `levels/w4_common.js` | 253 | МИР 4 · ОГНЕННАЯ СМОРОДИНА: клещи, горячее, лава, корка, пар |
-| `levels/4-1.js` | 287 | МИР 4 · ОГНЕННАЯ СМОРОДИНА · 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА» |
+| `levels/4-1.js` | 289 | МИР 4 · ОГНЕННАЯ СМОРОДИНА · 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА» |
 | `levels/4-2.js` | 212 | МИР 4 · 4-2 «РЕКА СМОРОДИНА» |
-| `levels/4-3.js` | 154 | МИР 4 · 4-3 «ЭЙ, УХНЕМ» — на четверых |
-| `levels/4-4.js` | 168 | МИР 4 · 4-4 «ЗМИЕВЫ ВАЛЫ» |
-| `levels/4-5.js` | 181 | МИР 4 · 4-5 «КАЛИНОВ МОСТ» — кульминация мира, путь Потапа |
+| `levels/4-3.js` | 156 | МИР 4 · 4-3 «ЭЙ, УХНЕМ» — на четверых |
+| `levels/4-4.js` | 174 | МИР 4 · 4-4 «ЗМИЕВЫ ВАЛЫ» |
+| `levels/4-5.js` | 182 | МИР 4 · 4-5 «КАЛИНОВ МОСТ» — кульминация мира, путь Потапа |
 | `levels/4-B.js` | 114 | 4-Б «ЗМЕЙ ГОРЫНЫЧ» — босс мира 4 |
 | `levels/w5_common.js` | 304 | МИР 5 · ОСТРОВ БУЯН: вещь по знаку, Лихо Одноглазое, овечьи… |
 | `levels/5-1.js` | 615 | МИР 5 · 5-1 «СУНДУК НА ДУБЕ» — остров, дуб и Лихо Одноглазое |
@@ -349,6 +349,7 @@
 | `levels/3-B/late_99t_k3b_sol.js` | — | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК»: СОЛОВЕЙ, ДОЧКИ-СОЛОВУШКИ, ЗВЕРИ-ТЕНИ — МОДЕЛИ И МИМИКА |
 | `levels/3-B/late_99u_k3b_fx.js` | 3-B | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК»: ЭФФЕКТЫ — ВИДИМЫЙ ЗВУК, ВЕТЕР, РВУЩИЕСЯ ОБЛАКА, НОЧЬ, ВИХРЬ |
 | `levels/3-B/late_99v_k3b.js` | 3-B | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК» — ГНЕЗДО НА СЕМИ ДУБАХ И БОЙ ПО БЫЛИНЕ (docs/26_solovei_boss.md) |
+| `levels/w4/late_99w4_kids.js` | 4-1, 4-2, 4-3, 4-4, 4-5 | МИР 4 · ДЕТСКИЕ ТАЙМЕРЫ ГОЛОВОЛОМОК |
 | `levels/w4/late_99w4_solo.js` | 4-1, 4-2, 4-3, 4-4, 4-5, 4-B | МИР 4 · ОДИНОЧНЫЙ РЕЖИМ |
 | `levels/3-B/late_99w_k3b_road.js` | — | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК»: ПОДХОД «ПРЯМОЕЗЖАЯ ДОРОЖКА» (≈170 м) |
 | `levels/1-B/late_99x_k1b_leshy.js` | 1-B | РЕЛИЗ final06 · 1-Б «ЛЕШИЙ-ПУТАНИК»: ОБЛИК — ЛЕШИЙ С ТРОФЕЯМИ, РУКИ-КОРЯГИ, ДВОЙНИКИ В НАРЯДАХ, ЛЕШАЧАТА-ЗРИТЕЛИ |
@@ -399,6 +400,7 @@
 | `rep_20_subs.py` | 5-Б2 финал |
 | `rep_20_subs.py` | эпилог |
 | `rep_20_subs.py` | Лукоморье |
+| `levels/4-2/rep_30_42.py` | детские таймеры (late_99w4_kids.js): плита запруды ждёт дольше на Лёгком и Среднем пути (9 / 8 с, Богатырский — 6) |
 | `levels/epi/rep_30_epi.py` | Эпилог: «Театр теней» (late_39_epi_shadows.js) — после ролика e1 мини-игра с живыми тенями вместо теней-картинок по кно… |
 | `levels/4-B/rep_30_gor4b.py` | 4-Б «Змей Горыныч»: Пробой любой головы держится вдвое дольше — 12 секунд (на вдохе — 18) |
 | `levels/4-B/rep_30_gor4b.py` | 4-Б «Змей Горыныч», фаза 3 (late_37_gor_uzda.js): после оглушения всех трёх голов — 50 секунд (было 25); «раз-два-три» … |
@@ -458,11 +460,11 @@
 | `38_world3_proposals.md` | 38. Мир 3 «Небесное царство»: комплексный разбор и предложения по всем уровням |
 | `39_world4_proposals.md` | 39. Мир 4 «Огненная Смородина»: комплексный разбор и предложения по всем уровням |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 117 файлов |
+| `changes/` | 119 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 278 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 280 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
