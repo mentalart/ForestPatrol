@@ -32,7 +32,7 @@ const W=ZC.W,F=W.flags,P=H.proshka,Y=H.yosha;U.toKind('proshka');P.pos.set(0,0,-
 const B=['KeyA','KeyD','KeyW','KeyS'];const rel=()=>B.forEach(k=>ZC.hold(k,false));
 const mv=(x,z,stop)=>{const h=U.me();const dx=x-h.pos.x,dz=z-h.pos.z,far=Math.hypot(dx,dz)>stop;ZC.hold(B[0],far&&dx<-0.3);ZC.hold(B[1],far&&dx>0.3);ZC.hold(B[2],far&&dz<-0.3);ZC.hold(B[3],far&&dz>0.3);if(!far)h.face=Math.atan2(dx,dz);return !far;};
 const log=[];
-for(let i=0;i<60*150&&!F.cleared;i++){P.iT=99;Y.iT=99;const al=W.enemies.filter(e=>e.alive);if(!al.length)break;
+for(let i=0;i<60*150&&!F.cleared;i++){P.iT=99;Y.iT=99;const al=W.enemies.filter(e=>e.alive);if(!al.length){ZC.tick(1);continue;}   // болваны волнами 1 → 2 → 3
   const hotE=al.find(e=>e.armor==='hot'),coolE=al.find(e=>e.armor==='cool'),offE=al.find(e=>e.armor==='off');
   if(coolE){if(U.me()!==P){rel();U.toKind('proshka');}if(mv(coolE.pos.x,coolE.pos.z,1.6)&&i%10===0)ZC.press('KeyR');}
   else if(offE){if(U.me()!==P){rel();U.toKind('proshka');}if(!U.def(0,i)&&mv(offE.pos.x,offE.pos.z,1.4)&&i%9===0)ZC.press('KeyF');}

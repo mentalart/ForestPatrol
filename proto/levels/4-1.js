@@ -74,7 +74,10 @@ function build41(){
   const L3=linkItem(-9.4,1.1,-58),n4=nutItem(9.6,0.6,-58.6),n5=nutItem(-9.6,0.6,-44);bell(0,-44.5);
   const master=makeForge(0,-58.4,0,{});colBox(-1.1,1.1,0,1.1,-59.2,-57.6,true);master.coalM.emissiveIntensity=0.05;master.fire.intensity=0;
   hotSocket(0,1.15,-57.4,{r:1.3,active:()=>F.cleared&&!F.lit,accept:it=>it.kind==='ugol'||it.kind==='slitok',onPut:(it)=>{consumeHot(it);F.lit=true;anim(1.4,k=>{master.coalM.emissiveIntensity=k*1.2;master.fire.intensity=k*1.6;});later(1.4,startRuki);}});
-  let arena=null;function spawnGolems(){F.fight=true;arena=[bolvanFoe(-4,-50),bolvanFoe(4,-51),bolvanFoe(0,-55)];banner('Чугунные болваны!','#ff9a60',2.4,'латы горячи: Йоша поливает — латы темнеют, клещами нагрудник сорви — и бей');
+  // болваны волнами 1 → 2 → 3 (docs/39, 41.3): сначала один — разобраться «полей → сорви → бей», потом больше
+  let arena=null;const WAVES=[[[0,-50]],[[-4,-51],[4,-51]],[[-4,-50],[4,-51],[0,-55]]];F.wave=0;
+  function nextWave(){const w=WAVES[F.wave++];for(const [x,z] of w)arena.push(bolvanFoe(x,z));if(F.wave>1)banner(F.wave===2?'Ещё двое!':'Последние трое!','#ff9a60',2,'полей — сорви — бей');}
+  function spawnGolems(){F.fight=true;arena=[];nextWave();banner('Чугунный болван!','#ff9a60',2.4,'латы горячи: Йоша поливает, клещами нагрудник сорви — и бей');
     later(1.4,()=>sayP('По горячим латам не бей.<br>Полей — и сними, как крышку с кастрюли, скорей.',3.6));}
   // тесный дальний цех: пока бьёмся с болванами и куём в четыре руки — камера выше и дальше, видно весь цех (стена у ворот — полупрозрачная)
   W.camZones.push({x:0,y:0,z:-52,r:8,camActive:()=>!G.cine&&(G.solo?[active(G.soloPi)]:[active(0),active(1)]).every(h=>h.pos.z<-43.5)&&((F.fight&&!F.cleared)||F.stage==='carry'||F.stage==='r4'||F.stage==='quench')});
@@ -95,7 +98,7 @@ function build41(){
   function strike(ok){const pr=T.proshka;pr.atkT=0.28;pr.face=Math.atan2(0-pr.pos.x,-14-pr.pos.z);const hk=FG.heat>0.3?1:0.5;FG.prog+=(ok?1.3:1)*hk;
     later(0.06,()=>{SFX.hammer();tone(ok?2600:1700,ok?0.5:0.25,'triangle',ok?0.24:0.12);burst(new V3(0,1.35,-14),ok?0xffe060:0xffa040,ok?18:6,ok?5:2);blank.material.emissiveIntensity=1.6;floatText(new V3(0,2.1,-14),ok?'Дзинь!':'тук',ok?'#ffe36b':'#e0c0a0');});
     if(FG.heat<=0.3&&!FG.coldTold){FG.coldTold=true;sayP('Горн остыл — Пелагея, на рычаг мехов прыгай, раздувай!',2.8);}
-    if(FG.prog>=FG.need){FG.prog=0;FG.made++;FG.queue++;SFX.ok();floatText(new V3(0,2.9,-14),'Клещи готовы — в корыто летят!','#ffd76a');flyToTrough(FG.made-1);
+    if(FG.prog>=FG.need){FG.prog=0;FG.need=5;const two=FG.made===2;FG.made+=two?2:1;FG.queue+=two?2:1;SFX.ok();floatText(new V3(0,2.9,-14),two?'Двое клещей разом — в корыто!':'Клещи готовы — в корыто летят!','#ffd76a');flyToTrough(FG.made-1);if(two)flyToTrough(FG.made-2);
       if(FG.made===1)later(0.9,()=>sayP('Йоша, клещи в корыте! Живой водой полей — пш-ш-ш, и готово!',3));}}
   function forgeTick(dt){FG.t+=dt;const k=Math.floor(FG.t/FG.B+1e-6);while(FG.k<k){FG.k++;if(FG.k<0)tone(1760,0.05,'square',0.05);else tone(880,0.04,'square',0.03);}
     const u=((FG.t%FG.B)+FG.B)%FG.B/FG.B;ring.position.set(0,1.32,-14);ring.scale.setScalar(lerp(1.6,0.3,u));ring.material.color.setHex(u>0.8?0xffffff:COL.yellow);ring.visible=FG.made<FG.total;
@@ -125,7 +128,7 @@ function build41(){
         if(Math.random()<0.8)burst(g.position.clone(),Math.random()<0.5?0xffd76a:0xffffff,2,1.2,0.9);
         if(k>=1){W.group.remove(g);ringFx(h.pos,PCOL[h.player],1.5);burst(to,COL.gold,14,3);tone(1320+i*180,0.3,'triangle',0.14);h.atkT=0.25;floatText(h.pos.clone().add(new V3(0,heroHeight(h)+0.7,0)),'Мои клещи!','#ffd9a0');}});});});
     later(4*0.3+1.3,()=>{F.flew=true;W.abil.kleshi=true;SFX.ok();L1.locked=false;L1.g.visible=true;burst(L1.pos.clone(),COL.gold,16,3);
-      banner('У каждого — клещи!','#ffb070',2.8,'кнопка R или ; (на джойстике RB): взять горячее, положить, а на бегу — бросить · горячее остывает за двадцать секунд');
+      banner('У каждого — клещи!','#ffb070',2.8,'кнопка R или ; (на джойстике RB): взять горячее, положить, а на бегу — бросить · остыло — погрей в горне');
       later(1.2,()=>bark(T.proshka,'proshka','Сам сковал. Своими руками.',2.2));for(const pi of[0,1])tip(pi,'Клещи '+K(pi,'item')+': у горячего — взять, ещё раз — положить.<br>На бегу — на четыре шага бросить, вот как быть.',4);});}
   /* ---------- Д. «В четыре руки»: большую заготовку несут вдвоём, куют вдвоём, закаляет Йоша ---------- */
   const BIG={pos:new V3(0,1.25,-57.3),ang:0,hold:[null,null],on:false,placed:false};
@@ -235,7 +238,8 @@ function build41(){
     else if(LIFT.up<=0&&!HEROES.some(h=>h.pos.x>4.6&&h.pos.x<7.7&&h.pos.z>-34.8&&h.pos.z<-31.2&&h.pos.y<LIFT.y-0.1&&LIFT.y-h.pos.y<h.d.height+0.6))LIFT.y=Math.max(0,LIFT.y-dt*0.9);const dy=LIFT.y-(liftCol.maxy-0.3);
     liftCol.miny=LIFT.y;liftCol.maxy=LIFT.y+0.3;liftM.position.y=LIFT.y+0.15;liftFire.emissiveIntensity=LIFT.up>0?1:0.05;for(const h of HEROES)if(h.groundRef===liftCol)h.pos.y+=dy;
     if(!F.fight&&F.g2&&[0,1].some(pi=>active(pi).pos.z<-44))spawnGolems();
-    if(F.fight&&!F.cleared&&arena.every(e=>!e.alive)){F.cleared=true;SFX.ok();banner('Цех чист!','#ffb070',2.2,'горячий уголь — в большой горн: большую заготовку он разогреет');later(1,()=>sayP('Большой горн кузню будит.',3));}});
+    if(F.fight&&!F.cleared&&!F.waveQ&&arena.every(e=>!e.alive)&&F.wave<WAVES.length&&!G.cine){F.waveQ=true;later(0.8,()=>{F.waveQ=false;nextWave();});}
+    if(F.fight&&!F.cleared&&!F.waveQ&&arena.every(e=>!e.alive)&&F.wave>=WAVES.length){F.cleared=true;SFX.ok();banner('Цех чист!','#ffb070',2.2,'горячий уголь — в большой горн: большую заготовку он разогреет');later(1,()=>sayP('Большой горн кузню будит.',3));}});
   /* ---------- рисунки кнопок ---------- */
   const P=T.proshka,Y=T.yosha,Pe=T.pelageya;
   prompt(0,'attack',()=>headOf(P),()=>F.stage==='forge'&&P.active&&hd(P.pos,{x:0,z:-14})<2.6&&FG.made<FG.total,'в такт');

@@ -95,7 +95,7 @@
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | late_99zn_ship34_wear | 3 | t34 tfin_companion_34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | late_99zm_sky35 | 3 | t35 tfin_companion_35 tfin_sky35 |
 | `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 11 | t3bv tfin_bossbar tfin_companion_3b tfin_hintlayer tfin_k3b tfin_k3bacorn tfin_k3bboss tf… |
-| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 13 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast tfin_… |
+| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | late_99w4_41, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 13 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast tfin_… |
 | `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 6 | t42v tfin_art tfin_companion_42 tfin_w4help tfin_w4kids tso42 |
 | `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 4 | t43 tfin_companion_43 tfin_w4help tso43 |
 | `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 5 | t44 tfin_companion_44 tfin_w4kids tfoes tso44 |
@@ -151,7 +151,7 @@
 | `levels/3-5.js` | 164 | МИР 3 · 3-5 «ГУСИ-ЛЕБЕДИ» |
 | `levels/3-B.js` | 260 | 3-Б «СОЛОВЕЙ-РАЗБОЙНИК» — босс мира 3 |
 | `levels/w4_common.js` | 253 | МИР 4 · ОГНЕННАЯ СМОРОДИНА: клещи, горячее, лава, корка, пар |
-| `levels/4-1.js` | 289 | МИР 4 · ОГНЕННАЯ СМОРОДИНА · 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА» |
+| `levels/4-1.js` | 293 | МИР 4 · ОГНЕННАЯ СМОРОДИНА · 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА» |
 | `levels/4-2.js` | 212 | МИР 4 · 4-2 «РЕКА СМОРОДИНА» |
 | `levels/4-3.js` | 156 | МИР 4 · 4-3 «ЭЙ, УХНЕМ» — на четверых |
 | `levels/4-4.js` | 174 | МИР 4 · 4-4 «ЗМИЕВЫ ВАЛЫ» |
@@ -356,6 +356,7 @@
 | `levels/3-B/late_99t_k3b_sol.js` | — | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК»: СОЛОВЕЙ, ДОЧКИ-СОЛОВУШКИ, ЗВЕРИ-ТЕНИ — МОДЕЛИ И МИМИКА |
 | `levels/3-B/late_99u_k3b_fx.js` | 3-B | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК»: ЭФФЕКТЫ — ВИДИМЫЙ ЗВУК, ВЕТЕР, РВУЩИЕСЯ ОБЛАКА, НОЧЬ, ВИХРЬ |
 | `levels/3-B/late_99v_k3b.js` | 3-B | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК» — ГНЕЗДО НА СЕМИ ДУБАХ И БОЙ ПО БЫЛИНЕ (docs/26_solovei_boss.md) |
+| `levels/4-1/late_99w4_41.js` | 4-1 | 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА»: КУЗНЯ УЗНАЁТСЯ СНАРУЖИ (docs/39, 41.4) |
 | `levels/w4/late_99w4_help.js` | 4-1, 4-2, 4-3, 4-4, 4-5, 4-B | МИР 4 · ПОМОЩЬ ПО ПРОМАХАМ (docs/39, УР.2) |
 | `levels/w4/late_99w4_kids.js` | 4-1, 4-2, 4-3, 4-4, 4-5 | МИР 4 · ДЕТСКИЕ ТАЙМЕРЫ ГОЛОВОЛОМОК |
 | `levels/w4/late_99w4_lessons.js` | 4-1, 4-2, 4-3, 4-4, 4-5 | МИР 4 · УРОКИ НОВЫХ МЕХАНИК (общий шаблон FIN.lesson, как у 4-Б) |
@@ -481,7 +482,7 @@
 | `40_kino_pravila.md` | Правила роликов (катсцен) — «Златая цепь» |
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 145 файлов |
+| `changes/` | 146 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |

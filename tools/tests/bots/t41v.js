@@ -43,7 +43,8 @@ r4.push(U.walkTo(0,0,-45,3),'fight='+F.fight,W.enemies.length);ZC.tick(120);
 const K2=[{a:'KeyF',it:'KeyR',g:'KeyG',B:['KeyA','KeyD','KeyW','KeyS']},{a:'Comma',it:'Semicolon',sk:'KeyL',g:'Period',B:['ArrowLeft','ArrowRight','ArrowUp','ArrowDown']}];
 const mv=(pi,x,z,stop)=>{const h=U.act(pi),k=K2[pi];const dx=x-h.pos.x,dz=z-h.pos.z,far=Math.hypot(dx,dz)>stop;ZC.hold(k.B[0],far&&dx<-0.3);ZC.hold(k.B[1],far&&dx>0.3);ZC.hold(k.B[2],far&&dz<-0.3);ZC.hold(k.B[3],far&&dz>0.3);if(!far)h.face=Math.atan2(dx,dz);return !far;};
 const log=[];let grabs=0,waters=0;
-for(let i=0;i<60*80;i++){H.proshka.iT=99;H.yosha.iT=99;const al=W.enemies.filter(e=>e.alive);if(!al.length||al.every(e=>e.armor==='off')){log.push('off@'+(i/60).toFixed(1));break;}
+for(let wv=0;wv<4&&!F.cleared;wv++){   // болваны волнами 1 → 2 → 3
+for(let i=0;i<60*80;i++){H.proshka.iT=99;H.yosha.iT=99;const al=W.enemies.filter(e=>e.alive);if(!al.length){if(F.cleared||i>120)break;ZC.tick(1);continue;}if(al.every(e=>e.armor==='off')){log.push('off@'+(i/60).toFixed(1));break;}
   const hotE=al.find(e=>e.armor==='hot'),coolE=al.find(e=>e.armor==='cool'),offE=al.find(e=>e.armor==='off');
   // Йоша: поливает горячих
   if(hotE){if(mv(1,hotE.pos.x,hotE.pos.z,2.4)&&i%15===0){ZC.press('KeyL');waters++;}}else if(offE){if(mv(1,offE.pos.x,offE.pos.z,1.8)&&i%9===0)ZC.press('Comma');}else mv(1,U.act(1).pos.x,U.act(1).pos.z,9);
@@ -51,7 +52,7 @@ for(let i=0;i<60*80;i++){H.proshka.iT=99;H.yosha.iT=99;const al=W.enemies.filter
   if(coolE){if(mv(0,coolE.pos.x,coolE.pos.z,1.6)&&i%10===0){ZC.press('KeyR');grabs++;}}else if(offE){if(mv(0,offE.pos.x,offE.pos.z,1.6)&&i%9===4)ZC.press('KeyF');}else if(hotE)mv(0,hotE.pos.x,hotE.pos.z,3.5);
   if(i%600===0)log.push(al.map(e=>e.armor+':'+e.state+':'+e.hp).join(','));
   ZC.tick(1);}
-[0,1].forEach(pi=>K2[pi].B.forEach(k=>ZC.hold(k,false)));log.push(U.brawl(90));
+[0,1].forEach(pi=>K2[pi].B.forEach(k=>ZC.hold(k,false)));log.push(U.brawl(90));ZC.tick(60);}
 r4.push(log.join(' | '),'grabs='+grabs,'waters='+waters,'cleared='+F.cleared,U.obj());r4
 //@@ shot=w41d.png
 ZC.tick(1);
