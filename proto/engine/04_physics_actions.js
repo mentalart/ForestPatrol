@@ -74,7 +74,7 @@ function doSwap(pi){const p=players[pi],h=active(pi),o=other(pi);if(h.cling)retu
   p.act=1-p.act;o.active=true;o.following=false;G.stats.swaps++;SFX.swap();ringFx(o.pos,PCOL[pi],1.6);}
 function doCall(pi){const o=other(pi),h=active(pi);if(h.cling)return;
   o.following=true;o.stuck=0;if(G.solo)for(const q of players[1-pi].heroes){if(q.cling)continue;q.following=true;q.stuck=0;q.warned=false;}   // в одиночку зовёт всех троих
-  SFX.call();floatText(h.pos.clone().add(new V3(0,h.d.height+0.7,0)),G.solo?'Все ко мне, ко мне!':'Ко мне!',PCSS[pi]);ringFx(h.pos,PCOL[pi],2);if(W.pingCall)W.pingCall(pi,h);}
+  SFX.call();floatText(h.pos.clone().add(new V3(0,h.d.height+0.7,0)),G.solo?'Все ко мне, ко мне!':'Ко мне!',PCSS[pi]);ringFx(h.pos,PCOL[pi],2);SPLIT.glow={pi,t:1};if(W.pingCall)W.pingCall(pi,h);}
 // одиночный режим: Y по кругу Прошка → Потап → Пелагея → Йоша; свой второй герой — обычная смена, герой второго игрока — просто берёшь его
 const SOLO4=['proshka','potap','pelageya','yosha'];
 function soloSwap(){if(G._swT===G.time)return;G._swT=G.time;const pi0=G.soloPi,cur=active(pi0);if(cur.cling)return;const i=SOLO4.indexOf(cur.kind);

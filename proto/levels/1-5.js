@@ -224,6 +224,7 @@ function build15(){
   nutItem(-10.6,7.6,-41.8);nutItem(10.4,7.6,-48.4,{owl:true});nutItem(1,8.9,-38.2);
   // засов: обе плиты у двери нажаты — засов поднят, дверь на повить открыта
   const plates=[-6,6].map((x,i)=>{const b=box(x-0.8,x+0.8,7,7.15,-50.6,-49,M(0x8a5a32),{occ:false});return {x,col:b.col,mesh:b.mesh,ring:goldRing(x,7.15,-49.8,0.75),gh:ghostOf(i?'pelageya':'potap',x,7.15,-49.8,Math.PI)};});
+  W.noSplitFn=()=>!F.latch&&acts().every(h=>h.pos.z<-34.4&&h.pos.z>-53&&h.pos.y>6.5);   // плиты засова в 12 м друг от друга: в сушильне экран общий — обе плиты и дверь в кадре
   const gateCol=colBox(-2,2,7,10.4,-52.8,-52.4);const gate=new THREE.Group();gate.position.set(0,8.7,-52.6);W.group.add(gate);
   {addMesh(new THREE.BoxGeometry(4,3.4,0.2),M(0x5a3a1a),0,0,0,gate);for(let x=-1.6;x<1.7;x+=0.8)addMesh(new THREE.BoxGeometry(0.12,3.4,0.3),wd,x,0,0,gate);addMesh(new THREE.BoxGeometry(4.6,0.3,0.4),M(0x8a8a90),0,0.4,0.15,gate);}
   function gateTo(open){gateCol.on=!open;const y0=gate.position.y,y1=open?12.1:8.7;anim(0.9,k=>{gate.position.y=lerp(y0,y1,smooth(k));});SFX.gate();}
