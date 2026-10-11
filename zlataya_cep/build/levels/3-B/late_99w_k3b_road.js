@@ -143,8 +143,10 @@ FIN.k3road=function(KR){const F=W.flags,T=HERO,C=KR.C,FX=FIN.k3fx,FX2=FIN.k2fx,S
   W.lifts.push({pos:new V3(C.x,0,C.z+KR.R+2.2),active:()=>KR.gateCol.on,onLift:h=>{W.gateOpen(h);}});
   RD.started=false;RD.introDone=false;
   RD.tick=dt=>{if(G.cine||F.phase>=1||RD.introDone)return;
+    // ждут свиста у прорехи (мосты из лепестков и стволов): все стоят на краю 1 с — Соловей свистит сразу, без ожидания (подход короче, docs/38)
+    {let wait=true;for(const h of ctl()){const z=h.pos.z;if(Math.hypot(h.vel.x,h.vel.z)>0.6||!((z>118.5&&z<124)||(z>102.5&&z<107.5)))wait=false;}RD.stillT=wait?(RD.stillT||0)+dt:0;if(RD.stillT>1&&RD.whT>1.25){RD.whT=1.25;}}
     RD.whT-=dt;if(RD.whT<=1.2&&!RD.tellOn){RD.tellOn=true;for(let i=0;i<6;i++)later(i*0.2,()=>tone(1400+i*120,0.1,'sine',0.05,2000));}
-    if(RD.whT<=0){RD.tellOn=false;RD.whT=(SOLO()?11:8)-Math.min(1.5,(176-RD.z1())/90);whistle();}
+    if(RD.whT<=0){RD.tellOn=false;RD.whT=(SOLO()?11:8)-Math.min(1.5,(176-RD.z1())/90);RD.stillT=-3;whistle();}
     waveTick(dt);logsTick(dt);for(const h of HEROES)if(h.tangleT>0)h.tangleT-=dt;petTick(dt);treesTick(dt);gateTick(dt);islesTick(dt);
     RD.pilT-=dt;if(RD.pilT<=0){RD.pilT=2.4;if(!RD.dauGone)pillowStart();}pillowsTick(dt);DAU.forEach(D=>D.tick(dt));
     if(!RD.dauGone&&RD.z1()<GZ-3){RD.dauGone=true;sayD('Ой! Прошли! Батюшке скажем — то-то будет!');DAU.forEach((D,i)=>{D.set('flap');const p0=D.g.position.clone();FX.anim(2.4,k=>{D.g.position.set(p0.x,p0.y+k*14,p0.z-k*40);},()=>{D.g.visible=false;D.set('idle');});});}

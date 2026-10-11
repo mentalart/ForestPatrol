@@ -46,7 +46,7 @@ const DIR=[
   {lv:'3-1',dur:12,mood:[GOLD,0.16],cues:[[0.6,dSlow(0.5,0.5)],[4.1,dAll('joy',0.08)],[8.0,dMood(COLD,0.12)]]},
   // 3-4: корабль взлетает; авария в воздухе
   {lv:'3-4',dur:12.4,cues:[[7.0,dSpeed(0.9)],[7.1,dAll('cheer',0.08)],[9.9,dDutch(0.1,1.4)]]},
-  {lv:'3-4',dur:21,cues:[[4.0,dEmo('potap','effort')],[6.9,dEmo('proshka','pride')]]},
+  {lv:'3-4',dur:9.6,cues:[[4.0,dEmo('potap','effort')],[6.7,dEmo('proshka','pride')]]},
   // 3-5: Яга разоблачает Кощея
   {lv:'3-5',dur:30,cues:[[6.3,dMood(COLD,0.12)],[10.5,dDZ(0.2,1.0,1.2)],[18.3,dMood(WARM,0.12)],[25.5,dAll('joy',0.08)]]},
   // 3-Б: Соловей свистит — «А ну, сдуло!»
@@ -62,21 +62,21 @@ const DIR=[
   // 4-Б: три головы Горыныча спорят
   {lv:'4-B',dur:20,cues:[[5.1,dAll('tilt',0.1)],[9.1,dAll('surprise',0.06)],[9.2,dPunch(-4)],[13.2,dAll('fear',0.06)],[16.8,dEmo('pelageya','nod')]]},
   // 5-1: «Лиху в глаз не смотрите»
-  {lv:'5-1',dur:21,cues:[[4.5,dAll('tilt',0.1)],[9.3,dDZ(0.22,1.0,1.4)],[9.4,dMood(COLD,0.14)],[19.1,dEmo('proshka','effort')]]},
+  {lv:'5-1',dur:18.4,cues:[[4.5,dAll('tilt',0.1)],[9.3,dDZ(0.22,1.0,1.4)],[9.4,dMood(COLD,0.14)],[16.5,dEmo('proshka','effort')]]},
   // 5-1 (расширенный): коршун и Лебедь, Голова чихает, белка, зеркальце, пятая цепь, Лихо ищет — овечьи шкуры, бой с Лихом, сундук, заяц
-  {lv:'5-1',dur:9.4,cues:[[4.4,dEmo('yosha','fear')],[6.9,dEmo('proshka','pride')]]},
-  {lv:'5-1',dur:34,mood:[WARM,0.12],cues:[[4.2,dAll('joy',0.08)],[12.9,dEmo('pelageya','tilt')],[15.2,dAll('surprise',0.06)],[19.8,dMood(COLD,0.1)],[24.1,dEmo('yosha','nod')],[28,dMood(WARM,0.1)]]},
-  {lv:'5-1',dur:13.4,cues:[[0.4,dDZ(0.2,1.2,1.4)],[4.8,dTrauma(0.2)],[7.2,dEmo('potap','effort')],[10.2,dEmo('yosha','hop')]]},
-  {lv:'5-1',dur:17.2,cues:[[0.3,dPunch(-4)],[0.4,dAll('surprise',0.06)],[10.4,dEmo('proshka','droop')],[12.6,dTrauma(0.3)]]},
-  {lv:'5-1',dur:11.6,cues:[[4.8,dMood(COLD,0.12)],[8.2,dEmo('pelageya','nod')]]},
-  {lv:'5-1',dur:19.4,mood:[WARM,0.14],cues:[[0.3,dSpark(8,0xffd23a)],[3.9,dAll('joy',0.08)],[12.9,dEmo('yosha','hop')]]},
-  {lv:'5-1',dur:31.4,cues:[[7.6,dEmo('pelageya','droop')],[13.2,dEmo('proshka','tilt')],[17.2,dMood(COLD,0.12)],[21.4,dSpark(8,0xcfe8ff)],[25.4,dEmo('yosha','surprise')],[28.2,dEmo('proshka','pride')]]},
-  {lv:'5-1',dur:12.6,cues:[[0.3,dDZ(0.22,1.2,1.4)],[5.2,dEmo('pelageya','nod')],[8.6,dPunch(-5)],[8.7,dAll('fear',0.06)]]},
-  {lv:'5-1',dur:24.4,cues:[[0.4,dTrauma(0.5)],[6.6,dMood(COLD,0.16)],[6.7,dAll('fear',0.06)],[18.7,dEmo('proshka','pride')],[21.5,dEmo('potap','nod')]]},
-  {lv:'5-1',dur:15,cues:[[4,dSlow(0.6,0.6)],[8.6,dEmo('proshka','pride')],[11.4,dEmo('yosha','hop')],[13.4,dAll('joy',0.08)]]},
-  {lv:'5-1',dur:13.6,mood:[NIGHT,0.16],cues:[[10.8,dEmo('yosha','hop')]]},
-  {lv:'5-1',dur:15.6,cues:[[0.3,dPunch(-4)],[0.4,dTrauma(0.3)],[3.5,dEmo('yosha','fear')],[5.2,dEmo('proshka','pride')],[12.2,dAll('joy',0.06)]]},
-  {lv:'5-1',dur:15.2,cues:[[3.6,dSlow(0.5,0.6)],[7.3,dTrauma(0.3)],[8.8,dMood(NIGHT,0.12)],[11,dEmo('pelageya','nod')]]},
+  {lv:'5-1',dur:5,cues:[[0,dEmo('yosha','fear')],[2.5,dEmo('proshka','pride')]]},
+  {lv:'5-1',dur:26.1,mood:[WARM,0.12],cues:[[0.3,dAll('joy',0.08)],[9,dEmo('pelageya','tilt')],[11.3,dAll('surprise',0.06)],[15.9,dMood(COLD,0.1)],[20.2,dEmo('yosha','nod')],[24.1,dMood(WARM,0.1)]]},
+  {lv:'5-1',dur:10.9,cues:[[0.4,dDZ(0.2,1.2,1.4)],[2.3,dTrauma(0.2)],[4.7,dEmo('potap','effort')],[7.7,dEmo('yosha','hop')]]},
+  {lv:'5-1',dur:14.4,cues:[[0.3,dPunch(-4)],[0.4,dAll('surprise',0.06)],[10.4,dEmo('proshka','droop')],[12.6,dTrauma(0.3)]]},
+  {lv:'5-1',dur:9.1,cues:[[2.3,dMood(COLD,0.12)],[5.7,dEmo('pelageya','nod')]]},
+  {lv:'5-1',dur:11.4,mood:[WARM,0.14],cues:[[0.3,dSpark(8,0xffd23a)],[0.3,dAll('joy',0.08)],[9.3,dEmo('yosha','hop')]]},
+  {lv:'5-1',dur:28.4,cues:[[4.6,dEmo('pelageya','droop')],[10.2,dEmo('proshka','tilt')],[14.2,dMood(COLD,0.12)],[18.4,dSpark(8,0xcfe8ff)],[22.4,dEmo('yosha','surprise')],[25.2,dEmo('proshka','pride')]]},
+  {lv:'5-1',dur:8.9,cues:[[0.3,dDZ(0.22,1.2,1.4)],[1.5,dEmo('pelageya','nod')],[4.9,dPunch(-5)],[5,dAll('fear',0.06)]]},
+  {lv:'5-1',dur:13.7,cues:[[0.4,dTrauma(0.5)],[2.3,dMood(COLD,0.16)],[2.4,dAll('fear',0.06)],[10.8,dEmo('proshka','pride')],[10.8,dEmo('potap','nod')]]},
+  {lv:'5-1',dur:13.6,cues:[[4,dSlow(0.6,0.6)],[8.6,dEmo('proshka','pride')],[11.4,dEmo('yosha','hop')],[13.4,dAll('joy',0.08)]]},
+  {lv:'5-1',dur:10,mood:[NIGHT,0.16],cues:[[7.2,dEmo('yosha','hop')]]},
+  {lv:'5-1',dur:13.4,cues:[[0.3,dPunch(-4)],[0.4,dTrauma(0.3)],[3.5,dEmo('yosha','fear')],[5.2,dEmo('proshka','pride')],[12.2,dAll('joy',0.06)]]},
+  {lv:'5-1',dur:11,cues:[[3.6,dSlow(0.5,0.6)],[7.3,dTrauma(0.3)],[8.8,dMood(NIGHT,0.12)],[11,dEmo('pelageya','nod')]]},
   {lv:'5-1',dur:17.6,cues:[[1.1,dConf(40)],[1.2,dAll('surprise',0.06)],[4.8,dEmo('yosha','hop')],[9.4,dMood(WARM,0.12)],[13,dAll('nod',0.08)]]},
   // 5-4: Кощей забирает яйцо — «Моё»
   {lv:'5-4',dur:25,cues:[[8.8,dMood(COLD,0.2)],[9.4,dDZ(0.3,1.1,1.4)],[9.6,dAll('fear',0.08)]]},

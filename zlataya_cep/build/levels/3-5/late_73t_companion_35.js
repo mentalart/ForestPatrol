@@ -66,5 +66,9 @@ CMP.route('3-5',[
   {id:'yaga',done:()=>!!W.flags.final,run:h=>{k35();if(!k35Sh())k35Dark(h,0,-148.6);}},
   // через пропасть по золотым мосткам между лучами трёх гусей — в конец, там Яга
   {id:'final',done:()=>W.flags.stage==='end'||!!W.flags.out,run:h=>{k35();if(G.cine)return 'follow';
-    if(h.pos.z>-188.4&&!k35Cross(h,-152,-188))return;k35Dark(h,0,-192,0.5);}}
+    const A=W.abyss35;if(!A){if(h.pos.z>-188.4&&!k35Cross(h,-152,-188))return;k35Dark(h,0,-192,0.5);return;}
+    // мостки по очереди (late_99zm): золотой — по плану между лучами, со светом; лиловый — с погашенным пером; перо меняет на островке
+    for(const[t,z0,z1]of A){if(h.pos.z<z1-0.45)continue;if(t==='light'){if(!k35Cross(h,z0,z1))return;continue;}
+      w3Lit(h,false);if(h.lit)return;cmpGoto(h,0,z1-1.2,0.4);return;}
+    k35Dark(h,0,-192,0.5);}}
 ]);

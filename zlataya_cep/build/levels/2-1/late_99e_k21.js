@@ -42,8 +42,8 @@ function k21Label(text,col){const c=document.createElement('canvas');c.width=256
 const K21_TUNE_TEX=(()=>{const c=document.createElement('canvas');c.width=512;c.height=208;const x=c.getContext('2d');x.fillStyle='#f4ecd8';x.fillRect(0,0,512,208);x.strokeStyle='#8a6a3a';x.lineWidth=8;x.strokeRect(6,6,500,196);
   x.font='bold 40px Georgia, serif';x.textAlign='center';x.fillStyle='#5a3a1a';x.fillText('Напев Садко',256,52);
   const dot=(cx,col,txt)=>{x.fillStyle=col;x.beginPath();x.arc(cx,118,26,0,Math.PI*2);x.fill();x.font='bold 24px Georgia, serif';x.fillStyle='#3a2a1a';x.fillText(txt,cx,178);};
-  dot(70,'#ffd23a','дзинь');dot(180,'#5ab8ff','дилинь');dot(330,'#ff7ab0','дон');dot(440,'#6ad86a','дон');x.font='bold 40px Georgia, serif';x.fillStyle='#5a3a1a';x.fillText('+',385,132);
-  x.font='bold 30px Georgia, serif';x.fillText('→',125,128);x.fillText('→',255,128);return new THREE.CanvasTexture(c);})();
+  dot(90,'#ffd23a','дзинь');dot(230,'#5ab8ff','дилинь');x.font='bold 30px Georgia, serif';x.fillStyle='#5a3a1a';x.fillText('→',160,128);x.fillText('→',300,128);   // две плиты по очереди, «дон-дон» допевают ворота
+  x.font='italic 26px Georgia, serif';x.fillText('дон-дон —',410,112);x.fillText('ворота',410,146);return new THREE.CanvasTexture(c);})();
 // сад Китежа: коралловые деревца с жемчугом вместо яблок
 function appleSea21(x,y,z){const g=new THREE.Group();g.position.set(x,y,z);g.rotation.y=rand(0,6);W.group.add(g);const c=M([0xff8a8a,0xffb07a,0xd08ae0][Math.floor(rand(0,3))]),p=M(0xfff4e8,{emissive:0x6a6050,emissiveIntensity:0.4});
   const br=(px,py,pz,l,a,d)=>{const m=addMesh(new THREE.CylinderGeometry(0.05,0.08,l,5),c,px+Math.sin(a)*l/2,py+Math.cos(a)*l*0.5,pz,g);m.rotation.z=-a;m.castShadow=false;

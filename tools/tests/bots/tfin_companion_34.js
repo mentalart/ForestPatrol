@@ -13,13 +13,13 @@ RESET34();
 if(!CO.routes['3-4'])throw new Error('нет маршрута 3-4');let i=0;for(;i<60*20&&!F().launched;i++){if(ZC.G.cine){ZC.skip();ZC.tick(5);}ZC.tick(1);}
 if(!F().launched)throw new Error('корабль не взлетел: '+pos(bot())+' '+CO.mode+' stage='+F().stage);'launch ok after '+(i/60).toFixed(1)+'s '+pos(bot())
 //@@
-// полёт: человек стоит на палубе, бот держит фонарь; ущелье, порывы, вороны — корабль доходит до гнезда и садится; фонарь гаснет не дольше нескольких секунд за весь полёт
-let dark=0;const L=[];for(let i=0;i<60*300&&!F().landed;i++){if(ZC.G.cine){ZC.skip();ZC.tick(5);}ZC.tick(1);if(ZC.W.shipS.z<-20&&!ZC.W.shipS.lit)dark++;}
+// полёт: человек стоит на палубе, бот держит фонарь (гасит его только для нырка под арку и тучу); ущелье, порывы, вороны, гроза — корабль доходит до гнезда и садится; фонарь гаснет не дольше нескольких секунд за весь полёт
+let dark=0;const L=[];for(let i=0;i<60*300&&!F().landed;i++){if(ZC.G.cine){ZC.skip();ZC.tick(5);}ZC.tick(1);if(ZC.W.shipS.z<-20&&!ZC.W.shipS.lit&&!F().diveNow&&!F().stolen)dark++;}
 if(!F().landed)throw new Error('корабль не сел: z='+ZC.W.shipS.z.toFixed(0)+' lit='+ZC.W.shipS.lit+' '+pos(bot())+' '+CO.mode+' stage='+F().stage);
 if(dark>600)throw new Error('фонарь был погашен '+(dark/60).toFixed(1)+' с');if(!F().crowsDone)throw new Error('вороны не прогнаны');if(ZC.players[1].petals<=0)throw new Error('Пелагея без лепестков');
-'flight ok dark='+(dark/60).toFixed(1)+'s crowsDone='+F().crowsDone+' bumps='+(F().bumps||0)+' petals='+ZC.players[1].petals
+'flight ok dark='+(dark/60).toFixed(1)+'s crowsDone='+F().crowsDone+' bumps='+(F().bumps||0)+' dives='+(F().dives||0)+' brace='+(F().braceHeld||0).toFixed(1)+' petals='+ZC.players[1].petals
 //@@
 // посадка: бот идёт к гнезду, человек сходит на берег — уровень пройден
-for(let i=0;i<60*40&&!F().out;i++){if(ZC.G.cine){ZC.skip();ZC.tick(5);}if(i%30===0&&me().pos.z>-309)U.goto(0,0,-314,2);ZC.tick(1);}U.rel(0);
+for(let i=0;i<60*40&&!F().out;i++){if(ZC.G.cine){ZC.skip();ZC.tick(5);}if(i%30===0&&me().pos.z>-335)U.goto(0,-1.2,-340,2);ZC.tick(1);}U.rel(0);
 if(!F().out)throw new Error('уровень не пройден: бот '+pos(bot())+' человек '+pos(me())+' '+CO.mode);if(window._errs.length)throw new Error('ошибки: '+window._errs.slice(0,3).join(' | '));
 'landing ok out='+F().out+' bot='+pos(bot())

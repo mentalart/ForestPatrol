@@ -75,9 +75,9 @@ r.push(U.walkTo(1,8.3,-149.2,4,(h)=>{SH(1)(h);if(h.grounded&&h.pos.y<3.1)ZC.pres
 if(!D.ropes[1].pulled||!D.PG[0].open)throw new Error('правая верёвка/левые ворота: '+r.join()+' '+U.act(1).pos.toArray().map(v=>v.toFixed(2)));
 r.push(U.walkTo(0,-6,-154,5),U.walkTo(1,6,-154,5),U.walkTo(0,-6,-157.5,4),U.walkTo(1,6,-157.5,4));if(!(U.act(0).pos.z<-153&&U.act(1).pos.z<-153))throw new Error('не прошли ворота: '+r.join());'perelivnaya ok'
 //@@ shot=k21_perel_done.png
-// Ж1: Звонкая мостовая — осётр пролетает и напевает; плиты: дзинь (Игрок 1), дилинь (Игрок 2), дон-дон — вдвоём разом; стража ворот — бой
+// Ж1: Звонкая мостовая — осётр пролетает и напевает; плиты: дзинь (Игрок 1), дилинь (Игрок 2) — две плиты по очереди, «дон-дон» допевают ворота; стража ворот — бой
 const D=ZC.W.warp21('tune');ZC.W.flags.sturg=false;ZC.tick(20);for(let i=0;i<20&&ZC.G.cine;i++){ZC.skip();ZC.tick(5);}const r=[WALK2([-2,-184],[2,-184],4)];let t=0;while(!D.F.sturg&&t<300){ZC.tick(1);t++;}ZC.tick(60*9);
-const T=D.TUNE;r.push(WALK2([T[0].x,T[0].z],null,6));ZC.tick(20);r.push(WALK2(null,[T[1].x,T[1].z],6));ZC.tick(20);const s1=D.TS.step;r.push(WALK2([T[2].x,T[2].z],[T[3].x,T[3].z],7));ZC.tick(30);
+const T=D.TUNE;r.push(WALK2([T[0].x,T[0].z],null,6));ZC.tick(20);r.push(WALK2(null,[T[1].x,T[1].z],6));ZC.tick(20);const s1=D.TS.step;if(T.length!==2)throw new Error('плит не две: '+T.length);ZC.tick(30);
 if(!D.TS.done)throw new Error('напев не сложился: step='+D.TS.step+' s1='+s1+' fails='+D.TS.fails+' '+r.join());ZC.tick(120);const g=D.TS.guard||[];const f=FIGHT2(g,40);
 'tune ok s1='+s1+' guard '+f
 //@@ shot=k21_tune.png
