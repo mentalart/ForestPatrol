@@ -118,6 +118,7 @@ zlataya_cep/build/levels/3-1/late_73p_companion_31.js tfin_companion_31
 zlataya_cep/build/levels/3-2/late_73q_companion_32.js tfin_companion_32
 zlataya_cep/build/levels/3-3/late_73r_companion_33.js tfin_companion_33
 zlataya_cep/build/levels/3-4/late_73s_companion_34.js tfin_companion_34
+zlataya_cep/build/levels/3-4/late_99zn_ship34_wear.js @level:3-4
 zlataya_cep/build/levels/3-5/late_73t_companion_35.js tfin_companion_35
 zlataya_cep/build/levels/3-B/late_73u_companion_3b.js tfin_companion_3b
 zlataya_cep/build/levels/4-1/late_73v_companion_41.js tfin_companion_41
