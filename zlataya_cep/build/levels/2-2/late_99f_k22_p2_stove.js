@@ -65,7 +65,7 @@
   /* ---------- 8. «между глаз мальчишки пляшут»: хоровод, плясовые камни — прыгай в такт ---------- */
   ground(-10,10,-304,-266,4.5,hump,skinSide);
   const eyesE=[eye22(-11.6,4.4,-284,2.0,-1),eye22(11.6,4.4,-284,2.0,1)];
-  const DC={x:0,z:-284,beat:0,bt:1.15,score:[0,0],need:6,done:false,on:false,stones:[],boys:[]};
+  const DC={x:0,z:-284,beat:0,bt:1.15,score:[0,0],need:4,done:false,on:false,stones:[],boys:[]};
   for(let i=0;i<8;i++){const a=i/8*Math.PI*2,x=Math.sin(a)*5.4,z=DC.z+Math.cos(a)*5.4;const g=new THREE.Group();g.position.set(x,4.5,z);W.group.add(g);const mat=M(0xd8c8a8,{emissive:0xffffff,emissiveIntensity:0});
     addMesh(new THREE.CylinderGeometry(0.85,0.95,0.16,14),mat,0,0.08,0,g);g.traverse(c=>{c.userData.noBatch=true;});DC.stones.push({i,x,z,g,mat,lit:-1});}
   for(let i=0;i<6;i++){const a=i/6*Math.PI*2;DC.boys.push(folk22(Math.sin(a)*2.0,4.5,DC.z+Math.cos(a)*2.0,{kind:'boy',s:0.75,who:i===0?'malec':null,ry:a+Math.PI/2}));}
@@ -81,7 +81,7 @@
     if(!real)for(let k=0;k<5;k++)addMesh(new THREE.SphereGeometry(0.05,5,4),M(0xffffff),Math.cos(k*1.3)*0.18,0.48,Math.sin(k*1.3)*0.18,g);
     const glow=addMesh(new THREE.TorusGeometry(0.5,0.05,6,16),MB(real?0xffe08a:0xff5a5a,{transparent:true,opacity:0}),0,0.06,0,g);glow.rotation.x=Math.PI/2;g.traverse(c=>{c.userData.noBatch=true;});
     return {x,z,real:!!real,g,glow,got:false,seen:0};});
-  const GR={got:0,need:5,done:false};
+  const GR={got:0,need:4,done:false};
   const curtain=new THREE.Group();W.group.add(curtain);for(let x=-9.6;x<=9.6;x+=0.45){const h=rand(3.6,5.4);addMesh(new THREE.CylinderGeometry(0.06,0.03,h,4),M(0x2a3448),x,4.5+h/2,-355.4+rand(-0.2,0.2),curtain);}
   const curtCol=colBox(-10,10,4.5,10,-355.8,-355,false);
   const nutGrove=nutItem(-9.2,5.1,-330);
@@ -121,7 +121,7 @@
     play({dur:12.4,fov:48,shots:[shot(0,[2.6,1.9,3.2],[T.potap.pos.x,1.3,T.potap.pos.z]),shot(6,[0,4,10],[0,1,0]),shot(8.2,[1.8,1.8,2.2],[T.potap.pos.x,1.4,T.potap.pos.z])],
       says:[[0.3,2.6,'potap','Как говаривал Илья…'],[3.1,2.4,'potap','Илья… какой Илья?'],[5.8,2.4,null,'<i>Потап молчит — долго, тяжело.</i>',true],[8.3,2.8,'potap','Забыл. Совсем забыл, как сказка эта начинается…'],[11.1,1.4,null,'<i>Никто не смеётся. Грустно всем немножко.</i>',true]],
       events:[{t:0,fn:()=>{T.potap.face=Math.PI*0.2;}},{t:5.8,fn:()=>{T.potap.face=Math.PI;}}],end:()=>{later(0.6,()=>say('zven','Рыба-кит! Тише — спит он. Вода тут одна на всех!',2.8,true));}});}
-  W.onWater=(z,st)=>{if(z===Z2&&st==='high'&&!F.hiTold){F.hiTold=true;bark(HERO.pelageya,'pelageya','Погоди, я пройду… Всё, давай, твой черёд!',2.4);}};
+  W.onWater=(z,st)=>{if(z===ZR&&st==='low'&&!F.hiTold){F.hiTold=true;bark(HERO.pelageya,'pelageya','Погоди, я пройду… Всё, давай, твой черёд!',2.4);}};
   W.updates.push(dt=>{
     // ворота к фонтану: открываются, когда оба сделали своё
     if(!G2.open&&F.mast&&F.garden){G2.open=true;SFX.gate();SFX.ok();g2col.on=false;anim(1.2,k=>{g2.position.y=-3.4*smooth(k);});banner('Ворота открыты!','#ffffff',1.8,'договорились — и прошли вдвоём');}

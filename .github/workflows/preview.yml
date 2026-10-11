@@ -37,4 +37,4 @@ jobs:
           gh release delete "$tag" --cleanup-tag --yes 2>/dev/null || true
           gh release create "$tag" zlataya_cep/zlataya_cep_final06.html --prerelease --title "$title" --notes-file notes.md --target "$GITHUB_SHA"
           gh release list --limit 1000 --json tagName,createdAt --jq '[.[] | select(.tagName|startswith("preview-"))] | sort_by(.createdAt) | reverse | .[10:] | .[].tagName' |
-            while read -r old; do [ -n "$old" ] && gh release delete "$old" --cleanup-tag --yes; done
+            while read -r old; do [ -n "$old" ] && { gh release delete "$old" --cleanup-tag --yes || echo "уже удалена: $old"; }; done   # другая ветка могла удалить её параллельно (404) — не ошибка

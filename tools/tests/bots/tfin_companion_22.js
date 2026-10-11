@@ -19,33 +19,33 @@ const D=ZC.W.dbg22();ACT(0,'potap');const r=[U.walkTo(0,4.2,33.8,6)];U.tap('KeyE
 r.push(U.walkTo(0,0,31,5),U.walkTo(0,0,23.5,6));const L=[];let last='';for(let i=0;i<60*30&&!(H.pelageya.pos.z<29&&H.yosha.pos.z<29);i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}}
 L.push('pel='+pos(H.pelageya),'yos='+pos(H.yosha),(H.pelageya.pos.z<29&&H.yosha.pos.z<29)?'tail ok':'FAIL tail');r.concat(L)
 //@@
-// забор: вода общая — человек стоит в стороне, бот сам просит прилив у ракушки и плывёт через забор (оба героя)
+// забор: человек стоит в стороне, бот сам играет прилив и плывёт через забор (оба героя)
 const D=ZC.W.warp22('yard');ZC.tick(20);NOCINE();put(me(),-3,1);put(bot(),2,2);put(other(),3,1.5);ZC.tick(10);
 const Z1=ZC.W.waters.find(z=>z.minz===-22.2&&z.maxz===-7);const L=[];let last='';for(let i=0;i<60*60&&!(H.pelageya.pos.z<-24&&H.yosha.pos.z<-24);i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' Z1='+Z1.state);last=m;}if(i%300===0)L.push((i/60)+' '+pos(bot())+' '+pos(other())+' Z1='+Z1.state);}
 L.push('pel='+pos(H.pelageya),'yos='+pos(H.yosha),(H.pelageya.pos.z<-24&&H.yosha.pos.z<-24)?'fence ok':'FAIL fence');L
 //@@
-// огород: бот (Йоша) в отлив пролезает в лаз и встаёт на плиту; человек потом плывёт к мачте (прилив), дёргает верёвку, в отлив Потап поднимает кувшин; ворота — оба
-const D=ZC.W.dbg22();const Z2=ZC.W.waters.find(z=>z.minz===-50&&z.maxz===-25.5);put(me(),9,-26.5);ZC.tick(5);
+// огород (перелив): человек ставит Потапа на заслонку; бот играет отлив справа — у человека слева прилив; Йоша в отлив пролезает в лаз и встаёт на плиту
+const D=ZC.W.dbg22();const Z2=ZC.W.waters.find(z=>z.minz===-50&&z.maxz===-25.5&&z.minx>0);ACT(0,'proshka');put(ZC.HERO.potap,-1.7,-29);put(me(),-4,-26.5);ZC.tick(5);
 const L=[];let last='';for(let i=0;i<60*60&&!F().garden;i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' Z2='+Z2.state);last=m;}}
 L.push('garden='+F().garden,'bot='+pos(bot()),'Z2='+Z2.state,F().garden?'plate ok':'FAIL plate');L
 //@@
-// человек: прилив (просьба у ракушки), вплавь к гнезду, верёвка; потом отлив — Потап поднимает кувшин
-const Z2=ZC.W.waters.find(z=>z.minz===-50&&z.maxz===-25.5);const r=[];ACT(0,'proshka');put(me(),-2,-27);ZC.tick(5);U.tap('KeyR');ZC.tick(200);r.push('Z2='+Z2.state);
+// человек: слева уже прилив (бот сыграл отлив справа) — вплавь к гнезду, верёвка; потом отлив — Потап поднимает кувшин
+const Z2=ZC.W.waters.find(z=>z.minz===-50&&z.maxz===-25.5&&z.maxx<0);const r=[];ACT(0,'proshka');put(me(),-2,-27);ZC.tick(5);if(Z2.state!=='high'){U.tap('KeyR');ZC.tick(200);}r.push('Z2='+Z2.state);
 r.push(U.walkTo(0,-4.5,-33,8,(h)=>{}),U.walkTo(0,-6.5,-35,6,(h)=>{if(h.grounded)ZC.press('Space');}));
 r.push('mast_y='+me().pos.y.toFixed(1));ZC.HERO.proshka.face=0;for(let k=0;k<5&&!F().mast;k++){U.tap('KeyF');ZC.tick(20);}r.push('mast='+F().mast);
 r.concat(['bot='+pos(bot())])
 //@@
-// отлив (просьба человека), Потап поднимает кувшин; ворота открываются; человек идёт к фонтану, бот (оба героя) следом
-const Z2=ZC.W.waters.find(z=>z.minz===-50&&z.maxz===-25.5);const r=[];ACT(0,'proshka');U.tap('KeyR');ZC.tick(200);r.push('Z2='+Z2.state);
+// отлив слева (Потап ещё на заслонке — справа прилив), Потап поднимает кувшин; ворота открываются; человек идёт к фонтану, бот (оба героя) следом
+const Z2=ZC.W.waters.find(z=>z.minz===-50&&z.maxz===-25.5&&z.maxx<0);const r=[];ACT(0,'proshka');U.tap('KeyR');ZC.tick(200);r.push('Z2='+Z2.state);
 for(const e of ZC.W.enemies)if(e.pi===0&&e.alive){e.alive=false;e.state='dying';ZC.W.group.remove(e.g);}
 ACT(0,'potap');put(ZC.HERO.potap,-2.5,-28);ZC.tick(5);r.push(U.walkTo(0,-3.2,-42,8));U.tap('KeyE');ZC.tick(60);r.push('jug='+F().jug);
 r.push(U.walkTo(0,-3,-47,8),U.walkTo(0,0,-56,8));
 const L=[];let last='';for(let i=0;i<60*50&&!(H.pelageya.pos.z<-51.5&&H.yosha.pos.z<-51.5);i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' Z2='+Z2.state);last=m;}if(i%300===0)L.push((i/60)+' '+pos(bot())+' '+pos(other()));}
 L.push('pel='+pos(H.pelageya),'yos='+pos(H.yosha),(H.pelageya.pos.z<-51.5&&H.yosha.pos.z<-51.5)?'yard ok':'FAIL yard');r.concat(L)
 //@@
-// фонтан дыхания: бот сам просит прилив, оба героя поочерёдно встают на дыру на выдохе — до облаков; человек стоит в стороне
+// фонтан дыхания: бот сам играет прилив, оба героя поочерёдно встают на дыру на выдохе — до облаков; человек стоит в стороне
 const D=ZC.W.warp22('village');ZC.tick(20);NOCINE();put(me(),8,-55);put(bot(),-2,-55);put(other(),-1,-54.5);CO.routes['2-2'].forEach(s=>{s.fin=false;});ZC.tick(10);ZC.W.flags.pikeFree=false;
-const Z3=D.Z3;const L=['step='+(CO.step()&&CO.step().id),'garden='+F().garden,'mast='+F().mast,'Z3 req='+JSON.stringify(Z3.req)+' t='+Z3.t];let last='';for(let i=0;i<60*70&&!(H.pelageya.pos.z<-72&&H.yosha.pos.z<-72);i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' Z3='+Z3.state);last=m;}if(i%300===0)L.push((i/60)+' '+pos(bot())+' '+pos(other()));}
+const Z3=D.Z3;const L=['step='+(CO.step()&&CO.step().id),'garden='+F().garden,'mast='+F().mast,'Z3='+Z3.state+' t='+Z3.t];let last='';for(let i=0;i<60*70&&!(H.pelageya.pos.z<-72&&H.yosha.pos.z<-72);i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' Z3='+Z3.state);last=m;}if(i%300===0)L.push((i/60)+' '+pos(bot())+' '+pos(other()));}
 L.push('pel='+pos(H.pelageya),'yos='+pos(H.yosha),(H.pelageya.pos.z<-72&&H.yosha.pos.z<-72)?'fountain ok':'FAIL fountain');L
 //@@
 // деревня: человек — Потап поднимает ведра; бот просит прилив и подсвечивает щуку Совиным взором; потом печка: оба вскакивают, едем
@@ -54,7 +54,7 @@ window.BOARD=(pi,max)=>{const D=ZC.W.dbg22(),K=KEYS[pi];for(let i=0;i<(max||6)*6
 const D=ZC.W.warp22('village');ZC.tick(20);NOCINE();CO.routes['2-2'].forEach(s=>{s.fin=false;});
 const wrong=D.BUCK.find(b=>!b.pike),pk=D.BUCK[D.PIKE_AT];put(ZC.HERO.potap,wrong.x+(wrong.x<0?1.3:-1.3),wrong.z+0.1,4.5);put(me(),0,-78,4.5);ZC.tick(5);ACT(0,'potap');ZC.tick(5);
 const r=[];const Lg=[];let last='';
-// ждём, пока бот наполнит пруд (просьба)
+// ждём, пока бот наполнит пруд
 for(let i=0;i<60*30&&D.PZ.state!=='high';i++){ZC.tick(1);const m=CO.mode;if(m!==last){Lg.push((i/60).toFixed(0)+'s '+m+' '+pos(bot())+' PZ='+D.PZ.state);last=m;}}
 r.push('PZ='+D.PZ.state,'owl='+ZC.W.owlT.toFixed(1));
 r.push(U.walkTo(0,wrong.x+(wrong.x<0?1.3:-1.3),wrong.z,6));U.tap('KeyE');ZC.tick(60);r.push('wrong tipped='+wrong.tipped);

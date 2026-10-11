@@ -11,6 +11,17 @@ function build1B(){
   // круглая поляна: по краю ели (коллайдеры — кольцом)
   for(let i=0;i<30;i++){const a=i/30*Math.PI*2;const x=C.x+Math.cos(a)*(R+1.2),z=C.z+Math.sin(a)*(R+1.2);if(z>C.z+R-2&&Math.abs(x)<2.2)continue;decorFir(x,z,rand(1.3,1.9),true);W.cyls.push({x,z,r:1.25,miny:-1,maxy:6,on:true});}
   edgeTrees(-29,6,-15,15);for(let i=0;i<40;i++)decorFir(rand(-15,15),rand(-30,-27),rand(1.4,2.2),true);
+  // тропа к поляне (подход): видна в начале ролика — камера идёт по ней к Лешему мимо его трофеев; за героями тропу завалило буреломом
+  ground(-4,4,8.2,36,0,M(0x3a4a2c));
+  {const fm=W.group.children.length;for(let z=10;z<35;z+=2.6)for(const s of[-1,1])decorFir(s*rand(5,7),z+rand(-0.8,0.8),rand(1.1,1.6),true);
+    // трофеи Лешего: моховые шапки на пнях (те, что в 1-4 водили по кругу), ленты на ветках, указатели «по кругу», шишки
+    for(const[x,z]of[[-2.6,12],[2.7,16],[-2.8,21],[2.6,26],[-2.5,31]]){addMesh(new THREE.CylinderGeometry(0.35,0.42,0.5,8),M(0x6b4a2b),x,0.25,z);
+      const hat=addMesh(new THREE.SphereGeometry(0.34,10,6,0,Math.PI*2,0,Math.PI/2),M(0x5a8a3a),x,0.5,z);hat.scale.y=0.8;}
+    for(const[x,z,c]of[[-3.4,14,0xff8fb0],[3.3,19,0x9fd0ff],[-3.2,24,0xffd24a],[3.4,29,0xb8f0a0]]){const r=addMesh(new THREE.BoxGeometry(0.08,1.0,0.22),M(c),x,1.9,z);r.rotation.z=0.3;}
+    for(const[x,z,ry]of[[1.8,18,0.8],[-1.9,27,-2.4]]){addMesh(new THREE.CylinderGeometry(0.06,0.07,1.6,6),M(0x6b4a2b),x,0.8,z);const b=addMesh(new THREE.BoxGeometry(1.0,0.26,0.06),M(0x9a7a50),x,1.4,z);b.rotation.y=ry;b.rotation.z=0.25;}
+    for(let i=0;i<9;i++)addMesh(new THREE.ConeGeometry(0.12,0.3,6),M(0x8a5a32),rand(-1.5,1.5),0.15,rand(11,33));
+    for(let i=0;i<3;i++){const c=addMesh(new THREE.CylinderGeometry(0.28,0.32,7.6,8),M(0x5a3d22),0,0.3+i*0.4,8.7+i*0.25);c.rotation.z=Math.PI/2;c.rotation.y=(i-1)*0.2;}   // бурелом у входа
+    fadeable(since(fm));}
   const carousel=new THREE.Group();carousel.position.set(C.x,0,C.z);W.group.add(carousel);
   for(let i=0;i<14;i++){const a=i/14*Math.PI*2;const f=new THREE.Group();f.position.set(Math.cos(a)*(R-0.6),0,Math.sin(a)*(R-0.6));carousel.add(f);addMesh(GEO.trunk,M(0x5a3d22),0,0.6,0,f);addMesh(GEO.cone1,M(0x2f5a34),0,2.0,0,f);addMesh(GEO.cone2,M(0x2f5a34),0,3.1,0,f);f.scale.setScalar(0.8);}
   carousel.visible=false;
@@ -79,17 +90,18 @@ function build1B(){
     if(F.phase===2){doubles.forEach(d=>{if(d.state!=='gone'){W.group.remove(d.m.g);d.state='gone';}});startPhase3();return true;}
     if(F.phase===3&&boss3&&boss3.alive){unravel(boss3);return true;}return false;};
   /* ---------- сюжет ---------- */
-  function intro(){F.phase=0;play({dur:9,fov:50,shots:[shot(0,[0,3,2],[0,5,-24]),shot(4,[3,6,-12],[0,7,-24],[1.6,4.2,-16],[0,7.2,-24],3)],
-      says:[[0.5,3.2,null,'<i>Леший ростом с ель, вместо рук — коряги.</i>',true],[4.2,3,'leshy','Опять заблудились? Ну-ка, где я?']],
-      events:[{t:4,fn:()=>{for(let i=0;i<6;i++)tone(rand(140,220),0.14,'sawtooth',0.12,rand(80,120),i*0.1);}}],
-      end:()=>{F.phase=1;F.head=0;spawnHands();snapCams();banner('Фаза 1 · руки','#b8e070',2.4,'жёлтая — щит · красная — кувырок');}});}
+  // вступление: 5 с — камера по тропе с трофеями (подход), потом Леший
+  function intro(){F.phase=0;play({dur:14,fov:50,shots:[shot(0,[0,2.6,35],[0,1.6,22],[0,2.4,10],[0,2.6,-4],5),shot(5,[0,3,2],[0,5,-24]),shot(9,[3,6,-12],[0,7,-24],[1.6,4.2,-16],[0,7.2,-24],3)],
+      says:[[0.5,4.2,null,'<i>Тропа к Лешему: на пнях — шапки из мха, на ветках — ленты, указатели — все по кругу.</i>',true],[5.5,3.2,null,'<i>Леший ростом с ель, вместо рук — коряги.</i>',true],[9.2,3,'leshy','Опять заблудились? Ну-ка, где я?']],
+      events:[{t:9,fn:()=>{for(let i=0;i<6;i++)tone(rand(140,220),0.14,'sawtooth',0.12,rand(80,120),i*0.1);}}],
+      end:()=>{F.phase=1;F.head=0;spawnHands();snapCams();banner('Фаза 1 · руки','#b8e070',2.6,'жёлтая — щит, как от кикиморок · красная — кувырок, как от пня');}});}
   function headHit(h){F.head++;SFX.finisher();G.hitstop=0.16;shakeAll(0.06,0.4);ringFx(headPos,COL.gold,3);floatText(headPos.clone().add(new V3(0,1,0)),'По макушке!','#ffd76a');
     for(let i=0;i<6;i++)spawnSpark(headPos.clone(),[COL.gold,0x6ad0ff,0xff6a8a][i%3]);bark(L,'leshy',['Ай!','Ой-ой! Макушка моя!','Ну всё, довольно, хватит!'][Math.min(2,F.head-1)],1.8);
     for(const q of HEROES)if(q.pos.y>4.5&&hd(q.pos,headPos)<5){q.vel.set(q.pos.x<0?-5:5,6,5);q.grounded=false;q.knockT=0.5;}
     dropRamp();hands.forEach(e=>{if(e.alive){e.state='idle';e.embers=e.maxEmb;e.t=0;}});
     if(F.head>=3){F.phase=1.5;hands.forEach(e=>unravel(e));later(1.2,()=>{play({dur:6,fov:50,shots:[shot(0,[0,4,0],[0,5,-22])],says:[[0.4,3,'leshy','Ах так? Нате вам — четыре Лешего, не счесть!']],
       events:[{t:3,fn:()=>{smokePuff();L.g.visible=false;}}],end:()=>{F.phase=2;F.round=0;spawnDoubles(4);addStakes(4);snapCams();
-        banner('Фаза 2 · двойники','#b8e070',2.6,'у настоящего тень и мох-следы');}});});}}
+        banner('Фаза 2 · двойники','#b8e070',2.8,'струна на колышках — как на болоте · у настоящего тень');}});});}}
   function ending(){const T=HERO;dropRamp();carousel.visible=false;const lz=makeLeshy(1.3);lz.g.position.set(0,0.7,-16);lz.g.rotation.y=0;
     const st=addMesh(new THREE.CylinderGeometry(1.1,1.2,0.7,12),M(0x8a5a32),0,0.35,-16.1);
     play({dur:16,fov:48,shots:[shot(0,[0,3.4,-8],[0,3,-16]),shot(7.4,[2.4,2.2,-11],[0,3.6,-16]),shot(12,[-2,1.8,-8.6],[T.proshka.pos.x,1,T.proshka.pos.z])],

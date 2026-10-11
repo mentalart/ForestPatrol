@@ -14,7 +14,8 @@
 #   · файлы — по таблице tools/tests/affected_map.txt (модули релиза, озвучка, документы…); файла нет в таблице — полный регресс;
 #   · прототип (части proto/ — склеенный index.html, tools/proto.py) — по изменённым строкам склеенного текста: внутри функции уровня (buildXX из таблицы LEVELS) — боты этого уровня; общая функция —
 #     уровни, где её вызывают; если её вызывает общий код (или правка вне функций) — полный регресс; комментарий в начале файла — ничего;
-#   · любая правка кода игры добавляет страховку: smoke (все уровни грузятся и играются, ~25 с), tfin_col (коллизии всех уровней), tallobj.
+#   · любая правка кода игры добавляет страховку: smoke (все уровни грузятся и играются, ~25 с), tfin_col (коллизии всех уровней), tallobj,
+#     tfin_textlint (тексты задач: длинные без краткой строки и молчащие карточки — только предупреждения, ~25 с).
 #   · final07 (WebGPU): файлы только final07 (zlataya_cep/build/gpu/*, Three r186) помечены в таблице @final07 — их боты гоняются на
 #     zlataya_cep_final07.html (сборка build_final.py --gpu) со страховкой и tfin_gpu; @full07 — полный регресс final07.
 # Полный регресс нужен, только когда скрипт так скажет, перед выпуском новой версии релиза и один раз в main после слияния нескольких веток.
@@ -24,7 +25,7 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 sys.path.insert(0, os.path.join(ROOT, 'tools'))
 import proto   # noqa: E402  прототип по частям (proto/)
 T = os.path.join(ROOT, 'tools', 'tests')
-GUARD = ['smoke', 'tfin_col', 'tallobj']
+GUARD = ['smoke', 'tfin_col', 'tallobj', 'tfin_textlint']   # tfin_textlint не падает: длинные задачи без краткой строки и молчащие карточки — в предупреждения PR
 WIDE = ['smoke', 'tfin_col', 'tallobj', 'tfin_art', 'tfin_budget', 'tfin_occ', 'tfin_fadebatch', 'tfin_foeidle', 'tfin_foekinds', 'tfin_foekinds1b',
         'tfin_foekinds2', 'tfin_foekinds2b', 'tfin_foekinds3', 'tfin_cast', 'tfin_foecast', 'tfin_slash', 'tfin_cine', 'tfin_menu']
 

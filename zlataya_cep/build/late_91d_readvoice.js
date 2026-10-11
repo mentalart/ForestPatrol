@@ -10,13 +10,19 @@
 const RDV={map:new Map(),cur:null,last:null,seq:0,played:0,failed:0};
 const rdvKey=t=>String(t==null?'':t).toLowerCase().replace(/[^a-zа-яё ]+/g,' ').replace(/\s+/g,' ').trim();
 for(const e of READ_LINES)RDV.map.set(e.k,e);
+// краткая строка задачи ещё без записи — звучит запись полного текста той же задачи (новые краткие строки озвучиваются позже — карточка не молчит)
+const rdvFind=t=>{const k=rdvKey(t),e=RDV.map.get(k);if(e)return e;
+  try{if(!W||!W.objectives)return null;const R=FIN.readAloud,rd=h=>rdvKey(R.text('<div class="hn-rd">'+String(h)+'</div>'));
+    for(const pi of[0,1])for(const o of W.objectives[pi]||[]){if(!o||!o.short||rd(o.short(pi))!==k)continue;
+      const f=RDV.map.get(rd(typeof o.text==='function'?o.text():o.text));if(f)return f;}}catch(err){}
+  return null;};
 function rdvStop(fade){RDV.seq++;const c=RDV.cur;if(!c)return;RDV.cur=null;const f=fade||0.08;
   try{if(AC){const t=AC.currentTime;c.g.gain.cancelScheduledValues(t);c.g.gain.setValueAtTime(c.g.gain.value,t);c.g.gain.linearRampToValueAtTime(0,t+f);c.s.stop(t+f+0.02);}}catch(err){}
   c.e.buf=null;c.e.pending=null;}
 {const RA=FIN.readAloud,_say=RA.say,_stop=RA.stop,_status=RA.status;
   // бот (RA.mock) → текст уходит в подмену; запись есть → звучит она; нет записи, громкость 0 или запись испорчена → тишина (голоса браузера нет)
   RA.say=function(text,now){if(RA.mock)return _say.call(RA,text,now);
-    const e=RDV.map.get(rdvKey(text));if(!e||!voxOn()||e.bad)return;
+    const e=rdvFind(text);if(!e||!voxOn()||e.bad)return;
     if(!now)FIN.kids.lv().read++;
     rdvStop(0.05);const my=RDV.seq;   // RA.speaking — только когда запись реально пошла: пока она раскодируется, чтение не занято
     voxDecode(e).then(b=>{if(my!==RDV.seq)return;
@@ -29,5 +35,5 @@ function rdvStop(fade){RDV.seq++;const c=RDV.cur;if(!c)return;RDV.cur=null;const
   RA.can=()=>kidsRead()&&(!!RA.mock||RDV.map.size>0);
   RA.status=()=>RDV.map.size?'голос: Байя (запись)':_status();}
 {const _vs=voxStart;voxStart=function(e,b){if(RDV.cur)rdvStop(0.1);_vs(e,b);};}   // герой заговорил — чтение замолкает
-FIN.readVoice={get n(){return RDV.map.size;},key:rdvKey,find:t=>RDV.map.get(rdvKey(t))||null,get cur(){return RDV.cur?RDV.cur.e.id:null;},
+FIN.readVoice={get n(){return RDV.map.size;},key:rdvKey,find:t=>rdvFind(t)||null,get cur(){return RDV.cur?RDV.cur.e.id:null;},
   get played(){return RDV.played;},get last(){return RDV.last;},get lines(){return[...RDV.map.values()];},get failed(){return RDV.failed;},stop:rdvStop};

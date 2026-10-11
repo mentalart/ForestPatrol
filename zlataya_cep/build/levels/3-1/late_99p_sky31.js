@@ -89,7 +89,7 @@ build31=function(){
   /* ---------- А. облачный остров: гнездо Жар-птицы (прежнее) ---------- */
   cloudIsle(-8,8,-8,8,0);
   addMesh(new THREE.CylinderGeometry(1.9,2.3,0.3,18),CLOUD_TOP,0,0.15,-4.5);W.cyls.push({x:0,z:-4.5,r:2.1,miny:-1,maxy:0.3,on:true});
-  const nest=nestMesh(0,0.28,-4.5,1.5);const fb=makeFirebird({bald:true});fb.g.position.set(0,0.42,-4.7);fb.g.scale.setScalar(0.95);
+  const nest=nest31(0,0.28,-4.5,1.3);const fb=makeFirebird31({old:true});fb.g.position.set(0,0.12,-4.6);fb.g.scale.setScalar(0.95);W.fb31=fb;
   const key=blackKey(1.6);key.position.set(0.6,0.57,-4.1);key.rotation.z=1.4;W.group.add(key);for(let i=0;i<6;i++){const sh=addMesh(new THREE.SphereGeometry(0.1,8,6,0,Math.PI*2,0,Math.PI/2),M(0xf4ecd8),rand(-0.8,0.8),0.44,-4.5+rand(-0.7,0.7));sh.rotation.x=rand(-1,1);}
   appleTree(-5.5,4.5,0,{s:0.9});appleTree(5.8,3.8,0,{s:0.95});bell(-3,2);
   const Z=makeZven();W.zven=Z;Z.pos.set(0,2.4,3);
@@ -161,7 +161,7 @@ build31=function(){
   cloudIsle(-10,10,-196,-162,0);bell(0,-164);
   const TG=[appleTree(-6.5,-168,0,{s:1.1}),appleTree(6.5,-169,0,{s:1.05}),appleTree(-6,-183,0,{s:1.15}),appleTree(6.2,-184,0,{s:1.1})].map(t=>aTree(t));
   const n5=nutItem(6.4,0.6,-178.2);
-  const OLD=makeOldGardener31();OLD.g.position.set(3.4,0,-190.6);OLD.g.rotation.y=Math.PI*0.85;if(OLD.body){OLD.body.rotation.x=0.22;}
+  const OLD=makeOldGardener31();OLD.g.position.set(3.4,0,-190.6);OLD.g.rotation.y=Math.atan2(-3.4,4);if(OLD.body){OLD.body.rotation.x=0.22;}
   const YNG=makeMolodets31();YNG.g.position.set(3.4,0,-190.6);YNG.g.rotation.y=Math.PI;YNG.g.visible=false;
   {const wd=M(0x8a6a40);box(2.4,4.4,0,0.45,-191.6,-190.9,wd,{occ:false});const cane=addMesh(new THREE.CylinderGeometry(0.035,0.04,1.4,5),M(0x6a4a2a),2.7,0.7,-190.2);cane.rotation.z=0.25;OLD.cane=cane;}
   const gateM=M(0x9a7a4a),fenceM=M(0x8a6a3a),gm0=W.group.children.length;
@@ -236,42 +236,88 @@ build31=function(){
   const BT=[aTree(appleTree(-10,-450,TY,{}),{noApple:true,re:3.5}),aTree(appleTree(10,-450,TY,{}),{noApple:true,re:3.5})];
   const L4=linkItem(0,TY+1.1,-480);L4.locked=true;L4.g.visible=false;
   const beams=ABW.map(b=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(0.25,0.6,10,10,1,true),MB(0xffe08a,{transparent:true,opacity:0.35,depthWrite:false,side:THREE.DoubleSide}));m.visible=false;m.userData.noBatch=true;W.group.add(m);return m;});
-  W.camZones.push({x:ARN.x,z:ARN.z,y:TY,r:13,camActive:()=>!G.cine&&VB.phase>=1&&VB.phase<4});
+  // камера боя — обычная игровая (за героями, отъезд по расстоянию между ними, облёт правым стиком вокруг героев). Прежняя круглая зона
+  // держала взгляд в центре арены: камера висела далеко и высоко и вращалась вокруг одной точки.
   const bb=$('bossbar');bb.style.display='none';{const _ol=W.onLeave;W.onLeave=()=>{bb.style.display='none';if(FIN.music)FIN.music.play(null);if(_ol)_ol();};}
   const VB={e:null,phase:0,ai:'fly',t:0,ang:0,tgt:null,shadow:null,hits:0,embAt:0,diveCd:3,dazeCap:0,mark:null};W.voron31=VB;
   {const sm=new THREE.Mesh(new THREE.CircleGeometry(1.4,24),MB(0x1a1030,{transparent:true,opacity:0.45,depthWrite:false}));sm.rotation.x=-Math.PI/2;sm.renderOrder=4;sm.visible=false;sm.userData.noBatch=true;W.group.add(sm);VB.shadow=sm;}
   {const lm=MB(0xff4a3a,{transparent:true,opacity:0.5,depthWrite:false});const lane=new THREE.Mesh(new THREE.PlaneGeometry(1.4,1),lm);lane.rotation.x=-Math.PI/2;lane.renderOrder=4;lane.visible=false;lane.userData.noBatch=true;W.group.add(lane);VB.lane=lane;}
   const targets=()=>G.solo?[active(G.soloPi)]:[active(0),active(1)].filter(h=>!players[h.player].downed&&!h.cling);
   /* ---------- сюжет: ролики у гнезда ---------- */
-  function intro(){F.stage='intro';const hs=HEROES;
-    play({dur:6.4,fov:50,shots:[shot(0,[7,1.5,20],[0,-2,12],[5,3,12],[0,0.5,4],4.4),shot(4.4,[0,3.4,11],[0,1,-2])],
-      says:[[0.3,3.4,null,'<i>Звенышко ведёт героев в небо — по облачным ступеням.</i>',true],[3.9,2.2,'zven','Дзинь! Небесное царство — чудо из чудес!']],
-      events:[{t:0,fn:()=>{hs.forEach((h,i)=>{h.pos.copy(steps[0].position).add(new V3(i-1.5,0.4,0));h.vel.set(0,0,0);});}}],
-      tick:(t)=>{for(let i=0;i<4;i++){const h=hs[i],k=clamp((t-i*0.25)/4.2,0,1),f=k*6.99,a=Math.floor(f),u=f-a;const s0=steps[a].position,s1=steps[Math.min(6,a+1)].position;
-          const sp=W.spawns[h.player][h===players[h.player].heroes[0]?0:1];const p=a>=6?new V3(sp.x,0,sp.z):new V3(lerp(s0.x,s1.x,u)+(i-1.5)*0.9,lerp(s0.y,s1.y,u)+0.35+Math.sin(u*Math.PI)*0.8,lerp(s0.z,s1.z,u));
-          if(k>=1){p.set(sp.x,0,sp.z);}h.pos.copy(p);h.vel.set(0,0,0);h.face=Math.PI;}
+  /* ---------- режиссура роликов: общий слой — late_99pb_sky31_cine.js (S31, C31, звук FIN.snd31) ---------- */
+  // Каждый ролик — мини-история из 4–13 шотов разной крупности; говорящего видно в лицо, слушатели повёрнуты к нему;
+  // эмоции, тряска, замедление, искры и звук — метки cues31 (при пропуске не срабатывают), состояние уровня — события events.
+  const SN=FIN.snd31,E31=CINE.E;
+  // камера перед лицом: d — расстояние, side — поворот вокруг лица (рад), dy — над глазами, push — наезд за шот (доля расстояния)
+  const fcam=(o,d,side,dy,push)=>(pose,u)=>{let H,a;if(o.pos&&o.d){H=new V3(o.pos.x,o.pos.y+o.d.height*0.74,o.pos.z);a=o.face;}else{H=(o.head||o.g).getWorldPosition(new V3());a=o.g.rotation.y;}
+    a+=side||0;const dd=d*(1-(push==null?0.1:push)*E31.inOutSine(u));pose.pos.set(H.x+Math.sin(a)*dd,H.y+(dy==null?0.12:dy),H.z+Math.cos(a)*dd);pose.look.copy(H);};
+  const place31=(h,x,z,y,at)=>{placeOnGround(h,x,z,y||0);h.vel.set(0,0,0);if(at)C31.face(h,at);};
+  const rHead=()=>VB.e&&VB.e.L&&VB.e.L.head?VB.e.L.head.getWorldPosition(new V3()):null;
+  // вступление: облачные ступени → прыжок на остров → Звенышко зовёт в сад
+  function intro(){F.stage='intro';const hs=HEROES,Z=W.zven,zm=Z.mode;const ctr=()=>{const c=new V3();hs.forEach(h=>c.add(h.pos));return c.multiplyScalar(1/hs.length);};
+    const T0=0.5,TD=4.2;   // подъём: старт и длительность (каждый следующий герой — на 0,22 с позже), потом прыжок на остров
+    play({dur:9.9,fov:50,d31:true,mood31:['#b8a8ff',0.1],
+      shots:[S31(0,[6.5,-9.6,25.5],[0,-4.5,15],{p2:[5.5,-3.4,21.5],l2:[0,-1.4,11.5],dur:2.8,move:'none'}),   // общий снизу: кран вверх по облачным ступеням
+        S31(2.8,[4.6,-1.4,8],[0,-2.2,11],{trk:C31.follow(ctr,new V3(3.4,1.5,-3.6),new V3(-0.2,0.6,0.8),1),tr:'whip'}),   // средний спереди-сбоку: ведём прыгающих героев, лица к нам
+        S31(4.8,[0.2,0.55,0.0],[0,1.05,5.0],{move:'push',amp:0.9,fov:12}),   // низкий ракурс с острова: герои выпрыгивают наверх лицом к нам
+        S31(6.1,[1.0,2.1,4.9],[-0.3,2.2,1.8],{p2:[0.7,2.1,4.4],l2:[-0.3,2.25,1.7],dur:3.8,move:'none'})],   // из-за плеча героев: Звенышко зовёт в сад, вдали — гнездо
+      says:[[0.3,3.3,null,'<i>Звенышко ведёт героев в небо — по облачным ступеням.</i>',true],[6.2,3.6,'zven','Дзинь! Небесное царство — чудо из чудес!']],
+      events:[{t:0,fn:()=>{hs.forEach((h,i)=>{h.pos.copy(steps[0].position).add(new V3(i-1.5,0.4,0));h.vel.set(0,0,0);h.face=Math.PI;});Z.mode='script';Z.vis=Z.shown=true;Z.pos.set(0,-3,13);}}],
+      cues31:[[0.2,()=>{SN.puff(0);SN.puff(0.6);}],[0.9,()=>SN.steps(0,7,0.3)],[3.0,()=>SN.steps(0,6,0.3)],
+        [5.0,()=>{CINE.trauma(0.14);SN.thud(0,0.06);FX.dust(new V3(-1,0.05,4.8),8,0xe8e0ff);}],[5.05,C31.emo('proshka','surprise')],[5.3,C31.emo('potap','surprise')],[5.55,C31.emo('pelageya','surprise')],[5.8,C31.emo('yosha','hop')],
+        [6.3,()=>{SN.trill(0);FX.sparkle(Z.pos.clone(),8,0xfff0a0);CINE.punch(-2);}],[7.7,C31.all('joy',0.12)],[7.8,()=>SN.yay(0)]],
+      tick:(t,dt)=>{for(let i=0;i<4;i++){const h=hs[i],k=clamp((t-T0-i*0.22)/TD,0,1),f=k*6.99,a=Math.floor(f),u=f-a;const s0=steps[a].position,s1=steps[Math.min(6,a+1)].position;
+          const sp=W.spawns[h.player][h===players[h.player].heroes[0]?0:1];
+          const p=new V3(lerp(s0.x,s1.x,u)+(i-1.5)*0.9,lerp(s0.y,s1.y,u)+0.35+Math.sin(u*Math.PI)*0.9,lerp(s0.z,s1.z,u));   // со ступеньки на ступеньку — дугой
+          if(k>=1){const q=clamp((t-T0-i*0.22-TD)/0.6,0,1),e=E31.outCubic(q);p.set(lerp(s1.x+(i-1.5)*0.9,sp.x,e),lerp(s1.y+0.35,0,q)+Math.sin(q*Math.PI)*0.7,lerp(s1.z,sp.z,e));}   // последний прыжок — на остров
+          h.pos.copy(p);h.vel.set(0,0,0);h.face=t<6.1?Math.PI:Math.atan2(0-h.pos.x,1.8-h.pos.z);}
+        // Звенышко летит впереди героев, у острова — повисает перед ними
+        const zk=clamp(t/5.6,0,1),zt=t<5.6?new V3(Math.sin(t*1.3)*1.2,lerp(-3,2.5,zk),lerp(13,1.8,E31.inOutSine(zk))):new V3(0,2.5+Math.sin(t*2)*0.1,1.8);Z.pos.lerp(zt,dt?1-Math.exp(-6*dt):1);Z.vis=true;
         steps.forEach((s,i)=>{s.position.y+=Math.sin(G.time*2+i)*0.002;});},
-      end:()=>{HEROES.forEach((h,i)=>{const sp=W.spawns[h.player][players[h.player].heroes.indexOf(h)];placeOnGround(h,sp.x,sp.z,0);h.face=Math.PI;});F.stage='walk';snapCams();}});}
-  function giftScene(){F.stage='gift';const pr=T.proshka;HEROES.forEach((h,i)=>{placeOnGround(h,-2.4+i*1.6,-1.2,0);h.face=Math.atan2(0-h.pos.x,-4.7-h.pos.z);});
-    const gifts=[];let ghost=null;
-    play({dur:31.6,fov:46,shots:[shot(0,[3.6,2.4,1.6],[0,1.1,-4.7]),shot(6.8,[1.5,1.6,-2.4],[0,1.6,-4.7]),shot(14.2,[-2.4,1.6,-1.6],[0,1.3,-4.6]),shot(20.2,[1.6,1.6,-2.2],[0.6,0.7,-4.1]),shot(24.2,[2.2,1.4,-1.8],[pr.pos.x,0.9,pr.pos.z]),shot(26.4,[3.4,1.2,-6],[3,-4,-12])],
-      says:[[0.3,3.4,null,'<i>Сад Жар-птицы в сумерках стоит, яблони серы.</i><br><i>В гнезде Жар-птица сидит — старая, облезлая, грустна без меры.</i>',true],[3.9,2.8,'zhar','Темно у меня… Перья я растеряла.'],
-        [6.9,3.6,'zhar','Сад мой — сад молодильных яблок: кто яблочко откусит — тот помолодеет.'],[10.6,3.6,'zhar','Да тени чьи-то яблоки покрали: яблони посерели, а я — состарилась.'],
-        [14.3,3.4,null,'<i>Последние перья из хвоста выдёргивает —</i><br><i>И каждому по перу протягивает.</i>',true],[17.8,2.4,'zhar','Верните саду свет, прошу.'],
-        [20.4,3.6,null,'<i>Под нею, средь скорлупок, чёрный ключ лежит —</i><br><i>Такой же, как на нитке у Кикиморы, блестит.</i>',true],[24.3,2.1,'proshka','Ключ! Холодный, как лёд зимой…'],
-        [26.5,3.2,null,'<i>Ключ сам из лапы выскользнул — и в пропасть упал.</i>',true],[29.8,1.6,'yosha','Ой.']],
-      events:[{t:7.0,fn:()=>{ghost=appleMesh31(2.2);ghost.position.set(0,2.6,-4.6);burst(ghost.position.clone(),0xffd76a,16,2);SFX.flower();anim(3.4,k=>{if(ghost)ghost.rotation.y+=0.04;});}},
-        {t:10.8,fn:()=>{if(!ghost)return;const g0=ghost;g0.traverse(c=>{if(c.material&&c.material.color){c.material=c.material.clone();c.material.color.setHex(0x8a8a96);if(c.material.emissive)c.material.emissiveIntensity=0;}});
-          anim(2.4,k=>{g0.position.y=2.6-k*k*1.6;g0.scale.setScalar(2.2*(1-k*0.6));if(k>=1){W.group.remove(g0);burst(new V3(0,1,-4.6),0x8a8a96,10,2);}});ghost=null;SFX.miss();}},
-        {t:14.4,fn:()=>{fb.tail.forEach(f=>{f.visible=false;});HEROES.forEach((h,i)=>{const fm=featherMesh(1.4);W.group.add(fm);gifts.push(fm);const a=new V3(0,1.2,-5.2),to=h.pos.clone().add(new V3(0,h.d.height*0.8,0));
-          later(i*0.35,()=>{SFX.flower();anim(1.1,k=>{fm.position.lerpVectors(a,to,smooth(k));fm.position.y+=Math.sin(k*Math.PI)*1.2;fm.rotation.z=k*6;if(k>=1){W.group.remove(fm);burst(to,0xffb040,10,2);tone(1320,0.2,'sine',0.1);}});});});
-          anim(1.4,k=>{fb.body.rotation.x=-Math.sin(k*Math.PI)*0.3;});}},
-        {t:22.0,fn:()=>{placeOnGround(pr,0.9,-2.7,0.3);pr.face=Math.PI;const kp=key.position.clone();anim(1.2,k=>{key.position.lerpVectors(kp,pr.pos.clone().add(new V3(0.25,0.9,0.1)),smooth(k));});}},
-        {t:24.3,fn:()=>{tone(2600,0.4,'sine',0.08,1800);burst(key.position.clone(),0xcfe8ff,8,1.5,0.6);}},
-        {t:26.5,fn:()=>{const kp=key.position.clone();anim(3.2,k=>{key.position.set(kp.x+k*3,kp.y+Math.sin(Math.min(1,k*3)*Math.PI)*0.5-k*k*14,kp.z-k*7);key.rotation.z+=0.3;});SFX.keys();}},
-        {t:29.8,fn:()=>{T.yosha.face=Math.atan2(3-T.yosha.pos.x,-12-T.yosha.pos.z);}}],
-      tick:(t)=>{fb.head.rotation.x=t<14?0.3:0.1;fb.body.position.y=Math.sin(t*2)*0.02;},
-      end:()=>{if(ghost){W.group.remove(ghost);ghost=null;}key.visible=false;W.anims.length=0;gifts.forEach(g=>W.group.remove(g));placeOnGround(pr,0.9,-2.2,0.3);W.abil.pero=true;F.stage='pero';
+      end:()=>{HEROES.forEach((h,i)=>{const sp=W.spawns[h.player][players[h.player].heroes.indexOf(h)];placeOnGround(h,sp.x,sp.z,0);h.face=Math.PI;});Z.mode=zm;F.stage='walk';snapCams();}});}
+  // у гнезда: грустная старая Жар-птица → сад молодильных яблок (видение) → тени покрали → перья в дар → чёрный ключ → упал
+  function giftScene(){F.stage='gift';const pr=T.proshka,yo=T.yosha,nest0=new V3(0,1.2,-4.6);
+    place31(T.proshka,-0.9,-1.6,0,nest0);place31(T.pelageya,0.9,-1.6,0,nest0);place31(T.potap,-2.7,-1.3,0,nest0);place31(T.yosha,2.6,-1.4,0,nest0);
+    const gifts=[];let ghost=null;const gh=()=>ghost?ghost.position:null,kp=()=>key.position;
+    play({dur:34,fov:46,d31:true,mood31:['#8a7cff',0.16],
+      shots:[S31(0,[5.6,3.9,3.4],[0,1.0,-4.6],{p2:[3.4,2.1,0.4],l2:[0,1.2,-4.6],dur:3.7,move:'none'}),   // 1 общий: сумеречный сад, гнездо
+        S31(3.7,[0.8,1.55,-2.0],[0,1.55,-4.3],{move:'push',amp:1}),   // 2 Жар-птица: «Темно у меня…»
+        S31(6.9,[2.9,1.0,-1.0],[0,1.9,-4.6],{trk:C31.look(gh,0.35),move:'crane',amp:0.8}),   // 3 снизу: видение золотого яблока над гнездом
+        S31(9.4,[0.9,2.1,-3.7],[-0.2,0.95,-1.4],{move:'orbit',amp:0.8,fov:4}),   // 4 обратный: лица героев в золотом свете
+        S31(11.6,[-1.4,1.5,-2.5],[0,1.7,-4.4],{trk:C31.look(gh,0.3),move:'push',amp:0.8}),   // 5 Жар-птица: яблоки покрали — яблоко сереет и падает
+        S31(15.0,[1.7,1.35,-3.4],[-0.3,1.0,-1.6],{move:'push',amp:1}),   // 6 Прошка и Пелагея поникли
+        S31(16.8,[2.8,1.5,-3.4],[0.2,1.3,-4.8],{move:'truck',amp:0.8}),   // 7 сбоку: выдёргивает последние перья
+        S31(19.4,[0.2,2.05,-3.9],[0,1.0,-1.4],{move:'pull',amp:0.7,fov:6}),   // 8 герои ловят перья
+        S31(21.6,[0.4,1.6,-2.8],[0,1.65,-4.2],{move:'push',amp:1.1}),   // 9 крупно: «Верните саду свет»
+        S31(24.4,[1.5,1.6,-2.9],[0.6,0.6,-4.1],{move:'push',amp:1,fov:-6,tr:'dip'}),   // 10 деталь: чёрный ключ в скорлупках
+        S31(27.0,[1.6,1.2,-3.9],[0.7,0.9,-2.7],{trk:fcam(pr,1.7,0.3,0.1,0.12)}),   // 11 Прошка с ключом: холодный!
+        S31(29.6,[2.6,1.4,-1.2],[1.5,0.9,-4],{trk:C31.follow(kp,new V3(2.0,1.3,2.6),new V3(0,-0.2,0),0.85),move:'none'}),   // 12 ключ выскальзывает и падает — камера ведёт его
+        S31(32.3,[2.6,1.2,-2.6],[2.6,1.0,-1.4],{trk:fcam(yo,1.4,-0.25,0.08,0.08),tr:'whip'})],   // 13 Йоша: «Ой.»
+      says:[[0.3,3.4,null,'<i>Сад Жар-птицы в сумерках стоит, яблони серы.</i><br><i>В гнезде Жар-птица сидит — старая, облезлая, грустна без меры.</i>',true],[3.9,3.0,'zhar','Темно у меня… Перья я растеряла.'],
+        [7.0,4.6,'zhar','Сад мой — сад молодильных яблок: кто яблочко откусит — тот помолодеет.'],[11.8,4.8,'zhar','Да тени чьи-то яблоки покрали: яблони посерели, а я — состарилась.'],
+        [17.0,3.4,null,'<i>Последние перья из хвоста выдёргивает —</i><br><i>И каждому по перу протягивает.</i>',true],[21.7,2.6,'zhar','Верните саду свет, прошу.'],
+        [24.5,3.6,null,'<i>Под нею, средь скорлупок, чёрный ключ лежит —</i><br><i>Такой же, как на нитке у Кикиморы, блестит.</i>',true],[27.6,2.5,'proshka','Ключ! Холодный, как лёд зимой…'],
+        [29.8,3.2,null,'<i>Ключ сам из лапы выскользнул — и в пропасть упал.</i>',true],[32.4,1.4,'yosha','Ой.']],
+      events:[{t:7.0,fn:()=>{ghost=appleMesh31(1.5);ghost.position.set(0,1.6,-4.4);burst(ghost.position.clone(),0xffd76a,16,2);const g0=ghost;anim(2.2,k=>{g0.position.y=1.6+E31.outBack(k)*1.2;g0.rotation.y+=0.04;});}},
+        {t:12.4,fn:()=>{if(!ghost)return;const g0=ghost;g0.traverse(c=>{if(c.material&&c.material.color){c.material=c.material.clone();c.material.color.setHex(0x8a8a96);if(c.material.emissive)c.material.emissiveIntensity=0;}});
+          anim(2.4,k=>{g0.position.y=2.8-k*k*1.9;g0.scale.setScalar(1.5*(1-k*0.6));if(k>=1){W.group.remove(g0);burst(new V3(0,1,-4.4),0x8a8a96,10,2);}});ghost=null;}},
+        {t:17.6,fn:()=>{fb.tailShow(false);HEROES.forEach((h,i)=>{const fm=featherMesh(1.4);fm.position.set(0,1.3,-5.3);W.group.add(fm);gifts.push(fm);const a=new V3(0,1.3,-5.3),to=h.pos.clone().add(new V3(0,h.d.height*0.8,0));
+          later(0.9+i*0.35,()=>{anim(1.1,k=>{fm.position.lerpVectors(a,to,E31.inOutCubic(k));fm.position.y+=Math.sin(k*Math.PI)*1.3;fm.rotation.z=k*6;if(k>=1){W.group.remove(fm);burst(to,0xffb040,10,2);}});});});}},
+        {t:26.6,fn:()=>{place31(pr,0.7,-2.75,0.3);pr.face=Math.PI;const k0=key.position.clone();anim(1.2,k=>{key.position.lerpVectors(k0,pr.pos.clone().add(new V3(0.25,0.9,0.1)),E31.inOutCubic(k));key.position.y+=Math.sin(k*Math.PI)*0.4;});}},
+        {t:29.9,fn:()=>{const k0=key.position.clone();anim(3.2,k=>{key.position.set(k0.x+k*3,k0.y+Math.sin(Math.min(1,k*3)*Math.PI)*0.5-k*k*14,k0.z-k*7);key.rotation.z+=0.3;});}},
+        {t:31.9,fn:()=>{yo.face=Math.atan2(3-yo.pos.x,-12-yo.pos.z);}}],
+      cues31:[[0.4,()=>SN.sadCoo(0.2)],[4.0,C31.emo('pelageya','droop')],[4.2,C31.emo('potap','droop')],
+        [7.05,()=>{SN.appleGlow(0);CINE.rimPulse(0.8);CINE.mood('#ffc860',0.16);}],[7.5,C31.all('surprise',0.1)],[9.6,C31.emo('yosha','joy')],[10.0,C31.emo('proshka','hop')],
+        [12.4,()=>{SN.appleSad(0);CINE.mood('#6f86ff',0.2);}],[13.0,C31.all('fear',0.08)],[15.1,C31.emo('proshka','droop')],[15.3,C31.emo('pelageya','droop')],[15.6,()=>SN.sadCoo(0)],
+        [17.6,()=>{SN.feather(0,0.4);CINE.trauma(0.1);}],[18.5,()=>{for(let i=0;i<4;i++)SN.feather(i*0.35,i%2?0.5:-0.5);}],
+        [19.6,C31.emo('proshka','joy')],[19.95,C31.emo('potap','joy')],[20.3,C31.emo('pelageya','joy')],[20.65,C31.emo('yosha','joy')],[19.7,()=>{for(let i=0;i<4;i++)SN.catchF(i*0.35);CINE.mood('#ffb870',0.12);}],
+        [21.8,()=>{if(SN.ok())AUD.bell(1047,{v:0.025,d:1.4,wet:0.7});}],[24.9,()=>{SN.icy(0);FX.sparkle(key.position.clone(),5,0xcfe8ff);CINE.mood('#6f86ff',0.18);}],
+        [27.7,()=>{SN.icy(0);FX.sparkle(key.position.clone(),6,0xcfe8ff);}],[28.0,C31.emo('proshka','fear')],[28.3,C31.emo('pelageya','surprise')],
+        [30.0,()=>{SN.keyFall(0);CINE.slowmo(0.5,0.5);}],[30.3,C31.all('surprise',0.06)],[32.5,()=>{CINE.punch(-3);SN.sting(0.15);}],[32.6,C31.emo('yosha','flinch')]],
+      tick:(t,dt)=>{const hx=t<6.9?0.38:t<11.8?-0.08:t<17.0?0.42:t<21.6?0.15:t<27?0.0:0.28;fb.head.rotation.x+=(hx-fb.head.rotation.x)*Math.min(1,(dt||1)*4);
+        const pl=t>17.2&&t<18.8?Math.sin((t-17.2)/1.6*Math.PI):0;fb.body.rotation.y=pl*0.9;fb.body.rotation.x=pl*-0.15+(t>21.6&&t<24.4?0.12:0);   // поворот к хвосту: выдёргивает перья
+        fb.body.position.y=Math.sin(t*2)*0.02-(t>11.8&&t<17?0.04:0);fb.wings.forEach(w=>{w.wp.rotation.z=w.s*(t>7&&t<11.6?0.35+Math.sin(t*3)*0.05:pl>0?0.5*pl:0.15);});},
+      end:()=>{if(ghost){W.group.remove(ghost);ghost=null;}key.visible=false;W.anims.length=0;gifts.forEach(g=>W.group.remove(g));fb.tailShow(false);fb.body.rotation.set(0,0,0);place31(pr,0.9,-2.2,0.3);W.abil.pero=true;F.stage='pero';
         banner('Перо Жар-птицы — жар-перо!','#ffb040',2.8,'кнопка R или ; (на джойстике RB) — зажечь иль погасить · свет помогает всем, кто рядом');
         for(const pi of[0,1])tip(pi,'У каждого своё перо: зажги '+K(pi,'item')+' — мостки видны.',4.2);}});}
   function openGate(){F.gateOpen=true;SFX.gate();SFX.ok();banner('Ворота сада отворились!','#ffe08a',2.4,'свет и тьма вместе — золотой мосток горит сам');
@@ -282,22 +328,60 @@ build31=function(){
     later(1.2,()=>say('zven','Один свет пера держит — другой бьёт, не робей!',2.4,true));}
   W.onFirstUnravel=()=>{later(0.6,()=>bark(T.proshka,'proshka','Бумажная, а кусается — вот те раз!',2));};
   /* ---------- Ж. сценки садовника ---------- */
-  function gardenerScene(){F.metGardener=true;F.stage='gard';HEROES.forEach((h,i)=>{placeOnGround(h,-2.4+i*1.6,-186.6,0);h.face=Math.PI;h.vel.set(0,0,0);});
-    play({dur:16.4,fov:46,shots:[shot(0,[-1,2.2,-183],[3.4,1.1,-190.6]),shot(4.2,[1.8,1.4,-188.2],[3.4,1.3,-190.6]),shot(11.2,[-3,2.6,-181],[0,1.4,-192],[-2,2.4,-183],[0,2,-194],3)],
-      says:[[0.3,3.6,null,'<i>У ворот сада на лавочке — старик-садовник. Борода до пояса, спина колесом.</i>',true],[4.2,3.6,'sadovnik','Здравствуйте, малые… Сто лет я этот сад стерегу. Нынче ворот не отпереть — стар.'],
-        [8.0,3.2,'sadovnik','Тени Кощеевы яблоки уносят. Кощей-то сам старый — помолодеть хочет!'],[11.4,2.6,'zven','Дзинь! Молодильное яблочко ему — и помолодеет!'],[14.2,2.0,'pelageya','Оживим яблоню — сорвём яблочко!']],
-      end:()=>{F.stage='free';snapCams();banner('Дед-Садовник','#d8e0b8',2.6,'оживи яблоню светом пера — яблочко само в руки упадёт · поднеси садовнику');}});}
-  function youngScene(){F.young=true;F.stage='young';HEROES.forEach((h,i)=>{placeOnGround(h,-2.4+i*1.6,-186.4,0);h.face=Math.PI;h.vel.set(0,0,0);});
-    play({dur:16.2,fov:44,shots:[shot(0,[0.6,1.8,-187.4],[3.4,1.2,-190.6]),shot(5.4,[1.4,1.7,-188.4],[3.4,1.5,-190.8]),shot(11.4,[-3.4,2.6,-184],[0,1.6,-195])],
-      says:[[0.3,3.0,null,'<i>Старик откусил яблочко — и закружились вокруг него золотые искры…</i>',true],[5.6,2.8,'molodets','Ох! Будто сто годков с плеч скинул! Спина не скрипит!'],
-        [8.5,2.4,'yosha','Был дедушка — стал добрый молодец!'],[11.0,2.8,'molodets','Вот почему сад зовётся — молодильных яблок! Ну, ворота — настежь!'],
-        [13.9,2.3,'molodets','А тени яблоки к колодцу живой воды носят — к Ворону Кощееву.']],
-      events:[{t:0.8,fn:()=>{const p=OLD.g.position.clone().add(new V3(0,1,0));SFX.grow();for(let i=0;i<40;i++)later(i*0.08,()=>{const a=i*0.6,r=1.3-i*0.02;burst(p.clone().add(new V3(Math.cos(a)*r,(i%8)*0.25-0.6,Math.sin(a)*r)),i%2?0xffd76a:0xfff6c0,2,1.2,0.6);});
-          anim(3.2,k=>{OLD.g.scale.setScalar(Math.max(0.02,1-k));OLD.g.rotation.y+=0.15;if(k>=1)OLD.g.visible=false;});if(OLD.cane)OLD.cane.visible=false;}},
-        {t:3.6,fn:()=>{YNG.g.visible=true;YNG.g.scale.setScalar(0.02);anim(1.6,k=>{YNG.g.scale.setScalar(Math.max(0.02,smooth(k)));YNG.g.rotation.y=Math.PI+(1-k)*6;});tone(1047,0.3,'sine',0.08);tone(1568,0.4,'sine',0.07,null,0.15);
+  // Дед-Садовник у ворот: общий план → он говорит (лицом к нам) → слушающие герои → крупно его тревога → Звенышко → Пелагея решила
+  const OLDF=Math.atan2(0-3.4,-186.6+190.6);   // садовник повёрнут к героям
+  function gardenerScene(){F.metGardener=true;F.stage='gard';const og=new V3(3.4,1.2,-190.6),Z=W.zven,zm=Z.mode;
+    HEROES.forEach((h,i)=>{place31(h,-2.4+i*1.6,-186.6,0,og);});OLD.g.rotation.y=OLDF;const pel=T.pelageya;
+    play({dur:17.8,fov:46,d31:true,mood31:['#9a8cff',0.12],
+      shots:[S31(0,[-4.5,4.8,-179.5],[2.5,1.2,-191],{p2:[-2.8,2.7,-183.4],l2:[2.6,1.0,-191],dur:3.9,move:'none'}),   // 1 общий: кран к воротам, старик на лавочке
+        S31(3.9,[1.5,1.6,-188.4],[3.4,1.1,-190.6],{trk:fcam(OLD,2.7,0.42,0.2,0.12)}),   // 2 средний: садовник говорит (герои — краем кадра)
+        S31(7.8,[4.6,1.8,-192.2],[0,1.0,-186.6],{move:'truck',amp:0.7}),   // 3 из-за плеча старика: слушающие герои
+        S31(9.7,[2.6,1.4,-189.6],[3.4,1.1,-190.6],{trk:fcam(OLD,1.55,-0.18,0.08,0.14)}),   // 4 крупно: «Кощей помолодеть хочет!»
+        S31(11.6,[0.6,2.2,-185.2],[1.2,2.3,-188.2],{move:'orbit',amp:1}),   // 5 Звенышко между героями и садовником
+        S31(15.0,[0,1.2,-188.4],[-0.6,1.0,-186.6],{trk:fcam(pel,1.8,0.3,0.1,0.12),tr:'whip'})],   // 6 Пелагея: «Оживим яблоню!»
+      says:[[0.3,3.6,null,'<i>У ворот сада на лавочке — старик-садовник. Борода до пояса, спина колесом.</i>',true],[4.0,3.8,'sadovnik','Здравствуйте, малые… Сто лет я этот сад стерегу. Нынче ворот не отпереть — стар.'],
+        [8.0,3.4,'sadovnik','Тени Кощеевы яблоки уносят. Кощей-то сам старый — помолодеть хочет!'],[11.7,3.3,'zven','Дзинь! Молодильное яблочко ему — и помолодеет!'],[15.1,2.3,'pelageya','Оживим яблоню — сорвём яблочко!']],
+      events:[{t:11.4,fn:()=>{Z.mode='script';Z.vis=Z.shown=true;Z.pos.set(1.2,4.5,-187.6);}},{t:15.0,fn:()=>{Z.mode=zm;}}],
+      cues31:[[0.4,()=>SN.creak(0.3)],[4.1,C31.emo('proshka','tilt')],[4.5,C31.emo('yosha','tilt')],[8.1,C31.all('nod',0.15)],[9.8,()=>{CINE.mood('#6f86ff',0.16);SN.sting(0.6);}],[10.6,C31.all('surprise',0.08)],
+        [11.8,()=>{SN.trill(0);FX.sparkle(Z.pos.clone(),8,0xfff0a0);CINE.punch(-2);CINE.mood('#ffc890',0.1);}],[13.4,C31.emo('proshka','hop')],[15.2,C31.emo('pelageya','pride')],[16.3,C31.all('nod',0.1)],[16.4,()=>SN.yay(0)]],
+      tick:(t,dt)=>{OLD.g.rotation.y=OLDF;if(OLD.body)OLD.body.rotation.x=0.22+(t>8&&t<11.4?0.06*Math.sin(t*2.4):0)+(t>4&&t<4.4?0.1:0);if(OLD.cane)OLD.cane.rotation.z=0.25+Math.sin(G.time*9)*0.012;
+        if(t>11.4&&t<15){Z.pos.lerp(new V3(1.2,2.3+Math.sin(t*2.2)*0.08,-188.2),dt?1-Math.exp(-5*dt):1);Z.vis=true;}},
+      end:()=>{Z.mode=zm;F.stage='free';snapCams();banner('Дед-Садовник','#d8e0b8',2.6,'оживи яблоню светом пера — яблочко само в руки упадёт · поднеси садовнику');}});}
+  // молодильное яблочко: откусил → закружился в искрах → добрый молодец (с отскоком) → «Ох!» → Йоша → ворота настежь → «тени носят яблоки к колодцу»
+  const YNGF=Math.atan2(0-1.8,-186.4+193.4);
+  function youngScene(){F.young=true;F.stage='young';const og=new V3(3.4,1.2,-190.6);HEROES.forEach((h,i)=>{place31(h,-2.4+i*1.6,-186.4,0,og);});OLD.g.rotation.y=OLDF;const yo=T.yosha;
+    let ap=null;const base=()=>OLD.g.position;
+    play({dur:18.6,fov:44,d31:true,mood31:['#9a8cff',0.1],
+      shots:[S31(0,[2.2,1.3,-189.2],[3.4,1.1,-190.6],{trk:fcam(OLD,2.0,0.3,0.05,0.1)}),   // 1 старик подносит яблочко ко рту — хрум!
+        S31(1.8,[5,1.6,-188],[3.4,1,-190.6],{trk:C31.orbit(base,3.4,1.3,OLDF+0.7,OLDF-1.1,1.0)}),   // 2 облёт: золотые искры, старик кружится — и вырастает молодец
+        S31(5.3,[2.4,1.6,-189],[3.4,1.5,-190.6],{trk:fcam(YNG,1.9,0.25,0.1,0.12)}),   // 3 крупно: «Будто сто годков с плеч скинул!»
+        S31(8.5,[1.6,1.2,-187.6],[2.4,1.0,-186.4],{trk:fcam(yo,1.6,-0.25,0.08,0.1),tr:'whip'}),   // 4 Йоша: «Был дедушка — стал добрый молодец!»
+        S31(11.4,[0.8,1.9,-187.4],[3.4,1.5,-190.6],{trk:fcam(YNG,3.6,0.35,0.2,0.1)}),   // 5 средний: «Ну, ворота — настежь!»
+        S31(13.2,[-3.2,2.9,-183.2],[1.5,1.4,-193.5],{p2:[-2.2,2.4,-185.5],l2:[0.4,1.6,-196],dur:2.4,move:'none',tr:'whip'}),   // 6 общий: шагает и распахивает ворота
+        S31(15.1,[1,1.8,-190],[1.8,1.5,-193.4],{trk:fcam(YNG,2.5,0.3,0.15,0.1)}),   // 7 молодец к героям: «к Ворону Кощееву»
+        S31(16.9,[0.5,2.2,-191.6],[0,2.4,-235],{move:'push',amp:1,tr:'whip'})],   // 8 сквозь ворота — вглубь сада, туда, где колодец
+      says:[[0.3,3.0,null,'<i>Старик откусил яблочко — и закружились вокруг него золотые искры…</i>',true],[5.4,3.0,'molodets','Ох! Будто сто годков с плеч скинул! Спина не скрипит!'],
+        [8.6,2.7,'yosha','Был дедушка — стал добрый молодец!'],[11.5,2.9,'molodets','Вот почему сад зовётся — молодильных яблок! Ну, ворота — настежь!'],
+        [15.2,2.6,'molodets','А тени яблоки к колодцу живой воды носят — к Ворону Кощееву.']],
+      events:[{t:0,fn:()=>{ap=appleMesh31(1);const h=(OLD.head||OLD.g).getWorldPosition(new V3());ap.position.set(h.x+Math.sin(OLDF)*0.5,h.y-0.6,h.z+Math.cos(OLDF)*0.5);const a0=ap.position.clone(),a1=h.clone().add(new V3(Math.sin(OLDF)*0.3,-0.15,Math.cos(OLDF)*0.3));
+          anim(0.8,k=>{if(ap)ap.position.lerpVectors(a0,a1,E31.inOutCubic(k));});}},
+        {t:0.9,fn:()=>{if(ap){const a=ap;anim(0.5,k=>{a.scale.setScalar(Math.max(0.02,1-k));if(k>=1)W.group.remove(a);});ap=null;}}},
+        {t:1.9,fn:()=>{const p=OLD.g.position.clone().add(new V3(0,1,0));SFX.grow();for(let i=0;i<40;i++)later(i*0.06,()=>{const a=i*0.6,r=1.3-i*0.02;burst(p.clone().add(new V3(Math.cos(a)*r,(i%8)*0.25-0.6,Math.sin(a)*r)),i%2?0xffd76a:0xfff6c0,2,1.2,0.6);});
+          const r0=OLD.g.rotation.y;anim(2.1,k=>{OLD.g.scale.setScalar(Math.max(0.02,1-E31.inCubic(k)));OLD.g.rotation.y=r0+k*k*9;if(k>=1)OLD.g.visible=false;});if(OLD.cane)OLD.cane.visible=false;}},
+        {t:4.0,fn:()=>{YNG.g.visible=true;YNG.g.position.set(3.4,0,-190.6);YNG.g.scale.setScalar(0.02);anim(1.0,k=>{YNG.g.scale.setScalar(Math.max(0.02,E31.outBack(k)));YNG.g.rotation.y=OLDF+(1-k)*6;});
           if(typeof FX!=='undefined'&&FX.sparkle)FX.sparkle(YNG.g.position.clone().add(new V3(0,1.4,0)),14);}},
-        {t:11.6,fn:()=>{SFX.gate();leaves.forEach(L=>{anim(1.6,k=>{L.lg.rotation.y=L.s*k*1.6;});});gateCol.on=false;}}],
-      end:()=>{OLD.g.visible=false;YNG.g.visible=true;YNG.g.scale.setScalar(1);YNG.g.rotation.y=Math.PI;gateCol.on=false;leaves.forEach(L=>{L.lg.rotation.y=L.s*1.6;});F.stage='free';snapCams();
+        {t:13.2,fn:()=>{const p0=YNG.g.position.clone(),p1=new V3(1.8,0,-193.4);anim(1.0,k=>{YNG.g.position.lerpVectors(p0,p1,E31.inOutCubic(k));YNG.g.rotation.y=lerp(OLDF,Math.PI,Math.min(1,k*2));});}},
+        {t:14.0,fn:()=>{SFX.gate();leaves.forEach(L=>{anim(1.4,k=>{L.lg.rotation.y=L.s*E31.outBack(k)*1.6;});});gateCol.on=false;}},
+        {t:14.8,fn:()=>{const r0=YNG.g.rotation.y;anim(0.5,k=>{YNG.g.rotation.y=lerp(r0,YNGF,E31.inOutCubic(k));});}}],
+      cues31:[[0.95,()=>{SN.bite(0);CINE.punch(-2);}],[1.2,C31.all('surprise',0.08)],[1.9,()=>{SN.magic(0,392);CINE.mood('#ffd27a',0.18);}],[3.0,()=>SN.magic(0,523)],
+        [4.0,()=>{SN.poof(0);CINE.flashDip('#fff6d8',0.35);CINE.slowmo(0.45,0.45);CINE.punch(-5);CINE.trauma(0.2);}],[4.6,C31.all('joy',0.1)],[4.7,()=>SN.yay(0)],
+        [5.5,C31.emo('molodets','hop')],[6.8,C31.emo('molodets','laugh')],[8.7,C31.emo('yosha','joy')],[9.6,C31.emo('potap','laugh')],[10.2,C31.emo('proshka','hop')],
+        [14.0,()=>{SN.creak(0);CINE.trauma(0.15);CINE.rimPulse(0.8);}],[14.5,()=>{FX.sparkle(new V3(0,1.8,-195),10,0xffe8a0);}],[14.6,C31.all('cheer',0.08)],
+        [15.3,C31.emo('molodets','nod')],[15.8,C31.all('tilt',0.1)],[17.0,()=>{CINE.mood('#8a7cff',0.12);SN.sting(0.1);}]],
+      tick:(t,dt)=>{const ar=YNG.arms;if(ar&&YNG.g.visible){const up=t>5.4&&t<7.2?Math.sin((t-5.4)/1.8*Math.PI):0,pt=t>15.8?Math.min(1,(t-15.8)*3):0;   // потягивается; потом показывает рукой вдаль
+          ar.forEach((a,i)=>{a.rotation.z=(i?1:-1)*up*2.2-(i?0:pt*0.5);a.rotation.x=i===0?pt*1.1:0;});}},
+      end:()=>{if(ap){W.group.remove(ap);ap=null;}OLD.g.visible=false;YNG.g.visible=true;YNG.g.scale.setScalar(1);YNG.g.position.set(1.8,0,-193.4);YNG.g.rotation.y=YNGF;if(YNG.arms)YNG.arms.forEach(a=>a.rotation.set(0,0,0));
+        gateCol.on=false;leaves.forEach(L=>{L.lg.rotation.y=L.s*1.6;});F.stage='free';snapCams();
         banner('Садовник помолодел!','#a8e08a',2.6,'молодильное яблочко: кто откусит — тот помолодеет');}});}
   AG.push({pos:new V3(3.4,0,-189.6),r:2.2,active:()=>F.metGardener&&!F.young,onApple:()=>later(0.3,youngScene)});
   AG.push({pos:new V3(0,0,-205.0),r:2.4,active:()=>!F.bridge,onApple:(a,h)=>{F.bridge=true;bridgeCol.on=true;newBr.visible=true;newBr.scale.set(1,1,0.02);newBr.position.z=-206*(1-0.02);
@@ -348,14 +432,28 @@ build31=function(){
     e.tick=(e,dt)=>{e.litNow=litAt(e.pos.x,e.pos.y+1.4,e.pos.z,1.4);e.cd=99;if(VB.phase>=2)e.guardText='старое перо — железное! Молодильным яблочком его!';ravenAI(e,dt);};
     e.onFinisher=h=>{if(VB.phase===1)toRaven2();};
     e.post=(e,dt)=>{const L=e.L;if(!L.wings)return;const fl=VB.ai==='fly'||VB.ai==='mark'||VB.ai==='rise'||VB.ai==='dive'||VB.ai==='fall';const flap=VB.ai==='flapTel'?0.9+Math.sin(G.time*8)*0.1:fl?Math.sin(G.time*(VB.ai==='dive'?4:9))*0.7:0.12;
-      L.wings.forEach(w=>{w.wp.rotation.z=-w.s*flap;});L.apple.visible=VB.phase>=2;L.head.rotation.x=VB.ai==='lungeTel'?0.4:(e.dazeT>0?Math.sin(G.time*10)*0.2:0);};
+      L.wings.forEach(w=>{w.wp.rotation.z=-w.s*flap;});L.apple.visible=VB.phase>=2||!!VB.kingHeld31;L.head.rotation.x=VB.ai==='lungeTel'?0.4:(e.dazeT>0?Math.sin(G.time*10)*0.2:0);};
     if(FIN.music)FIN.music.play('boss');
-    play({dur:14.4,fov:46,shots:[shot(0,[0,6,-448],[0,4.6,-482]),shot(3.6,[-3,5.4,-480],[-2,6.6,-486]),shot(8.2,[2,4.4,-452],[0,4,-446]),shot(10.6,[0,8,-450],[0,7,-470])],
+    // колодец и яблоня-матушка → Ворон каркает (наезд, dolly-zoom) → Прошка «Не отдадим!» → Ворон хохочет (голландский угол) → взлёт → чаши-солнышки
+    const ePos=()=>e.pos.clone().add(new V3(0,1.6,0));const pr=T.proshka;const at=new V3(-1.6,TY+3,-486);HEROES.forEach(h=>C31.face(h,at));VB.ai='perch31';
+    play({dur:15.4,fov:46,d31:true,mood31:['#6f5cc8',0.18],
+      shots:[S31(0,[0,TY+5.6,-446.5],[-1.5,TY+3.2,-486],{p2:[0,TY+4.2,-462],l2:[-2,TY+4.2,-486],dur:3.6,move:'none'}),   // 1 проезд к колодцу: Царь-яблоко горит на яблоне
+        S31(3.6,[0.8,TY+3.0,-481.4],[-1.6,TY+5.3,-486],{trk:C31.look(rHead,0.9),move:'push',amp:1}),   // 2 снизу крупно: Ворон каркает
+        S31(6.8,[-1.4,TY+1.4,-447.6],[-3,TY+1.1,-445],{trk:fcam(pr,1.7,0.3,0.1,0.12),tr:'whip'}),   // 3 Прошка: «Не отдадим!»
+        S31(8.5,[-4.0,TY+2.4,-478.5],[-1.6,TY+4.8,-486],{trk:C31.look(rHead,0.8),move:'orbit',amp:0.8}),   // 4 Ворон хохочет: «Триста лет живу!»
+        S31(10.6,[2,TY+4.6,-447.5],[0,TY+5,-470],{trk:C31.look(ePos,0.75),move:'none',tr:'whip'}),   // 5 общий: взлетает и кружит над ареной
+        S31(12.7,[0,TY+5.2,-451],[0,TY+0.4,-463],{p2:[0,TY+4.4,-454],l2:[0,TY+0.6,-464],dur:2.7,move:'none'})],   // 6 над чашами-солнышками: куда встать
       says:[[0.3,3.2,null,'<i>У колодца живой воды — яблоня-матушка, а на ней Царь-яблоко горит. На ветке — огромный чёрный ворон.</i>',true],
         [3.7,3.0,'voron','Кар-р! Царь-яблоко — Кощею! Помолодеет хозяин — весь свет заберёт!'],[6.9,1.6,'proshka','Не отдадим!'],
-        [8.6,2.0,'voron','Триста лет живу — и не таких видал! Кар-р!'],[10.8,3.4,'zven','Ворон света боится! Зажгите солнышки в обеих чашах разом!']],
-      events:[{t:3.7,fn:()=>{SFX.crash();shakeAll(0.04,0.4);}},{t:10.6,fn:()=>{const p0=e.pos.clone();anim(1.4,k=>{e.pos.set(lerp(p0.x,ARN.x+6.5,k),lerp(p0.y,TY+6.5,k),lerp(p0.z,ARN.z,k));});SFX.whoosh();}}],
-      end:()=>{VB.phase=1;VB.ai='fly';VB.t=0;VB.ang=0;VB.diveCd=3.2;e.pos.set(ARN.x+6.5,TY+6.5,ARN.z);F.stage='boss';snapCams();bossBar();
+        [8.6,2.0,'voron','Триста лет живу — и не таких видал! Кар-р!'],[10.8,4.0,'zven','Ворон света боится! Зажгите солнышки в обеих чашах разом!']],
+      events:[{t:3.7,fn:()=>{SFX.crash();shakeAll(0.04,0.4);VB.ai='flapTel';}},{t:4.9,fn:()=>{VB.ai='perch31';}},
+        {t:10.6,fn:()=>{VB.ai='fly';const p0=e.pos.clone();anim(1.6,k=>{const q=E31.inOutCubic(k);e.pos.set(lerp(p0.x,ARN.x+6.5,q),lerp(p0.y,TY+6.5,q)+Math.sin(k*Math.PI)*1.5,lerp(p0.z,ARN.z,q));});SFX.whoosh();}}],
+      cues31:[[0.2,()=>SN.menace(0)],[3.75,()=>{SN.caw(0,true);SN.flaps(0.1,3,0.2);CINE.dollyZoom(0.22,0.8,0.8);CINE.trauma(0.3);CINE.mood('#5a4aa8',0.22);}],[4.2,C31.all('fear',0.08)],
+        [6.9,()=>{CINE.punch(-3);SN.yay(0.1);}],[6.95,C31.emo('proshka','pride')],[7.3,C31.emo('pelageya','nod')],
+        [8.6,()=>{SN.caw(0.9,false);CINE.dutch(0.08);later(2,()=>CINE.dutch(0));}],[10.6,()=>{SN.flaps(0,5,0.22);FX.speed(0.6);}],
+        [11.2,C31.all('flinch',0.06)],[12.8,()=>{for(const b of ABW){FX.sparkle(new V3(b.x,TY+1,b.z),10,0xffe08a);}beams.forEach((m,i)=>{m.visible=true;m.position.set(ABW[i].x,TY+5,ABW[i].z);m.material.opacity=0.3;});SN.appleGlow(0);CINE.rimPulse(0.7);}],
+        [14.0,C31.all('nod',0.1)]],
+      end:()=>{VB.phase=1;VB.ai='fly';VB.t=0;VB.ang=0;VB.diveCd=3.2;e.pos.set(ARN.x+6.5,TY+6.5,ARN.z);beams.forEach(m=>{m.visible=false;});F.stage='boss';snapCams();bossBar();
         banner('Кощеев Ворон · В небе','#c8b0ff',2.8,'пикирует — красное: кувырок · две чаши-солнышка разом — ослепнет и упадёт: в свете бей');}});}
   function ravenAI(e,dt){if(G.cine||VB.phase<1||VB.phase===1.5||VB.phase>=3)return;if(e.state==='broken'||e.state==='spawn'||e.state==='dying'){VB.shadow.visible=false;VB.lane.visible=false;return;}
     VB.t+=dt;const P=e.pos;
@@ -395,12 +493,23 @@ build31=function(){
       case 'recover':{if(VB.t>VB.dur&&!(e.dazeT>0)){VB.ai='walk';VB.t=0;VB.dur=rand(1.4,2.2);}break;}}}
   function dazzle(e){VB.ai='fall';VB.t=0;VB.from=e.pos.clone();VB.fallTo=new V3(ARN.x+rand(-2,2),TY,ARN.z+rand(-1,2));e.dazeT=soloK()?8:6;VB.embAt=e.embers;SFX.flower();
     floatText(e.pos.clone().add(new V3(0,1.4,0)),'Кар! Ослеп!','#ffe08a');if(!F.dazzTold){F.dazzTold=true;later(0.6,()=>say('zven','Ослеп! В свете — бейте!',2,true));}}
-  function toRaven2(){VB.phase=1.5;const e=VB.e;e.dazeT=0;e.state='idle';beams.forEach(m=>{m.visible=false;});VB.shadow.visible=false;
-    play({dur:9.2,fov:46,shots:[shot(0,[3,5,-470],[-3.4,5.6,-487]),shot(3.6,[4,4.4,-458],[e.pos.x,4.4,e.pos.z])],
-      says:[[0.3,2.6,'voron','Кар-р! Не дамся! Царь-яблоко — моё!'],[3.0,3.4,'zven','Старое перо — железное, пером его не пронять! А молодильным яблочком — попробуйте!'],[6.6,2.4,'yosha','Яблочком — по Ворону? Помолодеет!']],
-      events:[{t:0.4,fn:()=>{const p0=e.pos.clone();anim(1.2,k=>{e.pos.set(lerp(p0.x,kingAt.x,k),lerp(p0.y,kingAt.y-1,k)+Math.sin(k*Math.PI)*2,lerp(p0.z,kingAt.z+1,k));});}},
-        {t:1.6,fn:()=>{if(kingG){W.group.remove(kingG);kingG=null;}SFX.keys();const p0=e.pos.clone();anim(1.0,k=>{e.pos.set(lerp(p0.x,0,k),lerp(p0.y,TY,k),lerp(p0.z,-470,k));});}},
-        {t:3.0,fn:()=>{BT.forEach(t=>{if(!t.revived)reviveTree(t);t.ap.noApple=false;t.ap.regrow=0.2;});}}],
+  // этап 2: Ворон в ярости хватает Царь-яблоко → тяжело садится посреди арены → Звенышко: яблочком его! (яблони у входа зацветают) → Йоша
+  function toRaven2(){VB.phase=1.5;const e=VB.e;e.dazeT=0;e.state='idle';beams.forEach(m=>{m.visible=false;});VB.shadow.visible=false;const yo=T.yosha,mid=new V3(0,TY+1.2,-470);
+    HEROES.forEach((h,i)=>{place31(h,-3.6+i*2.4,-460.5-Math.abs(i-1.5)*0.6,TY,mid);});const ePos=()=>e.pos.clone().add(new V3(0,1.4,0));
+    play({dur:11.8,fov:46,d31:true,mood31:['#6f5cc8',0.16],
+      shots:[S31(0,[2.2,TY+2.0,-476],[-2,TY+4.5,-484],{trk:C31.look(ePos,0.85),move:'none'}),   // 1 снизу: Ворон взмывает к яблоне
+        S31(1.5,[-2.0,TY+4.3,-483.6],[-3.4,TY+3.9,-486.9],{move:'push',amp:1,fov:-4}),   // 2 деталь: когти хватают Царь-яблоко
+        S31(2.5,[4.2,TY+2.6,-460.5],[0,TY+1.4,-470],{trk:C31.look(ePos,0.5),move:'pull',amp:0.6}),   // 3 общий: тяжело садится посреди арены
+        S31(4.6,[0,TY+2.6,-457],[-10,TY+2.3,-450],{p2:[0.1,TY+2.6,-456.6],l2:[10,TY+2.3,-450],dur:3.9,move:'none'}),   // 4 панорама: яблони у входа зацветают яблочками
+        S31(8.7,[0,TY+1.4,-462],[-0.6,TY+1.1,-460],{trk:fcam(yo,1.6,-0.3,0.08,0.12),tr:'whip'})],   // 5 Йоша: «Яблочком — по Ворону?»
+      says:[[0.3,2.5,'voron','Кар-р! Не дамся! Царь-яблоко — моё!'],[3.0,5.6,'zven','Старое перо — железное, пером его не пронять! А молодильным яблочком — попробуйте!'],[8.8,2.7,'yosha','Яблочком — по Ворону? Помолодеет!']],
+      events:[{t:0.3,fn:()=>{const p0=e.pos.clone();anim(1.2,k=>{const q=E31.inOutCubic(k);e.pos.set(lerp(p0.x,kingAt.x,q),lerp(p0.y,kingAt.y-1,q)+Math.sin(k*Math.PI)*2,lerp(p0.z,kingAt.z+1,q));});}},
+        {t:1.6,fn:()=>{if(kingG){W.group.remove(kingG);kingG=null;}SFX.keys();VB.kingHeld31=true;const p0=e.pos.clone();anim(0.9,k=>{const q=E31.inCubic(k);e.pos.set(lerp(p0.x,0,k),lerp(p0.y,TY,q)+Math.sin(k*Math.PI)*0.8,lerp(p0.z,-470,k));});}},
+        {t:4.8,fn:()=>{BT.forEach(t=>{if(!t.revived)reviveTree(t);t.ap.noApple=false;t.ap.regrow=0.2;});}}],
+      cues31:[[0.3,()=>{SN.caw(0,true);SN.flaps(0,4,0.2);}],[0.4,C31.all('flinch',0.07)],[1.6,()=>{SN.icy(0);CINE.punch(-3);FX.sparkle(kingAt.clone(),8,0xffe08a);}],
+        [2.5,()=>{SN.thud(0,0.14);CINE.trauma(0.35);FX.dust(new V3(0,TY+0.05,-470),14,0xd8d0f0,1.4);}],[2.6,C31.all('surprise',0.07)],[3.2,()=>SN.trill(0.1)],
+        [5.0,()=>{SN.magic(0,659);FX.sparkle(new V3(-10,TY+2.4,-450),12,0xffe08a);}],[7.4,()=>{SN.magic(0,784);FX.sparkle(new V3(10,TY+2.4,-450),12,0xffe08a);}],
+        [8.9,C31.emo('yosha','tilt')],[10.2,C31.emo('yosha','joy')],[10.4,C31.all('nod',0.08)],[10.5,()=>SN.yay(0)]],
       end:()=>{VB.phase=2;VB.ai='walk';VB.t=0;VB.dur=1.6;VB.hits=0;e.pos.set(0,TY,-470);e.noMove=true;BT.forEach(t=>{if(!t.revived)reviveTree(t);t.ap.noApple=false;});snapCams();bossBar();
         banner('Кощеев Ворон · Царь-яблоко','#c8b0ff',2.8,'бросайте в Ворона молодильные яблочки '+K(0,'attack')+' — когда он замахнулся иль открыт · взмах гасит перья');}});}
   W.appleAim31=()=>VB.phase===2&&VB.e&&VB.e.alive?[VB.e.pos]:[];
@@ -414,30 +523,69 @@ build31=function(){
     VB.ai='recover';VB.t=0;VB.dur=1.2;e.dazeT=0;return true;};
   let CH=null;
   function kingRespawn(){if(F.kingHome)return;const at=CH?CH.g.position.clone().add(new V3(1.2,0,0.6)):new V3(0,TY,-470);const a=apNew(null,{king:true,state:'ground',at:at});a.pos.y=TY;floatText(a.pos.clone().add(new V3(0,1,0)),'Царь-яблоко вернулось!','#ffe08a');}
-  function chickScene(){VB.phase=3;const e=VB.e;VB.lane.visible=false;const at=e.pos.clone();F.stage='chick';
-    play({dur:12.6,fov:44,shots:[shot(0,[at.x+3,TY+2.2,at.z+3.6],[at.x,TY+1,at.z]),shot(5.2,[at.x-2.4,TY+1.4,at.z+2.4],[at.x,TY+0.6,at.z]),shot(9.2,[0,TY+5,-468],[0,TY+3,-484])],
-      says:[[0.3,2.6,null,'<i>Третье яблочко — и Ворон съёжился, закружился в золотых искрах…</i>',true],[3.2,1.6,'voronenok','Кар?.. Пи-пи!'],[4.9,2.0,'proshka','Ворон — воронёнком стал!'],
-        [7.0,2.0,'pelageya','Какой маленький… Не бойся.'],[9.3,3.0,'zven','Царь-яблоко — Жар-птице! Вон она летит — еле крыльями машет!']],
-      events:[{t:0.4,fn:()=>{SFX.unravel();anim(1.6,k=>{e.inner.scale.setScalar(Math.max(0.02,0.55*(1-k)));e.inner.rotation.y+=0.3;});for(let i=0;i<30;i++)later(i*0.05,()=>burst(at.clone().add(new V3(Math.cos(i)*1.2,0.5+(i%6)*0.3,Math.sin(i)*1.2)),0xffd76a,2,1.5,0.6));}},
-        {t:2.0,fn:()=>{e.alive=false;e.state='dying';W.group.remove(e.g);const i=W.enemies.indexOf(e);if(i>=0)W.enemies.splice(i,1);CH=chickMesh31();CH.g.position.set(at.x,TY,at.z);CH.g.scale.setScalar(0.05);anim(0.8,k=>{CH.g.scale.setScalar(Math.max(0.05,k));});
+  // воронёнок: облёт в золотых искрах (замедление на «пуф») → крупно воронёнок «Пи-пи!» → Прошка ахнул → Пелагея ласково → летит Жар-птица
+  function chickScene(){VB.phase=3;const e=VB.e;VB.lane.visible=false;const at=e.pos.clone();F.stage='chick';const pr=T.proshka,pel=T.pelageya,ap0=at.clone().add(new V3(0,1,0));
+    HEROES.forEach((h,i)=>{const a=-0.9+i*0.6;place31(h,clamp(at.x+Math.sin(a)*3.4,-10,10),clamp(at.z+Math.cos(a)*3.4,-489,-443),TY,ap0);});
+    const chH=()=>CH?CH.head.getWorldPosition(new V3()):at.clone().add(new V3(0,0.8,0)),fbP=()=>fb.g.position.clone().add(new V3(0,1,0));
+    play({dur:14.6,fov:44,d31:true,mood31:['#ffd27a',0.12],
+      shots:[S31(0,[at.x+3,TY+2.2,at.z+3.6],[at.x,TY+1,at.z],{trk:C31.orbit(()=>at,3.6,1.4,0.9,-0.6,1.0)}),   // 1 облёт: Ворон съёживается в искрах
+        S31(2.4,[at.x+0.9,TY+0.65,at.z+1.5],[at.x,TY+0.75,at.z],{trk:C31.look(chH,0.8),move:'push',amp:1,fov:-3}),   // 2 крупно снизу: воронёнок «Кар?.. Пи-пи!»
+        S31(4.9,[pr.pos.x,TY+1.2,pr.pos.z-1.6],[pr.pos.x,TY+1,pr.pos.z],{trk:fcam(pr,1.6,0.25,0.08,0.12),tr:'whip'}),   // 3 Прошка ахнул
+        S31(7.1,[at.x,TY+0.7,at.z],[pel.pos.x,TY+1,pel.pos.z],{trk:(pose,u)=>{const c=chH(),P=new V3(pel.pos.x,pel.pos.y+pel.d.height*0.7,pel.pos.z),d=c.clone().sub(P).setY(0).normalize();
+            pose.pos.copy(c).addScaledVector(d,1.3-0.15*u).add(new V3(0,0.25,0));pose.look.copy(P).lerp(c,0.3);}}),   // 4 из-за воронёнка: Пелагея «Не бойся»
+        S31(9.7,[5.5,TY+2.8,-468],[0,TY+2,-484],{p2:[4.2,TY+4.2,-471],l2:[0,TY+2.4,-484],dur:4.6,trk:C31.look(fbP,0.8),move:'none',tr:'dip'})],   // 5 общий: еле-еле летит Жар-птица
+      says:[[0.3,2.6,null,'<i>Третье яблочко — и Ворон съёжился, закружился в золотых искрах…</i>',true],[3.2,1.6,'voronenok','Кар?.. Пи-пи!'],[5.0,2.0,'proshka','Ворон — воронёнком стал!'],
+        [7.2,2.3,'pelageya','Какой маленький… Не бойся.'],[9.8,4.5,'zven','Царь-яблоко — Жар-птице! Вон она летит — еле крыльями машет!']],
+      events:[{t:0.4,fn:()=>{SFX.unravel();anim(1.6,k=>{e.inner.scale.setScalar(Math.max(0.02,0.55*(1-E31.inCubic(k))));e.inner.rotation.y+=0.3;});for(let i=0;i<30;i++)later(i*0.05,()=>burst(at.clone().add(new V3(Math.cos(i)*1.2,0.5+(i%6)*0.3,Math.sin(i)*1.2)),0xffd76a,2,1.5,0.6));}},
+        {t:2.0,fn:()=>{e.alive=false;e.state='dying';W.group.remove(e.g);const i=W.enemies.indexOf(e);if(i>=0)W.enemies.splice(i,1);CH=chickMesh31();CH.g.position.set(at.x,TY,at.z);CH.g.scale.setScalar(0.05);anim(0.8,k=>{CH.g.scale.setScalar(Math.max(0.05,E31.outBack(k)));});
           const a=apNew(null,{king:true,state:'ground',at:new V3(at.x+1.3,TY,at.z+0.8)});SFX.dzin();}},
-        {t:9.2,fn:()=>{fb.g.visible=true;fb.g.position.set(-14,TY+12,-500);const from=fb.g.position.clone(),to=new V3(0,TY+1.05,-484.4);anim(3.2,k=>{fb.g.position.lerpVectors(from,to,smooth(k));fb.g.position.y+=Math.sin(k*Math.PI)*1.5;fb.wings.forEach(w=>{w.wp.rotation.z=w.s*Math.sin(k*18)*0.5;});});fb.g.rotation.y=0;}}],
+        {t:9.8,fn:()=>{fb.g.visible=true;fb.g.position.set(-14,TY+12,-500);const from=fb.g.position.clone(),to=new V3(0,TY+1.05,-484.4);anim(3.4,k=>{fb.g.position.lerpVectors(from,to,E31.inOutSine(k));fb.g.position.y+=Math.sin(k*Math.PI)*1.5-Math.abs(Math.sin(k*9))*0.25;fb.wings.forEach(w=>{w.wp.rotation.z=w.s*(0.3+Math.sin(k*14)*0.55);});});fb.g.rotation.y=0;}}],
+      cues31:[[0.4,()=>SN.magic(0,440)],[1.9,()=>{CINE.slowmo(0.45,0.5);}],[2.0,()=>{SN.poof(0);CINE.flashDip('#fff6d8',0.3);CINE.punch(-4);}],[2.2,C31.all('surprise',0.08)],
+        [3.25,()=>SN.peep(0)],[3.9,()=>SN.peep(0)],[5.0,C31.emo('proshka','surprise')],[5.6,()=>CINE.dollyZoom(0.18,0.7,0.6)],[7.3,C31.emo('pelageya','tilt')],[8.2,()=>SN.peep(0)],[8.4,C31.emo('pelageya','joy')],
+        [9.9,()=>{SN.sadCoo(0.3);CINE.mood('#ffb870',0.12);}],[10.6,()=>SN.flaps(0,6,0.45)],[12.0,C31.all('hop',0.1)]],
+      tick:(t)=>{if(CH){CH.head.rotation.z=t>3&&t<4.8?Math.sin((t-3)*5)*0.35:t>7.2&&t<9.6?0.3:0;CH.wings.forEach((w,i)=>{w.rotation.z=(i?1:-1)*Math.abs(Math.sin(G.time*(t<4.8?18:6)))*0.4;});
+          if(t>7.2&&t<9.6)CH.g.rotation.y=Math.atan2(pel.pos.x-CH.g.position.x,pel.pos.z-CH.g.position.z);}},
       end:()=>{fb.g.position.set(0,TY+1.05,-484.4);fb.g.rotation.y=0;F.stage='king';VB.phase=3;snapCams();bossBar();bb.style.display='none';
         banner('Воронёнок!','#c8c8d8',2.4,'Царь-яблоко — Жар-птице, к колодцу');}});}
   AG.push({pos:new V3(0,TY,-483.6),r:2.6,active:()=>F.stage==='king'&&!F.kingHome,accept:a=>a.king,onApple:()=>{F.kingHome=true;later(0.3,finale);}});
-  function finale(){F.won=true;F.stage='end';if(FIN.music)FIN.music.play(null);HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-480.6,TY);h.face=Math.PI;h.vel.set(0,0,0);});
-    const sky0=scene.background.clone(),sky1=new THREE.Color(0xa8a0e0);
-    play({dur:22,fov:46,shots:[shot(0,[2.4,TY+2.2,-480.4],[0,TY+1.6,-484.4]),shot(5.2,[0,TY+3.4,-476],[0,TY+2.6,-486]),shot(10.4,[-6,TY+5,-470],[0,TY+2,-486],[-4,TY+6,-468],[0,TY+3,-488],4),shot(15.6,[2.6,TY+2,-479.4],[0,TY+1.8,-484.4])],
-      says:[[0.3,3.0,null,'<i>Жар-птица откусила Царь-яблоко — и вспыхнула, как заря.</i>',true],[3.6,3.0,'zhar','Светло! Как прежде. Спасибо, малые, спасибо!'],[6.8,3.2,'zhar','Молодой я стала — и сад мой молодой! Яблочки опять золотые.'],
-        [10.2,2.6,'molodets','Сад ожил! Ну, теперь только поливать — живой водой из колодца!'],[13.0,3.0,'zhar','А воронёнка я сама выращу — пусть растёт добрым.'],[16.2,3.6,'zhar','А ключ… Ключ не мой. Кто-то подбросил, видно.<br>Держитесь от него подальше — ох, недоброе в нём, обидно.']],
-      events:[{t:0.4,fn:()=>{fb.tail.forEach(f=>{f.visible=true;f.userData.mats.forEach(m=>{m.color.setHex(0xff6a2a);m.emissiveIntensity=0.9;});});anim(3.0,k=>{fb.bloom(k);fb.wings.forEach(w=>{w.wp.rotation.z=w.s*Math.sin(k*30)*0.6;});});SFX.grow();
-          burst(new V3(0,TY+1.8,-484.4),0xffb040,30,5);ringFx(new V3(0,TY,-484.4),0xffc860,8);if(typeof CINE!=='undefined'&&CINE.flashDip)CINE.flashDip('#fff0c8',0.45);}},
-        {t:3.4,fn:()=>{for(const t of W.trees)if(!t.revived){const cb=t.onRevive;t.onRevive=null;reviveTree(t,true);t.onRevive=cb;}SFX.ok();if(W.wellWater31)W.wellWater31.material.color.setHex(0xa8f4ff);}},
-        {t:9.8,fn:()=>{YNG.g.visible=true;YNG.g.position.set(-3,TY,-479);YNG.g.rotation.y=Math.PI*0.9;if(CH){CH.g.position.set(1.6,TY,-482.6);}}},
-        {t:13.0,fn:()=>{if(CH){const p0=CH.g.position.clone(),to=new V3(0.9,TY+1.3,-484.6);anim(1.2,k=>{CH.g.position.lerpVectors(p0,to,smooth(k));CH.g.position.y+=Math.sin(k*Math.PI)*0.8;});}SFX.dzin();}},
-        {t:17.6,fn:()=>{if(typeof FX!=='undefined'&&FX.confetti)FX.confetti(new V3(0,TY+2.4,-482),40);L4.locked=false;L4.g.visible=true;L4.g.position.set(0,TY+6,-485);const p1=new V3(0,TY+1.1,-480.4);anim(1.6,k=>{L4.g.position.lerpVectors(new V3(0,TY+6,-485),p1,smooth(k));});L4.pos.copy(p1);}}],
-      tick:(t)=>{scene.background.lerpColors(sky0,sky1,clamp((t-1)/5,0,1));scene.fog.color.copy(scene.background);if(CH)CH.wings.forEach((w,i)=>{w.rotation.z=(i?1:-1)*Math.abs(Math.sin(G.time*14))*0.5;});},
-      end:()=>{L4.locked=false;L4.g.visible=true;L4.g.position.set(0,TY+1.1,-480.4);L4.pos.copy(L4.g.position);arenaGate.on=false;scene.background.copy(sky1);scene.fog.color.copy(sky1);F.stage='link';snapCams();bb.style.display='none';
+  // финал: Жар-птица откусывает Царь-яблоко → вспышка, замедление, облёт: молодеет (очки слетают, хвост веером) → «Светло!» → кран: сад вспыхивает
+  // → молодец → воронёнок прыгает к ней под крыло → серьёзно о ключе → герои кивают → звено с неба, конфетти
+  function finale(){F.won=true;F.stage='end';if(FIN.music)FIN.music.play(null);const fc=new V3(0,TY+1.6,-484.4);HEROES.forEach((h,i)=>{place31(h,-3+i*2,-480.6,TY,fc);});
+    const sky0=scene.background.clone(),sky1=new THREE.Color(0xa8a0e0),fbC=()=>fb.g.position.clone().add(new V3(0,0.9,0));let bite=null;
+    play({dur:25.6,fov:46,d31:true,mood31:['#ffc890',0.1],
+      shots:[S31(0,[1.0,TY+1.8,-482.0],[0,TY+1.7,-484.4],{trk:fcam(fb,2.3,0.35,0.05,0.1)}),   // 1 Жар-птица с Царь-яблоком — кусает
+        S31(1.2,[3,TY+1.9,-482],[0,TY+1.6,-484.4],{trk:C31.orbit(fbC,3.5,0.9,0.9,-0.9,0.4)}),   // 2 облёт: молодеет — вспышка, хвост веером
+        S31(3.4,[0.6,TY+1.9,-482.4],[0,TY+1.9,-484.2],{trk:fcam(fb,1.9,0.15,0.05,0.14)}),   // 3 крупно: «Светло! Как прежде»
+        S31(7.0,[0.8,TY+3.2,-475.6],[0,TY+1.8,-485],{p2:[0,TY+8.5,-468],l2:[0,TY+2.5,-486],dur:4.6,move:'none'}),   // 4 кран вверх: сад вспыхивает золотом
+        S31(11.6,[-2,TY+1.8,-477],[-3,TY+1.4,-479],{trk:fcam(YNG,2.4,0.3,0.1,0.1),tr:'whip'}),   // 5 молодец: «Сад ожил!»
+        S31(14.6,[1.9,TY+1.9,-481.2],[0.45,TY+1.6,-484.5],{move:'orbit',amp:0.8}),   // 6 Жар-птица и воронёнок под крылом
+        S31(18.1,[0.4,TY+1.9,-482.6],[0,TY+1.9,-484.2],{trk:fcam(fb,1.6,0.05,0.05,0.1)}),   // 7 крупно, серьёзно: про ключ
+        S31(21.8,[0.3,TY+1.4,-483.1],[0,TY+1.0,-480.6],{move:'push',amp:0.8}),   // 8 герои слушают и кивают
+        S31(23.6,[0,TY+2.4,-475.5],[0,TY+2,-482],{p2:[0,TY+6.2,-470],l2:[0,TY+2.2,-484],dur:2.0,move:'none'})],   // 9 звено с неба, общий план — конфетти
+      says:[[0.3,3.0,null,'<i>Жар-птица откусила Царь-яблоко — и вспыхнула, как заря.</i>',true],[3.5,3.4,'zhar','Светло! Как прежде. Спасибо, малые, спасибо!'],[7.1,4.4,'zhar','Молодой я стала — и сад мой молодой! Яблочки опять золотые.'],
+        [11.7,2.8,'molodets','Сад ожил! Ну, теперь только поливать — живой водой из колодца!'],[14.7,3.3,'zhar','А воронёнка я сама выращу — пусть растёт добрым.'],[18.2,6.8,'zhar','А ключ… Ключ не мой. Кто-то подбросил, видно.<br>Держитесь от него подальше — ох, недоброе в нём, обидно.']],
+      events:[{t:0,fn:()=>{bite=appleMesh31(1.4);bite.position.copy(fb.head.getWorldPosition(new V3())).add(new V3(0,-0.15,0.42));}},
+        {t:0.7,fn:()=>{if(bite){const b=bite;anim(0.4,k=>{b.scale.setScalar(1.4*Math.max(0.02,1-k));if(k>=1)W.group.remove(b);});bite=null;}}},
+        {t:1.2,fn:()=>{anim(2.6,k=>{fb.bloom(E31.inOutCubic(k));fb.tailShow(true);fb.wings.forEach(w=>{w.wp.rotation.z=w.s*(0.4+Math.sin(k*30)*0.6);});});SFX.grow();
+          burst(new V3(0,TY+1.8,-484.4),0xffb040,30,5);ringFx(new V3(0,TY,-484.4),0xffc860,8);
+          const g=fb.glasses;if(g&&g.parent){W.group.attach(g);const g0=g.position.clone();anim(1.3,k=>{g.position.set(g0.x+k*1.4,g0.y+Math.sin(k*Math.PI)*1.2-k*k*1.1,g0.z+k*0.9);g.rotation.z+=0.35;if(k>=1)W.group.remove(g);});}}},
+        {t:7.4,fn:()=>{for(const t of W.trees)if(!t.revived){const cb=t.onRevive;t.onRevive=null;reviveTree(t,true);t.onRevive=cb;}SFX.ok();if(W.wellWater31)W.wellWater31.material.color.setHex(0xa8f4ff);}},
+        {t:11.0,fn:()=>{YNG.g.visible=true;YNG.g.scale.setScalar(1);if(YNG.arms)YNG.arms.forEach(a=>a.rotation.set(0,0,0));const p0=new V3(-6.5,TY,-475.5),p1=new V3(-3,TY,-479);YNG.g.position.copy(p0);
+          const ry=Math.atan2(0-p1.x,-484.4-p1.z);anim(0.9,k=>{YNG.g.position.lerpVectors(p0,p1,E31.outCubic(k));YNG.g.rotation.y=ry+(1-k)*0.4;});if(CH){CH.g.position.set(1.6,TY,-482.6);}}},
+        {t:14.8,fn:()=>{if(CH){const p0=CH.g.position.clone(),to=new V3(0.9,TY+1.3,-484.6);anim(1.0,k=>{CH.g.position.lerpVectors(p0,to,E31.outCubic(k));CH.g.position.y+=Math.sin(k*Math.PI)*0.9;});}SFX.dzin();}},
+        {t:23.6,fn:()=>{L4.locked=false;L4.g.visible=true;L4.g.position.set(0,TY+6,-485);const p1=new V3(0,TY+1.1,-480.4);anim(1.6,k=>{L4.g.position.lerpVectors(new V3(0,TY+6,-485),p1,E31.outBack(k));});L4.pos.copy(p1);}}],
+      cues31:[[0.75,()=>{SN.bite(0);CINE.punch(-2);}],[1.2,()=>{CINE.flashDip('#fff0c8',0.45);CINE.slowmo(0.4,0.6);CINE.punch(-6);CINE.trauma(0.25);SN.magic(0,523);SN.poof(0.05);CINE.mood('#ffd27a',0.2);}],
+        [1.5,C31.all('surprise',0.07)],[1.7,()=>{if(SN.ok()){AUD.osc({type:'triangle',f0:600,f1:1500,d:0.25,v:0.04,glide:0.2});AUD.osc({type:'triangle',f0:900,f1:300,d:0.35,v:0.035,at:1.0});}}],
+        [2.6,()=>{SN.trill(0);FX.sparkle(fbC(),14,0xffd060);}],[3.0,C31.all('joy',0.1)],[3.1,()=>SN.yay(0)],[3.6,C31.emo('zhar','nod')],
+        [7.4,()=>{SN.magic(0,659);SN.magic(0.5,784);CINE.rimPulse(1);FX.petals(new V3(0,TY+3,-480),20);}],[8.4,C31.all('cheer',0.1)],
+        [11.8,C31.emo('molodets','laugh')],[12.4,C31.emo('potap','nod')],[15.0,()=>{SN.peep(0.2);SN.trill(0.6);}],[15.4,C31.emo('pelageya','joy')],[16.4,C31.emo('yosha','hop')],
+        [18.2,()=>{CINE.mood('#6f86ff',0.2);SN.icy(0.3);}],[19.2,()=>CINE.dollyZoom(0.14,1.2,1.6)],[20.4,C31.all('tilt',0.1)],[22.0,C31.all('nod',0.15)],[22.6,C31.emo('proshka','pride')],
+        [23.7,()=>{CINE.mood('#ffc890',0.14);SN.fanfare(0);}],[24.2,()=>{if(typeof FX!=='undefined'&&FX.confetti)FX.confetti(new V3(0,TY+2.4,-482),40);CINE.punch(-3);}],[24.4,C31.all('joy',0.08)]],
+      tick:(t,dt)=>{scene.background.lerpColors(sky0,sky1,clamp((t-1.5)/6,0,1));scene.fog.color.copy(scene.background);if(CH)CH.wings.forEach((w,i)=>{w.rotation.z=(i?1:-1)*Math.abs(Math.sin(G.time*14))*0.5;});
+        const hx=t<1.2?0.2:t<14.6?-0.12:t<18.1?0.35:t<21.8?0.28:-0.1;fb.head.rotation.x+=(hx-fb.head.rotation.x)*Math.min(1,(dt||1)*4);fb.body.rotation.x=t>18.1&&t<21.8?0.14:0;
+        if(t>3.8)fb.wings.forEach(w=>{w.wp.rotation.z=w.s*(t>14.6&&t<18.1&&w.s<0?0.75:0.2+Math.sin(G.time*1.5)*0.05);});},
+      end:()=>{if(bite){W.group.remove(bite);bite=null;}if(fb.glasses&&fb.glasses.parent)fb.glasses.parent.remove(fb.glasses);fb.bloom(1);fb.tailShow(true);fb.body.rotation.set(0,0,0);
+        L4.locked=false;L4.g.visible=true;L4.g.position.set(0,TY+1.1,-480.4);L4.pos.copy(L4.g.position);arenaGate.on=false;scene.background.copy(sky1);scene.fog.color.copy(sky1);F.stage='link';snapCams();bb.style.display='none';
         banner('Сад Жар-птицы светится!','#ffb040',2.4,'звено от Жар-птицы — возьмите');}});}
   /* ---------- главный шаг уровня ---------- */
   W.updates.push(dt=>{
@@ -514,7 +662,7 @@ build31=function(){
   W.warp31=(where)=>{const P={gardener:[0,-172,0],bridge:[0,-199,0],pass:[0,-236,0],oak:[0,-268,0],guards:[0,-304,0],steps:[0,-358,0],thieves:[0,-374,TY],boss:[0,-441.6,TY]}[where];if(!P)throw new Error('нет участка '+where);
     W.abil.pero=true;if(F.stage==='walk'||F.stage==='intro')F.stage='free';F.gateOpen=true;F.cleared=true;F.fight=true;arena=arena||[];if(!T2.revived)reviveTree(T2,true);if(!T3.revived)reviveTree(T3,true);F.garden=true;
     const ord=['gardener','bridge','pass','oak','guards','steps','thieves','boss'],k=ord.indexOf(where);
-    if(k>=1){F.metGardener=true;F.young=true;OLD.g.visible=false;YNG.g.visible=true;gateCol.on=false;leaves.forEach(L=>{L.lg.rotation.y=L.s*1.6;});}
+    if(k>=1){F.metGardener=true;F.young=true;OLD.g.visible=false;YNG.g.visible=true;YNG.g.position.set(1.8,0,-193.4);YNG.g.rotation.y=YNGF;gateCol.on=false;leaves.forEach(L=>{L.lg.rotation.y=L.s*1.6;});}
     if(k>=2){F.bridge=true;bridgeCol.on=true;newBr.visible=true;oldBr.visible=false;}
     if(k>=4){F.oak=true;oakCyl.on=false;oakOld.visible=false;oakNew.visible=true;}
     if(k>=6){F.guards=true;F.passed=true;F.steps=true;stepCols.forEach(c=>{c.on=true;});newSt.visible=true;oldSt.visible=false;}
