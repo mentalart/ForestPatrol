@@ -7,6 +7,8 @@ function build11(){
   ground(-11,11,-62,10);ground(-11,11,-192,-88);ground(-11,11,ZE,-204);
   wall(-11.2,-11,ZE,10);wall(11,11.2,ZE,10);wall(-11.2,11.2,10,10.2);wall(-11.2,11.2,ZE-0.2,ZE);
   edgeTrees(ZE+2,8,-11,11);
+  // за спиной на старте поляна продолжается и закрывается ельником — камера не видит края «плиты» (за стену z 10 не выйти)
+  ground(-11,11,10.2,34);edgeTrees(10,34,-11,11);for(let z=16;z<33;z+=rand(2.2,3.2))for(let x=-9.5;x<10;x+=rand(2.4,3.6))decorFir(x+rand(-0.6,0.6),z+rand(-0.8,0.8),rand(1.2,2.2),true);
   W.dressAvoid=(x,z)=>Math.abs(x)<13&&((z<-60&&z>-90)||(z<-190&&z>-206));   // в провалы (болото, речка) деревья среднего плана не сажать — не торчат из воды
   // указатели со стёртыми надписями (лес забыл тропы)
   for(const[x,z]of[[-8.5,-4],[8.4,-44]]){addMesh(new THREE.CylinderGeometry(0.07,0.08,1.8,6),M(0x6b4a2b),x,0.9,z);const b=addMesh(new THREE.BoxGeometry(1.2,0.35,0.08),M(0x9a7a50),x+0.3,1.55,z);b.rotation.z=-0.1;}
@@ -317,6 +319,15 @@ function build11(){
         for(const h of HEROES)h.vel.set(0,0,0);},
       end:()=>{F.done=true;for(const h of HEROES)placeOnGround(h,h.pos.x,h.pos.z,0);banner('Теремок спасён!','#ffd76a',2.6,'вороны улетели к Кощею ни с чем — у зверей новоселье!');later(1.8,finishLevel);}});}
   W.part11={RV,HS,ST,STF,LOGS,TM,TOSS,STEPS,KON,hsNut,SW,sheltered,hidden};   // для проверки ботом и напарника
+  // перескок к главе 2 «За калиткой» (сохранение внутри уровня — late_97w_w1_chapters.js — и боты): двор прибран, клубки розданы, калитка пройдена,
+  // избушка повёрнута; дальше — прилёт ворон своим ходом (ролик через 0,6 с: задачи двора успевают закрыться)
+  W.warp11=where=>{if(where!=='gate')throw new Error('warp11: '+where);
+    W.rzt.state='done';turn.on=true;turn.done=true;hut.g.rotation.y=0;hut.house.position.y=1.1;hut.legs.forEach(l=>{l.scale.y=0.5;l.position.y=1.1;l.rotation.x=0;});
+    arena.started=true;arena.cleared=true;arena.hold=0;arena.list.forEach(e=>{e.alive=false;if(e.g)e.g.visible=false;});
+    TR.forEach(t=>{t.state='done';if(t.g)t.g.visible=false;});if(TRB.g){TRB.state='done';TRB.g.visible=false;}F.cleanDone=true;
+    yaga.g.visible=true;hut.inner.visible=true;yaga.g.position.set(0,1.1,-26.4);W.abil.clew=true;W.abil.toss=true;F.glued=true;F.bye=true;F.out=true;F.gateTold=true;F.stage='yard';
+    HEROES.forEach((h,i)=>{placeOnGround(h,[-3,-1,1,3][i],-114.5,0);h.following=false;h.vel.set(0,0,0);});for(const pi of[0,1])players[pi].cp.set(0,0,-114.5);
+    snapCams();later(0.6,crowsArrive);};
   W.updates.push(dt=>{
     if(F.stage==='crows'||F.stage==='end')ravUpdate(dt);
     // ступа Яги: полёт над рощей, клубы пыли за помелом; пелена над рощей

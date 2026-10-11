@@ -62,7 +62,7 @@ function shakeUpd(r,dt){if(r.shT>0){r.shT-=dt;r.shTick-=dt;if(r.shTick<=0){r.shT
 function updateRig(i,dt){const h=active(i),r=rigs[i],back=camBack();
   r.la.x=damp(r.la.x,clamp(h.vel.x*0.45,-2.5,2.5),2.2,dt);r.la.z=damp(r.la.z,clamp(h.vel.z*0.45,-2.5,2.5),2.2,dt);
   const look=new V3(h.pos.x+r.la.x,h.pos.y+1.1,h.pos.z+r.la.z);const dist=7.2+SPLIT.rigK+(h.kind==='potap'?0.6:0),hgt=4.0+SPLIT.rigK*0.4;
-  const des=look.clone().addScaledVector(back,dist);des.y+=hgt;des.x=clamp(des.x,-W.camX,W.camX);r.pos.lerp(des,1-Math.exp(-4.5*dt));r.look.lerp(look,1-Math.exp(-7*dt));
+  const des=look.clone().addScaledVector(back,dist);des.y+=hgt;des.x=clamp(des.x,-W.camX,W.camX);if(W.camZMax!=null)des.z=Math.min(des.z,W.camZMax);r.pos.lerp(des,1-Math.exp(-4.5*dt));r.look.lerp(look,1-Math.exp(-7*dt));
   const right=new V3(back.z,0,-back.x),lat=h.vel.x*right.x+h.vel.z*right.z;r.roll=damp(r.roll,clamp(-lat*0.012,-0.07,0.07),3,dt);shakeUpd(r,dt);}
 function activeCamZone(){for(const z of W.camZones)if(z.camActive())return z;return null;}
 function updateShared(dt){shakeUpd(shared,dt);
@@ -72,7 +72,7 @@ function updateShared(dt){shakeUpd(shared,dt);
   const back=camBack(),a=G.solo?active(G.soloPi):active(0),b=G.solo?a:active(1),mid=new V3((a.pos.x+b.pos.x)/2,(a.pos.y+b.pos.y)/2,(a.pos.z+b.pos.z)/2);let look,dist,hgt;const z=activeCamZone();
   if(z){const zy=(z.y||0)+0.8;look=new V3(z.x,zy,z.z).lerp(new V3(mid.x,zy,mid.z),0.25);dist=z.r*1.05+4;hgt=z.r*0.85+3.5;}
   else{const sep=hd(a.pos,b.pos),la=G.solo?rigs[G.soloPi].la.clone():rigs[0].la.clone().add(rigs[1].la).multiplyScalar(0.5);look=new V3(mid.x+la.x,mid.y+1.1,mid.z+la.z);const sc=Math.min(sep,SPLIT.cfg.sepCap);dist=7.2+sc*0.8;hgt=4.0+sc*0.5;}
-  const des=look.clone().addScaledVector(back,dist);des.y+=hgt;if(!z)des.x=clamp(des.x,-W.camX,W.camX);shared.pos.lerp(des,1-Math.exp(-3.5*dt));shared.look.lerp(look,1-Math.exp(-5*dt));
+  const des=look.clone().addScaledVector(back,dist);des.y+=hgt;if(!z){des.x=clamp(des.x,-W.camX,W.camX);if(W.camZMax!=null)des.z=Math.min(des.z,W.camZMax);}shared.pos.lerp(des,1-Math.exp(-3.5*dt));shared.look.lerp(look,1-Math.exp(-5*dt));
   const right=new V3(back.z,0,-back.x),lat=((a.vel.x+b.vel.x)*right.x+(a.vel.z+b.vel.z)*right.z)*0.5;shared.roll=damp(shared.roll,clamp(-lat*0.008,-0.05,0.05),3,dt);}
 /* ------------------------------ раздельный экран: когда делить, как делить ------------------------------
    Режим G.splitMode: 'auto' — делится, когда герои разошлись (дальше SPLIT.cfg.split по земле и высоте) или не влезают в кадр общей камеры;

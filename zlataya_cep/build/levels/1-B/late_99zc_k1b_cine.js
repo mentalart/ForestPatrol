@@ -32,13 +32,14 @@ K1B.music=function(n){k1cMus();K1B.musName=n;try{FIN.music.play(n);}catch(e){}};
 const k1cSm=k=>k*k*(3-2*k);
 K1B.cine={
   // вход: великан проснулся
-  intro(d){const c=K1B.cur,L=c&&c.L;if(!L)return d;
-    d.shots=d.shots.concat([shot(6.2,[0.7,8.6,-18.8],[0,7.9,-24.2],[-0.5,8.2,-20.6],[0,7.8,-24.2],2.7)]);
+  // вступление начинается подходом по тропе (5 с, прототип): всё ниже сдвинуто на A=5
+  intro(d){const c=K1B.cur,L=c&&c.L;if(!L)return d;const A=5;
+    d.shots=d.shots.concat([shot(A+6.2,[0.7,8.6,-18.8],[0,7.9,-24.2],[-0.5,8.2,-20.6],[0,7.8,-24.2],2.7)]);
     d.events=(d.events||[]).concat([{t:0,fn:()=>{K1B.emo(L,'sleep',0);L.g.scale.setScalar(1.75);try{FIN.music.play('');}catch(e){}}},
-      {t:0.6,fn:()=>{K1B.fx.leaves(new V3(0,10,-24.5),16,{spd:1.2,up:0.3,size:1.2,cols:[0x9acb48,0x6aa338,0x8c6644]});}},
-      {t:1.8,fn:()=>{try{for(let i=0;i<5;i++)tone(rand(70,110),0.5,'sawtooth',0.08,rand(50,70),i*0.18);}catch(e){}shakeAll(0.03,0.8);}},
-      {t:3.7,fn:()=>{K1B.emo(L,'sly',0);K1B.music('k1b1');K1B.fx.leaves(new V3(0,9,-24.5),30,{spd:2,up:1.2});try{tone(180,0.3,'triangle',0.1,360);}catch(e){}}}]);
-    const tk=d.tick;d.tick=t=>{if(tk)tk(t);L.g.scale.setScalar(1.75+0.45*k1cSm(Math.min(1,t/3.8)));};
+      {t:A+0.6,fn:()=>{K1B.fx.leaves(new V3(0,10,-24.5),16,{spd:1.2,up:0.3,size:1.2,cols:[0x9acb48,0x6aa338,0x8c6644]});}},
+      {t:A+1.8,fn:()=>{try{for(let i=0;i<5;i++)tone(rand(70,110),0.5,'sawtooth',0.08,rand(50,70),i*0.18);}catch(e){}shakeAll(0.03,0.8);}},
+      {t:A+3.7,fn:()=>{K1B.emo(L,'sly',0);K1B.music('k1b1');K1B.fx.leaves(new V3(0,9,-24.5),30,{spd:2,up:1.2});try{tone(180,0.3,'triangle',0.1,360);}catch(e){}}}]);
+    const tk=d.tick;d.tick=t=>{if(tk)tk(t);L.g.scale.setScalar(1.75+0.45*k1cSm(clamp((t-A)/3.8,0,1)));};
     const oe=d.end;d.end=()=>{L.g.scale.setScalar(2.2);K1B.emo(L,'sly',0);if(oe)oe();K1B.music('k1b1');};return d;},
   // из этапа 1 в этап 2: «четыре Лешего» — хохот и дым там, где встанут двойники
   mid(d){const c=K1B.cur,L=c&&c.L;if(!L)return d;const C=c.C;

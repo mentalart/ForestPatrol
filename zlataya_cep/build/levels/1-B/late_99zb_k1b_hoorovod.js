@@ -35,7 +35,7 @@ K1S.start=function(){const c=K1B.cur,C=c.C,L=c.L;k1sReset();
 K1S.begin=function(){const c=K1B.cur;if(!c||K1S.on)return;const C=c.C;K1S.on=true;K1S.st='run';K1S.round=1;K1S.need=2;K1S.base=K1S.prog.slice();K1S.last=[null,null];
   K1S.lane=K1B.fx.lane(C,K1S_LANE,2.2,1);k1sRopes(1);k1sRibbons();
   K1B.fx.mood('fair',2);K1B.music&&K1B.music('k1b3');
-  banner('Хоровод!','#ffd76a',2.8,'бегите вокруг Лешего по стрелкам — ленты его обмотают · через скакалку — прыжок');
+  banner('Хоровод!','#ffd76a',3.0,'бегите вокруг Лешего, как ёлки хороводом · скакалка — прыжок');
   for(const pi of k1sPis())tip(pi,'Бегом по стрелкам вокруг Лешего — ленты его обмотают! Скакалка — прыжок '+K(pi,'jump')+'.',3.8);
   if(G.solo)tip(G.soloPi,'Бежишь ты — второй держит ленту.',3.4);};
 function k1sRopes(n){const C=K1B.cur.C;K1S.ropes.forEach(r=>W.group.remove(r.R.g));K1S.ropes=[];const w=K1S.round===1?0.63:0.55,ws=({easy:0.8,mid:1,hard:1.05})[k1sPath()]||1;
