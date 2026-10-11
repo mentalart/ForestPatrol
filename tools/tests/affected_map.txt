@@ -21,6 +21,7 @@ tools/script/*                                -
 tools/boss_audit/*                             -
 tools/boss_audit/audio/*                       -
 tools/map.py                                  -
+tools/art_prompts.py                          -
 tools/tests/grid.js                           -
 tools/tests/shot.js                           -
 tools/tests/pw.js                             -
