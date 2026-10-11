@@ -4,7 +4,7 @@
 //   • идёт за человеком: этим занят сам движок — тот же «ведомый», что в одиночном режиме (не сходит с краёв, прыгает через щели, подтягивается при застревании);
 //   • в бою (в пределах досягаемости моро́ков): сам держит щит, отбивает капли и замахи, кувыркается от красного зубца, бьёт, когда морок открыт,
 //     заходит сбоку к «коре», на Богатырский мах ждёт удара человека; не безупречен — часть замахов только щитом, часть пропускает (CMP.skill);
-//   • упал человек — подходит «подшить»; упал сам — берёт второго героя; в окнах (Лукоморье, «Сказ») и в ритме повторяет за человеком; ролик пропускается, пока держишь прыжок.
+//   • упал человек — подходит «подшить»; упал сам — берёт второго героя; в окнах (Лукоморье, «Сказ») и в ритме повторяет за человеком; ролик пропускается, пока держишь прыжок; в уроке (FIN.lesson) жмёт свою кнопку сам.
 // Парные загадки уровней бот проходит по «маршруту уровня» (CMP.route, ниже): список шагов Игрока 2 с условием «выполнено» — свой модуль в папке уровня
 // (levels/p — пролог, levels/1-1 … 1-5 и 1-B — мир 1, levels/2-1 … 2-5 и 2-B — мир 2, levels/3-1 … 3-5 и 3-B — мир 3 (общие помощники пера и мостков — levels/w3), levels/4-1 … 4-5 и 4-B — мир 4, levels/5-1 … 5-4 и 5-B1 — мир 5, levels/5-B2 — пролог и стадии 1–3 финала (дальше «ведомым»); в Лукоморье бот повторяет за человеком). Уровень без маршрута бот проходит «ведомым». Мир 5 — по маршруту на уровень.
 // Клавиатура: в этом режиме стрелки и M K L , . / ; работают как вторая половина клавиатуры Игрока 1 (WASD, пробел, F, G, Q, E, R, Shift, 1).
@@ -30,10 +30,13 @@ const CMP_HELD=new Set();
 const cmpKey=(a,on)=>{const c=BIND[1][a];if(on){down.add(c);CMP_HELD.add(c);}else{down.delete(c);CMP_HELD.delete(c);}};
 const cmpTap=a=>pressed.add(BIND[1][a]);
 function cmpFree(){for(const c of CMP_HELD)down.delete(c);CMP_HELD.clear();PADS.axes[1]={x:0,y:0};}
-// идти в сторону (dx,dz) по миру: стик Игрока 2 с учётом поворота камеры (ходьба в игре — относительно камеры)
-function cmpAxes(dx,dz,k){const l=Math.hypot(dx,dz);if(l<1e-4){PADS.axes[1]={x:0,y:0};return;}dx/=l;dz/=l;const b=camBack();
+// идти в сторону (dx,dz) по миру: стик Игрока 2 с учётом поворота камеры (ходьба в игре — относительно камеры). Камера — та, по которой пойдёт герой Игрока 2:
+// с поворотом правым стиком (late_89_camorbit.js, FIN.cam.cur=1), иначе при повёрнутой человеком камере бот уходил вбок
+function cmpCamBack(){const c=FIN.cam;if(!c)return camBack();const q=c.cur;c.cur=1;try{return camBack();}finally{c.cur=q;}}
+function cmpAxes(dx,dz,k){const l=Math.hypot(dx,dz);if(l<1e-4){PADS.axes[1]={x:0,y:0};return;}dx/=l;dz/=l;const b=cmpCamBack();
   PADS.axes[1]={x:(dx*b.z-dz*b.x)*k,y:(dx*b.x+dz*b.z)*k};}
 function cmpGoto(h,x,z,stop){const dx=x-h.pos.x,dz=z-h.pos.z,d=Math.hypot(dx,dz);if(d>stop)cmpAxes(dx,dz,d>stop+0.8?1:0.5);return d;}
+CMP.goto=cmpGoto;   // для ботов
 // повторять за человеком (окна, ритм, особые уровни): те же клавиши и тот же стик
 function cmpMirror(){for(const a in BIND[0]){const c=BIND[0][a];if(down.has(c)||PADS.down.has(c))cmpKey(a,true);if(pressed.has(c))cmpTap(a);}PADS.axes[1]=PADS.axes[0];}
 // окна с одним общим выбором (карта-рушник, Застава, сказки, примерочная, грядка): их цикл слушает обоих игроков и двигает один и тот же выбор,
@@ -98,11 +101,19 @@ function cmpCall(){const o=other(1);if(!o.following&&!o.cling&&!(CMP.callT>G.tim
 function cmpPath(h,pts,stop,adv){if(!CMP.wp||CMP.wp.key!==pts||CMP.wp.kind!==h.kind)CMP.wp={key:pts,kind:h.kind,i:0};const w=CMP.wp;
   while(w.i<pts.length-1&&Math.hypot(pts[w.i][0]-h.pos.x,pts[w.i][1]-h.pos.z)<(adv||0.9))w.i++;   // adv — допуск промежуточной точки (узкий мост — меньше)
   const last=w.i===pts.length-1,s=last?(stop||0.35):0.5;return cmpGoto(h,pts[w.i][0],pts[w.i][1],s)<=s&&last;}
+// урок (FIN.lesson, late_79e_lesson.js) — ролик, который ждёт кнопку каждого игрока: бот жмёт свою, как живой друг, — через полсекунды-секунду
+// после того, как карточка позвала (иначе урок 8 с ждал и показывал приём сам: «Смотри — вот так!»); «вместе, дружно» (wait.sync) — сразу за человеком
+function cmpLesson(){const L=FIN.lesson,c=G.cine,r=L.last;if(!r||!r.steps)return;
+  const s=r.steps.find(q=>q.t0!=null&&c.t>=q.t0&&c.t<q.t0+q.dur),need=s&&s.wait&&s.got?L.who(s.wait.who):[];
+  if(!s||s.okAt!=null||!need.includes(1)||s.got[1]||c.t<s.t0+(s.at!=null?s.at:0.8)){if(!s||CMP.les&&CMP.les.s!==s)CMP.les=null;return;}
+  const w=CMP.les&&CMP.les.s===s?CMP.les:(CMP.les={s,t0:G.time,d:0.45+0.5*Math.random()});
+  if(s.wait.sync&&need.includes(0)){if(s.got[0]&&s.first!=null&&G.time-s.first>0.12)cmpTap(s.wait.a);return;}
+  if(G.time-w.t0>=w.d)cmpTap(s.wait.a);}
 // ход бота за кадр: решает, чем занят, и жмёт клавиши Игрока 2 — до шага мира
 function cmpThink(dt){cmpFree();
   const p=players[1],hp=players[0],h=active(1),hh=active(0),o=other(1);CMP.mode='idle';CMP.tick++;
   if(p.path!==hp.path)p.path=hp.path;                    // сложность — одна на двоих, как в одиночном режиме
-  if(G.cine){const c=G.cine;if(c.skippable&&c.t>0.8&&btn(0,'jump'))cmpKey('jump',true);return;}   // ролик: держит прыжок вместе с человеком
+  if(G.cine){const c=G.cine;if(FIN.lesson&&FIN.lesson.on)cmpLesson();else CMP.les=null;if(c.skippable&&c.t>0.8&&btn(0,'jump'))cmpKey('jump',true);return;}   // ролик: держит прыжок вместе с человеком; в уроке жмёт свою кнопку
   if(G.trans)return;
   const cu=!!(W.custom||W.soloMirror),rt=!!CMP.routes[W.levelId];
   if(G.ui||(cu&&!rt)){CMP.mode='mirror';if(!CMP_ONE_SEL.has(G.ui))cmpMirror();return;}           // окна и особые уровни (гусли, раннер): повторяет за человеком (кроме окон с общим выбором)

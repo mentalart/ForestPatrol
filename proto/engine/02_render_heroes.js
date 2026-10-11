@@ -81,7 +81,7 @@ function makeHero(kind){
   const h={kind,d,player:d.player,g,body:b.body,parts:b.parts,pos:new V3(),vel:new V3(),face:Math.PI,grounded:false,groundRef:null,lastGroundY:0,coyote:0,
    active:false,iT:0,guard:false,atkT:0,atkCd:0,skillCd:0,glide:false,rollAng:0,following:false,stuck:0,holding:false,held:false,knockT:0,blocked:false,walkT:0,moving:false,cling:false,clingBell:null,warned:false};
   h.markerMat=MB(PCOL[d.player],{transparent:true,opacity:1});
-  h.marker=new THREE.Mesh(new THREE.TorusGeometry(0.22,0.045,8,22),h.markerMat);h.marker.rotation.x=Math.PI/2;g.add(h.marker);
+  h.marker=new THREE.Mesh(new THREE.ConeGeometry(0.17,0.38,4),h.markerMat);h.marker.rotation.x=Math.PI;h.marker.castShadow=false;h.marker.visible=false;g.add(h.marker);h.mkT=0;h.mkA=0;h.mkIdle=0;   // ромбик «это ты»: только над своим героем, ненадолго
   h.shieldMat=MB(PCOL[d.player],{transparent:true,opacity:0.5,side:THREE.DoubleSide,depthWrite:false});
   h.shield=new THREE.Mesh(new THREE.CircleGeometry(d.shield,24),h.shieldMat);h.shield.position.set(0,d.height*0.5,d.radius+0.25);g.add(h.shield);
   const ag=new THREE.RingGeometry(0.5,d.range,20,1,-Math.PI/2-0.9,1.8);ag.rotateX(-Math.PI/2);
@@ -160,7 +160,14 @@ const WEAR={
  armA:{slot:'hat',name:'Шапка Алёши Поповича',cost:0,earn:'z-a',desc:'Доспех богатыря — за богатырское время на Заставе.',
   icon:SV('<path d="M16 48 L32 12 L48 48Z" fill="#c03030"/><path d="M40 30 L54 6" stroke="#ffd23a" stroke-width="5"/>'),
   build(g){part(g,new THREE.ConeGeometry(0.3,0.45,12),M(0xc03030),0,0.22,0);const f=part(g,new THREE.ConeGeometry(0.037,0.5,4),M(0xffd23a,{emissive:0xffb000,emissiveIntensity:0.5}),0.17,0.47,-0.06);f.rotation.z=-0.5;}},
+ solomka:{slot:'hat',name:'Соломенная шляпа Дедки',cost:0,earn:'dedka',desc:'От Дедки — за три заказа с огорода: от солнышка и от дождичка.',
+  icon:SV('<ellipse cx="32" cy="42" rx="28" ry="8" fill="#e8c86a"/><path d="M18 42 Q18 18 32 18 Q46 18 46 42Z" fill="#f0d27a"/><rect x="18" y="34" width="28" height="6" fill="#c0302a"/>'),
+  build(g){const st=M(0xe8c86a);part(g,new THREE.CylinderGeometry(0.52,0.54,0.04,20),st,0,0.02,0);part(g,new THREE.CylinderGeometry(0.24,0.29,0.26,16),M(0xf0d27a),0,0.15,0);part(g,new THREE.CylinderGeometry(0.295,0.295,0.07,16),M(0xc0302a),0,0.07,0);}},
  // ---------- на шею ----------
+ pero:{slot:'neck',name:'Бусы с пёрышком Рябы',cost:0,earn:'ryaba',desc:'Пёрышко Курочки Рябы — она обронила его, когда её ласково гладили.',
+  icon:SV('<path d="M12 14 Q32 44 52 14" fill="none" stroke-width="2"/><path d="M32 30 Q22 44 30 60 Q40 46 32 30Z" fill="#f4efe4"/><circle cx="29" cy="44" r="2" fill="#8a7a6a" stroke="none"/><circle cx="33" cy="51" r="2" fill="#8a7a6a" stroke="none"/>'),
+  build(g,f){const r=f.neck[1]+0.02,t=f.hs,m=M(0xf0b030);for(let i=0;i<14;i++){const a=i/14*Math.PI*2;part(g,new THREE.SphereGeometry(0.03*t,6,5),m,Math.sin(a)*r,-Math.max(0,Math.cos(a))*0.05*t,Math.cos(a)*r);}
+   const fe=part(g,new THREE.SphereGeometry(0.08*t,8,6),M(0xf4efe4),0,-0.1*t,r+0.02);fe.scale.set(0.45,1.5,0.25);part(g,new THREE.SphereGeometry(0.018*t,5,4),M(0x8a7a6a),0.01,-0.08*t,r+0.045);}},
  platok:{slot:'neck',name:'Платок в горошек',cost:5,desc:'Алый, завязан узелком.',
   icon:SV('<path d="M10 20 Q32 30 54 20 L32 56Z" fill="#d8302a"/><circle cx="26" cy="30" r="3" fill="#fff" stroke="none"/><circle cx="38" cy="30" r="3" fill="#fff" stroke="none"/><circle cx="32" cy="42" r="3" fill="#fff" stroke="none"/>'),
   build(g,f){const r=f.neck[1],t=f.hs,red=M(0xd8302a);const tr=part(g,new THREE.TorusGeometry(r+0.01,0.05*t,6,20),red,0,0,0);tr.rotation.x=Math.PI/2;

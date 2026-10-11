@@ -2,7 +2,7 @@
 // релиз: мир 1 для детей 7–11 (late_74_kids_start.js, late_75_kids_w1.js, late_79b_readaloud.js; правки 1-1 и 1-3). Проверки:
 // «Новая игра» открывает «Кто играет?» (по умолчанию Лёгкий путь, выбрано «Начать сказку!»), режим и пути меняются стрелками, соло прячет игрока 2;
 // пролог и мир 1 мягче (замах, окно, Пробой, красный знак, подсказки ×2,5), Лукоморье — как прежде; кувырок за 0,8 с до красного удара засчитывается;
-// упавший игрок получает подсказку; над активным героем стрелка; калитка 1-1 остаётся открытой; задачи читаются вслух и повторяются по H.
+// упавший игрок получает подсказку; ромбик над своим героем горит дольше; калитка 1-1 остаётся открытой; задачи читаются вслух и повторяются по H.
 window.ERR=[];window.addEventListener('error',e=>ERR.push(String(e.message)));{const ce=console.error;console.error=(...a)=>{ERR.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 window.BAD=[];window.chk=(c,m)=>{if(!c)BAD.push(m);return c;};window.KD=ZC.FIN.kids;
 ZC.FIN.kids.force=true;ZC.FIN.openTitle(true);chk(ZC.FIN.menu&&ZC.FIN.menu.sel===1,'на титуле без сохранения выбрана «Новая игра»');ZC.menuKey('Enter');'new'
@@ -56,14 +56,15 @@ const e1=rollTest('easy',0.4),e2=rollTest('easy',0.9),e3=rollTest('hard',0.2);  
 chk(e1.dodged===1,'Лёгкий: кувырок за 0,7 с до удара засчитан: '+JSON.stringify(e1));chk(e2.dodged===0,'Лёгкий: кувырок за 1,2 с до удара не засчитан: '+JSON.stringify(e2));chk(e3.dodged===0,'Богатырский: за 0,5 с не засчитан (как в прототипе): '+JSON.stringify(e3));
 [JSON.stringify([e1,e2,e3])].concat(BAD)
 //@@
-// упавший игрок получает подсказку, друг — тоже; стрелка над активным героем
+// упавший игрок получает подсказку, друг — тоже; ромбик над активным героем
 const P=ZC.players,h0=P[0].heroes[P[0].act];P[0].path='easy';P[0].petals=1;P[0].tipT=0;P[1].tipT=0;P[0].downed=false;h0.iT=0;
 KD.dbgHurt(h0);ZC.tick(2);
 chk(P[0].downed===true,'лепестки кончились — упал');chk(/отдыхаешь/i.test(P[0].tipHTML||'')&&P[0].tipT>6,'упавший получил подсказку на '+P[0].tipT+' с: '+(P[0].tipHTML||'').slice(0,40));
 chk(/рассыпался/.test(P[1].tipHTML||'')&&P[1].tipT>6,'друг получил подсказку на '+P[1].tipT+' с');
 P[0].downed=false;P[0].petals=3;ZC.tick(5);
-const arr=h=>h.g.children.find(c=>c.userData&&c.userData.kidsArrow),act0=P[0].heroes[P[0].act],off0=P[0].heroes.find(h=>h!==act0);
-chk(arr(act0)&&arr(act0).visible,'над активным героем игрока 1 стрелка');chk(arr(off0)&&!arr(off0).visible,'над неактивным героем стрелки нет');
+const act0=P[0].heroes[P[0].act],off0=P[0].heroes.find(h=>h!==act0);act0.mkT=0;act0.mkIdle=0;ZC.tick(60*2);
+chk(ZC.W.markShow===4&&ZC.W.markIdle===3,'в мире 1 ромбик горит 4 с и загорается после 3 с без дела: '+ZC.W.markShow+'/'+ZC.W.markIdle);
+chk(act0.marker.visible===false,'ромбик погас');ZC.tick(60*1.6);chk(act0.marker.visible,'3 с без дела — ромбик над активным героем игрока 1 снова горит');chk(!off0.marker.visible,'над неактивным героем метки нет');
 ['tip0='+P[0].tipT].concat(BAD)
 //@@
 // «помощь по задаче» приходит быстрее: время без успеха идёт вдвое на Лёгком, ×1,5 на Среднем, как есть на Богатырском

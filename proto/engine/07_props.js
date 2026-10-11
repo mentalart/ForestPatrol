@@ -98,7 +98,7 @@ const bubEls=[];for(let i=0;i<6;i++){const d=document.createElement('div');d.cla
 function glyph(pi,a){if(a==='move')return MOVEK(pi);if(a==='label')return '';if(a==='warn')return '<span class="pb B">!</span>';if(a==='jumpHold')return K(pi,'jump')+'<small>держи в полёте</small>';return K(pi,a);}
 function updatePrompts(){let n=0;const H=innerHeight;
   if(!G.cine&&!G.trans&&(!G.ui||G.ui==='forge')&&G.state==='play')for(const pr of W.prompts){if(n>=bubEls.length)break;if(!pr.cond())continue;
-    const pane=PANES.length>1?PANES[pr.pi]:PANES[0];if(!pane)continue;const q=project(pr.at(),pane);if(q.behind||Math.abs(q.x)>1.05||Math.abs(q.y)>1.05)continue;
+    const pane=PANES.length>1?PANES[pr.pi]:PANES[0];if(!pane)continue;const q=project(pr.at(),pane);if(q.behind||(pane.poly?!paneHas(pane,pane.x+(q.x*0.5+0.5)*pane.w,(1-(q.y*0.5+0.5))*H,-20):Math.abs(q.x)>1.05||Math.abs(q.y)>1.05))continue;
     const b=bubEls[n++];const nt=typeof pr.note==='function'?pr.note():pr.note;const html=glyph(pr.pi,pr.action)+(nt?'<small>'+nt+'</small>':'');if(b.html!==html){b.html=html;b.el.innerHTML='<div class="inner">'+html+'</div>';}
     b.el.style.borderColor=PCSS[pr.pi];b.el.style.display='block';b.el.style.transform='translate('+(pane.x+(q.x*0.5+0.5)*pane.w).toFixed(1)+'px,'+((1-(q.y*0.5+0.5))*H).toFixed(1)+'px) translate(-50%,-100%)';}
   for(;n<bubEls.length;n++)bubEls[n].el.style.display='none';}

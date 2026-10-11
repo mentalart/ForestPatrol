@@ -16,11 +16,13 @@ HLP.reg=function(key,o){HLP.keys[key]=Object.assign({act:key,word:'',tail:'',tar
 function hlpS(pi,key){const m=HLP.st[pi]||(HLP.st[pi]={});return m[key]||(m[key]={miss:0,t:0,arm:0,stage:0});}
 HLP.stage=(pi,key)=>hlpS(pi,key).stage;
 HLP.reset=function(){hlpUnslow();HLP.st={};HLP.slow=[0,0];HLP.demo=[0,0];HLP.falls=[0,0];HLP.lastKey=['',''];hlpClear();if(typeof hideGhost==='function'){hideGhost(0);hideGhost(1);}};
-HLP.want=function(pi,key){if(!HLP.on||pi==null)return;hlpS(pi,key).arm=0.35;};
+// за Игрока 2 играет ИИ напарник (late_73_companion.js) — его не учим: ни мигания и карточек ему, ни повтора урока для обоих из-за его падений
+const hlpBot=pi=>pi===1&&!!(FIN.co&&FIN.co.live());
+HLP.want=function(pi,key){if(!HLP.on||pi==null||hlpBot(pi))return;hlpS(pi,key).arm=0.35;};
 HLP.ok=function(pi,key){const s=hlpS(pi,key);s.miss=0;s.t=0;s.stage=0;HLP.falls[pi]=0;
   if(HLP.demo[pi]>0){HLP.demo[pi]=0;if(typeof hideGhost==='function')hideGhost(pi);}hlpClear(pi);};
-HLP.miss=function(pi,key){if(!HLP.on)return;const s=hlpS(pi,key);s.miss++;HLP.lastKey[pi]=key;hlpUp(pi,key,s.miss>=3?3:s.miss>=2?2:1);};
-HLP.fall=function(pi){HLP.falls[pi]++;HLP.log.push('fall'+pi);
+HLP.miss=function(pi,key){if(!HLP.on||hlpBot(pi))return;const s=hlpS(pi,key);s.miss++;HLP.lastKey[pi]=key;hlpUp(pi,key,s.miss>=3?3:s.miss>=2?2:1);};
+HLP.fall=function(pi){if(hlpBot(pi))return;HLP.falls[pi]++;HLP.log.push('fall'+pi);
   if(HLP.falls[pi]>=2){HLP.falls[pi]=0;const k=hlpK(pi);if(!k)return;const key=HLP.lastKey[pi]||'';
     const keys=Object.keys(HLP.st[pi]||{}).filter(x=>HLP.st[pi][x].miss>0);HLP.log.push('lesson'+pi);
     if(typeof HLP.onLesson==='function'){try{HLP.onLesson({pi,key,keys,weak:k<1});}catch(e){console.error('help.lesson',e);}}}};
@@ -63,7 +65,8 @@ function hlpClear(pi){if(pi==null||(HLP.arrow&&HLP.arrow.pi===pi))HLP.arrow=null
 // смена уровня — чистая лестница и прежние окна TIMING (до загрузки: иначе поблажка осталась бы в базе)
 {const _ll=loadLevel;loadLevel=function(i){HLP.reset();_ll(i);};}
 // ход: таймеры, мигание, стрелка
-function hlpPos(p3){for(const pane of PANES){const pr=project(p3,pane);if(!pr.behind&&Math.abs(pr.x)<0.95&&Math.abs(pr.y)<0.92)return {x:pane.x+(pr.x*0.5+0.5)*pane.w,y:(1-(pr.y*0.5+0.5))*innerHeight};}return null;}
+function hlpPos(p3){for(const pane of PANES){const pr=project(p3,pane),x=pane.x+(pr.x*0.5+0.5)*pane.w,y=(1-(pr.y*0.5+0.5))*innerHeight;
+  if(!pr.behind&&(pane.poly?paneHas(pane,x,y,pane.w*0.025):Math.abs(pr.x)<0.95&&Math.abs(pr.y)<0.92))return {x,y};}return null;}
 const hlpLive=()=>HLP.on&&W&&G.state==='play'&&!G.cine&&!G.trans&&!G.ui;
 // таймеры — в шаге игры (идут и без отрисовки интерфейса)
 function hlpSim(dt){if(!hlpLive())return;
