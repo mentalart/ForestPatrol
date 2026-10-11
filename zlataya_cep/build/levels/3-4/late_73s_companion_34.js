@@ -12,6 +12,9 @@ CMP.route('3-4',[
   // полёт: хранитель фонаря; вороны — бой у мачты
   {id:'fly',first:true,done:()=>!!W.flags.landed,run:(h,hh)=>{k34();const F=W.flags;if(G.cine||!F.launched)return 'follow';if(!cmpWant('pelageya'))return;w3Lit(h,true);
     const sp=k34Spot(),S=W.shipS,lan={x:S.x,z:S.z+0.05},near=W.enemies.filter(e=>cmpAlive(e)&&hd(e.pos,h.pos)<7);
+    // Ворона-Ключница цепью держит корабль (late_99zn): корабль всё равно стоит — бот отходит от фонаря и бьёт золотые звенья
+    const K=W.k34;if(K&&K.st==='chain'){const L=K.links.filter(q=>q.alive).sort((a,b)=>hd(a.m.position,h.pos)-hd(b.m.position,h.pos))[0];
+      if(L){const p=L.m.position;if(hd(h.pos,p)>0.9){cmpGoto(h,p.x-Math.sign(L.lx)*0.6,p.z,0.3);return;}h.face=Math.atan2(p.x-h.pos.x,p.z-h.pos.z);if(!(K.tapT>G.time-0.4)){K.tapT=G.time;cmpTap('attack');}return;}}
     if(near.length){cmpFight(h,hh,near,TIMING[players[1].path]||TIMING.mid);if(hd(h.pos,lan)>1.4)cmpGoto(h,sp[0],sp[1],0.2);return;}
     if(hd(h.pos,{x:sp[0],z:sp[1]})>0.35)cmpGoto(h,sp[0],sp[1],0.3);}},
   // посадка: к гнезду Гусей-лебедей
