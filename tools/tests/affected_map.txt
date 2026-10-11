@@ -30,6 +30,7 @@ tools/tests/affected_map.txt                  -
 tools/tests/layout_check.js                   -
 tools/tests/regress.sh                        -
 tools/tests/flaky.py                          -
+tools/tests/textlint_warn.py                  -
 tools/changelog.py                            -
 wiki/*                                        -
 tools/wiki_shots.js                           -

@@ -51,3 +51,5 @@ tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky31cine tfin_
 tfin_bossnext
 # ромбик «это ты» над своим героем (движок, heroMarker)
 tfin_marker
+# тексты задач: длинные без краткой строки, молчащие карточки (только предупреждения)
+tfin_textlint
