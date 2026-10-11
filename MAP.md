@@ -104,7 +104,7 @@
 | `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51, late_97b_buyan51_chapters | 6 | t51 tfin_ch51 tfin_companion_51 tfin_likho tfoes tso51 |
 | `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | — | 2 | t52 tfin_companion_52 |
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 2 | t53 tfin_companion_53 |
-| `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | — | 3 | t54 tfin_companion_54 tso54 |
+| `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | late_97c_egg54_music | 3 | t54 tfin_companion_54 tso54 |
 | `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | late_96c_k5b1_texts | 4 | t5b1 t5b1cam t5b1solo tfin_companion_5b1 |
 | `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_93_koschei_level_p6_epic, late_93_koschei_level_ph_prologue, late_93_koschei_level_pi_lessonagain, late_94_koschei_reset, late_94b_k5e_budget | 3 | t5b2 tk5e_resume tlukoepi |
 | `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start | 3 | tepi tfin_episolo tfin_epitheatre |
@@ -161,7 +161,7 @@
 | `levels/5-1.js` | 615 | МИР 5 · 5-1 «СУНДУК НА ДУБЕ» — остров, дуб и Лихо Одноглазое |
 | `levels/5-2.js` | 109 | МИР 5 · 5-2 «ЗАЯЦ» — на четверых |
 | `levels/5-3.js` | 129 | МИР 5 · 5-3 «УТКА» — полёт на Горыныче в узде |
-| `levels/5-4.js` | 151 | МИР 5 · 5-4 «ЯЙЦО» — гусельный · «Калинка» 88 → 104 |
+| `levels/5-4.js` | 191 | МИР 5 · 5-4 «ЯЙЦО» — гусельный · «Калинка» 88 → 128, полная… |
 | `levels/5-B1.js` | 105 | МИР 5 · 5-Б1 «КОЩЕЙ В ТЕРЕМЕ» — бой «выстоять», заранее объ… |
 | `levels/5-B2.js` | 175 | МИР 5 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ» — финал без … |
 | `levels/epi.js` | 83 | ЭПИЛОГ — штаб-сосна, вечер: сказка без тетрадки |
@@ -319,6 +319,7 @@
 | `levels/5-B1/late_96c_k5b1_texts.js` | 5-B1 | РЕЛИЗ · 5-Б1 «КОЩЕЙ В ТЕРЕМЕ» · короткие надписи (docs/34 5Б1-2) |
 | `levels/5-1/late_97_buyan51.js` | 5-1 | РЕЛИЗ final06 · 5-1 «СУНДУК НА ДУБЕ»: НОВЫЕ ЖИТЕЛИ ОСТРОВА В РОЛИКАХ |
 | `levels/5-1/late_97b_buyan51_chapters.js` | 5-1 | РЕЛИЗ · 5-1 «СУНДУК НА ДУБЕ»: СОХРАНЕНИЕ ПО ЧАСТЯМ И КАРТОЧКИ ГЛАВ |
+| `levels/5-4/late_97c_egg54_music.js` | 5-4 | РЕЛИЗ · 5-4 «ЯЙЦО»: «КАЛИНКА» НА ИНСТРУМЕНТАХ МУЗЫКИ ИГРЫ |
 | `levels/4-B/late_98_gor_lava.js` | 4-B | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: АРЕНА ПО РЕФЕРЕНСУ, РЫК И ЛАВА, БОЛЬШОЙ ВДОХ, СЛАБОЕ МЕСТО |
 | `levels/1-3/late_99_kolobok_dance.js` | 1-3 | РЕЛИЗ final06 · 1-3 «КОЛОБОК»: ФИНАЛЬНАЯ ПЛЯСКА |
 | `levels/1-4/late_99b_kidnap14.js` | 1-4, 1-B | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: ШАПКИ НА ГОЛОВАХ, ЁЛКИ УТАСКИВАЮТ ПЕЛАГЕЮ |
@@ -457,7 +458,7 @@
 | `38_world3_proposals.md` | 38. Мир 3 «Небесное царство»: комплексный разбор и предложения по всем уровням |
 | `39_world4_proposals.md` | 39. Мир 4 «Огненная Смородина»: комплексный разбор и предложения по всем уровням |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 116 файлов |
+| `changes/` | 117 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
