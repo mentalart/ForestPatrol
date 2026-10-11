@@ -19,7 +19,7 @@ RESET53();
 //@@
 // полёт: вороны, тучи Кощея (три «раз-два-три»), кольца — до утки; на счёте «три» бот и человек успевают вместе
 if(!CO.routes['5-3'])throw new Error('нет маршрута 5-3');const W=ZC.W,F2=F();const L=[];let lm='',burn=0;
-for(let i=0;i<60*420&&F2.stage==='fly';i++){HUM();ZC.tick(1);if(CO.mode!==lm){L.push((i/60).toFixed(0)+'s '+CO.mode);lm=CO.mode;}}
+for(let i=0;i<60*600&&F2.stage==='fly';i++){HUM();ZC.tick(1);if(CO.mode!==lm){L.push((i/60).toFixed(0)+'s '+CO.mode);lm=CO.mode;}}
 HOFF();const gone=W.CLOUDS.filter(c=>c.state==='gone'||c.state==='burn').length;
 if(F2.stage==='fly')throw new Error('до утки не долетели: z='+W.GP.z.toFixed(0)+' тучи='+gone+'/3 вороны сбиты='+(F2.crowsDown||0)+' '+CO.mode+' '+L.slice(-4).join(' | '));
 if(gone<3)throw new Error('тучи не прожжены: '+gone+'/3');

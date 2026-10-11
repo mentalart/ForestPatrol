@@ -24,6 +24,10 @@
   прототипом: функции прототипа оборачивают присваиванием (`step=function(dt){_step(dt);…}`, `build5B2=function(){…}`),
   но не объявляют функций с теми же именами (сборка проверяет). Части уровня, закрытые в его функции, модулю отдают через
   замену в `rep_30_<уровень>.py` (`W.epiL={…}` — `rep_30_epi.py`, `W.gor4L={…}` — `rep_30_gor4b.py`).
+- **Мир 2 «Подводный Китеж» — источник правды в релизных модулях**: `zlataya_cep/build/levels/2-*/` и общий код мира
+  `levels/w2/` (вода гуслей, рейки, музыка уровней, сохранение на колокольчиках). Прототип `proto/levels/2-*.js` и `w2_common.js`
+  заморожен: релизные модули заменяют `build21…build2B` целиком (`late_99e…late_99j`), правки мира 2 в прототип не вносят (правило «две папки» к миру 2 не относится), разбор и боты —
+  только по релизу. Разбор мира и выбранные правки — `docs/15`, `docs/17`, `docs/19` и журнал `docs/changes/`.
 - **final07 (WebGPU) снят** — актуален final06. `build/gpu/`, `build_final.py --gpu`, `regress_list_final07.txt`, `tfin_gpu`/`tfin_post`
   заморожены (`docs/18_webgpu.md` — для истории): не собирать, шейдеры для WebGPU не переводить, ботов final07 не гонять.
 - **Боты** — `tools/tests/` (`README.md` там): шаги через `//@@ [shot=имя.png] [wait=мс]`; `tools/tests/run_one.sh бот [html]`;
@@ -83,12 +87,12 @@
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99b_kidnap14, late_99zf_pea14, late_99zg_auka14 | 7 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14long tfin_kidnap14 tfin_kids2 thub9e |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1 | 5 | tfin_ch1 tfin_companion_15 tfin_k15_boss tfin_k15_rooms thub2 |
 | `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zd_k1b_help | 6 | tfin_companion_1b tfin_companion_lesson tfin_k1b3solo tfin_post tfin_skaz tsospot |
-| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit, late_99zg_k21_gauge, late_99zh_k21_calm | 20 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tf… |
-| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99f_k22_q_whale, late_99l_kitezh_magic_water, late_99zi_k22_parts | 9 | t22d t22shot tfin_companion_22 tfin_k22 tfin_k22hint tfin_k22solo tfin_kids2 tfin_occ tfi… |
-| `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water, late_99zj_k23_lake | 4 | t23f tfin_companion_23 tfin_k23 tfin_k23solo |
-| `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water, late_99zk_k24_heart | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
-| `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99zl_k25_rise | 6 | t25c tfin_companion_25 tfin_k25 tfin_k25solo tfoes tsospot |
-| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase, late_99zm_k2b_storm | 13 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
+| `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit, late_99zg_k21_gauge, late_99zh_k21_calm, late_99zt_kw_gauges, late_99zu_kw_resume, late_99zv_kw_music | 21 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tf… |
+| `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99f_k22_q_whale, late_99l_kitezh_magic_water, late_99zi_k22_parts, late_99zt_kw_gauges, late_99zu_kw_resume, late_99zv_kw_music | 10 | t22d t22shot tfin_companion_22 tfin_k22 tfin_k22hint tfin_k22solo tfin_kids2 tfin_kwres t… |
+| `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water, late_99zj_k23_lake, late_99zt_kw_gauges, late_99zv_kw_music | 4 | t23f tfin_companion_23 tfin_k23 tfin_k23solo |
+| `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water, late_99zk_k24_heart, late_99zt_kw_gauges, late_99zv_kw_music | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
+| `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99zl_k25_rise, late_99zt_kw_gauges | 6 | t25c tfin_companion_25 tfin_k25 tfin_k25solo tfoes tsospot |
+| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase, late_99zm_k2b_storm, late_99zt_kw_gauges | 13 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_75_kids_w1, late_76_kids_fight, late_99p_sky31 | 18 | t31 t31c tfin_art tfin_companion_31 tfin_juice tfin_kids1 tfin_kids2 tfin_motylek tfin_sk… |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32, late_99x_sky32_tut, late_99y_sky32_cine, late_99zd_sky32_fx, late_99ze_sky32_cam | 11 | t32 tfin_companion_32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32cine tfin_sk… |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 3 | t33n tfin_companion_33 tso33 |
@@ -101,13 +105,13 @@
 | `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | — | 3 | t44 tfin_companion_44 tfoes |
 | `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | — | 3 | t45 tfin_companion_45 tsospot |
 | `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava | 13 | t4b tfin_boss4b tfin_bossfxcap tfin_cam tfin_cine tfin_companion_4b tfin_gor4 tfin_gorend… |
-| `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51, late_97b_buyan51_chapters | 6 | t51 tfin_ch51 tfin_companion_51 tfin_likho tfoes tso51 |
-| `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | — | 2 | t52 tfin_companion_52 |
-| `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | — | 2 | t53 tfin_companion_53 |
-| `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | late_97c_egg54_music | 3 | t54 tfin_companion_54 tso54 |
-| `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | late_96c_k5b1_texts | 4 | t5b1 t5b1cam t5b1solo tfin_companion_5b1 |
-| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_93_koschei_level_p6_epic, late_93_koschei_level_ph_prologue, late_93_koschei_level_pi_lessonagain, late_94_koschei_reset, late_94b_k5e_budget | 3 | t5b2 tk5e_resume tlukoepi |
-| `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start | 3 | tepi tfin_episolo tfin_epitheatre |
+| `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51, late_97b_buyan51_chapters, late_97g_buyan_nest | 6 | t51 tfin_ch51 tfin_companion_51 tfin_likho tfoes tso51 |
+| `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | late_97d_hare52, late_97g_buyan_nest | 3 | t52 tfin_companion_52 tfin_hare52 |
+| `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | late_97e_duck53, late_97g_buyan_nest | 4 | t53 tfin_companion_53 tfin_fly53 tfin_nest5 |
+| `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | late_97c_egg54_music, late_97f_koschei_motif, late_97g_buyan_nest | 4 | t54 tfin_companion_54 tfin_lag tso54 |
+| `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | late_96c_k5b1_texts, late_97f_koschei_motif, late_97g_buyan_nest | 5 | t5b1 t5b1cam t5b1solo tfin_companion_5b1 tfin_cover5b1 |
+| `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_93_koschei_level_p6_epic, late_93_koschei_level_ph_prologue, late_93_koschei_level_pi_lessonagain, late_94_koschei_reset, late_94b_k5e_budget, late_97f_koschei_motif | 3 | t5b2 tk5e_resume tlukoepi |
+| `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start, late_97f_koschei_motif, late_97g_buyan_nest | 3 | tepi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
 | `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 2 | tfin_juice tzast |
 | `z-a` | Застава · Алёша Попович: колокольная перекличка | `buildZast('a')` · `levels/zastava.js` | — | 1 | tzast |
@@ -119,7 +123,7 @@
 | часть | строк | разделы |
 |---|---|---|
 | `head.html` | 452 | — |
-| `engine/01_utils_input_sound.js` | 122 | УТИЛИТЫ · ВВОД · ДЖОЙСТИКИ (Gamepad API, стандартная раскладка, раскладка v4) · ЗВУК (placeholder) |
+| `engine/01_utils_input_sound.js` | 123 | УТИЛИТЫ · ВВОД · ДЖОЙСТИКИ (Gamepad API, стандартная раскладка, раскладка v4) · ЗВУК (placeholder) |
 | `engine/02_render_heroes.js` | 259 | РЕНДЕР / СЦЕНА · ГЕРОИ (осмысленные примитивы, умения по сценарию v4) |
 | `engine/03_world_fx_collision.js` | 226 | МИР · FX · ПОЛУПРОЗРАЧНОСТЬ ТОГО, ЧТО ЗАСЛОНЯЕТ ГЕРОЕВ · КОЛЛИЗИИ |
 | `engine/04_physics_actions.js` | 156 | ФИЗИКА ГЕРОЯ · ДЕЙСТВИЯ ИГРОКОВ |
@@ -157,12 +161,12 @@
 | `levels/4-4.js` | 168 | МИР 4 · 4-4 «ЗМИЕВЫ ВАЛЫ» |
 | `levels/4-5.js` | 181 | МИР 4 · 4-5 «КАЛИНОВ МОСТ» — кульминация мира, путь Потапа |
 | `levels/4-B.js` | 114 | 4-Б «ЗМЕЙ ГОРЫНЫЧ» — босс мира 4 |
-| `levels/w5_common.js` | 304 | МИР 5 · ОСТРОВ БУЯН: вещь по знаку, Лихо Одноглазое, овечьи… |
+| `levels/w5_common.js` | 322 | МИР 5 · ОСТРОВ БУЯН: вещь по знаку, Лихо Одноглазое, овечьи… |
 | `levels/5-1.js` | 615 | МИР 5 · 5-1 «СУНДУК НА ДУБЕ» — остров, дуб и Лихо Одноглазое |
-| `levels/5-2.js` | 109 | МИР 5 · 5-2 «ЗАЯЦ» — на четверых |
-| `levels/5-3.js` | 129 | МИР 5 · 5-3 «УТКА» — полёт на Горыныче в узде |
+| `levels/5-2.js` | 166 | МИР 5 · 5-2 «ЗАЯЦ» — на четверых |
+| `levels/5-3.js` | 182 | МИР 5 · 5-3 «УТКА» — полёт на Горыныче в узде |
 | `levels/5-4.js` | 191 | МИР 5 · 5-4 «ЯЙЦО» — гусельный · «Калинка» 88 → 128, полная… |
-| `levels/5-B1.js` | 105 | МИР 5 · 5-Б1 «КОЩЕЙ В ТЕРЕМЕ» — бой «выстоять», заранее объ… |
+| `levels/5-B1.js` | 127 | МИР 5 · 5-Б1 «КОЩЕЙ В ТЕРЕМЕ» — бой «выстоять», заранее объ… |
 | `levels/5-B2.js` | 175 | МИР 5 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ» — финал без … |
 | `levels/epi.js` | 83 | ЭПИЛОГ — штаб-сосна, вечер: сказка без тетрадки |
 | `levels/zastava.js` | 90 | ЗАСТАВА ТРЁХ БОГАТЫРЕЙ — испытания на время для старших |
@@ -311,6 +315,7 @@
 | `levels/5-B2/late_93_koschei_level_pg_final.js` | — | ---- продолжение build5B2 (k5epic, часть 16): СТАДИЯ 12, «ТЯНЕМ-ПОТЯНЕМ», ПРОЛОГ-ПОГОНЯ, тексты паузы ---- |
 | `levels/5-B2/late_93_koschei_level_ph_prologue.js` | 5-B2 | ---- продолжение build5B2 (k5epic, часть ph): ПРОЛОГ «Через леса, через моря» — погоня на Горыныче за чёрной тучей Коще… |
 | `levels/5-B2/late_93_koschei_level_pi_lessonagain.js` | 5-B2 | ---- «Показать урок ещё раз» из паузы для актов I–III (F-8: FIN.lesson.regLevel; тот же пункт меню, что у 4-Б) ---- |
+| `levels/5-B2/late_93_koschei_level_pj_route.js` | — | ---- продолжение build5B2 (часть pj): КОРОТКИЙ ПУТЬ ФИНАЛА — семь стадий вместо двенадцати ---- |
 | `levels/5-B2/late_93_koschei_level_pz_end.js` | — | ---- конец build5B2 (k5epic): части p6…py — битва в двенадцать стадий; здесь функция закрывается ---- |
 | `levels/5-B2/late_94_koschei_reset.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: СБРОС БОЯ ПРИ ЗАГРУЗКЕ УРОВНЯ |
 | `levels/5-B2/late_94b_k5e_budget.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2: БЮДЖЕТ ОТРИСОВКИ (B6-c) |
@@ -323,6 +328,10 @@
 | `levels/5-1/late_97_buyan51.js` | 5-1 | РЕЛИЗ final06 · 5-1 «СУНДУК НА ДУБЕ»: НОВЫЕ ЖИТЕЛИ ОСТРОВА В РОЛИКАХ |
 | `levels/5-1/late_97b_buyan51_chapters.js` | 5-1 | РЕЛИЗ · 5-1 «СУНДУК НА ДУБЕ»: СОХРАНЕНИЕ ПО ЧАСТЯМ И КАРТОЧКИ ГЛАВ |
 | `levels/5-4/late_97c_egg54_music.js` | 5-4 | РЕЛИЗ · 5-4 «ЯЙЦО»: «КАЛИНКА» НА ИНСТРУМЕНТАХ МУЗЫКИ ИГРЫ |
+| `levels/5-2/late_97d_hare52.js` | 5-2 | РЕЛИЗ · 5-2 «ЗАЯЦ»: СВОЯ ТЕМА — ИГРИВАЯ «ЗАИНЬКА» |
+| `levels/5-3/late_97e_duck53.js` | 5-3 | РЕЛИЗ · 5-3 «УТКА»: ЗВУК ПОЛЁТА — БАРАБАНЫ, ВЕТЕР ПО СКОРОСТИ, ЛИНИИ СКОРОСТИ |
+| `late_97f_koschei_motif.js` | 5-4, 5-B1, 5-B2, epi | РЕЛИЗ · ЛЕЙТМОТИВ КОЩЕЯ: ТЕРЕМ (5-Б1), «МОЁ» (5-4), ЗЕРКАЛЬЦЕ (5-2, 5-3), ФИНАЛ (5-Б2), ЭПИЛОГ |
+| `late_97g_buyan_nest.js` | 5-1, 5-2, 5-3, 5-4, 5-B1, epi | РЕЛИЗ · МИР 5: ИНДИКАТОР-МАТРЁШКА «СУНДУК → ЗАЯЦ → УТКА → ЯЙЦО → ИГЛА» |
 | `late_97w_w1_chapters.js` | — | РЕЛИЗ · МИР 1: СОХРАНЕНИЕ ВНУТРИ ДЛИННЫХ УРОВНЕЙ (1-1, 1-2, 1-5) |
 | `levels/4-B/late_98_gor_lava.js` | 4-B | РЕЛИЗ final06 · 4-Б «ЗМЕЙ ГОРЫНЫЧ»: АРЕНА ПО РЕФЕРЕНСУ, РЫК И ЛАВА, БОЛЬШОЙ ВДОХ, СЛАБОЕ МЕСТО |
 | `levels/1-3/late_99_kolobok_dance.js` | 1-3 | РЕЛИЗ final06 · 1-3 «КОЛОБОК»: ФИНАЛЬНАЯ ПЛЯСКА |
@@ -379,6 +388,9 @@
 | `levels/2-B/late_99zm_k2b_storm.js` | 2-B | РЕЛИЗ final06 · 2-Б: ПОГОНЯ В ГРОЗОВОЙ ВЕЧЕР, КОНИ ДЕШЕВЛЕ В ОТРИСОВКЕ |
 | `levels/3-5/late_99zm_sky35.js` | 3-5 | РЕЛИЗ final06 · 3-5 «ГУСИ-ЛЕБЕДИ»: ТУДА — ТИХО, ОБРАТНО — ПОГОНЯ (docs/40; прежний шаг — docs/38) |
 | `levels/3-4/late_99zn_ship34_wear.js` | 3-4 | РЕЛИЗ final06 · 3-4 «ЛЕТУЧИЙ КОРАБЛЬ»: КАПИТАНСКИЙ СВИСТОК |
+| `levels/w2/late_99zt_kw_gauges.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: МЕРНЫЕ РЕЙКИ У КАЖДОЙ ВОДЫ ГУСЛЕЙ — НЕ ТОЛЬКО В 2-1 |
+| `levels/w2/late_99zu_kw_resume.js` | 2-1, 2-2 | РЕЛИЗ final06 · МИР 2: СОХРАНЕНИЕ НА КОЛОКОЛЬЧИКАХ В ДЛИННЫХ УРОВНЯХ 2-1 И 2-2 |
+| `levels/w2/late_99zv_kw_music.js` | 2-1, 2-2, 2-3, 2-4 | РЕЛИЗ final06 · МИР 2: СВОЯ МУЗЫКА У КАЖДОГО УРОВНЯ, НАПЕВ САДКО — ЛЕЙТМОТИВ |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -469,17 +481,18 @@
 | `35_boss_observation.md` | 35. Протокол наблюдения за ребёнком у босса (печатная форма, сценарий ведущего, итоги) |
 | `36_boss_voice_lines.md` | 36 · Строки боссов к записи голоса (F-10) |
 | `37_split_screen.md` | Экран на двоих: разбор референсов и новая система раздела |
+| `38_mir5_razbor_i_plan.md` | 38. Мир 5 «Остров Буян» — разбор и план правок (октябрь 2026) |
 | `38_world3_proposals.md` | 38. Мир 3 «Небесное царство»: комплексный разбор и предложения по всем уровням |
 | `39_world4_proposals.md` | 39. Мир 4 «Огненная Смородина»: комплексный разбор и предложения по всем уровням |
 | `40_35_gusi_proposals.md` | 40. 3-5 «Гуси-лебеди»: переработка геймплея — «туда тихо, обратно погоня» |
 | `40_kino_pravila.md` | Правила роликов (катсцен) — «Златая цепь» |
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 140 файлов |
+| `changes/` | 148 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 282 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 289 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

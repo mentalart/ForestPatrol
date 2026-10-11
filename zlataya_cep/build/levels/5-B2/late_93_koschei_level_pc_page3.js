@@ -172,7 +172,7 @@
         if(lit){S.seenT+=dt;if(S.seenT>0.6&&!S.wh){S.seenT=0;floatText(lit.pos.clone().add(new V3(0,2.6,0)),'Вижу!','#c8a8ff');S.whT=Math.min(S.whT,0.4);}}else S.seenT=0;
         S.whT-=dt;if(S.whT<=0&&!S.wh){S.whT=G.solo?8.5:6.2;whistle(lit||null,S.ph==='night'?'purple':'blue');}}
       // ночь: клетка крутится, тени крадутся к несущим свет
-      if(S.ph==='night'){cage.rotation.y+=dt*0.35;S.shT-=dt;if(S.shT<=0&&S.shadows.length<(G.solo?1:2)){S.shT=G.solo?9:6.5;spawnShadow();}}
+      if(S.ph==='night'){cage.rotation.y+=dt*0.35;S.shT-=dt;if(S.shT<=0&&!(E.lite&&E.lite())&&S.shadows.length<(G.solo?1:2)){S.shT=G.solo?9:6.5;spawnShadow();}}
       for(const s of S.shadows.slice()){s.t+=dt;const p=s.g.position;s.arms.forEach((a,i)=>{a.rotation.x=Math.sin(G.time*6+i*3)*0.5;});
         const lit=s.lt!=null||litK(p.x,p.z);s.flat=damp(s.flat,lit?0:1,6,dt);s.g.scale.set(1,1,lerp(1,0.12,s.flat));
         if(s.st==='chase'){const car=carriers().sort((a,b)=>hd(a.pos,p)-hd(b.pos,p))[0];if(!car){p.x+=(X-p.x)*dt*0.2;continue;}const dx=car.pos.x-p.x,dz=car.pos.z-p.z,d=Math.hypot(dx,dz)||1;

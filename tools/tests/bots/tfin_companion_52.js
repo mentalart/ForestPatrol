@@ -1,4 +1,10 @@
 //@@ wait=1500
+window.FHAM=(max)=>{const W=ZC.W;const e=W.k52.ham();if(!e)return 'none';let refl=0;for(let i=0;i<60*(max||60);i++){if(!e.alive||W.flags.stage!=='ham')return 'done t='+(i/60).toFixed(1)+' refl='+refl;
+  const h=U.act(0),B=['KeyA','KeyD','KeyW','KeyS'];const b=W.bolts.find(q=>!q.refl&&q.tgt===h&&q.left===null);if(b&&b.eta<0.12){ZC.press('KeyG');refl++;}
+  const dx=e.pos.x-h.pos.x,dz=e.pos.z-h.pos.z,d=Math.hypot(dx,dz),open=e.state==='broken'||e.state==='stagger';const far=open?d>1.8:d<3.5?false:d>5.5;
+  ZC.hold(B[0],far&&dx<-0.3);ZC.hold(B[1],far&&dx>0.3);ZC.hold(B[2],far&&dz<-0.3);ZC.hold(B[3],far&&dz>0.3);if(open&&d<2.2){h.face=Math.atan2(dx,dz);if(i%8===0)ZC.press('KeyF');}
+  if(e.state==='wind'&&!e.def.ranged){const left=e.wdur-e.t;if(left<0.16&&e.left===null)ZC.press('KeyG');}ZC.tick(1);}
+  ['KeyA','KeyD','KeyW','KeyS'].forEach(k=>ZC.hold(k,false));return 'TIMEOUT state='+e.state+' emb='+e.embers+' refl='+refl;};
 // релиз final06: напарник-бот проходит 5-2 «Заяц» за Игрока 2: на каждом круге оба его героя (Пелагея, Йоша) встают на свои кольца — активный идёт на своё, смена, второй на своё, оставленный стоит столбом;
 // когда оба на местах, а оставленный друг человека ещё нет, бот зовёт «Ко мне!». Человека (Игрок 1) играет скрипт: тот же обход колец Прошкой и Потапом, в конце подкидка Прошки.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0])+' '+String(a[1]&&a[1].stack||a[1]).slice(0,200));ce(...a);};}
@@ -17,6 +23,10 @@ window.HUM=()=>{const W=ZC.W,F2=W.flags;if(ZC.G.cine||!W.k52)return;
 window.HSTOP=()=>['KeyA','KeyD','KeyW','KeyS'].forEach(b=>ZC.hold(b,false));
 RESET52();
 ['stage='+F().stage,'bot='+pos(bot()),'me='+pos(me()),CO.mode,!!CO.routes['5-2']]
+//@@
+// разминка: Хамелей у капусты — бьют оба (человек — скрипт боя, напарник — свой бой)
+{const W=ZC.W,F2=F();const res=FHAM(60);for(let i=0;i<60*20&&F2.stage==='ham';i++)ZC.tick(1);if(F2.stage!=='hunt')throw new Error('хамелей не распутан: '+res);window.HAMRES=res;}
+'ham ok '+HAMRES
 //@@
 // три круга: оба героя Игрока 2 каждый раз на своих кольцах; круги смыкаются; заяц садится в середине
 if(!CO.routes['5-2'])throw new Error('нет маршрута 5-2');const W=ZC.W,F2=F();const L=[];let lc=-1;

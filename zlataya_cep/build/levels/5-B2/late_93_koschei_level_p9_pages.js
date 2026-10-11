@@ -4,8 +4,13 @@
   const PPOS=[null,[-13.5,-9.5],[13.5,-9.5],[-12,-20.5],[12,-20.5]];
   const PAGES=[null];for(let w=1;w<=4;w++){const [x,z]=PPOS[w];const P=K5L.page(new V3(x,0,z),Math.atan2(C.x-x,C.z-z),w);P.g.visible=false;PAGES.push(P);}E.pages=PAGES;
   E.pagesShow=(on,fx)=>{for(let w=1;w<=4;w++){const P=PAGES[w],show=on&&!E.done[w+3];P.g.visible=show;if(show&&fx){P.g.scale.setScalar(0.01);later(0.2+w*0.3,()=>{anim(0.6,k=>P.g.scale.setScalar(Math.max(0.01,CE.outBack(k))));K5L.gold(P.g.position.clone().add(new V3(0,2.4,0)),12);k5s('book');});}}};
-  // всё, что построено в fn (меши в W.group), — в отдельную группу: арена скрыта, пока герои не в ней
-  E.capture=fn=>{const n0=W.group.children.length;fn();const g=new THREE.Group();for(const o of W.group.children.slice(n0)){W.group.remove(o);g.add(o);}k5Prop(g);g.visible=false;return g;};
+  // всё, что построено в fn (меши в W.group), — в отдельную группу: арена скрыта, пока герои не в ней.
+  // 5Б2-6: строится не при загрузке уровня, а при первом показе (g.visible=true — вход на страницу, прыжок к стадии): земля, скалы, вода
+  // и декор четырёх страниц — около половины мешей уровня; загрузка быстрее и легче по памяти. E.captureNow — построить сразу.
+  E.capture=fn=>{const g=new THREE.Group();k5Prop(g);let built=false,vis=false;
+    const build=()=>{built=true;const n0=W.group.children.length;fn();for(const o of W.group.children.slice(n0)){W.group.remove(o);g.add(o);}};
+    Object.defineProperty(g,'visible',{configurable:true,get(){return vis;},set(v){vis=!!v;if(vis&&!built)build();}});g.userData.build=()=>{if(!built)build();};return g;};
+  E.captureNow=fn=>{const g=E.capture(fn);g.userData.build();g.visible=false;return g;};
   // бумажная вспышка: лист перелистывается через весь экран
   E.paper=(mid,dur)=>{let el=document.getElementById('k5ePaper');if(!el){el=document.createElement('div');el.id='k5ePaper';el.style.cssText='position:fixed;inset:0;z-index:40;pointer-events:none;background:linear-gradient(90deg,#efe2c0,#f8f0dc 40%,#e8d8b0);opacity:0;transform-origin:left center';document.body.appendChild(el);}
     dur=dur||1.4;el.style.transition='none';el.style.opacity=1;el.style.transform='perspective(900px) rotateY(80deg)';k5s('book');

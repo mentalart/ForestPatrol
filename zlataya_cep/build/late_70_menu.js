@@ -74,6 +74,7 @@ function settingsScreen(){const S=FIN.set,pct=v=>Math.round(v*100)+'%',step=(v,d
     {label:'Размер текста',val:()=>Math.round(S.ts*100)+'%',side:d=>{const i=TS.indexOf(S.ts);S.ts=TS[Math.max(0,Math.min(TS.length-1,(i<0?1:i)+d))];save();}},
     {label:'Тряска камеры',val:()=>pct(S.shakeK),side:d=>{S.shakeK=lvl3(S.shakeK,d);save();}},
     {label:'Вспышки',val:()=>pct(S.flashK),sub:'50 % — мягче и без мигания, 0 % — без вспышек',side:d=>{S.flashK=lvl3(S.flashK,d);save();}},
+    {label:'Сдвиг такта',val:()=>((S.lag||0)>0?'+':'')+(S.lag||0)+' мс',sub:'звук запаздывает (наушники, телевизор) — плюс; в ритм-уровнях нажатие судится с поправкой',side:d=>{S.lag=Math.max(-100,Math.min(200,(S.lag||0)+d*20));save();}},
     {label:'Подписи к звукам',val:()=>S.caps?'вкл':'выкл',sub:'«[бубенец справа]» внизу экрана',side:()=>{S.caps=!S.caps;save();}},
     {label:'Вибрация джойстика',val:()=>S.rumble!==false?'вкл':'выкл',side:()=>{S.rumble=S.rumble===false;save();}},
     {label:'Графика',val:()=>QN[S.quality],sub:'тени, чёткость, трава и цветы',side:d=>{const i=Q.indexOf(S.quality);S.quality=Q[Math.max(0,Math.min(2,i+d))];save();FIN.applyQuality();}}];
@@ -98,7 +99,7 @@ function creditsScreen(){return {head:'Титры',html:()=>'<div class="fin-cre
 function pauseScreen(){const scr={pause:true,items:[{label:'Продолжить',act:()=>hideMenu()},
   {label:'Настройки',act:()=>finPush(settingsScreen())},{label:'Управление',act:()=>finPush(controlsScreen())},
   {label:'Режим',val:()=>FIN.co.label(),side:d=>FIN.co.cycle(d)},
-  {label:'Выйти в главное меню',sub:()=>G.hub?'пройденные уровни сохранены, этот уровень начнётся заново':'пролог начнётся заново',act:()=>{FIN.saveGame();finGo(()=>FIN.openTitle(true));}}],onBack:()=>hideMenu()};
+  {label:'Выйти в главное меню',sub:()=>G.hub?(G.resume&&W&&G.resume[W.levelId]?'пройденные уровни сохранены, этот — с колокольчика':'пройденные уровни сохранены, этот уровень начнётся заново'):'пролог начнётся заново',act:()=>{FIN.saveGame();finGo(()=>FIN.openTitle(true));}}],onBack:()=>hideMenu()};
   // «Показать урок ещё раз» — только если у уровня есть урок (FIN.lesson, late_79e_lesson.js)
   if(FIN.lesson&&FIN.lesson.has())scr.items.splice(scr.items.length-1,0,{label:'Показать урок ещё раз',act:()=>{hideMenu();FIN.lesson.again();}});
   return scr;}
