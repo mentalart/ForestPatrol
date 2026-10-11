@@ -70,7 +70,7 @@ function build43(){
   const SG={on:false,t:0,C:2.6,k:-1,hit:[false,false],res:false,verse:0,rush:0};
   const LINES=[['Эй, ухнем!','Эй, ухнем!','Ещё разик, ещё да раз!','Эй, ухнем!'],['Разовьём мы берёзу…','Разовьём мы кудряву…','Ай-да, да ай-да!','Эй, ухнем!'],['Мы по бережку идём…','Песню солнышку поём…','Эй, ухнем!','Эй, ухнем!'],['Ай-да, да ай-да, ай-да, да ай-да!','Ещё разик, ещё да раз!','Эй, ухнем!','Эй, ухнем!']];
   function startSong(){SG.on=true;SG.t=-1.2;SG.k=-1;W.song={t:0,B:SG.C/2,show:true,state:'play',pulse:0};}
-  const inWin=()=>{const u=((SG.t%SG.C)+SG.C)%SG.C;return u>=1.0&&u<2.0;};
+  const inWin=()=>{const u=((SG.t%SG.C)+SG.C)%SG.C,b=(W.ladBonus||0)*4;return u>=1.0-b&&u<2.0+b;};   // весточка Сирин: окно шире (0,16 с с каждой стороны)
   W.skillHook=(pi,h)=>{if(!SG.on||G.cine)return false;const mine=RINGS.filter(r=>r.hero&&r.hero.player===pi);if(!mine.length)return false;
     if(inWin()){if(!SG.hit[pi]){SG.hit[pi]=true;mine.forEach(r=>{r.flash=1;});if(G.solo&&!SG.hit[1-pi]){const ot=RINGS.filter(r=>r.hero&&r.hero.player===1-pi);if(ot.length){SG.hit[1-pi]=true;ot.forEach(r=>{r.flash=1;});}}floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Ух-нем!','#ffd76a');h.atkT=0.3;}}
     else{SFX.miss();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Рано — «ух-нем» подожди','#ffd0d0');}return true;};

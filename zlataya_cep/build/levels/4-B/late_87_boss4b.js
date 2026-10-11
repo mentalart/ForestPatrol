@@ -132,6 +132,7 @@ FIN.boss4bStage=n=>{if(n===1)t4Stage1();else if(n===2)FIN.boss4bLesson(1);else i
 L4.regLevel('4-B',()=>W.flags.phase===2?FIN.boss4bLesson(T4.l2||1):FIN.boss4bStage(W.flags.phase),()=>W.flags.phase>=1&&W.flags.phase<=3);   // «Показать урок ещё раз» — полный урок текущего этапа
 // ---------- живые подсказки в бою ----------
 function t4HintShow(key,c,targets,expect,dur){const H=T4.h;if(!H)return;if(H.cur&&H.cur.key===key&&H.until>G.time)return;
+  if(H.lvl===1){c=Object.assign({},c,{text:''});targets=null;}   // ступень 1: только мигающая кнопка
   H.cur={key,c,expect:expect||[],got:{}};H.until=G.time+(dur||6);H.last=G.time;H.cd[key]=G.time;t4Dom();
   const kh=t4Keys((expect||[]).map(e=>({pi:e[0],a:e[1],label:e[2]||'',wait:true})),{}).replace('class="ft-keys"','class="fh-keys"');
   T4.hint.innerHTML='<div class="fh-row"><div class="ft-ico">'+(T4I[c.icon]||'')+'</div><div class="fh-main"><div class="fh-title"><span class="ft-tag">'+c.tag+'</span>'+c.title+'</div><div class="fh-text">'+c.text+'</div></div>'+kh+'</div>';
@@ -152,7 +153,7 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
   // стрелки следуют за целями
   for(const a of T4.arrows){const p=t4TgtPos(a.userData.tgt);a.position.copy(p).add(new V3(0,0.35*Math.abs(Math.sin(now*4)),0));a.rotation.y+=dt*2.5;}
   // правильное нажатие — «Молодец!»
-  if(H.cur&&!T4.hint.classList.contains('ok')){for(const [pi,a] of H.cur.expect)if(t4Tap(pi,a)){t4HintHide(true);break;}}
+  if(H.cur&&!T4.hint.classList.contains('ok')){for(const [pi,a] of H.cur.expect)if(t4Tap(pi,a)){t4HintHide(true);H.esc=0;break;}}
   if(H.cur&&now>H.until)t4HintHide(false);
   const idle=now-Math.max(H.prog,H.last);
   if(F.phase===1){const L=hs[0],R=hs[2];
@@ -160,7 +161,7 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
     else if(R.state==='broken'&&L.state!=='broken')t4Ctx('one',()=>t4HintShow('one',{tag:'Быстрее!',title:'Левая голова — скорей!',icon:'clock',text:'Правая в Пробое! <b>Левую</b> оглушите, пока правая не проснулась, — живей!',col:0xfff2b0},[L],[[0,'attack','удар']],5),7);
     else if(L.state==='wind'&&L.sig==='yellow'&&H.n.y<3)t4Ctx('yel',()=>{H.n.y++;t4HintShow('yel',{tag:'Игрок 1',title:'Жёлтый кружок — щит, щит!',icon:'yellow',text:'Щитом отбей, потом бей.',col:0xffd23a},[L],[[0,'guard','щит']],3.5);},5);
     else if(R.state==='wind'&&R.sig==='red'&&H.n.r<3)t4Ctx('red',()=>{H.n.r++;t4HintShow('red',{tag:'Игрок 2',title:'Красный зубец — кувырок, кувырок!',icon:'red',text:'Щит не спасёт — кувыркнись, потом сбоку бей.',col:0xff5a4a},[R],[[1,'roll','кувырок']],3.5);},5);
-    else if(idle>12)t4Cycle([
+    else if(idle>12||(H.miss||0)>0)t4Cycle([
       ()=>t4HintShow('g1',{tag:'Подсказка',title:'Левая голова — щит да удар',icon:'yellow',text:'Жёлтый кружок — <b>щитом</b> отбей, затем <b>бей</b>.'},[L],[[0,'guard','щит'],[0,'attack','удар']]),
       ()=>t4HintShow('g2',{tag:'Подсказка',title:'Правая голова — кувырок да удар',icon:'red',text:'Красный зубец — <b>кувырок</b>, а там <b>сбоку бей</b>.'},[R],[[1,'roll','кувырок'],[1,'attack','удар']]),
       ()=>t4HintShow('g3',{tag:'Подсказка',title:'Вместе, разом!',icon:'clock',text:'Левую и правую — <b>разом</b>: Пробой двенадцать секунд держится.'},[L,R],null),
@@ -172,7 +173,7 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
     else if(acorn)t4Ctx('acorn',()=>t4HintShow('acorn',{tag:'Прошка',title:'Жёлудь! Стреляй!',icon:'acorn',text:'Средняя вдыхает — из <b>рогатки</b> в жёлудь стрельни'+(HERO.proshka.active?'':' (смени '+K(0,'swap')+')')+'.',col:0xffd76a},[Mi],[[0,'skill','рогатка']],4),6);
     else if(fire)t4Ctx('fire',()=>t4HintShow('fire',{tag:'Потап',title:'Огонь! Щит!',icon:'shield',text:'<b>Широкий щит</b> подними — закроешь всех за спиной.',col:0x9fe0ff},[HERO.potap],[[0,'guard','щит']],3.5),6);
     else if(sated)t4Ctx('sated',()=>t4HintShow('sated',{tag:'Йоша · Пелагея',title:'Голова сытая!',icon:'drop',text:'Вода Йоши, взор Пелагеи — один удар!',col:0xff9a3a},[sated],[[1,'skill','умение']],5),8);
-    else if(idle>12)t4Cycle([
+    else if(idle>12||(H.miss||0)>0)t4Cycle([
       ()=>t4HintShow('h1',{tag:'Подсказка',title:'Все три — в Пробой, разом',icon:'heads',text:'Оглушите три головы разом, среднюю — жёлудем.'},hs.filter(e=>e.state!=='broken'),null),
       ()=>t4HintShow('h2',{tag:'Подсказка',title:'Каждому — своё',icon:'hit',text:'Жёлудь, щит, вода, взор — и Пробой!'},null,[[0,'swap','сменить героя'],[1,'swap','сменить героя']])]);}
   if(F.phase===3){const gr=W.grabs[0],bp=gr?gr.pos():null;const ha=[0,1].map(pi=>active(pi));const near=bp?bp.distanceTo(T4SPOT)<3.2:false;const lifted=bp&&bp.y>0.8;
@@ -180,7 +181,13 @@ function t4HintTick(dt){const F=W.flags,H=T4.h;if(!H)return;
     else if(bp&&lifted&&!near)t4Ctx('carry',()=>t4HintShow('carry',{tag:'Оба игрока',title:'К кольцу светящемуся!',icon:'ring',text:'Несите узду вдвоём к кольцу.',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],null,5),8);
     else if(bp&&near)t4Ctx('123',()=>t4HintShow('123',{tag:'Оба игрока',title:'Раз-два-три — вместе, дружно!',icon:'n123',text:'<b>Умение</b> — трижды, <b>оба</b>: на «раз», на «два», на «три»!',col:0xffd76a},[T4SPOT.clone().add(new V3(0,1.3,0))],[[0,'skill',''],[1,'skill','']],5),6);}}
 function t4Ctx(key,fn,cd){const H=T4.h;if(H.cur&&H.until>G.time&&H.cur.key!=='g1'&&H.cur.key!=='g2'&&H.cur.key!=='g3'&&H.cur.key!=='h1'&&H.cur.key!=='h2')return;if(G.time-(H.cd[key]||-99)<(cd||6))return;fn();}
-function t4Cycle(list){const H=T4.h;if(H.cur)return;list[H.cycle%list.length]();H.cycle++;}
+// эскалация вместо перебора по кругу (docs/34, 4Б-4): ступень растёт с каждым промахом (удар по герою или 12 с без успеха) —
+// 1: мигает кнопка (без текста и стрелки) · 2: карточка и стрелка над целью · 3: короткое напоминание урока этапа (герои показывают приём)
+function t4Cycle(list){const H=T4.h;if(H.cur)return;H.miss=0;H.prog=G.time;H.esc=Math.min(3,(H.esc||0)+1);const n=H.esc;
+  if(n>=3&&T4.auto&&!G.cine&&!T4.on&&W.flags.phase>=1&&W.flags.phase<=3){H.esc=1;H.escN=(H.escN||0)+1;t4Short(W.flags.phase);return;}
+  H.lvl=n;try{list[H.cycle%list.length]();}finally{H.lvl=0;}if(n>=2)H.cycle++;}
+// промах — удар по герою на арене: подсказка поднимается на ступень
+{const _dh=damageHero;damageHero=function(h,src){const r=_dh(h,src);if(W&&W.levelId==='4-B'&&T4.h&&!G.cine)T4.h.miss=(T4.h.miss||0)+1;return r;};}
 // уроки 2 и 3 этапа 2 — на событии, перед тем как механика понадобится (огонь/сытая голова; большой вдох), с запасом по времени
 function t4Lessons2(dt){const F=W.flags,H=T4.h;if(!H||!T4.auto||F.phase!==2||G.cine||G.trans||T4.on||G.state!=='play'||G.time<(H.grace||0)||!t4Seen2(1))return;
   H.t2=(H.t2||0)+dt;if(H.t2<4)return;const hs=t4Heads(),Mi=hs[1];if(!Mi)return;const G4h=FIN.gor4,pull=G4h&&G4h.pull>0;

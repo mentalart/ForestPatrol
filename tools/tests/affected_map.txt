@@ -224,6 +224,8 @@ zlataya_cep/build/levels/w2/late_99l_kitezh_magic_water.js @level:2-1 @level:2-2
 zlataya_cep/build/levels/w4/late_99w4_solo.js @level:4-1 @level:4-2 @level:4-3 @level:4-4 @level:4-5 @level:4-B tso41 tso42 tso43 tso44 tso45
 zlataya_cep/build/levels/w4/late_99w4_kids.js @level:4-1 @level:4-2 @level:4-3 @level:4-4 @level:4-5 tfin_kids45 tfin_w4kids
 zlataya_cep/build/levels/w4/late_99w4_lessons.js @level:4-1 @level:4-2 @level:4-3 @level:4-4 @level:4-5 tfin_w4lessons tfin_hints tfin_lesson
+zlataya_cep/build/levels/w4/late_99w4_help.js @level:4-1 @level:4-2 @level:4-3 @level:4-4 @level:4-5 tfin_w4help
+zlataya_cep/build/levels/w4/late_99w4_rules.js @level:4-1 @level:4-2 @level:4-3 @level:4-4 @level:4-5 tfin_w4help
 zlataya_cep/build/levels/2-1/late_99m_k21_hermit.js @level:2-1 tfin_k21 tfin_k21solo tfin_foekinds6
 zlataya_cep/build/levels/2-1/late_99zh_k21_calm.js @level:2-1 tfin_k21 tfin_k21solo tfin_k21foes tfin_k21kelp
 

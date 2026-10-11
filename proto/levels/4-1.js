@@ -177,7 +177,7 @@ function build41(){
     if(kind==='strike'&&half===1&&R4.striker[0]===pi){floatText(top,'Теперь другой бьёт — меняйтесь!','#ffd9a0');return true;}
     if(R4.beatDone[j.k]){return true;}
     if(kind==='strike'&&![0,1].some(q=>q!==pi&&onPlate(HOLD,q))){floatText(top,'Держать некому — заготовка скачет!','#ffd9a0');return true;}
-    if(Math.abs(j.d)>0.22+(W.ladBonus||0)){floatText(top,j.d<0?'рано':'поздно','#dddddd');return true;}
+    if(Math.abs(j.d)>0.22+(W.ladBonus||0)){floatText(top,j.d<0?'рано':'поздно','#dddddd');SFX.miss();return true;}
     R4.beatDone[j.k]=true;R4.prog++;if(kind==='strike'){R4.striker[half]=pi;h.atkT=0.3;anim(0.22,q=>{hammer.rotation.z=-Math.sin(q*Math.PI)*1.1;});later(0.1,()=>{SFX.hammer();tone(2300+R4.prog*20,0.4,'triangle',0.2);burst(new V3(ANV.x,1.7,ANV.z),0xffe060,14,4);floatText(new V3(ANV.x,2.4,ANV.z),'Дзинь!','#ffe36b');});}
     else{R4.turn++;SFX.latch();floatText(top,'Поворот!','#bfe0ff');tone(1200,0.2,'sine',0.14,1600);}
     bigShape();bigMesh.position.set(ANV.x,1.55,ANV.z);
