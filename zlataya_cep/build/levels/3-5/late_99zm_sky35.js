@@ -223,7 +223,7 @@ build35=function(){
   const LINES=['Баю-баюшки-баю, колыбельную пою…','Гуси-лебеди, летите, в облаках своих поспите…','Крылья сложите — до утра поспите!'];
   const NOTE=[64,62,60,62,64,64,64,0,62,62,62,0,64,67,67];
   const tune=n=>{NOTE.slice(0,n).forEach((m,i)=>{if(m)later(i*0.42,()=>tone(mf(m),0.4,'triangle',0.09));});const src=tish.g.getWorldPosition(new V3());for(let i=0;i<Math.ceil(n/2);i++)later(i*0.5,()=>floatText(src.clone().add(new V3(rand(-0.6,0.6),1+i*0.1,0)),i%2?'♪':'♫','#ffe9a0'));};
-  function rememberLine(){F.lines++;F.songs++;const t=LINES[F.lines-1];later(0.6,()=>{tune(5);bark(tish,'tishka','<i>(вспоминает)</i> '+t,3,true);});
+  function rememberLine(){F.lines++;F.songs++;const t=LINES[F.lines-1];later(0.6,()=>{tune(5);bark(tish,'tishka',t,3,true);});
     if(F.lines===1)later(3.8,()=>{banner('Строчка колыбельной!','#ffe08a',2.6,'«Ко мне!» у Йоши — Тишка споёт: волна гусей задремлет');tip(1,'Тишка споёт — жми '+K(1,'call')+' у Йоши: волна задремлет.',3.4);});}
   W.sing35=pi=>{const h=active(pi);if(!back()||F.stage==='boss'||F.stage==='end'||SH||h.kind!=='yosha')return false;
     if(F.songs<=0){floatText(h.pos.clone().add(new V3(0,1.6,0)),'Строчки ещё не вспомнил…','#ffe9a0');return false;}
