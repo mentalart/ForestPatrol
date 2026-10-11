@@ -46,7 +46,7 @@ const DIR=[
   {lv:'3-1',dur:12,mood:[GOLD,0.16],cues:[[0.6,dSlow(0.5,0.5)],[4.1,dAll('joy',0.08)],[8.0,dMood(COLD,0.12)]]},
   // 3-4: корабль взлетает; авария в воздухе
   {lv:'3-4',dur:12.4,cues:[[7.0,dSpeed(0.9)],[7.1,dAll('cheer',0.08)],[9.9,dDutch(0.1,1.4)]]},
-  {lv:'3-4',dur:21,cues:[[4.0,dEmo('potap','effort')],[6.9,dEmo('proshka','pride')]]},
+  {lv:'3-4',dur:9.6,cues:[[4.0,dEmo('potap','effort')],[6.7,dEmo('proshka','pride')]]},
   // 3-5: Яга разоблачает Кощея
   {lv:'3-5',dur:30,cues:[[6.3,dMood(COLD,0.12)],[10.5,dDZ(0.2,1.0,1.2)],[18.3,dMood(WARM,0.12)],[25.5,dAll('joy',0.08)]]},
   // 3-Б: Соловей свистит — «А ну, сдуло!»

@@ -118,6 +118,7 @@ zlataya_cep/build/levels/3-1/late_73p_companion_31.js tfin_companion_31
 zlataya_cep/build/levels/3-2/late_73q_companion_32.js tfin_companion_32
 zlataya_cep/build/levels/3-3/late_73r_companion_33.js tfin_companion_33
 zlataya_cep/build/levels/3-4/late_73s_companion_34.js tfin_companion_34
+zlataya_cep/build/levels/3-4/late_99zn_ship34_wear.js @level:3-4
 zlataya_cep/build/levels/3-5/late_73t_companion_35.js tfin_companion_35
 zlataya_cep/build/levels/3-B/late_73u_companion_3b.js tfin_companion_3b
 zlataya_cep/build/levels/4-1/late_73v_companion_41.js tfin_companion_41
@@ -168,6 +169,7 @@ zlataya_cep/build/late_83_cine_actors.js      tfin_cine tfin_cast tfin_scooter
 zlataya_cep/build/late_84_cine_fx.js          tfin_cine tfin_scooter
 zlataya_cep/build/late_85_cine_audio.js       tfin_cine
 zlataya_cep/build/late_86_cine_direction.js   tfin_cine tfin_scooter
+zlataya_cep/build/late_86b_kino.js            tfin_sky31cine tfin_sky32kino tfin_cine
 zlataya_cep/build/late_88_occ.js              tfin_occ tfin_luko tfin_fadebatch tfin_fadelocal
 zlataya_cep/build/late_89_camorbit.js         tfin_cam tfin_companion_cam
 zlataya_cep/build/late_89b_split.js           tfin_split tsplit tfin_cam tfin_fadesplit tfin_companion_cam
@@ -204,16 +206,23 @@ zlataya_cep/build/levels/2-2/late_99f_k22.js  @level:2-2 tfin_k22 tfin_k22solo t
 zlataya_cep/build/levels/2-2/late_99f_k22_p4_tasks.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
 zlataya_cep/build/levels/2-2/late_99f_k22_p3_lullaby.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
 zlataya_cep/build/levels/2-2/late_99f_k22_p2_stove.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_foekinds6
+zlataya_cep/build/levels/2-2/late_99f_k22_q_whale.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_art
+zlataya_cep/build/levels/2-2/late_99zi_k22_parts.js @level:2-2 tfin_k22 tfin_k22solo tfin_k22hint tfin_warp
 zlataya_cep/build/levels/2-3/late_99g_k23.js  @level:2-3 tfin_k23 tfin_k23solo
+zlataya_cep/build/levels/2-3/late_99zj_k23_lake.js @level:2-3 tfin_k23 tfin_k23solo tfin_companion_23
 zlataya_cep/build/levels/2-4/late_99h_k24.js  @level:2-4 tfin_k24 tfin_k24solo tfin_k23
+zlataya_cep/build/levels/2-4/late_99zk_k24_heart.js @level:2-4 tfin_k24 tfin_k24solo tfin_companion_24
 zlataya_cep/build/levels/2-5/late_99i_k25.js  @level:2-5 tfin_k25 tfin_k25solo
+zlataya_cep/build/levels/2-5/late_99zl_k25_rise.js @level:2-5 tfin_k25 tfin_k25solo tfin_companion_25
 zlataya_cep/build/levels/2-B/late_99j_k2b.js  @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo tfin_k2blesson
 zlataya_cep/build/levels/2-B/late_99q_k2b_vod.js @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
 zlataya_cep/build/levels/2-B/late_99r_k2b_fx.js @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
 zlataya_cep/build/levels/2-B/late_99s_k2b_chase.js @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
+zlataya_cep/build/levels/2-B/late_99zm_k2b_storm.js @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo tfin_k2bhud
 zlataya_cep/build/levels/w2/late_99k_kitezh_foes.js @level:2-1 @level:2-5 tfin_k21foes tfin_foekinds6
 zlataya_cep/build/levels/w2/late_99l_kitezh_magic_water.js @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_water
 zlataya_cep/build/levels/2-1/late_99m_k21_hermit.js @level:2-1 tfin_k21 tfin_k21solo tfin_foekinds6
+zlataya_cep/build/levels/2-1/late_99zh_k21_calm.js @level:2-1 tfin_k21 tfin_k21solo tfin_k21foes tfin_k21kelp
 
 # ---- замены в прототипе при сборке ----
 zlataya_cep/build/rep_10_cine.py              tfin_cine tfin_voice
@@ -235,12 +244,12 @@ zlataya_cep/build/levels/epi/rep_30_epi.py    @level:epi tfin_epitheatre tfin_ep
 zlataya_cep/build/levels/1-1/late_99n_yaga11.js @level:1-1 tfin_yaga11
 zlataya_cep/build/levels/1-1/rep_31_yaga11.py @level:1-1 tfin_yaga11
 zlataya_cep/build/levels/3-1/rep_32_motylek.py @level:3-1 tfin_motylek
-zlataya_cep/build/levels/3-2/late_99o_sky32.js @level:3-2 tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor tfin_sky32fx tfin_companion_32
+zlataya_cep/build/levels/3-2/late_99o_sky32.js @level:3-2 tfin_sky32kino tfin_sky32 tfin_sky32solo tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut tfin_sky32cine tfin_sky32floor tfin_sky32fx tfin_companion_32
 zlataya_cep/build/levels/3-2/late_99x_sky32_tut.js @level:3-2 tfin_sky32tut tfin_sky32boss tfin_sky32bosssolo
 zlataya_cep/build/levels/3-2/late_99y_sky32_cine.js @level:3-2 tfin_sky32cine tfin_sky32 tfin_sky32boss
 zlataya_cep/build/levels/3-2/late_99zd_sky32_fx.js @level:3-2 tfin_sky32fx tfin_sky32boss tfin_sky32bosssolo tfin_sky32tut
 zlataya_cep/build/levels/3-2/late_99ze_sky32_cam.js @level:3-2 tfin_sky32fx tfin_sky32boss tfin_sky32bosssolo
-zlataya_cep/build/levels/3-1/late_99p_sky31.js @level:3-1 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo
+zlataya_cep/build/levels/3-1/late_99p_sky31.js @level:3-1 tfin_sky31 tfin_sky31solo tfin_sky31boss tfin_sky31bosssolo tfin_sky31cine
 zlataya_cep/build/late_95b_warp.js              smoke tfin_warp
 tools/tests/cine_frames.js                    -
 tools/tests/bots/archive/*                    -

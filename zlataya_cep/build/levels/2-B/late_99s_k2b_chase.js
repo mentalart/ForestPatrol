@@ -132,7 +132,7 @@ FIN.k2chase=function(KC){const F=W.flags,T=HERO,bank=KC.bank,rock=KC.rock,FX=FIN
   bell(-4,196,1);bell(-4,160,1);bell(-4,121,1);bell(-4,99,1);bell(-4,76,1);bell(-4,21.5,1);
   /* ---------- ВАЛ ---------- */
   const WV={z:212,on:false,hold:0,ck:196,base:()=>SOLO()?2.3:2.9,snd:0,mode:'chase',gap:99};CH.WV=WV;
-  const VAL=FX.val(14.6,5.6,{alpha:0.88});VAL.root.visible=false;const VZ=2.0*5.6*0.55;
+  const VAL=FX.val(14.6,5.6,{alpha:0.88,magic:1});VAL.root.visible=false;const VZ=2.0*5.6*0.55;
   const flood=new THREE.Mesh(new THREE.PlaneGeometry(14.4,220),M(0x3a8aa0,{transparent:true,opacity:0.66,emissive:0x0a3a4a,emissiveIntensity:0.35,depthWrite:false}));flood.rotation.x=-Math.PI/2;flood.renderOrder=4;W.group.add(flood);flood.visible=false;
   const placeVal=(z,y)=>{VAL.set(0,y==null?1:y,z+VZ,Math.PI);VAL.groundY=1;flood.position.set(0,(y==null?1:y)+0.6,z+VZ+110);};
   const CKS=[196,172,163,147,124,101,78,64,22,13];

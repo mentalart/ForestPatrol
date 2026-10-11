@@ -7,7 +7,7 @@
   const S1=-34;
   ground(-11,11,-214,-180,0,M(0xa8b4a6));
   for(const x of[-9.4,9.4])for(const z of[-185,-193,-201,-209]){addMesh(new THREE.CylinderGeometry(0.4,0.48,4.6,10),stone,x,2.3,z);addMesh(new THREE.SphereGeometry(0.42,10,8),goldM,x,4.8,z);W.cyls.push({x,z,r:0.48,miny:-1,maxy:4.6,on:true});}
-  const TUNE=[{x:-4.6,z:-189.5,n:67,w:'дзинь',c:0xffd23a},{x:4.6,z:-189.5,n:71,w:'дилинь',c:0x5ab8ff},{x:-4.6,z:-201,n:74,w:'дон',c:0xff7ab0},{x:4.6,z:-201,n:72,w:'дон',c:0x6ad86a}].map((t,i)=>{
+  const TUNE=[{x:-4.6,z:-194,n:67,w:'дзинь',c:0xffd23a},{x:4.6,z:-194,n:71,w:'дилинь',c:0x5ab8ff}].map((t,i)=>{
     const g=new THREE.Group();g.position.set(t.x,0,t.z);W.group.add(g);const mat=M(t.c,{emissive:t.c,emissiveIntensity:0.15});
     addMesh(new THREE.CylinderGeometry(1.35,1.45,0.12,28),goldM,0,0.06,0,g);addMesh(new THREE.CylinderGeometry(1.1,1.1,0.14,28),mat,0,0.08,0,g);const rim=addMesh(new THREE.TorusGeometry(1.25,0.06,6,32),goldM,0,0.15,0,g);rim.rotation.x=Math.PI/2;
     const note=new THREE.Sprite(new THREE.SpriteMaterial({map:KW_NOTE_TEX,color:t.c,transparent:true,depthWrite:false}));note.scale.setScalar(0.9);note.position.set(0,2.0,0);note.raycast=()=>{};g.add(note);
