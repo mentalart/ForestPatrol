@@ -47,6 +47,7 @@ ok(/\bpower\b/.test(bar(1).c)&&bar(1).h>=45&&bar(1).h<=54,'через 5 с — �
 ZC.tick(60*5.5);
 ok(!/\bpower\b/.test(bar(1).c)&&bar(1).h===0,'Вещий взор кончился — шкала пуста: '+bs(1));
 r.push('errs='+_errs.length+(_errs[0]?' '+_errs[0]:''));
+if(_errs.length||r.some(x=>/^FAIL/.test(x)))throw new Error(r.filter(x=>/^FAIL|^errs=[1-9]/.test(x)).join(' | '));   // проверка не пройдена — бот падает, а не просто печатает FAIL
 r.join('\n')
 //@@ reload=1
 // одиночный режим: выход тоже сам и тоже на обоих героев того игрока, чья шкала полна
@@ -57,4 +58,5 @@ P[0].blue=1;ZC.tick(3);
 ok(P[0].blue===0&&pw(H.proshka)>11.5&&pw(H.potap)>11.5,'соло: Прошка и Потап по 12 с без Смены: '+pw(H.proshka).toFixed(2)+' / '+pw(H.potap).toFixed(2));
 ok(!pw(H.pelageya)&&!pw(H.yosha),'герои второго игрока без силы');
 ZC.setSolo(false);
+if(r.some(x=>/^FAIL/.test(x)))throw new Error(r.filter(x=>/^FAIL/.test(x)).join(' | '));
 r.join('\n')
