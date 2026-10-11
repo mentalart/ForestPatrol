@@ -2,7 +2,7 @@
 // релиз: мир 1 для детей 7–11 (late_74_kids_start.js, late_75_kids_w1.js, late_79b_readaloud.js; правки 1-1 и 1-3). Проверки:
 // «Новая игра» открывает «Кто играет?» (по умолчанию Лёгкий путь, выбрано «Начать сказку!»), режим и пути меняются стрелками, соло прячет игрока 2;
 // пролог и мир 1 мягче (замах, окно, Пробой, красный знак, подсказки ×2,5), Лукоморье — как прежде; кувырок за 0,8 с до красного удара засчитывается;
-// упавший игрок получает подсказку; ромбик над своим героем горит дольше; калитка 1-1 остаётся открытой; задачи читаются вслух и повторяются по H.
+// упавший игрок получает подсказку; ромбик над своим героем горит дольше; калитка 1-1 открыта, только пока лапки нажаты; задачи читаются вслух и повторяются по H.
 window.ERR=[];window.addEventListener('error',e=>ERR.push(String(e.message)));{const ce=console.error;console.error=(...a)=>{ERR.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 window.BAD=[];window.chk=(c,m)=>{if(!c)BAD.push(m);return c;};window.KD=ZC.FIN.kids;
 ZC.FIN.kids.force=true;ZC.FIN.openTitle(true);chk(ZC.FIN.menu&&ZC.FIN.menu.sel===1,'на титуле без сохранения выбрана «Новая игра»');ZC.menuKey('Enter');'new'
@@ -74,15 +74,15 @@ const ie=run('easy'),im=run('mid'),ih=run('hard');
 chk(ie>9&&ie<11&&im>7&&im<8&&ih>4.8&&ih<5.3,'idle за 5 с: easy='+ie.toFixed(1)+' mid='+im.toFixed(1)+' hard='+ih.toFixed(1));
 ['idle '+ie.toFixed(1)+'/'+im.toFixed(1)+'/'+ih.toFixed(1)].concat(BAD)
 //@@
-// калитка 1-1: две лапки разом на секунду — и она открыта насовсем
+// калитка 1-1: открыта, пока нажаты две лапки разом; сошли — закрылась (головоломка «двое держат, двое проходят»)
 ZC.startFrom(ZC.LV('1-1'));ZC.G.manual=true;ZC.tick(10);for(let q=0;q<4&&ZC.G.cine;q++){ZC.skip();ZC.tick(5);}ZC.tick(10);
 const C=ZC.W.clean11,H=ZC.HERO;const put=(h,x,z)=>{h.pos.set(x,0,z);h.vel.set(0,0,0);};
 ZC.tick(60);chk(!C.gateOpen(),'калитка закрыта');
-put(H.proshka,-5.5,-102.5);ZC.tick(20);chk(!C.gateOpen()&&!ZC.W.flags.gateKept,'одна лапка — закрыта');
-put(H.pelageya,5.5,-102.5);ZC.tick(25);chk(C.gateOpen()&&!ZC.W.flags.gateKept,'две лапки — открыта, пока держат (меньше секунды)');
-ZC.tick(60);chk(ZC.W.flags.gateKept===true,'секунда на двух лапках — «открыто насовсем»');
-put(H.proshka,0,-90);put(H.pelageya,0,-92);ZC.tick(90);chk(C.gateOpen(),'лапки отпустили — калитка всё равно открыта');
-['gateKept='+ZC.W.flags.gateKept].concat(BAD)
+put(H.proshka,-5.5,-102.5);ZC.tick(20);chk(!C.gateOpen(),'одна лапка — закрыта');
+put(H.pelageya,5.5,-102.5);ZC.tick(25);chk(C.gateOpen(),'две лапки — открыта, пока держат');
+ZC.tick(60);chk(C.gateOpen()&&!ZC.W.flags.gateKept,'секунда на двух лапках — всё ещё открыта, но не насовсем');
+put(H.proshka,0,-90);put(H.pelageya,0,-92);ZC.tick(90);chk(!C.gateOpen(),'лапки отпустили — калитка закрылась');
+['gate='+C.gateOpen()].concat(BAD)
 //@@
 // задачи вслух: новая карточка читается сама, «Повтори» (H) — ещё раз; в Лукоморье — молчит
 window.SAID=[];ZC.FIN.readAloud.mock=t=>SAID.push(t);ZC.FIN.set.readAloud=true;ZC.FIN.set.vox=0;   // голоса героев не мешают: иначе чтение вслух ждёт, пока договорит Звенышко (время зависит от записи)
