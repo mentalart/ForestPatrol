@@ -212,6 +212,7 @@ zlataya_cep/build/levels/2-B/late_99r_k2b_fx.js @level:2-B tfin_k2b tfin_k2bsolo
 zlataya_cep/build/levels/2-B/late_99s_k2b_chase.js @level:2-B tfin_k2b tfin_k2bsolo tfin_k2bboss tfin_k2bbosssolo
 zlataya_cep/build/levels/w2/late_99k_kitezh_foes.js @level:2-1 @level:2-5 tfin_k21foes tfin_foekinds6
 zlataya_cep/build/levels/w2/late_99l_kitezh_magic_water.js @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kitezh_water
+zlataya_cep/build/levels/w4/late_99w4_solo.js @level:4-1 @level:4-2 @level:4-3 @level:4-4 @level:4-5 @level:4-B tso41 tso42 tso43 tso44 tso45
 zlataya_cep/build/levels/2-1/late_99m_k21_hermit.js @level:2-1 tfin_k21 tfin_k21solo tfin_foekinds6
 
 # ---- замены в прототипе при сборке ----
