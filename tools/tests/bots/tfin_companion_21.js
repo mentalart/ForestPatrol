@@ -50,12 +50,12 @@ put(me(),-8,-160);put(bot(),3,-159);put(ZC.HERO[bot().kind==='yosha'?'pelageya':
 const L=[];let last='';for(let i=0;i<60*100&&!D.mkt.done;i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}if(i%600===0)L.push((i/60).toFixed(0)+' '+pos(bot())+' en='+ZC.W.enemies.filter(e=>e.alive).map(e=>e.kind+':'+e.state).join());}
 L.push('mkt.done='+D.mkt.done,'en='+ZC.W.enemies.filter(e=>e.alive).map(e=>e.kind+':'+e.state).join(),D.mkt.done?'market ok':'FAIL market');L
 //@@
-// звонкая мостовая: человек — жёлтая плита (дзинь), бот — синяя (дилинь), потом человек на розовую, бот на зелёную (дон-дон вместе)
+// звонкая мостовая: человек — жёлтая плита (дзинь), бот — синяя (дилинь)
 const D=ZC.W.warp21('tune');ZC.W.flags.sturg=false;ZC.tick(20);for(let k=0;k<3;k++){let t=0;while(ZC.G.cine&&t<3000){ZC.skip();ZC.tick(5);t+=5;}ZC.tick(20);}
 put(me(),-2,-184);put(bot(),2,-184);put(ZC.HERO[bot().kind==='yosha'?'pelageya':'yosha'],3,-183);ZC.tick(300);
 const T=D.TUNE,r=['step0='+D.TS.step+' sturg='+F().sturg+' bot='+pos(bot())+' '+CO.mode];
 r.push(U.walkTo(0,T[0].x,T[0].z,6));ZC.tick(90);r.push('step1='+D.TS.step+' bot='+pos(bot())+' '+CO.mode);
-ZC.tick(60);r.push('step2='+D.TS.step+' bot='+pos(bot()));r.push(U.walkTo(0,T[2].x,T[2].z,6));ZC.tick(120);
+ZC.tick(120);
 r.push('done='+D.TS.done+' fails='+D.TS.fails+' bot='+pos(bot()),D.TS.done?'tune ok':'FAIL tune');r
 //@@
 // палаты царя: человек играет на первом стуле и прыгает через волны, бот — на втором; наплясался — двери открыты

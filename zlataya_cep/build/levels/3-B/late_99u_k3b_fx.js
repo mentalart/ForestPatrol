@@ -6,7 +6,7 @@
 // «Солнечный зайчик» (этап 2): пятно и луч от щита. Пух на «объективе» (подушки дочек). Телеграфы, капли и вспышка — общие с 2-Б (FIN.k2fx).
 // FIN.k3fx: всё по уровню 3-Б, чистится само при смене уровня.
 const K3FX={parts:[],curls:[],tick:[],wind:null,cl:null,night:null,vortex:null,fl:null,fluffK:0};FIN.k3fx=K3FX;
-K3FX.COL={white:0xf6fbff,blue:0x5ab4ff,gold:0xffd24a,purple:0xb080ff,red:0xff4a3a,green:0x5ad88a};
+K3FX.COL={white:0xf6fbff,blue:0x5ab4ff,yellow:0xffe14a,gold:0xffd24a,purple:0xb080ff,red:0xff4a3a,green:0x5ad88a};
 {const _ll=loadLevel;loadLevel=function(i){K3FX.reset();_ll(i);};}
 K3FX.reset=()=>{K3FX.parts.length=0;K3FX.curls.length=0;K3FX.tick.length=0;K3FX.wind=null;K3FX.cl=null;K3FX.night=null;K3FX.vortex=null;K3FX.pim=null;K3FX.fluffK=0;
   if(K3FX.fl)K3FX.fl.style.opacity='0';try{FIN.U.wind.value=1;}catch(e){}};

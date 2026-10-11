@@ -53,6 +53,6 @@ r.push('falls='+falls,'waits='+waits,U.st(),'cling='+U.act(1).cling,'errs='+_err
 //@@
 // 8 обод: Потап раздвигает калитку — в гнездо — ролик выхода Соловья — этап 1
 const r=[];r.push(U.toKind('potap',0));r.push(U.goto(0,0,0.4,8,0.5));U.act(0).face=Math.PI;ZC.press('KeyE');ZC.tick(30);r.push('gate='+!D.F.phase);
-r.push(U.goto(0,0,-5,6,0.6));r.push(U.cine(300));ZC.tick(30);r.push('phase='+D.F.phase,'errs='+_errs.length+' '+_errs.slice(0,3).join(' / '));if(D.F.phase!==1||_errs.length)throw new Error('обод: '+r.join(' | '));'3-B road ok '+r.join(' | ')
+r.push(U.goto(0,0,-5,6,0.6));r.push(U.cine(300));ZC.tick(30);r.push('phase='+D.F.phase,'gt='+ZC.G.time.toFixed(0),'errs='+_errs.length+' '+_errs.slice(0,3).join(' / '));if(D.F.phase!==1||_errs.length)throw new Error('обод: '+r.join(' | '));'3-B road ok '+r.join(' | ')
 //@@ shot=k3b_4.png
 ZC.tick(60);

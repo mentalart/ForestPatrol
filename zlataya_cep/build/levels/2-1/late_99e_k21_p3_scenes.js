@@ -2,14 +2,16 @@
   function giftScene(){F.stage='gift';const T=HERO,pe=T.pelageya;
     HEROES.forEach((h,i)=>{placeOnGround(h,-4.2+(i%2)*1.6,-12.6-Math.floor(i/2)*1.4,0);h.face=Math.atan2(-6.5-h.pos.x,-14.8-h.pos.z);});
     const gifts=[];
-    play({dur:20.6,fov:48,shots:[shot(0,[-4.6,1.8,-12.1],[-6.4,1.3,-14.8]),shot(5.4,[-1.2,2.8,-9.6],[-5.2,1.1,-13.6]),shot(9,[-3.8,1.6,-12.2],[-6.4,1.7,-14.8]),shot(17.4,[-1.8,1.5,-10.8],[pe.pos.x,0.9,pe.pos.z])],
+    play({dur:26.2,fov:48,shots:[shot(0,[-4.6,1.8,-12.1],[-6.4,1.3,-14.8]),shot(5.4,[-1.2,2.8,-9.6],[-5.2,1.1,-13.6]),shot(9,[-3.8,1.6,-12.2],[-6.4,1.7,-14.8]),shot(17.4,[-1.8,1.5,-10.8],[pe.pos.x,0.9,pe.pos.z]),shot(23.2,[-3.8,1.6,-12.2],[-6.4,1.7,-14.8])],
       says:[[0.3,2.2,null,'<i>Срастается струна — звенит.</i>',true],[2.3,3.0,'sadko','Ох, запела! Спасибо, малые, спасибо!'],[5.6,3.4,'sadko','Играйте на ходу. Вода любит, когда с нею речь ведут.'],
-        [9.2,2.4,'sadko','Лишь в Китеже не молчите — говорю.'],[11.7,2.4,'sadko','Только в Китеже — не молчите.'],[14.2,3.2,'sadko','Только в Китеже не молчите: кто молчит — того вода унесёт.'],[17.6,2.8,null,'<i>Пелагея клюв в перья прячет —</i><br><i>Вслух говорить ей трудно, иначе.</i>',true]],
+        [9.2,2.4,'sadko','Лишь в Китеже не молчите — говорю.'],[11.7,2.4,'sadko','Только в Китеже — не молчите.'],[14.2,3.2,'sadko','Только в Китеже не молчите: кто молчит — того вода унесёт.'],[17.6,2.8,null,'<i>Пелагея клюв в перья прячет —</i><br><i>Вслух говорить ей трудно, иначе.</i>',true],
+        [20.6,2.6,'pelageya','<i>(шёпотом)</i> А если голос… тихий?'],[23.3,2.8,'sadko','И тихий голос вода слышит. Лишь бы не молчал.']],   // дуга Пелагеи: завязка шёпота «Бом» в 2-5
       events:[{t:0,fn:()=>{sadko.drop.visible=false;SFX.grow();burst(new V3(-6.1,1.4,-14.4),0x9fe6ff,16,3);}},
         {t:1.4,fn:()=>{[67,71,74,79,78,74,71,74].forEach((m,i)=>later(i*0.22,()=>{gusli(m,0,0.18);sadko.arms.forEach((a,k)=>{a.rotation.x=(i+k)%2?0.3:-0.2;});}));}},
         {t:6.0,fn:()=>{HEROES.forEach((h,i)=>{const g=new THREE.Group();gusliMesh(g,M(COL.gold,{emissive:0xffb000,emissiveIntensity:0.8}),0.9);W.group.add(g);gifts.push(g);const a=new V3(-6.2,1.6,-14.4),to=h.pos.clone().add(new V3(0,h.d.height*0.6,0));
           anim(1.0+i*0.15,k=>{g.position.lerpVectors(a,to,k);g.position.y+=Math.sin(k*Math.PI)*1.6;g.rotation.y+=0.2;if(k>=1){W.group.remove(g);burst(to,COL.gold,10,2);SFX.knot();}});});}},
-        {t:17.6,fn:()=>{pe.parts.beak.visible=false;anim(0.6,k=>{pe.body.scale.set(1+0.12*k,1-0.12*k,1+0.12*k);});}}],
+        {t:17.6,fn:()=>{pe.parts.beak.visible=false;anim(0.6,k=>{pe.body.scale.set(1+0.12*k,1-0.12*k,1+0.12*k);});}},
+        {t:20.4,fn:()=>{pe.parts.beak.visible=true;anim(0.5,k=>{pe.body.scale.set(1.12-0.12*k,0.88+0.12*k,1.12-0.12*k);});}}],
       tick:(t)=>{sadko.head.rotation.x=t<9?0.1:0.2;sadko.body.rotation.z=Math.sin(t*2)*0.03;},
       end:()=>{pe.parts.beak.visible=true;pe.body.scale.set(1,1,1);W.abil.gusli=true;F.stage='gusli';later(0.3,tuneScene);}});}
   // напев Садко: четыре звука — их Китеж вспомнит в 2-5, когда колокола будут подымать ярусы
@@ -111,12 +113,12 @@
     anim(9,k=>{const p=new V3().lerpVectors(P0,P1,k);p.y-=Math.sin(k*Math.PI)*1.4;S.g.position.copy(p);S.g.rotation.y=Math.atan2(P1.x-P0.x,P1.z-P0.z)+Math.sin(k*14)*0.05;S.tail.rotation.y=Math.sin(G.time*5)*0.4;
       if(k>0.22&&!lit[0]){lit[0]=true;gusli(67,0,0.22);noteFly(TUNE[0],S.g.position);}
       if(k>0.38&&!lit[1]){lit[1]=true;gusli(71,0,0.22);noteFly(TUNE[1],S.g.position);}
-      if(k>0.54&&!lit[2]){lit[2]=true;gusli(74,0,0.22);gusli(72,0,0.22);noteFly(TUNE[2],S.g.position);noteFly(TUNE[3],S.g.position);}
+      if(k>0.54&&!lit[2]){lit[2]=true;gusli(74,0,0.22);gusli(72,0,0.22);noteFly({x:0,z:-212.9,c:0xff9ad0},S.g.position);}
       if(Math.random()<0.35)burst(S.g.position.clone().add(new V3(rand(-1,1),-0.6,rand(-2,2))),0xcff8ff,1,1.2,0.6);
       for(const h of HEROES){if(!h.active||h.cling||h.sturgT)continue;if(Math.abs(h.pos.x-p.x)<3.2&&Math.abs(h.pos.z-p.z)<5){h.sturgT=1;h.vel.x-=3.2;h.vel.y=Math.max(h.vel.y,2.8);h.grounded=false;floatText(h.pos.clone().add(new V3(0,h.d.height+0.5,0)),'Ух! Течение!','#cff8ff');}}
       if(k>=1){S.g.visible=false;for(const h of HEROES)h.sturgT=0;}});
     later(5.8,()=>say('zven','Слышали? Напев Садко! Дзинь, дилинь — по очереди, а дон-дон — вместе!',4));
-    later(8.6,()=>{for(const p of[0,1])tip(p,'Плиты: дзинь, дилинь — по очереди, дон-дон — вдвоём.',4.4);});}
+    later(8.6,()=>{for(const p of[0,1])tip(p,'Сначала «дзинь», потом «дилинь».',4.4);});}
   function tuneDone(){TS.done=true;F.tune=true;[67,71,74,72].forEach((m,i)=>later(i*0.14,()=>gusli(m,0,0.24)));later(0.7,()=>{gusli(67,0,0.2);gusli(74,0,0.2);gusli(79,0,0.2);});
     for(const T of TUNE){T.lit=1;burst(new V3(T.x,1.4,T.z),T.c,14,4);}tuneCol.on=false;SFX.gate();SFX.ok();
     anim(2.2,k=>{tuneGate.position.y=4.6*smooth(k);tgBells.forEach((b,i)=>{b.rotation.z=Math.sin(k*30+i)*0.4*(1-k);});});
@@ -129,10 +131,8 @@
     const ok=i=>{const T=TUNE[i];T.lit=1;gusli(T.n,0,0.22);burst(new V3(T.x,1.2,T.z),T.c,10,3);ringFx(new V3(T.x,0.2,T.z),T.c,1.6);};
     const fail=()=>{TS.step=0;TS.t=0;TS.fails++;tone(233,0.5,'sawtooth',0.07,220);tone(247,0.5,'sawtooth',0.07,230);for(const T of TUNE){T.lit=0;burst(new V3(T.x,0.6,T.z),0xff6a6a,6,2,0.5);}
       floatText(new V3(0,2.8,-195),'Фальшь! Сначала: дзинь…','#ffb0a0');
-      if(TS.fails===2)for(const p of[0,1])tip(p,'В одиночку: оставь героя на плите '+K(p,'swap')+'.',4.6);};
+      if(TS.fails===2)for(const p of[0,1])tip(p,'Сначала жёлтая плита «дзинь», потом синяя «дилинь».',4.6);};
     if(TS.step>0){TS.t+=dt;if(TS.t>10){TS.step=0;TS.t=0;floatText(new V3(0,2.8,-195),'Напев стих — сначала!','#cfe8ff');}}
     const fr=TUNE.filter(T=>T.fresh).map(T=>T.i);
     if(TS.step===0){if(fr.includes(0)){ok(0);TS.step=1;TS.t=0;}else if(fr.length)fail();}
-    else if(TS.step===1){if(fr.includes(1)){ok(1);TS.step=2;TS.t=0;}else if(fr.includes(2)||fr.includes(3))fail();}
-    else if(TS.step===2){if(TUNE[2].on&&TUNE[3].on){ok(2);ok(3);tuneDone();}
-      else if(fr.includes(2)||fr.includes(3)){const T=TUNE[fr.find(i=>i>=2)];gusli(T.n,0,0.12);T.lit=0.8;floatText(new V3(T.x,2.9,T.z),'дон-дон — ВМЕСТЕ!','#ffd9a0');}}}
+    else if(TS.step===1){if(fr.includes(1)){ok(1);TS.step=2;tuneDone();}}}
