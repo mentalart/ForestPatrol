@@ -72,6 +72,7 @@ const n0=nuts();r.push(...cook('Каша из топора'));P(L.HUTF.x,0.05,L.
 // снимок: варим кисель из ягод с куста у скалы (ягоды — сначала собрать)
 const B=L.BUSH[0];P(B.x-1.2,0.05,B.z);U.tap('KeyF');ZC.tick(5);const B2=L.BUSH[1];P(B2.x-1.2,0.05,B2.z);U.tap('KeyF');ZC.tick(5);R.berry=L.LC.bag.berry;
 P(L.HUTF.x,0.05,L.HUTF.z);U.tap('KeyF');ZC.tick(4);const opts=[...document.querySelectorAll('#mapui .opt span')].map(o=>o.innerText.replace(' ✓','').trim());const k=opts.indexOf('Ягодный кисель');for(let s=0;s<k;s++)U.tap('KeyS');U.tap('Space');ZC.tick(100);
+if(ZC.G.ui!=='cook')throw new Error('кисель не варится: ui='+ZC.G.ui+' k='+k+' opts='+opts.join('|')+' bag='+JSON.stringify(L.LC.bag)+' berryGot='+JSON.stringify(L.LC.berryGot)+' pos='+U.act(0).pos.toArray().map(v=>v.toFixed(1)));
 ['berry='+R.berry,'ui='+ZC.G.ui]
 //@@
 let i=0;while(L.CK.on&&i<600){ZC.hold('KeyA',(i>>3)%2===0);ZC.hold('KeyD',(i>>3)%2===1);ZC.tick(1);i++;}ZC.hold('KeyA',false);ZC.hold('KeyD',false);ZC.tick(20);
