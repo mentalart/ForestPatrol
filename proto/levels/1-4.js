@@ -80,12 +80,10 @@ function build14(){
   const svStart=new THREE.Mesh(new THREE.TorusGeometry(0.6,0.07,8,26),svM);svStart.rotation.x=Math.PI/2;svStart.position.set(SV.sx,0.06,SV.sz);silver.add(svStart);
   nutItem(-5,1.0,-84,{owl:true});nutItem(3.8,1.0,-90,{owl:true});
   const leshy=makeLeshy(1.35);leshy.g.position.set(-13.5,0,-88);leshy.g.rotation.y=Math.PI/2-0.3;
-  const LH={x:8.4,z:-101.6};   // где Леший прячется: за настоящим проходом, в ёлках
-  function leshyHide(){if(F.leshyHid)return;F.leshyHid=0.5;const p0=leshy.g.position.clone();leshy.g.rotation.y=Math.PI;
-    anim(1.8,k=>{leshy.g.position.set(p0.x+Math.sin(k*Math.PI)*1.2,Math.abs(Math.sin(k*Math.PI*5))*0.5,lerp(p0.z,-100,k));});   // убегает в чащу вдоль опушки
-    later(1.0,()=>bark(leshy,'leshy','Ку-ку!',0.9));
-    later(1.8,()=>{anim(0.5,k=>{leshy.g.position.y=-k*4;});later(0.55,()=>{leshy.g.visible=false;leshy.g.position.set(LH.x,-2.9,LH.z);leshy.g.rotation.y=Math.PI*0.15;F.leshyHid=1;
-      banner('Леший спрятался!','#c8e0a0',2.6,'Совиный взор Пелагеи покажет и его, и тропу к нему — серебряную');});});}
+  // Леший не прячется (прятки — этап 2 боя 1-Б «Ищи-свищи», повторять их здесь — значит выдать бой заранее): он стоит на краю поляны,
+  // водит ёлки и дразнится; нить легла по серебру — «так нечестно!», и он уходит в чащу
+  function leshyLeave(){if(F.leshyGone)return;F.leshyGone=true;leshy.g.rotation.y=Math.PI;const p0=leshy.g.position.clone();
+    anim(2.2,k=>{leshy.g.position.set(p0.x-k*5,Math.abs(Math.sin(k*Math.PI*5))*0.5-k*k*5,p0.z-k*3);});later(2.3,()=>{leshy.g.visible=false;});}
   W.aimSnap=(h,ang)=>{if(!F.seenSilver||Math.hypot(h.pos.x-SV.sx,h.pos.z-SV.sz)>2.6)return null;let d=ang-SV.ang;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;return Math.abs(d)<0.7?SV.ang:null;};
   /* ---------- Г: «Друг за друга» — две тропки за низкой изгородью; ёлки одной тропки держит только взгляд с другой ---------- */
   const LN={z0:-102,z1:-126.5};
@@ -223,11 +221,8 @@ function build14(){
     F.silver=sv;wF.forEach(m=>{m.silverLock=sv;});svM.opacity=Math.max(k*0.85,sv?0.35:0);silver.children.forEach((m,i)=>{m.position.y=0.04+Math.sin(G.time*3+i)*0.02;});
     if(W.owlT>0&&hd(active(1).pos,C)<14)F.seenSilver=true;
     leshy.head.rotation.y=Math.sin(G.time*0.6)*0.6;leshy.hands.forEach((hh,i)=>{hh.sh.rotation.x=Math.sin(G.time*1.3+i*2)*0.4-0.2;});
-    if(F.stage==='rescue'&&!F.leshyBark&&[0,1].some(pi=>active(pi).pos.z<-77)){F.leshyBark=true;bark(leshy,'leshy','Опять заблудились? Ну-ка, где я?',2.8);later(2.9,leshyHide);}
-    // Леший прячется: Совиный взор видит его — он выглядывает из-за ёлок за настоящим проходом; дошли — «нашли!», и он убегает
-    if(F.leshyHid===1){const seen=W.owlT>0;leshy.g.visible=seen;if(seen&&!F.leshySeen){F.leshySeen=true;floatText(new V3(LH.x,3.4,LH.z),'Вон он!','#e7c3ff');}
-      if([0,1].some(pi=>active(pi).pos.z<-99.8)){F.leshyHid=2;leshy.g.visible=true;bark(leshy,'leshy','Ай! Нашли меня, ишь!',2.2);const y0=leshy.g.position.y;
-        anim(0.6,k=>{leshy.g.position.y=y0*(1-k);});later(1.6,()=>{const x0=leshy.g.position.x;leshy.g.rotation.y=Math.PI/2;anim(1.4,k=>{leshy.g.position.x=x0+k*5;leshy.g.position.y=Math.abs(Math.sin(k*Math.PI*4))*0.4-k*k*6;});later(1.5,()=>{leshy.g.visible=false;});});}}
+    if(F.stage==='rescue'&&!F.leshyBark&&[0,1].some(pi=>active(pi).pos.z<-77)){F.leshyBark=true;bark(leshy,'leshy','Опять заблудились? Водит вас мой лес — по кругу да по кругу!',3.0);}
+    if(F.silver&&!F.leshyGone)later(2.0,leshyLeave);
     if(!arena.started&&!arena.custom&&F.krugDone&&[0,1].every(pi=>active(pi).pos.z<-194)){spawnFight();}
     for(const e of arena.list)if(e.state==='idle'&&!e.g.visible)e.g.visible=true;
     if(arena.started&&!arena.cleared&&!arena.custom&&arena.list.every(e=>!e.alive)){arena.cleared=true;arena.hold=1.6;barrier.forceOpen=true;SFX.ok();banner('Лешачата распутаны!','#ffffff',1.8,'выход из леса открыт — ступайте');}

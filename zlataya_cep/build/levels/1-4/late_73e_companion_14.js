@@ -3,7 +3,7 @@
 // (шишки-замки сбивает Прошка); потом ведёт обоих героев по тропе ёлок-ходунов к воротам из ёлок и привязывает правую ёлку клубком у столба (левую, если друг не успел);
 // на поляне Лешего берёт Пелагею: Совиный взор показывает серебряную тропу, клубок ложится вдоль неё — ёлки замирают, и бот идёт по серебру;
 // на двух тропках держит взглядом тропку друга; в хороводе сам ставит кольца (смотрит на кольцо и шагает в проход); на поляне-петле аукает с пня-эхо;
-// с Аукой: аукает в прятках, держит взглядом стену ёлок, на «большое АУ» встаёт на свободный пень-эхо и аукает; остальной бой — общий бой бота.
+// с Аукой (мирная перекличка, late_99zg_auka14.js): берёт каждое второе «ау» песенки — встаёт в круг нужного дупла и аукает.
 // Ёлки-ходуны стоят, пока на них кто-то смотрит (герой в ходьбе смотрит вперёд), поэтому к ёлке-воротам бот встаёт спиной и поворачивается к ней, только когда она у столба.
 const KM14={w:null,t:0,rt:0,sv:0};
 const km14=()=>{if(KM14.w!==W){KM14.w=W;KM14.t=0;KM14.rt=0;KM14.sv=0;}return KM14;};
@@ -64,14 +64,10 @@ CMP.route('1-4',[
   {id:'krug',done:()=>!!km14F().krugDone,run:(h,hh)=>{const K=W.k14;if(!K)return 'follow';const KG=K.KG;if(hh.pos.z>-157&&h.pos.z>-157)return 'follow';
     if(hd(hh.pos,KG.stump)<1.8){const gx=KG.gaps[KG.tru];if(KG.lit>0){if(h.pos.z>-184.8)cmpGoto(h,gx,-185.4,0.3);else cmpGoto(h,gx,-188.5,0.3);}else cmpGoto(h,0,-182,0.6);return;}
     if(cmpGoto(h,KG.stump.x,KG.stump.z,0.5)<=0.8){h.face=Math.PI;if(hh.pos.z<-176&&KG.lit<=0&&!(KM14.t>G.time-1.5)){KM14.t=G.time;cmpTap('call');}}}},
-  // Аука: прятки — аукнуть и к золотому дуплу; подголоски — держать взглядом ближнюю стену; «АУ» — на свободный пень-эхо и аукать; от белого кольца — прыжок
-  {id:'auka',first:true,done:()=>!!(W.k14&&W.k14.arena.cleared),run:(h,hh)=>{const K=W.k14,A=K&&K.auka;if(!A||!A.e||A.ph<1||A.ph>=4)return 'follow';const D=A.dbg(),e=A.e;
-    if(D.ring){const d=Math.hypot(h.pos.x,h.pos.z+205);if(d-D.ring.r>0.2&&d-D.ring.r<0.9&&h.grounded)cmpTap('jump');}
-    if(A.ph===1&&e.state==='hide'){const m=D.HL.find(q=>q.markT>0);if(m){cmpGoto(h,m.mx,m.mz,0.5);return;}if(!(KM14.t>G.time-5)){KM14.t=G.time;cmpTap('call');}return 'follow';}
-    if(A.ph===2&&!(e.dazeT>0)&&e.state!=='broken'){const w=D.walls.slice().sort((a,b)=>Math.abs(a.x)-Math.abs(b.x))[0];if(Math.abs(w.x)<7.6&&!W.enemies.some(q=>q.alive&&q.kind==='leshonok'&&(q.tgt===h&&q.state==='wind'||hd(q.pos,h.pos)<3.5))){
-      if(cmpGoto(h,w.sd*Math.max(0.6,Math.abs(w.x)-3.4),-203.5,0.6)<=0.9)h.face=w.sd>0?Math.PI/2:-Math.PI/2;return;}}
-    if(A.ph===3&&D.windT>0){const s=D.ES.slice().sort((a,b)=>hd(b,hh.pos)-hd(a,hh.pos))[0];if(cmpGoto(h,s.x,s.z,0.4)<=1.2&&!(KM14.rt>G.time-0.5)){KM14.rt=G.time;cmpTap('call');}return;}
-    return 'follow';}},
+  // Аука-перекличка: бот берёт каждое второе «ау» песенки (второе, четвёртое…) — встаёт в круг нужного дупла и аукает; остальное время ждёт в стороне
+  {id:'auka',first:true,done:()=>!!(W.k14&&W.k14.arena.cleared),run:(h,hh)=>{const K=W.k14,A=K&&K.auka;if(!A||A.ph!==1)return 'follow';const D=A.dbg();
+    if(D.st==='play'&&D.pos%2===1){const q=D.HL[D.seq[D.pos]];if(cmpGoto(h,q.mx,q.mz,0.4)<=0.9&&!(KM14.at>G.time-1.0)){KM14.at=G.time;cmpTap('call');}return;}
+    cmpGoto(h,2.4,-201.5,0.6);}},
   // выход: ворота открыты — к выходу
   {id:'exit',done:()=>!!km14F().out,run:h=>{if(!(W.k14&&W.k14.arena.cleared))return 'follow';cmpPath(h,KM14_EXIT,0.4);}},
 ]);

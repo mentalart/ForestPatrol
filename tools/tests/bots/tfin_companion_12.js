@@ -1,6 +1,6 @@
 //@@ wait=1500
 // релиз final06: напарник-бот проходит 1-2 «Кикиморино болото» за Игрока 2 (Йошей): колышки над кочками, высокая ветка, толстая струна Потапа, гать Журавля, туман, кувшинки,
-// бесёнок, колода, стычка и выход. Человека (Игрок 1) играет скрипт.
+// бесёнок (колоду он откатывает сам), стычка и выход. Человека (Игрок 1) играет скрипт.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
 window.CO=ZC.FIN.co;window.P=ZC.players;window.W=ZC.W;window.F=()=>ZC.W.flags;window.bot=()=>U.act(1);window.me=()=>U.act(0);window.H=ZC.HERO;
@@ -70,8 +70,8 @@ const S=SW(),RC=F().race;const r=[];put(me(),0,-262);ZC.tick(20);
 const L=[];let last='';for(let i=0;i<60*60&&!RC.won;i++){ZC.tick(1);const m=CO.mode+'/'+RC.st;if(m!==last){L.push((i/60).toFixed(0)+'s '+m);last=m;}}
 r.push(L.slice(-6).join(' '),'won='+RC.won+' tries='+RC.tries,'yosha='+pos(H.yosha),RC.won?'race ok':'FAIL race');r
 //@@
-// колода: человек (Потап) поднимает «кобылу»; бот ждёт и проходит
-const S=SW(),RC=F().race;const r=[U.until(()=>RC.lift==='try',20)];put(me(),0,-314.5);if(me().kind!=='potap'){ZC.press('KeyQ');ZC.tick(10);}put(me(),0,-315.8);ZC.tick(10);ZC.press('KeyE');ZC.tick(130);
+// колода: обогнали — бесёнок сам откатывает её с дороги; бот ждёт и проходит
+const S=SW(),RC=F().race;const r=[U.until(()=>RC.lift==='done',20)];put(me(),0,-314.5);ZC.tick(20);
 r.push('lift='+RC.lift,'col off='+!S.logCol.on,(RC.lift==='done'&&!S.logCol.on)?'log ok':'FAIL log');r
 //@@
 // стычка у ворот и выход: бот заходит на арену (общий бой), победа, к выходу; человек подходит следом и бьёт своих
