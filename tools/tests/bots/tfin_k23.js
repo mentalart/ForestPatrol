@@ -47,6 +47,7 @@ for(let i=0;i<60*70&&D.F.task<11;i++){const kz=D.KELP.find(k=>!k.gone);
   for(const pi of[0,1]){const h=U.act(pi);if(!kz&&D.RAFT3.z<-130.5){if(i%120===pi*60)r.push('shoal'+pi+':'+JUMPTO(pi,pi?1.2:-1.2,-137,5));continue;}
     if(h.groundRef!==D.RAFT3.col){if(i%40===pi*20)r.push('reboard'+pi+':'+JUMPTO(pi,D.RAFT3.x,D.RAFT3.z,4));continue;}
     if(kz&&Math.abs(kz.z-h.pos.z)<4.6){h.face=Math.PI;if(i%14===pi*7)ZC.press(KEYS[pi].attack);}}ZC.tick(1);}
+for(const pi of[0,1])if(U.act(pi).pos.z>-134)r.push('shoal'+pi+'+:'+JUMPTO(pi,pi?1.2:-1.2,-137,5));   // задача отмели включается по первому, кто сошёл: второй ещё на лодке — прыгает следом
 if(D.F.task<11)throw new Error('не доплыли: task='+D.F.task+' raft='+D.RAFT3.z.toFixed(1)+' kelp='+D.KELP.map(k=>k.gone?'x':k.hp).join('')+' '+r.slice(-6).join()+' '+U.st());'raft ok raft='+D.RAFT3.z.toFixed(1)+' '+r.slice(-4).join()
 //@@ shot=k23_shoal.png
 ZC.tick(20);'shoal: task='+ZC.W.dbg23().F.task
