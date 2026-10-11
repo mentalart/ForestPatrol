@@ -18,7 +18,8 @@ r.push('z='+U.me().pos.z.toFixed(1),'errs='+_errs.length);if(U.me().pos.z>95)thr
 //@@
 // застава в одиночку
 const r=[];r.push(U.toKind('potap'));r.push(GO(-4.6,83.7,14));U.me().face=Math.PI;U.tap('KeyE');ZC.tick(20);r.push('holder='+!!RD.gate.holder);
-r.push(U.toKind('pelageya'));r.push(U.goto(0,4.4,79.8,10,0.4));ZC.tick(20);r.push('plate='+RD.gate.open);r.push(U.toKind('potap'));r.push(U.goto(0,0,78,10,0.6));ZC.tick(30);r.push('propped='+!!RD.gate.propped,CALL());
+r.push(U.toKind('pelageya'));for(let k=0;k<3&&!RD.gate.open;k++){r.push(U.goto(0,4.4,79.8,10,0.4));ZC.tick(20);}r.push('plate='+RD.gate.open);   // свист сдувает — ещё попытка
+r.push(U.toKind('potap'));for(let k=0;k<3&&!RD.gate.propped;k++){r.push(U.goto(0,0,78,10,0.6));ZC.tick(30);}r.push('propped='+!!RD.gate.propped,CALL());
 r.push(GO(0,71,10));r.push('z='+U.me().pos.z.toFixed(1),'errs='+_errs.length);if(!RD.gate.propped)throw new Error('соло застава: '+r.join(' | '));r.join(' | ')
 //@@
 // облачка, дуб-сторож, обод

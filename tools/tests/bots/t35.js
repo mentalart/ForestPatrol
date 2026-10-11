@@ -27,11 +27,14 @@ H.potap.pos.set(-1.2,0,-102);H.pelageya.pos.set(1.5,0,-102.5);ZC.tick(420);r4.pu
 // речка: Прошка по запруде, Пелагея — Совиный взор
 const W=ZC.W,H=ZC.HERO;W.gooseCalm=9999;const r5=[];const L=(pi,on)=>{if(U.act(pi).lit!==on)U.tap(pi?'Semicolon':'KeyR');ZC.tick(2);};L(0,false);r5.push(U.path(0,[[0,-121]],3));L(0,true);r5.push(U.path(0,[[0,-135],[3,-137]],3),'ask='+W.flags.riverAsk);U.tap('KeyE');ZC.tick(60);r5.push('dam='+W.flags.dam);
 U.tap('KeyK');ZC.tick(3);H.pelageya.pos.set(-2,0,-136);H.pelageya.vel.set(0,0,0);ZC.tick(3);U.tap('KeyL');ZC.tick(30);r5.push('hollow='+W.flags.hollow,'rdone='+W.flags.riverDone);
-H.proshka.pos.set(0,0,-139);H.potap.pos.set(-1,0,-139.5);H.yosha.pos.set(1,0,-139.2);H.pelageya.pos.set(0.5,0,-138.4);ZC.tick(420);r5.push('links='+W.links,W.flags.stage,!!ZC.G.cine);r5
+H.proshka.pos.set(0,0,-139);H.potap.pos.set(-1,0,-139.5);H.yosha.pos.set(1,0,-139.2);H.pelageya.pos.set(0.5,0,-138.4);ZC.tick(660);   // речка: три волны гусей (≈ 9,4 с)
+r5.push('links='+W.links,W.flags.stage,!!ZC.G.cine);r5
 //@@
 const W=ZC.W,H=ZC.HERO;W.gooseCalm=9999;const r6=[];r6.push(U.walkTo(0,0,-148,3),!!ZC.G.cine,W.flags.stage);ZC.tick(10);ZC.skip();ZC.tick(5);r6.push(W.flags.stage,'final='+W.flags.final);
-if(!U.act(0).lit)U.tap('KeyR');if(!U.act(1).lit)U.tap('Semicolon');ZC.tick(2);
-r6.push(U.path(0,[[0,-152],[0,-190.5]],4),U.path(1,[[0.2,-151],[0.2,-152],[0.2,-190.5]],4),W.flags.stage,!!ZC.G.cine);ZC.tick(60);r6
+// над пропастью мостки по очереди: на золотом перо горит, на лиловом — погашено; меняем на островках; второй идёт следом, когда первый ушёл далеко
+const L=(pi,on)=>{if(U.act(pi).lit!==on)U.tap(pi?'Semicolon':'KeyR');ZC.tick(3);};
+const cross=pi=>{const x=pi?0.2:0;L(pi,false);r6.push(U.path(pi,[[x,-153.5]],4));L(pi,true);r6.push(U.path(pi,[[x,-163]],4));L(pi,false);r6.push(U.path(pi,[[x,-171]],4));L(pi,true);r6.push(U.path(pi,[[x,-180]],4));L(pi,false);r6.push(U.path(pi,[[x,-190.5]],4));};
+cross(0);cross(1);r6.push(W.flags.stage,'lull='+!!W.flags.lullaby,'falls='+(ZC.G.stats.falls||0),!!ZC.G.cine);ZC.tick(60);r6
 //@@ shot=w35c.png
 ZC.tick(900);
 //@@
