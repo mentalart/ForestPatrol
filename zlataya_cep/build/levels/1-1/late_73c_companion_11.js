@@ -75,11 +75,13 @@ CMP.route('1-1',[
     const ap=W.part11.APL.filter(a=>a.down&&!a.eaten).sort((a,b)=>hd(a,h.pos)-hd(b,h.pos))[0];if(!ap)return 'follow';cmpGoto(h,ap.x,ap.z,0.25);}},
   {id:'log',done:()=>!!s11F().smoke,run:(h,hh)=>s11Carry(h,hh,[W.part11.LG])},
   {id:'river',done:()=>s11Todo(-205,'riv').length===0,run:(h,hh)=>{if(s11F().stage!=='crows'||hh.pos.z>-184)return 'follow';
-    const td=s11Todo(-205,'riv'),k=td.includes(h.kind)?h.kind:td[0];if(!cmpWant(k))return;const x=S11.rx||(S11.rx=hh.pos.x>0?-5:5);   // своя дорожка — подальше от нити друга
+    const td=s11Todo(-205,'riv'),k=td.includes(h.kind)?h.kind:td[0];if(!cmpWant(k))return;const sd=S11.rx||(S11.rx=hh.pos.x>0?-1:1),x=sd*(h.kind==='yosha'?5:7.5);   // подальше от нити друга; у каждого героя своя дорожка (как на грядках)
     const th=W.threads.find(t=>t.owner===1&&!t.ret&&!t.string&&t.hero===h&&t.sz<-185);
     if(!th){if(Math.hypot(h.pos.x-x,h.pos.z+190.8)>0.45){cmpGoto(h,x,-190.8,0.25);return;}s11Throw(h);return;}
     if(th.grow&&th.len<13)return;cmpGoto(h,th.sx,-206.6,0.3);}},
   {id:'logs',done:()=>s11F().logs>=3,run:(h,hh)=>s11F().tmHi?s11Carry(h,hh,W.part11.LOGS):'follow'},
+  // конёк: подкидывает человек (Потап — ближайшего к себе), бот отходит в сторону, чтобы Потап не подкинул его героя
+  {id:'konek',done:()=>!!s11F().konek,run:h=>{cmpGoto(h,-4,-225.5,0.5);}},
 ]);
 // вороны Кощея (1-1) пикируют только на героев человека: бот от них не уворачивается
 {const _b11=build11;build11=function(){_b11.apply(this,arguments);W.ravSkip=h=>CMP.live()&&h.player===1;};}

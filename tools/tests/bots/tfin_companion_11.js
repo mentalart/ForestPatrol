@@ -86,6 +86,7 @@ const W=ZC.W,P=W.part11,H=ZC.HERO,r=[];r.push(U.goto(0,-2,-212,10,0.4),U.until((
 for(let n=0;n<3;n++){const L=P.LOGS.find(q=>q.state==='ground');if(!L)break;r.push(U.goto(0,L.g.position.x+(L.g.position.x<0?-0.9:0.9),L.g.position.z,15,0.3));
   r.push(U.until(()=>L.state==='carry',20));for(let i=0;i<60*20&&L.state==='carry';i++){U.step(0,P.TM.x+(me().pos.x<0?-1:1),P.TM.z+3.4,0.3);ZC.tick(1);}U.rel(0);ZC.tick(60);r.push('log'+n+'='+L.state);}
 r.push('logs='+F().logs,F().logs===3?'logs ok':'FAIL logs');
-U.toKind('proshka',0);H.potap.pos.set(P.TOSS.x,0,P.TOSS.z+1.3);H.potap.vel.set(0,0,0);r.push(U.goto(0,P.TOSS.x,P.TOSS.z,10,0.2));U.toKind('potap',0);H.potap.face=Math.PI;ZC.tick(2);ZC.press('KeyE');ZC.tick(90);
-r.push('konek='+!!F().konek);r.push(U.until(()=>ZC.G.cine,8));ZC.tick(60*3);U.nocine();
-r.push(U.until(()=>ZC.W.levelId!=='1-1',10),'lvl='+ZC.W.levelId,'errs='+_errs.length+(_errs[0]?' '+_errs[0]:''),(F().konek&&ZC.W.levelId!=='1-1'&&!_errs.length)?'1-1 ok':'FAIL 1-1');r
+U.toKind('proshka',0);r.push(U.goto(0,P.TOSS.x,P.TOSS.z,10,0.2));U.toKind('potap',0);H.potap.following=false;H.potap.pos.set(P.TOSS.x,0,P.TOSS.z+1.3);H.potap.vel.set(0,0,0);ZC.tick(6);   // Потапа — за Прошку (он шёл следом по «Ко мне!»)
+H.potap.face=Math.PI;ZC.tick(2);r.push('toss '+pos(H.proshka)+' '+pos(H.potap)+' bot '+pos(bot()));ZC.press('KeyE');ZC.tick(90);
+const kon=!!F().konek;r.push('konek='+kon,pos(H.proshka));r.push(U.until(()=>ZC.G.cine,8));ZC.tick(60*3);U.nocine();
+r.push(U.until(()=>ZC.W.levelId!=='1-1',10),'lvl='+ZC.W.levelId,'errs='+_errs.length+(_errs[0]?' '+_errs[0]:''),(kon&&ZC.W.levelId!=='1-1'&&!_errs.length)?'1-1 ok':'FAIL 1-1');r
