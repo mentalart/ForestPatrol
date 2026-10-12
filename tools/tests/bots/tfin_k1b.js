@@ -26,7 +26,7 @@ toHead(1)
 //@@ shot=k1b_trophy2.png
 toHead(2)
 //@@ shot=k1b_trophy3.png
-toHead(3)+' phase='+ZC.W.flags.phase
+toHead(3)+' phase='+ZC.W.flags.phase+' ownArms='+(ZC.FIN.k1b.cur.L.hands.every(h=>h.sh.visible)?'ok':'нет')   // этап 1 кончился — Леший не безрукий: свои руки на месте
 //@@ shot=k1b_s2.png
 // этап 2: двойники в нарядах, ночь со светляками
 ZC.tick(60*2);ZC.skip();ZC.tick(60*4);const W=ZC.W,K=ZC.FIN.k1b;'phase='+W.flags.phase+' mood='+K.fx.name+' doubles='+W.doubles.length+' real='+W.doubles.findIndex(d=>d.real)+' shadows='+W.doubles.map(d=>d.m.meshes.b?d.m.meshes.b.castShadow:'-').join('')
