@@ -128,6 +128,13 @@ function build44(){
     onWater:()=>{const x=deadWT.pos.x,z=deadWT.pos.z;let n=0;for(let dx=-1;dx<=1;dx++)for(let dz=-1;dz<=1;dz++){const k=cid(x+dx,z+dz);if(k>=0&&TT[k]===2&&!(KF[k]&(SRC|BOWLA|BOWLB|BOWLC|PIT))){heal(k);n++;}}
       SFX.grow();burst(new V3(x,0.3,z),0x7ad85a,12,3);floatText(new V3(x,1,z),'Мёртвая вода — борозда заросла травой','#9fe6a0');if(!F.healTold){F.healTold=true;later(0.5,()=>bark(T.yosha,'yosha','Ошиблись — поправим, не беда.',1.8));}}};
   W.waterTargets.push(deadWT);
+  /* ---------- Потап засыпает борозду лапой (docs/39, 44.6): ошибку отменяет и игрок 1 — умение Потапа перед бороздой ---------- */
+  const potapFurrow=h=>{for(const d of[1.1,1.6,0.7]){const x=h.pos.x+Math.sin(h.face)*d,z=h.pos.z+Math.cos(h.face)*d;const k=cid(x,z);if(k>=0&&TT[k]===2&&!LV[k]&&!(KF[k]&(SRC|BOWLA|BOWLB|BOWLC|PIT)))return k;}return -1;};
+  W.potapFurrow=()=>potapFurrow(T.potap);   // для ботов (tfin_w44)
+  W.skillHook=(pi,h)=>{if(h!==T.potap||G.cine||plow.by===h)return false;const k=potapFurrow(h);if(k<0)return false;if(h.skillCd>0)return true;h.skillCd=0.8;h.atkT=0.3;
+    const x=cx(k),z=cz(k);let n=0;for(let dx=-1;dx<=1;dx++)for(let dz=-1;dz<=1;dz++){const q=cid(x+dx,z+dz);if(q>=0&&TT[q]===2&&!LV[q]&&!(KF[q]&(SRC|BOWLA|BOWLB|BOWLC|PIT))){heal(q);n++;}}
+    F.pawFill=(F.pawFill||0)+1;SFX.thud();burst(new V3(x,0.3,z),0x6a4a2a,14,3);floatText(new V3(x,1,z),'Потап засыпал борозду лапой','#e8c8a0');
+    if(!F.pawTold){F.pawTold=true;later(0.4,()=>bark(T.potap,'potap','Лапой — и ровно!',1.8));}return true;};
   // живая вода на лаву в борозде — корка, как в 4-2 (docs/39, 44.4): клетки остывают, по ним можно пройти; поток там стоит, пока корка держит
   const crustK=new Map(),crM=M(0x2a2226,{emissive:0xff4a00,emissiveIntensity:0.25});
   const crustWT={pos:new V3(),pri:0.4,active:()=>{const Y=T.yosha;for(const d of[1.4,2.0,0.9]){const x=Y.pos.x+Math.sin(Y.face)*d,z=Y.pos.z+Math.cos(Y.face)*d;const k=cid(x,z);if(k>=0&&LV[k]&&!(KF[k]&(SRC|BOWLA|BOWLB|BOWLC|PIT|DOOR))){crustWT.pos.set(cx(k),0,cz(k));return true;}}return false;},
@@ -192,6 +199,7 @@ function build44(){
     prompt(pi,'attack',()=>headOf(h()),()=>h()===Po&&F.doorHeat>=1&&!F.doorOpen&&hd(h().pos,{x:0,z:-57.4})<3,'плечом!');}
   prompt(1,'skill',()=>headOf(Pe),()=>Pe.active&&F.stage!=='end'&&W.owlT<=0&&!F.owlTold,'куда потечёт?');
   prompt(1,'skill',()=>headOf(Y),()=>Y.active&&deadWT.active(),'мёртвая вода');
+  for(const pi of[0,1])prompt(pi,'skill',()=>headOf(T.potap),()=>T.potap.active&&T.potap.player===pi&&plow.by!==T.potap&&potapFurrow(T.potap)>=0,'засыпать борозду');
   /* ---------- задачи ---------- */
   const OR=(text,done,targets,ghost,read)=>{const o=O(text,done,targets,ghost);o.read=read;return o;};
   const mk=pi=>[
@@ -208,7 +216,7 @@ function build44(){
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>W.enemies.some(e=>e.alive&&e.kind==='pechnik'&&e.fed<=0&&hd(e.pos,h.pos)<10),text:(pi,h)=>heroCarry(h)?'Неси горячее печнику — вплотную поднеси иль брось рядом':'Печник остыл — его не ударить. Клещами '+K(pi,'item')+' уголь из жаровни возьми — и поднеси ему.'},
     {cond:(pi,h)=>plow.by===h&&!F.bowlA,text:pi=>'Мостки не пашутся — лава пройдёт только под аркой. Куда течь — покажет Совиный взор.'},
-    {cond:(pi,h)=>plow.by===h,text:pi=>'Ты пашешь: '+K(pi,'item')+' — отпустить плуг. Не туда — Йоша сотрёт борозду мёртвой водой.'},
+    {cond:(pi,h)=>plow.by===h,text:pi=>'Ты пашешь: '+K(pi,'item')+' — отпустить плуг. Не туда — Йоша сотрёт водой, Потап засыплет лапой.'},
     {cond:(pi,h)=>!F.bowlB&&hd(h.pos,{x:-7,z:-52})<4,text:pi=>'Вторая чаша: доведи сюда лаву — откроется сундук кузнецов.'});
   lubokShard(9,0.9,-56.4);   // СЮ.2: осколок лубка у дальнего края поля
   W.spawns=[[new V3(-2.6,0,9),new V3(-4.6,0,10)],[new V3(2.6,0,9),new V3(4.6,0,10)]];W.startAct=[0,0];

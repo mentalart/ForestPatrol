@@ -22,4 +22,13 @@ chk(!arena.includes('bolvan')&&!arena.includes('pechnik'),'первая волн
 F.drained=true;let t=0;while(!F.wave2&&t<300){ZC.tick(1);t++;}const a2=W.enemies.filter(e=>e.alive).map(e=>e.kind);
 chk(F.wave2&&a2.includes('bolvan')&&a2.includes('pechnik'),'вторая волна: '+a2.join(','));'pech1='+p1+' wave1='+arena.join(',')+' wave2='+a2.filter(k=>k!=='zmeenysh').join(',')
 //@@
+// 44.6: Потап засыпает неверную борозду лапой (умение Потапа перед бороздой)
+ZC.startFrom(ZC.LV('4-4'));ZC.G.manual=true;ZC.tick(30);U.nocine();const W=ZC.W,F=W.flags,H=ZC.HERO,P=H.proshka,Po=H.potap;
+U.walkTo(0,-3,-3.2,3);P.face=0;ZC.tick(2);U.tap('KeyR');ZC.tick(3);for(let i=0;i<70;i++){ZC.hold('KeyW',true);ZC.tick(1);}ZC.hold('KeyW',false);ZC.tick(2);U.tap('KeyR');ZC.tick(10);
+let cell=null;for(let z=-1;z>-14&&!cell;z-=0.5)for(let x=-6;x<2&&!cell;x+=0.5)if(W.furrowAt(x,z)===20&&W.furrowAt(x,z-1)!==-1)cell=[x,z];
+chk(!!cell,'нет борозды после плуга');
+if(cell){if(U.act(0)!==Po){U.tap('KeyQ');ZC.tick(10);}Po.pos.set(cell[0],0,cell[1]+1.1);Po.vel.set(0,0,0);Po.face=Math.PI;ZC.tick(2);chk(W.potapFurrow()>=0,'Потап не видит борозды перед собой');
+  while(Po.skillCd>0)ZC.tick(1);U.tap('KeyE');ZC.tick(5);chk(F.pawFill>0&&W.furrowAt(cell[0],cell[1])===10,'Потап не засыпал борозду: fill='+F.pawFill+' cell='+W.furrowAt(cell[0],cell[1]));}
+'paw fill='+F.pawFill+' cell='+cell
+//@@
 (BAD.length||_errs.length)?'FAIL tfin_w44 '+BAD.join(' || ')+' errs='+_errs.join(' | '):'tfin_w44 ok'
