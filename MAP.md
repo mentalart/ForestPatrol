@@ -104,7 +104,7 @@
 | `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo, late_99w4_song43 | 5 | t43 tfin_companion_43 tfin_w43 tfin_w4help tso43 |
 | `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 6 | t44 tfin_companion_44 tfin_w44 tfin_w4kids tfoes tso44 |
 | `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 5 | t45 tfin_companion_45 tfin_w45 tso45 tsospot |
-| `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava, late_99w4_help, late_99w4_rules, late_99w4_solo | 14 | t4b tfin_boss4b tfin_bossfxcap tfin_cam tfin_cine tfin_companion_4b tfin_gor4 tfin_gorend… |
+| `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava, late_99w4_help, late_99w4_rift4b, late_99w4_rules, late_99w4_solo | 15 | t4b tfin_boss4b tfin_bossfxcap tfin_cam tfin_cine tfin_companion_4b tfin_gor4 tfin_gorend… |
 | `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51, late_97b_buyan51_chapters, late_97g_buyan_nest | 6 | t51 tfin_ch51 tfin_companion_51 tfin_likho tfoes tso51 |
 | `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | late_97d_hare52, late_97g_buyan_nest | 3 | t52 tfin_companion_52 tfin_hare52 |
 | `5-3` | 5-3 · Утка | `build53()` · `levels/5-3.js` | late_97e_duck53, late_97g_buyan_nest | 4 | t53 tfin_companion_53 tfin_fly53 tfin_nest5 |
@@ -369,6 +369,7 @@
 | `levels/w4/late_99w4_help.js` | 4-1, 4-2, 4-3, 4-4, 4-5, 4-B | МИР 4 · ПОМОЩЬ ПО ПРОМАХАМ (docs/39, УР.2) |
 | `levels/w4/late_99w4_kids.js` | 4-1, 4-2, 4-3, 4-4, 4-5 | МИР 4 · ДЕТСКИЕ ТАЙМЕРЫ ГОЛОВОЛОМОК |
 | `levels/w4/late_99w4_lessons.js` | 4-1, 4-2, 4-3, 4-4, 4-5 | МИР 4 · УРОКИ НОВЫХ МЕХАНИК (общий шаблон FIN.lesson, как у 4-Б) |
+| `levels/4-B/late_99w4_rift4b.js` | 4-B | 4-Б «ЗМЕЙ ГОРЫНЫЧ»: КОРКА ЧЕРЕЗ ЛАВОВЫЕ ТРЕЩИНЫ (docs/39, 4Б.2) |
 | `levels/w4/late_99w4_rules.js` | 4-1, 4-2, 4-3, 4-4, 4-5, 4-B | МИР 4 · НЕВИДИМЫЕ ПРАВИЛА — ВСЛУХ (docs/39, УР.3) |
 | `levels/w4/late_99w4_solo.js` | 4-1, 4-2, 4-3, 4-4, 4-5, 4-B | МИР 4 · ОДИНОЧНЫЙ РЕЖИМ |
 | `levels/4-3/late_99w4_song43.js` | 4-3 | 4-3 «ЭЙ, УХНЕМ»: ПЕСНЯ ГОЛОСОМ (docs/39, 43.1) |
@@ -496,11 +497,11 @@
 | `40_kino_pravila.md` | Правила роликов (катсцен) — «Златая цепь» |
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 157 файлов |
+| `changes/` | 158 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 301 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 302 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
