@@ -1,11 +1,11 @@
 //@@ wait=1500
 // релиз final06 · 1-5: чердак овина — веретено удирает на повить; сушильня — сторожевые нити (задел — «дзынь» и нитяной морок; Совиный взор
-// показывает нити), засов на двоих; повить — мини-босс Веретенник: струны крест-накрест, рывок в паутинку — кокон слетел, удары; этап 2 —
+// показывает нити), засов на двоих; повить — мини-босс Веретенник: струны крест-накрест, кто-то встаёт в золотой круг — рывок из гнезда в паутинку, кокон слетел, удары; этап 2 —
 // мороки и три веретена (настоящее — Совиным взором); финал с Кикиморой, уровень пройден. Оба игрока — скриптом.
 // @timeout=1500
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 Math.random=(()=>{let q=777;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
-window.F=()=>ZC.W.flags;window.P=ZC.players;window.H=ZC.HERO;window.B=()=>ZC.W.vb15;
+window.F=()=>ZC.W.flags;window.P=ZC.players;window.H=ZC.HERO;window.B=()=>ZC.W.vb15;window.K=()=>ZC.W.k15;
 ZC.startFrom(ZC.LV('1-5'));ZC.G.manual=true;ZC.tick(30);U.nocine();ZC.tick(30);
 ZC.FIN.warp(-2.5,-31.2,7);ZC.tick(20);const c=U.until(()=>ZC.G.cine,3);ZC.skip();ZC.tick(30);
 ZC.W.enemies.forEach(e=>{e.alive=false;e.g.visible=false;});   // мороки сеней и овина остались позади (телепорт)
@@ -37,7 +37,7 @@ r.push('cine '+c,U.st(),'down='+P[0].downed+','+P[1].downed,'cine='+!!ZC.G.cine,
 // этап 1: струны в колышки (Игрок 1 — в западный, Игрок 2 — в восточный), паутинка между ними; герои — за паутинкой; ждём рывок
 window.str=(pi,sx,sz,fx,fz)=>{U.goto(pi,fx,fz,8,0.3);const h=U.act(pi);h.face=Math.atan2(sx-h.pos.x,sz-h.pos.z);for(let i=0;i<4&&!ZC.W.threads.some(t=>t.string&&t.owner===pi&&t.sz<-52.4);i++){ZC.press(U.K[pi].i);ZC.tick(40);}
   return ZC.W.threads.some(t=>t.string&&t.owner===pi&&t.sz<-52.4);};
-window.webUp=()=>{const a=str(0,7,-70.5,-4,-60.5),b=str(1,-7,-70.5,4,-60.5);return a+'/'+b+' webs='+ZC.W.webs.filter(w=>w.y>6).length;};
+window.webUp=()=>{const a=str(0,7,-71.5,-4,-61.5),b=str(1,-7,-71.5,4,-61.5);return a+'/'+b+' webs='+ZC.W.webs.filter(w=>w.y>6).length;};
 window.fightPhase=(ph,max)=>{const log=[];let catches=0,prevMode='';for(let i=0;i<max*60&&B().phase<=ph;i++){if(ZC.G.cine){ZC.skip();ZC.tick(5);continue;}const b=B(),e=b.e;
     if(b.mode!==prevMode){log.push(b.mode);prevMode=b.mode;if(b.mode==='caught')catches++;}
     if(b.mode==='decoy'){const pel=ZC.HERO.pelageya;if(ZC.W.owlT<=0&&i%30===0)ZC.press('KeyL');const r=b.decoys.find(d=>d.real&&d.alive);if(r&&ZC.W.owlT>0){U.step(1,r.g.position.x+1.4,r.g.position.z+1.4,0.8)&&(U.act(1).face=Math.atan2(r.g.position.x-U.act(1).pos.x,r.g.position.z-U.act(1).pos.z),i%10===0&&ZC.press('Comma'));}ZC.tick(1);continue;}
@@ -46,9 +46,9 @@ window.fightPhase=(ph,max)=>{const log=[];let catches=0,prevMode='';for(let i=0;
     for(const pi of[0,1]){const h=U.act(pi);
       if(b.mode==='sweepW'||b.mode==='sweep'){if(h.grounded&&i%12===pi*6)ZC.press(U.K[pi].j);continue;}
       if(!b.cocoon||e.state==='broken'){U.hit(pi,e,i);continue;}
-      // стоим за паутинкой: на линии «Веретенник — паутинка», в 3 м за ней
-      const w=ZC.W.webs.find(q=>q.y>6);if(w){const dx=w.x-e.pos.x,dz=w.z-e.pos.z,d=Math.hypot(dx,dz)||1;U.step(pi,w.x+dx/d*3.2+(pi?1:-1)*0.6,w.z+dz/d*3.2,0.5);}else U.rel(pi);
-      if(b.mode==='aim'&&b.tgt===h&&b.mt>0.9&&i%20===0&&!w)ZC.press(U.K[pi].r);}
+      // паутинка готова: Игрок 1 — в золотой круг-приманку, Игрок 2 — ждёт сбоку у паутинки
+      const w=K().webReady();if(w){if(pi===0)U.step(0,K().BAIT.x,K().BAIT.z,0.4);else U.step(1,2.4,-62.6,0.5);}else U.rel(pi);
+      if(b.mode==='aim'&&b.tgt===h&&b.mt>0.9&&i%20===0&&!b.bait)ZC.press(U.K[pi].r);}
     ZC.tick(1);}
   U.rel(0);U.rel(1);const e=B().e;return 'catches='+catches+' emb='+(e&&e.embers)+' st='+(e&&e.state)+' '+log.slice(-30).join(',')+' petals='+P[0].petals+','+P[1].petals+' down='+P[0].downed+','+P[1].downed+' '+U.st();};
 const r=['web '+webUp(),ZC.W.threads.filter(t=>t.string).map(t=>t.owner+':'+t.sx.toFixed(1)+','+t.sz.toFixed(1)+'→'+t.stake.x+','+t.stake.z).join(' ')];r.push(fightPhase(1,150),'phase='+B().phase,'petals='+P[0].petals+','+P[1].petals);r.push(B().phase>=1.5?'phase1 ok':'FAIL phase1');r
