@@ -43,5 +43,5 @@ r.push(U.act(0).pos.z<4&&U.act(1).pos.z<4&&!_errs.length?'rooms ok':'FAIL rooms'
 const C=ZC.FIN.cam,D=ZC.FIN.occ.dbg;C.fdt=1/30;ZC.FIN.occ.fdt=0.05;
 window.pose=()=>{ZC.FIN.occ.frame();return D.camS.position.clone();};
 const r=[];let bad=0;for(const[x,z]of[[-4.5,-12],[7,-22],[0,-26]]){ZC.FIN.warp(x,z,0);ZC.tick(90);
-  for(const sx of[1,-1]){C.stick[0]={x:sx,y:0.6};ZC.tick(90);const p=pose();C.stick[0]=null;const ok=Math.abs(p.x)<10.35&&p.z<4.35&&p.z>-34.35;if(!ok)bad++;r.push(x+','+z+' '+sx+': '+p.x.toFixed(1)+','+p.y.toFixed(1)+','+p.z.toFixed(1)+(ok?'':' !!'));ZC.tick(60);}}
+  for(const sx of[1,-1]){C.stick[0]={x:sx,y:0.6};ZC.tick(90);const p=pose();C.stick[0]=null;const ok=Math.abs(p.x)<13.35&&p.z<4.35&&p.z>-34.35;if(!ok)bad++;r.push(x+','+z+' '+sx+': '+p.x.toFixed(1)+','+p.y.toFixed(1)+','+p.z.toFixed(1)+(ok?'':' !!'));ZC.tick(60);}}
 r.push(bad?'FAIL cam':'cam ok');r

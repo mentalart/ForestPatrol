@@ -5,7 +5,8 @@
 //   ткацкая: человек на подножке — бот у челнока бросает клубок в зев; иначе бот сам держит подножку;
 //   овин: на каждом этаже — в кольцо, клубок в колышек, ждёт струну друга, прыжок на серединку (оба героя); Пелагея на галерее рубит старую нить;
 //   сушильня: Пелагея включает Совиный взор, идёт просветами, низкие нити — прыжком; встаёт на свободную плиту засова;
-//   повить: свою струну — поперёк струны человека (паутинка), встаёт за паутинкой, от белой нити — прыжок, от рывка — кувырок;
+//   повить: из своего кольца — струну в колышек напротив (паутинка посередине); паутинка готова — встаёт в золотой круг-приманку, если человек
+//     не встал в него сам (тогда ждёт у паутинки); от белой нити — прыжок, от рывка не в паутинку — кувырок;
 //     кокон слетел — общий бой; три веретена — Пелагея Совиным взором находит настоящее и бьёт.
 const KM15_S=[[[-5.2,-11.9],[-5.2,-20.1]],[[-9.6,-29.3],[-5.9,-29.3]],[[-6,-33.7],[1,-33.7]]];
 const KM15_R=[[[-1.8,-20.2,0],[-1.8,-11.8,0]],[[-5.9,-25,3.4],[-9.6,-25,3.4]],[[1,-30.1,7],[-6,-30.1,7]]];
@@ -20,7 +21,6 @@ function km15DryNext(h){const z=h.pos.z,x=h.pos.x;
   if(z>-46.6)return Math.abs(x+4)>0.4?[-4,-45.3]:[-4,-47.8];          // −46,6: при x<0 низкая — прыжок
   return null;}
 const KM15_DRY=[[-2.5,-35.6],[4,-36.2],[4,-39.2],[4,-42.2],[-5.2,-42.2],[-5.2,-45.2],[-4,-45.4],[-4,-48.2]];   // просветы сушильни; низкие нити — прыжком
-const KM15_SPOT=[[4,-60.5],[-4,-60.5],[4,-67.5],[-4,-67.5]];   // откуда бросать струну на повити (первое — кольцо Игрока 2)
 const KM15={w:null,t:0,hunt:0};
 const km15=()=>{if(KM15.w!==W){KM15.w=W;KM15.t=0;KM15.hunt=0;}return KM15;};
 const km15K=()=>W.k15;
@@ -28,9 +28,6 @@ const km15Tier=h=>!km15K().inBarn(h)?-1:h.pos.y>6.4?2:h.pos.y>2.9?1:0;
 const km15Str=(pi,t)=>{const s=KM15_S[t][pi];return W.threads.some(q=>q.string&&!q.sag&&q.owner===pi&&q.stake&&Math.hypot(q.stake.x-s[0],q.stake.z-s[1])<0.3);};
 const km15Web=t=>{const c=KM15_W[t];return W.webs.some(w=>Math.hypot(w.x-c[0],w.z-c[1])<1.5&&Math.abs(w.y-c[2])<0.8);};
 const km15Tap=(a,gap)=>{if(KM15.t>G.time-(gap||1))return;KM15.t=G.time;cmpTap(a);};
-// пересекаются ли отрезки (струна человека и наша будущая) где-то посередине — там будет паутинка
-function km15Cross(ax,az,bx,bz,cx,cz,dx,dz){const r1x=bx-ax,r1z=bz-az,r2x=dx-cx,r2z=dz-cz,den=r1x*r2z-r1z*r2x;if(Math.abs(den)<1e-3)return false;
-  const u=((cx-ax)*r2z-(cz-az)*r2x)/den,v=((cx-ax)*r1z-(cz-az)*r1x)/den;return u>0.15&&u<0.85&&v>0.15&&v<0.85;}
 CMP.route('1-5',[
   // сени: кикиморки — общий бой; этот шаг ведёт бота к тем, что стоят в стороне
   {id:'foesA',done:()=>{const K=km15K();return K.aFoes.started&&K.aFoes.list.every(e=>!e.alive);},run:h=>{
@@ -82,16 +79,11 @@ CMP.route('1-5',[
       const p=r.g.position;if(cmpGoto(h,p.x+1.6,p.z+1.6,0.9)>0.9)return;h.face=Math.atan2(p.x-h.pos.x,p.z-h.pos.z);km15Tap('attack',0.45);return;}
     if(B.mode==='sweepW'||B.mode==='sweep'){if(h.grounded&&hd(h.pos,e.pos)<9.6&&B.mode==='sweep')km15Tap('jump',0.3);return;}
     if(!B.cocoon||e.state==='broken')return 'follow';                                         // кокон слетел — общий бой
-    if(B.mode==='aim'&&B.tgt===h&&B.mt>0.7&&!W.webs.some(w=>w.y>6&&hd(w,h.pos)<5)){km15Tap('roll',0.8);return;}
+    if(B.mode==='aim'&&B.tgt===h&&B.mt>0.7&&!B.bait){km15Tap('roll',0.8);return;}
     if(W.enemies.some(q=>q!==e&&q.alive&&hd(q.pos,h.pos)<5))return 'follow';                 // мороки рядом — общий бой
-    const mine=W.threads.find(t=>t.owner===1&&t.string&&!t.sag&&t.sz<-52.4),his=W.threads.find(t=>t.owner===0&&t.string&&!t.sag&&t.sz<-52.4);
-    const web=W.webs.find(w=>w.y>6);
-    if(web){const dx=web.x-e.pos.x,dz=web.z-e.pos.z,d=Math.hypot(dx,dz)||1;cmpGoto(h,clamp(web.x+dx/d*3.2,-10.5,10.5),clamp(web.z+dz/d*3.2,-73,-54),0.5);return;}   // за паутинкой
-    if(mine&&!his)return;                                                                       // своя струна есть — ждём струну человека
-    // своя струна — поперёк струны человека (или из точки по умолчанию)
-    let best=null;for(const s of KM15_SPOT)for(const st of K.ARS){if(Math.hypot(st.x-s[0],st.z-s[1])>15.2)continue;
-      if(his&&!km15Cross(his.sx,his.sz,his.stake.x,his.stake.z,s[0],s[1],st.x,st.z))continue;const dd=Math.hypot(s[0]-h.pos.x,s[1]-h.pos.z);if(!best||dd<best.d)best={s,st,d:dd};}
-    if(!best)best={s:[4,-60.5],st:K.AR_G[1].st};
-    if(cmpGoto(h,best.s[0],best.s[1],0.3)>0.3)return;h.face=Math.atan2(best.st.x-h.pos.x,best.st.z-h.pos.z);km15Tap('item',2.5);}},   // не скрестились — новая струна (старая уйдёт, их не больше трёх)
+    if(K.webReady()){if(K.inBait(hh)&&!K.inBait(h)){cmpGoto(h,2.4,-62.6,0.5);return;}       // человек в круге — бот ждёт у паутинки
+      cmpGoto(h,K.BAIT.x+0.3,K.BAIT.z,0.4);return;}                                             // паутинка готова — в золотой круг
+    const G2=K.AR_G[1];if(W.threads.some(t=>t.owner===1&&t.string&&!t.sag&&t.sz<-52.4)){cmpGoto(h,G2.r.x+1.2,G2.r.z+1,0.6);return;}   // своя струна есть — ждём струну человека
+    if(cmpGoto(h,G2.r.x,G2.r.z,0.3)>0.3)return;h.face=Math.atan2(G2.st.x-h.pos.x,G2.st.z-h.pos.z);km15Tap('item',2.5);}},   // из своего кольца — клубок в колышек напротив
   {id:'end',done:()=>!!W.flags.out,run:()=>'follow'},
 ]);
