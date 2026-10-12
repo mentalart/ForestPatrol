@@ -7,7 +7,7 @@
 // Пропуск ролика даёт то же состояние. Кадры: Кот-камень, Кот проснулся, кран к стану.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(false);ZC.startFrom(ZC.LV('luko'));ZC.G.manual=true;ZC.tick(3);const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}
-const CI=ZC.FIN.cine,ACT=ZC.FIN.actors,V=THREE.Vector3;window.CREP=[];window.CBAD=[];window.CHK={t0:{},done:{}};
+const CI=ZC.FIN.cine,ACT=ZC.FIN.actors,V=THREE.Vector3;window.CI=CI;window.CREP=[];window.CBAD=[];window.CHK={t0:{},done:{}};
 // реплика: в середине — говорящий в кадре и лицом к камере (скалярное «вперёд»·«на камеру» > −0,1)
 window.SPK=(cd)=>{const S=ACT.speaker;if(!S||!S.who||S.who==='zven'||S.until<ZC.G.time)return;const k=S.who+'@'+S.until.toFixed(2);if(CHK.done[k])return;
   if(!CHK.t0[k])CHK.t0[k]=ZC.G.time;if(ZC.G.time<CHK.t0[k]+(S.until-CHK.t0[k])*0.5)return;CHK.done[k]=1;const L=CI.locate(S.who);if(!L)return;
@@ -44,7 +44,8 @@ ZC.tick(150);const a=U.hero(0),b=U.hero(1),mz=(a.pos.z+b.pos.z)/2;if(!(Z.pos.z<m
 if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));if(CBAD.length)throw new Error('FAIL '+CBAD.slice(0,6).join(' | '));
 r+' · крупн='+[...SZ].join('/')+' движ='+[...MV].join('/')+' · '+CREP.join(' ; ')
 //@@
-const dz=ZC.W.shoreDZ||0,r=[U.walkTo(0,-1.2,-18.6-dz,8),U.walkTo(1,1.2,-18.6-dz,8)];ZC.tick(30);r.join(' ')
+// в обход дуба (ствол — x 0, z −7): сбоку, потом к кольцу
+const dz=ZC.W.shoreDZ||0,r=[U.walkTo(0,-5,-7,10),U.walkTo(1,5,-7,10),U.walkTo(0,-1.2,-18.4-dz,12),U.walkTo(1,1.2,-18.4-dz,12)];ZC.tick(30);r.join(' ')
 //@@
 U.tap('Space');ZC.tick(20);const F=ZC.W.flags,A=ZC.FIN.lukoArrive();if(!F.rushnik)throw new Error('рушник не раскатан у кольца');if(A.beacon)throw new Error('маяк не погас');
 'рушник: cine='+!!ZC.G.cine

@@ -3,6 +3,7 @@
 //   node tools/tests/cine_frames.js 2-2 --nth 1                  # второй ролик, что случится сам
 //   node tools/tests/cine_frames.js 1-1 --code "ZC.W.rzt.state='done';ZC.W.rzt.onDone()"   # сперва пропустить ролики, выполнить код — и снять следующий ролик
 //   node tools/tests/cine_frames.js 2-2 --warp crown             # перенести героев (FIN.warp: номер колокольчика или имя участка) — и снять следующий ролик
+//   node tools/tests/cine_frames.js luko --at 6.2,23,24.8        # кадры в заданные моменты ролика (секунды), а не по одному на план
 //   опции: --html путь (по умолчанию zlataya_cep/zlataya_cep_final06.html — сперва build_final.py), --out папка (tools/tests/shots/cine), --solo
 // Печатает для каждого плана время, реплику в субтитрах и имя файла кадра.
 const {chromium}=require('./pw');const path=require('path'),fs=require('fs');
@@ -24,7 +25,7 @@ if(!fs.existsSync(html)){console.log('нет сборки '+html+' — python3 z
     if(!ok){console.log('ролик не начался за 30 с игры'+(k?' (найдено роликов: '+k+')':''));await browser.close();process.exit(1);}
     if(k>=nth)break;await E(`ZC.skip();ZC.tick(5);0`);}
   const info=await E(`(()=>{const d=ZC.FIN.lastCine||{};return {dur:ZC.G.cine.dur,shots:(d.shots||[]).map(s=>s.t)};})()`);
-  const times=(info.shots.length?info.shots:[0]).map((t,i,A)=>{const nx=i+1<A.length?A[i+1]:info.dur;return Math.min(t+Math.max(0.4,(nx-t)*0.45),nx-0.05);});
+  const AT=opt('--at');const times=AT?AT.split(',').map(Number).filter(x=>x>=0).sort((x,y)=>x-y):(info.shots.length?info.shots:[0]).map((t,i,A)=>{const nx=i+1<A.length?A[i+1]:info.dur;return Math.min(t+Math.max(0.4,(nx-t)*0.45),nx-0.05);});
   console.log(level+': ролик '+info.dur.toFixed(1)+' с, планов '+info.shots.length);
   for(let i=0;i<times.length;i++){const r=await E(`(()=>{let n=0;while(ZC.G.cine&&ZC.G.cine.t<${times[i]}&&n<6000){ZC.tick(1);n++;}${hideTitle}
       const s=document.getElementById('subs');return {t:ZC.G.cine?ZC.G.cine.t:-1,sub:s&&s.style.display!=='none'?s.textContent.replace(/\\s+/g,' ').trim():''};})()`);

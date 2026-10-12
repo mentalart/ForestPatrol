@@ -18,7 +18,7 @@ const LA_KOT=new V3(2.3,0,-4.6),LA_STAN=new V3(0,0,-24.4);   // Кот; стан
 // Кот окаменел: каждому мешу — своя копия материала с холодным серым оттенком (общий CMAT персонажей не трогаем); k — 0 камень … 1 живой
 function laStone(kot,k){if(!kot)return;const ms=Object.values(kot.meshes||{}).filter(m=>m&&m.isMesh);
   if(k>=1){ms.forEach(m=>{if(m.userData.laMat0){m.material=m.userData.laMat0;delete m.userData.laMat0;}});LA.stone=null;return;}
-  ms.forEach(m=>{if(!m.userData.laMat0){m.userData.laMat0=m.material;m.material=m.material.clone();}m.material.color.setRGB(lerp(0.62,1,k),lerp(0.66,1,k),lerp(0.72,1,k));});LA.stone=k;}
+  ms.forEach(m=>{if(!m.userData.laMat0){m.userData.laMat0=m.material;m.material=m.material.clone();}m.material.color.setRGB(lerp(0.5,1,k),lerp(0.56,1,k),lerp(0.66,1,k));});LA.stone=k;}
 // обрывок цепи на ветке дуба (дуб — makeOak(0,-7), ветка справа); висит до следующего прихода (в хабе его нет)
 function laFrag(){if(LA.frag&&LA.frag.parent)return LA.frag;const g=new THREE.Group();g.position.set(2.38,6.42,-6.8);W.group.add(g);
   const gm=M(COL.gold,{emissive:0xb07a10,emissiveIntensity:0.45});
@@ -38,12 +38,12 @@ function laPortal(p){const m=new THREE.Mesh(new THREE.TorusGeometry(1.6,0.12,8,4
   later(2.4,()=>anim(0.6,k=>{m.scale.setScalar(Math.max(0.01,1-k));m.material.opacity=0.95*(1-k);disc.material.opacity=0.55*(1-k);if(k>=1){W.group.remove(m);}}));return m;}
 lukoScene=function(){const Z=W.zven,kot=W.kot,F=W.flags,T=HERO,R=kot&&kot.rig;const dz=W.shoreDZ||0;LA_STAN.set(0,0,-18.4-dz);
   const KH=()=>kot.head.getWorldPosition(new V3()),ZP=()=>Z.pos.clone(),PORT=new V3(0,8.2,4.4);
-  const ear=()=>KH().add(new V3(-0.55,0.35,0.25));
+  const ear=()=>KH().add(new V3(0.5,0.6,-0.15));   // над правым ухом — не между камерой и мордочкой
   const spots=[['potap',-3.0,4.7],['proshka',-1.3,5.3],['yosha',0.6,5.3],['pelageya',2.5,4.8]];
   let lidK=0,armK=0,headK=0;const paw=R&&(R.armR||R.armL);
   play({dur:25,fov:50,kino:true,mood:['#ffc890',0.1],
    shots:[
-     KS(0,[0,3.0,16],[0,4.4,4],{move:'push',amp:0.6}),                                                            // 1 общий: кольцо над поляной, герои падают
+     KS(0,[0.4,2.4,12.6],[0,3.6,4],{move:'push',amp:0.6}),                                                            // 1 общий: кольцо над поляной, герои падают
      KS(2.3,[0.6,1.5,1.6],[0.6,1.0,5.3],{trk:KC.fcam(T.yosha,2.8,0.25,0.15,0.12)}),                              // 2 средний: Йоша — «Ух ты!»
      KS(4.3,[2.2,1.2,-1.4],[0.4,1.6,-7],{p2:[3.4,5.2,-3.2],l2:[2.2,5.6,-6.8],dur:2.3,move:'none'}),            // 3 кран по стволу: бороздка, обрывок цепи
      KS(6.7,[0.9,1.7,-1.6],[2.3,1.3,-4.6],{trk:KC.fcam(kot,3.4,0.45,0.1,0.15),fov:-2}),                         // 4 средний: Кот-камень, Звенышко летит к уху
@@ -53,7 +53,7 @@ lukoScene=function(){const Z=W.zven,kot=W.kot,F=W.flags,T=HERO,R=kot&&kot.rig;co
      KS(16.1,[1.6,1.7,-3.0],[2.3,1.6,-4.6],{trk:KC.fcam(kot,1.9,0.25,0.06,0.18)}),                              // 8 крупно: присказка
      KS(20.0,[-1.6,1.3,3.6],[-1.3,0.9,5.3],{trk:KC.fcam(T.proshka,1.7,-0.75,0.1,0.1)}),                         // 9 Прошка шепчет
      KS(21.95,[1.0,1.8,-2.2],[2.3,1.5,-4.6],{trk:KC.fcam(kot,2.6,-0.5,0.15,0.1)}),                              // 10 Кот показывает на море
-     KS(23.6,[3.2,3.4,-2.6],[1.0,2.0,-14],{p2:[1.2,7.5,-9],l2:[0,0.8,-18.4-dz],dur:1.4,move:'none',tr:'whip'})], // 11 кран к стану у моря
+     KS(23.6,[6.2,2.8,-2.6],[2.0,2.0,-14],{p2:[4.8,6.4,-12.5],l2:[0,0.8,-18.4-dz],dur:1.4,move:'none',tr:'whip'})], // 11 кран к стану у моря
    says:[[2.4,1.9,'yosha','Ух ты! Море! Дуб какой!'],
      [4.4,2.3,null,'<i>Дуб стоит — а цепи нет,</i><br><i>Лишь обрывок звякнул вслед.</i>',true],
      [6.8,1.5,'zven','Дзинь-дзинь! Кот, проснись!'],
