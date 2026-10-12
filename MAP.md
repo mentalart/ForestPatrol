@@ -505,7 +505,7 @@
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `42_priskazka_intro.md` | «Присказка» — вступительный ролик игры (сценарий) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 168 файлов |
+| `changes/` | 169 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
