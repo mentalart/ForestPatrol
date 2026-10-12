@@ -375,8 +375,8 @@ function build15(){
     arenaCam.look.set(clamp(cx*0.5,-5,5),7.6,clamp(cz,-68,-61));arenaCam.pos.set(arenaCam.look.x*0.7,arenaCam.look.y+17.7,arenaCam.look.z+9.4);return arenaCam;}
   const bb=$('bossbar');let bbOn=false;
   function bossBar(){const ph=B.phase;if(!bb)return;
-    if(!G.cine&&ph>=1&&ph<3){const st=ph<2?1:2,k=bossStep(),h='<b>Веретенник</b> · этап '+st+' / 2 · '+(k===0?'<span style="color:#ffd76a">найти настоящее — Совиный взор</span>'
-        :['струны крест-накрест','встань в круг','бей острие'].map((t,i)=>'<span style="color:'+(i+1===k?'#ffd76a':'rgba(255,255,255,.5)')+'">'+(i+1)+'. '+t+'</span>').join(' → '));
+    if(!G.cine&&ph>=1&&ph<3){const st=ph<2?1:2,k=bossStep(),h='<b>Веретенник</b> · этап '+st+' / 2 · '+(k===0?'<span style="color:#ffd76a">найти настоящее</span>'
+        :['струны','в круг','острие'].map((t,i)=>'<span style="color:'+(i+1===k?'#ffd76a':'rgba(255,255,255,.5)')+'">'+t+'</span>').join(' → '));   // коротко: длинная полоса на 720p наезжала на карточки
       if(bb.innerHTML!==h)bb.innerHTML=h;bb.style.display='block';bbOn=true;}
     else if(bbOn){bb.style.display='none';bbOn=false;}}
   {const _ol=W.onLeave;W.onLeave=()=>{if(bb)bb.style.display='none';bbOn=false;if(_ol)_ol();};}
