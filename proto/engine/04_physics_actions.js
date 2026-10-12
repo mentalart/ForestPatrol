@@ -44,7 +44,7 @@ function updatePlayer(pi,dt){
   if(!lock&&h.knockT<=0){if(btn(pi,'right'))ix+=1;if(btn(pi,'left'))ix-=1;if(btn(pi,'up'))iz+=1;if(btn(pi,'down'))iz-=1;const pa=padAx(pi);if(pa.x||pa.y){ix+=pa.x;iz-=pa.y;}}
   if(W.custom){W.custom(pi,h,dt,{ix,iz,lock});return;}                    // особые уровни (гусельный) управляют героем сами
   const back=camBack(),right=new V3(back.z,0,-back.x);let wx=right.x*ix-back.x*iz,wz=right.z*ix-back.z*iz;const wl=Math.hypot(wx,wz);if(wl>1){wx/=wl;wz/=wl;}
-  if(!lock){if(tap(pi,'swap')){if(G.solo)soloSwap();else{const full=p.blue>=1&&(W.abil.clew||W.abil.gusli||W.abil.pero||W.abil.kleshi)&&!o.cling;doSwap(pi);if(full&&active(pi)!==h)bogatyrExit(pi,active(pi));}}
+  if(!lock){if(tap(pi,'swap')){if(G.solo)soloSwap();else doSwap(pi);}
     if(tap(pi,'call'))doCall(pi);if(tap(pi,'item')){if(W.itemSign&&W.itemSign(pi))W.itemSign(pi)(pi);else if(W.world===2)playGusli(pi);else if(W.world===3)playFeather(pi);else if(W.world===4)playTongs(pi);else if(W.world===5)useSign(pi);else throwYarn(pi);}}
   const hh=active(pi);if(hh!==h){updateLeftBehind(p,other(pi),dt);return;}
   // держит толстую струну и оборачивается к тем, кто на ней, — струна проседает в ряску (ловушка 1-2)
@@ -79,7 +79,7 @@ function doCall(pi){const o=other(pi),h=active(pi);if(h.cling)return;
 const SOLO4=['proshka','potap','pelageya','yosha'];
 function soloSwap(){if(G._swT===G.time)return;G._swT=G.time;const pi0=G.soloPi,cur=active(pi0);if(cur.cling)return;const i=SOLO4.indexOf(cur.kind);
   for(let k=1;k<4;k++){const n=HERO[SOLO4[(i+k)%4]];if(!n||n.cling)continue;const q=n.player,pq=players[q];if(pq.downed)continue;
-    if(q===pi0){if(W.noSwap&&W.noSwap(q))continue;const full=pq.blue>=1&&(W.abil.clew||W.abil.gusli||W.abil.pero||W.abil.kleshi);doSwap(q);if(active(q)!==n)continue;if(full)bogatyrExit(q,n);return;}
+    if(q===pi0){if(W.noSwap&&W.noSwap(q))continue;doSwap(q);if(active(q)!==n)continue;return;}
     cur.vel.x=0;cur.vel.z=0;cur.guard=false;cur.glide=false;
     if(!n.active){if(active(q).cling||(W.noSwap&&W.noSwap(q)))continue;doSwap(q);if(active(q)!==n)continue;}
     else{G.stats.swaps++;SFX.swap();ringFx(n.pos,PCOL[q],1.6);}

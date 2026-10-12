@@ -53,7 +53,7 @@ function build2B(){
       halves=[waterZone(-11,0,-25,-3,-2,0.8,{floor:-2,shell:false,curb:false,start:'high'}),waterZone(0,11,-25,-3,-2,0.8,{floor:-2,shell:false,curb:false,start:'high'})];halves[0].shell=shells[3];halves[1].shell=shells[1];
       W.passiveCollect=true;say('vod','А вот я вас — воронкой закручу!',2.4);banner('Фаза 2 · течение','#7ad0a0',2.6,'сделайте воду разной: у одного прилив, у другого отлив — течение и встанет');}
     if(n===3){e.embers=e.maxEmb=1;e.guardAll=()=>e.state!=='broken';e.guardText='пузырь над головой — рогатку!';for(const z of halves){setWater(z,'low');z.noGusli=true;}F.current=0;W.passiveCollect=false;players.forEach(p=>{p.blue=1;});raiseBubble();
-      say('vod','Весь омут — на вас, держитесь!',2.4);banner('Фаза 3 · замах','#7ad0a0',2.6,'Прошка — стрельни в жёлудь на пузыре · синяя полоска полна — смени героя');}}
+      say('vod','Весь омут — на вас, держитесь!',2.4);banner('Фаза 3 · замах','#7ad0a0',2.6,'Прошка — стрельни в жёлудь на пузыре · богатырский выход — на вас обоих');}}
   function raiseBubble(){if(!bubble){const g=new THREE.Group();const m=new THREE.Mesh(new THREE.SphereGeometry(3.2,22,16),M(0x5ab0c8,{transparent:true,opacity:0.55,depthWrite:false}));g.add(m);
       const mk=markMesh(1.6);mk.position.set(0,0,3.3);g.add(mk);W.group.add(g);bubble={g,m,mk,up:false,k:0};
       W.marks.push({pos:new V3(),active:()=>F.phase===3&&bubble.up&&vod.state!=='broken',onHit:()=>{burstBubble();}});bubble.markRef=W.marks[W.marks.length-1];}
@@ -100,8 +100,7 @@ function build2B(){
     prompt(pi,'item',()=>headOf(h()),()=>F.phase===2&&halves&&F.current>0&&(pi===0?sideOf(h())!==sideOf(active(1)):true),'сделай воду разной');
     prompt(pi,'guard',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig!=='red'&&e.help)||W.bolts.some(b=>b.tgt===h()&&!b.refl&&b.eta<0.8));
     prompt(pi,'roll',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&e.tgt===h()&&e.state==='wind'&&e.sig==='red'&&e.help));
-    prompt(pi,'attack',()=>headOf(h()),()=>vod&&(vod.state==='broken'||(F.phase===2&&F.current===0))&&hd(vod.pos,h().pos)<5,F.phase===3?'вместе!':'');
-    prompt(pi,'swap',()=>headOf(h()),()=>F.phase===3&&players[pi].blue>=1,'богатырский выход');}
+    prompt(pi,'attack',()=>headOf(h()),()=>vod&&(vod.state==='broken'||(F.phase===2&&F.current===0))&&hd(vod.pos,h().pos)<5,F.phase===3?'вместе!':'');}
   prompt(0,'skill',()=>headOf(T.proshka),()=>F.phase===3&&bubble&&bubble.up&&T.proshka.active,'в жёлудь!');
   prompt(0,'swap',()=>headOf(T.proshka),()=>F.phase===3&&bubble&&bubble.up&&T.potap.active,'Прошка — рогатка');
   W.tipZones.push({cond:()=>F.phase===2&&F.current>0,text:pi=>'Один — прилив '+K(pi,'item')+', другой — отлив!'},
