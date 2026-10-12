@@ -11,6 +11,8 @@
 // АР.9 мелочи: 4-3 лямка натягивается и скрипит, пыль из-под баржи; 4-4 «голова» лавы у фронта, комья за плугом; 4-5 цепи скрипят и дрожат в такт качанию.
 // W.fx4(вид, точка) — хук прототипа для звуков и эффектов, которых в прототипе нет; FIN.w4art.log — для ботов (tfin_w4art).
 const W4A={log:[],n:{}};FIN.w4art=W4A;
+// косметика берёт случайность из своего генератора: случайные числа игры (Math.random) не сдвигаются — боты с зерном видят тот же мир
+const w4aR=(()=>{let q=987654;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})(),w4aRand=(a,b)=>a+(b-a)*w4aR();
 const w4aLog=k=>{W4A.n[k]=(W4A.n[k]||0)+1;if(W4A.log.length<200)W4A.log.push(k);};
 {const P={'4-1':{grade:[[255,170,110,.16],[20,30,70,.2],1.45]},
   '4-2':{bg:0x6a4a44,fog:[0x6e4e46,26,100],amb:[0xfff0e0,0.62],sun:[0xfff0d8,0.9],grade:[[255,240,220,.12],[60,40,30,.16],1.36]},
@@ -65,26 +67,26 @@ function w4aLava(){if(W.world!==4||!W.lavas.length)return;const bub=[],bm=MB(0xf
     const fl=Math.hypot(L.flow.x,L.flow.z)||1;tex.rotation=Math.atan2(L.flow.x,-L.flow.z);strips.push({tex,v:fl});}
   W.w4strips=strips;
   W.updates.push(dt=>{for(const s of strips){s.tex.offset.y-=dt*s.v*0.25;}
-    const c=camS.position;for(const b of bub){if(b.t<1){b.t+=dt*1.4;const k=b.t;b.m.scale.setScalar(0.4+k*1.2);b.m.material.opacity=1-k*0.6;if(k>=1){b.m.visible=false;burst(b.m.position.clone(),0xffa040,4,1.8,0.5);w4aLog('pop');if(AUD.ready()&&hd(b.m.position,c)<16)AUD.nz({type:'lowpass',f0:420,d:0.12,v:0.05});}continue;}
-      if(Math.random()<dt*0.9){const L=W.lavas[Math.floor(Math.random()*W.lavas.length)];const x=rand(Math.max(L.minx,c.x-12),Math.min(L.maxx,c.x+12)),z=rand(Math.max(L.minz,c.z-16),Math.min(L.maxz,c.z+4));
+    const c=camS.position;for(const b of bub){if(b.t<1){b.t+=dt*1.4;const k=b.t;b.m.scale.setScalar(0.4+k*1.2);b.m.material.opacity=1-k*0.6;if(k>=1){b.m.visible=false;w4aLog('pop');if(AUD.ready()&&hd(b.m.position,c)<16)AUD.nz({type:'lowpass',f0:420,d:0.12,v:0.05});}continue;}
+      if(w4aR()<dt*0.9){const L=W.lavas[Math.floor(w4aR()*W.lavas.length)];const x=w4aRand(Math.max(L.minx,c.x-12),Math.min(L.maxx,c.x+12)),z=w4aRand(Math.max(L.minz,c.z-16),Math.min(L.maxz,c.z+4));
         if(!(x>L.minx&&x<L.maxx&&z>L.minz&&z<L.maxz))continue;const g=groundAt(x,z,L.y+0.5,0);if(g.y>L.y-0.2)continue;b.t=0;b.m.visible=true;b.m.position.set(x,L.y+0.02,z);}}});}
 // ---------- АР.4 + АР.5 + АР.7: обёртки общих функций мира 4 ----------
 {const _hv=heatVis;heatVis=function(it){_hv(it);if(it.gold||W.world!==4)return;const h=it.heat,st=h>0.5?2:h>0.2?1:0;
-    if(st===1&&!it.carrier&&Math.random()<0.04)burst(it.pos.clone().add(new V3(0,0.35,0)),0x9a9aa4,1,0.8,0.9);
+    if(st===1&&!it.carrier&&w4aR()<0.04)burst(it.pos.clone().add(new V3(0,0.35,0)),0x9a9aa4,1,0.8,0.9);
     if(st===0&&h>0){it.m.color.setHex(0x6a6a72);it.m.emissiveIntensity=0.02;}
     if(it._st===1&&st===0){w4aLog('tick');if(W.fx4)W.fx4('cool',it.pos.clone());tone(1900,0.05,'square',0.05);tone(1500,0.05,'square',0.04,null,0.09);floatText(it.pos.clone().add(new V3(0,0.7,0)),'Остывает!','#c8d0e0');}
     if(it._st!=null&&it._st!==st)w4aLog('heat'+st);it._st=st;};}
-{const _ca=crustAt;crustAt=function(x,z,y,ang,o){const c=_ca(x,z,y,ang,o);if(W.world===4){w4aLog('steam');for(let i=0;i<3;i++)later(i*0.12,()=>burst(new V3(x+rand(-0.3,0.3),y+0.4+i*0.5,z+rand(-0.5,0.5)),0xeef4ff,6,1.6,1.1));
+{const _ca=crustAt;crustAt=function(x,z,y,ang,o){const c=_ca(x,z,y,ang,o);if(W.world===4){w4aLog('steam');for(let i=0;i<3;i++)later(i*0.12,()=>burst(new V3(x+w4aRand(-0.3,0.3),y+0.4+i*0.5,z+w4aRand(-0.5,0.5)),0xeef4ff,6,1.6,1.1));
       if(AUD.ready())AUD.nz({type:'highpass',f0:2600,f1:5200,d:0.7,v:0.05});}return c;};}
-function w4aCrustTick(){for(const c of W.crusts){if(c.gone||c.cracks)continue;if(c.t<3){c.cracks=true;w4aLog('crack');const m=MB(0x140808);for(let i=0;i<4;i++){const k=addMesh(new THREE.BoxGeometry(0.04,0.02,rand(0.5,1.1)),m,rand(-0.4,0.4),0.15,rand(-0.6,0.6),c.g);k.rotation.y=rand(-1.2,1.2);}
+function w4aCrustTick(){for(const c of W.crusts){if(c.gone||c.cracks)continue;if(c.t<3){c.cracks=true;w4aLog('crack');const m=MB(0x140808);for(let i=0;i<4;i++){const k=addMesh(new THREE.BoxGeometry(0.04,0.02,w4aRand(0.5,1.1)),m,w4aRand(-0.4,0.4),0.15,w4aRand(-0.6,0.6),c.g);k.rotation.y=w4aRand(-1.2,1.2);}
     tone(320,0.08,'square',0.05);later(0.15,()=>tone(260,0.08,'square',0.04));if(AUD.ready())AUD.nz({type:'bandpass',f0:900,q:3,d:0.25,v:0.05});}}}
 {const _ms=makeSmith;makeSmith=function(kind,stone){const S=_ms(kind,stone);const cm=MB(0xff8a2a,{transparent:true,opacity:0,depthWrite:false}),cr=new THREE.Group();(S.g||S.root||S).add?((S.g||S.root||S).add(cr)):null;
-    for(let i=0;i<9;i++){const k=new THREE.Mesh(new THREE.BoxGeometry(0.035,rand(0.4,0.9),0.035),cm);k.position.set(rand(-0.45,0.45),rand(0.5,2.4),0.52+rand(-0.05,0.05));k.rotation.z=rand(-0.9,0.9);cr.add(k);}
+    for(let i=0;i<9;i++){const k=new THREE.Mesh(new THREE.BoxGeometry(0.035,w4aRand(0.4,0.9),0.035),cm);k.position.set(w4aRand(-0.45,0.45),w4aRand(0.5,2.4),0.52+w4aRand(-0.05,0.05));k.rotation.z=w4aRand(-0.9,0.9);cr.add(k);}
     const _s=S.setStone;S.setStone=function(k){_s.call(S,k);cm.opacity=k>0.02&&k<0.98?Math.min(1,Math.sin(Math.PI*k)*1.6):0;if(cm.opacity>0.5&&!S._crk){S._crk=true;w4aLog('smithcrack');}};return S;};}
 // ---------- W.fx: звуки и эффекты для прототипа (ковка, лямка, цепи) ----------
 function w4aFx(kind,p){w4aLog('fx:'+kind);const ok=AUD.ready();
   if(kind==='strike'){G.hitstop=Math.max(G.hitstop||0,0.06);}
-  else if(kind==='temper'){for(let i=0;i<5;i++)later(i*0.1,()=>burst(p.clone().add(new V3(rand(-0.4,0.4),0.4+i*0.35,rand(-0.3,0.3))),0xeef4ff,6,1.4,1.2));if(ok)AUD.nz({type:'highpass',f0:2400,f1:6000,d:1.0,v:0.07});}
+  else if(kind==='temper'){for(let i=0;i<5;i++)later(i*0.1,()=>burst(p.clone().add(new V3(w4aRand(-0.4,0.4),0.4+i*0.35,w4aRand(-0.3,0.3))),0xeef4ff,6,1.4,1.2));if(ok)AUD.nz({type:'highpass',f0:2400,f1:6000,d:1.0,v:0.07});}
   else if(kind==='ringwave'){ringFx(p,0xffd76a,14);later(0.25,()=>ringFx(p,0xffe9a0,20));if(ok)AUD.bell(1320,{v:0.07,d:2.2});}
   else if(kind==='rope'){if(ok)AUD.nz({type:'bandpass',f0:380,f1:240,q:8,d:0.4,v:0.05});}
   else if(kind==='chain'){if(ok)AUD.nz({type:'bandpass',f0:520,f1:300,q:7,d:0.5,v:0.05});}}

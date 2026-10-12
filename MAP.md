@@ -99,11 +99,11 @@
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | late_99zn_ship34_wear | 3 | t34 tfin_companion_34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | late_99zm_sky35 | 3 | t35 tfin_companion_35 tfin_sky35 |
 | `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 11 | t3bv tfin_bossbar tfin_companion_3b tfin_hintlayer tfin_k3b tfin_k3bacorn tfin_k3bboss tf… |
-| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | late_99w4_41, late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 14 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast tfin_… |
-| `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 8 | t42v tfin_art tfin_companion_42 tfin_w42 tfin_w4help tfin_w4kids tfin_w4story tso42 |
-| `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo, late_99w4_song43 | 5 | t43 tfin_companion_43 tfin_w43 tfin_w4help tso43 |
-| `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 7 | t44 tfin_companion_44 tfin_w44 tfin_w4kids tfin_w4story tfoes tso44 |
-| `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_rules, late_99w4_solo | 5 | t45 tfin_companion_45 tfin_w45 tso45 tsospot |
+| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | late_99w4_41, late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_music, late_99w4_rules, late_99w4_solo | 14 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast tfin_… |
+| `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_music, late_99w4_rules, late_99w4_solo | 8 | t42v tfin_art tfin_companion_42 tfin_w42 tfin_w4help tfin_w4kids tfin_w4story tso42 |
+| `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_music, late_99w4_rules, late_99w4_solo, late_99w4_song43 | 5 | t43 tfin_companion_43 tfin_w43 tfin_w4help tso43 |
+| `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_music, late_99w4_rules, late_99w4_solo | 7 | t44 tfin_companion_44 tfin_w44 tfin_w4kids tfin_w4story tfoes tso44 |
+| `4-5` | 4-5 · Калинов мост | `build45()` · `levels/4-5.js` | late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_music, late_99w4_rules, late_99w4_solo | 5 | t45 tfin_companion_45 tfin_w45 tso45 tsospot |
 | `4-B` | 4-Б · Змей Горыныч | `build4B()` · `levels/4-B.js` | late_19_gor, late_37_gor_uzda, late_38_gor_friend, late_87_boss4b, late_98_gor_lava, late_99w4_art, late_99w4_help, late_99w4_rift4b, late_99w4_rules, late_99w4_solo, late_99w4_story | 16 | t4b tfin_boss4b tfin_bossfxcap tfin_cam tfin_cine tfin_companion_4b tfin_gor4 tfin_gorend… |
 | `5-1` | 5-1 · Сундук на дубе | `build51()` · `levels/5-1.js` | late_97_buyan51, late_97b_buyan51_chapters, late_97g_buyan_nest | 6 | t51 tfin_ch51 tfin_companion_51 tfin_likho tfoes tso51 |
 | `5-2` | 5-2 · Заяц | `build52()` · `levels/5-2.js` | late_97d_hare52, late_97g_buyan_nest | 3 | t52 tfin_companion_52 tfin_hare52 |
@@ -366,11 +366,11 @@
 | `levels/3-B/late_99u_k3b_fx.js` | 3-B | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК»: ЭФФЕКТЫ — ВИДИМЫЙ ЗВУК, ВЕТЕР, РВУЩИЕСЯ ОБЛАКА, НОЧЬ, ВИХРЬ |
 | `levels/3-B/late_99v_k3b.js` | 3-B | РЕЛИЗ final06 · 3-Б «СОЛОВЕЙ-РАЗБОЙНИК» — ГНЕЗДО НА СЕМИ ДУБАХ И БОЙ ПО БЫЛИНЕ (docs/26_solovei_boss.md) |
 | `levels/4-1/late_99w4_41.js` | 4-1 | 4-1 «КУЗНЯ КУЗЬМЫ И ДЕМЬЯНА»: КУЗНЯ УЗНАЁТСЯ СНАРУЖИ (docs/39, 41.4) |
-| `levels/w4/late_99w4_art.js` | 4-1, 4-5, 4-B | МИР 4 · АРТ И ЭФФЕКТЫ (docs/39, АР.1–АР.9) |
+| `levels/w4/late_99w4_art.js` | 4-1, 4-2, 4-3, 4-4, 4-5, 4-B | МИР 4 · АРТ И ЭФФЕКТЫ (docs/39, АР.1–АР.9) |
 | `levels/w4/late_99w4_help.js` | 4-1, 4-2, 4-3, 4-4, 4-5, 4-B | МИР 4 · ПОМОЩЬ ПО ПРОМАХАМ (docs/39, УР.2) |
 | `levels/w4/late_99w4_kids.js` | 4-1, 4-2, 4-3, 4-4, 4-5 | МИР 4 · ДЕТСКИЕ ТАЙМЕРЫ ГОЛОВОЛОМОК |
 | `levels/w4/late_99w4_lessons.js` | 4-1, 4-2, 4-3, 4-4, 4-5 | МИР 4 · УРОКИ НОВЫХ МЕХАНИК (общий шаблон FIN.lesson, как у 4-Б) |
-| `levels/w4/late_99w4_music.js` | — | МИР 4 · МУЗЫКА И ПОДПИСИ К ЗВУКАМ (docs/39, ЗВ.1–ЗВ.3) |
+| `levels/w4/late_99w4_music.js` | 4-1, 4-2, 4-3, 4-4, 4-5 | МИР 4 · МУЗЫКА И ПОДПИСИ К ЗВУКАМ (docs/39, ЗВ.1–ЗВ.3) |
 | `levels/4-B/late_99w4_rift4b.js` | 4-B | 4-Б «ЗМЕЙ ГОРЫНЫЧ»: КОРКА ЧЕРЕЗ ЛАВОВЫЕ ТРЕЩИНЫ (docs/39, 4Б.2) |
 | `levels/w4/late_99w4_rules.js` | 4-1, 4-2, 4-3, 4-4, 4-5, 4-B | МИР 4 · НЕВИДИМЫЕ ПРАВИЛА — ВСЛУХ (docs/39, УР.3) |
 | `levels/w4/late_99w4_solo.js` | 4-1, 4-2, 4-3, 4-4, 4-5, 4-B | МИР 4 · ОДИНОЧНЫЙ РЕЖИМ |

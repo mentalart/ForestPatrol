@@ -233,6 +233,8 @@ zlataya_cep/build/levels/w4/late_99w4_lessons.js @level:4-1 @level:4-2 @level:4-
 zlataya_cep/build/levels/w4/late_99w4_help.js @level:4-1 @level:4-2 @level:4-3 @level:4-4 @level:4-5 tfin_w4help
 zlataya_cep/build/levels/w4/late_99w4_rules.js @level:4-1 @level:4-2 @level:4-3 @level:4-4 @level:4-5 tfin_w4help
 zlataya_cep/build/levels/w4/late_99w4_story.js @level:4-B tfin_w4story
+zlataya_cep/build/levels/w4/late_99w4_art.js @level:4-1 @level:4-2 @level:4-3 @level:4-4 @level:4-5 @level:4-B tfin_w4art t45
+zlataya_cep/build/levels/w4/late_99w4_music.js @level:4-1 @level:4-2 @level:4-3 @level:4-4 @level:4-5 tfin_w4art
 zlataya_cep/build/levels/w2/late_99zt_kw_gauges.js @level:2-1 @level:2-2 @level:2-3 @level:2-4 @level:2-5 @level:2-B tfin_kwres tfin_k21
 zlataya_cep/build/levels/w2/late_99zu_kw_resume.js @level:2-1 @level:2-2 tfin_kwres
 zlataya_cep/build/levels/w2/late_99zv_kw_music.js @level:2-1 @level:2-2 @level:2-3 @level:2-4 tfin_kwres

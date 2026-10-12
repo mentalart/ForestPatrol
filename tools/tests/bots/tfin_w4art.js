@@ -23,4 +23,9 @@ W=go('4-4');chk(!!W.lavaHead,'4-4: нет «головы» лавы');if(W.demya
 W=go('4-5');chk(!!W.chainL,'4-5: цепи не видны модулю');W.flags.stage='hold';W.HD.sway=0.9;ZC.tick(3);W.flags.stage='build';chk((A.n['fx:chain']||0)>0,'4-5: цепи не скрипят на качании');
 'misc '+Object.keys(A.n).join(',')
 //@@
+// звук: своя тема на уровнях 4-1, 4-3, 4-4, 4-5; подписи к звукам (настройка включена)
+const T=ZC.FIN.music.TR;chk(['4-1','4-3','4-4','4-5'].every(l=>T['lv_'+l]&&T['lv_'+l].v.length>2),'нет своих тем уровней мира 4');
+ZC.FIN.set.caps=true;const n0=document.body.innerText.split('[').length;ZC.W.fx4('chain',ZC.HERO.potap.pos.clone());ZC.FIN.w4cap('рык Горыныча вдали');ZC.tick(2);
+chk(/\[цепи скрипят/.test(document.body.innerText)&&/\[рык Горыныча вдали/.test(document.body.innerText),'нет подписей к звукам');ZC.FIN.set.caps=false;'sound ok'
+//@@
 const ok=!BAD.length&&!_errs.length;(ok?'tfin_w4art ok':'FAIL tfin_w4art '+BAD.join(' | ')+' errs='+_errs.join(' | '))
