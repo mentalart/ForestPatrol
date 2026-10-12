@@ -79,7 +79,7 @@
 
 | id | уровень | функция · файл в proto/ | модули релиза | ботов | боты |
 |---|---|---|---|---|---|
-| `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_79t_hintteach, late_96_prolog_scooter, late_96b_prolog_night | 8 | tfin_cine tfin_companion_p tfin_fadesplit tfin_kids1 tfin_prolog_night tfin_scooter tfin_… |
+| `p` | Пролог «Звенышко» | `buildPrologue()` · `levels/p_prologue.js` | late_75_kids_w1, late_79t_hintteach, late_96_prolog_scooter, late_96b_prolog_night, late_96d_intro_sets, late_96e_intro_scenes | 8 | tfin_cine tfin_companion_p tfin_fadesplit tfin_kids1 tfin_prolog_night tfin_scooter tfin_… |
 | `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 17 | tfin_art tfin_audiolevel tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kid… |
 | `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_10b_w1_mood, late_40b_music_w1, late_73c_companion_11, late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 38 | t11 t11long tfin_art tfin_botlevel tfin_cam tfin_ch1 tfin_companion tfin_companion_11 tfi… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_76_kids_fight, late_79f_fog_hint12 | 5 | tbogauto tfin_bossfxcap tfin_ch1 tfin_companion_12 tsospot |
@@ -325,6 +325,8 @@
 | `late_96_uilog.js` | — | РЕЛИЗ · ЖУРНАЛ ИНТЕРФЕЙСА (только ?debug) |
 | `levels/p/late_96b_prolog_night.js` | p | РЕЛИЗ final06 · ПРОЛОГ: КОМНАТА ШТАБА, ОКНО В НОЧЬ, ПОГОНЯ КОЩЕЯ, ОЖИВШАЯ ТЕТРАДКА |
 | `levels/5-B1/late_96c_k5b1_texts.js` | 5-B1 | РЕЛИЗ · 5-Б1 «КОЩЕЙ В ТЕРЕМЕ» · короткие надписи (docs/34 5Б1-2) |
+| `levels/p/late_96d_intro_sets.js` | p | РЕЛИЗ final06 · «ПРИСКАЗКА» — ВСТУПИТЕЛЬНЫЙ РОЛИК ИГРЫ (1): ПЛОЩАДКИ |
+| `levels/p/late_96e_intro_scenes.js` | p | РЕЛИЗ final06 · «ПРИСКАЗКА» — ВСТУПИТЕЛЬНЫЙ РОЛИК ИГРЫ (2): СЕМЬ СЦЕН |
 | `levels/5-1/late_97_buyan51.js` | 5-1 | РЕЛИЗ final06 · 5-1 «СУНДУК НА ДУБЕ»: НОВЫЕ ЖИТЕЛИ ОСТРОВА В РОЛИКАХ |
 | `levels/5-1/late_97b_buyan51_chapters.js` | 5-1 | РЕЛИЗ · 5-1 «СУНДУК НА ДУБЕ»: СОХРАНЕНИЕ ПО ЧАСТЯМ И КАРТОЧКИ ГЛАВ |
 | `levels/5-4/late_97c_egg54_music.js` | 5-4 | РЕЛИЗ · 5-4 «ЯЙЦО»: «КАЛИНКА» НА ИНСТРУМЕНТАХ МУЗЫКИ ИГРЫ |
@@ -501,11 +503,11 @@
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `42_priskazka_intro.md` | «Присказка» — вступительный ролик игры (сценарий) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 165 файлов |
+| `changes/` | 166 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 305 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 306 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
