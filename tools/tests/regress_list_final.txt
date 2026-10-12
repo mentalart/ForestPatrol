@@ -6,7 +6,7 @@ tdodge tfade tsplit thw2
 # мир 3
 t31 t31c t32 t33n t34 t35 thw3a thw3b tmenu3
 # мир 4, Лукоморье
-t41v t42v t43 tluko t44 t45 t4b thw4
+t41v t42v t43 tluko t44 t45 t4b thw4 tso41 tso42 tso43 tso44 tso45 tfin_w4kids tfin_w4tasks tfin_w4lessons tfin_w4help tfin_w45 tfin_w44 tfin_w43 tfin_w42 tfin_w4rift tfin_w4story tfin_w4art
 # мир 5, эпилог, Застава
 tfin_likho t51 t52 t53 t54 t5b1 t5b1solo t5b1cam tepi tlukoepi tlukopro thub_corners tfin_mapnav tzast
 # задачи всех уровней

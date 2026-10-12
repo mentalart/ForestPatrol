@@ -5,7 +5,7 @@
 // бег Потапа: доски рушатся за спиной, но только после того, как он сошёл · лоза Йоши · «Ты держал.» — «А ты чинил.»
 function build45(){
   W.zvenAway=true;W.world=4;setTheme('smorodina');W.name='4-5 · «Калинов мост»';W.sub='Огненная Смородина · Потап держит мост';W.camX=11;const F=W.flags;F.stage='intro';
-  W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.kleshi=true;W.fallY=-12;const T=HERO,LY=-0.7;W.noLavaWater=()=>true;   // корки здесь не встают: огонь слишком силён
+  W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.kleshi=true;W.fallY=-12;const T=HERO,LY=-0.7;W.noLavaWater=(x,z)=>F.stage!=='run'||SEC.some(S=>!S.ok&&!S.span&&z<S.z0+0.6&&z>S.z1-0.6);   // корки здесь не встают: огонь слишком силён; в беге Потапа — встают (docs/39, 45.4: Йоша подстилает корку под упавшую доску), но треснувшую доску вода сначала сращивает
   scene.fog=new THREE.Fog(0x3a1a18,18,70);
   const bankM=M(0x5a4a40),rockM=M(0x3e3230),stoneM=M(0x6a625c),boardM=M(0x8a5a30,{emissive:0xff4a00,emissiveIntensity:0.15}),chainM=M(0x4a4a52);
   const Z=makeVestZ(helperOf(3));W.zven=Z;Z.pos.set(0,2.4,6);
@@ -15,14 +15,14 @@ function build45(){
   for(let z=10;z>-84;z-=rand(3,5))for(const s of[-1,1])addMesh(new THREE.DodecahedronGeometry(rand(1,2.2)),rockM,s*rand(11,18),LY,z);
   const smoke=[];for(let i=0;i<22;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(rand(2,4),10,8),MB(0x2a2224,{transparent:true,opacity:0.35,depthWrite:false}));m.position.set(rand(-14,14),rand(7,12),rand(-60,-20));W.group.add(m);smoke.push(m);}
   const gor=makeGorynych();gor.g.position.set(0,6,-100);gor.g.scale.setScalar(1.6);gor.g.rotation.y=Math.PI;
-  bell(-5,6);bell(-5,-58);const n1=nutItem(7.6,0.6,10),n2=nutItem(-7.6,0.6,-60);
+  bell(-5,6);bell(-5,-58);bell(-1.8,-26.4);bell(4.6,-55.6);const n1=nutItem(7.6,0.6,10),n2=nutItem(-7.6,0.6,-60);
   /* ---------- первая половина моста: 8 гнёзд для калёных досок на цепях ---------- */
   const posts=[-1.6,1.6].map(x=>{addMesh(new THREE.CylinderGeometry(0.2,0.26,4.6,8),M(0x5a4030),x,2.3,-7.6);const hk=addMesh(new THREE.TorusGeometry(0.28,0.07,6,14),chainM,x,4.5,-7.4);return {x,hk,shot:false};});
   const chainL=[-1.3,1.3].map(x=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,1,6),chainM);W.group.add(m);return {x,m,y:5};});
   function segTo(m,a,b){const d=b.clone().sub(a),l=d.length();m.position.copy(a).addScaledVector(d,0.5);m.scale.set(1,l,1);m.quaternion.setFromUnitVectors(new V3(0,1,0),d.normalize());}
-  const drawChains=()=>chainL.forEach(c=>segTo(c.m,new V3(c.x,4.3,-7.6),new V3(c.x,c.y,-30)));drawChains();
+  W.chainL=chainL;const drawChains=()=>chainL.forEach(c=>segTo(c.m,new V3(c.x,4.3,-7.6),new V3(c.x,c.y,-30)));drawChains();
   posts.forEach((p,i)=>{W.marks.push({pos:new V3(p.x,4.5,-7.4),active:()=>!p.shot,onHit:()=>{p.shot=true;SFX.brk();burst(new V3(p.x,4.5,-7.4),0xc8c8d0,10,3);p.hk.visible=false;floatText(new V3(p.x,5,-7.4),'Крюк сбит!','#ffd9a0');
-    if(posts.every(q=>q.shot)){F.chains=true;anim(1.2,k=>{chainL.forEach(c=>{c.y=5-4.8*smooth(k);});drawChains();});banner('Цепи опустились!','#ffb070',2,'кладите горячие доски');const it=linkItem(0,1.1,-6.4);later(0.6,()=>sayP('…доска к доске, а стык — водой.',2.8));}}});});
+    if(posts.every(q=>q.shot)){F.chains=true;anim(1.2,k=>{chainL.forEach(c=>{c.y=5-4.8*smooth(k);});drawChains();});banner('Цепи опустились!','#ffb070',2,'кладите горячие доски');const it=linkItem(0,1.1,-6.4);later(0.6,()=>sayP('…доска к доске, а стык — водой.',2.8));later(3.8,()=>bark(kz5,'kuzst','Мост наш ковали — не подведёт.',2.8));}}});});
   const SEC_REF=[];const SLOTS=[];for(let i=0;i<8;i++){const z0=-8-2.75*i,z1=z0-2.75;const S={i,z0,z1,zc:(z0+z1)/2,placed:false,fused:false,col:null,mesh:null,glow:null};SLOTS.push(S);
     S.sock=hotSocket(0,0.1,S.zc,{r:1.7,accept:it=>it.kind==='doska'&&F.chains&&!S.placed&&(i===0||SLOTS[i-1].fused),onPut:(it)=>{consumeHot(it);placeSlot(S);}});
     W.waterTargets.push({pos:new V3(0,0,S.z1+0.2),active:()=>S.placed&&!S.fused,onWater:()=>{S.fused=true;S.glow.material.color.setHex(0x4a4a52);S.glow.material.emissiveIntensity=0;SFX.grow();burst(new V3(0,0.2,S.z1),0x9fe6a0,10,3);floatText(new V3(0,1,S.z1),'Стык сросся','#9fe6a0');
@@ -60,7 +60,9 @@ function build45(){
   function spawnDrop(){const tg=active(1);const burned=SEC.filter(S=>S.ok&&!S.span);const onJoint=burned.length&&Math.random()<0.4;const S=onJoint?burned[Math.floor(Math.random()*burned.length)]:null;
     const x=S?rand(-0.8,0.8):clamp(tg.pos.x+rand(-1.2,1.2),-3,3),z=S?(S.z0+S.z1)/2:clamp(tg.pos.z+rand(-1.5,1.5),-56,-32.2);
     const m=new THREE.Mesh(new THREE.SphereGeometry(0.32,10,8),MB(0x5ab0ff));W.group.add(m);const mk=new THREE.Mesh(new THREE.RingGeometry(0.35,0.5,20),MB(0x2f7bff,{transparent:true,opacity:0.8,side:THREE.DoubleSide}));mk.rotation.x=-Math.PI/2;mk.position.set(x,0.05,z);W.group.add(mk);
-    HD.drops.push({m,mk,x,z,t:0,dur:1.5,sec:S});}
+    const dd={m,mk,x,z,t:0,dur:1.5,sec:S};HD.drops.push(dd);
+    // живая вода Йоши гасит каплю на лету — дело тем, кто уже перешёл (docs/39, 45.1); пока переходят — вода для стыков
+    W.waterTargets.push({pos:mk.position,pri:1.5,active:()=>!dd.cool&&HD.drops.includes(dd)&&F.stage==='hold'&&[T.pelageya,T.yosha].every(h=>h.pos.z<-52.2),onWater:()=>{dd.cool=true;dd.t=dd.dur;SFX.water();burst(new V3(dd.x,1.2,dd.z),0xe8f4ff,14,3);floatText(new V3(dd.x,1.6,dd.z),'Пш-ш! Капля погасла','#cfe8ff');HD.good=(HD.good||0)+1;}});}
   function holdTick(dt){const po=T.potap;HD.t+=dt;HD.errCd=Math.max(0,HD.errCd-dt);if(HD.frozen>0)HD.frozen-=dt;
     // Потап стоит у лапы; стик — против качания
     po.pos.set(0,0,-31);po.vel.set(0,0,0);po.face=Math.PI;const ix=AUTO(0)?clamp((HD.drift+HD.sway)/1.6,-1,1):(btn(0,'right')?1:0)-(btn(0,'left')?1:0)+(padAx(0).x||0);
@@ -70,7 +72,7 @@ function build45(){
     // синие капли огня: щит Потапа закрывает весь мост
     HD.dropT-=dt;if(HD.dropT<=0){HD.dropT=HD.t<10?rand(3,3.8):rand(1.8,2.8);spawnDrop();}
     let soon=null;for(const d of HD.drops){d.t+=dt;const k=d.t/d.dur;d.m.position.set(d.x,lerp(9,0.3,k*k),d.z);d.mk.scale.setScalar(0.6+k*0.8);if(!soon||d.t>soon.t)soon=d;}
-    for(let i=HD.drops.length-1;i>=0;i--){const d=HD.drops[i];if(d.t<d.dur)continue;W.group.remove(d.m);W.group.remove(d.mk);HD.drops.splice(i,1);
+    for(let i=HD.drops.length-1;i>=0;i--){const d=HD.drops[i];if(d.t<d.dur)continue;W.group.remove(d.m);W.group.remove(d.mk);HD.drops.splice(i,1);if(d.cool)continue;
       if(po.guard||AUTO(0)){SFX.shield();burst(new V3(d.x,0.6,d.z),0x9fd0ff,12,3);floatText(po.pos.clone().add(new V3(0,2.8,0)),'Широкий щит!','#cfe8ff');HD.good=(HD.good||0)+1;continue;}
       burst(new V3(d.x,0.3,d.z),0x5ab0ff,16,4);holdErr('Капля прожгла!','#9fd0ff');if(d.sec&&d.sec.ok){setSec(d.sec,false);floatText(new V3(0,1,d.z),'Стык прогорел!','#ff9a60');}
       for(const h of[T.pelageya,T.yosha])if(hd(h.pos,{x:d.x,z:d.z})<1.3){const dx=h.pos.x-d.x,dz=h.pos.z-d.z,dd=Math.hypot(dx,dz)||1;h.vel.x=dx/dd*1.5;h.vel.z=dz/dd*1.5;h.vel.y=2.5;h.grounded=false;floatText(h.pos.clone().add(new V3(0,h.d.height+0.5,0)),'Ай!','#9fd0ff');}}
@@ -89,34 +91,36 @@ function build45(){
   function crossTick(dt){for(const S of SEC){if(!S.span||S.ok)continue;for(const h of[T.pelageya,T.yosha]){if(h.grounded&&hd(h.pos,S.plate)<0.75&&Math.abs(h.pos.y)<0.4){setSec(S,true);SFX.gate();floatText(new V3(0,1.2,S.plate.z),'Доска опустилась!','#ffd76a');if(!F.plateTold){F.plateTold=true;later(0.4,()=>bark(T.pelageya,'pelageya','Йоша, иди, ступай!',1.6));}}}}
     if(HD.frozen>0)for(const h of[T.pelageya,T.yosha]){h.vel.x=0;h.vel.z=0;}
     if(!F.lookBack&&T.yosha.pos.z<-39){F.lookBack=true;later(0.5,()=>{T.yosha.face=0;bark(T.yosha,'yosha','…',1);later(1.1,()=>bark(T.potap,'potap','<i>(не оборачиваясь)</i> Иди. Я держу — не бойся.',2.4));});}
-    if([T.pelageya,T.yosha].every(h=>h.pos.z<-52.2&&h.grounded)){if(HD.t>=40)acrossDone();else if(!F.waitTold){F.waitTold=true;banner('Горыныч не унимается — ишь, какой!','#ff9a8a',2.2,'Потап держит, пока огонь не утихнет — берегитесь горячих капель, берегитесь');}}}
+    if([T.pelageya,T.yosha].every(h=>h.pos.z<-52.2&&h.grounded)){if(HD.t>=25)acrossDone();else if(!F.waitTold){F.waitTold=true;banner('Ещё чуть-чуть!','#ff9a8a',2.2,'Потап держит — Йоша, гаси капли живой водой '+K(1,'skill'));}}}
   /* ---------- бег Потапа ---------- */
   const RUN={fall:-1,t:0},PIER={};
   function runTick(dt){const po=T.potap;RUN.t+=dt;
     // доски рушатся за спиной: первая половина, бык, участки — только когда Потап уже сошёл
     const behind=[...SLOTS.map(S=>({z0:S.z0,z1:S.z1,col:S.col,m:[S.mesh,S.glow],done:S.gone,ref:S})),{z0:-30,z1:-32,col:null,m:[],ref:PIER},...SEC.map(S=>({z0:S.z0,z1:S.z1,col:S.col,land:S.land,m:[S.mesh,S.landM,S.plateM,S.hinge,S.crack],ref:S}))];
     const front=-26-RUN.t*1.4;for(const b of behind){if(b.ref.gone)continue;if(b.z1>front&&po.pos.z<b.z1-0.6){b.ref.gone=true;if(b.col)b.col.on=false;if(b.land)b.land.on=false;SFX.brk();burst(new V3(0,0,(b.z0+b.z1)/2),0xff8a3a,10,3);b.m.forEach(m=>{if(!m)return;const y0=m.position.y;anim(1,k=>{m.position.y=y0-k*k*3;m.rotation.x+=0.02;});later(1.05,()=>{m.visible=false;});});}}
-    if(RUN.t>2&&!F.runTold){F.runTold=true;sayP('Беги, беги!',1.6);}
+    if(RUN.t>2&&!F.runTold){F.runTold=true;sayP('Потап, беги — я вижу целые доски!',2.6);}   // СЮ.1: Пелагея закрывает тетрадку и говорит своё
     // последний пролёт — пустота: прыжок и лоза
     if(po.pos.z<-48.2&&!F.vine)vineScene();}
   /* ---------- сюжет ---------- */
   function intro(){const pe=T.pelageya,po=T.potap;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-4,0);h.face=Math.PI;});
-    play({dur:22,fov:48,camK:2.4,shots:[shot(0,[-6,6,6],[0,0,-30]),shot(5.4,[5,4,-20],[0,-0.4,-40]),shot(10.8,[0,3,-4],[0,4.3,-7.6]),shot(16,[pe.pos.x+1.6,1.4,pe.pos.z-1.6],[pe.pos.x,0.9,pe.pos.z])],
-      says:[[0.3,5,null,'<i>Калинов мост — калёный, из раскалённых досок на цепях над Смородиной. Половина досок разбросана по берегу.</i>',true],[5.4,5,null,'<i>Горыныч где-то за дымом. Порой сверху огонь летит.</i>',true],
-        [10.8,5,null,'<i>Цепи подтянуты к высоким крюкам. Сначала — строим.</i>',true],[16,3.6,'pelageya','Тут написано… Прошка сбивает крюки, а доски — в клещи.']],
-      events:[{t:5.4,fn:()=>{const d={m:new THREE.Mesh(new THREE.SphereGeometry(0.4,10,8),MB(0x5ab0ff))};W.group.add(d.m);anim(1.6,k=>{d.m.position.set(2,10-k*10.6,-38);if(k>=1){W.group.remove(d.m);burst(new V3(2,LY,-38),0x5ab0ff,16,4);}});}}],
-      end:()=>{W.anims.length=0;F.stage='build';snapCams();for(const pi of[0,1])tip(pi,pi?'Горячие доски в печи у берега — клещами '+K(1,'item')+' возьми.<br>Щель в мосту — мёртвой водой Йоши '+K(1,'skill')+' залей, срасти.':'Прошка, жёлудями '+K(0,'skill')+' в два крюка на столбах стрельни — цепи опустятся вниз.',4);}});}
+    // ролик короче (docs/39, 45.2): 22 → 13,8 с, субтитры ≤ 10 слов; реплика Пелагеи озвучена (4-5_006, 4,3 с)
+    play({dur:13.8,fov:48,camK:2.4,shots:[shot(0,[-6,6,6],[0,0,-30]),shot(3.6,[5,4,-20],[0,-0.4,-40]),shot(6.8,[0,3,-4],[0,4.3,-7.6]),shot(9.2,[pe.pos.x+1.6,1.4,pe.pos.z-1.6],[pe.pos.x,0.9,pe.pos.z])],
+      says:[[0.3,3.2,null,'<i>Калинов мост: калёные доски на цепях.</i>',true],[3.6,3,null,'<i>Половина досок — на берегу. Горыныч — за дымом.</i>',true],
+        [6.8,2.3,null,'<i>Сначала — строим.</i>',true],[9.2,4.5,'pelageya','Тут написано… Прошка сбивает крюки, а доски — в клещи.']],
+      events:[{t:3.6,fn:()=>{const d={m:new THREE.Mesh(new THREE.SphereGeometry(0.4,10,8),MB(0x5ab0ff))};W.group.add(d.m);anim(1.6,k=>{d.m.position.set(2,10-k*10.6,-38);if(k>=1){W.group.remove(d.m);burst(new V3(2,LY,-38),0x5ab0ff,16,4);}});}}],
+      end:()=>{W.anims.length=0;F.stage='build';snapCams();for(const pi of[0,1])tip(pi,pi?'Доски — в печи у берега: клещами '+K(1,'item')+'. Стык — мёртвой водой '+K(1,'skill')+'.':'Прошка, жёлудями '+K(0,'skill')+' — в два крюка на столбах.',4);}});}
   function halfDone(){F.stage='chain';tChain.on=true;tChainM.visible=true;banner('Полмоста!','#ffb070',2.4,'дальше цепь до другого берега: Прошка к вороту идёт');later(0.8,()=>bark(T.proshka,'proshka','Как по струне на болоте. Я — первый, так и быть.',2.2));}
   function winchDone(){F.winch=true;F.stage='kiki';tChain.on=false;tChainM.position.y=1.2;const pr=T.proshka,po=T.potap,pe=T.pelageya,yo=T.yosha;placeOnGround(pr,3.8,-55.4,0);pr.face=Math.PI*0.2;
     const ki=makeKikimora();ki.g.position.set(4,6,-70);
-    play({dur:21,fov:46,camK:2.4,shots:[shot(0,[6,3,-50],[3,1,-55]),shot(4,[-3,3,-20],[0,2,-40]),shot(9,[po.pos.x+2,2,po.pos.z-3],[0,1.6,-28]),shot(13.6,[-4,3,-26],[0,-0.6,-42])],
-      says:[[0.3,3.4,null,'<i>Прошка ворот на том берегу держит.</i>',true],[4,3,null,'<i>С того берега прилетает Кикимора с охапкой крепкой кудели.</i>',true],[7,1.8,'kiki','Должна была — отдаю.'],
-        [9,4.4,null,'<i>Её нитками доски к цепям вяжут —</i><br><i>Да середина всё равно провисает, скажут.</i>',true],[13.6,4.6,null,'<i>Посередине стоит каменный бык с медвежьей лапой.</i>',true],[18.2,2.6,'pelageya','Тут написано… Потапа — к лапе.']],
-      events:[{t:4,fn:()=>{const f=ki.g.position.clone();anim(2.8,k=>{ki.g.position.lerpVectors(f,new V3(-1.6,1.4,-29),smooth(k));ki.g.position.y+=Math.sin(k*Math.PI)*2;});}},
-        {t:9,fn:()=>{showSecond(true);for(let i=0;i<10;i++)later(i*0.15,()=>burst(new V3(rand(-1,1),0,rand(-50,-33)),0xd8d0a0,5,2));}},
-        {t:11,fn:()=>{giveLink(new V3(-1.6,0,-29),po,1.6);}},
-        {t:16,fn:()=>{const f=ki.g.position.clone();anim(2.4,k=>{ki.g.position.lerpVectors(f,new V3(-10,8,-60),k);if(k>=1)W.group.remove(ki.g);});}}],
-      end:()=>{W.anims.length=0;flushGifts();showSecond(true);if(active(0)!==po)doSwap(0);placeOnGround(po,0,-26,0);placeOnGround(pe,-0.6,-24,0);placeOnGround(yo,0.6,-24,0);snapCams();tip(0,'Потап, встань на медвежью лапу посреди моста — и '+K(0,'skill')+' нажми.',4);}});}
+    // ролик короче (docs/39, 45.2): 21 → 14 с, субтитры ≤ 10 слов; реплики Кикиморы и Пелагеи озвучены (4-5_008 3,2 с, 4-5_009 2,1 с)
+    play({dur:14,fov:46,camK:2.4,shots:[shot(0,[6,3,-50],[3,1,-55]),shot(2.8,[-3,3,-20],[0,2,-40]),shot(8.7,[po.pos.x+2,2,po.pos.z-3],[0,1.6,-28]),shot(11.6,[-4,3,-26],[0,-0.6,-42])],
+      says:[[0.3,2.4,null,'<i>Прошка держит ворот на том берегу.</i>',true],[2.8,2.4,null,'<i>Кикимора летит с охапкой крепких ниток.</i>',true],[5.3,3.3,'kiki','Должна была — отдаю.'],
+        [8.7,2.8,null,'<i>Нитки держат доски, но середина провисает.</i>',true],[11.6,2.3,'pelageya','Тут написано… Потапа — к лапе.']],
+      events:[{t:2.8,fn:()=>{const f=ki.g.position.clone();anim(2.4,k=>{ki.g.position.lerpVectors(f,new V3(-1.6,1.4,-29),smooth(k));ki.g.position.y+=Math.sin(k*Math.PI)*2;});}},
+        {t:8.7,fn:()=>{showSecond(true);for(let i=0;i<10;i++)later(i*0.15,()=>burst(new V3(rand(-1,1),0,rand(-50,-33)),0xd8d0a0,5,2));}},
+        {t:9.6,fn:()=>{giveLink(new V3(-1.6,0,-29),po,1.6);}},
+        {t:11.6,fn:()=>{const f=ki.g.position.clone();anim(2.4,k=>{ki.g.position.lerpVectors(f,new V3(-10,8,-60),k);if(k>=1)W.group.remove(ki.g);});}}],
+      end:()=>{W.anims.length=0;flushGifts();showSecond(true);if(active(0)!==po)doSwap(0);placeOnGround(po,0,-26,0);placeOnGround(pe,-0.6,-24,0);placeOnGround(yo,0.6,-24,0);snapCams();tip(0,'Потап — на медвежью лапу посреди моста, и '+K(0,'skill')+'.',4);}});}
   function holdScene(){F.stage='cut';const po=T.potap,pr=T.proshka,pe=T.pelageya,yo=T.yosha;placeOnGround(po,0,-31,0);po.face=Math.PI;placeOnGround(pe,-0.5,-29.2,0);placeOnGround(yo,0.5,-29.4,0);
     play({dur:23,fov:44,camK:2.2,shots:[shot(0,[4,2,-27],[0,1,-31]),shot(4.2,[-6,4,-24],[0,-0.3,-42]),shot(8.6,[po.pos.x+1.2,1.6,po.pos.z+2],[po.pos.x,1.5,po.pos.z]),shot(13,[po.pos.x-1.2,1.5,po.pos.z-2.2],[po.pos.x,1.5,po.pos.z]),shot(18.4,[pr.pos.x-1,1.4,pr.pos.z+1.6],[pr.pos.x,1,pr.pos.z])],
       says:[[0.3,3.8,null,'<i>Потап в балку плечом упирается —</i>',true],[4.2,3.6,null,'<i>— и мост выпрямляется, ровный, как стрела.</i>',true],[8.6,4,null,'<i>Потап на быка глядит, на дым, на друзей.</i>',true],
@@ -165,15 +169,19 @@ function build45(){
   /* ---------- задачи ---------- */
   const OR=(text,done,targets,ghost,read)=>{const o=O(text,done,targets,ghost);o.read=read;return o;};
   const mk=pi=>[
-    OR(()=>pi?'Цепи к крюкам подняты. Прошка (Игрок 1) жёлудями крюки сбивает —<br>А ты пока калёную доску в горне бери: клещи '+K(1,'item')+' — всяк знает.':'Цепи к крюкам подняты. Прошка — жёлуди '+K(0,'skill')+' по двум крюкам на столбах у моста.',()=>!!F.chains,()=>pi?[fm.g]:posts.filter(p=>!p.shot).map(p=>p.hk),null,'…Прошка крюки сбивает.'),
-    OR(()=>'Калёные доски на цепи: доска из горна клещами '+K(pi,'item')+' — на край моста.<br>Йоша стык мёртвой водой '+K(1,'skill')+' сращивает — тогда следующую кладут, и так до конца.',()=>!!F.half,()=>{const S=SLOTS.find(q=>!q.fused);return S?[new V3(0,0,S.placed?S.z1:S.zc)]:[];},null,'…доска к доске, а стык — водой.'),
-    OR(()=>pi?'Прошка по натянутой цепи на тот берег, к вороту идёт':'Прошка — по натянутой цепи, как по струне на болоте, на тот берег. У ворота — '+K(0,'item')+'.',()=>!!F.winch,()=>[winch.g],null,'…как по струне — вперёд.'),
-    OR(()=>'Середина провисает. Каменный бык с медвежьей лапой — Потапа к лапе: '+K(0,'skill')+'.',()=>!!F.hold,()=>[new V3(0,0,-31)],null,'Тут написано… Потапа — к лапе.'),
-    OR(()=>pi?'Переводи своих: стык — Йоша, мёртвая вода '+K(1,'skill')+'; пролёт — Пелагея перелетит, на плиту встанет — доска опустится.<br>Смена — '+K(1,'swap')+', и дело сладится.':'Держи мост! Стик — против качания (жёлтый шарик — в середину).<br>Синее — щит '+K(0,'guard')+'. Красная дрожь — упереться '+K(0,'roll')+', как в былину.',()=>!!F.across,()=>pi?SEC.filter(S=>!S.ok).slice(0,1).map(S=>new V3(0,0,S.span?S.plate.z:(S.z0+S.z1)/2)):[T.potap.g],null,pi?'…стык — водой, пролёт — крылами.':'…синее — щит держи, красное — упрись, не дрожи.'),
-    OR(()=>pi?'Йоша — мёртвая вода на треснувшие доски перед Потапом. Пелагея — Совиный взор '+K(1,'skill')+'.':'Беги, Потап! Мост за спиной рушится!',()=>F.stage==='end',()=>[new V3(0,0,-53)],null,'Беги, беги!'),
+    OR(()=>pi?'Пока Прошка сбивает крюки — бери доску из горна '+K(1,'item')+'.':'Прошка, жёлудями '+K(0,'skill')+' сбей два крюка на столбах.',()=>!!F.chains,()=>pi?[fm.g]:posts.filter(p=>!p.shot).map(p=>p.hk),null,'…Прошка крюки сбивает.'),
+    OR(()=>'Доску клещами '+K(pi,'item')+' — на край моста. Йоша сращивает стык '+K(1,'skill')+'.',()=>!!F.half,()=>{const S=SLOTS.find(q=>!q.fused);return S?[new V3(0,0,S.placed?S.z1:S.zc)]:[];},null,'…доска к доске, а стык — водой.'),
+    OR(()=>pi?'Прошка идёт по цепи к вороту.':'Прошка, по натянутой цепи — к вороту. Там '+K(0,'item')+'.',()=>!!F.winch,()=>[winch.g],null,'…как по струне — вперёд.'),
+    OR(()=>'Середина провисает. Потапа — к медвежьей лапе: '+K(0,'skill')+'.',()=>!!F.hold,()=>[new V3(0,0,-31)],null,'Тут написано… Потапа — к лапе.'),
+    OR(()=>pi?'Стык — Йоша '+K(1,'skill')+', пролёт — Пелагея на плиту. Смена '+K(1,'swap')+'.':'Держи мост: стик против качания, синее — щит '+K(0,'guard')+', красное — '+K(0,'roll')+'.',()=>!!F.across,()=>pi?SEC.filter(S=>!S.ok).slice(0,1).map(S=>new V3(0,0,S.span?S.plate.z:(S.z0+S.z1)/2)):[T.potap.g],null,pi?'…стык — водой, пролёт — крылами.':'…синее — щит держи, красное — упрись, не дрожи.'),
+    OR(()=>pi?'Йоша — мёртвой водой '+K(1,'skill')+' на треснувшие доски!':'Беги, Потап! Мост за спиной рушится!',()=>F.stage==='end',()=>[new V3(0,0,-53)],null,'Беги, беги!'),
     O('…',()=>false,()=>[T.potap.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
-  W.tipZones.push({cond:(pi,h)=>F.stage==='build'&&!heroCarry(h)&&hd(h.pos,{x:-5.4,z:-2})<2.6,text:pi=>'Горячие доски в печи. Клещами '+K(pi,'item')+' возьми — на край моста положи.'});
+  W.tipZones.push({cond:(pi,h)=>F.stage==='build'&&!heroCarry(h)&&hd(h.pos,{x:-5.4,z:-2})<2.6,text:pi=>'Горячие доски в печи: клещами '+K(pi,'item')+' — и на край моста.'});
+  W.tipZones.push({cond:(pi,h)=>F.stage==='hold'&&pi===1,text:pi=>'Жёлтый шарик над Потапом — в середину. Пролёт: Пелагея долетит, встанет на плиту — доска опустится.'});
+  // СЮ.3: Кузьма на своём берегу — мост их работы · СЮ.2: осколок лубка в углу у начала
+  const kz5=makeSmith('kuzma',false);kz5.g.position.set(6.4,0,-4.6);kz5.g.rotation.y=Math.PI*0.8;W.kuzma=kz5;
+  lubokShard(-8,0.9,12.4);
   W.spawns=[[new V3(-2.6,0,9),new V3(-4.6,0,10)],[new V3(2.6,0,9),new V3(4.6,0,10)]];W.startAct=[0,1];
   W.pauseLine='Калинов мост. Жёлуди по крюкам — цепи опустятся;<br>Калёные доски — клещами, стыки — мёртвой водой срастутся.<br>Потап мост держит: стик против качания, синее — щит, красное — упереться.<br>Переход: стык — Йоша, пролёт — Пелагея да плита, чтоб не свалиться.';
   W.onStart=()=>{later(0.4,intro);};

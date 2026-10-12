@@ -74,7 +74,10 @@ function build41(){
   const L3=linkItem(-9.4,1.1,-58),n4=nutItem(9.6,0.6,-58.6),n5=nutItem(-9.6,0.6,-44);bell(0,-44.5);
   const master=makeForge(0,-58.4,0,{});colBox(-1.1,1.1,0,1.1,-59.2,-57.6,true);master.coalM.emissiveIntensity=0.05;master.fire.intensity=0;
   hotSocket(0,1.15,-57.4,{r:1.3,active:()=>F.cleared&&!F.lit,accept:it=>it.kind==='ugol'||it.kind==='slitok',onPut:(it)=>{consumeHot(it);F.lit=true;anim(1.4,k=>{master.coalM.emissiveIntensity=k*1.2;master.fire.intensity=k*1.6;});later(1.4,startRuki);}});
-  let arena=null;function spawnGolems(){F.fight=true;arena=[bolvanFoe(-4,-50),bolvanFoe(4,-51),bolvanFoe(0,-55)];banner('Чугунные болваны!','#ff9a60',2.4,'латы горячи: Йоша поливает — латы темнеют, клещами нагрудник сорви — и бей');
+  // болваны волнами 1 → 2 → 3 (docs/39, 41.3): сначала один — разобраться «полей → сорви → бей», потом больше
+  let arena=null;const WAVES=[[[0,-50]],[[-4,-51],[4,-51]],[[-4,-50],[4,-51],[0,-55]]];F.wave=0;
+  function nextWave(){const w=WAVES[F.wave++];for(const [x,z] of w)arena.push(bolvanFoe(x,z));if(F.wave>1)banner(F.wave===2?'Ещё двое!':'Последние трое!','#ff9a60',2,'полей — сорви — бей');}
+  function spawnGolems(){F.fight=true;arena=[];nextWave();banner('Чугунный болван!','#ff9a60',2.4,'латы горячи: Йоша поливает, клещами нагрудник сорви — и бей');
     later(1.4,()=>sayP('По горячим латам не бей.<br>Полей — и сними, как крышку с кастрюли, скорей.',3.6));}
   // тесный дальний цех: пока бьёмся с болванами и куём в четыре руки — камера выше и дальше, видно весь цех (стена у ворот — полупрозрачная)
   W.camZones.push({x:0,y:0,z:-52,r:8,camActive:()=>!G.cine&&(G.solo?[active(G.soloPi)]:[active(0),active(1)]).every(h=>h.pos.z<-43.5)&&((F.fight&&!F.cleared)||F.stage==='carry'||F.stage==='r4'||F.stage==='quench')});
@@ -87,15 +90,17 @@ function build41(){
   const inTrough=[];for(let i=0;i<4;i++){const g=new THREE.Group();const L=hotLook('kleshi',g);g.visible=false;W.group.add(g);inTrough.push({g,m:L.m});}
   function flyToTrough(i){const q=inTrough[i];q.g.visible=true;q.m.color.setHex(0xff7a20);q.m.emissiveIntensity=1;const from=new V3(0,1.35,-14),to=new V3(4.2+(i%3)*0.35,0.66,-14.2+(i%2?0.12:-0.12));
     SFX.swish();anim(0.8,k=>{q.g.position.lerpVectors(from,to,k);q.g.position.y+=Math.sin(k*Math.PI)*1.6;q.g.rotation.y+=0.3;if(k>=1){SFX.water();burst(to.clone().add(new V3(0,0.3,0)),0xe8f4ff,8,2);floatText(to.clone().add(new V3(0,0.9,0)),'В корыто!','#ffd9a0');}});}
-  function temper(auto){if(FG.queue<=0)return;const i=FG.done;FG.queue--;FG.done++;SFX.water();burst(new V3(4.6,1,-14.2),0xe8f4ff,22,4);for(let k=0;k<6;k++)later(k*0.12,()=>burst(new V3(4.6+rand(-0.5,0.5),0.9,-14.2),0xffffff,3,2,1.4));
+  function temper(auto){if(FG.queue<=0)return;const i=FG.done;FG.queue--;FG.done++;SFX.water();if(W.fx4)W.fx4('temper',new V3(4.6,1,-14.2));burst(new V3(4.6,1,-14.2),0xe8f4ff,22,4);for(let k=0;k<6;k++)later(k*0.12,()=>burst(new V3(4.6+rand(-0.5,0.5),0.9,-14.2),0xffffff,3,2,1.4));
     floatText(new V3(4.6,1.9,-14.2),(auto?'Йоша сам полил! ':'Пш-ш-ш! ')+'Клещей '+FG.done+' / '+FG.total,'#cfe8ff');const q=inTrough[i],sl=rackSlots[i];q.m.color.setHex(0x3e3c44);q.m.emissiveIntensity=0;
     const from=q.g.position.clone(),to=new V3();sl.g.getWorldPosition(to);anim(0.9,k=>{q.g.position.lerpVectors(from,to,smooth(k));q.g.position.y+=Math.sin(k*Math.PI)*1.2;if(k>=1){q.g.visible=false;sl.on=true;sl.m.color.setHex(0x55555e);sl.m.opacity=1;sl.m.transparent=false;SFX.plate();FG.onRack++;floatText(to.clone().add(new V3(0,0.8,0)),'На стойку! '+FG.onRack+' / '+FG.total,'#d8f0c0');}});FG.waitT=0;FG.autoT=0;}
   W.waterTargets.push({pos:TROUGH,pri:3,active:()=>F.stage==='forge'&&FG.queue>0,onWater:()=>temper(false)});
   function startForge(){F.stage='forge';FG.t=-2*FG.B;FG.k=-3;ring.visible=true;stepRing.visible=true;banner('Куём клещи!','#ffd76a',3,'1 · Пелагея прыгает на рычаг мехов · 2 · Прошка молотом бьёт '+K(0,'attack')+' в такт · 3 · Йоша корыто поливает '+K(1,'skill'));}
+  // ЗВ.2: удары молота — ноты мотива «Эй, ухнем» (ми фригийский, полутоны от ми второй октавы): ковка звучит как песня 4-3
+  const MOT43=[7,5,0,7,5,0,5,7,8,7,5,3,1,0];let motI=0;const motNote=()=>mf(76+MOT43[motI++%MOT43.length]);
   function strike(ok){const pr=T.proshka;pr.atkT=0.28;pr.face=Math.atan2(0-pr.pos.x,-14-pr.pos.z);const hk=FG.heat>0.3?1:0.5;FG.prog+=(ok?1.3:1)*hk;
-    later(0.06,()=>{SFX.hammer();tone(ok?2600:1700,ok?0.5:0.25,'triangle',ok?0.24:0.12);burst(new V3(0,1.35,-14),ok?0xffe060:0xffa040,ok?18:6,ok?5:2);blank.material.emissiveIntensity=1.6;floatText(new V3(0,2.1,-14),ok?'Дзинь!':'тук',ok?'#ffe36b':'#e0c0a0');});
+    later(0.06,()=>{if(ok&&W.fx4)W.fx4('strike',new V3(0,1.35,-14));SFX.hammer();tone(ok?motNote():1700,ok?0.5:0.25,'triangle',ok?0.24:0.12);burst(new V3(0,1.35,-14),ok?0xffe060:0xffa040,ok?18:6,ok?5:2);blank.material.emissiveIntensity=1.6;floatText(new V3(0,2.1,-14),ok?'Дзинь!':'тук',ok?'#ffe36b':'#e0c0a0');});
     if(FG.heat<=0.3&&!FG.coldTold){FG.coldTold=true;sayP('Горн остыл — Пелагея, на рычаг мехов прыгай, раздувай!',2.8);}
-    if(FG.prog>=FG.need){FG.prog=0;FG.made++;FG.queue++;SFX.ok();floatText(new V3(0,2.9,-14),'Клещи готовы — в корыто летят!','#ffd76a');flyToTrough(FG.made-1);
+    if(FG.prog>=FG.need){FG.prog=0;FG.need=5;const two=FG.made===2;FG.made+=two?2:1;FG.queue+=two?2:1;SFX.ok();floatText(new V3(0,2.9,-14),two?'Двое клещей разом — в корыто!':'Клещи готовы — в корыто летят!','#ffd76a');flyToTrough(FG.made-1);if(two)flyToTrough(FG.made-2);
       if(FG.made===1)later(0.9,()=>sayP('Йоша, клещи в корыте! Живой водой полей — пш-ш-ш, и готово!',3));}}
   function forgeTick(dt){FG.t+=dt;const k=Math.floor(FG.t/FG.B+1e-6);while(FG.k<k){FG.k++;if(FG.k<0)tone(1760,0.05,'square',0.05);else tone(880,0.04,'square',0.03);}
     const u=((FG.t%FG.B)+FG.B)%FG.B/FG.B;ring.position.set(0,1.32,-14);ring.scale.setScalar(lerp(1.6,0.3,u));ring.material.color.setHex(u>0.8?0xffffff:COL.yellow);ring.visible=FG.made<FG.total;
@@ -125,7 +130,7 @@ function build41(){
         if(Math.random()<0.8)burst(g.position.clone(),Math.random()<0.5?0xffd76a:0xffffff,2,1.2,0.9);
         if(k>=1){W.group.remove(g);ringFx(h.pos,PCOL[h.player],1.5);burst(to,COL.gold,14,3);tone(1320+i*180,0.3,'triangle',0.14);h.atkT=0.25;floatText(h.pos.clone().add(new V3(0,heroHeight(h)+0.7,0)),'Мои клещи!','#ffd9a0');}});});});
     later(4*0.3+1.3,()=>{F.flew=true;W.abil.kleshi=true;SFX.ok();L1.locked=false;L1.g.visible=true;burst(L1.pos.clone(),COL.gold,16,3);
-      banner('У каждого — клещи!','#ffb070',2.8,'кнопка R или ; (на джойстике RB): взять горячее, положить, а на бегу — бросить · горячее остывает за двадцать секунд');
+      banner('У каждого — клещи!','#ffb070',2.8,'кнопка R или ; (на джойстике RB): взять горячее, положить, а на бегу — бросить · остыло — погрей в горне');
       later(1.2,()=>bark(T.proshka,'proshka','Сам сковал. Своими руками.',2.2));for(const pi of[0,1])tip(pi,'Клещи '+K(pi,'item')+': у горячего — взять, ещё раз — положить.<br>На бегу — на четыре шага бросить, вот как быть.',4);});}
   /* ---------- Д. «В четыре руки»: большую заготовку несут вдвоём, куют вдвоём, закаляет Йоша ---------- */
   const BIG={pos:new V3(0,1.25,-57.3),ang:0,hold:[null,null],on:false,placed:false};
@@ -177,8 +182,8 @@ function build41(){
     if(kind==='strike'&&half===1&&R4.striker[0]===pi){floatText(top,'Теперь другой бьёт — меняйтесь!','#ffd9a0');return true;}
     if(R4.beatDone[j.k]){return true;}
     if(kind==='strike'&&![0,1].some(q=>q!==pi&&onPlate(HOLD,q))){floatText(top,'Держать некому — заготовка скачет!','#ffd9a0');return true;}
-    if(Math.abs(j.d)>0.22+(W.ladBonus||0)){floatText(top,j.d<0?'рано':'поздно','#dddddd');return true;}
-    R4.beatDone[j.k]=true;R4.prog++;if(kind==='strike'){R4.striker[half]=pi;h.atkT=0.3;anim(0.22,q=>{hammer.rotation.z=-Math.sin(q*Math.PI)*1.1;});later(0.1,()=>{SFX.hammer();tone(2300+R4.prog*20,0.4,'triangle',0.2);burst(new V3(ANV.x,1.7,ANV.z),0xffe060,14,4);floatText(new V3(ANV.x,2.4,ANV.z),'Дзинь!','#ffe36b');});}
+    if(Math.abs(j.d)>0.22+(W.ladBonus||0)){floatText(top,j.d<0?'рано':'поздно','#dddddd');SFX.miss();return true;}
+    R4.beatDone[j.k]=true;R4.prog++;if(kind==='strike'){R4.striker[half]=pi;h.atkT=0.3;anim(0.22,q=>{hammer.rotation.z=-Math.sin(q*Math.PI)*1.1;});later(0.1,()=>{SFX.hammer();tone(motNote(),0.4,'triangle',0.2);burst(new V3(ANV.x,1.7,ANV.z),0xffe060,14,4);floatText(new V3(ANV.x,2.4,ANV.z),'Дзинь!','#ffe36b');});}
     else{R4.turn++;SFX.latch();floatText(top,'Поворот!','#bfe0ff');tone(1200,0.2,'sine',0.14,1600);}
     bigShape();bigMesh.position.set(ANV.x,1.55,ANV.z);
     if(R4.prog===R4.need/2){banner('Меняйтесь местами!','#ffd76a',2.2,G.solo?'помощник сам меняется с тобой: теперь ты держишь и поворачиваешь '+K(G.soloPi,'item'):'кто держал — тот бьёт, кто бил — тот держит');SFX.ok();
@@ -216,7 +221,7 @@ function build41(){
     play({dur:21,fov:46,camK:2.4,shots:[shot(0,[0,3,-45],[0,1.8,-54]),shot(5.6,[4.2,2.2,-47],[0.8,1.4,-50.2]),shot(11,[-1.4,1.3,-49.6],[0,0.9,-47.6]),shot(14,[-5.2,2,-51.4],[-8.2,1.9,-54.5]),shot(16,[0.8,1.2,-49.4],[0,0.9,-47.6])],
       says:[[0.3,3.6,null,'<i>Кольцо звенит, как колокол, —</i><br><i>И от звона того истуканы оживают вдруг.</i>',true],[5.6,3.2,'demyan','Хорошо сковано. Ладно.'],[8.8,2,'demyan','Вчетвером, говоришь?'],[11,3,null,'<i>Прошка на друзей кивает. Уши у него — красные.</i>',true],
         [14.2,1.8,'kuzst','Хм. Ученики, стало быть.'],[16,4.6,'proshka','<i>(тихо, через экран)</i> Ладно. Волшебство. Но сделанное руками.']],
-      events:[{t:0.3,fn:()=>{anim(3,k=>{kz.setStone(1-k);dm.setStone(1-k);});for(let i=0;i<8;i++)later(i*0.3,()=>burst(new V3(rand(-9,9),2,-54.5),0xff9a40,6,3));}},
+      events:[{t:0.3,fn:()=>{if(W.fx4)W.fx4('ringwave',new V3(0,0.3,-52));anim(3,k=>{kz.setStone(1-k);dm.setStone(1-k);});for(let i=0;i<8;i++)later(i*0.3,()=>burst(new V3(rand(-9,9),2,-54.5),0xff9a40,6,3));}},
         {t:3.4,fn:()=>{const f=dm.g.position.clone();anim(3,k=>{dm.g.position.lerpVectors(f,new V3(pr.pos.x+1.2,0,pr.pos.z-1),smooth(k));dm.g.rotation.y=k<0.85?-1.42:-0.88;});}},
         {t:18,fn:()=>{giveLink(dm.g.position,pr,2,1.1);}}],
       end:()=>{flushGifts();F.out=true;banner('Кузня ожила','#ffb070',2.4,'в лавке у Векши — фартук кузнеца, загляни!');later(1.8,finishLevel);}});}
@@ -235,7 +240,8 @@ function build41(){
     else if(LIFT.up<=0&&!HEROES.some(h=>h.pos.x>4.6&&h.pos.x<7.7&&h.pos.z>-34.8&&h.pos.z<-31.2&&h.pos.y<LIFT.y-0.1&&LIFT.y-h.pos.y<h.d.height+0.6))LIFT.y=Math.max(0,LIFT.y-dt*0.9);const dy=LIFT.y-(liftCol.maxy-0.3);
     liftCol.miny=LIFT.y;liftCol.maxy=LIFT.y+0.3;liftM.position.y=LIFT.y+0.15;liftFire.emissiveIntensity=LIFT.up>0?1:0.05;for(const h of HEROES)if(h.groundRef===liftCol)h.pos.y+=dy;
     if(!F.fight&&F.g2&&[0,1].some(pi=>active(pi).pos.z<-44))spawnGolems();
-    if(F.fight&&!F.cleared&&arena.every(e=>!e.alive)){F.cleared=true;SFX.ok();banner('Цех чист!','#ffb070',2.2,'горячий уголь — в большой горн: большую заготовку он разогреет');later(1,()=>sayP('Большой горн кузню будит.',3));}});
+    if(F.fight&&!F.cleared&&!F.waveQ&&arena.every(e=>!e.alive)&&F.wave<WAVES.length&&!G.cine){F.waveQ=true;later(0.8,()=>{F.waveQ=false;nextWave();});}
+    if(F.fight&&!F.cleared&&!F.waveQ&&arena.every(e=>!e.alive)&&F.wave>=WAVES.length){F.cleared=true;SFX.ok();banner('Цех чист!','#ffb070',2.2,'горячий уголь — в большой горн: большую заготовку он разогреет');later(1,()=>sayP('Большой горн кузню будит.',3));}});
   /* ---------- рисунки кнопок ---------- */
   const P=T.proshka,Y=T.yosha,Pe=T.pelageya;
   prompt(0,'attack',()=>headOf(P),()=>F.stage==='forge'&&P.active&&hd(P.pos,{x:0,z:-14})<2.6&&FG.made<FG.total,'в такт');
@@ -260,23 +266,25 @@ function build41(){
   /* ---------- задачи ---------- */
   const OR=(text,done,targets,ghost,read)=>{const o=O(text,done,targets,ghost);o.read=read;return o;};
   const forgeText=pi=>()=>{const st='Клещи '+FG.done+' / '+FG.total+'. ';
-    if(FG.queue>0)return st+(pi?'Клещи в корыте! Йоша '+K(1,'swap')+' — полей корыто живой водой '+K(1,'skill'):'Клещи в корыте — ждём, пока Йоша польёт. А ты куй следующие '+K(0,'attack'));
-    return st+(pi?'1 · Пелагея на рычаг мехов прыгает '+K(1,'jump')+' — жар растёт. 3 · Готовые клещи сами в корыто прилетят — тогда Йоша польёт':'2 · Прошка молотом бьёт '+K(0,'attack')+', как жёлтый кружок станет мал. Семь огоньков над наковальней — клещи готовы, час настал');};
+    if(FG.queue>0)return st+(pi?'В корыте клещи — Йоша '+K(1,'swap')+', полей '+K(1,'skill')+'.':'Йоша закаливает. Куй следующие '+K(0,'attack')+'.');
+    return st+(pi?'Пелагея, прыгай на рычаг мехов '+K(1,'jump')+'.':'Бей молотом '+K(0,'attack')+', когда жёлтый кружок мал.');};
   const mk=pi=>[
     OR('Кузня у огненной реки. Внутрь, смелей!',()=>F.stage!=='walk',()=>[anvil],null,'…кузня Кузьмы и Демьяна у самой реки стоит.'),
     OR('Кузнецы окаменели…',()=>F.stage!=='intro',()=>[anvil]),
     OR(forgeText(pi),()=>W.abil.kleshi,()=>FG.queue>0?[trough.g]:pi?[forge.bag]:[anvil],null,pi?'Мехи прыжками качают, а готовое — в воду, пусть шипит.':'…бить в такт, как по мороку, — и молот звенит.'),
-    OR(()=>'Горячим двери открываются: слиток из горна клещами возьми '+K(pi,'item')+' —<br>На холодную плиту положи.',()=>F.g1,()=>[slitok.g],null,'…холодная плита горячее любит.'),
-    OR(()=>'Дальние ворота засовом заперты: горячий гвоздь из горна — в щель.<br>На галерею — подъёмник: уголь в его печь — вот и вся цель.',()=>F.g2,()=>[gvozd.g,slot],null,'…засов от горячего гвоздя плавится.'),
-    OR(()=>'Чугунные болваны в раскалённых латах! По горячему не бей:<br>Йоша поливает '+K(1,'skill')+', используй клещи '+K(pi,'item')+' — нагрудник сорвать, и бейте его, скорей!',()=>F.cleared,()=>arena?arena.filter(e=>e.alive).map(e=>e.g):[],null,'…не сорвали латы за десять секунд — раскалятся опять.'),
-    OR(()=>'Горячий уголь иль слиток — в большой горн: он большую заготовку разогреет.',()=>F.lit,()=>[master.g],null,'…большой горн кузню будит.'),
-    OR(()=>'В четыре руки! Большую заготовку лишь вдвоём подымают: каждый клещами '+K(pi,'item')+' свой конец берёт.<br>Несите её на большую наковальню — вперёд!',()=>BIG.placed,()=>bigMesh?[bigMesh]:[],null,'…одному не поднять — вдвоём берите.'),
-    OR(()=>'Куём вдвоём: '+(R4.prog)+' / '+R4.need+'. Плита «БИТЬ» — удар '+K(pi,'attack')+' на раз-два-три.<br>Плита «ДЕРЖАТЬ» — клещами '+K(pi,'item')+' поворот на четыре (голубой кружок). На середине — местами меняйтесь, смотри.',()=>['quench','rung','end'].includes(F.stage),()=>[holdPlate,strikePlate],null,'…раз-два-три — удар, а четыре — поворот, смотрите.'),
-    OR(()=>'Кольцо готово! Йоша '+K(1,'swap')+' — живой водой '+K(1,'skill')+' его закали.',()=>F.stage==='rung'||F.stage==='end',()=>bigMesh?[bigMesh]:[],null,'…закалённое кольцо звенит, поёт.'),
+    OR(()=>'Слиток из горна — клещами '+K(pi,'item')+' на холодную плиту.',()=>F.g1,()=>[slitok.g],null,'…холодная плита горячее любит.'),
+    OR(()=>'Горячий гвоздь из горна — клещами '+K(pi,'item')+' в щель засова.',()=>F.g2,()=>[gvozd.g,slot],null,'…засов от горячего гвоздя плавится.'),
+    OR(()=>'Болваны: Йоша поливает латы '+K(1,'skill')+', клещи '+K(pi,'item')+' срывают — бей!',()=>F.cleared,()=>arena?arena.filter(e=>e.alive).map(e=>e.g):[],null,'…не сорвали латы за десять секунд — раскалятся опять.'),
+    OR(()=>'Горячий уголь или слиток — клещами '+K(pi,'item')+' в большой горн.',()=>F.lit,()=>[master.g],null,'…большой горн кузню будит.'),
+    OR(()=>'Большую заготовку — вдвоём клещами '+K(pi,'item')+', на наковальню.',()=>BIG.placed,()=>bigMesh?[bigMesh]:[],null,'…одному не поднять — вдвоём берите.'),
+    OR(()=>'Куём '+(R4.prog)+' / '+R4.need+': «БИТЬ» '+K(pi,'attack')+' трижды, «ДЕРЖАТЬ» '+K(pi,'item')+' в четвёртый.',()=>['quench','rung','end'].includes(F.stage),()=>[holdPlate,strikePlate],null,'…раз-два-три — удар, а четыре — поворот, смотрите.'),
+    OR(()=>'Кольцо готово! Йоша '+K(1,'swap')+' — закали его '+K(1,'skill')+'.',()=>F.stage==='rung'||F.stage==='end',()=>bigMesh?[bigMesh]:[],null,'…закалённое кольцо звенит, поёт.'),
     O('Кузнецы…',()=>false,()=>[dm.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
-  W.tipZones.push({cond:(pi,h)=>W.abil.kleshi&&!!heroCarry(h),text:pi=>'Несёшь горячее. Жми '+K(pi,'item')+' — положишь, а на бегу — бросишь.<br>Через двадцать секунд остынет — снова в печи погрей, не просишь.'});
-  W.tipZones.push({cond:(pi,h)=>F.stage==='forge'&&hd(h.pos,TROUGH)<3.5&&FG.queue===0,text:pi=>'Корыто для закалки. Готовые клещи сами сюда с наковальни прилетят —<br>Тогда Йоша их живой водой '+K(1,'skill')+' польёт, пусть шипят.'});
+  W.tipZones.push({cond:(pi,h)=>W.abil.kleshi&&!!heroCarry(h),text:pi=>'Несёшь горячее: '+K(pi,'item')+' — положить, на бегу — бросить. Остынет — погрей в горне.'});
+  W.tipZones.push({cond:(pi,h)=>W.abil.kleshi&&hd(h.pos,{x:4.6,z:-31})<3.2&&!(LIFT.up>0),text:pi=>'Подъёмник на галерею: горячий уголь клещами '+K(pi,'item')+' — в его печь.'});
+  W.tipZones.push({cond:(pi,h)=>F.stage==='r4'&&R4.prog>=R4.need/2&&R4.prog<R4.need/2+3,text:pi=>'Середина! Меняйтесь плитами: кто бил — держит, кто держал — бьёт.'});
+  W.tipZones.push({cond:(pi,h)=>F.stage==='forge'&&hd(h.pos,TROUGH)<3.5&&FG.queue===0,text:pi=>'Корыто: готовые клещи прилетят сюда — Йоша польёт их '+K(1,'skill')+'.'});
   W.spawns=[[new V3(-2.6,0,5),new V3(-4.6,0,6)],[new V3(2.6,0,5),new V3(4.6,0,6)]];W.startAct=[0,0];
   W.pauseLine='Кузня Кузьмы и Демьяна. Звенышка нет — Пелагея подсказки читает.<br>Ковка: мехи → наковальня → корыто → стойка; четыре готовы — клещи к героям летают.<br>Клещи (RB) горячее берут: слиток, уголь, гвоздь. Горячим двери открываются.<br>Чугунные латы — полить да сорвать. А в конце — кольцо цепи в четыре руки куётся.';
   W.onStart=()=>{later(0.8,()=>sayP('…Звенышка нет. Читать буду я — сама.',2.8));};

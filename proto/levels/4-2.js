@@ -17,25 +17,44 @@ function build42(){
   lavaZone(-60,60,-52,24,LY);lavaZone(-60,60,-120,-52,LY-6.2);
   const decorRock=(x,z,y,s)=>{const r=addMesh(new THREE.DodecahedronGeometry(s),rockM,x,y,z);r.rotation.set(rand(0,3),rand(0,3),0);return r;};
   for(let z=20;z>-110;z-=rand(3,5))for(const sd of[-1,1])decorRock(sd*rand(13,20),z,LY-0.2,rand(1,2.2));
-  /* ---------- ящерки-плевуньи: плюют огнём в Йошу, когда он на лаве; Прошка сбивает их рогаткой ---------- */
-  const spitters=[];const lizM=M(0xe0602a,{emissive:0x802000,emissiveIntensity:0.4});
-  function spitter(x,z,y,cond){const g=new THREE.Group();g.position.set(x,y,z);W.group.add(g);addMesh(new THREE.CylinderGeometry(0.42,0.6,3,8),rockM,0,-1.5,0,g);
+  /* ---------- ящерки-плевуньи: плюют огнём в Йошу, когда он на лаве; Прошка сбивает их рогаткой ----------
+     плюёт одна за раз (SPT.who): перед плевком 1,2 с светится и пищит; на пути Ёжика плевок не сбивает Йошу с корки, а отнимает у корки 2 с */
+  const spitters=[];const SPT={who:null,t:0};W.SPT=SPT;
+  function spitter(x,z,y,cond){const lizM=M(0xe0602a,{emissive:0x802000,emissiveIntensity:0.4});const g=new THREE.Group();g.position.set(x,y,z);W.group.add(g);addMesh(new THREE.CylinderGeometry(0.42,0.6,3,8),rockM,0,-1.5,0,g);
     const liz=new THREE.Group();liz.position.y=0.05;g.add(liz);const bd=part(liz,new THREE.SphereGeometry(0.3,10,8),lizM,0,0.25,0);bd.scale.set(0.8,0.6,1.4);part(liz,new THREE.SphereGeometry(0.2,10,8),lizM,0,0.4,0.4);
     for(const s of[-1,1])part(liz,new THREE.SphereGeometry(0.06,6,5),MB(0xfff3a0),s*0.09,0.5,0.55);const tl=new THREE.ConeGeometry(0.1,0.7,6);tl.rotateX(-Math.PI/2);part(liz,tl,lizM,0,0.2,-0.6);
     const mk=markMesh(0.9);mk.position.set(x,y+1.3,z);W.group.add(mk);
-    const S={g,liz,x,y,z,cond,cd:rand(2.4,3.6),down:0,mk,glow:0};S.mark={pos:new V3(x,y+0.5,z),active:()=>S.down<=0&&cond(),onHit:()=>{S.down=12;SFX.splash();burst(new V3(x,y+0.4,z),0xff6a20,14,3);floatText(new V3(x,y+1.6,z),'Бултых! Сбил!','#ffb070');
+    const S={g,liz,x,y,z,cond,cd:rand(2.4,3.6),down:0,mk,glow:0,mat:lizM};S.mark={pos:new V3(x,y+0.5,z),active:()=>S.down<=0&&cond(),onHit:()=>{S.down=12;SFX.splash();burst(new V3(x,y+0.4,z),0xff6a20,14,3);floatText(new V3(x,y+1.6,z),'Бултых! Сбил!','#ffb070');
       const f0=liz.position.clone();anim(0.6,k=>{liz.position.set(k*0.8,f0.y+Math.sin(k*Math.PI)*0.8-k*1.6,0);liz.rotation.z=k*3;});if(!F.spitTold){F.spitTold=true;later(0.4,()=>bark(T.proshka,'proshka','Прикрываю, Йоша, не бойся!',1.8));}}};
     W.marks.push(S.mark);spitters.push(S);return S;}
   const onLava=()=>{const Y=T.yosha;const L=lavaAt(Y.pos.x,Y.pos.z);return !!L&&Y.pos.y<L.y+1.2;};
-  function spitTick(dt){const Y=T.yosha;for(const S of spitters){S.mk.visible=S.down<=0&&S.cond();if(S.mk.visible){S.mk.lookAt(camS.position);S.mk.scale.setScalar(0.9+0.1*Math.sin(G.time*8));}
-      if(S.down>0){S.down-=dt;if(S.down<=0){S.liz.position.set(0,0.05,0);S.liz.rotation.z=0;burst(new V3(S.x,S.y+0.4,S.z),0xff8a30,8,2);}continue;}
-      lizM.emissiveIntensity=0.4;if(!S.cond()||!onLava()||hd(Y.pos,S)>9){S.cd=Math.max(S.cd,1.6);continue;}
-      S.liz.rotation.y=Math.atan2(Y.pos.x-S.x,Y.pos.z-S.z);S.cd-=dt;if(S.cd<0.9)S.liz.scale.setScalar(1+0.25*Math.sin(G.time*30));else S.liz.scale.setScalar(1);
-      if(S.cd<=0){S.cd=rand(3.2,4.4);const from=new V3(S.x,S.y+0.6,S.z),to=Y.pos.clone().add(new V3(0,0.6,0));const b=new THREE.Mesh(new THREE.SphereGeometry(0.2,8,6),MB(0xffa030));W.group.add(b);SFX.whoosh();
-        anim(0.9,k=>{b.position.lerpVectors(from,to,k);b.position.y+=Math.sin(k*Math.PI)*1.4;if(k>=1){W.group.remove(b);burst(to.clone(),0xff8a30,12,3);
-          if(hd(Y.pos,to)<1.2&&!G.cine){const dx=Y.pos.x-S.x,dz=Y.pos.z-S.z,dd=Math.hypot(dx,dz)||1;Y.vel.x=dx/dd*3.2;Y.vel.z=dz/dd*3.2;Y.vel.y=4;Y.grounded=false;Y.knockT=0.25;SFX.knock();floatText(Y.pos.clone().add(new V3(0,Y.d.height+0.6,0)),'Горячо!','#ffb070');
-            const c=Y.groundRef&&Y.groundRef.crust?Y.groundRef:null;if(c)c.t=Math.max(0.5,c.t-3);if(!F.spitHitTold){F.spitHitTold=true;tip(0,'Ящерки плюют в Йошу! Прикрой его: рогатка '+K(0,'skill')+' по ящерке — бей!',3.4);}}}});}}}
+  function spitTick(dt){const Y=T.yosha;if(SPT.fly&&SPT.t<-2)SPT.fly=false;   // плевок прервал ролик (W.anims очищены)
+    if(SPT.who&&(SPT.t-=dt)<=0&&!SPT.fly)SPT.who=null;
+    for(const S of spitters){S.mk.visible=S.down<=0&&S.cond();if(S.mk.visible){S.mk.lookAt(camS.position);S.mk.scale.setScalar(0.9+0.1*Math.sin(G.time*8));}
+      S.mat.emissiveIntensity=0.4;S.liz.scale.setScalar(1);
+      if(S.down>0){S.down-=dt;if(SPT.who===S&&!SPT.fly)SPT.who=null;if(S.down<=0){S.liz.position.set(0,0.05,0);S.liz.rotation.z=0;burst(new V3(S.x,S.y+0.4,S.z),0xff8a30,8,2);}continue;}
+      if(!S.cond()||!onLava()||hd(Y.pos,S)>9){S.cd=Math.max(S.cd,1.6);if(SPT.who===S&&!SPT.fly)SPT.who=null;continue;}
+      S.liz.rotation.y=Math.atan2(Y.pos.x-S.x,Y.pos.z-S.z);
+      if(S.cd-dt<1.2&&SPT.who!==S){if(SPT.who){S.cd=Math.max(S.cd,1.25);continue;}SPT.who=S;SPT.t=1.8;S.cd=1.2;SPT.g0=G.time;   // замах: свечение и писк 1,2 с
+        tone(330,0.22,'square',0.035);tone(440,0.22,'square',0.035,null,0.4);tone(587,0.3,'square',0.045,null,0.8);if(W.fx4)W.fx4('spit',new V3(S.x,S.y,S.z));}
+      S.cd-=dt;if(SPT.who===S){S.liz.scale.setScalar(1+0.25*Math.sin(G.time*30));S.mat.emissiveIntensity=1.2+0.4*Math.sin(G.time*20);}
+      if(S.cd<=0){S.cd=rand(3.2,4.4);SPT.fly=true;SPT.charge=G.time-SPT.g0;SPT.n=(SPT.n||0)+1;const from=new V3(S.x,S.y+0.6,S.z),to=Y.pos.clone().add(new V3(0,0.6,0));const b=new THREE.Mesh(new THREE.SphereGeometry(0.2,8,6),MB(0xffa030));W.group.add(b);SFX.whoosh();
+        anim(0.9,k=>{b.position.lerpVectors(from,to,k);b.position.y+=Math.sin(k*Math.PI)*1.4;if(k>=1){W.group.remove(b);burst(to.clone(),0xff8a30,12,3);SPT.fly=false;SPT.t=0.5;
+          if(hd(Y.pos,to)<1.2&&!G.cine){const c=Y.groundRef&&Y.groundRef.crust?Y.groundRef:null;F.spitHits=(F.spitHits||0)+1;
+            if(genPath()==='easy'){if(c)c.t=Math.max(0.5,c.t-2);SFX.knock();floatText(Y.pos.clone().add(new V3(0,Y.d.height+0.6,0)),'Горячо! Корка тает','#ffb070');}
+            else{const dx=Y.pos.x-S.x,dz=Y.pos.z-S.z,dd=Math.hypot(dx,dz)||1;Y.vel.x=dx/dd*3.2;Y.vel.z=dz/dd*3.2;Y.vel.y=4;Y.grounded=false;Y.knockT=0.25;SFX.knock();floatText(Y.pos.clone().add(new V3(0,Y.d.height+0.6,0)),'Горячо!','#ffb070');if(c)c.t=Math.max(0.5,c.t-3);}
+            if(!F.spitHitTold){F.spitHitTold=true;tip(0,'Ящерки плюют в Йошу! Прикрой его: рогатка '+K(0,'skill')+' по ящерке — бей!',3.4);}}}});}}}
   W.updates.push(dt=>{if(!G.cine)spitTick(dt);});
+  // контур будущей корки: корка в клещах — на лаве светится рамка там, где она ляжет (стоя — перед собой, на бегу — бросок на 4 м)
+  const ghosts=[0,1].map(()=>{const g=new THREE.Group();g.visible=false;W.group.add(g);const gm=MB(0xcfe8ff,{transparent:true,opacity:0.22,depthWrite:false});
+    const pl=new THREE.Mesh(new THREE.PlaneGeometry(1.2,2.0),gm);pl.rotation.x=-Math.PI/2;pl.renderOrder=3;g.add(pl);
+    const ed=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(1.2,0.18,2.0)),new THREE.LineBasicMaterial({color:0xe8f6ff,transparent:true,opacity:0.9}));ed.position.y=0.09;ed.renderOrder=3;g.add(ed);g.userData.m=[gm,ed.material];return g;});
+  const ghostAt=h=>{const f=h.face,mv=Math.hypot(h.vel.x,h.vel.z)>1.6;let x=h.pos.x+Math.sin(f)*0.95,z=h.pos.z+Math.cos(f)*0.95;
+    if(mv){const y=h.pos.y+0.5;for(let d=0.25;d<=4.001;d+=0.25){const qx=h.pos.x+Math.sin(f)*d,qz=h.pos.z+Math.cos(f)*d;if(W.boxes.some(b=>b.on&&!b.pass&&qx>b.minx-0.15&&qx<b.maxx+0.15&&qz>b.minz-0.15&&qz<b.maxz+0.15&&b.miny<y+0.8&&b.maxy>y))break;x=qx;z=qz;}}
+    const L=lavaAt(x,z);return L?{x,z,y:L.y,f}:null;};
+  W.updates.push(()=>{for(const pi of[0,1]){const g=ghosts[pi],h=active(pi),it=heroCarry(h),q=!G.cine&&it&&it.kind==='korka'?ghostAt(h):null;g.visible=!!q;if(!q)continue;
+    g.position.set(q.x,q.y+0.02,q.z);g.rotation.y=q.f;const a=0.5+0.5*Math.sin(G.time*6);g.userData.m[0].opacity=0.14+0.14*a;g.userData.m[1].opacity=0.6+0.35*a;}});
+  W.k42={ghosts:()=>ghosts.filter(g=>g.visible).length,SPT,spitters};   // для ботов (tfin_w42)
   /* ---------- А. берег и первый ручей: живая вода по лаве — корка; ящерки плюют, Прошка прикрывает ---------- */
   ground(-7,7,-2,14,0,bankM);bell(0,8);const n1=nutItem(6,0.6,11);
   box(-5.7,-4.3,LY-1,0,-4.9,-3.5,rockM);const L1=linkItem(-5,1.1,-4.2);
@@ -114,17 +133,19 @@ function build42(){
   // лавопад: «Сиди тут»
   function fallScene(){F.stage='cut1';const po=T.potap,yo=T.yosha,pr=T.proshka,pe=T.pelageya;
     placeOnGround(po,0.6,-49.4,0);placeOnGround(yo,-0.6,-48.6,0);placeOnGround(pr,2.6,-48.2,0);placeOnGround(pe,-2.8,-48.4,0);HEROES.forEach(h=>h.face=Math.PI);
-    play({dur:24,fov:46,camK:2.4,shots:[shot(0,[-5,3.4,-46],[0,-2.4,-60]),shot(4.6,[-1.8,1.6,-46.6],[0,1,-50]),shot(8.4,[4,2.6,-47],[0,0.8,-51]),shot(12.6,[yo.pos.x-1.6,1.3,yo.pos.z-1.6],[yo.pos.x,0.9,yo.pos.z]),shot(18.4,[po.pos.x+1.4,1.5,po.pos.z-1.8],[po.pos.x,1.1,po.pos.z])],
+    play({dur:24,fov:46,camK:2.4,shots:[shot(0,[-3.4,3.4,-46.2],[0,-1.4,-57],[-5.6,7.2,-44.4],[0,-1,-66],4.4),shot(4.6,[-1.8,1.6,-46.6],[0,1,-50]),shot(8.4,[4,2.6,-47],[0,0.8,-51]),shot(12.6,[yo.pos.x-1.6,1.3,yo.pos.z-1.6],[yo.pos.x,0.9,yo.pos.z]),shot(18.4,[po.pos.x+1.4,1.5,po.pos.z-1.8],[po.pos.x,1.1,po.pos.z])],
       says:[[0.3,4,null,'<i>Самое красивое место реки — водопад огня. Жёлоб справа залит огнём, внизу — огненная завеса.</i>',true],[4.6,3.4,'potap','<i>(загораживает Йошу)</i> Сиди тут. Я сам обход найду, не лезь.'],
         [8.4,3.8,null,'<i>Обхода нет. Потап вдоль края топчется.</i>',true],[12.6,1.8,null,'<i>Йоша не прыгает молча. Он поворачивается к Потапу.</i>',true],[14.6,3.6,'yosha','Потап, смотри на меня. Я пойду. Если что — ловишь.'],
         [18.4,3.4,null,'<i>Потап рот открывает. Закрывает.</i>',true],[21.6,2.2,'potap','…Ловлю. Ловлю, не бойся.']],
-      events:[{t:4.4,fn:()=>{const f=po.pos.clone();anim(0.8,k=>{po.pos.lerpVectors(f,new V3(-0.3,0,-49.6),k);});po.face=0.4;}},
+      events:[{t:1.0,fn:()=>{gorShadow(new V3(16,0,-70),new V3(-14,0,-42),3.2,-1.9);if(typeof FIN!=='undefined'&&FIN.w4story)FIN.w4story.farRoar();}},   // СЮ.4: тень Горыныча над лавопадом
+        {t:4.4,fn:()=>{const f=po.pos.clone();anim(0.8,k=>{po.pos.lerpVectors(f,new V3(-0.3,0,-49.6),k);});po.face=0.4;}},
         {t:8.4,fn:()=>{placeOnGround(po,-3,-51,0);po.face=Math.PI;anim(3.6,k=>{po.pos.x=-3+Math.sin(k*Math.PI*1.5)*4;po.face=Math.cos(k*Math.PI*1.5)>0?Math.PI/2:-Math.PI/2;});}},
         {t:12.4,fn:()=>{placeOnGround(po,edge.x+0.6,-50.2,0);po.face=-Math.PI/2;yo.face=Math.PI/2;}}],
       end:()=>{W.anims.length=0;placeOnGround(po,edge.x-1.4,edge.z,0);po.face=Math.PI;placeOnGround(yo,-1.2,-51.4,0);yo.face=Math.PI;placeOnGround(pr,1.6,-50.6,0);pr.face=Math.PI;placeOnGround(pe,-3,-49,0);
         if(active(0)!==pr)doSwap(0);if(active(1)!==yo)doSwap(1);F.stage='fall';F.cnt=0;F.cntT=0;W.noSwap=()=>F.stage==='fall';W.noSwapTip='Потап на краю страхует. Сейчас Йоша идёт, Прошка рогаткой его прикрывает.';snapCams();
         tip(0,'Йоша по огненному каскаду спускается. Прикрой его: ящерки огнём плюют — рогатка '+K(0,'skill')+'.<br>Потап на краю поймает, если Йоша оступится, — не бойся ни чуточки.',4.4);
         tip(1,'Йоша идёт сам: живой водой '+K(1,'skill')+' полей — корка под лапами встанет.<br>Внизу затвор жёлоба горит — остуди, и друзья спустятся, не отстанут.',4.4);}});}
+  lubokShard(-11.2,5.9,-22.6);   // СЮ.2: осколок лубка на высоком уступе
   spitter(-7.4,-54.2,-0.4,()=>F.stage==='fall');spitter(2.2,-55.8,-1.2,()=>F.stage==='fall');
   const NUM=['Раз.','Два.','Три.','Четыре.','Пять.','Шесть.','Семь.','Восемь.','Девять.','Десять.','Одиннадцать.','Двенадцать.','Тринадцать.','Четырнадцать.','Пятнадцать.','Шестнадцать.','Семнадцать.','Восемнадцать.','Девятнадцать.','Двадцать.','Двадцать одна…','Двадцать две…','Двадцать три…','Двадцать четыре…'];
   W.fallHook=h=>{if(F.stage!=='fall'||h!==T.yosha)return false;const po=T.potap;placeOnGround(h,po.pos.x+0.9,po.pos.z+0.3,po.pos.y);h.iT=1.2;h.vel.set(0,0,0);ringFx(po.pos,0xc08a48,1.6);SFX.toss();
@@ -142,7 +163,7 @@ function build42(){
       says:[[0.3,4,null,'<i>Внизу Йоша садится и тяжело дышит.</i><br><i>Потап рядом садится. Долго молчит — лишь тишина слышит.</i>',true],[4.4,4,null,'<i>Спускались все: Йоша — первым, Прошка его прикрывал,</i><br><i>Потап подкидывал и ловил — никто не отставал.</i>',true],
         [10.4,3.6,'potap','Ладно. Не «сиди тут».'],[15.4,3.6,null,'<i>Варя (шёпотом): «Он у меня самый главный».</i>',true]],
       events:[{t:0.2,fn:()=>{yo.body.scale.y=0.8;}},{t:4.4,fn:()=>{po.face=-Math.PI/2;po.body.scale.y=0.85;}},{t:16,fn:()=>{if(!L4.taken)takeItem(L4,yo);}}],
-      end:()=>{W.anims.length=0;yo.body.scale.y=1;po.body.scale.y=1;F.out=true;banner('Река Смородина позади!','#ffb070',2.4,'дальше — баржа у кузни ждёт');later(1.8,finishLevel);}});}
+      end:()=>{W.anims.length=0;yo.body.scale.y=1;po.body.scale.y=1;F.out=true;banner('Река Смородина позади!','#ffb070',2.4,'в лавке у Векши — пляска «Ручеёк», загляни!');later(1.8,finishLevel);}});}
   W.updates.push(dt=>{const ah=[0,1].map(active);
     if(F.stage==='a'&&ah.some(h=>h.pos.z<-7&&h.pos.y>-0.2))F.stage='b';
     if(F.stage==='b'&&ah.some(h=>h.pos.z<-20.4&&h.pos.y>-0.2))F.stage='c';
@@ -157,7 +178,8 @@ function build42(){
     if(F.stage==='fall'){const yo=T.yosha;
       // Потап считает вслух, чтобы не бояться
       if(yo.pos.z<-52&&yo.pos.y>-2){F.cntT+=dt;if(F.cntT>1.15&&F.cnt<NUM.length){F.cntT=0;bark(T.potap,'potap',NUM[F.cnt++],1);}}
-      if(yo.grounded&&yo.pos.y<-1.9&&yo.pos.z<-56.4&&!F.t1told){F.t1told=true;SFX.ok();bark(yo,'yosha','Я внизу! Сейчас затвор, сейчас!',1.8);}}
+      if(yo.grounded&&yo.pos.y<-1.9&&yo.pos.z<-56.4&&!F.t1told){F.t1told=true;SFX.ok();bark(yo,'yosha','Я внизу! Сейчас затвор, сейчас!',1.8);
+        later(2.1,()=>{bark(T.potap,'potap','Всё. Внизу. Дошёл, Йоша!',2.4);F.cntEnd=true;for(const[n,d]of[[45,0],[57,0],[61,0.06],[64,0.12],[69,0.18]])tone(mf(n),1.6,'triangle',0.1,null,d);});}}   // счёт кончается фразой и аккордом
     // завеса
     if(CUR.frozen>0){CUR.frozen-=dt;curtCol.on=false;curtM.color.setHex(0x3a3034);curtM.emissiveIntensity=CUR.frozen<2.5&&Math.sin(G.time*14)>0?0.8:0.1;if(CUR.frozen<=0){SFX.whoosh();floatText(new V3(0,-1.2,-61),'Завеса снова льётся — берегись!','#ffb070');}}
     else{curtCol.on=true;curtM.color.setHex(0xff7418);curtM.emissiveIntensity=0.85+0.15*Math.sin(G.time*9);const pa=curtain.geometry.attributes.position;if(pa){for(let i=0;i<pa.count;i++){const x=pa.getX(i),y=pa.getY(i);pa.setZ(i,Math.sin(G.time*6+x*0.8+y*1.3)*0.08);}pa.needsUpdate=true;}}
@@ -191,20 +213,20 @@ function build42(){
   /* ---------- задачи ---------- */
   const OR=(text,done,targets,ghost,read)=>{const o=O(text,done,targets,ghost);o.read=read;return o;};
   const mk=pi=>[
-    OR(()=>pi?'Река огня. Йоша '+K(1,'swap')+' — живую воду '+K(1,'skill')+' на лаву: застынет корка.<br>Перейдёшь — корку-мосток друзьям сделай с того бока.':'Река огня. Корку Йоша делает. Ящерки огнём в него плюют — прикрой: рогатка '+K(0,'skill')+' по ящерке.<br>Потом на корку Йоши прыгай — не мешкай ни капельки.',()=>F.stage!=='a'&&F.stage!=='intro',()=>pi?[spot1]:spitters.filter(s=>s.down<=0&&s.cond()).map(s=>s.g),null,'Огонь живой воды боится…'),
-    OR(()=>'Бурлящая струя: корка там не встаёт. Йоша в тихой заводи делает, клещи '+K(pi,'item')+' несут да кладут на струю.<br>Стоишь на одной — заднюю вперёд переложи, как по краю.',()=>['c','d','cut1','fall','tier1','dam','down','cut2'].includes(F.stage),()=>[pool],null,'…Йоша творит, а Прошка носит.'),
-    OR(()=>'Широкий разлив: корка на струе плотом плывёт. Паровые столбы бьют — Йоша поливает '+K(1,'skill')+', и стихают.<br>Второй герой на плот запрыгнет, коль рядом стоит, — не отстаёт.',()=>['d','cut1','fall','tier1','dam','down','cut2'].includes(F.stage),()=>[vents[1].g],null,'…горячий камень в жерло — столб выше встанет; полил — и стихнет, отстанет.'),
+    OR(()=>pi?'Йоша '+K(1,'swap')+' — живой водой '+K(1,'skill')+' на лаву: встанет корка.':'Прикрой Йошу: рогатка '+K(0,'skill')+' по ящеркам. Потом — на корку.',()=>F.stage!=='a'&&F.stage!=='intro',()=>pi?[spot1]:spitters.filter(s=>s.down<=0&&s.cond()).map(s=>s.g),null,'Огонь живой воды боится…'),
+    OR(()=>'Струя бурлит: корку из заводи неси клещами '+K(pi,'item')+' на струю.',()=>['c','d','cut1','fall','tier1','dam','down','cut2'].includes(F.stage),()=>[pool],null,'…Йоша творит, а Прошка носит.'),
+    OR(()=>'Разлив: корка плывёт плотом. Паровой столб Йоша гасит '+K(1,'skill')+'.',()=>['d','cut1','fall','tier1','dam','down','cut2'].includes(F.stage),()=>[vents[1].g],null,'…горячий камень в жерло — столб выше встанет; полил — и стихнет, отстанет.'),
     OR(()=>'Лавопад…',()=>['fall','tier1','dam','down','cut2'].includes(F.stage),()=>[new V3(0,0,-51.5)]),
-    OR(()=>pi?'Йоша первым спускается: живая вода '+K(1,'skill')+' — корка на каждой ступени.<br>Внизу — горящий затвор жёлоба: остуди, и друзья спустятся без промедленья.':'Прикрой Йошу: ящерки огнём плюют — рогатка '+K(0,'skill')+' по ящеркам.<br>Потап на краю поймает, коль Йоша оступится, — не бойся нимало.',()=>['tier1','dam','down','cut2'].includes(F.stage),()=>pi?[valve]:spitters.filter(s=>s.down<=0&&s.cond()).map(s=>s.g),null,pi?'…не сиди тут — ступай.':'…кто прикрывает — тот тоже идёт, так и знай.'),
-    OR(()=>(pi?'Огненная завеса! Потап через огонь подкинет, кто рядом стоит.':'Огненная завеса! Потап '+K(0,'swap')+' подкинет '+K(0,'skill')+', кто рядом стоит, — через огонь.')+'<br>Потом Йоша с той стороны завесу польёт '+K(1,'skill')+(pi?': на восемь секунд застынет — Потап пройдёт, не сгорит.':': на восемь секунд застынет — Потапа не тронь.'),()=>['dam','down','cut2'].includes(F.stage),()=>[curtain],null,'…один подкидывает, другой гасит — вот и лад.'),
-    OR(()=>pi?'Запруда: как Прошка плиту собьёт — у протоки стой, сразу поливай '+K(1,'skill')+':<br>Шесть секунд у тебя — не зевай!':'Запруда: рогаткой '+K(0,'skill')+' щеколду на скале сбей — плита в протоку упадёт.<br>Йоша её сразу остудит — и путь вперёд.',()=>['down','cut2'].includes(F.stage),()=>DAM.state==='up'?[latchMk]:[damG],null,'…вдвоём — и огонь уходит назад.'),
-    OR(()=>'Огонь ушёл! Вниз по застывшим ступеням — все вместе!',()=>F.stage==='cut2',()=>[new V3(0,-6,-72)]),
+    OR(()=>pi?'Спускайся: живая вода '+K(1,'skill')+' — корка на ступенях. Внизу остуди затвор.':'Прикрой Йошу: рогатка '+K(0,'skill')+' по ящеркам. Потап поймает.',()=>['tier1','dam','down','cut2'].includes(F.stage),()=>pi?[valve]:spitters.filter(s=>s.down<=0&&s.cond()).map(s=>s.g),null,pi?'…не сиди тут — ступай.':'…кто прикрывает — тот тоже идёт, так и знай.'),
+    OR(()=>pi?'Завеса! Потап подкинет тебя. Там Йоша полей завесу '+K(1,'skill')+'.':'Завеса! Потап '+K(0,'swap')+' подкидывает '+K(0,'skill')+' того, кто рядом.',()=>['dam','down','cut2'].includes(F.stage),()=>[curtain],null,'…один подкидывает, другой гасит — вот и лад.'),
+    OR(()=>pi?'Запруда: плита упадёт — сразу остуди её '+K(1,'skill')+'.':'Запруда: рогаткой '+K(0,'skill')+' сбей щеколду на скале.',()=>['down','cut2'].includes(F.stage),()=>DAM.state==='up'?[latchMk]:[damG],null,'…вдвоём — и огонь уходит назад.'),
+    OR(()=>'Огонь ушёл! Все вниз по застывшим ступеням.',()=>F.stage==='cut2',()=>[new V3(0,-6,-72)]),
     O('Внизу…',()=>false,()=>[T.yosha.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
-  W.tipZones.push({cond:(pi,h)=>!heroCarry(h)&&hd(h.pos,{x:-5.6,z:-24.2})<2.4&&F.stage!=='fall',text:pi=>'Горячий камень! Клещами '+K(pi,'item')+' возьми — в дыру с паром брось.<br>Столб выше станет — как лифт на скалу, вот и сбылось.'});
-  W.tipZones.push({cond:(pi,h)=>{const it=heroCarry(h);return !!it&&it.kind==='korka';},text:pi=>'Несёшь корку. Стоя жми '+K(pi,'item')+' — на лаву пред собой положишь, на бегу — на четыре шага бросишь.<br>На течении она поплывёт — не упросишь.'});
-  W.tipZones.push({cond:(pi,h)=>F.stage==='tier1'&&h.pos.z>-60.6&&h.pos.y>-2.6&&h.pos.y<-1.6,text:pi=>'Огненная завеса. Встань рядом с Потапом — через огонь подкинет ('+K(0,'skill')+' у Потапа).<br>Пелагея в полёте прыжок держать может — планирует, как лапа.'});
-  W.k42={cur:()=>CUR.frozen,dam:()=>DAM.state};                   // для бота-напарника: завеса застыла? плита в протоке?
+  W.tipZones.push({cond:(pi,h)=>!heroCarry(h)&&hd(h.pos,{x:-5.6,z:-24.2})<2.4&&F.stage!=='fall',text:pi=>'Горячий камень: клещами '+K(pi,'item')+' — в дыру с паром. Столб поднимет на скалу.'});
+  W.tipZones.push({cond:(pi,h)=>{const it=heroCarry(h);return !!it&&it.kind==='korka';},text:pi=>'Несёшь корку: стоя '+K(pi,'item')+' — положить перед собой, на бегу — бросить. Стоишь на одной — заднюю перекладывай вперёд.'});
+  W.tipZones.push({cond:(pi,h)=>F.stage==='tier1'&&h.pos.z>-60.6&&h.pos.y>-2.6&&h.pos.y<-1.6,text:pi=>'Завеса: встань рядом с Потапом — он подкинет через огонь ('+K(0,'skill')+').'});
+  W.k42=Object.assign(W.k42||{},{cur:()=>CUR.frozen,dam:()=>DAM.state});                   // для бота-напарника: завеса застыла? плита в протоке?
   W.spawns=[[new V3(-2.6,0,9),new V3(-4.6,0,10)],[new V3(2.6,0,9),new V3(4.6,0,10)]];W.startAct=[0,1];
   W.pauseLine='Река Смородина. Йоша корку живой водой творит — и друзьям с того берега помогает.<br>Прошка рогаткой его прикрывает и корку клещами таскает.<br>Лавопад: Йоша первым спускается, затвор жёлоба гасит; Потап через огненную завесу подкидывает, Йоша её гасит;<br>Запруда — рогаткой по щеколде да живой водой на плиту — вот и сказ весь.';
   W.onStart=()=>{later(0.4,intro);};

@@ -72,3 +72,16 @@ U.swim=(pi,i)=>{const h=U.hero(pi);if(h.groundRef&&h.groundRef.water&&i%30===0)Z
 U.held=S=>Object.values(ZC.HERO).some(h=>h.kwHold&&h.kwHold.ref===S.ref);
 U.playHold=(pi,S,spot,max)=>{ZC.tick(45);const [x,z]=spot||[S.x,S.z];for(let k=0;k<(max||20)*60;k++){if(U.def(pi,k))continue;if(U.step(pi,x,z,0.9))break;U.swim(pi,k);ZC.tick(1);}
   U.rel(pi);const K=U.K[U.pk(pi)];ZC.press(K.i);ZC.tick(3);ZC.press(K.s);ZC.tick(8);return U.held(S);};
+/* ---------- U.soloAdapt(): коопный бот — в одиночке ----------
+   После ZC.setSolo(true): клавиши Игрока 1 ведут героя, активного у Игрока 1, клавиши Игрока 2 — героя Игрока 2; перед нажатием бот сам
+   берёт нужного героя по Q (как человек). Q и K — смена героя в своей паре, как в коопе. U.soloSwaps — сколько раз пришлось менять. */
+U.soloAdapt=function(){if(U._sa)return;U._sa=true;U.soloSwaps=0;
+  const P1=new Set(['KeyA','KeyD','KeyW','KeyS','Space','KeyF','KeyG','ShiftLeft','KeyR','KeyE']);
+  const P2=new Set(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','KeyM','Comma','Period','Slash','Semicolon','KeyL']);
+  const press=ZC.press,hold=ZC.hold;let busy=false;
+  const take=kind=>{busy=true;try{if(U.me().kind!==kind){U.soloSwaps++;U.toKind(kind);}}finally{busy=false;}};
+  const want=pi=>{const p=ZC.players[pi],h=p.heroes[p.act];if(ZC.G.soloPi!==pi||U.me()!==h)take(h.kind);};
+  ZC.press=c=>{if(!busy&&ZC.G.solo){if(c==='KeyQ'||c==='KeyK'){const p=ZC.players[c==='KeyQ'?0:1];take(p.heroes[1-p.act].kind);return;}
+    if(P1.has(c))want(0);else if(P2.has(c))want(1);}press(c);};
+  ZC.hold=(c,on)=>{if(on&&!busy&&ZC.G.solo){if(P1.has(c))want(0);else if(P2.has(c))want(1);}hold(c,on);};};
+'soloAdapt ok'

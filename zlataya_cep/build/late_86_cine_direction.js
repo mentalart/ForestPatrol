@@ -52,6 +52,8 @@ const DIR=[
   // 3-Б: Соловей свистит — «А ну, сдуло!»
   {lv:'3-B',dur:13,say:'Фью',cues:[[4.7,dAll('surprise',0.06)],[7.4,dSpeed(1)],[7.45,dTrauma(0.45)],[7.5,dDutch(0.12,1.6)],[7.55,dAll('fear',0.05)]]},
   {lv:'3-B',dur:14,mood:[GOLD,0.14],cues:[[3.9,dEmo('pelageya','pride')],[10.6,dConf(36)],[10.7,dAll('cheer',0.08)]]},
+  // 4-1: из-за реки рычит Горыныч — он нависает над всем миром (docs/39, СЮ.4)
+  {lv:'4-1',dur:27,cues:[[8.3,()=>{if(FIN.w4story)FIN.w4story.farRoar();}],[8.4,dTrauma(0.2)],[8.7,dAll('surprise',0.05)]]},
   // 4-2: Потап оберегает Йошу — доверие
   {lv:'4-2',dur:24,calm:true,cues:[[4.8,dEmo('potap','pride')],[14.8,dEmo('yosha','nod')],[21.8,dEmo('potap','nod')]]},
   // 4-3: «Эй, ухнем»
