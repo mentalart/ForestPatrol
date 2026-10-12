@@ -159,29 +159,32 @@ function k1ArmSeg(r0,r1,seed){const g=new THREE.Group(),C=K1C;fk(g,K=>{K.add(KP.
     for(let i=0;i<3;i++){const ph=i*2.4+seed;K.add(KP.cone(0.09,0.5,4),C.barkD,tm(Math.sin(ph)*r0*1.05,k1hr(i,seed+3,-0.3,0.3),Math.cos(ph)*r0*1.05,0,Math.PI/2+ph,Math.PI/2+0.3),{noise:0.01});}},{H:1.5});return g;}
 function k1MakeArm(side){const g=new THREE.Group();W.group.add(g);const u=k1ArmSeg(0.85,0.68,side),f=k1ArmSeg(0.68,0.5,side+2),el=new THREE.Group();g.add(u);g.add(f);g.add(el);
   fk(el,K=>{K.add(hSph(0.78,8,6),K1C.barkL,tm(0,0,0),{noise:0.03});K.add(hSph(0.4,6,4),K1C.moss,tm(0,0.5,0.1,0,0,0,1.3,0.7,1),{noise:0.02});},{H:1.5});
-  k1Dyn(g);g.visible=false;return {g,u,f,el,side};}
-const K1_Y=new V3(0,1,0),K1_A=new V3(),K1_B=new V3(),K1_D=new V3(),K1_P=new V3(),K1_E=new V3(),K1_Q=new THREE.Quaternion();
-function k1PlaceSeg(m,a,b){K1_D.subVectors(b,a);const len=K1_D.length()||0.001;m.position.copy(a).add(b).multiplyScalar(0.5);K1_Q.setFromUnitVectors(K1_Y,K1_D.divideScalar(len));m.quaternion.copy(K1_Q);m.scale.set(1,len,1);}
-function k1UpdateArms(c){if(!c.arms)return;const F=W.flags,L=c.L;for(const A of c.arms){const e=c.hands.find(h=>h.side===A.side);
-    const vis=!!(e&&e.alive&&e.L&&e.L.wrist&&F.phase===1&&!(e.k1bridge&&e.k1bridge.g.parent)&&L&&L.g.visible);A.g.visible=vis;if(!vis)continue;
+  k1Dyn(g);g.visible=false;return {g,u,f,el,side,lay:0};}
+const K1_Y=new V3(0,1,0),K1_F=new V3(),K1_G=new V3(),K1_A=new V3(),K1_B=new V3(),K1_D=new V3(),K1_P=new V3(),K1_E=new V3(),K1_Q=new THREE.Quaternion();
+function k1PlaceSeg(m,a,b,w){K1_D.subVectors(b,a);const len=K1_D.length()||0.001;m.position.copy(a).add(b).multiplyScalar(0.5);K1_Q.setFromUnitVectors(K1_Y,K1_D.divideScalar(len));m.quaternion.copy(K1_Q);m.scale.set(w||1,len,w||1);}
+// Рука не отваливается никогда: в покое — от плеча «резинкой» до кисти; в Пробое остаётся на плече и сама опускается мостом
+// (прямая, потолще — по ней взбегают, дорожка мха сверху — в K1B.bridge), а когда мост убран — так же плавно поднимается обратно.
+const K1_LAY=1.0;   // на сколько ось опущенной руки ниже линии настила: верх руки — вровень с настилом
+function k1UpdateArms(c,dt){if(!c.arms)return;const F=W.flags,L=c.L;for(const A of c.arms){const e=c.hands.find(h=>h.side===A.side);
+    const vis=!!(e&&e.alive&&e.L&&e.L.wrist&&F.phase===1&&L&&L.g.visible);A.g.visible=vis;if(!vis){A.lay=0;continue;}
+    const br=e.k1bridge&&e.k1bridge.g.parent?e.k1bridge:null;if(br)A.from=br.from;A.lay+=((br?1:0)-A.lay)*Math.min(1,(dt||1/60)*8);if(!br&&A.lay<0.01)A.lay=0;
     const sh=L.rig[A.side>0?'shL':'shR'];sh.getWorldPosition(K1_A);K1_A.y-=0.2;e.L.wrist.getWorldPosition(K1_B);
     const d=K1_A.distanceTo(K1_B),reach=A.reach,half=Math.min(d,reach*2-0.05)/2,h=Math.sqrt(Math.max(0,reach*reach-half*half));
     K1_D.subVectors(K1_B,K1_A).normalize();K1_P.set(A.side*0.9,1,0.5);K1_P.addScaledVector(K1_D,-K1_P.dot(K1_D)).normalize();
     K1_E.copy(K1_A).addScaledVector(K1_D,Math.min(d,reach*2-0.05)/2).addScaledVector(K1_P,h);
-    k1PlaceSeg(A.u,K1_A,K1_E);k1PlaceSeg(A.f,K1_E,K1_B);A.el.position.copy(K1_E);}}
+    let w=1;
+    if(A.lay>0&&A.from){const k=A.lay,F0=K1_F.copy(A.from);F0.y-=K1_LAY;K1_B.lerp(F0,k);K1_G.copy(K1_A).add(K1_B).multiplyScalar(0.5);K1_E.lerp(K1_G,k);w=1+0.15*k;}   // мост: прямая рука от плеча к ладони на земле
+    k1PlaceSeg(A.u,K1_A,K1_E,w);k1PlaceSeg(A.f,K1_E,K1_B,w);A.el.position.copy(K1_E);}}
 /* ---------- мост-рука на плечо: большое бревно-рука с мхом, цветами и светляками ---------- */
 K1B.bridge=function(g,from,to,len,hand){const C=K1C,dir=to.clone().sub(from).normalize(),mid=from.clone().add(to).multiplyScalar(0.5);
-  const lg=new THREE.Group();lg.position.copy(mid).add(new V3(0,-0.82,0));lg.quaternion.setFromUnitVectors(K1_Y,dir);g.add(lg);
-  fk(lg,K=>{K.add(KP.cyl(0.78,0.98,len,9),C.bark,tm(0,0,0),{noise:0.035});for(let i=0;i<Math.ceil(len/1.5);i++){const y=-len/2+0.6+i*1.5;   // кольца-сучья по руке, мох по бокам
-      K.add(KP.tor(0.88-0.2*(i/(len/1.5)),0.1,4,10),C.barkD,tm(0,y,0,Math.PI/2,0,0),{noise:0.02});
-      for(const s of[-1,1])K.add(hSph(0.34,6,4),i%2?C.mossL:C.moss,tm(s*(0.9-0.15*i/(len/1.5)),y+0.2,k1hr(i,s,-0.2,0.2),0,0,0,1,0.7,1.1),{noise:0.02});}},{H:3});
+  // само «бревно» — рука Лешего: её рисует k1UpdateArms (остаётся на плече, опускается к ладони); здесь — дорожка мха по верху руки, цветы и светляки
   const top=k1G(g,0,0,0);top.position.copy(mid).add(new V3(0,0.04,0));top.quaternion.setFromUnitVectors(K1_Y,dir);   // дорожка мха по верху
-  fk(top,K=>{K.box(1.15,len*0.97,0.1,C.mossL,tm(0,0,0.0,0,0,0),{b:0.03,amp:0.02});for(let i=0;i<Math.ceil(len/1.2);i++){const y=-len/2+0.5+i*1.2,x=k1hr(i,1,-0.45,0.45);K.add(hIco(0.1),i%3===0?C.pink:i%3===1?C.yellow:C.white,tm(x,y,0.09),{s:0.2});}},{H:3});
+  fk(top,K=>{K.box(0.95,len*0.97,0.1,C.mossL,tm(0,0,0.0,0,0,0),{b:0.03,amp:0.02});for(let i=0;i<Math.ceil(len/1.2);i++){const y=-len/2+0.5+i*1.2,x=k1hr(i,1,-0.36,0.36);K.add(hIco(0.1),i%3===0?C.pink:i%3===1?C.yellow:C.white,tm(x,y,0.09),{s:0.2});}},{H:3});
   top.rotation.set(0,0,0);top.quaternion.setFromUnitVectors(K1_Y,dir);
   // светляки вдоль дорожки до плеча
   const fl=[];for(let i=0;i<7;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.1,6,5),new THREE.MeshBasicMaterial({color:0xfff3a0}));const k=(i+0.5)/7;m.position.copy(from).lerp(to,k).add(new V3(k1hr(i,1,-0.5,0.5),1.0+k1hr(i,2,0,0.6),0));g.add(m);fl.push({m,k,ph:i*0.9});}
   k1Dyn(g);K1B.tick.push(dt=>{if(!g.parent)return false;const t=G.time;fl.forEach(f=>{f.m.position.y=from.y+(to.y-from.y)*f.k+1.0+Math.sin(t*2.2+f.ph)*0.25;f.m.scale.setScalar(0.8+0.4*Math.sin(t*5+f.ph));});return true;});
-  if(hand)hand.k1bridge={g};};
+  if(hand)hand.k1bridge={g,from:from.clone(),to:to.clone()};};
 /* ---------- двойники: пять нарядов ---------- */
 function k1Costume(o,idx){const B=o.rig,C=K1C,add=(bone,g)=>{bone.add(g);k1Dyn(g);return g;};
   if(idx===0){const g=new THREE.Group();g.position.set(0,0.68,0);fk(g,K=>{K.add(KP.tor(0.5,0.06,4,14),C.leafD,tm(0,0,0,Math.PI/2,0,0),{noise:0.02});for(let i=0;i<9;i++){const a=i/9*Math.PI*2;
@@ -235,5 +238,6 @@ K1B.init=function(ctx){K1B.cur=ctx;K1B.fly.length=0;K1B.tick.length=0;ctx.arms=[
   K1B.crowd(ctx.C,ctx.R,10);if(K1B.fx&&K1B.fx.init)K1B.fx.init(ctx);};
 {const _ll=loadLevel;loadLevel=function(i){K1B.cur=null;K1B.crowdL=null;K1B.fly.length=0;K1B.tick.length=0;_ll(i);};}
 {const _st=step;step=function(dt){_st(dt);const c=K1B.cur;if(!c||!W||W.levelId!=='1-B')return;try{
-    c.hands=W.enemies.filter(e=>e.kind==='hand');c.hands.forEach(e=>{e.side=e.side||(e.home.x<0?-1:1);});k1UpdateArms(c);k1FlyTick(dt);k1CrowdTick(dt);
+    c.hands=W.enemies.filter(e=>e.kind==='hand');c.hands.forEach(e=>{e.side=e.side||(e.home.x<0?-1:1);});k1UpdateArms(c,dt);
+    if(W.flags.phase>1&&c.L&&!c.ownArms){c.ownArms=true;c.L.hands.forEach(h=>{h.sh.visible=true;});}   // этап 1 кончился: «резинки» убраны — у Лешего на месте собственные руки, он не остаётся безруким в ролике и на хороводеk1FlyTick(dt);k1CrowdTick(dt);
     for(let i=K1B.tick.length-1;i>=0;i--){if(K1B.tick[i](dt)===false)K1B.tick.splice(i,1);}}catch(e){console.error('k1b',e);K1B.cur=null;}};}

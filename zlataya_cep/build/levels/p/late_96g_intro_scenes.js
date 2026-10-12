@@ -1,12 +1,12 @@
 /* ============================== РЕЛИЗ final06 · «ПРИСКАЗКА» — ВСТУПИТЕЛЬНЫЙ РОЛИК ИГРЫ (2): СЕМЬ СЦЕН ============================== */
-// Сценарий — zlataya_cep/docs/42_priskazka_intro.md (шоты 1-1…7-3), площадки — late_96d_intro_sets.js.
+// Сценарий — zlataya_cep/docs/42_priskazka_intro.md (шоты 1-1…7-3), площадки — late_96f_intro_sets.js.
 // Запуск: «Кто играет?» → «Начать сказку!» (FIN.introWant) → пролог грузится, и вместо игры сразу идут семь роликов (def.kino,
 // правила — docs/40_kino_pravila.md), каждый ≤ 25 с; конец последнего — комната пролога, игра. Пропуск любого ролика пропускает
 // всю «Присказку» (PRK.skipped) — пролог в том же состоянии, что и без неё. Повтор — «Главы» → «Присказка».
 // Озвучки новых реплик пока нет (Higgsfield из облачной сессии недоступен): реплики в кадре звучат «голоском» (babble), рассказ
 // Кота — субтитрами. Тексты для записи — tools/voice/pending/intro.json; появится запись в voice/lines.json — зазвучит сама.
 const PRK_T=HERO;
-const LA=(x,y,z)=>prA(PRO.L,x,y,z),PA=(x,y,z)=>prA(PRO.P,x,y,z),WA=(k,x,y,z)=>prA(PRO[k],x,y,z);
+const prLA=(x,y,z)=>prA(PRO.L,x,y,z),prPA=(x,y,z)=>prA(PRO.P,x,y,z),prWA=(k,x,y,z)=>prA(PRO[k],x,y,z);
 const prkV=a=>PRV(a[0],a[1],a[2]);
 const prkWP=o=>o.getWorldPosition(new V3());
 // озвучка: id → текст (то же, что в pending/intro.json); vo — голос за кадром (Кот-рассказчик), в кадре его нет
@@ -34,42 +34,43 @@ function prkMot(inst,notes,spb,vol,delay){try{if(!AC||!FIN.music||!FIN.music.ins
   document.head.appendChild(st);
   for(const id of['prkPlate','prkTitle','prkBlack']){const d=document.createElement('div');d.id=id;document.body.appendChild(d);}}
 const PRK_PLATE={proshka:['ПРОШКА','лисёнок-изобретатель',0],potap:['ПОТАП','медвежонок-силач',0],yosha:['ЙОША','ёжик-водонос',1],pelageya:['ПЕЛАГЕЯ','совушка-сказительница',1]};
-function prkPlate(who,dur){const el=$('prkPlate');if(!el)return;const p=PRK_PLATE[who];if(!p)return;const pl=G.solo?'':FIN.co&&FIN.co.on&&p[2]?'напарник':'Игрок '+(p[2]+1);
-  el.style.setProperty('--c',PCSS[p[2]]);el.style.setProperty('--ts',FIN.set.ts||1);el.innerHTML='<div class="r"><b>'+p[0]+'</b><i>'+p[1]+'</i>'+(pl?'<s>'+pl+'</s>':'')+'</div>';
+function prkPlate(who,dur){const el=$('prkPlate');if(!el)return;const p=PRK_PLATE[who];if(!p)return;const prPl=G.solo?'':FIN.co&&FIN.co.on&&p[2]?'напарник':'Игрок '+(p[2]+1);
+  el.style.setProperty('--c',PCSS[p[2]]);el.style.setProperty('--ts',FIN.set.ts||1);el.innerHTML='<div class="r"><b>'+p[0]+'</b><i>'+p[1]+'</i>'+(prPl?'<s>'+prPl+'</s>':'')+'</div>';
   el.classList.add('on');const k=prkPlate.k=(prkPlate.k||0)+1;later(dur||2.6,()=>{if(prkPlate.k===k)el.classList.remove('on');});}
 function prkTitle(on){const el=$('prkTitle');if(!el)return;el.style.setProperty('--ts',FIN.set.ts||1);
   if(on){el.innerHTML='<div class="ring"><small>Пролог</small><b>Звенышко</b><span class="dot">• • •</span></div>';el.classList.add('on');}else el.classList.remove('on');}
 function prkBlack(a){const el=$('prkBlack');if(el)el.style.opacity=a;}
 // ---------- общие помощники сцен ----------
-const PL=()=>PRK.L,PP=()=>PRK.P,PW=k=>PRK.Wd[k];
+const prL=()=>PRK.L,prPm=()=>PRK.P,prWd=k=>PRK.Wd[k];
 // Кот на цепи: u — место на спирали; face — 'out' (к зрителю, наружу от ствола), 'walk' (вдоль цепи) или угол
-function prkKotChain(u,face){const L=PL(),p=L.spiral(u),r=Math.hypot(p.x,p.z)||1,ox=p.x/r,oz=p.z/r,k=L.kot;
+function prkKotChain(u,face){const L=prL(),p=L.spiral(u),r=Math.hypot(p.x,p.z)||1,ox=p.x/r,oz=p.z/r,k=L.kot;
   k.g.position.set(p.x+ox*0.34,p.y+0.12,p.z+oz*0.34);const a=u*Math.PI*2*3;
   k.g.rotation.set(0,face==='walk'?Math.atan2(Math.cos(a),-Math.sin(a)):face==='out'?Math.atan2(ox,oz):(face||0),0);}
-function prkKotScale(s,sy){const k=PL().kot,b=PL().kotS;k.g.scale.set(b*s,b*(sy||s),b*s);}
+function prkKotScale(s,sy){const k=prL().kot,b=prL().kotS;k.g.scale.set(b*s,b*(sy||s),b*s);}
 // цвет и свечение: плавно в серое
-function prkGrey(o,k){o.traverse(c=>{const m=c.material;if(!m||Array.isArray(m)||!m.color)return;if(!c.userData.c0)c.userData.c0=m.color.clone();if(c.userData.e0===undefined&&m.emissive)c.userData.e0=m.emissiveIntensity;
-  const grey=new THREE.Color(0x8a8a90);m.color.copy(c.userData.c0).lerp(grey,k);if(m.emissive)m.emissiveIntensity=(c.userData.e0||0)*(1-k*0.9);});}
+function prkGrey(o,k,col){o.traverse(c=>{if(!c.material||Array.isArray(c.material)||!c.material.color)return;if(!c.userData.prkOwn){c.material=c.material.clone();c.userData.prkOwn=1;}const m=c.material;   // своя копия: общие материалы моделей не трогаем
+  if(!c.userData.c0)c.userData.c0=m.color.clone();if(c.userData.e0===undefined&&m.emissive)c.userData.e0=m.emissiveIntensity;
+  const grey=new THREE.Color(col||0x8a8a90);m.color.copy(c.userData.c0).lerp(grey,k);if(m.emissive)m.emissiveIntensity=(c.userData.e0||0)*(1-k*0.9);});}
 function prkAttach(par,obj,x,y,z){par.add(obj);obj.position.set(x,y,z);PRK.att.push(obj);return obj;}
 // падающая искра мира: от a к b за d секунд
 function prkFallAnim(s,a,b,d,then){s.visible=true;s.position.copy(a);const tr=s.userData.tr;anim(d,k=>{const e=prkE.i(k);s.position.lerpVectors(a,b,e);if(tr){tr.lookAt(prkWP(s).add(a.clone().sub(b).normalize()));}if(k>=1){s.visible=false;if(then)then();}});}
 function prkBurst(pos,col,n){try{burst(pos,col,n||14,4);}catch(e){}try{FX.sparkle(pos,10,col);}catch(e){}}
 function prkHeroesOff(){for(const h of HEROES){h.following=false;h.vel.set(0,0,0);}}
 // камера для KC.fcam у NPC: смотрит вперёд по повороту g
-const fc=KC.fcam,pl=KC.place;
+const prFc=KC.fcam,prPl=KC.place;
 
 /* ============================== СЦЕНА 1 «У ЛУКОМОРЬЯ» ============================== */
-function prkS1(){const L=PL();let hero=null;
+function prkS1(){const L=prL();let hero=null;
   return {dur:23,fov:44,kino:true,mood:['#ffc890',0.08],
-    shots:[KS(0,LA(0,8.1,30.4),LA(0,8,26),{p2:LA(0,8.02,27.3),l2:LA(0,8,22),dur:2.95,move:'none'}),   // 1-1 звено в темноте — сквозь него
-      KS(3.0,LA(30,22,48),LA(0,7,0),{p2:LA(12,8.5,30),l2:LA(0,6.5,0),dur:4.2,move:'none'}),   // 1-2 рассвет с птичьего полёта
-      KS(7.2,LA(0.2,4.6,4.4),LA(0,4.3,2.6),{trk:(pose,u)=>{const uu=lerp(0.25,0.4,prkE.io(u)),p=L.spiral(uu),r=Math.hypot(p.x,p.z),o=PRV(p.x/r,0,p.z/r);
+    shots:[KS(0,prLA(0,8.1,30.4),prLA(0,8,26),{p2:prLA(0,8.02,27.3),l2:prLA(0,8,22),dur:2.95,move:'none'}),   // 1-1 звено в темноте — сквозь него
+      KS(3.0,prLA(30,22,48),prLA(0,7,0),{p2:prLA(12,8.5,30),l2:prLA(0,6.5,0),dur:4.2,move:'none'}),   // 1-2 рассвет с птичьего полёта
+      KS(7.2,prLA(0.2,4.6,4.4),prLA(0,4.3,2.6),{trk:(pose,u)=>{const uu=lerp(0.25,0.4,prkE.io(u)),p=L.spiral(uu),r=Math.hypot(p.x,p.z),o=PRV(p.x/r,0,p.z/r);
         pose.look.set(PRO.L.x+p.x,p.y,PRO.L.z+p.z);pose.pos.copy(pose.look).addScaledVector(o,1.75);pose.pos.y+=0.35;}}),   // 1-3 вдоль цепи: гравюры
-      KS(9.4,LA(2.4,5.2,6.6),LA(0,4.6,2.6),{trk:fc(L.kot,2.9,0,0.15,0.12)}),   // 1-4 Кот идёт по цепи к нам
-      KS(13.4,LA(1.2,5.0,4.2),LA(0,4.9,2.6),{trk:fc(L.kot,1.9,0.55,0.12,0.1)}),   // 1-5а «направо — песнь…»
-      KS(15.3,LA(-1.2,5.0,4.2),LA(0,4.9,2.6),{trk:fc(L.kot,1.9,-0.55,0.12,0.1),tr:'whip'}),   // 1-5б whip — «налево — сказку…»
-      KS(17.4,LA(8,9,9),LA(0,7.5,0),{trk:KC.orbit(()=>prkP(PRO.L,0,7.6,0),11.5,1.6,0.75,-0.2,0)}),   // 1-6 облёт кроны: русалка, Леший
-      KS(20.6,LA(0,3.2,15),LA(0,3,0),{p2:LA(0,7.5,28),l2:LA(0,4,0),dur:2.4,move:'none'})],   // 1-7 отъезд: слушатели сходятся
+      KS(9.4,prLA(2.4,5.2,6.6),prLA(0,4.6,2.6),{trk:prFc(L.kot,2.9,0,0.15,0.12)}),   // 1-4 Кот идёт по цепи к нам
+      KS(13.4,prLA(1.2,5.0,4.2),prLA(0,4.9,2.6),{trk:prFc(L.kot,1.9,0.55,0.12,0.1)}),   // 1-5а «направо — песнь…»
+      KS(15.3,prLA(-1.2,5.0,4.2),prLA(0,4.9,2.6),{trk:prFc(L.kot,1.9,-0.55,0.12,0.1),tr:'whip'}),   // 1-5б whip — «налево — сказку…»
+      KS(17.4,prLA(8,9,9),prLA(0,7.5,0),{trk:KC.orbit(()=>prkP(PRO.L,0,7.6,0),11.5,1.6,0.75,-0.2,0)}),   // 1-6 облёт кроны: русалка, Леший
+      KS(20.6,prLA(0,3.2,15),prLA(0,3,0),{p2:prLA(0,7.5,28),l2:prLA(0,4,0),dur:2.4,move:'none'})],   // 1-7 отъезд: слушатели сходятся
     says:[prkSay(0.3,2.3,'kot','Садитесь в круг — начну рассказ!',true),prkSay(3.3,3.8,'kot','У лукоморья дуб зелёный,<br>Златая цепь на дубе том…',true),
       prkSay(9.6,3.7,'kot','И днём и ночью кот учёный<br>Всё ходит по цепи кругом.'),prkSay(13.5,3.8,'kot','Идёт направо — песнь заводит,<br>Налево — сказку говорит!'),
       prkSay(17.6,3.0,'kot','Там чудеса: там леший бродит,<br>Русалка на ветвях сидит…',true)],
@@ -99,17 +100,17 @@ function prkS1(){const L=PL();let hero=null;
     end:()=>PRK.next()};}
 
 /* ============================== СЦЕНА 2 «СЛОВО И МОЛОТ» ============================== */
-function prkS2(){const L=PL(),coal=()=>prkWP(L.coal),ham=()=>prkWP(L.kidHammer),gap=L.links[4];let letT=-1,flyT=-1,waveT=-1,strikes=[];
+function prkS2(){const L=prL(),coal=()=>prkWP(L.coal),ham=()=>prkWP(L.kidHammer),gap=L.links[4];let letT=-1,flyT=-1,waveT=-1,strikes=[];
   const kotHead=()=>prkWP(L.kot.head),lp=[];
   return {dur:20,fov:46,kino:true,mood:['#ffd08a',0.08],
-    shots:[KS(0,LA(3.9,5.2,2.6),LA(3.4,5.1,0.35),{trk:fc(L.kot,2.1,0.3,0.1,0.12)}),   // 2-1 Кот на ветке: слово — звено
-      KS(3.0,LA(4.4,3.4,10),LA(6.6,1.6,3.4),{trk:KC.look(()=>{const a=L.letters.filter(s=>s.visible);if(!a.length)return coal();const c=new V3();a.forEach(s=>c.add(prkWP(s)));return c.multiplyScalar(1/a.length);},0.7),move:'truck'}),   // 2-2 буквы летят в горн
-      KS(5.2,LA(7.6,2.0,4.6),LA(8.4,1.8,3.2),{trk:(pose)=>{const h=ham(),q=new THREE.Quaternion();L.rack.getWorldQuaternion(q);const f=PRV(0,0,1).applyQuaternion(q);pose.look.copy(h).add(PRV(0,-0.2,0));pose.pos.copy(h).addScaledVector(f,1.35).add(PRV(0,0.1,0));}}),   // 2-3 деревянный молоточек
-      KS(6.2,LA(6.6,2.4,5.6),LA(6.4,1.9,3.6),{trk:fc(L.kuzma,2.2,-0.35,0.05,0.14)}),   // 2-4 Кузьма: три удара
-      KS(9.0,LA(1.6,2.8,10.6),LA(4.9,2.6,1.9),{trk:KC.two(kotHead,()=>prkWP(L.kuzma.head),0.9),move:'push',amp:0.3,fov:6}),   // 2-5 Кот и Кузьма вдвоём
-      KS(11.6,LA(3,2.2,17),LA(0,6,0),{p2:LA(5,15,30),l2:LA(0,8,0),dur:3.8,move:'none'}),   // 2-6 звено на цепь — дуб зеленеет
-      KS(15.4,LA(3.6,3,13),LA(0,1,7.4),{trk:KC.orbit(()=>prkP(PRO.L,0,1.0,7.6),6.8,2.2,0.6,-0.5,0.2)}),   // 2-7 слушатели на закате
-      KS(18.0,LA(0,7,20),LA(0,5,0),{p2:LA(0,26,90),l2:LA(0,16,240),dur:2.0,move:'none'})],   // 2-8 над морем — к лесу
+    shots:[KS(0,prLA(3.9,5.2,2.6),prLA(3.4,5.1,0.35),{trk:prFc(L.kot,2.1,0.3,0.1,0.12)}),   // 2-1 Кот на ветке: слово — звено
+      KS(3.0,prLA(4.4,3.4,10),prLA(6.6,1.6,3.4),{trk:KC.look(()=>{const a=L.letters.filter(s=>s.visible);if(!a.length)return coal();const c=new V3();a.forEach(s=>c.add(prkWP(s)));return c.multiplyScalar(1/a.length);},0.7),move:'truck'}),   // 2-2 буквы летят в горн
+      KS(5.2,prLA(7.6,2.0,4.6),prLA(8.4,1.8,3.2),{trk:(pose)=>{const h=ham(),q=new THREE.Quaternion();L.rack.getWorldQuaternion(q);const f=PRV(0,0,1).applyQuaternion(q);pose.look.copy(h).add(PRV(0,-0.2,0));pose.pos.copy(h).addScaledVector(f,1.35).add(PRV(0,0.1,0));}}),   // 2-3 деревянный молоточек
+      KS(6.2,prLA(6.6,2.4,5.6),prLA(6.4,1.9,3.6),{trk:prFc(L.kuzma,2.2,-0.35,0.05,0.14)}),   // 2-4 Кузьма: три удара
+      KS(9.0,prLA(1.6,2.8,10.6),prLA(4.9,2.6,1.9),{trk:KC.two(kotHead,()=>prkWP(L.kuzma.head),0.9),move:'push',amp:0.3,fov:6}),   // 2-5 Кот и Кузьма вдвоём
+      KS(11.6,prLA(3,2.2,17),prLA(0,6,0),{p2:prLA(5,15,30),l2:prLA(0,8,0),dur:3.8,move:'none'}),   // 2-6 звено на цепь — дуб зеленеет
+      KS(15.4,prLA(3.6,3,13),prLA(0,1,7.4),{trk:KC.orbit(()=>prkP(PRO.L,0,1.0,7.6),6.8,2.2,0.6,-0.5,0.2)}),   // 2-7 слушатели на закате
+      KS(18.0,prLA(0,7,20),prLA(0,5,0),{p2:prLA(0,26,90),l2:prLA(0,16,240),dur:2.0,move:'none'})],   // 2-8 над морем — к лесу
     says:[prkSay(0.3,2.6,'kot','Что ни сказка — то звено:<br>Слово к слову — вот оно!'),prkSay(6.4,1.9,'kuzma','Звено куют руками…'),prkSay(9.1,2.1,'kot','…а держится оно — словами.'),
       prkSay(11.8,3.4,'kot','Пока цела цепь золотая, —<br>Живут и сказки, не смолкая.',true)],
     events:[{t:0,fn:()=>{PRK.only('L');PRK.look('day');FIN.music.play('title');L.cliff.visible=false;L.stupa.g.visible=false;
@@ -139,32 +140,32 @@ function prkS2(){const L=PL(),coal=()=>prkWP(L.coal),ham=()=>prkWP(L.kidHammer),
     end:()=>{L.links.forEach(o=>o.m.scale.setScalar(1));L.crown.scale.setScalar(1);L.letters.forEach(s=>{s.visible=false;});L.newLink.visible=false;gap.m.visible=true;PRK.next();}};}
 
 /* ============================== СЦЕНА 3 «ЛЕСНОЙ ПАТРУЛЬ» ============================== */
-function prkS3(){const P=PP(),O=PRO.P,T=PRK_T,pr=T.proshka,po=T.potap,pe=T.pelageya,yo=T.yosha;let spT=-1;
+function prkS3(){const P=prPm(),O=PRO.P,T=PRK_T,pr=T.proshka,po=T.potap,pe=T.pelageya,yo=T.yosha;let spT=-1;
   const at=(x,z)=>PRV(O.x+x,0,O.z+z),poHead=()=>PRV(po.pos.x,po.pos.y+po.d.height*0.8,po.pos.z),springW=()=>prkWP(P.spring);
   const potapX=t=>lerp(5.6,1.6,prkE.io(clamp((t-8.8)/0.9,0,1)));
   return {dur:24.2,fov:46,kino:true,mood:['#ffb070',0.1],
-    shots:[KS(0,PA(-42,14,70),PA(0,6,0),{p2:PA(-9,7.5,28),l2:PA(0,4,2),dur:3.0,move:'none'}),   // 3-1 пролёт над лесом
-      KS(3.0,PA(10,5,14),PA(0,3,0),{trk:KC.orbit(()=>prkP(O,0,3.2,2),17,2.4,0.8,0.25,0)}),   // 3-2 сосна-штаб
-      KS(5.8,PA(-9.4,1.9,8.4),PA(-10.2,1.0,5.0),{trk:fc(pr,3.8,0.35,0.2,0.12)}),   // 3-3 Прошка и самокат
-      KS(8.8,PA(4.6,1.9,12.4),PA(2.4,1.2,6.6),{trk:KC.look(()=>spT>=0&&spT<1?springW():poHead(),0.75),move:'push'}),   // 3-4 пружина — Потап ловит
-      KS(11.6,PA(9.6,1.5,8.2),PA(9.7,0.8,5.6),{trk:fc(yo,2.0,-0.45,0.15,0.12)}),   // 3-5 Йоша и росток
-      KS(14.4,PA(3,3,13),PA(1.6,8,5.9),{p2:PA(2.7,11.9,8.9),l2:PA(1.6,11.7,5.9),dur:1.7,move:'none'}),   // 3-6 вверх по стволу — Пелагея
-      KS(17.4,PA(-1.4,1.3,6.6),PA(-1.9,0.6,4.4),{trk:fc(P.tish,2.1,0.25,0.12,0.1)}),   // 3-7 Тишка в дверях
-      KS(19.6,PA(-1.6,1.0,3.75),PA(-2.0,1.0,9.2),{move:'none'}),   // 3-8 куча-мала у двери
-      KS(21.8,PA(1.9,12.4,7.6),PA(1.6,11.9,5.9),{trk:fc(pe,1.75,0.2,0.08,0.1)}),   // 3-9а Пелагея: «…и я»
-      KS(23.1,PA(7,14,20),PA(1.6,12,5.9),{p2:PA(12,17,32),l2:PA(0,14,0),dur:1.1,move:'none'})],   // 3-9б отъезд — первая звезда
+    shots:[KS(0,prPA(-42,14,70),prPA(0,6,0),{p2:prPA(-9,7.5,28),l2:prPA(0,4,2),dur:3.0,move:'none'}),   // 3-1 пролёт над лесом
+      KS(3.0,prPA(10,5,14),prPA(0,3,0),{trk:KC.orbit(()=>prkP(O,0,3.2,2),17,2.4,0.8,0.25,0)}),   // 3-2 сосна-штаб
+      KS(5.8,prPA(-9.4,1.9,8.4),prPA(-10.2,1.0,5.0),{trk:prFc(pr,3.8,0.35,0.2,0.12)}),   // 3-3 Прошка и самокат
+      KS(8.8,prPA(4.6,1.9,12.4),prPA(2.4,1.2,6.6),{trk:KC.look(()=>spT>=0&&spT<1?springW():poHead(),0.75),move:'push'}),   // 3-4 пружина — Потап ловит
+      KS(11.6,prPA(9.6,1.5,8.2),prPA(9.7,0.8,5.6),{trk:prFc(yo,2.0,-0.45,0.15,0.12)}),   // 3-5 Йоша и росток
+      KS(14.4,prPA(3,3,13),prPA(1.6,8,5.9),{p2:prPA(2.7,11.9,8.9),l2:prPA(1.6,11.7,5.9),dur:1.7,move:'none'}),   // 3-6 вверх по стволу — Пелагея
+      KS(17.4,prPA(-1.4,1.3,6.6),prPA(-1.9,0.6,4.4),{trk:prFc(P.tish,2.1,0.25,0.12,0.1)}),   // 3-7 Тишка в дверях
+      KS(19.6,prPA(-1.6,1.0,3.75),prPA(-2.0,1.0,9.2),{move:'none'}),   // 3-8 куча-мала у двери
+      KS(21.8,prPA(1.9,12.4,7.6),prPA(1.6,11.9,5.9),{trk:prFc(pe,1.75,0.2,0.08,0.1)}),   // 3-9а Пелагея: «…и я»
+      KS(23.1,prPA(7,14,20),prPA(1.6,12,5.9),{p2:prPA(12,17,32),l2:prPA(0,14,0),dur:1.1,move:'none'})],   // 3-9б отъезд — первая звезда
     says:[prkSay(0.2,2.8,'kot','А в дремучем лесу, на сосне,<br>Светит штаб огоньком в окне.',true),prkSay(3.1,2.6,'kot','Четверо друзей там живут —<br>Лесным патрулём их зовут.',true),
       prkSay(6.0,2.4,'proshka','Сказки — сказками, а техника — вещь!'),prkSay(9.8,1.7,'potap','Держу-держу. Хо-хо!'),prkSay(12.8,1.6,'yosha','Сам вырастил! Я сам!'),
       prkSay(15.4,2.6,'pelageya','<i>(шёпотом)</i> В некотором царстве… нет, не так…'),prkSay(17.5,2.1,'tishka','Сказку! Кто мне сказку на ночь?'),
       prkSay(19.7,0.75,'proshka','Чур, я!'),prkSay(20.45,0.6,'potap','Я!'),prkSay(21.05,0.75,'yosha','Нет, я сам!'),prkSay(21.9,1.1,'pelageya','<i>(шёпотом)</i> …и я.')],
     events:[{t:0,fn:()=>{PRK.only('P');PRK.look('forestset');FIN.music.play('hub');prkHeroesOff();
-        pl(pr,O.x-10.2,O.z+5.0,0,at(-10.2,9));pl(po,O.x+5.6,O.z+6.6,0,at(0,6.6));pl(yo,O.x+9.7,O.z+5.6,0,at(10.6,9.6));pl(pe,O.x+1.6,O.z+5.9,11,at(1.6,12));
+        prPl(pr,O.x-10.2,O.z+5.0,0,at(-10.2,9));prPl(po,O.x+5.6,O.z+6.6,0,at(0,6.6));prPl(yo,O.x+9.7,O.z+5.6,0,at(10.6,9.6));prPl(pe,O.x+1.6,O.z+5.9,11,at(1.6,12));
         prkAttach(po.g,P.log,0,po.d.height*0.92,0).rotation.set(0,0,0);P.log.visible=true;P.log.add(P.tish.g);P.tish.g.position.set(0.3,0.18,0);P.tish.g.rotation.set(0,0,0);P.cap.visible=false;
         prkAttach(pe.g,P.glass,0.22,pe.d.height*0.7,0.18).rotation.set(0.3,0,0);prkAttach(pe.g,P.book,-0.34,pe.d.height*0.36,0.1).rotation.set(0.2,0,0.9);
         P.spring.position.set(-10.9,0.7,4.2);P.spring.visible=true;P.sprout.scale.setScalar(0.01);P.zv.visible=false;P.rain.forEach(r=>{r.s.visible=false;r.t=-1;});P.cloud.visible=false;P.rv.g.visible=false;
         P.star.material.opacity=0;}},
       {t:17.4,fn:()=>{P.log.visible=false;P.g.add(P.tish.g);P.tish.g.position.copy(P.doorPos).sub(O);P.tish.g.position.y=0;P.tish.g.rotation.set(0,-0.42,0);P.cap.visible=true;}},
-      {t:19.6,fn:()=>{pl(pr,O.x-3.4,O.z+8.2,0,P.doorPos);pl(po,O.x-1.9,O.z+8.9,0,P.doorPos);pl(yo,O.x-0.4,O.z+8.2,0,P.doorPos);}}],
+      {t:19.6,fn:()=>{prPl(pr,O.x-3.4,O.z+8.2,0,P.doorPos);prPl(po,O.x-1.9,O.z+8.9,0,P.doorPos);prPl(yo,O.x-0.4,O.z+8.2,0,P.doorPos);}}],
     cues:[[0.3,()=>PSN.flaps(0.2)],[6.0,()=>prkPlate('proshka')],[6.1,KC.emo('proshka','pride')],[7.9,()=>{spT=0;PSN.snap(0);}],[9.0,()=>prkPlate('potap')],[9.55,()=>{PSN.thud(0);KC.emo('potap','nod')();}],
       [11.8,()=>{prkPlate('yosha');FX.drops&&FX.drops(prkWP(P.sprout),12);psfx('water')();}],[12.25,()=>{psfx('grow')();PSN.poof(0);}],[12.62,()=>{KC.emo('yosha','flinch')();PSN.peep&&PSN.peep(0);}],[13.1,KC.emo('yosha','pride')],
       [15.0,()=>prkPlate('pelageya')],[15.5,KC.emo('pelageya','tilt')],[17.6,KC.emo('tishka','hop')],[19.7,KC.emo('proshka','hop')],[20.45,KC.emo('potap','nod')],[21.05,KC.emo('yosha','hop')],
@@ -187,15 +188,15 @@ function prkS3(){const P=PP(),O=PRO.P,T=PRK_T,pr=T.proshka,po=T.potap,pe=T.pelag
     end:()=>{po.g.scale.setScalar(1);P.star.material.opacity=0;PRK.next();}};}
 
 /* ============================== СЦЕНА 4 «КОЛЫБЕЛЬНАЯ ЗА РЕКОЙ» ============================== */
-function prkS4(){const L=PL(),ko=L.ko,koHead=()=>prkWP(ko.head);let nutT=-1;
+function prkS4(){const L=prL(),ko=L.ko,koHead=()=>prkWP(ko.head);let nutT=-1;
   return {dur:19.8,fov:46,kino:true,mood:['#7a8cff',0.12],
-    shots:[KS(0,LA(3,26,32),LA(0,34,-60),{p2:LA(1.5,4.4,18.5),l2:LA(0,2.6,4),dur:2.4,move:'none'}),   // 4-1 от звезды — к костру
-      KS(2.4,LA(0.6,5.1,6.4),LA(0,4.8,2.6),{trk:fc(L.kot,3.9,0.22,0.1,0.12)}),   // 4-2 «…а Кощей, как водится, — проиграл»
-      KS(6.2,LA(3.8,2.3,12.8),LA(0,0.9,7.2),{move:'push',amp:0.6}),   // 4-3 смех у костра
-      KS(8.0,LA(-4.4,6.8,-36),LA(-6,9.2,-70),{p2:LA(-5.3,8.3,-61.5),l2:LA(-6,9.3,-70),dur:3.2,move:'none'}),   // 4-4 за морем — силуэт против луны
-      KS(11.2,LA(0.4,5,4.6),LA(0,4.9,2.6),{trk:fc(L.kot,2.0,0,0.1,0.12)}),   // 4-5 «А теперь — колыбельная…»
-      KS(14.2,LA(0,4.6,6),LA(-6,8,-70),{p2:LA(-5.5,8.9,-65.8),l2:LA(-6,9.1,-70),dur:4.0,move:'none',trk:KC.look(()=>koHead().add(PRV(0,-0.4,0)),1)}),   // 4-6 песня над водой
-      KS(18.2,LA(-5,8.6,-68.6),LA(-5.6,8.3,-69.6),{trk:(pose)=>{const h=prkWP(ko.hand);pose.look.copy(h);pose.pos.copy(h).add(PRV(0.75,0.12,1.25));}})],   // 4-7 рука сжимается
+    shots:[KS(0,prLA(3,26,32),prLA(0,34,-60),{p2:prLA(1.5,4.4,18.5),l2:prLA(0,2.6,4),dur:2.4,move:'none'}),   // 4-1 от звезды — к костру
+      KS(2.4,prLA(0.6,5.1,6.4),prLA(0,4.8,2.6),{trk:prFc(L.kot,3.9,0.22,0.1,0.12)}),   // 4-2 «…а Кощей, как водится, — проиграл»
+      KS(6.2,prLA(3.8,2.3,12.8),prLA(0,0.9,7.2),{move:'push',amp:0.6}),   // 4-3 смех у костра
+      KS(8.0,prLA(-4.4,6.8,-36),prLA(-6,9.2,-70),{p2:prLA(-5.3,8.3,-61.5),l2:prLA(-6,9.3,-70),dur:3.2,move:'none'}),   // 4-4 за морем — силуэт против луны
+      KS(11.2,prLA(0.4,5,4.6),prLA(0,4.9,2.6),{trk:prFc(L.kot,2.0,0,0.1,0.12)}),   // 4-5 «А теперь — колыбельная…»
+      KS(14.2,prLA(0,4.6,6),prLA(-6,8,-70),{p2:prLA(-5.5,8.9,-65.8),l2:prLA(-6,9.1,-70),dur:4.0,move:'none',trk:KC.look(()=>koHead().add(PRV(0,-0.4,0)),1)}),   // 4-6 песня над водой
+      KS(18.2,prLA(-5,8.6,-68.6),prLA(-5.6,8.3,-69.6),{trk:(pose)=>{const h=prkWP(ko.hand);pose.look.copy(h);pose.pos.copy(h).add(PRV(0.75,0.12,1.25));}})],   // 4-7 рука сжимается
     says:[prkSay(2.6,3.4,'kot','…а Кощей, как водится, — проиграл.<br>Тут и сказке конец!'),prkSay(9.0,2.4,'koschei','<i>(тихо)</i> Как водится… проиграл.'),
       prkSay(11.3,1.7,'kot','А теперь — колыбельная…'),prkSay(14.3,3.9,'kot','♪ Баю-баю, за рекою,<br>Серый волк живёт… ♪',true)],
     events:[{t:0,fn:()=>{PRK.only('L');PRK.look('night');FIN.music.play('prk_night');L.cliff.visible=true;L.fire.visible=true;L.stupa.g.visible=false;L.hand.visible=false;
@@ -222,21 +223,21 @@ function prkS4(){const L=PL(),ko=L.ko,koHead=()=>prkWP(ko.head);let nutT=-1;
     end:()=>{if(ko.hand){ko.hand.scale.setScalar(1);ko.hand.rotation.x=0;}PRK.next();}};}
 
 /* ============================== СЦЕНА 5 «ЧЁРНАЯ ТУЧА» ============================== */
-function prkS5(){const L=PL(),ko=L.ko,koHead=()=>prkWP(ko.head),U=0.62;let cloudT=-1,sparkT=-1;
+function prkS5(){const L=prL(),ko=L.ko,koHead=()=>prkWP(ko.head),U=0.62;let cloudT=-1,sparkT=-1;
   const lnk=()=>{const p=L.spiral(U);return PRV(PRO.L.x+p.x,p.y,PRO.L.z+p.z);};
   const handTo=()=>{const p=L.spiral(U),r=Math.hypot(p.x,p.z);return PRV(p.x+p.x/r*0.25,p.y+1.45,p.z+p.z/r*0.25);};
   const koloA=PRV(-2.3,0,7.4),koloB=PRV(-8.5,0,13.5);
   return {dur:21.2,fov:46,kino:true,mood:['#8a6ad0',0.16],
-    shots:[KS(0,LA(-5.3,8.1,-67.4),LA(-6,9.3,-70),{p2:LA(-5,9.4,-66),l2:LA(-6,13,-76),dur:2.6,move:'none'}),   // 5-1 «Довольно.» — снизу, туча встаёт
-      KS(2.8,LA(7,5,19),LA(-3,10,-30),{move:'crane',amp:0.6}),   // 5-2 туча идёт на Лукоморье
-      KS(4.8,LA(-4,1.2,10),LA(-2.3,0.6,7.4),{trk:fc({g:L.kolo.g},2.6,0,0.55,0.05)}),   // 5-3а Колобок катится прочь
-      KS(7.0,LA(0.8,3.4,9.2),LA(-1.2,3.4,2.4),{tr:'whip',move:'push',amp:0.5}),   // 5-3б белка в дупло, русалка в море
-      KS(8.0,LA(3.0,4.6,6.4),LA(5.2,4.8,0.4),{tr:'whip',move:'push',amp:0.5}),   // 5-3в Жар-птица прячется, Садко обнимает гусли
-      KS(9.0,LA(0,6.9,-6.0),LA(0,6.9,-2.65),{trk:fc(L.kot,3.4,0,0.25,0.15)}),   // 5-4 «Кто там?! Тебя сюда не звали!»
-      KS(12.0,LA(-7.5,1.8,10),LA(-1.6,10.5,1.3),{move:'push',amp:0.4}),   // 5-5 рука опускается из тучи
-      KS(15.0,LA(0,6.6,-3),LA(0,6.4,-2.1),{trk:fc(L.kot,1.05,0,0.08,0.2)}),   // 5-6 глаза Кота
-      KS(16.2,LA(-3.4,8.2,3.0),LA(-1.7,7.6,1.4),{trk:(pose)=>{const c=lnk(),r=Math.hypot(c.x-PRO.L.x,c.z-PRO.L.z),o=PRV((c.x-PRO.L.x)/r,0,(c.z-PRO.L.z)/r);pose.look.copy(c).add(PRV(0,0.4,0));pose.pos.copy(c).addScaledVector(o,2.1).add(PRV(0,0.6,0));}}),   // 5-7 пальцы смыкаются
-      KS(17.2,LA(4,16,34),LA(0,13,0),{p2:LA(6,26,64),l2:LA(0,15,0),dur:4.0,move:'none',tr:'cut'})],   // 5-8 искры — во все стороны
+    shots:[KS(0,prLA(-5.3,8.1,-67.4),prLA(-6,9.3,-70),{p2:prLA(-5,9.4,-66),l2:prLA(-6,13,-76),dur:2.6,move:'none'}),   // 5-1 «Довольно.» — снизу, туча встаёт
+      KS(2.8,prLA(7,5,19),prLA(-3,10,-30),{move:'crane',amp:0.6}),   // 5-2 туча идёт на Лукоморье
+      KS(4.8,prLA(-4,1.2,10),prLA(-2.3,0.6,7.4),{trk:prFc({g:L.kolo.g},2.6,0,0.55,0.05)}),   // 5-3а Колобок катится прочь
+      KS(7.0,prLA(0.8,3.4,9.2),prLA(-1.2,3.4,2.4),{tr:'whip',move:'push',amp:0.5}),   // 5-3б белка в дупло, русалка в море
+      KS(8.0,prLA(3.0,4.6,6.4),prLA(5.2,4.8,0.4),{tr:'whip',move:'push',amp:0.5}),   // 5-3в Жар-птица прячется, Садко обнимает гусли
+      KS(9.0,prLA(0,6.9,-6.0),prLA(0,6.9,-2.65),{trk:prFc(L.kot,3.4,0,0.25,0.15)}),   // 5-4 «Кто там?! Тебя сюда не звали!»
+      KS(12.0,prLA(-7.5,1.8,10),prLA(-1.6,10.5,1.3),{move:'push',amp:0.4}),   // 5-5 рука опускается из тучи
+      KS(15.0,prLA(0,6.6,-3),prLA(0,6.4,-2.1),{trk:prFc(L.kot,1.05,0,0.08,0.2)}),   // 5-6 глаза Кота
+      KS(16.2,prLA(-3.4,8.2,3.0),prLA(-1.7,7.6,1.4),{trk:(pose)=>{const c=lnk(),r=Math.hypot(c.x-PRO.L.x,c.z-PRO.L.z),o=PRV((c.x-PRO.L.x)/r,0,(c.z-PRO.L.z)/r);pose.look.copy(c).add(PRV(0,0.4,0));pose.pos.copy(c).addScaledVector(o,2.1).add(PRV(0,0.6,0));}}),   // 5-7 пальцы смыкаются
+      KS(17.2,prLA(4,16,34),prLA(0,13,0),{p2:prLA(6,26,64),l2:prLA(0,15,0),dur:4.0,move:'none',tr:'cut'})],   // 5-8 искры — во все стороны
     says:[prkSay(0.6,1.3,'koschei','Довольно.'),prkSay(4.9,2.2,'kolobok','Я от бабушки ушёл —<br>А от тучи — укачусь!'),prkSay(9.2,2.4,'kot','Кто там?! Тебя сюда не звали!'),
       prkSay(18.8,2.1,'kot','Разлетелись звенья по свету —',true)],
     events:[{t:0,fn:()=>{PRK.only('L');PRK.look('night');FIN.music.play('prk_kosh');L.cliff.visible=true;L.fire.visible=true;L.hand.visible=false;L.chain.visible=true;L.crown.visible=true;
@@ -278,17 +279,17 @@ function prkS5(){const L=PL(),ko=L.ko,koHead=()=>prkWP(ko.head),U=0.62;let cloud
     end:()=>{prkBlack(0);prkKotScale(1);L.big.forEach(b=>{b.visible=false;});PRK.next();}};}
 
 /* ============================== СЦЕНА 6 «ПЯТЬ СТОРОН» ============================== */
-function prkS6(){const L=PL(),P=PP(),D=PRK.Wd,O=PRO.P,pe=PRK_T.pelageya;let rainT=-1;
+function prkS6(){const L=prL(),P=prPm(),D=PRK.Wd,O=PRO.P,pe=PRK_T.pelageya;let rainT=-1;
   const look=(k,w)=>()=>{PRK.only(w);PRK.look(k);};
   return {dur:18.4,fov:46,kino:true,mood:['#8a9ad0',0.12],
-    shots:[KS(0,WA('W1',0,5.2,13),WA('W1',0.5,2.6,-9),{move:'push',amp:0.8,tr:'cut'}),   // 6-1 лес
-      KS(1.8,WA('W2',2.6,2.4,3.4),WA('W2',-0.2,2.6,-6),{move:'crane',amp:0.6,tr:'cut'}),   // 6-2 Китеж
-      KS(3.6,WA('W3',2,-4,6),WA('W3',-1,2,-6),{p2:WA('W3',1.8,3.6,3.4),l2:WA('W3',-1,2.6,-6.4),dur:1.8,move:'none',tr:'cut'}),   // 6-3 сад за облаками
-      KS(5.4,WA('W4',-5,4.5,9),WA('W4',2,3.6,-13),{move:'push',amp:0.7,tr:'cut'}),   // 6-4 Смородина
-      KS(7.2,WA('W5',2,3.4,10.5),WA('W5',1,3,-2),{move:'push',amp:0.7,tr:'cut'}),   // 6-5 Буян
-      KS(9.2,LA(0.8,2.4,8.6),LA(0,1.4,3),{p2:LA(1,3.4,11.5),l2:LA(0,1.6,3),dur:3.8,move:'none'}),   // 6-6 Лукоморье без цепи
-      KS(13.0,PA(-0.8,12.75,7.5),PA(40,9.6,3),{move:'none'}),   // 6-7 Пелагея и звёздный дождь
-      KS(15.8,PA(3.4,12.3,6.8),PA(1.6,11.9,6.3),{trk:fc(pe,1.8,0.25,0.08,0.12)})],   // 6-8 «Ой… летит… к нам!»
+    shots:[KS(0,prWA('W1',0,5.2,13),prWA('W1',0.5,2.6,-9),{move:'push',amp:0.8,tr:'cut'}),   // 6-1 лес
+      KS(1.8,prWA('W2',2.6,2.4,3.4),prWA('W2',-0.2,2.6,-6),{move:'crane',amp:0.6,tr:'cut'}),   // 6-2 Китеж
+      KS(3.6,prWA('W3',2,-4,6),prWA('W3',-1,2,-6),{p2:prWA('W3',1.8,3.6,3.4),l2:prWA('W3',-1,2.6,-6.4),dur:1.8,move:'none',tr:'cut'}),   // 6-3 сад за облаками
+      KS(5.4,prWA('W4',-5,4.5,9),prWA('W4',2,3.6,-13),{move:'push',amp:0.7,tr:'cut'}),   // 6-4 Смородина
+      KS(7.2,prWA('W5',2,3.4,10.5),prWA('W5',1,3,-2),{move:'push',amp:0.7,tr:'cut'}),   // 6-5 Буян
+      KS(9.2,prLA(1.4,2.0,7.4),prLA(0.6,0.8,3.2),{p2:prLA(1.6,2.7,9.8),l2:prLA(0.4,1.1,3.0),dur:3.8,move:'none'}),   // 6-6 Лукоморье без цепи
+      KS(13.0,prPA(-0.8,12.75,7.5),prPA(40,9.6,3),{move:'none'}),   // 6-7 Пелагея и звёздный дождь
+      KS(15.8,prPA(3.4,12.3,6.8),prPA(1.6,11.9,6.3),{trk:prFc(pe,1.8,0.25,0.08,0.12)})],   // 6-8 «Ой… летит… к нам!»
     says:[prkSay(0.1,1.6,'kot','В лес дремучий…',true),prkSay(1.9,1.6,'kot','…в Китеж подводный…',true),prkSay(3.7,1.6,'kot','…за облака…',true),prkSay(5.5,1.7,'kot','…за огненную реку…',true),
       prkSay(7.3,1.8,'kot','…на остров Буян.',true),prkSay(9.4,3.6,'kot','Без цепи сказки забываются —<br>Слово за словом рассыпаются.',true),prkSay(16.0,1.9,'pelageya','<i>(шёпотом)</i> Ой… летит… к нам!')],
     events:[{t:0,fn:()=>{look('forest','w1')();FIN.music.play('prk_quiet');for(const pi of[0,1])players[pi].heroes.forEach((h,k)=>{if(h.kind==='pelageya')return;const s=W.spawns[pi][k];placeOnGround(h,s.x,s.z,s.y||0);});const w=D.w1;w.walk.forEach(f=>f.position.copy(f.userData.p0));w.eyes.forEach(e=>e.scale.y=0.05);w.hut.g.rotation.y=-0.4;
@@ -300,7 +301,7 @@ function prkS6(){const L=PL(),P=PP(),D=PRK.Wd,O=PRO.P,pe=PRK_T.pelageya;let rain
       {t:9.2,fn:()=>{PRK.only('L');PRK.look('grey');FIN.music.play('prk_quiet');L.crown.visible=false;L.chain.visible=false;L.fire.visible=false;L.cliff.visible=false;L.hand.visible=false;
         L.kot.g.position.set(1.3,0,3.5);L.kot.g.rotation.set(0,0.15,0);prkKotScale(1.3);if(L.kot.head)L.kot.head.rotation.x=0.35;L.kolo.g.visible=false;L.belka.g.visible=false;L.sadko.g.visible=false;L.zhar.g.visible=false;L.leshy.g.visible=false;L.mer.g.visible=false;
         L.grassM.color.setHex(0x7a8a6a);L.letters.forEach((s,i)=>{s.visible=true;s.material.color.setHex(0xffffff);s.material.opacity=0;s.position.set(-1.9+(Math.random()-0.5)*0.6,0.3,3.0+(Math.random()-0.5)*0.4);s.userData.ph=Math.random()*2;});}},
-      {t:13.0,fn:()=>{PRK.only('P');PRK.look('pnight');FIN.music.play('prk_night');pl(pe,O.x+1.6,O.z+6.3,11,PRV(O.x+40,12,O.z+6));rainT=0;
+      {t:13.0,fn:()=>{PRK.only('P');PRK.look('pnight');FIN.music.play('prk_night');prPl(pe,O.x+1.6,O.z+6.3,11,PRV(O.x+40,12,O.z+6));rainT=0;
         P.zv.visible=true;P.zv.position.set(170,34,40);P.rv.g.visible=true;}}],
     cues:[[0.15,()=>prkMot('flute',[[69,0.5],[72,0.5],[74,1],[72,1]],0.3,0.09)],[1.0,()=>{prkBurst(prkP(PRO.W1,0.6,0.6,-4),0xffd060,10);psfx('link')();}],[1.2,()=>PSN.creak(0)],
       [1.9,()=>prkMot('bell',[[64,1],[67,1],[69,2]],0.28,0.1)],[2.95,()=>{PSN.snap(0);}],[3.7,()=>prkMot('harp',[[76,0.5],[79,0.5],[81,0.5],[84,1]],0.24,0.08)],[4.4,()=>PSN.sadCoo(0)],
@@ -325,6 +326,8 @@ function prkS6(){const L=PL(),P=PP(),D=PRK.Wd,O=PRO.P,pe=PRK_T.pelageya;let rain
       // Лукоморье: буквы встают из книги и рассыпаются серым пеплом
       if(t>=9.2&&t<13){const L0=L;L0.letters.forEach((s,i)=>{const k=clamp((t-9.5-i*0.1)/2.2,0,1);s.position.y=0.3+k*2.4;s.position.x+=Math.sin(t*3+i)*0.004;
         s.material.color.setHex(0xffe08a).lerp(new THREE.Color(0x6a6a70),clamp(k*1.6,0,1));s.material.opacity=Math.sin(k*Math.PI)*0.95;});}
+      // Кот у корней сереет, каменеет и закрывает глаза (в ролике прибытия на Лукоморье его разбудит Звенышко)
+      if(t>=9.2&&t<13){const k=clamp((t-10.0)/2.6,0,1);prkGrey(L.kot.g,k*0.85,0x8a96a8);if(L.kot.lids)L.kot.lids.forEach(l=>{if(l&&l.rotation)l.rotation.x=lerp(-0.5,1.3,clamp((t-11.6)/0.8,0,1));});}
       // звёздный дождь и искра, свернувшая к сосне
       if(rainT>=0&&t>=13){P.rain.forEach((r,i)=>{if(r.t<0&&Math.random()<dt*2.5){r.t=0;r.s.visible=true;r.s.position.set(110+Math.random()*90,26+Math.random()*22,(Math.random()-0.6)*120);r.v.set(0,-14-Math.random()*6,-22-Math.random()*10);
           r.tr.lookAt(prkWP(r.s).add(r.v.clone().normalize().multiplyScalar(-1)));r.tr.rotateX(Math.PI/2);}});
@@ -334,11 +337,11 @@ function prkS6(){const L=PL(),P=PP(),D=PRK.Wd,O=PRO.P,pe=PRK_T.pelageya;let rain
     end:()=>{L.letters.forEach(s=>{s.visible=false;});PRK.next();}};}
 
 /* ============================== СЦЕНА 7 «ПРИСКАЗКА» ============================== */
-function prkS7(){const P=PP(),O=PRO.P;let titleOn=false;
+function prkS7(){const P=prPm(),O=PRO.P;let titleOn=false;
   const win=[Math.sin(Math.PI-0.85)*6.9,2.55,Math.cos(Math.PI-0.85)*6.9];
   return {dur:11.4,fov:46,kino:true,mood:['#ffc070',0.1],
-    shots:[KS(0,PA(7,-2.5,24),PA(0,7,0),{p2:PA(5,1.5,22),l2:PA(0,9,0),dur:4.0,move:'none'}),   // 7-1 сосна снизу, искра-комета, туча
-      KS(4.0,PA(3.0,3.5,10),PA(1.36,3.3,3.22),{p2:PA(2.1,3.35,5.0),l2:PA(1.36,3.3,3.22),dur:2.0,move:'none'}),   // 7-2а к окну
+    shots:[KS(0,prPA(7,-2.5,24),prPA(0,7,0),{p2:prPA(5,1.5,22),l2:prPA(0,9,0),dur:4.0,move:'none'}),   // 7-1 сосна снизу, искра-комета, туча
+      KS(4.0,prPA(3.0,3.5,10),prPA(1.36,3.3,3.22),{p2:prPA(2.1,3.35,5.0),l2:prPA(1.36,3.3,3.22),dur:2.0,move:'none'}),   // 7-2а к окну
       KS(6.0,[0,3.2,10.4],[0,1.3,-1.2],{p2:[0,2.6,8.2],l2:[0,1.2,-1.6],dur:2.0,move:'none',tr:'dip'}),   // 7-2б в комнате: спорят, кто расскажет
       KS(8.0,[win[0]-2.0,2.45,win[2]+2.2],win,{move:'push',amp:0.4})],   // 7-3 круглое окно — титул
     says:[prkSay(0.2,1.9,'kot','Кто соберёт звено к звену?',true),prkSay(2.1,1.9,'kot','Кто сказку вспомнит — не одну?',true),prkSay(4.2,3.6,'kot','Это присказка, не сказка.<br>Сказка — будет впереди!',true)],

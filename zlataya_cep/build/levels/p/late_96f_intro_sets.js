@@ -1,5 +1,5 @@
 /* ============================== РЕЛИЗ final06 · «ПРИСКАЗКА» — ВСТУПИТЕЛЬНЫЙ РОЛИК ИГРЫ (1): ПЛОЩАДКИ ============================== */
-// Сценарий — zlataya_cep/docs/42_priskazka_intro.md. Ролик играет при «Новой игре» перед прологом (сцены и порядок — late_96e_intro_scenes.js).
+// Сценарий — zlataya_cep/docs/42_priskazka_intro.md. Ролик играет при «Новой игре» перед прологом (сцены и порядок — late_96g_intro_scenes.js).
 // Площадки строятся в уровне пролога, далеко от комнаты штаба (по 600 м друг от друга, туман их разделяет), и убираются после ролика:
 //  · L — Лукоморье: остров у моря, дуб, златая цепь спиралью (звенья-медальоны с гравюрами миров), Кот, кузня Кузьмы с деревянным
 //    молоточком на стене, слушатели (Колобок, белка, Садко, Жар-птица, русалка, Леший, Яга в ступе), костёр, книга у корней,
@@ -16,10 +16,11 @@ const PRO={L:PRV(600,0,0),P:PRV(600,0,600),W1:PRV(-600,0,0),W2:PRV(-600,0,600),W
 const prA=(o,x,y,z)=>[o.x+x,o.y+y,o.z+z],prkP=(o,x,y,z)=>PRV(o.x+x,o.y+y,o.z+z);
 function prkNoBatch(o){o.traverse(c=>{c.userData.batchNo=true;c.userData.noBatchL=true;});return o;}
 function prkM(col,o){return new THREE.MeshLambertMaterial(Object.assign({color:col},o||{}));}
+const PRK_DARK=prkM(0x18141c);
 function prkAdd(par,geo,mat,x,y,z){const m=new THREE.Mesh(geo,mat);m.position.set(x||0,y||0,z||0);m.castShadow=true;m.receiveShadow=true;par.add(m);return m;}
 function prkGroup(par,x,y,z){const g=new THREE.Group();g.position.set(x||0,y||0,z||0);(par||PRK.root).add(g);return g;}
 // персонаж из общих конструкторов (они кладут в W.group) — переносим в свою площадку
-function prkCast(fn,par,x,y,z,s,ry){const o=fn();par.add(o.g);o.g.position.set(x,y,z);if(s)o.g.scale.setScalar(s);o.g.rotation.y=ry||0;return o;}
+function prkCast(fn,par,x,y,z,s,ry){const o=fn();o.g.userData.prkCast=true;par.add(o.g);o.g.position.set(x,y,z);if(s)o.g.scale.setScalar(s);o.g.rotation.y=ry||0;return o;}
 function prkTex(w,h,draw){const c=document.createElement('canvas');c.width=w;c.height=h;draw(c.getContext('2d'),w,h);const t=new THREE.CanvasTexture(c);t.anisotropy=4;return t;}
 function prkCol(x,minx,maxx,miny,maxy,minz,maxz){const c={minx:x.x+minx,maxx:x.x+maxx,miny:x.y+miny,maxy:x.y+maxy,minz:x.z+minz,maxz:x.z+maxz,on:true,occ:false};W.boxes.push(c);PRK.boxes.push(c);return c;}
 const prkE={io:k=>k<0.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2,o:k=>1-Math.pow(1-k,3),i:k=>k*k*k,back:k=>{const c=1.70158;return 1+(c+1)*Math.pow(k-1,3)+c*Math.pow(k-1,2);}};
@@ -120,7 +121,7 @@ function prkBuildL(){const O=PRO.L,g=prkGroup(PRK.root,O.x,O.y,O.z),L={g};PRK.L=
     const fin=prkAdd(tail,new THREE.ConeGeometry(0.28,0.4,4),prkM(0x7fe0d0,{emissive:0x1a6a60}),0.22,-1.05,0);fin.rotation.z=Math.PI+0.3;fin.scale.set(1,1,0.3);
     prkAdd(mer,new THREE.CylinderGeometry(0.16,0.22,0.6,7),prkM(0x9ad8f0),0,0.3,0);prkAdd(mer,new THREE.IcosahedronGeometry(0.2,0),prkM(0xf6d2b8),0,0.78,0.02);
     const hair=prkAdd(mer,new THREE.ConeGeometry(0.24,0.9,7),prkM(0x3fa58c),0,0.6,-0.08);hair.rotation.x=0.15;
-    for(const s of[-1,1])prkAdd(mer,new THREE.SphereGeometry(0.035,5,4),MAT.dark,s*0.07,0.8,0.18);
+    for(const s of[-1,1])prkAdd(mer,new THREE.SphereGeometry(0.035,5,4),PRK_DARK,s*0.07,0.8,0.18);
     const comb=prkAdd(mer,new THREE.BoxGeometry(0.16,0.06,0.03),prkM(0xffd27a,{emissive:0x806010}),0.18,0.94,0);L.mer={g:mer,tail,comb};}
   // Леший выглядывает из-за ствола
   L.leshy=prkCast(()=>makeLeshy(0.5),g,-1.4,0,-2.9,0,0.4);
@@ -223,7 +224,7 @@ function prkBuildP(){const O=PRO.P,g=prkGroup(PRK.root,O.x,O.y,O.z),P={g};PRK.P=
       x.fillStyle='#ffd24a';x.font='bold 40px Georgia, serif';x.textAlign='center';x.textBaseline='middle';x.fillText('ЛП',w/2,h/2+2);})}));fl.position.x=0.62;P.flag.add(fl);P.flagM=fl;}
   {const rope=prkM(0xc8a070);for(const s of[-1,1])prkAdd(g,new THREE.CylinderGeometry(0.03,0.03,11,4),rope,3.6+s*0.3,5.2,4.6);for(let y=0.6;y<10.6;y+=0.6)prkAdd(g,new THREE.BoxGeometry(0.66,0.06,0.08),rope,3.6,y,4.6);}
   // мастерская Прошки: верстак, самокат, пружина; огород Йоши: бочки, росток
-  prkAdd(g,new THREE.BoxGeometry(1.6,0.8,0.8),plank,-12.2,0.4,4.2);P.sc=makeScooter();g.add(P.sc.g);P.sc.g.position.set(-10.9,0,4.0);P.sc.g.rotation.y=1.2;
+  prkAdd(g,new THREE.BoxGeometry(1.6,0.8,0.8),plank,-12.2,0.4,4.2);P.sc=makeScooter();P.sc.g.userData.prkCast=true;g.add(P.sc.g);P.sc.g.position.set(-10.9,0,4.0);P.sc.g.rotation.y=1.2;
   P.spring=prkGroup(g,-10.9,0.7,4.2);for(let i=0;i<5;i++)prkAdd(P.spring,new THREE.TorusGeometry(0.1,0.022,5,10),prkM(0xb8c0c8),0,i*0.05,0).rotation.x=Math.PI/2;
   P.barrels=[];for(const[x,z]of[[9.2,3.8],[11.6,3.9],[13.0,3.9]]){const b=prkGroup(g,x,0,z);b.scale.setScalar(0.62);prkAdd(b,new THREE.CylinderGeometry(0.55,0.5,0.9,10),prkM(0x8a5a30),0,0.45,0);prkAdd(b,new THREE.CylinderGeometry(0.5,0.5,0.06,10),prkM(0x4a2e18),0,0.9,0);
     for(let i=0;i<3;i++)prkAdd(b,new THREE.ConeGeometry(0.1,0.3,4),prkM(0x5aa040),Math.sin(i*2)*0.25,1.05,Math.cos(i*2)*0.25);P.barrels.push(b);}
@@ -242,7 +243,7 @@ function prkBuildP(){const O=PRO.P,g=prkGroup(PRK.root,O.x,O.y,O.z),P={g};PRK.P=
   P.rain=[];for(let i=0;i<26;i++){const s=prkGroup(g,0,0,0);prkGlow(s,0xffe080,0.9,0,0,0,1);const tr=prkAdd(s,new THREE.CylinderGeometry(0.02,0.11,4,5),new THREE.MeshBasicMaterial({color:0xffe9a0,transparent:true,opacity:0.6,fog:false}),0,0,0);tr.castShadow=false;
     s.visible=false;P.rain.push({s,tr,p0:PRV(0,0,0),v:PRV(0,0,0),t:-1});}
   P.zv=prkGroup(g,0,0,0);prkGlow(P.zv,0xffd060,2.2,0,0,0,1);prkAdd(P.zv,new THREE.TorusGeometry(0.22,0.06,6,12),prkM(0xffd060,{emissive:0xffa020,emissiveIntensity:1}),0,0,0);P.zv.visible=false;
-  P.rv=makeRaven();g.add(P.rv.g);P.rv.g.scale.setScalar(0.6);P.rv.g.visible=false;
+  P.rv=makeRaven();P.rv.g.userData.prkCast=true;g.add(P.rv.g);P.rv.g.scale.setScalar(0.6);P.rv.g.visible=false;
   {const cg=prkGroup(g,0,30,-80);P.cloud=cg;const cm=prkM(0x3a2e66,{emissive:0x140c28});for(let i=0;i<16;i++){const geo=new FIN.orig.Icosa(5+Math.random()*4,1);FIN.jitter(geo,0.4);const b=prkAdd(cg,geo,cm,(Math.random()-0.5)*60,Math.random()*10,(Math.random()-0.5)*20);b.castShadow=false;}cg.visible=false;}
   PRK.ups.push((t,dt)=>{if(!g.visible)return;P.flagM.rotation.y=Math.sin(t*2.4)*0.25;P.bulbs.forEach((b,i)=>{b.visible=Math.sin(t*3+i*1.7)>-0.6;});
     P.rain.forEach(r=>{if(r.t>=0){r.t+=dt;r.s.position.addScaledVector(r.v,dt);if(r.t>2.6){r.t=-1;r.s.visible=false;}}});});
@@ -256,9 +257,9 @@ function prkBuildW(){const D=PRK.Wd={};
   {const O=PRO.W1,g=prkGroup(PRK.root,O.x,O.y,O.z),w={g};D.w1=w;const gm=prkM(0x2e4a2a);prkAdd(g,new THREE.CylinderGeometry(34,34,1,20),gm,0,-0.5,0);
     for(let i=0;i<46;i++){const a=i*2.399,r=10+(i*29%26),x=Math.sin(a)*r,z=Math.cos(a)*r-6;if(Math.abs(x)<6&&z>-17)continue;prkFir(g,x,0,z,7+(i%4)*1.5,[0x1f4030,0x2a5038,0x1a3a2a][i%3]);}
     w.walk=[[-7.5,-3],[7.2,-3.4],[-6.2,-11],[6.6,-11.6]].map(([x,z])=>{const f=prkFir(g,x,0,z,7.5,0x2a5038);f.userData.p0=f.position.clone();return f;});
-    const old=prkGroup(g,0,0,-12);prkAdd(old,new THREE.CylinderGeometry(1.3,1.8,7,9),prkM(0x4a3422),0,3.5,0);prkAdd(old,new THREE.CircleGeometry(0.7,10),MAT.dark,0,3.0,1.42);
+    const old=prkGroup(g,0,0,-12);prkAdd(old,new THREE.CylinderGeometry(1.3,1.8,7,9),prkM(0x4a3422),0,3.5,0);prkAdd(old,new THREE.CircleGeometry(0.7,10),PRK_DARK,0,3.0,1.42);
     w.eyes=[-1,1].map(s=>{const e=prkAdd(old,new THREE.SphereGeometry(0.17,8,6),new THREE.MeshBasicMaterial({color:0xd8ff6a}),s*0.3,3.1,1.5);e.scale.y=0.05;return e;});
-    w.hut=makeHut();g.add(w.hut.g||w.hut);(w.hut.g||w.hut).position.set(4.6,0,-7);(w.hut.g||w.hut).rotation.y=-0.4;
+    w.hut=makeHut();w.hut.g.userData.prkCast=true;g.add(w.hut.g);(w.hut.g||w.hut).position.set(4.6,0,-7);(w.hut.g||w.hut).rotation.y=-0.4;
     const clew=prkAdd(g,new THREE.SphereGeometry(0.32,8,6),prkM(0xd03030),1.4,0.32,-3.4);for(let i=0;i<3;i++)prkAdd(g,new THREE.TorusGeometry(0.33,0.02,4,12),prkM(0xf06060),1.4,0.32,-3.4).rotation.set(i,i*1.3,0);
     w.sp=prkFall(g);}
   // 2 · Подводный Китеж: купола, колокол без звона, гусли со струной, рыбы, пузыри
@@ -297,17 +298,18 @@ function prkBuildW(){const D=PRK.Wd={};
     {const isl=new THREE.CylinderGeometry(11,13,2.4,14);FIN.jitter(isl,0.2);prkAdd(g,isl,prkM(0xd8c08a),0,-1.1,0);}
     const ok=prkGroup(g,0,0,-3);prkAdd(ok,new THREE.CylinderGeometry(1.2,1.9,9,9),prkM(0x5a4028),0,4.5,0);const br=prkAdd(ok,new THREE.CylinderGeometry(0.3,0.5,5,7),prkM(0x5a4028),1.9,7.4,0.4);br.rotation.z=-1.2;
     for(let i=0;i<5;i++){const geo=new FIN.orig.Icosa(2.4,1);FIN.jitter(geo,0.25);prkAdd(ok,geo,prkM(0x3a5a2a),Math.sin(i*1.3)*2.4,10+Math.cos(i*2)*0.8,Math.cos(i*1.3)*2.2);}
-    prkAdd(ok,new THREE.CircleGeometry(0.8,10),MAT.dark,0,1.4,1.85);
+    prkAdd(ok,new THREE.CircleGeometry(0.8,10),PRK_DARK,0,1.4,1.85);
     w.eye=prkGroup(ok,0,1.4,1.9);prkAdd(w.eye,new THREE.SphereGeometry(0.55,12,8),prkM(0xf4ecd8),0,0,0).scale.z=0.5;prkAdd(w.eye,new THREE.SphereGeometry(0.28,10,6),prkM(0xd8401a,{emissive:0xb02000,emissiveIntensity:0.9}),0,0,0.22).scale.z=0.4;
-    prkAdd(w.eye,new THREE.SphereGeometry(0.12,8,5),MAT.dark,0,0,0.3).scale.z=0.3;w.lid=prkAdd(w.eye,new THREE.SphereGeometry(0.6,12,8,0,6.283,0,Math.PI/2),prkM(0x3a2a1e),0,0,0.02);w.lid.rotation.x=0.05;
-    w.chest=prkGroup(ok,3.6,5.2,0.6);const ch=makeChest5();w.chest.add(ch.g||ch);(ch.g||ch).position.set(0,0,0);
+    prkAdd(w.eye,new THREE.SphereGeometry(0.12,8,5),PRK_DARK,0,0,0.3).scale.z=0.3;w.lid=prkAdd(w.eye,new THREE.SphereGeometry(0.6,12,8,0,6.283,0,Math.PI/2),prkM(0x3a2a1e),0,0,0.02);w.lid.rotation.x=0.05;
+    w.chest=prkGroup(ok,3.6,5.2,0.6);const ch=makeChest5();ch.g.userData.prkCast=true;w.chest.add(ch.g||ch);(ch.g||ch).position.set(0,0,0);
     for(const[x,z]of[[-0.4,-0.3],[0.4,-0.3],[-0.4,0.3],[0.4,0.3]])prkAdd(w.chest,new THREE.CylinderGeometry(0.03,0.03,2.4,4),prkM(0x8a8a94),x,1.9,z);
     w.sp=prkFall(g);}}
 
 /* ---------- сборка, кадр, уборка ---------- */
 PRK.build=function(){if(PRK.root)return;PRK.root=new THREE.Group();W.group.add(PRK.root);PRK.ups=[];PRK.boxes=[];
   prkBuildL();prkBuildP();prkBuildW();prkNoBatch(PRK.root);PRK.t=0;
-  PRK.root.traverse(o=>{if(o.isMesh&&o.material&&!Array.isArray(o.material)){o.material.userData.noFade=true;if(!o.isSkinnedMesh&&typeof occNo==='function')o.material=occNo(o.material);}});   // без «горошка» у камеры (late_88)
+  // без «горошка» у камеры (late_88) — только у своих мешей: материалы готовых моделей общие, их не трогаем
+  {const walk=o=>{if(o.userData.prkCast)return;if(o.isMesh&&o.material&&!Array.isArray(o.material)&&!o.isSkinnedMesh){o.material.userData.noFade=true;if(typeof occNo==='function')o.material=occNo(o.material);}o.children.forEach(walk);};walk(PRK.root);}
   W.updates.push(PRK.upd=dt=>{if(!PRK.root)return;PRK.t+=dt;for(const f of PRK.ups){try{f(PRK.t,dt);}catch(e){console.error(e);}}});};
 PRK.dispose=function(){if(!PRK.root)return;W.group.remove(PRK.root);const k=W.updates.indexOf(PRK.upd);if(k>=0)W.updates.splice(k,1);
   PRK.boxes.forEach(c=>{c.on=false;const i=W.boxes.indexOf(c);if(i>=0)W.boxes.splice(i,1);});PRK.boxes=[];

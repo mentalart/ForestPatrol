@@ -1,5 +1,5 @@
 {
- "about": "«Присказка» — вступительный ролик (zlataya_cep/docs/42_priskazka_intro.md, код — build/levels/p/late_96e_intro_scenes.js). Озвучить: Higgsfield (Eleven v4, голос из cast, подсказка — поле eleven) или python3 tools/voice/silero_lines.py tools/voice/pending/intro.json --model v4_ru.pt; затем node tools/voice/fetch.js --only <id> и пересборка. Готовые записи: «Садитесь в круг — начну рассказ!» (luko_002) и «Идёт направо…» (luko_004).",
+ "about": "«Присказка» — вступительный ролик (zlataya_cep/docs/42_priskazka_intro.md, код — build/levels/p/late_96g_intro_scenes.js). Озвучить: Higgsfield (Eleven v4, голос из cast, подсказка — поле eleven) или python3 tools/voice/silero_lines.py tools/voice/pending/intro.json --model v4_ru.pt; затем node tools/voice/fetch.js --only <id> и пересборка. Готовые записи: «Садитесь в круг — начну рассказ!» (luko_002) и «Идёт направо…» (luko_004).",
  "cast": {},
  "lines": [
   {
