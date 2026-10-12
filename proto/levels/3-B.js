@@ -237,7 +237,6 @@ function build3B(){
     prompt(pi,'label',()=>headOf(h()),()=>F.phase===2&&!G.cine&&heroLight(h()),'ты светишь');
     prompt(pi,'label',()=>headOf(h()),()=>F.phase===2&&!G.cine&&!heroLight(h())&&HEROES.some(q=>heroLight(q))&&W.sparks.some(s=>s.free>0),'лови искры!');
     prompt(pi,'attack',()=>headOf(h()),()=>sol&&(sol.state==='broken'||(sol.state==='stagger'&&!sol.openHit&&(F.phase!==2||sol.litNow)))&&hd(sol.pos,h().pos)<5,F.phase===4?'вместе!':'');
-    prompt(pi,'swap',()=>headOf(h()),()=>F.phase===4&&players[pi].blue>=1&&sol&&sol.state==='broken','богатырский выход');
     for(const B of bells){prompt(pi,'attack',()=>new V3(B.x,2.4,BZ),()=>F.phase===3&&!F.down&&!B.clouded&&hd(h().pos,{x:B.x,z:BZ})<5,()=>bells[1-B.i].t>0?'скорее!':'бей в колокол');
       prompt(pi,'item',()=>new V3(B.x,2.4,BZ),()=>F.phase===3&&B.clouded&&!heroLight(h())&&hd(h().pos,{x:B.x,z:BZ})<5,'посвети — облако растает');}}
   prompt(0,'guard',()=>headOf(T.potap),()=>F.phase===1&&(F.sigT>0||F.tellHigh>0)&&T.potap.active,'широкий щит');

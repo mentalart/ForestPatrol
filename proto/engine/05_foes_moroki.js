@@ -344,6 +344,6 @@ function updateSparks(dt){for(let i=W.sparks.length-1;i>=0;i--){const s=W.sparks
     else{s.v.multiplyScalar(Math.exp(-2*dt));s.v.y+=s.t>0.6?1.4*dt:-6*dt;}}
   p.addScaledVector(s.v,dt);s.m.material.opacity=s.free>6?Math.max(0,1-(s.free-6)/2):1;if(s.free>8||p.y>18){W.group.remove(s.m);W.sparks.splice(i,1);}}}
 function collectSpark(s,h){G.stats.sparks++;W.sparksGot=(W.sparksGot||0)+1;SFX.spark();const p=players[h.player];if(s.color===0xff6a8a&&p.petals<3)p.petals++;
-  if(s.color===0x6ad0ff&&(W.abil.clew||W.abil.gusli||W.abil.pero||W.abil.kleshi)){p.blue=Math.min(1,p.blue+0.14);if(p.blue>=1&&!p.blueTold){p.blueTold=true;tip(h.player,'Полоска полна! Смени героя '+K(h.player,'swap')+' — богатырский удар.',3.5);}}
+  if(s.color===0x6ad0ff&&(W.abil.clew||W.abil.gusli||W.abil.pero||W.abil.kleshi)){p.blue=Math.min(1,p.blue+0.14);}
   floatText(h.pos.clone().add(new V3(0,h.d.height+0.4,0)),'+искра','#fff6c0');}
 

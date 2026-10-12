@@ -122,7 +122,6 @@ K1S.hint=function(pi){const i=k1sIdx(pi),lap=Math.min(K1S.need,K1S.laps[i]||0);
 {const _tp=tip;tip=function(pi,html,dur){if(W&&W.levelId==='1-B'&&typeof html==='string'){let m;
     if(m=/^Большой морок оглушён! Ударьте (.*?) оба разом/.exec(html))html='Бейте '+m[1]+' вдвоём — Богатырский мах!';
     else if(/^Увернулся — враг закружился!/.test(html))html='Враг закружился — бей, пока открыт!';
-    else if(m=/^Синяя полоска полна! Смени героя (.*?) —/.exec(html))html='Полоска полна — смени героя '+m[1]+'!';
     else if(/^Не попасть! Отбей/.test(html))html='Не попасть — сначала отбей его удар.';}
   return _tp(pi,html,dur);};}
 
