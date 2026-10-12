@@ -116,9 +116,17 @@
     {pic:'u3',lines:[['gorL','На последней картинке лубка — всегда он.'],['gorR','И все над ним смеются хором.']]},
     {pic:'u4',lines:[['gorM','Просил мальчишка переписать — с укором.'],['gorL','Кот же не переписал ни строчки.']]},
     {pic:'u5',lines:[['gorL','А потом он вырос — время шло…'],['gorL','…и стал костью да ключами — всё ушло.'],['gorR','Мы-то думали — злодей какой,<br>А он в сказке быть не хотел такой.']]}];
+  // осколки лубка (docs/39, СЮ.2): лицо ученика по четвертям — каждая найдена в своём уровне 4-2 … 4-5 (G.flags.w4shards), остальные — сколотый камень
+  function lubokFace(){const got=G.flags.w4shards||{},L=['4-2','4-3','4-4','4-5'],n=L.filter(l=>got[l]).length,Q=[[0,0],[70,0],[0,75],[70,75]];
+    const face='<path d="M28 58 Q30 18 70 16 Q110 18 112 58 Q100 34 70 36 Q40 34 28 58Z" fill="#6a4426"/><ellipse cx="70" cy="80" rx="40" ry="48" fill="#e2c8a4" stroke="#2a1a10" stroke-width="3"/>'+
+      '<path d="M44 66 q8 -6 16 0 M80 66 q8 -6 16 0" stroke="#2a1a10" stroke-width="3" fill="none"/><circle cx="52" cy="76" r="5" fill="#2a1a10"/><circle cx="88" cy="76" r="5" fill="#2a1a10"/>'+
+      '<path d="M70 82 q-5 12 2 14" stroke="#8a5a3a" stroke-width="3" fill="none"/><path d="M56 108 q14 -8 28 0" stroke="#8a1a14" stroke-width="3" fill="none"/><circle cx="46" cy="96" r="7" fill="#e89a8a" opacity=".55"/><circle cx="94" cy="96" r="7" fill="#e89a8a" opacity=".55"/>';
+    const chips=L.map((l,i)=>got[l]?'':'<g><rect x="'+Q[i][0]+'" y="'+Q[i][1]+'" width="70" height="75" fill="#9a8a78"/><path d="M'+(Q[i][0]+10)+' '+(Q[i][1]+12)+' l18 20 l-8 16 l22 14 M'+(Q[i][0]+50)+' '+(Q[i][1]+8)+' l-10 26" stroke="#6a5a4a" stroke-width="2" fill="none"/></g>').join('');
+    return '<div style="display:flex;align-items:center;gap:12px;justify-content:center;margin:6px 0"><svg viewBox="0 0 140 150" width="96" height="103">'+face+chips+'<rect x="1" y="1" width="138" height="148" fill="none" stroke="#2a1a10" stroke-width="3"/></svg>'+
+      '<div style="font:700 14px Georgia,serif;color:#5a2a14">Лицо ученика<br>осколков лубка: '+n+' из 4'+(n===4?'<br><i>собрано целиком</i>':'')+'</div></div>';}
   function uchenik(){G.ui='lubok';const el=$('mapui');el.style.display='flex';let pi=0,li=0,tt=0;const g=gor4.g;
     const draw=()=>{const P=UCH[pi],L=P.lines[li],w=WHO[L[0]];el.innerHTML='<div class="lubok"><div style="font:900 22px Georgia,serif;color:#8a1a14;margin-bottom:8px">«Ученик»</div>'+(LUBOK[P.pic]||'')+
-      '<div class="cap"><b style="color:'+w[1]+'">'+w[0]+':</b> '+L[1]+'</div><div class="hint" style="font:600 13px system-ui;opacity:.7">'+(pi+1)+' / '+UCH.length+' · '+K(0,'jump')+' дальше</div></div>';babble(L[0],L[1]);};
+      (pi===UCH.length-1?lubokFace():'')+'<div class="cap"><b style="color:'+w[1]+'">'+w[0]+':</b> '+L[1]+'</div><div class="hint" style="font:600 13px system-ui;opacity:.7">'+(pi+1)+' / '+UCH.length+' · '+K(0,'jump')+' дальше</div></div>';babble(L[0],L[1]);};
     draw();
     G.uiTick=()=>{tt+=1/60;const a=G.time*0.3;g.position.set(Math.sin(a)*12,9,-30-Math.cos(a)*10);g.rotation.y=a+Math.PI/2;HEROES.forEach((h,i)=>{const o=new V3(...onBack[i]).multiplyScalar(0.75).applyEuler(g.rotation);h.pos.set(g.position.x+o.x,g.position.y+o.y,g.position.z+o.z);h.vel.set(0,0,0);});
       if(tt>4.6||tap(0,'jump')||tap(1,'jump')){tt=0;li++;if(li>=UCH[pi].lines.length){li=0;pi++;}if(pi>=UCH.length){G.ui=null;G.uiTick=null;el.style.display='none';landing4();return;}draw();SFX.flower();}};}

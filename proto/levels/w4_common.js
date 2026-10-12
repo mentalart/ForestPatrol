@@ -251,3 +251,19 @@ function makeGorynych(){const g=new THREE.Group();W.group.add(g);const sk=M(0x4a
   const necks=[];for(const[x,a]of[[-1.6,0.5],[0,0],[1.6,-0.5]]){const n=addMesh(new THREE.CylinderGeometry(0.42,0.6,3.6,10),sk,x+Math.sin(a)*-0.6,4.8,2.2,g);n.rotation.x=0.45;n.rotation.z=a*0.6;necks.push(n);}
   return {g,wings,tail,necks};}
 
+// Горыныч над миром (docs/39, СЮ.4): тень змея проносится по земле — три шеи, крылья, хвост (видна и сверху, из игровой камеры)
+function gorShadow(a,b,dur,y){const sh=new THREE.Shape();sh.moveTo(0,-6);sh.lineTo(1.4,-1);sh.lineTo(9,0.6);sh.lineTo(7.4,2.2);sh.lineTo(2,1.6);sh.lineTo(1.2,4.6);sh.lineTo(2.4,7.4);sh.lineTo(1.4,7.6);
+  sh.lineTo(0.5,5.2);sh.lineTo(0.5,8.4);sh.lineTo(-0.5,8.4);sh.lineTo(-0.5,5.2);sh.lineTo(-1.4,7.6);sh.lineTo(-2.4,7.4);sh.lineTo(-1.2,4.6);sh.lineTo(-2,1.6);sh.lineTo(-7.4,2.2);sh.lineTo(-9,0.6);sh.lineTo(-1.4,-1);sh.lineTo(0,-6);
+  const mt=MB(0x000000,{transparent:true,opacity:0,depthWrite:false});const m=new THREE.Mesh(new THREE.ShapeGeometry(sh),mt);m.rotation.x=-Math.PI/2;m.rotation.z=Math.atan2(b.x-a.x,b.z-a.z)+Math.PI;m.renderOrder=4;W.group.add(m);W.gorShadow=m;
+  anim(dur,k=>{m.position.set(lerp(a.x,b.x,k),y,lerp(a.z,b.z,k));mt.opacity=0.42*Math.sin(Math.PI*k);const s=1+0.15*Math.sin(k*Math.PI*3);m.scale.set(s,1,1);if(k>=1)W.group.remove(m);});return m;}
+// осколок лубка (docs/39, СЮ.2): по одному необязательному тайнику в 4-2 … 4-5; каждый открывает четверть лица ученика
+// в ролике «Ученик» (luko_3_worlds45.js). Найденные — G.flags.w4shards[уровень] (в сохранении)
+function lubokShard(x,y,z){const lv=W.levelId,g=new THREE.Group();g.position.set(x,y,z);W.group.add(g);const c=document.createElement('canvas');c.width=c.height=64;const q=c.getContext('2d');
+  q.fillStyle='#e8d8b0';q.beginPath();q.moveTo(4,10);q.lineTo(58,4);q.lineTo(60,52);q.lineTo(30,60);q.lineTo(6,48);q.fill();q.fillStyle='#d8c0a0';q.beginPath();q.arc(34,34,18,0,Math.PI*2);q.fill();q.strokeStyle='#2a1a10';q.lineWidth=3;q.stroke();
+  const tile=new THREE.Mesh(new THREE.BoxGeometry(0.5,0.5,0.06),[MB(0xd8c8a0),MB(0xd8c8a0),MB(0xd8c8a0),MB(0xd8c8a0),new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c)}),MB(0xb8a880)]);g.add(tile);
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(0.42,0.03,6,20),MB(0xffd76a,{transparent:true,opacity:0.8}));g.add(ring);
+  const got=()=>!!(G.flags.w4shards&&G.flags.w4shards[lv]);if(got())g.visible=false;
+  W.updates.push(dt=>{if(!g.visible)return;tile.rotation.y+=dt*1.4;ring.rotation.y-=dt*0.8;g.position.y=y+0.12*Math.sin(G.time*2.6);
+    const h=[0,1].map(active).find(h=>hd(h.pos,g.position)<1.0&&Math.abs(h.pos.y-y)<1.8);if(!h||got())return;
+    G.flags.w4shards=Object.assign({},G.flags.w4shards,{[lv]:true});g.visible=false;const n=Object.keys(G.flags.w4shards).length;SFX.flower();burst(g.position.clone(),0xffd76a,16,3);
+    banner('Осколок лубка!','#ffd76a',2.2,'кусочек лица ученика — '+n+' из 4');if(n===1)later(0.8,()=>sayP('Осколок лубка… Кусочек лица!',2.6));});return g;}

@@ -157,7 +157,7 @@ function build43(){
     if(F.stage==='pull'||F.stage==='hill'){if(!G.cine)songTick(dt);ringTick(dt);
       const rz=(RINGS[0].z+RINGS[3].z)/2;cam.x=1.2;cam.z=rz+1.6;cam.y=hillY(rz);
       if(F.stage==='pull'&&B.z<H0+6){F.stage='hill';SG.verse=2;banner('В гору!','#ffb070',2,'баржа в гору едет, лишь коль огонь горит: неси уголь клещами '+K(0,'item')+' в топку на носу баржи');
-        const D=2.4;let pu=0;anim(1.6,k=>{const u=smooth(k),du=u-pu;pu=u;B.z-=D*du;B.tz-=D*du;RINGS.forEach(r=>{r.dz+=D*du;});});SFX.whoosh();floatText(new V3(BX,B.y+3.4,B.z-4),'Баржа подтянулась!','#ffd9a0');}
+        const D=2.4;let pu=0;anim(1.6,k=>{const u=smooth(k),du=u-pu;pu=u;B.z-=D*du;B.tz-=D*du;RINGS.forEach(r=>{r.dz+=D*du;});});SFX.whoosh();floatText(new V3(BX,B.y+3.4,B.z-4),'Баржа подтянулась!','#ffd9a0');later(3.2,()=>bark(T.proshka,'proshka','Дым на горизонте… Горыныч не спит.',2.8));}
       if(F.stage==='hill'){const tp=fireSock.pos;cam.z=(rz+1.6+tp.z)/2;cam.x=0.6;cam.r=11.2;}
       if(F.stage==='pull'){SG.verse=B.z<-14?1:0;}
       if(F.stage==='hill'&&B.z<H0-4)SG.verse=3;
@@ -196,9 +196,9 @@ function build43(){
   /* ---------- задачи ---------- */
   const OR=(text,done,targets,ghost,read)=>{const o=O(text,done,targets,ghost);o.read=read;return o;};
   const mk=pi=>[
-    OR(()=>'Встаньте в кольца лямки. На «ух-нем» — '+K(pi,'skill')+' вместе!',()=>B.z<-24,()=>RINGS.filter(r=>!r.hero).map(r=>r.g),null,'…на «ух-нем» — все вместе, разом.'),
-    OR(()=>'Бревно у кольца — его герой прыгает '+K(pi,'jump')+' на «ух-нем».',()=>RINGS.every(r=>r.z<LOGS[2].z-0.5),()=>RINGS.filter(r=>r.blocked).map(r=>r.g),null,'…бревно — прыжком, а лямку не бросать.'),
-    OR(()=>'В гору: уголь клещами '+K(pi,'item')+' — в топку на носу баржи.',()=>F.stage==='end',()=>FIRE.t>0?[bg.g]:[door],null,'…топка горит — баржа подсобляет.'),
+    OR(()=>'Встаньте в кольца лямки. На «ух-нем» — '+K(pi,'skill')+' вместе!',()=>B.z<-24,()=>RINGS.filter(r=>!r.hero).map(r=>r.g),null,'На «ух-нем» — все вместе, разом!'),
+    OR(()=>'Бревно у кольца — его герой прыгает '+K(pi,'jump')+' на «ух-нем».',()=>RINGS.every(r=>r.z<LOGS[2].z-0.5),()=>RINGS.filter(r=>r.blocked).map(r=>r.g),null,'Бревно — прыжком! Лямку не бросать!'),
+    OR(()=>'В гору: уголь клещами '+K(pi,'item')+' — в топку на носу баржи.',()=>F.stage==='end',()=>FIRE.t>0?[bg.g]:[door],null,'Топка горит — баржа подсобляет!'),
     O('Кузьма у ворот ждёт…',()=>false,()=>[kz.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>F.stage==='hill'&&!heroCarry(h)&&piles.some(p=>hd(h.pos,p)<2.2),text:pi=>'Горячий уголь: клещами '+K(pi,'item')+' — и в топку. На бегу можно бросить.'});
@@ -207,6 +207,12 @@ function build43(){
   W.tipZones.push({cond:(pi,h)=>F.shoal&&!F.shoalOk,text:pi=>RINGS.some(r=>!r.hero)?'Мель! Все четверо — в кольца, и два «Рывка» подряд.':'Мель! Два «Рывка» подряд — все четверо на «ух-нем».'});
   W.tipZones.push({cond:(pi,h)=>SG.on&&caller()===pi&&!SG.called,text:pi=>'Ты — Потап: запевай «Эй» '+K(pi,'skill')+', остальные отвечают «ух-нем».'});
   W.tipZones.push({cond:(pi,h)=>LZ.on&&LZ.down<=0&&h===T.proshka&&!heroCarry(h),text:pi=>'Ящерка на свае выбивает уголь. Рогатка '+K(pi,'skill')+' — по ней!'});
+  /* ---------- СЮ.4: дым на горизонте (за берегом) · СЮ.2: осколок лубка за шатром ---------- */
+  {const SM={x:-46,z:-112},pool=[];const sm=MB(0x3a3034,{transparent:true,opacity:0.5,depthWrite:false,fog:false});
+    for(let i=0;i<16;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(1,8,6),sm.clone());m.visible=false;W.group.add(m);pool.push({m,t:9});}
+    W.updates.push(dt=>{for(const p of pool){if(p.t>=8){if(Math.random()<dt*0.35){p.t=0;p.m.visible=true;p.x=SM.x+rand(-2,2);p.z=SM.z+rand(-2,2);}else continue;}
+      p.t+=dt;const k=p.t/8;p.m.position.set(p.x+k*9,2+k*30,p.z);p.m.scale.setScalar(2+k*7);p.m.material.opacity=0.5*Math.sin(Math.min(1,k)*Math.PI);if(p.t>=8)p.m.visible=false;}});}
+  lubokShard(-6.4,0.9,14.2);
   W.spawns=[[new V3(-4.4,0,10),new V3(-5.6,0,11)],[new V3(-1.4,0,10),new V3(-0.2,0,11)]];W.startAct=[1,0];
   W.pauseLine='Эй, ухнем. В кольца на лямке встаньте (оставленный держит сам) —<br>И на «ух-нем» жмите RT вместе, по часам.<br>Брёвна — прыжок героя из кольца. В гору — лишь с огнём:<br>Уголь клещами в топку баржи — и пойдём!';
   W.onStart=()=>{later(0.4,intro);};

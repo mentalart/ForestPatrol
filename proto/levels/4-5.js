@@ -22,7 +22,7 @@ function build45(){
   function segTo(m,a,b){const d=b.clone().sub(a),l=d.length();m.position.copy(a).addScaledVector(d,0.5);m.scale.set(1,l,1);m.quaternion.setFromUnitVectors(new V3(0,1,0),d.normalize());}
   const drawChains=()=>chainL.forEach(c=>segTo(c.m,new V3(c.x,4.3,-7.6),new V3(c.x,c.y,-30)));drawChains();
   posts.forEach((p,i)=>{W.marks.push({pos:new V3(p.x,4.5,-7.4),active:()=>!p.shot,onHit:()=>{p.shot=true;SFX.brk();burst(new V3(p.x,4.5,-7.4),0xc8c8d0,10,3);p.hk.visible=false;floatText(new V3(p.x,5,-7.4),'Крюк сбит!','#ffd9a0');
-    if(posts.every(q=>q.shot)){F.chains=true;anim(1.2,k=>{chainL.forEach(c=>{c.y=5-4.8*smooth(k);});drawChains();});banner('Цепи опустились!','#ffb070',2,'кладите горячие доски');const it=linkItem(0,1.1,-6.4);later(0.6,()=>sayP('…доска к доске, а стык — водой.',2.8));}}});});
+    if(posts.every(q=>q.shot)){F.chains=true;anim(1.2,k=>{chainL.forEach(c=>{c.y=5-4.8*smooth(k);});drawChains();});banner('Цепи опустились!','#ffb070',2,'кладите горячие доски');const it=linkItem(0,1.1,-6.4);later(0.6,()=>sayP('…доска к доске, а стык — водой.',2.8));later(3.8,()=>bark(kz5,'kuzst','Мост наш ковали — не подведёт.',2.8));}}});});
   const SEC_REF=[];const SLOTS=[];for(let i=0;i<8;i++){const z0=-8-2.75*i,z1=z0-2.75;const S={i,z0,z1,zc:(z0+z1)/2,placed:false,fused:false,col:null,mesh:null,glow:null};SLOTS.push(S);
     S.sock=hotSocket(0,0.1,S.zc,{r:1.7,accept:it=>it.kind==='doska'&&F.chains&&!S.placed&&(i===0||SLOTS[i-1].fused),onPut:(it)=>{consumeHot(it);placeSlot(S);}});
     W.waterTargets.push({pos:new V3(0,0,S.z1+0.2),active:()=>S.placed&&!S.fused,onWater:()=>{S.fused=true;S.glow.material.color.setHex(0x4a4a52);S.glow.material.emissiveIntensity=0;SFX.grow();burst(new V3(0,0.2,S.z1),0x9fe6a0,10,3);floatText(new V3(0,1,S.z1),'Стык сросся','#9fe6a0');
@@ -98,7 +98,7 @@ function build45(){
     // доски рушатся за спиной: первая половина, бык, участки — только когда Потап уже сошёл
     const behind=[...SLOTS.map(S=>({z0:S.z0,z1:S.z1,col:S.col,m:[S.mesh,S.glow],done:S.gone,ref:S})),{z0:-30,z1:-32,col:null,m:[],ref:PIER},...SEC.map(S=>({z0:S.z0,z1:S.z1,col:S.col,land:S.land,m:[S.mesh,S.landM,S.plateM,S.hinge,S.crack],ref:S}))];
     const front=-26-RUN.t*1.4;for(const b of behind){if(b.ref.gone)continue;if(b.z1>front&&po.pos.z<b.z1-0.6){b.ref.gone=true;if(b.col)b.col.on=false;if(b.land)b.land.on=false;SFX.brk();burst(new V3(0,0,(b.z0+b.z1)/2),0xff8a3a,10,3);b.m.forEach(m=>{if(!m)return;const y0=m.position.y;anim(1,k=>{m.position.y=y0-k*k*3;m.rotation.x+=0.02;});later(1.05,()=>{m.visible=false;});});}}
-    if(RUN.t>2&&!F.runTold){F.runTold=true;sayP('Беги, беги!',1.6);}
+    if(RUN.t>2&&!F.runTold){F.runTold=true;sayP('Потап, беги — я вижу целые доски!',2.6);}   // СЮ.1: Пелагея закрывает тетрадку и говорит своё
     // последний пролёт — пустота: прыжок и лоза
     if(po.pos.z<-48.2&&!F.vine)vineScene();}
   /* ---------- сюжет ---------- */
@@ -179,6 +179,9 @@ function build45(){
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>F.stage==='build'&&!heroCarry(h)&&hd(h.pos,{x:-5.4,z:-2})<2.6,text:pi=>'Горячие доски в печи: клещами '+K(pi,'item')+' — и на край моста.'});
   W.tipZones.push({cond:(pi,h)=>F.stage==='hold'&&pi===1,text:pi=>'Жёлтый шарик над Потапом — в середину. Пролёт: Пелагея долетит, встанет на плиту — доска опустится.'});
+  // СЮ.3: Кузьма на своём берегу — мост их работы · СЮ.2: осколок лубка в углу у начала
+  const kz5=makeSmith('kuzma',false);kz5.g.position.set(6.4,0,-4.6);kz5.g.rotation.y=Math.PI*0.8;W.kuzma=kz5;
+  lubokShard(-8,0.9,12.4);
   W.spawns=[[new V3(-2.6,0,9),new V3(-4.6,0,10)],[new V3(2.6,0,9),new V3(4.6,0,10)]];W.startAct=[0,1];
   W.pauseLine='Калинов мост. Жёлуди по крюкам — цепи опустятся;<br>Калёные доски — клещами, стыки — мёртвой водой срастутся.<br>Потап мост держит: стик против качания, синее — щит, красное — упереться.<br>Переход: стык — Йоша, пролёт — Пелагея да плита, чтоб не свалиться.';
   W.onStart=()=>{later(0.4,intro);};

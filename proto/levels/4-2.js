@@ -133,17 +133,19 @@ function build42(){
   // лавопад: «Сиди тут»
   function fallScene(){F.stage='cut1';const po=T.potap,yo=T.yosha,pr=T.proshka,pe=T.pelageya;
     placeOnGround(po,0.6,-49.4,0);placeOnGround(yo,-0.6,-48.6,0);placeOnGround(pr,2.6,-48.2,0);placeOnGround(pe,-2.8,-48.4,0);HEROES.forEach(h=>h.face=Math.PI);
-    play({dur:24,fov:46,camK:2.4,shots:[shot(0,[-3.4,3.4,-46.2],[0,-1.4,-57],[-5.6,7.2,-44.4],[0,-3.6,-62],4.4),shot(4.6,[-1.8,1.6,-46.6],[0,1,-50]),shot(8.4,[4,2.6,-47],[0,0.8,-51]),shot(12.6,[yo.pos.x-1.6,1.3,yo.pos.z-1.6],[yo.pos.x,0.9,yo.pos.z]),shot(18.4,[po.pos.x+1.4,1.5,po.pos.z-1.8],[po.pos.x,1.1,po.pos.z])],
+    play({dur:24,fov:46,camK:2.4,shots:[shot(0,[-3.4,3.4,-46.2],[0,-1.4,-57],[-5.6,7.2,-44.4],[0,-1,-66],4.4),shot(4.6,[-1.8,1.6,-46.6],[0,1,-50]),shot(8.4,[4,2.6,-47],[0,0.8,-51]),shot(12.6,[yo.pos.x-1.6,1.3,yo.pos.z-1.6],[yo.pos.x,0.9,yo.pos.z]),shot(18.4,[po.pos.x+1.4,1.5,po.pos.z-1.8],[po.pos.x,1.1,po.pos.z])],
       says:[[0.3,4,null,'<i>Самое красивое место реки — водопад огня. Жёлоб справа залит огнём, внизу — огненная завеса.</i>',true],[4.6,3.4,'potap','<i>(загораживает Йошу)</i> Сиди тут. Я сам обход найду, не лезь.'],
         [8.4,3.8,null,'<i>Обхода нет. Потап вдоль края топчется.</i>',true],[12.6,1.8,null,'<i>Йоша не прыгает молча. Он поворачивается к Потапу.</i>',true],[14.6,3.6,'yosha','Потап, смотри на меня. Я пойду. Если что — ловишь.'],
         [18.4,3.4,null,'<i>Потап рот открывает. Закрывает.</i>',true],[21.6,2.2,'potap','…Ловлю. Ловлю, не бойся.']],
-      events:[{t:4.4,fn:()=>{const f=po.pos.clone();anim(0.8,k=>{po.pos.lerpVectors(f,new V3(-0.3,0,-49.6),k);});po.face=0.4;}},
+      events:[{t:1.0,fn:()=>{gorShadow(new V3(16,0,-70),new V3(-14,0,-42),3.2,-1.9);if(typeof FIN!=='undefined'&&FIN.w4story)FIN.w4story.farRoar();}},   // СЮ.4: тень Горыныча над лавопадом
+        {t:4.4,fn:()=>{const f=po.pos.clone();anim(0.8,k=>{po.pos.lerpVectors(f,new V3(-0.3,0,-49.6),k);});po.face=0.4;}},
         {t:8.4,fn:()=>{placeOnGround(po,-3,-51,0);po.face=Math.PI;anim(3.6,k=>{po.pos.x=-3+Math.sin(k*Math.PI*1.5)*4;po.face=Math.cos(k*Math.PI*1.5)>0?Math.PI/2:-Math.PI/2;});}},
         {t:12.4,fn:()=>{placeOnGround(po,edge.x+0.6,-50.2,0);po.face=-Math.PI/2;yo.face=Math.PI/2;}}],
       end:()=>{W.anims.length=0;placeOnGround(po,edge.x-1.4,edge.z,0);po.face=Math.PI;placeOnGround(yo,-1.2,-51.4,0);yo.face=Math.PI;placeOnGround(pr,1.6,-50.6,0);pr.face=Math.PI;placeOnGround(pe,-3,-49,0);
         if(active(0)!==pr)doSwap(0);if(active(1)!==yo)doSwap(1);F.stage='fall';F.cnt=0;F.cntT=0;W.noSwap=()=>F.stage==='fall';W.noSwapTip='Потап на краю страхует. Сейчас Йоша идёт, Прошка рогаткой его прикрывает.';snapCams();
         tip(0,'Йоша по огненному каскаду спускается. Прикрой его: ящерки огнём плюют — рогатка '+K(0,'skill')+'.<br>Потап на краю поймает, если Йоша оступится, — не бойся ни чуточки.',4.4);
         tip(1,'Йоша идёт сам: живой водой '+K(1,'skill')+' полей — корка под лапами встанет.<br>Внизу затвор жёлоба горит — остуди, и друзья спустятся, не отстанут.',4.4);}});}
+  lubokShard(-11.2,5.9,-22.6);   // СЮ.2: осколок лубка на высоком уступе
   spitter(-7.4,-54.2,-0.4,()=>F.stage==='fall');spitter(2.2,-55.8,-1.2,()=>F.stage==='fall');
   const NUM=['Раз.','Два.','Три.','Четыре.','Пять.','Шесть.','Семь.','Восемь.','Девять.','Десять.','Одиннадцать.','Двенадцать.','Тринадцать.','Четырнадцать.','Пятнадцать.','Шестнадцать.','Семнадцать.','Восемнадцать.','Девятнадцать.','Двадцать.','Двадцать одна…','Двадцать две…','Двадцать три…','Двадцать четыре…'];
   W.fallHook=h=>{if(F.stage!=='fall'||h!==T.yosha)return false;const po=T.potap;placeOnGround(h,po.pos.x+0.9,po.pos.z+0.3,po.pos.y);h.iT=1.2;h.vel.set(0,0,0);ringFx(po.pos,0xc08a48,1.6);SFX.toss();
