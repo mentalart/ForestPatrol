@@ -24,7 +24,7 @@ function kidsSetupScreen(){const S=FIN.set,cyc=(pi,d)=>{cyclePath(pi);if(d<0)cyc
     p1,p2,
     {label:'Читать задачи вслух',val:()=>kidsRead()?'да':'нет',sub:()=>FIN.readAloud?FIN.readAloud.status():'',side:()=>FIN.readAloud.toggle()},
     {label:'Крупный текст',val:()=>S.ts>=1.3?'да':'нет',side:()=>{S.ts=S.ts>=1.3?1:1.3;save();}},
-    {label:'Начать сказку!',sub:'можно поменять потом: Настройки',act:()=>{save();finGo(()=>startFrom(0));}},
+    {label:'Начать сказку!',sub:'можно поменять потом: Настройки',act:()=>{save();FIN.introWant=true;finGo(()=>startFrom(0));}},   // FIN.introWant — сперва «Присказка» (levels/p/late_96g)
     {label:'Назад',act:finBack}];
   return {head:'Кто играет?',items,sel:5};}
 {const _ng=newGame;newGame=function(){
