@@ -121,9 +121,11 @@ function build43(){
         if(!jumped){const lim=r.z-(L.z+0.6);if(blockAt===null||lim<blockAt.lim)blockAt={lim,r};}}}
     if(blockAt){mv=Math.max(0,Math.min(mv,blockAt.lim));blockAt.r.blocked=true;if(G.time-(F.logTipT||-9)>4){F.logTipT=G.time;const r=blockAt.r;const who=r.hero?(r.hero.active?'прыгай':'смени героя и прыгай'):'встаньте в кольцо';
       floatText(new V3(r.x,r.y+2,r.z),'У кольца '+(r.i+1)+' — бревно!','#ffd76a');for(const pi of[0,1])tip(pi,'Бревно у кольца '+(r.i+1)+': этот герой на «ух-нем» прыгает '+K(pi,'jump')+'.<br>Оставленный сам не прыгнет — '+who,3);}}
-    if(n>0&&mv>0){B.tz=B.z-mv;}else if(n===0&&SG.k>1&&!F.soloTold){F.soloTold=true;for(const pi of[0,1])tip(pi,'В кольца на лямке встаньте и на «ух-нем» жмите '+K(pi,'skill')+'.<br>Оставленный герой лямку держит сам — не отпустит.',3.4);}}
+    if(n>0&&mv>0){B.tz=B.z-mv;B.pull=1;if(W.fx4)W.fx4('rope',new V3(BX,B.y+1,B.z));}else if(n===0&&SG.k>1&&!F.soloTold){F.soloTold=true;for(const pi of[0,1])tip(pi,'В кольца на лямке встаньте и на «ух-нем» жмите '+K(pi,'skill')+'.<br>Оставленный герой лямку держит сам — не отпустит.',3.4);}}
   // герои в кольцах: оставленный держит лямку и идёт с ней
   function ringTick(dt){const prevZ=B.z;if(B.tz<B.z){B.z=Math.max(B.tz,B.z-dt*4.2);}const dz=B.z-prevZ;placeBarge();
+    B.pull=Math.max(0,(B.pull||0)-dt*1.6);rope.forEach(m=>{m.scale.x=m.scale.z=1-0.35*B.pull;});ropeM.emissive.setHex(0x6a4a10);ropeM.emissiveIntensity=B.pull;   // натянутая лямка тоньше и светлее
+    if(dz<0&&Math.random()<0.6)burst(new V3(BX-2.6+rand(-0.2,0.2),B.y+0.25,B.z+rand(-5,5)),0x8a7a6a,2,1.4,0.7);   // пыль из-под баржи
     for(const r of RINGS){let best=null,bd=0.8;const keep=r.hero&&Math.hypot(r.hero.pos.x-r.x,r.hero.pos.z-r.z)<1.25&&Math.abs(r.hero.pos.y-r.y)<3;   // кто в кольце — держит, даже в прыжке
       if(keep)best=r.hero;else for(const h of HEROES){if(h.active&&players[h.player].downed)continue;const d=Math.hypot(h.pos.x-r.x,h.pos.z-r.z);if(d<bd&&Math.abs(h.pos.y-r.y)<1.3&&!RINGS.some(q=>q!==r&&q.hero===h)){bd=d;best=h;}}r.hero=best;
       if(best&&dz<0){best.pos.z+=dz;if(!best.active){best.pos.x=damp(best.pos.x,r.x,6,dt);best.face=Math.PI;}

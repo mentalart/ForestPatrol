@@ -17,7 +17,7 @@ function build44(){
   const mZ=new THREE.Matrix4().makeScale(0,0,0),mT=new THREE.Matrix4();for(let k=0;k<N;k++){furIM.setMatrixAt(k,mZ);lavIM.setMatrixAt(k,mZ);}W.group.add(furIM);W.group.add(lavIM);
   const showFur=(k,on)=>{furIM.setMatrixAt(k,on?mT.makeTranslation(cx(k),0.02,cz(k)):mZ);furIM.instanceMatrix.needsUpdate=true;};
   const showLav=(k,on)=>{lavIM.setMatrixAt(k,on?mT.makeTranslation(cx(k),0.05,cz(k)):mZ);lavIM.instanceMatrix.needsUpdate=true;};
-  const dig=k=>{if(k<0||TT[k]!==1||(KF[k]&WALK))return false;TT[k]=2;showFur(k,true);snap(k);return true;};
+  const dig=k=>{if(k<0||TT[k]!==1||(KF[k]&WALK))return false;TT[k]=2;showFur(k,true);snap(k);if(W.plowBy&&W.plowBy())burst(new V3(cx(k),0.25,cz(k)),0x5a3a22,3,2.2,0.5);return true;};   // комья земли за плугом
   // борозда сама дотягивается до жерла, чаши, ямы или порога, если до них одна клетка
   const snap=k=>{const i=k%NX,j=Math.floor(k/NX);for(let di=-2;di<=2;di++)for(let dj=-2;dj<=2;dj++){if(Math.max(Math.abs(di),Math.abs(dj))!==2)continue;const ii=i+di,jj=j+dj;if(ii<0||ii>=NX||jj<0||jj>=NZ)continue;const n=jj*NX+ii;if(!(KF[n]&(SRC|BOWLA|BOWLB|BOWLC|PIT|DOOR)))continue;
     const m=(j+Math.sign(dj))*NX+i+Math.sign(di);if(TT[m]===1&&!(KF[m]&WALK)){TT[m]=2;showFur(m,true);}}};
@@ -79,10 +79,14 @@ function build44(){
     if(pech1&&pech1.alive&&F.stage==='C'){pech1.alive=false;pech1.state='dying';pech1.t=0;F.pech1Done=true;burst(pech1.pos.clone().add(new V3(0,1,0)),0x8a8a90,14,3);const i=W.enemies.indexOf(pech1);later(0.7,()=>{W.group.remove(pech1.g);const j=W.enemies.indexOf(pech1);if(j>=0)W.enemies.splice(j,1);});}});const n5=nutItem(0,0.6,-80),L4=linkItem(-9.2,1.1,-80.6);
   /* ---------- течение лавы: фронт растёт по бороздам; если исток соединён с ямой — лава только на пути к яме ---------- */
   const FL={t:0,drainT:0};
+  // фронт лавы: светящаяся «голова» там, куда лава только что пришла
+  const LH={t:0,m:new THREE.Mesh(new THREE.SphereGeometry(0.42,10,8),MB(0xffd060,{transparent:true}))};LH.m.visible=false;W.group.add(LH.m);W.lavaHead=LH;
+  W.updates.push(dt=>{LH.t=Math.max(0,LH.t-dt*0.9);LH.m.visible=LH.t>0;if(LH.m.visible){LH.m.scale.set(1+0.2*Math.sin(G.time*9),0.55,1+0.2*Math.cos(G.time*7));LH.m.material.opacity=Math.min(1,LH.t*1.6);}});
   function flowTick(dt){FL.t+=dt;if(FL.t<0.36)return;FL.t=0;const add=[];
     for(let k=0;k<N;k++){if(!LV[k])continue;for(const n of NB(k)){if(TT[n]===2&&!LV[n]&&CT[n]<=0)add.push(n);}}
     if(!F.lavaCam&&!G.manual&&!G.cine){const fk=add.find(k=>!PRE.has(k)&&!(KF[k]&(SRC|BOWLA|BOWLB|BOWLC|PIT|DOOR)));if(fk!==undefined){F.lavaCam=true;const x=cx(fk),z=cz(fk);   // первая лава в свежей борозде — камера 2 с за ней
         play({dur:2.4,fov:50,camK:3,shots:[shot(0,[x+3,5.5,z+5],[x,0,z],[x+2,5,z+2],[x,0,z-3],2.4)],says:[[0.2,2.1,'pelageya','…лава течёт туда, куда борозда ведёт.']]});}}
+    if(add.length&&!G.cine){const k=add[add.length-1];LH.t=1;LH.m.position.set(cx(k),0.22,cz(k));if(Math.random()<0.5)burst(new V3(cx(k),0.6,cz(k)),0x6a6a70,2,1.2,0.9);}
     for(const k of add){setLava(k,true);if(KF[k]&BOWLA&&!F.bowlA)bowlDone('A');if(KF[k]&BOWLB&&!F.bowlB)bowlDone('B');if(KF[k]&BOWLC&&!F.bowlC)bowlDone('C');}
     // сток в яму: оставить лаву только на кратчайшем пути от истока к яме
     const src=[];for(let k=0;k<N;k++)if(KF[k]&SRC&&LV[k])src.push(k);const prev=new Int32Array(N).fill(-2);const q=[];for(const k of src){prev[k]=-1;q.push(k);}let hit=-1;

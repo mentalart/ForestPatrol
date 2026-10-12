@@ -20,7 +20,7 @@ function build45(){
   const posts=[-1.6,1.6].map(x=>{addMesh(new THREE.CylinderGeometry(0.2,0.26,4.6,8),M(0x5a4030),x,2.3,-7.6);const hk=addMesh(new THREE.TorusGeometry(0.28,0.07,6,14),chainM,x,4.5,-7.4);return {x,hk,shot:false};});
   const chainL=[-1.3,1.3].map(x=>{const m=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,1,6),chainM);W.group.add(m);return {x,m,y:5};});
   function segTo(m,a,b){const d=b.clone().sub(a),l=d.length();m.position.copy(a).addScaledVector(d,0.5);m.scale.set(1,l,1);m.quaternion.setFromUnitVectors(new V3(0,1,0),d.normalize());}
-  const drawChains=()=>chainL.forEach(c=>segTo(c.m,new V3(c.x,4.3,-7.6),new V3(c.x,c.y,-30)));drawChains();
+  W.chainL=chainL;const drawChains=()=>chainL.forEach(c=>segTo(c.m,new V3(c.x,4.3,-7.6),new V3(c.x,c.y,-30)));drawChains();
   posts.forEach((p,i)=>{W.marks.push({pos:new V3(p.x,4.5,-7.4),active:()=>!p.shot,onHit:()=>{p.shot=true;SFX.brk();burst(new V3(p.x,4.5,-7.4),0xc8c8d0,10,3);p.hk.visible=false;floatText(new V3(p.x,5,-7.4),'Крюк сбит!','#ffd9a0');
     if(posts.every(q=>q.shot)){F.chains=true;anim(1.2,k=>{chainL.forEach(c=>{c.y=5-4.8*smooth(k);});drawChains();});banner('Цепи опустились!','#ffb070',2,'кладите горячие доски');const it=linkItem(0,1.1,-6.4);later(0.6,()=>sayP('…доска к доске, а стык — водой.',2.8));later(3.8,()=>bark(kz5,'kuzst','Мост наш ковали — не подведёт.',2.8));}}});});
   const SEC_REF=[];const SLOTS=[];for(let i=0;i<8;i++){const z0=-8-2.75*i,z1=z0-2.75;const S={i,z0,z1,zc:(z0+z1)/2,placed:false,fused:false,col:null,mesh:null,glow:null};SLOTS.push(S);

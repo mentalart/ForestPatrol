@@ -36,7 +36,7 @@ function build42(){
       if(!S.cond()||!onLava()||hd(Y.pos,S)>9){S.cd=Math.max(S.cd,1.6);if(SPT.who===S&&!SPT.fly)SPT.who=null;continue;}
       S.liz.rotation.y=Math.atan2(Y.pos.x-S.x,Y.pos.z-S.z);
       if(S.cd-dt<1.2&&SPT.who!==S){if(SPT.who){S.cd=Math.max(S.cd,1.25);continue;}SPT.who=S;SPT.t=1.8;S.cd=1.2;SPT.g0=G.time;   // замах: свечение и писк 1,2 с
-        tone(330,0.22,'square',0.035);tone(440,0.22,'square',0.035,null,0.4);tone(587,0.3,'square',0.045,null,0.8);}
+        tone(330,0.22,'square',0.035);tone(440,0.22,'square',0.035,null,0.4);tone(587,0.3,'square',0.045,null,0.8);if(W.fx4)W.fx4('spit',new V3(S.x,S.y,S.z));}
       S.cd-=dt;if(SPT.who===S){S.liz.scale.setScalar(1+0.25*Math.sin(G.time*30));S.mat.emissiveIntensity=1.2+0.4*Math.sin(G.time*20);}
       if(S.cd<=0){S.cd=rand(3.2,4.4);SPT.fly=true;SPT.charge=G.time-SPT.g0;SPT.n=(SPT.n||0)+1;const from=new V3(S.x,S.y+0.6,S.z),to=Y.pos.clone().add(new V3(0,0.6,0));const b=new THREE.Mesh(new THREE.SphereGeometry(0.2,8,6),MB(0xffa030));W.group.add(b);SFX.whoosh();
         anim(0.9,k=>{b.position.lerpVectors(from,to,k);b.position.y+=Math.sin(k*Math.PI)*1.4;if(k>=1){W.group.remove(b);burst(to.clone(),0xff8a30,12,3);SPT.fly=false;SPT.t=0.5;

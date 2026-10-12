@@ -90,13 +90,15 @@ function build41(){
   const inTrough=[];for(let i=0;i<4;i++){const g=new THREE.Group();const L=hotLook('kleshi',g);g.visible=false;W.group.add(g);inTrough.push({g,m:L.m});}
   function flyToTrough(i){const q=inTrough[i];q.g.visible=true;q.m.color.setHex(0xff7a20);q.m.emissiveIntensity=1;const from=new V3(0,1.35,-14),to=new V3(4.2+(i%3)*0.35,0.66,-14.2+(i%2?0.12:-0.12));
     SFX.swish();anim(0.8,k=>{q.g.position.lerpVectors(from,to,k);q.g.position.y+=Math.sin(k*Math.PI)*1.6;q.g.rotation.y+=0.3;if(k>=1){SFX.water();burst(to.clone().add(new V3(0,0.3,0)),0xe8f4ff,8,2);floatText(to.clone().add(new V3(0,0.9,0)),'В корыто!','#ffd9a0');}});}
-  function temper(auto){if(FG.queue<=0)return;const i=FG.done;FG.queue--;FG.done++;SFX.water();burst(new V3(4.6,1,-14.2),0xe8f4ff,22,4);for(let k=0;k<6;k++)later(k*0.12,()=>burst(new V3(4.6+rand(-0.5,0.5),0.9,-14.2),0xffffff,3,2,1.4));
+  function temper(auto){if(FG.queue<=0)return;const i=FG.done;FG.queue--;FG.done++;SFX.water();if(W.fx4)W.fx4('temper',new V3(4.6,1,-14.2));burst(new V3(4.6,1,-14.2),0xe8f4ff,22,4);for(let k=0;k<6;k++)later(k*0.12,()=>burst(new V3(4.6+rand(-0.5,0.5),0.9,-14.2),0xffffff,3,2,1.4));
     floatText(new V3(4.6,1.9,-14.2),(auto?'Йоша сам полил! ':'Пш-ш-ш! ')+'Клещей '+FG.done+' / '+FG.total,'#cfe8ff');const q=inTrough[i],sl=rackSlots[i];q.m.color.setHex(0x3e3c44);q.m.emissiveIntensity=0;
     const from=q.g.position.clone(),to=new V3();sl.g.getWorldPosition(to);anim(0.9,k=>{q.g.position.lerpVectors(from,to,smooth(k));q.g.position.y+=Math.sin(k*Math.PI)*1.2;if(k>=1){q.g.visible=false;sl.on=true;sl.m.color.setHex(0x55555e);sl.m.opacity=1;sl.m.transparent=false;SFX.plate();FG.onRack++;floatText(to.clone().add(new V3(0,0.8,0)),'На стойку! '+FG.onRack+' / '+FG.total,'#d8f0c0');}});FG.waitT=0;FG.autoT=0;}
   W.waterTargets.push({pos:TROUGH,pri:3,active:()=>F.stage==='forge'&&FG.queue>0,onWater:()=>temper(false)});
   function startForge(){F.stage='forge';FG.t=-2*FG.B;FG.k=-3;ring.visible=true;stepRing.visible=true;banner('Куём клещи!','#ffd76a',3,'1 · Пелагея прыгает на рычаг мехов · 2 · Прошка молотом бьёт '+K(0,'attack')+' в такт · 3 · Йоша корыто поливает '+K(1,'skill'));}
+  // ЗВ.2: удары молота — ноты мотива «Эй, ухнем» (ми фригийский, полутоны от ми второй октавы): ковка звучит как песня 4-3
+  const MOT43=[7,5,0,7,5,0,5,7,8,7,5,3,1,0];let motI=0;const motNote=()=>mf(76+MOT43[motI++%MOT43.length]);
   function strike(ok){const pr=T.proshka;pr.atkT=0.28;pr.face=Math.atan2(0-pr.pos.x,-14-pr.pos.z);const hk=FG.heat>0.3?1:0.5;FG.prog+=(ok?1.3:1)*hk;
-    later(0.06,()=>{SFX.hammer();tone(ok?2600:1700,ok?0.5:0.25,'triangle',ok?0.24:0.12);burst(new V3(0,1.35,-14),ok?0xffe060:0xffa040,ok?18:6,ok?5:2);blank.material.emissiveIntensity=1.6;floatText(new V3(0,2.1,-14),ok?'Дзинь!':'тук',ok?'#ffe36b':'#e0c0a0');});
+    later(0.06,()=>{if(ok&&W.fx4)W.fx4('strike',new V3(0,1.35,-14));SFX.hammer();tone(ok?motNote():1700,ok?0.5:0.25,'triangle',ok?0.24:0.12);burst(new V3(0,1.35,-14),ok?0xffe060:0xffa040,ok?18:6,ok?5:2);blank.material.emissiveIntensity=1.6;floatText(new V3(0,2.1,-14),ok?'Дзинь!':'тук',ok?'#ffe36b':'#e0c0a0');});
     if(FG.heat<=0.3&&!FG.coldTold){FG.coldTold=true;sayP('Горн остыл — Пелагея, на рычаг мехов прыгай, раздувай!',2.8);}
     if(FG.prog>=FG.need){FG.prog=0;FG.need=5;const two=FG.made===2;FG.made+=two?2:1;FG.queue+=two?2:1;SFX.ok();floatText(new V3(0,2.9,-14),two?'Двое клещей разом — в корыто!':'Клещи готовы — в корыто летят!','#ffd76a');flyToTrough(FG.made-1);if(two)flyToTrough(FG.made-2);
       if(FG.made===1)later(0.9,()=>sayP('Йоша, клещи в корыте! Живой водой полей — пш-ш-ш, и готово!',3));}}
@@ -181,7 +183,7 @@ function build41(){
     if(R4.beatDone[j.k]){return true;}
     if(kind==='strike'&&![0,1].some(q=>q!==pi&&onPlate(HOLD,q))){floatText(top,'Держать некому — заготовка скачет!','#ffd9a0');return true;}
     if(Math.abs(j.d)>0.22+(W.ladBonus||0)){floatText(top,j.d<0?'рано':'поздно','#dddddd');SFX.miss();return true;}
-    R4.beatDone[j.k]=true;R4.prog++;if(kind==='strike'){R4.striker[half]=pi;h.atkT=0.3;anim(0.22,q=>{hammer.rotation.z=-Math.sin(q*Math.PI)*1.1;});later(0.1,()=>{SFX.hammer();tone(2300+R4.prog*20,0.4,'triangle',0.2);burst(new V3(ANV.x,1.7,ANV.z),0xffe060,14,4);floatText(new V3(ANV.x,2.4,ANV.z),'Дзинь!','#ffe36b');});}
+    R4.beatDone[j.k]=true;R4.prog++;if(kind==='strike'){R4.striker[half]=pi;h.atkT=0.3;anim(0.22,q=>{hammer.rotation.z=-Math.sin(q*Math.PI)*1.1;});later(0.1,()=>{SFX.hammer();tone(motNote(),0.4,'triangle',0.2);burst(new V3(ANV.x,1.7,ANV.z),0xffe060,14,4);floatText(new V3(ANV.x,2.4,ANV.z),'Дзинь!','#ffe36b');});}
     else{R4.turn++;SFX.latch();floatText(top,'Поворот!','#bfe0ff');tone(1200,0.2,'sine',0.14,1600);}
     bigShape();bigMesh.position.set(ANV.x,1.55,ANV.z);
     if(R4.prog===R4.need/2){banner('Меняйтесь местами!','#ffd76a',2.2,G.solo?'помощник сам меняется с тобой: теперь ты держишь и поворачиваешь '+K(G.soloPi,'item'):'кто держал — тот бьёт, кто бил — тот держит');SFX.ok();
@@ -219,7 +221,7 @@ function build41(){
     play({dur:21,fov:46,camK:2.4,shots:[shot(0,[0,3,-45],[0,1.8,-54]),shot(5.6,[4.2,2.2,-47],[0.8,1.4,-50.2]),shot(11,[-1.4,1.3,-49.6],[0,0.9,-47.6]),shot(14,[-5.2,2,-51.4],[-8.2,1.9,-54.5]),shot(16,[0.8,1.2,-49.4],[0,0.9,-47.6])],
       says:[[0.3,3.6,null,'<i>Кольцо звенит, как колокол, —</i><br><i>И от звона того истуканы оживают вдруг.</i>',true],[5.6,3.2,'demyan','Хорошо сковано. Ладно.'],[8.8,2,'demyan','Вчетвером, говоришь?'],[11,3,null,'<i>Прошка на друзей кивает. Уши у него — красные.</i>',true],
         [14.2,1.8,'kuzst','Хм. Ученики, стало быть.'],[16,4.6,'proshka','<i>(тихо, через экран)</i> Ладно. Волшебство. Но сделанное руками.']],
-      events:[{t:0.3,fn:()=>{anim(3,k=>{kz.setStone(1-k);dm.setStone(1-k);});for(let i=0;i<8;i++)later(i*0.3,()=>burst(new V3(rand(-9,9),2,-54.5),0xff9a40,6,3));}},
+      events:[{t:0.3,fn:()=>{if(W.fx4)W.fx4('ringwave',new V3(0,0.3,-52));anim(3,k=>{kz.setStone(1-k);dm.setStone(1-k);});for(let i=0;i<8;i++)later(i*0.3,()=>burst(new V3(rand(-9,9),2,-54.5),0xff9a40,6,3));}},
         {t:3.4,fn:()=>{const f=dm.g.position.clone();anim(3,k=>{dm.g.position.lerpVectors(f,new V3(pr.pos.x+1.2,0,pr.pos.z-1),smooth(k));dm.g.rotation.y=k<0.85?-1.42:-0.88;});}},
         {t:18,fn:()=>{giveLink(dm.g.position,pr,2,1.1);}}],
       end:()=>{flushGifts();F.out=true;banner('Кузня ожила','#ffb070',2.4,'в лавке у Векши — фартук кузнеца, загляни!');later(1.8,finishLevel);}});}
