@@ -45,6 +45,8 @@ ZC.tick(1);
 const r=[TIE()];if(S.st!=='sit')throw new Error('избушка не села: '+r.join(' | '));
 TK(100);r.push('волков='+S.wolves.length);if(S.wolves.length<1)throw new Error('нет волков-сторожей: '+r.join(' | '));
 {const w=S.wolves[0],n0=S.wolves.length;for(let k=0;k<3&&S.wolves.includes(w);k++){const p=w.m.g.position;PUT(H(0),p.x+1,p.z);ZC.W.onAttack(0,H(0));ZC.tick(2);}r.push('волк побит='+(S.wolves.length<n0));}
+// остальных сторожей — тоже: удар рядом с волком (< 2.2 м) достаётся волку, а не кругу; волк бежит за своим героем со случайной стороны
+for(const w of S.wolves.slice())for(let k=0;k<3&&S.wolves.includes(w);k++){const p=w.m.g.position;PUT(H(0),p.x+1,p.z);ZC.W.onAttack(0,H(0));ZC.tick(2);}r.push('волков осталось='+S.wolves.length);
 const cs=A1.targets(0);PUT(H(0),cs[0].position.x,cs[0].position.z);PUT(H(1),cs[1].position.x,cs[1].position.z);ZC.W.onAttack(0,H(0));ZC.W.onAttack(1,H(1));TK(150);
 r.push('фаза='+S.phase+' st='+S.st);if(S.phase!==3)throw new Error('не повернулась: '+r.join(' | '));PUT(H(0),A1.STEPS[1][0],A1.STEPS[1][2],A1.STEPS[1][1]);PUT(H(1),A1.BALC[0],A1.BALC[2],A1.BALC[1]);TK(10);CHK(r.join(' | '))
 //@@ shot=k5e_p1_roof.png
