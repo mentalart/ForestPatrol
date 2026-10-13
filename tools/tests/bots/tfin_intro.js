@@ -4,7 +4,7 @@
 // Новая игра с FIN.introWant: семь роликов подряд, целиком, без пропуска. Проверки: каждый — ручная постановка (def.kino), ≤ 25 с, не меньше 3 крупностей
 // и 2 типов движения камеры; в середине каждой реплики в кадре (не голос за кадром) говорящий в кадре и повёрнут к камере; после — комната пролога:
 // площадки убраны, уровень виден, герои на местах, свет пролога, ролик «Колыбельная» не начался. Пропуск в середине — то же состояние. Ошибок нет.
-// Кадры: Лукоморье (1-2), сосна-штаб с героями (3-3), рука над цепью (5-5), головы Горыныча на Смородине (6).
+// Кадры: Лукоморье (1-2), сосна-штаб с героями (3-3), рука над цепью (5-5), русалка на дубе (1-6), головы Горыныча на Смородине (6).
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(false);ZC.FIN.introWant=true;ZC.startFrom(0);ZC.G.manual=true;ZC.tick(2);
 const CI=ZC.FIN.cine,ACT=ZC.FIN.actors,V=THREE.Vector3,PRK=ZC.FIN.intro;window.CREP=[];window.CBAD=[];
@@ -25,6 +25,12 @@ window.SEEN=new Set();window.TRACK=()=>{const c=ZC.G.cine,cd=CI.CD();if(!c||!cd|
 window.RUN=(i,t)=>{let n=0;while(n<60*200){const c=ZC.G.cine;if(!PRK.on||(PRK.i>i)||(PRK.i===i&&c&&c.t>=t))break;ZC.tick(1);n++;TRACK();}return 'сцена '+(PRK.i+1)+' t='+(ZC.G.cine?ZC.G.cine.t.toFixed(1):'—');};
 if(!PRK.on)throw new Error('«Присказка» не началась при новой игре');
 const lv=document.getElementById('level');(lv.style.opacity==='1'?'FIN название уровня поверх ролика ':'')+RUN(0,5.2)
+//@@ shot=intro_mermaid.png wait=200
+// русалка на ветке дуба (облёт кроны 1-6): модель с лицом, руками и гребнем; хвост плещет, гребень ходит, глаза моргают
+RUN(0,18.3);{const M=ZC.FIN.intro.L.mer;if(!M||!M.anim||!M.g.visible||!M.eyes||M.eyes.length!==2||!M.comb)throw new Error('FAIL русалка без модели');
+  const r0=M.seg[4].rotation.x,c0=M.aR.sh.rotation.z;let bl=false;for(let i=0;i<240;i++){ZC.tick(1);if(M.eyes[0].scale.y<0.5)bl=true;}
+  if(Math.abs(M.seg[4].rotation.x-r0)<0.005&&Math.abs(M.aR.sh.rotation.z-c0)<0.005)throw new Error('FAIL русалка не двигается');if(!bl)throw new Error('FAIL русалка не моргает');}
+RUN(0,18.6)
 //@@ shot=intro_patrol.png wait=200
 RUN(2,7.0)
 //@@ shot=intro_hand.png wait=200

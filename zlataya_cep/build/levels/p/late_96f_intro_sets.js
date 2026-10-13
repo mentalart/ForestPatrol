@@ -86,6 +86,69 @@ function prkSea(par,size,seg,col){const g=new THREE.PlaneGeometry(size,size,seg,
   PRK.ups.push(t=>{if(!m.visible)return;for(let i=0;i<p.count;i++){const x=b[i*3],z=b[i*3+2];p.setY(i,Math.sin(x*0.18+t*0.9)*0.25+Math.cos(z*0.22+t*0.7)*0.22+Math.sin((x+z)*0.07+t*0.4)*0.35);}p.needsUpdate=true;});return {m,mat};}
 
 /* ---------- L: Лукоморье ---------- */
+/* ---------- русалка (сидит на ветке дуба) ---------- */
+function prkMermaid(par,x,y,z,sc){const mer=prkGroup(par,x,y,z);mer.scale.setScalar(sc||1);
+  const skin=prkM(0xf6d2b8),hairM=prkM(0x2f9a84,{emissive:0x0a2a24}),hair2=prkM(0x3fb898,{emissive:0x0a3028}),tl=prkM(0x2fb0a8,{emissive:0x0a4a48}),tl2=prkM(0x249a96,{emissive:0x083e3c}),
+    finM=prkM(0x7fe0d0,{emissive:0x1a6a60,side:THREE.DoubleSide}),shell=prkM(0xe8b8e0,{emissive:0x3a2038}),pearl=prkM(0xfff8f0,{emissive:0x605850}),pink=prkM(0xff9a9a),
+    gold=prkM(0xffd27a,{emissive:0x806010}),white=prkM(0xffffff),iris=prkM(0x2a8ab0,{emissive:0x0a2a40});
+  // хвост: шесть звеньев цепочкой — от бёдер вперёд через ветку и вниз; полоски-чешуйки, на конце плавник-«сердечко»
+  const tail=prkGroup(mer,0,0.02,0.04),seg=[],base=[-1.25,0.42,0.38,0.36,0.3,0.28];let pp=tail;
+  for(let i=0;i<6;i++){const sg=prkGroup(pp,0,i?-0.22:0,0);sg.rotation.x=base[i];const r=0.17-i*0.02;
+    const m=prkAdd(sg,new THREE.SphereGeometry(r,10,8),i%2?tl2:tl,0,-0.11,0);m.scale.set(1,1.45,0.88);
+    const bnd=prkAdd(sg,new THREE.TorusGeometry(r*0.92,0.018,4,12),i%2?tl:tl2,0,-0.03,0);bnd.rotation.x=Math.PI/2;bnd.scale.set(1,0.88,1);seg.push(sg);pp=sg;}
+  {const fz=prkGroup(pp,0,-0.2,0);const sh=new THREE.Shape();sh.moveTo(0,0);sh.bezierCurveTo(0.12,-0.05,0.3,-0.12,0.34,-0.36);sh.bezierCurveTo(0.2,-0.28,0.08,-0.3,0,-0.2);
+    sh.bezierCurveTo(-0.08,-0.3,-0.2,-0.28,-0.34,-0.36);sh.bezierCurveTo(-0.3,-0.12,-0.12,-0.05,0,0);prkAdd(fz,new THREE.ShapeGeometry(sh,6),finM,0,0,0).rotation.y=Math.PI/2;
+    for(const s of[-1,1]){const l=prkAdd(fz,new THREE.CylinderGeometry(0.006,0.01,0.3,4),tl2,0,-0.15,s*0.1);l.rotation.x=s*0.6;}seg.fin=fz;}
+  for(const s of[-1,1]){const f=prkAdd(seg[2],new THREE.ConeGeometry(0.07,0.2,4),finM,s*0.14,-0.1,0);f.rotation.z=-s*1.9;f.scale.z=0.3;}
+  // пояс-чешуя на бёдрах
+  for(let i=0;i<10;i++){const a=i/10*Math.PI*2;const c=prkAdd(mer,new THREE.ConeGeometry(0.05,0.12,4),tl2,Math.sin(a)*0.15,0.02,Math.cos(a)*0.13);c.rotation.set(Math.PI+Math.cos(a)*0.5,0,-Math.sin(a)*0.5);}
+  // тело: стан, ракушки, жемчужное ожерелье
+  const body=prkGroup(mer,0,0,0);
+  prkAdd(body,new THREE.LatheGeometry([[0.001,0],[0.16,0.01],[0.14,0.12],[0.12,0.22],[0.15,0.32],[0.14,0.41],[0.08,0.47],[0.001,0.49]].map(([a,b])=>new THREE.Vector2(a,b)),10),skin,0,0,0).scale.z=0.85;
+  for(const s of[-1,1]){const sh=prkAdd(body,new THREE.SphereGeometry(0.075,8,5,0,Math.PI*2,0,Math.PI/2),shell,s*0.068,0.33,0.085);sh.rotation.x=Math.PI/2-0.25;sh.scale.y=0.55;
+    for(let k=0;k<3;k++){const rb=prkAdd(sh,new THREE.CylinderGeometry(0.006,0.006,0.13,3),pearl,(k-1)*0.03,0.04,0);rb.rotation.x=Math.PI/2;}}
+  for(let i=0;i<9;i++){const a=(i/8-0.5)*2.2;prkAdd(body,new THREE.SphereGeometry(0.018,6,4),pearl,Math.sin(a)*0.1,0.43-Math.cos(a)*0.04+0.04,Math.cos(a)*0.09);}
+  prkAdd(body,new THREE.CylinderGeometry(0.045,0.05,0.12,8),skin,0,0.52,0);
+  // голова: лицо, глаза с бликами, щёки, улыбка; волосы — шапка, чёлка, пряди по спине и на плечах; венок с цветами
+  const head=prkGroup(body,0,0.67,0);prkAdd(head,new THREE.SphereGeometry(0.16,14,12),skin,0,0,0).scale.set(1,1.06,0.96);
+  const eyes=[];for(const s of[-1,1]){const e=prkGroup(head,s*0.058,0.0,0.128);prkAdd(e,new THREE.SphereGeometry(0.034,8,6),white,0,0,0).scale.z=0.5;
+    prkAdd(e,new THREE.SphereGeometry(0.024,8,6),iris,0,-0.003,0.012).scale.z=0.5;prkAdd(e,new THREE.SphereGeometry(0.013,6,4),PRK_DARK,0,-0.003,0.019).scale.z=0.5;
+    prkAdd(e,new THREE.SphereGeometry(0.007,5,4),white,s*-0.008+0.006,0.009,0.024);
+    for(let k=0;k<3;k++){const l=prkAdd(e,new THREE.BoxGeometry(0.004,0.022,0.004),PRK_DARK,s*(0.016+k*0.01),0.03-k*0.003,0.012);l.rotation.z=-s*(0.5+k*0.3);}eyes.push(e);
+    const ck=prkAdd(head,new THREE.SphereGeometry(0.026,6,5),pink,s*0.095,-0.05,0.115);ck.scale.z=0.35;
+    const br=prkAdd(head,new THREE.BoxGeometry(0.045,0.008,0.008),hairM,s*0.06,0.052,0.142);br.rotation.z=-s*0.15;}
+  prkAdd(head,new THREE.SphereGeometry(0.014,5,4),skin,0,-0.028,0.158);
+  {const mo=prkAdd(head,new THREE.TorusGeometry(0.03,0.007,4,10,Math.PI),prkM(0xd85a6a),0,-0.06,0.145);mo.rotation.z=Math.PI;}
+  {const cap=prkAdd(head,new THREE.SphereGeometry(0.172,14,8,0,Math.PI*2,0,Math.PI*0.5),hairM,0,0.0,-0.012);cap.rotation.x=-0.45;cap.scale.set(1.04,1.05,1.05);
+    const bk=prkAdd(head,new THREE.SphereGeometry(0.17,10,8),hairM,0,-0.02,-0.05);bk.scale.set(1.04,1,0.95);
+    for(let i=0;i<5;i++){const b=prkAdd(head,new THREE.SphereGeometry(0.05,6,5),i%2?hair2:hairM,(i-2)*0.055,0.11-Math.abs(i-2)*0.018,0.1-Math.abs(i-2)*0.02);b.scale.set(1.1,0.7,0.6);}}
+  const strands=[];const strand=(px,py,pz,n,len,r,ry,rx,mat)=>{const root=prkGroup(head,px,py,pz);root.rotation.set(rx,ry,0);let q=root;const ch=[];
+    for(let k=0;k<n;k++){const sg=prkGroup(q,0,k?-len:0,0);sg.rotation.x=k?0.12:0;const rr=r*(1-k/(n+1)*0.6);prkAdd(sg,new THREE.CylinderGeometry(rr,rr*0.82,len,6),mat,0,-len/2,0);ch.push(sg);q=sg;}
+    prkAdd(q,new THREE.ConeGeometry(r*0.5,len*0.6,6),mat,0,-len-len*0.3,0).rotation.x=Math.PI;strands.push({root,ch,rx,ph:strands.length*0.9});};
+  for(let i=0;i<6;i++){const a=(i-2.5)*0.22;strand(Math.sin(a)*0.14,-0.04,-0.08-Math.cos(a)*0.06,4,0.2,0.05,a*0.6,0.25,i%2?hair2:hairM);}
+  for(const s of[-1,1])strand(s*0.13,-0.06,0.02,3,0.17,0.035,0,-0.12,s>0?hairM:hair2);
+  {const wr=prkAdd(head,new THREE.TorusGeometry(0.162,0.02,5,18),prkM(0x5a9a48),0,0.085,-0.01);wr.rotation.x=Math.PI/2-0.35;
+    for(let i=0;i<7;i++){const a=i/7*Math.PI*2+0.3,fx=Math.cos(a)*0.162,fz=Math.sin(a)*0.162;const fy=0.085+Math.sin(a)*Math.sin(0.35)*0.162*-1;const fl=prkGroup(head,fx,fy,fz-0.01);
+      for(let k=0;k<5;k++){const b=k/5*Math.PI*2;prkAdd(fl,new THREE.SphereGeometry(0.018,5,4),i%3===1?prkM(0xffb0d0):white,Math.cos(b)*0.022,Math.sin(b)*0.022,0).scale.z=0.5;}
+      prkAdd(fl,new THREE.SphereGeometry(0.013,5,4),prkM(0xffd23a,{emissive:0x604000}),0,0,0.006);fl.lookAt(fl.position.clone().multiplyScalar(3).add(new THREE.Vector3(0,0.2,0)));}}
+  // руки: правая с гребнем расчёсывает прядь, левая опирается о ветку
+  const arm=(s)=>{const sh=prkGroup(body,s*0.15,0.43,0);prkAdd(sh,new THREE.SphereGeometry(0.042,6,5),skin,0,0,0);prkAdd(sh,new THREE.CylinderGeometry(0.034,0.03,0.2,7),skin,0,-0.1,0);
+    const el=prkGroup(sh,0,-0.2,0);prkAdd(el,new THREE.CylinderGeometry(0.03,0.025,0.18,7),skin,0,-0.09,0);const hd=prkGroup(el,0,-0.19,0);prkAdd(hd,new THREE.SphereGeometry(0.032,7,5),skin,0,0,0).scale.set(0.8,1.1,0.6);
+    const br=prkAdd(sh,new THREE.TorusGeometry(0.033,0.008,4,10),gold,0,-0.15,0);br.rotation.x=Math.PI/2;return {sh,el,hd};};
+  const aR=arm(1),aL=arm(-1);aL.sh.rotation.set(-0.15,0,-0.35);aL.el.rotation.set(-0.5,0,0);
+  const comb=prkGroup(aR.hd,0,-0.02,0.03);prkAdd(comb,new THREE.BoxGeometry(0.16,0.04,0.02),gold,0,0,0);for(let k=0;k<7;k++)prkAdd(comb,new THREE.BoxGeometry(0.008,0.04,0.012),gold,(k-3)*0.02,-0.035,0);comb.rotation.z=0.3;
+  const M={g:mer,tail,seg,base,body,head,eyes,strands,aR,aL,comb,blink:2.2,bt:-1};
+  M.anim=(t,dt)=>{const sl=Math.sin(t*1.3);
+    seg.forEach((sg,i)=>{sg.rotation.x=M.base[i]+Math.sin(t*2.2-i*0.7)*0.06*(0.4+i*0.25);sg.rotation.z=Math.sin(t*1.6-i*0.6)*0.05*(0.3+i*0.2);});if(seg.fin)seg.fin.rotation.x=Math.sin(t*2.2-4.6)*0.35;
+    body.rotation.z=Math.sin(t*0.9)*0.035;body.rotation.x=Math.sin(t*0.7)*0.02;
+    head.rotation.set(0.05+Math.sin(t*0.7+1)*0.05,Math.sin(t*0.45)*0.18,0.14+Math.sin(t*1.3)*0.06);
+    // гребень: рука поднята к правому плечу, проводит вниз по пряди и возвращается
+    const c=(1-Math.cos(t*2.4))*0.5;aR.sh.rotation.set(-0.55-c*0.35,0.2,0.75-c*0.25);aR.el.rotation.set(-1.9+c*0.7,0,0.2);aR.hd.rotation.set(0.2,0,0.1);
+    strands.forEach((st,i)=>{st.root.rotation.x=st.rx+Math.sin(t*1.1+st.ph)*0.06;st.ch.forEach((q,k)=>{if(k)q.rotation.z=Math.sin(t*1.4+st.ph-k*0.8)*0.06;});});
+    M.blink-=dt;if(M.blink<=0&&M.bt<0){M.bt=0;M.blink=2.4+((t*7.3)%1)*2.6;}let e=1;if(M.bt>=0){M.bt+=dt;const u=M.bt/0.16;e=u<0.5?1-u*1.9:Math.min(1,0.05+(u-0.5)*1.9);if(u>=1)M.bt=-1;}
+    eyes.forEach(q=>{q.scale.y=Math.max(0.06,e);});};
+  M.anim(0,0);return M;}
+
 function prkBuildL(){const O=PRO.L,g=prkGroup(PRK.root,O.x,O.y,O.z),L={g};PRK.L=L;
   const sea=prkSea(g,460,64,0x3d8cb0);L.seaM=sea.mat;
   // остров: трава, песок, камни
@@ -116,13 +179,8 @@ function prkBuildL(){const O=PRO.L,g=prkGroup(PRK.root,O.x,O.y,O.z),L={g};PRK.L=
     const m=prkAdd(chain,linkG,gold,p.x,p.y,p.z);m.lookAt(O.x+q.x,q.y,O.z+q.z);m.rotateY(Math.PI/2);if(i%2)m.rotateX(Math.PI/2);L.links.push({m,u});}
   // Кот Учёный (сидячая модель — по цепи «идёт» шажками)
   L.kot=prkCast(makeKot,g,0,0,0,0.55,0);L.kotS=0.55;
-  // русалка на ветке: голова, волосы, хвост
-  {const mer=prkGroup(g,-4.9,7.75,0.9);mer.scale.setScalar(1.6);const tail=prkGroup(mer,0,0,0);prkAdd(tail,new THREE.ConeGeometry(0.26,1.1,7),prkM(0x2fb0a8,{emissive:0x0a4a48}),0.1,-0.45,0).rotation.z=0.25;
-    const fin=prkAdd(tail,new THREE.ConeGeometry(0.28,0.4,4),prkM(0x7fe0d0,{emissive:0x1a6a60}),0.22,-1.05,0);fin.rotation.z=Math.PI+0.3;fin.scale.set(1,1,0.3);
-    prkAdd(mer,new THREE.CylinderGeometry(0.16,0.22,0.6,7),prkM(0x9ad8f0),0,0.3,0);prkAdd(mer,new THREE.IcosahedronGeometry(0.2,0),prkM(0xf6d2b8),0,0.78,0.02);
-    const hair=prkAdd(mer,new THREE.ConeGeometry(0.24,0.9,7),prkM(0x3fa58c),0,0.6,-0.08);hair.rotation.x=0.15;
-    for(const s of[-1,1])prkAdd(mer,new THREE.SphereGeometry(0.035,5,4),PRK_DARK,s*0.07,0.8,0.18);
-    const comb=prkAdd(mer,new THREE.BoxGeometry(0.16,0.06,0.03),prkM(0xffd27a,{emissive:0x806010}),0.18,0.94,0);L.mer={g:mer,tail,comb};}
+  // русалка на ветке: сидит, хвост свешивается за ветку, правой рукой расчёсывает волосы гребнем; L.mer.anim — плеск хвоста, гребень, моргание
+  L.mer=prkMermaid(g,-4.9,7.75,0.9,1.6);
   // Леший выглядывает из-за ствола
   L.leshy=prkCast(()=>makeLeshy(0.5),g,-1.4,0,-2.9,0,0.4);
   // слушатели
@@ -188,7 +246,7 @@ function prkBuildL(){const O=PRO.L,g=prkGroup(PRK.root,O.x,O.y,O.z),L={g};PRK.L=
     hg.add(new THREE.Mesh(new FIN.orig.Circle(0.62,20),new THREE.MeshLambertMaterial({map:prkIcon('oak'),emissive:0x5a3a00,emissiveIntensity:0.5,side:THREE.DoubleSide})));prkGlow(hg,0xffd070,3.2,0,0,-0.3,0.5);hg.visible=false;L.hero=hg;}
   // ступа летает кругами, русалка плещет, костёр дрожит, туча клубится
   PRK.ups.push((t,dt)=>{if(!g.visible)return;const st=L.stupa.g;if(st.visible){const a=t*0.32;st.position.set(Math.sin(a)*24,13+Math.sin(t*0.9)*1.2,Math.cos(a)*24-6);st.rotation.y=a+Math.PI/2;}
-    L.mer.tail.rotation.z=Math.sin(t*2.2)*0.18;
+    if(L.mer.g.visible)L.mer.anim(t,dt);
     if(L.fire.visible)L.flames.forEach((f,i)=>{f.scale.set(1+Math.sin(t*13+i)*0.12,1+Math.sin(t*9+i*2)*0.22,1);});
     L.cloudBlobs.forEach(b=>{if(b.scale.x>0.05){b.position.y=b.userData.p0.y+Math.sin(t*0.7+b.userData.ph)*0.5;b.rotation.y+=dt*0.05;}});
     L.links.forEach(o=>{if(o.med)o.m.rotation.z=Math.sin(t*0.8+o.u*20)*0.08;});
