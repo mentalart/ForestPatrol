@@ -1,0 +1,306 @@
+<title>Кастинг «Златой цепи»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<style>
+/* Layout: одна колонка ролей, сгруппированных по частям игры; сверху — сводка выбора, прилипающая к верху. */
+:root {
+  --bg: #f6f4ee;
+  --surface: #fffdf8;
+  --ink: #1f2240;
+  --muted: #5d6078;
+  --line: #ddd8c8;
+  --gold: #a87b14;
+  --gold-soft: #f3e6c2;
+  --ok: #2f6b45;
+  --ok-soft: #e1efe4;
+  --warn: #8a4b12;
+  --font-display: "Prata", Georgia, "Times New Roman", serif;
+  --font-body: "PT Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "PT Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14152a; --surface: #1d1f38; --ink: #ecebf5; --muted: #a6a8c2; --line: #33365a;
+    --gold: #e2b852; --gold-soft: #3a3320; --ok: #7fcf98; --ok-soft: #1d3527; --warn: #f0a96a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14152a; --surface: #1d1f38; --ink: #ecebf5; --muted: #a6a8c2; --line: #33365a;
+  --gold: #e2b852; --gold-soft: #3a3320; --ok: #7fcf98; --ok-soft: #1d3527; --warn: #f0a96a;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--font-body); }
+.wrap { max-width: 860px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 64px; display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--font-display); font-weight: 400; text-wrap: balance; margin: 0; }
+h1 { font-size: 2rem; line-height: 1.15; }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1.15rem; }
+.lead { color: var(--muted); max-width: 62ch; margin: 6px 0 0; }
+
+.summary { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; display: grid; gap: 8px; }
+.summary-top { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; justify-content: space-between; }
+.count { font-variant-numeric: tabular-nums; font-weight: 700; }
+.bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--gold); transition: width .25s; }
+.status { font-size: .85rem; color: var(--muted); }
+.status.err { color: var(--warn); }
+.line-out { font-family: var(--font-mono); font-size: .85rem; color: var(--muted); overflow-wrap: anywhere; }
+button { font: inherit; cursor: pointer; }
+.btn { border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: 6px; padding: 4px 12px; }
+.btn:hover { border-color: var(--gold); }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+section.group { display: grid; gap: 14px; }
+.group-head { display: flex; align-items: baseline; gap: 10px; border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+.group-head small { color: var(--muted); }
+
+.role { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 10px; }
+.role.done { border-color: var(--ok); }
+.role-head { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; justify-content: space-between; }
+.chip { font-size: .78rem; letter-spacing: .03em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: var(--gold-soft); color: var(--gold); }
+.role.done .chip { background: var(--ok-soft); color: var(--ok); }
+.about { color: var(--muted); margin: 0; font-size: .95rem; }
+.script { font-size: .88rem; margin: 0; padding: 8px 10px; border-left: 3px solid var(--gold-soft); color: var(--muted); }
+.how { font-size: .8rem; color: var(--muted); }
+
+.opts { display: grid; gap: 8px; }
+.opt { display: grid; grid-template-columns: auto auto 1fr; gap: 6px 12px; align-items: center; padding: 8px 10px;
+  border: 1px solid var(--line); border-radius: 8px; background: var(--bg); }
+.opt.sel { border-color: var(--ok); background: var(--ok-soft); }
+.opt input { width: 22px; height: 22px; accent-color: var(--ok); margin: 0; }
+.opt label { cursor: pointer; min-width: 0; }
+.opt .letter { font-family: var(--font-display); font-size: 1.2rem; width: 1.4em; text-align: center; }
+.opt .vname { font-weight: 700; }
+.opt audio { grid-column: 1 / -1; width: 100%; height: 36px; }
+.opt.none { grid-template-columns: auto 1fr; }
+.note { width: 100%; box-sizing: border-box; min-height: 2.4em; font: inherit; font-size: .92rem; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; resize: vertical; }
+@media (min-width: 640px) {
+  .opt { grid-template-columns: auto auto minmax(8em, 12em) 1fr; }
+  .opt audio { grid-column: auto; }
+}
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Кастинг «Златой цепи»</h1>
+    <p class="lead">Послушайте варианты и отметьте галочкой голос для каждой роли. Если не подходит ни один, отметьте «Ни один» и напишите, чего не хватает. Выбор сохраняется сразу, Claude прочитает его отсюда.</p>
+  </header>
+
+  <div class="summary" aria-live="polite">
+    <div class="summary-top">
+      <span>Выбрано <span class="count" id="cnt">0 из 0</span></span>
+      <button class="btn" id="copy" type="button">Скопировать выбор</button>
+    </div>
+    <div class="bar"><i id="barfill"></i></div>
+    <div class="line-out" id="lineout">Пока ничего не выбрано.</div>
+    <div class="status" id="status">Подключаю сохранение…</div>
+  </div>
+
+  <main id="groups"></main>
+</div>
+
+<script>
+const GROUPS = [
+  { id: "heroes", title: "Герои и Звенышко", hint: "взрослые голоса с детской подачей" },
+  { id: "adults", title: "Взрослые и Сказительница", hint: "" },
+  { id: "bosses", title: "Боссы", hint: "дизайн голоса ElevenLabs" },
+];
+const LIB = "библиотека ElevenLabs, тег [childlike voice]";
+const DES = "дизайн голоса ElevenLabs — три варианта одного описания";
+const ROLES = [
+  { id: "proshka", g: "heroes", name: "Прошка", about: "Лисёнок, мальчик 9–10 лет: бойкий, чуть хвастливый, с улыбкой в голосе.", how: LIB,
+    text: "Колыбельные — для малых, не для нас, для удалых! … Ха-ха! Вот это я прокатился! … (шёпотом) Это он про что?",
+    opts: [["A","Ekaterina","proshka/proshka_A_ekaterina.mp3"],["B","Vika","proshka/proshka_B_vika.mp3"],["C","Taya","proshka/proshka_C_taya.mp3"]] },
+  { id: "potap", g: "heroes", name: "Потап", about: "Медвежонок, мальчик 10 лет: низковатый, тёплый, неторопливый.", how: LIB,
+    text: "Стой, не бойся ничего — подниму тебя легко! … Хо-хо-хо! … (шёпотом) Раз-два — взяли!",
+    opts: [["A","Kuchka (молодой мужской)","potap/potap_A_kuchka.mp3"],["B","Daniel (молодой мужской)","potap/potap_B_daniel.mp3"],["C","Vika (низкая подача)","potap/potap_C_vika.mp3"]] },
+  { id: "pelageya", g: "heroes", name: "Пелагея", about: "Совушка, девочка 9 лет: тихая, ясная, умная; шёпот и полный голос.", how: LIB,
+    text: "Я вас видела. Всё время. … Восемь чёрных свеч — смотрите! … (шёпотом) …Кот говорил: под водой, в глубине, есть город…",
+    opts: [["A","Lunya","pelageya/pelageya_A_lunya.mp3"],["B","Dasha","pelageya/pelageya_B_dasha.mp3"],["C","Masha","pelageya/pelageya_C_masha.mp3"]] },
+  { id: "yosha", g: "heroes", name: "Йоша", about: "Ёжик, самый маленький, 6–7 лет: звонкий, упрямый, «я сам!».", how: LIB + ", [high voice]",
+    text: "Я бы сам дошёл — не мал! Это всё из-за тебя, Прошка! … Ха-ха-ха! Вот потеха! … (шёпотом) Тише. Пусть спит.",
+    opts: [["A","Lunya","yosha/yosha_A_lunya.mp3"],["B","Vika","yosha/yosha_B_vika.mp3"],["C","Ekaterina","yosha/yosha_C_ekaterina.mp3"]] },
+  { id: "tishka", g: "heroes", name: "Тишка", about: "Бельчонок 4–5 лет: сонный, ласковый.", how: LIB,
+    text: "(напевно) Баю-баю, за рекою… Дальше слов не помню я… Ой! Тени! Ваши тени на стене! …",
+    opts: [["A","Lunya","tishka/tishka_A_lunya.mp3"],["B","Ekaterina","tishka/tishka_B_ekaterina.mp3"],["C","Taya","tishka/tishka_C_taya.mp3"]] },
+  { id: "zven", g: "heroes", name: "Звенышко", about: "Волшебное звено цепи: крошечный звонкий голосок. Эффект «звон» игра наложит сама.", how: DES,
+    text: "Чёрное болото! Пешком не пройти — лишь по струне. Дзинь-дзинь! … Кикиморки! Защищайтесь, не зевайте!",
+    opts: [["A","вариант A","zven/zven_A.mp3"],["B","вариант B","zven/zven_B.mp3"],["C","вариант C","zven/zven_C.mp3"]] },
+
+  { id: "kot", g: "adults", name: "Кот Учёный", about: "Сказочник: тёплый, мудрый, неторопливый.", how: "библиотека ElevenLabs", pre: "C",
+    text: "…а ещё была сказка про ежа, что сам по облаку гулял… (шёпотом) …у лукоморья… дуб зелёный… златая цепь…",
+    opts: [["A","Igor","kot/kot_A_igor.mp3"],["B","Vishnevski","kot/kot_B_vishnevski.mp3"],["C","Vladimir","kot/kot_C_vladimir.mp3"]] },
+  { id: "koschei", g: "adults", name: "Кощей", about: "Холодный, усталый, одинокий; заклинания — на подъёме, без рыка.", how: "библиотека ElevenLabs", pre: "A",
+    text: "Сказку бы кто прочёл… Хоть одну. … Я дочитал. Да только сказка — без конца … Все цепи — ко мне!",
+    opts: [["A","Егор","koschei/koschei_A_egor.mp3"],["B","Mikhail","koschei/koschei_B_mikhail.mp3"],["C","Fuad","koschei/koschei_C_fuad.mp3"]] },
+  { id: "kuzma", g: "adults", name: "Кузьма", about: "Кузнец: немногословный, басовитый, добрый.", how: "библиотека ElevenLabs", pre: "B",
+    text: "Богатырское дело. Хорошо. Крепко. Ещё бы чуток — и было бы в самый раз. Дошли — уже сила.",
+    opts: [["A","Maxim","kuzma/kuzma_A_maxim.mp3"],["B","Nester Surovy","kuzma/kuzma_B_nester.mp3"]] },
+  { id: "yaga", g: "adults", name: "Баба Яга", about: "Ворчливая, острая на язык, добрая в душе.", how: DES,
+    text: "Ну? Сам себя мусор не уберёт! … Это Кощей костлявый чужим ключом гусей моих приманил — ишь, удумал! …",
+    opts: [["A","вариант A","yaga/yaga_A.mp3"],["B","вариант B","yaga/yaga_B.mp3"],["C","вариант C","yaga/yaga_C.mp3"]] },
+  { id: "reader", g: "adults", name: "Сказительница", about: "Голос «Читать вслух» — задачи и подсказки. Тёплый, ясный, не похожий на персонажей.", how: "библиотека ElevenLabs",
+    text: "Отбей жёлтый знак щитом, красный знак — кувырок. Брось клубок в колышек. Упавшего бей! Леший на пень садится…",
+    opts: [["A","Svetlana","reader/reader_A_svetlana.mp3"],["B","Marina","reader/reader_B_marina.mp3"],["C","Kate","reader/reader_C_kate.mp3"]] },
+
+  { id: "leshy", g: "bosses", name: "Леший", about: "Босс 1-Б: скрипучий, как ветки, водит по кругу.", how: DES,
+    text: "Опять заблудились? Водит вас мой лес, по кругу да по кругу! … Проиграл, что ж… Теперь я вам должен.",
+    opts: [["A","вариант A","leshy/leshy_A.mp3"],["B","вариант B","leshy/leshy_B.mp3"],["C","вариант C","leshy/leshy_C.mp3"]] },
+  { id: "vod", g: "bosses", name: "Водяной", about: "Босс 2-Б: огромный, сонный, булькающий дед.", how: DES,
+    text: "Буль-буль-буль! Кто там звенел, кто спать мешал? … Ладно уж… Не буду буянить.",
+    opts: [["A","вариант A","vod/vod_A.mp3"],["B","вариант B","vod/vod_B.mp3"],["C","вариант C","vod/vod_C.mp3"]] },
+  { id: "solovei", g: "bosses", name: "Соловей-Разбойник", about: "Босс 3-Б: хвастун со свистом.", how: DES,
+    text: "Фью-у-ить! Кто тут гнездо моё тревожит? … Спасибо, маленькая. С тобою — поётся.",
+    opts: [["A","вариант A","solovei/solovei_A.mp3"],["B","вариант B","solovei/solovei_B.mp3"],["C","вариант C","solovei/solovei_C.mp3"]] },
+  { id: "gorL", g: "bosses", name: "Горыныч, левая голова", about: "Босс 4-Б: сонная, медленная.", how: DES,
+    text: "Ы-ы… кто разбудил, кто посмел? … Дружить — так дружить… Только чур, не будить.",
+    opts: [["A","вариант A","gorL/gorL_A.mp3"],["B","вариант B","gorL/gorL_B.mp3"],["C","вариант C","gorL/gorL_C.mp3"]] },
+  { id: "gorM", g: "bosses", name: "Горыныч, средняя голова", about: "Босс 4-Б: огненная, командует.", how: DES,
+    text: "Поймали — служить буду … Садитесь, друзья, — прокачу над лугом! Мы — Горыныч!",
+    opts: [["A","вариант A","gorM/gorM_A.mp3"],["B","вариант B","gorM/gorM_B.mp3"],["C","вариант C","gorM/gorM_C.mp3"]] },
+  { id: "gorR", g: "bosses", name: "Горыныч, правая голова", about: "Босс 4-Б: голодная, капризная.", how: DES,
+    text: "А я — есть! Вот и обед пришёл сам! … А с пирожками дружба — вдвое вкусней!",
+    opts: [["A","вариант A","gorR/gorR_A.mp3"],["B","вариант B","gorR/gorR_B.mp3"],["C","вариант C","gorR/gorR_C.mp3"]] },
+  { id: "likho", g: "bosses", name: "Лихо Одноглазое", about: "Босс 5-1: шепчущее, смешное, а не жуткое.", how: DES,
+    text: "Ух-ху! Сундук — мой! Я — сторож! … УХ! Кто меня будит?! … Уа-а-ах… Спать хочу…",
+    opts: [["A","вариант A","likho/likho_A.mp3"],["B","вариант B","likho/likho_B.mp3"],["C","вариант C","likho/likho_C.mp3"]] },
+  { id: "auka", g: "bosses", name: "Аука", about: "Мини-босс 1-4: пузатый лесной дух-перекличка.", how: DES,
+    text: "Никто со мной не аукается... Поаукаемся? … Ой... ответили! Хи-хи! Ау-ау!",
+    opts: [["A","вариант A","auka/auka_A.mp3"],["B","вариант B","auka/auka_B.mp3"],["C","вариант C","auka/auka_C.mp3"]] },
+  { id: "otshel", g: "bosses", name: "Рак-Отшельник", about: "Мини-босс сада Китежа: ворчливый задира без домика.", how: DES,
+    text: "Кто тут шумит? Это МОЙ дом! Уходите! … Ой, какой домик! Звонкий! Спасибо, малые!",
+    opts: [["A","вариант A","otshel/otshel_A.mp3"],["B","вариант B","otshel/otshel_B.mp3"],["C","вариант C","otshel/otshel_C.mp3"]] },
+];
+
+const state = {};          // id -> {pick, note}
+ROLES.forEach(r => state[r.id] = { pick: r.pre || "", note: "" });
+let db = null;
+const statusEl = document.getElementById("status");
+function setStatus(t, err) { statusEl.textContent = t; statusEl.classList.toggle("err", !!err); }
+
+function lsSave() { try { localStorage.setItem("casting", JSON.stringify(state)); } catch (e) {} }
+function lsLoad() { try { const s = JSON.parse(localStorage.getItem("casting") || "{}"); for (const k in s) if (state[k]) state[k] = s[k]; } catch (e) {} }
+
+function build() {
+  const root = document.getElementById("groups");
+  for (const g of GROUPS) {
+    const sec = document.createElement("section");
+    sec.className = "group";
+    sec.innerHTML = `<div class="group-head"><h2></h2><small></small></div>`;
+    sec.querySelector("h2").textContent = g.title;
+    sec.querySelector("small").textContent = g.hint;
+    for (const r of ROLES.filter(x => x.g === g.id)) sec.appendChild(roleEl(r));
+    root.appendChild(sec);
+  }
+  document.querySelectorAll("audio").forEach(a => a.addEventListener("play", () => {
+    document.querySelectorAll("audio").forEach(o => { if (o !== a) o.pause(); });
+  }));
+}
+
+function roleEl(r) {
+  const el = document.createElement("article");
+  el.className = "role"; el.id = "role-" + r.id;
+  el.innerHTML = `<div class="role-head"><h3></h3><span class="chip"></span></div>
+    <p class="about"></p><p class="script"></p><div class="how"></div><div class="opts"></div>
+    <textarea class="note" id="note-${r.id}" placeholder="Комментарий (необязательно): что поправить, чего не хватает"></textarea>`;
+  el.querySelector("h3").textContent = r.name;
+  el.querySelector(".about").textContent = r.about;
+  el.querySelector(".script").textContent = "Читает: " + r.text;
+  el.querySelector(".how").textContent = "Как сделано: " + r.how;
+  const opts = el.querySelector(".opts");
+  for (const [k, label, file] of r.opts) {
+    const o = document.createElement("div");
+    o.className = "opt"; o.dataset.k = k;
+    const id = `pick-${r.id}-${k}`;
+    o.innerHTML = `<input type="checkbox" id="${id}"><label class="letter" for="${id}"></label>
+      <label class="vname" for="${id}"></label><audio controls preload="none"></audio>`;
+    o.querySelector(".letter").textContent = k;
+    o.querySelector(".vname").textContent = label;
+    o.querySelector("audio").src = file;
+    o.querySelector("input").addEventListener("change", e => choose(r.id, e.target.checked ? k : ""));
+    opts.appendChild(o);
+  }
+  const n = document.createElement("div");
+  n.className = "opt none"; n.dataset.k = "none";
+  n.innerHTML = `<input type="checkbox" id="pick-${r.id}-none"><label for="pick-${r.id}-none">Ни один не подходит — сделать новые варианты</label>`;
+  n.querySelector("input").addEventListener("change", e => choose(r.id, e.target.checked ? "none" : ""));
+  opts.appendChild(n);
+  let t;
+  el.querySelector(".note").addEventListener("input", e => {
+    clearTimeout(t);
+    t = setTimeout(() => { state[r.id].note = e.target.value; save(r.id); renderSummary(); }, 700);
+  });
+  return el;
+}
+
+function choose(id, k) { state[id].pick = k; renderRole(id); renderSummary(); save(id); }
+
+function renderRole(id) {
+  const el = document.getElementById("role-" + id), s = state[id];
+  el.querySelectorAll(".opt").forEach(o => {
+    const on = o.dataset.k === s.pick;
+    o.classList.toggle("sel", on);
+    o.querySelector("input").checked = on;
+  });
+  const ta = el.querySelector(".note");
+  if (document.activeElement !== ta) ta.value = s.note || "";
+  el.classList.toggle("done", !!s.pick);
+  el.querySelector(".chip").textContent = !s.pick ? "не выбрано" : s.pick === "none" ? "нужны новые" : "выбран " + s.pick;
+}
+
+function renderSummary() {
+  const done = ROLES.filter(r => state[r.id].pick).length;
+  document.getElementById("cnt").textContent = `${done} из ${ROLES.length}`;
+  document.getElementById("barfill").style.width = (100 * done / ROLES.length) + "%";
+  document.getElementById("lineout").textContent = summaryText() || "Пока ничего не выбрано.";
+}
+function summaryText() {
+  return ROLES.filter(r => state[r.id].pick).map(r => {
+    const s = state[r.id];
+    return `${r.name} ${s.pick === "none" ? "— ни один" : s.pick}${s.note ? " (" + s.note + ")" : ""}`;
+  }).join("; ");
+}
+
+let pending = Promise.resolve();
+function save(id) {
+  lsSave();
+  if (!db) return;
+  const body = { pick: state[id].pick, note: state[id].note || "", at: new Date().toISOString() };
+  pending = pending.then(() => db.doc("choices/" + id).set(body))
+    .then(() => setStatus("Сохранено. Claude увидит выбор."))
+    .catch(e => setStatus(e && e.code === "invalid_argument" ? "Сохранить не удалось: у этой ссылки нет права на запись." : "Не удалось сохранить, повторите выбор.", true));
+}
+
+document.getElementById("copy").addEventListener("click", () => {
+  const t = summaryText(), out = document.getElementById("lineout");
+  if (!t) return;
+  navigator.clipboard?.writeText(t).then(() => setStatus("Скопировано."), () => {
+    const rg = document.createRange(); rg.selectNodeContents(out);
+    const sel = getSelection(); sel.removeAllRanges(); sel.addRange(rg); setStatus("Текст выделен — скопируйте его.");
+  });
+});
+
+build();
+lsLoad();
+ROLES.forEach(r => renderRole(r.id));
+renderSummary();
+
+(async () => {
+  try { db = window.claude && await window.claude.use("db"); } catch (e) { db = null; }
+  if (!db) { setStatus("Сохранение у Claude недоступно в этом окне: выбор хранится только в этом браузере, нажмите «Скопировать выбор» и пришлите текст.", true); return; }
+  setStatus("Выбор сохраняется автоматически.");
+  db.collection("choices").onSnapshot(snap => {
+    for (const d of snap.docs) {
+      if (!state[d.id] || d.metadata.hasPendingWrites) continue;
+      const v = d.data() || {};
+      state[d.id] = { pick: v.pick || "", note: v.note || "" };
+      renderRole(d.id);
+    }
+    renderSummary();
+  }, () => setStatus("Связь с хранилищем прервалась — обновите страницу.", true));
+})();
+</script>
