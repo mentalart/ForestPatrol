@@ -70,7 +70,7 @@
   /* ---------- Сказ 2 «Колокола Китежа»: Кот без голоса — Пелагея рассказывает сама, шёпотом ---------- */
   function festival2(){F.stage='fest';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-1.6,0);h.face=Math.PI;});snapCams();
     const pa=skazAcc(1);   // эхо: Пелагея вспоминает прошлую сказку, помощник которой ещё стоит на поляне
-    play({dur:pa?12:7.6,fov:48,shots:[shot(0,[0,3,5],[0,1.2,-3])].concat(pa?[shot(4.1,[-3.4,1.8,1.6],[SKAZ_HELPER_AT[0],1.1,SKAZ_HELPER_AT[1]])]:[]),says:[[0.4,3.6,null,'<i>Второй Сказ. Кот без голоса — сказывать некому.</i><br><i>Пелагея над тетрадкой сидит, думу думает…</i>',true]].concat(pa?[[4.1,4.2,'pelageya',SKAZ[2].pre+'Помнишь прошлую сказку? Про '+pa+'…']]:[],[[pa?8.5:4.1,3.2,'zven','Выбирайте: начало, помощник, конец!']]),end:()=>skaz2()});}
+    play({dur:pa?12:7.6,fov:48,shots:[shot(0,[0,3,5],[0,1.2,-3])].concat(pa?[shot(4.1,[-3.4,1.8,1.6],[SKAZ_HELPER_AT[0],1.1,SKAZ_HELPER_AT[1]])]:[]),says:[[0.4,3.6,null,'<i>Второй Сказ. Кот без голоса — сказывать некому.</i><br><i>Пелагея над тетрадкой сидит, думу думает…</i>',true]].concat(pa?[[4.1,4.2,'pelageya','<i>(шёпотом)</i> Помнишь прошлую сказку? Про '+pa+'…']]:[],[[pa?8.5:4.1,3.2,'zven','Выбирайте: начало, помощник, конец!']]),end:()=>skaz2()});}
   function skaz2(){skazChoose(2,tell2);}
   function tell2(t){const T=HERO,pe=T.pelageya;
     skazTell(2,t,{shot0:shot(0,[pe.pos.x+1.8,1.3,pe.pos.z+1.5],[pe.pos.x,0.9,pe.pos.z]),lastShot:T0=>shot(T0,[0,4,6],[0,3.4,-7]),
@@ -111,7 +111,7 @@
   /* ---------- Сказ 3 «Соловьиная песня»: Пелагея рассказывает вполголоса; Варя — начало, я — помощника ---------- */
   function festival3(){F.stage='fest';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-1.6,0);h.face=Math.PI;});snapCams();
     const pa=skazAcc(2);
-    play({dur:pa?12:7.6,fov:48,shots:[shot(0,[0,3,5],[0,1.2,-3])].concat(pa?[shot(4.1,[-3.4,1.8,1.6],[SKAZ_HELPER_AT[0],1.1,SKAZ_HELPER_AT[1]])]:[]),says:[[0.4,3.6,null,'<i>Третий Сказ. Пелагея тетрадку раскрыла —</i><br><i>Вполголоса сказывать будет, набравшись силы.</i>',true]].concat(pa?[[4.1,4.2,'pelageya',SKAZ[3].pre+'Помнишь прошлую сказку? Про '+pa+'…']]:[],[[pa?8.5:4.1,3.2,'zven','Выбирайте: начало, помощник, конец!']]),end:()=>skaz3()});}
+    play({dur:pa?12:7.6,fov:48,shots:[shot(0,[0,3,5],[0,1.2,-3])].concat(pa?[shot(4.1,[-3.4,1.8,1.6],[SKAZ_HELPER_AT[0],1.1,SKAZ_HELPER_AT[1]])]:[]),says:[[0.4,3.6,null,'<i>Третий Сказ. Пелагея тетрадку раскрыла —</i><br><i>Вполголоса сказывать будет, набравшись силы.</i>',true]].concat(pa?[[4.1,4.2,'pelageya','<i>(вполголоса)</i> Помнишь прошлую сказку? Про '+pa+'…']]:[],[[pa?8.5:4.1,3.2,'zven','Выбирайте: начало, помощник, конец!']]),end:()=>skaz3()});}
   function skaz3(){skazChoose(3,tell3);}
   function tell3(t){const pe=T.pelageya,pr=T.proshka;
     skazTell(3,t,{shot0:shot(0,[pe.pos.x+1.8,1.3,pe.pos.z+1.5],[pe.pos.x,0.9,pe.pos.z]),lastShot:T0=>shot(T0,[pr.pos.x-1.6,1.3,pr.pos.z+1.6],[pr.pos.x,0.9,pr.pos.z]),

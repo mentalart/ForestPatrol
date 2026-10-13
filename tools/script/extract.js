@@ -109,6 +109,8 @@ function consumer(node,anc){let cur=node;const path=[];
 const KEYRU={jump:'прыжок',attack:'удар',guard:'щит',item:'предмет',skill:'умение',swap:'смена героя',roll:'кувырок',call:'зов',up:'вверх',down:'вниз',left:'влево',right:'вправо'};
 function phLabel(n){const code=src.slice(n.start,n.end);
   if(n.type==='CallExpression'&&n.callee.type==='Identifier'&&/^(K|padGlyph|glyph)$/.test(n.callee.name)){const a=n.arguments[n.arguments.length-1];return a&&a.type==='Literal'&&KEYRU[a.value]?'кнопка «'+KEYRU[a.value]+'»':'кнопка';}
+  if(/^(MOVEK|moveKey)\(|^STICK$/.test(code))return 'кнопки «ходьба»';   // «К жёлтому пятну ступай: WASD» — подпись кнопок, не число
+  if(/^'♥'\.repeat\(/.test(code))return 'полные сердечки';if(/^'♡'\.repeat\(/.test(code))return 'пустые сердечки';   // счёт ♥♥♡ в 2-4
   if(/^(heroName|HNAME)\b|\.d\.name$|WHO\[[^\]]*\]\[0\]|^nm$|NAMES?\[|heroNameAcc|\.name$/.test(code))return /lvName|LEVELS/.test(code)?'название уровня':'имя героя';
   if(/lvName|LEVELS\[/.test(code))return 'название уровня';
   if(/^ICO_|^[A-Z]{3,}I$|MAGI|GOOI/.test(code))return 'значок';

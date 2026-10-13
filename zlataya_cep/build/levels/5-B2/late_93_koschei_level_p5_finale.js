@@ -36,7 +36,7 @@
       says:[[0.3,4,null,'<i>Каков ни будь конец — а прежде вот что было:</i><br><i>Кощей вернул, что взял, и всё, что прежде скрыл он.</i>',true],[4.6,2.2,null,'<i>Яге отдаёт он связку чёрных ключей — до одного.</i>',true],[6.8,3.6,'koschei','Возьми ключи. Гусей твоих не трону я, Яга, —<br>Ни гуся, ни ворона не приманю — никогда.'],
         [10.6,3.8,null,'<i>Из кармана золотую ниточку достаёт — Коту возвращает.</i><br><i>Кот первый вдох делает — и говорит: хрипло, а словами отвечает.</i>',true],
         [14.4,6.0,'kot','Прости меня. Я всегда сказывал, что ты проиграл, —<br>Так было проще. Прости, что не переписал.'],[20.6,2.8,'koschei','Так перепиши.'],[23.6,2.4,'kot','<i>(кивает на Пелагею)</i> Не я. Она уже рассказала.'],
-        [26.2,2.6,'koschei','Пелагея. Пелагея…'],[29.0,2.2,null,'<i>Над портретом Пелагеи имя её загорается — последнее из забытых.</i>',true],[31.8,3.6,'yosha','Мы вспомнили! Все имена — до одного,<br>И не забудем больше никого!'],[35.6,3.0,'koschei','<i>(тише)</i> Пелагея… Расскажи ещё.'],
+        [26.2,2.6,'koschei','Пелагея. Пелагея…'],[29.0,2.4,null,G.flags.b1page?'<i>Пелагея отдаёт Кощею последнюю страницу — свою сказку.</i>':'<i>Над портретом Пелагеи имя её загорается — последнее из забытых.</i>',true],[31.8,3.6,'yosha','Мы вспомнили! Все имена — до одного,<br>И не забудем больше никого!'],[35.6,3.0,'koschei','<i>(тише)</i> Пелагея… Расскажи ещё.'],
         [38.8,4.2,null,'<i>Застёжку Прошка в цепь вставляет — и цепь смыкается, звеня,</i><br><i>И дуб зелёным стал — листвой шумит, весь в свете дня.</i>',true],[45.6,5.4,null,'<i>Кот Учёный по ней кругом идёт — направо песнь заводит,</i><br><i>Налево сказку говорит. И первая сказка у него — наша, выходит.</i>',true]].concat(tail),
       events:[{t:0.2,fn:()=>KA.pose('slump',{k:60,c:11})},{t:4.4,fn:()=>{kTurn(toYa,0.6);KA.pose('offer',{antic:0.2});}},
         {t:4.7,fn:()=>{const f=keys.position.clone();anim(1.6,k=>{keys.position.lerpVectors(f,ya.clone().add(new V3(0.4,1.2,0.4)),CE.inOutSine(k));keys.position.y+=Math.sin(k*Math.PI)*1.5;keys.rotation.y+=0.2;});SFX.keys();later(1.7,()=>{FX.sparkle(ya.clone().add(new V3(0.4,1.4,0.4)),10,0xffe08a);if(yagaM){const n=ACT.npcs.find(q=>q.o===yagaM);if(n)n.em={type:'nod',t:0,d:0.7};}});}},
@@ -47,6 +47,8 @@
         {t:12.6,fn:pose('listen',{k:60,c:11})},{t:14.2,fn:()=>{kot.head.rotation.x=0.2;}},{t:20.4,fn:pose('help',{antic:0.15})},
         {t:23.4,fn:()=>{kot.g.rotation.y=kotToPe;const n=ACT.npcs.find(q=>q.o===kot);if(n)n.em={type:'nod',t:0,d:0.8};}},
         {t:26.0,fn:()=>{kTurn(toPe,0.6);KA.pose('listen');}},{t:28.8,fn:()=>{G.flags.names.pelageya=true;k5s('name');banner('Имя вернулось: Пелагея','#d7a6ec',2.6);nameBurst(pe,0xd7a6ec);ACT.emote(pe,'pride');}},
+        {t:29.2,fn:()=>{if(!G.flags.b1page)return;const pg=k5Prop(new THREE.Mesh(new THREE.PlaneGeometry(0.42,0.56),new THREE.MeshBasicMaterial({color:0xf4ecd8,side:THREE.DoubleSide})));pg.raycast=()=>{};   // вырванная в 5-Б1 последняя страница
+          const f=pe.pos.clone().add(new V3(0,1.1,0.3));pg.position.copy(f);anim(1.5,k=>{pg.position.lerpVectors(f,KS.hand.getWorldPosition(new V3()),CE.inOutSine(k));pg.position.y+=Math.sin(k*Math.PI)*0.5;pg.rotation.y+=0.08;});later(1.6,()=>FX.sparkle(pg.position.clone(),10,0xffe08a));}},
         {t:31.8,fn:()=>{anim(0.6,k=>{yo.pos.y=Math.sin(k*Math.PI)*1.2;});ACT.emote(yo,'joy');G.flags.nameless=false;}},{t:35.4,fn:()=>{KA.pose('slump',{k:50,c:10});KA.set('hRz',0.15);}},
         {t:39.0,fn:()=>{const f=ndl.g.position.clone(),to=OAK.clone().add(new V3(0,1+coilLinks.length*0.16,3.2));anim(1.4,k=>{ndl.g.position.lerpVectors(f,to,CE.inOutSine(k));});k5Trail(()=>ndl.g.parent?ndl.g.position.clone():null,0xffe08a,{size:0.4,life:0.4,every:0.03,max:30});
           later(1.5,()=>{SFX.link();SFX.horn();k5s('chainClose');for(let i=0;i<8;i++)addCoilLink();burst(to,COL.gold,30,5);ringFx(OAK.clone().add(new V3(0,2,0)),COL.gold,5);k5Flash(to,0xffe08a,6,0.7);k5Ring(OAK.clone().add(new V3(0,0.1,0)),0xffd060,1,12,1.2,0.08);k5Pillar(OAK.clone(),0xffd060,22,3.4,2.0);
@@ -89,8 +91,8 @@
   const objTg=pi=>{const st=K5.st;if(st===1)return candles.filter(c=>c.lit).map(c=>c.g);if(st===5)return [anvil];return K5.live?[KS.g]:[];};
   for(const pi of[0,1])W.objectives[pi]=[O(()=>objText(pi),()=>F.stage==='chain',()=>objTg(pi))];
   W.spawns=[[new V3(-3,0,4),new V3(-1,0,4)],[new V3(1,0,4),new V3(3,0,4)]];W.startAct=[0,0];
-  W.pauseLine='Кощея силой не сломить —<br>С него бы спесь сначала сбить,<br>Связать бы нитью золотой<br>И досказать конец другой! Двенадцать глав; подсказки — на экране. Рассыпался клубком — «Смена»: второй герой цел. Глава заново, только если клубками стали все четверо.';
+  W.pauseLine='Бой с Кощеем — не робей:<br>Сбей с него спесь, да поскорей,<br>Свяжи его нитью золотой<br>И доскажи конец другой! Двенадцать глав; подсказки — на экране. Рассыпался клубком — «Смена»: второй герой цел. Глава заново, только если клубками стали все четверо.';
   // для ботов и отладки
-  Object.assign(K5,{KB,KS,candles,C,ANV,RG,stageStart,stageWin,stageLose,orbThrow,keyMake,lockHero,unlock,k5Locked,nearLock,LOCK_HP,ravenMake,needlePass,leap,ringStart,sparkTo,setBar,forging,sword,dome});
+  Object.assign(K5,{KB,KS,candles,C,ANV,RG,stageStart,stageWin,stageLose,orbThrow,keyMake,lockHero,unlock,k5Locked,nearLock,LOCK_HP,ravenMake,needlePass,leap,ringStart,sparkTo,setBar,forging,sword,dome,chainScene});
   W.onStart=()=>{FIN.k5e.start();};
 

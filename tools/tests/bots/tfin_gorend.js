@@ -43,6 +43,7 @@ const r=until(29.2);[r,sub(),'hs='+heads().map(e=>e.pos.toArray().map(v=>v.toFix
 const r=until(31.8);[r,sub(),'hs='+heads().map(e=>e.pos.toArray().map(v=>v.toFixed(1)).join(',')).join(' ')]
 //@@
 let n=0;while(ZC.G.cine&&n<60*40){ZC.tick(1);subRec();n++;}const r=['after cine sec='+(n/60).toFixed(1),'vox='+window._vox.join(',')];n=0;while(ZC.W.levelId==='4-B'&&n<60*20){ZC.tick(1);n++;}
-const GF=ZC.FIN.gorFriend,st=GF?GF.stats:{};const need=['4-B_017','4-B_018','4-B_026','4-B_027','4-B_028','4-B_029','4-B_030'],miss=need.filter(w=>!window._vox.includes(w));r.push('missing='+miss.join(','));
+// реплики без записи (revoice — ждут переозвучки) идут субтитрами — их голоса не ждём
+const GF=ZC.FIN.gorFriend,st=GF?GF.stats:{};const need=['4-B_017','4-B_018','4-B_026','4-B_027','4-B_028','4-B_029','4-B_030'].filter(w=>ZC.FIN.vox.lines.some(e=>e.id===w)),miss=need.filter(w=>!window._vox.includes(w));r.push('missing='+miss.join(','));
 const ok=GF&&st.plays===1&&st.rockets===6&&st.rings===3&&st.hat&&!miss.length&&ZC.W.levelId!=='4-B'&&!window._errs.length;
 r.push('dur='+D,'stats='+JSON.stringify(st),'level='+ZC.W.levelId,'errs='+window._errs.length+(window._errs[0]?' '+window._errs[0]:''),ok?'gorend ok':'FAIL gorend');r
