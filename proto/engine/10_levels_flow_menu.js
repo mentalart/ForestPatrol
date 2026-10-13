@@ -54,7 +54,7 @@ function autoFade(){const skip=new Set(W.enemies.map(e=>e.g));if(W.zven&&W.zven.
         if(sph.radius>0.3&&sph.radius<70)fadeable(o);}}for(const c of o.children)walk(c);};
   for(const c of W.group.children)walk(c);}
 function loadLevel(i){G.levelIdx=i;G.soloPi=0;applyOutfits();$('bossbar').style.display='none';floats.forEach(f=>f.els.forEach(e=>e.remove()));floats.length=0;newWorld();W.levelId=LEVELS[i].id;LEVELS[i].build();if(LEVELS[i].world===2||W.autoFade)autoFade();if(LEVELS[i].world>=2)applyVest();
-  for(const pi of[0,1]){const p=players[pi];p.act=W.startAct[pi];p.petals=3;p.obj=0;p.idle=0;p.pulsed=[];p.tipT=0;p.clingOffer=false;p.falls=[];p.spirit=1;p.spiritLock=0;p.cpBell=null;
+  for(const pi of[0,1]){const p=players[pi];p.act=W.startAct[pi];p.petals=3;p.spare=0;p.obj=0;p.idle=0;p.pulsed=[];p.tipT=0;p.clingOffer=false;p.falls=[];p.spirit=1;p.spiritLock=0;p.cpBell=null;
     p.downed=false;p.downT=0;p.revT=0;p.yarnCd=0;p.owlCd=0;
     p.heroes.forEach((h,k)=>{h.active=k===p.act;h.following=false;h.cling=false;h.iT=0;h.knockT=0;h.guard=false;h.glide=false;h.extraY=0;h.body.position.set(0,0,0);
       h.rollT=0;h.hang=false;h.hurtT=0;h.power=null;h.firefly=25;h.hatOn=false;h.inRing=false;h.body.visible=true;h.g.scale.setScalar(1);h.lit=false;h.litK=0;h.hidden=false;h.noFeather=false;h.carry=null;h.heatK=0;if(h.skin){h.g.remove(h.skin);h.skin=null;}h.jumpK=null;h.inFlock=false;h.likhoSafe=false;
