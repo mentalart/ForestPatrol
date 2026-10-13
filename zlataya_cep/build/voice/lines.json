@@ -92,7 +92,10 @@
    "about": "болотная, хитрая, с хрипотцой",
    "voice": "Kiki",
    "voice_id": "2d51d9d0-b2a4-5e8b-9c63-f310adafd5f7",
-   "pitch": 0.5
+   "pitch": 0,
+   "el_voice_id": "N3u28e5FyzYk54w8IB5q",
+   "el_voice_name": "ZC Кикимора",
+   "pitch_hf": 0.5
   },
   "leshy": {
    "name": "Леший",
@@ -109,7 +112,10 @@
    "about": "круглый, весёлый, всё время поёт",
    "voice": "Giselle",
    "voice_id": "9d3128b8-dd25-5158-9bdb-2e69ac8998b9",
-   "pitch": 2.5
+   "pitch": 0,
+   "el_voice_id": "YY7FCu17sj7ThR1x0yIC",
+   "el_voice_name": "ZC Колобок",
+   "pitch_hf": 2.5
   },
   "vek": {
    "name": "Векша",
@@ -318,29 +324,41 @@
    "about": "из сказки «Журавль и цапля»: долговязый, суетливый, добродушный жених",
    "voice": "Holden",
    "voice_id": "3c9d6053-6334-592c-8997-4e325286af3f",
-   "pitch": 0.5
+   "pitch": 0,
+   "el_voice_id": "PvHv7M9U0o7NMRsWdjV1",
+   "el_voice_name": "ZC Журавль",
+   "pitch_hf": 0.5
   },
   "caplya": {
    "name": "Цапля",
    "about": "из сказки «Журавль и цапля»: гордая, капризная, с характером",
    "voice": "Vera",
    "voice_id": "0c51919f-0756-5f8d-8169-026a339d8fd7",
-   "pitch": 1
+   "pitch": 0,
+   "el_voice_id": "evNErfPK71pEtGwA8c9J",
+   "el_voice_name": "ZC Цапля",
+   "pitch_hf": 1
   },
   "lyagushka": {
    "name": "Царевна-лягушка",
    "about": "лягушка в золотой короне: ласковая, певучая, чуточку важная",
    "voice": "Mabel",
    "voice_id": "fa64fba4-ad02-405e-99d0-1f085d87c706",
-   "pitch": 1.5,
-   "fx": "magic"
+   "pitch": 0,
+   "fx": "magic",
+   "el_voice_id": "4r6sGpjxnOa2P87wenhC",
+   "el_voice_name": "ZC Царевна-лягушка",
+   "pitch_hf": 1.5
   },
   "bes": {
    "name": "Бесёнок",
    "about": "бесёнок из «Сказки о попе и о работнике его Балде»: маленький, вертлявый, хвастливый, хихикает",
    "voice": "Benji",
    "voice_id": "e6f9b893-51b1-51d3-afe9-9e0482cb7ac1",
-   "pitch": 3
+   "pitch": 0,
+   "el_voice_id": "sOEuj2utmDqkWMjFH24e",
+   "el_voice_name": "ZC Бесёнок",
+   "pitch_hf": 3
   },
   "king": {
    "name": "Морской царь",
@@ -423,38 +441,52 @@
    "about": "мини-босс 1-4: пузатый лесной дух-перекличка — озорной, звонкий, в конце растроганный",
    "voice": "Silero xenia",
    "silero": "xenia",
-   "pitch": 2,
+   "pitch": 0,
    "fx": "auka",
    "el_voice_id": "fe2BU2IiI12E4vIrzdrB",
-   "el_voice_name": "ZC Аука"
+   "el_voice_name": "ZC Аука",
+   "pitch_hf": 2
   },
   "mysh": {
    "name": "Мышка-норушка",
    "about": "мышка из избушки Яги: тоненькая, шустрая, хитренькая",
    "voice": "Pixie",
    "voice_id": "0178ef57-ada4-43d9-992b-8d9221045bb4",
-   "pitch": 4.5
+   "pitch": 0,
+   "el_voice_id": "hffaW8bH4bblhPerO89W",
+   "el_voice_name": "ZC Мышка-норушка",
+   "pitch_hf": 4.5
   },
   "voron": {
    "name": "Ворон Кощея",
    "about": "ворон Кощея из 1-1: хриплый, каркающий, наглый",
    "voice": "John",
    "voice_id": "6b528d43-c056-4a2f-9d82-1591a7ba13b0",
-   "pitch": -1
+   "pitch": 0,
+   "el_voice_id": "sE1uSeS3zAzWyukvq6t2",
+   "el_voice_name": "ZC Ворон",
+   "pitch_hf": -1
   },
   "zayka": {
    "name": "Зайчик-побегайчик",
    "about": "зайчик-побегайчик из «Теремка» (1-1): быстрый, весёлый, смешливый",
    "voice": "Hallie",
    "voice_id": "10274bf1-fb93-554f-b59f-d620a920fd36",
-   "pitch": 2.5
+   "pitch": 0,
+   "el_voice_id": "GN4wbsbejSnGSa1AzjH5",
+   "el_voice_name": "Ekaterina",
+   "el_tag": "[cheerful]",
+   "pitch_hf": 2.5
   },
   "lisa": {
    "name": "Лисичка-сестричка",
    "about": "лисичка-сестричка из «Теремка» (1-1): хитренькая, ласковая, распоряжается",
    "voice": "Sloane",
    "voice_id": "b57b22a0-f287-405b-bc82-6f08f5e6bb1f",
-   "pitch": 1
+   "pitch": 0,
+   "el_voice_id": "7CPD49d3y4krj7MKJYOV",
+   "el_voice_name": "Marina",
+   "pitch_hf": 1
   },
   "zayac": {
    "name": "Заяц",
@@ -468,8 +500,12 @@
    "about": "ожившее веретено в чёрной кудели: скрипучий, вертлявый, не злой — заколдованный",
    "voice": "Silero aidar",
    "silero": "aidar",
-   "pitch": -2,
-   "fx": "magic"
+   "pitch": 0,
+   "fx": "magic",
+   "el_voice_id": "RvcToHi9ENVDatbeYNJe",
+   "el_voice_name": "Mikhail",
+   "el_tag": "[raspy]",
+   "pitch_hf": -2
   },
   "reader": {
    "name": "Сказительница",
@@ -664,6 +700,294 @@
    "url": "elevenlabs:eleven_v4",
    "el_take": 1,
    "dur": 1.72
+  },
+  {
+   "id": "intro_001",
+   "lv": "p",
+   "who": "kot",
+   "text": "У лукоморья дуб зелёный,<br>Златая цепь на дубе том…",
+   "tts": "[warm, storytelling] У лукоморья дуб зелёный, Златая цепь на дубе том…",
+   "max": 3.8
+  },
+  {
+   "id": "intro_002",
+   "lv": "p",
+   "who": "kot",
+   "text": "И днём и ночью кот учёный<br>Всё ходит по цепи кругом.",
+   "tts": "[warm, storytelling] И днём и ночью кот учёный Всё ходит по цепи кругом.",
+   "max": 3.7
+  },
+  {
+   "id": "intro_003",
+   "lv": "p",
+   "who": "kot",
+   "text": "Там чудеса: там леший бродит,<br>Русалка на ветвях сидит…",
+   "tts": "[warm, storytelling] Там чудеса: там леший бродит, Русалка на ветвях сидит…",
+   "max": 3.0
+  },
+  {
+   "id": "intro_004",
+   "lv": "p",
+   "who": "kot",
+   "text": "Что ни сказка — то звено:<br>Слово к слову — вот оно!",
+   "tts": "[warm, storytelling] Что ни сказка — то звено: Слово к слову — вот оно!",
+   "max": 2.6
+  },
+  {
+   "id": "intro_005",
+   "lv": "p",
+   "who": "kuzma",
+   "text": "Звено куют руками…",
+   "tts": "[gruff, low] Звено куют руками…",
+   "max": 1.9
+  },
+  {
+   "id": "intro_006",
+   "lv": "p",
+   "who": "kot",
+   "text": "…а держится оно — словами.",
+   "tts": "[warm, storytelling] …а держится оно — словами.",
+   "max": 2.1
+  },
+  {
+   "id": "intro_007",
+   "lv": "p",
+   "who": "kot",
+   "text": "Пока цела цепь золотая, —<br>Живут и сказки, не смолкая.",
+   "tts": "[warm, storytelling] Пока цела цепь золотая, — Живут и сказки, не смолкая.",
+   "max": 3.4
+  },
+  {
+   "id": "intro_008",
+   "lv": "p",
+   "who": "kot",
+   "text": "А в дремучем лесу, на сосне,<br>Светит штаб огоньком в окне.",
+   "tts": "[warm, storytelling] А в дремучем лесу, на сосне, Светит штаб огоньком в окне.",
+   "max": 2.8
+  },
+  {
+   "id": "intro_009",
+   "lv": "p",
+   "who": "kot",
+   "text": "Четверо друзей там живут —<br>Лесным патрулём их зовут.",
+   "tts": "[warm, storytelling] Четверо друзей там живут — Лесным патрулём их зовут.",
+   "max": 2.6
+  },
+  {
+   "id": "intro_010",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Сказки — сказками, а техника — вещь!",
+   "tts": "[proud, cheerful] Сказки — сказками, а техника — вещь!",
+   "max": 2.4
+  },
+  {
+   "id": "intro_011",
+   "lv": "p",
+   "who": "potap",
+   "text": "Держу-держу. Хо-хо!",
+   "tts": "[calm, warm] Держу-держу. Хо-хо!",
+   "max": 1.7
+  },
+  {
+   "id": "intro_012",
+   "lv": "p",
+   "who": "yosha",
+   "text": "Сам вырастил! Я сам!",
+   "tts": "[excited, stubborn] Сам вырастил! Я сам!",
+   "max": 1.6
+  },
+  {
+   "id": "intro_013",
+   "lv": "p",
+   "who": "pelageya",
+   "text": "<i>(шёпотом)</i> В некотором царстве… нет, не так…",
+   "tts": "[whispers, shy] В некотором царстве… нет, не так…",
+   "max": 2.6
+  },
+  {
+   "id": "intro_014",
+   "lv": "p",
+   "who": "tishka",
+   "text": "Сказку! Кто мне сказку на ночь?",
+   "tts": "[sleepy, pleading] Сказку! Кто мне сказку на ночь?",
+   "max": 2.1
+  },
+  {
+   "id": "intro_015",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Чур, я!",
+   "tts": "[proud, cheerful] Чур, я!",
+   "max": 0.8
+  },
+  {
+   "id": "intro_016",
+   "lv": "p",
+   "who": "potap",
+   "text": "Я!",
+   "tts": "[calm, warm] Я!",
+   "max": 0.6
+  },
+  {
+   "id": "intro_017",
+   "lv": "p",
+   "who": "yosha",
+   "text": "Нет, я сам!",
+   "tts": "[excited, stubborn] Нет, я сам!",
+   "max": 0.8
+  },
+  {
+   "id": "intro_018",
+   "lv": "p",
+   "who": "pelageya",
+   "text": "<i>(шёпотом)</i> …и я.",
+   "tts": "[whispers, shy] …и я.",
+   "max": 1.1
+  },
+  {
+   "id": "intro_019",
+   "lv": "p",
+   "who": "kot",
+   "text": "…а Кощей, как водится, — проиграл.<br>Тут и сказке конец!",
+   "tts": "[warm, storytelling] …а Кощей, как водится, — проиграл. Тут и сказке конец!",
+   "max": 3.4
+  },
+  {
+   "id": "intro_020",
+   "lv": "p",
+   "who": "koschei",
+   "text": "<i>(тихо)</i> Как водится… проиграл.",
+   "tts": "[quiet, tired, cold] Как водится… проиграл.",
+   "max": 2.4
+  },
+  {
+   "id": "intro_021",
+   "lv": "p",
+   "who": "kot",
+   "text": "А теперь — колыбельная…",
+   "tts": "[warm, storytelling] А теперь — колыбельная…",
+   "max": 1.7
+  },
+  {
+   "id": "intro_022",
+   "lv": "p",
+   "who": "kot",
+   "text": "♪ Баю-баю, за рекою,<br>Серый волк живёт… ♪",
+   "tts": "[warm, storytelling] Баю-баю, за рекою, Серый волк живёт…",
+   "max": 3.9
+  },
+  {
+   "id": "intro_023",
+   "lv": "p",
+   "who": "koschei",
+   "text": "Довольно.",
+   "tts": "[quiet, tired, cold] Довольно.",
+   "max": 1.3
+  },
+  {
+   "id": "intro_024",
+   "lv": "p",
+   "who": "kolobok",
+   "text": "Я от бабушки ушёл —<br>А от тучи — укачусь!",
+   "tts": "[singing, fast, cheerful] Я от бабушки ушёл — А от тучи — укачусь!",
+   "max": 2.2
+  },
+  {
+   "id": "intro_025",
+   "lv": "p",
+   "who": "kot",
+   "text": "Кто там?! Тебя сюда не звали!",
+   "tts": "[warm, storytelling] Кто там?! Тебя сюда не звали!",
+   "max": 2.4
+  },
+  {
+   "id": "intro_026",
+   "lv": "p",
+   "who": "kot",
+   "text": "Разлетелись звенья по свету —",
+   "tts": "[warm, storytelling] Разлетелись звенья по свету —",
+   "max": 2.1
+  },
+  {
+   "id": "intro_027",
+   "lv": "p",
+   "who": "kot",
+   "text": "В лес дремучий…",
+   "tts": "[warm, storytelling] В лес дремучий…",
+   "max": 1.6
+  },
+  {
+   "id": "intro_028",
+   "lv": "p",
+   "who": "kot",
+   "text": "…в Китеж подводный…",
+   "tts": "[warm, storytelling] …в Китеж подводный…",
+   "max": 1.6
+  },
+  {
+   "id": "intro_029",
+   "lv": "p",
+   "who": "kot",
+   "text": "…за облака…",
+   "tts": "[warm, storytelling] …за облака…",
+   "max": 1.6
+  },
+  {
+   "id": "intro_030",
+   "lv": "p",
+   "who": "kot",
+   "text": "…за огненную реку…",
+   "tts": "[warm, storytelling] …за огненную реку…",
+   "max": 1.7
+  },
+  {
+   "id": "intro_031",
+   "lv": "p",
+   "who": "kot",
+   "text": "…на остров Буян.",
+   "tts": "[warm, storytelling] …на остров Буян.",
+   "max": 1.8
+  },
+  {
+   "id": "intro_032",
+   "lv": "p",
+   "who": "kot",
+   "text": "Без цепи сказки забываются —<br>Слово за словом рассыпаются.",
+   "tts": "[warm, storytelling] Без цепи сказки забываются — Слово за словом рассыпаются.",
+   "max": 3.6
+  },
+  {
+   "id": "intro_033",
+   "lv": "p",
+   "who": "pelageya",
+   "text": "<i>(шёпотом)</i> Ой… летит… к нам!",
+   "tts": "[whispers, shy] Ой… летит… к нам!",
+   "max": 1.9
+  },
+  {
+   "id": "intro_034",
+   "lv": "p",
+   "who": "kot",
+   "text": "Кто соберёт звено к звену?",
+   "tts": "[warm, storytelling] Кто соберёт звено к звену?",
+   "max": 1.9
+  },
+  {
+   "id": "intro_035",
+   "lv": "p",
+   "who": "kot",
+   "text": "Кто сказку вспомнит — не одну?",
+   "tts": "[warm, storytelling] Кто сказку вспомнит — не одну?",
+   "max": 1.9
+  },
+  {
+   "id": "intro_036",
+   "lv": "p",
+   "who": "kot",
+   "text": "Это присказка, не сказка.<br>Сказка — будет впереди!",
+   "tts": "[warm, storytelling] Это присказка, не сказка. Сказка — будет впереди!",
+   "max": 3.6
   },
   {
    "id": "g_001",
