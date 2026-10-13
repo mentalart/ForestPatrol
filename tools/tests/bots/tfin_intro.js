@@ -25,8 +25,23 @@ window.SEEN=new Set();window.TRACK=()=>{const c=ZC.G.cine,cd=CI.CD();if(!c||!cd|
 window.RUN=(i,t)=>{let n=0;while(n<60*200){const c=ZC.G.cine;if(!PRK.on||(PRK.i>i)||(PRK.i===i&&c&&c.t>=t))break;ZC.tick(1);n++;TRACK();}return 'сцена '+(PRK.i+1)+' t='+(ZC.G.cine?ZC.G.cine.t.toFixed(1):'—');};
 if(!PRK.on)throw new Error('«Присказка» не началась при новой игре');
 const lv=document.getElementById('level');(lv.style.opacity==='1'?'FIN название уровня поверх ролика ':'')+RUN(0,5.2)
+//@@
+// постановка: точка в кадре (8 % от края — запас); русалка не торчит хвостом над Котом в 1-4 и появляется в 1-6б;
+// хвост Кота живой (пружины); 2-5 — Кот и Кузьма оба в кадре; 4-4б — Кощей на своей реплике крупно; 5-5 — рука видна, пока опускается
+window.INF=p=>{const V=THREE.Vector3,P=ZC.FIN.cine.CD().pose,f=new V().subVectors(P.look,P.pos).normalize(),r=new V().crossVectors(f,new V(0,1,0)).normalize(),u=new V().crossVectors(r,f),to=new V().subVectors(p,P.pos);
+  const z=to.dot(f),tv=Math.tan(P.fov*Math.PI/360)*0.92;return z>0&&Math.abs(to.dot(u)/z)<tv&&Math.abs(to.dot(r)/z)<tv*16/9;};
+window.WP=o=>o.getWorldPosition(new THREE.Vector3());
+{const PRK=ZC.FIN.intro,L=PRK.L,bad=[];RUN(0,11.0);if(L.mer.g.visible)bad.push('1-4: русалка видна до 1-6');
+  const t0=L.kot.tail.map(b=>b.position.clone());for(let i=0;i<20;i++){ZC.tick(1);TRACK();}if(!L.kot.tail.some((b,i)=>b.position.distanceTo(t0[i])>0.004))bad.push('хвост Кота неподвижен');
+  RUN(0,20.0);if(!L.mer.g.visible||!INF(WP(L.mer.g)))bad.push('1-6б: русалки нет в кадре');
+  RUN(1,10.3);if(!INF(WP(L.kot.head)))bad.push('2-5: Кота нет в кадре');if(!INF(WP(L.kuzma.head)))bad.push('2-5: Кузьмы нет в кадре');
+  if(bad.length)throw new Error('FAIL постановка: '+bad.join(', '));'постановка ok'}
 //@@ shot=intro_patrol.png wait=200
 RUN(2,7.0)
+//@@
+{const PRK=ZC.FIN.intro,L=PRK.L,bad=[];RUN(3,10.2);{const d=ZC.FIN.cine.CD().pose.pos.distanceTo(WP(L.ko.head));if(d>4.5||!INF(WP(L.ko.head)))bad.push('4-4б: Кощей не крупно, d='+d.toFixed(1));}
+  RUN(4,14.0);if(!L.hand.visible||!INF(WP(L.hand)))bad.push('5-5: руки не видно');
+  if(bad.length)throw new Error('FAIL постановка: '+bad.join(', '));'постановка 4–5 ok'}
 //@@ shot=intro_hand.png wait=200
 RUN(4,14.2)
 //@@
