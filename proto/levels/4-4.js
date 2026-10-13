@@ -165,7 +165,7 @@ function build44(){
   function intro(){const pe=T.pelageya,pr=T.proshka;HEROES.forEach((h,i)=>{placeOnGround(h,-4+i*2,6,0);h.face=Math.PI;});dm.g.position.set(-5,0,-0.4);dm.g.rotation.y=-0.4;
     play({dur:22,fov:46,camK:2.4,shots:[shot(0,[0,9,16],[0,0,-14]),shot(5.4,[-7.4,2.5,4.4],[-4.4,1.7,-0.8]),shot(10.8,[-1,3,1],[-3,1.8,-1]),shot(15,[-9,4,-2],[-7,0.4,-7]),shot(18.6,[pr.pos.x+1.4,1.4,pr.pos.z-1.6],[pr.pos.x,0.9,pr.pos.z])],
       says:[[0.3,5,null,'<i>Плуг до сих пор стоит в поле — огромный, железный, с раскалённым лемехом.</i>',true],[5.4,5,'demyan','Эти валы мы с Кузьмой на Змее пахали.'],
-        [10.8,4,null,'<i>Над плугом светлячки Лешего кружат:</i><br><i>Долг он отдаёт — дорогу кажет, как обещал, послужит.</i>',true],[15,3.4,'pelageya','…лава течёт туда, куда борозда ведёт.'],[18.6,3.2,'proshka','Лемех горячий… значит, клещами!']],
+        [10.8,4,null,'<i>Над плугом — светлячки Лешего:</i><br><i>он отдаёт долг, кажет дорогу.</i>',true],[15,3.4,'pelageya','…лава течёт туда, куда борозда ведёт.'],[18.6,3.2,'proshka','Лемех горячий… значит, клещами!']],
       end:()=>{W.anims.length=0;F.stage='A';dm.g.position.set(-7.6,0,3.2);dm.g.rotation.y=Math.PI*0.7;snapCams();for(const pi of[0,1])tip(pi,'Клещи '+K(pi,'item')+' у плуга нажми — он поедет за тобой, канавку оставит.<br>Ещё раз '+K(pi,'item')+' — отпустить, и плуг отстанет.',4);}});}
   function endScene(){F.stage='end';const pr=T.proshka,pe=T.pelageya;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-68,0);h.face=Math.PI;});
     play({dur:17,fov:46,camK:2.4,shots:[shot(0,[0,5,-60],[0,0.6,-70]),shot(5,[pe.pos.x+1.6,1.4,pe.pos.z-1.6],[pe.pos.x,0.9,pe.pos.z]),shot(9.6,[-2,2.4,-63],[0,2,-70]),shot(13.4,[pr.pos.x-1.4,1.3,pr.pos.z-1.6],[pr.pos.x,0.9,pr.pos.z])],

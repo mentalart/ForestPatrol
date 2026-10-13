@@ -126,7 +126,7 @@
   // стороны, земля трясётся, из трещин лезут костлявые руки; ковать нельзя, пока все три цепи не разбиты (тогда Кощей без сил);
   // не успели за 26 с (одному — 30) — буря утихает сама, цепи уходят под землю
   function ringStart(){RG.on=true;RG.t=-2.4;RG.chains=[];RG.handT=1.4;KB.state='k5cast';kosCast();
-    say('koschei','Все цепи острова — ко мне!<br>Дуй, ветер! Дрогни, земля, во тьме!',3.6);k5s('ult');K5.log.push('ring');}
+    say('koschei','Все цепи — ко мне!<br>Дуй, ветер! Дрогни, земля!',3.6);k5s('ult');K5.log.push('ring');}
   function galeChain(i){const a=i/3*Math.PI*2+rand(-0.4,0.4)+Math.PI*0.5,r=rand(2.9,3.6);const p=inArena(new V3(ANV.x+Math.cos(a)*r,0,ANV.z+Math.sin(a)*r),1.2);
     const e=makeFoe('cep',p.x,p.z,{pi:G.solo?G.soloPi:i%2,leash:1});e.k5=true;e.noMove=true;e.noKill=true;e.k5chain=true;e.k5gale=true;if(G.solo)e.embers=e.maxEmb=2;K5.adds.push(e);RG.chains.push(e);
     burst(new V3(p.x,0.4,p.z),0x2a2230,14,3);SFX.crash();k5Ring(new V3(p.x,0.1,p.z),0x7a5cff,0.3,2.2,0.5,0.12);k5Pillar(p.clone(),0x5a3a9a,5,0.5,0.8);
@@ -155,7 +155,7 @@
     if(ok){Fg.n++;Fg.good++;k5s('forge');SFX.hammer?SFX.hammer():SFX.clink();FX.sparks(ANV.clone().add(new V3(0,1.3,0)),14,0xffe080);floatText(ANV.clone().add(new V3(0,2,0)),'Дзинь! '+Fg.n+' / '+Fg.need,'#ffe08a');K5.log.push('forge'+Fg.n);
       if((Fg.n===4||Fg.n===8)&&Fg.n<Fg.need&&!Fg.rings[Fg.n])later(0.6,()=>{if(K5.fight&&K5.st===5&&!RG.on){Fg.rings[Fg.n]=true;ringStart();}});
       if(Fg.n===6&&!K5.said.k24){K5.said.k24=true;later(0.4,()=>{say('koschei','Меня никто не слушал — никогда!<br>Один я был — один, всегда!',3.6);later(3.8,()=>bark(T.yosha,'yosha','А мы — тут! Мы слушаем — всегда!',2.8));});}
-      if(Fg.n===Fg.need-2&&!K5.said.k26){K5.said.k26=true;bark(T.pelageya,'pelageya','Ещё удар, ещё чуток —<br>Скуём застёжку, мой дружок!',2.8);}
+      if(Fg.n===Fg.need-2&&!K5.said.k26){K5.said.k26=true;bark(T.pelageya,'pelageya','Ещё удар, ещё чуток —<br>Скуёшь застёжку, Прошка, в срок!',2.8);}
       if(Fg.n>=Fg.need){G.flags.claspQ=Fg.good/Math.max(Fg.need,Fg.tries);later(0.5,()=>{if(K5.fight)stageWin(5);});}}
     else{floatText(ANV.clone().add(new V3(0,1.8,0)),'тук — в такт!','#ffd0a0');SFX.clink();}return true;}
   function stage5Tick(dt){needleTick(dt);forgeTick(dt);ringTick(dt);if(RG.on)return;const N=K5.needle,hold=N&&N.holder;

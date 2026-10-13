@@ -12,7 +12,7 @@ bad.length?'FAIL '+bad.join(' | '):'helpers ok'
 // праздник 1: Сказ 1 — выбор (начало: Игрок 2, помощник: Игрок 1, конец: оба)
 ZC.startFrom(ZC.LV('1-B'));const G=ZC.G;G.manual=true;ZC.tick(10);['1-1','1-2','1-3','1-4','1-5'].forEach(id=>{G.done[id]=true;G.got[id]=3;G.nutsGot[id]=3;});G.done['1-B']=true;
 ZC.goLevel('luko');ZC.tick(120);const r=[ZC.W.levelId,ZC.W.flags.mode,!!G.cine];ZC.skip();ZC.tick(10);r.push('ui='+G.ui);
-const html=document.getElementById('skaz').innerHTML;r.push(/Леший-проводник/.test(html)&&/ёлки хороводом|ёлки/i.test(html)?'шаг 1 ok':'FAIL шаг 1');r
+const html=document.getElementById('skaz').innerHTML;r.push(/Лесная тропинка/.test(html)&&/ёлки хороводом|ёлки/i.test(html)?'шаг 1 ok':'FAIL шаг 1');r
 //@@ shot=skaz1_helpers.png
 U.tap('ArrowDown');U.tap('ArrowDown');U.tap('KeyM');ZC.tick(3);
 const h2=document.getElementById('skaz').innerHTML;(/весточка в следующем мире/.test(h2)?'подсказка весточки ok':'FAIL нет подсказки весточки')+' | '+(/Колобок|Леший|Яга/.test(h2)?'помощники ok':'FAIL')
@@ -45,7 +45,7 @@ r.push(W.skz.helper&&W.skz.helper.k==='yaga'?'помощник на поляне
 const h=U.act(0);h.pos.set(1.0,0,-3.2);ZC.tick(2);U.tap('KeyF');ZC.tick(3);r.push('ui='+ZC.G.ui);r
 //@@ shot=skaz1_book.png
 const r=[];const tl=document.getElementById('mapui').innerHTML;r.push(/Наши сказки/.test(tl)?'книга в меню ok':'FAIL нет книги');
-U.tap('Space');ZC.tick(3);r.push('ui='+ZC.G.ui);const bk=document.getElementById('mapui').innerHTML;r.push(/Леший-проводник/.test(bk)&&/Бабу|Яга/.test(bk)?'страница ok':'FAIL страница');r
+U.tap('Space');ZC.tick(3);r.push('ui='+ZC.G.ui);const bk=document.getElementById('mapui').innerHTML;r.push(/Лесная тропинка/.test(bk)&&/Бабу|Яга/.test(bk)?'страница ok':'FAIL страница');r
 //@@
 U.tap('Escape');ZC.tick(3);'ui='+ZC.G.ui
 //@@ shot=skaz2_choose.png

@@ -99,7 +99,7 @@ function build41(){
   const MOT43=[7,5,0,7,5,0,5,7,8,7,5,3,1,0];let motI=0;const motNote=()=>mf(76+MOT43[motI++%MOT43.length]);
   function strike(ok){const pr=T.proshka;pr.atkT=0.28;pr.face=Math.atan2(0-pr.pos.x,-14-pr.pos.z);const hk=FG.heat>0.3?1:0.5;FG.prog+=(ok?1.3:1)*hk;
     later(0.06,()=>{if(ok&&W.fx4)W.fx4('strike',new V3(0,1.35,-14));SFX.hammer();tone(ok?motNote():1700,ok?0.5:0.25,'triangle',ok?0.24:0.12);burst(new V3(0,1.35,-14),ok?0xffe060:0xffa040,ok?18:6,ok?5:2);blank.material.emissiveIntensity=1.6;floatText(new V3(0,2.1,-14),ok?'Дзинь!':'тук',ok?'#ffe36b':'#e0c0a0');});
-    if(FG.heat<=0.3&&!FG.coldTold){FG.coldTold=true;sayP('Горн остыл — Пелагея, на рычаг мехов прыгай, раздувай!',2.8);}
+    if(FG.heat<=0.3&&!FG.coldTold){FG.coldTold=true;sayP('Горн остыл — на рычаг мехов, прыгай, раздувай!',2.8);}
     if(FG.prog>=FG.need){FG.prog=0;FG.need=5;const two=FG.made===2;FG.made+=two?2:1;FG.queue+=two?2:1;SFX.ok();floatText(new V3(0,2.9,-14),two?'Двое клещей разом — в корыто!':'Клещи готовы — в корыто летят!','#ffd76a');flyToTrough(FG.made-1);if(two)flyToTrough(FG.made-2);
       if(FG.made===1)later(0.9,()=>sayP('Йоша, клещи в корыте! Живой водой полей — пш-ш-ш, и готово!',3));}}
   function forgeTick(dt){FG.t+=dt;const k=Math.floor(FG.t/FG.B+1e-6);while(FG.k<k){FG.k++;if(FG.k<0)tone(1760,0.05,'square',0.05);else tone(880,0.04,'square',0.03);}
@@ -149,7 +149,7 @@ function build41(){
     if(u>=0.02){bigMesh.rotation.x=Math.PI/2;bigMesh.rotation.z=-lerp(0.45,Math.PI,u)+R4.turn*Math.PI/2;}W.group.add(bigMesh);}
   function startRuki(){F.stage='carry';BIG.on=true;bigShape();bigMesh.position.copy(BIG.pos);SFX.gate();anim(1.6,k=>{bigAnvil.position.y=lerp(-2.4,0,smooth(k));});holdPlate.visible=strikePlate.visible=true;
     W.cyls.push({x:ANV.x,z:ANV.z,r:1.0,miny:-1,maxy:1.4,on:true});banner('В четыре руки — дружно!','#ffd76a',3.2,G.solo?'большая заготовка тяжела — возьми клещами один конец, второй помощник подхватит, и несите на большую наковальню':'большая заготовка тяжела — клещами вдвоём, каждый за свой конец, и несите на большую наковальню');
-    later(1.6,()=>sayP('Кузьма говорил: клещи в четыре руки куют.<br>И кольцо цепи — тоже, вот и весь тут труд.',3.6));}
+    later(1.6,()=>sayP('Кузьма говорил: клещи в четыре руки куют.<br>И кольцо цепи — тоже.',3.6));}
   const bigEnds=()=>{const c=Math.cos(BIG.ang),s=Math.sin(BIG.ang);return [new V3(BIG.pos.x-1.1*c,0,BIG.pos.z+1.1*s),new V3(BIG.pos.x+1.1*c,0,BIG.pos.z-1.1*s)];};
   function grabBig(pi){const h=active(pi);if(BIG.hold[pi]){BIG.hold[pi]=null;if(G.solo)BIG.hold[1-pi]=null;SFX.latch();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Отпустил','#ffd9a0');if(!BIG.hold[1-pi]){BIG.pos.y=0.12;}return;}
     const E=bigEnds();const used=BIG.hold[1-pi]?BIG.hold[1-pi].end:-1;let best=-1,bd=1.5;E.forEach((e,i)=>{if(i===used)return;const d=hd(e,h.pos);if(d<bd){bd=d;best=i;}});if(best<0)return;
@@ -212,7 +212,7 @@ function build41(){
         shot(16.4,[1.6,2,-11.6],[0,1.3,-14]),shot(20.6,[pr.pos.x-1.6,1.4,pr.pos.z+1.6],[pr.pos.x,0.9,pr.pos.z]),shot(23.4,[-7,2.2,-16],[-10.9,2.6,-19])],
       says:[[0.3,4,null,'<i>Кузня у самой огненной реки стоит —</i><br><i>Внутри жарко да красно, огонь гудит.</i>',true],[5,4.2,null,'<i>Кузьма-старший с Демьяном — каменные истуканы стоят:</i><br><i>Кощей заколдовал — и молоты молчат.</i>',true],
         [10,3.6,'pelageya','<i>(тихо, запинаясь, но вслух)</i> Кузьма говорил: клещи в четыре руки куют…'],[13.8,2.4,null,'<i>Её голос звучит там, где прозвенело бы Звенышко.</i>',true],
-        [16.4,3.6,null,'<i>На наковальне клещи недоделанные лежат.</i><br><i>Прошка на них глядит — и на звенья в сумке, что рассыпаны, звенят.</i>',true],[20.6,2.6,'proshka','Три раза ковал. Докую.'],
+        [16.4,3.6,null,'<i>На наковальне — недоделанные клещи.</i><br><i>Прошка на них глядит.</i>',true],[20.6,2.6,'proshka','Три раза ковал. Докую.'],
         [23.4,3.4,null,'<i>На стене выбит старый лубок: Кот Учёный, а рядом ученик с молотом. Только лицо ученика сколото.</i>',true]],
       events:[{t:10,fn:()=>{tone(1320,0.12,'triangle',0.08);tone(1760,0.16,'sine',0.06,null,0.06);}}],
       end:()=>{W.group.remove(nb.g);placeOnGround(pr,0.2,-11.8,0);pr.face=Math.PI;placeOnGround(pe,-6.6,-12.4,0);placeOnGround(T.yosha,3.4,-12.4,0);placeOnGround(T.potap,-2.8,-9.6,0);

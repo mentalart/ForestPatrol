@@ -99,7 +99,7 @@ function build1B(){
     for(let i=0;i<6;i++)spawnSpark(headPos.clone(),[COL.gold,0x6ad0ff,0xff6a8a][i%3]);bark(L,'leshy',['Ай!','Ой-ой! Макушка моя!','Ну всё, довольно, хватит!'][Math.min(2,F.head-1)],1.8);
     for(const q of HEROES)if(q.pos.y>4.5&&hd(q.pos,headPos)<5){q.vel.set(q.pos.x<0?-5:5,6,5);q.grounded=false;q.knockT=0.5;}
     dropRamp();hands.forEach(e=>{if(e.alive){e.state='idle';e.embers=e.maxEmb;e.t=0;}});
-    if(F.head>=3){F.phase=1.5;hands.forEach(e=>unravel(e));later(1.2,()=>{play({dur:6,fov:50,shots:[shot(0,[0,4,0],[0,5,-22])],says:[[0.4,3,'leshy','Ах так? Нате вам — четыре Лешего, не счесть!']],
+    if(F.head>=3){F.phase=1.5;hands.forEach(e=>unravel(e));later(1.2,()=>{play({dur:6,fov:50,shots:[shot(0,[0,4,0],[0,5,-22])],says:[[0.4,3,'leshy','Ах так? Нате вам — четыре Лешего! Ищите!']],
       events:[{t:3,fn:()=>{smokePuff();L.g.visible=false;}}],end:()=>{F.phase=2;F.round=0;spawnDoubles(4);addStakes(4);snapCams();
         banner('Фаза 2 · двойники','#b8e070',2.8,'струна на колышках — как на болоте · у настоящего тень');}});});}}
   function ending(){const T=HERO;dropRamp();carousel.visible=false;const lz=makeLeshy(1.3);lz.g.position.set(0,0.7,-16);lz.g.rotation.y=0;
@@ -110,7 +110,7 @@ function build1B(){
       events:[{t:0,fn:()=>{HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-9.5,0);h.face=Math.PI;});T.proshka.hatOn='nose';}},{t:2,fn:()=>{anim(3,k=>{lz.hands[0].sh.rotation.x=-1.8-Math.sin(k*Math.PI*6)*0.2;});}},
         {t:12,fn:()=>{T.proshka.face=Math.PI*0.8;}}],
       tick:t=>{lz.head.rotation.z=t>2&&t<5?Math.sin(t*9)*0.1:0;},
-      end:()=>{banner('Леший-Путаник распутан — вот так диво!','#ffd76a',2.4,'теперь он нам должен — и путь укажет');later(2.2,()=>{F.out=true;finishLevel();});}});}
+      end:()=>{banner('Леший-Путаник распутан!','#ffd76a',2.4,'теперь он нам должен — и путь укажет');later(2.2,()=>{F.out=true;finishLevel();});}});}
   W.updates.push(dt=>{
     setBar();
     // руки: пока рука в Пробое — лежит мостком; вернулась — мостик убран

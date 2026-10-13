@@ -167,13 +167,13 @@ build25=function(){
         {t:9.8,fn:()=>{swirl.visible=false;linkV.locked=false;linkV.g.visible=true;}},{t:12.8,fn:()=>{pe.face+=Math.PI;}}],
       tick:(t)=>{swirl.rotation.z+=0.08;},
       end:()=>{F.voice='sunk';swirl.visible=false;vbell.g.position.set(-4.6,-8.1,-23.4);vbell.g.rotation.set(0,0,1.4);linkV.locked=false;linkV.g.visible=true;pe.parts.beak.visible=true;pe.body.scale.set(1,1,1);
-        for(const pi of[0,1])tip(pi,'Звено упало на дно. Все в колодец — и отлив '+K(pi,'item')+' сыграй:<br>Вода вас опустит через весь город, так и знай.',4);}});}
+        for(const pi of[0,1])tip(pi,'Звено упало на дно. Все в колодец — и сыграй отлив '+K(pi,'item')+':<br>вода опустит вас через весь город.',4);}});}
   function tryVoice(){F.voice='tried';const pe=T.pelageya;SFX.miss();floatText(pe.pos.clone().add(new V3(0,1.7,0)),'…','#e7c3ff');
     anim(0.5,k=>{pe.parts.beak.rotation.x=0.5+Math.sin(k*Math.PI)*0.6;});later(0.6,()=>{pe.parts.beak.visible=false;anim(0.5,k=>{pe.body.scale.set(1+0.14*k,1-0.16*k,1+0.14*k);});});later(1.6,sinkScene);}
   W.skillHook=(pi,h)=>{if(pi===1&&h.kind==='pelageya'&&F.voice==='ready'){tryVoice();return true;}return false;};
   function giveScene(){F.given='scene';const pr=T.proshka,pe=T.pelageya;
     play({dur:13.4,fov:46,shots:[shot(0,[0.6,-7.0,-18.6],[-3.4,-8.4,-22.2])],
-      says:[[0.3,3,null,'<i>Всю дорогу Пелагея последней летела.</i>',true],[3.4,3.4,null,'<i>На дне Прошка ей молча звено отдаёт —</i><br><i>То, что сам достал из вод.</i>',true],[7.2,2.2,null,'<i>Она берёт — без слов.</i>',true],[9.6,3.4,'proshka','Прости меня. Зря я сказал: «Что тут трудного».']],
+      says:[[0.3,3,null,'<i>Всю дорогу Пелагея последней летела.</i>',true],[3.4,3.4,null,'<i>На дне Прошка протягивает ей звено —</i><br><i>то, что сам достал.</i>',true],[7.2,2.2,null,'<i>Она берёт — без слов.</i>',true],[9.6,3.4,'proshka','Прости меня. Зря я сказал: «Что тут трудного».']],
       events:[{t:0,fn:()=>{placeOnGround(pr,-2.4,-22.4,-9);placeOnGround(pe,-4.4,-21.2,-9);pr.face=Math.atan2(pe.pos.x-pr.pos.x,pe.pos.z-pr.pos.z);pe.face=Math.atan2(pr.pos.x-pe.pos.x,pr.pos.z-pe.pos.z)+1.2;}},
         {t:3.4,fn:()=>{const g=new THREE.Group();const m=new THREE.Mesh(new THREE.TorusGeometry(0.22,0.07,10,24),M(COL.gold,{emissive:0xffb000,emissiveIntensity:0.8}));m.scale.set(1,1.45,1);g.add(m);W.group.add(g);
           const a=pr.pos.clone().add(new V3(0,0.9,0)),b=pe.pos.clone().add(new V3(0,0.8,0));anim(2.2,k=>{g.position.lerpVectors(a,b,smooth(k));g.rotation.y+=0.05;if(k>=1)W.group.remove(g);});}},
@@ -255,14 +255,14 @@ build25=function(){
   prompt(0,'guard',()=>headOf(T.potap),()=>T.potap.active&&W.bolts.some(b=>!b.refl&&b.tgt!==T.potap&&hd(b.p,T.potap.pos)<5),'широкий щит');
   /* ---------- задачи ---------- */
   const stick=(k,f)=>()=>!!(F[k]||(F[k]=!!f()));   // пройденный участок остаётся пройденным, даже если герой спрыгнул вниз (в бассейн колокола, в озеро)
-  const o1=pi=>O(pi?()=>'Китеж подняться хочет, да колокола молчат. Первый — на островке.<br>Язычка у него нет: крикни — и зазвенит. Пелагея ближе всех, налегке.':'Китеж подняться хочет, да колокола молчат.<br>Первый колокол — на островке посреди колодца, говорят.',
+  const o1=pi=>O(pi?()=>'Китеж хочет подняться, да колокола молчат. Первый — на островке.<br>Языка у него нет: крикни — и зазвенит. Пелагея ближе всех.':'Китеж хочет подняться, да колокола молчат.<br>Первый колокол — на островке посреди колодца.',
     ()=>F.voice==='sunk'||F.voice==='sinking'||!!F.given,()=>[vbell.g]);
-  const o2=pi=>O(()=>'Звено упало на дно. Все в колодец — и отлив '+K(pi,'item')+' сыграй:<br>Вода вас опустит через весь город, так и знай.',()=>arena.started||!!F.given,()=>[linkV.g]);
+  const o2=pi=>O(()=>'Звено упало на дно. Все в колодец — и сыграй отлив '+K(pi,'item')+':<br>вода опустит вас через весь город.',()=>arena.started||!!F.given,()=>[linkV.g]);
   const o3=pi=>O(()=>'Прилив '+K(pi,'item')+' сделай — и наверх, к звонницам!',stick('_o3'+pi,()=>active(pi).pos.z<-30),()=>[GW.shell.g]);
   const o4=[O(()=>'Низкая звонница. Отлив '+K(0,'item')+' сделай — язычок повиснет в пустоте.<br>Из рогатки '+K(0,'skill')+' в него стрельни — зазвенит в высоте.',()=>!!F.b1,()=>[mL,L1.shell.g]),
-    O(()=>'Звонница на воде. Прилив '+K(1,'item')+' сделай, доплыви —<br>И крылом '+K(1,'attack')+' по колоколу ударь, не щади!',()=>!!F.b2,()=>[bR.g,R1.shell.g])];
+    O(()=>'Звонница на воде. Прилив '+K(1,'item')+' сделай, доплыви —<br>и ударь '+K(1,'attack')+' по колоколу!',()=>!!F.b2,()=>[bR.g,R1.shell.g])];
   const o5=pi=>O('Колокола звонят — Китеж растёт! Бегом вверх по ступеням!',stick('_o5'+pi,()=>active(pi).pos.z<-55&&active(pi).pos.y>2.5),()=>st1.steps.map(s=>s.m));
-  const o6=pi=>O(pi?()=>'Двойная звонница. Твой колокол — верхний: прилив '+K(1,'item')+' и удар '+K(1,'attack')+'. У друга — нижний.<br>Звоните подряд — за пять секунд успейте, не мешкайте лишне!':()=>'Двойная звонница. Твой колокол — нижний: отлив '+K(0,'item')+' и рогатка '+K(0,'skill')+'. У друга — верхний.<br>Звоните подряд — за пять секунд успейте, как на праздник первый!',
+  const o6=pi=>O(pi?()=>'Двойная звонница. Твой колокол — верхний: прилив '+K(1,'item')+' и удар '+K(1,'attack')+'. У друга — нижний.<br>Звоните подряд — успейте за пять секунд!':()=>'Двойная звонница. Твой колокол — нижний: отлив '+K(0,'item')+' и рогатка '+K(0,'skill')+'. У друга — верхний.<br>Звоните подряд — успейте за пять секунд!',
     ()=>!!F.b3,()=>pi?[dbR.g]:[mD]);
   const o7=pi=>O('Выше — на площадку над провалом!',stick('_o7'+pi,()=>active(pi).pos.z<-73&&active(pi).pos.y>5),()=>st2.steps.map(s=>s.m));
   const oA=pi=>O(()=>'Невидимый Китеж: мост виден и твёрд, пока звенит колокол. Колокол на этом краю кажет ДРУГОЙ мост.<br>Ракушка с колокольчиком — гусли '+K(pi,'item')+'. Один звонит — другой идёт; за провалом — наоборот.',
@@ -279,7 +279,7 @@ build25=function(){
     {cond:(pi,h)=>F.zvon&&h.pos.z<-76.4&&h.pos.z>-80.2&&h.pos.y>5&&!brR.solid&&!brL.solid,text:pi=>'Мостов не видно. Сыграй у ракушки с колокольчиком '+K(pi,'item')+' — проступит мост на той стороне.'},
     {cond:(pi,h)=>!F.tune&&h.pos.z<-124&&h.pos.z>-144&&h.pos.y>5,text:pi=>'Ноты на воротах: жёлтая, синяя, розовая, зелёная. Звоните по очереди — у каждой ракушки колокол своей ноты.'});
   W.tipZones.push({cond:(pi,h)=>arena.started&&!arena.cleared&&W.enemies.some(e=>e.alive&&e.kind==='tyagun'&&!e.up&&hd(e.pos,h.pos)<9),text:pi=>W.enemies.some(e=>e.alive&&e.kind==='tyagun'&&e.silt)?'Тягун в ил зарылся. Прилив '+K(pi,'item')+' сделай, а потом отлив опять — вылезет, не утаится.':'Тягун в воде таится. На гуслях сыграй '+K(pi,'item')+' — отлив на мель его вытащит.<br>Бей сбоку — пусть поплатится!'},
-    {cond:(pi,h)=>h.grounded&&h.groundRef&&h.groundRef.water,text:pi=>'Ты плывёшь. Волна на столбе кажет, какая вода колоколу нужна:<br>Внизу — отлив, вверху — прилив. Гусли '+K(pi,'item')+' — и вся недолга.'},
+    {cond:(pi,h)=>h.grounded&&h.groundRef&&h.groundRef.water,text:pi=>'Ты плывёшь. Волна на столбе показывает, какая вода нужна колоколу:<br>внизу — отлив, вверху — прилив. Играй на гуслях '+K(pi,'item')+'.'},
     {pi:1,cond:(pi,h)=>F.voice==='ready'&&h.kind==='pelageya',text:pi=>'Над Пелагеей нотка зажглась…'});
   W.spawns=[[new V3(-3,0,5),new V3(-5,0,6)],[new V3(3,0,5),new V3(5,0,6)]];W.startAct=[0,0];
   W.pauseLine='Китеж звонит: колокол звенит, лишь когда вода на отметке его стоит.<br>Мост-призрак виден, пока звенит колокол; в Светлояре путь кажет отражение;<br>напев Садко — по нотам на воротах. А главный колокол — на четверых, держись!';

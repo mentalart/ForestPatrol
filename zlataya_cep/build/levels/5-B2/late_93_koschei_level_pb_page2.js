@@ -143,7 +143,7 @@
     function freeVod(){S.ph='free';S.t=0;E.log('free');ES.prog=0.72;vset('roar','angry');if(FIN.k2fx)FIN.k2fx.column(VOD.x,lvl(),VOD.z,8,1.6,1.4);
       anim(1.2,k=>{vodG.scale.setScalar(0.8+0.35*CE.outBack(k));});barkS(vod,'vod','Свободен! Ну, Кощеюшка, — теперь моя волна!',2.6,true);
       later(2.8,()=>{if(E.cur!==5||S.ph!=='free')return;black.forEach(B=>{B.sw=2;B.gl.material.color.set(0x8a30d0);B.gl.material.opacity=1;later(0.7,()=>{B.gl.material.opacity=0;});K5L.ink(B.g.position.clone(),10);});K5X.shock(TOW,18,6,0x4a1a80,{y:lvl(),h:1.4});shakeAll(0.12,0.6);
-        if(AUD.ready())AUD.thump({f0:70,f1:28,d:1.2,v:0.32});barkS(KS,'koschei','На-а-абат! Чёрная вода — топи их!',2.2,true);startFinal();});}
+        if(AUD.ready())AUD.thump({f0:70,f1:28,d:1.2,v:0.32});barkS(KS,'koschei','На-а-абат! Чёрная вода — смой их!',2.2,true);startFinal();});}
     function startFinal(){S.ph='final';S.t=0;S.fin=0;S.front=-14;S.tide=999;tideUp(999);ink.visible=true;inkU.uF.value=-14;blagG.visible=true;blagG.position.y=-8;anim(1.6,k=>{blagG.position.y=-8+8*CE.outBack(k);});
       K5L.gold(BLAG.clone().add(new V3(0,3,0)),24);vset('conduct','neutral');
       if(!S.horses){S.horses=[];if(FIN.k2v&&FIN.k2v.horse)for(let i=0;i<4;i++){const H=FIN.k2v.horse();W.group.remove(H.g);A.g.add(H.g);H.g.visible=false;K5L.noRay(H.g);S.horses.push(H);}}

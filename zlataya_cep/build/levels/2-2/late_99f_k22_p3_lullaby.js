@@ -75,7 +75,7 @@
         {t:20.0,fn:()=>{anim(1.4,k=>{fountainCol.scale.y=Math.max(0.01,14*(1-k));fountainCol.position.y=8.5+7*(1-k);});later(1.4,()=>{fountainCol.visible=false;});}}],
       tick:(t)=>{for(const h of HEROES)if(h.cineHold)h.vel.set(0,0,0);},
       end:()=>{fountainCol.visible=false;HEROES.forEach((h,i)=>{h.cineHold=false;if(h.pos.y<20)placeOnGround(h,land[i][0],land[i][1],22.2);});for(const pi of[0,1])players[pi].cp.set(0,22.2,-436);
-        banner('Подружились с китом!','#ffd76a',2.6,'звено — на облаке; а что кит проглотил — узнаем в «Тридцати кораблях»');}});}
+        banner('Подружились с китом!','#ffd76a',2.6,'звено — на облаке; что кит проглотил — узнаем в брюхе');}});}
   /* ---------- дыхание кита ---------- */
   function inhale(){tone(55,2.4,'sine',0.16,75);for(let i=0;i<8;i++)later(i*0.25,()=>burst(new V3(rand(-9,9),active(0).pos.y+0.2,active(0).pos.z+rand(-8,8)),0xcfe8ff,1,1.5,0.5));
     if(WB.n===0&&!F.inhTold){F.inhTold=true;for(const p of[0,1])tip(p,'Кит вдыхает — гудит! Сейчас выдохнет: спину тряхнёт, всех подкинет и качнёт вбок.',3.4);}}

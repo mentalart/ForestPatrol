@@ -226,7 +226,7 @@ S.lightT=(S.lightT==null?6:S.lightT)-dt;if(S.lightT<=0){S.lightT=rand(8,14);FX.l
   function s3Start(){F.phase=3;S3.st='fight';S3.t=0;S3.ang=0;S3.shuffleT=9;S3.geyT=SOLO()?4:3;S3.throwT=4;vod.embers=vod.maxEmb=6;BS.lastEmb=6;BS.zap=0;vod.setScale(1.3);vod.r=1.2;V.set(vod.k2,'idle','happy');
     if(!S3.fakes.length)S3.fakes=[s3MkFake(0),s3MkFake(1)];S3.real=Math.floor(Math.random()*3);let k=0;for(let i=0;i<3;i++)if(i!==S3.real){S3.fakes[k].slot=i;S3.fakes[k].g.visible=true;S3.fakes[k].pop=0;k++;}
     BUDS.forEach(B=>{B.g.visible=true;B.cool=0;});OM.swirl=1;OM.chop=0.4;music('vod3');FX.rain(true,{c:new V3(C.x,0,C.z)});
-    card(3,'Этап 3 · Омут-зеркало','три отражения — настоящий один',p=>p===1?'Йоша, полей бутон '+K(1,'skill')+' — вырастет плот!':'Метни рогатку '+K(0,'skill')+' в настоящего!');}
+    card(3,'Этап 3 · Омут-зеркало','три отражения — настоящий один',p=>p===1?'Йоша, полей бутон '+K(1,'skill')+' — вырастет плот!':'Стрельни из рогатки '+K(0,'skill')+' в настоящего!');}
   function s3Geyser(){const h=pick();if(!h)return;const p=new V3(h.pos.x,0,h.pos.z),dur=SOLO()?1.5:1.2;FX.tele(p.x,surf(),p.z,1.5,dur,'red');
     const dome=new THREE.Mesh(K2_DOME_G,MB(0xcff4ff,{transparent:true,opacity:0.45,depthWrite:false}));dome.position.set(p.x,surf(),p.z);dome.scale.set(1,0.05,1);dome.userData.noBatch=dome.userData.noBatchL=true;W.group.add(dome);
     for(let i=0;i<10;i++)later(i*dur/10,()=>{FX.drop(new V3(p.x+rand(-0.9,0.9),surf()-0.3,p.z+rand(-0.9,0.9)),new V3(0,rand(1,2.4),0),0.08,{noRing:true,life:0.4});});
@@ -466,5 +466,5 @@ S.lightT=(S.lightT==null?6:S.lightT)-dt;if(S.lightT<=0){S.lightT=rand(8,14);FX.l
     if(/^Колокольчик! Коль упадёшь/.test(html))html='Колокольчик — сюда вернёшься, если упадёшь.';
     else if(m=/^Щит держит! А коль нажать (.*?) <b>/.exec(html))html='Щит '+m[1]+' в последний миг — удар назад!';
     else if(m=/Синяя капля — защита (.*?), в последний миг/.exec(html))html='Синяя капля — щит '+m[1]+' в последний миг!';
-    else if(/^Друг клубком ниток/.test(html))html='Друг рассыпался — подойди, зашей!';}
+    else if(/^Друг клубком ниток/.test(html))html='Друг рассыпался — подойди, подшей!';}
   return _tp(pi,html,dur);};}

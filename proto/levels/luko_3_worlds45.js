@@ -9,9 +9,9 @@
         shot(22,[2.8,1.6,-2.6],[1.8,0.6,-5.2]),shot(25,[-3.6,1.8,1.2],[po.pos.x,1.2,po.pos.z]),shot(29,[pe.pos.x+2.4,1.8,pe.pos.z+2.2],[pe.pos.x,1.2,pe.pos.z-0.4]),shot(35.4,[1.4,2.8,-1.2],[0.2,3.2,-4.2]),
         shot(40,[7,3.2,-1],[-4,1.2,-40],[8,4.4,1],[-6,1,-60],6),shot(47.4,[0,3.6,5],[0,5,-7]),shot(51.6,[pr.pos.x+1.6,1.2,pr.pos.z+1.8],[pr.pos.x,0.6,pr.pos.z-0.4])],
       says:[[0.4,3.2,null,'<i>Звон ключей несётся издалёка.</i>',true],[4.4,4.4,null,'<i>Не таится Кощей на сей раз:</i><br><i>Через пир идёт он медленно — все расступились тотчас.</i>',true],
-        [12.2,3.6,null,'<i>Цепь на дубе он хватает обеими руками — и тянет.</i>',true],[17.6,3.8,null,'<i>Рвутся витки — будто струны лопнули звеня,</i><br><i>Сыплются звенья в траву, блестя.</i>',true],
+        [12.2,3.6,null,'<i>Цепь на дубе он хватает обеими руками — и тянет.</i>',true],[17.6,3.8,null,'<i>Рвутся витки, будто струны лопнули, —</i><br><i>звенья сыплются в траву.</i>',true],
         [22,2.8,null,'<i>Кот к корням упал — и вновь молчит.</i>',true],[25.2,3.6,null,'<i>Потап всех щитом закрыл — да что ему щит?</i><br><i>Кощей на щит и не глядит.</i>',true],
-        [29,3.8,null,'<i>Он глядит на тетрадку, где Звенышко светится ярко,</i><br><i>И руку тянет — жадно, жарко.</i>',true],[33,2.4,null,'<i>Звенышко само из тетрадки рвётся прочь —</i><br><i>Чтоб тетрадку Кощей не унёс в ночь…</i>',true],
+        [29,3.8,null,'<i>Он тянет руку к тетрадке со Звенышком —</i><br><i>холодную, в инее.</i>',true],[33,2.4,null,'<i>Звенышко само из тетрадки рвётся прочь —</i><br><i>Чтоб тетрадку Кощей не унёс в ночь…</i>',true],
         [35.6,2.6,null,'<i>…и в кулаке у него повисает, дрожит.</i>',true],[38.4,2.4,'koschei','Сказок больше не бывать.'],[40.8,4.4,null,'<i>И уходит в море — со Звенышком вместе.</i>',true],
         [47.6,3.4,null,'<i>Дуб стоит нагой.</i>',true],[51.4,3,null,'<i>Прошка звенья в горсть собирает,</i><br><i>Не обернувшись, молвит — и зубы сжимает:</i>',true],[54.6,2.8,'proshka','Скуём заново. Не беда.']],
       events:[{t:0.4,fn:()=>{SFX.keys();later(1.4,()=>SFX.keys());later(2.8,()=>SFX.keys());}},
@@ -47,8 +47,8 @@
     const nb=makeNotebook();nb.g.scale.setScalar(0.9);nb.g.position.set(pe.pos.x+0.1,0.95,pe.pos.z+0.3);
     play({dur:25,fov:46,camK:2.4,shots:[shot(0,[4.6,2.4,-9],[1.9,0.6,-4.9]),shot(5,[5.4,2.2,-8],[2,1.2,-5]),shot(10.4,[5.6,1.8,-9.8],[1.6,0.8,-5.2]),shot(15,[7.6,2.4,-4],[10.2,1.6,-0.6]),shot(20,[pe.pos.x+2,1.5,pe.pos.z+1.6],[pe.pos.x,0.9,pe.pos.z])],
       says:[[0.3,4.4,null,'<i>Дуб стоит нагой. Кот от корней подымается — молча.</i>',true],[5,4.4,null,'<i>Кот на кузню лапой кажет и молот изображает:</i><br><i>Тук-тук-тук — по воздуху ударяет.</i>',true],
-        [10.4,2.2,'yosha','Понял, понял — вот так раз!'],[12.4,2.6,null,'<i>Йоша ложку ему приносит — угодил!</i>',true],[15,4.2,null,'<i>Кузьма на рваную цепь у корней глядит.</i>',true],[17.4,2.6,'kuzma','Без Демьяновых клещей её не срастить.'],
-        [20,4.6,'pelageya','<i>(по тетрадке)</i> …кузня Кузьмы и Демьяна<br>У огненной реки стоит — жарко там и рано.']],
+        [10.4,2.2,'yosha','Понял, понял!'],[12.4,2.6,null,'<i>Йоша приносит ему ложку — не угадал!</i>',true],[15,4.2,null,'<i>Кузьма на рваную цепь у корней глядит.</i>',true],[17.4,2.6,'kuzma','Без Демьяновых клещей её не срастить.'],
+        [20,4.6,'pelageya','<i>(по тетрадке)</i> …кузня Кузьмы и Демьяна<br>стоит у огненной реки.']],
       events:[{t:0.3,fn:()=>{anim(1.6,k=>{kot.body.rotation.z=1.2*(1-smooth(k));});kot.lids.forEach(l=>{l.rotation.x=-0.5;});}},
         {t:5,fn:()=>{kot.g.rotation.y=Math.atan2(10.2-kot.g.position.x,-0.6-kot.g.position.z);anim(4,k=>{kot.body.rotation.x=Math.abs(Math.sin(k*Math.PI*6))*0.3;});for(let i=0;i<3;i++)later(1+i*1.2,()=>tone(700,0.12,'triangle',0.08));}},
         {t:10.4,fn:()=>{kot.body.rotation.x=0;spoon.visible=true;const f=yo.pos.clone();anim(1.8,k=>{yo.pos.lerpVectors(f,new V3(1.2,0,-4.2),smooth(k));yo.face=Math.atan2(1.9-yo.pos.x,-4.9-yo.pos.z);spoon.position.set(yo.pos.x+0.3,0.6,yo.pos.z-0.2);});}},
@@ -58,7 +58,7 @@
   function mapScene4(){F.stage='map';F.rushnik=true;map.visible=true;map.scale.z=0.01;anim(1.2,k=>{map.scale.z=Math.max(0.01,smooth(k));});icons.forEach(g=>{g.scale.y=1;});
     HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-16.2,0);h.face=Math.PI;});const vz=makeVestZ(helperOf(3));vz.pos.set(0,3,-15);
     play({dur:11.4,fov:46,shots:[shot(0,[0,6.5,-12.5],[0,0,-18.5]),shot(4,[3.4,2.4,-15.6],[2.1,0.4,-18.5]),shot(7.8,[2,2,-14],[2.1,6,-24])],
-      says:[[0.4,3.4,null,'<i>На рушнике — огненная река,</i><br><i>Нитками цвета жара вышита слегка.</i>',true],[4,3.2,'pelageya','…четвёртый мир — Смородина огневая.'],[7.6,3,null,'<i>Весточка помощника — нырь в вышитый огонь,</i><br><i>И четверых за ней утянуло — только тронь.</i>',true]],
+      says:[[0.4,3.4,null,'<i>На рушнике — огненная река,</i><br><i>вышитая нитками цвета жара.</i>',true],[4,3.2,'pelageya','…четвёртый мир — Смородина огневая.'],[7.6,3,null,'<i>Весточка помощника — нырь в вышитый огонь,</i><br><i>и четверо за ней.</i>',true]],
       events:[{t:6.9,fn:()=>{const from=vz.pos.clone(),to=new V3(2.1,0.5,-18.5);anim(1.1,k=>{vz.pos.lerpVectors(from,to,k*k);});later(1.1,()=>{ringFx(to,0xff8a3a,3);burst(to,0xffb040,20,5);vz.g.visible=false;SFX.whoosh();});}},
         {t:8.1,fn:()=>{HEROES.forEach(h=>{const from=h.pos.clone(),to=new V3(2.1,0.3,-18.5);anim(1.6,k=>{const q=smooth(k);h.pos.lerpVectors(from,to,q);h.pos.y+=Math.sin(q*Math.PI)*1.2;h.g.scale.setScalar(Math.max(0.05,1-q*0.95));h.face+=0.25;});});
           for(let i=0;i<6;i++)later(i*0.2,()=>ringFx(new V3(2.1,0.3+i*0.4,-18.5),[0xff8a3a,COL.gold][i%2],1.5+i*0.4));}},{t:10,fn:()=>{$('flash').style.transition='opacity .6s';$('flash').style.opacity=1;}}],
@@ -107,15 +107,15 @@
   function ride4(){F.stage='ride';const g=gor4.g;
     const seat=()=>{HEROES.forEach((h,i)=>{const o=new V3(...onBack[i]).multiplyScalar(0.75).applyEuler(g.rotation);h.pos.set(g.position.x+o.x,g.position.y+o.y,g.position.z+o.z);h.vel.set(0,0,0);h.face=g.rotation.y;});};
     play({dur:16,fov:50,camK:2,shots:[shot(0,[0,15,3],[0,8.5,-30]),shot(8,[-19,13,-12],[0,9,-30],[-17,15,-6],[0,9,-32],8)],
-      says:[[0.4,3.6,null,'<i>Над морем Горыныч нас несёт.</i><br><i>Головы сказывают, перебивая, — кто кого перебьёт.</i>',true],[4.4,3,'gorL','Тыщу лет тому назад…'],[7.6,2.6,'gorR','Не тыщу! Девятьсот девяносто, говорят!'],[10.4,2.6,'gorM','Тихо. Про ученика сказывайте ладом.'],[13.2,2.4,'gorL','Ну вот. Был у Кота ученик — с молотком…']],
+      says:[[0.4,3.6,null,'<i>Горыныч несёт героев над морем.</i><br><i>Головы рассказывают, перебивая друг друга.</i>',true],[4.4,3,'gorL','Тыщу лет тому назад…'],[7.6,2.6,'gorR','Не тыщу! Девятьсот девяносто, говорят!'],[10.4,2.6,'gorM','Тихо. Про ученика сказывайте ладом.'],[13.2,2.4,'gorL','Ну вот. Был у Кота ученик — с молотком…']],
       tick:(t)=>{const a=t/16*Math.PI*1.2;g.position.set(Math.sin(a)*12,9+Math.sin(t*1.3)*0.6,-30-Math.cos(a)*10);g.rotation.y=a+Math.PI/2;gor4.wings.forEach(w=>{w.wp.rotation.z=w.s*Math.sin(t*6)*0.5;});seat();},
       end:()=>{W.anims.length=0;uchenik();}});}
   // ролик «Ученик»: лубки, головы рассказывают по очереди
   const UCH=[{pic:'u1',lines:[['gorL','Тыщу лет тому назад<br>Был у Кота ученик, говорят.'],['gorR','Тощий мальчик, с молотком.'],['gorM','Сказки сам сложить мечтал тайком.']]},
     {pic:'u2',lines:[['gorR','Кот любил его сердечно.'],['gorL','Но в сказках проигравшим записал навечно.'],['gorM','Ведь кому-то проигрывать надо — таков закон.']]},
     {pic:'u3',lines:[['gorL','На последней картинке лубка — всегда он.'],['gorR','И все над ним смеются хором.']]},
-    {pic:'u4',lines:[['gorM','Просил мальчишка переписать — с укором.'],['gorL','Кот же не переписал ни строчки.']]},
-    {pic:'u5',lines:[['gorL','А потом он вырос — время шло…'],['gorL','…и стал костью да ключами — всё ушло.'],['gorR','Мы-то думали — злодей какой,<br>А он в сказке быть не хотел такой.']]}];
+    {pic:'u4',lines:[['gorM','Просил мальчишка сказку переписать.'],['gorL','Кот же не переписал ни строчки.']]},
+    {pic:'u5',lines:[['gorL','А потом он вырос — время шло…'],['gorL','…и стал костью да ключами — всё ушло.'],['gorR','Мы-то думали — злодей какой.<br>А он просто не хотел в сказке быть последним.']]}];
   // осколки лубка (docs/39, СЮ.2): лицо ученика по четвертям — каждая найдена в своём уровне 4-2 … 4-5 (G.flags.w4shards), остальные — сколотый камень
   function lubokFace(){const got=G.flags.w4shards||{},L=['4-2','4-3','4-4','4-5'],n=L.filter(l=>got[l]).length,Q=[[0,0],[70,0],[0,75],[70,75]];
     const face='<path d="M28 58 Q30 18 70 16 Q110 18 112 58 Q100 34 70 36 Q40 34 28 58Z" fill="#6a4426"/><ellipse cx="70" cy="80" rx="40" ry="48" fill="#e2c8a4" stroke="#2a1a10" stroke-width="3"/>'+
@@ -123,7 +123,7 @@
       '<path d="M70 82 q-5 12 2 14" stroke="#8a5a3a" stroke-width="3" fill="none"/><path d="M56 108 q14 -8 28 0" stroke="#8a1a14" stroke-width="3" fill="none"/><circle cx="46" cy="96" r="7" fill="#e89a8a" opacity=".55"/><circle cx="94" cy="96" r="7" fill="#e89a8a" opacity=".55"/>';
     const chips=L.map((l,i)=>got[l]?'':'<g><rect x="'+Q[i][0]+'" y="'+Q[i][1]+'" width="70" height="75" fill="#9a8a78"/><path d="M'+(Q[i][0]+10)+' '+(Q[i][1]+12)+' l18 20 l-8 16 l22 14 M'+(Q[i][0]+50)+' '+(Q[i][1]+8)+' l-10 26" stroke="#6a5a4a" stroke-width="2" fill="none"/></g>').join('');
     return '<div style="display:flex;align-items:center;gap:12px;justify-content:center;margin:6px 0"><svg viewBox="0 0 140 150" width="96" height="103">'+face+chips+'<rect x="1" y="1" width="138" height="148" fill="none" stroke="#2a1a10" stroke-width="3"/></svg>'+
-      '<div style="font:700 14px Georgia,serif;color:#5a2a14">Лицо ученика<br>осколков лубка: '+n+' из 4'+(n===4?'<br><i>собрано целиком</i>':'')+'</div></div>';}
+      '<div style="font:700 14px Georgia,serif;color:#5a2a14">Лицо ученика<br>собрано осколков: '+n+' из 4'+(n===4?'<br><i>собрано целиком</i>':'')+'</div></div>';}
   function uchenik(){G.ui='lubok';const el=$('mapui');el.style.display='flex';let pi=0,li=0,tt=0;const g=gor4.g;
     const draw=()=>{const P=UCH[pi],L=P.lines[li],w=WHO[L[0]];el.innerHTML='<div class="lubok"><div style="font:900 22px Georgia,serif;color:#8a1a14;margin-bottom:8px">«Ученик»</div>'+(LUBOK[P.pic]||'')+
       (pi===UCH.length-1?lubokFace():'')+'<div class="cap"><b style="color:'+w[1]+'">'+w[0]+':</b> '+L[1]+'</div><div class="hint" style="font:600 13px system-ui;opacity:.7">'+(pi+1)+' / '+UCH.length+' · '+K(0,'jump')+' дальше</div></div>';babble(L[0],L[1]);};
@@ -132,7 +132,7 @@
       if(tt>4.6||tap(0,'jump')||tap(1,'jump')){tt=0;li++;if(li>=UCH[pi].lines.length){li=0;pi++;}if(pi>=UCH.length){G.ui=null;G.uiTick=null;el.style.display='none';landing4();return;}draw();SFX.flower();}};}
   function landing4(){const pe=T.pelageya,g=gor4.g;
     play({dur:15,fov:46,camK:2.2,shots:[shot(0,[6,4,-14],[0,2,-24]),shot(5.4,[pe.pos.x+1.8,1.4,-14.6],[pe.pos.x,0.9,-16]),shot(10.4,[0,3,-8],[0,1.4,-16])],
-      says:[[0.3,4.4,null,'<i>Горыныч у моря садится —</i><br><i>Пелагея всю дорогу молчала, как птица.</i>',true],[5.4,4.6,null,'<i>Потом тихонько молвит, ни на кого не глядя:</i>',true],[9.2,3,'pelageya','Он ведь тоже сочинял…']],
+      says:[[0.3,4.4,null,'<i>Горыныч садится у моря.</i><br><i>Пелагея всю дорогу молчала.</i>',true],[5.4,4.6,null,'<i>Потом тихонько молвит, ни на кого не глядя:</i>',true],[9.2,3,'pelageya','Он ведь тоже сочинял…']],
       events:[{t:0.2,fn:()=>{const f=g.position.clone();anim(3,k=>{g.position.lerpVectors(f,new V3(-10,0.4,-21),smooth(k));g.rotation.y=lerp(g.rotation.y,0.9,k);});
         later(3,()=>{F.landed=true;HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-16,0);h.face=Math.PI*0.8;});});}}],
       tick:(t)=>{if(!F.landed&&t<3){HEROES.forEach((h,i)=>{const o=new V3(...onBack[i]).multiplyScalar(0.75).applyEuler(g.rotation);h.pos.set(g.position.x+o.x,g.position.y+o.y,g.position.z+o.z);h.vel.set(0,0,0);});}},
@@ -166,8 +166,8 @@
   function w5Intro(){F.stage='w5intro';const pe=T.pelageya,pr=T.proshka;HEROES.forEach((h,i)=>{placeOnGround(h,-5.6+i*1.4,-15.6,0);h.face=Math.atan2(-10-h.pos.x,-21-h.pos.z);});
     const H=gorH?gorH.heads:null;
     play({dur:20,fov:46,camK:2.4,shots:[shot(0,[-3,3,-12],[-10,2,-21]),shot(6.6,[-6,4,-14],[-10,5.4,-19]),shot(13.6,[pe.pos.x+2,1.5,pe.pos.z+1.8],[pe.pos.x,0.9,pe.pos.z])],
-      says:[[0.3,3.6,null,'<i>Горыныч у моря потягивается —</i><br><i>Тремя головами разом позёвывается.</i>',true],[4,2,'gorL','Уговор есть уговор.'],[6,1.8,'gorR','Возим, возим!'],[7.8,4.2,'gorM','Садитесь — на Буян! На острове — дуб,<br>А на дубе — сундук…'],
-        [12.2,4,'pelageya','…в сундуке — заяц, в зайце — утка,<br>В утке — яйцо, в яйце — игла, не шутка.'],[16.4,2.8,'proshka','Матрёшка, право, какая-то!']],
+      says:[[0.3,3.6,null,'<i>Горыныч у моря потягивается</i><br><i>и зевает тремя головами разом.</i>',true],[4,2,'gorL','Уговор есть уговор.'],[6,1.8,'gorR','Возим, возим!'],[7.8,4.2,'gorM','Садитесь — на Буян! На острове — дуб,<br>А на дубе — сундук…'],
+        [12.2,4,'pelageya','…в сундуке — заяц, в зайце — утка,<br>В утке — яйцо, в яйце — игла, не шутка.'],[16.4,2.8,'proshka','Матрёшка какая-то!']],
       events:[{t:0.3,fn:()=>{if(gorH)anim(2,k=>{gorH.g.position.y=0.4+Math.sin(k*Math.PI)*0.6;gorH.wings.forEach(w=>{w.wp.rotation.z=w.s*Math.sin(k*Math.PI*3)*0.5;});});}},
         {t:4,fn:()=>{if(H)anim(0.5,k=>{H[2].jaw.rotation.x=Math.sin(k*Math.PI)*0.5;});}},{t:6,fn:()=>{if(H)anim(0.5,k=>{H[0].jaw.rotation.x=Math.sin(k*Math.PI)*0.5;});}},{t:7.8,fn:()=>{if(H)anim(3.4,k=>{H[1].jaw.rotation.x=Math.abs(Math.sin(k*Math.PI*5))*0.4;});}}],
       end:()=>{W.anims.length=0;G.flags.w5intro=true;later(0.2,mapScene5);}});}
@@ -190,7 +190,7 @@
   // девять звеньев Буяна — ворота терема
   function forgeScene5(){F.forging=true;const pr=T.proshka;placeOnGround(pr,7.6,1.8,0);pr.face=Math.atan2(8.6-7.6,0.6-1.8);
     play({dur:14,fov:46,camK:2.4,shots:[shot(0,[5,2.4,4.4],[7.4,1,1.8]),shot(7,[pr.pos.x-1.4,1.3,pr.pos.z+1.6],[8.6,1,0.6])],
-      says:[[0.3,2.8,'kuzma','Девять. На терем хватит.'],[3.4,1.8,'proshka','А на цепь-то как?'],[5.4,3.4,'kuzma','Цепь — потом. Сперва — выстоять, устоять.'],[9.4,3.4,null,'<i>Отворились терема ворота.</i>',true]],
+      says:[[0.3,2.8,'kuzma','Девять. На терем хватит.'],[3.4,1.8,'proshka','А на цепь-то как?'],[5.4,3.4,'kuzma','Цепь — потом. Сперва — выстоять.'],[9.4,3.4,null,'<i>Отворились терема ворота.</i>',true]],
       events:[{t:9.4,fn:()=>{SFX.gate();SFX.ok();G.flags.forged5=true;banner('Терема ворота отворились!','#a0ffb8',2.6,'на рушнике-карте — 5-Б1 «Кощей в тереме», гляди!');}}],
       end:()=>{W.anims.length=0;F.forging=false;kuz.arm.rotation.x=0;G.flags.forged5=true;}});}
   // «Без имён»: пустые рамки, «ПРОЩЕНИЯ» на песке, «Я расскажу ему сказку»
@@ -202,9 +202,9 @@
       says:[[0.3,4.4,null,'<i>Мы приходим в себя на Лукоморье, и что-то не так. Над портретами героев — пустые рамки.</i>',true],[5,4.2,null,'<i>Я зову медвежонка — и не помню, как его зовут.</i>',true],
         [9.4,3.6,'yosha','Эй… ты… ну, тот, что мост держал…'],[13.6,3.2,null,'<i>Прошка молчит, на лапы свои глядит.</i>',true],
         [17,5,null,'<i>Кот к воде подходит, слово пишет на песке.</i><br><i>Волна сотрёт — он снова пишет, в тоске.</i>',true],[22.4,3.4,'zven','Про… ще… ни… я.'],
-        [26,4,null,'<i>Кот лапой на себя, потом на море кажет —</i><br><i>И голову склоняет, ничего не скажет.</i>',true],[30,3.8,'proshka','Он прощенья хочет попросить. У него — у Кощея.'],
+        [26,4,null,'<i>Кот лапой на себя, потом на море кажет —</i><br><i>И голову склоняет, ничего не скажет.</i>',true],[30,3.8,'proshka','Кот хочет попросить прощенья. У Кощея.'],
         [34,4.6,null,'<i>Пелагея стоит без тетрадки. У неё больше ничего не написано — не подсмотреть, не спрятаться за крыло.</i>',true],
-        [38.8,5.6,'pelageya','Я расскажу ему сказку — сама её сложила,<br>Помню всю — и чем кончится, не позабыла.'],[44.8,2,null,'<i>Говорит она громко, при всех, не читая —</i><br><i>Своими словами, сама, не робея.</i>',true],[47,3.6,'proshka','Расскажи. А я скую — не подведу.']],
+        [38.8,5.6,'pelageya','Я расскажу ему сказку.<br>Я знаю, чем она кончится.'],[44.8,2,null,'<i>Говорит она громко, при всех,</i><br><i>своими словами, не читая.</i>',true],[47,3.6,'proshka','Расскажи. А я скую — не подведу.']],
       events:[{t:5,fn:()=>{floatText(po.pos.clone().add(new V3(0,2.4,0)),'…?','#e0b27a');}},{t:13.6,fn:()=>{anim(1,k=>{pr.body.rotation.x=0.25*k;});}},
         {t:17,fn:()=>{const f=kot.g.position.clone();kot.g.rotation.y=Math.PI;anim(2,k=>{kot.g.position.lerpVectors(f,new V3(-3.2,0,-18.4),smooth(k));});}},
         {t:19,fn:()=>{kot.g.rotation.y=Math.PI*0.6;wr=sandWriting('ПРОЩЕНИЯ',false,0.8,-19.6);wr.material.opacity=0;anim(1.2,k=>{wr.material.opacity=k;});later(1.6,()=>{anim(0.8,k=>{wr.material.opacity=1-k;});SFX.wave&&SFX.wave();});later(2.8,()=>{anim(1.2,k=>{wr.material.opacity=k;});});}},

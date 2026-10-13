@@ -16,7 +16,7 @@
    const order=r=>[1,3].concat(r.pages.slice().sort((a,b)=>a-b),[9,11,12]);
    const skip=n=>{const r=rt();if(!r)return false;return order(r).indexOf(n)<0;};
    E.routeSet=r=>{G.flags.k5eRoute=r?{short:!!r.short,pages:(r.pages||[4,5]).slice(0,2)}:null;};
-   K5E.stageLabel=n=>{const r=rt();if(!r)return 'стадия '+n+' / 12';const k=order(r).indexOf(n);return k>=0?'шаг '+(k+1)+' / 7':'стадия '+n+' / 12';};
+   K5E.stageLabel=n=>{const r=rt();if(!r)return 'глава '+n+' / 12';const k=order(r).indexOf(n);return k>=0?'шаг '+(k+1)+' / 7':'глава '+n+' / 12';};
    // пропущенная стадия засчитана «за кадром»: строка пролога над дубом — золотом
    const pass=n=>{if(!E.done[n]){E.done[n]=true;try{E.sky.add(n,true);}catch(e){}}};
    const _go=E.go;E.go=(n,o)=>{o=o||{};if(rt()&&!o.warp&&!o.retry){let m=n;while(m<12&&skip(m)){pass(m);m++;}n=m;}return _go(n,o);};
@@ -27,7 +27,7 @@
    if(E.pagesShow){const _ps=E.pagesShow;E.pagesShow=(on,fx)=>{_ps(on,fx);const r=rt();if(r&&E.pages)for(let w=1;w<=4;w++)if(r.pages.indexOf(w+3)<0&&E.pages[w])E.pages[w].g.visible=false;};}
    // карточка выбора пути (и двух страниц) перед боем
    const askRoute=done=>{const kid=G.solo||players.some(p=>p.path==='easy');
-     const SH='Короткий путь — 7 стадий (≈25 мин)',FL='Весь сказ — 12 стадий (≈1 ч)';const opts=kid?[SH,FL]:[FL,SH];
+     const SH='Короткий путь — 7 глав (≈25 мин)',FL='Весь сказ — 12 глав (≈1 ч)';const opts=kid?[SH,FL]:[FL,SH];
      skazClouds({who:0,title:'Битва с Кощеем',sub:'Каким путём пойдём? Выбирает Игрок первый. В коротком — две страницы-сказки на выбор.',opts},c=>{
        if(opts[c]===FL){E.routeSet(null);done();return;}
        const all=[4,5,6,7];skazClouds({who:0,title:'Первая страница',sub:'Куда шагнём в сказку? (страница — мир, где ждёт друг)',opts:all.map(p=>PAGEN[p])},a=>{const p1=all[a],rest=all.filter(p=>p!==p1);

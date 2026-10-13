@@ -129,7 +129,7 @@ function buildPrologue(){
    for(let i=0;i<9;i++){const s=i%2?1:-1;const lf=addMesh(new THREE.ConeGeometry(0.14,0.5,5),M(0x6ab04a),s*0.95,0.1,-0.6-i*0.9,bridge);lf.rotation.z=-s*0.9;}}
   bridge.scale.set(1,1,0.01);bridge.visible=false;const bridgeCol=colBox(4.65,6.55,-1.2,0,-49.3,-40.8);bridgeCol.on=false;
   W.waterTargets.push({pos:new V3(5.6,0,-40.5),active:()=>!F.rootGrown&&!F.rootGrowing,onWater:()=>{F.rootGrowing=true;SFX.grow();dry.visible=false;bridge.visible=true;burst(new V3(5.6,0.4,-40.8),0x9fe6ff,14,4);
-    anim(1.6,k=>{bridge.scale.z=Math.max(0.01,smooth(k));});later(1.6,()=>{F.rootGrown=true;bridgeCol.on=true;banner('Корень ожил!','#9fe6ff',1.5,'Корень вырос — вот те раз! —<br>Через ручей мосток для нас!');});}});
+    anim(1.6,k=>{bridge.scale.z=Math.max(0.01,smooth(k));});later(1.6,()=>{F.rootGrown=true;bridgeCol.on=true;banner('Корень ожил!','#9fe6ff',1.5,'Корень вырос — через ручей мосток!');});}});
   // тропинки расходятся вокруг чащи — экран делится; через десять шагов сходятся — черта тает
   colBox(-3.6,3.6,0,3.6,-61,-50,true);const thMark=W.group.children.length;
   for(let i=0;i<9;i++){const b=addMesh(new THREE.IcosahedronGeometry(rand(0.9,1.4),0),MAT.stone,rand(-2.6,2.6),rand(0.4,0.9),rand(-60,-51));b.rotation.set(rand(0,3),rand(0,3),0);}
@@ -221,7 +221,7 @@ function buildPrologue(){
       if(F.spot[0]&&F.spot[1]&&!F.lulQueued){F.lulQueued=true;later(0.7,lullabyScene);}}
     if(F.stage!=='room'&&F.stage!=='lullaby')spots.forEach(s=>{s.g.visible=false;});
     // Прошка на уступе — скидывает лесенку для Потапа
-    if(!F.ladder&&ladderBtn.done){F.ladder=true;bark(HERO.proshka,'proshka','Щас подкручу механизм —<br>Держи лесенку, дружок!',2.4);
+    if(!F.ladder&&ladderBtn.done){F.ladder=true;bark(HERO.proshka,'proshka','Щас подкручу механизм —<br>и лесенка вниз!',2.4);
       steps.forEach((s,i)=>later((5-i)*0.12,()=>{SFX.clink();anim(0.25,k=>{s.m.scale.x=Math.max(0.01,k);});s.col.on=true;}));ropes.forEach(r=>anim(0.8,k=>{r.scale.y=Math.max(0.01,k);}));}
     // «Стой там, я тебя подниму!» — «Я сам!»
     if(!barkDone&&HERO.yosha.active&&hd(HERO.yosha.pos,{x:7.1,z:-22.3})<3.2){barkDone=true;bark(HERO.potap,'potap','Стой, не бойся ничего —<br>Подниму тебя легко!',2.2);later(2.1,()=>bark(HERO.yosha,'yosha','Сам управлюсь — я не мал!',1.6));}
@@ -282,26 +282,26 @@ function buildPrologue(){
   const crack=pi=>O(()=>'За Звенышком беги скорей,<br>Трещину прыжком '+K(pi,'jump')+' одолей!',()=>active(pi).pos.z<CRK1-0.4,()=>[crackMark],()=>({kind:active(pi).kind,action:'jump',from:new V3(pi?0.9:-0.9,0,CRK0+0.8),to:new V3(pi?0.9:-0.9,0,CRK1-1.0)}));
   const plates=(pi,pa,pb,g,xs)=>[
     O(()=>'Жёлтая плита с лапкой — встань на неё,<br>И ворота откроются — вот и всё!',()=>pa.pressed||pb.pressed||g.latched||players[pi].heroes.some(h=>h.pos.z<-68.9),()=>[pa.g],()=>({kind:active(pi).kind,action:'walk',from:new V3(xs,0,-62.8),to:new V3(xs,0,-65.2)})),
-    O(()=>'Смени героя '+K(pi,'swap')+' — ступай в ворота смело:<br>Первый на плите стоит — ворота не закроются.',()=>g.latched||players[pi].heroes.some(h=>h.pos.z<-68.9),()=>[g.g],()=>({kind:other(pi).kind,action:'walk',from:new V3(xs+(xs<0?-1.6:1.6),0,-66),to:new V3(xs+(xs<0?-1.6:1.6),0,-70)})),
-    O(()=>'За воротами — такая ж плита, гляди:<br>Встань — теперь ворота держишь ты один.',()=>g.latched||pb.pressed||allThru(pi),()=>[pb.g]),
-    O(()=>'Второго героя проведи теперь:<br>Смени '+K(pi,'swap')+' или позови к себе '+K(pi,'call')+' — пройдёт он в дверь.',()=>g.latched||allThru(pi),()=>[other(pi).g])];
-  const fight=pi=>O(()=>arena.started?'Солнышко <i class="sg y"></i> над мороком — щитом '+K(pi,'guard')+' закройся,<br>Огоньки <i class="sg e"></i> погасли — бей '+K(pi,'attack')+', не бойся!':'Впереди поляна. Постой —<br>Подождём друга с тобой.',()=>arena.cleared,()=>arena.list.map(e=>e.g));
-  const hollow=O('В дупло светящееся прыгай смело —<br>За Звенышком! Вот и всё дело.',()=>false,()=>[ht.hole]);
+    O(()=>'Смени героя '+K(pi,'swap')+' и проходи в ворота:<br>пока первый стоит на плите, ворота открыты.',()=>g.latched||players[pi].heroes.some(h=>h.pos.z<-68.9),()=>[g.g],()=>({kind:other(pi).kind,action:'walk',from:new V3(xs+(xs<0?-1.6:1.6),0,-66),to:new V3(xs+(xs<0?-1.6:1.6),0,-70)})),
+    O(()=>'За воротами — такая же плита.<br>Встань на неё — теперь ворота держишь ты.',()=>g.latched||pb.pressed||allThru(pi),()=>[pb.g]),
+    O(()=>'Теперь проведи второго героя:<br>смени '+K(pi,'swap')+' или позови к себе '+K(pi,'call')+'.',()=>g.latched||allThru(pi),()=>[other(pi).g])];
+  const fight=pi=>O(()=>arena.started?'Солнышко <i class="sg y"></i> над мороком — щитом '+K(pi,'guard')+' закройся,<br>Угольки <i class="sg e"></i> погасли — бей '+K(pi,'attack')+', не бойся!':'Впереди поляна. Постой —<br>Подождём друга с тобой.',()=>arena.cleared,()=>arena.list.map(e=>e.g));
+  const hollow=O('Прыгай в светящееся дупло — за Звенышком!',()=>false,()=>[ht.hole]);
   W.objectives[0]=[
     O(()=>'К жёлтому пятну ступай: '+MOVEK(0),()=>F.spot[0]||!inRoom(),()=>[spots[0].g],()=>({kind:active(0).kind,action:'walk',from:active(0).pos.clone(),to:new V3(spots[0].x,0,spots[0].z)})),
-    O('Подождём, пока дойдёт<br>Друг до пятнышка — вот-вот!',()=>!inRoom(),()=>[spots[1].g]),
+    O('Подождём, пока друг дойдёт до пятнышка.',()=>!inRoom(),()=>[spots[1].g]),
     crack(0),
-    O(()=>'Уступ высок — Потапу не допрыгнуть,<br>Прошку бери '+K(0,'swap')+': он выше всех умеет прыгнуть!',()=>F.ladder||active(0).pos.z<-36.5,()=>[ledge],()=>({kind:'proshka',action:'jump',from:new V3(-4.4,0,-23.8),to:new V3(-4.4,1.92,-26.4)})),
-    O('Прошка наверху! На кнопку с лапкой встань —<br>Для Потапа лесенка слетит, ты только глянь!',()=>F.ladder||active(0).pos.z<-37.6,()=>[ladderBtn.g],()=>({kind:'proshka',action:'walk',from:new V3(-5,1.92,-26.2),to:new V3(-6.9,1.92,-27.6)})),
-    O(()=>'Упала лесенка! Кликни Потапа '+K(0,'call')+' — и в путь:<br>За Звенышком вперёд, не отставать ничуть!',()=>active(0).pos.z<-37.6,()=>[ladder]),
+    O(()=>'Уступ высок — Потапу не допрыгнуть.<br>Смени на Прошку '+K(0,'swap')+': он прыгает выше всех!',()=>F.ladder||active(0).pos.z<-36.5,()=>[ledge],()=>({kind:'proshka',action:'jump',from:new V3(-4.4,0,-23.8),to:new V3(-4.4,1.92,-26.4)})),
+    O('Прошка наверху! Встань на кнопку с лапкой —<br>и для Потапа упадёт лесенка.',()=>F.ladder||active(0).pos.z<-37.6,()=>[ladderBtn.g],()=>({kind:'proshka',action:'walk',from:new V3(-5,1.92,-26.2),to:new V3(-6.9,1.92,-27.6)})),
+    O(()=>'Лесенка упала! Позови Потапа '+K(0,'call')+' — и за Звенышком!',()=>active(0).pos.z<-37.6,()=>[ladder]),
     O(()=>'Щеколда высоко — рукой не достать.<br>Метку-жёлудь видишь? Из рогатки '+K(0,'skill')+' — стрелять!',()=>F.latch||active(0).pos.z<-43,()=>[mark],()=>({kind:'proshka',action:'press',from:new V3(-4.6,0,-38.8)})),
     O('Тропинка надвое бежит —<br>Тебе налево: там Звенышко звенит.',()=>active(0).pos.z<-62.4,()=>[]),
     ...plates(0,La,Lb,gL,-3.2),fight(0),hollow];
   W.objectives[1]=[
     O(()=>'К жёлтому пятну ступай: '+MOVEK(1),()=>F.spot[1]||!inRoom(),()=>[spots[1].g],()=>({kind:active(1).kind,action:'walk',from:active(1).pos.clone(),to:new V3(spots[1].x,0,spots[1].z)})),
-    O('Подождём, пока дойдёт<br>Друг до пятнышка — вот-вот!',()=>!inRoom(),()=>[spots[0].g]),
+    O('Подождём, пока друг дойдёт до пятнышка.',()=>!inRoom(),()=>[spots[0].g]),
     crack(1),
-    O(()=>'Глубок овраг! Смени '+K(1,'swap')+' — Пелагея нужна:<br>Прыгни, держи '+K(1,'jump')+' — перелетит на крылышках она.',()=>(T.pelageya.pos.z<-28.4&&T.pelageya.pos.y>-1)||active(1).pos.z<-36.5,()=>[ravineMark],()=>({kind:'pelageya',action:'glide',from:new V3(3.8,0,-22.4),to:new V3(3.8,0,-29.6)})),
+    O(()=>'Глубок овраг! Смени на Пелагею '+K(1,'swap')+':<br>прыгни и держи '+K(1,'jump')+' — она перелетит на крыльях.',()=>(T.pelageya.pos.z<-28.4&&T.pelageya.pos.y>-1)||active(1).pos.z<-36.5,()=>[ravineMark],()=>({kind:'pelageya',action:'glide',from:new V3(3.8,0,-22.4),to:new V3(3.8,0,-29.6)})),
     O(()=>'А Йоша мал — пролезет под корнем, как мышь!<br>Смени '+K(1,'swap')+' на него — и вмиг проскользишь.',()=>T.yosha.pos.z<-28.4||active(1).pos.z<-36.5,()=>[logMesh],()=>({kind:'yosha',action:'walk',from:new V3(7.1,0,-21.8),to:new V3(7.1,0,-29.4)})),
     O(()=>'Корень засох — беда невелика:<br>Полей живой водой из Йошиного ковшика '+K(1,'skill')+'!',()=>F.rootGrown||F.rootGrowing||active(1).pos.z<-49.5,()=>[dry],()=>({kind:'yosha',action:'press',from:new V3(5.6,0,-39.3)})),
     O('Тропинка надвое бежит —<br>Тебе направо: светлячок манит.',()=>active(1).pos.z<-62.4,()=>[]),
@@ -312,6 +312,6 @@ function buildPrologue(){
     {cond:(pi,h)=>h.pos.z<-63&&h.pos.z>-76&&other(pi).held&&!h.held,text:pi=>'Пока герой стоит на плите — ворота открыты.'});
   W.spawns=[[new V3(-4.0,0,0.3),new V3(-3.2,0,4.6)],[new V3(3.8,0,-2.9),new V3(3.5,0,4.6)]];W.startAct=[1,1];
   W.spawnFace=[[Math.atan2(-0.7,-1.1),Math.PI],[Math.atan2(-0.9,0.8),Math.PI]];
-  W.pauseLine='За Звенышком бежим скорей —<br>которое упало в тетрадку Пелагеи.<br>Кто-то цепь златую рвёт —<br>Сказки забывает народ.';
+  W.pauseLine='Златую цепь порвали — сказки забываются.<br>Бежим по веткам за Звенышком: оно ведёт на Лукоморье.';
   flushDecor();}
 

@@ -14,7 +14,7 @@ const ap=()=>active(0),bp=()=>active(1);
 // уроки: id → {lv, can() — пора ли, steps() — шаги}
 const LS={
   forge41:{lv:'4-1',can:()=>W.flags.stage==='forge',steps:()=>[
-    S(6,[-1.8,2.8,-7.6],[-5,0.6,-14.2],{tag:'Урок · кузня',title:'Мехи',icon:'fire',text:'Пелагея прыгает на рычаг мехов — горн жарче.',keys:[{pi:1,a:'jump'}]},
+    S(6,[-1.8,2.8,-7.6],[-5,0.6,-14.2],{tag:'Урок · кузня',title:'Мехи',icon:'fire',text:'Мехи: прыгаешь на рычаг — горн жарче.',keys:[{pi:1,a:'jump'}]},
       {wait:{who:1,a:'jump'},voice:'4-1_031',done:(s,auto)=>{hop(HERO.pelageya);pop(HERO.pelageya,'Пых!','#ffb070');}}),
     S(6,[2.2,2.6,-8.4],[0,1,-14],{tag:'Урок · кузня',title:'Молот',icon:'hit',text:'Жёлтый кружок сжался — бей молотом!',keys:[{pi:0,a:'attack'}]},
       {wait:{who:0,a:'attack'},voice:'4-1_032',done:()=>{HERO.proshka.atkT=0.3;SFX.hammer?SFX.hammer():SFX.clink();burst(new V3(0,1.3,-14),0xffe060,12,3);}}),

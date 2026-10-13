@@ -54,9 +54,9 @@ function t4View(tg,cands,skip){const T=new V3(tg[0],tg[1],tg[2]);for(const c of 
 // ---------- этап 1: три запала ----------
 function t4Stage1(){const H=t4Heads(),L=H[0],Mi=H[1],R=H[2];if(!L||!R)return;const a0=()=>active(0),a1=()=>active(1);let sigL=null,sigR=null;
   t4Run([
-    t4S('wide',4.2,{tag:'Как победить',title:'Этап 1 из 3 · Три запала',icon:'heads',text:'У каждой головы — свой «запал». Оглушите <b>левую</b> и <b>правую</b> <b>разом</b> —<br>Горыныч ослабнет. Глядите, как это делается, — сразу!'},
+    t4S('wide',4.2,{tag:'Как победить',title:'Этап 1 из 3 · Три запала',icon:'heads',text:'У каждой головы — свой «запал». Оглушите <b>левую</b> и <b>правую</b> <b>разом</b> —<br>Горыныч ослабнет. Смотрите, как это делается!'},
       {enter:()=>{sayP('Как его одолеть! Глядите!',2.6);}}),
-    t4S('L',9,{tag:'Игрок 1 · левая голова',title:'Сонная голова — жёлтый кружок, медленный удар',icon:'yellow',text:'Над головой <b>жёлтый кружок</b> — бьёт она медленно, как во сне.<br>Подними <b>щит</b> — и отбей удар, как по весне!',keys:[{pi:0,a:'guard',label:'щит',wait:true}],go:'Нажми щит!',okText:'Отбил!'},
+    t4S('L',9,{tag:'Игрок 1 · левая голова',title:'Сонная голова — жёлтый кружок, медленный удар',icon:'yellow',text:'Над головой <b>жёлтый кружок</b> — бьёт она медленно, как во сне.<br>Подними <b>щит</b> — и отбей удар!',keys:[{pi:0,a:'guard',label:'щит',wait:true}],go:'Нажми щит!',okText:'Отбил!'},
       {wait:{who:0,a:'guard'},at:1.2,enter:()=>{sigL=t4Prop(t4Ring(0xffd23a,0.55));},update:(s,u)=>{if(sigL){const p=t4HeadTop(L);sigL.position.copy(p).add(new V3(0,0.95,0));sigL.lookAt(camS.position);sigL.scale.setScalar(1+0.25*Math.sin(G.time*6));}},
        done:()=>{a0()._demoGuard=G.time+0.9;SFX.parry();const p=t4HeadTop(L);FX.sparks(p.clone().add(new V3(1,0,1.4)),14);floatText(p.clone().add(new V3(0,1.6,0)),'Отбил!','#ffe08a');if(sigL)sigL.visible=false;CINE.punch(-2);}}),
     t4S('L',7,{tag:'Игрок 1 · левая голова',title:'Теперь бей!',icon:'hit',text:'Удар отбит — голова открыта. <b>Бей</b>, пока не опомнилась, скорей!',keys:[{pi:0,a:'attack',label:'удар',wait:true}],go:'Бей!',okText:'ПРОБОЙ!'},
@@ -68,7 +68,7 @@ function t4Stage1(){const H=t4Heads(),L=H[0],Mi=H[1],R=H[2];if(!L||!R)return;con
       {wait:{who:1,a:'attack'},at:0.6,cut:false,done:()=>{a1().atkT=0.28;SFX.brk();const p=t4HeadTop(R);FX.stars(p,12);t4Broken(R,true);floatText(p.clone().add(new V3(0,1.8,0)),'ПРОБОЙ!','#fff2b0');}}),
     t4S('wide',5.2,{tag:'Главное',title:'Вместе — за двенадцать секунд!',icon:'clock',text:'Оглушённая голова спит <b>двенадцать секунд</b>. Одну оглушили — проснётся опять.<br>Бейте <b>левую и правую вместе</b> — чтоб обе в Пробое разом стоять!'},
       {enter:()=>{for(const e of[L,R]){const r=t4Prop(t4Ring(0xfff2b0,0.8));r.userData.e=e;}},update:(s,u)=>{for(const o of T4.props)if(o.userData.e){const p=t4HeadTop(o.userData.e);o.position.copy(p).add(new V3(0,1.2,0));o.lookAt(camS.position);o.scale.setScalar(Math.max(0.05,1-u/5));}}}),
-    t4S('M',4.4,{tag:'А средняя?',title:'Средняя синим плюётся',icon:'blue',text:'Синие капли <b>щитом отбивай</b>. Среднюю на следующем этапе оглушим, так и знай.'}),
+    t4S('M',4.4,{tag:'А средняя?',title:'Средняя синим плюётся',icon:'blue',text:'Синие капли <b>щитом отбивай</b>. Среднюю оглушим на следующем этапе.'}),
     t4S('team',2.6,{tag:'Вперёд!',title:'Теперь — по-настоящему!',icon:'go',text:'Подсказки будут рядом. Удачи вам, богатыри!'},{enter:()=>{FX.confettiCam(30);SFX.ok();}})],
     {end:()=>{t4Broken(L,false);t4Broken(R,false);t4SeenSet(1);}});}
 // ---------- этап 2: вдох — три коротких урока (≤ 25 с, одна механика), каждый перед тем, как механика понадобится ----------
@@ -110,7 +110,7 @@ function t4Stage3(){const gr=W.grabs[0];if(!gr)return;const bp=gr.pos(),saved=bp
     t4S('bridle',9,{tag:'Оба игрока',title:'Возьмите узду',icon:'tongs',text:'К узде с <b>двух сторон</b> подойдите — и <b>клещами</b> её возьмите.',keys:[{pi:0,a:'item',label:'клещи',wait:true},{pi:1,a:'item',label:'клещи',wait:true}],go:'Берите вдвоём!',okText:'Взяли!'},
       {p:vB.p,l:vB.l,wait:{who:'both',a:'item'},at:1.6,enter:()=>{walk(i=>new V3(saved.x+(i?1.2:-1.1),0,saved.z+(i?0.3:-0.8)),1.4,saved);},each:(s,pi)=>{FX.sparks(bp.clone().add(new V3(0,0.5,0)),8);floatText(t4P(active(pi)).add(new V3(0,2,0)),'Взял!','#ffb070');},
        done:()=>{const f=bp.clone();anim(0.8,k=>{bp.y=f.y+smooth(k)*1.3;});}}),
-    t4S('spot',5,{tag:'Несите к шее',title:'Кольцо на шее светится',icon:'ring',text:'Несите узду <b>вдвоём</b> к золотому ореолу на шее Змея — к кругу на полу.<br>Не расходитесь далеко — уроните, жалея!'},
+    t4S('spot',5,{tag:'Несите к шее',title:'Кольцо на шее светится',icon:'ring',text:'Несите узду <b>вдвоём</b> к золотому ореолу на шее Змея — к кругу на полу.<br>Не расходитесь далеко — уроните!'},
       {p:vS.p,l:vS.l,enter:()=>{if(!FIN.uzda){ring=t4Prop(t4Ring(0xffd76a,0.95));ring.position.copy(T4SPOT);}   // с late_37 место показывает золотой ореол
          const f=bp.clone(),to=new V3(T4SPOT.x,1.9,T4SPOT.z+1.8);anim(2.6,k=>{const q=smooth(k);bp.lerpVectors(f,to,q);bp.y+=Math.sin(q*Math.PI)*0.4;});
          walk(i=>new V3(T4SPOT.x+(i?0.95:-0.95),0,T4SPOT.z+1.8),2.6,T4SPOT);},update:()=>{if(ring){ring.rotation.y+=0.03;ring.scale.setScalar(1+0.12*Math.sin(G.time*6));}}}),

@@ -33,7 +33,7 @@ function makeRunGoose(){const g=new THREE.Group();W.group.add(g);const w=M(0xfff
   return {g,wings};}
 function build13(){W.soloMirror=true;
   W.zvenAway=true;   // Звенышко улетает вперёд и появляется, только когда нужно
-  setTheme('forest');W.name='1-3 · «Колобок»';W.sub='Дремучий лес · гусельный раннер · «Ах вы, сени, мои сени» · пять частей и пляска';W.camX=8;const F=W.flags;
+  setTheme('forest');W.name='1-3 · «Колобок»';W.sub='Дремучий лес · бегом за Колобком под гусли · «Ах вы, сени, мои сени» · пять частей и пляска';W.camX=8;const F=W.flags;
   // пять частей: у каждой свой темп, скорость, погода и своя новая штука; четвёртая и пятая — бой на бегу и в полёте
   const PARTS=[{name:'Солнечная опушка',short:'Опушка',bpm:96,speed:4.4,tr:0,sky:0x8fd0f0,fog:0xa8dcec,sunC:0xfff4dc,sunI:1.0,amb:0.72,
       sub:'струна в такт — ввысь (Колобок покажет) · плетень — только со струны · Заяц поёт — повтори щитом'},
@@ -182,7 +182,7 @@ function build13(){W.soloMirror=true;
   function taleEnd(q){const P=q.pi,need=q.T.pat.reduce((a,b)=>a+b,0),got=q.hit.reduce((a,b)=>a+b,0),at=q.b.g.position.clone().add(new V3(0,2.9,0));q.t=0;S.tries[P][q.ph]+=need;S.hits[P][q.ph]+=got;
     if(got===need){q.res='ok';const n=3*mult(P);S.got[P]+=n;SFX.ok();floatText(at,q.T.name+' пляшет! +'+n,'#ffe36b');spawnSpark(q.b.g.position.clone().add(new V3(0,1,0)),COL.gold);}
     else if(got){q.res='part';combo(P,false);floatText(at,'Почти перепели!','#ffe0a0');}
-    else{q.res='bump';stumble(P,q.T.name+' толкнул — не больно!');teach(P,'taleMiss','Зверь пропел — повтори за ним щитом '+K(P,'guard')+'<br>В те доли, где он скакал, — и в пляс он пойдёт!');}}
+    else{q.res='bump';stumble(P,q.T.name+': толк — не больно!');teach(P,'taleMiss','Зверь пропел — повтори за ним щитом '+K(P,'guard')+'<br>В те доли, где он скакал, — и в пляс он пойдёт!');}}
   function addObst(type,pi,k,lanes){const z=zKf(k),g=new THREE.Group();W.group.add(g);const L=LANES[pi];let x=L[1];lanes=(lanes||[0,1,2]).map(l=>mir(pi,l));
     const o={type,pi,k,z,g,lanes,hit:false,ph:ph(k)};
     if(type==='log'){g.position.set(L[1],0,z);const c=new THREE.CylinderGeometry(0.3,0.34,6.2,10);c.rotateZ(Math.PI/2);addMesh(c,M(0x6b4a2b),0,0.3,0,g);for(const s of[-1,1]){const e=new THREE.Mesh(new THREE.CircleGeometry(0.3,10),M(0xd2a870));e.rotation.y=s*Math.PI/2;e.position.set(s*3.11,0.3,0);g.add(e);}
@@ -328,7 +328,7 @@ function build13(){W.soloMirror=true;
       if(r>=-4&&r<0&&q.T.pat[r+4]&&S.taleSnd!==k){S.taleSnd=k;tone(mf(melNote(q.k+r+4)+q.T.oct),0.3,q.T.tone,0.11);gusli(melNote(q.k+r+4),0,0.1);}
       if(r===-4)floatText(h.pos.clone().add(new V3(0,h.d.height+1.0,0)),'Слушай!','#ffffff');
       if(r===0){floatText(h.pos.clone().add(new V3(0,h.d.height+1.0,0)),'Повтори щитом!',PCSS[q.pi]);
-        teach(q.pi,'tale','Зверь пропел — повтори! Щит '+K(q.pi,'guard')+' в те доли,<br>Где он скакал: бусины над ним подскажут, не боле.');}}
+        teach(q.pi,'tale','Зверь пропел — повтори! Щит '+K(q.pi,'guard')+' в те доли,<br>где он скакал: бусины над ним подскажут.');}}
     if(k===86&&S.part===2&&!S.foxOff){foxes.forEach((f,i)=>{if(f.trip)return;S.fox[i]=Math.max(S.fox[i],2);S.foxK[i]=k;floatText(f.g.position.clone().add(new V3(0,1.6,0)),'Лиса: «Колобок, сядь мне на носок!»','#ffb070');});
       later(0.7,()=>say('kolobok','Не сяду! Ребята, на струны — запутаем рыжую!',2.6));}
     // лиса отстаёт, если 6 долей не спотыкаться
@@ -364,7 +364,7 @@ function build13(){W.soloMirror=true;
   function stumble(pi,text,pull){if(resting(pi))return;const h=active(pi);petalLose(pi);S.stumbles=(S.stumbles||0)+1;S.stLog=(S.stLog||[]);S.stLog.push(pi+':'+(text||'').slice(0,6)+'@'+S.lastK);S.off[pi]=Math.max(-3,S.off[pi]-1.6);h.vel.y=pull?7:4;h.grounded=false;SFX.knock();shake(pi,0.03,0.15);combo(pi,false);
     floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),text||'Спотык!','#ffd0e0');S.hurtT=S.hurtT||[0,0];S.hurtT[pi]=0.5;
     if(S.part===2&&!S.foxOff&&!foxes[pi].trip){S.fox[pi]=Math.min(3,S.fox[pi]+1);S.foxK[pi]=S.lastK;if(S.fox[pi]>=3){const n=Math.min(5,S.got[pi]);S.got[pi]-=n;S.fox[pi]=1;S.foxCaught[pi]++;foxes[pi].leap=0.001;
-        later(0.2,()=>{SFX.knock();floatText(h.pos.clone().add(new V3(0,h.d.height+1.2,0)),n?'Лиса '+n+' искр утащила!':'Лиса цапнула — а искр-то и нет!','#ffb070');});}
+        later(0.2,()=>{SFX.knock();floatText(h.pos.clone().add(new V3(0,h.d.height+1.2,0)),n?'Лиса утащила искры: '+n+'!':'Лиса цапнула — а искр-то и нет!','#ffb070');});}
       else floatText(h.pos.clone().add(new V3(0,h.d.height+1.2,0)),'Лиса ближе!','#ffb070');}}
   function gotSpark(pi,sp){if(resting(pi))return;sp.taken=true;W.group.remove(sp.m);const n=mult(pi)*(sp.n||1);S.got[pi]+=n;tone(1500+rand(0,400)+(n-1)*300,0.08,'sine',0.1,2200);}
   // струна: в такт — высоко (воздушная — со струны на струну: снова на ту же высоту через долю), «Чисто!» — в полдоли окна, искры за попадание;
@@ -376,9 +376,9 @@ function build13(){W.soloMirror=true;
       gusli(melNote(s.k),0,0.22);if(clean)gusli(melNote(s.k)+7,0.07,0.1);const n=(clean?2:1)*mult(pi);S.got[pi]+=n;
       floatText(top,(clean?'Чисто!':'В такт!')+' +'+n,clean?'#ffffff':'#bff4ff');burst(new V3(xL,s.y+0.3,s.z),STRC,clean?18:12,3);combo(pi,true);
       foxPush(pi);helpFriend(pi);duoCheck(pi,s);
-      if(s.air)teach(pi,'airOk','Со струны на струну — над лесом летишь!<br>Жми прыжок '+K(pi,'jump')+' на каждой, пока кружок — точкой, — и держишь!');}
+      if(s.air)teach(pi,'airOk','Со струны на струну — над лесом летишь!<br>Жми прыжок '+K(pi,'jump')+' на каждой, когда кружок станет точкой.');}
     else{hh.vel.y=s.air?4:9;SFX.jump();gusli(55,0,0.12);floatText(top,j.d<0?'рано':'поздно','#dddddd');combo(pi,false);
-      teach(pi,'strMiss','На струну прыгай ровно тогда,<br>Когда кружок на деке станет точкой — да!');}}
+      teach(pi,'strMiss','На струну прыгай ровно тогда,<br>когда кружок на ней станет точкой.');}}
   // «в лад»: прыжок на «и» (полдоли до препятствия) — герой над корягой ровно в долю: +искра
   function ladJump(pi,hh){if(resting(pi))return;const o=S.obst.find(q=>q.pi===pi&&!q.hit&&!q.lad&&(q.type==='log'||((q.type==='barrel'||q.type==='hole'||q.type==='stump')&&q.lanes.includes(S.lane[pi])))&&BT[q.k]-S.t>0&&BT[q.k]-S.t<0.9);
     if(!o)return;const B=60/PARTS[o.ph].bpm;if(Math.abs(S.t-(BT[o.k]-B/2))>winOf(pi)*1.3)return;o.lad=true;const n=mult(pi);S.got[pi]+=n;S.lads=(S.lads||0)+1;
@@ -509,7 +509,7 @@ function build13(){W.soloMirror=true;
           if(f.type==='lunge'){if(inL&&hh.rollT<=0)foeBad(P,f,'Волк цапнул!');else foeOk(P,f,inL?'Кувырок!':'Увернулся!',1);}
           else if(f.type==='crow'){if(inL)foeBad(P,f,'Ворона клюнула!');else foeOk(P,f,'Увернулся!',1);}
           else{if(inL&&hh.pos.y<0.6)foeBad(P,f,'Кабан!');else foeOk(P,f,inL?'Перепрыгнул!':'Мимо!',1);}
-          if(f.res==='hit'&&f.type==='lunge')teach(P,'lunge','Красный круг — волк прыгнет на твою тропу!<br>Беги на другую '+K(P,'left')+K(P,'right')+' или кувырком '+K(P,'roll')+' — ко лбу!');
+          if(f.res==='hit'&&f.type==='lunge')teach(P,'lunge','Красный круг — волк прыгнет на твою тропу!<br>Беги на другую '+K(P,'left')+K(P,'right')+' или кувыркнись '+K(P,'roll')+'!');
           if(f.res==='hit'&&f.type==='crow')teach(P,'crow','Красный круг в небе — ворона пикирует вниз!<br>На другую дорожку '+K(P,'left')+K(P,'right')+' перелети — берегись!');
           if(f.res==='hit'&&f.type==='boar')teach(P,'boar','Кабан несётся навстречу — прыгни '+K(P,'jump')+' через него!');}}
       else if(f.type==='paw'||f.type==='hawk'){const x=LANES[P][S.lane[P]];if(!f.res||f.res==='parry'&&S.t<f.cw){f.lx=x;}
@@ -615,7 +615,7 @@ function build13(){W.soloMirror=true;
         shot(11,[kx+1.2,1.3,kz-2.2],[kx,0.8,kz]),shot(14,[pr.pos.x-1.8,2.0,pr.pos.z-1.4],[pr.pos.x,1.0,pr.pos.z]),shot(18.8,[4.5,2.4,pr.pos.z+2.2],[2.6,0.8,pr.pos.z])],
       says:[[1.0,2.2,null,'<i>Музыка замирает. Колобок пред Прошкой встаёт</i><br><i>И зажмуривается — вот-вот его съедят, он ждёт.</i>',true],[3.4,3.2,'kolobok','Ну, ешь. В сказке лиса меня всегда съедает — таков уж сказ.'],
         [6.8,3.8,'proshka','<i>(фыркает)</i> Не буду я тебя есть. Ты же из теста, в тебе никакой конструкции.'],[11.2,2.4,'kolobok','А так можно было, правда?'],
-        [14.1,4.2,'proshka','Катишься сам? Значит, внутри пружина. Ладно. Пусть будет волшебная пружина.'],[18.8,3,null,'<i>Пелагея в тетрадке нового Колобка рисует,</i><br><i>А Прошка будто не видит — и бровью не поведёт, не ревнует.</i>',true]],
+        [14.1,4.2,'proshka','Катишься сам? Значит, внутри пружина. Ладно. Пусть будет волшебная пружина.'],[18.8,3,null,'<i>Пелагея рисует нового Колобка.</i><br><i>Прошка будто не смотрит.</i>',true]],
       events:[{t:0,fn:()=>{kol.g.position.set(kx,0,kz);kol.g.rotation.y=Math.atan2(pr.pos.x-kx,pr.pos.z-kz);pr.face=Math.atan2(kx-pr.pos.x,kz-pr.pos.z);kol.lids.forEach(l=>{l.rotation.x=0.2;});}},
         {t:11,fn:()=>{kol.lids[0].rotation.x=-0.5;}},{t:11.6,fn:()=>{kol.lids[1].rotation.x=-0.5;}},
         {t:18.8,fn:()=>{const pe=T.pelageya;pe.face=Math.PI/2;floatText(pe.pos.clone().add(new V3(0,1.6,0)),'✎','#e7c3ff');}}],
@@ -664,15 +664,15 @@ function build13(){W.soloMirror=true;
     const laneAt=q=>q.type==='storm'?new V3(LANES[pi][q.lanes[0]],4.6,q.z):q.type==='duo'?new V3(0,q.air?5.2:2.8,q.z):new V3(LANES[pi][q.lane===undefined?1:q.lane],q.y0+(q.air?1.8:2.4),q.z);
     for(const[a,types,note]of LANEI)prompt(pi,a,()=>{const q=laneFoe(types);return q?laneAt(q):headOf(active(pi));},()=>S.state==='play'&&!resting(pi)&&!!laneFoe(types),note);
     W.objectives[pi]=[
-      O(()=>'За Колобком беги! Дорожки — '+K(pi,'left')+K(pi,'right')+'.<br>Струна поперёк тропы — прыгай '+K(pi,'jump')+' под бубенец: подкинет — будешь браво!',()=>S.lastK>=PS[1],()=>{const s=nextStr(pi);return s?[s.g]:[];}),
+      O(()=>'За Колобком беги! Дорожки — '+K(pi,'left')+K(pi,'right')+'.<br>Струна поперёк тропы — прыгай '+K(pi,'jump')+' под бубенец: подкинет!',()=>S.lastK>=PS[1],()=>{const s=nextStr(pi);return s?[s.g]:[];}),
       O(()=>'Мост через речку. Дыры да бочки — обегай стороной.<br>Возьми перо — гусь-лебедь понесёт над мостом, над водой.',()=>S.lastK>=PS[2],()=>S.picks.filter(q=>q.pi===pi&&!q.taken&&q.kind==='goose').map(q=>q.g)),
-      O(()=>'Лиса сзади! Трижды подряд не споткнись — искры утащит.<br>А в конце — три струны подряд, кто вперёд обрящет!',()=>S.lastK>=PS[3]||S.state!=='play',()=>[]),
+      O(()=>'Лиса сзади! Трижды подряд не споткнись — искры утащит.<br>А в конце — три струны: запутай в них лису!',()=>S.lastK>=PS[3]||S.state!=='play',()=>[]),
       O(()=>'Волчья чаща! Знак над зверем подскажет кнопку.',()=>S.lastK>=PS[4]||S.state!=='play',()=>S.foes.filter(q=>(q.pi===pi||q.pi===2)&&!q.res&&q.m.g.visible).map(q=>q.m.g)),
       O(()=>'Гуси-лебеди! Знак над птицей подскажет кнопку.',()=>S.state!=='play',()=>S.foes.filter(q=>(q.pi===pi||q.pi===2)&&!q.res&&q.m.g.visible).map(q=>q.m.g)),
       O(()=>{const st=S.fs||0,P=FST[st];return 'Пляска на гуслях '+(st+1)+' / 3 · '+(st===0?'прыгайте '+K(pi,'jump')+' вместе на каждый звон —<br>Четыре струны зажгите — вот вам и лад, и звон!':st===1?'по очереди: '+(pi?'твой звон — сиреневый':'твой звон — оранжевый')+', прыгай '+K(pi,'jump')+' на свой.<br>Четыре струны зажгите — пусть поют над головой!':'над головой подсказка: прыжок '+K(pi,'jump')+' вдвоём иль хлопок щитом '+K(pi,'guard')+' вдвоём.<br>Четыре струны зажгите — вот и пляс, и гром!');},()=>S.state==='done',()=>[kol.g]),
       O('Колобок звено отдаёт',()=>false,()=>[kol.g])];}
   W.spawns=[[new V3(LANES[0][1],0,10),new V3(LANES[0][1]-0.55,0,11.8)],[new V3(LANES[1][1],0,10),new V3(LANES[1][1]+0.55,0,11.8)]];W.startAct=[0,0];
-  W.pauseLine='Колобок катится по опушке, через речку, лисьей тропой да волчьей чащей,<br>А там гуси-лебеди всех несут над долиной, над пущей.<br>Беги за ним: дорожки, прыжки, струны в долю — Колобок прыгнет первым, ты за ним через две;<br>Заяц, Волк и Медведь запоют — повтори щитом в те же доли;<br>Красное — в сторону, жёлтое — щит в такт и бей. Три пляски на гуслях вдвоём — всему венец.';
+  W.pauseLine='Колобок катится через опушку, речку, лисью тропу и волчью чащу, а потом гуси-лебеди несут всех над долиной.<br>Беги за ним по трём дорожкам. Колобок прыгнул на струну — через две доли прыгай и ты.<br>Зверь пропел — повтори щитом. Красное — в сторону, жёлтое — щит в такт, потом бей.<br>В конце — три пляски на гуслях вдвоём.';
   W.onStart=()=>{S.state='cine';play({dur:5.2,fov:50,shots:[shot(0,[0,3,6],[0,0.8,-6]),shot(2.6,[2,1.6,-2],[0,0.8,-6])],
     says:[[0.3,2.4,'kolobok','Я от бабушки ушёл, я от дедушки ушёл…'],[2.7,2.4,'zven','Колобок весь в песне. Бегите в такт — догоните!']],
     tick:t=>{kol.ball.rotation.y=Math.sin(t*3)*0.3;kol.ball.position.y=0.55+Math.abs(Math.sin(t*5))*0.3;},end:()=>{S.state='play';W.camFn=runCam;snapCams();}});};

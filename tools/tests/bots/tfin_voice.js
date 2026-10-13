@@ -31,7 +31,7 @@ if(V.babbled!==b1)throw new Error('бормотание: '+(V.babbled-b1));
 'level voices: '+cur1+' '+cur2+' sub='+st.toFixed(2)+'≥'+e.dur.toFixed(2)
 //@@
 // громкость «Голоса» 0 — бормотание вместо записи; пропуск ролика глушит голос
-const vol=ZC.FIN.set.vox;ZC.FIN.set.vox=0;const b2=V.babbled;V.stop(0.01);V.say('proshka','Щас подкручу механизм —<br>Держи лесенку, дружок!',2.4);const off=[V.cur,V.babbled-b2];ZC.FIN.set.vox=vol;
+const vol=ZC.FIN.set.vox;ZC.FIN.set.vox=0;const b2=V.babbled;V.stop(0.01);V.say('proshka','Щас подкручу механизм —<br>и лесенка вниз!',2.4);const off=[V.cur,V.babbled-b2];ZC.FIN.set.vox=vol;
 ZC.startFrom(ZC.LV('p'));ZC.G.manual=true;ZC.tick(20);const P2=ZC.players;P2[0].heroes[P2[0].act].pos.set(-2,0,1.4);P2[1].heroes[P2[1].act].pos.set(2.2,0,1.4);
 let k=0;while(!(ZC.G.cine&&V.cur)&&k<400){ZC.tick(1);k++;}const during=V.cur;ZC.skip();ZC.tick(3);const after=V.cur;
 if(off[0]||!off[1])throw new Error('при громкости 0: cur='+off[0]+' babble='+off[1]);if(!during||after)throw new Error('пропуск ролика: during='+during+' after='+after);

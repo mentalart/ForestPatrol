@@ -71,17 +71,17 @@ function build5B1(){
     shadows.forEach(s=>{if(s.e.alive){s.e.alive=false;W.group.remove(s.e.g);burst(s.e.pos.clone().add(new V3(0,1,0)),0x3a1a6a,12,3);}});shadows.length=0;
     W.hots.forEach(it=>{if(it.gold&&!it.gone){it.gone=true;if(it.carrier){it.carrier.carry=null;it.carrier=null;}W.group.remove(it.g);}});swing=null;mark.visible=false;wave.visible=false;
     KS.body.position.y=0;KS.body.rotation.x=0;KS.g.position.set(0,0,-28);KS.armR.rotation.x=-2.6;nIcon.g.visible=true;
-    banner('Кощей иглу подымает','#a0ffb8',3.5,'Закрываем Пелагею');later(1.2,()=>say('zven','Закройте Пелагею! Хоть немножко, хоть чуть!',2.4,true));
+    banner('Кощей иглу подымает','#a0ffb8',3.5,'Закрываем Пелагею');later(1.2,()=>say('zven','Закройте Пелагею! Хоть ненадолго!',2.4,true));
     later(2,()=>{Z.mode='script';});}
   function takeBook(){F.stage='book';const pe=T.pelageya;nIcon.g.visible=false;const nb=makeNotebook();nb.g.scale.setScalar(0.9);nb.g.position.set(pe.pos.x+0.2,1.0,pe.pos.z+0.3);
     play({dur:17,fov:44,camK:2.2,shots:[shot(0,[pe.pos.x+3,2.4,pe.pos.z+3],[pe.pos.x,1.2,pe.pos.z]),shot(6.4,[pe.pos.x-2,2,pe.pos.z+4],[KS.g.position.x,2.6,KS.g.position.z]),shot(10.8,[0,3,4],[0,2.6,8])],
-      says:[[0.3,3.6,null,'<i>Кощей сквозь щит идёт, как сквозь дым, крыло отводит —</i><br><i>И тетрадку забирает, прочь уходит.</i>',true],[4.2,2.4,null,'<i>Просто берёт — и прочь уходит.</i>',true],
-        [7,2.4,null,'<i>Уж в дверях оборачивается.</i>',true],[9.6,4.6,'koschei','Не бойся. Я её не порву.<br>Прочитать хочу — только и всего.'],[14.4,2.4,null,'<i>Звенышко у Пелагеи под крылом прячется.</i>',true]],
+      says:[[0.3,3.6,null,'<i>Кощей идёт сквозь щит, как сквозь дым,</i><br><i>и забирает тетрадку.</i>',true],[4.2,2.4,null,'<i>Просто берёт — и уходит.</i>',true],
+        [7,2.4,null,'<i>Уж в дверях оборачивается.</i>',true],[9.6,4.6,'koschei','Не бойся. Я её не порву.<br>Я хочу прочитать.'],[14.4,2.4,null,'<i>Звенышко у Пелагеи под крылом прячется.</i>',true]],
       events:[{t:0.3,fn:()=>{KS.g.position.set(pe.pos.x,0,pe.pos.z-1.1);KS.g.rotation.y=0;anim(0.8,k=>{KS.armR.rotation.x=-k*1.2;});later(1.6,()=>{anim(1,k=>{nb.g.position.lerpVectors(nb.g.position.clone(),KS.hand.getWorldPosition(new V3()),k);});});}},
         {t:4.2,fn:()=>{const f=KS.g.position.clone();KS.g.rotation.y=Math.PI;anim(5,k=>{KS.g.position.lerpVectors(f,new V3(0,0,9),k);nb.g.position.copy(KS.hand.getWorldPosition(new V3()));});}},
         {t:9.4,fn:()=>{KS.g.rotation.y=0;}},{t:14.4,fn:()=>{Z.pos.copy(pe.pos).add(new V3(0.4,0.8,0.2));}}],
       end:()=>{W.anims.length=0;flushGifts();F.out=true;bb.style.display='none';G.flags.nameless=true;G.flags.names={};const pg=(F.cover||0)>=6;G.flags.b1page=pg;G.flags.b1cover=Math.round(F.cover||0);
-        banner('Выстояли','#a0ffb8',3.5,pg?'тетрадку унёс — последняя страница у Пелагеи':'Потеряна тетрадка Пелагеи');if(pg)later(0.6,()=>bark(T.pelageya,'pelageya','Тут написано… последняя страница — у меня.',2.6));later(pg?3:2,finishLevel);}});}
+        banner('Выстояли','#a0ffb8',3.5,pg?'тетрадку унёс — последняя страница у Пелагеи':'Потеряна тетрадка Пелагеи');if(pg)later(0.6,()=>bark(T.pelageya,'pelageya','Последняя страница — у меня.',2.6));later(pg?3:2,finishLevel);}});}
   W.updates.push(dt=>{
     if(F.stage!=='fight'||G.cine)return;F.t+=dt;setBar();
     // тени возвращаются из темноты
@@ -121,7 +121,7 @@ function build5B1(){
     O('…',()=>false,()=>[])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.spawns=[[new V3(-3,0,10),new V3(-1,0,10)],[new V3(1,0,10),new V3(3,0,10)]];W.startAct=[0,0];
-  W.pauseLine='Кощей в тереме. Тут не победить — лишь выстоять: цель вверху, вместо полоски босса.<br>Тени любимую защиту перенимают — чередуй приёмы. Слитки — клещами в горн, без спроса.<br>Как поднимет он иглу — Пелагею закрываем.';
+  W.pauseLine='Кощей в тереме. Тут не победить — только выстоять: цель вверху, вместо полоски босса.<br>Тени перенимают любимую защиту — чередуй приёмы. Слитки неси клещами в горн.<br>Поднимет Кощей иглу — закрывайте Пелагею.';
   W.onStart=()=>{intro();};
   flushDecor();}
 

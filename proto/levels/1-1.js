@@ -358,7 +358,7 @@ function build11(){
   function spawnKiki(){if(arena.started)return;arena.started=true;SFX.splash();arena.list=puddles.map(([x,z])=>makeFoe('kiki',x,z,{leash:8}));banner('Кикиморки!','#b9f0a0',1.8,'лохматые, в тине, с ложками деревянными');}
   function giveClews(){F.stage='gift';const T=HERO;
     play({dur:12.5,fov:50,shots:[shot(0,[0,3.4,-17],[0,2.6,-26.5]),shot(3.2,[-1.8,2.0,-20.5],[0,1.6,-24]),shot(9.0,[0,4,-14],[0,1,-26])],
-      says:[[0.3,2.6,'yaga','Вот это двор — любо-дорого глядеть!<br>Каждому по клубку, помощнички, — владеть!'],[3.2,2.2,'yaga','<i>(Потапу, на ухо)</i> В Лешем лесу шапку наизнанку наденьте, а то закружит.'],
+      says:[[0.3,2.6,'yaga','Вот это двор — любо-дорого глядеть!<br>Каждому по клубку, помощнички!'],[3.2,2.2,'yaga','<i>(Потапу, на ухо)</i> В Лешем лесу шапку наизнанку наденьте, а то закружит.'],
         [5.4,2.0,'yaga','<i>(Пелагее)</i> В Лешем лесу шапку наизнанку наденьте…'],[7.4,1.6,'yaga','<i>(Йоше)</i> …а то закружит.'],[9.1,2.4,null,'<i>Прошка закатывает глаза.</i>',true]],
       events:[{t:0.8,fn:()=>{HEROES.forEach((h,i)=>{const b=new THREE.Mesh(new THREE.SphereGeometry(0.17,10,8),M(COL.gold,{emissive:0xffb000,emissiveIntensity:0.9}));W.group.add(b);const a=new V3(0,3.2,-26),to=h.pos.clone().add(new V3(0,1,0));
           anim(0.9+i*0.15,k=>{b.position.lerpVectors(a,to,k);b.position.y+=Math.sin(k*Math.PI)*2;if(k>=1){W.group.remove(b);burst(to,COL.gold,8,2);SFX.knot();}});});}},
@@ -411,7 +411,7 @@ function build11(){
     prompt(pi,'guard',()=>headOf(active(pi)),()=>W.enemies.some(e=>e.alive&&e.tgt===active(pi)&&e.state==='wind'&&e.help));
     prompt(pi,'attack',()=>headOf(active(pi)),()=>W.enemies.some(e=>e.alive&&((e.state==='broken'&&hd(e.pos,active(pi).pos)<6)||(e.tgt===active(pi)&&e.state==='stagger'&&!e.openHit&&players[pi].staggerSeen<=3))));}
   for(const pi of[0,1]){
-    prompt(pi,'attack',()=>headOf(active(pi)),()=>F.stage==='crows'&&!F.hayHit&&hd(active(pi).pos,HS)<2.9,'разворошь!');
+    prompt(pi,'attack',()=>headOf(active(pi)),()=>F.stage==='crows'&&!F.hayHit&&hd(active(pi).pos,HS)<2.9,'развороши!');
     // ступа Яги: поднимает только Потап — его игроку: «смени на Потапа», потом «подними!»
     prompt(pi,'swap',()=>headOf(active(pi)),()=>F.stage==='crows'&&!F.stupa&&T.potap.player===pi&&active(pi)!==T.potap&&hd(active(pi).pos,ST)<4,'на Потапа');
     prompt(pi,'skill',()=>headOf(T.potap),()=>F.stage==='crows'&&!F.stupa&&active(pi)===T.potap&&hd(T.potap.pos,ST)<3.2,'подними!');
@@ -428,7 +428,7 @@ function build11(){
     O('Избушка к нам задом стоит. Звенышко: «Скажите ей, как в сказке, — пусть повернёт!»',()=>active(pi).pos.z<-14||W.rzt.state!=='wait',()=>[hut.house]),
     both(pi),
     O('Избушка поворачивается…',()=>F.stage==='fight'||F.stage==='yard'||F.stage==='gift',()=>[hut.house]),
-    O(()=>'Кикиморки! Солнышко <i class="sg y"></i> над ней — щитом '+K(pi,'guard')+' закройся,<br>Огоньки погасли — бей '+K(pi,'attack')+', не бойся!',()=>arena.cleared,()=>arena.list.map(e=>e.g)),
+    O(()=>'Кикиморки! Солнышко <i class="sg y"></i> над ней — щитом '+K(pi,'guard')+' закройся,<br>Угольки погасли — бей '+K(pi,'attack')+', не бойся!',()=>arena.cleared,()=>arena.list.map(e=>e.g)),
     O(()=>'Кикиморки намусорили! Подойди — мусор сам возьмётся.<br>В кучу у забора неси: '+cleanN()+' / '+(TR.length+1)+'. Корыто — вдвоём несётся.',()=>F.stage==='gift'||F.stage==='yard',()=>TR.filter(t=>t.state==='ground'||t.state==='carry').map(t=>t.g).concat(TRB.state==='ground'||TRB.state==='carry'?[TRB.g]:[],[heapG])),
     O('Баба Яга клубки раздаёт…',()=>F.stage==='yard',()=>[yaga.g]),
     O(()=>'На грядках капуста — топтать не смей!<br>Брось клубок '+K(pi,'item')+' — и по нити, как по дощечке, скорей.',()=>active(pi).pos.z<-51.5,()=>[],()=>({kind:active(pi).kind,action:'walk',from:new V3(pi?5.5:-5.5,0,-37),to:new V3(pi?5.5:-5.5,0,-51)}))];
@@ -442,12 +442,12 @@ function build11(){
     O(pi?()=>'Конёк с петушком — на крышу! Пелагеей по чурбакам наверх, прыгни к лесам<br>и держи '+K(1,'jump')+' — долетишь! Или встань рядом с Потапом — он подкинет.':()=>'Конёк с петушком — на крышу! Прошкой встань в круг у лесов, рядом Потап,<br>смени '+K(0,'swap')+' на Потапа, жми '+K(0,'skill')+' — подкинет! (Пелагея долетит с чурбаков.)',()=>!!F.konek,()=>[KON.g]),
     O('Новоселье в теремке!',()=>!!F.done)];
   W.objectives[0]=common(0).concat([
-    O(()=>'Звено на крыше сарая! Прошкой рядом с Потапом встань,<br>Смени на Потапа, жми '+K(0,'skill')+' — он подкинет, только глянь!',()=>roofLink.taken||active(0).pos.z<-62.5,()=>[roofLink.g],()=>({kind:'proshka',action:'jump',from:new V3(-4.2,0,-58),to:new V3(-6,3.4,-58)})),
-    O(()=>'Лужа широка — одной нити мало.<br>Бросьте клубки ОБА у края '+K(0,'item')+' — нить к нити пристала.',()=>active(0).pos.z<-88.5,()=>[pitMark],()=>({kind:active(0).kind,action:'walk',from:new V3(-1,0,-62),to:new V3(-1,0,-76)})),
+    O(()=>'Звено на крыше сарая! Прошкой встань рядом с Потапом,<br>смени на Потапа и жми '+K(0,'skill')+' — он подкинет.',()=>roofLink.taken||active(0).pos.z<-62.5,()=>[roofLink.g],()=>({kind:'proshka',action:'jump',from:new V3(-4.2,0,-58),to:new V3(-6,3.4,-58)})),
+    O(()=>'Лужа широка — одной нити мало.<br>Бросьте клубки ОБА у края '+K(0,'item')+' — нити сцепятся.',()=>active(0).pos.z<-88.5,()=>[pitMark],()=>({kind:active(0).kind,action:'walk',from:new V3(-1,0,-62),to:new V3(-1,0,-76)})),
     gateObj(0)].concat(part2(0)));
   W.objectives[1]=common(1).concat([
     O(()=>'Звено на голубятне! Пелагеей на стог взберись,<br>Прыгни, держи '+K(1,'jump')+' — долетишь, не боись!',()=>dovLink.taken||active(1).pos.z<-62.5,()=>[dovLink.g],()=>({kind:'pelageya',action:'glide',from:new V3(6.5,2.2,-57.8),to:new V3(9.4,2.3,-62.2)})),
-    O(()=>'Лужа широка — одной нити мало.<br>Бросьте клубки ОБА у края '+K(1,'item')+' — твоя к другу пристала.',()=>active(1).pos.z<-88.5,()=>[pitMark],()=>({kind:active(1).kind,action:'walk',from:new V3(1,0,-62),to:new V3(1,0,-76)})),
+    O(()=>'Лужа широка — одной нити мало.<br>Бросьте клубки ОБА у края '+K(1,'item')+' — нити сцепятся.',()=>active(1).pos.z<-88.5,()=>[pitMark],()=>({kind:active(1).kind,action:'walk',from:new V3(1,0,-62),to:new V3(1,0,-76)})),
     gateObj(1)].concat(part2(1)));
   W.tipZones.push({cond:(pi,h)=>!!RV.dive&&RV.dive.h===h&&RV.dive.st==='lock',text:pi=>'Красный круг — беги из него!'},
     {cond:(pi,h)=>F.stage==='crows'&&!F.dust&&h.pos.z<-158&&h.pos.z>-187,text:pi=>'Воронья роща — без пыли не пройти, заклюют!<br>Ступа Яги в коряге — Потап её поднимет.'},
@@ -461,7 +461,7 @@ function build11(){
     {cond:(pi,h)=>F.stage==='yard'&&h.pos.z<-59&&h.pos.z>-63&&W.threads.some(t=>t.owner!==pi&&!t.ret),text:pi=>'Нить друга лежит — брось свою рядом.'});
   W.onGlue=()=>{F.glued=true;};
   W.spawns=[[new V3(-3.5,0,5),new V3(-5.5,0,6)],[new V3(3.5,0,5),new V3(5.5,0,6)]];W.startAct=[0,0];
-  W.pauseLine='Звенышко в Дремучий лес ведёт.<br>У Яги клубок-путеводитель ждёт:<br>Куда бросишь — туда и катится,<br>Золотою нитью путь стелется.<br>А за калиткой — вороны Кощеевы кружат, ступа Яги выручает, да теремок зверей ждёт.';
+  W.pauseLine='Звенышко ведёт в Дремучий лес. Яга подарит клубок-путеводитель:<br>куда бросишь — туда он покатится и протянет золотую нить.<br>За калиткой — вороны Кощея, ступа Яги и теремок зверей.';
   W.onStart=()=>{later(0.8,()=>say('zven','Скажите ей, как в сказке.',2.6,true));};
   flushDecor();}
 

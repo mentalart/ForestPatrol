@@ -11,9 +11,9 @@ function makeBogatyr(kind){const g=new THREE.Group();W.group.add(g);const C={i:[
   if(kind==='a'){const gs=new THREE.Group();gusliMesh(gs,M(0xc89a4a),0.7);gs.position.set(0.6,1.3,0.4);gs.rotation.set(-0.6,0,0.4);g.add(gs);}
   for(const s of[-1,1])part(g,new THREE.CylinderGeometry(0.18,0.2,0.6,8),M(0x4a3a2a),s*0.28,0.3,0);return {g,head};}
 function buildZast(kind){
-  const Z5={i:{id:'z-i',b:'Илья Муромец',t:'Крен Калинова моста',arm:'armI',hero:'Потапу',gold:45,silver:80,line:'Сила — не только поднять, мой свет.<br>Знать, куда встать, — вот и весь секрет.'},
+  const Z5={i:{id:'z-i',b:'Илья Муромец',t:'Крен Калинова моста',arm:'armI',hero:'Потапу',gold:45,silver:80,line:'Сила — не только поднять, Потапушка.<br>Знать, куда встать, — вот в чём секрет.'},
     d:{id:'z-d',b:'Добрыня Никитич',t:'Семерых одним махом',arm:'armD',hero:'Прошке',gold:80,silver:130,line:'Семерых — одним махом? Посмотрим, поглядим.'},
-    a:{id:'z-a',b:'Алёша Попович',t:'Колокольная перекличка',arm:'armA',hero:'Пелагее',gold:90,silver:140,line:'Колокола перекликаются. Запомните — и повторите за ним.'}}[kind];
+    a:{id:'z-a',b:'Алёша Попович',t:'Колокольная перекличка',arm:'armA',hero:'Пелагее',gold:90,silver:140,line:'Колокола перекликаются. Запомните — и повторите за ними.'}}[kind];
   setTheme('sunset');sky('sunset');W.name='Застава · '+Z5.b;W.sub='«'+Z5.t+'» · испытание на время';W.camX=16;const F=W.flags;F.stage='intro';F.t=0;W.zast=kind;
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.fallY=-6;const T=HERO;
   const bog=makeBogatyr(kind);bog.g.position.set(-9,0,-2);bog.g.rotation.y=0.9;W.cyls.push({x:-9,z:-2,r:0.9,miny:-1,maxy:3,on:true});
@@ -23,8 +23,8 @@ function buildZast(kind){
   function setBar(){bb.style.display='block';bb.style.borderColor='#ffd76a';const t=F.t;bb.innerHTML='<b style="color:#ffd76a">'+fmt(t)+'</b> · <span style="color:'+(t<=Z5.gold?'#ffd76a':'#888')+'">богатырское время — '+Z5.gold+' с · доспех</span>'+(F.extra?' <small>'+F.extra()+'</small>':'');}
   function done(){if(F.stage==='done')return;F.stage='done';const t=F.t;const m=t<=Z5.gold?'gold':'done';G.zbest=G.zbest||{};if(!G.zbest[Z5.id]||t<G.zbest[Z5.id])G.zbest[Z5.id]=t;
     const kind={armI:'potap',armD:'proshka',armA:'pelageya'}[Z5.arm];if(m==='gold'&&!own(Z5.arm)){buyWard(Z5.arm);putOn(kind,Z5.arm);}SFX.horn();SFX.ok();setBar();
-    banner(m==='gold'?'Богатырское время!':'Дошли!','#ffd76a',3,fmt(t)+(m==='gold'?' · доспех '+Z5.b.split(' ')[0]+'а — в примерочной':' · доспех — за '+Z5.gold+' с'));
-    later(0.6,()=>bark(bog,'kuzma',m==='gold'?'Богатырское дело — вот это да!':t<=Z5.silver?'Крепко. Ещё бы чуток — и было бы в самый раз.':'Дошли — уже сила, так и знай.',2.2));later(3.4,()=>{bb.style.display='none';goLevel('luko');});}
+    banner(m==='gold'?'Богатырское время!':'Дошли!','#ffd76a',3,fmt(t)+(m==='gold'?' · '+Z5.b.split(' ')[0]+' дарит доспех — он в примерочной':' · доспех — за '+Z5.gold+' с'));
+    later(0.6,()=>bark(bog,'kuzma',m==='gold'?'Богатырское дело. Хорошо.':t<=Z5.silver?'Крепко. Ещё бы чуток — и было бы в самый раз.':'Дошли — уже сила.',2.2));later(3.4,()=>{bb.style.display='none';goLevel('luko');});}
   function intro(extra){HEROES.forEach(h=>{const k=players[h.player].heroes.indexOf(h),s=W.spawns[h.player][k];placeOnGround(h,s.x,s.z,0);h.face=Math.PI;});
     play({dur:7,fov:46,shots:[shot(0,[-6,2.4,2],[-9,2.2,-2])],says:[[0.3,3.2,null,'<i>'+Z5.b+' у Заставы встречает — богатырь удалой.</i>',true],[3.4,3.4,null,'«'+Z5.line+'»',true]],end:()=>{W.anims.length=0;F.stage='run';F.t=0;snapCams();setBar();banner(Z5.t,'#ffd76a',3,extra);}});}
   W.updates.push(dt=>{if(F.stage==='run'&&!G.cine){F.t+=dt;setBar();}});
@@ -47,7 +47,7 @@ function buildZast(kind){
       if(F.stage==='run'&&HEROES.every(h=>h.pos.z<Z1-0.5&&h.pos.y>-0.5))done();});
     F.extra=()=>'крен '+Math.round(Math.abs(B.th)/TMAX*100)+'% · на том берегу: '+HEROES.filter(h=>h.pos.z<Z1-0.5).length+' / 4'+(F.tips?' · переворотов: '+F.tips:'');
     W.spawns=[[new V3(-1.6,0,3),new V3(-3.6,0,4)],[new V3(1.6,0,3),new V3(3.6,0,4)]];
-    for(let pi=0;pi<2;pi++)W.objectives[pi]=[O(()=>'Все четверо — на тот берег по Калинову мосту. Мост кренится туда, где тяжелей.<br>Потап тяжёл, как трое. До края наклонится — перевернётся, не жалей.',()=>F.stage==='done',()=>[]),O('…',()=>false,()=>[])];
+    for(let pi=0;pi<2;pi++)W.objectives[pi]=[O(()=>'Все четверо — на тот берег по Калинову мосту. Мост кренится туда, где тяжелей.<br>Потап тяжёл, как трое. Наклонится до края — перевернётся.',()=>F.stage==='done',()=>[]),O('…',()=>false,()=>[])];
     W.pauseLine='Застава · Илья Муромец. Калинов мост кренится туда, где вес, а Потап — за троих.<br>Все четверо — на тот берег, на время. Сильный крен — перевернётся мост в тот же миг.';
     W.onStart=()=>intro('все четверо — на тот берег · крен держите: Потап за троих весит');}
   /* ---------- Добрыня: семерых одним махом ---------- */
@@ -57,8 +57,8 @@ function buildZast(kind){
     F.extra=()=>'распутано: '+(W.enemies.filter(e=>!e.alive).length)+' / 7';
     W.updates.push(dt=>{if(F.stage==='run'){if(wi<0)wave();else if(list.every(e=>!e.alive))wave();}});
     W.spawns=[[new V3(-2,0,-1),new V3(-4,0,0)],[new V3(2,0,-1),new V3(4,0,0)]];W.clampR={x:C.x,z:C.z,r:R-0.6};
-    for(let pi=0;pi<2;pi++)W.objectives[pi]=[O(()=>'Семерых одним махом! Щитом '+K(pi,'guard')+' закрывайся в самый последний миг пред ударом —<br>Так быстрее всего, не даром.',()=>F.stage==='done',()=>W.enemies.filter(e=>e.alive).map(e=>e.g)),O('…',()=>false,()=>[])];
-    W.pauseLine='Застава · Добрыня Никитич. Три волны, семь мороков — на время.<br>Отбив в самый миг угольки быстрее гасит — вот и всё умение.';
+    for(let pi=0;pi<2;pi++)W.objectives[pi]=[O(()=>'Семерых одним махом! Закрывайся щитом '+K(pi,'guard')+' в самый последний миг —<br>так быстрее всего.',()=>F.stage==='done',()=>W.enemies.filter(e=>e.alive).map(e=>e.g)),O('…',()=>false,()=>[])];
+    W.pauseLine='Застава · Добрыня Никитич. Три волны, семь мороков — на время.<br>Отбив в последний миг гасит угольки быстрее всего.';
     W.onStart=()=>intro('три волны, семь мороков · «Одним махом» — быстрей всего');}
   /* ---------- Алёша: колокольная перекличка ---------- */
   if(kind==='a'){ground(-16,16,-24,8,0);tower(-7,-16);tower(7,-16);
@@ -84,7 +84,7 @@ function buildZast(kind){
     for(const pi of[0,1])prompt(pi,'attack',()=>headOf(active(pi)),()=>state==='input'&&BELLS.some(q=>!q.high&&hd(q.pos,active(pi).pos)<2.2),'позвонить');
     prompt(0,'skill',()=>headOf(T.proshka),()=>state==='input'&&T.proshka.active,'рогатка — в колокол на башне');
     for(let pi=0;pi<2;pi++)W.objectives[pi]=[O(()=>'Колокола по очереди звонят. Запомните порядок и повторите.<br>Низкий колокол — ударь '+K(pi,'attack')+', на башне — из рогатки Прошки стрельните.',()=>F.stage==='done',()=>BELLS.map(b=>b.g)),O('…',()=>false,()=>[])];
-    W.pauseLine='Застава · Алёша Попович. Колокола по порядку звонят — повторите:<br>Низкие — ударом, на башнях — рогаткой. Ошибка — пять секунд штрафа, учтите.';
+    W.pauseLine='Застава · Алёша Попович. Колокола звонят по порядку — повторите:<br>низкие — ударом, на башнях — рогаткой. Ошибка — пять секунд штрафа.';
     W.onStart=()=>intro('запомните порядок и повторите · четыре переклички подряд');}
   W.startAct=[0,0];flushDecor();}
 

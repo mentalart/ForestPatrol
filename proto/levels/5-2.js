@@ -73,7 +73,7 @@ function build52(){
     else if(HR.state==='dash'){const m=edgeMid(HR.edge);to=m;sp=6.2;if(P.distanceTo(new V3(m.x,0,m.z))<0.7){const t=TH[HR.edge];
         if(t.state==='solid'){HR.state='center';HR.cd=rand(1.2,2);HR.tgt=null;SFX.shield();floatText(P.clone().add(new V3(0,1.8,0)),'Бум! Изгородь держит — не пройдёшь','#ffe36b');burst(P.clone().add(new V3(0,0.8,0)),COL.gold,8,3);if(Math.random()<0.4)taunt('bonk');}
         else{HR.state='out';HR.t=0;HR.escapes++;const out=P.clone().sub(C).setY(0).normalize();HR.tgt=C.clone().addScaledVector(out,12);SFX.whoosh();banner('Заяц в дырку удрал!','#ffd0d0',1.6,'сейчас заяц к капусте вернётся — держите изгородь');taunt('out');
-          if(HR.escapes===1)later(0.8,()=>bark(T.yosha,'yosha','Видишь дырку у друга — кличь: «Ко мне!»<br>Его столб покатится закрывать — вот и ладно вполне!',3));}}}
+          if(HR.escapes===1)later(0.8,()=>bark(T.yosha,'yosha','Видишь дырку у друга — кричи: «Ко мне!»<br>Его столб покатится и закроет дырку.',3));}}}
     else if(HR.state==='out'){to=HR.tgt;sp=6.5;if(P.distanceTo(HR.tgt)<0.8){const a=Math.atan2(P.x-C.x,P.z-C.z)+0.9;HR.tgt=new V3(C.x+Math.sin(a)*12,0,C.z+Math.cos(a)*12);}
       if(HR.t>4.5){HR.state='back';HR.t=0;}}
     else if(HR.state==='back'){to=C;sp=6;if(P.distanceTo(C)<1.2){HR.state='center';HR.cd=rand(1.5,2.5);HR.tgt=null;}}
@@ -118,7 +118,7 @@ function build52(){
       end:()=>{W.anims.length=0;HR.state='free';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-3,0);h.face=Math.PI;});snapCams();startHam();}});}
   // разминка: Хамелей у капусты перенял знак гуслей — плюётся каплями; распутали — загоняем зайца
   let ham=null;function startHam(){F.stage='ham';ham=hameleyFoe(C.x+3,C.z+5,{leash:8});banner('Хамелей у капусты!','#ffd76a',3,'знак гуслей перенял — распутайте');later(0.8,()=>bark(T.pelageya,'pelageya','Тут написано… у знака гуслей он плюётся каплями.',3));}
-  function startHunt(){F.stage='hunt';HR.state='free';showCircle(0);SFX.ok();banner('Изгородь из нитей-ниток','#ffd76a',3,'меж героями, что ближе десяти шагов стоят, нить натягивается · пока идёшь — нить мигает');}
+  function startHunt(){F.stage='hunt';HR.state='free';showCircle(0);SFX.ok();banner('Изгородь из нитей','#ffd76a',3,'меж героями, что ближе десяти шагов стоят, нить натягивается · пока идёшь — нить мигает');}
   function closeCircle(){const k=circle;SFX.ok();ringFx(new V3(C.x,0.1,C.z),COL.gold,RAD[k]+1);burst(new V3(C.x,1,C.z),COL.gold,20,4);giveLink(new V3(C.x,1,C.z),active(k%2),1.4,1.1);
     if(k===0&&HR.state==='free'){HR.state='back';HR.t=0;}
     if(k<2){circle=k+1;showCircle(circle);banner('Круг '+(k+1)+' сомкнулся!','#ffd76a',2.4,'сменяйтесь и подходите по одному — к кольцам поближе');
@@ -149,7 +149,7 @@ function build52(){
   const mk=pi=>[
     OR('Заяц…',()=>F.stage!=='intro'&&F.stage!=='introCine',()=>[hare.g]),
     OR(()=>'Хамелей у капусты знак гуслей перенял — плюётся каплями.<br>Защита — отбив '+K(pi,'guard')+', погасли угольки — удар '+K(pi,'attack')+'.',()=>F.stage!=='ham',()=>ham&&ham.alive?[ham.g]:[],null,'…хамелей. Перенял гусли — капли полетят.'),
-    OR(()=>'На первый круг встаньте — все четверо: цифра и цвет — чьё кольцо.<br>Меж стоящими героями нить натянется — вот и крыльцо.',()=>circle>=1,()=>SPOTS[0].filter(s=>s.pi===pi).map(s=>s.g),null,'…оставленные — столбы, стоят.'),
+    OR(()=>'На первый круг встаньте все четверо: цифра и цвет — чьё кольцо.<br>Между стоящими героями натянется нить.',()=>circle>=1,()=>SPOTS[0].filter(s=>s.pi===pi).map(s=>s.g),null,'…оставленные — столбы, стоят.'),
     OR(()=>'Смена '+K(pi,'swap')+', шаг — по одному на кольца ближе. Дырка у друга — «Ко мне!» '+K(pi,'call')+'.<br>Мышь перегрызла нить — клубок по знаку '+K(pi,'item')+'. Мышь бежит — спугни ударом '+K(pi,'attack')+'.',()=>circle>=2,()=>SPOTS[1].filter(s=>s.pi===pi).map(s=>s.g),null,'…смена, шаг, смена, шаг.'),
     OR(()=>'Последний круг — три шага. Заяц хитрит: смотрит в одну сторону, бежит в другую.',()=>circle>=3,()=>SPOTS[2].filter(s=>s.pi===pi).map(s=>s.g),null,'…последний круг — три шага, три.'),
     OR(pi?()=>'Заяц сел в середине, ушами дрожит. Потап Прошку подкидывает.':()=>'Потап — подкидка '+K(0,'skill')+': Прошку — сверху прямо на зайца.',()=>F.stage==='end',()=>[hare.g]),

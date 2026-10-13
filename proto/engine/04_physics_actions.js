@@ -25,7 +25,7 @@ function placeOnGround(h,x,z,yHint){h.pos.set(x,yHint+0.05,z);const g=groundAt(x
 function onFall(h){ // падение: без урона, назад к колокольчику своего игрока; три падения в одном месте — «Держись за меня»
   const p=players[h.player];if(W.fallHook&&W.fallHook(h))return;
   if(h.active){G.stats.falls++;const now=G.time;p.falls=p.falls.filter(f=>now-f.t<240);const near=p.falls.filter(f=>Math.hypot(f.x-h.pos.x,f.z-h.pos.z)<7).length;p.falls.push({x:h.pos.x,z:h.pos.z,t:now});
-    tip(h.player,near>=2?'Тут трудно — не торопись! Ты снова у колокольчика, лепестки целы.':'Упс! Ты снова у колокольчика. Лепестки целы — будь смелым.',2.4);}
+    tip(h.player,near>=2?'Тут трудно — не торопись! Ты снова у колокольчика, лепестки целы.':'Ой! Ты снова у колокольчика. Лепестки целы — вперёд!',2.4);}
   if(h.active&&W.spring&&h.safe){W.spring=false;placeOnGround(h,h.safe.x,h.safe.z,h.safe.y);h.iT=1;floatText(h.pos.clone().add(new V3(0,h.d.height+0.7,0)),'Пружинка Колобка!','#f0c050');SFX.toss();return;}
   const k=p.heroes.indexOf(h);placeOnGround(h,p.cp.x+(k?1.2:-0.4),p.cp.z,p.cp.y);h.iT=1;h.following=false;burst(h.pos.clone().add(new V3(0,0.6,0)),0xffffff,8,3);}
 function teleportBehind(o,h){const tx=h.pos.x-Math.sin(h.face)*1.2,tz=h.pos.z-Math.cos(h.face)*1.2;const g=groundAt(tx,tz,h.pos.y+0.5,0);
