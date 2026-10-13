@@ -113,7 +113,7 @@
 | `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_93_koschei_level_p6_epic, late_93_koschei_level_ph_prologue, late_93_koschei_level_pi_lessonagain, late_94_koschei_reset, late_94b_k5e_budget, late_97f_koschei_motif | 3 | t5b2 tk5e_resume tlukoepi |
 | `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start, late_97f_koschei_motif, late_97g_buyan_nest | 4 | tepi tfin_companion_epi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
-| `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 2 | tfin_juice tzast |
+| `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 3 | tfin_bogatyr tfin_juice tzast |
 | `z-a` | Застава · Алёша Попович: колокольная перекличка | `buildZast('a')` · `levels/zastava.js` | — | 1 | tzast |
 
 ## Части прототипа (`proto/`, порядок — `proto/parts.txt`; склейка — `index.html`, `python3 tools/proto.py`)
@@ -128,7 +128,7 @@
 | `engine/03_world_fx_collision.js` | 226 | МИР · FX · ПОЛУПРОЗРАЧНОСТЬ ТОГО, ЧТО ЗАСЛОНЯЕТ ГЕРОЕВ · КОЛЛИЗИИ |
 | `engine/04_physics_actions.js` | 156 | ФИЗИКА ГЕРОЯ · ДЕЙСТВИЯ ИГРОКОВ |
 | `engine/05_foes_moroki.js` | 349 | МОРОКИ (язык боя v4: сигнал → защита → запал гаснет → Пробо… |
-| `engine/06_damage_clew.js` | 174 | УРОН, КЛУБОК НИТОК И ПОДШИВАНИЕ (закон доброго дивана) · КЛУБОК-ПУТЕВОДИТЕЛЬ (RB): нить-тропка, нить к нити, струны … |
+| `engine/06_damage_clew.js` | 195 | УРОН, КЛУБОК НИТОК И ПОДШИВАНИЕ (закон доброго дивана) · КЛУБОК-ПУТЕВОДИТЕЛЬ (RB): нить-тропка, нить к нити, струны … |
 | `engine/07_props.js` | 105 | ПРЕДМЕТЫ: звенья и золотые орешки · КОЛЫШКИ, КАМНИ С ЛАПОЙ, КОЧКИ · ВЗГЛЯД И ХОДЯЧИЕ ЁЛКИ (1-4) · ПЕНЬКИ «НА РАЗ-ДВА-ТРИ» · ПЛИТЫ, ВОРОТА, КОЛОКОЛЬЧИКИ · РИСУНОК КНОПКИ НАД ГЕРОЕМ |
 | `engine/08_zven_tasks_camera.js` | 197 | ЗВЕНЫШКО: проводник и подсказчик · ЗАДАЧИ, ПОДСКАЗКИ 20/40 с, ПРИЗРАК · КАМЕРА (демпфирование, lookahead, крен, тряска, слияние, ро… |
 | `engine/09_hud_cine.js` | 129 | HUD / UI · ОБНОВЛЕНИЕ ГЕРОЕВ (визуал) · РОЛИКИ В ДВИЖКЕ (кадры, реплики, события; пропуск — оба дер… |
@@ -289,6 +289,7 @@
 | `late_91d_readvoice.js` | — | РЕЛИЗ · ЗАДАЧИ И ПОДСКАЗКИ — ЗАПИСАННЫМ ГОЛОСОМ |
 | `late_91e_dash.js` | — | РЕЛИЗ · РЫВОК-УВОРОТ (LT / Shift): своя анимация и след у каждого героя |
 | `late_91e_foe_death.js` | — | РЕЛИЗ · СМЕРТЬ МОРОКОВ: «распутывание» |
+| `late_91g_bogatyr.js` | — | РЕЛИЗ · БОГАТЫРСКИЙ ВЫХОД: СИЛУ ВИДНО НА КАЖДОМ ГЕРОЕ |
 | `levels/5-B2/late_92_koschei.js` | 5-B2 | РЕЛИЗ final06 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ»: ФИНАЛЬНЫЙ БОЙ В ПЯТЬ ЭТАПОВ |
 | `levels/5-B2/late_92a_k5e_init.js` | 5-B2 | БИТВА С КОЩЕЕМ (5-Б2) · общие данные стадий |
 | `levels/5-B2/late_92b_k5e_lib.js` | — | БИТВА С КОЩЕЕМ (k5epic) · БИБЛИОТЕКА: пролог, Лукоморье, Кот на цепи, буквы-удары, страницы, оркестр |
@@ -507,11 +508,11 @@
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `42_priskazka_intro.md` | «Присказка» — вступительный ролик игры (сценарий) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 172 файлов |
+| `changes/` | 173 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 309 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 310 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
