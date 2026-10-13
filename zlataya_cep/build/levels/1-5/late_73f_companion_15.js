@@ -2,7 +2,7 @@
 // Подворье Кикиморы — пять частей (proto/levels/1-5.js, общее — W.k15):
 //   сени: кикиморки — общий бой; мотовило — бот встаёт на свободную площадку (подальше от человека), наверху сходит на полати и клубком
 //     заводит мотовило, если внизу кто-то стоит на площадке;
-//   ткацкая: человек на подножке — бот у челнока бросает клубок в зев; иначе бот сам держит подножку;
+//   ткацкая: человек на подножке — бот у челнока бросает клубок в зев; иначе бот сам держит нужную подножку (их две, по очереди);
 //   овин: на каждом этаже — в кольцо, клубок в колышек, ждёт струну друга, прыжок на серединку (оба героя); Пелагея на галерее рубит старую нить;
 //   сушильня: Пелагея включает Совиный взор, идёт просветами, низкие нити — прыжком; встаёт на свободную плиту засова;
 //   повить: из своего кольца — струну в колышек напротив (паутинка посередине); паутинка готова — встаёт в золотой круг-приманку, если человек
@@ -33,20 +33,29 @@ CMP.route('1-5',[
   {id:'foesA',done:()=>{const K=km15K();return K.aFoes.started&&K.aFoes.list.every(e=>!e.alive);},run:h=>{
     const al=km15K().aFoes.list.filter(e=>e.alive&&e.state!=='spawn'&&e.state!=='dying');if(W.flags.stage!=='play'||!al.length)return 'follow';
     al.sort((a,b)=>hd(a.pos,h.pos)-hd(b.pos,h.pos));cmpGoto(h,al[0].pos.x,al[0].pos.z,3);}},
-  // мотовило: на свободную площадку; наверху — на полати и клубком заводить мотовило
-  {id:'lift',done:()=>!!W.flags.liftDone||active(1).pos.z<28.4,run:(h,hh)=>{km15();const K=km15K(),F=W.flags;if(F.stage!=='play')return 'follow';
-    if(h.pos.y>4.1&&h.pos.z<31.45){                                                                  // на полатях
+  // мотовило: на свободную площадку (лучше правую — там контур Пелагеи); наверху — на полати и клубком заводить мотовило, если внизу кто-то стоит.
+  // «Поровну» (человек не Потапом) или мешок на своей площадке — 2,5 с без толку: бот сходит и ударом шлёт мешок шерсти на площадку
+  // человека (тот станет тяжелее) или сбрасывает со своей; потом обратно на площадку
+  {id:'lift',done:()=>!!W.flags.liftDone||active(1).pos.z<28.4,run:(h,hh,dt)=>{const M=km15(),K=km15K(),F=W.flags,S=K.SACK;if(F.stage!=='play')return 'follow';
+    if(h.pos.y>4.1&&h.pos.z<31.45){M.stuck=0;M.sack=false;                                          // на полатях
       const below=K.PL.find(P=>P.y<1&&K.weightOn(P)>0);if(!below||K.LIFT.wind>=0){cmpGoto(h,h.pos.x,30,0.4);return;}
       if(cmpGoto(h,1.4,29.4,0.35)>0.35)return;h.face=Math.atan2(K.reel.position.x-h.pos.x,K.reel.position.z-h.pos.z);km15Tap('item',1.2);return;}
-    const on=K.PL.find(P=>h.groundRef===P.col);
-    if(on){if(on.y>K.LIFT.top-0.1)cmpGoto(h,on.cx,30.2,0.3);return;}                               // поднялся — сходит на полати; иначе стоит и ждёт
-    const P=K.PL.slice().sort((a,b)=>Math.abs(b.cx-hh.pos.x)-Math.abs(a.cx-hh.pos.x)).find(q=>q.y<1.2)||K.PL[1];
+    const on=K.PL.find(P=>h.groundRef===P.col),hOn=K.PL.find(P=>hh.groundRef===P.col);
+    if(M.sack&&G.time-M.sackT>12)M.sack=false;                                                    // не вышло за 12 с — обратно на площадку
+    if(M.sack){if(S.fly)return;
+      const sp=K.sack.position;
+      if(S.on>=0&&(!hOn||S.on!==hOn.i)){if(cmpGoto(h,sp.x+(S.on?-1:1),sp.z,0.5)>0.6)return;h.face=Math.atan2(sp.x-h.pos.x,sp.z-h.pos.z);km15Tap('attack',0.8);return;}   // мешок не там — сбросить на пол
+      if(S.on<0&&hOn&&hOn.y<1.5){const j=hOn.i,sx=sp.x+(j?-1.1:1.1);if(cmpGoto(h,sx,sp.z,0.3)>0.35)return;h.face=j?Math.PI/2:-Math.PI/2;km15Tap('attack',0.8);return;}   // к человеку на площадку
+      M.sack=false;M.stuck=0;}
+    if(on){if(on.y>K.LIFT.top-0.1){cmpGoto(h,on.cx,30.2,0.3);return;}                               // поднялся — сходит на полати; иначе стоит и ждёт
+      const stuck=hOn&&hOn!==on&&(K.LIFT.eq||S.on===on.i);M.stuck=stuck?(M.stuck||0)+(dt||1/60):0;if(M.stuck>2.5){M.sack=true;M.sackT=G.time;M.stuck=0;}return;}
+    const free=K.PL.filter(q=>q!==hOn&&q.y<1.2).sort((a,b)=>(b.i-a.i)*3+Math.abs(b.cx-hh.pos.x)-Math.abs(a.cx-hh.pos.x));const P=free[0]||K.PL[1];
     const d=cmpGoto(h,P.cx,33,0.5);if(d<2.4&&h.grounded&&h.pos.y<P.y-0.3)km15Tap('jump',0.6);}},
   // ткацкий стан: человек на подножке — бот у челнока; иначе бот держит подножку
   {id:'loom',done:()=>!!W.flags.loomDone,run:(h,hh)=>{const K=km15K();if(W.flags.stage!=='play')return 'follow';if(h.pos.z>28.6){cmpGoto(h,0,27.4,0.4);return;}
-    const humanPedal=hh.groundRef===K.treadleCol;
+    const humanPedal=K.treadleCols.includes(hh.groundRef);                                          // подножек две — по очереди (светится нужная)
     if(humanPedal){if(cmpGoto(h,K.spotRing.position.x,K.spotRing.position.z,0.3)>0.3)return;h.face=Math.PI;if(K.LOOM.open)km15Tap('item',1.3);return;}
-    cmpGoto(h,-6.5,25.5,0.25);}},
+    if(h.groundRef!==K.treadleCols[K.LOOM.need])cmpGoto(h,K.TRX[K.LOOM.need],25.5,0.25);}},
   // нитяные мороки на полу овина: бой общий
   {id:'foes',done:()=>{const K=km15K();return W.flags.spFled||(K.floorFoes.started&&K.floorFoes.list.every(e=>!e.alive));},run:h=>{
     const al=km15K().floorFoes.list.filter(e=>e.alive&&e.state!=='spawn'&&e.state!=='dying');if(!al.length)return 'follow';

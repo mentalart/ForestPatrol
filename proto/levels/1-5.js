@@ -25,6 +25,8 @@ function build15(){
   if(!FOE.vereten){FOE.vereten={r:1.15,emb:6,sig:['yellow','red'],sp:1.5,look:'vereten',big:true};   // Веретенник: облик — veretenLook (при первом входе в уровень)
     WHO.vereten=['Веретенник','#e8d8b0'];VOICE.vereten={f:120,w:'triangle',sp:0.12};
     const _fl=foeLook;foeLook=function(kind,inner,def){return def.look==='vereten'?veretenLook(inner):_fl(kind,inner,def);};}
+  // ролики уровня: релиз ставит их вручную (late_99zw_k15_kino.js, W.k15kino[id](def,ctx) → новый def с теми же событиями); прототип — как есть
+  const k15c=(id,def,ctx)=>{const f=W.k15kino&&W.k15kino[id];if(!f)return def;try{return f(def,ctx||{})||def;}catch(e){console.error(e);return def;}};
   W.zvenAway=false;   // Звенышко — проводник: висит над следующей целью (W.zvenGoal ниже)
   setTheme('barn');W.name='1-5 · «Кикиморина прялка»';W.sub='Дремучий лес · подворье Кикиморы · паутинка крест-накрест';W.camX=13;W.camZMax=50.1;const F=W.flags;   // камера не уходит за заднюю стену сеней (иначе на старте смотрит сквозь неё)
   W.abil.clew=true;W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.threadLife=10;
@@ -45,7 +47,10 @@ function build15(){
   {const d0=W.group.children.length;
     for(let z=48;z>29;z-=5)for(const s of[-1,1])addMesh(new THREE.BoxGeometry(0.5,16,0.5),wd,s*14.7,8,z);
     for(let i=0;i<8;i++){const r=addMesh(new THREE.BoxGeometry(0.4,0.4,22),wd,-14+i*4,15.4,39.4);r.castShadow=false;}
-    for(let x=-14;x<15;x+=1.6)addMesh(new THREE.BoxGeometry(0.1,0.9,0.1),wd,x,4.9,31.3);addMesh(new THREE.BoxGeometry(30,0.1,0.14),wd,0,5.35,31.3);   // перильце полатей
+    // перильце полатей — с калитками напротив площадок мотовила (x 4,2…7,8): поднялся — шагай прямо на полати, перила не мешают и не обманывают глаз
+    for(let x=-14;x<15;x+=1.6)if(Math.abs(Math.abs(x)-6)>2)addMesh(new THREE.BoxGeometry(0.1,0.9,0.1),wd,x,4.9,31.3);
+    for(const[a,b]of[[-15,-7.9],[-4.1,4.1],[7.9,15]])addMesh(new THREE.BoxGeometry(b-a,0.1,0.14),wd,(a+b)/2,5.35,31.3);
+    for(const s of[-1,1])for(const x of[4.05,7.95])addMesh(new THREE.BoxGeometry(0.16,1.3,0.16),M(0x8a5a32),s*x,5.05,31.3);
     for(let i=0;i<7;i++){const h=addMesh(new THREE.BoxGeometry(1.4,0.9,1),M(0xd8b04a),rand(-14,-11),0.45,rand(36,48));h.rotation.y=rand(0,3);}   // сено
     // прялки, мотки и кудель по стенам
     for(let i=0;i<4;i++){const g=new THREE.Group();g.position.set(i%2?13.6:-13.6,0,46-i*4.6);g.rotation.y=i%2?-Math.PI/2:Math.PI/2;W.group.add(g);
@@ -56,11 +61,20 @@ function build15(){
     for(const x of[-2.8,2.8])addMesh(new THREE.BoxGeometry(0.5,6,0.5),wd,x,3,50.6);addMesh(new THREE.BoxGeometry(6.1,0.5,0.5),wd,0,5.9,50.6);}   // столбы ворот — в толще стены: камера у задней стены их не задевает
   lantern(-14.2,47,0);lantern(14.2,40,0);lantern(-14.2,30,4.4);lantern(14.2,30,4.4);
   // мотовило-противовес: две площадки на одной нити через блок под крышей. На обеих стоят — тяжелей вниз, легче вверх; поровну — стоят; пусто — в покое на 0,9 м
-  const LIFT={rest:0.9,top:4.4,low:0.08,wind:-1,windT:0,told:{}};   // низ — чуть выше пола, чтобы стоящий был на площадке, а не на полу
+  // защёлка: площадка с героем дошла доверху — «щёлк», держится, пока с неё не сойдут (лёгкий не уезжает вниз, если Потап сошёл раньше)
+  const LIFT={rest:0.9,top:4.4,low:0.08,wind:-1,windT:0,told:{},latch:-1,latchT:0,eq:false,eqY:[0.9,0.9],eqT:0,wasUp:false,creakT:0};   // низ — чуть выше пола, чтобы стоящий был на площадке, а не на полу
   const PL=[[-7.6,-4.4],[4.4,7.6]].map(([x0,x1],i)=>{const col=colBox(x0,x1,0.6,0.9,31.5,34.5,false);const g=new THREE.Group();g.position.set((x0+x1)/2,0.9,33);W.group.add(g);
     addMesh(new THREE.BoxGeometry(x1-x0,0.3,3),plank,0,-0.15,0,g);for(const s of[-1,1])addMesh(new THREE.BoxGeometry(x1-x0,0.12,0.12),wd,0,0.06,s*1.45,g);
     for(const s of[-1,1])for(const t of[-1,1]){const r=addMesh(new THREE.CylinderGeometry(0.03,0.03,1,4),M(0xd8d8e4),s*1.3,0,t*1.2,g);r.userData.rope=true;}
-    const ring=goldRing((x0+x1)/2,0.9,33,1.0);return {x0,x1,cx:(x0+x1)/2,col,g,ring,y:0.9,i};});
+    // контур — кто сюда встаёт: слева Потап (тяжёлый, вниз), справа друг (лёгкий, вверх)
+    const gh=buildHeroMesh(i?'pelageya':'potap',true).g;gh.position.set(0,0,0.2);g.add(gh);
+    // «весы» на нитях площадки: гирьки — сколько весит стоящий (Потап — две), стрелка — куда поедет; поровну — знак «=»
+    const sc=new THREE.Group();sc.position.set(0,2.5,-1.25);g.add(sc);addMesh(new THREE.BoxGeometry(2.3,0.5,0.08),M(0x8a5a32),0,0,0,sc);
+    const kM=M(0x3a3a44,{emissive:0xffb000,emissiveIntensity:0.25}),kg=[];for(let k=0;k<4;k++){const q=new THREE.Group();q.position.set(-0.78+k*0.52,0.05,0.06);sc.add(q);
+      addMesh(new THREE.CylinderGeometry(0.13,0.17,0.24,10),kM,0,-0.04,0,q);addMesh(new THREE.TorusGeometry(0.06,0.025,5,10),kM,0,0.14,0,q);q.visible=false;kg.push(q);}
+    const arM=MB(COL.gold,{transparent:true,opacity:0.95}),ar=new THREE.Mesh(new THREE.ConeGeometry(0.26,0.5,4),arM);ar.position.set(0,0.75,0);sc.add(ar);
+    const eqG=new THREE.Group();eqG.position.set(0,0.75,0);sc.add(eqG);for(const y of[-0.09,0.09])addMesh(new THREE.BoxGeometry(0.5,0.08,0.08),MB(0xffffff),0,y,0,eqG);
+    const ring=goldRing((x0+x1)/2,0.9,33,1.0);return {x0,x1,cx:(x0+x1)/2,col,g,ring,y:0.9,i,gh,sc,kg,ar,arM,eqG};});
   const pulley=[];for(const P of PL){const wl=addMesh(new THREE.TorusGeometry(0.5,0.1,6,18),M(0x5a3a1a),P.cx,10,33);wl.rotation.y=Math.PI/2;pulley.push(wl);}
   addMesh(new THREE.BoxGeometry(14,0.4,0.4),wd,0,10.6,33);const overRope=addMesh(new THREE.BoxGeometry(12,0.05,0.05),M(0xd8d8e4),0,10.5,33);
   const reel=new THREE.Group();reel.position.set(0,4.4,29.8);W.group.add(reel);
@@ -68,8 +82,34 @@ function build15(){
     for(let i=0;i<4;i++){const a=addMesh(new THREE.BoxGeometry(0.12,1.6,0.12),M(0x8a5a32),0,0,0,spin);a.rotation.x=i*Math.PI/4;}addMesh(new THREE.CylinderGeometry(0.22,0.22,1.7,10).rotateZ(Math.PI/2),M(0xd8d0b8),0,0,0,spin);}
   W.cyls.push({x:0,z:29.8,r:0.7,miny:4,maxy:6,on:true});
   const reelRing=goldRing(0,4.4,28.9,0.6);
-  const weightOn=P=>HEROES.reduce((s,h)=>s+(h.groundRef===P.col?(h.kind==='potap'?2:1):0),0);
+  // мешок шерсти — вторая гиря: удар — прыгает на площадку, куда смотришь; ещё удар — обратно на пол. Весит как лёгкий герой:
+  // «поровну» решается и без Потапа (мешок к себе — и ты тяжелей)
+  const SACK={on:-1,fly:false,home:new V3(0,0,36.2)};
+  const sack=new THREE.Group();sack.position.copy(SACK.home);W.group.add(sack);
+  {const sm=M(0xd8c8a0);const b=part(sack,new THREE.SphereGeometry(0.55,12,9),sm,0,0.5,0);b.scale.set(1,0.95,0.9);part(sack,new THREE.ConeGeometry(0.22,0.35,8),sm,0,1.07,0);
+    part(sack,new THREE.TorusGeometry(0.17,0.045,5,12),M(0xc0302a),0,0.93,0).rotation.x=Math.PI/2;
+    for(let i=0;i<3;i++)part(sack,new THREE.SphereGeometry(0.13,6,5),M([0xe8dcc0,0xc8a868,0xf0e8d8][i]),Math.cos(i*2.1)*0.42,0.55+i*0.12,Math.sin(i*2.1)*0.42+0.12);}
+  const sackCyl={x:SACK.home.x,z:SACK.home.z,r:0.5,miny:-1,maxy:1.1,on:true};W.cyls.push(sackCyl);
+  const sackAt=i=>i<0?SACK.home.clone():new V3(PL[i].cx+(i?0.95:-0.95),PL[i].y,33.95);
+  function sackHit(h){if(SACK.fly||F.liftDone)return;let to=-1;
+    if(SACK.on<0){to=Math.sin(h.face)>=0?1:0;if(PL[to].y>1.5){floatText(sack.position.clone().add(new V3(0,1.6,0)),'Высоко — не докинуть','#e8dcc0');return;}}
+    const from=sack.position.clone();SACK.fly=true;SACK.on=-1;SFX.toss();
+    anim(0.55,k=>{const t=sackAt(to);sack.position.lerpVectors(from,t,smooth(k));sack.position.y+=Math.sin(k*Math.PI)*1.6;sack.rotation.z=Math.sin(k*Math.PI*2)*0.3;
+      if(k>=1){SACK.fly=false;SACK.on=to;sack.rotation.z=0;SFX.thud();burst(sack.position.clone().add(new V3(0,0.3,0)),0xe8dcc0,10,3);
+        floatText(sack.position.clone().add(new V3(0,1.6,0)),to<0?'Мешок — на пол':'+1 к весу','#ffd76a');}});}
+  // камера у мотовила — общая (экран не делится), в кадре обе площадки, весы и полати; кто поднялся — камера поднимает взгляд
+  W.camZones.push({x:0,z:33.2,r:6.4,get y(){return Math.max(...PL.map(P=>weightOn(P)>0?P.y:0))*0.55;},
+    camActive:()=>F.stage==='play'&&!F.liftDone&&!G.cine&&!(W.k15&&W.k15.aFoes.list.some(e=>e.alive))&&acts().every(h=>h.pos.z>28.4&&h.pos.z<45.6)});
+  W.hittables.push({pos:sack.position,r:0.6,alive:()=>!F.liftDone&&!SACK.fly,onHit:h=>sackHit(h)});
+  // вес на площадке: стоящие на ней герои, кроме ведомых (идут следом сами: второй герой напарника-бота, «Все ко мне» в одиночку), и мешок;
+  // Потап — за двоих. Раньше ведомый Йоша заходил за ботом на ту же площадку — «поровну», и мотовило вставало.
+  // Прыжок с площадки вверх веса не снимает, пока герой над ней (до 1,5 с) — площадка не дёргается под прыгающим.
+  const onPl=(h,P)=>{if(h.groundRef===P.col){h._pl=P;h._plT=G.time;}
+    else if(h.groundRef||h._pl!==P||G.time-h._plT>1.5||h.pos.y<P.y-0.3||h.pos.x<P.x0-0.3||h.pos.x>P.x1+0.3||h.pos.z<31.2||h.pos.z>34.8)return false;
+    return !h.following&&!players[h.player].downed;};
+  const weightOn=P=>HEROES.reduce((s,h)=>s+(onPl(h,P)?(h.kind==='potap'?2:1):0),0)+(SACK.on===P.i&&!SACK.fly?1:0);
   function windReel(pi){const h=active(pi),w=PL.map(weightOn);let wi=w[0]>w[1]?0:w[1]>w[0]?1:-1;
+    if(LIFT.latch>=0&&w[LIFT.latch]>0){SFX.miss();tip(pi,'Сначала сойди с площадки на полати — потом мотовило.',2.4);return;}
     if(wi<0||PL[wi].y>LIFT.top-0.2){SFX.miss();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Мотовило крутится вхолостую','#d8d8e4');return;}
     LIFT.wind=wi;LIFT.windT=25;SFX.thread();SFX.knot();h.face=Math.atan2(reel.position.x-h.pos.x,reel.position.z-h.pos.z);
     banner('Клубок на мотовило!','#ffd76a',1.6,'нить наматывается — площадка едет вверх');F.wound=true;}
@@ -79,7 +119,9 @@ function build15(){
   wall(-15.4,-15,-1,16,4.4,28.4);wall(15,15.4,-1,16,4.4,28.4);lantern(-14.2,25,4.4);lantern(14.2,25,4.4);lantern(-14.2,10.4,4.4);lantern(14.2,10.4,4.4);
   {const pit=new THREE.Mesh(new THREE.PlaneGeometry(30,11),MB(0x1a1208));pit.rotation.x=-Math.PI/2;pit.position.set(0,-5,16.9);W.group.add(pit);
     for(const z of[11.4,22.4]){const e=addMesh(new THREE.BoxGeometry(30,9.4,0.3),M(0x3a2a18),0,-0.3,z+(z>15?-0.15:0.15));e.castShadow=false;}}
-  const LOOM={n:0,max:5,strip:2.2,z0:22.4,open:false,busy:0};
+  // две подножки, как у настоящего стана: левая поднимает чётные нити основы, правая — нечётные; полосы ткутся по очереди — левая, правая, левая…
+  // держащий подножку перепрыгивает на ту, что светится; на чужой зев закрыт. С третьей полосы мешает кикиморка («Не тки!»)
+  const LOOM={n:0,max:5,strip:2.2,z0:22.4,open:false,busy:0,need:0,wrongT:0,told:{}};const TRX=[-6.5,-4.1];
   const clothCol=colBox(-1.5,1.5,4.2,4.4,22.4,22.4,false);clothCol.on=false;
   const cloth=addMesh(new THREE.BoxGeometry(3,0.14,1),M(0xe8dcc0),0,4.33,22.4);cloth.scale.z=0.001;
   const clothStripes=[];for(let i=0;i<LOOM.max;i++){const s=addMesh(new THREE.BoxGeometry(3.02,0.15,0.18),M([0xc0302a,0x3a6ad0,0xe0b020,0x3f8a45,0x9a4a6a][i]),0,4.34,LOOM.z0-LOOM.strip*(i+0.5));s.visible=false;clothStripes.push(s);}
@@ -87,18 +129,23 @@ function build15(){
   {for(const z of[22.6,11.2])for(const s of[-1,1])addMesh(new THREE.BoxGeometry(0.35,4,0.35),wd,s*2.4,6.4,z);
     for(const z of[22.6,11.2]){addMesh(new THREE.BoxGeometry(5.2,0.3,0.3),wd,0,8.3,z);const b=addMesh(new THREE.CylinderGeometry(0.22,0.22,4.6,10).rotateZ(Math.PI/2),M(0x8a5a32),0,4.1,z);b.castShadow=false;}}
   const reed=addMesh(new THREE.BoxGeometry(3.4,0.9,0.1),M(0x8a6a40,{transparent:true,opacity:0.75}),0,5.2,22.2);
-  const treadle=box(-7.3,-5.7,4.4,4.6,24.7,26.3,M(0x8a5a32),{occ:false});const treadleCol=treadle.col;
+  const treadles=TRX.map(x=>box(x-0.8,x+0.8,4.4,4.6,24.7,26.3,M(0x8a5a32),{occ:false})),treadle=treadles[0],treadleCol=treadle.col,treadleCols=treadles.map(t=>t.col);
+  treadles.forEach((t,k)=>{for(let j=0;j<3;j++)addMesh(new THREE.BoxGeometry(0.18,0.03,1.2),MB(k?0x3a6ad0:0xc0302a),TRX[k]-0.45+j*0.45,4.62,25.5).userData.pedal=k;});   // полоски: левая — красная, правая — синяя
   const treadleRing=goldRing(-6.5,4.6,25.5,0.75),spotRing=goldRing(0,4.4,23.7,0.65);
   const loomGh=[ghostOf('potap',-6.5,4.6,25.5,Math.PI),ghostOf('proshka',0,4.4,23.7,Math.PI)];
   const shuttle=new THREE.Mesh(new THREE.SphereGeometry(0.2,10,8),M(COL.gold,{emissive:0xffb000,emissiveIntensity:0.9}));shuttle.visible=false;W.group.add(shuttle);
   function setCloth(){const L=LOOM.n*LOOM.strip;cloth.scale.z=Math.max(0.001,L);cloth.position.z=LOOM.z0-L/2;clothCol.minz=LOOM.z0-L;clothCol.on=L>0;clothStripes.forEach((s,i)=>{s.visible=i<LOOM.n;});}
   function loomThrow(pi){const h=active(pi);if(F.loomDone||LOOM.busy>0)return;
-    if(!LOOM.open){SFX.miss();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Зев закрыт!','#d8d8e4');tip(pi,'Зев закрыт! Друг — на подножку.',2.4);return;}
+    if(!LOOM.open){SFX.miss();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Зев закрыт!','#d8d8e4');
+      tip(pi,HEROES.some(q=>q.groundRef===treadleCols[1-LOOM.need])?'Не та подножка! Нужна '+(LOOM.need?'правая, синяя':'левая, красная')+' — она светится.':'Зев закрыт! Друг — на подножку.',2.4);return;}
     LOOM.busy=1.0;h.face=Math.PI;SFX.thread();const fz=LOOM.z0-LOOM.n*LOOM.strip-LOOM.strip/2;shuttle.visible=true;
     anim(0.7,k=>{shuttle.position.set(lerp(-2.8,2.8,k),4.75+Math.sin(k*Math.PI)*0.3,fz);if(k>=1)shuttle.visible=false;});
-    later(0.75,()=>{LOOM.n++;setCloth();SFX.knot();burst(new V3(0,4.6,fz),COL.gold,10,3);anim(0.35,k=>{reed.position.z=lerp(22.2,fz+1.1,Math.sin(k*Math.PI));});
+    later(0.75,()=>{LOOM.n++;LOOM.need=LOOM.n%2;setCloth();SFX.knot();burst(new V3(0,4.6,fz),COL.gold,10,3);anim(0.35,k=>{reed.position.z=lerp(22.2,fz+1.1,Math.sin(k*Math.PI));});
+      tone(220,0.08,'square',0.25,140,0.3);tone(180,0.1,'triangle',0.3,90,0.32);   // батан прибивает уток — деревянный «тук»
+      if(LOOM.n===1&&!LOOM.told.alt){LOOM.told.alt=true;for(const q of[0,1])tip(q,'Полоса легла! Теперь другая подножка — та, что светится.',3);}
+      if(LOOM.n===2&&!F.loomKiki){F.loomKiki=true;F.loomKikiE=makeFoe('kiki',9,26.6,{y:4.4,leash:6});banner('Кикиморка: «Не тки!»','#c8e0a8',2,'отбейтесь — и тките дальше');}
       floatText(new V3(0,5.6,fz),'Полоса '+LOOM.n+' / '+LOOM.max,'#ffd76a');
-      if(LOOM.n>=LOOM.max){F.loomDone=true;SFX.ok();banner('Полотно-мост готов!','#ffd76a',2.2,'идите по полотну на тот берег');
+      if(LOOM.n>=LOOM.max){F.loomDone=true;SFX.ok();banner('Полотно-мост готов!','#ffd76a',2.2,'идите по полотну на тот берег');later(2.3,()=>bark(h,h.kind,'Вот так полотно — хоть на ярмарку!',2));
         if(!F.loomFoe){F.loomFoe=true;makeFoe('thread',4,10.4,{y:4.4,leash:5});}}});}
   W.itemSign=pi=>{const h=active(pi);if(!h||players[pi].downed)return null;
     if(!F.loomDone&&hd(h.pos,spotRing.position)<1.1&&Math.abs(h.pos.y-4.4)<0.8)return loomThrow;
@@ -181,7 +228,7 @@ function build15(){
     const jg=[ghostOf(i?'yosha':'potap',c.x+0.5,c.y,c.z+0.4,Math.atan2(t.x-c.x,t.z-c.z)),ghostOf(i?'pelageya':'proshka',c.x-0.5,c.y,c.z-0.4,Math.atan2(t.x-c.x,t.z-c.z))];jg.forEach(q=>g.add(q));
     g.visible=false;return {g,c,t,jg};});
   linkItem(-4.4,3.2,-16);linkItem(-7.75,6.6,-28.4);const highLink=linkItem(-2.5,11.8,-31.9);W.linkTotal++;   // четвёртое отдаст Кикимора
-  nutItem(8.5,0.6,-3);nutItem(-8.4,4.0,-8);nutItem(4,7.6,-33);nutItem(-9.3,4.0,-28.3);nutItem(8.8,1.0,-27,{owl:true});
+  nutItem(-8.4,4.0,-8);nutItem(4,7.6,-33);nutItem(-9.3,4.0,-28.3);nutItem(8.8,1.0,-27,{owl:true});
   /* ---------- старая сказочная нить: видна только Совиным взором, рвётся ударом ---------- */
   const hook=new V3(-5.9,4.5,-9.5),wheelHub=new V3(7.2,6.5,-18);
   const old=new THREE.Mesh(new THREE.CylinderGeometry(0.04,0.04,1,6),MB(0xdfe8ff,{transparent:true,opacity:0}));W.group.add(old);
@@ -199,11 +246,11 @@ function build15(){
   // на чердаке веретено вырывается из рук Кикиморы и улетает в дверь — на повить (там оно станет Веретенником)
   const flySp=new THREE.Group();W.group.add(flySp);flySp.visible=false;{const inn=new THREE.Group();flySp.add(inn);veretenLook(inn);}
   function spindleFlees(){F.spFled=true;F.warn=false;const from=new V3();kiki.spindle.getWorldPosition(from);
-    play({dur:7.4,fov:50,shots:[shot(0,[-1.5,9.6,-26],[3.6,2,-18]),shot(3.2,[1.2,9.2,-27.5],[-2.5,8.4,-34.2])],
+    play(k15c('flee',{dur:7.4,fov:50,shots:[shot(0,[-1.5,9.6,-26],[3.6,2,-18]),shot(3.2,[1.2,9.2,-27.5],[-2.5,8.4,-34.2])],
       says:[[0.3,2.8,'kiki','<i>(во сне)</i> Пряди… Стой! Веретено, стой!'],[3.6,3.4,'zven','Веретено удрало на повить! Скорей за ним!']],
       events:[{t:0.4,fn:()=>{kiki.spindle.visible=false;yarn.visible=false;flySp.visible=true;SFX.whoosh();SFX.keys();const a=from.clone(),b=new V3(-2.5,8.6,-33.6),c=new V3(-2.5,8.6,-44);
           anim(5.6,k=>{const q=k<0.6?k/0.6:1,p=k<0.6?a.clone().lerp(b,smooth(q)):b.clone().lerp(c,(k-0.6)/0.4);p.y+=Math.sin(q*Math.PI)*3;flySp.position.copy(p);flySp.rotation.y+=0.4;flySp.rotation.z=0.6;flySp.scale.setScalar(0.25+0.35*k);if(k>=1)flySp.visible=false;});}}],
-      end:()=>{flySp.visible=false;banner('Веретено удрало!','#e8d8b0',2,'в дверь на чердаке — на повить');}});}
+      end:()=>{flySp.visible=false;banner('Веретено удрало!','#e8d8b0',2,'в дверь на чердаке — на повить');}},{from}));}
   /* ================= 4. СУШИЛЬНЯ (z −34,4 … −52,4, пол 7): сторожевые нити и засов на двоих ================= */
   ground(-15,15,-52.4,-34.4,7,floorM,sideM);
   wall(-15.4,-15,3,17,-52.4,-34.4);wall(15,15.4,3,17,-52.4,-34.4);wall(-15.4,-13.4,3,17,-34.4,-34);wall(13.4,15.4,3,17,-34.4,-34);
@@ -224,11 +271,12 @@ function build15(){
   const dryFoes=[];
   function tripped(w,h){(F.trips=F.trips||[]).push(w.z+':'+h.kind+'@'+h.pos.x.toFixed(1)+','+h.pos.y.toFixed(2)+','+h.pos.z.toFixed(1)+(h.following?'f':''));w.cd=4;w.flash=1.8;SFX.bell();SFX.dzin();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Дзынь! Задели нить!','#dfe8ff');shake(h.player,0.03,0.2);
     if(!F.wireTold){F.wireTold=true;for(const pi of[0,1])tip(pi,'Нить не видна! Пелагея — Совиный взор '+K(1,'skill')+'!',3);}
+    else if(h.kind==='pelageya'&&w.y>7.6&&!F.yoshaTold){F.yoshaTold=true;tip(1,'Высокую нить Йоша '+K(1,'swap')+' пролезет понизу!',3);}
     if(dryFoes.filter(e=>e.alive).length<2)dryFoes.push(makeFoe('thread',clamp(h.pos.x,-10,10),w.z-2.6,{y:7,leash:7}));}
   nutItem(-13.6,7.6,-41.8);nutItem(13.4,7.6,-48.4,{owl:true});nutItem(1,8.9,-38.2);
   // засов: обе плиты у двери нажаты — засов поднят, дверь на повить открыта
   const plates=[-6,6].map((x,i)=>{const b=box(x-0.8,x+0.8,7,7.15,-50.6,-49,M(0x8a5a32),{occ:false});return {x,col:b.col,mesh:b.mesh,ring:goldRing(x,7.15,-49.8,0.75),gh:ghostOf(i?'pelageya':'potap',x,7.15,-49.8,Math.PI)};});
-  W.noSplitFn=()=>!F.latch&&acts().every(h=>h.pos.z<-34.4&&h.pos.z>-53&&h.pos.y>6.5);   // плиты засова в 12 м друг от друга: в сушильне экран общий — обе плиты и дверь в кадре
+  W.noSplitFn=()=>!F.latch&&acts().every(h=>h.pos.z<-34.4&&h.pos.z>-53&&h.pos.y>6.5)||!F.loomDone&&acts().every(h=>h.pos.z<28.4&&h.pos.z>22&&h.pos.y>4.1);   // и у стана: подножки и зев в одном кадре   // плиты засова в 12 м друг от друга: в сушильне экран общий — обе плиты и дверь в кадре
   const gateCol=colBox(-2,2,7,10.4,-52.8,-52.4);const gate=new THREE.Group();gate.position.set(0,8.7,-52.6);W.group.add(gate);
   {addMesh(new THREE.BoxGeometry(4,3.4,0.2),M(0x5a3a1a),0,0,0,gate);for(let x=-1.6;x<1.7;x+=0.8)addMesh(new THREE.BoxGeometry(0.12,3.4,0.3),wd,x,0,0,gate);addMesh(new THREE.BoxGeometry(4.6,0.3,0.4),M(0x8a8a90),0,0.4,0.15,gate);}
   function gateTo(open){gateCol.on=!open;const y0=gate.position.y,y1=open?5.1:8.7;anim(0.9,k=>{gate.position.y=lerp(y0,y1,smooth(k));});SFX.gate();}
@@ -354,20 +402,20 @@ function build15(){
     e.pos.set(p.x,7,p.z);e.g.visible=true;e.state='idle';e.t=0;e.hideUntil=null;e.dazeT=2.6;B.mode='home';B.atkCd=3.2;SFX.ok();banner(txt,'#ffd76a',1.4,'вот настоящее веретено');summonAdds();}
   function summonAdds(){B.adds=B.adds.filter(a=>a.alive);for(const x of[-9,9]){if(B.adds.length>=2)break;B.adds.push(makeFoe('thread',x,-63,{y:7,leash:9}));}}
   function toPhase2(){const e=B.e;B.phase=1.5;B.mode='free';hideTele();const at=e.pos.clone();
-    play({dur:8,fov:48,shots:[shot(0,[at.x+4.5,10.6,at.z+7],[at.x,8.6,at.z]),shot(3.6,[at.x-5,9.6,at.z+6],[at.x,8.8,at.z])],
+    play(k15c('phase2',{dur:8,fov:48,shots:[shot(0,[at.x+4.5,10.6,at.z+7],[at.x,8.6,at.z]),shot(3.6,[at.x-5,9.6,at.z+6],[at.x,8.8,at.z])],
       says:[[0.3,3.0,'vereten','Ой-ой! Пряду-кручу — не дамся!'],[3.6,4.0,'kiki','<i>(издалека)</i> Детки… веретено моё… троиться станет — глядите зорче!']],
       events:[{t:0.2,fn:()=>{anim(3,k=>{e.inner.rotation.y+=0.5;e.g.position.y=7+Math.sin(k*Math.PI)*0.8;});SFX.whoosh();}},{t:3.4,fn:()=>{e.g.position.y=7;rewrap(e);}}],
-      end:()=>{B.phase=2;e.state='idle';e.t=0;e.finT=0;e.embers=e.maxEmb=6;rewrap(e);B.mode='home';B.cnt=0;B.atkCd=2.5;summonAdds();banner('Веретенник · этап 2','#e8d8b0',2,'мороки в помощь — и троиться станет');}});}
+      end:()=>{B.phase=2;e.state='idle';e.t=0;e.finT=0;e.embers=e.maxEmb=6;rewrap(e);B.mode='home';B.cnt=0;B.atkCd=2.5;summonAdds();banner('Веретенник · этап 2','#e8d8b0',2,'мороки в помощь — и троиться станет');}},{at,e}));}
   function defeat(){const e=B.e;B.phase=3;F.done=true;F.bossWon=true;hideTele();for(const a of B.adds)if(a.alive)unravel(a);for(const t of trails){t.t=0;t.m.visible=false;}
     e.alive=false;e.state='dying';e.t=0;finale(e.pos.clone(),e);}
   // вход: веретено просыпается в гнезде; последний план — сверху вся повить: кольца, струны крест-накрест, круг у входа
   function introBoss(){B.phase=0.5;
-    play({dur:9.6,fov:48,shots:[shot(0,[0,12,-55],[0,7.8,NEST.z],[0,10,-63],[0,8.6,NEST.z],4),shot(4.2,[3.4,9.4,NEST.z+6],[0,9,NEST.z]),shot(6.8,[0,20.5,-53.2],[0,7,-65.5])],
+    play(k15c('boss',{dur:9.6,fov:48,shots:[shot(0,[0,12,-55],[0,7.8,NEST.z],[0,10,-63],[0,8.6,NEST.z],4),shot(4.2,[3.4,9.4,NEST.z+6],[0,9,NEST.z]),shot(6.8,[0,20.5,-53.2],[0,7,-65.5])],
       says:[[0.4,3.2,'zven','Веретено ожило! Это Веретенник!'],[3.9,2.8,'vereten','Пряду-кручу — всех опутаю!'],[6.9,2.6,'zven','Ловите его в паутинку!']],
       events:[{t:0,fn:()=>{gateTo(false);for(const pi of[0,1])players[pi].cp.set(-4.2,7,-55.2);let k=0;for(const q of HEROES){if(q.pos.z<-53.4&&q.pos.y>6)continue;placeOnGround(q,[-1.5,1.5,-3,3][k%4],-55.4,7);q.following=true;k++;}}},
         {t:1.2,fn:()=>{const e=spawnBoss();SFX.keys();shakeAll(0.04,0.4);if(W.heap)anim(1.2,k=>{W.heap.scale.set(1-k,0.5*(1-k)+0.01,1-k);});}}],
       end:()=>{B.phase=1;B.atkCd=3;if(W.heap)W.heap.visible=false;banner('Веретенник!','#e8d8b0',2.4,'кокон не пробить — поймайте в паутинку');
-        for(const pi of[0,1])tip(pi,'Встань в своё кольцо — клубок '+K(pi,'item')+' в колышек напротив!',4.4);}});}
+        for(const pi of[0,1])tip(pi,'Встань в своё кольцо — клубок '+K(pi,'item')+' в колышек напротив!',4.4);}}));}
   // следующий этап (как у боссов, Ctrl+Alt+B; им же пользуется бот-аудитор tfin_bossaudit): этап 1 → этап 2 → победа
   W.bossNext=()=>{if(G.cine||F.bossWon||!B.e||B.phase<1||B.phase===1.5)return false;hideTele();for(const d of B.decoys){if(d.alive)W.group.remove(d.g);d.alive=false;}B.decoys.length=0;
     B.e.g.visible=true;if(B.e.state==='hide'){B.e.state='idle';B.e.hideUntil=null;}if(B.phase===1)toPhase2();else defeat();return true;};
@@ -393,25 +441,82 @@ function build15(){
     const c=new THREE.Mesh(new THREE.ConeGeometry(0.45,0.9,4),m);c.rotation.x=Math.PI;g.add(c);const st=new THREE.Mesh(new THREE.BoxGeometry(0.22,0.7,0.22),m);st.position.y=0.75;g.add(st);
     g.visible=false;return {g,on,x,y,z};});
   const tierOf=h=>!inBarn(h)?-1:h.pos.y>6.4?2:h.pos.y>2.9?1:0;   // этаж овина
+  /* ---------- чёрная нить-ключник: тянется со двора через все залы к веретену Кикиморы (это она её заворожила); веретено удрало — нить за ним,
+     на повить; Веретенник рассыпался — нить лопается и уползает в щель (ролик финала) ---------- */
+  const BT={segs:[],mat:MB(0x1a0a24,{transparent:true,opacity:0.92})};
+  for(let i=0;i<12;i++){const m=new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.045,1,5),BT.mat);m.castShadow=false;m.visible=false;W.group.add(m);BT.segs.push(m);}
+  const BT_A=[[0,13.6,50.2],[0,13.6,31.5],[0,8.3,28.2],[0,11.6,16],[0,5.3,4.4],[0,12.6,-2],[4.4,12.8,-15.5]].map(a=>new V3(...a));
+  const BT_B=[[0,12.6,-2],[-2.5,9.9,-33.6],[-1,12,-44],[0,10.6,-52.4],[0,14,-62]].map(a=>new V3(...a));
+  function btPts(){if(F.done)return null;const sp=new V3();
+    if(!F.spFled){kiki.spindle.getWorldPosition(sp);return BT_A.concat([sp]);}
+    if(flySp.visible)return BT_A.slice(0,6).concat([flySp.position.clone().add(new V3(0,1.2,0))]);
+    const e=B.e&&B.e.alive?B.e.pos.clone().add(new V3(0,3.4,0)):new V3(NEST.x,7.8,NEST.z);return BT_A.slice(0,5).concat(BT_B,[e]);}
+  function btUpdate(){const P=btPts();BT.segs.forEach((m,i)=>{const a=P&&P[i],b=P&&P[i+1];m.visible=!!(a&&b);if(!m.visible)return;m.position.copy(a).add(b).multiplyScalar(0.5);m.scale.y=a.distanceTo(b);
+      m.quaternion.setFromUnitVectors(new V3(0,1,0),b.clone().sub(a).normalize());});const k=0.5+0.5*Math.sin(G.time*2.2);BT.mat.color.setRGB(0.1+0.25*k,0.04,0.14+0.35*k);}
+  /* ---------- Кикимора в овине: следит головой за ближним героем и раз в ~13 с швыряет клок кудели — где упадёт, липко 5 с (без урона) ---------- */
+  const KD={t:9,flying:null,patches:[],shadow:null};
+  {const sh=new THREE.Mesh(new THREE.RingGeometry(0.5,0.8,20),MB(0xc04a8a,{transparent:true,opacity:0.6,depthWrite:false}));sh.rotation.x=-Math.PI/2;sh.visible=false;W.group.add(sh);KD.shadow=sh;
+    const clump=new THREE.Group();for(let i=0;i<5;i++)part(clump,new THREE.SphereGeometry(0.22,7,5),M([0x3a1a4a,0xd8c08a,0x5a3a6a][i%3]),Math.cos(i*1.3)*0.18,Math.sin(i*2.1)*0.12,Math.sin(i*1.3)*0.18);clump.visible=false;W.group.add(clump);KD.clump=clump;
+    const pg=new THREE.CircleGeometry(0.95,18);pg.rotateX(-Math.PI/2);for(let i=0;i<3;i++){const m=new THREE.Mesh(pg,MB(0x5a3a6a,{transparent:true,opacity:0.6,depthWrite:false}));m.visible=false;W.group.add(m);KD.patches.push({m,t:0});}}
+  const KIKI_BARK=['Пряди… не мешай!','Кыш от прялки!','Не спи… пряди…'];
+  function kikiThrow(h){const from=new V3();kiki.spindle.getWorldPosition(from);const to=new V3(h.pos.x+rand(-1.2,1.2),h.lastGroundY!=null?h.lastGroundY:h.pos.y,h.pos.z+rand(-1.2,1.2));
+    KD.shadow.position.set(to.x,to.y+0.04,to.z);KD.shadow.visible=true;KD.clump.visible=true;SFX.whoosh();bark(kiki,'kiki',KIKI_BARK[(KD.n=(KD.n||0)+1)%3],1.6,true);
+    anim(1.1,k=>{KD.clump.position.lerpVectors(from,to,k);KD.clump.position.y+=Math.sin(k*Math.PI)*3.2;KD.clump.rotation.y+=0.2;
+      if(k>=1){KD.clump.visible=false;KD.shadow.visible=false;SFX.thud();burst(to.clone().add(new V3(0,0.3,0)),0x5a3a6a,10,3);const p=KD.patches.find(q=>q.t<=0)||KD.patches[0];p.t=5;p.m.position.set(to.x,to.y+0.03,to.z);p.m.visible=true;}});}
+  /* ---------- тайничок Кикиморы: куча кудели в углу ткацкой — что-то в ней поблёскивает; ударь — разлетится, внутри орешек ---------- */
+  const SECRET={heap:new THREE.Group(),glint:2};SECRET.heap.position.set(12.4,4.4,26.4);W.group.add(SECRET.heap);
+  for(let i=0;i<9;i++){const b=part(SECRET.heap,new THREE.SphereGeometry(rand(0.35,0.55),8,6),M([0xd8c08a,0xc8a868,0x3a1a4a,0xe8dcc0][i%4]),Math.cos(i*2.4)*0.6,0.3+(i%3)*0.22,Math.sin(i*2.4)*0.5);b.scale.y=0.7;}
+  const secretNut=nutItem(12.4,5.0,26.4);secretNut.locked=true;secretNut.g.visible=false;
+  W.hittables.push({pos:SECRET.heap.position,r:0.9,alive:()=>!F.secret,onHit:h=>{F.secret=true;SFX.ok();burst(SECRET.heap.position.clone().add(new V3(0,0.6,0)),0xe8dcc0,22,5);burst(SECRET.heap.position.clone().add(new V3(0,0.6,0)),COL.gold,10,3);
+    anim(0.5,k=>{SECRET.heap.scale.setScalar(Math.max(0.01,1-k));});secretNut.locked=false;secretNut.g.visible=true;banner('Тайничок Кикиморы!','#ffd76a',1.8,'в кудели — орешек');}});
+  /* ---------- сушильня: низкое бельё качается на верёвках над сторожевыми нитями; где полотнище чиркнет нить — та на миг блеснёт (подсказка без Совиного взора) ---------- */
+  const SHEETS=[];
+  for(const[z,xs]of[[-37.6,[-9,9]],[-40.6,[-4,6]],[-43.6,[-11,8]],[-46.6,[-8,5]]]){addMesh(new THREE.BoxGeometry(30,0.04,0.04),M(0xd8d0b8),0,10.2,z+0.45);
+    for(const x of xs){const pv=new THREE.Group();pv.position.set(x,10.2,z+0.45);W.group.add(pv);const sm=new THREE.Mesh(new THREE.PlaneGeometry(2.2,1.7),M([0xf0e8d8,0xe8d0c8,0xd8e0f0][SHEETS.length%3],{side:THREE.DoubleSide}));sm.position.y=-0.85;pv.add(sm);
+      SHEETS.push({pv,z,x,ph:rand(0,6.28)});}}
   /* ================= ход уровня ================= */
   W.updates.push(dt=>{
     // мотовило-противовес
     {const w=PL.map(weightOn);let T=[LIFT.rest,LIFT.rest];
-      if(LIFT.wind>=0){LIFT.windT-=dt;const wi=LIFT.wind;if(w[wi]===0&&PL[wi].y>LIFT.top-0.05||LIFT.windT<=0)LIFT.wind=-1;else{T[wi]=LIFT.top;T[1-wi]=LIFT.low;}}
-      // обе заняты — тяжелей вниз, легче вверх (поровну — стоят); занята одна — она опускается, пустая держится на храповике; пусто — в покой
-      if(LIFT.wind<0){if(w[0]>0&&w[1]>0)T=w[0]>w[1]?[LIFT.low,LIFT.top]:w[1]>w[0]?[LIFT.top,LIFT.low]:[PL[0].y,PL[1].y];else if(w[0]>0)T=[LIFT.low,PL[1].y];else if(w[1]>0)T=[PL[0].y,LIFT.low];}
-      if(w[0]>0&&w[0]===w[1]&&LIFT.wind<0&&!LIFT.told.eq){LIFT.told.eq=true;for(const pi of[0,1])tip(pi,'Поровну — стоят! Потап тяжелее: пусть встанет он.',3);}
-      PL.forEach((P,i)=>{const ny=P.y+clamp(T[i]-P.y,-1.7*dt,1.7*dt),dy=ny-P.y;if(Math.abs(dy)<1e-5)return;P.y=ny;P.col.miny=ny-0.3;P.col.maxy=ny;P.g.position.y=ny;P.ring.position.y=ny+0.04;
+      // защёлка: дошла доверху с героем — держится, пока он не сойдёт (0,6 с пусто — отпускает)
+      if(LIFT.latch<0)for(const P of PL)if(P.y>LIFT.top-0.05&&w[P.i]>0){LIFT.latch=P.i;LIFT.latchT=0;LIFT.wind=-1;SFX.latch();floatText(new V3(P.cx,P.y+3.4,33),'Щёлк!','#ffd76a');
+        if(!LIFT.wasUp){LIFT.wasUp=true;const up=HEROES.find(h=>onPl(h,P)),dn=HEROES.find(h=>onPl(h,PL[1-P.i]));
+          if(up&&dn&&dn.kind==='potap'){bark(up,up.kind,'Потап, ты прямо гиря!',1.8);later(1.9,()=>bark(dn,'potap','Сам ты гиря! Я — противовес.',2));}
+          else if(up)later(0.3,()=>bark(up,up.kind,'Еду-у! Я наверху!',1.6));}
+        break;}
+      if(LIFT.latch>=0){const L=LIFT.latch;if(w[L]===0){LIFT.latchT+=dt;if(LIFT.latchT>0.6)LIFT.latch=-1;}else LIFT.latchT=0;}
+      if(LIFT.wind>=0){LIFT.windT-=dt;if(w[LIFT.wind]===0&&PL[LIFT.wind].y>LIFT.top-0.05||LIFT.windT<=0)LIFT.wind=-1;}
+      const eq=LIFT.latch<0&&LIFT.wind<0&&w[0]>0&&w[0]===w[1];
+      if(LIFT.latch>=0){const L=LIFT.latch;T[L]=LIFT.top;T[1-L]=w[1-L]>0?LIFT.low:PL[1-L].y;}
+      else if(LIFT.wind>=0){const wi=LIFT.wind;T[wi]=LIFT.top;T[1-wi]=LIFT.low;}
+      // обе заняты — тяжелей вниз, легче вверх; поровну — покачиваются на месте; занята одна — она опускается, пустая держится на храповике; пусто — в покой
+      else if(eq){if(!LIFT.eq){LIFT.eqY=[PL[0].y,PL[1].y];LIFT.eqT=0;}const o=0.12*Math.sin(G.time*3.4);T=[clamp(LIFT.eqY[0]+o,LIFT.low,LIFT.top),clamp(LIFT.eqY[1]-o,LIFT.low,LIFT.top)];}
+      else if(w[0]>0&&w[1]>0)T=w[0]>w[1]?[LIFT.low,LIFT.top]:[LIFT.top,LIFT.low];else if(w[0]>0)T=[LIFT.low,PL[1].y];else if(w[1]>0)T=[PL[0].y,LIFT.low];
+      // поровну — подсказка не один раз, а каждые 7 с, пока стоят: смена на Потапа или мешок шерсти к себе
+      if(eq&&!F.liftDone){LIFT.eqT-=dt;if(LIFT.eqT<=0){LIFT.eqT=7;SFX.miss();for(const P of PL)floatText(new V3(P.cx,P.y+3.6,33),'Поровну!','#ffffff');
+        for(const pi of[0,1])tip(pi,pi===0&&!HEROES.some(h=>h.kind==='potap'&&h.active)?'Поровну — стоят! Смени героя '+K(0,'swap')+': Потап тяжелее.<br>Или мешок ударом '+K(0,'attack')+' — к себе на площадку.'
+          :'Поровну — стоят! Потап тяжелее — пусть встанет он.<br>Или мешок ударом '+K(pi,'attack')+' — к себе на площадку.',4);}}
+      LIFT.eq=eq;
+      let mv=0;PL.forEach((P,i)=>{const ny=P.y+clamp(T[i]-P.y,-1.7*dt,1.7*dt),dy=ny-P.y;if(Math.abs(dy)<1e-5)return;mv=Math.max(mv,Math.abs(dy)/Math.max(dt,1e-4));P.y=ny;P.col.miny=ny-0.3;P.col.maxy=ny;P.g.position.y=ny;P.ring.position.y=ny+0.04;
         for(const h of HEROES)if(h.groundRef===P.col)h.pos.y+=dy;P.g.children.forEach(c=>{if(c.userData.rope){c.scale.y=10-ny;c.position.y=(10-ny)/2;}});});
+      if(SACK.on>=0&&!SACK.fly)sack.position.copy(sackAt(SACK.on));sackCyl.x=sack.position.x;sackCyl.z=sack.position.z;sackCyl.miny=sack.position.y-0.2;sackCyl.maxy=sack.position.y+1.1;
+      // скрип каната: чем тяжелее, тем ниже
+      LIFT.creakT-=dt;if(mv>0.4&&LIFT.creakT<=0){LIFT.creakT=0.34;const k=Math.max(w[0],w[1]);tone(150-k*14,0.24,'sawtooth',0.07,110-k*10);}
       pulley.forEach((p,i)=>{p.rotation.z+=(PL[i].y-(p.userData.y||PL[i].y))*2;p.userData.y=PL[i].y;});
       reel.userData.spin.rotation.x+=dt*(LIFT.wind>=0&&PL[LIFT.wind].y<LIFT.top-0.05?6:0.2);
-      const liftOn=!F.liftDone;PL.forEach(P=>{P.ring.visible=liftOn&&weightOn(P)===0;P.ring.rotation.y+=dt;});reelRing.visible=liftOn&&PL.some(P=>P.y<1&&weightOn(P)>0)&&acts().some(h=>h.pos.y>4.1&&h.pos.z>28.4);
+      const liftOn=!F.liftDone;PL.forEach(P=>{const n=w[P.i];P.ring.visible=liftOn&&n===0;P.ring.rotation.y+=dt;P.gh.visible=liftOn&&n===0&&!LIFT.wasUp;
+        P.sc.visible=liftOn;P.kg.forEach((q,k)=>{q.visible=k<n;});const o=w[1-P.i],dir=n===0?0:LIFT.latch===P.i||n<o?1:n>o?-1:o>0?2:-1;
+        P.ar.visible=dir===1||dir===-1;P.ar.rotation.z=dir===1?0:Math.PI;P.arM.color.setHex(dir===1?0x7ee08a:0xffb040);P.ar.position.y=0.75+Math.sin(G.time*5)*0.08*dir;
+        P.eqG.visible=dir===2&&Math.sin(G.time*8)>-0.3;});
+      reelRing.visible=liftOn&&PL.some(P=>P.y<1&&weightOn(P)>0)&&acts().some(h=>h.pos.y>4.1&&h.pos.z>28.4);
       if(!F.liftDone&&acts().every(h=>(h.pos.z<31.4&&h.pos.y>4.1)||h.pos.z<28.4))F.liftDone=true;}
-    // ткацкий стан: подножка нажата — зев открыт
-    {const pressed=HEROES.some(h=>h.groundRef===treadleCol);LOOM.open=pressed&&!F.loomDone;LOOM.busy=Math.max(0,LOOM.busy-dt);
-      treadle.mesh.position.y=pressed?4.42:4.5;warp.forEach((m,i)=>{const up=LOOM.open&&i%2===0;m.position.y=damp(m.position.y,up?5.05:4.45,10,dt);});
-      const on=!F.loomDone;treadleRing.visible=on&&!pressed;spotRing.visible=on;[treadleRing,spotRing].forEach(r=>{r.rotation.y+=dt;r.userData.m.opacity=0.55+0.35*Math.sin(G.time*5);});
-      loomGh[0].visible=on&&!pressed;loomGh[1].visible=on&&!HEROES.some(h=>hd(h.pos,spotRing.position)<1.1&&Math.abs(h.pos.y-4.4)<0.8);}
+    // ткацкий стан: нужная подножка нажата — зев открыт (левая — чётные нити вверх, правая — нечётные); светится та, что нужна
+    {const pr=treadleCols.map(c=>HEROES.some(h=>h.groundRef===c)),need=LOOM.need,pressed=pr[need];LOOM.open=pressed&&!F.loomDone;LOOM.busy=Math.max(0,LOOM.busy-dt);
+      treadles.forEach((t,k)=>{t.mesh.position.y=pr[k]?4.42:4.5;});const lift=F.demoLift!=null?F.demoLift:pr[0]?0:pr[1]?1:-1;   // F.demoLift — показка стана (релиз)
+      warp.forEach((m,i)=>{const up=!F.loomDone&&lift>=0&&i%2===lift;m.position.y=damp(m.position.y,up?5.05:4.45,10,dt);});
+      const on=!F.loomDone;treadleRing.position.x=TRX[need];treadleRing.visible=on&&!pressed;spotRing.visible=on;[treadleRing,spotRing].forEach(r=>{r.rotation.y+=dt;r.userData.m.opacity=0.55+0.35*Math.sin(G.time*5);});
+      loomGh[0].position.x=damp(loomGh[0].position.x,TRX[need],8,dt);loomGh[0].visible=on&&!pressed;loomGh[1].visible=on&&!HEROES.some(h=>hd(h.pos,spotRing.position)<1.1&&Math.abs(h.pos.y-4.4)<0.8);
+      LOOM.wrongT=Math.max(0,LOOM.wrongT-dt);if(on&&pr[1-need]&&!pressed&&LOOM.wrongT<=0&&LOOM.n>0){LOOM.wrongT=4;floatText(new V3(TRX[need],5.6,25.5),'Сюда! Другая подножка','#ffd76a');}}
     // прялка: каждые 28 с разгоняется, 6 с струны мигают — потом утягивает; жёлудь в веретено — пауза
     if(!F.pullOn&&HEROES.some(h=>inBarn(h)&&h.pos.y>2.9)){F.pullOn=true;F.pullT=0;later(0.5,()=>bark(kiki,'kiki','<i>(замечает вас)</i> Пряди. Пряди! Прочь от прялки!',2));}   // на середине Кикимора замечает нас
     const going=F.stage==='play'&&F.pullOn&&!F.cut&&!G.cine&&!F.done&&!F.spFled;F.stumble=Math.max(0,F.stumble-dt);
@@ -438,19 +543,32 @@ function build15(){
     W.barnThreads.forEach((m,i)=>{m.material.opacity=F.warn?(Math.sin(G.time*20+i)>0?0.95:0.2):0.45+0.1*Math.sin(G.time*2+i);});
     // мороки: кикиморки в сенях, нитяные — на полу овина
     if(!aFoes.started&&F.stage==='play'){aFoes.started=true;aFoes.list=[makeFoe('kiki',-4,40,{leash:8}),makeFoe('kiki',4.5,38.5,{leash:8})];banner('Кикиморки-прядильщицы!','#c8e0a8',2,'жёлтый кружок — щит, потом бей');}
-    if(!floorFoes.started&&F.stage==='play'&&acts().some(h=>h.pos.z<3)){floorFoes.started=true;floorFoes.list=[makeFoe('thread',2.5,-24,{leash:9}),makeFoe('thread',-2,-26,{leash:9})];banner('Нитяные мороки!','#d8d8e4',2,'синяя капля — щитом закройся, а в последний миг — отбей назад');}
+    if(!F.demoWeb&&F.stage==='play'&&!G.cine&&acts().some(h=>h.pos.z<3)){F.demoWeb=true;if(W.k15kino&&W.k15kino.demoWeb)W.k15kino.demoWeb();}   // показка паутинки (релиз), потом мороки
+    if(!floorFoes.started&&F.stage==='play'&&F.demoWeb&&!G.cine&&acts().some(h=>h.pos.z<3)){floorFoes.started=true;floorFoes.list=[makeFoe('thread',2.5,-24,{leash:9}),makeFoe('thread',-2,-26,{leash:9})];banner('Нитяные мороки!','#d8d8e4',2,'синяя капля — щитом закройся, а в последний миг — отбей назад');}
     // камера по залам: ширина — по залу; назад — не дальше задней стены того зала, где герои (в новый зал камера переходит, когда герои
     // прошли от порога 1,5 м); иначе она смотрела сквозь стену прошлого зала. В бою с Веретенником — своя камера сверху (arenaCamFn)
     {const mz=acts().reduce((s,h)=>s+h.pos.z,0)/acts().length,ri=ROOMS.findIndex(r=>mz>r.z-1.5);const R0=ROOMS[ri<0?ROOMS.length-1:ri];
       W.camX=R0.cx;W.camZMax=R0.cz;W.camFn=B.phase>=1&&B.phase<3?arenaCamFn:null;
-      if(F.stage==='play'&&!G.cine&&R0.name&&!F['room_'+R0.id]){F['room_'+R0.id]=true;banner(R0.name,'#e8d8b0',1.8,R0.sub);}}
+      if(F.stage==='play'&&!G.cine&&R0.name&&!F['room_'+R0.id]){F['room_'+R0.id]=true;banner(R0.name,'#e8d8b0',1.8,R0.sub);
+        if(R0.id==='tkac'&&!F.loomDone&&W.k15kino&&W.k15kino.demoLoom)later(0.4,()=>{if(!G.cine&&!F.loomDone)W.k15kino.demoLoom();});}}   // показка стана (релиз)
     exitMarks.forEach(m=>{const on=m.on()&&acts().some(h=>h.pos.z>m.z+0.5);m.g.visible=on;if(on){m.g.position.y=m.y+Math.abs(Math.sin(G.time*3))*0.4;m.g.rotation.y+=dt*1.5;}});
     // сушильня: сторожевые нити — видны Совиным взором, мерцают вблизи и после «дзынь»
     for(const w of WIRES){w.cd=Math.max(0,w.cd-dt);w.flash=Math.max(0,w.flash-dt);const near=acts().some(h=>Math.abs(h.pos.z-w.z)<1.4&&h.pos.y>6.5&&h.pos.x>w.x0-0.5&&h.pos.x<w.x1+0.5);
-      w.mat.opacity=Math.max(W.owlT>0?Math.min(1,W.owlT/0.4)*0.95:0,w.flash>0?0.9:0,near?0.14+0.08*Math.sin(G.time*9):0);
+      w.glint=Math.max(0,(w.glint||0)-dt);w.mat.opacity=Math.max(W.owlT>0?Math.min(1,W.owlT/0.4)*0.95:0,w.flash>0?0.9:0,near?0.14+0.08*Math.sin(G.time*9):0,w.glint*0.6);
       if(w.cd>0||G.cine)continue;
       for(const h of acts()){if(players[h.player].downed||h.cling||h._wz===undefined||Math.abs(h._wz-h.pos.z)>2)continue;if((h._wz-w.z)*(h.pos.z-w.z)>0||h.pos.x<w.x0||h.pos.x>w.x1)continue;if(w.y<h.pos.y-0.02||w.y>h.pos.y+heroHeight(h))continue;tripped(w,h);break;}}   // задел — пересёк линию нити на её высоте
     for(const h of HEROES)h._wz=h.pos.z;
+    for(const q of SHEETS){const a=Math.sin(G.time*1.3+q.ph);q.pv.rotation.x=a*0.32;if(a>0.94&&!G.cine)for(const w of WIRES)if(Math.abs(w.z-q.z)<0.1&&q.x>w.x0-1.1&&q.x<w.x1+1.1)w.glint=Math.max(w.glint||0,0.6);}
+    // чёрная нить, Кикимора в овине, тайничок
+    btUpdate();
+    if(!F.spFled&&!F.done&&!G.cine&&F.stage==='play'){const near=acts().filter(h=>inBarn(h)&&!players[h.player].downed);
+      if(near.length){const h=near.reduce((a,b)=>hd(a.pos,kiki.g.position)<hd(b.pos,kiki.g.position)?a:b),want=Math.atan2(h.pos.x-kiki.g.position.x,h.pos.z-kiki.g.position.z)-kiki.g.rotation.y;
+        kiki.head.rotation.y=damp(kiki.head.rotation.y,clamp(Math.atan2(Math.sin(want),Math.cos(want)),-1.1,1.1),4,dt);
+        KD.t-=dt;if(KD.t<=0&&F.pullOn&&!F.warn&&!KD.clump.visible){KD.t=rand(11,15);kikiThrow(near[Math.floor(rand(0,near.length))]);}}}
+    for(const p of KD.patches){if(p.t<=0)continue;p.t-=dt;p.m.material.opacity=Math.min(0.6,p.t*0.6);if(p.t<=0)p.m.visible=false;
+      for(const h of acts())if(h.grounded&&Math.hypot(h.pos.x-p.m.position.x,h.pos.z-p.m.position.z)<0.95&&Math.abs(h.pos.y-p.m.position.y)<0.6){h.pos.x-=h.vel.x*dt*0.55;h.pos.z-=h.vel.z*dt*0.55;
+        if(!KD.told){KD.told=true;floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Липко! Обойди кудель','#e8dcc0');}}}
+    SECRET.glint-=dt;if(SECRET.glint<=0&&!F.secret){SECRET.glint=2.6;burst(SECRET.heap.position.clone().add(new V3(rand(-0.3,0.3),0.9,rand(-0.3,0.3))),COL.gold,3,1);}
     // засов на двоих
     {const pr=plates.map(p=>HEROES.some(h=>h.groundRef===p.col));plates.forEach((p,i)=>{p.mesh.position.y=pr[i]?7.03:7.075;p.ring.visible=!F.latch&&!pr[i];p.gh.visible=!F.latch&&!pr[i];p.ring.rotation.y+=dt;p.ring.userData.m.opacity=0.55+0.35*Math.sin(G.time*5);});
       if(!F.latch&&pr[0]&&pr[1]){F.latch=true;SFX.latch();gateTo(true);banner('Засов открыт!','#ffd76a',1.8,'на повить — за веретеном');}
@@ -481,7 +599,7 @@ function build15(){
     if(ss.length===1&&!F.crossTold){F.crossTold=true;tip(1-t.owner,'Струна друга уж висит. Брось свою поперёк —<br>Где скрестятся — паутинка-батут, скок!',3);}};
   {const prev=W.onOwl;W.onOwl=h=>{if(prev)prev(h);if(B.mode==='decoy'){const r=B.decoys.find(q=>q.real&&q.alive);if(r)floatText(r.g.position.clone().add(new V3(0,4.4,0)),'Вот оно — настоящее!','#ffd76a');}};}
   function finale(at,e){const T=HERO,pr=T.proshka;if(players[0].act!==0)doSwap(0);const kx=clamp(at.x+2.6,-10,10),kz=clamp(at.z+2.2,-76,-57);
-    play({dur:20,fov:48,shots:[shot(0,[at.x+3,10.4,at.z+7],[at.x,8,at.z]),shot(3.6,[at.x-3,9.2,at.z+5],[at.x,7.4,at.z]),shot(8.2,[kx-2.6,9.4,kz+3.8],[kx,8.4,kz]),shot(13.6,[kx-1.8,9.2,kz+3.2],[kx,8.6,kz])],
+    play(k15c('finale',{dur:20,fov:48,shots:[shot(0,[at.x+3,10.4,at.z+7],[at.x,8,at.z]),shot(3.6,[at.x-3,9.2,at.z+5],[at.x,7.4,at.z]),shot(8.2,[kx-2.6,9.4,kz+3.8],[kx,8.4,kz]),shot(13.6,[kx-1.8,9.2,kz+3.2],[kx,8.6,kz])],
       says:[[0.4,3.0,null,'<i>Веретенник рассыпается куделью — веретёнце падает на пол.</i>',true],[3.6,4.4,null,'<i>Из веретена выскальзывает чёрная нитка с маленьким ключом и, звеня, утягивается в щель.</i>',true],
         [8.4,3.2,'kiki','<i>(своим, ворчливым голосом)</i> Ишь, ключник… Всю ночь меня гонял.'],[13.6,4.4,'kiki','Веретено отняли — ладно. Должна буду. Кикиморы долги помнят.']],
       events:[{t:0.2,fn:()=>{SFX.unravel();burst(at.clone().add(new V3(0,2,0)),0x4a1a6a,26,6);burst(at.clone().add(new V3(0,2,0)),0xe8dcc0,20,5);
@@ -491,7 +609,7 @@ function build15(){
           HEROES.forEach((q,i)=>{placeOnGround(q,clamp(kx-2.2+i*1.1,-14,14),kz+2.6+(i%2)*0.8,7);q.face=Math.atan2(kx-q.pos.x,kz-q.pos.z);});}},
         {t:8.2,fn:()=>{kiki.head.rotation.x=0.3;anim(1,k=>{kiki.head.rotation.z=Math.sin(k*Math.PI*3)*0.2;});}},
         {t:16,fn:()=>{const it=linkItem(kx,9.2,kz);W.linkTotal--;const from=new V3(kx,9.2,kz),to=pr.pos.clone().add(new V3(0,1.2,0));anim(1.2,k=>{it.base=9.2;it.pos.lerpVectors(from,to,smooth(k));if(k>=1)takeItem(it,pr);});}}],
-      end:()=>{kiki.head.rotation.x=0;later(1.2,()=>{F.out=true;finishLevel();});}});}
+      end:()=>{kiki.head.rotation.x=0;later(1.2,()=>{F.out=true;finishLevel();});}},{at,e,kx,kz}));}
   /* ---------- рисунки кнопок и задачи ---------- */
   const hasStr0=(pi,i)=>W.threads.some(t=>t.string&&!t.sag&&t.owner===pi&&t.stake===STK[i][pi]);
   const T=HERO,onFloor=(h,i)=>inBarn(h)&&(i===2?h.pos.y>6.4:i===1?h.pos.y>2.9&&h.pos.y<6.4:h.pos.y<2.9);
@@ -499,6 +617,8 @@ function build15(){
     prompt(pi,'item',()=>headOf(h()),()=>rings.some((R,i)=>onFloor(h(),i)&&hd(h().pos,R[pi])<0.9&&!hasStr0(pi,i)),'в колышек');
     prompt(pi,'item',()=>headOf(h()),()=>!F.loomDone&&LOOM.open&&hd(h().pos,spotRing.position)<1.1&&Math.abs(h().pos.y-4.4)<0.8,'в зев');
     prompt(pi,'item',()=>headOf(h()),()=>!F.liftDone&&h().pos.y>4.1&&h().pos.z>28.4&&hd(h().pos,reel.position)<2.4&&PL.some(P=>P.y<1&&weightOn(P)>0),'на мотовило');
+    prompt(pi,'attack',()=>sack.position.clone().add(new V3(0,1.7,0)),()=>!F.liftDone&&!SACK.fly&&hd(h().pos,sack.position)<1.9&&Math.abs(h().pos.y-sack.position.y)<1.2,()=>SACK.on<0?'мешок на площадку':'мешок на пол');
+    prompt(pi,'move',()=>new V3(h().pos.x,h().pos.y+2.6,30.4),()=>!F.liftDone&&PL.some(P=>P.y>LIFT.top-0.05&&h().groundRef===P.col),'на полати');
     prompt(pi,'item',()=>headOf(h()),()=>AR_G[pi].r.g.visible&&hd(h().pos,AR_G[pi].r)<1.1,'в колышек');
     prompt(pi,'move',()=>new V3(BAIT.x,9.4,BAIT.z),()=>baitRing.visible&&!baitHero()&&inArena(h()),'встань в круг');
     prompt(pi,'move',()=>{const g=guides.map(G2=>G2[pi]).find(q=>q.gh.visible);return g?new V3(g.r.x,g.r.y+2.2,g.r.z):headOf(h());},()=>guides.some(G2=>G2[pi].gh.visible),'встань сюда');
@@ -510,7 +630,7 @@ function build15(){
   prompt(0,'skill',()=>headOf(T.proshka),()=>B.mode==='aim'&&!B.bait&&T.proshka.active&&inArena(T.proshka),'в острие');
   prompt(1,'skill',()=>headOf(T.pelageya),()=>F.warn&&!F.cut&&T.pelageya.active&&W.owlT<=0,'старая нить');
   prompt(1,'skill',()=>headOf(T.pelageya),()=>T.pelageya.active&&W.owlT<=0&&(B.mode==='decoy'||(T.pelageya.pos.z<-35.5&&T.pelageya.pos.z>-48&&T.pelageya.pos.y>6.5)),'Совиный взор');
-  const web=(pi,i,nx)=>O(()=>(!hasStr0(pi,i)?'Встань в своё кольцо — там герой твой нарисован — и клубок '+K(pi,'item')+' в колышек брось.<br>Струна друга поперёк ляжет — вот и сошлось.':!W.webs.some(w=>Math.hypot(w.x-WEBC[i].x,w.z-WEBC[i].z)<1.5)?'Твоя струна готова! Ждём струну друга — крест-накрест лечь.':'Паутинка готова! На серединку прыгни '+K(pi,'jump')+' — подкинет до '+nx+'.<br>Второго героя тоже: смени '+K(pi,'swap')+' или кликни '+K(pi,'call')+' — пусть идёт следом.'),
+  const web=(pi,i,nx)=>O(()=>(!hasStr0(pi,i)?'Встань в своё кольцо и брось клубок '+K(pi,'item')+' в колышек.':!W.webs.some(w=>Math.hypot(w.x-WEBC[i].x,w.z-WEBC[i].z)<1.5)?'Твоя струна готова! Ждём струну друга — поперёк.':'Паутинка! Прыгни '+K(pi,'jump')+' на серединку — до '+nx+'. Второго героя позови '+K(pi,'call')+'.'),
     ()=>F.spFled||players[pi].heroes.every(h=>(inBarn(h)&&h.pos.y>(i===0?2.9:6.4))||h.pos.z<-34.4),()=>hasStr0(pi,i)?[]:[rings[i][pi].g,STK[i][pi].g]);
   const hasStrA=pi=>W.threads.some(t=>t.owner===pi&&t.string&&!t.sag&&t.sz<-52.4);
   const bossText=pi=>{const k=bossStep();if(B.phase<1)return 'Повить! Веретенник прячется в кудели — входите оба.';
@@ -520,25 +640,28 @@ function build15(){
     return hasStrA(pi)?'Твоя струна готова. Ждём струну друга.':'Встань в своё кольцо и брось клубок '+K(pi,'item')+' в колышек.';};
   for(const pi of[0,1])W.objectives[pi]=[
     O(()=>'Кикиморки-прядильщицы! Жёлтый кружок — щит '+K(pi,'guard')+', потом бей '+K(pi,'attack')+'.',()=>aFoes.started&&aFoes.list.every(e=>!e.alive),()=>aFoes.list.filter(e=>e.alive).map(e=>e.g)),
-    O(()=>'Мотовило: кто тяжелей — тот вниз, другой — вверх, на полати.<br>Потап тяжёлый! Наверху — клубок '+K(pi,'item')+' на мотовило: подтянет друга.',()=>!!F.liftDone,()=>F.liftDone?[]:[PL[0].g,PL[1].g,reel]),
-    O(()=>'Ткацкий стан: один — на подножку, второй — клубок '+K(pi,'item')+' в зев.<br>Полотно-мост: '+LOOM.n+' / '+LOOM.max+'.',()=>!!F.loomDone,()=>F.loomDone?[]:[treadle.mesh,spotRing]),
-    O('Нитяные мороки! Жёлтый кружок — щит. Синяя капля — отбей назад.<br>Красный зубец — кувырок, и никаких преград.',()=>F.spFled||(floorFoes.started&&floorFoes.list.every(e=>!e.alive)),()=>floorFoes.list.filter(e=>e.alive).map(e=>e.g)),
+    O(()=>LIFT.wasUp?'Кто наверху — клубок '+K(pi,'item')+' на мотовило: вытянет друга.'
+      :pi===0&&!HERO.potap.active?'Мотовило! Смени героя на Потапа '+K(0,'swap')+' и встань на площадку.'
+      :pi===0?'Мотовило! Встань Потапом на площадку — друг поедет вверх.':'Мотовило! Встань на площадку — Потап на другой поднимет тебя.',()=>!!F.liftDone,()=>F.liftDone?[]:[PL[0].g,PL[1].g,reel]),
+    O(()=>'Ткём мост! Подножки — по очереди, клубок '+K(pi,'item')+' — в зев. Полотно '+LOOM.n+' / '+LOOM.max+'.',()=>!!F.loomDone,()=>F.loomDone?[]:[treadles[LOOM.need].mesh,spotRing]),
+    O(()=>'Нитяные мороки! Жёлтый — щит '+K(pi,'guard')+', синяя капля — отбей, красный — кувырок '+K(pi,'roll')+'.',()=>F.spFled||(floorFoes.started&&floorFoes.list.every(e=>!e.alive)),()=>floorFoes.list.filter(e=>e.alive).map(e=>e.g)),
     web(pi,0,'галереи'),web(pi,1,'чердака'),
     O('Веретено удрало на повить! За ним — в дверь на чердаке.',()=>acts().every(h=>h.pos.z<-35.2),()=>[]),
-    O(()=>'Сторожевые нити не видны! Пелагея — Совиный взор '+K(1,'skill')+'.<br>Низкую нить перепрыгни '+K(pi,'jump')+', высокую обойди.',()=>!!F.latch||acts().every(h=>h.pos.z<-47.6),()=>[]),
+    O(()=>'Нити не видны! Пелагея — Совиный взор '+K(1,'skill')+'. Низкую — прыжком '+K(pi,'jump')+', высокую — обойди.',()=>!!F.latch||acts().every(h=>h.pos.z<-47.6),()=>[]),
     O('Засов! Встаньте вдвоём на обе плиты у двери.',()=>!!F.latch,()=>plates.map(p=>p.mesh)),
     O(()=>bossText(pi),()=>!!F.bossWon,()=>B.e&&B.e.alive?[B.e.g]:[]),
     O('Веретено падает…',()=>false,()=>[kiki.g])];
   W.tipZones.push({cond:()=>F.warn&&!F.spFled,text:pi=>pi?'Прялка тянет нити! Совиный взор '+K(1,'skill')+' включи —<br>И старую нить ударом '+K(1,'attack')+' рассеки.':'Прялка тянет нити! Прошкой из рогатки '+K(0,'skill')+' в веретено стрельни —<br>Колесо споткнётся, как ни верти.'},
     {cond:(pi,h)=>W.owlT>0&&!F.cut&&!F.spFled,text:pi=>'Серебром старая сказочная нить светится — у крюка на галерее.<br>Разрежь её ударом '+K(pi,'attack')+' — да поскорее!'},
     {cond:()=>B.mode==='aim',text:pi=>B.bait&&B.tgt===active(pi)?'Стой в круге — он влетит в паутинку!':pi?'Веретенник разгоняется! Красная дорожка — кувырок '+K(1,'roll')+' в сторону.':'Веретенник разгоняется! Прошка — рогаткой '+K(0,'skill')+' в острие: споткнётся!'});
-  W.k15={aFoes,floorFoes,PL,LIFT,reel,LOOM,treadleCol,spotRing,WIRES,plates,ARS,AR_G,B,weightOn,inBarn,inArena,NEST,BAIT,WEBA,webReady,inBait,baitHero,bossStep,ROOMS,guideGoal};   // для напарника-бота и ботов проверки
+  W.k15={aFoes,floorFoes,PL,LIFT,SACK,sack,sackHit,reel,LOOM,treadleCol,treadleCols,treadles,TRX,warp,shuttle,cloth,clothStripes,kiki,wheel,flySp,keyThread,gateTo,BT,KD,rings,STK,WEBC,LAND,guides,jumpG,ghostOf,goldRing,SECRET,spotRing,WIRES,plates,ARS,AR_G,B,weightOn,inBarn,inArena,NEST,BAIT,WEBA,webReady,inBait,baitHero,bossStep,ROOMS,guideGoal};   // для напарника-бота и ботов проверки
   // перескок к главе (сохранение внутри уровня — late_97w_w1_chapters.js — и боты), к колокольчику комнаты:
   //   'ovin' — мотовило и полотно-мост позади, кикиморки в сенях побеждены; 'dry' — ещё и старая нить перерезана, веретено удрало на повить;
   //   'boss' — ещё и засов открыт: герои на повити, бой с Веретенником начинается сам
   W.warp15=where=>{const R={ovin:[3,0,2],dry:[-9.4,7,-36.4],boss:[-4.2,7,-54]}[where];if(!R)throw new Error('warp15: '+where);G.cine=null;F.stage='play';
     const gone=L=>{L.started=true;L.list.forEach(e=>{e.alive=false;if(e.g)e.g.visible=false;});};
     gone(aFoes);F.liftDone=true;LOOM.n=LOOM.max;setCloth();F.loomDone=true;F.loomFoe=true;
+    F.demoWeb=true;   // показку паутинки при перескоке к главе не показываем — до овина уже дошли
     if(where!=='ovin'){gone(floorFoes);F.pullOn=true;F.cut=true;old.visible=false;F.spFled=true;F.warn=false;F.pullT=0;kiki.spindle.visible=false;yarn.visible=false;flySp.visible=false;}
     if(where==='boss'&&!F.latch){F.latch=true;F.plateTold=true;gateTo(true);}
     HEROES.forEach((h,i)=>{placeOnGround(h,clamp(R[0]-1.8+i*1.2,-10.6,10.6),R[2],R[1]);h.following=false;h.vel.set(0,0,0);});
@@ -548,7 +671,7 @@ function build15(){
     if(aFoes.list.some(e=>e.alive))return null;
     if(!F.liftDone){if(a.some(h=>h.pos.y>4.1&&h.pos.z<31.45)&&PL.some(P=>P.y<1&&weightOn(P)>0))return P3(reel.position.x,4.4,reel.position.z);
       const P=PL.find(q=>weightOn(q)===0&&q.y<1.2)||PL[0];return P3(P.cx,P.y,33);}
-    if(!F.loomDone){if(mz>28.4)return P3(0,4.4,27.4);return HEROES.some(h=>h.groundRef===treadleCol)?P3(0,4.4,spotRing.position.z):P3(-6.5,4.6,25.5);}
+    if(!F.loomDone){if(mz>28.4)return P3(0,4.4,27.4);return HEROES.some(h=>h.groundRef===treadleCols[LOOM.need])?P3(0,4.4,spotRing.position.z):P3(TRX[LOOM.need],4.6,25.5);}
     if(mz>4.4)return P3(0,0,2);
     if(floorFoes.list.some(e=>e.alive))return null;
     if(!F.spFled){const t=Math.min(...a.map(h=>tierOf(h)<0?0:tierOf(h)));if(t>=2)return null;const c=WEBC[t];
@@ -562,10 +685,10 @@ function build15(){
     return g?g.add(new V3(0,2.8,0)):new V3(m.x,Math.max(...a.map(h=>h.pos.y))+2.4,m.z-2.2);};W.zvenFree=true;
   bell(-9,43);bell(-9.4,30.2,4.4);bell(9,26,4.4);bell(-9.4,-36.4,7);bell(-4.2,-54,7);
   W.spawns=[[new V3(-2.5,0,42),new V3(-4.5,0,43.4)],[new V3(2.5,0,42),new V3(4.5,0,43.4)]];   // перед плетнём — камере есть куда отъехатьW.startAct=[0,0];
-  W.pauseLine='Кикимора прядёт чужим голосом, как во сне.<br>Мотовило: тяжёлый вниз — лёгкий вверх. Ткацкий стан: подножка и клубок — полотно-мост.<br>В овине — паутинка крест-накрест. На повити — струны крест-накрест, и встань в золотой круг: Веретенник влетит в паутинку!';
-  W.onStart=()=>{F.stage='intro';play({dur:13,fov:48,shots:[shot(0,[0,5,-2],[5,3,-18]),shot(4.6,[1.6,2.2,-14.6],[4.3,1.4,-18]),shot(8.6,[-1.6,3.2,-8],[-3,0.4,-16],[-0.6,2.4,-9.5],[-3,0.6,-16],3)],
+  W.pauseLine='Кикимору заворожила чёрная нить — она прядёт во сне. Нить ведёт к веретену.<br>Мотовило: Потап вниз — друг вверх; поровну — мешок шерсти ударом на площадку. Стан: подножки по очереди, клубок — в зев.<br>В овине — паутинка крест-накрест. На повити — струны крест-накрест, и встань в золотой круг: Веретенник влетит в паутинку!';
+  W.onStart=()=>{F.stage='intro';play(k15c('intro',{dur:13,fov:48,shots:[shot(0,[0,5,-2],[5,3,-18]),shot(4.6,[1.6,2.2,-14.6],[4.3,1.4,-18]),shot(8.6,[-1.6,3.2,-8],[-3,0.4,-16],[-0.6,2.4,-9.5],[-3,0.6,-16],3)],
     says:[[0.6,3.6,null,'<i>Кикимора прядёт в старом овине. Прялка огромная, до крыши; звенья висят высоко над колесом.</i>',true],[4.8,3,'kiki','<i>(сухим, деревянным голосом)</i> Пряди. Пряди. Не спи.'],
       [8.8,3.8,'zven','Где две струны скрестятся — паутинка. Прыгайте — подкинет до самой крыши!']],
-    events:[{t:4.8,fn:()=>SFX.keys()}],end:()=>{F.stage='play';snapCams();}});};
+    events:[{t:4.8,fn:()=>SFX.keys()}],end:()=>{F.stage='play';snapCams();}}));};
   fadeable(walls);   // стены залов тают, когда заслоняют героев
   flushDecor();}

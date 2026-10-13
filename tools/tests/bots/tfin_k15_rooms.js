@@ -28,13 +28,16 @@ r.push('P1 off '+U.goto(0,-6,30.3,6,0.4),U.st());ZC.tick(60);
 r.push('liftDone='+!!F().liftDone,U.obj());r.push(F().liftDone?'lift ok':'FAIL lift');r
 //@@ shot=k15_loom.png
 // ткацкая: Потап на подножку, Пелагея — к челноку, пять бросков клубка
-const r=[];r.push('door '+U.goto(0,0,28.8,8,0.4)+' '+U.goto(0,0,27,6,0.4)+' '+U.goto(0,-6.5,25.5,8,0.3));
-r.push('spot '+U.goto(1,0,28.8,8,0.4)+' '+U.goto(1,0,23.7,8,0.3));ZC.tick(30);
-let n=0;for(let i=0;i<12&&!F().loomDone;i++){ZC.press('Semicolon');ZC.tick(80);n++;}
-r.push('throws='+n,'loomDone='+!!F().loomDone,U.st());r.push(F().loomDone?'loom ok':'FAIL loom');r
+// подножек две — по очереди: Потап перепрыгивает на ту, что светится (LOOM.need); при входе в зал — показка стана (ролик)
+const K=ZC.W.k15,r=[];r.push('door '+U.goto(0,0,28.8,8,0.4)+' '+U.goto(0,-2,25.6,6,0.4)+' · '+U.goto(1,0,28.8,8,0.4)+' '+U.goto(1,1,25.6,6,0.4));
+r.push('demo '+U.until(()=>ZC.G.cine,4));const dm=!!ZC.G.cine;U.nocine();ZC.tick(5);r.push(dm?'demo ok':'FAIL demo');
+r.push('pedal '+U.goto(0,K.TRX[0],25.5,8,0.3),'spot '+U.goto(1,0,23.7,8,0.3));ZC.tick(30);
+let n=0,wrong=0;for(let i=0;i<16&&!F().loomDone;i++){const x=K.TRX[K.LOOM.need];if(Math.abs(U.act(0).pos.x-x)>0.4){U.goto(0,x,25.5,4,0.3);ZC.tick(10);}
+  if(!K.LOOM.open)wrong++;ZC.press('Semicolon');ZC.tick(80);n++;if(ZC.W.enemies.some(e=>e.alive&&e.pos.z>22&&e.pos.y>4)){r.push('kiki '+U.brawl(30,['parry','parry']));U.goto(1,0,23.7,8,0.3);U.act(1).face=Math.PI;}}
+r.push('throws='+n,'closed='+wrong,'loomDone='+!!F().loomDone,'kikiFoe='+!!F().loomKiki,U.st());r.push(F().loomDone?'loom ok':'FAIL loom');r
 //@@
 // по полотну на тот берег, вниз по лесенке — в овин
-const r=[];for(const pi of[1,0]){r.push(pi+': '+U.path(pi,[[0,22],[0,12],[0,10],[0,6],[0,2]],4));}
+const r=[];for(const pi of[1,0]){r.push(pi+': '+U.path(pi,[[0,22],[0,12],[0,10],[0,6],[0,2]],4));ZC.tick(5);if(ZC.G.cine){r.push('demo web');U.nocine();ZC.tick(5);}}
 ZC.press('Digit1');ZC.press('Digit0');ZC.tick(300);r.push(U.st(),U.obj(),'errs='+_errs.length+(_errs[0]?' '+_errs[0]:''));
 r.push('followers '+[H.proshka,H.pelageya,H.potap,H.yosha].filter(h=>h.pos.z<6).length+'/4');
 r.push(U.act(0).pos.z<4&&U.act(1).pos.z<4&&!_errs.length?'rooms ok':'FAIL rooms');r

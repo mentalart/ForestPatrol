@@ -28,11 +28,15 @@ r.push('up '+U.until(()=>me().pos.y>4.3,30),pos(me()),pos(bot()),'wound='+!!F().
 r.push('off '+U.goto(0,mine.cx,30.2,6,0.4));ZC.tick(30);r.push('liftDone='+!!F().liftDone,F().liftDone?'lift ok':'FAIL lift');r
 //@@
 // ткацкий стан: человек на подножке, бот бросает клубок-челнок
-const r=[];r.push(U.goto(0,0,29,8,0.4),U.goto(0,0,27,6,0.4),U.goto(0,-6.5,25.5,8,0.3));
-r.push('loom '+U.until(()=>F().loomDone,40),'n='+K15().LOOM.n,pos(bot()),'mode='+CO.mode);r.push(F().loomDone?'loom ok':'FAIL loom');r
+// подножек две — по очереди: человек перепрыгивает на светящуюся; при входе в зал — показка стана (ролик), кикиморка с 3-й полосы — бьют оба
+const r=[],K=K15();r.push(U.goto(0,0,29,8,0.4),U.goto(0,0,27,6,0.4));U.until(()=>ZC.G.cine,3);U.nocine();ZC.tick(5);
+let lt='TIMEOUT';for(let i=0;i<60*60;i++){if(F().loomDone){lt='t='+(i/60).toFixed(1);break;}if(ZC.G.cine){ZC.skip();ZC.tick(5);continue;}
+  const kf=ZC.W.enemies.find(e=>e.alive&&e.pos.z>22&&e.pos.y>4);if(kf){if(!U.def(0,i))U.hit(0,kf,i);ZC.tick(1);continue;}
+  U.step(0,K.TRX[K.LOOM.need],25.5,0.3);ZC.tick(1);}U.rel(0);
+r.push('loom '+lt,'n='+K.LOOM.n,pos(bot()),'mode='+CO.mode);r.push(F().loomDone?'loom ok':'FAIL loom');r
 //@@
 // по мосту в овин; нитяные мороки на полу — бьют оба
-const r=[U.path(0,[[0,22],[0,12],[0,10],[0,6],[0,1],[0,-14]],5)];r.push(U.until(()=>ZC.W.enemies.some(e=>e.alive&&e.pos.z<0),8));
+const r=[U.path(0,[[0,22],[0,12],[0,10],[0,6],[0,1]],5)];ZC.tick(5);if(ZC.G.cine){r.push('demo web');U.nocine();ZC.tick(5);}r.push(U.path(0,[[0,-14]],5));r.push(U.until(()=>ZC.W.enemies.some(e=>e.alive&&e.pos.z<0),8));
 const hr=hb(90,e=>e.pos.z<0&&e.pos.z>-34);r.push(hr,'bot '+pos(bot()),/cleared/.test(hr)?'foes ok':'FAIL foes');r
 //@@
 // человек поднимается: кольцо → клубок в колышек → ждёт струну друга → на серединку, прыжок

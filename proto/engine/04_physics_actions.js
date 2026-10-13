@@ -14,7 +14,7 @@ function integrate(h,dt){
   const prevY=h.pos.y;let ny=prevY+h.vel.y*dt;const reach=h.grounded?prevY+STEP:prevY+0.02;const g=groundAt(h.pos.x,h.pos.z,reach,undefined,h);
   if(ny<=g.y&&h.vel.y<=0.001){const landed=!h.grounded;
     // паутинка: две струны крест-накрест — прыжок в перекрестье подбрасывает на три метра
-    if(g.ref&&g.ref.string&&landed&&W.webs.some(w=>Math.hypot(w.x-h.pos.x,w.z-h.pos.z)<1.45&&Math.abs(w.y-g.y)<0.7)){ny=g.y+0.02;h.vel.y=14.2;h.grounded=false;h.groundRef=null;h.hang=false;SFX.toss();
+    if(g.ref&&g.ref.string&&landed&&W.webs.some(w=>Math.hypot(w.x-h.pos.x,w.z-h.pos.z)<1.45&&Math.abs(w.y-g.y)<0.7)){ny=g.y+0.02;h.vel.y=14.2;h.grounded=false;h.groundRef=null;h.hang=false;SFX.toss();W.webBoing={x:h.pos.x,z:h.pos.z,t:G.time};tone(160,0.28,'sine',0.3,520);
       floatText(h.pos.clone().add(new V3(0,h.d.height+0.4,0)),'Паутинка!','#fff2b0');if(W.onWeb)W.onWeb(h);}
     else{if(landed&&-h.vel.y>9&&h.active){shake(h.player,0.03,0.18);SFX.land();}ny=g.y;h.vel.y=0;h.grounded=true;h.groundRef=g.ref;h.lastGroundY=g.y;h.coyote=0.12;}}
   else if(h.grounded&&h.vel.y<=0&&g.y>prevY-0.3&&g.y<=reach){ny=g.y;h.vel.y=0;h.groundRef=g.ref;}
