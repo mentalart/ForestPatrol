@@ -160,13 +160,25 @@ function updateThreads(dt){
   W.webs.length=0;const ss=W.threads.filter(t=>t.string&&!t.sag);
   for(let i=0;i<ss.length;i++)for(let j=i+1;j<ss.length;j++){const a=ss[i],b=ss[j],den=a.dx*b.dz-a.dz*b.dx;if(Math.abs(den)<0.2)continue;
     const wx=b.sx-a.sx,wz=b.sz-a.sz,ua=(wx*b.dz-wz*b.dx)/den,ub=(wx*a.dz-wz*a.dx)/den;if(ua<0.3||ua>a.len-0.3||ub<0.3||ub>b.len-0.3)continue;
-    const ya=thY(a,ua),yb=thY(b,ub);if(Math.abs(ya-yb)<0.8)W.webs.push({x:a.sx+a.dx*ua,y:Math.max(ya,yb),z:a.sz+a.dz*ua});}
-  if(!W.webMeshes)W.webMeshes=[];while(W.webMeshes.length<W.webs.length){const g=new THREE.Group();const m=MB(0xfff2b0,{transparent:true,opacity:0.85});
-    for(let k=0;k<4;k++){const r=new THREE.Mesh(new THREE.TorusGeometry(0.2+k*0.17,0.025,4,24),m);r.rotation.x=Math.PI/2;g.add(r);}W.group.add(g);W.webMeshes.push(g);}
-  W.webMeshes.forEach((g,i)=>{const w=W.webs[i];g.visible=!!w;if(w){g.position.set(w.x,w.y+0.08,w.z);g.rotation.y+=dt;g.scale.setScalar(1+0.08*Math.sin(G.time*7));}});
+    const ya=thY(a,ua),yb=thY(b,ub);if(Math.abs(ya-yb)<0.8)W.webs.push({x:a.sx+a.dx*ua,y:Math.max(ya,yb),z:a.sz+a.dz*ua,a1:Math.atan2(a.dz,a.dx),a2:Math.atan2(b.dz,b.dx)});}
+  // паутинка — настоящая сетка: спицы вдоль обеих струн и между ними, кольца по спицам; дышит светом, на прыжке прогибается (W.webBoing)
+  if(!W.webMeshes)W.webMeshes=[];while(W.webMeshes.length<W.webs.length){const g=new THREE.Group();const m=MB(0xfff2b0,{transparent:true,opacity:0.9,side:THREE.DoubleSide,depthWrite:false});
+    const me=new THREE.Mesh(new THREE.BufferGeometry(),m);g.add(me);const glow=new THREE.Mesh(new THREE.CircleGeometry(1.25,24),MB(0xffe08a,{transparent:true,opacity:0.18,depthWrite:false}));glow.rotation.x=-Math.PI/2;glow.position.y=-0.02;g.add(glow);
+    g.userData={me,m,glow,key:''};W.group.add(g);W.webMeshes.push(g);}
+  W.webMeshes.forEach((g,i)=>{const w=W.webs[i];g.visible=!!w;if(!w)return;const u=g.userData,key=w.a1.toFixed(2)+'/'+w.a2.toFixed(2);if(u.key!==key){u.key=key;u.me.geometry.dispose();u.me.geometry=webGeo(w.a1,w.a2,1.25);}
+    const b=W.webBoing&&Math.hypot(W.webBoing.x-w.x,W.webBoing.z-w.z)<1.6?Math.max(0,1-(G.time-W.webBoing.t)/0.45):0,dip=Math.sin(b*Math.PI)*0.32*b;
+    g.position.set(w.x,w.y+0.06-dip,w.z);g.scale.set(1+0.12*b,1,1+0.12*b);u.m.opacity=0.72+0.2*Math.sin(G.time*5+i);u.glow.material.opacity=0.12+0.1*Math.sin(G.time*5+i)+0.3*b;});
   if(!W.glueHints)W.glueHints=[0,1].map(()=>{const m=new THREE.Mesh(new THREE.TorusGeometry(0.55,0.08,8,24),MB(COL.gold,{transparent:true,opacity:0.85}));m.rotation.x=Math.PI/2;m.visible=false;W.group.add(m);return m;});
   for(const pi of[0,1]){const m=W.glueHints[pi],ok=canContinue(pi);m.visible=ok;
     if(ok){const hs=findHost(pi,active(pi));m.position.set(hs.sx+hs.dx*hs.len,hs.y+0.14,hs.sz+hs.dz*hs.len);m.scale.setScalar(1+0.25*Math.sin(G.time*8+pi));m.material.color.setHex(PCOL[pi]);}}}
+// сетка паутинки в плоскости XZ: 8 спиц (вдоль двух струн, обе стороны, и биссектрисы) и 4 кольца-многоугольника; ленты шириной 4 см
+function webGeo(a1,a2,R){const sp=[a1,a1+Math.PI,a2,a2+Math.PI],bis=[];
+  const all=sp.map(a=>((a%(2*Math.PI))+2*Math.PI)%(2*Math.PI)).sort((x,y)=>x-y);for(let k=0;k<4;k++){const x=all[k],y=k<3?all[k+1]:all[0]+2*Math.PI;bis.push((x+y)/2);}
+  const ang=all.concat(bis).sort((x,y)=>x-y),pos=[],w=0.022;
+  const seg=(x0,z0,x1,z1)=>{const dx=x1-x0,dz=z1-z0,L=Math.hypot(dx,dz)||1,nx=-dz/L*w,nz=dx/L*w;pos.push(x0+nx,0,z0+nz,x1+nx,0,z1+nz,x1-nx,0,z1-nz,x0+nx,0,z0+nz,x1-nx,0,z1-nz,x0-nx,0,z0-nz);};
+  for(const a of ang)seg(0,0,Math.cos(a)*R,Math.sin(a)*R);
+  for(const f of[0.3,0.52,0.74,0.95])for(let k=0;k<ang.length;k++){const a=ang[k],b=ang[(k+1)%ang.length],r0=R*f*(1+0.06*Math.sin(k*1.7)),r1=R*f*(1+0.06*Math.sin((k+1)*1.7));seg(Math.cos(a)*r0,Math.sin(a)*r0,Math.cos(b)*r1,Math.sin(b)*r1);}
+  const g=new THREE.BufferGeometry();g.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));return g;}
 function pickByBall(x,y,z){for(const it of W.items){if(it.taken||it.locked||it.kind!=='nut'||(it.owl&&W.owlT<=0))continue;if(Math.hypot(it.pos.x-x,it.pos.z-z)<1.1&&Math.abs(it.pos.y-y)<1.6)takeItem(it,null);}
   for(const s of W.sparks){if(s.m.position.distanceTo(new V3(x,y,z))<1.2){s.free=0;s.t=0.36;}}}
 // упал в ряску со струны — сам выбирается на ближайшую кочку (без колокольчика и без потери лепестков)
