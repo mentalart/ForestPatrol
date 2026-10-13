@@ -1,0 +1,11 @@
+file	who	voice_name	el_voice_id	model	take	dur	credits	note
+kot/kot_A_igor.mp3	kot	Igor – Calm & Warm	rUOpAdbAl56KxO00wR5D	eleven_v4	1	10.24	127	кастинг
+kot/kot_B_vishnevski.mp3	kot	Vishnevski voice	Jy9A3l4WDp3IWeJMxJaW	eleven_v4	1	9.36	127	кастинг
+kot/kot_C_vladimir.mp3	kot	Vladimir	NkBkAMqIBNjZUjXKAA7r	eleven_v4	1	9.60	127	кастинг
+koschei/koschei_A_egor.mp3	koschei	Егор	BXpVl3OTz6ZGDqlYtXXB	eleven_v4	1	13.84	173	кастинг
+koschei/koschei_B_mikhail.mp3	koschei	Mikhail	RvcToHi9ENVDatbeYNJe	eleven_v4	1	15.04	173	кастинг
+koschei/koschei_C_fuad.mp3	koschei	Fuad	dWNEQ4rqRY6thcusuDyq	eleven_v4	1	15.20	173	кастинг
+kuzma/kuzma_A_maxim.mp3	kuzma	Maxim – Premium Baritone	SkGOoi8yfK3ONMNKMKj0	eleven_v4	1	8.88	89	кастинг
+kuzma/kuzma_B_nester.mp3	kuzma	Nester Surovy	pM78bgjPVk0JXtaEnFoj	eleven_v4	1	9.28	89	кастинг
+-	kuzma	Ivan	JKtNvDNrWu33P1xzttP2	eleven_v4	1	-	-	ОТКАЗ: Free Tier отключён («unusual activity… upgrade to a paid subscription»)
+-	proshka,potap,pelageya,yosha,tishka	(дизайн голоса)	-	eleven_ttv_v3	-	-	-	ОТКАЗ: дизайн детских голосов заблокирован правилами ElevenLabs
