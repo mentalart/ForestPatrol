@@ -320,7 +320,10 @@ function prkS6(){const L=prL(),P=prPm(),D=PRK.Wd,O=PRO.P,pe=PRK_T.pelageya;let r
         const f=clamp((t-4.4)/1.0,0,1);w.feather.visible=f>0;w.feather.position.set(-1+Math.sin(f*6)*0.4,3-f*3.2,-6+f*0.6);w.feather.rotation.z=Math.sin(f*8)*0.6;}
       // Смородина: головы Горыныча из пара — к искре — лбами
       if(t>=5.4&&t<7.2){const w=D.w4,N=w.gor.necks||[];const up=prkE.o(clamp((t-5.6)/0.8,0,1)),bonk=Math.sin(clamp((t-6.5)/0.45,0,1)*Math.PI);w.gor.g.position.y=-6+up*5;
-        N.forEach((n,i)=>{if(!n)return;n.rotation.z=(i-1)*-0.35*bonk;n.rotation.x=-0.25*up;});}
+        const H=w.gor.heads||[],PV=w.gor.piv||[];
+        N.forEach((n,i)=>{if(!n)return;n.rotation.z=(i-1)*-0.35*bonk;n.rotation.x=-0.25*up;
+          // голова — за своей шеей: тот же поворот вокруг основания шеи
+          const h=H[i],pv=PV[i];if(h&&pv){h.g.position.copy(h.base).sub(pv).applyEuler(n.rotation).add(pv);h.g.rotation.copy(n.rotation);}});}
       // Буян: сундук качается, глаз Лиха открывается
       if(t>=7.2&&t<9.2){const w=D.w5;w.chest.rotation.z=t>8?Math.sin((t-8)*6)*0.25*Math.exp(-(t-8)*0.8):0;w.lid.rotation.x=0.05-1.7*prkE.o(clamp((t-8.4)/0.5,0,1));}
       // Лукоморье: буквы встают из книги и рассыпаются серым пеплом

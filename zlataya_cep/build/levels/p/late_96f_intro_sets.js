@@ -288,7 +288,8 @@ function prkBuildW(){const D=PRK.Wd={};
     for(const s of[-1,1]){const b=prkAdd(g,new THREE.BoxGeometry(80,2,14),prkM(0x3a2a26),0,-1,-8+s*11.5);b.receiveShadow=true;}
     const br=prkGroup(g,0,0,-8);for(let i=0;i<12;i++){const u=i/11,z=-4.8+u*9.6;prkAdd(br,new THREE.BoxGeometry(3,0.2,0.75),prkM(0x8a4a2a),0,0.2+Math.sin(u*Math.PI)*1.6,z);}
     for(const s of[-1,1])for(const z of[-4.6,0,4.6])prkAdd(br,new THREE.CylinderGeometry(0.1,0.12,2.2,5),prkM(0x6a3a1e),s*1.5,1+(z===0?1.4:0),z);
-    w.gor=prkCast(makeGorynych,g,2,-6,-13,1.25,Math.PI*0.05);
+    w.gor=prkCast(()=>makeGorynych5(1),g,2,-6,-13,1.25,Math.PI*0.05);   // с головами: у makeGorynych — только шеи
+    {const G=w.gor,v=new THREE.Vector3();G.g.updateMatrixWorld(true);G.piv=G.necks.map(n=>n?G.g.worldToLocal(n.getWorldPosition(v.clone())):null);}
     w.steam=[];for(let i=0;i<8;i++){const s=prkAdd(g,new THREE.SphereGeometry(0.9,7,5),new THREE.MeshBasicMaterial({color:0xf0d8c8,transparent:true,opacity:0.3,depthWrite:false}),(Math.random()-0.5)*20,Math.random()*5,-8+(Math.random()-0.5)*6);s.castShadow=false;w.steam.push(s);}
     const an=prkGroup(g,-5,0,-1.5);prkAdd(an,new THREE.BoxGeometry(0.8,0.6,0.5),prkM(0x3a3a44),0,0.6,0);prkAdd(an,new THREE.CylinderGeometry(0.3,0.4,0.4,6),prkM(0x5a3a1a),0,0.2,0);
     const tg=prkGroup(an,0,0.96,0);for(const s of[-1,1]){const j=prkAdd(tg,new THREE.BoxGeometry(1.1,0.06,0.07),prkM(0x6a6a74),0,0,s*0.05);j.rotation.y=s*0.12;}
