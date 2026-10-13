@@ -83,12 +83,16 @@ CMP.route('2-3',[
     if(Math.hypot(h.pos.x-10.2,h.pos.z+73)>0.7){cmpGoto(h,10.2,-73,0.3);return;}
     h.face=-Math.PI/2;if((D.CE.dir!==-1||D.CE.t<2.5)&&!(K23.t>G.time-1.2)){K23.t=G.time;cmpTap('item');}}},
   // лодка старика: оба героя в лодку, пока она у причала (течение играет человек); заросли рубит Пелагея с носа; у отмели — на берег
-  {id:'pier',done:()=>W.flags.task>=11,run:(h,hh)=>{k23();const D=W.dbg23(),R=D.RAFT3,Fl=W.flags;if(Fl.task<9||h.pos.z>-90)return 'follow';
+  {id:'pier',first:true,done:()=>W.flags.task>=11,run:(h,hh)=>{k23();const D=W.dbg23(),R=D.RAFT3,Fl=W.flags;if(Fl.task<9||h.pos.z>-90||players[0].downed)return 'follow';
     const aboard=q=>q.groundRef===R.col,pel=HERO.pelageya,yo=HERO.yosha;k23Hold();
+    // щуки протоки плюются пузырями: на лодке — щит в последний миг; в общий бой не идёт (шагнул бы к щуке — в воду впереди лодки, и лодка встала бы у зарослей)
+    if(aboard(h))cmpBolts(h,TIMING[players[1].path]||TIMING.mid);
     if(R.z>-100.5&&!(aboard(pel)&&aboard(yo))){const k=!aboard(pel)?'pelageya':'yosha';if(!cmpWant(k))return;const d=Math.hypot(R.x-h.pos.x,R.z-h.pos.z);cmpGoto(h,R.x,R.z,0.2);if(h.grounded&&d<2.4)cmpTap('jump');return;}
     const kz=D.KELP.find(k=>!k.gone);
     if(kz){if(!cmpWant('pelageya'))return;if(aboard(h)&&Math.abs(kz.z-h.pos.z)<4.6){h.face=Math.PI;if(!(K23.t>G.time-0.3)){K23.t=G.time;cmpTap('attack');}}return;}    // руби с носа
-    if(R.z<-130){const need=['pelageya','yosha'].filter(k=>HERO[k].pos.z>-134.5),k=need.includes(h.kind)?h.kind:need[0];if(!k)return;if(!cmpWant(k))return;cmpGoto(h,k==='pelageya'?-1.2:1.2,-137.5,0.4);if(h.grounded&&h.blocked)cmpTap('jump');}}},
+    if(R.z<-130){const need=['pelageya','yosha'].filter(k=>HERO[k].pos.z>-134.5),k=need.includes(h.kind)?h.kind:need[0];if(!k)return;if(!cmpWant(k))return;cmpGoto(h,k==='pelageya'?-1.2:1.2,-137.5,0.4);
+      const st=K23.sh;if(!st||st.k!==h.kind||Math.hypot(h.pos.x-st.x,h.pos.z-st.z)>0.3)K23.sh={k:h.kind,x:h.pos.x,z:h.pos.z,t:G.time};   // с носа лодки на берег: стоит на месте дольше секунды (упёрся в край у берега) — прыжок
+      if(h.grounded&&(h.blocked||G.time-K23.sh.t>1)){cmpTap('jump');K23.sh.t=G.time;}}}},
   // отмель: Йоша — в сторону (храп сдувает с середины), Пелагея щекочет нижние усы ударом (Прошка — верхние рогаткой); зевок — в пасть
   {id:'shoal',done:()=>W.flags.task>=12,run:(h,hh)=>{k23();const D=W.dbg23(),Fl=W.flags;if(Fl.task<11||h.pos.z>-134)return 'follow';
     const yo=HERO.yosha,W2=D.WHI;k23Hold();

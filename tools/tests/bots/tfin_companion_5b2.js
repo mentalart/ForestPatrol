@@ -30,14 +30,16 @@ for(let i=0;i<60*400&&E5.cur!==1;i++){
 if(E5.cur!==1)throw new Error('пролог не пройден: leg='+PRO.leg+' legs='+legs.join(',')+' crows='+PRO.crows+' cnt='+JSON.stringify(PRO.cnt&&PRO.cnt.press)+' tries='+PRO.tries+' '+CO.mode);
 ['pro ok legs='+legs.join(',')+' crows='+PRO.crows+' orbs='+PRO.orbs+' hits='+PRO.hits+' wards='+PRO.wards+' parries='+((ZC.G.stats.parries||0)-st0)+' tries='+PRO.tries+' dropsP2='+d1+' refl='+refl.size]
 //@@
-// пролог, отрезок «Через моря», огонь бота отключён: вороны Игрока 2 успевают бросить капли — бот отбивает их щитом в последний миг (и они сбивают воронов)
-for(const pi of[0,1])ZC.players[pi].petals=3;E5.goStage(0);ZC.G.manual=true;ZC.tick(20);CO.set(true);CO.skill=1;
+// пролог, отрезок «Через моря», огонь бота отключён: вороны Игрока 2 успевают бросить капли — бот отбивает их щитом в последний миг (и они сбивают воронов).
+// Короткий пролог (по умолчанию: лес → туча) моря не проходит — здесь полный (E5.proFull, как в tk5e_prolog)
+for(const pi of[0,1])ZC.players[pi].petals=3;E5.proFull=true;E5.goStage(0);ZC.G.manual=true;ZC.tick(20);CO.set(true);CO.skill=1;
 const P2=E5.pro;const seen2=new Set(),refl2=new Set();let seaT=0;
 for(let i=0;i<60*200&&P2.leg!=='sky'&&E5.cur!==1;i++){
   if(ZC.G.cine&&i%3===0)ZC.skip();if(ZC.G.ui==='skaz'&&i%20===0)ZC.press('Space');
   if(ZC.FIN.co.k5b2)ZC.FIN.co.k5b2.t.fire=1e9;
   if(P2.on){const X=E5.proX();for(const d of X.drops){if(d.pi===1&&!seen2.has(d)){seen2.add(d);}if(d.pi===1&&d.refl)refl2.add(d);}}
   ZC.tick(1);}
+E5.proFull=false;
 if(!(seen2.size>0))throw new Error('капель в бота не было (leg='+P2.leg+')');
 if(!(refl2.size>0&&refl2.size>=seen2.size-1))throw new Error('капли не отбиты щитом: брошено '+seen2.size+' отбито '+refl2.size);
 ['shield ok drops='+seen2.size+' refl='+refl2.size]

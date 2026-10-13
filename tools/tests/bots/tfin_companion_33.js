@@ -29,3 +29,8 @@ if(!F().out)throw new Error('финал не сыгран: '+ZC.W.song.state+' '
 RESET33();const S=PLAY(false);const mb=MISS(1);
 if(S.state!=='stop')throw new Error('песня не доиграна: '+S.state+' t='+S.t.toFixed(1));if(Object.keys(mb).length)throw new Error('промахи бота: '+JSON.stringify(mb));if(Object.keys(S.rep).length)throw new Error('перемотки: '+JSON.stringify(S.rep));
 'bot alone ok best='+S.best.join('/')+' holds='+S.holds+' shields='+S.shields
+//@@
+// «Сдвиг такта» +150 мс (звук запаздывает): игра судит нажатие с поправкой — бот жмёт на столько же позже и снова не промахивается
+RESET33();ZC.G.songLag=0.15;const S=PLAY(false);ZC.G.songLag=0;const mb=MISS(1);
+if(S.state!=='stop')throw new Error('песня не доиграна (сдвиг): '+S.state+' t='+S.t.toFixed(1));if(Object.keys(mb).length)throw new Error('промахи бота со сдвигом такта: '+JSON.stringify(mb));
+'lag ok best='+S.best.join('/')

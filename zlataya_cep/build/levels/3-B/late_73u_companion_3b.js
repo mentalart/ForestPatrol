@@ -113,5 +113,5 @@ CMP.route('3-B',[
     k3bDef(K,h,D);cmpKey('guard',true);if(hd(h.pos,K3B_C)>1.5)cmpGoto(h,K3B_C.x,K3B_C.z,1.0);}},
   // песня: Пелагея прыгает в долю (провалить нельзя)
   {id:'song',first:true,done:()=>!!W.flags.out,run:h=>{const K=k3b(),S=W.song;if(!S||G.cine)return 'follow';if(!cmpWant('pelageya'))return;
-    if(K.sgS!==S){K.sgS=S;K.sg={};}for(let k=0;k<8;k++){if(K.sg[k])continue;if(S.t>=k*S.B-0.02){K.sg[k]=1;if(h.grounded)cmpTap('jump');}}}}
+    if(K.sgS!==S){K.sgS=S;K.sg={};}for(let k=0;k<8;k++){if(K.sg[k])continue;if(S.t-songLag()>=k*S.B-0.02){K.sg[k]=1;if(h.grounded)cmpTap('jump');}}}}
 ]);

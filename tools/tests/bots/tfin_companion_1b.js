@@ -9,17 +9,17 @@ window.pos=h=>h.kind+'@'+h.pos.x.toFixed(1)+','+h.pos.y.toFixed(1)+','+h.pos.z.t
 ZC.startFrom(ZC.LV('1-B'));ZC.G.manual=true;ZC.tick(60);window.W=ZC.W;CO.set(true);CO.skill=1;U.nocine();ZC.tick(30);window.K=ZC.FIN.k1b;
 ['phase='+F().phase,'hands='+W.enemies.filter(e=>e.kind==='hand').length,'me='+pos(me()),'bot='+pos(bot()),'mode='+CO.mode]
 //@@
-// этап 1: человек стоит в стороне; бот отбивает левую руку, кувыркается от правой, бежит по мосту-руке к плечу и бьёт по макушке (три трофея)
-me().pos.set(0,0,10);me().vel.set(0,0,0);P[0].petals=3;const L=[];let last='',n=0;
-for(;n<60*150&&F().phase===1;n++){ZC.tick(1);if(n%60===0){P[0].petals=3;me().pos.set(0,0,10);}const m=CO.mode;if(m!==last){L.push((n/60).toFixed(0)+'s '+m+' head='+F().head);last=m;}}
+// этап 1: человек стоит в стороне (за тропой подхода, в пустоте: на тропе «всегда вместе» перенесло бы бота к нему за стену арены); бот отбивает левую руку, кувыркается от правой, бежит по мосту-руке к плечу и бьёт по макушке (три трофея)
+me().pos.set(0,0,40);me().vel.set(0,0,0);P[0].petals=3;const L=[];let last='',n=0;
+for(;n<60*150&&F().phase===1;n++){ZC.tick(1);if(n%60===0){P[0].petals=3;me().pos.set(0,0,40);}const m=CO.mode;if(m!==last){L.push((n/60).toFixed(0)+'s '+m+' head='+F().head);last=m;}}
 L.push('head='+F().head,'phase='+F().phase,'petals='+P[1].petals,(F().phase>1||F().head>=3)?'hands ok':'FAIL hands');
 L.slice(-8)
 //@@
 // ролик «Ах так? Нате вам — четыре Лешего!», потом этап 2: двойники; бот натягивает струну на колышках и бьёт упавшего настоящего (два круга)
-me().pos.set(0,0,10);me().vel.set(0,0,0);const L=[];let last='',n=0;
+me().pos.set(0,0,40);me().vel.set(0,0,0);const L=[];let last='',n=0;
 for(;n<60*20&&F().phase!==2;n++){if(ZC.G.cine)ZC.skip();ZC.tick(1);}
 L.push('phase='+F().phase,'doubles='+W.doubles.length,'stakes='+W.stakes.filter(s=>!s.used).length);
-for(n=0;n<60*170&&F().phase===2;n++){ZC.tick(1);if(n%60===0){P[0].petals=3;me().pos.set(0,0,10);}if(ZC.G.cine)ZC.skip();const m=CO.mode;if(m!==last){L.push((n/60).toFixed(0)+'s '+m+' round='+F().round);last=m;}}
+for(n=0;n<60*170&&F().phase===2;n++){ZC.tick(1);if(n%60===0){P[0].petals=3;me().pos.set(0,0,40);}if(ZC.G.cine)ZC.skip();const m=CO.mode;if(m!==last){L.push((n/60).toFixed(0)+'s '+m+' round='+F().round);last=m;}}
 L.push('round='+F().round,'phase='+F().phase,(F().phase>=3||F().round>=2)?'hide ok':'FAIL hide');L.slice(-9)
 //@@
 // этап 3, хоровод: человек бежит свою дорожку, прыгает перед скакалкой, на «ТРИ!» жмёт удар и бьёт мах; бот — свою

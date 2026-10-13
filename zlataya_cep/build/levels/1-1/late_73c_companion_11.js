@@ -71,8 +71,9 @@ CMP.route('1-1',[
     if(HEROES.some(q=>q.pos.z>-108.4)){if(!on('pelageya',PL[3]))stand('pelageya',PL[3]);else if(!on('yosha',PL[2]))stand('yosha',PL[2]);return;}
     return 'follow';}},
   // за калиткой: вороны бота не трогают (W.ravSkip); стог и ступу делает человек; брёвна — вдвоём с человеком; ручей — по своей нити
-  {id:'river',done:()=>s11Todo(-205,'riv').length===0,run:(h,hh)=>{if(s11F().stage!=='crows'||hh.pos.z>-184)return 'follow';
-    const td=s11Todo(-205,'riv'),k=td.includes(h.kind)?h.kind:td[0];
+  {id:'river',done:()=>s11Todo(-206.1,'riv').length===0,run:(h,hh)=>{if(s11F().stage!=='crows'||hh.pos.z>-184)return 'follow';
+    const td=s11Todo(-206.1,'riv'),k=td.includes(h.kind)?h.kind:td[0];
+    // перешёл — только когда сошёл с конца нити (≈ -205,8): стоящего на ней при броске второй нити смотает назад, на тот берег
     // второй герой ждёт на берегу: за рощей бот звал его «Ко мне!» — шёл бы следом мимо нити и падал в ручей
     for(const q of['pelageya','yosha'])if(q!==k&&HERO[q].pos.z>-189&&HERO[q].following){HERO[q].following=false;HERO[q].stuck=0;}
     if(!cmpWant(k))return;const sd=S11.rx||(S11.rx=hh.pos.x>0?-1:1),x=sd*(h.kind==='yosha'?5:7.5);   // подальше от нити друга; у каждого героя своя дорожка (как на грядках)
