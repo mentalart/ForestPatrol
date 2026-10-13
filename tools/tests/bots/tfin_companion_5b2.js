@@ -17,7 +17,7 @@ window.SURVEY=(n,sec)=>{const t0=GOS(n);const out=['st'+n+' ready@'+t0];const lm
 //@@
 // пролог: человек стоит, жмёт огонь и «три»; бот сам берёт курс, бьёт своих ворон, отбивает свои капли и жмёт «три»
 const st0=ZC.G.stats.parries||0;
-for(const pi of[0,1])ZC.players[pi].petals=3;E5.goStage(0);ZC.G.manual=true;ZC.tick(20);CO.set(true);CO.skill=1;
+for(const pi of[0,1])ZC.players[pi].petals=3;ZC.G.manual=true;E5.goStage(0);ZC.tick(20);CO.set(true);CO.skill=1;
 const PRO=E5.pro;let leg='',legs=[],fireH=0,tm=0,seen=new Set(),refl=new Set(),d1=0;
 for(let i=0;i<60*400&&E5.cur!==1;i++){
   if(ZC.G.cine&&i%3===0)ZC.skip();if(ZC.G.ui==='skaz'&&i%20===0)ZC.press('Space');
@@ -32,7 +32,7 @@ if(E5.cur!==1)throw new Error('пролог не пройден: leg='+PRO.leg+'
 //@@
 // пролог, отрезок «Через моря», огонь бота отключён: вороны Игрока 2 успевают бросить капли — бот отбивает их щитом в последний миг (и они сбивают воронов).
 // Короткий пролог (по умолчанию: лес → туча) моря не проходит — здесь полный (E5.proFull, как в tk5e_prolog)
-for(const pi of[0,1])ZC.players[pi].petals=3;E5.proFull=true;E5.goStage(0);ZC.G.manual=true;ZC.tick(20);CO.set(true);CO.skill=1;
+for(const pi of[0,1])ZC.players[pi].petals=3;E5.proFull=true;ZC.G.manual=true;E5.goStage(0);ZC.tick(20);CO.set(true);CO.skill=1;
 const P2=E5.pro;const seen2=new Set(),refl2=new Set();let seaT=0;
 for(let i=0;i<60*200&&P2.leg!=='sky'&&E5.cur!==1;i++){
   if(ZC.G.cine&&i%3===0)ZC.skip();if(ZC.G.ui==='skaz'&&i%20===0)ZC.press('Space');
