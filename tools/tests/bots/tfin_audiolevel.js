@@ -38,9 +38,14 @@ AI
   if(!window.MT)window.MT=setInterval(()=>{try{F.music.tick();}catch(e){}},16);
   // нейтральный микс: ни приглушения, ни «тишины» стингера, ни ролика (их гасит render, а он встаёт под нагрузкой) — иначе музыка плавает на 10 дБ
   const neutral=()=>{const J=F.juiceW;try{ZC.G.cine=null;J.calmT=0;J.hushT=0;if(F.juice)F.juice.duckT=0;}catch(e){}AM.mus.gain.cancelScheduledValues(0);AM.mus.gain.value=1;};
-  neutral();F.music.play(null);await sleep(400);
-  for(const n of names){if(!TR[n]){out[n]=null;continue;}F.music.play(n);neutral();await sleep(1500);neutral();reset();await sleep(3000);out[n]=get().all;F.music.play(null);await sleep(500);}
-  window.MUS=out;return JSON.stringify(out);})()
+  // голос игры (реплики боссовых уровней, загруженных выше) не должен попадать в окно замера музыки: на выходе лимитера он даёт пик −2 / RMS −15
+  // и выдаёт себя за «громкую тему» (раньше — случайно jxBoss2/jxBoss3/k1b1). Голос глушим на время замера, окно с репликой или бормотанием переснимаем.
+  const V=F.vox,vset=F.set.vox;F.set.vox=0;const said=()=>V.played+V.babbled;const quiet=()=>{try{V.stop(0.01);}catch(e){}};
+  neutral();quiet();F.music.play(null);await sleep(400);let redo=0;
+  for(const n of names){if(!TR[n]){out[n]=null;continue;}
+    for(let k=0;k<3;k++){F.music.play(n);neutral();quiet();await sleep(1500);neutral();quiet();const s0=said();reset();await sleep(3000);out[n]=get().all;F.music.play(null);await sleep(500);
+      if(said()===s0&&!V.cur)break;redo++;}}
+  F.set.vox=vset;window.MUS=out;return JSON.stringify(out)+(redo?' (переснято окон с голосом: '+redo+')':'');})()
 //@@
 // звуки боссов: удар (для сравнения), рык Горыныча (копия рецепта), «гул», рык Водяного, свист Соловья, бормотание без записи
 (async()=>{if(!window.get)return 'skip';const F=ZC.FIN,A=F.aud,out={};
