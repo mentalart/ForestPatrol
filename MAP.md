@@ -84,7 +84,7 @@
 | `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_10b_w1_mood, late_40b_music_w1, late_73c_companion_11, late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 38 | t11 t11long tfin_art tfin_botlevel tfin_cam tfin_ch1 tfin_companion tfin_companion_11 tfi… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_76_kids_fight, late_79f_fog_hint12 | 5 | tbogauto tfin_bossfxcap tfin_ch1 tfin_companion_12 tsospot |
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 5 | tfin_companion_13 tfin_k13strings tfin_k13teach tfin_kids1 tfin_kids2 |
-| `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99b_kidnap14, late_99zf_pea14, late_99zg_auka14 | 7 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14long tfin_kidnap14 tfin_kids2 thub9e |
+| `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99b_kidnap14, late_99zf_pea14, late_99zg_auka14 | 8 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14cine tfin_k14long tfin_kidnap14 tfi… |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99zw_k15_kino | 7 | tfin_ch1 tfin_companion_15 tfin_k15_boss tfin_k15_lift tfin_k15_rooms tfin_k15cine thub2 |
 | `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zd_k1b_help | 6 | tfin_companion_1b tfin_companion_lesson tfin_k1b3solo tfin_post tfin_skaz tsospot |
 | `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit, late_99zg_k21_gauge, late_99zh_k21_calm, late_99zt_kw_gauges, late_99zu_kw_resume, late_99zv_kw_music | 21 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21foes tf… |
@@ -408,6 +408,7 @@
 | `levels/w2/late_99zu_kw_resume.js` | 2-1, 2-2 | РЕЛИЗ final06 · МИР 2: СОХРАНЕНИЕ НА КОЛОКОЛЬЧИКАХ В ДЛИННЫХ УРОВНЯХ 2-1 И 2-2 |
 | `levels/w2/late_99zv_kw_music.js` | 2-1, 2-2, 2-3, 2-4 | РЕЛИЗ final06 · МИР 2: СВОЯ МУЗЫКА У КАЖДОГО УРОВНЯ, НАПЕВ САДКО — ЛЕЙТМОТИВ |
 | `levels/1-5/late_99zw_k15_kino.js` | 1-5 | РЕЛИЗ final06 · 1-5 «КИКИМОРИНА ПРЯЛКА»: РОЛИКИ ВРУЧНУЮ И ПОКАЗКИ МЕХАНИК |
+| `levels/1-4/late_99zx_k14_kino.js` | — | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: РОЛИКИ В РУЧНОЙ ПОСТАНОВКЕ — ШАПКИ, «ПЕЛАГЕЮ УВЕЛИ», АУКА |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -449,6 +450,7 @@
 | `levels/1-3/rep_30_kolobok13.py` | 1-3 «Колобок»: последний ролик — пляска; Колобок отдаёт звено Прошке |
 | `levels/1-3/rep_30_kolobok13.py` | 1-3 «Колобок»: мир 1 для детей 7–11 — окно попадания в долю шире на Лёгком (±0,20 с) и Среднем (±0,12 с); Богатырский —… |
 | `levels/1-4/rep_30_leshy14.py` | 1-4 «Леший водит»: ролик «Пелагею увели» — ёлки кружат Пелагею хороводом и вихрем уносят в кольцо |
+| `levels/1-4/rep_30_leshy14.py` | 1-4: ролик «Шапки из мха» — ручная постановка (late_99zx_k14_kino.js, FIN.k14Hats): шапки и пень передаются из build14 |
 | `levels/1-B/rep_30_leshy1b.py` | 1-Б «Леший-Путаник»: Леший с трофеями на голове, большие руки-коряги от плеча, двойники в нарядах, мост-рука, зрители, … |
 | `levels/1-B/rep_30_leshy1b.py` | этап 2 «Ищи-свищи»: прятки (late_99za_k1b_hide.js, шаг 4 плана) |
 | `levels/1-B/rep_30_leshy1b.py` | этап 3 «Хоровод»: Леший на пне, скакалка, ленты, «Тяни-потяни» (late_99zb_k1b_hoorovod.js, шаг 5 плана) — вместо карусе… |
@@ -510,12 +512,13 @@
 | `42_priskazka_intro.md` | «Присказка» — вступительный ролик игры (сценарий) |
 | `43_scenarny_analiz.md` | Сценарный разбор «Златой цепи» (final06) |
 | `44_prompt_pereozvuchka_elevenlabs.md` | Промт: чистовая переозвучка всей игры через ElevenLabs MCP |
+| `45_kino_audit.md` | Аудит роликов «Златой цепи» и очередь ручной постановки |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 180 файлов |
+| `changes/` | 182 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 10 файлов |
 
-Ботов всего: 312 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 313 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
