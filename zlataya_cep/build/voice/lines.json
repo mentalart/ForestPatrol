@@ -7,28 +7,40 @@
    "about": "самый маленький в штабе-сосне: тихий, сонный, ласковый",
    "voice_id": "375a3398-e3b4-4f91-845d-42181e352899",
    "pitch": 3.5,
-   "voice": "Luna"
+   "voice": "Luna",
+   "el_voice_id": "rSfuQoQ3FY8SVKeraMAp",
+   "el_voice_name": "Lunya",
+   "el_tag": "[childlike voice]"
   },
   "proshka": {
    "name": "Прошка",
    "about": "лисёнок: бойкий, чуть хвастливый, добрый",
    "voice_id": "1fb253b8-928b-4d29-a349-f242a71eaddf",
    "pitch": 1.5,
-   "voice": "Skye"
+   "voice": "Skye",
+   "el_voice_id": "YjYZWA1JjVPJcnWmCm0r",
+   "el_voice_name": "Vika Prof",
+   "el_tag": "[childlike voice]"
   },
   "potap": {
    "name": "Потап",
    "about": "медвежонок-силач: тёплый, неторопливый, надёжный",
    "voice_id": "5c615d8a-5135-539d-8ab0-497b7ceabbae",
    "pitch": 2.5,
-   "voice": "Kayla"
+   "voice": "Kayla",
+   "el_voice_id": "HO0xRRVNKM5KFlpsrNit",
+   "el_voice_name": "Kuchka",
+   "el_tag": "[childlike voice]"
   },
   "yosha": {
    "name": "Йоша",
    "about": "ёжик: маленький, звонкий, упрямый «я сам»",
    "voice_id": "e9cfbbf0-4476-46be-b396-596eb774b165",
    "pitch": 1,
-   "voice": "Chloe"
+   "voice": "Chloe",
+   "el_voice_id": "rSfuQoQ3FY8SVKeraMAp",
+   "el_voice_name": "Lunya",
+   "el_tag": "[childlike voice] [high voice]"
   },
   "zven": {
    "name": "Звенышко",
@@ -36,14 +48,19 @@
    "voice_id": "09878754-f20b-5330-9790-58a8027ab5b2",
    "pitch": 2,
    "voice": "Gracie",
-   "fx": "zven"
+   "fx": "zven",
+   "el_voice_id": "SU4ks9gEc2CmZuomYn22",
+   "el_voice_name": "ZC Звенышко"
   },
   "pelageya": {
    "name": "Пелагея",
    "about": "совушка: умная, спокойная, читает по тетрадке",
    "voice": "Isla",
    "voice_id": "7367e919-3069-5a0b-939e-dfb1c0fd91b4",
-   "pitch": 1.5
+   "pitch": 1.5,
+   "el_voice_id": "CH4syTkdz0MNPn6zayBd",
+   "el_voice_name": "Russian Girl Masha",
+   "el_tag": "[childlike voice]"
   },
   "kot": {
    "name": "Кот Учёный",
@@ -60,7 +77,9 @@
    "voice": "Linda",
    "voice_id": "f82790fd-8283-5187-9e3f-cc8e99bc5b17",
    "pitch": 1,
-   "fx": "crone"
+   "fx": "crone",
+   "el_voice_id": "3H7aTk6uTUDbt11IM9D4",
+   "el_voice_name": "ZC Баба Яга"
   },
   "kiki": {
    "name": "Кикимора",
@@ -75,7 +94,9 @@
    "voice": "Gideon",
    "voice_id": "1ad38ba4-9cc4-4f2f-9fde-b0fefdf67ae5",
    "pitch": 0,
-   "fx": "wood"
+   "fx": "wood",
+   "el_voice_id": "rI5rq12Z7HLRDqCJZqDO",
+   "el_voice_name": "ZC Леший"
   },
   "kolobok": {
    "name": "Колобок",
@@ -120,9 +141,7 @@
    "voice": "Arthur",
    "voice_id": "30fc8796-ceb6-4a66-b3a7-4a145ef7f346",
    "pitch": -0.5,
-   "fx": "hall",
-   "el_voice_id": "BXpVl3OTz6ZGDqlYtXXB",
-   "el_voice_name": "Егор"
+   "fx": "hall"
   },
   "sadko": {
    "name": "Садко",
@@ -137,7 +156,9 @@
    "voice": "Caspian",
    "voice_id": "ef70cc83-3015-4bad-9359-0ea968c43ec0",
    "pitch": 0,
-   "fx": "water"
+   "fx": "water",
+   "el_voice_id": "ILW5owaWYUzP21S5Se0k",
+   "el_voice_name": "ZC Водяной"
   },
   "starik": {
    "name": "Старик",
@@ -180,7 +201,9 @@
    "about": "хвастливый разбойник",
    "voice": "John",
    "voice_id": "6b528d43-c056-4a2f-9d82-1591a7ba13b0",
-   "pitch": 0
+   "pitch": 0,
+   "el_voice_id": "n6HFNmgefTKGL69fGu6Y",
+   "el_voice_name": "ZC Соловей-Разбойник"
   },
   "likho": {
    "name": "Лихо Одноглазое",
@@ -188,7 +211,9 @@
    "voice": "Landon",
    "voice_id": "dc1c0a41-53cd-53af-aec5-ab637840505f",
    "pitch": -1,
-   "fx": "dark"
+   "fx": "dark",
+   "el_voice_id": "pl0k4WKsnZGFfRQx0ctC",
+   "el_voice_name": "ZC Лихо Одноглазое"
   },
   "gorL": {
    "name": "Горыныч, левая голова",
@@ -196,7 +221,9 @@
    "voice": "Alistair",
    "voice_id": "d9d5c263-f84e-4752-97b5-3750fcc6fd2f",
    "pitch": 0,
-   "fx": "dragon"
+   "fx": "dragon",
+   "el_voice_id": "VThyZgT63lUMHqcybpK7",
+   "el_voice_name": "ZC Горыныч левая"
   },
   "gorM": {
    "name": "Горыныч, средняя голова",
@@ -204,7 +231,9 @@
    "voice": "Barrett",
    "voice_id": "d603a8cd-3fe1-55e0-9245-617a2589131e",
    "pitch": 0,
-   "fx": "dragon"
+   "fx": "dragon",
+   "el_voice_id": "wzFSXO3Bdy8QxeUHM0It",
+   "el_voice_name": "ZC Горыныч средняя"
   },
   "gorR": {
    "name": "Горыныч, правая голова",
@@ -212,7 +241,9 @@
    "voice": "Soraya",
    "voice_id": "5c1d2f7f-cdb4-5b1d-bca9-156439e3275e",
    "pitch": 0,
-   "fx": "dragon"
+   "fx": "dragon",
+   "el_voice_id": "NCnbgHIBpmxvFl2MQc6o",
+   "el_voice_name": "ZC Горыныч правая"
   },
   "pechka": {
    "name": "Печка",
@@ -375,7 +406,9 @@
    "about": "мини-босс сада Китежа: ворчливый задира без домика, в конце — смущённый и счастливый",
    "voice": "Reid",
    "voice_id": "66469f5a-10db-586a-bab1-72f6ee66ba69",
-   "pitch": 1.5
+   "pitch": 1.5,
+   "el_voice_id": "4d236ygY2l2ZSD595ygh",
+   "el_voice_name": "ZC Рак-Отшельник"
   },
   "auka": {
    "name": "Аука",
@@ -383,7 +416,9 @@
    "voice": "Silero xenia",
    "silero": "xenia",
    "pitch": 2,
-   "fx": "auka"
+   "fx": "auka",
+   "el_voice_id": "fe2BU2IiI12E4vIrzdrB",
+   "el_voice_name": "ZC Аука"
   },
   "mysh": {
    "name": "Мышка-норушка",
@@ -427,6 +462,13 @@
    "silero": "aidar",
    "pitch": -2,
    "fx": "magic"
+  },
+  "reader": {
+   "name": "Сказительница",
+   "about": "голос «Читать вслух» (задачи и подсказки): тёплый, ясный, неспешный; не совпадает с персонажами",
+   "el_voice_id": "PZhi1QpQl0Z9H9WfRfYS",
+   "el_voice_name": "Svetlana – Children's Storyteller",
+   "pitch": "0"
   }
  },
  "lines": [
