@@ -5,10 +5,10 @@ window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
 window.CO=ZC.FIN.co;window.bot=()=>U.act(1);window.me=()=>U.act(0);window.H=ZC.HERO;window.F=()=>ZC.W.flags;
 window.pos=h=>h.kind+'@'+h.pos.x.toFixed(1)+','+h.pos.y.toFixed(1)+','+h.pos.z.toFixed(1);
-window.RESET54=()=>{for(let t=0;t<4;t++){ZC.startFrom(ZC.LV('5-4'));ZC.G.manual=true;ZC.tick(30);if(ZC.W.levelId==='5-4')break;}for(let i=0;i<30&&ZC.G.cine;i++){ZC.skip();ZC.tick(10);}U.nocine();ZC.tick(5);CO.set(true);CO.skill=1;ZC.tick(20);window.H=ZC.HERO;return F().stage;};
+window.RESET54=()=>{for(let t=0;t<4;t++){ZC.startFrom(ZC.LV('5-4'));ZC.G.manual=true;ZC.tick(30);if(ZC.W.levelId==='5-4')break;}for(let i=0;i<30&&ZC.G.cine;i++){ZC.skip();ZC.tick(10);}U.nocine();ZC.tick(5);CO.set(true);CO.skill=1;ZC.G.songLag=0.12;ZC.tick(20);window.H=ZC.HERO;return F().stage;};   // «Сдвиг такта» +120 мс: доли судятся с поправкой — и человек, и бот жмут позже
 // человек: прыжок / защита в долю (как t54)
 window.HUM=()=>{const W=ZC.W,S=W.S54;if(!S||S.state!=='play'||ZC.G.cine)return;
-  for(let k=Math.max(0,S.lastK);k<=S.lastK+1&&k<S.NB;k++){const d=S.bt[k]-S.t;if(d<0.02&&d>-0.03&&!S.judged[0][k]){const a=S.act(0,k);if(a!=='rest')ZC.press(a==='guard'?'KeyG':a==='item'?'KeyR':'Space');}}};
+  for(let k=Math.max(0,S.lastK);k<=S.lastK+1&&k<S.NB;k++){const d=S.bt[k]+ZC.G.songLag-S.t;if(d<0.02&&d>-0.03&&!S.judged[0][k]){const a=S.act(0,k);if(a!=='rest')ZC.press(a==='guard'?'KeyG':a==='item'?'KeyR':'Space');}}};
 RESET54();
 ['stage='+F().stage,'bot='+pos(bot()),'me='+pos(me()),CO.mode,!!CO.routes['5-4'],'song='+!!ZC.W.S54]
 //@@

@@ -48,7 +48,7 @@ const L=[];let last='';for(let i=0;i<60*70&&F().task<4;i++){ZC.tick(1);const m=C
 r.push('task='+F().task,'set='+R.map(s=>s.set?1:0).join(''),'held='+NN.held,'bot='+pos(bot())+' '+CO.mode,F().task>=4?'fish ok':'FAIL fish');r.concat(L)
 //@@
 // протока: человек — течение с причала; бот: оба героя на плот, Совиный взор, уступ, тайное течение; дальше на песок
-const D=ZC.W.warp23('protoka');ZC.tick(20);CO.routes['2-3'].forEach(s=>{s.fin=false;});put(me(),-3,-33);put(bot(),2,-33);put(other(),3,-32.5);ZC.tick(10);
+const D=ZC.W.warp23('protoka');ZC.tick(20);U.nocine();ZC.tick(5);CO.routes['2-3'].forEach(s=>{s.fin=false;});put(me(),-3,-33);put(bot(),2,-33);put(other(),3,-32.5);ZC.tick(10);
 const r=[];const L=[];let last='';
 for(let i=0;i<60*20;i++){ZC.tick(1);const m=CO.mode;if(m!==last||i%300===0){L.push('p1 '+(i/60).toFixed(0)+'s '+m+' '+pos(bot())+' raft='+D.RAFT.z.toFixed(1)+' on='+(bot().groundRef===D.RAFT.col)+'/'+(other().groundRef===D.RAFT.col));last=m;}if(bot().groundRef===D.RAFT.col&&other().groundRef===D.RAFT.col)break;}
 r.push('aboard '+(bot().groundRef===D.RAFT.col)+'/'+(other().groundRef===D.RAFT.col));
@@ -65,7 +65,7 @@ r.push('caught='+D.YR.caught,'bot='+pos(bot()),D.YR.caught?'lake ok':'FAIL lake'
 //@@
 // лодка старика: человек играет «Течение» с причала и прыгает следом; бот: оба героя в лодку, Пелагея рубит заросли с носа; у отмели — на берег
 for(let k=0;k<6;k++){let t0=0;while(ZC.G.cine&&t0<4000){ZC.skip();ZC.tick(5);t0+=5;}ZC.tick(40);}
-const D=ZC.W.warp23('pier');ZC.tick(20);CO.routes['2-3'].forEach(s=>{s.fin=false;});put(me(),-3,-92);put(bot(),2,-92);put(other(),3,-91.5);ZC.tick(10);F().task=9;
+const D=ZC.W.warp23('pier');ZC.tick(20);U.nocine();ZC.tick(5);CO.routes['2-3'].forEach(s=>{s.fin=false;});put(me(),-3,-92);put(bot(),2,-92);put(other(),3,-91.5);ZC.tick(10);F().task=9;
 const L=[];let last='';
 for(let i=0;i<60*20;i++){ZC.tick(1);const m=CO.mode;if(m!==last||i%300===0){L.push('p1 '+(i/60).toFixed(0)+'s '+m+' '+pos(bot())+' raft='+D.RAFT3.z.toFixed(1)+' on='+(bot().groundRef===D.RAFT3.col)+'/'+(other().groundRef===D.RAFT3.col));last=m;}if(bot().groundRef===D.RAFT3.col&&other().groundRef===D.RAFT3.col)break;}
 const r=['aboard '+(bot().groundRef===D.RAFT3.col)+'/'+(other().groundRef===D.RAFT3.col)];

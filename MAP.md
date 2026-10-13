@@ -111,7 +111,7 @@
 | `5-4` | 5-4 · Яйцо | `build54()` · `levels/5-4.js` | late_97c_egg54_music, late_97f_koschei_motif, late_97g_buyan_nest | 4 | t54 tfin_companion_54 tfin_lag tso54 |
 | `5-B1` | 5-Б1 · Кощей в тереме | `build5B1()` · `levels/5-B1.js` | late_96c_k5b1_texts, late_97f_koschei_motif, late_97g_buyan_nest | 5 | t5b1 t5b1cam t5b1solo tfin_companion_5b1 tfin_cover5b1 |
 | `5-B2` | 5-Б2 · Кощей Бессмертный и Златая цепь | `build5B2()` · `levels/5-B2.js` | late_92_koschei, late_92a_k5e_init, late_92d_k5e_pics, late_93_koschei_level, late_93_koschei_level_p2_storm, late_93_koschei_level_p3_wind, late_93_koschei_level_p4_skaz, late_93_koschei_level_p5_finale, late_93_koschei_level_p6_epic, late_93_koschei_level_ph_prologue, late_93_koschei_level_pi_lessonagain, late_94_koschei_reset, late_94b_k5e_budget, late_97f_koschei_motif | 3 | t5b2 tk5e_resume tlukoepi |
-| `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start, late_97f_koschei_motif, late_97g_buyan_nest | 3 | tepi tfin_episolo tfin_epitheatre |
+| `epi` | Эпилог | `buildEpi()` · `levels/epi.js` | late_39_epi_shadows, late_74_kids_start, late_97f_koschei_motif, late_97g_buyan_nest | 4 | tepi tfin_companion_epi tfin_episolo tfin_epitheatre |
 | `z-i` | Застава · Илья Муромец: крен Калинова моста | `buildZast('i')` · `levels/zastava.js` | — | 1 | tzast |
 | `z-d` | Застава · Добрыня Никитич: семерых одним махом | `buildZast('d')` · `levels/zastava.js` | — | 2 | tfin_juice tzast |
 | `z-a` | Застава · Алёша Попович: колокольная перекличка | `buildZast('a')` · `levels/zastava.js` | — | 1 | tzast |
@@ -256,6 +256,7 @@
 | `levels/5-B1/late_73ze_companion_5b1.js` | — | РЕЛИЗ final06 · 5-Б1 «КОЩЕЙ В ТЕРЕМЕ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
 | `levels/5-1/late_73zf_companion_51.js` | — | РЕЛИЗ final06 · 5-1 «СУНДУК НА ДУБЕ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
 | `levels/5-B2/late_73zg_companion_5b2.js` | — | РЕЛИЗ final06 · 5-Б2 «КОЩЕЙ БЕССМЕРТНЫЙ И ЗЛАТАЯ ЦЕПЬ»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 |
+| `levels/epi/late_73zh_companion_epi.js` | — | РЕЛИЗ final06 · ЭПИЛОГ «ТЕАТР ТЕНЕЙ»: НАПАРНИК-БОТ ИГРАЕТ ТЕНЯМИ ЗА ИГРОКА 2 |
 | `late_74_kids_start.js` | epi, luko | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · СТАРТ, УДОБСТВО, СОХРАННОСТЬ |
 | `late_75_kids_w1.js` | 1-1, 1-2, 1-3, 1-4, 1-5, 1-B, 2-1, 3-1, p | РЕЛИЗ · МИР 1 ДЛЯ ДЕТЕЙ 7–11 · ПРАВКИ УРОВНЕЙ |
 | `late_76_kids_fight.js` | 1-1, 1-2, 2-1, 3-1 | РЕЛИЗ · ДЕТИ 7–11 · БОЙ: СИНЯЯ КАПЛЯ, «ЖАЛОСТЬ», КРАСНЫЙ ЗНАК |
@@ -505,11 +506,11 @@
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `42_priskazka_intro.md` | «Присказка» — вступительный ролик игры (сценарий) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 169 файлов |
+| `changes/` | 170 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 307 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 308 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

@@ -5,9 +5,9 @@
 const K13={bk:-9,fk:-9};
 const k13Left=()=>{PADS.axes[1]={x:-1,y:0};},k13Right=()=>{PADS.axes[1]={x:1,y:0};};
 function k13Run(h,dt){const S=W.song;if(!S||(S.state!=='play'&&S.state!=='final'))return 'follow';
-  const BT=S.BT,w=Math.max(0.03,dt*1.1);
+  const BT=S.BT,w=Math.max(0.03,dt*1.1),L=songLag();   // L — «Сдвиг такта»: пляску, зверей, лапу, коршуна и вожака игра судит с поправкой на звук
   if(S.state==='final'){                                           // пляска: прыжок или хлопок щитом в свою долю
-    if(!S.fin)return;const P=S.FST[S.fs],k=Math.round(S.ft/S.B2),d=S.ft-k*S.B2;
+    if(!S.fin)return;const P=S.FST[S.fs],ft=S.ft-L,k=Math.round(ft/S.B2),d=ft-k*S.B2;
     if(k>=0&&Math.abs(d)<w&&K13.fk!==S.fs*1000+k){K13.fk=S.fs*1000+k;const b=k%P.n,who=P.who(b);if(who===2||who===1)cmpTap(P.act(b)==='C'?'guard':'jump');}
     return;}
   const i=CMP.tick,oz=o=>o.type==='barrel'?o.bz:o.z;
@@ -28,7 +28,7 @@ function k13Run(h,dt){const S=W.song;if(!S||(S.state!=='play'&&S.state!=='final'
   if(s&&onB&&h.grounded)cmpTap('jump');
   else if((lg||hole)&&h.grounded&&!s)cmpTap('jump');
   if(br&&h.grounded&&h.rollT<=0)cmpTap('roll');
-  const b=S.beasts.find(q=>q.pi===1&&!q.res&&Math.abs(q.z-h.pos.z)<3.6);if(b&&onB&&S.lastK===b.k)cmpTap('guard');
+  const b=S.beasts.find(q=>q.pi===1&&!q.res&&Math.abs(q.z-h.pos.z)<3.6);if(b&&Math.abs(S.t-L-BT[b.k])<w)cmpTap('guard');
   for(const f of S.foes){if(f.res&&f.res!=='parry')continue;const d=BT[f.k]-S.t;
     if((f.type==='lunge'||f.type==='crow')&&!f.res&&f.locked&&f.lane===lane&&f.pi===1&&d<0.9&&d>0){                     // красный круг или ворона: на другую дорожку
       const c=[0,1,2].filter(l=>l!==f.lane&&!bad(l)),nl=c.length?c.sort((a,b)=>Math.abs(a-lane)-Math.abs(b-lane))[0]:(f.lane===0?1:f.lane-1);
@@ -36,8 +36,8 @@ function k13Run(h,dt){const S=W.song;if(!S||(S.state!=='play'&&S.state!=='final'
     if(f.type==='boar'&&!f.res&&f.pi===1&&f.lane===lane&&d<0.22&&d>0.05&&h.grounded)cmpTap('jump');                   // кабан — прыжком
     if(f.type==='storm'&&!f.res&&f.pi===1&&f.lanes.includes(lane)&&h.pos.z-f.z<10&&h.pos.z>f.z){                       // туча — облететь
       const c=[0,1,2].filter(l=>!f.lanes.includes(l));if(i%3===0&&c.length){const nl=c.sort((a,b)=>Math.abs(a-lane)-Math.abs(b-lane))[0];if(nl<lane)k13Left();else k13Right();}}
-    if((f.type==='paw'||f.type==='hawk')&&f.pi===1){if(!f.res&&Math.abs(d)<w)cmpTap('guard');                           // лапа, коршун — щит в такт, потом удар
-      if(f.res==='parry'&&S.t>BT[f.k]+0.15&&!f.cn){f.cn=1;cmpTap('attack');}}
-    if(f.type==='duo'&&!f.res&&Math.abs(d)<w)cmpTap('guard');}                                                       // вожак — щит вдвоём
+    if((f.type==='paw'||f.type==='hawk')&&f.pi===1){if(!f.res&&Math.abs(d+L)<w)cmpTap('guard');                           // лапа, коршун — щит в такт, потом удар
+      if(f.res==='parry'&&S.t>BT[f.k]+L+0.15&&!f.cn){f.cn=1;cmpTap('attack');}}
+    if(f.type==='duo'&&!f.res&&Math.abs(d+L)<w)cmpTap('guard');}                                                       // вожак — щит вдвоём
 }
 CMP.route('1-3',[{id:'runner',done:()=>false,run:(h,hh,dt)=>k13Run(h,dt)}]);   // до конца уровня; когда раннер молчит (ролик, пауза), бот повторяет за человеком

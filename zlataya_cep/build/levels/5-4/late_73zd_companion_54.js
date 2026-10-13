@@ -10,7 +10,7 @@ CMP.route('5-4',[
     // клетка с Звенышком: Йоша поливает нитки, пока клетка рядом (на ленте справа)
     if(F.cageOn&&!F.freed){if(!cmpWant('yosha'))return;if(h.skillCd<=0)k54Tap(K,'cage',0.7,'skill');}
     // доли: нажать в момент доли (оценка ±0,1 с); прыжок — только с земли
-    for(let k=Math.max(0,S.lastK);k<=S.lastK+1&&k<S.NB;k++){const d=S.bt[k]-S.t;
+    for(let k=Math.max(0,S.lastK-1);k<=S.lastK+2&&k<S.NB;k++){const d=S.bt[k]+songLag()-S.t;   // songLag — «Сдвиг такта»: доля судится с поправкой
       if(d<0.02&&d>-0.03&&!S.judged[1][k]){const a=S.act(1,k);if(a==='rest')continue;if(a==='guard')cmpTap('guard');else if(a==='item')cmpTap('item');else if(h.grounded||h.coyote>0)cmpTap('jump');}}
   }}
 ]);

@@ -16,7 +16,7 @@ CMP.route('4-3',[
     if(k!==K.k){K.k=k;K.hit=false;K.jmp=0;K.swp=0;}
     const mine=k43Mine(),inRing=x=>mine.some(r=>r.hero===x),fireOut=W.FIRE.t<9;
     // ---- ухнем по часам песни ----
-    if(u>=1.1&&u<1.9&&!K.hit&&mine.length){K.hit=true;cmpTap('skill');}
+    const ul=u-songLag();if(ul>=1.1&&ul<1.9&&!K.hit&&mine.length){K.hit=true;cmpTap('skill');}   // окно «ух-нем» игра судит со «Сдвигом такта» (songLag)
     // ---- бревно: прыгнул — кольцо пройдёт; оставленному — смена героя (оба нужны: прыжок, смена, прыжок) ----
     const need=x=>mine.some(r=>r.hero===x&&(r.blocked||k43Log(r)));
     if(mine.length){

@@ -17,6 +17,8 @@ CMP.route('1-B',[
     const rp=(W.ramps||[]).slice(-2);if(rp.length<2)return 'follow';
     if(KB.pathOf!==rp[0]){KB.pathOf=rp[0];const r=rp[0],f=rp[1];KB.path=[[r.x0-r.dx*1.6,r.z0-r.dz*1.6]];for(let k=1;k<=8;k++)KB.path.push([r.x0+r.dx*r.len*k/8,r.z0+r.dz*r.len*k/8]);KB.wi=-1;KB.wt=G.time;KB.path.push([f.x0+f.dx*f.len,f.z0+f.dz*f.len]);}   // рампа руки, потом площадка на плече
     const end=KB.path[KB.path.length-1],atEnd=Math.hypot(h.pos.x-end[0],h.pos.z-end[1])<0.5;
+    // сбили с моста (вторая рука, кувырок): начать заново от основания руки — иначе шёл бы по точкам понизу и упирался в плечо, пока мост не уберут
+    if(!atEnd&&CMP.wp&&CMP.wp.key===KB.path&&CMP.wp.i>=2&&h.grounded&&!rp.includes(h.groundRef)){CMP.wp.i=0;KB.wi=0;KB.wt=G.time;}
     if(!atEnd){cmpPath(h,KB.path,0.3,0.6);
       if(CMP.wp&&CMP.wp.key===KB.path){if(CMP.wp.i!==KB.wi){KB.wi=CMP.wp.i;KB.wt=G.time;}else if(G.time-KB.wt>1.2&&CMP.wp.i<KB.path.length-1){CMP.wp.i++;KB.wt=G.time;}}   // стоит на месте — следующая точка
       if(!(h.pos.y>4.5))return;}   // рампа узкая (0,75 м от оси): точки пути — с малым допуском, входит строго вдоль оси
