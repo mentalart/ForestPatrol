@@ -106,9 +106,9 @@ function bgOnset(pi,mate){const p=players[pi];
     for(const q of players[1-pi].heroes)if(q.power&&q.power.t>0)bgBeam(q.pos.clone(),0xffd76a,1.1);bgNote(pi,'Богатырская дружина! Каждому +2 с','#ffd76a');}}
 {const _f=bogatyrFx;bogatyrFx=function(pi,mate){_f(pi,mate);try{bgOnset(pi,mate);}catch(e){console.error('bogatyr',e);}};}
 // ---------- предвкушение: шкала от 70% ----------
-{const _cs=collectSpark;collectSpark=function(s,h){const p=players[h.player],b0=p.blue;_cs(s,h);try{if(p.blue>b0&&p.blue>=0.69){
+{const _cs=collectSpark;collectSpark=function(s,h){const p=h&&players[h.player],b0=p?p.blue:0,r=_cs.apply(this,arguments);try{if(p&&p.blue>b0&&p.blue>=0.69){
     tone(520+p.blue*700,0.16,'triangle',0.07);tone(1040+p.blue*1400,0.1,'sine',0.04,null,0.05);bgFX('sparkle',bgHead(h,0.2),6,0x9fd6ff);
-    if(p.blue>=1){bgFX('stars',bgHead(h,0.4),10,0x9fd6ff);bgRing(h.pos.clone(),0x6ad0ff,2.2,0.4,0.8);}}}catch(e){console.error('bogatyr',e);}};}
+    if(p.blue>=1){bgFX('stars',bgHead(h,0.4),10,0x9fd6ff);bgRing(h.pos.clone(),0x6ad0ff,2.2,0.4,0.8);}}}catch(e){console.error('bogatyr',e);}return r;};}
 // ---------- Кладенец: своя дуга (золотая, шире обычной) ----------
 if(typeof SL_STYLE!=='undefined')SL_STYLE.kladenets={col:0xffd23a,core:0xffffff,edge:0x8a5a10,r0:0.3,r1:2.25,arc:3.4,n:3,lag:0.12,roll:0.42,off:0.0,rad:0.25,dur:0.26,lines:true,spark:0xfff0a0};
 {const _s=bogatyrSwing;bogatyrSwing=function(h,e){_s(h,e);try{h._slA=h.atkT;   // обычная лента героя не рисуется — у Кладенца своя
