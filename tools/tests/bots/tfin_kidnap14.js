@@ -14,7 +14,7 @@ window.HAT=h=>{const hat=h.hat,hp=new V3(),bp=new V3();hat.getWorldPosition(hp);
 ZC.startFrom(ZC.LV('1-4'));ZC.G.manual=true;ZC.tick(30);const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}
 'cine='+!!ZC.G.cine
 //@@ shot=k14_hats.png
-T(4.3);const H=ZC.HERO,r={};for(const k of['potap','pelageya','yosha'])r[k]=HAT(H[k]);
+T(5.8);const H=ZC.HERO,r={};for(const k of['potap','pelageya','yosha'])r[k]=HAT(H[k]);
 for(const k in r){const q=r[k];if(!q.par||!q.vis||q.dxz>0.45||q.dy<-0.05)throw new Error('шапка '+k+' не на голове: '+JSON.stringify(q));}JSON.stringify(r)
 //@@
 // в ходьбе шапка идёт вместе с головой: смещение от кости головы не меняется
@@ -43,7 +43,7 @@ T(13.4);const RC={x:7.3,z:-33};if(Math.hypot(PE.pos.x-RC.x,PE.pos.z-RC.z)>0.3)th
 if(rr.filter(c=>c.on).length!==8)throw new Error('коллизии кольца не включены: '+rr.filter(c=>c.on).length);if(K.vortex.g.visible)throw new Error('вихрь не убран');
 const de=Math.max(...K.c.ring.map(f=>Math.abs(Math.hypot(f.g.position.x-RC.x,f.g.position.z-RC.z)-K.c.RR)));if(de>0.1)throw new Error('ёлки не встали кольцом: '+de.toFixed(2));'ring ok de='+de.toFixed(3)
 //@@ shot=k14_k8_hat.png
-T(21.9);const q=HAT(ZC.HERO.proshka);if(!q.par||!q.vis)throw new Error('шапка Прошки не на голове: '+JSON.stringify(q));JSON.stringify(q)
+T(22.4);const q=HAT(ZC.HERO.proshka);if(!q.par||!q.vis)throw new Error('шапка Прошки не на голове: '+JSON.stringify(q));JSON.stringify(q)
 //@@
 T(99);ZC.tick(30);const H=ZC.HERO,q=HAT(H.proshka);if(ZC.G.cine)throw new Error('ролик не закончился');
 if(!q.par||!q.vis||q.dxz>0.45||q.dy<-0.05)throw new Error('шапка Прошки «на нос» провалилась: '+JSON.stringify(q));
