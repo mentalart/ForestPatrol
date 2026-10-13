@@ -1,66 +1,72 @@
 {
  "about": "Озвучка реплик (final06). text — реплика точно как в игре (по ней ищется запись; сборка останавливается, если такой строки в игре нет), tts — что произносит голос (в квадратных скобках — подсказки интонации ElevenLabs, не произносятся), voice — чей голос (по умолчанию who), fx — обработка (far — издалека), lul — синтез-мелодия колыбельной, которую запись приглушает, max — предел длины в секундах (успеть до следующей реплики), gain — громкость в игре. Новые реплики добавляет tools/voice/plan.js (из вывода tools/voice/extract.js); файлы <id>.mp3 рядом делает tools/voice/fetch.js из результатов генерации (url). В cast — голос каталога Higgsfield, сдвиг тона в полутонах и обработка голоса (fx).",
- "model": "elevenlabs_v4 (Eleven v4 через Higgsfield)",
+ "model": "eleven_v4 (ElevenLabs, переозвучка 2026-10; старые записи — Eleven v4 через Higgsfield)",
  "cast": {
   "tishka": {
    "name": "Тишка",
    "about": "самый маленький в штабе-сосне: тихий, сонный, ласковый",
    "voice_id": "375a3398-e3b4-4f91-845d-42181e352899",
-   "pitch": 3.5,
+   "pitch": "2",
    "voice": "Luna",
    "el_voice_id": "rSfuQoQ3FY8SVKeraMAp",
    "el_voice_name": "Lunya",
-   "el_tag": "[childlike voice]"
+   "el_tag": "[childlike voice]",
+   "pitch_hf": 3.5
   },
   "proshka": {
    "name": "Прошка",
    "about": "лисёнок: бойкий, чуть хвастливый, добрый",
    "voice_id": "1fb253b8-928b-4d29-a349-f242a71eaddf",
-   "pitch": 1.5,
+   "pitch": "0.5",
    "voice": "Skye",
    "el_voice_id": "YjYZWA1JjVPJcnWmCm0r",
    "el_voice_name": "Vika Prof",
-   "el_tag": "[childlike voice]"
+   "el_tag": "[childlike voice]",
+   "pitch_hf": 1.5
   },
   "potap": {
    "name": "Потап",
    "about": "медвежонок-силач: тёплый, неторопливый, надёжный",
    "voice_id": "5c615d8a-5135-539d-8ab0-497b7ceabbae",
-   "pitch": 2.5,
+   "pitch": "0",
    "voice": "Kayla",
    "el_voice_id": "HO0xRRVNKM5KFlpsrNit",
    "el_voice_name": "Kuchka",
-   "el_tag": "[childlike voice]"
+   "el_tag": "[childlike voice]",
+   "pitch_hf": 2.5
   },
   "yosha": {
    "name": "Йоша",
    "about": "ёжик: маленький, звонкий, упрямый «я сам»",
    "voice_id": "e9cfbbf0-4476-46be-b396-596eb774b165",
-   "pitch": 1,
+   "pitch": "0.5",
    "voice": "Chloe",
    "el_voice_id": "rSfuQoQ3FY8SVKeraMAp",
    "el_voice_name": "Lunya",
-   "el_tag": "[childlike voice] [high voice]"
+   "el_tag": "[childlike voice] [high voice]",
+   "pitch_hf": 1
   },
   "zven": {
    "name": "Звенышко",
    "about": "волшебное звено цепи: крошечный звонкий голосок с переливом",
    "voice_id": "09878754-f20b-5330-9790-58a8027ab5b2",
-   "pitch": 2,
+   "pitch": "1",
    "voice": "Gracie",
    "fx": "zven",
    "el_voice_id": "SU4ks9gEc2CmZuomYn22",
-   "el_voice_name": "ZC Звенышко"
+   "el_voice_name": "ZC Звенышко",
+   "pitch_hf": 2
   },
   "pelageya": {
    "name": "Пелагея",
    "about": "совушка: умная, спокойная, читает по тетрадке",
    "voice": "Isla",
    "voice_id": "7367e919-3069-5a0b-939e-dfb1c0fd91b4",
-   "pitch": 1.5,
+   "pitch": "0.5",
    "el_voice_id": "CH4syTkdz0MNPn6zayBd",
    "el_voice_name": "Russian Girl Masha",
-   "el_tag": "[childlike voice]"
+   "el_tag": "[childlike voice]",
+   "pitch_hf": 1.5
   },
   "kot": {
    "name": "Кот Учёный",
@@ -141,7 +147,9 @@
    "voice": "Arthur",
    "voice_id": "30fc8796-ceb6-4a66-b3a7-4a145ef7f346",
    "pitch": -0.5,
-   "fx": "hall"
+   "fx": "hall",
+   "el_voice_id": "zmHRBgD4Hpk9Ib4Drfbp",
+   "el_voice_name": "ZC Кощей"
   },
   "sadko": {
    "name": "Садко",
@@ -480,9 +488,9 @@
    "tts": "[magical, cheerful] Абадзех-Лаб! Лаборатория творчества.",
    "fx": "hall",
    "max": 3.2,
-   "job": "3b8b7e5d-21de-4830-b63e-df8882f895ef",
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_184424_3b8b7e5d-21de-4830-b63e-df8882f895ef.mp3",
-   "dur": 3.06
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.09
   },
   {
    "id": "p01_bayu",
@@ -492,9 +500,9 @@
    "tts": "[sings softly] Баю-баю, за рекою…",
    "lul": "LUL1",
    "max": 4.4,
-   "job": "16408ac7-9029-4fee-bb2b-f8e5ed2ac144",
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124747_16408ac7-9029-4fee-bb2b-f8e5ed2ac144.mp3",
-   "dur": 2.8
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3
   },
   {
    "id": "p02_zabyl",
@@ -503,9 +511,9 @@
    "text": "Дальше слов не помню я…",
    "tts": "[sadly] Дальше слов не помню я…",
    "max": 3.2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075143_b844b23f-76d8-41bf-87d4-064b7dba8de1.mp3",
-   "job": "b844b23f-76d8-41bf-87d4-064b7dba8de1",
-   "dur": 1.89
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.18
   },
   {
    "id": "p03_malyshi",
@@ -514,9 +522,9 @@
    "text": "Колыбельные — для малых,<br>Не для нас, для удалых!",
    "tts": "Колыбельные — для малых, не для нас, для удалых!",
    "max": 2.4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075143_b7fee62c-8ef7-44fd-8fde-badecfa11cf1.mp3",
-   "job": "b7fee62c-8ef7-44fd-8fde-badecfa11cf1",
-   "dur": 3.34
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 2,
+   "dur": 2.56
   },
   {
    "id": "p04_samokat",
@@ -525,20 +533,20 @@
    "text": "Хочешь — дам самокат, дружок?<br>Он получше всяких строк!",
    "tts": "Хочешь — дам самокат, дружок? Он получше всяких строк!",
    "max": 2.5,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075143_763453b4-79b1-4e50-9d76-71fa69562b39.mp3",
-   "job": "763453b4-79b1-4e50-9d76-71fa69562b39",
-   "dur": 3.28
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.12
   },
   {
    "id": "p05_haha",
    "lv": "p",
    "who": "yosha",
    "text": "Ха-ха-ха! Вот так дела!",
-   "tts": "[laughs] Ха-ха-ха! Вот так дела!",
+   "tts": "[laughs] Ха-ха! Вот так дела!",
    "max": 2.2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075143_f077313f-123a-4bee-8318-76e6091c8bb8.mp3",
-   "job": "f077313f-123a-4bee-8318-76e6091c8bb8",
-   "dur": 2.64
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 2,
+   "dur": 1.94
   },
   {
    "id": "p05a_hihi",
@@ -547,9 +555,9 @@
    "text": "Хи-хи-хи!",
    "tts": "[giggles] Хи-хи-хи!",
    "max": 2.8,
-   "job": "dc3da62a-a339-4a68-b0e5-b3f544dbac11",
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_dc3da62a-a339-4a68-b0e5-b3f544dbac11.mp3",
-   "dur": 1.83
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.11
   },
   {
    "id": "p05b_hoho",
@@ -558,9 +566,9 @@
    "text": "Хо-хо-хо!",
    "tts": "[laughs heartily] Хо-хо-хо!",
    "max": 2.8,
-   "job": "da4a0687-4d85-4e86-b18c-8c622d047594",
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_da4a0687-4d85-4e86-b18c-8c622d047594.mp3",
-   "dur": 2.71
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.97
   },
   {
    "id": "p05c_haha",
@@ -569,9 +577,9 @@
    "text": "Ха-ха-ха!",
    "tts": "[laughs] Ха-ха-ха!",
    "max": 2.8,
-   "job": "3218134f-de09-4536-ae95-93c68ca4fb40",
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_3218134f-de09-4536-ae95-93c68ca4fb40.mp3",
-   "dur": 1.44
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.99
   },
   {
    "id": "p05d_prokatilsya",
@@ -580,9 +588,9 @@
    "text": "Ха-ха! Вот это я прокатился!",
    "tts": "[laughs] Ха-ха! Вот это я прокатился!",
    "max": 3,
-   "job": "de3d6162-3a5c-424c-956a-7b6601d37225",
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_230428_de3d6162-3a5c-424c-956a-7b6601d37225.mp3",
-   "dur": 3.14
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.19
   },
   {
    "id": "p06_bezhim",
@@ -591,9 +599,9 @@
    "text": "Дзинь-дзинь! За мной — бегом!",
    "tts": "[excited] Дзинь-дзинь! За мной — бегом!",
    "max": 2.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075143_7f96fa23-7fec-4b07-abc4-48387bbb2083.mp3",
-   "job": "7f96fa23-7fec-4b07-abc4-48387bbb2083",
-   "dur": 2.63
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.66
   },
   {
    "id": "p07_volk",
@@ -606,9 +614,9 @@
    "gain": 0.6,
    "lul": "LUL2",
    "max": 3.4,
-   "job": "d2924489-e0fe-43aa-a6ee-4a9809330d90",
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_124807_d2924489-e0fe-43aa-a6ee-4a9809330d90.mp3",
-   "dur": 2.04
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.25
   },
   {
    "id": "p08_akh",
@@ -619,9 +627,9 @@
    "fx": "far",
    "gain": 0.7,
    "max": 1.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075142_04f947d5-e898-45e7-85f5-c3babb17ae1e.mp3",
-   "job": "04f947d5-e898-45e7-85f5-c3babb17ae1e",
-   "dur": 1.62
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.63
   },
   {
    "id": "p09_lesenka",
@@ -630,7 +638,10 @@
    "text": "Щас подкручу механизм —<br>и лесенка вниз!",
    "tts": "Щас подкручу механизм — и лесенка вниз!",
    "max": 2.4,
-   "revoice": "analiz_proposals"
+   "revoice": "analiz_proposals",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.52
   },
   {
    "id": "p10_podnimu",
@@ -639,9 +650,9 @@
    "text": "Стой, не бойся ничего —<br>Подниму тебя легко!",
    "tts": "Стой, не бойся ничего — подниму тебя легко!",
    "max": 2.05,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075143_e67dbf37-4870-4866-9c22-78cc68199bc2.mp3",
-   "job": "e67dbf37-4870-4866-9c22-78cc68199bc2",
-   "dur": 2.81
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 2,
+   "dur": 2.42
   },
   {
    "id": "p11_sam",
@@ -650,9 +661,9 @@
    "text": "Сам управлюсь — я не мал!",
    "tts": "[proudly] Сам управлюсь — я не мал!",
    "max": 1.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075143_ba055f15-fbae-441c-b344-496241960d0a.mp3",
-   "job": "ba055f15-fbae-441c-b344-496241960d0a",
-   "dur": 1.87
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.72
   },
   {
    "id": "g_001",
@@ -6381,9 +6392,9 @@
    "text": "Эй… ты… ну, тот, что мост держал…",
    "tts": "Эй… ты… ну, тот, что мост держал…",
    "max": 4.12,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_082540_0a70947c-e9df-4422-a2f8-dddd810e1e7b.mp3",
-   "job": "0a70947c-e9df-4422-a2f8-dddd810e1e7b",
-   "dur": 3.4
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.45
   },
   {
    "id": "luko_125",
@@ -6392,8 +6403,9 @@
    "text": "Про… ще… ни… я.",
    "tts": "Про… ще… ни… я.",
    "max": 3.52,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_164322_a1a152a7-a125-41ae-8bb4-790896c9bf8c.mp3",
-   "dur": 3.23
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.43
   },
   {
    "id": "luko_126",
@@ -6402,7 +6414,10 @@
    "text": "Кот хочет попросить прощенья. У Кощея.",
    "tts": "Кот хочет попросить прощенья. У Кощея.",
    "max": 3.92,
-   "revoice": "analiz_proposals"
+   "revoice": "analiz_proposals",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.43
   },
   {
    "id": "luko_127",
@@ -6411,7 +6426,10 @@
    "text": "Я расскажу ему сказку.<br>Я знаю, чем она кончится.",
    "tts": "Я расскажу ему сказку. Я знаю, чем она кончится.",
    "max": 5.92,
-   "revoice": "analiz_proposals"
+   "revoice": "analiz_proposals",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.81
   },
   {
    "id": "luko_128",
@@ -6420,9 +6438,9 @@
    "text": "Расскажи. А я скую — не подведу.",
    "tts": "Расскажи. А я скую — не подведу.",
    "max": 4.92,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_082539_45d39eee-f8f3-4c13-bd78-9bbacc208f32.mp3",
-   "job": "45d39eee-f8f3-4c13-bd78-9bbacc208f32",
-   "dur": 3.12
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.95
   },
   {
    "id": "luko_129",
