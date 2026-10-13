@@ -161,7 +161,7 @@ function prkS3(){const P=prPm(),O=PRO.P,T=PRK_T,pr=T.proshka,po=T.potap,pe=T.pel
     events:[{t:0,fn:()=>{PRK.only('P');PRK.look('forestset');FIN.music.play('hub');prkHeroesOff();
         prPl(pr,O.x-10.2,O.z+5.0,0,at(-10.2,9));prPl(po,O.x+5.6,O.z+6.6,0,at(0,6.6));prPl(yo,O.x+9.7,O.z+5.6,0,at(10.6,9.6));prPl(pe,O.x+1.6,O.z+5.9,11,at(1.6,12));
         prkAttach(po.g,P.log,0,po.d.height*0.92,0).rotation.set(0,0,0);P.log.visible=true;P.log.add(P.tish.g);P.tish.g.position.set(0.3,0.18,0);P.tish.g.rotation.set(0,0,0);P.cap.visible=false;
-        prkAttach(pe.g,P.glass,0.22,pe.d.height*0.7,0.18).rotation.set(0.3,0,0);prkAttach(pe.g,P.book,-0.34,pe.d.height*0.36,0.1).rotation.set(0.2,0,0.9);
+        prkAttach(pe.g,P.glass,0.5,pe.d.height*0.42,0.14).rotation.set(-1.15,0,-0.15);prkAttach(pe.g,P.book,-0.5,pe.d.height*0.36,0.12).rotation.set(0.2,0,0.9);   // труба и книга — под крыльями, снаружи тела
         P.spring.position.set(-10.9,0.7,4.2);P.spring.visible=true;P.sprout.scale.setScalar(0.01);P.zv.visible=false;P.rain.forEach(r=>{r.s.visible=false;r.t=-1;});P.cloud.visible=false;P.rv.g.visible=false;
         P.star.material.opacity=0;}},
       {t:17.4,fn:()=>{P.log.visible=false;P.g.add(P.tish.g);P.tish.g.position.copy(P.doorPos).sub(O);P.tish.g.position.y=0;P.tish.g.rotation.set(0,-0.42,0);P.cap.visible=true;}},
