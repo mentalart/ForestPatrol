@@ -4,7 +4,7 @@
 // Новая игра с FIN.introWant: семь роликов подряд, целиком, без пропуска. Проверки: каждый — ручная постановка (def.kino), ≤ 25 с, не меньше 3 крупностей
 // и 2 типов движения камеры; в середине каждой реплики в кадре (не голос за кадром) говорящий в кадре и повёрнут к камере; после — комната пролога:
 // площадки убраны, уровень виден, герои на местах, свет пролога, ролик «Колыбельная» не начался. Пропуск в середине — то же состояние. Ошибок нет.
-// Кадры: Лукоморье (1-2), сосна-штаб с героями (3-3), рука над цепью (5-5).
+// Кадры: Лукоморье (1-2), сосна-штаб с героями (3-3), рука над цепью (5-5), головы Горыныча на Смородине (6).
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(false);ZC.FIN.introWant=true;ZC.startFrom(0);ZC.G.manual=true;ZC.tick(2);
 const CI=ZC.FIN.cine,ACT=ZC.FIN.actors,V=THREE.Vector3,PRK=ZC.FIN.intro;window.CREP=[];window.CBAD=[];
@@ -29,6 +29,13 @@ const lv=document.getElementById('level');(lv.style.opacity==='1'?'FIN назв�
 RUN(2,7.0)
 //@@ shot=intro_hand.png wait=200
 RUN(4,14.2)
+//@@
+// Смородина (сцена 6): у Горыныча три головы (не одни шеи), и головы у оснований шей сходятся лбами
+RUN(5,6.75);{const G=ZC.FIN.intro.Wd.w4.gor,V3=THREE.Vector3;if(!G.heads||G.heads.length!==3)throw new Error('FAIL у Горыныча в «Присказке» нет голов');
+  const hx=G.heads.map(h=>h.g.getWorldPosition(new V3()));G.necks.forEach((n,i)=>{const d=hx[i].distanceTo(n.getWorldPosition(new V3()));if(d>4)throw new Error('FAIL голова '+i+' оторвана от шеи: '+d.toFixed(1));});
+  ZC.FIN.introGor=hx.map(v=>v.x.toFixed(1)).join('/');}
+//@@ shot=intro_gor.png wait=200
+ZC.FIN.introGor
 //@@
 RUN(9,0)
 //@@
