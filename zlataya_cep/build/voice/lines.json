@@ -50,7 +50,9 @@
    "about": "сказочник: тёплый, мудрый, неторопливый",
    "voice": "Alexey",
    "voice_id": "7c2133e5-68ab-511f-9aed-9a67664382b1",
-   "pitch": 0
+   "pitch": 0,
+   "el_voice_id": "NkBkAMqIBNjZUjXKAA7r",
+   "el_voice_name": "Vladimir"
   },
   "yaga": {
    "name": "Баба Яга",
@@ -94,7 +96,9 @@
    "about": "кузнец: немногословный, ворчливый, добрый",
    "voice": "Brooks",
    "voice_id": "c2acff45-84b2-4974-892d-89fa2d4e5598",
-   "pitch": 0
+   "pitch": 0,
+   "el_voice_id": "pM78bgjPVk0JXtaEnFoj",
+   "el_voice_name": "Nester Surovy"
   },
   "kuzst": {
    "name": "Кузьма-старший",
@@ -116,7 +120,9 @@
    "voice": "Arthur",
    "voice_id": "30fc8796-ceb6-4a66-b3a7-4a145ef7f346",
    "pitch": -0.5,
-   "fx": "hall"
+   "fx": "hall",
+   "el_voice_id": "BXpVl3OTz6ZGDqlYtXXB",
+   "el_voice_name": "Егор"
   },
   "sadko": {
    "name": "Садко",
