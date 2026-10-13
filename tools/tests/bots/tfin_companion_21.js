@@ -12,7 +12,7 @@ ZC.startFrom(ZC.LV('2-1'));ZC.G.manual=true;ZC.tick(30);window.W=ZC.W;CO.set(tru
 ['me='+pos(me()),'bot='+pos(bot()),'mode='+CO.mode,'stage='+F().stage]
 //@@
 // Садко: человек подходит к нему — ролик; бот берёт Йошу и поливает струну мёртвой водой, получает гусли
-const L=[];let last='';U.walkTo(0,-3,-11,6);for(let i=0;i<60*40&&!ZC.W.abil.gusli;i++){ZC.tick(1);const m=CO.mode+'/'+F().stage;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}}
+const L=[];let last='';U.walkTo(0,-3,-11,6);for(let i=0;i<60*40&&!ZC.W.abil.gusli;i++){if(ZC.G.cine&&ZC.G.cine.t>1&&i%10===0)ZC.skip();ZC.tick(1);const m=CO.mode+'/'+F().stage;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}}
 L.push('gusli='+ZC.W.abil.gusli,'bot='+pos(bot()),ZC.W.abil.gusli?'sadko ok':'FAIL sadko');L
 //@@
 // причал: человек стоит слева (свой участок), бот на правом: прилив, лодка, крыша дома, дальше по улице
@@ -37,7 +37,9 @@ r.push('CL='+D.CL.state+' CR='+D.CR.state+' bot='+pos(bot())+' '+CO.mode);r
 //@@
 // Прошка — лодкой на левую террасу, верёвка; бот в это время ждёт
 const D=ZC.W.dbg21();const r=[U.walkTo(0,-8.3,-140,8),U.walkTo(0,-8.3,-144.5,4,(h)=>{if(h.grounded&&h.groundRef&&h.groundRef.water)ZC.press('Space');})];ZC.tick(30);
-r.push(U.walkTo(0,-8.3,-149.2,4,(h)=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}));ZC.tick(20);r.push(U.walkTo(0,-5.9,-150.4,3));ZC.tick(5);
+r.push(U.walkTo(0,-8.3,-149.2,4,(h)=>{if(h.grounded&&h.pos.y<3.1)ZC.press('Space');}));ZC.tick(20);
+// прилив слева держится недолго: не успел на террасу — человек туда переносится (проверяется бот, а не путь Прошки)
+if(me().pos.y<2.9){r.push('put');put(me(),-5.9,-150.4,3.2);ZC.tick(20);}r.push(U.walkTo(0,-5.9,-150.4,3));ZC.tick(5);
 ZC.HERO.proshka.face=Math.PI/2;U.tap('KeyF');ZC.tick(30);r.push('ropeL='+D.ropes[0].pulled,'PG1='+D.PG[1].open,'bot='+pos(bot())+' '+CO.mode,'CL='+D.CL.state+' CR='+D.CR.state);r
 //@@
 // бот: прилив справа, лодка, верёвка, ворота; человек ждёт на левой террасе

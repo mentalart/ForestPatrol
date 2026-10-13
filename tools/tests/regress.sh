@@ -1,6 +1,8 @@
 #!/bin/sh
 # Регресс: боты из списка параллельно (JOBS, по умолчанию 3).
 # Вывод каждого — out/out_<бот>.txt; в конце — сводка: ошибки страницы и последний результат («> …») каждого бота.
+# Бот упал: код выхода не 0, EVAL ERROR (исключение в шаге), PAGEERROR или «FAIL» в результате ЛЮБОГО шага (строка «> …»): промежуточный FAIL
+# раньше не считался — бот с проваленным шагом, дошедший до «… ok» в конце, проходил.
 # Использование: tools/tests/regress.sh [путь к index.html]; другой список — LIST=путь (например regress_list_final.txt для релизной сборки;
 # несколько через пробел — LIST="regress_list_final.txt regress_list_final07.txt" для final07),
 # свои боты — BOTS="бот бот …". Какие боты нужны для текущих правок — tools/tests/affected.py (полный регресс — только когда он скажет).
@@ -38,7 +40,7 @@ if [ "${RETRY:-1}" != "0" ]; then
 fi
 bad=0; flaky=0
 for n in $L; do
-  f="$O/out_$n.txt"; e=$(grep -c "EVAL ERROR\|PAGEERROR" "$f" 2>/dev/null); rc=$(grep "^$n rc=" "$O/regress_progress.txt" | tail -1 | cut -d= -f2)
+  f="$O/out_$n.txt"; e=$(grep -cE "EVAL ERROR|PAGEERROR|^> .*FAIL([^A-Za-z]|$)" "$f" 2>/dev/null);   # ошибка — исключение, ошибка страницы или шаг, вернувший «FAIL …» (в любом шаге, не только в последнем) rc=$(grep "^$n rc=" "$O/regress_progress.txt" | tail -1 | cut -d= -f2)
   first=$(grep "^$n " "$O/retry_first.txt.$$" 2>/dev/null | cut -d' ' -f2); secs=$(grep "^$n " "$O/times.txt" | awk '{s+=$2} END{print s+0}')
   if [ "$rc" != "0" ] || [ "$e" != "0" ]; then bad=$((bad+1)); mark="!!"; elif [ -n "$first" ]; then flaky=$((flaky+1)); mark="~~"; else mark="  "; fi
   printf "%s\t%s\t%s\t%s\t%s\n" "$n" "$rc" "$e" "$secs" "$first" >> "$O/results.tsv"
