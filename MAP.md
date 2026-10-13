@@ -511,7 +511,7 @@
 | `43_scenarny_analiz.md` | Сценарный разбор «Златой цепи» (final06) |
 | `44_prompt_pereozvuchka_elevenlabs.md` | Промт: чистовая переозвучка всей игры через ElevenLabs MCP |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 181 файлов |
+| `changes/` | 182 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
