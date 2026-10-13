@@ -139,7 +139,9 @@ function build13(){W.soloMirror=true;
         addMesh(new THREE.SphereGeometry(0.14,10,8),knob,sx*w/2,0.95,0,g);const rb=addMesh(new THREE.BoxGeometry(0.06,0.7,0.02),M([0xff6a8a,0xffd23a][sx>0?1:0]),sx*w/2+sx*0.12,0.5,0,g);rb.rotation.z=sx*0.3;}}
     const mat=M(STRC,{emissive:STRE,emissiveIntensity:0.8}),strs=[];for(const sz of[-0.24,0,0.24]){const c=new THREE.CylinderGeometry(0.03,0.03,w,6);c.rotateZ(Math.PI/2);strs.push(addMesh(c,mat,0,0.36,sz,g));}
     const chev=new THREE.Group();chev.position.y=1.25;g.add(chev);const chM=MB(STRC,{transparent:true,opacity:0.75,depthWrite:false});
-    for(const cy of[0,0.32])for(const sx of[-1,1]){const b=new THREE.Mesh(new THREE.BoxGeometry(0.42,0.09,0.06),chM);b.position.set(sx*0.15,cy,0);b.rotation.z=sx*-0.7;chev.add(b);}
+    {const P=[],o=new THREE.Object3D(),v=new V3();for(const cy of[0,0.32])for(const sx of[-1,1]){const bg=new THREE.BoxGeometry(0.42,0.09,0.06).toNonIndexed(),pa=bg.attributes.position;o.position.set(sx*0.15,cy,0);o.rotation.z=sx*-0.7;o.updateMatrix();
+      for(let i=0;i<pa.count;i++){v.fromBufferAttribute(pa,i).applyMatrix4(o.matrix);P.push(v.x,v.y,v.z);}bg.dispose();}
+      const cg=new THREE.BufferGeometry();cg.setAttribute('position',new THREE.Float32BufferAttribute(P,3));chev.add(new THREE.Mesh(cg,chM));}   // четыре «галочки» — одна отрисовка (прозрачные в пачки не идут)
     const ring=new THREE.Mesh(new THREE.RingGeometry(0.62,0.8,28),MB(STRC,{transparent:true,opacity:0.8,side:THREE.DoubleSide,depthWrite:false}));ring.rotation.x=-Math.PI/2;ring.renderOrder=2;ring.visible=false;W.group.add(ring);
     const s={pi,k,z,g,str:strs[1],strs,mat,chev,ring,used:false,vib:0,ph:ph(k),lanes,air:!!o.air,y,duo:!!o.duo};S.strings.push(s);
     if(o.duo&&pi===0){const r=new THREE.Mesh(new THREE.TorusGeometry(2.6,0.09,6,30,Math.PI),M(0xffb0d0,{emissive:0xff6a9a,emissiveIntensity:0.6}));r.position.set(0,0.2,z);W.group.add(r);
@@ -147,10 +149,18 @@ function build13(){W.soloMirror=true;
     if(item){const it=(item==='link'?linkItem:nutItem)((x0+x1)/2,y+4.3,z-2.2);S.items.push({it,ph:s.ph,pi,kind:item});s.item=it;}
     if(!item&&!o.noArc)flightArc(pi,k,o.air?GRAV*(60/PARTS[ph(k)].bpm)/2+0.4:14,o.air?y+0.36:0,o.air?4:6);
     return s;}
+  // искры — сотни на тропе: каждая была отдельной отрисовкой (бюджет tfin_budget). Теперь искра — невидимый Object3D (позиция, вращение, сбор — как были),
+  // рисуют их два InstancedMesh (голубые ноты дуги и золотые), матрицы — каждый кадр из живых искр в группе уровня
+  const SPK={b:{geo:()=>new THREE.OctahedronGeometry(0.2),mat:()=>M(STRC,{emissive:0x7ad8ff,emissiveIntensity:1})},g:{geo:()=>new THREE.OctahedronGeometry(0.17),mat:()=>M(COL.gold,{emissive:0xffb000,emissiveIntensity:0.9})}};
+  function sparkObj(kind,x,y,z){const o=new THREE.Object3D();o.position.set(x,y,z);o.userData.spk=kind;W.group.add(o);return o;}
+  function sparkDraw(){const by={b:[],g:[]};for(const sp of S.sparks)if(!sp.taken&&sp.m.visible&&sp.m.parent===W.group)by[sp.m.userData.spk].push(sp.m);
+    for(const k in by){const L=by[k],Q=SPK[k];if(!Q.im||Q.cap<L.length){if(Q.im){W.group.remove(Q.im);Q.im.geometry.dispose();}Q.cap=L.length+32;
+        Q.im=new THREE.InstancedMesh(Q.geo(),Q.mat(),Q.cap);Q.im.frustumCulled=false;Q.im.userData.noBatch=true;W.group.add(Q.im);}
+      L.forEach((m,i)=>{m.updateMatrix();Q.im.setMatrixAt(i,m.matrix);});Q.im.count=L.length;Q.im.instanceMatrix.needsUpdate=true;}}
   // искры-ноты по дуге полёта со струны: видны и берутся только в высоком прыжке; дорожку не выбирают — тянутся к дорожке героя
   function flightArc(pi,k,vy,y0,n){const P=PARTS[ph(k)],B=60/P.bpm,T=vy/GRAV*2;n=n||6;
     for(let i=0;i<n;i++){const tt=T*(0.22+0.56*i/(n-1)),yy=y0+vy*tt-GRAV/2*tt*tt;if(yy<1.9)continue;
-      const m=new THREE.Mesh(new THREE.OctahedronGeometry(0.2),M(STRC,{emissive:0x7ad8ff,emissiveIntensity:1}));m.position.set(LANES[pi][1],yy+0.7,zK(k)-P.speed*tt);W.group.add(m);S.sparks.push({pi,m,taken:false,ph:ph(k),free:true,n:2});}}
+      const m=sparkObj('b',LANES[pi][1],yy+0.7,zK(k)-P.speed*tt);S.sparks.push({pi,m,taken:false,ph:ph(k),free:true,n:2});}}
   /* ---------- сказка: встречные Колобка — Заяц, Волк, Медведь. Зверь выкатывается перед героем: «Колобок, Колобок, я тебя съем!» —
      Колобок отвечает песенкой, зверь пропевает её четыре доли (скачет и звенит в свои доли, бусины над ним вспыхивают),
      следующие четыре доли игрок повторяет щитом-хлопком те же доли. Все доли — «пляшет!», часть — «почти», ни одной — толкнёт (лепесток) ---------- */
@@ -208,7 +218,7 @@ function build13(){W.soloMirror=true;
     const q={kind,pi,k,z,g,lane:l,taken:false,ph:ph(k)};S.picks.push(q);return q;}
   function sparkRow(pi,k0,k1,lane,arc,y0){for(let k=k0;k<=k1+1e-6;k+=0.5){const kk=Math.max(0,Math.min(END,k)),z=zAt(BT[Math.floor(kk)]+(kk%1)*(BT[Math.floor(kk)+1]-BT[Math.floor(kk)]));
       const x=typeof lane==='function'?lane(k):lx(pi,lane),y=(y0||0.9)+(arc?Math.sin((k-k0)/(k1-k0||1)*Math.PI)*arc:0);
-      const m=new THREE.Mesh(new THREE.OctahedronGeometry(0.17),M(COL.gold,{emissive:0xffb000,emissiveIntensity:0.9}));m.position.set(x,y,z);W.group.add(m);S.sparks.push({pi,m,taken:false,ph:ph(kk)});}}
+      const m=sparkObj('g',x,y,z);S.sparks.push({pi,m,taken:false,ph:ph(kk)});}}
   const zig=(pi,k0)=>k=>lx(pi,[0,1,2,1][Math.floor((k-k0)*1)%4]);
   /* ---------- бой на бегу (части 4–5): красное — уйди с дорожки, жёлтое — щит в такт и бей, кабан — прыгай, вожак — щит вдвоём ---------- */
   function makeBird(col,sc){const g=new THREE.Group();W.group.add(g);const m=M(col);part(g,new THREE.SphereGeometry(0.34,10,8),m,0,0,0).scale.set(0.8,0.7,1.4);part(g,new THREE.SphereGeometry(0.2,10,8),m,0,0.18,0.42);
@@ -556,6 +566,7 @@ function build13(){W.soloMirror=true;
     kol.ball.position.y=0.55+Math.abs(Math.sin((S.state==='final'?S.ft/S.B2:S.lastK+S.bph)*Math.PI))*(S.state==='final'?0.6:0.35);
     if(S.state==='play'&&S.pulse>0.95&&Math.random()<0.35)floatText(kol.g.position.clone().add(new V3(rand(-0.4,0.4),1.5,0)),['♪','♫'][Math.random()<0.5?0:1],'#ffe7a0');
     hudTick();});
+  W.updates.push(()=>sparkDraw());
   // камера раннера: сзади и чуть сверху, смотрит вперёд по тропе
   const runCam=()=>{const a=active(0),b=active(1),mz=(a.pos.z+b.pos.z)/2,my=Math.max(a.pos.y,b.pos.y),sp=PARTS[S.part].speed,d=7.4+sp*0.3,fx=S.part===2&&!S.foxOff?1:0;
     return {pos:new V3((a.pos.x+b.pos.x)*0.12,4.2+my*0.55+fx*0.9,mz+d+fx*0.8),look:new V3((a.pos.x+b.pos.x)*0.08,0.9+my*0.5,mz-8+fx*2.5),k:6};};
