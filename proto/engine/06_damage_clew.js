@@ -1,12 +1,13 @@
 /* ============================== УРОН, КЛУБОК НИТОК И ПОДШИВАНИЕ (закон доброго дивана) ============================== */
 // Единственная точка снятия лепестка. Источник — только морок или опасность мира: герой задеть героя не может.
 function damageHero(h,src){if(!src||(src.kind!=='enemy'&&src.kind!=='hazard'))return false;if(HEROES.indexOf(src.ref)>=0)return false;
-  if(!h.active||h.cling)return false;const p=players[h.player];if(p.downed||h.iT>0||(h.power&&h.power.t>0&&h.kind==='potap'))return false;
-  p.petals=Math.max(W.noLose?1:0,p.petals-(W.noPetals?0:1));h.iT=1.2;h.hurtT=1.2;SFX.hurt();shake(h.player,0.05,0.25);
+  if(!h.active||h.cling)return false;const p=players[h.player];if(p.downed||h.iT>0)return false;
+  if(h.power&&h.power.t>0&&h.kind==='potap'){bogatyrBlock(h,src);return false;}   // Медвежья сила: удар отскакивает
+  const spare=p.spare>0&&!W.noPetals;if(spare)p.spare=0;else p.petals=Math.max(W.noLose?1:0,p.petals-(W.noPetals?0:1));h.iT=1.2;h.hurtT=1.2;SFX.hurt();shake(h.player,0.05,0.25);   // запасной лепесток Йоши сгорает первым
   if(src.ref&&src.ref.pos){const dx=h.pos.x-src.ref.pos.x,dz=h.pos.z-src.ref.pos.z,d=Math.hypot(dx,dz)||1;const kk=W.world===4&&W.lavas.length&&((h.groundRef&&h.groundRef.crust)||overLava(h))?0.15:1;h.vel.x=dx/d*6*kk;h.vel.z=dz/d*6*kk;h.vel.y=4*kk;h.grounded=kk<1&&h.grounded;h.knockT=0.3*kk;
     if(src.ref.kind==='tat'){h.vel.x*=0.15;h.vel.z*=0.15;h.vel.y=2;h.knockT=0.15;}   // паутинник щиплет, а не отбрасывает
     if(src.ref.kind==='tyagun'){h.vel.x=-dx/d*4.5;h.vel.z=-dz/d*4.5;h.vel.y=2.5;h.knockT=0.28;floatText(h.pos.clone().add(new V3(0,h.d.height+1,0)),'Тянет!','#9fe6ff');}}
-  floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),W.noPetals?'Ох!':'-1 лепесток','#ff9ab8');
+  floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),W.noPetals?'Ох!':spare?'Запасной лепесток сгорел':'-1 лепесток','#ff9ab8');
   if(p.petals===0){p.downed=true;p.downT=10;p.revT=0;h.guard=false;tip(1-p.i,'Друг клубком ниток рассыпался! Подойди — зашей.',3);}
   return true;}
 function updateDowned(pi,dt){const p=players[pi],h=active(pi);h.vel.x=damp(h.vel.x,0,8,dt);h.vel.z=damp(h.vel.z,0,8,dt);p.downT-=dt;
@@ -15,16 +16,36 @@ function updateDowned(pi,dt){const p=players[pi],h=active(pi);h.vel.x=damp(h.vel
   if(near){p.revT+=dt;if(p.revT>=1){p.downed=false;p.petals=2;h.iT=2;G.stats.revives++;SFX.ok();floatText(h.pos.clone().add(new V3(0,1.6,0)),'Подшили!','#7ee08a');}}
   else p.revT=Math.max(0,p.revT-dt*0.5);
   if(p.downed&&p.downT<=0){p.downed=false;p.petals=3;placeOnGround(h,p.cp.x,p.cp.z,p.cp.y);h.iT=2;tip(pi,'Снова в пути! Все лепестки на месте.',2);}}
-/* богатырский выход: синяя шкала полна — сам, сразу у обоих героев игрока (вторая шкала — следом, когда снова наполнится) */
+/* богатырский выход: синяя шкала полна — сам, сразу у обоих героев игрока (вторая шкала — следом, когда снова наполнится).
+   Подача (вспышка, знаки сил над героями, волна, HUD) — релизный слой late_91g_bogatyr.js через крючки bogatyrFx / bogatyrSwing / bogatyrEnd */
 const POWER={potap:['Медвежья сила',12,'каждый удар ломает скорлупу'],proshka:['Меч-кладенец',12,'меч сам рубит ближних'],pelageya:['Вещий взор',10,'мороки вдвое медленнее'],yosha:['Живой родник',2,'всем по лепестку']};
 function bogatyrLeft(pi){const p=players[pi];let t=0;for(const h of p.heroes)if(h.power&&h.power.t>t)t=h.power.t;return p.exitDur?Math.min(1,t/p.exitDur):0;}   // доля оставшегося времени силы (0 — выхода нет)
-function bogatyrExit(pi){const p=players[pi];p.blue=0;p.exitDur=Math.max(...p.heroes.map(h=>POWER[h.kind][1]));SFX.horn();banner('Богатырский выход!',PCSS[pi],2.6,p.heroes.map(h=>h.d.name+' — «'+POWER[h.kind][0]+'»').join('<br>'));
+// морок отшатывается (волна выхода, удар о Потапа): короткое оглушение — только у обычных мороков, не у больших и не у мороков с особым поведением
+function bogatyrDaze(e,t){if(!e||!e.alive||e.big||e.tick||!FOE[e.kind]||e.def!==FOE[e.kind]||/^(spawn|hide|dying|broken|stagger)$/.test(e.state))return false;e.dazeT=Math.max(e.dazeT||0,t);return true;}
+function bogatyrBlock(h,src){if(G.time-(h.power.blkT||-9)<0.6)return;h.power.blkT=G.time;SFX.clink();floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'Не берёт!','#ffd76a');
+  const e=src&&src.ref;if(e&&W.enemies.indexOf(e)>=0)bogatyrDaze(e,0.5);}
+function bogatyrFx(pi,mate){}           // крючок релиза: столбы света, хит-стоп, наезд камеры, возгласы
+function bogatyrEnd(h){}                 // крючок релиза: знак силы осыпается, звук угасания
+function bogatyrSwing(h,e){h.power.cd=0.45;h.face=Math.atan2(e.pos.x-h.pos.x,e.pos.z-h.pos.z);h.atkT=0.28;SFX.swish();enemyHit(e,h,false);}
+function bogatyrExit(pi){const p=players[pi];p.blue=0;p.exitDur=Math.max(...p.heroes.map(h=>POWER[h.kind][1]));
+  const mate=bogatyrLeft(1-pi)>0;   // у друга выход ещё идёт — «Богатырская дружина»: обеим силам по 2 с
+  SFX.horn();banner(mate?'Богатырская дружина!':'Богатырский выход!',PCSS[pi],2.6,p.heroes.map(h=>h.d.name+' — «'+POWER[h.kind][0]+'»').join('<br>')+(mate?'<br>вместе — каждому +2 с':''));
   for(const h of p.heroes){const P=POWER[h.kind];h.power={t:P[1]};ringFx(h.pos,COL.gold,4);
     if(h.kind==='pelageya')G.slowFoes=P[1];
-    if(h.kind==='yosha'){for(const q of players){q.petals=Math.min(3,q.petals+1);if(q.downed){q.downed=false;q.petals=2;active(q.i).iT=2;}}burst(h.pos.clone().add(new V3(0,1,0)),0x7ad8ff,24,6);}}}
+    if(h.kind==='yosha'){for(const q of players){const a=active(q.i);let t;
+        if(q.downed){q.downed=false;q.petals=2;a.iT=2;t='Встал!';}else if(q.petals<3){q.petals++;t='+1 лепесток';}else{q.spare=1;t='Все здоровы — запасной лепесток!';}
+        floatText(a.pos.clone().add(new V3(0,a.d.height+1.0,0)),t,'#7ad8ff');}
+      burst(h.pos.clone().add(new V3(0,1,0)),0x7ad8ff,24,6);}}
+  // волна выхода: ближние мороки отшатываются
+  for(const e of W.enemies)if(p.heroes.some(h=>hd(h.pos,e.pos)<5&&Math.abs(h.pos.y-e.pos.y)<2.5))bogatyrDaze(e,0.6);
+  if(mate){G.stats.druzhina=(G.stats.druzhina||0)+1;for(const q of players){if(!bogatyrLeft(q.i))continue;q.exitDur+=2;for(const h of q.heroes)if(h.power&&h.power.t>0)h.power.t+=2;}if(G.slowFoes>0)G.slowFoes+=2;}
+  if(!G.flags.bogaTaught){G.flags.bogaTaught=true;for(const q of[0,1])tip(q,'<b>Богатырский выход!</b> Сила — у обоих героев: знак над головой покажет какая.',5);}
+  bogatyrFx(pi,mate);}
 function updatePowers(dt){G.slowFoes=Math.max(0,(G.slowFoes||0)-dt);if(!G.cine&&(W.abil.clew||W.abil.gusli||W.abil.pero||W.abil.kleshi))players.forEach((p,pi)=>{if(p.blue>=1)bogatyrExit(pi);});for(const h of HEROES){if(!h.power||h.power.t<=0)continue;h.power.t-=dt;
-  if(h.kind==='proshka'&&h.active){h.power.cd=(h.power.cd||0)-dt;if(h.power.cd<=0){let best=null,bd=3.2;for(const e of W.enemies){if(!e.alive)continue;const d=hd(e.pos,h.pos);if(d<bd){bd=d;best=e;}}
-    if(best){h.power.cd=0.45;h.face=Math.atan2(best.pos.x-h.pos.x,best.pos.z-h.pos.z);h.atkT=0.28;SFX.swish();enemyHit(best,h,false);}}}}}
+  if(h.power.t<=0){h.power.t=0;bogatyrEnd(h);continue;}
+  // Кладенец рубит и у Прошки, который идёт следом (сила обоих героев — не только того, кем играют)
+  if(h.kind==='proshka'&&!h.cling&&!h.hidden&&!(h.active&&players[h.player].downed)){h.power.cd=(h.power.cd||0)-dt;if(h.power.cd<=0){let best=null,bd=3.2;for(const e of W.enemies){if(!e.alive)continue;const d=hd(e.pos,h.pos);if(d<bd&&Math.abs(e.pos.y-h.pos.y)<2.5){bd=d;best=e;}}
+    if(best)bogatyrSwing(h,best);}}}}
 
 /* ============================== КЛУБОК-ПУТЕВОДИТЕЛЬ (RB): нить-тропка, нить к нити, струны на колышках, паутинки ============================== */
 const THREAD_GEO=new THREE.CylinderGeometry(0.06,0.06,1,6);THREAD_GEO.rotateX(Math.PI/2);THREAD_GEO.translate(0,0,0.5);
