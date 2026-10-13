@@ -150,8 +150,8 @@ function build43(){
   function endScene(){F.stage='end';SG.on=false;W.song=null;W.skillHook=null;const po=T.potap,pr=T.proshka;
     [[-3.6,-66],[-2.6,-65],[-4.6,-65],[-1.6,-66]].forEach(([x,z],i)=>{placeOnGround(HEROES[i],x,z,HT);HEROES[i].face=Math.PI;});
     play({dur:18,fov:46,camK:2.4,shots:[shot(0,[-8,HT+4,-54],[BX,HT,-60]),shot(5,[-1,HT+1.6,-68.6],[-1.2,HT+1.8,-72.6]),shot(10.4,[-5,HT+2,-62],[-2.8,HT+1,-66]),shot(14.4,[po.pos.x-1.2,HT+1.4,-67.6],[po.pos.x,HT+1,-65])],
-      says:[[0.3,4.2,null,'<i>Под последний куплет баржа в гору вползает.</i>',true],[5,3,null,'<i>Кузьма у ворот баржу встречает — и шапку снимает.</i>',true],[8.2,2,'kuzst','Эх… Как в старину, как встарь.'],
-        [10.4,3.4,null,'<i>Звено — из угольного мешка: Кузьма его Потапу отдаёт.</i>',true],[14.4,3.2,'potap','<i>(тихо)</i> Песню я не забыл.<br>Значит, и остальное вспомню — хватит сил.']],
+      says:[[0.3,4.2,null,'<i>Под последний куплет баржа в гору вползает.</i>',true],[5,3,null,'<i>Кузьма-старший встречает баржу у ворот — и снимает шапку.</i>',true],[8.2,2,'kuzst','Эх… Как в старину, как встарь.'],
+        [10.4,3.4,null,'<i>Звено — из угольного мешка: Кузьма его Потапу отдаёт.</i>',true],[14.4,3.2,'potap','<i>(тихо)</i> Песню я не забыл.<br>Значит, и остальное вспомню.']],
       events:[{t:5.6,fn:()=>{const f=hat.position.clone();anim(1.2,k=>{hat.position.set(0.3*k,0.3+Math.sin(k*Math.PI)*0.3-k*0.6,0.35*k);hat.rotation.x=k*1.2;kz.armL.rotation.x=-k*1.6;});}},
         {t:10.4,fn:()=>{giveLink(kz.g.position,po,HT+2,1.4);}}],
       end:()=>{W.anims.length=0;flushGifts();F.out=true;banner('Баржа у кузни!','#ffb070',2.4,'в лавке у Векши — пляска «Бурлацкая», загляни!');later(1.8,finishLevel);}});}
@@ -201,7 +201,7 @@ function build43(){
     OR(()=>'Встаньте в кольца лямки. На «ух-нем» — '+K(pi,'skill')+' вместе!',()=>B.z<-24,()=>RINGS.filter(r=>!r.hero).map(r=>r.g),null,'На «ух-нем» — все вместе, разом!'),
     OR(()=>'Бревно у кольца — его герой прыгает '+K(pi,'jump')+' на «ух-нем».',()=>RINGS.every(r=>r.z<LOGS[2].z-0.5),()=>RINGS.filter(r=>r.blocked).map(r=>r.g),null,'Бревно — прыжком! Лямку не бросать!'),
     OR(()=>'В гору: уголь клещами '+K(pi,'item')+' — в топку на носу баржи.',()=>F.stage==='end',()=>FIRE.t>0?[bg.g]:[door],null,'Топка горит — баржа подсобляет!'),
-    O('Кузьма у ворот ждёт…',()=>false,()=>[kz.g])];
+    O('Кузьма-старший у ворот ждёт…',()=>false,()=>[kz.g])];
   for(const pi of[0,1])W.objectives[pi]=mk(pi);
   W.tipZones.push({cond:(pi,h)=>F.stage==='hill'&&!heroCarry(h)&&piles.some(p=>hd(h.pos,p)<2.2),text:pi=>'Горячий уголь: клещами '+K(pi,'item')+' — и в топку. На бегу можно бросить.'});
   W.tipZones.push({cond:(pi,h)=>F.stage==='pull'&&RINGS.some(r=>r.blocked&&r.hero&&!r.hero.active&&r.hero.player===pi),text:pi=>'У бревна оставленный герой: смени его '+K(pi,'swap')+' и прыгай '+K(pi,'jump')+'.'});

@@ -153,12 +153,12 @@ function buildLukomorye(){
     const pr=HERO.proshka;if(F.stage==='free'&&!G.ui&&!F.forging&&pr.active&&hd(pr.pos,anvil.position)<2.2&&tap(0,'attack')){
       if(coilPending())coilGame();
       else if(pendingLinks()>0)forgeGame();
-      else if(G.flags.w3done&&!G.done['4-1']){bark(kuz,'kuzma','Цепь порвана — не срастить никак<br>Без Демьяновых клещей, вот так.',2.6);}
+      else if(G.flags.w3done&&!G.done['4-1']){bark(kuz,'kuzma','Без Демьяновых клещей её не срастить.',2.6);}
       else if(G.flags.w5done){bark(kuz,'kuzma','Цепь цела. Ступай, мастер, на покой.',2.2);}
       else if(G.flags.w4done&&G.flags.forged5){bark(kuz,'kuzma','Ворота терема открыты — ступай.',2);}
       else if(G.flags.w4done&&worldLinks(5)===0){bark(kuz,'kuzma','Полцепи сковано. Путь — на Буян.',2.2);}
       else if(curWorld()===1?G.flags.forged:curWorld()===2?G.flags.forged2:curWorld()===3?G.flags.forged3:curWorld()===4?G.flags.forged4:G.flags.forged5){bark(kuz,'kuzma',curWorld()===4?'Узда при вас — клещами её берите.':'Ворота настежь — в путь ступай.',1.8);}
-      else{bark(kuz,'kuzma','Руки есть. А голова? Поглядим сперва.',2.4);tip(0,'Нечего пока ковать. '+(curWorld()===1?'К Лешему':curWorld()===2?'К Водяному':curWorld()===3?'К Соловью':curWorld()===4?'К Горынычу':'В терем')+' ворота открыть —<br>'+GATE(curWorld())+' звеньев мира надобно скрепить. Сейчас '+(G.forgedW[curWorld()]||0)+' / '+GATE(curWorld()),3);}}
+      else{bark(kuz,'kuzma','Руки есть. Голова — посмотрим.',2.4);tip(0,'Нечего пока ковать. '+(curWorld()===1?'К Лешему':curWorld()===2?'К Водяному':curWorld()===3?'К Соловью':curWorld()===4?'К Горынычу':'В терем')+' ворота открыть —<br>'+GATE(curWorld())+' звеньев мира надобно скрепить. Сейчас '+(G.forgedW[curWorld()]||0)+' / '+GATE(curWorld()),3);}}
     else if(F.stage==='free'&&!G.ui&&tap(1,'attack')&&hd(active(1).pos,anvil.position)<2.6)tip(1,'Ковать будет Прошка — ему молот под стать:<br>Это дело его — ему и ковать.',2);});
   for(const pi of[0,1]){prompt(pi,'jump',()=>headOf(active(pi)),()=>F.stage==='free'&&!G.ui&&!F.rushnik&&active(pi).pos.z<-17.2&&Math.abs(active(pi).pos.x)<17,'карта');}
   prompt(0,'attack',()=>headOf(HERO.proshka),()=>F.stage==='free'&&!G.ui&&!F.forging&&HERO.proshka.active&&hd(HERO.proshka.pos,anvil.position)<2.2&&(pendingLinks()>0||coilPending()),()=>coilPending()?'чинить цепь':'ковать звенья');
@@ -169,7 +169,7 @@ function buildLukomorye(){
   else{W.spawns=[[new V3(-2.4,0,-14.5),new V3(-4.2,0,-13.8)],[new V3(2.4,0,-14.5),new V3(4.2,0,-13.8)]];W.spawnFace=[[Math.PI,Math.PI],[Math.PI,Math.PI]];}
   W.startAct=[players[0].act,players[1].act];
   W.pauseLine=mode==='first'?'У лукоморья мы стоим:<br>Дуб пуст — цепь сорвана над ним.<br>Кот присказку сказал с утра,<br>Да не поняла её детвора.'
-    :'Рушник-карта у моря — выбирай и мир, и путь.<br>Кузьма звенья куёт: двенадцать — чтоб к хозяину мира ворота распахнуть.<br>Орешки — Векше за наряды несём,<br>Самоцветы — Коту за сказки да Заставе потом.';
+    :'Карта-рушник — у стана у моря: выбирай мир и уровень.<br>Звенья неси Кузьме: двенадцать звеньев мира открывают ворота к хозяину мира.<br>Орешки — Векше за наряды, самоцветы — Коту за сказки и на Заставу.';
   if(mode!=='first'){Z.pos.set(1.0,3.0,-5.5);}
   if(G.flags.w3done&&!G.flags.zvenBack){Z.vis=false;Z.pos.set(0,-40,0);W.zvenAway=false;W.zvenGoal=()=>new V3(0,-40,0);}   // в хабе Звенышко отдыхает на ветке дуба, рядом с Котом
   W.onStart=()=>{if(mode==='first')lukoScene();else if(mode==='festival')festival();else if(mode==='festival2')festival2();else if(mode==='festival3')festival3();else if(mode==='festival4')festival4();else if(mode==='bezimen')bezImen();else hubHello();};

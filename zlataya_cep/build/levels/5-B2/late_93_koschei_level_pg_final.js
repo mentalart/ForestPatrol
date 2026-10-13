@@ -25,8 +25,8 @@
       for(const h of k5Heroes()){if(P.hit.has(h))continue;const v=h.pos.clone().sub(P.c);v.y=0;const along=v.dot(P.d),side=Math.abs(v.x*P.d.z-v.z*P.d.x);if(Math.abs(along)<7&&side<0.6&&h.pos.y<2.2&&h.rollT<=0){P.hit.add(h);k5Hurt(h,P.c);}}
       if(P.t>4.1){k5Del(P.wall);k5Del(P.ln);ES.pens.splice(ES.pens.indexOf(P),1);}}}
   function kotTick(dt){if(!kot||!kot.g)return;ES.kotA+=dt*0.35;const a=ES.kotA,r=3.0;kot.g.position.set(OAK.x+Math.cos(a)*r,5.6,OAK.z+Math.sin(a)*r);kot.g.rotation.y=-a;
-    const right=Math.sin(a)>0;if(right!==ES.kotRight){ES.kotRight=right;if(right){ES.song=5;W.ladBonus=0.12;songR.material.opacity=0.8;barkS(kot,'kot','Иду направо — песнь завожу!',2,true);E.log('song');}
-      else{ES.tale=3;K5.listen=true;if(K5.live&&KB.state!=='broken')KB.dazeT=Math.max(KB.dazeT||0,3);barkS(kot,'kot','Иду налево — сказку говорю… Кощей, слушай!',2,true);E.log('tale');}}
+    const right=Math.sin(a)>0;if(right!==ES.kotRight){ES.kotRight=right;if(right){ES.song=5;W.ladBonus=0.12;songR.material.opacity=0.8;barkS(kot,'kot','<i>(шёпотом)</i> Иду направо — песнь завожу!',2,true);E.log('song');}
+      else{ES.tale=3;K5.listen=true;if(K5.live&&KB.state!=='broken')KB.dazeT=Math.max(KB.dazeT||0,3);barkS(kot,'kot','<i>(шёпотом)</i> Иду налево — сказку говорю… Кощей, слушай!',2,true);E.log('tale');}}
     if(ES.song>0){ES.song-=dt;songR.position.set(ANV.x,0.08,ANV.z);songR.scale.setScalar(1+0.06*Math.sin(G.time*6));if(Math.random()<dt*5)FX.sparkle(ANV.clone().add(new V3(rand(-2,2),rand(1,3),rand(-2,2))),1,0xffd76a);if(ES.song<=0){W.ladBonus=0;songR.material.opacity=0;}}
     if(ES.tale>0){ES.tale-=dt;if(Math.random()<dt*4)FX.sparkle(KS.g.position.clone().add(new V3(rand(-1,1),3,rand(-1,1))),1,0xfff4c0);if(ES.tale<=0)K5.listen=false;}}
   E.layer[12]={start(){dem12.g.visible=true;dem12.g.position.set(ANV.x-2.2,0,ANV.z-1.2);dem12.g.rotation.y=0.6;kuzma.g.position.set(ANV.x+2.2,0,ANV.z-1.0);kuzma.g.rotation.y=-0.6;
@@ -103,8 +103,8 @@
         if(R0.k>=5){R0.last=true;say('pelageya','Вытянуть не можем… Позвали мышку!',3,true);}}};
     function finish(){R0.done=true;E.log('repkaDone');k5s('shatter');shakeAll(0.12,0.8);k5Flash(root.clone(),0xffe0a0,8,0.6);K5L.gold(root.clone().add(new V3(0,1,0)),40);k5Del(ch);ch=chainLine(root,endP,COL.gold);
       const i=W.updates.indexOf(tickF);if(i>=0)W.updates.splice(i,1);k5Del(beatR);(R0.vis||[]).forEach(o=>k5Del(o));try{KA.pose('slump');}catch(e){}const f=KS.g.position.clone();anim(0.8,k=>{KS.g.position.set(f.x,Math.sin(k*Math.PI)*1.2,f.z+k*1.5);});
-      E.oakGreen(1,true);later(1.4,()=>{barkS(kot,'kot','…И там я был, и мёд я пил; у моря видел дуб зелёный…',4,true);});later(5.6,()=>{k5Del(ch);ES.repkaAtk=null;done();});}};
+      E.oakGreen(1,true);later(1.4,()=>{barkS(kot,'kot','<i>(шёпотом)</i> …И там я был, и мёд я пил; у моря видел дуб зелёный…',4,true);});later(5.6,()=>{k5Del(ch);ES.repkaAtk=null;done();});}};
   // удар во время «Репки»
   {const _oa=W.onAttack;W.onAttack=(pi,h)=>{if(E.cur===12&&ES.repkaAtk){ES.repkaAtk(h,pi);return;}if(_oa)_oa(pi,h);};}
   /* ---------- тексты паузы по стадиям ---------- */
-  E.PAUSE=[];for(let n=0;n<=12;n++)E.PAUSE[n]='<b>'+K5E.NAMES[n]+'</b><br><i>'+K5L.LINES[n]+'</i><br>Битва с Кощеем: двенадцать строк пролога — двенадцать стадий. Tab — панель стадий и оценок.';
+  E.PAUSE=[];for(let n=0;n<=12;n++)E.PAUSE[n]='<b>'+K5E.NAMES[n]+'</b><br><i>'+K5L.LINES[n]+'</i><br>Битва с Кощеем: двенадцать строк пролога — двенадцать глав.';

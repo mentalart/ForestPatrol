@@ -19,9 +19,9 @@
   function skaz(){skazChoose(1,tell);}
   function tell(t){const pe=HERO.pelageya;
     skazTell(1,t,{shot0:shot(0,[3.4,1.9,-1.2],[2.3,1.6,-4.6]),lastShot:T0=>shot(T0,[-1.4,1.6,0.4],[pe.pos.x,0.9,pe.pos.z]),
-      closers:[[0,3.4,null,'<i>Кот нашу сказку сказывает своим голосом,</i><br><i>А Пелагея клювом шевелит вслед — тихо, волосом.</i>',true]],tail:3.8,
+      closers:[[0,3.4,null,'<i>Кот сказывает нашу сказку своим голосом,</i><br><i>а Пелагея беззвучно повторяет за ним.</i>',true]],tail:3.8,
       tick:(tt)=>{pe.body.position.y=tt>0.4&&tt<16?Math.abs(Math.sin(tt*9))*0.04:0;kot.head.rotation.x=Math.sin(tt*2)*0.05;},
-      end:()=>{pe.body.position.y=0;banner('Сказ «Леший-проводник»','#ffd76a',2.4,'весточка: помощник с вами в новый мир пойдёт');later(2.6,voiceScene);}});}
+      end:()=>{pe.body.position.y=0;banner('Сказ «Лесная тропинка»','#ffd76a',2.4,'весточка: помощник с вами в новый мир пойдёт');later(2.6,voiceScene);}});}
   function voiceScene(){const T=HERO;const ko=makeKoschei();ko.g.position.set(-9,-0.2,-26);ko.g.visible=false;const coil=addCoil(0,false);
     const thread=new THREE.Mesh(new THREE.CylinderGeometry(0.025,0.025,1,6),MB(0xffd76a));thread.visible=false;W.group.add(thread);
     const kotHead=()=>{const v=new V3();kot.head.getWorldPosition(v);return v;};
@@ -30,9 +30,9 @@
       shots:[shot(0,[0,4,6],[0,3,-7]),shot(3.2,[3.6,2.2,-1],[0,2.2,-7]),shot(9,[5,2.6,-2.4],[2.3,1.9,-5.6]),shot(14,[-2,3.2,2],[-7,1.4,-20],[-2,2.6,0.5],[-4,1.6,-10],5),
         shot(21,[4.6,2.4,-2],[2.3,2.0,-5.4]),shot(29,[3.8,2.1,-3],[2.3,2.1,-5]),shot(34,[-1,3,2],[-5,1,-18],[0,3.4,4],[-10,1,-40],7),shot(42,[3.4,1.8,-2.2],[2.3,1.9,-4.8]),shot(46,[0,2.2,3.6],[0,1.2,-1.2])],
       says:[[0.4,3,null,'<i>На Лукоморье — пир да праздник.</i>',true],[3.4,3.4,null,'<i>Кузьма на дуб первую цепь вешает.</i>',true],[9.2,3.6,null,'<i>Кот на первую ступень цепи восходит,</i><br><i>Рот открывает — песню заводит…</i>',true],
-        [13.6,2.6,null,'<i>…и вдруг — тишина.</i>',true],[16.8,4.2,null,'<i>Как пришёл он — не видал никто:</i><br><i>Высок, сух, в кафтане чёрном, звенит, как ключей решето.</i>',true],
-        [22,4.4,null,'<i>На нас Кощей не глядит. К Коту руку тянет — перстень тяжёл —</i><br><i>И голос снимает с него, золотую ниточку, как шапку, — и прочь пошёл.</i>',true],
-        [30,3.2,null,'<i>Ниточку в карман кладёт —</i><br><i>И по воде уходит, не оглянётся вперёд.</i>',true],[42.4,1.6,'kot','Мяу.'],[44.4,2.4,null,'<i>Прошка впервые за всю игру — ни слова.</i>',true],[47,2.8,null,'<i>Варя берёт меня за рукав.</i>',true]],
+        [13.6,2.6,null,'<i>…и вдруг — тишина.</i>',true],[16.8,4.2,null,'<i>Как он пришёл — никто не видел.</i><br><i>Высокий, сухой, звенят ключи.</i>',true],
+        [22,4.4,null,'<i>Рука с тяжёлым перстнем снимает с Кота голос —</i><br><i>золотую ниточку.</i>',true],
+        [30,3.2,null,'<i>Кладёт ниточку в карман</i><br><i>и уходит по воде, не оглянувшись.</i>',true],[42.4,1.6,'kot','Мяу.'],[44.4,2.4,null,'<i>Прошка впервые не находит ни слова.</i>',true],[47,2.8,null,'<i>Варя берёт меня за рукав.</i>',true]],
       events:[{t:0.3,fn:()=>{SFX.ok();for(let i=0;i<5;i++)later(i*0.5,()=>burst(new V3(rand(-6,6),3,rand(-6,2)),[0xff9ad0,0xfff08a,0x9ad0ff][i%3],10,3));}},
         {t:3.6,fn:()=>{coil.visible=true;coil.scale.setScalar(0.01);anim(1.4,k=>coil.scale.setScalar(Math.max(0.01,smooth(k))));SFX.link();G.flags.coils=Math.max(1,G.flags.coils||0);}},
         {t:9.2,fn:()=>{const from=kot.g.position.clone();anim(2,k=>{kot.g.position.set(lerp(from.x,1.7,k),Math.sin(k*Math.PI)*0.3+k*0.9,lerp(from.z,-5.4,k));});kot.lids.forEach(l=>{l.rotation.x=-0.5;});}},

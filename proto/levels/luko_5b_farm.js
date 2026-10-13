@@ -206,7 +206,7 @@
     HS.tgt.set(clamp(p.x+Math.sin(a)*2.5,YARD.x0+0.5,YARD.x1-0.5),0,clamp(p.z+Math.cos(a)*2.5,YARD.z0+0.5,YARD.z1-0.5));SFX.miss();henSay('Ко-ко-ко! Не тискай меня — гладь ласково!','#ffb0b0');
     for(let k=0;k<5;k++)later(k*0.08,()=>burst(hen.g.position.clone().add(new V3(0,0.6,0)),0xf4efe4,3,2.5));}
   function takeEggs(h){const p=HN.eggs*2;G.nutsHub=(G.nutsHub||0)+p;eggMeshes.forEach((m,k)=>{if(k<HN.gold-(EGG?1:0))return;const from=m.position.clone();anim(0.5,q=>{m.position.lerpVectors(from,h.pos.clone().add(new V3(0,h.d.height,0)),q);});});
-    later(0.55,()=>{HN.eggs=0;eggsDraw();});SFX.ok();floatText(NEST.clone().add(new V3(0,1,0)),'Яички! +'+p+' орешков','#ffd060');}
+    later(0.55,()=>{HN.eggs=0;eggsDraw();});SFX.ok();floatText(NEST.clone().add(new V3(0,1,0)),'Яички! Орешки: +'+p+'','#ffd060');}
   /* ---------- золотое яичко: в лукошке к Дедке; мышки бегут к лукошку, друг их гоняет (в одиночку и с напарником — гоняют спутники) ---------- */
   const human=o=>G.solo?ctrl(o):(o.active&&!(o.player===1&&typeof CMP!=='undefined'&&CMP.live&&CMP.live()));
   const autoShoo=()=>G.solo||(typeof CMP!=='undefined'&&CMP.live&&CMP.live());
@@ -220,7 +220,7 @@
     const egg=new THREE.Mesh(new THREE.SphereGeometry(0.16,12,10),M(0xffd23a,{emissive:0xb07a10,emissiveIntensity:0.8}));egg.scale.y=1.3;egg.position.copy(at).add(new V3(0,0.21,0));W.group.add(egg);
     bark({g:ded},'dedka','Яичко золотое! А ну-ка — крепкое ли?',1.8);
     for(let k=0;k<3;k++)later(1.0+k*0.55,()=>{anim(0.25,q=>{ded.scale.y=1-Math.sin(q*Math.PI)*0.12;});later(0.12,()=>{SFX.hammer();burst(egg.position.clone(),0xffd76a,8,2);shakeAll(0.02,0.12);anim(0.2,q=>{egg.position.y=0.21+Math.sin(q*Math.PI)*0.15;});});});
-    later(2.9,()=>{const p=12;G.nutsHub=(G.nutsHub||0)+p;HN.golds++;SFX.horn();SFX.ok();banner('Бил-бил — не разбил!','#ffd76a',2.6,'яичко золотое · +'+p+' орешков');bark({g:ded},'dedka','Бил-бил — не разбил! Крепкое — знать, к добру.',2.6);
+    later(2.9,()=>{const p=12;G.nutsHub=(G.nutsHub||0)+p;HN.golds++;SFX.horn();SFX.ok();banner('Бил-бил — не разбил!','#ffd76a',2.6,'яичко золотое · орешки: +'+p+'');bark({g:ded},'dedka','Бил-бил — не разбил! Крепкое — знать, к добру.',2.6);
       later(1.4,()=>{W.group.remove(egg);G.ui=null;});});}
   function eggBreak(){const h=EGG.h,p=h.pos.clone().add(new V3(0,h.d.height*0.6,0));eggEnd();HN.gold=Math.max(0,HN.gold-1);eggsDraw();
     const egg=new THREE.Mesh(new THREE.SphereGeometry(0.15,12,10),M(0xffd23a,{emissive:0xb07a10,emissiveIntensity:0.8}));egg.scale.y=1.3;egg.position.copy(p);W.group.add(egg);anim(0.45,q=>{egg.position.y=p.y+(0.1-p.y)*q*q;});
@@ -236,7 +236,7 @@
     if(kind==='podsolnuh'){GD.seeds+=3;later(0.7,()=>floatText(BEDC[i].clone().add(new V3(0,1.7,0)),'Семечки — Рябе лакомство!','#f0e0a0'));}
     if(cropDone(i,h,pi,kind))return;
     if(kind==='goroh'){spawnPeas(BEDC[i]);floatText(BEDC[i].clone().add(new V3(0,1.2,0)),'Стручки лопнули — горошины покатились!','#b8f0a0');return;}
-    G.nutsHub=(G.nutsHub||0)+C.nuts;floatText(BEDC[i].clone().add(new V3(0,1.2,0)),C.name+'! +'+C.nuts+' орешка','#ffd060');}
+    G.nutsHub=(G.nutsHub||0)+C.nuts;floatText(BEDC[i].clone().add(new V3(0,1.2,0)),C.name+'! Орешки: +'+C.nuts+'','#ffd060');}
   function pullHold(i,h,pi){return {need:0.6,ok:()=>near(h,BEDC[i],1.7)&&beds[i].crop==='morkov',tick:(dt,t)=>{bedG[i].pl.position.y=t*0.3;bedG[i].pl.rotation.z=Math.sin(t*40)*0.06;},
     cancel:()=>{bedG[i].pl.position.y=0;bedG[i].pl.rotation.z=0;},done:()=>{bedG[i].pl.position.y=0;bedG[i].pl.rotation.z=0;GD.carrots++;
       if(!GD.hare&&!HARE&&GD.carrots%2===0){hareSteal(i);return;}SFX.ok();if(cropDone(i,h,pi,'morkov'))return;G.nutsHub=(G.nutsHub||0)+2;floatText(BEDC[i].clone().add(new V3(0,1.2,0)),'Морковка! +2 орешка','#ffd060');}};}
@@ -245,7 +245,7 @@
     floatText(BEDC[i].clone().add(new V3(0,1.4,0)),'Ой! Заяц морковку утащил! Догоняй!','#ffd0a0');for(const q of[0,1])tip(q,'Заяц морковку утащил — догони косого!',2.4);}
   function feedHare(h,pi){h.hand=null;GD.hare=true;SFX.ok();floatText(HARE.g.position.clone().add(new V3(0,1,0)),'Спасибо! Больше не трону — честное заячье!','#fff4d0');HARE.st='bye';HARE.t=0;HARE.ca.visible=true;}
   function giveDed(h,pi){const kind=h.hand,C=CROPS[kind];h.hand=null;SFX.ok();ded.rotation.y=Math.atan2(h.pos.x-ded.position.x,h.pos.z-ded.position.z);
-    if(GD.order!==kind){G.nutsHub=(G.nutsHub||0)+C.nuts;floatText(ded.position.clone().add(new V3(0,2.4,0)),'+'+C.nuts+' орешка','#ffd060');bark({g:ded},'dedka','Спасибо, внучек! Векше снесу — орешками отплатит.',2.2);return;}
+    if(GD.order!==kind){G.nutsHub=(G.nutsHub||0)+C.nuts;floatText(ded.position.clone().add(new V3(0,2.4,0)),'Орешки: +'+C.nuts+'','#ffd060');bark({g:ded},'dedka','Спасибо, внучек! Векше снесу — орешками отплатит.',2.2);return;}
     orderDone(C.nuts*2+3);}
   function orderDone(p){GD.order=null;GD.orders++;G.nutsHub=(G.nutsHub||0)+p;SFX.horn();banner('Заказ Дедки!','#ffd76a',2.4,'вдвое орешков · +'+p);bark({g:ded},'dedka','Уважил! Вот тебе за то орешки — вдвойне.',2.4);
     if(GD.orders>=3&&!own('solomka'))later(2.8,()=>{buyWard('solomka');SFX.ok();banner('Соломенная шляпа Дедки!','#ffd76a',2.8,'в примерочной — «Шапки»');bark({g:ded},'dedka','Держи шляпу соломенную — от солнышка, от дождичка!',2.8);});}
@@ -282,7 +282,7 @@
     const draw=()=>{el.innerHTML='<div class="tet seed"><h2>Что посадим?</h2><div class="seeds">'+ks.map((k,j)=>'<div class="sd'+(j===sel?' sel':'')+'">'+CROPS[k].icon+'<b>'+CROPS[k].name+'</b><small>'+CROPS[k].nuts+' '+ICO_NUT+'</small></div>').join('')+'</div>'+
       '<div class="tale">'+SEED_TALE[ks[sel]]+'</div><div class="hint">'+K(pi,'left')+K(pi,'right')+' · '+K(pi,'jump')+' посадить · '+K(pi,'guard')+' отмена</div></div>';};
     draw();G.uiTick=()=>{for(const q of[0,1]){const n=uiNav(q);if(n.dx){sel=(sel+n.dx+ks.length)%ks.length;SFX.swap();draw();}if(tap(q,'guard')||pressed.has('Escape')){closePanel();return;}
-      if(tap(q,'jump')){beds[i]={crop:ks[sel],stage:0,wet:false};plantDraw(i);closePanel();SFX.grow();wormMaybe(BEDC[i]);burst(BEDC[i].clone().add(new V3(0,0.4,0)),0x8a6a44,10,2);floatText(BEDC[i].clone().add(new V3(0,1,0)),CROPS[ks[sel]].name+' посажена! Полить бы теперь.','#b8f0a0');return;}}};}
+      if(tap(q,'jump')){beds[i]={crop:ks[sel],stage:0,wet:false};plantDraw(i);closePanel();SFX.grow();wormMaybe(BEDC[i]);burst(BEDC[i].clone().add(new V3(0,0.4,0)),0x8a6a44,10,2);floatText(BEDC[i].clone().add(new V3(0,1,0)),'Посадили: '+CROPS[ks[sel]].name+'! Полить бы теперь.','#b8f0a0');return;}}};}
   function water(i,h,pi){if(CAN.h!==h){tip(pi,'Лейка у бочки с водой стоит.',2.2);SFX.miss();return;}if(CAN.water<=0){tip(pi,'Лейка пуста — в бочке воды набери.',2);SFX.miss();return;}CAN.water--;const b=beds[i];SFX.water();
     for(let k=0;k<6;k++)later(k*0.06,()=>burst(BEDC[i].clone().add(new V3(rand(-0.6,0.6),0.5,rand(-0.4,0.4))),0x7ac8ff,4,2,0.6));
     if(GD.dry&&!b.water){b.water=1;floatText(BEDC[i].clone().add(new V3(0,1,0)),'Засуха — земля сухая! Ещё разок полей.','#ffd0a0');return;}
@@ -302,7 +302,7 @@
           if(R.miss>=3&&!R.mouse){R.mouse=makeMouse();R.mouse.position.set(c.x+1.7+4*0.72,0,c.z);R.mouse.rotation.y=-Math.PI/2;SFX.ok();banner('Кликнули мышку!','#e0e0ff',2.2,'мышка за Йошу, Йоша за Потапа… — тянем-потянем!');}}}
       if(R.pulls>=3){G.uiTick=null;W.group.remove(ring);const pl=bedG[i].pl,from=pl.position.clone();anim(0.9,q=>{pl.position.set(from.x+q*1.8,from.y+Math.sin(q*Math.PI)*2.2,from.z);pl.rotation.z=-q*2;});
         later(0.2,()=>{order.forEach((h,k)=>{h.vel.set(4+k,4,0);h.grounded=false;h.knockT=0.4;});});SFX.ok();SFX.horn();burst(c.clone().add(new V3(0,1,0)),0xffd76a,30,5);
-        later(1.2,()=>{const ord=GD.order==='repka';if(R.mouse)W.group.remove(R.mouse);if(ord)orderDone(CROPS.repka.nuts*2+3);else{G.nutsHub=(G.nutsHub||0)+CROPS.repka.nuts;banner('Вытянули репку!','#ffd76a',2.6,'всем миром · +'+CROPS.repka.nuts+' орешков в лукошко');}beds[i]={crop:null,stage:0,wet:false};pl.position.set(0,0,0);pl.rotation.set(0,0,0);plantDraw(i);ded.position.copy(d0);G.ui=null;
+        later(1.2,()=>{const ord=GD.order==='repka';if(R.mouse)W.group.remove(R.mouse);if(ord)orderDone(CROPS.repka.nuts*2+3);else{G.nutsHub=(G.nutsHub||0)+CROPS.repka.nuts;banner('Вытянули репку!','#ffd76a',2.6,'всем миром · орешки в лукошко: +'+CROPS.repka.nuts+'');}beds[i]={crop:null,stage:0,wet:false};pl.position.set(0,0,0);pl.rotation.set(0,0,0);plantDraw(i);ded.position.copy(d0);G.ui=null;
           if(!ord)bark({g:ded},'dedka','Тянут-потянут — вытянули репку!<br>Вот что значит — вместе, крепко!',3);});}};}
   /* ---------- погода по возвращении: дождик с радугой ---------- */
   let rain=null;if(hubMode&&NEWS.rain){rain={t:6,g:new THREE.Group(),drops:[]};W.group.add(rain.g);const dm=MB(0x9fd0ff,{transparent:true,opacity:0.6});
@@ -409,7 +409,7 @@
     if(hideOn)msgs.push(()=>banner('Цыплятки разбежались!','#ffe060',2.8,'найди их по писку — и приведи во двор'));
     if(NEWS.order&&GD.order)msgs.push(()=>bark({g:ded},'dedka',ORDER_LINE[GD.order],2.8));
     if(NEWS.pea)msgs.push(()=>GD.peaSt>=3?banner('Горох вырос до неба!','#b8f0a0',2.8,'по листьям — на облако'):floatText(PEA.clone().add(new V3(0,1.6,0)),'Чудо-горох подрос!','#b8f0a0'));
-    if(NEWS.mill)msgs.push(()=>floatText(mill.position.clone().add(new V3(0,1.2,0)),'Жерновцы намололи: +'+NEWS.mill+' орешков','#ffd060'));
+    if(NEWS.mill)msgs.push(()=>floatText(mill.position.clone().add(new V3(0,1.2,0)),'Жерновцы намололи орешков: +'+NEWS.mill+'','#ffd060'));
     msgs.forEach((f,k)=>later(2.2+k*1.6,f));}
   W.farm={GD,HN,HS,ded,hen,chicks,rooks,MICE,PEAS,WORMS,FEATH,DROPS,LEAVES,PEA,CHEST,SCARE,TROUGH,NEST,SACK,BEDC,YARD,get egg(){return EGG;},get hare(){return HARE;},get hideOn(){return hideOn;},own,buyWard};   // для ботов
   { const leave=W.onLeave;W.onLeave=()=>{CAN.h=null;EGG=null;HOLD=null;HEROES.forEach(h=>{if(h.hand&&CROPS[h.hand])G.nutsHub=(G.nutsHub||0)+CROPS[h.hand].nuts;h.can9=false;h.grain=false;h.hand=null;h.handM=null;h.handK=null;});if(leave)leave();};}

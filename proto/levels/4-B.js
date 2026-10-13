@@ -22,7 +22,7 @@ function build4B(){
   function spawnHeads(){heads=HP.map(([x,z],i)=>{const e=makeFoe('golova',x,z,{scale:1.4,leash:0.5,pi:i===0?0:i===2?1:undefined,signals:i===0?['yellow']:i===2?['red']:['blue'],face:0});e.noMove=true;e.noKill=true;e.idx=i;e.def=Object.assign({},e.def);if(i===1)e.def.ranged=true;
       e.embers=e.maxEmb=4;e.onFinisher=h=>{floatText(e.pos.clone().add(new V3(0,3,0)),'Пробой держите — соседнюю гасите!','#ffd76a');};
       e.tick=(e,dt)=>{if(e.state==='wind'&&!e._w){e._w=true;if(e.idx===0)e.wdur*=1.6;}if(e.state!=='wind')e._w=false;
-        if(e.state==='broken'&&!e._b){e._b=true;e.bdur=F.phase===2?9:6;SFX.thud();floatText(e.pos.clone().add(new V3(0,3,0)),NAME[e.idx][0].toUpperCase()+NAME[e.idx].slice(1)+' голова — в Пробое! Ещё '+Math.round(e.bdur)+' секунд','#fff2b0');}
+        if(e.state==='broken'&&!e._b){e._b=true;e.bdur=F.phase===2?9:6;SFX.thud();floatText(e.pos.clone().add(new V3(0,3,0)),NAME[e.idx][0].toUpperCase()+NAME[e.idx].slice(1)+' голова — в Пробое! Ещё '+Math.round(e.bdur)+' с','#fff2b0');}
         if(e.embers>e.maxEmb+1)e.embers=e.maxEmb+1;
         if(e.state!=='broken'&&e._b){e._b=false;if(F.phase<3&&!G.cine){floatText(e.pos.clone().add(new V3(0,3,0)),'Проснулась!','#ff9a8a');bark({g:e.g},VO[e.idx],e.idx===0?'Ы-ы… кто разбудил, кто посмел?':e.idx===2?'Я голодная, голодная!':'Полетели, полетели!',1.6);}}
         if(e.sat>0){e.guardAll=()=>e.open<=0&&e.state!=='broken';e.darkGuard=()=>e.open<=0;e.guardText='сытая — погаси живой водой иль Совиный взор: слабое место';}else{e.guardAll=null;e.darkGuard=null;}};
@@ -66,13 +66,13 @@ function build4B(){
   function intro(){HEROES.forEach((h,i)=>{placeOnGround(h,-4.5+i*3,5,0);h.face=Math.PI;});spawnHeads();heads.forEach(e=>{e.state='idle';e.cd=99;});
     play({dur:20,fov:48,camK:2.4,shots:[shot(0,[0,6,10],[0,5,-18]),shot(5,[-7,3,-4],[-5.4,1.4,-9.6]),shot(9,[7,3,-4],[5.4,1.4,-9.6]),shot(13,[0,3.4,-3],[0,1.6,-10.8]),shot(16.6,[-5,2,4],[-7,0.8,3])],
       says:[[0.3,4.4,null,'<i>Горыныч на скале за Калиновым мостом сидит —</i><br><i>Три головы спорят, каждая своё твердит.</i>',true],[5,2.6,'gorL','Спать хочу… спать…'],[7.6,1.4,'gorL','Ы-ы-ы…'],[9,2.6,'gorR','А я — есть! Вот и обед пришёл сам!'],
-        [13,2.8,'gorM','Лететь надо! Кто там звенит, кто там?'],[16.6,3.4,'pelageya','Тут написано… у каждой головы свой запал. Узда — горячая.']],
+        [13,2.8,'gorM','Лететь надо! Кто там у моста топчется?'],[16.6,3.4,'pelageya','Тут написано… у каждой головы свой запал. Узда — горячая.']],
       tick:(t)=>{updNecks();},
       end:()=>{W.anims.length=0;F.phase=1;heads.forEach(e=>{e.cd=1.5;});HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-1,0);h.face=Math.PI;});W.clampR={x:C.x,z:C.z,r:R-0.7};W.wideShield=true;snapCams();
         banner('Фаза 1 · три запала','#ffe08a',2.8,'первый игрок — у левой головы (сонная, жёлтый кружок медленный), второй — у правой (голодная, красный зубец — кувырок) · средняя плюётся синим · оглушённая голова ждёт шесть секунд');}});}
   function ending(){const m=heads[1];F.phase=5;heads.forEach(e=>{e.harmless=true;e.cd=99;e.state='idle';});
     play({dur:16,fov:46,camK:2.4,shots:[shot(0,[0,4,-2],[0,2,-12]),shot(5.6,[-4,2.6,-6],[0,1.6,-11]),shot(10,[3,2.4,-5],[0,1.8,-11])],
-      says:[[0.3,4,null,'<i>Головы спорить перестали. Друг на друга глядят.</i>',true],[4.6,1.4,'gorL','…'],[5.6,1.6,'gorR','…'],[7,3.4,'gorM','<i>(фыркает дымом)</i> Ну, поймали. Так и быть.'],[10.4,3.6,'gorM','Уговор есть уговор — возить буду, не тужить.']],
+      says:[[0.3,4,null,'<i>Головы спорить перестали. Друг на друга глядят.</i>',true],[4.6,1.4,'gorL','…'],[5.6,1.6,'gorR','…'],[7,3.4,'gorM','<i>(фыркает дымом)</i> Ну, поймали. Так и быть.'],[10.4,3.6,'gorM','Поймали — служить буду: возить, куда скажете.']],
       events:[{t:0.3,fn:()=>{heads[0].face=0.8;heads[2].face=-0.8;}},{t:7,fn:()=>{for(let i=0;i<5;i++)later(i*0.15,()=>burst(m.pos.clone().add(new V3(rand(-0.3,0.3),2.2,0.6)),0x8a8a90,6,2));}}],
       tick:(t)=>{updNecks();heads[0].g.rotation.y=0.8*Math.min(1,t/2);heads[2].g.rotation.y=-0.8*Math.min(1,t/2);},
       end:()=>{W.anims.length=0;F.out=true;banner('Горыныч в узде!','#ffd76a',2.4,'звенья мира — ваши · на Лукоморье праздник-пир');later(2.2,finishLevel);}});}

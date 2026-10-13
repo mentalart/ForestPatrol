@@ -131,7 +131,7 @@ function build45(){
     SEC.forEach(S=>setSec(S,false));snapCams();banner('Держи мост!','#ffd76a',2.8,'Потап: стик наклоняй против качания · синяя капля — щит '+K(0,'guard')+' · красный зубец — упрись '+K(0,'roll'));
     tip(1,'Щель в мосту — мёртвой водой Йоши '+K(1,'skill')+' залей.<br>Пропасть — Пелагея перелетит, встанет на плиту: доска опустится. Сменяй '+K(1,'swap')+' скорей.',5);}
   function acrossDone(){if(F.across)return;F.across=true;F.stage='run';HD.drops.forEach(d=>{W.group.remove(d.m);W.group.remove(d.mk);});HD.drops.length=0;hud.visible=false;warnRing.visible=false;T.potap.body.rotation.z=0;
-    banner('Всё! Мы на том берегу — ура!','#ffd76a',2.4,'мост рушится — беги, Потап, беги!');say(null,'<i>Варя кричит: «Всё! Мы на том берегу!»</i>',2.6,true);SFX.brk();shakeAll(0.05,0.6);
+    banner('Трое — на том берегу!','#ffd76a',2.4,'мост рушится — беги, Потап, беги!');say(null,'<i>Варя кричит: «Всё! Мы на том берегу!»</i>',2.6,true);SFX.brk();shakeAll(0.05,0.6);
     // от удара две доски впереди треснули: Йоша срастит, Пелагея видит целые
     [SEC[2],SEC[4]].forEach(S=>setSec(S,false));SEC.filter(S=>S.span).forEach(S=>setSec(S,true));later(1.2,()=>sayP('Йоша — доски перед ним, скорей!',2.2));}
   function vineScene(){F.vine=true;F.stage='end';{const S5=SEC[5];S5.col.on=false;const hg=S5.hinge;anim(0.8,k=>{hg.rotation.x=k*1.2;hg.position.y=-k*k*2;});}const po=T.potap,yo=T.yosha,pe=T.pelageya,pr=T.proshka;placeOnGround(yo,-0.8,-53.2,0);yo.face=0;placeOnGround(pe,-2.4,-54,0);

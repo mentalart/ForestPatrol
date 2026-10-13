@@ -94,7 +94,7 @@
    const ring=(p,col,s)=>{const m=new THREE.Mesh(new THREE.TorusGeometry(3,0.28,8,36),k5Add(col,{opacity:0.9}));m.position.copy(p);k5Prop(m);K5L.noRay(m);k5fx(0.55,k=>{m.scale.setScalar((s||1)*(0.6+k*2.6));m.material.opacity=0.9*(1-k);},()=>k5Del(m));};
    const chainUp=(n,p)=>{const m0=mult();PRO.chain+=n||1;PRO.chainT=3.6;PRO.best=Math.max(PRO.best,PRO.chain);const m=mult();
      if(m>m0){ft((p||fp()).clone().add(new V3(0,4.4,0)),'цепочка ×'+m+'!','#ffe08a');if(AUD.ready())AUD.bell(880*Math.pow(1.122,m),{v:0.07,d:0.7});
-       if(!PRO.chainTold){PRO.chainTold=true;say('zven','Ловите подряд — цепочка растёт: рывок сильнее, очков больше!',2.8);}}};
+       if(!PRO.chainTold){PRO.chainTold=true;say('zven','Ловите подряд — цепочка растёт, Горыныч летит быстрее!',2.8);}}};
    const heatUp=v=>{if(PRO.hyper>0)return;PRO.heat=Math.min(1,PRO.heat+v);if(PRO.heat>=1&&hyperOk())hyperOn();};
    const hyperOn=()=>{PRO.hyper=6.5;PRO.hypers++;PRO.heat=1;banner('ГОРЫНЫЧ В ЖАРУ!','#ffb040',2.4,'всё нипочём · буквы летят сами');if(SFX.whoosh)SFX.whoosh();if(SFX.ok)SFX.ok();shakeAll(0.14,0.6);
      const p=fp();K5L.gold(p,30);ring(p,0xff9a30,2.2);kick(14);say('gorM',['Пышу огнём — не удержать!','Ух, разгорелся! Жарко!','Огонь в груди — держитесь!'][PRO.hypers%3],1.8);};
@@ -210,7 +210,7 @@
      g.add(new THREE.Mesh(new THREE.SphereGeometry(2.6,12,10),k5Add(B.col,{opacity:0.2})));
      g.position.set(PX+u,y,z);k5Prop(g);K5L.noRay(g);bonuses.push({g,c,kind,u,y,z,ph:rand(0,6),t:0,done:false});};
    const bonusSpawn=()=>{const kind=['magnet','ward','feather'][PRO.bi++%3],z=GP.z-clamp(GV.sp*3.4,52,90),q=safePos(rand(-9,9),rand(16,25),z);bonusMake(kind,q[0],q[1],z);
-     if(!PRO.bonSeen){PRO.bonSeen=true;later(1.2,()=>{if(PRO.on&&!G.cine)say('zven','Бонусы на пути: магнит, оберег, жар-перо — подберите!',2.6);});}};
+     if(!PRO.bonSeen){PRO.bonSeen=true;later(1.2,()=>{if(PRO.on&&!G.cine)say('zven','Подарки в пути: магнит, оберег, жар-перо — ловите!',2.6);});}};
    const bonusGot=b=>{const p=b.g.position.clone(),B=BON[b.kind];PRO.bonus++;K5L.gold(p,16);ring(p,B.col,1.2);if(AUD.ready())AUD.bell(988,{v:0.07,d:0.7});scoreAdd(100*mult());chainUp(1,p);
      const up=new V3(0,3,0);
      if(b.kind==='magnet'){PRO.magnet=9;ft(p.clone().add(up),'Магнит! Буквы сами летят','#ff9a9a');}
@@ -383,7 +383,7 @@
    /* ---------- полоса стадии ---------- */
    E.note=n=>n===0?(ES.note||''):'';
    E.stage[0]={targets:()=>[],end:()=>{proEnd();}};
-   E.PAUSE[0]='<b>'+K5E.NAMES[0]+'</b><br><i>'+K5L.LINES[0]+'</i><br>Погоня на Горыныче за тучей Кощея: через леса, ущелье, море и облака — к «раз-два-три».<br>Буквы и обручи дают рывок; пойманные подряд — цепочка ×1…×5 и жар. Шкала жара полна — Горыныч в жару: сквозь всё. Бонусы: магнит, оберег, жар-перо; «впритирку» — награда. Удар сбивает цепочку и часть жара.';
+   E.PAUSE[0]='<b>'+K5E.NAMES[0]+'</b><br><i>'+K5L.LINES[0]+'</i><br>Погоня на Горыныче за тучей Кощея: через леса, ущелье, море и облака — к «раз-два-три».<br>Буквы и обручи дают рывок; пойманные подряд — цепочка ×1…×5 и жар. Жар полон — Горыныч летит сквозь всё. Подарки в пути: магнит, оберег, жар-перо; пролететь «впритирку» — тоже награда. Удар сбивает цепочку и часть жара.';
    /* ---------- обучающие катсцены пролога ---------- */
    // Горыныч летит сам, по сценарию (автопилот по времени урока); реквизит — настоящие обручи, ели, скалы, вороны, шары и буквы-стены, но зачёта нет.
    // pro — после вступления (головы, руль, разгон, буквы, обручи, ели); pro_gorge / pro_sea / pro_sky / pro_write / pro_three — в начале отрезка.

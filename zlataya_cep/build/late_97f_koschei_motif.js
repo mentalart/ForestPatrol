@@ -21,5 +21,5 @@ FIN.motifK=mode=>{try{const M=FIN.music;if(!M||!M.inst||!AC||AC.state!=='running
   if(E.cine&&E.cine.intro){const _in=E.cine.intro;E.cine.intro=function(){later(0.6,()=>FIN.motifK('minor'));return _in.apply(this,arguments);};}
   // 5-Б1: Пелагея успела вырвать последнюю страницу — Кощей вспоминает о ней в начале боя
   if(E.go){const _go=E.go;E.go=function(n){const r=_go.apply(this,arguments);if(n===1&&G.flags.b1page&&!W.flags.b1said){W.flags.b1said=true;
-      later(3,()=>say('koschei','<i>(листает)</i> Последней страницы нет… Ты спрятала, птица?',3.4));later(6.8,()=>bark(HERO.pelageya,'pelageya','Тут написано… не скажу.',2.2));}return r;};}};}
+      later(3,()=>say('koschei','<i>(листает)</i> Последней страницы нет… Ты спрятала, птица?',3.4));later(6.8,()=>bark(HERO.pelageya,'pelageya','Не скажу.',2.2));}return r;};}};}
 {const _b=buildEpi;buildEpi=function(){_b();later(1.5,()=>FIN.motifK('major'));};}

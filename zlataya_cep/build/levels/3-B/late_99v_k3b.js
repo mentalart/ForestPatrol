@@ -487,7 +487,7 @@ build3B=function(){
     bb.style.display='block';W.gateOpen&&W.gateOpen();HEROES.forEach((h,i)=>{placeOnGround(h,-3.6+i*2.4,C.z+R-3,0);h.face=Math.PI;h.following=false;});if(!sol)spawnSol();sol.state='idle';const O=OAKS[3];
     placeSol(perchOf(O,true));SL.set(sol.k3,'idle','cocky');const top=perchOf(O,true);
     play2({dur:14,fov:50,camK:2.6,shots:[shot(0,[0,7,4],[0,8,-30]),shot(4.4,[5.5,7.6,-12.5],[0,9.2,-26.5]),shot(7.6,[0,3.4,-6],[0,6,-24],[0,2.6,-4],[0,5.4,-24],3),shot(11.2,[7,9,2],[0,2,-16])],
-      says:[[0.3,4,null,'<i>Соловей-Разбойник на семи дубах сидит, свитых гнездом,</i><br><i>И свистит так, что облака рвутся кругом.</i>',true],[4.6,2.6,'solovei','Фью-у-ить! Кто там звенит, кто спать не даёт?'],[7.6,2.6,'solovei','А ну — сдуло! Прочь, народ!'],[10.6,2.8,'zven','На табличку над ним глядите — там написано, что делать!']],
+      says:[[0.3,4,null,'<i>Соловей-Разбойник на семи дубах сидит, свитых гнездом,</i><br><i>И свистит так, что облака рвутся кругом.</i>',true],[4.6,2.6,'solovei','Фью-у-ить! Кто тут гнездо моё тревожит?'],[7.6,2.6,'solovei','А ну — сдуло! Прочь, народ!'],[10.6,2.8,'zven','На табличку над ним глядите — там написано, что делать!']],
       events:[{t:0.2,fn:()=>{SL.set(sol.k3,'sing','cocky');}},{t:4.4,fn:()=>{SL.set(sol.k3,'idle','cocky');sol.k3.st.look[0]=0.3;}},
         {t:6.2,fn:()=>{SL.set(sol.k3,'hop');}},{t:6.6,fn:()=>{const from=sol.pos.clone(),to=at(O.a,7.5);SL.set(sol.k3,'glide');FX.anim(1.0,k=>{sol.pos.lerpVectors(from,to,smooth(k));sol.pos.y=lerp(from.y,0,smooth(k))+Math.sin(k*Math.PI)*1.5;sol.face=faceTo(from,to);},()=>{sol.face=faceTo(sol.pos,C);SL.set(sol.k3,'roar','angry');SFX.thud();shakeAll(0.05,0.4);});}},
         {t:7.8,fn:()=>{SL.set(sol.k3,'whistle','angry');wave('big',at(O.a,7.5),{skip:HEROES});FX.cl.tear(1,2.2);OAKS.forEach((q,i)=>{q.tb=0.18;later(1.6,()=>{q.tb=0;});});FX.windSet('blow',1,at(O.a,7.5));later(2,()=>FX.windSet(null,0));HEROES.forEach(h=>{h.vel.z+=3;});}},
@@ -519,13 +519,13 @@ build3B=function(){
     FX.feathers(sol.pos.clone().add(new V3(0,1,0)),24);FX.down(sol.pos.clone().add(new V3(0,1,0)),30);later(1.4,ending);}
   function ending(){const e=sol,pe=T.pelageya;bb.style.display='none';FIN.music.play(null);F.phase=5;FX.windSet(null,0);clearWaves();acorns.forEach(q=>{q.g.visible=false;});aim.visible=false;
     play2({dur:13,fov:48,camK:2.4,shots:[shot(0,[e.pos.x+3.4,2.4,e.pos.z+4.6],[e.pos.x,1.6,e.pos.z]),shot(6.6,[pe.pos.x+2,1.6,pe.pos.z+2],[e.pos.x,1.6,e.pos.z])],
-      says:[[0.3,3,null,'<i>Соловей садится и горло трёт.</i>',true],[3.4,3,'solovei','Я не хотел свистеть, не хотел…'],[6.6,3,'solovei','Я петь разучился — вот беда.'],[9.8,3,null,'<i>Пелагея к нему подходит и тихо запевает</i><br><i>Ту самую песню, что Сирин с Алконостом знают.</i>',true]],
+      says:[[0.3,3,null,'<i>Соловей садится и горло трёт.</i>',true],[3.4,3,'solovei','Я не хотел свистеть, не хотел…'],[6.6,3,'solovei','Я петь разучился. Только свищу.'],[9.8,3,null,'<i>Пелагея к нему подходит и тихо запевает</i><br><i>Ту самую песню, что Сирин с Алконостом знают.</i>',true]],
       events:[{t:0,fn:()=>{e.harmless=true;e.state='idle';e.dazeT=0;e.spin.visible=false;e.setScale(1.4);SL.set(e.k3,'sit','sad');e.face=faceTo(e.pos,C);}},
         {t:9.8,fn:()=>{if(players[1].act!==0)doSwap(1);placeOnGround(pe,lerp(e.pos.x,C.x,0.3),lerp(e.pos.z,C.z,0.3)+1.2,0);pe.face=faceTo(pe.pos,e.pos);}}],
       end:()=>{startSong();}});}
   // песня с Соловьём: Пелагея прыгает в долю — Соловей подхватывает. Провалить нельзя
   const SG={on:false,t:0,k:-1,B:60/84,hits:0,judged:{}};W.song=null;
-  function startSong(){SG.on=true;SG.t=-4*SG.B;SG.k=-5;SG.hits=0;SG.judged={};W.song={t:SG.t,B:SG.B,show:true,state:'play',pulse:0};banner('Подпой, Пелагея!','#d7a6ec',2.4,'прыгай '+K(1,'jump')+' в такт — Соловей подпоёт, подхватит');later(0.3,()=>say('pelageya','Песня Сирин и Алконоста — «Во поле берёза»!',2.2,true));   // сквозной мотив мира: тот же напев, что в 3-3
+  function startSong(){SG.on=true;SG.t=-4*SG.B;SG.k=-5;SG.hits=0;SG.judged={};W.song={t:SG.t,B:SG.B,show:true,state:'play',pulse:0};banner('Подпой, Пелагея!','#d7a6ec',2.4,'прыгай '+K(1,'jump')+' в такт — Соловей подпоёт, подхватит');later(0.3,()=>say('pelageya','Та самая песня — «Во поле берёза»!',2.2,true));   // сквозной мотив мира: тот же напев, что в 3-3
     W.custom=(pi,h,dt,c)=>{for(const q of players[pi].heroes){q.vel.x=damp(q.vel.x,0,10,dt);q.vel.z=damp(q.vel.z,0,10,dt);}
       if(pi===1&&(tap(1,'jump')||SOLO()&&tap(G.soloPi,'jump'))&&h.grounded&&SG.on){h.vel.y=6.4;h.grounded=false;SFX.jump();const k=Math.round(SG.t/SG.B);if(k>=0&&k<8&&!SG.judged[k]){const d=SG.t-k*SG.B;const ok=Math.abs(d)<=(LADWIN[players[1].path]||0.1)+0.05+(W.ladBonus||0);SG.judged[k]=1;
         if(ok){SG.hits++;const m=BER[0][k][0];if(m)tone(mf(m+12),0.4,'sine',0.2);floatText(h.pos.clone().add(new V3(0,h.d.height+0.6,0)),'В долю!','#e7c3ff');if(SG.hits>=3){const mm=BER[0][k][0];if(mm)tone(mf(mm),0.5,'triangle',0.16);}}

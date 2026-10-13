@@ -392,7 +392,7 @@ function build12(){
   prompt(1,'skill',()=>headOf(T.yosha),()=>T.yosha.active&&lilyNear(T.yosha),'полей!');prompt(1,'swap',()=>headOf(T.pelageya),()=>T.pelageya.active&&lilyNear(T.pelageya));
   /* ---------- задачи ---------- */
   const lane=pi=>[
-    O(()=>'Болото! Простая нить за пять секунд тонет.<br>Брось клубок '+K(pi,'item')+' в колышек с ленточкой — струна не утонет, пока не смотаешь, не тронет.',()=>active(pi).pos.z<-15.4,()=>[S1[pi].g],()=>({kind:active(pi).kind,action:'walk',from:new V3(lanes[pi],0,-5.8),to:new V3(lanes[pi]+0.4,0.75,-14)})),
+    O(()=>'Болото! Простая нить за пять секунд тонет.<br>Брось клубок '+K(pi,'item')+' в колышек с ленточкой — струна не утонет, пока её не смотаешь.',()=>active(pi).pos.z<-15.4,()=>[S1[pi].g],()=>({kind:active(pi).kind,action:'walk',from:new V3(lanes[pi],0,-5.8),to:new V3(lanes[pi]+0.4,0.75,-14)})),
     O(()=>'Следующий колышек — над трясиной. Брось клубок '+K(pi,'item')+' — и по струне иди.<br>Пустую струну Паутинник грызёт — стой на ней иль прогони.',()=>active(pi).pos.z<-25.6,()=>[S2[pi].g])];
   const branch=pi=>O(()=>'По пенькам на высокую ветку взберись,<br>Брось клубок '+K(pi,'item')+' к колышку — и по струне вниз катись.',()=>active(pi).pos.z<-52.6,()=>[branchMark,S3.g],()=>({kind:active(pi).kind,action:'walk',from:new V3(-5.5,0,-34),to:new V3(-5.5,3,-40)}));
   const fight=pi=>O(()=>'Пень-ворчун в коре — спереди не пробить.<br>Красный зубец <i class="sg r"></i> — кувырком '+K(pi,'roll')+' вбок, и сбоку бить!',()=>arena.cleared,()=>arena.list.map(e=>e.g));
@@ -415,10 +415,10 @@ function build12(){
       ()=>RC.won,()=>[raceMat,flag,finStake.g])];
   W.objectives[0]=lane(0).concat([branch(0),
     O(()=>'Дальше — трясина глубока. На Потапа смени,<br>Встань на камень с медвежьей лапой, брось клубок '+K(0,'item')+' — толстую струну натяни.',()=>W.threads.some(t=>t.thick&&t.string)||active(0).pos.z<-74,()=>[stone.g],()=>({kind:'potap',action:'walk',from:new V3(2,0,-55),to:new V3(0,0.22,-58.6)})),
-    O(()=>'Потап, стой, не оборачивайся — пусть друзья пройдут!<br>Потом Прошку возьми '+K(0,'swap')+', перейди и Потапа кликни '+K(0,'call')+' — тут как тут.',()=>players[0].heroes.every(h=>h.pos.z<-74),()=>[ST.g])].concat(NEW(0),[
+    O(()=>'Потап, стой и не оборачивайся — пусть друзья пройдут!<br>Потом смени на Прошку '+K(0,'swap')+', перейди и позови Потапа '+K(0,'call')+'.',()=>players[0].heroes.every(h=>h.pos.z<-74),()=>[ST.g])].concat(NEW(0),[
     fight(0),O('Бери звено — и дальше, за Звенышком, вперёд!',()=>false,()=>[endLink.g])]));
   W.objectives[1]=lane(1).concat([branch(1),
-    O('Потап толстую струну натянет —<br>Пелагею и Йошу по ней переведи, не отстанет.',()=>players[1].heroes.every(h=>h.pos.z<-74),()=>[ST.g,stone.g])].concat(NEW(1),[
+    O('Потап натянет толстую струну —<br>переведи по ней Пелагею и Йошу.',()=>players[1].heroes.every(h=>h.pos.z<-74),()=>[ST.g,stone.g])].concat(NEW(1),[
     fight(1),O('Бери звено — и дальше, за Звенышком, вперёд!',()=>false,()=>[endLink.g])]));
   W.tipZones.push({cond:(pi,h)=>W.enemies.some(e=>e.kind==='tat'&&e.alive&&e.chew&&hd(e.pos,h.pos)<14),text:pi=>'Паутинник грызёт нить! Встань на струну — и он удерёт.<br>Или бей его, пока грызёт.'},
     {cond:(pi,h)=>h.pos.y<-0.3,text:pi=>'Плюх! Ряска мелкая — выберешься на кочку враз.'},

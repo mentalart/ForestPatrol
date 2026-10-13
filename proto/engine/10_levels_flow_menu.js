@@ -144,7 +144,7 @@ function menuHTML(mode){const row=(pi,a,t,later)=>'<tr'+(later?' class="later"':
       '<br><span style="opacity:.8">Водяного убаюкали колокола Китежа. Йоша научился просить, Прошка молча отдал Пелагее звено, а Пелагея впервые рассказала Сказ сама — шёпотом. Цепь на дубе стала длиннее. На карте-рушнике открылся Мир 3 «Небесное царство».</span></div><div class="go">Enter или Start — вернуться на Лукоморье</div>';}
   if(mode==='end'&&G.flags.voiceDone){const s=G.stats,m=Math.floor(G.playTime/60),sec=Math.floor(G.playTime%60),nuts=W1.reduce((a,id)=>a+(G.nutsGot[id]||0),0),t=G.flags.skaz;
     return top+'<h2 style="color:#ffc93c">Мир 1 «Дремучий лес» пройден!</h2><div class="res">Звенья мира: '+worldLinks()+' / 19 · Орешки: '+nuts+' / 23 · Время: '+m+' мин '+sec+' с'+(s.skips?' · пропущено роликов: '+s.skips:'')+
-      (t?'<br>Сказ «Леший-проводник»: <i>'+skazFull(t)+'</i>':'')+
+      (t?'<br>Сказ «Лесная тропинка»: <i>'+skazFull(t)+'</i>':'')+
       '<br>Щитов: '+s.shields+' · Отбивов: '+s.parries+' · «Одним махом»: '+s.mahs+' · Добивающих махов: '+s.finishers+' · Богатырских махов: '+s.bogatyr+' · Нитей склеено: '+s.glue+
       '<br>Смен героя: '+s.swaps+' · Падений (без урона): '+s.falls+' · Подшили друга: '+s.revives+' · Звенышко подтянуло оставленных: '+s.carries+
       '<br><span style="opacity:.8">Кощей унёс голос Кота. Кот теперь мяукает, а следующие Сказы рассказывает Пелагея. На карте-рушнике открылся Мир 2 «Подводный Китеж».</span></div><div class="go">Enter или Start — вернуться на Лукоморье</div>';}

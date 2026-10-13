@@ -155,7 +155,7 @@ function build14(){
   const T=HERO;
   function hatScene(){F.stage='hats';const pos={potap:T.potap,pelageya:T.pelageya,yosha:T.yosha};
     play({dur:12,fov:48,shots:[shot(0,[3.2,2.4,2.8],[0,0.8,-1.5]),shot(5.2,[-2.6,1.8,1.6],[0,0.9,-1.2]),shot(8.4,[1.6,1.5,0.6],[0,1.0,-0.6])],
-      says:[[0.5,3.6,null,'<i>У входа в лес на пне — четыре шапки из мха.</i><br><i>Пелагея, Йоша, Потап выворачивают — вот и вся недолга.</i>',true],
+      says:[[0.5,3.6,null,'<i>На пне — четыре шапки из мха.</i><br><i>Трое надевают их наизнанку.</i>',true],
         [8.6,3.2,'proshka','<i>(берёт свою шапку двумя пальцами и швыряет обратно)</i> Лес — это деревья. Деревья не ходят.']],
       events:[{t:0,fn:()=>{const P=[[1.4,0.2],[-1.3,0.3],[0.5,0.9]];['potap','pelageya','yosha'].forEach((k,i)=>{placeOnGround(T[k],P[i][0],P[i][1]-1.5+1.6,0);T[k].face=Math.atan2(-P[i][0],-1.6-P[i][1]);});
           placeOnGround(T.proshka,0.2,0.4,0);T.proshka.face=Math.PI;}},
@@ -203,7 +203,7 @@ function build14(){
     anim(1.4,k=>{ring.forEach(f=>{const r=lerp(RR,4.4,smooth(k));f.g.position.set(RC.x+Math.cos(f.a)*r,0,RC.z+Math.sin(f.a)*r);f.g.scale.setScalar(0.64*(1-k*0.3));});});
     later(0.3,()=>{ring.forEach(f=>{f.col.on=false;});hedge.forEach(c=>{c.on=false;});tun.on=false;anim(1.2,k=>{hedgeFirs.forEach(f=>{f.g.position.y=-k*4.4;});});later(1.3,()=>hedgeFirs.forEach(f=>{f.g.visible=false;}));});
     later(0.6,()=>{pe.inRing=false;link2.base=1.1;exitCol.on=false;SFX.gate();anim(1.4,k=>{exitD.forEach((f,i)=>{f.g.position.x=f.x+(f.x<0?-1:1)*k*3.5;f.col.on=false;f.g.position.y=-k*3.2;});});
-      banner('Кольцо раскрылось!','#ffd76a',2.2,'Пелагея на воле — экран снова вместе');bark(pe,'pelageya','Я вас видела. Всё время, всякий миг.',2.4);});}
+      banner('Кольцо раскрылось!','#ffd76a',2.2,'Пелагея на воле — экран снова вместе');bark(pe,'pelageya','Я вас видела. Всё время.',2.4);});}
   function spawnFight(){arena.started=true;SFX.gate();
     arena.list=hide.map(([x,z],i)=>{const e=makeFoe('leshonok',x,z,{leash:9,signals:i%3===2?['yellow','red']:i%2?['red']:['yellow']});e.state='hide';e.g.visible=false;e.g.position.y=e.baseY;e.hideUntil=G.time+0.4+i*0.9;return e;});
     banner('Лешачата!','#b8e070',2,'из-за ёлок прыгают: жёлтый кружок — щит, красный зубец — кувырком');}
@@ -312,7 +312,7 @@ function build14(){
   const gaze=pi=>O('Ёлки ходят, когда на них не глядят!<br>Светлячок светит, куда герой смотрит, — в луче ёлки стоят.',()=>F.stage==='kidnap'||F.stage==='rescue',()=>wB.map(m=>m.g));
   const guard=pi=>O(()=>'Поставь героя к тропе лицом и смени '+K(pi,'swap')+' — светить он будет, пока светлячок горит.<br>Ёлку-ворота клубком '+K(pi,'item')+' у колышка привяжи — пусть стоит.',
     ()=>active(pi).pos.z<-73,()=>[gateL.g,gateR.g],()=>({kind:active(pi).kind,action:'walk',from:new V3(0,0,-46.5),to:new V3(0,0,-60)}));
-  const glade=pi=>O(pi?()=>'Поляна Лешего — всё тут ходит. Совиный взор '+K(1,'skill')+' — четыре секунды тропа видна.<br>Брось клубок '+K(1,'item')+' вдоль серебряной тропы — вот и дорога одна.':()=>'Поляна Лешего — всё тут ходит. Пелагея серебряную тропу покажет.<br>Брось клубок '+K(0,'item')+' вдоль неё: нить Леший не сдвинет — ни на пядь, ни даже.',
+  const glade=pi=>O(pi?()=>'Поляна Лешего — тут всё ходит. Совиный взор '+K(1,'skill')+' — четыре секунды тропа видна.<br>Брось клубок '+K(1,'item')+' вдоль серебряной тропы — нить Леший не сдвинет.':()=>'Поляна Лешего — тут всё ходит. Пелагея покажет серебряную тропу.<br>Брось клубок '+K(0,'item')+' вдоль неё: нить Леший не сдвинет.',
     ()=>active(pi).pos.z<-98,()=>[svStart],()=>({kind:active(pi).kind,action:'walk',from:new V3(SV.sx,0,SV.sz),to:new V3(SV.ex,0,SV.ez)}));
   const lanes=pi=>O(()=>'Две тропки за изгородью. Свою тропку не удержишь — ёлки держит взгляд с другой.<br>'+(G.solo?'Оставь героя лицом к другой тропке '+K(pi,'swap')+' — пусть держит, а ты беги.':'Разойдитесь и глядите друг на друга: один держит — другой бежит.'),
     ()=>active(pi).pos.z<LN.z1-0.5,()=>laneW.filter(L=>Math.abs(L.m.pos.z-active(pi).pos.z)<7).map(L=>L.m.g));
@@ -322,19 +322,19 @@ function build14(){
     ()=>!!F.krugDone,()=>KG.lit>0?[KG.lamp[KG.tru].g]:[KG.ring]);
   const fight=pi=>O(()=>'Лешачата! Жёлтый кружок <i class="sg y"></i> — щитом '+K(pi,'guard')+' закройся,<br>Красный зубец <i class="sg r"></i> — кувыркнись '+K(pi,'roll')+', не бойся!',()=>arena.cleared,()=>arena.list.filter(e=>e.alive).map(e=>e.g));
   W.objectives[0]=[O('Шапки из мха на пне лежат…',()=>F.stage!=='hats',()=>[stump]),gaze(0),O('Пелагею увели…',()=>F.stage==='rescue',()=>[]),
-    O(()=>'Пелагея в кольце из ёлок — её луч держит ёлки на твоей тропе.<br>Веди Прошку к изгороди. А Йоша под корнями пролезет — ёлку-замок полить на себе.',()=>F.watered,()=>[lockFir.g]),
-    O(()=>'Сбей три шишки-замка ('+locks.filter(L=>L.hit).length+' / 3): встань Прошкой на след светящийся<br>И из рогатки стреляй '+K(0,'skill')+' — не промахнёшься, не смутишься.',()=>F.ringOpen,()=>locks.filter(L=>!L.hit).map(L=>L.foot)),
+    O(()=>'Пелагея в кольце из ёлок — её луч держит ёлки на твоей тропе.<br>Веди Прошку к изгороди. А Йоша пролезет под корнями и польёт ёлку-замок.',()=>F.watered,()=>[lockFir.g]),
+    O(()=>'Сбей три шишки-замка ('+locks.filter(L=>L.hit).length+' / 3): встань Прошкой на светящийся след<br>и стреляй из рогатки '+K(0,'skill')+'.',()=>F.ringOpen,()=>locks.filter(L=>!L.hit).map(L=>L.foot)),
     guard(0),glade(0),lanes(0),horoO(0),krugO(0),fight(0),O('Прочь из леса — за Звенышком!',()=>false,()=>[barrier.g])];
   W.objectives[1]=[O('Шапки из мха на пне лежат…',()=>F.stage!=='hats',()=>[stump]),gaze(1),O('Пелагею увели…',()=>F.stage==='rescue',()=>[]),
-    O(()=>'Йоша, пролезь под корнями к кольцу — лаз этот лишь для тебя.<br>Ёлку-замок живой водой '+K(1,'skill')+' полей, любя.',()=>F.watered,()=>[lockFir.g],()=>({kind:'yosha',action:'walk',from:new V3(1.6,0,-33),to:new V3(4.9,0,-33)})),
-    O(()=>'Шишки-замки проснулись ('+locks.filter(L=>L.hit).length+' / 3) — Прошка сбивает рогаткой.<br>Пелагея, на тропу гляди — держи ёлки украдкой!',()=>F.ringOpen,()=>[lockMark]),
+    O(()=>'Йоша, пролезь под корнями к кольцу — этот лаз только для тебя.<br>Полей ёлку-замок живой водой '+K(1,'skill')+'.',()=>F.watered,()=>[lockFir.g],()=>({kind:'yosha',action:'walk',from:new V3(1.6,0,-33),to:new V3(4.9,0,-33)})),
+    O(()=>'Шишки-замки проснулись ('+locks.filter(L=>L.hit).length+' / 3) — Прошка сбивает их рогаткой.<br>Пелагея, смотри на тропу — держи ёлки!',()=>F.ringOpen,()=>[lockMark]),
     guard(1),glade(1),lanes(1),horoO(1),krugO(1),fight(1),O('Прочь из леса — за Звенышком!',()=>false,()=>[barrier.g])];
   W.tipZones.push({cond:(pi,h)=>h.inRing,text:pi=>'Пелагея в кольце из ёлок. Гляди сквозь щель на тропу — луч твой ёлки держит.<br>Потом на Йошу смени '+K(pi,'swap')+' — он дело довершит.'},
-    {cond:(pi,h)=>W.gaze&&!other(pi).inRing&&other(pi).firefly>0&&other(pi).firefly<5,text:pi=>'У оставленного героя светлячок гаснет — скоро ёлки пойдут.<br>Вернись к нему иль привяжи ёлки клубком — вот и всё тут.'});
+    {cond:(pi,h)=>W.gaze&&!other(pi).inRing&&other(pi).firefly>0&&other(pi).firefly<5,text:pi=>'У оставленного героя светлячок гаснет — скоро ёлки пойдут.<br>Вернись к нему или привяжи ёлку клубком.'});
   W.onOwl=()=>{if(hd(active(1).pos,C)<14)F.seenSilver=true;};
   W.fadeTargets=()=>T.pelageya.inRing?[T.pelageya]:[];
   W.spawns=[[new V3(-2.5,0,5),new V3(-4.5,0,6)],[new V3(2.5,0,5),new V3(4.5,0,6)]];W.startAct=[0,0];
-  W.pauseLine='Леший водит: ёлки ходят, пока не глядишь.<br>Луч светлячка их держит — хоть у оставленного, глядишь.<br>А Пелагея Совиный взор открыла — видишь?<br>Хоровод держи взглядом, а заблудишься — аукни: настоящий выход откликнется.';
+  W.pauseLine='Леший водит: ёлки ходят, пока на них не смотрят.<br>Луч светлячка держит их на месте — даже у оставленного героя.<br>У Пелагеи теперь Совиный взор: он показывает тропу.<br>Хоровод держи взглядом, а заблудишься — аукни: настоящий выход откликнется.';
   W.onStart=()=>hatScene();
   // Совиный взор открывается, как только Пелагея свободна
   W.updates.push(()=>{if(F.ringOpen&&!W.abil.owl){W.abil.owl=true;later(2.8,()=>{banner('Совиный взор!','#e7c3ff',2.6,'кнопка L (на джойстике RT): четыре секунды видно спрятанное — и тропу, и тайники');});}});
