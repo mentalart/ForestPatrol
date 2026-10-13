@@ -83,7 +83,7 @@
 | `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 18 | tfin_art tfin_audiolevel tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kid… |
 | `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_10b_w1_mood, late_40b_music_w1, late_73c_companion_11, late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 38 | t11 t11long tfin_art tfin_botlevel tfin_cam tfin_ch1 tfin_companion tfin_companion_11 tfi… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_76_kids_fight, late_79f_fog_hint12 | 5 | tbogauto tfin_bossfxcap tfin_ch1 tfin_companion_12 tsospot |
-| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 4 | tfin_companion_13 tfin_k13teach tfin_kids1 tfin_kids2 |
+| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 5 | tfin_companion_13 tfin_k13strings tfin_k13teach tfin_kids1 tfin_kids2 |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99b_kidnap14, late_99zf_pea14, late_99zg_auka14 | 7 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14long tfin_kidnap14 tfin_kids2 thub9e |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1 | 5 | tfin_ch1 tfin_companion_15 tfin_k15_boss tfin_k15_rooms thub2 |
 | `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zd_k1b_help | 6 | tfin_companion_1b tfin_companion_lesson tfin_k1b3solo tfin_post tfin_skaz tsospot |
@@ -136,7 +136,7 @@
 | `levels/w1_common.js` | 204 | ЖИТЕЛИ МИРА 1 И РЕКВИЗИТ (примитивы) · Живое болото мира 1 (1-1 и 1-2): чудо болотное, камыш и кув… |
 | `levels/1-1.js` | 467 | МИР 1 · ДРЕМУЧИЙ ЛЕС · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ» |
 | `levels/1-2.js` | 451 | 1-2 «КИКИМОРИНО БОЛОТО» |
-| `levels/1-3.js` | 554 | 1-3 «КОЛОБОК» — гусельный уровень |
+| `levels/1-3.js` | 669 | 1-3 «КОЛОБОК» — гусельный уровень |
 | `levels/1-4.js` | 342 | 1-4 «ЛЕШИЙ ВОДИТ» |
 | `levels/1-5.js` | 571 | 1-5 «КИКИМОРИНА ПРЯЛКА» |
 | `levels/1-B.js` | 158 | 1-Б «ЛЕШИЙ-ПУТАНИК» — босс мира 1 |
@@ -359,7 +359,7 @@
 | `levels/w2/late_99k_kitezh_foes.js` | 2-1, 2-5 | РЕЛИЗ final06 · МИР 2: ЖЕМЧУЖНИЦА И ЩУКИ, ЧТО ПЛАВАЮТ |
 | `levels/w2/late_99l_kitezh_magic_water.js` | 2-1, 2-2, 2-3, 2-4, 2-5, 2-B | РЕЛИЗ final06 · МИР 2: ВОДА ГУСЛЕЙ — СКАЗОЧНАЯ, ПЕРЕЛИВЧАТАЯ |
 | `levels/2-1/late_99m_k21_hermit.js` | 2-1 | РЕЛИЗ final06 · 2-1: МИНИ-БОСС «РАК-ОТШЕЛЬНИК» |
-| `levels/1-1/late_99n_yaga11.js` | 1-1 | РЕЛИЗ final06 · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ»: РОЛИК «ЯГА СТАВИТ ЗАДАЧУ» — НОВАЯ ПОСТАНОВКА |
+| `levels/1-1/late_99n_yaga11.js` | 1-1 | РЕЛИЗ final06 · 1-1 «ИЗБУШКА, ПОВЕРНИСЬ»: РОЛИКИ С ЯГОЙ — «ЯГА СТАВИТ ЗАДАЧУ» И «КЛУБКИ В ДАР» |
 | `levels/3-2/late_99o_sky32.js` | 3-2 | РЕЛИЗ final06 · 3-2 «ОБЛАЧНЫЕ ПАСТБИЩА» — ВТРОЕ ДЛИННЕЕ: ПУШОК, ВЕТЕР-ВЕТРИЛО, РАДУГА-ДУГА, ОВЧАРНЯ, ГРОМОВОЙ БАРАН |
 | `levels/3-1/late_99p_sky31.js` | 3-1 | РЕЛИЗ final06 · 3-1 «САД МОЛОДИЛЬНЫХ ЯБЛОК» — ВТРОЕ БОЛЬШЕ: КТО ЯБЛОЧКО ОТКУСИТ — ТОТ ПОМОЛОДЕЕТ |
 | `levels/3-1/late_99pa_sky31_art.js` | — | РЕЛИЗ final06 · 3-1 «САД МОЛОДИЛЬНЫХ ЯБЛОК»: ЖАР-ПТИЦА И ГНЕЗДО |
@@ -455,6 +455,7 @@
 | `levels/luko/rep_30_luko.py` | Лукоморье: после «Все уровни открыты» (Ctrl+Alt+], флаг devAll) Кот не встречает «Садитесь — начну рассказ!» |
 | `levels/luko/rep_30_luko.py` | Лукоморье, первый приход: задача и строка паузы — под новый ролик прибытия (late_96d_luko_arrive.js) |
 | `levels/p/rep_30_prolog.py` | Пролог «Колыбельная»: сценка с самокатом — Прошка несёт его Тишке, спотыкается о шишку, самокат разваливается, все смею… |
+| `levels/1-1/rep_31_yaga11.py` | ролик «Клубки в дар» (после уборки двора) — постановка в late_99n_yaga11.js (FIN.yaga11gift); без модуля — прежний |
 
 ## Документы (`zlataya_cep/docs/`)
 
@@ -507,11 +508,11 @@
 | `41_art_research_prompts.md` | Арт-ресёрч для 3D на Unreal Engine 5.8: 5 стилей × 159 сущностей = 795 промтов для Qwen Image |
 | `42_priskazka_intro.md` | «Присказка» — вступительный ролик игры (сценарий) |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 171 файлов |
+| `changes/` | 173 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 8 файлов |
 
-Ботов всего: 309 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 310 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

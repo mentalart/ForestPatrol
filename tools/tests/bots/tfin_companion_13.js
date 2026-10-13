@@ -18,11 +18,11 @@ window.hbot=function(n){const S=ZC.W.song;const pi=0,J='Space',G='KeyG',R='Shift
    if(want!==S.lane[pi]&&i%6===0)ZC.press(want<S.lane[pi]?L:Rt);
    const lg=S.obst.find(x=>x.pi===pi&&!x.hit&&x.type==='log'&&x.z<h.pos.z&&h.pos.z-x.z<1.25),br=S.obst.find(x=>x.pi===pi&&!x.hit&&x.type==='branch'&&x.z<h.pos.z&&h.pos.z-x.z<1.6);
    const hole=S.obst.find(x=>x.pi===pi&&!x.hit&&x.type==='hole'&&x.lanes.includes(S.lane[pi])&&x.z<h.pos.z&&h.pos.z-x.z<0.9);
-   const s=S.strings.find(q=>q.pi===pi&&!q.used&&Math.abs(q.z-h.pos.z)<1.3&&q.lanes.includes(S.lane[pi]));
+   const s=S.strings.find(q=>q.pi===pi&&!q.used&&Math.abs(q.z-h.pos.z)<1.3&&q.lanes.includes(S.lane[pi])&&(q.air?!h.grounded:h.grounded));
    const onB=Math.abs(S.bph)<0.012||Math.abs(S.bph-1)<0.012||(S.B&&(S.bph*S.B<0.0175));
-   if(s&&onB&&h.grounded)ZC.press(J);else if((lg||hole)&&h.grounded&&!s)ZC.press(J);
+   if(s&&onB)ZC.press(J);else if((lg||hole)&&h.grounded&&!s)ZC.press(J);
    if(br&&h.grounded&&h.rollT<=0)ZC.press(R);
-   const b=S.beasts.find(q=>q.pi===pi&&!q.res&&Math.abs(q.z-h.pos.z)<3.6);if(b&&onB&&S.lastK===b.k)ZC.press(G);
+   const tl=S.tales.find(q=>q.pi===pi&&!q.res);if(tl&&onB){const r=S.lastK-tl.k;if(r>=0&&r<4&&tl.T.pat[r])ZC.press(G);}   // ответ зверю из сказки
    const BT=S.BT;for(const f of S.foes){if(f.res&&f.res!=='parry')continue;const dt=BT[f.k]-S.t;
     if((f.type==='lunge'||f.type==='crow')&&!f.res&&f.locked&&f.lane===S.lane[pi]&&f.pi===pi&&dt<0.9&&dt>0){const c=[0,1,2].filter(l=>l!==f.lane&&!bad(l));const nl=c.length?c.sort((a,b)=>Math.abs(a-S.lane[pi])-Math.abs(b-S.lane[pi]))[0]:(f.lane===0?1:f.lane-1);if(i%3===0)ZC.press(nl<S.lane[pi]?L:Rt);}
     if(f.type==='boar'&&!f.res&&f.pi===pi&&f.lane===S.lane[pi]&&dt<0.22&&dt>0.05&&h.grounded)ZC.press(J);
