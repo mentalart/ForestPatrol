@@ -9,7 +9,7 @@ window.E5=ZC.FIN.k5e;window.CHK=s=>{if(_errs.length)throw new Error(s+' — ош
 window.KB=[{B:['KeyA','KeyD','KeyW','KeyS']},{B:['ArrowLeft','ArrowRight','ArrowUp','ArrowDown']}];
 window.PIS=[0,1];
 window.MX={sp:0,fov:0,kick:0};
-window.START=solo=>{ZC.setSolo(!!solo);E5.goStage(0);ZC.G.manual=true;ZC.tick(20);PIS=solo?[0]:[0,1];
+window.START=solo=>{ZC.setSolo(!!solo);ZC.G.manual=true;E5.goStage(0);ZC.tick(20);PIS=solo?[0]:[0,1];
   const P=E5.pro;for(let i=0;i<60*120&&!(P.leg==='forest'&&!ZC.G.cine);i++){if(ZC.G.cine&&i%3===0)ZC.skip();ZC.tick(1);}
   if(P.leg!=='forest'||!P.on)throw new Error('не дошли до леса: leg='+P.leg+' on='+P.on);return 'лес: z='+P.dbg().GP.z.toFixed(0);};
 window.REL=()=>{for(const k of KB)k.B.forEach(b=>ZC.hold(b,false));};
