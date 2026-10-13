@@ -53,6 +53,7 @@ function auka14Setup(){const K14=W.k14;if(!K14||W.levelId!=='1-4')return;const F
   const ag=new THREE.Group();ag.position.set(CS.x,0.55,CS.z);ag.visible=false;W.group.add(ag);const inner=new THREE.Group();ag.add(inner);const L=FL.auka(inner);
   for(const sd of[-1,1]){addMesh(new THREE.SphereGeometry(0.11,10,8),M(0xfbf8ee),sd*0.2,0.98,0.5,inner);addMesh(new THREE.SphereGeometry(0.05,8,6),MAT.dark,sd*0.2,0.98,0.6,inner);}
   ag.traverse(c=>{c.userData.noBatch=true;});
+  const aHead=new THREE.Object3D();aHead.position.set(0,0.98,0.3);L.body.add(aHead);if(typeof regNpc==='function')regNpc({g:ag,body:L.body,head:aHead},'auka');   // для роликов: лицо Ауки
   const LEN={easy:[2,3,4],mid:[3,4,5],hard:[3,5,6]};
   const A={ph:0,st:'idle',r:0,seq:[],need:0,pos:0,miss:0,t:0,si:0,idle:0,look:null,sing:0,hop:0,g:ag,L,friend:null,score:0,auT:6};
   const path=()=>genPath(),noteT=()=>({easy:1.0,mid:0.8,hard:0.65})[path()]||0.8;
@@ -83,19 +84,21 @@ function auka14Setup(){const K14=W.k14;if(!K14||W.levelId!=='1-4')return;const F
   // ---- ролики ----
   function gather(){for(const q of HEROES){if(q.cling)continue;const a=G.solo?active(G.soloPi):active(q.player);if(q===a)continue;if(hd(q.pos,a.pos)>8){placeOnGround(q,clamp(a.pos.x+(q.player?1.4:-1.4),-9,9),Math.min(a.pos.z+1.2,z0-1),0);q.following=true;}}}
   function introScene(){A.ph=0.5;AR.started=true;ag.visible=true;
-    play({dur:10.6,fov:46,shots:[shot(0,[0,3.4,z0-0.5],[0,1.4,mid],[0,2.6,mid+6],[0,1.4,mid],3.6),shot(3.6,[CS.x+2.6,1.9,CS.z+3.6],[CS.x,1.4,CS.z])],
+    const def={dur:10.6,fov:46,shots:[shot(0,[0,3.4,z0-0.5],[0,1.4,mid],[0,2.6,mid+6],[0,1.4,mid],3.6),shot(3.6,[CS.x+2.6,1.9,CS.z+3.6],[CS.x,1.4,CS.z])],
       says:[[0.3,3.2,null,'<i>Поляна, а вокруг — дуплистые пни. Из каждого — «Ау!» своим голосом.</i>',true],[3.6,3.4,'auka','<i>(вздыхает)</i> Никто со мной не аукается… Все только блудят да боятся.'],
         [7.2,3.2,'auka','Поаукаемся? Я спою — а вы повторите!']],
       events:[{t:0,fn:()=>gather()},{t:1.0,fn:()=>{HL.forEach((q,i)=>later(i*0.4,()=>sing(i)));}},{t:7.2,fn:()=>{A.hop=0.8;}}],
-      end:()=>{A.ph=1;banner('Аука-Перекличка','#c8e070',2.8,'слушай, какие дупла поют, — и повтори: встань в круг у дупла и аукни');startRound(0);setObj();}});}
+      end:()=>{A.ph=1;banner('Аука-Перекличка','#c8e070',2.8,'слушай, какие дупла поют, — и повтори: встань в круг у дупла и аукни');startRound(0);setObj();}};
+    play(FIN.k14AukaIntro?FIN.k14AukaIntro(def,{A,ag,L,hd:aHead,HL,CS,z0}):def);}
   function friendScene(){if(A.ph!==1)return;A.ph=3.5;A.st='done';const at=new V3(CS.x,0,CS.z);
-    play({dur:12.6,fov:46,shots:[shot(0,[at.x+3.2,2.0,at.z+4.4],[at.x,1.0,at.z]),shot(4.6,[at.x-4,2.6,at.z+5.2],[at.x,1.2,at.z]),shot(8.4,[0,3.4,-209],[0,1.6,-216])],
+    const def={dur:12.6,fov:46,shots:[shot(0,[at.x+3.2,2.0,at.z+4.4],[at.x,1.0,at.z]),shot(4.6,[at.x-4,2.6,at.z+5.2],[at.x,1.2,at.z]),shot(8.4,[0,3.4,-209],[0,1.6,-216])],
       says:[[0.3,3.0,'auka','Ой… ответили! Хи-хи! Ау-ау!'],[3.4,1.6,'pelageya','Ау, Аука!'],[4.9,1.5,'potap','Ау-у!'],[6.5,4.0,'auka','Пойдёмте, я выход покажу. Кто аукнет — того не брошу!']],
       events:[{t:0,fn:()=>{const pl=[[-2.2,1.8],[2.2,1.8],[-1.2,3.0],[1.2,3.0]];HEROES.forEach((q,i)=>{placeOnGround(q,at.x+pl[i][0],at.z+pl[i][1],0);q.face=Math.atan2(at.x-q.pos.x,at.z-q.pos.z);});A.hop=3;
           for(let i=0;i<10;i++)burst(new V3(at.x+rand(-1,1),rand(1,2.5),at.z+rand(-1,1)),i%2?COL.gold:0xc8e070,3,3);}},
         {t:3.4,fn:()=>{for(const q of HEROES)floatText(q.pos.clone().add(new V3(0,q.d.height+0.7,0)),'Ау!',PCSS[q.player]);SFX.call();HL.forEach((q,i)=>later(i*0.15,()=>sing(i)));}},
         {t:8.4,fn:()=>{AR.cleared=true;AR.hold=1.6;K14.barrier.forceOpen=true;SFX.gate();}}],
-      end:()=>{A.ph=4;AR.cleared=true;AR.hold=1.6;K14.barrier.forceOpen=true;ag.position.set(-3.4,0,-213.5);A.friend={t:0};banner('Подружились!','#c8e070',2.4,'Аука выход покажет — ступайте за ним');}});}
+      end:()=>{A.ph=4;AR.cleared=true;AR.hold=1.6;K14.barrier.forceOpen=true;ag.position.set(-3.4,0,-213.5);A.friend={t:0};banner('Подружились!','#c8e070',2.4,'Аука выход покажет — ступайте за ним');}};
+    play(FIN.k14AukaFriend?FIN.k14AukaFriend(def,{A,ag,L,hd:aHead,HL,CS,z0}):def);}
   // ---- задачи и рамка ----
   function setObj(){for(const pi of[0,1]){const Lo=W.objectives[pi];const o=Lo.find(q=>q._k14fight)||Lo.find(q=>typeof q.text==='function'&&/Лешачата!/.test(q.text()));if(!o)continue;o._k14fight=true;
     o.text=()=>A.st==='show'?'Слушай, какие дупла поют «ау»… Песенка '+(A.r+1)+' / 3.'

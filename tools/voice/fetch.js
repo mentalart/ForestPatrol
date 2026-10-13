@@ -4,7 +4,7 @@
 // Скачивает запись в tools/voice/raw/<id>.<ext> (папка не в git), затем ffmpeg: обрезает тишину по краям, сдвигает тон голоса персонажа
 // (cast.<голос>.pitch, полутона; тон меняется без изменения темпа), ускоряет, если реплика длиннее max (не больше чем в 1,2 раза),
 // обработка fx (far — издалека: без низов и верхов, эхо; zven — звонкий перелив), громкость по EBU R128 (−16 LUFS),
-// MP3 моно 48 кбит/с, 24 кГц → zlataya_cep/build/voice/<id>.mp3 (готовые файлы пропускаются; --force — переделать все), длительность → поле dur. После — python3 zlataya_cep/build/build_final.py.
+// MP3 моно 48 кбит/с, 24 кГц → zlataya_cep/build/voice/<id>.mp3 (готовые файлы пропускаются; --force — переделать все), длительность → поле dur; cut — срезать столько секунд с начала готовой записи. После — python3 zlataya_cep/build/build_final.py.
 const fs=require('fs'),path=require('path'),{execFileSync}=require('child_process');
 const ROOT=path.join(__dirname,'..','..'),VD=path.join(ROOT,'zlataya_cep','build','voice'),RAW=path.join(__dirname,'raw');
 const FF0='/usr/local/lib/python3.11/dist-packages/imageio_ffmpeg/binaries/ffmpeg-linux-x86_64-v7.0.2',FF=process.env.FFMPEG||(fs.existsSync(FF0)?FF0:'ffmpeg');   // нет imageio-ffmpeg — ffmpeg из PATH
@@ -41,6 +41,8 @@ for(const e of D.lines){if(ONLY.length&&!ONLY.includes(e.id))continue;const pipe
   let d0=dur(tmp),tempo=1;if(e.max&&d0>e.max)tempo=Math.min(1.2,d0/e.max);
   const fx=e.fx||c.fx;const chain=[tempo>1.001?`atempo=${tempo.toFixed(4)}`:null,fx?FX[fx]:null,'loudnorm=I=-16:TP=-1.5:LRA=11','aresample=24000'].filter(Boolean).join(',');
   const out=path.join(VD,e.id+'.mp3');ff(['-i',tmp,'-af',chain,'-ac','1','-ar','24000','-c:a','libmp3lame','-b:a','48k',out]);done++;fs.rmSync(tmp);
+  // cut — секунды, срезанные с начала готовой записи (так из чтений Пелагеи убрано «Тут написано…», запись не переозвучивалась)
+  if(e.cut){const t2=path.join(RAW,e.id+'.cut.mp3');ff(['-ss',String(e.cut),'-i',out,'-af','afade=t=in:d=0.03','-ac','1','-ar','24000','-c:a','libmp3lame','-b:a','48k',t2]);fs.renameSync(t2,out);}
   e.dur=+dur(out).toFixed(2);console.log(`${e.id}  ${who}  pitch ${p>=0?'+':''}${p}  ${d0.toFixed(2)}s${tempo>1.001?' ×'+tempo.toFixed(2):''} → ${e.dur}s${e.max&&e.dur>e.max+0.05?'  (длиннее max '+e.max+')':''}`);}
 fs.writeFileSync(CAT,JSON.stringify(D,null,1)+'\n');console.log('готово записей:',done);
 if(!process.argv.includes('--keep'))fs.rmSync(RAW,{recursive:true,force:true});
