@@ -9,3 +9,10 @@ kuzma/kuzma_A_maxim.mp3	kuzma	Maxim – Premium Baritone	SkGOoi8yfK3ONMNKMKj0	el
 kuzma/kuzma_B_nester.mp3	kuzma	Nester Surovy	pM78bgjPVk0JXtaEnFoj	eleven_v4	1	9.28	89	кастинг
 -	kuzma	Ivan	JKtNvDNrWu33P1xzttP2	eleven_v4	1	-	-	ОТКАЗ: Free Tier отключён («unusual activity… upgrade to a paid subscription»)
 -	proshka,potap,pelageya,yosha,tishka	(дизайн голоса)	-	eleven_ttv_v3	-	-	-	ОТКАЗ: дизайн детских голосов заблокирован правилами ElevenLabs
+<who>/<who>_{A,B,C}.mp3	yaga,leshy,vod,solovei,likho,gorL,gorM,gorR,auka,otshel,zven	дизайн голоса	design_ids.tsv	eleven_ttv_v3	-	-	-	кастинг: 3 превью на роль; после выбора — creative_save_designed_voice
+proshka/*	proshka	Ekaterina|Vika Prof|Taya	GN4wbsbejSnGSa1AzjH5|YjYZWA1JjVPJcnWmCm0r|8pYiWLBihr54ecI85RXM	eleven_v4	1	-	222	кастинг, тег [childlike voice]
+pelageya/*	pelageya	Lunya|Dasha|Masha	rSfuQoQ3FY8SVKeraMAp|sk83Bye6Z8drwXh0KBFz|CH4syTkdz0MNPn6zayBd	eleven_v4	1	-	230	кастинг, тег [childlike voice]
+yosha/*	yosha	Lunya|Vika Prof|Ekaterina	rSfuQoQ3FY8SVKeraMAp|YjYZWA1JjVPJcnWmCm0r|GN4wbsbejSnGSa1AzjH5	eleven_v4	1	-	244	кастинг, теги [childlike voice] [high voice]
+tishka/*	tishka	Lunya|Ekaterina|Taya	rSfuQoQ3FY8SVKeraMAp|GN4wbsbejSnGSa1AzjH5|8pYiWLBihr54ecI85RXM	eleven_v4	1	-	239	кастинг, тег [childlike voice]
+potap/*	potap	Kuchka|Daniel|Vika Prof	HO0xRRVNKM5KFlpsrNit|GC6lSBdDbTgPRulcGFDX|YjYZWA1JjVPJcnWmCm0r	eleven_v4	1	-	210	кастинг, тег [childlike voice] (+[deep voice] у C)
+reader/*	reader	Svetlana|Marina|Kate	PZhi1QpQl0Z9H9WfRfYS|7CPD49d3y4krj7MKJYOV|WfExDXCt2GBg6MI5KjQk	eleven_v4	1	-	109	кастинг «Читать вслух»
