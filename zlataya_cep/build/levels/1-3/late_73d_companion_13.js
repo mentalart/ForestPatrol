@@ -1,6 +1,7 @@
 /* ============================== РЕЛИЗ final06 · 1-3 «КОЛОБОК»: НАПАРНИК-БОТ БЕЖИТ СВОЮ ДОРОЖКУ ============================== */
 // Раннер ведёт героев сам (W.custom): у каждого игрока свои дорожки, струны под бубенец, звери, враги и пляска-финал. Бот за Игрока 2 играет свою дорожку, как живой игрок:
-// уходит с дорожки, где впереди пень, дыра или бочка, берёт перья на пути, прыгает на струны в такт, кувыркается под ветками, щитом встречает зверя, лапу и коршуна
+// уходит с дорожки, где впереди пень, дыра или бочка, берёт перья на пути, прыгает на струны в такт (и на воздушные — в полёте), кувыркается под ветками,
+// повторяет щитом песенку Зайца, Волка и Медведя в их доли, щитом встречает лапу и коршуна
 // в такт и отвечает ударом, вожака держит вместе с человеком, в пляске-финале прыгает и хлопает щитом в свою долю. Ход — по образцу бота t13v (человек играет Игрока 1 так же).
 const K13={bk:-9,fk:-9};
 const k13Left=()=>{PADS.axes[1]={x:-1,y:0};},k13Right=()=>{PADS.axes[1]={x:1,y:0};};
@@ -23,12 +24,12 @@ function k13Run(h,dt){const S=W.song;if(!S||(S.state!=='play'&&S.state!=='final'
   const lg=S.obst.find(x=>x.pi===1&&!x.hit&&x.type==='log'&&x.z<h.pos.z&&h.pos.z-x.z<1.25);
   const br=S.obst.find(x=>x.pi===1&&!x.hit&&x.type==='branch'&&x.z<h.pos.z&&h.pos.z-x.z<1.6);
   const hole=S.obst.find(x=>x.pi===1&&!x.hit&&x.type==='hole'&&x.lanes.includes(lane)&&x.z<h.pos.z&&h.pos.z-x.z<0.9);
-  const s=S.strings.find(q=>q.pi===1&&!q.used&&Math.abs(q.z-h.pos.z)<1.3&&q.lanes.includes(lane));
+  const s=S.strings.find(q=>q.pi===1&&!q.used&&Math.abs(q.z-h.pos.z)<1.3&&q.lanes.includes(lane)&&(q.air?!h.grounded:h.grounded));
   const since=S.bph*S.B,onB=since<Math.max(0.0175,dt*1.05)||(1-S.bph)*S.B<0.006;
-  if(s&&onB&&h.grounded)cmpTap('jump');
+  if(s&&onB)cmpTap('jump');
   else if((lg||hole)&&h.grounded&&!s)cmpTap('jump');
   if(br&&h.grounded&&h.rollT<=0)cmpTap('roll');
-  const b=S.beasts.find(q=>q.pi===1&&!q.res&&Math.abs(q.z-h.pos.z)<3.6);if(b&&Math.abs(S.t-L-BT[b.k])<w)cmpTap('guard');
+  const tl=S.tales&&S.tales.find(q=>q.pi===1&&!q.res);if(tl)for(let j=0;j<4;j++)if(tl.T.pat[j]&&!tl.hit[j]&&Math.abs(S.t-L-BT[tl.k+j])<w)cmpTap('guard');   // ответ зверю — в его доли
   for(const f of S.foes){if(f.res&&f.res!=='parry')continue;const d=BT[f.k]-S.t;
     if((f.type==='lunge'||f.type==='crow')&&!f.res&&f.locked&&f.lane===lane&&f.pi===1&&d<0.9&&d>0){                     // красный круг или ворона: на другую дорожку
       const c=[0,1,2].filter(l=>l!==f.lane&&!bad(l)),nl=c.length?c.sort((a,b)=>Math.abs(a-lane)-Math.abs(b-lane))[0]:(f.lane===0?1:f.lane-1);
