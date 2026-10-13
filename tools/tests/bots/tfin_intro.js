@@ -4,7 +4,7 @@
 // Новая игра с FIN.introWant: семь роликов подряд, целиком, без пропуска. Проверки: каждый — ручная постановка (def.kino), ≤ 25 с, не меньше 3 крупностей
 // и 2 типов движения камеры; в середине каждой реплики в кадре (не голос за кадром) говорящий в кадре и повёрнут к камере; после — комната пролога:
 // площадки убраны, уровень виден, герои на местах, свет пролога, ролик «Колыбельная» не начался. Пропуск в середине — то же состояние. Ошибок нет.
-// Кадры: Лукоморье (1-2), сосна-штаб с героями (3-3), рука над цепью (5-5), головы Горыныча на Смородине (6).
+// Кадры: Лукоморье (1-2), сосна-штаб с героями (3-3), рука над цепью (5-5), русалка на дубе (1-6), головы Горыныча на Смородине (6).
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(false);ZC.FIN.introWant=true;ZC.startFrom(0);ZC.G.manual=true;ZC.tick(2);
 const CI=ZC.FIN.cine,ACT=ZC.FIN.actors,V=THREE.Vector3,PRK=ZC.FIN.intro;window.CREP=[];window.CBAD=[];
@@ -26,16 +26,23 @@ window.RUN=(i,t)=>{let n=0;while(n<60*200){const c=ZC.G.cine;if(!PRK.on||(PRK.i>
 if(!PRK.on)throw new Error('«Присказка» не началась при новой игре');
 const lv=document.getElementById('level');(lv.style.opacity==='1'?'FIN название уровня поверх ролика ':'')+RUN(0,5.2)
 //@@
-// постановка: точка в кадре (8 % от края — запас); русалка не торчит хвостом над Котом в 1-4 и появляется в 1-6б;
-// хвост Кота живой (пружины); 2-5 — Кот и Кузьма оба в кадре; 4-4б — Кощей на своей реплике крупно; 5-5 — рука видна, пока опускается
+// постановка: точка в кадре (8 % от края — запас); русалка не торчит над Котом в 1-4 и появляется в 1-6б; хвост Кота живой (пружины);
+// 2-5 — Кот и Кузьма оба в кадре; 4-4б — Кощей на своей реплике крупно; 5-5 — рука видна, пока тянется к цепи
 window.INF=p=>{const V=THREE.Vector3,P=ZC.FIN.cine.CD().pose,f=new V().subVectors(P.look,P.pos).normalize(),r=new V().crossVectors(f,new V(0,1,0)).normalize(),u=new V().crossVectors(r,f),to=new V().subVectors(p,P.pos);
   const z=to.dot(f),tv=Math.tan(P.fov*Math.PI/360)*0.92;return z>0&&Math.abs(to.dot(u)/z)<tv&&Math.abs(to.dot(r)/z)<tv*16/9;};
 window.WP=o=>o.getWorldPosition(new THREE.Vector3());
 {const PRK=ZC.FIN.intro,L=PRK.L,bad=[];RUN(0,11.0);if(L.mer.g.visible)bad.push('1-4: русалка видна до 1-6');
   const t0=L.kot.tail.map(b=>b.position.clone());for(let i=0;i<20;i++){ZC.tick(1);TRACK();}if(!L.kot.tail.some((b,i)=>b.position.distanceTo(t0[i])>0.004))bad.push('хвост Кота неподвижен');
-  RUN(0,20.0);if(!L.mer.g.visible||!INF(WP(L.mer.g)))bad.push('1-6б: русалки нет в кадре');
+  if(bad.length)throw new Error('FAIL постановка: '+bad.join(', '));'постановка 1 ok'}
+//@@ shot=intro_mermaid.png wait=200
+// русалка на ветке дуба (1-6б): модель с лицом, руками и гребнем, в кадре
+RUN(0,19.8);{const M=ZC.FIN.intro.L.mer;if(!M||!M.anim||!M.g.visible||!M.eyes||M.eyes.length!==2||!M.comb)throw new Error('FAIL русалка без модели');if(!INF(WP(M.g)))throw new Error('FAIL 1-6б: русалки нет в кадре');}
+//@@
+// хвост плещет, гребень ходит, глаза моргают; 2-5 — Кот и Кузьма в кадре
+{const PRK=ZC.FIN.intro,L=PRK.L,M=L.mer,bad=[];const r0=M.seg[4].rotation.x,c0=M.aR.sh.rotation.z;let bl=false;for(let i=0;i<130;i++){ZC.tick(1);TRACK();if(M.eyes[0].scale.y<0.5)bl=true;}
+  if(Math.abs(M.seg[4].rotation.x-r0)<0.005&&Math.abs(M.aR.sh.rotation.z-c0)<0.005)throw new Error('FAIL русалка не двигается');if(!bl)throw new Error('FAIL русалка не моргает');
   RUN(1,10.3);if(!INF(WP(L.kot.head)))bad.push('2-5: Кота нет в кадре');if(!INF(WP(L.kuzma.head)))bad.push('2-5: Кузьмы нет в кадре');
-  if(bad.length)throw new Error('FAIL постановка: '+bad.join(', '));'постановка ok'}
+  if(bad.length)throw new Error('FAIL постановка: '+bad.join(', '));'постановка 2 ok'}
 //@@ shot=intro_patrol.png wait=200
 RUN(2,7.0)
 //@@

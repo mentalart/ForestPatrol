@@ -24,7 +24,7 @@ function hEye(R,s,x,y,z,r,iris,o){o=o||{};const e='eye'+s,l='lid'+s;R.bone(e,'he
   if(iris)R.part(e,hIco(r*0.42),PAL.night,tm(0,0,r*0.56,0,0,0,1,1.1,0.5),{kN:0,kJ:0,s:-0.6});
   R.part(e,hIco(r*0.22),PAL.white,tm(r*0.28,r*0.3,r*0.7),{kN:0,kJ:0,s:1});R.part(e,hIco(r*0.1),PAL.white,tm(-r*0.25,-r*0.26,r*0.72),{kN:0,kJ:0,s:1});
   // веко: верхняя полусфера цвета шерсти; в покое повёрнуто назад (глаз открыт), вперёд — прикрывает
-  R.part(l,new FIN.orig.Sphere(r*1.13,6,2,0,Math.PI*2,0,Math.PI/2),o.lid||PAL.fox,tm(0,0,0,0,0,0,1,1,0.8),{kN:0.3,kJ:0.04});R.map[l].rotation.x=-1.85;}
+  R.part(l,new FIN.orig.Sphere(r*1.13,6,2,0,Math.PI*2,0,Math.PI/2),o.lid||PAL.fox,tm(0,0,0,0,0,0,1,1,o.lz||0.8),{kN:0.3,kJ:0.04});R.map[l].rotation.x=-1.85;}
 function hBrow(R,s,x,y,z,w,pal,rz){const b='brow'+s;R.bone(b,'head',x,y,z);R.box(b,w,w*0.26,w*0.3,pal||PAL.bark,tm(0,0,0,0.2,0,rz||0),{kN:0.2,b:0});}
 function hMouth(R,x,y,z,w){R.bone('mouth','head',x,y,z);R.part('mouth',hSph(w,6,4),PAL.night,tm(0,0,0,0,0,0,1.4,0.75,0.5),{kN:0,kJ:0,s:-0.3});
   R.part('mouth',hIco(w*0.62),PAL.pink,tm(0,-w*0.32,w*0.12,0,0,0,1.3,0.5,0.5),{kN:0,kJ:0,s:0});R.map.mouth.scale.y=0.32;}
@@ -91,7 +91,7 @@ function buildPelageya(){const R=heroRig(1.15,7);const O=PAL.owl,C=PAL.cream,Gd=
   R.part('head',KP.tor(0.2,0.018,3,12,Math.PI),Gd,tm(0,0.1,0.02,-0.5,0,0),{kN:0.3,s:0.2});for(let i=0;i<3;i++)R.part('head',hIco(0.022),PAL.red,tm((i-1)*0.1,0.2+(i===1?0.03:0),0.1-Math.abs(i-1)*0.03),{s:0.2});
   R.bone('beak','head',0,-0.035,0.245);const bk=KP.cone(0.048,0.13,5);bk.rotateX(Math.PI/2);R.part('beak',bk,Gd,tm(0,0,0.03),{s:-0.1});
   for(const[s,n]of[[1,'L'],[-1,'R']]){R.bone('ear'+n,'head',s*0.17,0.17,-0.02);R.part('ear'+n,KP.cone(0.06,0.2,4),O,tm(0,0.08,0,0,Math.PI/4,-s*0.4,1,1,0.5),{s:-0.1});
-    hEye(R,n,s*0.105,0.025,0.21,0.092,Gd,{lid:O});hBrow(R,n,s*0.11,0.13,0.23,0.085,PAL.night,-s*0.18);}
+    hEye(R,n,s*0.105,0.025,0.21,0.092,Gd,{lid:O,lz:0.66});/* веко плоское — прикрытое не выпирает */hBrow(R,n,s*0.11,0.13,0.23,0.085,PAL.night,-s*0.18);}
   R.map.mouth=R.map.beak;
   // крылья-руки: висят вдоль тела, раскрываются вбок по rotation.z (как в прототипе), кончики — перья-«пальцы»
   for(const[s,n]of[[1,'L'],[-1,'R']]){R.bone('wing'+n,'chest',s*0.33,0.14,-0.01);R.part('wing'+n,hSph(0.18,6,4),O,tm(s*0.02,-0.2,-0.01,0,0,0,0.3,1.45,0.95),{s:-0.1});

@@ -60,11 +60,10 @@ function prkHeroesOff(){for(const h of HEROES){h.following=false;h.vel.set(0,0,0
 const prFc=KC.fcam,prPl=KC.place;
 // ---------- жизнь персонажей: follow-through на пружинах (spring-damper) ----------
 // Кот: хвост (семь позвонков вокруг корня) идёт волной от корня к кончику и отстаёт от поворотов и подскоков; уши подёргиваются
-// и «доколебываются» после поворота головы. Русалка поводит хвостом. PRK.calm (0…1) — сколько жизни осталось: Кот каменеет в 6-6.
+// и «доколебываются» после поворота головы (русалка живёт сама — L.mer.anim). PRK.calm (0…1) — сколько жизни осталось: Кот каменеет в 6-6.
 function prkSpring(k,c){return {x:0,v:0,k:k||70,c:c||8,go(to,dt){dt=Math.min(dt,0.05);this.v+=(this.k*(to-this.x)-this.c*this.v)*dt;this.x+=this.v*dt;return this.x;}};}
 const PRK_LIFE={kot:null};
 function prkLife(t,dt){const L=PRK.L;if(!L||!dt)return;const k=L.kot,cm=PRK.calm==null?1:PRK.calm;
-  if(L.mer&&L.mer.tail&&L.mer.g.visible)L.mer.tail.rotation.z=Math.sin(t*2.1)*0.22*cm;
   if(!k||!k.g.visible||!k.g.parent||!L.g.visible)return;
   let s=PRK_LIFE.kot;if(!s||s.o!==k){s=PRK_LIFE.kot={o:k,yaw:prkSpring(38,5.5),bob:prkSpring(55,6.5),ear:prkSpring(160,7),hy:prkSpring(120,9),p:prkWP(k.g),r:k.g.rotation.y,hr:0,tw:1.5,
     tail0:(k.tail||[]).map(b=>b?b.position.clone():null),e0:['L','R'].map(n=>k.rig&&k.rig['ear'+n]?k.rig['ear'+n].rotation.x:0)};}
@@ -121,7 +120,7 @@ function prkS1(){const L=prL();let hero=null;
       if(L.kot.head)L.kot.head.rotation.y=t>12.4&&t<13.4?Math.sin((t-12.4)*3)*0.2:0;
       // 1-6: Леший выглядывает и прячется; русалка машет
       const lk=t>17.5&&t<19.1?Math.sin(clamp((t-17.5)/1.6,0,1)*Math.PI):0;L.leshy.g.position.x=lerp(-1.4,-3.3,prkE.o(lk));L.leshy.g.rotation.y=0.4+lk*0.5;
-      L.mer.g.visible=t>=19.1;if(t>=19.1)L.mer.g.scale.setScalar(1.6*Math.max(0.05,prkE.back(clamp((t-19.1)/0.45,0,1))));if(L.mer.comb)L.mer.comb.rotation.z=t>19.5?Math.sin(t*5)*0.5:0;
+      L.mer.g.visible=t>=19.1;if(t>=19.1)L.mer.g.scale.setScalar(1.6*Math.max(0.05,prkE.back(clamp((t-19.1)/0.45,0,1))));
       // 1-7: слушатели сходятся к корням, книга раскрывается
       const k=prkE.io(clamp((t-20.4)/2.2,0,1));[[L.kolo,-9,10,-2.3,7.4],[L.belka,9,11,2.4,7.8],[L.sadko,-12,13,-4.6,8.6]].forEach(([o,x0,z0,x1,z1])=>{o.g.position.x=lerp(x0,x1,k);o.g.position.z=lerp(z0,z1,k);
         if(k>0&&k<1)o.g.position.y=(o===L.sadko?0.25:0)+Math.abs(Math.sin(t*9))*0.18;});
@@ -193,7 +192,7 @@ function prkS3(){const P=prPm(),O=PRO.P,T=PRK_T,pr=T.proshka,po=T.potap,pe=T.pel
     events:[{t:0,fn:()=>{PRK.only('P');PRK.look('forestset');FIN.music.play('hub');prkHeroesOff();
         prPl(pr,O.x-10.2,O.z+5.0,0,at(-10.2,9));prPl(po,O.x+5.6,O.z+6.6,0,at(0,6.6));prPl(yo,O.x+9.7,O.z+5.6,0,at(10.6,9.6));prPl(pe,O.x+1.6,O.z+5.9,11,at(1.6,12));
         prkAttach(po.g,P.log,0,po.d.height*0.92,0).rotation.set(0,0,0);P.log.visible=true;P.log.add(P.tish.g);P.tish.g.position.set(0.3,0.18,0);P.tish.g.rotation.set(0,0,0);P.cap.visible=false;
-        prkAttach(pe.g,P.glass,0.22,pe.d.height*0.7,0.18).rotation.set(0.3,0,0);prkAttach(pe.g,P.book,-0.34,pe.d.height*0.36,0.1).rotation.set(0.2,0,0.9);
+        prkAttach(pe.g,P.glass,0.5,pe.d.height*0.42,0.14).rotation.set(-1.15,0,-0.15);prkAttach(pe.g,P.book,-0.5,pe.d.height*0.36,0.12).rotation.set(0.2,0,0.9);   // труба и книга — под крыльями, снаружи тела
         P.spring.position.set(-10.9,0.7,4.2);P.spring.visible=true;P.sprout.scale.setScalar(0.01);P.zv.visible=false;P.rain.forEach(r=>{r.s.visible=false;r.t=-1;});P.cloud.visible=false;P.rv.g.visible=false;
         P.star.material.opacity=0;}},
       {t:17.4,fn:()=>{P.log.visible=false;P.g.add(P.tish.g);P.tish.g.position.copy(P.doorPos).sub(O);P.tish.g.position.y=0;P.tish.g.rotation.set(0,-0.42,0);P.cap.visible=true;}},
