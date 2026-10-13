@@ -5,7 +5,8 @@ ZC.startFrom(ZC.LV('2-1'));ZC.G.manual=true;ZC.tick(20);const G=ZC.G;
 G.hen={food:0.5,joy:0.5,eggs:0,gold:0,chicks:2,trip:G.trips,happy:3,wish:'grain'};ZC.goLevel('luko');ZC.tick(120);ZC.skip&&ZC.skip();ZC.tick(60);
 const FM=ZC.W.farm,r=[ZC.W.flags.stage,'wish='+G.hen.wish];
 // зерно — желание исполнено, следом новое желание; ласка (держать удар) — второе
-r.push(U.path(1,[[-5,-11],[-5.5,-1],[-5.5,5.2],[-9.4,5.6],[-9.4,7.4],[-11.1,7.4]],6));U.tap('Comma');ZC.tick(5);
+// путь от стана к курятнику — в обход сувенира 1-го сказа у дуба (SKAZ_SLOT[1] = -5.2,-8.4, коллизия r=0.55)
+r.push(U.path(1,[[-5,-11],[-6.7,-9.6],[-6.7,-7.2],[-5.5,-1],[-5.5,5.2],[-9.4,5.6],[-9.4,7.4],[-11.1,7.4]],6));U.tap('Comma');ZC.tick(5);
 const hp=FM.hen.g.position;r.push(U.walkTo(1,hp.x+0.8,hp.z,4));U.tap('Comma');ZC.tick(10);r.push('wishN='+G.hen.wishN);ZC.tick(170);r.push('wish2='+G.hen.wish);
 G.hen.wish='pet';Math.random0=Math.random;Math.random=()=>0.1;r.push(U.walkTo(1,hp.x+0.8,hp.z,4));ZC.press('Comma');ZC.hold('Comma',true);ZC.tick(80);ZC.hold('Comma',false);ZC.tick(150);Math.random=Math.random0;
 r.push('wishN='+G.hen.wishN,'wish='+G.hen.wish,'joy='+G.hen.joy.toFixed(2),'feathers='+FM.FEATH.length);
