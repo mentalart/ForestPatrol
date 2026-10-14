@@ -83,7 +83,7 @@
 | `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 18 | tfin_art tfin_audiolevel tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kid… |
 | `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_10b_w1_mood, late_40b_music_w1, late_73c_companion_11, late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 38 | t11 t11long tfin_art tfin_botlevel tfin_cam tfin_ch1 tfin_companion tfin_companion_11 tfi… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_76_kids_fight, late_79f_fog_hint12 | 5 | tbogauto tfin_bossfxcap tfin_ch1 tfin_companion_12 tsospot |
-| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 6 | tfin_companion_13 tfin_k13cine tfin_k13strings tfin_k13teach tfin_kids1 tfin_kids2 |
+| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 7 | tfin_companion_13 tfin_k13cine tfin_k13strings tfin_k13teach tfin_kids1 tfin_kids2 tfin_n… |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99b_kidnap14, late_99zf_pea14, late_99zg_auka14 | 8 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14cine tfin_k14long tfin_kidnap14 tfi… |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99zw_k15_kino | 7 | tfin_ch1 tfin_companion_15 tfin_k15_boss tfin_k15_lift tfin_k15_rooms tfin_k15cine thub2 |
 | `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zd_k1b_help | 6 | tfin_companion_1b tfin_companion_lesson tfin_k1b3solo tfin_post tfin_skaz tsospot |
@@ -516,11 +516,11 @@
 | `44_prompt_pereozvuchka_elevenlabs.md` | Промт: чистовая переозвучка всей игры через ElevenLabs MCP |
 | `45_kino_audit.md` | Аудит роликов «Златой цепи» и очередь ручной постановки |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 194 файлов |
+| `changes/` | 195 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 10 файлов |
 
-Ботов всего: 316 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 317 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
