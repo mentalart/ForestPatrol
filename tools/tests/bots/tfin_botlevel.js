@@ -38,16 +38,27 @@ let items=F.menu.items.map(i=>i.label),k=items.indexOf('Режим');chk(k>=0&&i
 // переключили «Режим» прямо в паузе — пункт появляется под ним, переключили обратно — исчезает
 const pm=F.menu.items[k];pm.side(1);chk(!F.menu.items.some(i=>i.label==='Напарник в бою'),'в одиночном режиме пункта нет');
 pm.side(1);chk(CO.live(),'режим переключён на ИИ напарника');
-items=F.menu.items.map(i=>i.label);chk(items[k]==='Режим'&&items[k+1]==='Напарник в бою','пункт появился под «Режимом»: '+items.join('|'));
-let it=F.menu.items[k+1];chk(it.val()==='Смекалка'&&/под стать/.test(it.sub()),'по умолчанию Смекалка: '+it.val()+' / '+it.sub());
+items=F.menu.items.map(i=>i.label);chk(items[k]==='Режим'&&items[k+1]==='Сложность'&&items[k+2]==='Напарник в бою','пункт появился под «Режимом» и «Сложностью»: '+items.join('|'));
+let it=F.menu.items[k+2];chk(it.val()==='Смекалка'&&/под стать/.test(it.sub()),'по умолчанию Смекалка: '+it.val()+' / '+it.sub());
 it.side(1);chk(CO.level()===2&&it.val()==='Бывалый','← → меняют уровень: '+CO.level()+' '+it.val());it.side(-1);it.side(-1);chk(CO.level()===0&&it.val()==='Растеряша','назад: '+CO.level());
 pm.side(1);chk(!CO.live()&&!F.menu.items.some(i=>i.label==='Напарник в бою'),'вернули «вдвоём» — пункт исчез');
 // пауза открыта, когда ИИ напарник уже играет: пункт сразу на месте
-ZC.start();CO.set(true);ZC.menu('pause');items=F.menu.items.map(i=>i.label);chk(items[items.indexOf('Режим')+1]==='Напарник в бою','при открытии паузы пункт уже есть: '+items.join('|'));
+ZC.start();CO.set(true);ZC.menu('pause');items=F.menu.items.map(i=>i.label);chk(items[items.indexOf('Режим')+2]==='Напарник в бою','при открытии паузы пункт уже есть: '+items.join('|'));
 // настройки: пункт под «Сложностью», когда играет бот
 F.menu.items.find(i=>i.label==='Настройки').act();
 const st=F.menu.items.map(i=>i.label),ks=st.indexOf('Сложность');chk(ks>=0&&st[ks+1]==='Напарник в бою','в настройках пункт под «Сложностью»: '+st.join('|'));
 F.menu.items[ks+1].side(1);chk(CO.level()===1,'в настройках меняется: '+CO.level());
+// сложность в паузе: вдвоём — «Путь игрока 1» и «Путь игрока 2», один — «Сложность», с ИИ напарником — «Сложность» и «Напарник в бою»; набор следует за «Режимом»
+CO.set(false);ZC.setSolo(false);ZC.start();P[0].path='mid';P[1].path='mid';ZC.menu('pause');
+const lab=()=>F.menu.items.map(i=>i.label),at=()=>lab().indexOf('Режим');
+let pmode=F.menu.items[at()];chk(lab().slice(at()+1,at()+3).join('|')==='Путь игрока 1|Путь игрока 2','вдвоём: два пути под «Режимом»: '+lab().join('|'));
+let pi1=F.menu.items[at()+1],pi2=F.menu.items[at()+2];pi1.side(1);chk(P[0].path==='hard'&&P[1].path==='mid'&&pi1.val()==='Богатырский путь','«Путь игрока 1» → вправо: '+P[0].path+'/'+P[1].path);
+pi2.side(-1);chk(P[1].path==='easy'&&pi2.val()==='Лёгкий путь','«Путь игрока 2» ← влево: '+P[1].path);
+pmode.side(1);chk(ZC.G.solo&&lab()[at()+1]==='Сложность'&&lab()[at()+2]!=='Путь игрока 2'&&lab()[at()+2]!=='Напарник в бою','один: одна «Сложность»: '+lab().join('|'));
+let sd=F.menu.items[at()+1];sd.side(1);chk(P[0].path===P[1].path&&sd.val()===({easy:'Лёгкий путь',mid:'Средний путь',hard:'Богатырский путь'})[P[0].path],'в одиночку путь один на обоих: '+P[0].path+'/'+P[1].path);
+pmode.side(1);chk(CO.live()&&lab().slice(at()+1,at()+3).join('|')==='Сложность|Напарник в бою','с ИИ напарником: «Сложность» и «Напарник в бою»: '+lab().join('|'));
+pmode.side(1);chk(!CO.live()&&!ZC.G.solo&&lab().slice(at()+1,at()+3).join('|')==='Путь игрока 1|Путь игрока 2'&&lab().filter(x=>x==='Сложность'||x==='Напарник в бою').length===0,'по кругу назад — снова два пути: '+lab().join('|'));
+P[0].path='mid';P[1].path='mid';
 F.kids.force=false;ZC.start();CO.setLevel(1);CO.set(false);
 if(BAD.length)throw new Error(BAD.join(' · '));
 ['menus ok','items='+items.join('|')]
