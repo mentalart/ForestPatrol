@@ -31,6 +31,8 @@ tools/tests/affected_map.txt                  -
 tools/tests/layout_check.js                   -
 tools/tests/regress.sh                        -
 tools/tests/flaky.py                          -
+tools/tests/bot_times.py                      -
+tools/tests/bot_times.tsv                     -
 tools/tests/textlint_warn.py                  -
 tools/changelog.py                            -
 wiki/*                                        -

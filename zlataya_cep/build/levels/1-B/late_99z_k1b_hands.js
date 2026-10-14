@@ -3,15 +3,20 @@
 // Правая — «Сгреб» (красная): отводит руку в сторону, заливка веера растёт и замирает (курс запирается на 60 % замаха), метёт дугой — кувырок или шаг за край веера.
 // После удара, которого рука не добилась (щит, шаг в сторону), ладонь увязает в корнях 1,5 с — бейте. Руки бьют по очереди, никогда вместе, с паузой ≈ 1,2 с; после второго трофея —
 // «Хлоп-хлоп»: левая, затем правая подряд (пауза 0,25 с). Рука «достаёт, докуда достаёт»: привязь 6,5 м вокруг прежнего места, рука от плеча тянется следом.
+// Руки не налезают друг на друга: левая ладонь держится левой половины поляны, правая — правой (у тропы коридор, руки от плеч не перекрещиваются),
+// ладони не ближе 6 м — уступает та, что сейчас не бьёт. Пробитая ладонь не лежит где попало: падает плашмя к тропе, на своё место у края поляны,
+// и рука ложится длинным пологим мостом (≈ 28° вместо ≈ 42°) — по нему видно и легко взбежать на плечо к макушке.
 // Меньше надписей: в бою всплывают только ключевые («Открыт! Бей!», «Нашли!», «Одним махом!»…); удары, угольки, искры, щит — звуком и вспышкой.
 // Всё поверх общей логики мороков (e.tick / e.post, обёртки canWind, foeStrike, hitHero, floatText): угольки, отбой, Пробой, кувырок работают как везде.
-const K1N={atkAt:-9,fanHalf:0.8,fanExtra:3.4,stuck:1.5,quiet:/Уголёк погас|^Отбил|искра|^мимо$|^Щит!|Увернулся|^Толк|^Шишки|Запутался — шишки|закрылся|лепесток|По руке — да к плечу|Опять запутался/i};K1B.hands=K1N;
+const K1N={atkAt:-9,fanHalf:0.8,fanExtra:3.4,stuck:1.5,half:2.5,gap:6,lay:{x:5,z:-12.5},fall:0.4,quiet:/Уголёк погас|^Отбил|искра|^мимо$|^Щит!|Увернулся|^Толк|^Шишки|Запутался — шишки|закрылся|лепесток|По руке — да к плечу|Опять запутался/i};K1B.hands=K1N;
 // рука встаёт на учёт при появлении (из spawnHands): своя очерёдность, позы, окна
-K1B.hand=function(e){e.k1={prev:'spawn',lock:null,hit:false,stuck:false,sx:0,bob:0};e.tick=k1nTick;e.post=k1nPost;};
+K1B.hand=function(e){e.k1={prev:'spawn',lock:null,hit:false,stuck:false,sx:0,bob:0,fall:null};e.tick=k1nTick;e.post=k1nPost;};
 function k1nLeshy(){return K1B.cur&&K1B.cur.L;}
 function k1nHead(){return (W.flags&&W.flags.head)||0;}
 // переходы состояний: вскинули → удар → окно
 function k1nTick(e,dt){const k=e.k1,st=e.state;
+  if(e.onBroken&&!e.onBroken.k1n){const ob=e.onBroken;e.onBroken=()=>k1nFall(e,ob);e.onBroken.k1n=1;}   // мост — после того, как ладонь упала на своё место
+  if(k.fall)k1nFallStep(e,dt);
   if(st!==k.prev){const was=k.prev;k.prev=st;
     if(st==='wind'){k.lock=null;k.hit=false;K1B.emo(k1nLeshy(),'mock',1.4);}
     if(was==='wind'&&st!=='wind')k1nResolve(e);                        // удар состоялся (в щит, в отбив, в пустоту, в героя)
@@ -25,6 +30,21 @@ function k1nTick(e,dt){const k=e.k1,st=e.state;
 function k1nResolve(e){const F=K1B.fx,s=e.side||1,fx=e.pos.x+Math.sin(e.face)*e.r*1.2,fz=e.pos.z+Math.cos(e.face)*e.r*1.2;
   if(e.sig==='red'){SFX.whoosh();shakeAll(0.02,0.2);if(F)for(let i=0;i<6;i++){const a=e.face+(i/5-0.5)*K1N.fanHalf*2*-s,rr=e.r+2.4;F.leaves(new V3(e.pos.x+Math.sin(a)*rr,0.3,e.pos.z+Math.cos(a)*rr),3,{up:0.3,spd:1.4,size:0.9});}}
   else{SFX.crash();shakeAll(0.04,0.28);if(F){F.sprouts(fx,fz,e.r+1.2);F.leaves(new V3(fx,0.4,fz),10,{up:0.6,spd:1.5,cols:[0x9acb48,0x6aa338,0x8c6644]});}}}
+// Пробой: ладонь падает плашмя к тропе (0,4 с), там рука ложится мостом на плечо
+function k1nFall(e,ob){const s=e.side||1,x1=s*K1N.lay.x,z1=K1N.lay.z,sh=K1B.cur&&K1B.cur.shoulders&&K1B.cur.shoulders[s>0?1:0];
+  e.k1.fall={x0:e.pos.x,z0:e.pos.z,x1,z1,t:0,ob};if(sh)e.face=Math.atan2(x1-sh.x,z1-sh.z);e.inner.rotation.y=0;SFX.whoosh();}
+function k1nFallStep(e,dt){const f=e.k1.fall;if(e.state!=='broken'||!e.alive){e.k1.fall=null;return;}
+  f.t+=dt;const u=clamp(f.t/K1N.fall,0,1),q=u*u*(3-2*u);e.pos.x=f.x0+(f.x1-f.x0)*q;e.pos.z=f.z0+(f.z1-f.z0)*q;
+  if(u<1)return;e.k1.fall=null;const F=K1B.fx;SFX.crash();shakeAll(0.05,0.3);if(F){F.sprouts(e.pos.x,e.pos.z,e.r+1.4);F.leaves(new V3(e.pos.x,0.4,e.pos.z),12,{up:0.7,spd:1.6,cols:[0x9acb48,0x6aa338,0x8c6644]});}
+  f.ob();}
+// руки врозь: своя половина поляны, ладони не ближе K1N.gap (уступает та, что не бьёт; обе свободны — расходятся поровну), привязь — как была
+function k1nSpace(e,dt){const s=e.side||1;if(e.state==='broken'||e.state==='spawn'||e.k1.fall)return;
+  if(e.pos.x*s<K1N.half)e.pos.x=s*K1N.half;
+  const o=W.enemies.find(q=>q!==e&&q.k1&&q.alive);
+  if(o){const d=Math.hypot(e.pos.x-o.pos.x,e.pos.z-o.pos.z);
+    if(d<K1N.gap){const busy=q=>q.state==='ready'||q.state==='wind'||q.state==='strike'||q.state==='broken'||q.dazeT>0,share=busy(o)?1:busy(e)?0:0.5;
+      if(share>0)e.pos.x+=s*Math.min((K1N.gap-d)*share,6*dt);}}
+  const hx=e.pos.x-e.home.x,hz=e.pos.z-e.home.z,hl=Math.hypot(hx,hz),lim=e.leash-0.05;if(hl>lim){e.pos.x=e.home.x+hx/hl*lim;e.pos.z=e.home.z+hz/hl*lim;}}
 // ладонь увязла в корнях: окно удара (общий «открыт» — e.dazeT: враг в recover, можно бить сколько успеешь)
 function k1nStuck(e){e.dazeT=K1N.stuck;e.k1.stuck=true;const F=K1B.fx;SFX.knock();K1B.emo(k1nLeshy(),'surprise',1.0);
   if(F){F.sprouts(e.pos.x,e.pos.z,e.r+0.6);}floatText(e.pos.clone().add(new V3(0,e.L.top*e.s+1.0,0)),'Открыт! Бей!','#ffe36b');}
@@ -32,6 +52,7 @@ function k1nStuck(e){e.dazeT=K1N.stuck;e.k1.stuck=true;const F=K1B.fx;SFX.knock(
 const k1nLerp=(a,b,t)=>a+(b-a)*t;
 function k1nPost(e,dt,k){const k1=e.k1,L=e.L,b=e.body,s=e.side||1,st=e.state,red=(e.sig==='red'&&(st==='wind'||st==='strike'))||(st==='ready'&&e.signals[0]==='red'),
     w=st==='wind',kk=w?k:st==='ready'?clamp(e.t/0.45,0,1)*0.35:0;
+  k1nSpace(e,dt);
   if(!L.arm)return;
   if(st==='ready'||w){if(red){e.inner.rotation.y=k1nLerp(e.inner.rotation.y,s*0.9*kk,0.3);L.arm.rotation.x=-0.3*kk;b.position.y+=0.3*kk;}
     else{e.inner.rotation.y*=0.7;b.position.y+=1.5*kk;L.arm.rotation.x=-1.5*kk;}}
