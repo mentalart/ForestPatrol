@@ -1,0 +1,191 @@
+[
+{
+"id": "3-1_s09",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Третье яблочко — и Ворон съёжился, закружился в золотых искрах…",
+"max": 4.1
+},
+{
+"id": "3-1_s10",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Жар-птица откусила Царь-яблоко — и вспыхнула, как заря.",
+"max": 4.5
+},
+{
+"id": "3-2_s01",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] От тепла двух перьев грозовая нить тает, как иней.",
+"max": 4.3
+},
+{
+"id": "3-2_s02",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Все девять барашков — в кошаре. Ветер подлетает поближе.",
+"max": 4.3
+},
+{
+"id": "3-2_s03",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] На вершине — гроза. В середине её — огромный баран, шерсть искрит, рога горят.",
+"max": 4.5
+},
+{
+"id": "3-2_s04",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Гроза иссякла — Баран падает на облако. Только на рогах чёрная нить держится.",
+"max": 4.1
+},
+{
+"id": "3-2_s05",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Баран опускает голову — и чёрная нить на рогах лопается.",
+"max": 4.3
+},
+{
+"id": "3-5_s01",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Мышка на лавку садится — золотые яблочки катает, будто Тишка.",
+"max": 3.9
+},
+{
+"id": "3-5_s02",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Стая пролетела, а один гусь — вожак — кружит над печкой. Чует!",
+"max": 4.5
+},
+{
+"id": "3-5_s03",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Гуси под колыбельную уснули, сели, как куры. Яга на ступе спускается.",
+"max": 4.1
+},
+{
+"id": "3-5_064",
+"who": "yaga",
+"vid": "3H7aTk6uTUDbt11IM9D4",
+"prompt": "Чужим ключом моих гусей приманил, костлявый.",
+"max": 5.5
+},
+{
+"id": "3-5_065",
+"who": "yaga",
+"vid": "3H7aTk6uTUDbt11IM9D4",
+"prompt": "Велел малыша взять — чтоб колыбельную никто не вспомнил. Ну, погоди.",
+"max": 5.5
+},
+{
+"id": "3-5_s04",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Яга выдёргивает ключ и швыряет в пропасть. Потом смотрит на нас.",
+"max": 4.7
+},
+{
+"id": "3-5_066",
+"who": "yaga",
+"vid": "3H7aTk6uTUDbt11IM9D4",
+"prompt": "Долг за мной был — считай, отдала.",
+"max": 4.9
+},
+{
+"id": "3-5_067",
+"who": "yaga",
+"vid": "3H7aTk6uTUDbt11IM9D4",
+"prompt": "А за этот ещё буду должна.",
+"max": 4.1
+},
+{
+"id": "3-5_s05",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Гуси-лебеди унесли бельчонка Тишку — того, что колыбельную забыл.",
+"max": 5.1
+},
+{
+"id": "3-5_068",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Гуси видят свет. Тише… Где темно — идём смело.",
+"max": 5.1
+},
+{
+"id": "3-B_s01",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Соловей-Разбойник на семи дубах сидит, свитых гнездом, И свистит так, что облака рвутся кругом.",
+"max": 5.5
+},
+{
+"id": "3-B_s02",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Соловей крикнул по-звериному — и солнце погасло. Из тьмы глядят глаза.",
+"max": 4.9
+},
+{
+"id": "3-B_s03",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Зашипел Соловей по-змеиному — и закрутился посреди гнезда вихрь.",
+"max": 4.7
+},
+{
+"id": "3-B_s04",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Сел Соловей на самый высокий дуб — и раздулся втрое. Все три голоса — разом.",
+"max": 5.1
+},
+{
+"id": "3-B_s05",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Соловей садится и горло трёт.",
+"max": 4.5
+},
+{
+"id": "3-B_s06",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Пелагея к нему подходит и тихо запевает Ту самую песню, что Сирин с Алконостом знают.",
+"max": 4.5
+},
+{
+"id": "3-B_s07",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Соловей подхватывает. Голос у него — настоящий.",
+"max": 4.9
+},
+{
+"id": "3-B_s08",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Перья голосов вернулись на хвост, гнездо снова сплелось, а дочки-соловушки подпевают.",
+"max": 4.7
+},
+{
+"id": "3-B_s09",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Соловей звено выплёвывает — звенит, как колокольчик.",
+"max": 4.7
+},
+{
+"id": "3-B_s10",
+"who": null,
+"vid": "PZhi1QpQl0Z9H9WfRfYS",
+"prompt": "[warm, storytelling] Заколодела дорожка прямоезжая — к Соловью, на семь дубов. Свистнет он — травы-муравы заплетаются, цветочки осыпаются, леса к земле клонятся.",
+"max": 5.5
+}
+]

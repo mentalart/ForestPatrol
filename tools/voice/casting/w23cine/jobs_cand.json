@@ -1,0 +1,128 @@
+[
+{
+"id": "cand_sadovnik_alexander",
+"vid": "LTkx8oHrUXaND7aaxdTA",
+"name": "Alexander - Deep Mature Narrator",
+"tag": "[old, raspy]",
+"prompt": "[old, raspy] Здравствуйте, малые… Сто лет я этот сад стерегу. Нынче ворот не отпереть — стар."
+},
+{
+"id": "cand_sadovnik_zhelezny",
+"vid": "Ga0Zjw9ZBbevb3wIda0V",
+"name": "David Zhelezny",
+"tag": "[old, raspy]",
+"prompt": "[old, raspy] Здравствуйте, малые… Сто лет я этот сад стерегу. Нынче ворот не отпереть — стар."
+},
+{
+"id": "cand_sadovnik_andrey",
+"vid": "YVzZgJXzmJLOqP7aJOnD",
+"name": "Andrey",
+"tag": "[old, raspy]",
+"prompt": "[old, raspy] Здравствуйте, малые… Сто лет я этот сад стерегу. Нынче ворот не отпереть — стар."
+},
+{
+"id": "cand_molodets_daniel",
+"vid": "GC6lSBdDbTgPRulcGFDX",
+"name": "Daniel",
+"tag": "[cheerful]",
+"prompt": "[cheerful] Ох! Будто сто годков с плеч скинул! Спина не скрипит!"
+},
+{
+"id": "cand_molodets_alexfr",
+"vid": "sy3iWjPWyIrDlSo8mBwS",
+"name": "Alex - Friendly & Casual",
+"tag": "[cheerful]",
+"prompt": "[cheerful] Ох! Будто сто годков с плеч скинул! Спина не скрипит!"
+},
+{
+"id": "cand_molodets_denis",
+"vid": "76rT6drChOHgGsscaHMJ",
+"name": "Denis - Narrator",
+"tag": "[cheerful]",
+"prompt": "[cheerful] Ох! Будто сто годков с плеч скинул! Спина не скрипит!"
+},
+{
+"id": "cand_veter_permikin",
+"vid": "lsAmGFzUYusakA482527",
+"name": "Andrey Permikin",
+"tag": "[excited]",
+"prompt": "[excited] Ух! Стадо по небу разбрелось — собираю, гоняю! Берегитесь, малые, — сдую!"
+},
+{
+"id": "cand_veter_ivan",
+"vid": "JKtNvDNrWu33P1xzttP2",
+"name": "Ivan",
+"tag": "[excited]",
+"prompt": "[excited] Ух! Стадо по небу разбрелось — собираю, гоняю! Берегитесь, малые, — сдую!"
+},
+{
+"id": "cand_veter_sergey",
+"vid": "XuEV9VY3VUASYgJVNBh0",
+"name": "Sergey",
+"tag": "[excited]",
+"prompt": "[excited] Ух! Стадо по небу разбрелось — собираю, гоняю! Берегитесь, малые, — сдую!"
+},
+{
+"id": "cand_baran_vladnizk",
+"vid": "2yWzeFFP9bP0WcgRi1jx",
+"name": "Владимир - Низкий & Глубокий",
+"tag": "[booming]",
+"prompt": "[booming] Кто тут?! Где мой сынок?! Бе-е-е-е!"
+},
+{
+"id": "cand_baran_maxim",
+"vid": "SkGOoi8yfK3ONMNKMKj0",
+"name": "Maxim - Premium Baritone",
+"tag": "[booming]",
+"prompt": "[booming] Кто тут?! Где мой сынок?! Бе-е-е-е!"
+},
+{
+"id": "cand_baran_fuad",
+"vid": "dWNEQ4rqRY6thcusuDyq",
+"name": "Fuad",
+"tag": "[booming]",
+"prompt": "[booming] Кто тут?! Где мой сынок?! Бе-е-е-е!"
+},
+{
+"id": "cand_pushok_dasha",
+"vid": "sk83Bye6Z8drwXh0KBFz",
+"name": "Dasha",
+"tag": "[childlike voice]",
+"prompt": "[childlike voice] Бе-е! Папа!"
+},
+{
+"id": "cand_pushok_taya",
+"vid": "8pYiWLBihr54ecI85RXM",
+"name": "Taya - Warm Narrator",
+"tag": "[childlike voice]",
+"prompt": "[childlike voice] Бе-е! Папа!"
+},
+{
+"id": "cand_pushok_kate",
+"vid": "WfExDXCt2GBg6MI5KjQk",
+"name": "Kate",
+"tag": "[childlike voice]",
+"prompt": "[childlike voice] Бе-е! Папа!"
+},
+{
+"id": "cand_voronenok_viktoriya",
+"vid": "xcVbjGhhLIoKi3va6mAe",
+"name": "Viktoriya Voloshina",
+"tag": "[childlike voice]",
+"prompt": "[childlike voice] Кар?.. Пи-пи!"
+},
+{
+"id": "cand_voronenok_kate",
+"vid": "WfExDXCt2GBg6MI5KjQk",
+"name": "Kate",
+"tag": "[childlike voice]",
+"prompt": "[childlike voice] Кар?.. Пи-пи!"
+},
+{
+"id": "cand_voronenok_dasha",
+"vid": "sk83Bye6Z8drwXh0KBFz",
+"name": "Dasha",
+"tag": "[childlike voice]",
+"prompt": "[childlike voice] Кар?.. Пи-пи!"
+}
+]
