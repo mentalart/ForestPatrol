@@ -294,15 +294,21 @@
    "about": "ласковая, молодая",
    "voice": "Delia",
    "voice_id": "1550321e-7f5b-526e-b001-02328b03e9bc",
-   "pitch": 1
+   "pitch": 0,
+   "pitch_hf": 1,
+   "el_voice_id": "H6D7dDuIRVswtBeh1uQL",
+   "el_voice_name": "ZC Яблонька"
   },
   "rechka": {
    "name": "Молочная речка",
    "about": "плавная, журчащая",
    "voice": "Livia",
    "voice_id": "984ddbed-83d3-5388-84ce-02fe6c24befa",
-   "pitch": 0.5,
-   "fx": "magic"
+   "pitch": 0,
+   "fx": "magic",
+   "pitch_hf": 0.5,
+   "el_voice_id": "8b0ZAn0hwmUqAkzPaQu7",
+   "el_voice_name": "ZC Молочная речка"
   },
   "dedka": {
    "name": "Дедка",
@@ -350,7 +356,8 @@
    "pitch": 0,
    "el_voice_id": "PvHv7M9U0o7NMRsWdjV1",
    "el_voice_name": "ZC Журавль",
-   "pitch_hf": 0.5
+   "pitch_hf": 0.5,
+   "el_voice_deleted": "2026-10-14: голос удалён из аккаунта ElevenLabs (лимит 30 голосов); записи мира 1 готовы"
   },
   "caplya": {
    "name": "Цапля",
@@ -360,7 +367,8 @@
    "pitch": 0,
    "el_voice_id": "evNErfPK71pEtGwA8c9J",
    "el_voice_name": "ZC Цапля",
-   "pitch_hf": 1
+   "pitch_hf": 1,
+   "el_voice_deleted": "2026-10-14: голос удалён из аккаунта ElevenLabs (лимит 30 голосов); записи мира 1 готовы"
   },
   "lyagushka": {
    "name": "Царевна-лягушка",
@@ -2725,9 +2733,9 @@
    "text": "Ох, хорошо! Напоил, напоил!",
    "tts": "Ох, хорошо! Напоил, напоил!",
    "max": 2.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_080030_6fc31338-156c-479a-a6a8-7de76980b2d2.mp3",
-   "job": "6fc31338-156c-479a-a6a8-7de76980b2d2",
-   "dur": 2.89
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.04
   },
   {
    "id": "3-5_002",
@@ -2736,9 +2744,9 @@
    "text": "Спасибо! Вода ушла — под бережком место есть, полезайте.",
    "tts": "Спасибо! Вода ушла — под бережком место есть, полезайте.",
    "max": 3.4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_080030_0727994e-9990-47c4-99cf-8e5abc8e463f.mp3",
-   "job": "0727994e-9990-47c4-99cf-8e5abc8e463f",
-   "dur": 4.06
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4
   },
   {
    "id": "3-5_003",
@@ -2802,9 +2810,9 @@
    "text": "Съешь моё кислое яблочко да полей меня — спрячу, сберегу.",
    "tts": "Съешь моё кислое яблочко да полей меня — спрячу, сберегу.",
    "max": 4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_080031_18985da6-91b2-4bc8-a9a1-877385213430.mp3",
-   "job": "18985da6-91b2-4bc8-a9a1-877385213430",
-   "dur": 4.1
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.05
   },
   {
    "id": "3-5_009",
@@ -2813,9 +2821,9 @@
    "text": "Плотина дышать мне не даёт! Сломайте её —<br>А я вас под бережком спрячу, как своё.",
    "tts": "Плотина дышать мне не даёт! Сломайте её — а я вас под бережком спрячу, как своё.",
    "max": 4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_080031_f1df679e-75b8-4ca5-8631-0aa09fb9542a.mp3",
-   "job": "f1df679e-75b8-4ca5-8631-0aa09fb9542a",
-   "dur": 5.15
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.16
   },
   {
    "id": "3-5_010",
@@ -13507,8 +13515,8 @@
    "text": "Киселька отведали — спрячу! Под бережком пещерка, ищите.",
    "max": 4,
    "tts": "Киселька отведали, спрячу! Под бережком пещерка, ищите.",
-   "pitch": 0.5,
-   "url": "silero:baya",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
    "dur": 4.12
   },
   {
@@ -13518,9 +13526,9 @@
    "text": "Не отведали яблочка — так хоть полейте меня! Тогда спрячу.",
    "max": 4,
    "tts": "Не отведали яблочка, так хоть полейте меня! Тогда спрячу.",
-   "pitch": 2,
-   "url": "silero:kseniya",
-   "dur": 3.76
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.03
   },
   {
    "id": "3-5_036",
@@ -13529,9 +13537,9 @@
    "text": "Отведали яблочка — спрячу, сберегу! Потапушка, раздвинь ветки.",
    "max": 4,
    "tts": "Отведали яблочка, спрячу, сберегу! Потапушка, раздвинь ветки.",
-   "pitch": 2,
-   "url": "silero:kseniya",
-   "dur": 4.03
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.77
   },
   {
    "id": "3-5_037",
@@ -13683,9 +13691,9 @@
    "text": "Уважили! На обратном пути — спрячу.",
    "max": 3.4,
    "tts": "Уважили! На обратном пути, спрячу.",
-   "pitch": 2,
-   "url": "silero:kseniya",
-   "dur": 2.59
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.21
   },
   {
    "id": "3-5_051",
@@ -13694,9 +13702,9 @@
    "text": "Ну, как знаете… Обратно пойдёте — водицы мне дайте.",
    "max": 3.6,
    "tts": "Ну, как знаете... Обратно пойдёте, водицы мне дайте.",
-   "pitch": 2,
-   "url": "silero:kseniya",
-   "dur": 3.52
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.24
   },
   {
    "id": "3-5_052",
@@ -13705,9 +13713,9 @@
    "text": "Отведайте моего киселька с молочком — спрячу, сберегу.",
    "max": 4,
    "tts": "Отведайте моего киселька с молочком, спрячу, сберегу.",
-   "pitch": 0.5,
-   "url": "silero:baya",
-   "dur": 3.93
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.08
   },
   {
    "id": "3-5_053",
@@ -13716,9 +13724,9 @@
    "text": "Ну, как знаете… Обратно пойдёте — запруду мне сбейте.",
    "max": 3.8,
    "tts": "Ну, как знаете... Обратно пойдёте, запруду мне сбейте.",
-   "pitch": 0.5,
-   "url": "silero:baya",
-   "dur": 3.88
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.36
   },
   {
    "id": "3-5_054",
@@ -13771,9 +13779,9 @@
    "text": "Отведали — обратно пойдёте, спрячу!",
    "max": 3.4,
    "tts": "Отведали, обратно пойдёте, спрячу!",
-   "pitch": 0.5,
-   "url": "silero:baya",
-   "dur": 2.73
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.09
   },
   {
    "id": "3-5_059",
