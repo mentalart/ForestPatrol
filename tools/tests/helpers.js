@@ -84,4 +84,6 @@ U.soloAdapt=function(){if(U._sa)return;U._sa=true;U.soloSwaps=0;
   ZC.press=c=>{if(!busy&&ZC.G.solo){if(c==='KeyQ'||c==='KeyK'){const p=ZC.players[c==='KeyQ'?0:1];take(p.heroes[1-p.act].kind);return;}
     if(P1.has(c))want(0);else if(P2.has(c))want(1);}press(c);};
   ZC.hold=(c,on)=>{if(on&&!busy&&ZC.G.solo){if(P1.has(c))want(0);else if(P2.has(c))want(1);}hold(c,on);};};
+// 1-Б: ролик-урок «Как одолеть Лешего» перед этапом 1 — боты его не смотрят (свой бот tfin_k1btut включает: ZC.FIN.k1b.tut.auto=true)
+try{if(ZC.FIN&&ZC.FIN.k1b&&ZC.FIN.k1b.tut)ZC.FIN.k1b.tut.auto=false;}catch(e){}
 'soloAdapt ok'

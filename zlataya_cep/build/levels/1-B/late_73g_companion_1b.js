@@ -19,6 +19,7 @@ CMP.route('1-B',[
     const end=KB.path[KB.path.length-1],atEnd=Math.hypot(h.pos.x-end[0],h.pos.z-end[1])<0.5;
     // сбили с моста (вторая рука, кувырок): начать заново от основания руки — иначе шёл бы по точкам понизу и упирался в плечо, пока мост не уберут
     if(!atEnd&&CMP.wp&&CMP.wp.key===KB.path&&CMP.wp.i>=2&&h.grounded&&!rp.includes(h.groundRef)){CMP.wp.i=0;KB.wi=0;KB.wt=G.time;}
+    {const S1=FIN.k1b.s1,S=S1&&S1.sw.find(q=>q.r&&q.r.cols.includes(rp[0]));if(S&&!S.hit&&S.t>S.dur-0.3&&h.grounded&&rp.includes(h.groundRef)){cmpTap('roll');return;}}   // вторая рука сметает мост — кувырок (late_99zca_k1b_stage1.js)
     if(!atEnd){cmpPath(h,KB.path,0.3,0.6);
       if(CMP.wp&&CMP.wp.key===KB.path){if(CMP.wp.i!==KB.wi){KB.wi=CMP.wp.i;KB.wt=G.time;}else if(G.time-KB.wt>1.2&&CMP.wp.i<KB.path.length-1){CMP.wp.i++;KB.wt=G.time;}}   // стоит на месте — следующая точка
       if(!(h.pos.y>4.5))return;}   // рампа узкая (0,75 м от оси): точки пути — с малым допуском, входит строго вдоль оси

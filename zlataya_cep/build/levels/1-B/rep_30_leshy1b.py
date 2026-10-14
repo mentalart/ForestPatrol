@@ -9,6 +9,7 @@ rep("function headHit(h){F.head++;","function headHit(h){F.head++;FIN.k1b.onHead
 rep("const arm=new THREE.Mesh(new THREE.CylinderGeometry(0.55,0.75,len,8),M(0x3d5a2a));arm.position.copy(from).add(to).multiplyScalar(0.5);arm.quaternion.setFromUnitVectors(new V3(0,1,0),to.clone().sub(from).normalize());g.add(arm);","FIN.k1b.bridge(g,from,to,len,hand);")
 rep("const top=new THREE.Mesh(new THREE.BoxGeometry(1.1,0.1,len),MAT.moss);top.position.copy(arm.position).add(new V3(0,0.55,0));top.lookAt(to.clone().add(new V3(0,0.55,0)));g.add(top);","")
 rep("W.onStart=()=>intro();","W.onStart=()=>intro();FIN.k1b.init({L,hands,doubles,shoulders,headPos,C,R,carousel,F,bb,ending,setBoss:b=>{boss3=b;}});")
+rep("FIN.k1b.init({L,hands,","FIN.k1b.init({ramps,L,hands,")   # мосты — модулю этапа 1: «держи — беги», смахивание с моста (late_99zca_k1b_stage1.js)
 # ---- этап 2 «Ищи-свищи»: прятки (late_99za_k1b_hide.js, шаг 4 плана) ----
 rep("state:'walk',t:0,pos:m.g.position});}\n    smokePuff();}","state:'walk',t:0,pos:m.g.position});}\n    FIN.k1b.hideInit(doubles,n,F.round||0,C);smokePuff();}")   # слоты хороводов, настоящий — со следами
 rep("if(d.state==='walk'){d.a+=dt*0.32;d.pos.set(C.x+Math.cos(d.a)*7,0,C.z+Math.sin(d.a)*7);d.m.g.rotation.y=-d.a;d.m.body.rotation.z=Math.sin(G.time*5+d.a)*0.06;","if(d.state==='walk'){FIN.k1b.hideStep(d,dt,C);")   # вместо ровного круга — перебежки, приседы, обмен местами

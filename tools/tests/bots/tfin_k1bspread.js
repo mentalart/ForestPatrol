@@ -23,8 +23,8 @@ window.rp=(W.ramps||[]).find(q=>q.y1>4&&q.y0<1);
 ok2=!!(e&&e.k1bridge&&e.k1bridge.g.parent&&rp&&Math.abs(e.pos.x-e.side*5)<0.3&&Math.abs(e.pos.z+12.5)<0.3&&rp.len>10);
 'broken after '+(n/60).toFixed(1)+'s side='+(e&&e.side)+' at '+(e&&e.pos.x.toFixed(1)+','+e.pos.z.toFixed(1))+' bridge='+!!(e&&e.k1bridge)+' len='+(rp&&rp.len.toFixed(1))+' slope='+(rp&&(Math.atan2(rp.y1-rp.y0,rp.len)*57.3).toFixed(0))+' ok='+ok2
 //@@
-// по мосту — на плечо, удар по макушке: трофей
-const h0=W.flags.head||0,h=U.act(0),sh={x:e.side*2.4,z:-22.5};U.walkTo(0,rp.x0-rp.dx*1.2,rp.z0-rp.dz*1.2,4);let top=0;
+// по мосту — на плечо, удар по макушке: трофей (смахивание с моста здесь выключено — его проверяет tfin_k1bstage1)
+K.cur.ramps.forEach(r=>{r.k1swDone=true;});const h0=W.flags.head||0,h=U.act(0),sh={x:e.side*2.4,z:-22.5};U.walkTo(0,rp.x0-rp.dx*1.2,rp.z0-rp.dz*1.2,4);let top=0;
 for(let k=1;k<=10;k++){U.walkTo(0,rp.x0+rp.dx*rp.len*k/10,rp.z0+rp.dz*rp.len*k/10,2);top=Math.max(top,h.pos.y);}
 U.walkTo(0,sh.x,sh.z,2);h.face=Math.atan2(0-h.pos.x,-24.2-h.pos.z);ZC.tick(1);ZC.press('KeyF');ZC.tick(24);
 'top='+top.toFixed(1)+' head '+h0+'→'+W.flags.head+' ok='+(ok2&&W.flags.head>h0)
