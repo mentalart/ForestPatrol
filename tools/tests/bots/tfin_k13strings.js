@@ -1,5 +1,5 @@
 //@@ wait=1500
-// 1-3 «Колобок», переделка частей 1–3: струны-гусли с кружком доли, Колобок прыгает на струне за две доли, дуга искр в полёте, плетень и бурелом
+// 1-3 «Колобок», переделка частей 1–3 (и вожак стаи в части 5): струны-гусли с кружком доли, Колобок прыгает на струне за две доли, дуга искр в полёте, плетень и бурелом
 // только со струны, воздушные струны (со струны на струну), двойная струна, встречные из сказки (Заяц, Волк, Медведь — зов и ответ щитом),
 // лиса запутывается в струнах, «в лад» за прыжок на «и», музыка слоями, звёзды частей, мягкий повтор последней фразы.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
@@ -47,7 +47,23 @@ r.push('wallStumbles='+wl,'hare='+hare);
 s.jump(58);let rep=false;for(let i=0;i<60*20&&s.lastK<70;i++){ZC.tick(1);if(s.rep[1]>0&&!rep){rep=true;r.push('rewindAt='+s.lastK);}}
 const pit=(s.stLog||[]).filter(t=>/Нить/.test(t)).length;r.push('pit='+pit,'rep='+JSON.stringify(s.rep),'k='+s.lastK,'errs='+_errs.length+(_errs[0]?' '+_errs[0]:''));
 r.push(wl===2&&hare==='bump,bump'&&pit>=2&&s.rep[1]===1&&!_errs.length?'misses ok':'FAIL misses');r
+//@@ wait=800
+// со струны не в такт («рано») — всё равно высоко: плетень (доля 11) перелетаем без «перевалился», струна не засчитана;
+// у обвалов (доли 50 и 61) струна поперёк всех трёх дорожек — с крайней дорожки тоже перелетаем, «Нить подтянула» нет
+ZC.startFrom(ZC.LV('1-3'));ZC.G.manual=true;ZC.tick(10);U.nocine();ZC.tick(5);ZC.players.forEach(p=>{p.path='hard';});window.S=()=>ZC.W.song;const s=S(),r=[];
+const early=(kEnd,side)=>{for(let i=0;i<60*30&&s.state==='play'&&s.lastK<kEnd;i++){for(const pi of[0,1]){const K=U.K[pi],h=U.act(pi);
+    if(side&&i%8===pi*4&&s.lane[pi]!==(pi?2:0))ZC.press(pi?K.B[1]:K.B[0]);
+    const st=s.strings.find(q=>q.pi===pi&&!q.used&&!q.air&&q.lanes.includes(s.lane[pi])&&h.grounded&&h.pos.z-q.z<0.95&&h.pos.z-q.z>0.55);
+    const lg=s.obst.find(o=>o.pi===pi&&!o.hit&&o.type==='log'&&h.pos.z-o.z<1.2&&h.pos.z-o.z>0.6);if((st||lg)&&h.grounded)ZC.press(K.j);}
+  ZC.tick(1);}};
+s.jump(6);early(13,false);const w11=s.strings.filter(q=>q.k===10),wl=(s.stLog||[]).filter(t=>/Плет/.test(t)).length;
+r.push('k10 used='+w11.map(q=>q.used).join(',')+' ok='+w11.map(q=>!!q.ok).join(','),'wallStumbles='+wl);
+s.jump(48);early(64,true);const ps=s.strings.filter(q=>(q.k===50||q.k===61)&&!q.air),pit=(s.stLog||[]).filter(t=>/Нить/.test(t)).length;
+r.push('lanes='+ps.map(q=>q.lanes.length).join(','),'pitUsed='+ps.map(q=>q.used).join(','),'pit='+pit,'side='+s.lane.join(','));
+r.push(w11.every(q=>q.used&&!q.ok)&&!wl&&ps.every(q=>q.lanes.length===3&&q.used)&&!pit?'offbeat ok':'FAIL offbeat');r
 //@@
-// до конца уровня: пляска и звено — без ошибок
-const s=S();s.jump(186);const r=[U.until(()=>s.state!=='play',20),'state='+s.state,'errs='+_errs.length+(_errs[0]?' '+_errs[0]:'')];
-r.push(s.state!=='play'&&!_errs.length?'k13strings ok':'FAIL k13strings');r
+// до конца уровня: пляска и звено — без ошибок; вожак стаи (доля 191) виден — сияние вокруг и счёт «Три… Два… Раз… ЩИТ»
+const s=S();s.jump(186);const du=s.foes.find(q=>q.type==='duo'&&q.k===191);let hv=false,cd=[];
+for(let i=0;i<60*20&&s.state==='play';i++){ZC.tick(1);if(du.halo.visible)hv=true;if(du.cd!==undefined&&cd[cd.length-1]!==du.cd)cd.push(du.cd);}
+const r=['state='+s.state,'halo='+hv,'cd='+cd.join(''),'errs='+_errs.length+(_errs[0]?' '+_errs[0]:'')];
+r.push(s.state!=='play'&&hv&&cd.join('')==='3210'&&!_errs.length?'k13strings ok':'FAIL k13strings');r
