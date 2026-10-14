@@ -6,8 +6,9 @@
 //    дальний утёс с Кощеем и вороном, луна и звёзды, лиловая туча, костлявая рука в перстне, искры разлетевшейся цепи;
 //  · P — сосна-штаб Лесного патруля снаружи: настил, ветка-мастерская Прошки, огород Йоши, гнездо Пелагеи на макушке, окно, дверь,
 //    флажок, гирлянда; лес внизу; ночью — звёздный дождь и искра, летящая к сосне;
-//  · W1…W5 — пять миров на 2 секунды каждый: лес (ели смыкаются, глаза Лешего, избушка), Китеж (колокол без звона, струна гуслей),
-//    небесный сад (яблони сереют, Жар-птица тускнеет), Смородина (три головы Горыныча), Буян (сундук на цепях, глаз Лиха).
+//  · W1…W5 — пять миров на 2 секунды каждый, в каждом — босс в своём логове: лес (ели смыкаются, встаёт Леший-великан, огоньки, избушка),
+//    Китеж (Водяной верхом на соме над куполами, колокол без звона), небесный сад (яблони сереют; Соловей-Разбойник свистит с гнезда на
+//    семи дубах), Смородина (три головы Горыныча — лбами и огнём), Буян (сундук на цепях, Лихо Одноглазое открывает глаз).
 // Свет и небо меняются по шотам (PRK.look) без пересборки уровня: фон, туман, свет, горизонт, цветокор — как у setTheme.
 const PRK={on:false,root:null,boxes:[],hid:[],ups:[],L:null,P:null,Wd:[],look0:null,heroes0:null,skipped:false,i:-1,lastSay:null};FIN.intro=PRK;
 const PRV=(x,y,z)=>new V3(x,y,z);
@@ -311,16 +312,17 @@ function prkBuildP(){const O=PRO.P,g=prkGroup(PRK.root,O.x,O.y,O.z),P={g};PRK.P=
 function prkFall(par,col){const s=prkGroup(par,0,0,0);prkGlow(s,col||0xffd060,2.2,0,0,0,1);prkAdd(s,new THREE.TorusGeometry(0.24,0.07,6,12),prkM(0xffd060,{emissive:0xffa020,emissiveIntensity:1}),0,0,0);
   const tr=prkAdd(s,new THREE.CylinderGeometry(0.02,0.14,3,5),new THREE.MeshBasicMaterial({color:0xffe9a0,transparent:true,opacity:0.55,fog:false}),0,1.5,0);tr.castShadow=false;s.userData.tr=tr;s.visible=false;return s;}
 function prkBuildW(){const D=PRK.Wd={};
-  // 1 · Дремучий лес: ели смыкаются, глаза Лешего в дупле, избушка поворачивается, клубок в траве
+  // 1 · Дремучий лес (1-Б): ели смыкаются, из чащи встаёт Леший-Путаник выше елей, болотные огоньки, избушка поворачивается, клубок в траве
   {const O=PRO.W1,g=prkGroup(PRK.root,O.x,O.y,O.z),w={g};D.w1=w;const gm=prkM(0x2e4a2a);prkAdd(g,new THREE.CylinderGeometry(34,34,1,20),gm,0,-0.5,0);
     for(let i=0;i<46;i++){const a=i*2.399,r=10+(i*29%26),x=Math.sin(a)*r,z=Math.cos(a)*r-6;if(Math.abs(x)<6&&z>-17)continue;prkFir(g,x,0,z,7+(i%4)*1.5,[0x1f4030,0x2a5038,0x1a3a2a][i%3]);}
     w.walk=[[-7.5,-3],[7.2,-3.4],[-6.2,-11],[6.6,-11.6]].map(([x,z])=>{const f=prkFir(g,x,0,z,7.5,0x2a5038);f.userData.p0=f.position.clone();return f;});
-    const old=prkGroup(g,0,0,-12);prkAdd(old,new THREE.CylinderGeometry(1.3,1.8,7,9),prkM(0x4a3422),0,3.5,0);prkAdd(old,new THREE.CircleGeometry(0.7,10),PRK_DARK,0,3.0,1.42);
-    w.eyes=[-1,1].map(s=>{const e=prkAdd(old,new THREE.SphereGeometry(0.17,8,6),new THREE.MeshBasicMaterial({color:0xd8ff6a}),s*0.3,3.1,1.5);e.scale.y=0.05;return e;});
+    w.lesh=prkCast(()=>makeLeshy(3.4),g,0.4,-12,-15,0,0);w.lesh.g.userData.y0=0;   // встаёт из-под земли (tick сцены 6)
+    w.wisp=[];for(let i=0;i<9;i++){const s=prkGlow(g,[0x8af0ff,0xb8ff8a,0x6ad8ff][i%3],0.9,0,0,0,0.9);s.userData={a:i*0.7,r:3.5+(i%4)*1.6,h:0.8+(i%3)*1.1,sp:0.5+(i%3)*0.25};w.wisp.push(s);}
+    PRK.ups.push(t=>{if(!g.visible)return;w.wisp.forEach(s=>{const u=s.userData,a=t*u.sp+u.a;s.position.set(Math.sin(a)*u.r,u.h+Math.sin(t*2+u.a)*0.4,Math.cos(a)*u.r*0.6-7);});});
     w.hut=makeHut();w.hut.g.userData.prkCast=true;g.add(w.hut.g);(w.hut.g||w.hut).position.set(4.6,0,-7);(w.hut.g||w.hut).rotation.y=-0.4;
     const clew=prkAdd(g,new THREE.SphereGeometry(0.32,8,6),prkM(0xd03030),1.4,0.32,-3.4);for(let i=0;i<3;i++)prkAdd(g,new THREE.TorusGeometry(0.33,0.02,4,12),prkM(0xf06060),1.4,0.32,-3.4).rotation.set(i,i*1.3,0);
     w.sp=prkFall(g);}
-  // 2 · Подводный Китеж: купола, колокол без звона, гусли со струной, рыбы, пузыри
+  // 2 · Подводный Китеж (2-Б): купола, Водяной верхом на соме кружит над городом, колокол без звона, гусли со струной, рыбы, пузыри, лучи сверху
   {const O=PRO.W2,g=prkGroup(PRK.root,O.x,O.y,O.z),w={g};D.w2=w;prkAdd(g,new THREE.CylinderGeometry(34,34,1,20),prkM(0xb8b08a),0,-0.5,0);
     const wall=prkM(0xf0ece0),dome=prkM(0xffc83a,{emissive:0x6a4a00,emissiveIntensity:0.5});
     for(const[x,z,s]of[[-7,-16,1.3],[0,-22,1.7],[8,-17,1.2],[14,-26,1.0],[-14,-25,1.1]]){const c=prkGroup(g,x,0,z);c.scale.setScalar(s);prkAdd(c,new THREE.BoxGeometry(3,4,3),wall,0,2,0);prkAdd(c,new THREE.CylinderGeometry(0.9,0.9,1.6,10),wall,0,4.8,0);
@@ -331,16 +333,25 @@ function prkBuildW(){const D=PRK.Wd={};
     w.fish=[];for(let i=0;i<9;i++){const f=prkGroup(g,0,0,0);prkAdd(f,new THREE.SphereGeometry(0.3,7,5),prkM([0xf08a3a,0x8ac8f0,0xf0d040][i%3]),0,0,0).scale.set(1.6,0.8,0.5);prkAdd(f,new THREE.ConeGeometry(0.2,0.35,4),prkM(0xf0a050),-0.55,0,0).rotation.z=Math.PI/2;
       f.userData={r:4+i*1.4,h:2+(i%4)*1.3,ph:i*0.9,sp:0.4+(i%3)*0.15};w.fish.push(f);}
     w.bub=[];for(let i=0;i<24;i++){const b=prkAdd(g,new THREE.SphereGeometry(0.08+Math.random()*0.08,6,4),new THREE.MeshBasicMaterial({color:0xd8f8ff,transparent:true,opacity:0.6}),(Math.random()-0.5)*14,Math.random()*10,(Math.random()-0.5)*12-4);b.castShadow=false;w.bub.push(b);}
-    w.sp=prkFall(g);PRK.ups.push((t,dt)=>{if(!g.visible)return;w.fish.forEach(f=>{const u=f.userData,a=t*u.sp+u.ph;f.position.set(Math.sin(a)*u.r,u.h,Math.cos(a)*u.r-6);f.rotation.y=a+Math.PI;});w.bub.forEach(b=>{b.position.y+=dt*1.2;if(b.position.y>11)b.position.y=0;});});}
-  // 3 · Небесный сад: облака под ногами, яблони сереют, Жар-птица тускнеет, перо падает
+    w.som=FIN.k2v.som();w.som.g.userData.prkCast=true;g.add(w.som.g);w.som.g.scale.setScalar(1.15);w.vod=FIN.k2v.rig(w.som.saddle,{seed:1});FIN.k2v.set(w.vod,'ride','angry');
+    for(let i=0;i<6;i++){const r=prkAdd(g,new THREE.CylinderGeometry(0.5,2.2,26,8,1,true),new THREE.MeshBasicMaterial({color:0xc8f8ff,transparent:true,opacity:0.07,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending,fog:false}),-12+i*5,12,-14+(i%3)*4);r.rotation.z=0.25;r.castShadow=false;}
+    w.somAt=a=>{const S=w.som;S.g.position.set(Math.sin(a)*6,1.9+Math.sin(a*2)*0.3,Math.cos(a)*3.5-10);S.g.rotation.y=a+Math.PI/2;};w.somAt(-0.6);
+    w.sp=prkFall(g);PRK.ups.push((t,dt)=>{if(!g.visible)return;try{w.som.tick(dt);FIN.k2v.anim(w.vod,dt);}catch(e){}w.fish.forEach(f=>{const u=f.userData,a=t*u.sp+u.ph;f.position.set(Math.sin(a)*u.r,u.h,Math.cos(a)*u.r-6);f.rotation.y=a+Math.PI;});w.bub.forEach(b=>{b.position.y+=dt*1.2;if(b.position.y>11)b.position.y=0;});});}
+  // 3 · Небесный сад (3-Б): облака под ногами, яблони сереют, Жар-птица тускнеет, перо падает; за садом — гнездо на семи дубах, Соловей-Разбойник свистит
   {const O=PRO.W3,g=prkGroup(PRK.root,O.x,O.y,O.z),w={g};D.w3=w;const cl=prkM(0xf4f0ff,{emissive:0x302a50});
     for(let i=0;i<40;i++){const geo=new FIN.orig.Icosa(2+Math.random()*2.5,1);FIN.jitter(geo,0.3);const b=prkAdd(g,geo,cl,(Math.random()-0.5)*40,-1.2+Math.random()*0.6,(Math.random()-0.5)*30-6);b.scale.y=0.45;}
     for(let i=0;i<14;i++){const geo=new FIN.orig.Icosa(2+Math.random()*2,1);FIN.jitter(geo,0.3);const b=prkAdd(g,geo,cl,(Math.random()-0.5)*20,-7-Math.random()*3,(Math.random()-0.5)*16);b.scale.y=0.5;}
     w.leaf=prkM(0x5ab04a);w.trees=[[-4,-6],[3.5,-7.5],[-1,-11],[6,-12]].map(([x,z])=>{const t=prkGroup(g,x,0,z);prkAdd(t,new THREE.CylinderGeometry(0.22,0.32,2,7),prkM(0x6b4a2b),0,1,0);
       const geo=new FIN.orig.Icosa(1.5,1);FIN.jitter(geo,0.2);prkAdd(t,geo,w.leaf,0,2.6,0);for(let i=0;i<5;i++)prkAdd(t,new THREE.SphereGeometry(0.17,6,4),prkM(0xf0c040,{emissive:0x806000}),Math.sin(i*1.3)*1.2,2.4+Math.cos(i*2)*0.5,Math.cos(i*1.3)*1.2);return t;});
     w.fb=prkCast(()=>makeFirebird({}),g,-1,2.2,-6.4,0.8,0.3);w.fb.g.traverse(c=>{if(c.material&&c.material.emissive){c.userData.e0=c.material.emissiveIntensity;c.userData.c0=c.material.color.clone();}});
+    {const N=prkGroup(g,2,-2.6,-15),oak=prkM(0x5a3d22),crown=prkM(0x4f7a2c);
+      for(let i=0;i<7;i++){const a=i/7*6.283+0.2,x=Math.cos(a)*4.2,z=Math.sin(a)*2.6;prkAdd(N,new THREE.CylinderGeometry(0.6,0.9,9,8),oak,x,1.5,z);
+        for(let k=0;k<2;k++){const geo=new FIN.orig.Icosa(1.9+k*0.4,1);FIN.jitter(geo,0.25);prkAdd(N,geo,crown,x*1.15+(k-0.5)*1.2,8.4+k*1.3,z*1.15-2.4);}}
+      prkAdd(N,new THREE.CylinderGeometry(4.6,3.4,1.0,18),prkM(0x8a6a40),0,5.4,0);for(let i=0;i<4;i++){const t=prkAdd(N,new THREE.TorusGeometry(4.4-i*0.9,0.16,5,30),prkM(i%2?0x9a7a48:0x6a4a2a),0,5.95,0);t.rotation.x=Math.PI/2;}
+      w.sol=prkCast(()=>makeSolovei(),N,0,5.9,2.4,2.1,Math.PI);
+      w.gust=[];for(let i=0;i<10;i++){const m=prkAdd(N,new THREE.TorusGeometry(1.2+i*0.35,0.05,4,20,2.2),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,depthWrite:false,fog:false}),0,8,2);m.castShadow=false;m.userData.ph=i/10;w.gust.push(m);}}
     w.feather=prkAdd(g,new THREE.ConeGeometry(0.14,0.7,4),prkM(0xff9a30,{emissive:0xff5a00,emissiveIntensity:0.9}),-1,3,-6);w.feather.visible=false;w.sp=prkFall(g);}
-  // 4 · Огненная Смородина: лавовая река, Калинов мост, три головы Горыныча из пара, клещи на наковальне
+  // 4 · Огненная Смородина (4-Б): лавовая река, Калинов мост, три головы Горыныча из пара — лбами и огнём в небо, искры, клещи на наковальне
   {const O=PRO.W4,g=prkGroup(PRK.root,O.x,O.y,O.z),w={g};D.w4=w;
     const lava=prkAdd(g,new THREE.PlaneGeometry(80,9,20,2),prkM(0xff7a20,{emissive:0xff4a00,emissiveIntensity:0.9}),0,-0.6,-8);lava.rotation.x=-Math.PI/2;lava.castShadow=false;
     for(const s of[-1,1]){const b=prkAdd(g,new THREE.BoxGeometry(80,2,14),prkM(0x3a2a26),0,-1,-8+s*11.5);b.receiveShadow=true;}
@@ -351,15 +362,17 @@ function prkBuildW(){const D=PRK.Wd={};
     w.steam=[];for(let i=0;i<8;i++){const s=prkAdd(g,new THREE.SphereGeometry(0.9,7,5),new THREE.MeshBasicMaterial({color:0xf0d8c8,transparent:true,opacity:0.3,depthWrite:false}),(Math.random()-0.5)*20,Math.random()*5,-8+(Math.random()-0.5)*6);s.castShadow=false;w.steam.push(s);}
     const an=prkGroup(g,-5,0,-1.5);prkAdd(an,new THREE.BoxGeometry(0.8,0.6,0.5),prkM(0x3a3a44),0,0.6,0);prkAdd(an,new THREE.CylinderGeometry(0.3,0.4,0.4,6),prkM(0x5a3a1a),0,0.2,0);
     const tg=prkGroup(an,0,0.96,0);for(const s of[-1,1]){const j=prkAdd(tg,new THREE.BoxGeometry(1.1,0.06,0.07),prkM(0x6a6a74),0,0,s*0.05);j.rotation.y=s*0.12;}
-    w.sp=prkFall(g);PRK.ups.push((t,dt)=>{if(!g.visible)return;w.steam.forEach((s,i)=>{s.position.y+=dt*(0.8+i%3*0.3);if(s.position.y>7)s.position.y=0;s.scale.setScalar(0.6+s.position.y*0.2);});});}
-  // 5 · Буян: остров, дуб, сундук на цепях, глаз Лиха в дупле
+    w.fire=[0,1,2].map(i=>{const f=prkGroup(g,0,0,0);for(let k=0;k<6;k++){const s=prkGlow(f,[0xffd060,0xff8a20,0xff4a10][k%3],1.2+k*0.55,0,0,0,0.9);s.position.y=k*0.9;}f.visible=false;return f;});
+    w.emb=[];for(let i=0;i<30;i++){const s=prkGlow(g,0xffa040,0.35,(Math.random()-0.5)*30,Math.random()*12,-8+(Math.random()-0.5)*14,0.9);s.userData.v=0.8+Math.random()*1.6;w.emb.push(s);}
+    w.sp=prkFall(g);PRK.ups.push((t,dt)=>{if(!g.visible)return;w.emb.forEach(s=>{s.position.y+=dt*s.userData.v;s.position.x+=Math.sin(t*2+s.userData.v*5)*dt*0.5;if(s.position.y>14)s.position.y=0;});w.steam.forEach((s,i)=>{s.position.y+=dt*(0.8+i%3*0.3);if(s.position.y>7)s.position.y=0;s.scale.setScalar(0.6+s.position.y*0.2);});});}
+  // 5 · Буян (5-1): остров, дуб, сундук на цепях; у дуба спит Лихо Одноглазое — и открывает свой глаз
   {const O=PRO.W5,g=prkGroup(PRK.root,O.x,O.y,O.z),w={g};D.w5=w;prkSea(g,260,30,0x16384c);
     {const isl=new THREE.CylinderGeometry(11,13,2.4,14);FIN.jitter(isl,0.2);prkAdd(g,isl,prkM(0xd8c08a),0,-1.1,0);}
     const ok=prkGroup(g,0,0,-3);prkAdd(ok,new THREE.CylinderGeometry(1.2,1.9,9,9),prkM(0x5a4028),0,4.5,0);const br=prkAdd(ok,new THREE.CylinderGeometry(0.3,0.5,5,7),prkM(0x5a4028),1.9,7.4,0.4);br.rotation.z=-1.2;
     for(let i=0;i<5;i++){const geo=new FIN.orig.Icosa(2.4,1);FIN.jitter(geo,0.25);prkAdd(ok,geo,prkM(0x3a5a2a),Math.sin(i*1.3)*2.4,10+Math.cos(i*2)*0.8,Math.cos(i*1.3)*2.2);}
-    prkAdd(ok,new THREE.CircleGeometry(0.8,10),PRK_DARK,0,1.4,1.85);
-    w.eye=prkGroup(ok,0,1.4,1.9);prkAdd(w.eye,new THREE.SphereGeometry(0.55,12,8),prkM(0xf4ecd8),0,0,0).scale.z=0.5;prkAdd(w.eye,new THREE.SphereGeometry(0.28,10,6),prkM(0xd8401a,{emissive:0xb02000,emissiveIntensity:0.9}),0,0,0.22).scale.z=0.4;
-    prkAdd(w.eye,new THREE.SphereGeometry(0.12,8,5),PRK_DARK,0,0,0.3).scale.z=0.3;w.lid=prkAdd(w.eye,new THREE.SphereGeometry(0.6,12,8,0,6.283,0,Math.PI/2),prkM(0x3a2a1e),0,0,0.02);w.lid.rotation.x=0.05;
+    w.lih=prkCast(()=>makeLikho(),g,-3.6,0,1.2,1.15,0.35);w.lih.lid.userData.lidHold=true;
+    w.eyeGlow=prkGlow(w.lih.eye,0xff4a20,2.4,0,0,0.4,0);
+    for(let i=0;i<6;i++)prkRock(g,(i-2.5)*3.4,0.2,6+(i%2)*2,0.6+(i%3)*0.3,0x8a7a62);
     w.chest=prkGroup(ok,3.6,5.2,0.6);const ch=makeChest5();ch.g.userData.prkCast=true;w.chest.add(ch.g||ch);(ch.g||ch).position.set(0,0,0);
     for(const[x,z]of[[-0.4,-0.3],[0.4,-0.3],[-0.4,0.3],[0.4,0.3]])prkAdd(w.chest,new THREE.CylinderGeometry(0.03,0.03,2.4,4),prkM(0x8a8a94),x,1.9,z);
     w.sp=prkFall(g);}}

@@ -106,7 +106,7 @@ function prkS1(){const L=prL();let hero=null;
         hero=L.hero;hero.visible=true;}},
       {t:2.62,fn:()=>{PRK.only('L');PRK.look('dawn');if(hero)hero.visible=false;}}],
     cues:[[0.1,()=>{PSN.magic(0,520);}],[0.5,()=>FX.sparkle(prkP(PRO.L,0,8,26),8,0xffe08a)],[2.55,()=>{CINE.flashDip('#ffe8b0',0.5);psfx('dzin')();}],[3.1,()=>PSN.trill(0.1)],
-      [7.4,()=>psfx('link')()],[8.4,()=>psfx('link')()],[12.7,()=>{const l=L.kot.lids;if(l&&l[0])l[0].rotation&&(l[0].rotation.x=-1.85);setTimeout(()=>{if(l&&l[0]&&l[0].rotation)l[0].rotation.x=-0.5;},260);}],
+      [7.4,()=>psfx('link')()],[8.4,()=>psfx('link')()],[12.7,()=>{const l=L.kot.lids;if(l&&l[0])l[0].rotation&&(l[0].rotation.x=1.3);later(0.26,()=>{if(l&&l[0]&&l[0].rotation)l[0].rotation.x=-0.5;});}],
       [13.7,()=>{FX.sparkle(prkWP(L.kot.head),8,0xffe08a);prkMot('harp',[[74,0.5],[76,0.5],[79,1]],0.3,0.07);}],[15.4,()=>{FX.sparkle(prkWP(L.kot.head),6,0xfff0c0);PSN.feather&&PSN.feather(0);}],
       [17.6,()=>PSN.creak&&PSN.creak(0)],[18.2,()=>{PSN.peep(0);KC.emo('leshy','surprise')();}],
       [19.15,()=>{FX.drops(prkWP(L.mer.g),14);FX.sparkle(prkWP(L.mer.g),10,0x9af0e8);psfx('splash')();PSN.poof(0.05);}],[20.8,()=>{psfx('whoosh')();PSN.yay&&PSN.yay(0.4);}]],
@@ -319,22 +319,22 @@ function prkS5(){const L=prL(),ko=L.ko,koHead=()=>prkWP(ko.head),U=0.62;let clou
 function prkS6(){const L=prL(),P=prPm(),D=PRK.Wd,O=PRO.P,pe=PRK_T.pelageya;let rainT=-1;
   const look=(k,w)=>()=>{PRK.only(w);PRK.look(k);};
   return {dur:18.4,fov:46,kino:true,mood:['#8a9ad0',0.12],
-    shots:[KS(0,prWA('W1',0,5.2,13),prWA('W1',0.5,2.6,-9),{move:'push',amp:0.8,tr:'cut'}),   // 6-1 лес
-      KS(1.8,prWA('W2',2.6,2.4,3.4),prWA('W2',-0.2,2.6,-6),{move:'crane',amp:0.6,tr:'cut'}),   // 6-2 Китеж
-      KS(3.6,prWA('W3',2,-4,6),prWA('W3',-1,2,-6),{p2:prWA('W3',1.8,3.6,3.4),l2:prWA('W3',-1,2.6,-6.4),dur:1.8,move:'none',tr:'cut'}),   // 6-3 сад за облаками
+    shots:[KS(0,prWA('W1',0,2.0,12),prWA('W1',0.4,7.2,-12),{move:'push',amp:0.8,tr:'cut'}),   // 6-1 лес: снизу — на встающего Лешего
+      KS(1.8,prWA('W2',4,2.0,9),prWA('W2',0,3.6,-9),{move:'crane',amp:0.6,tr:'cut'}),   // 6-2 Китеж: Водяной на соме над куполами
+      KS(3.6,prWA('W3',2,-4,6),prWA('W3',-1,2,-6),{p2:prWA('W3',1.8,3.6,3.4),l2:prWA('W3',0.3,5.0,-9),dur:1.8,move:'none',tr:'cut'}),   // 6-3 сад за облаками
       KS(5.4,prWA('W4',-5,4.5,9),prWA('W4',2,3.6,-13),{move:'push',amp:0.7,tr:'cut'}),   // 6-4 Смородина
-      KS(7.2,prWA('W5',2,3.4,10.5),prWA('W5',1,3,-2),{move:'push',amp:0.7,tr:'cut'}),   // 6-5 Буян
+      KS(7.2,prWA('W5',3,2.4,11),prWA('W5',-1.2,3.8,-1),{move:'push',amp:0.7,tr:'cut'}),   // 6-5 Буян: Лихо у дуба
       KS(9.2,prLA(1.4,2.0,7.4),prLA(0.6,0.8,3.2),{p2:prLA(1.6,2.7,9.8),l2:prLA(0.4,1.1,3.0),dur:3.8,move:'none'}),   // 6-6 Лукоморье без цепи
       KS(13.0,prPA(-0.8,12.75,7.5),prPA(40,9.6,3),{trk:KC.look(()=>prkWP(P.zv),0.08),move:'push',amp:0.35}),   // 6-7 Пелагея и звёздный дождь: камера тянется за искрой
       KS(15.8,prPA(3.4,12.3,6.8),prPA(1.6,11.9,6.3),{trk:prFc(pe,1.8,0.25,0.08,0.12)})],   // 6-8 «Ой… летит… к нам!»
     says:[prkSay(0.1,1.6,'kot','В лес дремучий…',true),prkSay(1.9,1.6,'kot','…в Китеж подводный…',true),prkSay(3.7,1.6,'kot','…за облака…',true),prkSay(5.5,1.7,'kot','…за огненную реку…',true),
       prkSay(7.3,1.8,'kot','…на остров Буян.',true),prkSay(9.4,3.6,'kot','Без цепи сказки забываются —<br>Слово за словом рассыпаются.',true),prkSay(16.0,1.9,'pelageya','<i>(шёпотом)</i> Ой… летит… к нам!')],
-    events:[{t:0,fn:()=>{look('forest','w1')();FIN.music.play('prk_quiet');for(const pi of[0,1])players[pi].heroes.forEach((h,k)=>{if(h.kind==='pelageya')return;const s=W.spawns[pi][k];placeOnGround(h,s.x,s.z,s.y||0);});const w=D.w1;w.walk.forEach(f=>f.position.copy(f.userData.p0));w.eyes.forEach(e=>e.scale.y=0.05);w.hut.g.rotation.y=-0.4;
+    events:[{t:0,fn:()=>{look('forest','w1')();FIN.music.play('prk_quiet');for(const pi of[0,1])players[pi].heroes.forEach((h,k)=>{if(h.kind==='pelageya')return;const s=W.spawns[pi][k];placeOnGround(h,s.x,s.z,s.y||0);});const w=D.w1;w.walk.forEach(f=>f.position.copy(f.userData.p0));w.lesh.g.position.y=-12;w.hut.g.rotation.y=-0.4;
         prkFallAnim(w.sp,prkP(PRO.W1,0,20,-4),prkP(PRO.W1,0.6,0.5,-4),1.0);}},
-      {t:1.8,fn:()=>{look('kitezh','w2')();const w=D.w2;w.str.forEach(s=>{s.visible=true;});prkFallAnim(w.sp,prkP(PRO.W2,-1,13,-4),prkP(PRO.W2,-1.4,0.5,-4.2),1.1);}},
+      {t:1.8,fn:()=>{look('kitezh','w2')();const w=D.w2;w.somAt(-0.6);FIN.k2v.set(w.vod,'ride','angry');w.str.forEach(s=>{s.visible=true;});prkFallAnim(w.sp,prkP(PRO.W2,-1,13,-4),prkP(PRO.W2,-1.4,0.5,-4.2),1.1);}},
       {t:3.6,fn:()=>{look('heaven','w3')();const w=D.w3;prkGrey(w.fb.g,0);w.leaf.color.setHex(0x5ab04a);w.feather.visible=false;prkFallAnim(w.sp,prkP(PRO.W3,1,-8,-5),prkP(PRO.W3,-1,3.2,-6.4),1.0);}},
-      {t:5.4,fn:()=>{look('smor','w4')();const w=D.w4;prkFallAnim(w.sp,prkP(PRO.W4,1,16,-8),prkP(PRO.W4,1,-0.4,-8),0.8);}},
-      {t:7.2,fn:()=>{look('buyan','w5')();const w=D.w5;w.lid.rotation.x=0.05;w.chest.rotation.z=0;prkFallAnim(w.sp,prkP(PRO.W5,3.6,16,-2.4),prkP(PRO.W5,3.6,5.8,-2.4),0.8);}},
+      {t:5.4,fn:()=>{look('smor','w4')();const w=D.w4;w.fire.forEach(f=>f.visible=false);prkFallAnim(w.sp,prkP(PRO.W4,1,16,-8),prkP(PRO.W4,1,-0.4,-8),0.8);}},
+      {t:7.2,fn:()=>{look('buyan','w5')();const w=D.w5;w.lih.lid.rotation.x=1.1;w.eyeGlow.material.opacity=0;w.chest.rotation.z=0;prkFallAnim(w.sp,prkP(PRO.W5,3.6,16,-2.4),prkP(PRO.W5,3.6,5.8,-2.4),0.8);}},
       {t:9.2,fn:()=>{PRK.only('L');PRK.look('grey');FIN.music.play('prk_quiet');L.crown.visible=false;L.chain.visible=false;L.fire.visible=false;L.cliff.visible=false;L.hand.visible=false;
         L.kot.g.position.set(1.3,0,3.5);L.kot.g.rotation.set(0,0.15,0);prkKotScale(1.3);if(L.kot.head)L.kot.head.rotation.x=0.35;L.kolo.g.visible=false;L.belka.g.visible=false;L.sadko.g.visible=false;L.zhar.g.visible=false;L.leshy.g.visible=false;L.mer.g.visible=false;
         L.grassM.color.setHex(0x7a8a6a);L.letters.forEach((s,i)=>{s.visible=true;s.material.color.setHex(0xffffff);s.material.opacity=0;s.position.set(-1.9+(Math.random()-0.5)*0.6,0.3,3.0+(Math.random()-0.5)*0.4);s.userData.ph=Math.random()*2;});}},
@@ -347,22 +347,28 @@ function prkS6(){const L=prL(),P=prPm(),D=PRK.Wd,O=PRO.P,pe=PRK_T.pelageya;let r
       [9.4,()=>{FX.leaves(prkP(PRO.L,0,10,0),30,0xa89a6a);prkMot('harp',[[67,1],[null,0.5],[71,1],[null,1],[69,2]],0.4,0.06);}],[11.4,()=>FX.leaves(prkP(PRO.L,1,10,1),20,0x9a8a5a)],
       [13.2,()=>psfx('dzin')()],[14.6,()=>{psfx('dzin')();}],[15.9,KC.emo('pelageya','surprise')],[17.7,()=>{KC.emo('pelageya','hop')();PSN.flaps(0);}]],
     tick:(t,dt)=>{dt=dt||0;
-      // лес: ели переступают и смыкаются, глаза Лешего открываются, избушка — задом
+      // лес: ели переступают и смыкаются, из чащи встаёт Леший выше елей, избушка — задом
       if(t<1.8){const w=D.w1,k=prkE.io(clamp((t-0.4)/1.2,0,1));w.walk.forEach(f=>{f.position.x=f.userData.p0.x*(1-k*0.45);f.position.y=Math.abs(Math.sin(t*12))*0.15*(k>0&&k<1?1:0);});
-        w.eyes.forEach(e=>{e.scale.y=Math.max(0.05,prkE.back(clamp((t-0.9)/0.3,0,1)));});w.hut.g.rotation.y=-0.4+Math.PI*prkE.io(clamp((t-0.6)/1.1,0,1));}
-      // Китеж: колокол качается без звона, струна лопается
-      if(t>=1.8&&t<3.6){const w=D.w2;w.bell.rotation.z=Math.sin((t-1.8)*3.2)*0.35;if(t>2.95)w.str[2].visible=false;}
+        const up=prkE.o(clamp((t-0.15)/1.15,0,1));w.lesh.g.position.y=-12+12*up;w.lesh.g.rotation.z=Math.sin(t*2.2)*0.04;w.hut.g.rotation.y=-0.4+Math.PI*prkE.io(clamp((t-0.6)/1.1,0,1));}
+      // Китеж: Водяной на соме кружит над куполами и рычит, колокол качается без звона, струна лопается
+      if(t>=1.8&&t<3.6){const w=D.w2;w.bell.rotation.z=Math.sin((t-1.8)*3.2)*0.35;if(t>2.95)w.str[2].visible=false;w.somAt(-0.6+(t-1.8)*0.75);if(t>2.5&&w.vod.st.pose!=='roar')FIN.k2v.set(w.vod,'roar','angry');}
       // сад: яблони сереют, Жар-птица тускнеет, перо падает
       if(t>=3.6&&t<5.4){const w=D.w3,k=clamp((t-3.9)/1.3,0,1);w.leaf.color.setHex(0x5ab04a).lerp(new THREE.Color(0x8a8a90),k);prkGrey(w.fb.g,k);
+        const S=w.sol,pf=clamp((t-3.8)/0.4,0,1);if(S.cheeks)S.cheeks.forEach(c=>c.scale.setScalar(1+pf*0.9));if(S.wings)S.wings.forEach(q=>{q.wp.rotation.z=q.s*(0.5+pf*0.7+Math.sin(t*14)*0.12*pf);});
+        w.gust.forEach(m=>{const u=((t-3.6)*1.3+m.userData.ph)%1;m.scale.setScalar(1+u*3.2);m.position.z=2+u*12;m.rotation.z=u*2+m.userData.ph*6;m.material.opacity=pf*(1-u)*0.55;});
         const f=clamp((t-4.4)/1.0,0,1);w.feather.visible=f>0;w.feather.position.set(-1+Math.sin(f*6)*0.4,3-f*3.2,-6+f*0.6);w.feather.rotation.z=Math.sin(f*8)*0.6;}
       // Смородина: головы Горыныча из пара — к искре — лбами
       if(t>=5.4&&t<7.2){const w=D.w4,N=w.gor.necks||[];const up=prkE.o(clamp((t-5.6)/0.8,0,1)),bonk=Math.sin(clamp((t-6.5)/0.45,0,1)*Math.PI);w.gor.g.position.y=-6+up*5;
         const H=w.gor.heads||[],PV=w.gor.piv||[];
         N.forEach((n,i)=>{if(!n)return;n.rotation.z=(i-1)*-0.35*bonk;n.rotation.x=-0.25*up;
           // голова — за своей шеей: тот же поворот вокруг основания шеи
-          const h=H[i],pv=PV[i];if(h&&pv){h.g.position.copy(h.base).sub(pv).applyEuler(n.rotation).add(pv);h.g.rotation.copy(n.rotation);}});}
-      // Буян: сундук качается, глаз Лиха открывается
-      if(t>=7.2&&t<9.2){const w=D.w5;w.chest.rotation.z=t>8?Math.sin((t-8)*6)*0.25*Math.exp(-(t-8)*0.8):0;w.lid.rotation.x=0.05-1.7*prkE.o(clamp((t-8.4)/0.5,0,1));}
+          const h=H[i],pv=PV[i];if(h&&pv){h.g.position.copy(h.base).sub(pv).applyEuler(n.rotation).add(pv);h.g.rotation.copy(n.rotation);}});
+        // после «бом» — три столба огня в небо
+        const fk=clamp((t-6.85)/0.3,0,1);w.fire.forEach((f,i)=>{const h=H[i];f.visible=fk>0&&!!h;if(!f.visible)return;w.gor.g.updateMatrixWorld(true);f.position.copy(w.g.worldToLocal(h.g.getWorldPosition(new THREE.Vector3())));
+          f.scale.setScalar(0.4+fk*1.1+Math.sin(t*30+i)*0.06);f.rotation.z=(i-1)*0.35;});}
+      // Буян: сундук качается, Лихо поднимает голову и открывает свой единственный глаз
+      if(t>=7.2&&t<9.2){const w=D.w5,k=prkE.o(clamp((t-8.4)/0.5,0,1));w.chest.rotation.z=t>8?Math.sin((t-8)*6)*0.25*Math.exp(-(t-8)*0.8):0;
+        w.lih.lid.rotation.x=lerp(1.1,-1.25,k);w.eyeGlow.material.opacity=k*0.85;if(w.lih.head)w.lih.head.rotation.x=lerp(0.3,-0.05,prkE.o(clamp((t-8.1)/0.6,0,1)));}
       // Лукоморье: буквы встают из книги и рассыпаются серым пеплом
       if(t>=9.2&&t<13){const L0=L;L0.letters.forEach((s,i)=>{const k=clamp((t-9.5-i*0.1)/2.2,0,1);s.position.y=0.3+k*2.4;s.position.x+=Math.sin(t*3+i)*0.004;
         s.material.color.setHex(0xffe08a).lerp(new THREE.Color(0x6a6a70),clamp(k*1.6,0,1));s.material.opacity=Math.sin(k*Math.PI)*0.95;});}
