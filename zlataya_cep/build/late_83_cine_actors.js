@@ -46,7 +46,7 @@ const EMO={
   laugh:{d:1.1,f(u,o,hs){const a=Math.sin(Math.PI*u);o.sy+=0.07*Math.abs(Math.sin(u*28))*a;o.py+=0.05*hs*Math.abs(Math.sin(u*28))*a;o.rz+=0.07*Math.sin(u*20)*a;o.rx-=0.1*a;o.eyeY=1-0.55*a;o.wing=0.5*a;}},
   effort:{d:0.7,f(u,o){if(u<0.3){const k=CE.outCubic(u/0.3);o.rx-=0.2*k;o.sy+=0.05*k;o.arms=0.6*k;}else if(u<0.5){const k=(u-0.3)/0.2;o.rx+=-0.2+0.5*CE.outBack(k);o.sy-=0.12*k;o.armF=1;}
     else{const k=(u-0.5)/0.5;o.rx+=0.3*(1-CE.inOutCubic(k));o.sy-=0.12*(1-k);}}},
-  droop:{d:1.6,f(u,o){const a=u<0.3?CE.inOutSine(u/0.3):u>0.8?1-CE.inOutSine((u-0.8)/0.2):1;o.rx+=0.16*a;o.sy-=0.05*a;o.eyeY=1-0.3*a;o.earK=-0.7*a;}},
+  droop:{d:1.6,f(u,o){const a=u<0.3?CE.inOutSine(u/0.3):u>0.8?1-CE.inOutSine((u-0.8)/0.2):1;o.rx+=0.16*a;o.sy-=0.05*a;o.eyeY=1-0.15*a;o.earK=-0.7*a;}},
   cheer:{d:1.5,f(u,o,hs,sg){const k=u<0.5?u/0.5:(u-0.5)/0.5;EMO.hop.f(k,o,hs);o.arms=1;o.wing=1;o.rz+=0.08*sg*Math.sin(u*Math.PI*4);}}};
 ACT.emote=function(h,type,delay){if(!h||!EMO[type])return;const go=()=>{h._em={type,t:0,d:EMO[type].d,sg:h._sg||(h.player?-1:1)};CINE.emit('emote',{who:h.kind||h.who,type,pos:h.pos||h.g.position});};
   if(delay>0&&W&&W.timers)later(delay,go);else go();};
@@ -118,7 +118,7 @@ function heroLife(h,dt){const R=h._rig,b=h.body,cine=!!G.cine,hs=h.d.height/1.25
   // лицо: удивление — брови вверх и рот «О», радость — рот открыт, страх и грусть — брови домиком, усилие — брови нахмурены, гордость и сонливость — веки прикрыты, речь — рот
   {const F=R.face,fc=h._fc,em=h._em?h._em.type:null;let by=0,bz=0,lid=0,mo=0.32;
     if(AO.eye>1){by+=(AO.eye-1)*0.1;mo=Math.max(mo,0.32+(AO.eye-1)*1.5);}if(AO.eyeY<1)mo=Math.max(mo,0.32+(1-AO.eyeY)*1.2);
-    if(AO.earK<0)bz-=AO.earK*0.45;if(em==='effort'){bz-=0.45;mo=0.18;}if(em==='droop'){lid=0.55;}if(em==='pride'){lid=0.35;by-=0.01;}if(em==='flinch')lid=Math.max(lid,0.7);if(em==='tilt')by+=0.03;
+    if(AO.earK<0)bz-=AO.earK*0.45;if(em==='effort'){bz-=0.45;mo=0.18;}if(em==='droop'){lid=0.3;}if(em==='pride'){lid=0.35;by-=0.01;}if(em==='flinch')lid=Math.max(lid,0.7);if(em==='tilt')by+=0.03;
     if(h._talk>0){const e=Math.min(1,h._talk*3);mo=Math.max(mo,0.32+0.85*Math.abs(Math.sin(G.time*14+h._ph))*e);}
     fc.by=damp(fc.by,by,14,dt);fc.bz=damp(fc.bz,bz,12,dt);fc.lid=damp(fc.lid,lid,12,dt);fc.mo=damp(fc.mo,mo,20,dt);const hs2=h.d.height/1.25;
     for(const[n,sg]of[['L',1],['R',-1]]){const bw=F['brow'+n];if(bw){if(bw.userData.y0==null)bw.userData.y0=bw.position.y;bw.position.y=bw.userData.y0+fc.by*hs2;bw.rotation.z=-sg*fc.bz;}

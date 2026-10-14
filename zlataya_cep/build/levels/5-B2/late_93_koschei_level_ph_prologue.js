@@ -532,7 +532,7 @@
      const Y=GP.y,dP=t=>[PX,Y,zt(t)],kP=t=>[PX,YL[1]+4,zt(t)-CL.gap],ad=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]];
      const CAM=[[t=>ad(dP(t),[7,8.5,20]),t=>ad(dP(t),[0,4,-35])],[t=>ad(kP(t),[6,1.5,14]),kP],[t=>ad(dP(t),[12,5,-8]),t=>ad(dP(t),[0,4.5,0])],[t=>ad(dP(t),[0,9.5,19]),t=>ad(dP(t),[0,4.5,-26])]];
      play({dur:9.6,fov:48,camK:6,shots:TC.map((t,i)=>{const t2=i<3?TC[i+1]:9.6;return shot(t,CAM[i][0](t),CAM[i][1](t),CAM[i][0](t2),CAM[i][1](t2),t2-t);}),
-       says:[[0.2,2.8,null,'<i>Унёс Кощей тетрадку с Буяна — на Лукоморье. За ним — на Горыныче!</i>',true],[3.0,2.1,'koschei','Не догоните! Перепишу сказку — по-своему!'],...says],
+       says:[[0.2,2.8,null,'<i>Летит Кощей с тетрадкой к Лукоморью. Наперерез — на Горыныче!</i>',true],[3.0,2.1,'koschei','Не догоните! Перепишу сказку — по-своему!'],...says],
        events:[{t:3.0,fn:()=>{try{KA.pose('proud');}catch(e){}}}],
        tick:t=>{GP.z=zt(t);place();clPlace(0.016);const S=G.cine;if(!S||!S.camPos)return;const kp=CL.pos.clone().add(new V3(0,4,0)),d=new V3(PX+GP.x,GP.y,GP.z);
          const cams=[[d.clone().add(new V3(7,8.5,20)),d.clone().add(new V3(0,4,-35))],[kp.clone().add(new V3(6,1.5,14)),kp],[d.clone().add(new V3(12,5,-8)),d.clone().add(new V3(0,4.5,0))],[d.clone().add(new V3(0,9.5,19)),d.clone().add(new V3(0,4.5,-26))]];

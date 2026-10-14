@@ -99,7 +99,7 @@ function build54(){
   let waterT=0;function signHit(pi,k){S.signs++;const sg=PH[bph[k]].sign,h=active(pi);const b=beams.find(q=>q.k===k&&q.pi===pi);if(b)b.lit=1;
     if(sg==='gusli'){waterT=1.2;ringFx(new V3(h.pos.x,0.3,h.pos.z),0x7ad8ff,2.4);if(!W.songNote)gusli(64,0,0.1);}else burst(new V3(h.pos.x,0.4,h.pos.z-1),SIGN_COL[sg],10,3);}
   // голоса на смену частей песни (по строке; запись голоса — voice/lines.json, без неё — субтитр)
-  const PHSAY={1:['proshka','Быстрей пошло — держись!'],2:['pelageya','Тут написано… перо светит в долю.'],3:['potap','Раз-два — не сбиваемся!'],4:['yosha','По очереди! Ты поёшь — я отвечаю!'],6:['pelageya','Мягко… все вместе.']};
+  const PHSAY={1:['proshka','Быстрей пошло — держись!'],2:['pelageya','…перо светит в долю.'],3:['potap','Раз-два — не сбиваемся!'],4:['yosha','По очереди! Ты поёшь — я отвечаю!'],6:['pelageya','Мягко… все вместе.']};
   function onBeat(k){if(k<0){tone(1760,0.06,'square',0.05);banner(['Раз','Два','Три','Четыре!'][k+4],'#ffe7a0',0.5,k===-1?'на плитку своего цвета прыгай':'');return;}
     if(k>=NB){S.state='stop';endSong();return;}
     const p=PH[bph[k]],i=bi[k];S.B=beatB(k);S.phase=bph[k];

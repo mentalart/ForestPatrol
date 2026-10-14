@@ -114,10 +114,10 @@ function build52(){
   /* ---------- ход игры ---------- */
   function intro(){F.stage='introCine';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-3,0);h.face=Math.PI;});
     play({dur:14,fov:48,camK:2.6,shots:[shot(0,[0,7,6],[0,0.5,-18]),shot(5.4,[-3,1.6,-4.6],[-1,0.9,-3.2]),shot(9.4,[2.5,2,-5],[0,1,-3])],
-      says:[[0.3,4,null,'<i>Заяц по поляне носится — в нём утка сидит,</i><br><i>Руками не поймать: быстрей ветра бежит.</i>',true],[5.6,3.2,'yosha','Зайца не догнать. Зайца загоняют.'],[9.4,2.4,'potap','Слушаем ежа.'],[11.6,2.4,'pelageya','Тут написано… изгородь из нитей.']],
+      says:[[0.3,4,null,'<i>Заяц по поляне носится — в нём утка сидит,</i><br><i>Руками не поймать: быстрей ветра бежит.</i>',true],[5.6,3.2,'yosha','Зайца не догнать. Зайца загоняют.'],[9.4,2.4,'potap','Слушаем ежа.'],[11.6,2.4,'pelageya','…изгородь из нитей.']],
       end:()=>{W.anims.length=0;HR.state='free';HEROES.forEach((h,i)=>{placeOnGround(h,-3+i*2,-3,0);h.face=Math.PI;});snapCams();startHam();}});}
   // разминка: Хамелей у капусты перенял знак гуслей — плюётся каплями; распутали — загоняем зайца
-  let ham=null;function startHam(){F.stage='ham';ham=hameleyFoe(C.x+3,C.z+5,{leash:8});banner('Хамелей у капусты!','#ffd76a',3,'знак гуслей перенял — распутайте');later(0.8,()=>bark(T.pelageya,'pelageya','Тут написано… у знака гуслей он плюётся каплями.',3));}
+  let ham=null;function startHam(){F.stage='ham';ham=hameleyFoe(C.x+3,C.z+5,{leash:8});banner('Хамелей у капусты!','#ffd76a',3,'знак гуслей перенял — распутайте');later(0.8,()=>bark(T.pelageya,'pelageya','…у знака гуслей он плюётся каплями.',3));}
   function startHunt(){F.stage='hunt';HR.state='free';showCircle(0);SFX.ok();banner('Изгородь из нитей','#ffd76a',3,'меж героями, что ближе десяти шагов стоят, нить натягивается · пока идёшь — нить мигает');}
   function closeCircle(){const k=circle;SFX.ok();ringFx(new V3(C.x,0.1,C.z),COL.gold,RAD[k]+1);burst(new V3(C.x,1,C.z),COL.gold,20,4);giveLink(new V3(C.x,1,C.z),active(k%2),1.4,1.1);
     if(k===0&&HR.state==='free'){HR.state='back';HR.t=0;}

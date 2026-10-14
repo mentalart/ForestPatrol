@@ -99,6 +99,8 @@
     VIT.forEach((b,i)=>{const s=i%2?1:-1,f=new V3(s*26,-2,b.home.z);b.g.position.copy(f);later(0.4+0.2*i,()=>{if(E.cur!==9)return;if(FIN.k2fx)FIN.k2fx.crown(new V3(f.x,-0.5,f.z),1);anim(2.4,k=>{b.g.position.lerpVectors(f,b.home,CE.outCubic(k));b.g.position.y=lerp(-2,0,Math.min(1,k*2));});});});
     }
   function vitCharge(){E.log('vitCharge');SFX.horn&&SFX.horn();say('ilya','Как я говаривал, Потап? Богатырским махом — разом!',2.2,true);
+    // Потап всю игру не мог вспомнить былину («Как Илья Муромец говаривал… э-э…», 2-2, Пир) — при встрече с Ильёй вспоминает её начало (один раз)
+    if(!W.flags.ilyaMet){W.flags.ilyaMet=true;later(2.5,()=>{if(E.cur===9)say('potap','Вспомнил! «Как во славном городе во Муроме…» —<br>это же про тебя былина!',3.6);});}
     VIT.forEach((b,i)=>{const f=b.home.clone(),to=new V3(C.x+(i-4)*1.6,0,C.z+1);anim(0.9,k=>{b.g.position.lerpVectors(f,to,CE.inOutSine(k));});later(1.0,()=>{anim(1.2,k=>{b.g.position.lerpVectors(to,f,CE.inOutSine(k));});});});
     KN.forEach(n=>{const f=n.home.clone(),to=f.clone().lerp(new V3(C.x,0,f.z),0.35);anim(0.8,k=>{n.g.position.lerpVectors(f,to,CE.inOutSine(k));});later(1.0,()=>{anim(1.0,k=>{n.g.position.lerpVectors(to,f,CE.inOutSine(k));});});});
     later(0.9,()=>{shakeAll(0.08,0.4);for(const b of banners)K5X.shock(b.g.position,14,11,0xffd76a,{h:1.4,onHit:()=>{}});for(const e of K5.adds.slice())if(e.kind==='k5bone'&&e.alive){FX.dust(e.pos.clone(),10,0xe8e0c8);k5Kill(e);}

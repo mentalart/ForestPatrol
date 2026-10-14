@@ -11,7 +11,7 @@ window._errs=[];window.addEventListener('error',e=>_errs.push(String(e.message))
 window.E5=ZC.FIN.k5e;window.CHK=s=>{if(_errs.length)throw new Error(s+' — ошибки: '+_errs.slice(0,4).join(' / '));return s;};
 window.KB=[{B:['KeyA','KeyD','KeyW','KeyS'],a:'KeyF',g:'KeyG',e:'KeyE'},{B:['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'],a:'Comma',g:'Period',e:'KeyL'}];
 window.RUN={legs:[],last:'',i:0};
-window.START=solo=>{ZC.setSolo(!!solo);E5.proFull=!window.PROSHORT;E5.goStage(0);ZC.G.manual=true;ZC.tick(20);RUN.legs=[];RUN.last='';RUN.i=0;RUN.pis=solo?[0]:[0,1];return 'on='+E5.pro.on+' leg='+E5.pro.leg;};
+window.START=solo=>{ZC.setSolo(!!solo);E5.proFull=!window.PROSHORT;ZC.G.manual=true;E5.goStage(0);ZC.G.manual=true;ZC.tick(20);RUN.legs=[];RUN.last='';RUN.i=0;RUN.pis=solo?[0]:[0,1];return 'on='+E5.pro.on+' leg='+E5.pro.leg;};
 // один кадр управления: куда рулить, когда стрелять, щит, «три»
 window.CTRL=()=>{const P=E5.pro,D=P.dbg(),GP=D.GP,PIS=RUN.pis,solo=PIS.length===1;RUN.i++;if(P.leg!==RUN.last){RUN.legs.push(P.leg+'@'+(RUN.i/60).toFixed(0)+'s');RUN.last=P.leg;}
   let tx=0,ty=(D.YL[0]+D.YL[1])/2;const ahead=(z,a,b)=>GP.z-z>(a==null?-3:a)&&GP.z-z<b;
@@ -22,7 +22,7 @@ window.CTRL=()=>{const P=E5.pro,D=P.dbg(),GP=D.GP,PIS=RUN.pis,solo=PIS.length===
     if(sp.some(s=>s.wall))ty=D.YL[1];else for(const s of sp)if(Math.abs(tx-s.u)<6||Math.abs(GP.x-s.u)<6){tx=Math.max(-13,Math.min(13,s.u+(GP.x>=s.u?8:-8)));}
     for(const R of D.rocks)if(!R.arch&&ahead(R.z,-3,40)&&Math.abs(tx-R.u)<6)tx=Math.max(-13,Math.min(13,R.u+(GP.x>=R.u?8:-8)));
     const ar=D.rocks.find(R=>R.arch&&ahead(R.z,-3,50));if(ar&&(!hp||hp.z<ar.z-3))ty=D.YL[0];}
-  if(P.leg==='sea'||P.leg==='sky')for(const pi of PIS){const own=D.crows.some(c=>c.alive&&!c.leave&&(solo||c.pi===pi||c.lead))||D.orbs.some(o=>o.alive&&(o.gold||solo||o.pi===pi));if(own&&RUN.i%24===pi*12)ZC.press(KB[pi].a);
+  if(P.leg==='sea'||P.leg==='sky')for(const pi of PIS){const own=D.crows.some(c=>c.alive&&!c.leave&&(solo||c.pi===pi||c.lead))||D.orbs.some(o=>o.alive&&(o.gold||solo||o.pi===pi));if(own&&!window.HOLDFIRE&&RUN.i%24===pi*12)ZC.press(KB[pi].a);
     for(const d of D.drops)if(!d.refl&&!d._bot&&(solo||d.pi===pi)&&d.dur-d.t<0.5){d._bot=true;ZC.press(KB[pi].g);}}
   if(P.leg==='write'){const L=D.letters.filter(L=>!L.passed).sort((a,b)=>b.z-a.z)[0];if(L){const S=D.GLY[L.ch],tta=(GP.z-L.z)/Math.max(D.GV.sp,1),ox=L.slide?Math.sin((L.t+tta)*1.15)*7:0,u=GP.x-ox,w=GP.y+D.PY-D.V0;
     const m=S.safe.slice().sort((a,b)=>Math.hypot(a[0]-u,a[1]-w)-Math.hypot(b[0]-u,b[1]-w))[0];tx=m[0]+ox;ty=D.V0+m[1]-D.PY;}}
@@ -52,7 +52,8 @@ const P=E5.pro;CHK(FLY(()=>P.leg==='gorge'&&P.dbg().GP.z<-500)+' '+STAT()+' во
 ZC.tick(1);
 //@@
 // 3 «Через моря»: вороны прилетели, капля в полёте
-const P=E5.pro;CHK(FLY(()=>P.leg==='sea'&&P.dbg().drops.some(d=>!d.refl&&d.t>0.6))+' '+STAT())
+// огонь придержан: ворон, сбитый сразу, не успевает бросить каплю
+window.HOLDFIRE=true;const P=E5.pro;const t55=FLY(()=>P.leg==='sea'&&P.dbg().drops.some(d=>!d.refl&&d.t>0.6));window.HOLDFIRE=false;CHK(t55+' '+STAT())
 //@@ shot=k5e_pro_sea.png
 ZC.tick(1);
 //@@

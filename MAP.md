@@ -92,14 +92,14 @@
 | `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water, late_99zj_k23_lake, late_99zt_kw_gauges, late_99zv_kw_music | 4 | t23f tfin_companion_23 tfin_k23 tfin_k23solo |
 | `2-4` | 2-4 · В брюхе у кита | `build24()` · `levels/2-4.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99h_k24, late_99l_kitezh_magic_water, late_99zk_k24_heart, late_99zt_kw_gauges, late_99zv_kw_music | 4 | t24n tfin_companion_24 tfin_k24 tfin_k24solo |
 | `2-5` | 2-5 · Китеж звонит | `build25()` · `levels/2-5.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99i_k25, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99zl_k25_rise, late_99zt_kw_gauges | 6 | t25c tfin_companion_25 tfin_k25 tfin_k25solo tfoes tsospot |
-| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase, late_99zm_k2b_storm, late_99zt_kw_gauges | 13 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
+| `2-B` | 2-Б · Водяной | `build2B()` · `levels/2-B.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99j_k2b, late_99l_kitezh_magic_water, late_99q_k2b_vod, late_99r_k2b_fx, late_99s_k2b_chase, late_99zm_k2b_storm, late_99zt_kw_gauges | 14 | t2c tfin_bossbar tfin_companion_2b tfin_companion_2bboss tfin_flash tfin_k2b tfin_k2bboss… |
 | `3-1` | 3-1 · Сад молодильных яблок | `build31()` · `levels/3-1.js` | late_75_kids_w1, late_76_kids_fight, late_99p_sky31 | 18 | t31 t31c tfin_art tfin_companion_31 tfin_juice tfin_kids1 tfin_kids2 tfin_motylek tfin_sk… |
 | `3-2` | 3-2 · Облачные пастбища | `build32()` · `levels/3-2.js` | late_99o_sky32, late_99x_sky32_tut, late_99y_sky32_cine, late_99zd_sky32_fx, late_99ze_sky32_cam | 11 | t32 tfin_companion_32 tfin_sky32 tfin_sky32boss tfin_sky32bosssolo tfin_sky32cine tfin_sk… |
 | `3-3` | 3-3 · Сирин и Алконост | `build33()` · `levels/3-3.js` | — | 3 | t33n tfin_companion_33 tso33 |
 | `3-4` | 3-4 · Летучий корабль | `build34()` · `levels/3-4.js` | late_99zn_ship34_wear | 3 | t34 tfin_companion_34 tmenu3 |
 | `3-5` | 3-5 · Гуси-лебеди | `build35()` · `levels/3-5.js` | late_99zm_sky35 | 3 | t35 tfin_companion_35 tfin_sky35 |
 | `3-B` | 3-Б · Соловей-Разбойник | `build3B()` · `levels/3-B.js` | late_92c_k5e_fx, late_99u_k3b_fx, late_99v_k3b | 11 | t3bv tfin_bossbar tfin_companion_3b tfin_hintlayer tfin_k3b tfin_k3bacorn tfin_k3bboss tf… |
-| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | late_99w4_41, late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_music, late_99w4_rules, late_99w4_solo | 14 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast tfin_… |
+| `4-1` | 4-1 · Кузня Кузьмы и Демьяна | `build41()` · `levels/4-1.js` | late_99w4_41, late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_music, late_99w4_rules, late_99w4_solo | 15 | t41v tfin_companion_41 tfin_fadelocal tfin_kids1 tfin_kids2 tfin_luko tfin_lukozast tfin_… |
 | `4-2` | 4-2 · Река Смородина | `build42()` · `levels/4-2.js` | late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_music, late_99w4_rules, late_99w4_solo | 8 | t42v tfin_art tfin_companion_42 tfin_w42 tfin_w4help tfin_w4kids tfin_w4story tso42 |
 | `4-3` | 4-3 · Эй, ухнем | `build43()` · `levels/4-3.js` | late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_music, late_99w4_rules, late_99w4_solo, late_99w4_song43 | 5 | t43 tfin_companion_43 tfin_w43 tfin_w4help tso43 |
 | `4-4` | 4-4 · Змиевы валы | `build44()` · `levels/4-4.js` | late_99w4_art, late_99w4_help, late_99w4_kids, late_99w4_lessons, late_99w4_music, late_99w4_rules, late_99w4_solo | 7 | t44 tfin_companion_44 tfin_w44 tfin_w4kids tfin_w4story tfoes tso44 |
@@ -313,7 +313,7 @@
 | `levels/5-B2/late_93_koschei_level_pc_page3.js` | — | ---- продолжение build5B2 (k5epic, часть 12): СТРАНИЦА 3 «В ТЕМНИЦЕ ТАМ ЦАРЕВНА ТУЖИТ» (стадия 6, мир 3, свет) ---- |
 | `levels/5-B2/late_93_koschei_level_pd_page4.js` | — | ---- продолжение build5B2 (k5epic, часть 13): СТРАНИЦА 4 «ТАМ НА НЕВЕДОМЫХ ДОРОЖКАХ…» (стадия 7, мир 4, клещи) ---- |
 | `levels/5-B2/late_93_koschei_level_pe_act3.js` | — | ---- продолжение build5B2 (k5epic, часть 14): АКТ III — стадии 8 (буря), 9 (витязи), 10 (Цепной великан) ---- |
-| `levels/5-B2/late_93_koschei_level_pf_bezimen.js` | — | ---- продолжение build5B2 (k5epic, часть 15): СТАДИЯ 11 «БЕЗ ИМЁН» (новая; отзвук терема 5-Б1) ---- |
+| `levels/5-B2/late_93_koschei_level_pf_bezimen.js` | — | ---- продолжение build5B2 (k5epic, часть 15): СТАДИЯ 11 «ТАМ РУССКИЙ ДУХ» (отзвук терема 5-Б1: имена, вычеркнутые там, … |
 | `levels/5-B2/late_93_koschei_level_pg_final.js` | — | ---- продолжение build5B2 (k5epic, часть 16): СТАДИЯ 12, «ТЯНЕМ-ПОТЯНЕМ», ПРОЛОГ-ПОГОНЯ, тексты паузы ---- |
 | `levels/5-B2/late_93_koschei_level_ph_prologue.js` | 5-B2 | ---- продолжение build5B2 (k5epic, часть ph): ПРОЛОГ «Через леса, через моря» — погоня на Горыныче за чёрной тучей Коще… |
 | `levels/5-B2/late_93_koschei_level_pi_lessonagain.js` | 5-B2 | ---- «Показать урок ещё раз» из паузы для актов I–III (F-8: FIN.lesson.regLevel; тот же пункт меню, что у 4-Б) ---- |
@@ -516,11 +516,11 @@
 | `44_prompt_pereozvuchka_elevenlabs.md` | Промт: чистовая переозвучка всей игры через ElevenLabs MCP |
 | `45_kino_audit.md` | Аудит роликов «Златой цепи» и очередь ручной постановки |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 183 файлов |
+| `changes/` | 188 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 10 файлов |
 
-Ботов всего: 314 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 315 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
