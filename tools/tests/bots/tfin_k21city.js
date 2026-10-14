@@ -2,8 +2,8 @@
 // @timeout=1500
 // релиз final06: 2-1 «Гусли Садко» — спящий Китеж за воротами (late_99e_k21_p3k_kitezh.js). Вдвоём настоящими нажатиями:
 // ролик у ворот «Китеж спит» → слобода: два горожанина (гусли у ракушки — проснулся, нотка к Сонным воротам), дед и бабка — разом →
-// ворота поднялись → колодец у звонницы: прилив поднимает на площадку → ролик «Колокол без языка» (Садко на осетре, Водяной, Рыба-кит) → уровень пройден.
-// Оба ролика — под ручной режиссурой (def.kino): ≥ 3 крупностей, ≥ 2 типов движения камеры, говорящий в кадре и лицом к камере.
+// ворота поднялись → колодец у звонницы: прилив поднимает на площадку → ролики «Колокол без языка» (Садко на осетре, Водяной, Рыба-кит) и «К киту» → уровень пройден.
+// Все три ролика — под ручной режиссурой (def.kino): ≥ 3 крупностей, ≥ 2 типов движения камеры, говорящий в кадре и лицом к камере.
 // Потом одиночка: дед и бабка — сыграл у деда, сменил героя (оставленный доигрывает), сыграл у бабки — проснулись оба.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(false);ZC.startFrom(ZC.LV('2-1'));ZC.G.manual=true;ZC.tick(3);U.nocine();const lv=document.getElementById('level');if(lv){lv.style.transition='none';lv.style.opacity=0;}
@@ -18,7 +18,7 @@ window.SPK=(cd)=>{const S=ACT.speaker;if(!S||!S.who||S.who==='zven'||S.until<ZC.
   if(ang>half*0.95||back<-0.1)CBAD.push(cd.def.dur+'с: '+rec);};
 window.PLAYC=(name,maxT)=>{let n=0;while(!ZC.G.cine&&n<(maxT||600)){ZC.tick(1);n++;}if(!ZC.G.cine)throw new Error(name+': ролик не начался '+U.st());const cd=CI.CD();
   if(!cd||!cd.def.kino)throw new Error(name+': ролик не под режиссурой kino');const sizes=new Set(cd.shots.map(s=>s.size)),moves=new Set(cd.shots.map(s=>s.p2?'spline':s.trk?'track':s.move));
-  let c=0;while(ZC.G.cine&&c<60*60){ZC.tick(1);c++;const now=CI.CD();if(now)SPK(now);}
+  let c=0;while(ZC.G.cine&&CI.CD()===cd&&c<60*60){ZC.tick(1);c++;SPK(cd);}   // следующий ролик может начаться прямо из конца этого
   const r=name+' '+cd.def.dur+'с шотов='+cd.shots.length+' крупн='+[...sizes].join('/')+' движ='+[...moves].join('/');if(sizes.size<3||moves.size<2)CBAD.push('мало разнообразия: '+r);CREP.push(r);return r;};
 window.PLAY=(pi,x,z)=>{if(U.act(pi).pos.z>-356)U.goto(pi,pi?1.2:-1.2,-358,8,0.5);const g=U.goto(pi,x,z,10,0.4);ZC.press(U.K[pi].i);ZC.tick(4);return g;};   // сквозь арку — между столбами
 const D=ZC.W.warp21('gate');ZC.tick(10);D.F.hermitWon+' '+U.st()
@@ -42,7 +42,7 @@ const K=ZC.W.dbg21k(),T=K.twz;const r=[U.goto(0,0,-409.5,14,0.4),U.goto(1,1.2,-4
 if(T.state!=='high')throw new Error('колодец не наполнился: '+T.state+' '+U.st());const y=U.act(0).pos.y;
 r.push('y='+y.toFixed(2));for(let i=0;i<6*60&&!ZC.G.cine;i++){U.step(0,0,-416.5,0.3);ZC.tick(1);}U.rel(0);if(!ZC.G.cine)throw new Error('нет ролика на звоннице: '+U.st());r.join(' ')
 //@@ shot=k21city_sadko.png
-const r=PLAYC('звонница',30);ZC.tick(60);r+' lvl='+ZC.W.levelId+' out='+!!ZC.W.flags.out+' links='+ZC.W.links
+const r=PLAYC('звонница',30)+' · '+PLAYC('к киту',30);ZC.tick(60);r+' lvl='+ZC.W.levelId+' out='+!!ZC.W.flags.out+' links='+ZC.W.links
 //@@
 if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));if(CBAD.length)throw new Error('FAIL '+CBAD.slice(0,6).join(' | '));
 if(!(ZC.G.done&&ZC.G.done['2-1']))throw new Error('2-1 не отмечен пройденным');'duo ok · реплик проверено '+CREP.filter(s=>/лицо/.test(s)).length
