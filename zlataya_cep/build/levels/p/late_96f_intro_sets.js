@@ -167,6 +167,9 @@ function prkLukoEnv(){const W0=W,bg=scene.background,fog=scene.fog?[scene.fog.co
   g.traverse(o=>{if(!o.isMesh||o.isInstancedMesh)return;const gt=o.geometry&&o.geometry.type;if(gt==='CircleGeometry'&&o.material&&o.material.fog===false){kill.push(o);return;}
     if(o.parent!==g)return;bb.setFromObject(o);bb.getSize(sz);bb.getCenter(c);if(sz.x>250&&sz.y<2){kill.push(o);return;}
     if(sz.x<6&&sz.z<6&&PRK_LK.cut.some(([x,z,r])=>Math.hypot(c.x-x,c.z-z)<r))kill.push(o);});
+  // то, что ставит на место игровой цикл уровня (желания курицы, кольца, искры), без него лежит кучкой в начале координат — в кадре 2-7 это «непонятный предмет»
+  for(const o of g.children){if(o.isInstancedMesh||o.isPoints||o.userData.decor)continue;bb.setFromObject(o);if(bb.isEmpty())continue;bb.getSize(sz);bb.getCenter(c);
+    if(sz.x<3&&sz.z<3&&Math.hypot(c.x,c.z)<0.05&&Math.abs(c.y)<0.6)kill.push(o);}
   kill.forEach(o=>{if(o.parent)o.parent.remove(o);});
   // деревья и трава кита (инстансы) у дуба и на месте кузни — вынуть по одному
   g.traverse(o=>{if(!o.isInstancedMesh)return;const m=new THREE.Matrix4(),z0=new THREE.Matrix4().makeScale(0,0,0),p=new V3();

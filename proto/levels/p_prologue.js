@@ -154,7 +154,7 @@ function buildPrologue(){
   const arena={x:0,z:-85,r:8.5,started:false,cleared:false,hold:0,list:[]};arena.camActive=()=>arena.started&&(!arena.cleared||arena.hold>0);W.camZones.push(arena);
   const barrier=makeGate(-9.6,9.6,-94,'thread','arena',{h:2.6});
   for(const[x,z]of[[-7.5,-80],[7.5,-81],[-7,-90],[7.2,-89.5]]){addMesh(new THREE.CylinderGeometry(0.7,0.85,0.5,12),M(0x8a5a32),x,0.25,z);W.cyls.push({x,z,r:0.8,miny:-1,maxy:0.5,on:true});}
-  W.onFirstUnravel=()=>{later(0.45,()=>{lullaby(LUL2,0.46,0,0.2);say(null,'♪ …серый волк живёт… ♪',3.4,true);});later(4.1,()=>say('tishka','<i>(издалека)</i> Ой, беда!',2));};
+  W.onFirstUnravel=null;
 
   /* ---------- Е. Светящееся дупло ---------- */
   const ht=hollowTree(0,-106);
