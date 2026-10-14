@@ -48,7 +48,7 @@ function updatePlayer(pi,dt){
     if(tap(pi,'call'))doCall(pi);if(tap(pi,'item')){if(W.itemSign&&W.itemSign(pi))W.itemSign(pi)(pi);else if(W.world===2)playGusli(pi);else if(W.world===3)playFeather(pi);else if(W.world===4)playTongs(pi);else if(W.world===5)useSign(pi);else throwYarn(pi);}}
   const hh=active(pi);if(hh!==h){updateLeftBehind(p,other(pi),dt);return;}
   // держит толстую струну и оборачивается к тем, кто на ней, — струна проседает в ряску (ловушка 1-2)
-  if(!lock&&wl>0.3&&!h.hang){const str=W.threads.find(t=>t.string&&t.thick&&t.hero===h&&!t.sag&&hd(h.pos,t.anchor)<1.2);if(str&&HEROES.some(q=>q!==h&&q.groundRef===str))releaseString(str,true);}
+  if(!lock&&wl>0.3&&!h.hang){const str=W.threads.find(t=>t.string&&t.thick&&t.hero===h&&!t.sag&&hd(h.pos,t.anchor)<1.2);if(str&&wx*str.dx+wz*str.dz<0.3&&HEROES.some(q=>q!==h&&q.groundRef===str))releaseString(str,true);}   // шаг вдоль своей струны — не «обернулся»: Потап идёт следом за друзьями
   h.guard=!lock&&btn(pi,'guard')&&p.spiritLock<=0&&h.rollT<=0&&!h.hang;
   // момент нажатия защиты запоминается во времени морока: по нему решается щит / отбив / «Одним махом»
   if(!lock&&tap(pi,'guard')){for(const e of W.enemies)if(e.alive&&e.tgt===h&&e.state==='wind')e.left=e.wdur-e.t;for(const b of W.bolts)if(b.tgt===h&&!b.refl)b.left=b.eta;if(W.onGuardTap){W.onGuardTap(pi,h);if(G.solo)W.onGuardTap(1-pi,active(1-pi));}}

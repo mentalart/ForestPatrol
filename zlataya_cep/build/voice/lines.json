@@ -1229,6 +1229,171 @@
    "dur": 3.81
   },
   {
+   "id": "p_les1_01",
+   "lv": "p",
+   "who": "zven",
+   "text": "Разбег до края — и прыжок!<br>Кольцо — куда ступить, дружок!",
+   "tts": "[excited] Разбег до края — и прыжок! Кольцо — куда ступить, дружок!",
+   "max": 5.1,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.99
+  },
+  {
+   "id": "p_les1_02",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Упадёшь — не беда:<br>колокольчик вернёт сюда!",
+   "tts": "[cheerful] Упадёшь — не беда: колокольчик вернёт сюда!",
+   "max": 3.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.14
+  },
+  {
+   "id": "p_les2_01",
+   "lv": "p",
+   "who": "pelageya",
+   "text": "Двое у каждого из нас —<br>меняй, кто нужен сейчас!",
+   "tts": "[calm, clever] Двое у каждого из нас — меняй, кто нужен сейчас!",
+   "max": 4.3,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.6
+  },
+  {
+   "id": "p_les2_02",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Эй! А я стою и жду?",
+   "tts": "[offended] Эй! А я стою и жду?",
+   "max": 2.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.99
+  },
+  {
+   "id": "p_les2_03",
+   "lv": "p",
+   "who": "potap",
+   "text": "Постой чуток — я позову!",
+   "tts": "[calm, warm] Постой чуток — я позову!",
+   "max": 2.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.82
+  },
+  {
+   "id": "p_les3_01",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Потап, ко мне!",
+   "tts": "[shouting] Потап, ко мне!",
+   "max": 1.9,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.51
+  },
+  {
+   "id": "p_les3_02",
+   "lv": "p",
+   "who": "potap",
+   "text": "Бегу-бегу!",
+   "tts": "[eager] Бегу-бегу!",
+   "max": 1.3,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.03
+  },
+  {
+   "id": "p_les3_03",
+   "lv": "p",
+   "who": "pelageya",
+   "text": "Йоша, ко мне!",
+   "tts": "[calling out] Йоша, ко мне!",
+   "max": 1.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.46
+  },
+  {
+   "id": "p_les3_04",
+   "lv": "p",
+   "who": "yosha",
+   "text": "Бегу-бегу!",
+   "tts": "[eager] Бегу-бегу!",
+   "max": 1.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.1
+  },
+  {
+   "id": "p_les3_05",
+   "lv": "p",
+   "who": "zven",
+   "text": "Крикни «Ко мне!» —<br>друг прибежит, хоть где стоит!",
+   "tts": "[cheerful] Крикни «Ко мне!» — друг прибежит, хоть где стоит!",
+   "max": 4.3,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4
+  },
+  {
+   "id": "p_les3_06",
+   "lv": "p",
+   "who": "zven",
+   "text": "Крикни «Ко мне!» —<br>все трое прибегут!",
+   "tts": "[cheerful] Крикни «Ко мне!» — все трое прибегут!",
+   "max": 3.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.14
+  },
+  {
+   "id": "p_les4_01",
+   "lv": "p",
+   "who": "pelageya",
+   "text": "Солнышко над ним горит —<br>щит подними, удар отбит!",
+   "tts": "[clear, explaining] Солнышко над ним горит — щит подними, удар отбит!",
+   "max": 4.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.86
+  },
+  {
+   "id": "p_les4_02",
+   "lv": "p",
+   "who": "potap",
+   "text": "Угольки потухли — бей смелей!",
+   "tts": "[warm, encouraging] Угольки потухли — бей смелей!",
+   "max": 2.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.4
+  },
+  {
+   "id": "p_les4_03",
+   "lv": "p",
+   "who": "proshka",
+   "text": "Пробой! Ещё удар — и нет клубка!",
+   "tts": "[excited] Пробой! Ещё удар — и нет клубка!",
+   "max": 3.3,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.95
+  },
+  {
+   "id": "p_les4_04",
+   "lv": "p",
+   "who": "yosha",
+   "text": "Теперь вы сами — посмелей!",
+   "tts": "[cheerful] Теперь вы сами — посмелей!",
+   "max": 2.5,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.08
+  },
+  {
    "id": "g_001",
    "lv": "g",
    "who": "potap",
@@ -1537,6 +1702,50 @@
    "dur": 3.04
   },
   {
+   "id": "1-3_013",
+   "lv": "1-3",
+   "who": "zven",
+   "text": "Гляди: Колобок на струне прыг — через две доли и ты прыгай!",
+   "max": 3.6,
+   "tts": "[quickly] Гляди: Колобок на струне прыг — через две доли и ты прыгай!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 2,
+   "dur": 3.67
+  },
+  {
+   "id": "1-3_014",
+   "lv": "1-3",
+   "who": "zven",
+   "text": "Плетень! Простым прыжком не взять — только со струны!",
+   "max": 3.4,
+   "tts": "Плетень! Простым прыжком не взять — только со струны!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.57
+  },
+  {
+   "id": "1-3_015",
+   "lv": "1-3",
+   "who": "zven",
+   "text": "Над водой струна висит — со струны на струну!",
+   "max": 3.4,
+   "tts": "Над водой струна висит — со струны на струну!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.45
+  },
+  {
+   "id": "1-3_016",
+   "lv": "1-3",
+   "who": "kolobok",
+   "text": "Не сяду! Ребята, на струны — запутаем рыжую!",
+   "max": 3.6,
+   "tts": "Не сяду! Ребята, на струны — запутаем рыжую!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4
+  },
+  {
    "id": "1-3_s01",
    "lv": "1-3",
    "who": null,
@@ -1835,6 +2044,182 @@
    "url": "elevenlabs:eleven_v4",
    "el_take": 1,
    "dur": 5.54
+  },
+  {
+   "id": "1-5_019",
+   "lv": "1-5",
+   "who": "kiki",
+   "text": "Пряди… не мешай!",
+   "max": 2.6,
+   "tts": "Пряди… не мешай!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.99
+  },
+  {
+   "id": "1-5_020",
+   "lv": "1-5",
+   "who": "kiki",
+   "text": "Кыш от прялки!",
+   "max": 2.6,
+   "tts": "Кыш от прялки!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.41
+  },
+  {
+   "id": "1-5_021",
+   "lv": "1-5",
+   "who": "kiki",
+   "text": "Не спи… пряди…",
+   "max": 2.6,
+   "tts": "Не спи… пряди…",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.4
+  },
+  {
+   "id": "1-5_022",
+   "lv": "1-5",
+   "who": "proshka",
+   "text": "Вот так полотно — хоть на ярмарку!",
+   "max": 3,
+   "tts": "Вот так полотно — хоть на ярмарку!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.66
+  },
+  {
+   "id": "1-5_023",
+   "lv": "1-5",
+   "who": "potap",
+   "text": "Вот так полотно — хоть на ярмарку!",
+   "max": 3,
+   "tts": "Вот так полотно — хоть на ярмарку!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.92
+  },
+  {
+   "id": "1-5_024",
+   "lv": "1-5",
+   "who": "pelageya",
+   "text": "Вот так полотно — хоть на ярмарку!",
+   "max": 3,
+   "tts": "Вот так полотно — хоть на ярмарку!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.88
+  },
+  {
+   "id": "1-5_025",
+   "lv": "1-5",
+   "who": "yosha",
+   "text": "Вот так полотно — хоть на ярмарку!",
+   "max": 3,
+   "tts": "Вот так полотно — хоть на ярмарку!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.88
+  },
+  {
+   "id": "1-5_026",
+   "lv": "1-5",
+   "who": "proshka",
+   "text": "Потап, ты прямо гиря!",
+   "max": 2.8,
+   "tts": "Потап, ты прямо гиря!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.16
+  },
+  {
+   "id": "1-5_027",
+   "lv": "1-5",
+   "who": "potap",
+   "text": "Потап, ты прямо гиря!",
+   "max": 2.8,
+   "tts": "Потап, ты прямо гиря!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.18
+  },
+  {
+   "id": "1-5_028",
+   "lv": "1-5",
+   "who": "pelageya",
+   "text": "Потап, ты прямо гиря!",
+   "max": 2.8,
+   "tts": "Потап, ты прямо гиря!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.42
+  },
+  {
+   "id": "1-5_029",
+   "lv": "1-5",
+   "who": "yosha",
+   "text": "Потап, ты прямо гиря!",
+   "max": 2.8,
+   "tts": "Потап, ты прямо гиря!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.4
+  },
+  {
+   "id": "1-5_030",
+   "lv": "1-5",
+   "who": "potap",
+   "text": "Сам ты гиря! Я — противовес.",
+   "max": 3,
+   "tts": "Сам ты гиря! Я — противовес.",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.9
+  },
+  {
+   "id": "1-5_031",
+   "lv": "1-5",
+   "who": "proshka",
+   "text": "Еду-у! Я наверху!",
+   "max": 2.6,
+   "tts": "Еду-у! Я наверху!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.01
+  },
+  {
+   "id": "1-5_032",
+   "lv": "1-5",
+   "who": "potap",
+   "text": "Еду-у! Я наверху!",
+   "max": 2.6,
+   "tts": "Еду-у! Я наверху!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.61
+  },
+  {
+   "id": "1-5_033",
+   "lv": "1-5",
+   "who": "pelageya",
+   "text": "Еду-у! Я наверху!",
+   "max": 2.6,
+   "tts": "Еду-у! Я наверху!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.06
+  },
+  {
+   "id": "1-5_034",
+   "lv": "1-5",
+   "who": "yosha",
+   "text": "Еду-у! Я наверху!",
+   "max": 2.6,
+   "tts": "Еду-у! Я наверху!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.16
   },
   {
    "id": "1-5_s01",
@@ -10963,10 +11348,11 @@
    "lv": "5-B2",
    "who": "yaga",
    "text": "Ох, голубчики… цепь-то чёрная — держит! Не пускает!",
-   "tts": "Ох, голубчики… цепь-то чёрная — держит! Не пускает!",
+   "tts": "[quickly] Ох, голубчики… цепь-то чёрная — держит! Не пускает!",
    "max": 3.12,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261009_135053_39344991-f715-44a4-87b8-2d9dea4b83fb.mp3",
-   "dur": 4.08
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 2,
+   "dur": 3.33
   },
   {
    "id": "5-B2_040",
@@ -11113,8 +11499,9 @@
    "text": "Спасли старую! Полезайте в ступу, касатики!",
    "tts": "Спасли старую! Полезайте в ступу, касатики!",
    "max": 2.62,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261009_135056_59e17be6-805a-4a96-b630-85eb7df451f8.mp3",
-   "dur": 2.9
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.09
   },
   {
    "id": "5-B2_054",
@@ -11123,8 +11510,9 @@
    "text": "Домчу до Лукоморья, пока Кощей лес не запер!",
    "tts": "Домчу до Лукоморья, пока Кощей лес не запер!",
    "max": 2.82,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261009_135054_ee5fdf9b-8cc9-4008-a98e-ba67ee26285e.mp3",
-   "dur": 2.92
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.83
   },
   {
    "id": "5-B2_055",
@@ -11233,8 +11621,9 @@
    "text": "Избушка, избушка! Повернись к лесу задом, ко мне — передом!",
    "tts": "Избушка, избушка! Повернись к лесу задом, ко мне — передом!",
    "max": 4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261009_135217_af5e1834-fa4d-4e86-9ca9-b4c935934583.mp3",
-   "dur": 4.24
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.32
   },
   {
    "id": "5-B2_066",
@@ -14230,6 +14619,41 @@
    "dur": 3.52
   },
   {
+   "id": "1-1_029",
+   "lv": "1-1",
+   "who": "yaga",
+   "text": "Ох, мастер языком плести!<br>Гляди — сам не запутайся.",
+   "tts": "[sarcastic] Ох, мастер языком плести! Гляди — сам не запутайся.",
+   "max": 4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.03
+  },
+  {
+   "id": "1-1_030",
+   "lv": "1-1",
+   "who": null,
+   "voice": "reader",
+   "text": "Все: «Избушка, избушка, повернись к лесу задом, к нам передом!»",
+   "max": 4,
+   "tts": "[warm, storytelling] Все: Избушка, избушка, повернись к лесу задом, к нам передом!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.05
+  },
+  {
+   "id": "1-1_031",
+   "lv": "1-1",
+   "who": null,
+   "voice": "reader",
+   "text": "Петушок на коньке: «Ку-ка-ре-ку!»",
+   "max": 3.2,
+   "tts": "[warm, storytelling] Петушок на коньке: Ку-ка-ре-ку!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.83
+  },
+  {
    "id": "1-1_s01",
    "lv": "1-1",
    "who": null,
@@ -15056,6 +15480,106 @@
    "url": "elevenlabs:eleven_v4",
    "el_take": 1,
    "dur": 3.81
+  },
+  {
+   "id": "luko_y01",
+   "lv": "luko",
+   "who": "yaga",
+   "text": "Фу-фу! Русским духом пахнет… А, это вы! Заходите, гости дорогие — кухня открыта.",
+   "tts": "[quickly] Фу-фу! Русским духом пахнет… А, это вы! Заходите, гости дорогие — кухня открыта.",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 6.02
+  },
+  {
+   "id": "luko_y02",
+   "lv": "luko",
+   "who": "yaga",
+   "text": "Опять отвернулась, вертихвостка! Ну, что варить будем?",
+   "tts": "Опять отвернулась, вертихвостка! Ну, что варить будем?",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.34
+  },
+  {
+   "id": "luko_y03",
+   "lv": "luko",
+   "who": "yaga",
+   "text": "Что варить будем, гости дорогие?",
+   "tts": "Что варить будем, гости дорогие?",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.18
+  },
+  {
+   "id": "luko_y04",
+   "lv": "luko",
+   "who": "yaga",
+   "text": "Без рыбы ухи не сваришь — ступай на причал!",
+   "tts": "Без рыбы ухи не сваришь — ступай на причал!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.31
+  },
+  {
+   "id": "luko_y05",
+   "lv": "luko",
+   "who": "yaga",
+   "text": "Грибов-то нет! Поищи под деревьями.",
+   "tts": "Грибов-то нет! Поищи под деревьями.",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.9
+  },
+  {
+   "id": "luko_y06",
+   "lv": "luko",
+   "who": "yaga",
+   "text": "Ягод маловато — у скалы кусты красные.",
+   "tts": "Ягод маловато — у скалы кусты красные.",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.28
+  },
+  {
+   "id": "luko_y07",
+   "lv": "luko",
+   "who": "yaga",
+   "text": "Каша из топора? Ну, солдатская хитрость… Ладно, сварим!",
+   "tts": "Каша из топора? Ну, солдатская хитрость… Ладно, сварим!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.28
+  },
+  {
+   "id": "luko_y08",
+   "lv": "luko",
+   "who": "yaga",
+   "text": "Объеденье! Сама бы лучше не сварила.",
+   "tts": "Объеденье! Сама бы лучше не сварила.",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.24
+  },
+  {
+   "id": "luko_y09",
+   "lv": "luko",
+   "who": "yaga",
+   "text": "Пальчики оближешь!",
+   "tts": "Пальчики оближешь!",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.48
+  },
+  {
+   "id": "luko_y10",
+   "lv": "luko",
+   "who": "yaga",
+   "text": "Съедобно! Мешать-то надо живее.",
+   "tts": "Съедобно! Мешать-то надо живее.",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.04
   },
   {
    "id": "2-1_050",

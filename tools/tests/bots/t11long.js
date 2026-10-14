@@ -55,6 +55,13 @@ r.push('hit='+!!F().hayHit,'hide='+!!F().hayHide,'nut='+P2().hsNut.base.toFixed(
 put(U.act(0),S.x-0.6,S.z+0.5);put(U.act(1),S.x+0.6,S.z-0.5);ZC.tick(5);const g0=P2().RV.grabs+P2().RV.dodges;ZC.tick(60*8);r.push('under hay hits='+(P2().RV.grabs+P2().RV.dodges-g0));
 chk(P2().RV.grabs+P2().RV.dodges===g0,'в шалаше ворон не пикирует');r.concat(BAD)
 //@@
+// готовые шалаши вдоль тропы (перед рощей, в роще, после ручья): внутри — укрыт, у входа снаружи и на крыше — нет; стенки не пропускают со спины
+const W=ZC.W,P=P2(),r=[];chk(P.HUTS.length===5,'шалашей пять: '+P.HUTS.length);
+for(const u of P.HUTS.slice(1)){const h=U.act(0);put(h,u.x,u.z+0.4);ZC.tick(5);const ins=P.sheltered(h);put(h,u.x+2.6,u.z+0.4);ZC.tick(5);const out=P.sheltered(h);
+  put(h,u.x,u.z-3.2);ZC.tick(5);h.vel.set(0,0,1.2);ZC.tick(40);const back=h.pos.z<u.z-1.1;r.push('hut@'+u.x+','+u.z+' in='+ins+' out='+out+' back='+back);
+  chk(ins,'в шалаше укрыт @'+u.z);chk(!out,'рядом с шалашом не укрыт @'+u.z);chk(back,'стенка спины держит @'+u.z);}
+r.concat(BAD)
+//@@
 // ступа Яги: Прошка не поднимет — только Потап (кнопка умения у ступы); ступа взлетает, пыль над рощей — вороны не видят
 const W=ZC.W,T=P2().ST,H=ZC.HERO,r=[];U.toKind('proshka',0);put(H.proshka,T.x+0.6,T.z+1.7);put(H.potap,T.x+3,T.z+3);ZC.tick(20);ZC.press('KeyE');ZC.tick(40);r.push('proshka stupa='+!!F().stupa);chk(!F().stupa,'Прошка ступу не поднимает');
 U.toKind('potap',0);put(H.potap,T.x+0.6,T.z+1.7);ZC.tick(20);ZC.press('KeyE');ZC.tick(30);r.push('potap stupa='+!!F().stupa);chk(F().stupa,'Потап поднял ступу');

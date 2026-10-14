@@ -164,7 +164,10 @@ function updateThreads(dt){
     // клубок по дороге подхватывает орешки
     const bx=t.sx+t.dx*t.len,bz=t.sz+t.dz*t.len;pickByBall(bx,thY(t,t.len)+0.2,bz);
     // струна на колышке держится, пока её не смотают (RB). Толстую держит Потап с камня: ушёл, когда по ней идут, — проседает в ряску
-    if(t.string&&!t.sag){if(t.thick){const hh=t.hero;const off=hd(hh.pos,t.anchor)>0.9||Math.abs(hh.pos.y-t.anchor.y)>0.7||players[hh.player].downed||hh.cling;
+    if(t.string&&!t.sag){if(t.thick){const hh=t.hero;let off=hd(hh.pos,t.anchor)>0.9||Math.abs(hh.pos.y-t.anchor.y)>0.7||players[hh.player].downed||hh.cling;
+      {const px=hh.pos.x-t.sx,pz=hh.pos.z-t.sz,u=px*t.dx+pz*t.dz;   // Потап сам идёт по своей струне следом за друзьями — держит её, не «ушёл»
+        if(u>-0.6&&u<t.len+0.3&&Math.abs(px*t.dz-pz*t.dx)<1.1&&Math.abs(hh.pos.y-thY(t,clamp(u,0,t.len)))<0.7)off=false;}
+
       if(off&&HEROES.some(q=>q!==hh&&q.groundRef===t))releaseString(t,false);}}
     else if(!t.string){const occupied=standingOn(t)||standingOn(t.gluedWith)||standingOn(t.parent)||standingOn(t.child);t.life-=dt;
       if(t.life<=0&&!occupied){removeThread(t);continue;}}

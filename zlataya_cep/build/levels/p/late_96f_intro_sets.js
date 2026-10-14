@@ -150,13 +150,50 @@ function prkMermaid(par,x,y,z,sc){const mer=prkGroup(par,x,y,z);mer.scale.setSca
     eyes.forEach(q=>{q.scale.y=Math.max(0.06,e);});};
   M.anim(0,0);return M;}
 
+// Лукоморье игры: уровень luko строится «в песочнице» (свой W, свет и интерфейс потом возвращаются), одевается как в игре
+// (деревья и трава кита, обрывы, стилизация) и его группа переезжает в площадку L — дуб уровня встаёт на место дуба «Присказки».
+// Свои дуб с цепью, Кот, Кузьма, кузня и слушатели — из «Присказки»: всё, что у уровня стоит на их местах, убирается.
+const PRK_LK={dz:7,cut:[[0,-7,4.2],[2.3,-4.6,1.2],[10.2,-0.6,1.4],[8.6,0.6,1.2],[7.4,-3.6,3.0]]};
+function prkLukoEnv(){const W0=W,bg=scene.background,fog=scene.fog?[scene.fog.color.clone(),scene.fog.near,scene.fog.far]:null,a0=[amb.color.clone(),amb.intensity],s0=[sun.color.clone(),sun.intensity],ui=[G.ui,G.uiTick];
+  const dr=Object.assign({},DRESS),fk=new Set(Object.keys(G.flags));let Wl=null,g=null;   // флаги, что заведёт уровень (G.flags.lc…), потом убираются
+  try{W=null;newWorld();Wl=W;W.levelId='luko';buildLukomorye();if(typeof flushDecor==='function')flushDecor();if(FIN.dressWorld)FIN.dressWorld();try{dressScatter();}catch(e){}if(FIN.styLevel)FIN.styLevel();g=W.group;}
+  catch(e){console.error('prk luko',e);g=null;}
+  finally{if(Wl&&Wl.group)scene.remove(Wl.group);W=W0;scene.background=bg;if(fog&&scene.fog){scene.fog.color.copy(fog[0]);scene.fog.near=fog[1];scene.fog.far=fog[2];}
+    amb.color.copy(a0[0]);amb.intensity=a0[1];sun.color.copy(s0[0]);sun.intensity=s0[1];G.ui=ui[0];G.uiTick=ui[1];for(const k in DRESS)delete DRESS[k];Object.assign(DRESS,dr);for(const k of Object.keys(G.flags))if(!fk.has(k))delete G.flags[k];}
+  if(!g)return null;
+  // своё небо и море у «Присказки»: диски солнца и луны уровня, его плоское море и Звенышко — прочь; на местах дуба, Кота и кузни — пусто
+  const kill=[],bb=new THREE.Box3(),sz=new V3(),c=new V3();
+  for(const o of[Wl.oak,Wl.kot&&Wl.kot.g,Wl.zven&&Wl.zven.g])if(o&&o.parent)kill.push(o);
+  g.traverse(o=>{if(!o.isMesh||o.isInstancedMesh)return;const gt=o.geometry&&o.geometry.type;if(gt==='CircleGeometry'&&o.material&&o.material.fog===false){kill.push(o);return;}
+    if(o.parent!==g)return;bb.setFromObject(o);bb.getSize(sz);bb.getCenter(c);if(sz.x>250&&sz.y<2){kill.push(o);return;}
+    if(sz.x<6&&sz.z<6&&PRK_LK.cut.some(([x,z,r])=>Math.hypot(c.x-x,c.z-z)<r))kill.push(o);});
+  kill.forEach(o=>{if(o.parent)o.parent.remove(o);});
+  // деревья и трава кита (инстансы) у дуба и на месте кузни — вынуть по одному
+  g.traverse(o=>{if(!o.isInstancedMesh)return;const m=new THREE.Matrix4(),z0=new THREE.Matrix4().makeScale(0,0,0),p=new V3();
+    for(let i=0;i<o.count;i++){o.getMatrixAt(i,m);p.setFromMatrixPosition(m);if(PRK_LK.cut.some(([x,z,r])=>Math.hypot(p.x-x,p.z-z)<r)){o.setMatrixAt(i,z0);}}o.instanceMatrix.needsUpdate=true;});
+  g.position.set(0,0,PRK_LK.dz);g.userData.prkCast=true;return {g,W:Wl};}
+// ---------- лес мира 1: холмистая земля-долина и деревья кита (инстансы, как у уровней) ----------
+function prkKitTo(par,items){const ims=items.length?instKit(items):[];for(const m of ims){if(m.parent)m.parent.remove(m);par.add(m);}return ims;}
+// o: x0…x1, z0…z1 — участок, y — уровень земли, hill(x,z) — холмы, river(x,z) — ручей, step — шаг сетки деревьев, size(x,z,R) — масштаб дерева (0 — нет)
+function prkForest(par,o){const Rn=kRng(o.seed||17),hill=o.hill||(()=>0),B={minx:o.x0,maxx:o.x1,minz:o.z0,maxz:o.z1};
+  const geo=valleyGeo(B,o.y,0,o.pal||PAL.moss,o.cell||6,{flat:true,river:o.river,riverPal:PAL.shallow}),p=geo.attributes.position;
+  for(let i=0;i<p.count;i++)p.setY(i,p.getY(i)+hill(p.getX(i),p.getZ(i)));geo.computeVertexNormals();geo.computeBoundingSphere();
+  const gm=new THREE.Mesh(geo,KMAT.vc);gm.receiveShadow=true;par.add(gm);const items=[],mix=o.mix||TREES.forest;
+  for(let x=o.x0;x<o.x1;x+=o.step)for(let z=o.z0;z<o.z1;z+=o.step){const px=x+(Rn()-0.5)*o.step*0.9,pz=z+(Rn()-0.5)*o.step*0.9;if(o.river&&o.river(px,pz))continue;
+    const sc=o.size(px,pz,Rn);if(!sc)continue;items.push({name:pickW(mix,Rn()),v:0,x:px,y:o.y+hill(px,pz)-0.15,z:pz,s:sc,ry:Rn()*6.283,tint:0.78+Rn()*0.3});}
+  (o.extra||[]).forEach(e=>items.push(e));return {ground:gm,trees:prkKitTo(par,items)};}
 function prkBuildL(){const O=PRO.L,g=prkGroup(PRK.root,O.x,O.y,O.z),L={g};PRK.L=L;
   const sea=prkSea(g,460,64,0x3d8cb0);L.seaM=sea.mat;
-  // остров: трава, песок, камни
-  const grassM=prkM(0x6f9a4a);L.grassM=grassM;{const isl=new THREE.CylinderGeometry(15,17.5,3,18,2);FIN.jitter(isl,0.2);prkAdd(g,isl,grassM,0,-1.5,0);}
+  // Лукоморье игры (prkLukoEnv); не собралось — прежний остров: трава, песок, камни
+  const grassM=prkM(0x6f9a4a);L.grassM=grassM;const env=prkLukoEnv();L.env=env&&env.g;
+  if(env){g.add(env.g);L.envW=env.W;}
+  else{{const isl=new THREE.CylinderGeometry(15,17.5,3,18,2);FIN.jitter(isl,0.2);prkAdd(g,isl,grassM,0,-1.5,0);}
   {const sand=new THREE.CylinderGeometry(19,21,1.6,20);FIN.jitter(sand,0.12);prkAdd(g,sand,prkM(0xe2c48c),0,-1.4,0);}
   for(let i=0;i<16;i++){const a=i/16*6.283+0.3,r=16.8+Math.sin(i*3.1)*1.1;prkRock(g,Math.sin(a)*r,-0.6,Math.cos(a)*r,0.6+((i*37)%10)/10,0x8a8478);}
-  for(let i=0;i<60;i++){const a=i*2.4,r=4+(i*53%100)/10;const t=prkAdd(g,new THREE.ConeGeometry(0.12,0.5,3),prkM(0x4f7e36),Math.sin(a)*r,0.2,Math.cos(a)*r);t.rotation.z=((i*13)%10-5)*0.05;}
+  for(let i=0;i<60;i++){const a=i*2.4,r=4+(i*53%100)/10;const t=prkAdd(g,new THREE.ConeGeometry(0.12,0.5,3),prkM(0x4f7e36),Math.sin(a)*r,0.2,Math.cos(a)*r);t.rotation.z=((i*13)%10-5)*0.05;}}
+  // за морем — лесной берег мира 1: туда летит камера в конце сцены 2 (к Лесному патрулю)
+  {const F=prkGroup(g,0,0,0);F.userData.prkCast=true;L.coast=F;const hl=(x,z)=>Math.max(-0.3,Math.min(1,(z-150)/26)*3.5+Math.max(0,z-210)*0.07+Math.sin(x*0.031)*Math.cos(z*0.043)*2.6);
+    prkForest(F,{x0:-300,x1:300,z0:142,z1:440,y:-0.5,cell:7,step:5.2,hill:hl,seed:5,pal:PAL.moss,size:(x,z,Rn)=>z<158?0:Rn()<0.6?2.4+Rn()*1.5:0});}
   // дуб
   const bark=prkM(0x6a4a2e),oak=prkGroup(g,0,0,0);L.oak=oak;
   prkAdd(oak,new THREE.CylinderGeometry(1.55,2.3,13,10),bark,0,6.5,0);
@@ -200,8 +237,11 @@ function prkBuildL(){const O=PRO.L,g=prkGroup(PRK.root,O.x,O.y,O.z),L={g};PRK.L=
     prkAdd(rack,new THREE.BoxGeometry(2.0,0.12,0.14),wood,0,2.3,0);prkAdd(rack,new THREE.BoxGeometry(1.9,0.9,0.06),prkM(0x5a3a20),0,1.65,-0.07);
     const tool=(x,len,head,col)=>{const t=prkGroup(rack,x,2.15,0.05);prkAdd(t,new THREE.CylinderGeometry(0.025,0.025,len,5),wood,0,-len/2,0);prkAdd(t,new THREE.BoxGeometry(head,0.1,0.1),prkM(col),0,-len,0);return t;};
     tool(-0.6,0.8,0.26,0x4a4a54);tool(-0.25,0.65,0.2,0x4a4a54);
-    const kid=tool(0.35,0.42,0.17,0xd8b070);kid.children.forEach(c=>{c.material=prkM(0xd8b070);});L.kidHammer=kid;
-    const web=new THREE.LineBasicMaterial({color:0xf0f0f0,transparent:true,opacity:0.55});for(let i=0;i<4;i++){const gg=new THREE.BufferGeometry().setFromPoints([PRV(0.2,2.24,0.08),PRV(0.48+i*0.04,2.05-i*0.12,0.08)]);rack.add(new THREE.Line(gg,web));}
+    const kid=tool(0.35,0.42,0.17,0xd8b070);L.hamMats=kid.children.map(c=>{c.material=prkM(0xd8b070,{emissive:0xffa020,emissiveIntensity:0});return c.material;});L.kidHammer=kid;
+    L.ham0={p:kid.position.clone(),r:kid.rotation.clone(),s:kid.scale.clone()};
+    // волшебство молоточка: тёплое свечение, кольцо рун вокруг бойка, искорки — их зажигает сцена 2
+    L.hamGlow=prkGlow(kid,0xffd070,0.5,0,-0.42,0,0);L.hamRune=prkAdd(kid,new THREE.TorusGeometry(0.13,0.01,4,26),prkM(0xffe08a,{emissive:0xffc040,emissiveIntensity:1}),0,-0.42,0);L.hamRune.castShadow=false;L.hamRune.visible=false;
+    const web=new THREE.LineBasicMaterial({color:0xf0f0f0,transparent:true,opacity:0.55});L.web=[];for(let i=0;i<4;i++){const gg=new THREE.BufferGeometry().setFromPoints([PRV(0.2,2.24,0.08),PRV(0.48+i*0.04,2.05-i*0.12,0.08)]);const ln=new THREE.Line(gg,web);rack.add(ln);L.web.push(ln);}
 
     L.newLink=prkAdd(fg,new THREE.TorusGeometry(0.27,0.075,6,12),prkM(0xffd060,{emissive:0xff8a20,emissiveIntensity:1}),0.2,0.95,0.6);L.newLink.visible=false;L.fg=fg;}
   L.kuzma=prkCast(makeKuzma,g,6.35,0,3.53,1,0.6);   // у наковальни (не в группе кузни — KC.fcam берёт поворот g)
@@ -217,6 +257,7 @@ function prkBuildL(){const O=PRO.L,g=prkGroup(PRK.root,O.x,O.y,O.z),L={g};PRK.L=
   {const c=prkGroup(g,-6,0,-70);L.cliff=c;for(let i=0;i<9;i++){const a=i*0.8;prkRock(c,Math.sin(a)*2.4,i*0.75-0.4,Math.cos(a)*1.6,2.1-i*0.13,0x3a3448);}
     prkRock(c,0,6.2,0,1.3,0x3a3448);L.ko=prkCast(makeKoschei,c,0,6.9,0,1,0);
     {const rg=new THREE.Group();L.ko.ring.add(rg);prkAdd(rg,new THREE.TorusGeometry(0.06,0.022,5,10),prkM(0xffc83a,{emissive:0x8a5a00,emissiveIntensity:0.9}),0,0,0);prkAdd(rg,new THREE.OctahedronGeometry(0.045),prkM(0xd02030,{emissive:0xb00010,emissiveIntensity:1}),0,0.03,0.05);L.koGem=prkGlow(rg,0xff4050,0.5,0,0.03,0.06,0.6);}
+    L.koEyes=['eyeL','eyeR'].map(n=>L.ko.rig&&L.ko.rig[n]?prkGlow(L.ko.rig[n],0x8affa8,0.32,0,0,0.04,0):null).filter(Boolean);
     const rv=makeRaven();L.ko.g.add(rv.g);rv.g.position.set(0.42,2.25,-0.05);rv.g.scale.setScalar(0.45);rv.g.rotation.y=0.4;L.raven=rv;
     L.frost=[];const fm=new THREE.MeshBasicMaterial({color:0xd8f0ff,transparent:true,opacity:0.7,depthWrite:false});
     for(let i=0;i<7;i++){const d=new THREE.Mesh(new FIN.orig.Circle(0.6+i*0.25,10),fm);d.rotation.x=-Math.PI/2;d.position.set(Math.sin(i*2.1)*1.2,6.95+i*0.002,Math.cos(i*2.1)*1.0);d.scale.setScalar(0.01);c.add(d);L.frost.push(d);}}
@@ -283,20 +324,78 @@ function prkBuildP(){const O=PRO.P,g=prkGroup(PRK.root,O.x,O.y,O.z),P={g};PRK.P=
       x.fillStyle='#ffd24a';x.font='bold 40px Georgia, serif';x.textAlign='center';x.textBaseline='middle';x.fillText('ЛП',w/2,h/2+2);})}));fl.position.x=0.62;P.flag.add(fl);P.flagM=fl;}
   {const rope=prkM(0xc8a070);for(const s of[-1,1])prkAdd(g,new THREE.CylinderGeometry(0.03,0.03,11,4),rope,3.6+s*0.3,5.2,4.6);for(let y=0.6;y<10.6;y+=0.6)prkAdd(g,new THREE.BoxGeometry(0.66,0.06,0.08),rope,3.6,y,4.6);}
   // мастерская Прошки: верстак, самокат, пружина; огород Йоши: бочки, росток
-  prkAdd(g,new THREE.BoxGeometry(1.6,0.8,0.8),plank,-12.2,0.4,4.2);P.sc=makeScooter();P.sc.g.userData.prkCast=true;g.add(P.sc.g);P.sc.g.position.set(-10.9,0,4.0);P.sc.g.rotation.y=1.2;
-  P.spring=prkGroup(g,-10.9,0.7,4.2);for(let i=0;i<5;i++)prkAdd(P.spring,new THREE.TorusGeometry(0.1,0.022,5,10),prkM(0xb8c0c8),0,i*0.05,0).rotation.x=Math.PI/2;
+  prkAdd(g,new THREE.BoxGeometry(1.6,0.8,0.8),plank,-12.2,0.4,4.2);P.sc=makeScooter();P.sc.g.userData.prkCast=true;g.add(P.sc.g);P.sc.g.position.set(-11.6,0,5.6);P.sc.g.rotation.y=1.2;
+  // на верстаке — чертёж и шестерёнки
+  {const bp=new THREE.Mesh(new THREE.PlaneGeometry(0.9,0.6),new THREE.MeshLambertMaterial({map:prkTex(128,90,(x,w,h)=>{x.fillStyle='#2a5a9a';x.fillRect(0,0,w,h);x.strokeStyle='#d8ecff';x.lineWidth=2;
+      x.beginPath();x.arc(36,52,18,0,7);x.stroke();x.beginPath();x.moveTo(36,52);x.lineTo(96,22);x.stroke();x.strokeRect(20,66,90,14);for(let i=0;i<5;i++){x.beginPath();x.arc(36,52,6+i*3,0,7);x.stroke();}
+      x.font='bold 12px Georgia';x.fillStyle='#d8ecff';x.fillText('ПЛАН',78,62);})}));bp.rotation.x=-Math.PI/2;bp.rotation.z=0.2;bp.position.set(-12.2,0.81,4.2);g.add(bp);}
+  // катапульта-«подавалка» Прошки: основание, две шестерни, пружина, рычаг с ложкой, ручка спуска; P.cat.fire(k) — выстрел (0…1)
+  {const c=prkGroup(g,-8.4,0,5.0);c.rotation.y=0;c.scale.setScalar(1.35);P.cat=c;const wd=prkM(0xc48e56),ir=prkM(0x9aa2b0),rd=prkM(0xd84a30),gd=prkM(0xf6be3e,{emissive:0x5a3a00,emissiveIntensity:0.3});
+    prkAdd(c,new THREE.BoxGeometry(0.95,0.22,0.6),wd,0,0.11,0);for(const z of[-0.22,0.22])prkAdd(c,new THREE.BoxGeometry(0.12,0.5,0.08),wd,0,0.42,z);
+    P.gears=[[0.32,0.42,0.33,0.2,gd],[0.12,0.3,0.33,0.13,ir]].map(([x,y,z,r,m])=>{const ge=prkGroup(c,x,y,z);prkAdd(ge,new THREE.CylinderGeometry(r,r,0.05,12),m,0,0,0).rotation.x=Math.PI/2;
+      for(let i=0;i<8;i++){const a=i/8*6.283;prkAdd(ge,new THREE.BoxGeometry(0.06,0.06,0.05),m,Math.cos(a)*(r+0.025),Math.sin(a)*(r+0.025),0).rotation.z=a;}prkAdd(ge,new THREE.CylinderGeometry(0.03,0.03,0.08,6),rd,0,0,0).rotation.x=Math.PI/2;return ge;});
+    P.coil=prkGroup(c,-0.18,0.22,0);for(let i=0;i<6;i++)prkAdd(P.coil,new THREE.TorusGeometry(0.1,0.022,5,12),prkM(0xc8d0d8),0,i*0.045,0).rotation.x=Math.PI/2;
+    const arm=prkGroup(c,0,0.62,0);P.catArm=arm;prkAdd(arm,new THREE.BoxGeometry(0.95,0.07,0.09),wd,-0.47,0,0);const cup=prkGroup(arm,-0.95,0.06,0);prkAdd(cup,new THREE.CylinderGeometry(0.17,0.09,0.1,10,1,true),prkM(0xd8a050,{side:THREE.DoubleSide}),0,0,0);
+    prkAdd(cup,new THREE.CylinderGeometry(0.09,0.09,0.02,10),prkM(0xd8a050),0,-0.05,0);P.cup=cup;arm.rotation.z=0.25;
+    const lv=prkGroup(c,0.42,0.22,-0.2);P.lever=lv;prkAdd(lv,new THREE.CylinderGeometry(0.025,0.025,0.5,5),ir,0,0.25,0);prkAdd(lv,new THREE.SphereGeometry(0.06,8,6),rd,0,0.52,0);lv.rotation.z=0.5;}
+  // яблоко — летит из катапульты Потапу в лапы
+  P.apple=prkGroup(g,0,0,0);prkAdd(P.apple,new THREE.SphereGeometry(0.15,10,8),prkM(0xe0302a,{emissive:0x400000,emissiveIntensity:0.3}),0,0,0).scale.set(1,0.9,1);
+  prkAdd(P.apple,new THREE.CylinderGeometry(0.012,0.012,0.08,4),prkM(0x5a3a1e),0,0.15,0);{const lf=prkAdd(P.apple,new THREE.SphereGeometry(0.05,5,3),prkM(0x5aa040),0.04,0.16,0);lf.scale.set(1,0.3,0.6);}
+  // гаечный ключ Прошки (в лапе)
+  P.wrench=new THREE.Group();{const wm=prkM(0xd8dee8,{emissive:0x303840,emissiveIntensity:0.4});prkAdd(P.wrench,new THREE.BoxGeometry(0.05,0.4,0.06),wm,0,-0.12,0);for(const x of[-0.055,0.055])prkAdd(P.wrench,new THREE.BoxGeometry(0.04,0.11,0.06),wm,x,-0.36,0);}prkNoBatch(P.wrench);
   P.barrels=[];for(const[x,z]of[[9.2,3.8],[11.6,3.9],[13.0,3.9]]){const b=prkGroup(g,x,0,z);b.scale.setScalar(0.62);prkAdd(b,new THREE.CylinderGeometry(0.55,0.5,0.9,10),prkM(0x8a5a30),0,0.45,0);prkAdd(b,new THREE.CylinderGeometry(0.5,0.5,0.06,10),prkM(0x4a2e18),0,0.9,0);
     for(let i=0;i<3;i++)prkAdd(b,new THREE.ConeGeometry(0.1,0.3,4),prkM(0x5aa040),Math.sin(i*2)*0.25,1.05,Math.cos(i*2)*0.25);P.barrels.push(b);}
   {const b=prkGroup(g,10.5,0,6.45);prkAdd(b,new THREE.CylinderGeometry(0.34,0.28,0.36,10),prkM(0x9a5a3a),0,0.18,0);prkAdd(b,new THREE.CylinderGeometry(0.3,0.3,0.04,10),prkM(0x4a2e18),0,0.36,0);}
-  P.sprout=prkGroup(g,10.5,0.36,6.45);{const st=prkAdd(P.sprout,new THREE.CylinderGeometry(0.04,0.06,1.2,5),prkM(0x5aa040),0,0.6,0);const lf=prkAdd(P.sprout,new THREE.SphereGeometry(0.28,6,4),prkM(0x6ac04a),0.18,1.2,0.05);lf.scale.set(1,0.35,0.7);}P.sprout.scale.setScalar(0.01);
-  // бревно Потапа (на плече) и Тишка
-  P.log=new THREE.Group();prkAdd(P.log,new THREE.CylinderGeometry(0.22,0.26,2.2,8),prkM(0x8a5a32),0,0,0).rotation.z=Math.PI/2;prkNoBatch(P.log);
-  P.tish=prkCast(makeTishka,g,0,0,0,1,0);P.cap=prkAdd(P.tish.g,new THREE.ConeGeometry(0.16,0.4,7),prkM(0x4a7ad0),0,0.82,0);P.cap.rotation.z=-0.4;P.cap.visible=false;
+  // засохший цветок в горшке: стебель поник, листья бурые, бутон закрыт; P.bloom(k) — оживает от воды Йоши (0…1)
+  {const f=prkGroup(g,10.5,0.36,6.45);P.flw=f;const sm=prkM(0x8a7a50),lm=prkM(0x8a7048),pm=prkM(0x9a8070),cm=prkM(0x7a6040);P.flwM={sm,lm,pm,cm};
+    const st=prkGroup(f,0,0,0);P.stem=st;prkAdd(st,new THREE.CylinderGeometry(0.025,0.035,0.55,5),sm,0,0.27,0);
+    P.leaves=[1,-1].map((sg,i)=>{const l=prkGroup(st,0,0.16+i*0.12,0);const m=prkAdd(l,new THREE.SphereGeometry(0.09,6,4),lm,sg*0.09,0,0);m.scale.set(1,0.25,0.5);l.rotation.z=-sg*0.9;return l;});
+    const hd=prkGroup(st,0,0.56,0);P.flwHead=hd;prkAdd(hd,new THREE.SphereGeometry(0.07,8,6),cm,0,0,0);
+    P.petals=[];for(let i=0;i<8;i++){const pv=prkGroup(hd,0,0,0);pv.rotation.y=i/8*6.283;const pt=prkAdd(pv,new THREE.SphereGeometry(0.075,6,4),pm,0,0,0.1);pt.scale.set(0.7,0.22,1.25);pv.userData.pt=pt;P.petals.push(pv);}
+    P.bloom=k=>{const e=prkE.back(clamp(k,0,1)),c=clamp(k*1.4,0,1);st.rotation.z=lerp(1.25,0,e);hd.rotation.z=lerp(0.6,0,e);P.leaves.forEach((l,i)=>{l.rotation.z=(i?-1:1)*lerp(-0.9,0.5,e);});
+      sm.color.setHex(0x8a7a50).lerp(new THREE.Color(0x4cb44a),c);lm.color.setHex(0x8a7048).lerp(new THREE.Color(0x6ac04a),c);pm.color.setHex(0x9a8070).lerp(new THREE.Color(0xff7ea4),c);cm.color.setHex(0x7a6040).lerp(new THREE.Color(0xf8d03c),c);
+      const op=CINE.E.outElastic?CINE.E.outElastic(clamp((k-0.35)/0.65,0,1)):prkE.back(clamp((k-0.35)/0.65,0,1));P.petals.forEach(pv=>{pv.rotation.x=lerp(-1.3,0.15,op);});hd.scale.setScalar(lerp(0.8,1.35,prkE.back(clamp((k-0.3)/0.7,0,1))));};
+    P.bloom(0);}
+  // лейка Йоши (в лапе)
+  P.can=new THREE.Group();{const cm=prkM(0x4a9ad8);prkAdd(P.can,new THREE.CylinderGeometry(0.09,0.1,0.15,10),cm,0,0,0);const sp=prkAdd(P.can,new THREE.CylinderGeometry(0.012,0.025,0.2,6),cm,0,0.03,0.13);sp.rotation.x=Math.PI/2-0.6;
+    prkAdd(P.can,new THREE.TorusGeometry(0.06,0.012,4,10,Math.PI),cm,0,0.08,-0.04).rotation.y=Math.PI/2;P.canTip=new THREE.Object3D();P.canTip.position.set(0,0.09,0.22);P.can.add(P.canTip);}prkNoBatch(P.can);
+  P.drops=[];for(let i=0;i<14;i++){const d=prkAdd(g,new THREE.SphereGeometry(0.03,5,4),new THREE.MeshBasicMaterial({color:0x8ad8ff}),0,0,0);d.castShadow=false;d.visible=false;P.drops.push(d);}
+  // Тишка: ночной колпак с помпоном (на голове, по кости), подушка в обнимку, «z-z-z» над головой
+  P.tish=prkCast(makeTishka,g,0,0,0,1,0);{const T=P.tish,hb=T.rig&&T.rig.head||T.g,cp=new THREE.Group(),bm=prkM(0x5a8ae0),wm=prkM(0xfff8e8);P.cap=cp;
+    prkAdd(cp,new THREE.TorusGeometry(0.13,0.035,5,14),wm,0,0,0).rotation.x=Math.PI/2;prkAdd(cp,new THREE.ConeGeometry(0.13,0.2,9),bm,0,0.1,0);
+    const tip=prkGroup(cp,0,0.19,0);tip.rotation.z=-1.0;prkAdd(tip,new THREE.ConeGeometry(0.07,0.2,8),bm,0,0.09,0);prkAdd(tip,new THREE.SphereGeometry(0.045,8,6),wm,0,0.2,0);P.capTip=tip;
+    cp.position.set(0,0.11,-0.02);cp.rotation.set(-0.15,0,-0.3);hb.add(cp);
+    const pl=new THREE.Group();P.pillow=pl;const pm=prkAdd(pl,new THREE.SphereGeometry(0.17,10,6),prkM(0xf6f0e4),0,0,0);pm.scale.set(1.25,0.85,0.45);
+    for(const s of[-1,1])prkAdd(pl,new THREE.SphereGeometry(0.035,5,4),prkM(0xf6f0e4),s*0.2,s*0.1,0);(T.rig&&T.rig.hips||T.g).add(pl);pl.position.set(0,0.0,0.19);
+    P.zzz=[0,1,2].map(i=>{const sp=new THREE.Sprite(new THREE.SpriteMaterial({map:prkLetter('z'),color:0xb8d8ff,transparent:true,depthWrite:false,fog:false,opacity:0}));sp.scale.setScalar(0.22+i*0.06);g.add(sp);return sp;});
+    prkNoBatch(T.g);}
   // подзорная труба и тетрадка Пелагеи
   P.glass=new THREE.Group();prkAdd(P.glass,new THREE.CylinderGeometry(0.06,0.09,0.6,8),prkM(0xc89a3a,{emissive:0x402a00}),0,0,0).rotation.x=Math.PI/2;
-  P.book=new THREE.Group();prkAdd(P.book,new THREE.BoxGeometry(0.34,0.05,0.26),prkM(0x8a2a22),0,0,0);
-  // лес внизу: ели вокруг, верхушки ниже настила
-  for(let i=0;i<80;i++){const a=i*2.399,r=12+(i*37%60);const h=11+(i*13%6);prkFir(g,Math.sin(a)*r,-16+(i%3)*0.8,Math.cos(a)*r,h+2,[0x2e5a3a,0x3a6a40,0x264c32][i%3]);}
+  // тетрадь Пелагеи: раскрытая, на правой странице сказка пишется буква за буквой (P.page(n, зачёркнуто)), на левой — рисунок царства; перо водит по строке
+  P.book=new THREE.Group();{const cv=prkM(0x8a2a22);prkAdd(P.book,new THREE.BoxGeometry(0.62,0.03,0.42),cv,0,-0.02,0);
+    const mk=(draw)=>{const c=document.createElement('canvas');c.width=256;c.height=176;const t=new THREE.CanvasTexture(c);t.anisotropy=4;draw(c.getContext('2d'),256,176);return {c,t};};
+    const paper=(x,w,h)=>{x.fillStyle='#fbf6e6';x.fillRect(0,0,w,h);x.strokeStyle='rgba(90,120,200,.35)';x.lineWidth=1.5;for(let y=34;y<h;y+=26){x.beginPath();x.moveTo(8,y);x.lineTo(w-8,y);x.stroke();}};
+    const L0=mk((x,w,h)=>{paper(x,w,h);x.strokeStyle='#5a3a8a';x.lineWidth=3;x.beginPath();x.moveTo(60,140);x.lineTo(60,80);x.lineTo(90,55);x.lineTo(120,80);x.lineTo(120,140);x.closePath();x.stroke();
+      x.beginPath();x.moveTo(120,140);x.lineTo(120,95);x.lineTo(150,70);x.lineTo(180,95);x.lineTo(180,140);x.stroke();x.beginPath();x.arc(200,40,14,0,7);x.stroke();x.fillStyle='#f6be3e';x.beginPath();x.arc(90,45,6,0,7);x.fill();});
+    const R0=mk(paper);P.pageTex=R0;const TXT=['В некотором','царстве,','в некотором','государстве…'];
+    P.page=(n,cross)=>{const k=Math.floor(n),key=k+'|'+cross;if(P.page.k===key)return;P.page.k=key;const x=R0.c.getContext('2d');paper(x,256,176);x.fillStyle='#3a2a6a';x.font='italic 22px Georgia, serif';let left=k;
+      TXT.forEach((ln,i)=>{if(left<=0)return;const s=ln.slice(0,left);left-=ln.length;x.fillText(s,14,30+i*26);});
+      if(cross>0){x.strokeStyle='#c0302a';x.lineWidth=4;x.beginPath();for(let i=0;i<4;i++){const y=22+i*26,len=Math.min(1,cross*4-i);if(len<=0)break;x.moveTo(12,y);x.lineTo(12+220*len,y+(i%2?4:-3));}x.stroke();}R0.t.needsUpdate=true;};
+    // страницы — к зрителю (тетрадь развёрнута к камере, Пелагея пишет «вверх ногами» — как в мультфильме): верх строк — к −z, рисунок — слева (−x)
+    for(const[sx,T]of[[-1,L0],[1,R0]]){const pg=new THREE.Mesh(new THREE.PlaneGeometry(0.29,0.4),new THREE.MeshLambertMaterial({map:T.t}));pg.rotation.set(-Math.PI/2,sx*0.08,0);pg.position.set(sx*0.152,0.003,0);P.book.add(pg);}
+    // точка на правой странице: строка i (0…3), доля строки u (0…1)
+    P.pageAt=(i,u)=>PRV(0.152+(lerp(0.06,0.92,u)-0.5)*0.29,0.01,-0.2+(30+i*26-6)/176*0.4);
+    P.page(0,0);
+    const q=new THREE.Group();P.quill=q;const fm=prkM(0xfff4f8);const vane=prkAdd(q,new THREE.SphereGeometry(0.05,6,4),fm,0,0.17,0);vane.scale.set(0.5,2.6,0.18);
+    prkAdd(q,new THREE.CylinderGeometry(0.006,0.008,0.3,4),prkM(0xd8c8a0),0,0.12,0);prkAdd(q,new THREE.ConeGeometry(0.01,0.04,4),prkM(0x2a2a40),0,-0.03,0).rotation.x=Math.PI;q.rotation.set(0.5,0,-0.45);P.book.add(q);
+    P.ball=prkAdd(g,new THREE.IcosahedronGeometry(0.07,0),prkM(0xfbf6e6),0,0,0);P.ball.visible=false;}prkNoBatch(P.book);
+  // лес мира 1 внизу: холмистая долина с ручьём, ели и сосны кита до горизонта (верхушки у ствола — ниже настила), корни сосны, сосны-соседки
+  {const F=prkGroup(g,0,0,0);F.userData.prkCast=true;P.forest=F;const riv=(x,z)=>Math.abs(x-58-Math.sin(z*0.013)*36)<4.5&&Math.hypot(x,z)>20;
+    const hl=(x,z)=>{const r=Math.hypot(x,z);return Math.sin(x*0.021)*Math.cos(z*0.017)*2.5+Math.max(0,(r-110)/150)**2*28;};
+    const near=[[-34,-24,7.2],[40,-30,6.6],[-48,22,6.2],[30,36,6.8],[8,-56,7.4],[-20,48,6.0]].map(([x,z,sc])=>({name:'firTall',v:0,x,y:-21+hl(x,z)-0.2,z,s:sc*1.15,ry:x,tint:0.95}));
+    prkForest(F,{x0:-270,x1:270,z0:-270,z1:270,y:-21,cell:6.5,step:5.0,hill:hl,river:riv,seed:11,pal:PAL.moss,extra:near,
+      size:(x,z,Rn)=>{const r=Math.hypot(x,z);if(r<5.4)return 0;if(r>70&&Rn()>Math.max(0.2,1-(r-70)/170))return 0;return r<16?2.6+Rn()*0.6:r<70?3.0+Rn()*0.8:3.3+Rn()*1.3;}});
+    for(let i=0;i<9;i++){const a=i/9*6.283+0.2;const r=prkAdd(g,new THREE.ConeGeometry(1.1,5.5,5),bark,Math.sin(a)*3.9,-20,Math.cos(a)*3.9);r.rotation.x=Math.cos(a)*1.15;r.rotation.z=-Math.sin(a)*1.15;}}
   // ночь: звёзды, звёздный дождь, искра к сосне, ворон за ней
   P.stars=prkStars(g,480,260,0,0);P.stars.visible=false;P.star=prkGlow(g,0xfff2c0,3,-8,34,-60,0);
   P.rain=[];for(let i=0;i<26;i++){const s=prkGroup(g,0,0,0);prkGlow(s,0xffe080,0.9,0,0,0,1);const tr=prkAdd(s,new THREE.CylinderGeometry(0.02,0.11,4,5),new THREE.MeshBasicMaterial({color:0xffe9a0,transparent:true,opacity:0.6,fog:false}),0,0,0);tr.castShadow=false;
@@ -348,7 +447,7 @@ function prkBuildW(){const D=PRK.Wd={};
       for(let i=0;i<7;i++){const a=i/7*6.283+0.2,x=Math.cos(a)*4.2,z=Math.sin(a)*2.6;prkAdd(N,new THREE.CylinderGeometry(0.6,0.9,9,8),oak,x,1.5,z);
         for(let k=0;k<2;k++){const geo=new FIN.orig.Icosa(1.9+k*0.4,1);FIN.jitter(geo,0.25);prkAdd(N,geo,crown,x*1.15+(k-0.5)*1.2,8.4+k*1.3,z*1.15-2.4);}}
       prkAdd(N,new THREE.CylinderGeometry(4.6,3.4,1.0,18),prkM(0x8a6a40),0,5.4,0);for(let i=0;i<4;i++){const t=prkAdd(N,new THREE.TorusGeometry(4.4-i*0.9,0.16,5,30),prkM(i%2?0x9a7a48:0x6a4a2a),0,5.95,0);t.rotation.x=Math.PI/2;}
-      w.sol=prkCast(()=>makeSolovei(),N,0,5.9,2.4,2.1,Math.PI);
+      w.sol=prkCast(()=>makeSolovei(),N,0,5.9,2.4,2.1,0);   // лицом к зрителю (камера сада — со стороны +z)
       w.gust=[];for(let i=0;i<10;i++){const m=prkAdd(N,new THREE.TorusGeometry(1.2+i*0.35,0.05,4,20,2.2),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:0,depthWrite:false,fog:false}),0,8,2);m.castShadow=false;m.userData.ph=i/10;w.gust.push(m);}}
     w.feather=prkAdd(g,new THREE.ConeGeometry(0.14,0.7,4),prkM(0xff9a30,{emissive:0xff5a00,emissiveIntensity:0.9}),-1,3,-6);w.feather.visible=false;w.sp=prkFall(g);}
   // 4 · Огненная Смородина (4-Б): лавовая река, Калинов мост, три головы Горыныча из пара — лбами и огнём в небо, искры, клещи на наковальне

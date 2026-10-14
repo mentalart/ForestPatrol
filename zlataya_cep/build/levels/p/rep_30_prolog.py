@@ -7,3 +7,9 @@ rep("play({dur:39,fov:48,","play(FIN.lulGag({dur:39,fov:48,")
 # модулю окно, лампу, тетрадку, Звенышко и прочее.
 rep("const Z=makeZven();W.zven=Z;Z.mode='script';Z.vis=false;Z.pos.set(2.9,9,-2.1);","const Z=makeZven();W.zven=Z;Z.mode='script';Z.vis=false;Z.pos.set(2.9,9,-2.1);if(FIN.proRoom)FIN.proRoom({win,winPos,walls,R,lampG,lampL,nb,NB_TABLE,NB_WING,tish,sc,spots,door,Z,F,shadow});")
 rep("banner('За Звенышком!','#ffd76a',2,'По веткам — вперёд, бегом!');}});}","banner('За Звенышком!','#ffd76a',2,'По веткам — вперёд, бегом!');}},{sc,tish}));}")
+# Ролики-уроки (late_96h_prolog_lessons.js): модулю — флаги, трещина, первый прыжок, кнопка лесенки, поляна; мороки поляны появляются
+# после ролика «Бой с мороком» (FIN.proFight запускает его и зовёт spawnM в конце; без модуля или у ботов — сразу, как раньше).
+rep("W.spawns=[[new V3(-4.0,0,0.3),","if(FIN.proLessons)FIN.proLessons({F,CRK0,CRK1,JH,ladderBtn,arena});W.spawns=[[new V3(-4.0,0,0.3),")
+rep("arena.started=true;F.stage='arena';arena.list=[makeFoe('morok',-3,-86,{pi:0,harmless:true,tutorial:true}),makeFoe('morok',3,-86,{pi:1,harmless:true,tutorial:true})];SFX.gate();banner('Морок!','#e7b0ff',2,'Ниток спутанных клубок,<br>Колюч, как ёжиков бок!');}",
+    "arena.started=true;F.stage='arena';const spawnM=()=>{if(arena.list.length)return;arena.list=[makeFoe('morok',-3,-86,{pi:0,harmless:true,tutorial:true}),makeFoe('morok',3,-86,{pi:1,harmless:true,tutorial:true})];SFX.gate();banner('Морок!','#e7b0ff',2,'Ниток спутанных клубок,<br>Колюч, как ёжиков бок!');};if(!(FIN.proFight&&FIN.proFight(spawnM)))spawnM();}")
+rep("if(arena.started&&!arena.cleared&&arena.list.every(e=>!e.alive)){arena.cleared=true;arena.hold=2.4;","if(arena.started&&!arena.cleared&&arena.list.length&&arena.list.every(e=>!e.alive)){arena.cleared=true;arena.hold=2.4;")
