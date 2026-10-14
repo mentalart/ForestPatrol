@@ -1,0 +1,436 @@
+[
+{
+"id": "3-1_001",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Дзинь! Небесное царство — чудо из чудес!",
+"max": 2.42
+},
+{
+"id": "3-1_004",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Ключ! Холодный, как лёд зимой…",
+"max": 2.12
+},
+{
+"id": "3-1_005",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Ой.",
+"max": 1.92
+},
+{
+"id": "3-1_008",
+"who": "pelageya",
+"vid": "CH4syTkdz0MNPn6zayBd",
+"prompt": "[childlike voice] Зажгла — светло, погасила — темно!",
+"max": 3
+},
+{
+"id": "3-1_009",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Один свет пера держит — другой бьёт, не робей!",
+"max": 3.4
+},
+{
+"id": "3-1_010",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Бумажная, а кусается!",
+"max": 3
+},
+{
+"id": "3-2_001",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Облака тёплый свет любят. Дзинь!",
+"max": 3.4
+},
+{
+"id": "3-2_002",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Свет пера — твоя защита: светлый круг с тобой идёт, не отстаёт!",
+"max": 3.6
+},
+{
+"id": "3-2_003",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Йоша, давай ко мне — довезу, не бойся.",
+"max": 3.6
+},
+{
+"id": "3-2_004",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Ладно. На этот раз — вези.",
+"max": 3.4
+},
+{
+"id": "3-2_005",
+"who": "pelageya",
+"vid": "CH4syTkdz0MNPn6zayBd",
+"prompt": "[childlike voice] Я поливаю — ты подымаешь!",
+"max": 3.2
+},
+{
+"id": "3-2_006",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Ну и ладно. В другой раз… подожду.",
+"max": 3.8
+},
+{
+"id": "3-2_007",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Живой мост! Бегом, пока свет не погас!",
+"max": 3.4
+},
+{
+"id": "3-3_003",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Птицы поссорились — и небо закачалось. Помогите спеть им вместе: жмите в такт, чтоб песня не сбивалась!",
+"max": 3.8
+},
+{
+"id": "3-4_001",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Полетели! Дзинь-дзинь-дзинь!",
+"max": 2.72
+},
+{
+"id": "3-4_002",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Держитесь. Я… тяжёлый, увы.",
+"max": 2.52
+},
+{
+"id": "3-4_003",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Держу мачту. Чини, не медли!",
+"max": 2.82
+},
+{
+"id": "3-4_004",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Запасные крылья! Из вёдер. Я предусмотрел — я не промах!",
+"max": 3.72
+},
+{
+"id": "3-4_005",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Ключи на воронах… Это Кощей их прислал, не иначе!",
+"max": 3.6
+},
+{
+"id": "3-4_006",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Кыш! С палубы, прочь!",
+"max": 2.8
+},
+{
+"id": "3-4_007",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "В тучах мостков нет. Да у нас фонарь — свет дорогу проложит!",
+"max": 3.8
+},
+{
+"id": "3-4_008",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Перо — в фонарь у мачты, вставьте скорей!",
+"max": 3.6
+},
+{
+"id": "3-5_003",
+"who": "tishka",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] Йоша! Я тут, я тут!",
+"max": 2.62
+},
+{
+"id": "3-5_004",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Держись крепко, братец!",
+"max": 2.32
+},
+{
+"id": "3-5_005",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Гуси! Погоня! Бежим!",
+"max": 2.32
+},
+{
+"id": "3-5_010",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Пелагея, Совиный взор включи — найди, где под берегом спрятаться!",
+"max": 3.8
+},
+{
+"id": "3-5_011",
+"who": "yaga",
+"vid": "3H7aTk6uTUDbt11IM9D4",
+"prompt": "А, это вы мне двор чистили, голубчики!",
+"max": 4.12
+},
+{
+"id": "3-5_012",
+"who": "yaga",
+"vid": "3H7aTk6uTUDbt11IM9D4",
+"prompt": "Это Кощей костлявый чужим ключом гусей моих приманил — ишь, удумал!",
+"max": 4.12
+},
+{
+"id": "3-5_013",
+"who": "yaga",
+"vid": "3H7aTk6uTUDbt11IM9D4",
+"prompt": "Велел малыша утащить: колыбельная-то — про него! Ну, погоди, Кощей, — я тебе припомню!",
+"max": 4.32
+},
+{
+"id": "3-5_014",
+"who": "yaga",
+"vid": "3H7aTk6uTUDbt11IM9D4",
+"prompt": "Я вам за двор была должна — вот, отдала должок.",
+"max": 3.52
+},
+{
+"id": "3-5_015",
+"who": "yaga",
+"vid": "3H7aTk6uTUDbt11IM9D4",
+"prompt": "А за гусей — ещё помогу, дружок.",
+"max": 3.52
+},
+{
+"id": "3-5_016",
+"who": "tishka",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] Спасибо, Яга, бабушка!",
+"max": 4.52
+},
+{
+"id": "3-5_017",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Гуси свет видят! Гасите перья — и ступайте, где темно.",
+"max": 3.8
+},
+{
+"id": "3-5_018",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Кислятина… Ладно уж. Съем до огрызка.",
+"max": 3.6
+},
+{
+"id": "3-5_019",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Гуси свет примечают. Тише… Где темно — там и ступайте смело.",
+"max": 4.12
+},
+{
+"id": "3-B_001",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "Один звон — не звон, а ползвона! Фью-ить!",
+"max": 2.8
+},
+{
+"id": "3-B_002",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "А колокольчик — в облачко, прятки! Фью!",
+"max": 3
+},
+{
+"id": "3-B_003",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "Хи-хи! Не тот, не тот!",
+"max": 2.6
+},
+{
+"id": "3-B_004",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "Фью-ить! Ваши искорки — мои, мои!",
+"max": 2.8
+},
+{
+"id": "3-B_005",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "А я вам солнышко — свистом погашу!",
+"max": 3.4
+},
+{
+"id": "3-B_006",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "Ну держитесь — я в небо, ввысь!",
+"max": 3.2
+},
+{
+"id": "3-B_007",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "А теперь — главный свист, держитесь!",
+"max": 3.2
+},
+{
+"id": "3-B_008",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Пелагея, Совиный взор включи — какой жёлудь настоящий? Прошка, стреляй в золотой, в блестящий!",
+"max": 4.4
+},
+{
+"id": "3-B_009",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "Фью-у-ить! Кто тут гнездо моё тревожит?",
+"max": 2.72
+},
+{
+"id": "3-B_010",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "А ну — сдуло! Прочь, народ!",
+"max": 2.52
+},
+{
+"id": "3-B_011",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "На табличку над ним глядите — там написано, что делать!",
+"max": 2.92
+},
+{
+"id": "3-B_012",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "Я не хотел свистеть, не хотел…",
+"max": 3.12
+},
+{
+"id": "3-B_013",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "Я петь разучился. Только свищу.",
+"max": 3.12
+},
+{
+"id": "3-B_014",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "Спасибо, маленькая. С тобою — поётся.",
+"max": 3.32
+},
+{
+"id": "3-B_015",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Третий виток цепи готов! Дзинь-дзинь!",
+"max": 3.32
+},
+{
+"id": "3-B_016",
+"who": "solovei",
+"vid": "n6HFNmgefTKGL69fGu6Y",
+"prompt": "Фью! Проморгался, прозрел!",
+"max": 2.6
+},
+{
+"id": "3-5_020",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] [mumbling] Ну и что это доказывает, а?",
+"max": 3.6
+},
+{
+"id": "3-5_021",
+"who": "pelageya",
+"vid": "CH4syTkdz0MNPn6zayBd",
+"prompt": "[childlike voice] [whispers] Спасибо, спасибо…",
+"max": 3.6
+},
+{
+"id": "3-5_022",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Вкусно. Спасибо, матушка.",
+"max": 3.6
+},
+{
+"id": "3-5_023",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Ням! Сладкий, как мёд!",
+"max": 3.6
+},
+{
+"id": "3-2_008",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Я сам! Не мал, не слаб!",
+"max": 2.6
+},
+{
+"id": "3-2_009",
+"who": "pelageya",
+"vid": "CH4syTkdz0MNPn6zayBd",
+"prompt": "[childlike voice] Ягнёночек! Облачный, как пушок.",
+"max": 2.62
+},
+{
+"id": "3-2_010",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "От стада отбился. Слышите, гром за облаками? Его батюшка ищет — вожак стада.",
+"max": 3.22
+},
+{
+"id": "3-2_011",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Не бойся, Пушок, — доведём!",
+"max": 1.72
+},
+{
+"id": "3-2_012",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "«Ветер, ветер! Ты могуч, ты гоняешь стаи туч!» Дзинь!",
+"max": 3.52
+},
+{
+"id": "3-2_013",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Меня не сдует.",
+"max": 1.62
+},
+{
+"id": "3-2_014",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Ко мне! За меня держитесь — у меня перо в кулаке не гаснет.",
+"max": 3.8
+}
+]
