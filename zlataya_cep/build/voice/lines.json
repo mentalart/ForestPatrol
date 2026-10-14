@@ -1098,6 +1098,28 @@
    "dur": 3.62
   },
   {
+   "id": "intro_037",
+   "lv": "p",
+   "who": "kot",
+   "text": "Садитесь в круг — начну рассказ!",
+   "tts": "[warm, storytelling] Садитесь в круг — начну рассказ!",
+   "max": 2.3,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.28
+  },
+  {
+   "id": "intro_038",
+   "lv": "p",
+   "who": "kot",
+   "text": "Идёт направо — песнь заводит,<br>Налево — сказку говорит!",
+   "tts": "[warm, storytelling] Идёт направо — песнь заводит, Налево — сказку говорит!",
+   "max": 3.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.81
+  },
+  {
    "id": "g_001",
    "lv": "g",
    "who": "potap",
