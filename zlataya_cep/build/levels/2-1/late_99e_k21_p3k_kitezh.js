@@ -107,59 +107,69 @@
   const KSH=(t,p,l,o)=>{o=o||{};return {t,p,l,p2:o.p2,l2:o.l2,dur:o.dur,cut:o.cut,xk:o};};
   function gateScene(){const T=HERO,E=CINE.E,fx=(h,p)=>Math.atan2(p.x-h.pos.x,p.z-h.pos.z);
     const row=[[-2.6,-348.6],[-0.9,-349.2],[0.9,-349.2],[2.6,-348.6]],from=HEROES.map(h=>h.pos.clone()),ARCH=new V3(0,1.4,-356);
-    play({dur:11.6,fov:50,kino:true,mood:['#7aa8d8',0.12],
-      shots:[KSH(0,[0,4.6,-342.6],[0,2.6,-372],{p2:[0,3.0,-345.6],l2:[0,2.4,-376],dur:3.4,move:'none'}),        // 1 общий из-за спин: водоросли ушли — за аркой тёмный город
-        KSH(3.4,[0.6,1.9,-353.2],[0,1.3,-349],{move:'truck',amp:0.5}),                                             // 2 обратный: лица героев — тихо, ни огонька
-        KSH(6.0,[-0.9,1.3,-351],[-0.9,1.1,-349.2],{trk:KC.fcam(T.proshka,1.9,0.35,0.05,0.12)}),                   // 3 Прошка крупно: «Эй, Китеж! Подъём!»
-        KSH(8.6,[0,4.2,-352],[0,1.2,-368],{p2:[0,8.5,-358],l2:[0,0.8,-376],dur:3,move:'none'})],                  // 4 кран над аркой: спящие на лавках, «з-з-з»
-      says:[[0.3,3.0,null,'<i>Расступились водоросли — а за воротами спит Китеж-град.</i>',true],[3.5,2.4,'zven','Тихо-то как… Ни звона, ни огонька.'],
-        [6.1,2.4,'proshka','Эй, Китеж! Подъём! …Спят, что ли?'],[8.8,2.7,'zven','Напев Садко помните? Им и будите!']],
+    // тайминг — по записям: ремарка 2-1_s10 ≈ 5 с, реплики 2-1_039…041 ≈ 3,2–3,7 с
+    play({dur:16.4,fov:50,kino:true,mood:['#7aa8d8',0.12],
+      shots:[KSH(0,[0,4.6,-342.6],[0,2.6,-372],{p2:[0,3.6,-344.6],l2:[0,2.4,-376],dur:2.8,move:'none'}),        // 1 общий из-за спин: водоросли ушли — за аркой тёмный город
+        KSH(2.8,[3.4,2.2,-350.2],[-1,2.6,-374],{move:'truck',amp:0.5}),                                          // 2 через плечо сбоку: тёмные терема, ни огонька
+        KSH(5.4,[0.6,1.9,-353.2],[0,1.3,-349],{move:'truck',amp:0.5}),                                           // 3 обратный: лица героев — тихо
+        KSH(9.2,[-0.9,1.3,-351],[-0.9,1.1,-349.2],{trk:KC.fcam(T.proshka,1.9,0.35,0.05,0.12)}),                 // 4 Прошка крупно: «Эй, Китеж! Подъём!»
+        KSH(12.8,[0,4.2,-352],[0,1.2,-368],{p2:[0,8.5,-358],l2:[0,0.8,-376],dur:3.6,move:'none'})],             // 5 кран над аркой: спящие на лавках, «з-з-з»
+      says:[[0.3,4.9,null,'<i>Расступились водоросли — а за воротами спит Китеж-град.</i>',true],[5.5,3.6,'zven','Тихо-то как… Ни звона, ни огонька.'],
+        [9.3,3.4,'proshka','Эй, Китеж! Подъём! …Спят, что ли?'],[12.9,3.3,'zven','Напев Садко помните? Им и будите!']],
       events:[{t:0,fn:()=>{F.gateOpen=true;}}],
-      cues:[[0.2,()=>SFX.gate()],[1.6,()=>CINE.rimPulse(0.4)],[3.6,KC.all('surprise',0.08)],[6.3,()=>CINE.punch(-3)],[6.4,KC.emo('proshka','cheer')],
-        [7.6,()=>{KSND.puff(0);floatText(new V3(-5.6,2.6,-365.5),'Хр-р-р…','#cfe8ff');}],[8.0,KC.emo('proshka','droop')],[8.1,KC.emo('yosha','laugh')],
-        [9.4,()=>{FIN.SADKO_TUNE.forEach((m,i)=>later(i*0.45,()=>gusli(m,0,0.14)));}],[10.6,KC.all('nod',0.1)]],
+      cues:[[0.2,()=>SFX.gate()],[1.6,()=>CINE.rimPulse(0.4)],[5.6,KC.all('surprise',0.08)],[9.5,()=>CINE.punch(-3)],[9.6,KC.emo('proshka','cheer')],
+        [11.4,()=>{KSND.puff(0);floatText(new V3(-5.6,2.6,-365.5),'Хр-р-р…','#cfe8ff');}],[11.8,KC.emo('proshka','droop')],[11.9,KC.emo('yosha','laugh')],
+        [13.6,()=>{FIN.SADKO_TUNE.forEach((m,i)=>later(i*0.45,()=>gusli(m,0,0.14)));}],[15.2,KC.all('nod',0.1)]],
       tick:(t)=>{HEROES.forEach((h,i)=>{const k=E.inOutCubic(clamp(t/1.2,0,1)),s=row[i];h.pos.set(lerp(from[i].x,s[0],k),lerp(from[i].y,0,k),lerp(from[i].z,s[1],k));h.vel.set(0,0,0);
-        h.face=t>=7.9&&t<8.6&&h.kind!=='proshka'?fx(h,T.proshka.pos):fx(h,ARCH);});},
+        h.face=t>=11.6&&t<12.8&&h.kind!=='proshka'?fx(h,T.proshka.pos):fx(h,ARCH);});},
       end:()=>{HEROES.forEach((h,i)=>{placeOnGround(h,row[i][0],row[i][1],0);h.face=Math.PI;});snapCams();}});}
-  // ---------- финал: колокол без языка, Садко на осетре, к киту ----------
-  function towerScene(){const T=HERO,E=CINE.E,fx=(h,p)=>Math.atan2(p.x-h.pos.x,p.z-h.pos.z),S=sturg,Y=TW.top;
-    const spots=[[-2.4,-416.4],[-0.8,-416.8],[0.8,-416.8],[2.4,-416.4]],from=HEROES.map(h=>h.pos.clone()),BP=new V3(0,8.4,-419);
-    const sad=makeSadko();sad.drop.visible=false;sad.g.visible=false;
-    const HOV=new V3(8.6,5.0,-419),P0=new V3(28,15,-396),UP=new V3(16,22,-438);
-    const seat=[[-0.3,1.0,0.9],[0.3,1.0,-0.4],[-0.3,1.0,-1.7],[0.3,1.0,-3.0]],SAD_L=new V3(0,1.0,2.6);
-    const fishAt=t=>{if(t<6.8)return null;if(t<9.0){const k=E.inOutCubic((t-6.8)/2.2);const p=new V3().lerpVectors(P0,HOV,k);p.y+=Math.sin(k*Math.PI)*2.2;return p;}
-      if(t<20.9)return HOV.clone().add(new V3(0,Math.sin(t*1.3)*0.12,0));const k=E.inOutSine(clamp((t-20.9)/3.1,0,1));return new V3().lerpVectors(HOV,UP,k);};
-    const heroAt=(i,t)=>{const s=spots[i],j0=20.9+i*0.12;const ground=new V3(s[0],Y,s[1]);if(t<j0)return ground;const back=S.g.localToWorld(new V3(...seat[i]));
-      if(t>=j0+0.6)return back;const k=E.outBack(clamp((t-j0)/0.6,0,1)),p=new V3().lerpVectors(ground,back,Math.min(1,k));p.y+=Math.sin(Math.min(1,k)*Math.PI)*1.4;return p;};
-    play({dur:24.2,fov:50,kino:true,mood:['#8ab0e0',0.12],
-      shots:[KSH(0,[1.4,2.0,-401.5],[0,9.5,-419],{p2:[0.4,4.4,-404],l2:[0,8.6,-419],dur:2.8,move:'none'}),            // 1 общий снизу: звонница, герои наверху, колокол тёмный
-        KSH(2.8,[0.35,7.5,-418.3],[0,10,-419.3],{move:'push',amp:0.4}),                                                  // 2 деталь: в колоколе пусто, обрывок ремня
-        KSH(4.8,[-0.8,Y+1.3,-418],[-0.8,Y+1.1,-416.8],{trk:KC.fcam(T.pelageya,1.6,0.3,0.05,0.15)}),                       // 3 Пелагея крупно: «Бом…» — тишина
-        KSH(6.8,[-3.2,Y+3.6,-410.5],[8,Y,-416],{trk:KC.look(()=>S.g.position,0.75),move:'none'}),                          // 4 общий: осётр с Садко подплывает
-        KSH(9.0,[7,Y+1.6,-419],[8.6,Y+1.4,-419],{trk:KC.fcam(sad,2.6,-0.25,0.05,0.12)}),                                  // 5 Садко крупно: «Колокол без языка…»
-        KSH(11.4,[7,Y+1.2,-419],[8.6,Y+1.4,-419],{trk:KC.fcam(sad,2.4,0.3,-0.15,0.2),tr:'whip'}),                       // 6 Садко ниже и ближе: «Водяной язык сорвал…»
-        KSH(14.0,[7.5,Y-2,-404],[20,30,-436],{move:'push',amp:0.5}),                                                // 7 вверх: тень кита над Китежем
-        KSH(16.4,[1.5,Y+1.4,-416.8],[0,Y+1.2,-416.8],{trk:KC.fcam(T.potap,2.0,0.25,0.05,0.12)}),                          // 8 Потап крупно: «Достанем!»
-        KSH(18.4,[5,Y+2.2,-417],[8.6,Y+1.6,-419],{trk:KC.fcam(sad,3.8,0.45,0.35,0.1)}),                                   // 9 Садко средний: «Садитесь на осетра»
-        KSH(20.6,[0.6,Y+3,-408],[8.6,Y+1,-419],{trk:KC.follow(()=>S.g.position,new V3(-8,3,11),new V3(0,0.8,0),1),move:'none'})],   // 10 общий за осетром: прыжок на спину и ввысь, к киту
-      says:[[0.2,2.5,null,'<i>Наверху — главный колокол. А языка в нём нет.</i>',true],[2.9,1.8,'zven','Пусто! Чем же ему звонить?'],
-        [5.0,1.6,'pelageya','Бом…'],[6.9,1.9,'zven','Глядите — Садко! На осетре!'],
-        [9.2,2.1,'sadko','Колокол без языка — вот Китеж и спит.'],[11.5,2.4,'sadko','Водяной язык сорвал — а Рыба-кит проглотил.'],
-        [14.1,2.2,'zven','Вон он, кит! Над самым Китежем плывёт!'],[16.5,1.8,'potap','Достанем. Как положено!'],[18.5,2.0,'sadko','Садитесь на осетра — к киту домчит!']],
+  // ---------- финал в два ролика (каждый ≤ 25 с): «Колокол без языка» → «К киту» ----------
+  // Тайминг — по записям (2-1_s12, 2-1_042…049): каждой реплике — пауза не короче записи.
+  const TWS={sad:null,HOV:new V3(8.6,5.0,-419),P0:new V3(28,15,-396),UP:new V3(16,22,-438),
+    spots:[[-2.4,-416.4],[-0.8,-416.8],[0.8,-416.8],[2.4,-416.4]],seat:[[-0.3,1.0,0.9],[0.3,1.0,-0.4],[-0.3,1.0,-1.7],[0.3,1.0,-3.0]],SAD_L:new V3(0,1.0,2.6)};
+  // осётр и Садко в точке fp; ry — поворот осётра, pitch — нос вверх; Садко стоит у головы и смотрит на героев (или вперёд на взлёте)
+  function towerFish(fp,ry,pitch,tailK,away){const S=sturg,sad=TWS.sad;S.g.visible=!!fp;sad.g.visible=!!fp;if(!fp)return;
+    S.g.position.copy(fp);S.g.rotation.set(pitch,ry,0);S.tail.rotation.y=Math.sin(G.time*tailK)*0.35;S.g.updateMatrixWorld(true);
+    sad.g.position.copy(S.g.localToWorld(TWS.SAD_L.clone()));sad.g.rotation.set(0,away?-Math.PI:-Math.PI/2,0);sad.head.rotation.x=0.05;}
+  function towerScene(){const T=HERO,E=CINE.E,fx=(h,p)=>Math.atan2(p.x-h.pos.x,p.z-h.pos.z),S=sturg,Y=TW.top,BP=new V3(0,8.4,-419),from=HEROES.map(h=>h.pos.clone());
+    TWS.sad=makeSadko();TWS.sad.drop.visible=false;TWS.sad.g.visible=false;const sad=TWS.sad;
+    const fishAt=t=>{if(t<8.8)return null;if(t<11.0){const k=E.inOutCubic((t-8.8)/2.2);const p=new V3().lerpVectors(TWS.P0,TWS.HOV,k);p.y+=Math.sin(k*Math.PI)*2.2;return p;}
+      return TWS.HOV.clone().add(new V3(0,Math.sin(t*1.3)*0.12,0));};
+    play({dur:19.4,fov:50,kino:true,mood:['#8ab0e0',0.12],
+      shots:[KSH(0,[1.4,2.0,-401.5],[0,9.5,-419],{p2:[0.8,3.2,-402.6],l2:[0,9.0,-419],dur:2.2,move:'none'}),            // 1 общий снизу: звонница, колокол тёмный
+        KSH(2.2,[-6,7.5,-406],[0,8.8,-419],{move:'crane',amp:0.5}),                                                       // 2 общий сбоку: герои у колокола
+        KSH(4.4,[0.35,7.5,-418.3],[0,10,-419.3],{move:'push',amp:0.4}),                                                   // 3 деталь: в колоколе пусто, обрывок ремня
+        KSH(7.0,[-0.8,Y+1.3,-418],[-0.8,Y+1.1,-416.8],{trk:KC.fcam(T.pelageya,1.6,0.3,0.05,0.15)}),                        // 4 Пелагея крупно: «Бом…» — тишина
+        KSH(8.8,[-3.2,Y+3.6,-410.5],[8,Y,-416],{trk:KC.look(()=>S.g.position,0.75),move:'none'}),                           // 5 общий: осётр с Садко подплывает
+        KSH(11.9,[7,Y+1.6,-419],[8.6,Y+1.4,-419],{trk:KC.fcam(sad,2.6,-0.25,0.05,0.12)}),                                  // 6 Садко крупно: «Колокол без языка…»
+        KSH(15.4,[4.6,Y+1.2,-418],[8.6,Y+1.4,-419],{trk:KC.fcam(sad,4.0,0.35,-0.15,0.15),tr:'whip'})],                     // 7 Садко средний снизу: «Водяной язык сорвал…»
+      says:[[0.2,4.1,null,'<i>Наверху — главный колокол. А языка в нём нет.</i>',true],[4.5,2.4,'zven','Пусто! Чем же ему звонить?'],
+        [7.1,1.6,'pelageya','Бом…'],[8.9,2.9,'zven','Глядите — Садко! На осетре!'],
+        [12.0,3.4,'sadko','Колокол без языка — вот Китеж и спит.'],[15.5,3.6,'sadko','Водяной язык сорвал — а Рыба-кит проглотил.']],
       events:[{t:0,fn:()=>{if(!endLink.taken)takeItem(endLink,active(0));}}],
-      cues:[[0.3,()=>CINE.rimPulse(0.4)],[3.0,()=>{KSND.icy(0);CINE.punch(-2);}],[3.4,KC.all('surprise',0.08)],
-        [5.2,()=>{floatText(new V3(-0.8,Y+2.2,-417),'бом…','#e7c3ff');}],[6.3,KC.emo('pelageya','droop')],
-        [6.9,()=>{SFX.whoosh();KSND.gust(0,1.6);}],[7.4,KC.all('surprise',0.07)],[8.6,()=>{for(let i=0;i<10;i++)burst(S.g.position.clone().add(new V3(rand(-2,2),rand(0,1),rand(-5,5))),0xcff8ff,2,2,0.6);}],
-        [9.0,KC.all('joy',0.08)],[11.5,()=>{KSND.menace(0);CINE.dutch(0.1);}],[11.7,KC.all('fear',0.07)],
-        [14.0,()=>CINE.dutch(0)],[14.1,()=>{KSND.thunder(0,false);CINE.dollyZoom(0.12,1.6,0.5);}],[16.6,KC.emo('potap','pride')],[16.9,KC.all('nod',0.09)],
-        [19.0,()=>KSND.yay(0)],[21.0,KC.all('hop',0.12)],[21.6,()=>{SFX.splash();CINE.punch(-3);}],[22.2,()=>KSND.fanfare(0)]],
-      tick:(t)=>{const fp=fishAt(t);S.g.visible=!!fp;sad.g.visible=!!fp;
-        if(fp){S.g.position.copy(fp);let ry=-2.45;if(t>=7.6)ry=lerp(-2.45,-Math.PI,E.inOutCubic(clamp((t-7.6)/1.6,0,1)));S.g.rotation.set(t>20.9?0.45*E.inOutSine(clamp((t-20.9)/1.5,0,1)):0,ry,0);
-          S.tail.rotation.y=Math.sin(G.time*(t>20.9?6:2.5))*0.35;S.g.updateMatrixWorld(true);
-          sad.g.position.copy(S.g.localToWorld(SAD_L.clone()));sad.g.rotation.set(0,t<20.9?-Math.PI/2:-Math.PI,0);
-          sad.arms.forEach((a,k)=>{a.rotation.x=t>9&&t<20.5?(k?0.4:-0.2)+Math.sin(t*3+k)*0.15:0;});sad.head.rotation.x=0.05;}
-        HEROES.forEach((h,i)=>{if(t<1.2){const k=E.inOutCubic(clamp(t/1.2,0,1)),s=spots[i];h.pos.set(lerp(from[i].x,s[0],k),lerp(from[i].y,Y,k),lerp(from[i].z,s[1],k));}
-          else h.pos.copy(heroAt(i,t));h.vel.set(0,0,0);
-          h.face=t>=20.9+i*0.12?Math.PI:t>=6.8?fx(h,S.g.position):fx(h,BP);});},
+      cues:[[0.3,()=>CINE.rimPulse(0.4)],[4.6,()=>{KSND.icy(0);CINE.punch(-2);}],[5.0,KC.all('surprise',0.08)],
+        [7.2,()=>{floatText(new V3(-0.8,Y+2.2,-417),'бом…','#e7c3ff');}],[8.3,KC.emo('pelageya','droop')],
+        [8.9,()=>{SFX.whoosh();KSND.gust(0,1.6);}],[9.4,KC.all('surprise',0.07)],[10.8,()=>{for(let i=0;i<10;i++)burst(S.g.position.clone().add(new V3(rand(-2,2),rand(0,1),rand(-5,5))),0xcff8ff,2,2,0.6);}],
+        [12.0,KC.all('joy',0.08)],[15.5,()=>{KSND.menace(0);CINE.dutch(0.1);}],[15.8,KC.all('fear',0.07)],[19.2,()=>CINE.dutch(0)]],
+      tick:(t)=>{const fp=fishAt(t);let ry=-2.45;if(t>=9.6)ry=lerp(-2.45,-Math.PI,E.inOutCubic(clamp((t-9.6)/1.6,0,1)));towerFish(fp,ry,0,2.5,false);
+        if(fp)sad.arms.forEach((a,k)=>{a.rotation.x=t>12?(k?0.4:-0.2)+Math.sin(t*3+k)*0.15:0;});
+        HEROES.forEach((h,i)=>{const s=TWS.spots[i];if(t<1.2){const k=E.inOutCubic(clamp(t/1.2,0,1));h.pos.set(lerp(from[i].x,s[0],k),lerp(from[i].y,Y,k),lerp(from[i].z,s[1],k));}
+          else h.pos.set(s[0],Y,s[1]);h.vel.set(0,0,0);h.face=t>=8.8?fx(h,S.g.position):fx(h,BP);});},
+      end:()=>{CINE.dutch(0);towerScene2();}});}
+  function towerScene2(){const T=HERO,E=CINE.E,fx=(h,p)=>Math.atan2(p.x-h.pos.x,p.z-h.pos.z),S=sturg,Y=TW.top,sad=TWS.sad;
+    const fishAt=t=>{if(t<9.4)return TWS.HOV.clone().add(new V3(0,Math.sin(t*1.3)*0.12,0));return new V3().lerpVectors(TWS.HOV,TWS.UP,E.inOutSine(clamp((t-9.4)/3.2,0,1)));};
+    const heroAt=(i,t)=>{const s=TWS.spots[i],j0=9.4+i*0.12,ground=new V3(s[0],Y,s[1]);if(t<j0)return ground;const back=S.g.localToWorld(new V3(...TWS.seat[i]));
+      if(t>=j0+0.6)return back;const k=Math.min(1,E.outBack(clamp((t-j0)/0.6,0,1))),p=new V3().lerpVectors(ground,back,k);p.y+=Math.sin(k*Math.PI)*1.4;return p;};
+    play({dur:13.0,fov:50,kino:true,mood:['#8ab0e0',0.12],
+      shots:[KSH(0,[7.5,Y-2,-404],[20,30,-436],{move:'push',amp:0.5}),                                                     // 1 вверх: тень кита над Китежем
+        KSH(3.8,[1.5,Y+1.4,-416.8],[0,Y+1.2,-416.8],{trk:KC.fcam(T.potap,2.0,0.25,0.05,0.12)}),                              // 2 Потап крупно: «Достанем!»
+        KSH(6.2,[5,Y+2.2,-417],[8.6,Y+1.6,-419],{trk:KC.fcam(sad,3.8,0.45,0.35,0.1)}),                                       // 3 Садко средний: «Садитесь на осетра»
+        KSH(9.2,[0.6,Y+3,-408],[8.6,Y+1,-419],{trk:KC.follow(()=>S.g.position,new V3(-8,3,11),new V3(0,0.8,0),1),move:'none'})],   // 4 общий за осетром: прыжок на спину и ввысь, к киту
+      says:[[0.1,3.7,'zven','Вон он, кит! Над самым Китежем плывёт!'],[3.9,2.3,'potap','Достанем. Как положено!'],[6.3,2.8,'sadko','Садитесь на осетра — к киту домчит!']],
+      cues:[[0.1,()=>{KSND.thunder(0,false);CINE.dollyZoom(0.12,1.6,0.5);}],[0.6,KC.all('surprise',0.08)],[4.0,KC.emo('potap','pride')],[4.4,KC.all('nod',0.09)],
+        [6.8,()=>KSND.yay(0)],[9.5,KC.all('hop',0.12)],[10.1,()=>{SFX.splash();CINE.punch(-3);}],[10.7,()=>KSND.fanfare(0)]],
+      tick:(t)=>{towerFish(fishAt(t),-Math.PI,t>9.4?0.45*E.inOutSine(clamp((t-9.4)/1.5,0,1)):0,t>9.4?6:2.5,t>=9.4);
+        sad.arms.forEach((a,k)=>{a.rotation.x=t>6&&t<9.2?(k?0.4:-0.2)+Math.sin(t*3+k)*0.15:0;});
+        HEROES.forEach((h,i)=>{h.pos.copy(heroAt(i,t));h.vel.set(0,0,0);h.face=t>=9.4+i*0.12?Math.PI:fx(h,S.g.position);});},
       end:()=>{S.g.visible=false;W.group.remove(sad.g);F.out=true;finishLevel();}});}
   W.dbg21k=()=>({SLP,SLAMP,sgateCol,TW,twz,BELL,WHALE,wake,openSleepGate});
