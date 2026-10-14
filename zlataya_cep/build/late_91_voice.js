@@ -40,11 +40,12 @@ Object.defineProperty(FIN,'voxDuck',{get(){return VOX.cur&&AC&&AC.currentTime<VO
 {const _ll=loadLevel;loadLevel=function(i){voxStop(0.1);_ll(i);voxPrep();};}
 CINE.on('end',d=>{if(d.skipped)voxStop(0.12);});
 // ролик ждёт голос: если следующая реплика ролика (или его конец) наступит раньше, чем договорит текущий голос, время ролика
-// идёт медленнее (не медленнее 20%), пока фраза не закончится; на одну реплику — не больше 3,2 с добавки, дальше как было
+// идёт медленнее (не медленнее 20%), пока фраза не закончится; на одну реплику — не больше 3,2 с добавки (у Сказительницы, voice: reader, —
+// 4,5 с: её ремарки длиннее пауз, подобранных под чтение глазами), дальше как было
 {const _play=play;play=function(def){_play(def);const S=G.cine;if(S&&def){S._says=def.says||[];S._hold=0;S._holdAt=-1;S._g0=G.time;}};}
 {const _st=step;step=function(dt){const c=G.cine;   // ждём только голос, начатый в этом ролике (g0 ≥ начала ролика)
   if(c&&c._says&&c._says.length&&VOX.cur&&VOX.cur.g0>=c._g0&&AC&&G.state==='play'){const rem=Math.min(VOX.cur.end-AC.currentTime,VOX.cur.e.dur-(G.time-VOX.cur.g0)),nx=c._says[c.yi],nt=nx?nx[0]:c.dur;
     if(c._holdAt!==c.yi){c._holdAt=c.yi;c._hold=0;}
-    const until=nt-c.t;if(rem>0.05&&until<rem+0.12&&c._hold<3.2){const k=Math.max(0.2,Math.min(1,until/(rem+0.12)));c.t-=dt*(1-k);c._hold+=dt*(1-k);VOX.slowed=(VOX.slowed||0)+dt*(1-k);}}
+    const until=nt-c.t;if(rem>0.05&&until<rem+0.12&&c._hold<(VOX.cur.e.voice==='reader'?4.5:3.2)){const k=Math.max(0.2,Math.min(1,until/(rem+0.12)));c.t-=dt*(1-k);c._hold+=dt*(1-k);VOX.slowed=(VOX.slowed||0)+dt*(1-k);}}
   _st(dt);};}
 {const _r=render;render=function(){_r();if(VOX.cur&&G.state==='pause')voxStop(0.2);};}
