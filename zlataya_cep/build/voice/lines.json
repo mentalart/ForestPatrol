@@ -10880,10 +10880,11 @@
    "lv": "5-B2",
    "who": "yaga",
    "text": "Ох, голубчики… цепь-то чёрная — держит! Не пускает!",
-   "tts": "Ох, голубчики… цепь-то чёрная — держит! Не пускает!",
+   "tts": "[quickly] Ох, голубчики… цепь-то чёрная — держит! Не пускает!",
    "max": 3.12,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261009_135053_39344991-f715-44a4-87b8-2d9dea4b83fb.mp3",
-   "dur": 4.08
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 2,
+   "dur": 3.33
   },
   {
    "id": "5-B2_040",
@@ -11030,8 +11031,9 @@
    "text": "Спасли старую! Полезайте в ступу, касатики!",
    "tts": "Спасли старую! Полезайте в ступу, касатики!",
    "max": 2.62,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261009_135056_59e17be6-805a-4a96-b630-85eb7df451f8.mp3",
-   "dur": 2.9
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.09
   },
   {
    "id": "5-B2_054",
@@ -11040,8 +11042,9 @@
    "text": "Домчу до Лукоморья, пока Кощей лес не запер!",
    "tts": "Домчу до Лукоморья, пока Кощей лес не запер!",
    "max": 2.82,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261009_135054_ee5fdf9b-8cc9-4008-a98e-ba67ee26285e.mp3",
-   "dur": 2.92
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.83
   },
   {
    "id": "5-B2_055",
@@ -11150,8 +11153,9 @@
    "text": "Избушка, избушка! Повернись к лесу задом, ко мне — передом!",
    "tts": "Избушка, избушка! Повернись к лесу задом, ко мне — передом!",
    "max": 4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261009_135217_af5e1834-fa4d-4e86-9ca9-b4c935934583.mp3",
-   "dur": 4.24
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.32
   },
   {
    "id": "5-B2_066",
@@ -14098,6 +14102,17 @@
    "url": "elevenlabs:eleven_v4",
    "el_take": 2,
    "dur": 3.52
+  },
+  {
+   "id": "1-1_029",
+   "lv": "1-1",
+   "who": "yaga",
+   "text": "Ох, мастер языком плести!<br>Гляди — сам не запутайся.",
+   "tts": "[sarcastic] Ох, мастер языком плести! Гляди — сам не запутайся.",
+   "max": 4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.03
   },
   {
    "id": "1-1_s01",
