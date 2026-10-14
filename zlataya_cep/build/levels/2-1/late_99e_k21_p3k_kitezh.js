@@ -30,7 +30,7 @@
       addMesh(new THREE.SphereGeometry(0.08,8,6),M(0xf4ecd8),0,0.48,-0.42,cap);
       if(o.kind==='ded'){const bd=new THREE.ConeGeometry(0.2,0.5,8);bd.rotateX(Math.PI);addMesh(bd,M(0xe8e4dc),0,-0.3,0.14,head);}}
     const arms=[];for(const sx of[-1,1]){const a=new THREE.Group();a.position.set(sx*0.32,0.78,0);body.add(a);addMesh(new THREE.CylinderGeometry(0.07,0.07,0.5,5),shirt,0,-0.24,0.05,a);arms.push(a);}
-    const zz=new THREE.Sprite(new THREE.SpriteMaterial({map:ZZ_TEX,transparent:true,depthWrite:false}));zz.scale.set(1.1,0.37,1);zz.position.set(0,2.4,0);g.add(zz);
+    const zz=new THREE.Sprite(new THREE.SpriteMaterial({map:ZZ_TEX,transparent:true,depthWrite:false}));zz.scale.set(1.1,0.37,1);zz.raycast=()=>{};zz.position.set(0,2.4,0);g.add(zz);
     g.traverse(c=>{c.userData.noBatch=true;});W.cyls.push({x,z,r:0.55,miny:-1,maxy:1.8,on:true});
     return {g,body,head,eyes,arms,zz,ph:rand(0,6),awake:0};}
   // окно над спящим: гаснет и загорается вместе с ним
