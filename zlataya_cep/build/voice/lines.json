@@ -10938,6 +10938,78 @@
    "dur": 4.27
   },
   {
+   "id": "2-2_s01",
+   "lv": "2-2",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Поперёк моря лежит Чудо-юдо Рыба-кит…</i>",
+   "tts": "[warm, storytelling] Поперёк моря лежит Чудо-юдо Рыба-кит…",
+   "max": 5.15,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.5
+  },
+  {
+   "id": "2-2_s02",
+   "lv": "2-2",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>…все бока его изрыты, частоколы в рёбра вбиты,</i>",
+   "tts": "[warm, storytelling] Все бока его изрыты, частоколы в рёбра вбиты,",
+   "max": 4.03,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.03
+  },
+  {
+   "id": "2-2_s03",
+   "lv": "2-2",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>на хвосте сыр-бор шумит, на спине село стоит,</i>",
+   "tts": "[warm, storytelling] на хвосте сыр-бор шумит, на спине село стоит,",
+   "max": 4.48,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.1
+  },
+  {
+   "id": "2-2_s04",
+   "lv": "2-2",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>мужички на губе пашут, между глаз мальчишки пляшут…</i>",
+   "tts": "[warm, storytelling] мужички на губе пашут, между глаз мальчишки пляшут…",
+   "max": 4.03,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.05
+  },
+  {
+   "id": "2-2_s05",
+   "lv": "2-2",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>…а в дубраве, меж усов, ищут девушки грибов.</i>",
+   "tts": "[warm, storytelling] а в дубраве, меж усов, ищут девушки грибов.",
+   "max": 4.03,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.05
+  },
+  {
+   "id": "2-2_s06",
+   "lv": "2-2",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Десять лет лежит кит — и дышит тяжко.</i>",
+   "tts": "[warm, storytelling] Десять лет лежит кит — [softly] и дышит тяжко.",
+   "max": 3.7,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.72
+  },
+  {
    "id": "2-3_022",
    "lv": "2-3",
    "who": "yorsh",
