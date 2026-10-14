@@ -574,6 +574,54 @@
    "el_voice_id": "PZhi1QpQl0Z9H9WfRfYS",
    "el_voice_name": "Svetlana – Children's Storyteller",
    "pitch": "0"
+  },
+  "sadovnik": {
+   "name": "Садовник",
+   "about": "3-1: старик-садовник, сторож сада молодильных яблок",
+   "pitch": 0,
+   "el_voice_id": "LTkx8oHrUXaND7aaxdTA",
+   "el_voice_name": "Alexander - Deep Mature Narrator",
+   "el_tag": "[old, raspy]"
+  },
+  "molodets": {
+   "name": "Молодец",
+   "about": "3-1: садовник, помолодевший от яблочка: бодрый, весёлый",
+   "pitch": 0,
+   "el_voice_id": "sy3iWjPWyIrDlSo8mBwS",
+   "el_voice_name": "Alex - Friendly & Casual",
+   "el_tag": "[cheerful]"
+  },
+  "veter": {
+   "name": "Ветер",
+   "about": "3-2: гоняет небесное стадо, шумный, удалой",
+   "pitch": 0,
+   "el_voice_id": "JKtNvDNrWu33P1xzttP2",
+   "el_voice_name": "Ivan",
+   "el_tag": "[excited]"
+  },
+  "baran": {
+   "name": "Громовой Баран",
+   "about": "3-2: вожак небесного стада, гроза; в конце добреет",
+   "pitch": 0,
+   "el_voice_id": "2yWzeFFP9bP0WcgRi1jx",
+   "el_voice_name": "Владимир - Низкий & Глубокий",
+   "el_tag": "[booming]"
+  },
+  "pushok": {
+   "name": "Пушок",
+   "about": "3-2: барашек, сынок Громового Барана",
+   "pitch": 0,
+   "el_voice_id": "sk83Bye6Z8drwXh0KBFz",
+   "el_voice_name": "Dasha",
+   "el_tag": "[childlike voice]"
+  },
+  "voronenok": {
+   "name": "Воронёнок",
+   "about": "3-1: Ворон Кощея, помолодевший до птенца",
+   "pitch": 0,
+   "el_voice_id": "WfExDXCt2GBg6MI5KjQk",
+   "el_voice_name": "Kate",
+   "el_tag": "[childlike voice]"
   }
  },
  "lines": [
@@ -15487,61 +15535,12 @@
    "max": 4.1
   },
   {
-   "id": "3-5_064",
-   "lv": "3-5",
-   "who": "yaga",
-   "text": "Чужим ключом моих гусей приманил, костлявый.",
-   "tts": "Чужим ключом моих гусей приманил, костлявый.",
-   "max": 5.5
-  },
-  {
-   "id": "3-5_065",
-   "lv": "3-5",
-   "who": "yaga",
-   "text": "Велел малыша взять — чтоб колыбельную никто не вспомнил. Ну, погоди.",
-   "tts": "Велел малыша взять — чтоб колыбельную никто не вспомнил. Ну, погоди.",
-   "max": 5.5
-  },
-  {
-   "id": "3-5_s04",
-   "lv": "3-5",
-   "who": null,
-   "voice": "reader",
-   "text": "<i>Яга выдёргивает ключ и швыряет в пропасть. Потом смотрит на нас.</i>",
-   "tts": "[warm, storytelling] Яга выдёргивает ключ и швыряет в пропасть. Потом смотрит на нас.",
-   "max": 4.7
-  },
-  {
-   "id": "3-5_066",
-   "lv": "3-5",
-   "who": "yaga",
-   "text": "Долг за мной был — считай, отдала.",
-   "tts": "Долг за мной был — считай, отдала.",
-   "max": 4.9
-  },
-  {
-   "id": "3-5_067",
-   "lv": "3-5",
-   "who": "yaga",
-   "text": "А за этот ещё буду должна.",
-   "tts": "А за этот ещё буду должна.",
-   "max": 4.1
-  },
-  {
    "id": "3-5_s05",
    "lv": "3-5",
    "who": null,
    "voice": "reader",
    "text": "<i>Гуси-лебеди унесли бельчонка Тишку —</i><br><i>того, что колыбельную забыл.</i>",
    "tts": "[warm, storytelling] Гуси-лебеди унесли бельчонка Тишку — того, что колыбельную забыл.",
-   "max": 5.1
-  },
-  {
-   "id": "3-5_068",
-   "lv": "3-5",
-   "who": "zven",
-   "text": "Гуси видят свет. Тише… Где темно — идём смело.",
-   "tts": "Гуси видят свет. Тише… Где темно — идём смело.",
    "max": 5.1
   },
   {
