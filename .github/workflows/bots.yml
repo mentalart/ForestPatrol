@@ -1,11 +1,13 @@
 # Боты Playwright на каждый PR в main: tools/tests/affected.py --run выбирает ботов по изменённым файлам.
-# Выбранные боты делятся на 8 машин (--shard I/8), на машине — по 2 разом. Если правка требует полного регресса (общий код прототипа,
-# модуль на все уровни, инфраструктура ботов) — CI гоняет весь regress_list_final.txt (--full-ci), тоже по 8 машинам (~20 мин):
-# полный регресс локально больше не нужен. Ещё — каждую ночь на main и вручную (Actions → Боты → Run workflow, «полный регресс»).
+# Сначала задача plan (affected.py --plan) решает, сколько машин нужно: правка документов — ни одной, пара ботов — одна, полный регресс — до 8.
+# Выбранные боты делятся между машинами по времени (--shard I/N, tools/tests/bot_times.tsv — времена из последнего ночного прогона),
+# на машине — по 2 разом. Если правка требует полного регресса (общий код прототипа, модуль на все уровни, инфраструктура ботов) —
+# CI гоняет весь regress_list_final.txt (--full-ci): полный регресс локально больше не нужен. Ещё — каждую ночь на main и вручную (Actions → Боты → Run workflow, «полный регресс»).
 # Упавший не из-за игры бот (таймаут, закрытый браузер) повторяется один раз (regress.sh); прошёл со второго раза — помечен «~~»
 # и попадает в сводку неустойчивых ботов (flaky.yml). Итог — проверка «bots»: в её отчёте (Summary) — таблица по всем машинам.
+# Боты идут в готовом образе Playwright (Chromium и системные библиотеки внутри) — без установки браузера на каждой машине.
 # Снимки кадров в CI не делаются (NOSHOTS=1: каждый стоит 20–45 с, а проверки на них не опираются) — кадры смотрят локально.
-# Выводы ботов и results.tsv — во вложениях к запуску (по одному на долю). Chromium кешируется.
+# Выводы ботов и results.tsv — во вложениях к запуску (по одному на долю). Ночной прогон кладёт времена ботов во вложение bot-times (его берёт plan).
 name: Боты
 
 on:
@@ -24,45 +26,85 @@ concurrency:
   group: bots-${{ github.ref }}-${{ github.event_name }}
   cancel-in-progress: true
 
+env:
+  # версия Playwright = версия образа: Chromium внутри образа собран ровно под неё
+  PW_VER: 1.56.1
+
 jobs:
-  shard:
-    name: bots (${{ matrix.shard }}/8)
+  plan:
+    name: план
     runs-on: ubuntu-latest
-    timeout-minutes: 90
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [1, 2, 3, 4, 5, 6, 7, 8]
+    timeout-minutes: 15
+    permissions:
+      actions: read      # времена ботов — из вложения последнего ночного прогона
+      contents: read
+    outputs:
+      n: ${{ steps.plan.outputs.n }}
+      shards: ${{ steps.plan.outputs.shards }}
+      mode: ${{ steps.plan.outputs.mode }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0            # affected.py ищет merge-base с origin/main
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-      - name: Playwright (глобально)
-        # глобально, а не в node_modules репозитория: иначе affected.py считает node_modules изменёнными файлами
-        # и требует полный регресс (tools/tests/pw.js находит глобальную установку сам)
-        run: |
-          npm i -g playwright
-          echo "PW_VER=$(playwright --version | awk '{print $2}')" >> "$GITHUB_ENV"
-      - name: Кеш Chromium
-        id: pwcache
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/ms-playwright
-          key: pw-chromium-${{ runner.os }}-${{ env.PW_VER }}
-      - name: Chromium
-        run: |
-          if [ "${{ steps.pwcache.outputs.cache-hit }}" = "true" ]; then playwright install-deps chromium; else playwright install --with-deps chromium; fi
-
-      - name: Боты (доля ${{ matrix.shard }}/8)
+      - name: Времена ботов (последний ночной прогон)
         env:
-          NOSHOTS: '1'   # без снимков кадров: снимок в программной графике стоит 20–45 с, проверки на нём не держатся (кадры — локально)
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/plan"
+          for id in $(gh run list --workflow bots.yml --event schedule --limit 5 --json databaseId,status --jq '.[] | select(.status=="completed") | .databaseId'); do
+            gh run download "$id" -n bot-times -D "$RUNNER_TEMP/plan" 2>/dev/null && { echo "времена — из прогона $id"; break; }
+          done
+          [ -f "$RUNNER_TEMP/plan/bot_times.tsv" ] || { echo "вложения bot-times нет — берём tools/tests/bot_times.tsv, если он есть, иначе доли ровные"; cp tools/tests/bot_times.tsv "$RUNNER_TEMP/plan/" 2>/dev/null || true; }
+      - name: План
+        id: plan
         run: |
           mode=--full-ci
           if [ "${{ github.event_name }}" = "schedule" ] || [ "${{ github.event_name }}" = "workflow_dispatch" -a "${{ inputs.full }}" = "true" ]; then mode=--all; fi
-          python3 tools/tests/affected.py --run --jobs 2 --shard ${{ matrix.shard }}/8 $mode
+          python3 tools/tests/affected.py $mode --times "$RUNNER_TEMP/plan/bot_times.tsv" --jobs 2 --plan "$RUNNER_TEMP/plan/plan.json"
+          n=$(jq .n "$RUNNER_TEMP/plan/plan.json")
+          echo "n=$n" >> "$GITHUB_OUTPUT"
+          echo "mode=$mode" >> "$GITHUB_OUTPUT"
+          echo "shards=$(jq -c '[range(1; .n + 1)]' "$RUNNER_TEMP/plan/plan.json")" >> "$GITHUB_OUTPUT"
+          echo "### План: машин $n, ботов $(jq '.bots | length' "$RUNNER_TEMP/plan/plan.json"), ~$(jq '.est_secs / 60 | floor' "$RUNNER_TEMP/plan/plan.json") мин работы ботов (с известным временем: $(jq .known_times "$RUNNER_TEMP/plan/plan.json"))" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plan
+          path: ${{ runner.temp }}/plan/
+          retention-days: 1
+
+  shard:
+    name: bots (${{ matrix.shard }}/${{ needs.plan.outputs.n }})
+    needs: plan
+    if: needs.plan.outputs.n != '0'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    # Chromium и его системные библиотеки уже в образе: не качаем и не ставим на каждой машине
+    container:
+      image: mcr.microsoft.com/playwright:v1.56.1-jammy
+      options: --ipc=host --init       # общая память хоста: в 64 МБ /dev/shm Chromium падает на тяжёлых страницах
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.shards) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0            # affected.py ищет merge-base с origin/main
+      - uses: actions/download-artifact@v4
+        with:
+          name: plan
+          path: ${{ runner.temp }}/plan
+      - name: Playwright (глобально) и Python
+        # глобально, а не в node_modules репозитория: иначе affected.py считает node_modules изменёнными файлами
+        # и требует полный регресс (tools/tests/pw.js находит глобальную установку сам); браузер берётся из образа
+        run: |
+          command -v python3 >/dev/null || { apt-get update -qq && apt-get install -y -qq python3; }
+          PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm i -g playwright@${PW_VER}
+
+      - name: Боты (доля ${{ matrix.shard }}/${{ needs.plan.outputs.n }})
+        env:
+          NOSHOTS: '1'   # без снимков кадров: снимок в программной графике стоит 20–45 с, проверки на нём не держатся (кадры — локально)
+        run: python3 tools/tests/affected.py --run --jobs 2 --shard ${{ matrix.shard }}/${{ needs.plan.outputs.n }} ${{ needs.plan.outputs.mode }} --times "$RUNNER_TEMP/plan/bot_times.tsv"
 
       - name: Выводы ботов и кадры
         if: always()
@@ -78,20 +120,35 @@ jobs:
   # итоговая проверка с прежним именем «bots» — её и смотреть в PR (и делать обязательной для автослияния)
   bots:
     if: always()
-    needs: shard
+    needs: [plan, shard]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Боты не нужны
+        if: needs.plan.outputs.n == '0'
+        run: echo "### Боты не нужны (документы, инструменты вне игры)" | tee -a "$GITHUB_STEP_SUMMARY"
       - uses: actions/download-artifact@v4
+        if: needs.plan.outputs.n != '0'
         with:
           pattern: bots-out-*
           path: _out
       - name: Сводка по всем машинам
+        if: needs.plan.outputs.n != '0'
         run: python3 tools/tests/flaky.py --summary _out | tee -a "$GITHUB_STEP_SUMMARY"
       - name: Тексты задач — предупреждения (tfin_textlint, не падает)
-        if: always()
+        if: needs.plan.outputs.n != '0'
         run: python3 tools/tests/textlint_warn.py _out
+      - name: Времена ботов для следующих планов (только полный прогон)
+        if: needs.plan.outputs.mode == '--all' && needs.plan.outputs.n != '0'
+        run: python3 tools/tests/bot_times.py merge bot_times.tsv _out
+      - uses: actions/upload-artifact@v4
+        if: needs.plan.outputs.mode == '--all' && needs.plan.outputs.n != '0'
+        with:
+          name: bot-times
+          path: bot_times.tsv
+          retention-days: 30
       - name: Все доли зелёные?
         run: |
-          echo "доли: ${{ needs.shard.result }}"
-          [ "${{ needs.shard.result }}" = "success" ]
+          echo "план: ${{ needs.plan.result }}, доли: ${{ needs.shard.result }}"
+          [ "${{ needs.plan.result }}" = "success" ]
+          if [ "${{ needs.plan.outputs.n }}" = "0" ]; then [ "${{ needs.shard.result }}" = "skipped" ]; else [ "${{ needs.shard.result }}" = "success" ]; fi
