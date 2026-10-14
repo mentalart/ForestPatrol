@@ -97,6 +97,9 @@ function k1nPost(e,dt,k){const k1=e.k1,L=e.L,b=e.body,s=e.side||1,dm=e.state==='
       if(d>e.r+K1N.fanExtra||Math.abs(a)>K1N.fanHalf||Math.abs(h.pos.y-e.pos.y)>1.6||h.cling||players[pi].downed)return;
       hitHero(e,h,'<i class="sg r"></i> Красный зубец — кувырок '+K(pi,'roll')+' или шаг за край веера!');return;}
     return _fs(e);};}
+// рука Лешего не «распускается» на этапе 1: «Одним махом!» (щит в идеальный миг — для мелкого морока это unravel) и любой другой путь к unravel
+// пробивают её сразу — ладонь падает к тропе, рука ложится мостом (раньше рука исчезала вместе с рукой от плеча). Конец этапа (три трофея) распускает руки, как прежде.
+{const _ur=unravel;unravel=function(e){if(e&&e.k1&&e.kind==='hand'&&e.alive&&W&&W.levelId==='1-B'&&W.flags.phase===1){if(e.state!=='broken')emberOut(e,Math.max(1,e.embers),'Одним махом!');return;}return _ur.apply(this,arguments);};}
 // был ли удар по герою — иначе рука увязнет
 {const _hh=hitHero;hitHero=function(e,h,t){if(e&&e.k1)e.k1.hit=true;return _hh(e,h,t);};}
 // меньше надписей: удары, угольки, искры, щит — звуком и вспышкой; ключевые остаются
