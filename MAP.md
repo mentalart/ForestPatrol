@@ -32,7 +32,7 @@
   заморожены (`docs/18_webgpu.md` — для истории): не собирать, шейдеры для WebGPU не переводить, ботов final07 не гонять.
 - **Боты** — `tools/tests/` (`README.md` там): шаги через `//@@ [shot=имя.png] [wait=мс]`; `tools/tests/run_one.sh бот [html]`;
   набор — `BOTS="a b" JOBS=3 tools/tests/regress.sh html`; кадры с полным качеством — `URLQ='&hq=1'`. Вывод — `tools/tests/out/`,
-  кадры — `tools/tests/shots/`. Какие боты затронуты — `python3 tools/tests/affected.py`; весь набор гоняет CI на PR (8 машин, итог — `bots`; полный регресс — тоже CI, локально не гонять), локально — только
+  кадры — `tools/tests/shots/`. Какие боты затронуты — `python3 tools/tests/affected.py`; весь набор гоняет CI на PR (до 8 машин, число — по объёму работы, ботов делят по времени; итог — `bots`; полный регресс — тоже CI, локально не гонять), локально — только
   новые и изменённые боты (`BOTS="…" tools/tests/regress.sh zlataya_cep/zlataya_cep_final06.html`).
 
 ## Движок: имена, которые ищут чаще всего (`where <имя>` покажет, где)
@@ -517,7 +517,7 @@
 | `44_prompt_pereozvuchka_elevenlabs.md` | Промт: чистовая переозвучка всей игры через ElevenLabs MCP |
 | `45_kino_audit.md` | Аудит роликов «Златой цепи» и очередь ручной постановки |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 203 файлов |
+| `changes/` | 204 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |

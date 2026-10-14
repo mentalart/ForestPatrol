@@ -7,7 +7,12 @@
 #                                                    Прототип index.html — только исходник релиза: боты, что есть лишь в списке прототипа
 #                                                    (regress_list.txt), не гоняются — уровни проверяют их релизные боты.
 #   python3 tools/tests/affected.py --base A --to B  # что проверять для разницы двух коммитов (например, чужой ветки перед слиянием)
-#   python3 tools/tests/affected.py --run --shard 2/8 # только своя доля выбранных ботов (CI делит их на 8 машин)
+#   python3 tools/tests/affected.py --run --shard 2/8 # только своя доля выбранных ботов (CI делит их на N машин по времени ботов:
+#                                                    самый долгий — на самую свободную; времена — tools/tests/bot_times.tsv или --times ФАЙЛ,
+#                                                    нет файла или бота в нём — доли ровные; файл собирает ночной прогон: bot_times.py)
+#   python3 tools/tests/affected.py --plan plan.json  # ничего не запускать, записать план для CI: сколько машин нужно (n, 0 — ботов не нужно),
+#                                                    список ботов и оценка секунд (--target СЕК — сколько работы на машину, по умолчанию 300;
+#                                                    --max-shards — не больше машин, по умолчанию 8)
 #   … --full-ci   # нужен полный регресс — не останавливаться с кодом 2, а прогнать весь regress_list_final.txt (CI: доля на машину)
 #   … --all       # полный регресс без разбора правок (CI: ночной прогон main и ручной запуск «полный регресс»)
 # Как решается:
@@ -387,6 +392,36 @@ def LINES_OF(p):
     return _LC[p]
 
 
+def load_times(path):
+    # секунды на бота: строки «бот<TAB>секунды» (bot_times.py); нет файла — пусто
+    out = {}
+    try:
+        for l in open(path, encoding='utf-8'):
+            p = l.rstrip('\n').split('\t')
+            if len(p) >= 2 and p[0] and p[1].isdigit():
+                out[p[0]] = int(p[1])
+    except OSError:
+        pass
+    return out
+
+
+def weights(bots, times):
+    known = sorted(times[b] for b in bots if b in times)
+    dflt = known[len(known) // 2] if known else 120   # бота без записи считаем средним по известным
+    return {b: times.get(b, dflt) for b in bots}
+
+
+def balance(bots, times, n):
+    # n машин: самый долгий бот — на самую свободную; при равных весах выходит прежнее «каждый n-й». Внутри машины — от долгих к коротким.
+    w = weights(bots, times)
+    load, out = [0] * n, [[] for _ in range(n)]
+    for b in sorted(bots, key=lambda b: (-w[b], bots.index(b))):
+        i = load.index(min(load))
+        out[i].append(b)
+        load[i] += w[b]
+    return out
+
+
 def main():
     a = sys.argv[1:]
     # карта проекта для новых сессий (MAP.md, tools/map.py): напомнить, если устарела — на проверку не влияет
@@ -424,7 +459,7 @@ def main():
         for w in full + ['final07: ' + x for x in full07]:
             print('  ! ' + w)
         if full:
-            print('  его гоняет CI на PR сам (весь regress_list_final.txt по 8 машинам) — локально не запускать; итог — проверка «bots»')
+            print('  его гоняет CI на PR сам (весь regress_list_final.txt по машинам) — локально не запускать; итог — проверка «bots»')
         if full07 or g07:
             print('  LIST="tools/tests/regress_list_final.txt tools/tests/regress_list_final07.txt" tools/tests/regress.sh zlataya_cep/zlataya_cep_final07.html'
                   '   # final07: python3 zlataya_cep/build/build_final.py --gpu')
@@ -433,9 +468,18 @@ def main():
         bots, g07, wide = list(dict.fromkeys(REL)), [], True   # CI: полный регресс релиза — весь список, по долям на машины
         print('\nПолный регресс в CI: %d ботов релиза' % len(bots))
     rel = [b for b in bots if b in REL or b not in PROTO]
-    if '--shard' in a:   # машина I из N: каждый N-й бот (соседние в списке — часто тяжёлые боты одного уровня — расходятся по машинам)
+    times = load_times(a[a.index('--times') + 1] if '--times' in a else os.path.join(T, 'bot_times.tsv'))
+    if '--plan' in a:   # план для CI (bots.yml): сколько машин, какие боты, сколько секунд работы — ничего не запускается
+        import json
+        opt = lambda k, d: int(a[a.index(k) + 1]) if k in a else d
+        est = sum(weights(rel, times).values())
+        n = 0 if not rel and not g07 else max(1, min(opt('--max-shards', 8), -(-est // (int(jobs) * opt('--target', 300)))))
+        json.dump({'n': n, 'bots': rel, 'est_secs': est, 'known_times': sum(b in times for b in rel)}, open(a[a.index('--plan') + 1], 'w'))
+        print('\nПлан: %d ботов, ~%d с работы (%d из них с известным временем), машин: %d' % (len(rel), est, sum(b in times for b in rel), n))
+        return 0
+    if '--shard' in a:   # машина I из N: боты делятся по времени (balance), без времён — поровну
         si, sn = (int(x) for x in a[a.index('--shard') + 1].split('/'))
-        rel = rel[si - 1::sn]
+        rel = balance(rel, times, sn)[si - 1]
         print('Доля %d / %d: %d ботов' % (si, sn, len(rel)))
         if not rel:
             print('На эту машину ботов не досталось.')
