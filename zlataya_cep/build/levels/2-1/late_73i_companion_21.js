@@ -1,6 +1,6 @@
 /* ============================== РЕЛИЗ final06 · 2-1 «ГУСЛИ САДКО»: НАПАРНИК-БОТ ИДЁТ ПУТЁМ ИГРОКА 2 ============================== */
 // Бот за Игрока 2 играет правую сторону улиц и всё, что в уровне делает «второй голос»: мёртвая вода для струны Садко (Йоша), прилив и отлив гуслями у воды, лодки к террасам,
-// шлюзы, верёвки Переливной улицы, плиты напева, стул гусляра у трона, правая раковина, ростки сада (Йоша) и бой с Раком-Отшельником. Положения — из build/levels/2-1/late_99e_k21*.js.
+// шлюзы, верёвки Переливной улицы, плиты напева, стул гусляра у трона, правая раковина, ростки сада (Йоша), бой с Раком-Отшельником и спящих в Китеже (правый горожанин, бабка). Положения — из build/levels/2-1/late_99e_k21*.js.
 const F21=()=>W.flags;
 const K21B={w:null,t:0,tide:0};
 const k21b=()=>{if(K21B.w!==W){K21B.w=W;K21B.t=0;K21B.tide=0;}return K21B;};
@@ -93,4 +93,13 @@ CMP.route('2-1',[
     if(players[0].downed)return 'follow';
     const lx=B.LP.x+0.7,lz=B.LP.z+0.5;if(Math.hypot(h.pos.x-lx,h.pos.z-lz)>0.9){cmpGoto(h,lx,lz,0.4);return;}
     if(B.LURE.hum<2.5&&!(K21B.t>G.time-0.8)){K21B.t=G.time;cmpTap('item');}}},
+  // спящий Китеж (late_99e_k21_p3k_kitezh.js): правый горожанин — сыграть у его ракушки; бабка — играть, пока человек будит деда напротив
+  {id:'sleep1',done:()=>{const K=W.dbg21k&&W.dbg21k();return !K||K.SLP[1].woke;},run:h=>{k21b();if(!W.flags.gateSeen||h.pos.z>-362)return 'follow';
+    other(1).following=false;const S=W.dbg21k().SLP[1];
+    if(Math.hypot(h.pos.x-S.sh.x,h.pos.z-S.sh.z)>1.0){cmpGoto(h,S.sh.x,S.sh.z+0.6,0.5);return;}
+    if(!(K21B.t>G.time-0.9)){K21B.t=G.time;cmpTap('item');}}},
+  {id:'pair',done:()=>!!W.flags.sleepGate,run:h=>{k21b();if(!W.flags.gateSeen||h.pos.z>-362)return 'follow';
+    other(1).following=false;const S=W.dbg21k().SLP[3];
+    if(Math.hypot(h.pos.x-S.sh.x,h.pos.z-S.sh.z)>1.0){cmpGoto(h,S.sh.x,S.sh.z+0.6,0.5);return;}
+    if(S.ref.hum<2.5&&!(K21B.t>G.time-0.9)){K21B.t=G.time;cmpTap('item');}}},
 ]);

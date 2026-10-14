@@ -1,6 +1,6 @@
 //@@ wait=1500
 // релиз final06: напарник-бот проходит 2-1 «Гусли Садко» за Игрока 2 (Пелагея и Йоша, правая сторона улиц): мёртвая вода для Садко, фонтан, причал и дом-колодец,
-// шлюзы, переливная улица, торговые ряды, звонкая мостовая, палаты царя, сад Китежа, Рак-Отшельник, ворота. Человека (Игрок 1) играет скрипт.
+// шлюзы, переливная улица, торговые ряды, звонкая мостовая, палаты царя, сад Китежа, Рак-Отшельник, ворота, спящий Китеж (правый горожанин и бабка — разом с дедом человека). Человека (Игрок 1) играет скрипт.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,160));ce(...a);};}
 Math.random=(()=>{let q=12345;return()=>{q=(q*16807)%2147483647;return (q-1)/2147483646;};})();
 window.CO=ZC.FIN.co;window.P=ZC.players;window.W=ZC.W;window.F=()=>ZC.W.flags;window.bot=()=>U.act(1);window.me=()=>U.act(0);window.H=ZC.HERO;
@@ -115,8 +115,15 @@ for(const K of KEYS)[K.left,K.right,K.up,K.down].forEach(k=>ZC.hold(k,false));
 let t=0;for(let q=0;q<4;q++){while(ZC.G.cine&&t<3000){ZC.skip();ZC.tick(5);t+=5;}ZC.tick(30);}
 L.push('phase='+D.HB.dbg().phase,'stunF='+st,'won='+D.F.hermitWon,D.F.hermitWon?'hermit2 ok':'FAIL hermit2');L
 //@@
-// ворота Китежа: человек идёт к звену и за ворота, бот следом; уровень пройден
-const D=ZC.W.dbg21();const L=[];L.push(U.walkTo(0,-0.5,-348,10),U.walkTo(0,0,-352,6),U.walkTo(0,-1,-361,8));
-let last='';for(let i=0;i<60*25&&!D.F.out;i++){ZC.tick(1);const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}}
+// ворота Китежа: человек идёт за ворота (ролик «Китеж спит»), бот следом
+const D=ZC.W.dbg21();const L=[];L.push(U.walkTo(0,-0.5,-348,10),U.walkTo(0,0,-352,6),U.walkTo(0,-1,-358,8));let t=0;while(ZC.G.cine&&t<3000){ZC.tick(5);t+=5;}
+L.push('gateSeen='+!!D.F.gateSeen,'bot='+pos(bot()));L
+//@@
+// спящий Китеж: человек будит левого горожанина и деда, бот — правого горожанина и бабку (разом с дедом); колодец у звонницы — ролик, уровень пройден
+const D=ZC.W.dbg21(),S=ZC.W.dbg21k().SLP;const L=[];let last='';const watch=i=>{const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}};
+L.push(U.walkTo(0,0,-352,6),U.walkTo(0,-0.5,-358,6),U.walkTo(0,S[0].sh.x,S[0].sh.z+0.5,8));U.tap('KeyR');   // сквозь арку — по центруfor(let i=0;i<60*25&&!S[1].woke;i++){ZC.tick(1);watch(i);}L.push('s0='+S[0].woke,'s1(бот)='+S[1].woke);
+L.push(U.walkTo(0,S[2].sh.x,S[2].sh.z+0.5,8));for(let i=0;i<60*30&&!D.F.sleepGate;i++){if(i%150===0)U.tap('KeyR');ZC.tick(1);watch(i);}L.push('дед,бабка='+S[2].woke+','+S[3].woke);
+L.push(U.walkTo(0,0,-409.5,12));U.tap('KeyR');ZC.tick(200);for(let i=0;i<6*60&&!ZC.G.cine;i++){U.step(0,0,-416.5,0.3);ZC.tick(1);}U.rel(0);
+for(let i=0;i<60*40&&!D.F.out;i++){ZC.tick(1);watch(i);}
 L.push('out='+!!D.F.out,'links='+ZC.W.links,'bot='+pos(bot()),'errs='+_errs.length+(_errs[0]?' '+_errs[0]:''),(D.F.out&&!_errs.length)?'2-1 ok':'FAIL 2-1');L
 //@@

@@ -9,8 +9,9 @@
 //      родник снова наполняет сад через 10 с — оставленный держит отлив напевом; на ростке — якорь, Потап поднимет.
 // Порядок участков: сначала прилив и отлив поодиночке (улица участков, шлюзы — две ступени), потом парное (Переливная улица — за шлюзами).
 // Колодец-лифт убран: «вода как лифт» уже есть в доме-колодце. Торговые ряды, две раковины и ворота — прежние. Звеньев 4.
-// У каждой воды — мерная рейка (late_99q_k21_gauge.js); у ворот — ролик «Китеж просыпается».
-{const L=LEVELS.find(l=>l.id==='2-1');if(L)L.nuts=12;}   // орешков на уровне стало больше — для списка уровней
+// У каждой воды — мерная рейка (late_99zg_k21_gauge.js). За воротами — спящий Китеж (late_99e_k21_p3k_kitezh.js): ролик «Китеж спит»,
+// слобода (гусли будят горожан, дед и бабка — разом), Сонные ворота, звонница без языка — финал: Садко на осетре везёт к киту (2-2).
+{const L=LEVELS.find(l=>l.id==='2-1');if(L)L.nuts=15;}   // орешков на уровне стало больше — для списка уровней
 WHO.king=['Морской царь','#7ad8ff'];VOICE.king={f:110,w:'triangle',sp:0.13};
 // Морской царь: ростом с терем, борода из тины, венец, трезубец; пляшет вприсядку, когда играют гусли
 function kingMesh21(){const g=new THREE.Group();W.group.add(g);const body=new THREE.Group();g.add(body);const robe=M(0x2a8a8a),trim=M(COL.gold,{emissive:0x806010,emissiveIntensity:0.4}),skin=M(0xb8d8d0),weed=M(0x3f8a4a);
@@ -59,9 +60,9 @@ const K21_CARD_TEX=[0,1,2].map(kind=>{const c=document.createElement('canvas');c
 build21=function(){
   W.zvenAway=true;W.world=2;W.bubbles=true;setTheme('kitezh');W.name='2-1 · «Гусли Садко»';W.sub='Подводный Китеж · прилив и отлив, перелив, пляска Морского царя';W.camX=10;const F=W.flags;F.stage='walk';
   W.abil.toss=true;W.abil.roll=true;W.abil.owl=true;W.abil.gusli=false;W.fallY=-14;W.gusliLocked='Гусли Садко — у Садко на площади ждут.';
-  kitezhDecor(-360,10);
+  kitezhDecor(-432,10);
   const stone=M(0xb8b4a4),pave=M(0x9aa094),wallM=M(0xe0d6c0);
-  wall(-11.2,-11,-360,9);wall(11,11.2,-360,9);wall(-11.2,11.2,9,9.2);wall(-11.2,11.2,-360.2,-360);
+  wall(-11.2,-11,-432,9);wall(11,11.2,-432,9);wall(-11.2,11.2,9,9.2);wall(-11.2,11.2,-432.2,-432);   // за воротами — спящий Китеж до −432 (late_99e_k21_p3k_kitezh.js)
   /* ---------- А. дно у въезда ---------- */
   ground(-11,11,-8,9,0,pave);
   for(const[x,z]of[[-8.4,-2],[8.4,-4]]){addMesh(new THREE.CylinderGeometry(0.45,0.55,3.4,10),stone,x,1.7,z);W.cyls.push({x,z,r:0.55,miny:-1,maxy:3.4,on:true});}

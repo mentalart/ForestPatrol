@@ -120,7 +120,7 @@
   function bylina(){const T=HERO;
     play({dur:12.4,fov:48,shots:[shot(0,[2.6,1.9,3.2],[T.potap.pos.x,1.3,T.potap.pos.z]),shot(6,[0,4,10],[0,1,0]),shot(8.2,[1.8,1.8,2.2],[T.potap.pos.x,1.4,T.potap.pos.z])],
       says:[[0.3,2.6,'potap','Как говаривал Илья…'],[3.1,2.4,'potap','Илья… какой Илья?'],[5.8,2.4,null,'<i>Потап молчит — долго, тяжело.</i>',true],[8.3,2.8,'potap','Забыл. Совсем забыл, как сказка эта начинается…'],[11.1,1.4,null,'<i>Никто не смеётся. Цепь порвана — вот сказки и забываются.</i>',true]],
-      events:[{t:0,fn:()=>{T.potap.face=Math.PI*0.2;}},{t:5.8,fn:()=>{T.potap.face=Math.PI;}}],end:()=>{later(0.6,()=>say('zven','Рыба-кит! Тише — спит он. Вода тут одна на всех!',2.8,true));}});}
+      events:[{t:0,fn:()=>{T.potap.face=Math.PI*0.2;}},{t:5.8,fn:()=>{T.potap.face=Math.PI;}}],end:()=>{later(0.6,()=>say('zven','Рыба-кит! Тише — спит он. Вода тут одна на всех!',2.8,true));later(3.8,()=>say('yosha','Где-то в нём — язык колокола Китежа. Достанем!',2.8,true));}});}   // цель из финала 2-1
   W.onWater=(z,st)=>{if(z===ZR&&st==='low'&&!F.hiTold){F.hiTold=true;bark(HERO.pelageya,'pelageya','Погоди, я пройду… Всё, давай, твой черёд!',2.4);}};
   W.updates.push(dt=>{
     // ворота к фонтану: открываются, когда оба сделали своё
