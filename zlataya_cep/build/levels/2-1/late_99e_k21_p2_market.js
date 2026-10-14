@@ -90,11 +90,11 @@
   const nutGarden=(p=>nutItem(p.x,p.y+0.6,p.z))(KS[1].padAt(11));   // орешек над листом лесенки — по пути наверх
   /* ---------- З3. Рак-Отшельник у ворот Китежа: мини-босс в два этапа (late_99m_k21_hermit.js) ---------- */
   const HB=FIN.hermitBoss({z0:-266+DG,z1:-310+DG});
-  /* ---------- И. ворота Китежа (дальше на 110 м) ---------- */
+  /* ---------- И. ворота Китежа (дальше на 110 м); за ними — спящий Китеж (late_99e_k21_p3k_kitezh.js) ---------- */
   const D3=-110+S1-44;   // ворота — за ареной Рака-Отшельника
   ground(-11,11,-172+D3,-156+D3,0,pave);
   {const gm=W.group.children.length;for(const sd of[-1,1])box(sd*3.9-0.9,sd*3.9+0.9,0,5.2,-167+D3,-165.6+D3,wallM);addMesh(new THREE.BoxGeometry(9.6,1.1,1.6),wallM,0,5.75,-166.3+D3);kdome(0,-166.3+D3,0.5,6.3);fadeable(since(gm));}
-  const endLink=linkItem(0,1.1,-162.6+D3);bell(0,-158.6+D3);
+  const endLink=linkItem(0,7.1,-415.6);bell(0,-158.6+D3);   // последнее звено — на площадке звонницы за воротами (late_99e_k21_p3k_kitezh.js)
   FIN.kwPrompts();
   W.updates.push(dt=>{
     if(!mkt.started&&[0,1].some(pi=>active(pi).pos.z<-118.5+D&&active(pi).pos.y<3)){mkt.started=true;SFX.gate();

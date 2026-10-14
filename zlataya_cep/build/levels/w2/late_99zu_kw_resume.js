@@ -6,7 +6,7 @@
 // Боты (G.manual) карточку не видят; продолжить за них — FIN.kwRes.apply('2-1').
 // Участок — самый дальний, что начинается не дальше колокольчика; с участка ворот/финала (gate, crown) не продолжают.
 const KWRES={
-  '2-1':{warp:'warp21',secs:()=>{const D=W.dbg21?W.dbg21():{};return[['locks',-78],['market',-157],['tune',-182],['dance',(D.K0||-196)-2],['shells',-219+(D.S1||0)],['garden',-235.5+(D.DG||0)],['boss',-267+(D.DG||0)]];}},
+  '2-1':{warp:'warp21',secs:()=>{const D=W.dbg21?W.dbg21():{};return[['locks',-78],['market',-157],['tune',-182],['dance',(D.K0||-196)-2],['shells',-219+(D.S1||0)],['garden',-235.5+(D.DG||0)],['boss',-267+(D.DG||0)],['city',-362],['tower',-401]];}},
   '2-2':{warp:'warp22',secs:()=>[['yard',10],['village',-75],['ride',-97],['ribs',-142],['lip',-208],['eyes',-268],['grove',-306],['head',-358]]}};
 if(typeof SAVE_FIELDS!=='undefined'&&SAVE_FIELDS.indexOf('resume')<0)SAVE_FIELDS.push('resume');
 function kwresMark(b,secs){const id=W&&W.levelId;if(!KWRES[id]||!b)return;let sec=null;for(const[n,z]of secs)if(z>=b.z-2)sec=n;if(!sec)return;

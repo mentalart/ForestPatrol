@@ -221,7 +221,7 @@ function kwTick(dt){if(!W||W.world!==2)return;KW.owlT=Math.max(0,KW.owlT-dt);
 FIN.kwPrompts=function(){for(const pi of[0,1]){const h=()=>active(pi);
   prompt(pi,'item',()=>headOf(h()),()=>{if(!W.abil.gusli)return false;const S=kwShellAt(h());return !!S&&S.kind==='current'&&!S.ref.dir;},'течение — куда смотришь');
   prompt(pi,'item',()=>headOf(h()),()=>{if(!W.abil.gusli)return false;const S=kwShellAt(h());return !!S&&S.kind==='ring'&&S.ref.hum<1.2;},'звон');
-  prompt(pi,'item',()=>headOf(h()),()=>{if(!W.abil.gusli)return false;const S=kwShellAt(h());return !!S&&S.kind==='dance'&&S.ref.hum<1.2;},'сыграй — царь пляшет');
+  prompt(pi,'item',()=>headOf(h()),()=>{if(!W.abil.gusli)return false;const S=kwShellAt(h());return !!S&&S.kind==='dance'&&S.ref.hum<1.2;},()=>{const S=kwShellAt(h());return S&&S.pnote||'сыграй — царь пляшет';});   // pnote — своя подпись (спящие горожане 2-1)
   prompt(pi,'swap',()=>headOf(h()),()=>{const L=h().kwLast;return !!L&&G.time-L.t<3.5&&(L.kind==='current'||L.kind==='ring'||L.kind==='dance'||(L.kind==='tide'&&L.ref&&L.ref.kwHoldable))&&Math.hypot(h().pos.x-L.x,h().pos.z-L.z)<1.2;},'оставь — доиграет');}};
 // для ботов: собрать испытательную площадку из тех же деталей
 FIN.kwTest=()=>({ground,waterZone,M,boardMesh,setWater,playGusli,zoneAt,KW});

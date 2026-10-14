@@ -87,7 +87,7 @@
     prompt(pi,'attack',()=>headOf(h()),()=>W.enemies.some(e=>e.alive&&hd(e.pos,h().pos)<5&&Math.abs(e.pos.y-h().pos.y)<2&&(e.state==='broken'||(e.state==='stagger'&&!e.openHit)||e.flop)),'');}
   /* ---------- задачи ---------- */
   // задачи: одна карточка — одно действие, полный текст ≤ 20 слов (docs/31, этап 4; разбор мира 2). 13 карточек: вступление со струной — одна карточка,
-  // книга — ролик без своей карточки, Переливная — две карточки, ворота Китежа — продолжение карточки Рака-Отшельника.
+  // книга — ролик без своей карточки, Переливная — две карточки, ворота Китежа — продолжение карточки Рака-Отшельника; спящий Китеж — три карточки (16).
   const side=pi=>{const d=SD[pi];return [
     O(()=>'Причал. Прилив '+K(pi,'item')+' — лодки всплывут до крыш.<br>С лодки шагай на крыши.',()=>active(pi).pos.z<-60.3||(active(pi).pos.y>3.3&&active(pi).pos.z<-56),()=>[d.boat2.g,d.zA.shell.g],
       ()=>({kind:active(pi).kind,action:'jump',from:new V3(d.X(4.2),3.1,-54),to:new V3(d.X(4.2),3.44,-57.6)})),
@@ -109,23 +109,27 @@
     O(()=>'Две раковины: левой — прилив, правой — отлив.<br>Сыграйте '+K(pi,'item')+' — каждый у своей.',()=>!!F.grate,()=>[LZ.shell.g,RZ.shell.g]),
     O(()=>'Сад Китежа: отлив '+K(pi,'item')+' у родника — дойдёт только Потап.<br>Йоша польёт ростки '+K(1,'skill')+' — вырастут лесенки к террасе.',
       ()=>active(pi).pos.z<-262+DG,()=>{const r=[];if(GARD.state==='high')r.push(GARD.shell.g);for(const s of KS)if(!s.grown)r.push(s.g);if(!F.anchor)r.push(anchor);return r;}),
-    O(()=>F.hermitWon?'Ворота Китежа открыты — бери звено, и в путь-дорогу!':'Рак-Отшельник! Сыграй '+K(pi,'item')+' у ракушки-музыкалки — заслушается, тут и бей.<br>Без домика удирает — зажмите с двух сторон.',
-      ()=>false,()=>{if(F.hermitWon)return [endLink.g];const e=HB.dbg().e;return e&&e.alive?[e.g]:[HB.dbg().lureShell.g];})];
+    O(()=>F.hermitWon?'Ворота Китежа открыты — ступай в город!':'Рак-Отшельник! Сыграй '+K(pi,'item')+' у ракушки-музыкалки — заслушается, тут и бей.<br>Без домика удирает — зажмите с двух сторон.',
+      ()=>!!F.gateSeen,()=>{if(F.hermitWon)return [];const e=HB.dbg().e;return e&&e.alive?[e.g]:[HB.dbg().lureShell.g];}),
+    // спящий Китеж (late_99e_k21_p3k_kitezh.js): слобода, дед и бабка, звонница
+    O(()=>'Китеж спит. У спящего — ракушка:<br>сыграй '+K(pi,'item')+' — проснётся.',()=>SLP.filter(S=>!S.pair).every(S=>S.woke),()=>SLP.filter(S=>!S.pair&&!S.woke).map(S=>S.sh.g)),
+    O(()=>'Деда и бабку — разом: сыграйте '+K(pi,'item')+' оба.<br>Один? Сыграй и смени '+K(pi,'swap')+'.',()=>!!F.sleepGate,()=>SLP.filter(S=>S.pair&&!S.woke).map(S=>S.sh.g)),
+    O(()=>'Звонница! Прилив '+K(pi,'item')+' в колодце —<br>вода поднимет к звену.',()=>!!F.towerSeen,()=>[twz.shell.g,endLink.g])];
   for(const pi of[0,1])W.objectives[pi]=common(pi).concat(side(pi),late(pi));
   W.tipZones.push({cond:(pi,h)=>h.grounded&&h.groundRef&&h.groundRef.water,text:pi=>'Ты плывёшь! Сыграй на гуслях '+K(pi,'item')+' — лодка всплывёт.'},
     {cond:(pi,h)=>h.pos.y<-1.5&&h.pos.z<-45&&h.pos.z>-52,text:pi=>'Отлив открыл подвал. На дне — орешек! Назад — по ступенькам.'},
     {cond:(pi,h)=>SD[pi]&&SD[pi].inShaft(h)&&h.pos.y<-2,text:pi=>'Со дна — прилив '+K(pi,'item')+': вода поднимет.'});
   W.spawns=[[new V3(-3.5,0,5),new V3(-5.5,0,6)],[new V3(3.5,0,5),new V3(5.5,0,6)]];W.startAct=[0,0];
-  W.pauseLine='Подводный Китеж. Гусли Садко (RB) меняют воду там, где стоишь: прилив поднимает лодки, отлив открывает подвалы.<br>Переливная улица: вода одна на двоих — Потап держит заслонку.<br>Морскому царю играйте в два голоса. В саду Потап идёт по дну, Йоша растит лесенки. Раку-Отшельнику нужен новый домик.<br>В Китеже молчать нельзя!';
+  W.pauseLine='Подводный Китеж. Гусли Садко (RB) меняют воду там, где стоишь: прилив поднимает лодки, отлив открывает подвалы.<br>Переливная улица: вода одна на двоих — Потап держит заслонку.<br>Морскому царю играйте в два голоса. В саду Потап идёт по дну, Йоша растит лесенки. Раку-Отшельнику нужен новый домик.<br>За воротами Китеж спит: гусли будят горожан, деда и бабку — разом. На звонницу — приливом в колодце.<br>В Китеже молчать нельзя!';
   W.onStart=()=>{later(0.8,()=>say('zven','Китеж! Под водою спит он. Дзинь — за мной!',2.6,true));};
   // для ботов: перенос к участку
-  W.warp21=(where)=>{F.stage='street';F.book=true;W.abil.gusli=true;const P={locks:[0,0,-78],perel:[-6,0,-78+PZ],market:[0,0,-157],tune:[0,0,-182],dance:[0,0,K0-2],shells:[0,0,-219+S1],garden:[0,0,-235.5+DG],boss:[0,0,-267+DG],gate:[0,0,-311+DG]}[where];
-    const ORD=['locks','perel','market','tune','dance','shells','garden','boss','gate'],after=w=>ORD.indexOf(where)>ORD.indexOf(w);
+  W.warp21=(where)=>{F.stage='street';F.book=true;W.abil.gusli=true;const P={locks:[0,0,-78],perel:[-6,0,-78+PZ],market:[0,0,-157],tune:[0,0,-182],dance:[0,0,K0-2],shells:[0,0,-219+S1],garden:[0,0,-235.5+DG],boss:[0,0,-267+DG],gate:[0,0,-311+DG],city:[0,0,-362],tower:[0,0,-401]}[where];
+    const ORD=['locks','perel','market','tune','dance','shells','garden','boss','gate','city','tower'],after=w=>ORD.indexOf(where)>ORD.indexOf(w);
     if(after('market')){mkt.started=true;mkt.done=true;mktGate.forceOpen=true;}
     if(after('tune')){TS.done=true;F.tune=true;F.sturg=true;tuneCol.on=false;tuneGate.position.y=4.6;}
     if(after('dance')){F.kingMet=true;F.kingDone=true;F.kingOpen=true;}
     if(after('shells')){F.grate=true;grateCol.on=false;grate.position.y=3.8;}if(after('garden')){F.gardTold=true;}
-    if(where==='gate'){F.hermitWon=true;HB.dbg().weedCol.on=false;HB.skip&&HB.skip();}
+    if(where==='gate'||after('gate')){F.hermitWon=true;HB.dbg().weedCol.on=false;HB.skip&&HB.skip();}if(after('gate'))F.gateSeen=true;if(after('city'))for(const S of SLP)wake(S,true);
     if(after('perel')){PG.forEach((q,i)=>openPG(i));F.perelTold=true;}if(where==='dance')F.kingMet=true;if(where==='tune')F.sturg=true;
     HEROES.forEach((h,i)=>{placeOnGround(h,P[0]+(i%2?1.4:-1.4)+(i>1?3:0)*(P[0]<0?1:-1),P[2]+(i>1?0.6:0),P[1]);h.following=false;});for(const pi of[0,1])players[pi].cp.set(P[0],P[1],P[2]);snapCams();
     return W.dbg21();};

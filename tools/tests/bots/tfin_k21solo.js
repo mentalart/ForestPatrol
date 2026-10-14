@@ -79,6 +79,13 @@ toKind('proshka');let st2=0;for(let i=0;i<60*120&&D.HB.dbg().phase===2;i++){cons
 rel();if(D.HB.dbg().phase<3)throw new Error('рака в одиночку не поймали: phase='+D.HB.dbg().phase+' stun='+st2+' '+st());t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(20);
 if(!D.F.hermitWon)throw new Error('нет победы над раком');'hermit solo ok hits='+hits+' stun='+st2
 //@@
-const D=ZC.W.dbg21(),G=D.DG;const r=[];r.push(go(0,-312+G,8));callAll();r.push(go(0,-323+G,6));ZC.tick(60);callAll();r.push(go(0,-324+G,4));ZC.tick(120);let tg=0;while(ZC.W.levelId==='2-1'&&!ZC.W.flags.out&&tg<1500){ZC.tick(1);tg++;}'end '+r.join()+' lvl='+ZC.W.levelId+' out='+!!ZC.W.flags.out
+const D=ZC.W.dbg21(),G=D.DG;const r=[];r.push(go(0,-312+G,8));callAll();r.push(go(0,-323+G,6));ZC.tick(60);callAll();r.push(go(0,-324+G,4));ZC.tick(120);let tg=0;while(ZC.G.cine&&tg<1500){ZC.tick(1);tg++;}if(!ZC.W.flags.gateSeen||ZC.W.flags.out)throw new Error('ворота: gateSeen='+ZC.W.flags.gateSeen+' out='+ZC.W.flags.out);'gate '+r.join()
+//@@
+// спящий Китеж в одиночку: два горожанина, дед (сыграл и сменил героя — оставленный доигрывает) и бабка, колодец у звонницы, финальный ролик
+const K=ZC.W.dbg21k(),S=K.SLP,PLAY=q=>{if(me().pos.z>-356)U.goto(0,-1.2,-358,8,0.5);const g=U.goto(0,q.sh.x,q.sh.z+0.5,10,0.4);U.tap('KeyR');ZC.tick(4);return g;};
+const r=[PLAY(S[0]),PLAY(S[1])];ZC.tick(120);r.push('held='+U.playHold(0,S[2].sh,[S[2].sh.x,S[2].sh.z+0.5]));r.push(PLAY(S[3]));ZC.tick(240);
+if(!ZC.W.flags.sleepGate)throw new Error('Сонные ворота закрыты: '+S.map(q=>q.woke).join(',')+' '+r.join()+' '+st());
+r.push(U.goto(0,0,-409.5,14,0.4));U.tap('KeyR');ZC.tick(200);for(let i=0;i<6*60&&!ZC.G.cine;i++){U.step(0,0,-416.5,0.3);ZC.tick(1);}U.rel(0);
+let tg=0;while(ZC.W.levelId==='2-1'&&!ZC.W.flags.out&&tg<3000){ZC.tick(1);tg++;}'end '+r.join()+' lvl='+ZC.W.levelId+' out='+!!ZC.W.flags.out
 //@@
 if(ZC.W.levelId==='2-1'&&!ZC.W.flags.out)throw new Error('уровень не пройден: '+st());if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'2-1 solo done errs=0'

@@ -3,7 +3,7 @@
 //  1) Средний путь в 2-1: у игрока не больше двух стрелков сразу (в замахе и капель в полёте) — как Лёгкий путь в late_76_kids_fight.
 //  2) Край плиты уровня (x = ±11) — не обрыв в пустоту, а риф: камни и кораллы вдоль обеих стен. Один InstancedMesh на камни и один на кораллы.
 //  3) Вдали за рифом — большие тёмные силуэты храмов Китежа: город больше, чем видно с улицы.
-//  4) Водяной подглядывает: в тёмной воде за рифом три пары жёлтых глаз; моргают, гаснут, когда герой подходит ближе (завязка 2-Б).
+//  4) Водяной подглядывает: в тёмной воде за рифом четыре пары жёлтых глаз (последняя — у спящей слободы); моргают, гаснут, когда герой подходит ближе (завязка 2-Б).
 // Механику уровня (вода, задачи, коллизии) модуль не меняет: всё новое стоит за стенами уровня.
 const K21C={shoot:2,eyes:[]};
 {const _cw=canWind;canWind=function(e,h){if(!_cw(e,h))return false;
@@ -43,8 +43,8 @@ function k21Eyes(x,y,z){const g=new THREE.Group();g.position.set(x,y,z);g.rotati
   g.traverse(c=>{c.userData.noBatch=true;});
   return {g,em,pu,eyes,vis:0,blink:rand(2,5),bt:0,away:0};}
 function k21Calm(){K21C.eyes=[];
-  k21Reef(-358,8);k21Skyline(-360,8);
-  for(const[x,y,z]of[[-16.4,1.4,-40],[16.4,2.2,-150],[-16.4,1.8,-262]])K21C.eyes.push(k21Eyes(x,y,z));
+  k21Reef(-430,8);k21Skyline(-432,8);   // до конца спящего Китежа (late_99e_k21_p3k_kitezh.js)
+  for(const[x,y,z]of[[-16.4,1.4,-40],[16.4,2.2,-150],[-16.4,1.8,-262],[16.4,2.4,-392]])K21C.eyes.push(k21Eyes(x,y,z));
   W.updates.push(dt=>vodEyesTick(K21C.eyes,dt));}
 // общий шаг глаз Водяного (2-1, 2-3, 2-4): видны, когда герой в 7…32 м по z; подошёл ближе — нырнул на 4 с; моргают
 function vodEyesTick(list,dt){for(const E of list){let near=99;for(const pi of[0,1]){const h=active(pi);if(h)near=Math.min(near,Math.abs(h.pos.z-E.g.position.z));}

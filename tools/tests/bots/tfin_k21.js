@@ -132,9 +132,15 @@ const D=ZC.W.dbg21();{const bb=document.getElementById('bossbar');if(bb.style.di
 for(const K of KEYS)[K.left,K.right,K.up,K.down].forEach(k=>ZC.hold(k,false));if(D.HB.dbg().phase<3)throw new Error('рака не поймали: phase='+D.HB.dbg().phase+' stunF='+st);
 let t=0;while(ZC.G.cine&&t<3000){ZC.tick(1);t++;}ZC.tick(30);if(!D.F.hermitWon||D.HB.dbg().weedCol.on)throw new Error('ворота не открыты после рака');if(document.getElementById('bossbar').style.display!=='none')throw new Error('полоса рака не скрыта после боя');'hermit friends stunF='+st
 //@@ shot=k21_hermit_home.png
-// ворота: звено и конец уровня
+// ворота: ролик «Китеж спит» — уровень продолжается в городе
 const D=ZC.W.dbg21(),G=D.DG;const r=[WALK2([-0.5,-314+G],[2,-314+G],8),WALK2([-0.5,-320.6+G],[2,-318+G],6),WALK2([-1,-327+G],[2,-327+G],5)];ZC.tick(120);
-let tg=0;const seen=!!ZC.W.flags.gateSeen||ZC.W.levelId!=='2-1';while(ZC.W.levelId==='2-1'&&!ZC.W.flags.out&&tg<1500){ZC.tick(1);tg++;}
-if(!seen)throw new Error('нет ролика у ворот Китежа');'links='+ZC.W.links+' nuts='+ZC.W.nuts+' out='+!!ZC.W.flags.out+' state='+ZC.G.state+' lvl='+ZC.W.levelId+' '+r.join()
+let tg=0;while(ZC.G.cine&&tg<1500){ZC.tick(1);tg++;}const seen=!!ZC.W.flags.gateSeen;
+if(!seen)throw new Error('нет ролика у ворот Китежа');if(ZC.W.flags.out)throw new Error('уровень кончился у ворот — а спящий Китеж?');'links='+ZC.W.links+' nuts='+ZC.W.nuts+' out='+!!ZC.W.flags.out+' state='+ZC.G.state+' lvl='+ZC.W.levelId+' '+r.join()
+//@@
+// спящий Китеж (late_99e_k21_p3k_kitezh.js): горожане, дед и бабка разом, колодец у звонницы — финальный ролик, уровень пройден
+const K=ZC.W.dbg21k(),S=K.SLP,PLAY=(pi,q)=>{if(U.act(pi).pos.z>-356)U.goto(pi,pi?1.2:-1.2,-358,8,0.5);const g=U.goto(pi,q.sh.x,q.sh.z+0.5,10,0.4);ZC.press(U.K[pi].i);ZC.tick(4);return g;};
+const r=[PLAY(0,S[0]),PLAY(1,S[1]),PLAY(0,S[2]),PLAY(1,S[3])];ZC.tick(240);if(!ZC.W.flags.sleepGate)throw new Error('Сонные ворота закрыты: '+S.map(q=>q.woke).join(','));
+r.push(U.goto(0,0,-409.5,14,0.4));ZC.press(U.K[0].i);ZC.tick(200);for(let i=0;i<6*60&&!ZC.G.cine;i++){U.step(0,0,-416.5,0.3);ZC.tick(1);}U.rel(0);
+let tg=0;while(ZC.W.levelId==='2-1'&&!ZC.W.flags.out&&tg<3000){ZC.tick(1);tg++;}'links='+ZC.W.links+' nuts='+ZC.W.nuts+' lvl='+ZC.W.levelId+' '+r.join()
 //@@
 if(!ZC.W.flags.out&&ZC.W.levelId==='2-1')throw new Error('уровень не пройден');if(_errs.length)throw new Error('ошибки: '+_errs.slice(0,3).join(' | '));'2-1 done errs=0'
