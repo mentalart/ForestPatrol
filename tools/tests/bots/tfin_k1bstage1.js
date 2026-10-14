@@ -24,6 +24,10 @@ ok.stuck=Math.abs(easy-2.2)<0.01&&Math.abs(mid-1.5)<0.01;ok.glow=glow;'easy='+ea
 // 5: после второго трофея (Средний) каждый третий замах красной — обманка: опускает ладонь на середине замаха, удара нет
 reset();W.flags.head=2;N.redN=2;for(const pi of[0,1])U.act(pi).pos.set(5,0,-9);wind(1,0);let wnd=0,str=0;for(let i=0;i<90;i++){ZC.tick(1);const s=hand(1).state;if(s==='wind')wnd++;if(s==='strike')str++;}
 ok.fake=wnd>3&&str===0&&N.redN===3;W.flags.head=0;'wind='+wnd+' strike='+str+' redN='+N.redN
+//@@
+// «Одним махом!» по руке (идеальный щит — у мелкого морока это unravel) не убирает руку: она пробита и ложится мостом, рука от плеча на месте
+reset();ZC.FIN.dbgUnravel(hand(-1));ZC.tick(40);const e=hand(-1),arm=K.cur.arms.find(a=>a.side===-1);ok.swoop=e.alive&&e.state==='broken'&&!!(e.k1bridge&&e.k1bridge.g.parent)&&arm.g.visible;
+'alive='+e.alive+' state='+e.state+' bridge='+!!e.k1bridge+' arm='+arm.g.visible
 //@@ shot=k1bs1_sweep.png
 // 2, 8: жёлтая пробита — мост; камера показывает мост; герой поднялся — красная смахивает (без кувырка), урона нет
 reset();brk(-1);ZC.tick(40);const b=hand(-1).k1bridge,mid=b.from.clone().lerp(b.to,0.5);const cam=W.camFn(),dc=Math.hypot(cam.look.x-mid.x,cam.look.z-mid.z);ok.cam=dc<4;
