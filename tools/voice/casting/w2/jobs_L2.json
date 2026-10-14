@@ -1,0 +1,520 @@
+[
+{
+"id": "2-3_020",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Водяной воду крутит… Запомним!",
+"max": 3.4
+},
+{
+"id": "2-3_021",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Ёрш Ершович! Озорник всех в озере обижает. Ловите — да вчетвером!",
+"max": 4.2
+},
+{
+"id": "2-4_010",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] С ребра — долой! Плыви, кораблик!",
+"max": 3
+},
+{
+"id": "2-4_011",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Сыграйте ему в лад — гуслями! Нотка твоего цвета к сердцу долетит — и дзинь!",
+"max": 4.42
+},
+{
+"id": "2-4_012",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Язык от колокола! Вот что кит проглотил!",
+"max": 3.12
+},
+{
+"id": "2-4_013",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "В Китеж его отнесём — пусть колокол заговорит!",
+"max": 2.72
+},
+{
+"id": "2-4_014",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Корабли! Целый залив — кит их проглотил, оттого и мучается.",
+"max": 4
+},
+{
+"id": "2-5_004",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Дзинь, дилинь, дон, дон! Напев Садко!",
+"max": 3.02
+},
+{
+"id": "2-5_005",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Сыграли, как Садко! Все вместе!",
+"max": 2.12
+},
+{
+"id": "2-5_006",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Слышите? Колокол звякнул — и мост проступил! И снова пропал…",
+"max": 3.32
+},
+{
+"id": "2-5_007",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Звон — и невидимое видно. Понял!",
+"max": 2.52
+},
+{
+"id": "2-5_008",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Язык колокола — тот, что кит проглотил. Донёс!",
+"max": 3.52
+},
+{
+"id": "2-5_009",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Вешай, Потапушка, на место!",
+"max": 2.82
+},
+{
+"id": "2-5_010",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Колокол тяжёлый — раскачать его только вчетвером!",
+"max": 3.12
+},
+{
+"id": "2-B_008",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Эх, дубинушка, ухнем!",
+"max": 2.8
+},
+{
+"id": "2-B_009",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Гребешок за спину — лес стеной!",
+"max": 2.8
+},
+{
+"id": "2-B_010",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Кто звенел? Кто будил? Догоню-у-у!",
+"max": 2.52
+},
+{
+"id": "2-B_011",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Бежим! К омуту, скорее!",
+"max": 2.32
+},
+{
+"id": "2-1_025",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Вот это осётр! С терем ростом!",
+"max": 3.4
+},
+{
+"id": "2-1_026",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Слышали? Напев Садко! Дзинь, дилинь — по очереди, а дон-дон — вместе!",
+"max": 5
+},
+{
+"id": "2-1_027",
+"who": "king",
+"vid": "t3cz8dupgS466xvp2eB2",
+"prompt": "В два голоса, гусляры! Один — скукота!",
+"max": 3.6
+},
+{
+"id": "2-1_028",
+"who": "king",
+"vid": "t3cz8dupgS466xvp2eB2",
+"prompt": "Вприсядку! Эх, раздайся, море!",
+"max": 3.2
+},
+{
+"id": "2-1_029",
+"who": "king",
+"vid": "t3cz8dupgS466xvp2eB2",
+"prompt": "Шибче, гусляры, шибче!",
+"max": 3.2
+},
+{
+"id": "2-1_030",
+"who": "king",
+"vid": "t3cz8dupgS466xvp2eB2",
+"prompt": "Да в два голоса, у самого трона!",
+"max": 2.72
+},
+{
+"id": "2-1_031",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Вот это пляска! Дальше — в сад Китежа!",
+"max": 3.12
+},
+{
+"id": "2-2_014",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Эх… прости, сосенка. Мостиком послужишь!",
+"max": 3.4
+},
+{
+"id": "2-2_015",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Ух! Вот так занозища!",
+"max": 2.8
+},
+{
+"id": "2-2_016",
+"who": "pahar",
+"vid": "VlXLedwkU4YDM3HBGpiI",
+"prompt": "[cheerful] Ай да детки! Пошла соха, пошла родимая! Проходите, путь открыт!",
+"max": 4.4
+},
+{
+"id": "2-2_017",
+"who": "kit",
+"vid": "wQBtmZehmnioGheqFFq6",
+"prompt": "[sighs] Ох… легче стало… Кто тут такие добрые?",
+"max": 4.22
+},
+{
+"id": "2-2_018",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Мы — Лесной патруль! Привет, Кит!",
+"max": 2.72
+},
+{
+"id": "2-2_019",
+"who": "kit",
+"vid": "wQBtmZehmnioGheqFFq6",
+"prompt": "Десять лет частокол в боку… Спасибо, малые. Ступайте по мне — я тихонько дышать буду.",
+"max": 3.92
+},
+{
+"id": "2-2_020",
+"who": "kit",
+"vid": "wQBtmZehmnioGheqFFq6",
+"prompt": "[sighs] Ох, тяжко мне… Нырну-ка я на дно — там тихо…",
+"max": 3.12
+},
+{
+"id": "2-2_021",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Кит ныряет! Деревня утонет!",
+"max": 1.52
+},
+{
+"id": "2-2_022",
+"who": "kit",
+"vid": "wQBtmZehmnioGheqFFq6",
+"prompt": "[softly] Не нырну… Спели вы мне, как мама в детстве пела.",
+"max": 3.12
+},
+{
+"id": "2-2_023",
+"who": "kit",
+"vid": "wQBtmZehmnioGheqFFq6",
+"prompt": "Болит внутри — проглотил я что-то звонкое, золотое…",
+"max": 3.22
+},
+{
+"id": "2-2_024",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Мы поможем, Кит! Честное слово!",
+"max": 3.02
+},
+{
+"id": "2-2_025",
+"who": "kit",
+"vid": "wQBtmZehmnioGheqFFq6",
+"prompt": "Тогда держитесь крепче, малые!",
+"max": 3.72
+},
+{
+"id": "2-2_026",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "До облаков! Вот это кит!",
+"max": 2.72
+},
+{
+"id": "2-2_027",
+"who": "malec",
+"vid": "6gs4Nc3jAINHpczl2vtf",
+"prompt": "[childlike voice] [excited] Эй, айда с нами в пляс! Прыг — на камушек, как загорится!",
+"max": 4.4
+},
+{
+"id": "2-2_028",
+"who": "malec",
+"vid": "6gs4Nc3jAINHpczl2vtf",
+"prompt": "[childlike voice] [excited] Ух, наплясались! Глядите — кит глаза открыл! Дальше — в дубраву!",
+"max": 4.2
+},
+{
+"id": "2-2_029",
+"who": "devica",
+"vid": "MnpvhIEwlRGIW0kbECKH",
+"prompt": "Ой, сколько грибочков! Спасибо! Кит, пусти их — усы подними!",
+"max": 4.4
+},
+{
+"id": "2-2_030",
+"who": "devica",
+"vid": "MnpvhIEwlRGIW0kbECKH",
+"prompt": "Грибы прячутся — не видать! Совиным бы глазом поискать…",
+"max": 4.2
+},
+{
+"id": "2-1_032",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] А ну-ка, вылезай! Раз-два — взяли!",
+"max": 3.12
+},
+{
+"id": "2-1_033",
+"who": "otshel",
+"vid": "4d236ygY2l2ZSD595ygh",
+"prompt": "Ой-ой! Без домика… стыдно-то как!",
+"max": 2.92
+},
+{
+"id": "2-1_034",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Ему просто домика нет! Вот и сердился.",
+"max": 3.12
+},
+{
+"id": "2-1_035",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Вот тебе терем! Золотой, с колокольчиком!",
+"max": 3.82
+},
+{
+"id": "2-1_036",
+"who": "otshel",
+"vid": "4d236ygY2l2ZSD595ygh",
+"prompt": "Ой, какой домик! Звонкий! Спасибо, малые!",
+"max": 3.92
+},
+{
+"id": "2-1_037",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Вот и подружились! А Китеж — за воротами!",
+"max": 4.52
+},
+{
+"id": "2-1_038",
+"who": "otshel",
+"vid": "4d236ygY2l2ZSD595ygh",
+"prompt": "[annoyed] Кто тут шумит? Это МОЙ дом! Уходите!",
+"max": 3.82
+},
+{
+"id": "2-2_031",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Звёздочки сонные! Пелагея, глянь Совиным взором — а ловите прыжком!",
+"max": 4.4
+},
+{
+"id": "2-2_032",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Последний куплет — в четыре голоса! Все четверо — по ракушкам!",
+"max": 4.2
+},
+{
+"id": "2-3_022",
+"who": "yorsh",
+"vid": "8CIriRHaOzqmbUpPUtOX",
+"prompt": "Плывём, плывём! Там ещё заросли — рубите!",
+"max": 3.4
+},
+{
+"id": "2-3_023",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Кит зевает — прыгайте в пасть! Все вместе!",
+"max": 3.8
+},
+{
+"id": "2-3_024",
+"who": "som",
+"vid": "O1uVJ0jxq6KkLPcqmXSm",
+"prompt": "Вину искупишь, Ёрш Ершович: гостей к Рыбе-киту проводишь.",
+"max": 3.62
+},
+{
+"id": "2-3_025",
+"who": "yorsh",
+"vid": "8CIriRHaOzqmbUpPUtOX",
+"prompt": "Да знаю я, где кит! За озером, в море спит — пасть на замке.",
+"max": 3.52
+},
+{
+"id": "2-3_026",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Язык колокола — у кита в брюхе. Айда за ершом!",
+"max": 3.32
+},
+{
+"id": "2-3_027",
+"who": "yorsh",
+"vid": "8CIriRHaOzqmbUpPUtOX",
+"prompt": "Тс-с! Вот он, кит. Пасть на замке. Пощекочите ему усы — все четыре разом — зевнёт!",
+"max": 4.6
+},
+{
+"id": "2-B_012",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Держу ус! Раз…",
+"max": 2.4
+},
+{
+"id": "2-B_013",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Но-о, водяной! К острову!",
+"max": 2.6
+},
+{
+"id": "2-B_014",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Но-о, водяной! К острову!",
+"max": 2.6
+},
+{
+"id": "2-B_015",
+"who": "pelageya",
+"vid": "CH4syTkdz0MNPn6zayBd",
+"prompt": "[childlike voice] Но-о, водяной! К острову!",
+"max": 2.6
+},
+{
+"id": "2-B_016",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Но-о, водяной! К острову!",
+"max": 2.6
+},
+{
+"id": "2-B_017",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Расти, кувшинка, — неси нас!",
+"max": 2.6
+},
+{
+"id": "2-B_018",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Держитесь вместе!",
+"max": 1.32
+},
+{
+"id": "2-B_019",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Ах так?! Сом устал — кони не устанут!",
+"max": 3.42
+},
+{
+"id": "2-B_020",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Раковины на мелях! Сыграйте — конь замрёт!",
+"max": 1.92
+},
+{
+"id": "2-B_021",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Буль-буль… А ну-ка, угадайте, где я!",
+"max": 3.22
+},
+{
+"id": "2-B_022",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Пелагея, Совиный взор! Прошка — рогатку!",
+"max": 2.22
+},
+{
+"id": "2-B_023",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Ну, держитесь! Весь омут — на вас! Валом смою!",
+"max": 3.42
+},
+{
+"id": "2-B_024",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "В лад! На «бом» — бейте!",
+"max": 1.92
+},
+{
+"id": "2-B_025",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Ой-ой… вода ушла… буль… буль…",
+"max": 2.12
+},
+{
+"id": "2-B_026",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Вместе — разом!",
+"max": 1.12
+},
+{
+"id": "2-B_027",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Ладно уж… Не буду буянить, коль звонить будете.",
+"max": 3.32
+},
+{
+"id": "2-B_k01",
+"who": "koschei",
+"vid": "zmHRBgD4Hpk9Ib4Drfbp",
+"prompt": "[softly] Всё вместе да вместе… Посмотрим, надолго ли.",
+"max": 2.8
+}
+]
