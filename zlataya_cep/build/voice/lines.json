@@ -723,7 +723,7 @@
    "who": "kot",
    "text": "Там чудеса: там леший бродит,<br>Русалка на ветвях сидит…",
    "tts": "[warm, storytelling] Там чудеса: там леший бродит, Русалка на ветвях сидит…",
-   "max": 3.0
+   "max": 3
   },
   {
    "id": "intro_004",
@@ -1497,8 +1497,9 @@
    "text": "Веретено ожило! Это Веретенник!",
    "tts": "Веретено ожило! Это Веретенник!",
    "max": 3.2,
-   "url": "silero:baya",
-   "dur": 2.49
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.26
   },
   {
    "id": "1-5_015",
@@ -1507,8 +1508,9 @@
    "text": "Пряду-кручу — всех опутаю!",
    "tts": "Пряду-кручу, всех опутаю!",
    "max": 2.8,
-   "url": "silero:aidar",
-   "dur": 1.89
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.88
   },
   {
    "id": "1-5_016",
@@ -1517,8 +1519,9 @@
    "text": "Ловите его в паутинку!",
    "tts": "Ловите его в паутинку!",
    "max": 2.6,
-   "url": "silero:baya",
-   "dur": 1.6
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.82
   },
   {
    "id": "1-5_017",
@@ -1527,8 +1530,9 @@
    "text": "Ой-ой! Пряду-кручу — не дамся!",
    "tts": "Ой-ой! Пряду-кручу, не дамся!",
    "max": 3,
-   "url": "silero:aidar",
-   "dur": 2.37
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.21
   },
   {
    "id": "1-5_018",
@@ -1537,10 +1541,10 @@
    "text": "<i>(издалека)</i> Детки… веретено моё… троиться станет — глядите зорче!",
    "tts": "Детки... веретено моё... троиться станет, глядите зорче!",
    "max": 4,
-   "pitch": -2,
    "fx": "far",
-   "url": "silero:xenia",
-   "dur": 3.98
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.54
   },
   {
    "id": "1-B_001",
@@ -1549,9 +1553,9 @@
    "text": "Ай! Ну, это случайно, по оплошке.",
    "tts": "Ай! Ну, это случайно, по оплошке.",
    "max": 3,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075420_d05d3273-84be-44f1-82a9-c1aa72f4dca1.mp3",
-   "job": "d05d3273-84be-44f1-82a9-c1aa72f4dca1",
-   "dur": 3.13
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.45
   },
   {
    "id": "1-B_002",
@@ -1560,9 +1564,9 @@
    "text": "Ай! Нашли меня, ишь…",
    "tts": "Ай! Нашли меня, ишь…",
    "max": 3,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075420_3ceefa74-9ab2-4359-97fb-ff1f82e6d5db.mp3",
-   "job": "3ceefa74-9ab2-4359-97fb-ff1f82e6d5db",
-   "dur": 2.56
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.95
   },
   {
    "id": "1-B_003",
@@ -1571,9 +1575,9 @@
    "text": "А ну-ка, закружу, заверчу!",
    "tts": "А ну-ка, закружу, заверчу!",
    "max": 3.2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075420_1966b3eb-5d58-43b6-8cf7-22c7e88d6af2.mp3",
-   "job": "1966b3eb-5d58-43b6-8cf7-22c7e88d6af2",
-   "dur": 3.04
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.21
   },
   {
    "id": "1-B_004",
@@ -1582,8 +1586,9 @@
    "text": "Ай!",
    "tts": "Ай!",
    "max": 2.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_131755_b4e39015-e062-4ac9-8c3a-ebab72602db1.mp3",
-   "dur": 0.61
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 0.81
   },
   {
    "id": "1-B_005",
@@ -1592,9 +1597,9 @@
    "text": "Ой-ой! Макушка моя!",
    "tts": "Ой-ой! Макушка моя!",
    "max": 2.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075420_ba7bc09c-3432-4741-a7f6-c19d602494dc.mp3",
-   "job": "ba7bc09c-3432-4741-a7f6-c19d602494dc",
-   "dur": 2.38
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.73
   },
   {
    "id": "1-B_006",
@@ -1603,9 +1608,9 @@
    "text": "Ну всё, довольно, хватит!",
    "tts": "Ну всё, довольно, хватит!",
    "max": 2.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_082942_4408e1f3-ae7f-4958-b024-a8b102b8df4a.mp3",
-   "job": "4408e1f3-ae7f-4958-b024-a8b102b8df4a",
-   "dur": 2.39
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.56
   },
   {
    "id": "1-B_007",
@@ -1614,7 +1619,9 @@
    "text": "Ах так? Нате вам — четыре Лешего! Ищите!",
    "tts": "Ах так? Нате вам — четыре Лешего! Ищите!",
    "max": 5.52,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.94
   },
   {
    "id": "1-B_008",
@@ -1623,7 +1630,9 @@
    "text": "<i>(садится на пень)</i> Проиграл, что ж…<br>Теперь я вам должен — путь укажу.",
    "tts": "Проиграл, что ж… Теперь я вам должен — путь укажу.",
    "max": 11.32,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.32
   },
   {
    "id": "1-B_009",
@@ -1632,7 +1641,9 @@
    "text": "<i>(тихо)</i> А шапка-то, между прочим, помогает.",
    "tts": "[softly] А шапка-то, между прочим, помогает.",
    "max": 3.72,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.64
   },
   {
    "id": "1-B_010",
@@ -1641,9 +1652,9 @@
    "text": "Вкусно! Ох, объеденье!",
    "tts": "Вкусно! Ох, объеденье!",
    "max": 2.4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_082942_f299f92e-480d-4d93-aaf5-c40efd8f6769.mp3",
-   "job": "f299f92e-480d-4d93-aaf5-c40efd8f6769",
-   "dur": 2.55
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.9
   },
   {
    "id": "2-1_001",
@@ -8715,9 +8726,9 @@
    "text": "Ох, болото широкое — семь вёрст! Отнесите Цапле моё сватовство!",
    "tts": "Ох, болото широкое — семь вёрст! Отнесите Цапле моё сватовство!",
    "max": 4.2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143025_a6934eda-e1ee-4bae-a8cf-9246869c4f96.mp3",
-   "job": "a6934eda-e1ee-4bae-a8cf-9246869c4f96",
-   "dur": 4.89
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.94
   },
   {
    "id": "1-2_006",
@@ -8726,9 +8737,9 @@
    "text": "Сватается? А пусть сам ко мне придёт — по струночке, ножек не замочив!",
    "tts": "Сватается? А пусть сам ко мне придёт — по струночке, ножек не замочив!",
    "max": 4.4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143027_a9d14689-efc0-4618-9a58-39ed1a9fcf6f.mp3",
-   "job": "a9d14689-efc0-4618-9a58-39ed1a9fcf6f",
-   "dur": 4.41
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.7
   },
   {
    "id": "1-2_008",
@@ -8737,8 +8748,8 @@
    "text": "Где же струна? С моего бережка до первой кочки перекиньте!",
    "tts": "Где же струна? С моего бережка до первой кочки перекиньте!",
    "max": 3.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143025_7cdc5e40-e969-4d53-b6cd-1207325cc31b.mp3",
-   "job": "7cdc5e40-e969-4d53-b6cd-1207325cc31b",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
    "dur": 3.81
   },
   {
@@ -8748,9 +8759,9 @@
    "text": "Дальше пусто… Перекиньте струну — я подожду.",
    "tts": "Дальше пусто… Перекиньте струну — я подожду.",
    "max": 3.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143028_db86eb1b-50d3-4d0c-b72e-782a952984c7.mp3",
-   "job": "db86eb1b-50d3-4d0c-b72e-782a952984c7",
-   "dur": 3.64
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.84
   },
   {
    "id": "1-2_010",
@@ -8759,9 +8770,9 @@
    "text": "Ой-ой, перегрызли! Крылья выручили — назад!",
    "tts": "Ой-ой, перегрызли! Крылья выручили — назад!",
    "max": 3.4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143025_eb84b89b-2b1d-4236-8999-814ce62073c4.mp3",
-   "job": "eb84b89b-2b1d-4236-8999-814ce62073c4",
-   "dur": 3.77
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.74
   },
   {
    "id": "1-2_011",
@@ -8770,9 +8781,9 @@
    "text": "Ну, раз пешком пришёл — пойду за тебя, долговязый!",
    "tts": "[proudly] Ну, раз пешком пришёл — пойду за тебя, долговязый!",
    "max": 4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143026_0e9d63b6-90d9-4fa1-8cba-984206faed55.mp3",
-   "job": "0e9d63b6-90d9-4fa1-8cba-984206faed55",
-   "dur": 4
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.03
   },
   {
    "id": "1-2_012",
@@ -8781,9 +8792,9 @@
    "text": "Курлы-курлы! Спасибо, ребятки, — вот вам звено на счастье!",
    "tts": "Курлы-курлы! Спасибо, ребятки, — вот вам звено на счастье!",
    "max": 4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143026_89fc9d7b-3b1a-4cac-9a8a-cfd22385d35e.mp3",
-   "job": "89fc9d7b-3b1a-4cac-9a8a-cfd22385d35e",
-   "dur": 4
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.32
   },
   {
    "id": "1-2_013",
@@ -8792,9 +8803,9 @@
    "text": "Дзинь! Вот она, тропка — кочки сами всплывают!",
    "tts": "Дзинь! Вот она, тропка — кочки сами всплывают!",
    "max": 3.2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143026_f472c38a-cb78-45ff-9229-9c9816e1e983.mp3",
-   "job": "f472c38a-cb78-45ff-9229-9c9816e1e983",
-   "dur": 3.51
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.79
   },
   {
    "id": "1-2_014",
@@ -8803,9 +8814,9 @@
    "text": "Дзинь-дзинь! Сюда!",
    "tts": "Дзинь-дзинь! Сюда!",
    "max": 3.2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143026_e9c6a642-4edc-4f5b-9b29-dbfcc0f71771.mp3",
-   "job": "e9c6a642-4edc-4f5b-9b29-dbfcc0f71771",
-   "dur": 1.9
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.8
   },
   {
    "id": "1-2_015",
@@ -8814,9 +8825,9 @@
    "text": "Хи-хи-хи! Мой огонёчек — прямо в трясинку манит!",
    "tts": "[laughs] Хи-хи-хи! Мой огонёчек — прямо в трясинку манит!",
    "max": 3.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143025_808ec0c2-b62b-4a51-a65a-cf19d1aac80d.mp3",
-   "job": "808ec0c2-b62b-4a51-a65a-cf19d1aac80d",
-   "dur": 4.09
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.08
   },
   {
    "id": "1-2_016",
@@ -8825,9 +8836,9 @@
    "text": "Ква! Стрела Ивана-царевича! Ну, держитесь — запою, а кувшинки в лад запляшут!",
    "tts": "Ква! Стрела Ивана-царевича! Ну, держитесь — запою, а кувшинки в лад запляшут!",
    "max": 4.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_143026_cb0bdd2a-b1d4-4845-8a39-9839dabdb0a4.mp3",
-   "job": "cb0bdd2a-b1d4-4845-8a39-9839dabdb0a4",
-   "dur": 6.01
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 6.24
   },
   {
    "id": "1-2_017",
@@ -8836,9 +8847,9 @@
    "text": "Ква-а! Живая водица — моей кувшинке водица!",
    "tts": "Ква-а! Живая водица — моей кувшинке водица!",
    "max": 3.4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145113_66e378a0-73ad-472d-9c0c-36b00b418cdf.mp3",
-   "job": "66e378a0-73ad-472d-9c0c-36b00b418cdf",
-   "dur": 3.76
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.84
   },
   {
    "id": "1-2_018",
@@ -8847,9 +8858,9 @@
    "text": "Ква-а… Стрелу Ивана-царевича ветер на сухую ольху закинул. Без неё не поётся!",
    "tts": "Ква-а… Стрелу Ивана-царевича ветер на сухую ольху закинул. Без неё не поётся!",
    "max": 4.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145114_e40297f5-9762-447e-a25f-a0e08243bcf7.mp3",
-   "job": "e40297f5-9762-447e-a25f-a0e08243bcf7",
-   "dur": 6.12
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 6.36
   },
   {
    "id": "1-2_020",
@@ -8858,9 +8869,9 @@
    "text": "Сдаюсь, сдаюсь! Вот вам оброк — орешки за три года вперёд!",
    "tts": "Сдаюсь, сдаюсь! Вот вам оброк — орешки за три года вперёд!",
    "max": 4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145112_0ec2707f-4481-49fb-8095-bad1c68f05f3.mp3",
-   "job": "0ec2707f-4481-49fb-8095-bad1c68f05f3",
-   "dur": 4
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.34
   },
   {
    "id": "1-2_021",
@@ -8869,9 +8880,9 @@
    "text": "Кто тут наш омут струнами морщит? Обгони меня кругом омута — тогда пропущу! Встань на кружок — и побежали!",
    "tts": "Кто тут наш омут струнами морщит? Обгони меня кругом омута — тогда пропущу! Встань на кружок — и побежали!",
    "max": 5.2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145112_6b3bf2ff-04c4-4707-bd8a-862ba7b2f228.mp3",
-   "job": "6b3bf2ff-04c4-4707-bd8a-862ba7b2f228",
-   "dur": 6.4
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 6.74
   },
   {
    "id": "1-2_022",
@@ -8880,9 +8891,9 @@
    "text": "Раз… два… ТРИ!",
    "tts": "[excited] Раз… два… ТРИ!",
    "max": 2.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145112_e994a5e4-b8cb-442f-9188-84ac4a0b7fb2.mp3",
-   "job": "e994a5e4-b8cb-442f-9188-84ac4a0b7fb2",
-   "dur": 2.04
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.61
   },
   {
    "id": "1-2_023",
@@ -8891,9 +8902,9 @@
    "text": "Чур, без жульничества! Бежим на «ТРИ»!",
    "tts": "Чур, без жульничества! Бежим на «ТРИ»!",
    "max": 3.2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145843_81e5fe5e-9665-4ce7-b9cc-ee17089cd39a.mp3",
-   "job": "81e5fe5e-9665-4ce7-b9cc-ee17089cd39a",
-   "dur": 2.92
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.68
   },
   {
    "id": "1-2_024",
@@ -8902,9 +8913,9 @@
    "text": "Хи-хи! Опять я первый! Ногами меня не обогнать — головой думай!",
    "tts": "[laughs] Хи-хи! Опять я первый! Ногами меня не обогнать — головой думай!",
    "max": 3.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145112_93608cb8-e71f-47de-870d-ea1675500b16.mp3",
-   "job": "93608cb8-e71f-47de-870d-ea1675500b16",
-   "dur": 4.27
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.89
   },
   {
    "id": "1-2_025",
@@ -8913,9 +8924,9 @@
    "text": "Хи-хи! Я первый! Ну, ещё разок? Встань на кружок!",
    "tts": "[laughs] Хи-хи! Я первый! Ну, ещё разок? Встань на кружок!",
    "max": 3.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145113_9b7285ac-cf64-47c5-8958-7750ce03880b.mp3",
-   "job": "9b7285ac-cf64-47c5-8958-7750ce03880b",
-   "dur": 3.82
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.32
   },
   {
    "id": "1-2_026",
@@ -8924,9 +8935,9 @@
    "text": "Как?! Ты уже тут?! Ох, у вас, видать, братишка есть — как у того Балды…",
    "tts": "Как?! Ты уже тут?! Ох, у вас, видать, братишка есть — как у того Балды…",
    "max": 4.4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_145112_b5226c74-496f-4197-8f14-e90f6ee578b5.mp3",
-   "job": "b5226c74-496f-4197-8f14-e90f6ee578b5",
-   "dur": 4.56
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.8
   },
   {
    "id": "1-2_029",
@@ -8935,9 +8946,9 @@
    "text": "Паутинники на гати — ноги мне запутают! Прогоните их всех — тогда пойду.",
    "tts": "Паутинники на гати — ноги мне запутают! Прогоните их всех — тогда пойду.",
    "max": 4.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155049_75122508-db8c-4e2a-b614-b90a59752e8c.mp3",
-   "job": "75122508-db8c-4e2a-b614-b90a59752e8c",
-   "dur": 4.64
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.65
   },
   {
    "id": "1-2_030",
@@ -8946,9 +8957,9 @@
    "text": "Гать чиста! Иду-иду — свататься!",
    "tts": "Гать чиста! Иду-иду — свататься!",
    "max": 3.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20261001_155049_f1820f9d-f1e4-4605-908d-794b06640d85.mp3",
-   "job": "f1820f9d-f1e4-4605-908d-794b06640d85",
-   "dur": 3.19
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.31
   },
   {
    "id": "4-B_026",
@@ -12115,9 +12126,9 @@
    "text": "<i>(вздыхает)</i> Никто со мной не аукается… Все только блудят да боятся.",
    "max": 5.2,
    "tts": "Никто со мной не аукается... Все только блудят да боятся.",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 3.55
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.3
   },
   {
    "id": "1-4_a02",
@@ -12126,9 +12137,9 @@
    "text": "Поаукаемся? Я спою — а вы повторите!",
    "max": 3.1,
    "tts": "Поаукаемся? Я спою, а вы повторите!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 2.61
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.48
   },
   {
    "id": "1-4_a03",
@@ -12137,9 +12148,9 @@
    "text": "Слушай!",
    "max": 1.2,
    "tts": "Слушай!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 0.88
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.1
   },
   {
    "id": "1-4_a04",
@@ -12148,9 +12159,9 @@
    "text": "Теперь вы!",
    "max": 1.4,
    "tts": "Теперь вы!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 0.96
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.15
   },
   {
    "id": "1-4_a05",
@@ -12159,9 +12170,9 @@
    "text": "Хи-хи! Не так!",
    "max": 2.3,
    "tts": "Хи-хи! Не так!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 1.89
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.08
   },
   {
    "id": "1-4_a06",
@@ -12170,9 +12181,9 @@
    "text": "Ай да голоса!",
    "max": 1.9,
    "tts": "Ай да голоса!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 1.2
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.89
   },
   {
    "id": "1-4_a07",
@@ -12181,9 +12192,9 @@
    "text": "Длиннее спою — не собьётесь?",
    "max": 2.3,
    "tts": "Длиннее спою, не собьётесь?",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 2.01
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.61
   },
   {
    "id": "1-4_a08",
@@ -12192,9 +12203,9 @@
    "text": "Последняя — самая длинная!",
    "max": 1.9,
    "tts": "Последняя, самая длинная!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 1.94
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.54
   },
   {
    "id": "1-4_a09",
@@ -12203,9 +12214,9 @@
    "text": "Слушай ещё раз!",
    "max": 1.9,
    "tts": "Слушай ещё раз!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 1.24
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.82
   },
   {
    "id": "1-4_a10",
@@ -12214,9 +12225,9 @@
    "text": "Ой… ответили! Хи-хи! Ау-ау!",
    "max": 3.1,
    "tts": "Ой... ответили! Хи-хи! Ау-ау!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 3.38
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.72
   },
   {
    "id": "1-4_a11",
@@ -12225,9 +12236,9 @@
    "text": "Пойдёмте, я выход покажу. Кто аукнет — того не брошу!",
    "max": 4.4,
    "tts": "Пойдёмте, я выход покажу. Кто аукнет, того не брошу!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 3.67
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.72
   },
   {
    "id": "1-4_a12",
@@ -12236,9 +12247,9 @@
    "text": "Ау! Сюда!",
    "max": 1.4,
    "tts": "Ау! Сюда!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 1.41
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.7
   },
   {
    "id": "3-5_024",
@@ -12686,9 +12697,9 @@
    "text": "Шалаш из сена! Под ним ворон не углядит.",
    "max": 2.4,
    "tts": "Шалаш из сена! Под ним ворон не углядит.",
-   "pitch": 2,
-   "url": "silero:baya",
-   "dur": 2.52
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.16
   },
   {
    "id": "1-1_012",
@@ -12697,9 +12708,9 @@
    "text": "Ух! Ступа — на донце!",
    "max": 2,
    "tts": "Ух! Ступа, на донце!",
-   "pitch": -1,
-   "url": "silero:baya",
-   "dur": 1.75
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.08
   },
   {
    "id": "1-1_013",
@@ -12708,9 +12719,9 @@
    "text": "Яга добро не забыла — ступу прислала! Пыль над рощей — бегите!",
    "max": 3,
    "tts": "Яга добро не забыла, ступу прислала! Пыль над рощей, бегите!",
-   "pitch": 2,
-   "url": "silero:baya",
-   "dur": 3.76
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.6
   },
   {
    "id": "1-1_014",
@@ -12719,9 +12730,9 @@
    "text": "Ой! Вороны! Чёрные, Кощеевы!",
    "max": 2.2,
    "tts": "Ой! Вороны! Чёрные, Кощеевы!",
-   "pitch": 2,
-   "url": "silero:baya",
-   "dur": 2.37
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.16
   },
   {
    "id": "1-1_015",
@@ -12730,9 +12741,9 @@
    "text": "Карр! Кощей велел: клубочки отнять, в Дремучий лес не пускать!",
    "max": 2.8,
    "tts": "Карр! Кощей велел: клубочки отнять, в Дремучий лес не пускать!",
-   "pitch": -3,
-   "url": "silero:eugene",
-   "dur": 3.24
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.01
   },
   {
    "id": "1-1_016",
@@ -12741,9 +12752,9 @@
    "text": "Ха! Сперва догоните!",
    "max": 2,
    "tts": "Ха! Сперва догоните!",
-   "pitch": 1,
-   "url": "silero:xenia",
-   "dur": 1.56
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.99
   },
   {
    "id": "1-1_017",
@@ -12752,9 +12763,9 @@
    "text": "Ой, беда-беда! Медведь на теремок сел — брёвна раскатились!",
    "max": 3,
    "tts": "Ой, беда-беда! Медведь на теремок сел, брёвна раскатились!",
-   "pitch": 5,
-   "url": "silero:xenia",
-   "dur": 3.43
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.77
   },
   {
    "id": "1-1_018",
@@ -12763,9 +12774,9 @@
    "text": "Потап, это не ты, случаем?",
    "max": 2.2,
    "tts": "Потап, это не ты, случаем?",
-   "pitch": 1,
-   "url": "silero:xenia",
-   "dur": 1.8
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.18
   },
   {
    "id": "1-1_019",
@@ -12774,9 +12785,9 @@
    "text": "Я на теремки не сажусь! Я на пеньки сажусь.",
    "max": 2.6,
    "tts": "Я на теремки не сажусь! Я на пеньки сажусь.",
-   "pitch": -1,
-   "url": "silero:baya",
-   "dur": 2.61
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.95
   },
   {
    "id": "1-1_020",
@@ -12785,9 +12796,9 @@
    "text": "Помогите венцы сложить: брёвна — вдвоём к срубу!",
    "max": 2.8,
    "tts": "Помогите венцы сложить: брёвна, вдвоём к срубу!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 2.8
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.9
   },
   {
    "id": "1-1_021",
@@ -12796,9 +12807,9 @@
    "text": "Теперь конёк на крышу! Потап подкинет на леса — а совушка и с чурбаков долетит!",
    "max": 3.2,
    "tts": "Теперь конёк на крышу! Потап подкинет на леса, а совушка и с чурбаков долетит!",
-   "pitch": 1,
-   "url": "silero:kseniya",
-   "dur": 4.15
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.77
   },
   {
    "id": "1-1_022",
@@ -12807,9 +12818,9 @@
    "text": "Карр! Петушок! Улетаем к Кощею — ни с чем!",
    "max": 2.6,
    "tts": "Карр! Петушок! Улетаем к Кощею, ни с чем!",
-   "pitch": -3,
-   "url": "silero:eugene",
-   "dur": 2.61
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.57
   },
   {
    "id": "1-1_023",
@@ -12818,9 +12829,9 @@
    "text": "Теремок краше прежнего! Заходите в гости!",
    "max": 2.6,
    "tts": "Теремок краше прежнего! Заходите в гости!",
-   "pitch": 5,
-   "url": "silero:xenia",
-   "dur": 2.61
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.02
   },
   {
    "id": "1-1_024",
@@ -12829,9 +12840,9 @@
    "text": "Чур, я первый!",
    "max": 1.6,
    "tts": "Чур, я первый!",
-   "pitch": -1,
-   "url": "silero:baya",
-   "dur": 1.1
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.29
   },
   {
    "id": "1-1_025",
@@ -12840,9 +12851,9 @@
    "text": "Ой… Не пролезаю…",
    "max": 2,
    "tts": "Ой... Не пролезаю...",
-   "pitch": -1,
-   "url": "silero:baya",
-   "dur": 1.44
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.01
   },
   {
    "id": "1-1_026",
@@ -12851,9 +12862,9 @@
    "text": "Ха-ха! Медведю — почётное место на крылечке!",
    "max": 2.6,
    "tts": "Ха-ха! Медведю, почётное место на крылечке!",
-   "pitch": 2,
-   "url": "silero:xenia",
-   "dur": 2.61
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.04
   },
   {
    "id": "1-1_027",
@@ -12862,9 +12873,9 @@
    "text": "Новоселье! Все в хоровод — дзинь-дзинь!",
    "max": 2.6,
    "tts": "Новоселье! Все в хоровод, дзинь-дзинь!",
-   "pitch": 2,
-   "url": "silero:baya",
-   "dur": 2.71
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.88
   },
   {
    "id": "1-1_028",
@@ -12873,9 +12884,9 @@
    "text": "Ступа Яги в коряге застряла! Потап, подними — она подсобит.",
    "max": 3,
    "tts": "Ступа Яги в коряге застряла! Потап, подними, она подсобит.",
-   "pitch": 2,
-   "url": "silero:baya",
-   "dur": 3.72
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.53
   },
   {
    "id": "1-4_009",
@@ -12884,9 +12895,9 @@
    "text": "Глядите — кланяются! Вот вежливые ёлочки.",
    "max": 2.4,
    "tts": "Глядите, кланяются! Вот вежливые ёлочки.",
-   "pitch": 1,
-   "url": "silero:kseniya",
-   "dur": 2.61
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.38
   },
   {
    "id": "1-4_010",
@@ -12895,9 +12906,9 @@
    "text": "Ишь, аукаются! Ну и идите, идите…",
    "max": 2.4,
    "tts": "Ишь, аукаются! Ну и идите, идите...",
-   "pitch": -3,
-   "url": "silero:aidar",
-   "dur": 2.49
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.57
   },
   {
    "id": "1-4_011",
@@ -12906,9 +12917,9 @@
    "text": "Хе-хе! Опять тут?",
    "max": 2,
    "tts": "Хе-хе! Опять тут?",
-   "pitch": -3,
-   "url": "silero:aidar",
-   "dur": 1.75
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.87
   },
   {
    "id": "1-4_012",
@@ -12917,9 +12928,9 @@
    "text": "Кругом да около!",
    "max": 2,
    "tts": "Кругом да около!",
-   "pitch": -3,
-   "url": "silero:aidar",
-   "dur": 1.22
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.68
   },
   {
    "id": "1-4_013",
@@ -12928,9 +12939,9 @@
    "text": "Леший водит, не отпустит!",
    "max": 2,
    "tts": "Леший водит, не отпустит!",
-   "pitch": -3,
-   "url": "silero:aidar",
-   "dur": 1.89
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.23
   },
   {
    "id": "1-B_011",
@@ -12939,9 +12950,9 @@
    "text": "Опять заблудились? Ну-ка, где я?",
    "max": 3,
    "tts": "Опять заблудились? Ну-ка, где я?",
-   "pitch": -3,
-   "url": "silero:aidar",
-   "dur": 2.32
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.07
   },
   {
    "id": "4-1_031",
