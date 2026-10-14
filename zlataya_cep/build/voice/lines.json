@@ -707,7 +707,10 @@
    "who": "kot",
    "text": "У лукоморья дуб зелёный,<br>Златая цепь на дубе том…",
    "tts": "[warm, storytelling] У лукоморья дуб зелёный, Златая цепь на дубе том…",
-   "max": 3.8
+   "max": 3.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.84
   },
   {
    "id": "intro_002",
@@ -715,7 +718,10 @@
    "who": "kot",
    "text": "И днём и ночью кот учёный<br>Всё ходит по цепи кругом.",
    "tts": "[warm, storytelling] И днём и ночью кот учёный Всё ходит по цепи кругом.",
-   "max": 3.7
+   "max": 3.7,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.72
   },
   {
    "id": "intro_003",
@@ -723,7 +729,10 @@
    "who": "kot",
    "text": "Там чудеса: там леший бродит,<br>Русалка на ветвях сидит…",
    "tts": "[warm, storytelling] Там чудеса: там леший бродит, Русалка на ветвях сидит…",
-   "max": 3
+   "max": 3,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.76
   },
   {
    "id": "intro_004",
@@ -731,7 +740,10 @@
    "who": "kot",
    "text": "Что ни сказка — то звено:<br>Слово к слову — вот оно!",
    "tts": "[warm, storytelling] Что ни сказка — то звено: Слово к слову — вот оно!",
-   "max": 2.6
+   "max": 2.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.62
   },
   {
    "id": "intro_005",
@@ -739,7 +751,10 @@
    "who": "kuzma",
    "text": "Звено куют руками…",
    "tts": "[gruff, low] Звено куют руками…",
-   "max": 1.9
+   "max": 1.9,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.92
   },
   {
    "id": "intro_006",
@@ -747,7 +762,10 @@
    "who": "kot",
    "text": "…а держится оно — словами.",
    "tts": "[warm, storytelling] …а держится оно — словами.",
-   "max": 2.1
+   "max": 2.1,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.11
   },
   {
    "id": "intro_007",
@@ -755,7 +773,10 @@
    "who": "kot",
    "text": "Пока цела цепь золотая, —<br>Живут и сказки, не смолкая.",
    "tts": "[warm, storytelling] Пока цела цепь золотая, — Живут и сказки, не смолкая.",
-   "max": 3.4
+   "max": 3.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.67
   },
   {
    "id": "intro_008",
@@ -763,7 +784,10 @@
    "who": "kot",
    "text": "А в дремучем лесу, на сосне,<br>Светит штаб огоньком в окне.",
    "tts": "[warm, storytelling] А в дремучем лесу, на сосне, Светит штаб огоньком в окне.",
-   "max": 2.8
+   "max": 2.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.74
   },
   {
    "id": "intro_009",
@@ -771,7 +795,10 @@
    "who": "kot",
    "text": "Четверо друзей там живут —<br>Лесным патрулём их зовут.",
    "tts": "[warm, storytelling] Четверо друзей там живут — Лесным патрулём их зовут.",
-   "max": 2.6
+   "max": 2.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.8
   },
   {
    "id": "intro_010",
@@ -779,7 +806,10 @@
    "who": "proshka",
    "text": "Сказки — сказками, а техника — вещь!",
    "tts": "[proud, cheerful] Сказки — сказками, а техника — вещь!",
-   "max": 2.4
+   "max": 2.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.66
   },
   {
    "id": "intro_011",
@@ -787,7 +817,10 @@
    "who": "potap",
    "text": "Держу-держу. Хо-хо!",
    "tts": "[calm, warm] Держу-держу. Хо-хо!",
-   "max": 1.7
+   "max": 1.7,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.87
   },
   {
    "id": "intro_012",
@@ -795,7 +828,10 @@
    "who": "yosha",
    "text": "Сам вырастил! Я сам!",
    "tts": "[excited, stubborn] Сам вырастил! Я сам!",
-   "max": 1.6
+   "max": 1.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.94
   },
   {
    "id": "intro_013",
@@ -803,7 +839,10 @@
    "who": "pelageya",
    "text": "<i>(шёпотом)</i> В некотором царстве… нет, не так…",
    "tts": "[whispers, shy] В некотором царстве… нет, не так…",
-   "max": 2.6
+   "max": 2.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.61
   },
   {
    "id": "intro_014",
@@ -811,7 +850,10 @@
    "who": "tishka",
    "text": "Сказку! Кто мне сказку на ночь?",
    "tts": "[sleepy, pleading] Сказку! Кто мне сказку на ночь?",
-   "max": 2.1
+   "max": 2.1,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.54
   },
   {
    "id": "intro_015",
@@ -819,7 +861,10 @@
    "who": "proshka",
    "text": "Чур, я!",
    "tts": "[proud, cheerful] Чур, я!",
-   "max": 0.8
+   "max": 0.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 0.81
   },
   {
    "id": "intro_016",
@@ -827,7 +872,10 @@
    "who": "potap",
    "text": "Я!",
    "tts": "[calm, warm] Я!",
-   "max": 0.6
+   "max": 0.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 0.57
   },
   {
    "id": "intro_017",
@@ -835,7 +883,10 @@
    "who": "yosha",
    "text": "Нет, я сам!",
    "tts": "[excited, stubborn] Нет, я сам!",
-   "max": 0.8
+   "max": 0.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.34
   },
   {
    "id": "intro_018",
@@ -843,7 +894,10 @@
    "who": "pelageya",
    "text": "<i>(шёпотом)</i> …и я.",
    "tts": "[whispers, shy] …и я.",
-   "max": 1.1
+   "max": 1.1,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.1
   },
   {
    "id": "intro_019",
@@ -851,7 +905,10 @@
    "who": "kot",
    "text": "…а Кощей, как водится, — проиграл.<br>Тут и сказке конец!",
    "tts": "[warm, storytelling] …а Кощей, как водится, — проиграл. Тут и сказке конец!",
-   "max": 3.4
+   "max": 3.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.4
   },
   {
    "id": "intro_020",
@@ -859,7 +916,10 @@
    "who": "koschei",
    "text": "<i>(тихо)</i> Как водится… проиграл.",
    "tts": "[quiet, tired, cold] Как водится… проиграл.",
-   "max": 2.4
+   "max": 2.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.52
   },
   {
    "id": "intro_021",
@@ -867,7 +927,10 @@
    "who": "kot",
    "text": "А теперь — колыбельная…",
    "tts": "[warm, storytelling] А теперь — колыбельная…",
-   "max": 1.7
+   "max": 1.7,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.72
   },
   {
    "id": "intro_022",
@@ -875,7 +938,10 @@
    "who": "kot",
    "text": "♪ Баю-баю, за рекою,<br>Серый волк живёт… ♪",
    "tts": "[warm, storytelling] Баю-баю, за рекою, Серый волк живёт…",
-   "max": 3.9
+   "max": 3.9,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.91
   },
   {
    "id": "intro_023",
@@ -883,7 +949,10 @@
    "who": "koschei",
    "text": "Довольно.",
    "tts": "[quiet, tired, cold] Довольно.",
-   "max": 1.3
+   "max": 1.3,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 0.98
   },
   {
    "id": "intro_024",
@@ -891,7 +960,10 @@
    "who": "kolobok",
    "text": "Я от бабушки ушёл —<br>А от тучи — укачусь!",
    "tts": "[singing, fast, cheerful] Я от бабушки ушёл — А от тучи — укачусь!",
-   "max": 2.2
+   "max": 2.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.12
   },
   {
    "id": "intro_025",
@@ -899,7 +971,10 @@
    "who": "kot",
    "text": "Кто там?! Тебя сюда не звали!",
    "tts": "[warm, storytelling] Кто там?! Тебя сюда не звали!",
-   "max": 2.4
+   "max": 2.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.28
   },
   {
    "id": "intro_026",
@@ -907,7 +982,10 @@
    "who": "kot",
    "text": "Разлетелись звенья по свету —",
    "tts": "[warm, storytelling] Разлетелись звенья по свету —",
-   "max": 2.1
+   "max": 2.1,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.01
   },
   {
    "id": "intro_027",
@@ -915,7 +993,10 @@
    "who": "kot",
    "text": "В лес дремучий…",
    "tts": "[warm, storytelling] В лес дремучий…",
-   "max": 1.6
+   "max": 1.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.34
   },
   {
    "id": "intro_028",
@@ -923,7 +1004,10 @@
    "who": "kot",
    "text": "…в Китеж подводный…",
    "tts": "[warm, storytelling] …в Китеж подводный…",
-   "max": 1.6
+   "max": 1.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.48
   },
   {
    "id": "intro_029",
@@ -931,7 +1015,10 @@
    "who": "kot",
    "text": "…за облака…",
    "tts": "[warm, storytelling] …за облака…",
-   "max": 1.6
+   "max": 1.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.08
   },
   {
    "id": "intro_030",
@@ -939,7 +1026,10 @@
    "who": "kot",
    "text": "…за огненную реку…",
    "tts": "[warm, storytelling] …за огненную реку…",
-   "max": 1.7
+   "max": 1.7,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.63
   },
   {
    "id": "intro_031",
@@ -947,7 +1037,10 @@
    "who": "kot",
    "text": "…на остров Буян.",
    "tts": "[warm, storytelling] …на остров Буян.",
-   "max": 1.8
+   "max": 1.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.46
   },
   {
    "id": "intro_032",
@@ -955,7 +1048,10 @@
    "who": "kot",
    "text": "Без цепи сказки забываются —<br>Слово за словом рассыпаются.",
    "tts": "[warm, storytelling] Без цепи сказки забываются — Слово за словом рассыпаются.",
-   "max": 3.6
+   "max": 3.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.81
   },
   {
    "id": "intro_033",
@@ -963,7 +1059,10 @@
    "who": "pelageya",
    "text": "<i>(шёпотом)</i> Ой… летит… к нам!",
    "tts": "[whispers, shy] Ой… летит… к нам!",
-   "max": 1.9
+   "max": 1.9,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.08
   },
   {
    "id": "intro_034",
@@ -971,7 +1070,10 @@
    "who": "kot",
    "text": "Кто соберёт звено к звену?",
    "tts": "[warm, storytelling] Кто соберёт звено к звену?",
-   "max": 1.9
+   "max": 1.9,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.92
   },
   {
    "id": "intro_035",
@@ -979,7 +1081,10 @@
    "who": "kot",
    "text": "Кто сказку вспомнит — не одну?",
    "tts": "[warm, storytelling] Кто сказку вспомнит — не одну?",
-   "max": 1.9
+   "max": 1.9,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.94
   },
   {
    "id": "intro_036",
@@ -987,7 +1092,10 @@
    "who": "kot",
    "text": "Это присказка, не сказка.<br>Сказка — будет впереди!",
    "tts": "[warm, storytelling] Это присказка, не сказка. Сказка — будет впереди!",
-   "max": 3.6
+   "max": 3.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.62
   },
   {
    "id": "g_001",
@@ -1018,9 +1126,9 @@
    "text": "Ну? Сам себя мусор не уберёт!<br>Всё — в кучу у забора, вперёд!",
    "tts": "Ну? Сам себя мусор не уберёт! Всё — в кучу у забора, вперёд!",
    "max": 3.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075222_85e6c54a-389b-433c-86f5-3a4d65f41651.mp3",
-   "job": "85e6c54a-389b-433c-86f5-3a4d65f41651",
-   "dur": 4.22
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.24
   },
   {
    "id": "1-1_002",
@@ -1029,7 +1137,9 @@
    "text": "Кикиморки весь двор мне замусорили!<br>Уберёте — клубок подарю.",
    "tts": "Кикиморки весь двор мне замусорили! Уберёте — клубок подарю.",
    "max": 3.52,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.1
   },
   {
    "id": "1-1_003",
@@ -1038,9 +1148,9 @@
    "text": "Клубок ниток? Да я сам верёвку сплету — и не такое могу!",
    "tts": "Клубок ниток? Да я сам верёвку сплету — и не такое могу!",
    "max": 2.42,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075222_e2e15927-b0f2-4dcd-bd46-0cf6112472a8.mp3",
-   "job": "e2e15927-b0f2-4dcd-bd46-0cf6112472a8",
-   "dur": 3.58
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.55
   },
   {
    "id": "1-1_004",
@@ -1049,9 +1159,9 @@
    "text": "Кикиморки! Защищайтесь, не зевайте!",
    "tts": "Кикиморки! Защищайтесь, не зевайте!",
    "max": 3.62,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075222_09183fd9-be9d-4f2d-82f6-8e7575bb83c2.mp3",
-   "job": "09183fd9-be9d-4f2d-82f6-8e7575bb83c2",
-   "dur": 3.51
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.62
   },
   {
    "id": "1-1_005",
@@ -1060,7 +1170,9 @@
    "text": "Вот это двор — любо-дорого глядеть!<br>Каждому по клубку, помощнички!",
    "tts": "Вот это двор — любо-дорого глядеть! Каждому по клубку, помощнички!",
    "max": 2.82,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.82
   },
   {
    "id": "1-1_006",
@@ -1069,9 +1181,9 @@
    "text": "<i>(Потапу, на ухо)</i> В лесу у Лешего шапку наизнанку наденьте —<br>А не то заблудитесь, не отвертитесь.",
    "tts": "[whispers] В лесу у Лешего шапку наизнанку наденьте — а не то заблудитесь, не отвертитесь.",
    "max": 2.12,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_080359_b8aedd57-ab6b-4b13-917a-aff1ffa877a6.mp3",
-   "job": "b8aedd57-ab6b-4b13-917a-aff1ffa877a6",
-   "dur": 4.64
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.04
   },
   {
    "id": "1-1_007",
@@ -1080,9 +1192,9 @@
    "text": "<i>(Пелагее)</i> У Лешего в лесу — шапку наизнанку, душенька…",
    "tts": "У Лешего в лесу — шапку наизнанку, душенька…",
    "max": 1.92,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075223_0064c1bd-02cd-4a64-ad36-6c24c574c6d1.mp3",
-   "job": "0064c1bd-02cd-4a64-ad36-6c24c574c6d1",
-   "dur": 3.22
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.07
   },
   {
    "id": "1-1_008",
@@ -1091,9 +1203,9 @@
    "text": "<i>(Йоше)</i> …а не то заплутаете.",
    "tts": "…а не то заплутаете.",
    "max": 1.62,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075222_4bf964cb-2c66-4d91-865b-7b912092bd5e.mp3",
-   "job": "4bf964cb-2c66-4d91-865b-7b912092bd5e",
-   "dur": 1.62
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.63
   },
   {
    "id": "1-1_009",
@@ -1102,9 +1214,9 @@
    "text": "Помогли старухе — старуха добро не забудет.",
    "tts": "Помогли старухе — старуха добро не забудет.",
    "max": 3.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075223_f1df50e5-0e10-4883-803d-315bfcb28a43.mp3",
-   "job": "f1df50e5-0e10-4883-803d-315bfcb28a43",
-   "dur": 3.52
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.36
   },
   {
    "id": "1-1_010",
@@ -1113,7 +1225,9 @@
    "text": "Скажите избушке волшебные слова — как в сказке!",
    "tts": "Скажите избушке волшебные слова — как в сказке!",
    "max": 3.6,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.67
   },
   {
    "id": "1-2_001",
@@ -1122,9 +1236,9 @@
    "text": "Как Илья Муромец говаривал… э-э… кто упал — тот… мокрый.",
    "tts": "Как Илья Муромец говаривал… э-э… кто упал — тот… мокрый.",
    "max": 4.2,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075254_c1322138-8b8c-48ef-a423-03a597747f80.mp3",
-   "job": "c1322138-8b8c-48ef-a423-03a597747f80",
-   "dur": 4.71
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.22
   },
   {
    "id": "1-2_002",
@@ -1133,9 +1247,9 @@
    "text": "Я бы сам дошёл — не мал!",
    "tts": "Я бы сам дошёл — не мал!",
    "max": 3,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075254_8111f6d3-d409-4b56-8314-6a43b0335ab1.mp3",
-   "job": "8111f6d3-d409-4b56-8314-6a43b0335ab1",
-   "dur": 2.24
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.35
   },
   {
    "id": "1-2_003",
@@ -1144,9 +1258,9 @@
    "text": "Потап, ты не обернулся ни разу. Спасибо, друг.",
    "tts": "Потап, ты не обернулся ни разу. Спасибо, друг.",
    "max": 3.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075254_42ee2af9-0188-44d4-903a-60473a22eb17.mp3",
-   "job": "42ee2af9-0188-44d4-903a-60473a22eb17",
-   "dur": 3.69
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.79
   },
   {
    "id": "1-2_004",
@@ -1155,9 +1269,9 @@
    "text": "Чёрное болото! Пешком не пройти — лишь по струне. Дзинь-дзинь!",
    "tts": "Чёрное болото! Пешком не пройти — лишь по струне. Дзинь-дзинь!",
    "max": 3.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075254_ee52e3f6-c7b1-471e-8479-f63514c980b9.mp3",
-   "job": "ee52e3f6-c7b1-471e-8479-f63514c980b9",
-   "dur": 4.43
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.8
   },
   {
    "id": "1-3_001",
@@ -1166,9 +1280,9 @@
    "text": "Поняла я, поняла!",
    "tts": "Поняла я, поняла!",
    "max": 3,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075254_0de09049-c56e-4dfc-8e3d-1fd290ecccd5.mp3",
-   "job": "0de09049-c56e-4dfc-8e3d-1fd290ecccd5",
-   "dur": 1.87
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.8
   },
   {
    "id": "1-3_002",
@@ -1177,9 +1291,9 @@
    "text": "Речка! Мост старенький — под ноги глядите. Дзинь!",
    "tts": "Речка! Мост старенький — под ноги глядите. Дзинь!",
    "max": 3.6,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075254_1811b74c-9c2d-483b-a4d2-fdc9bf88bbf5.mp3",
-   "job": "1811b74c-9c2d-483b-a4d2-fdc9bf88bbf5",
-   "dur": 3.75
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.93
   },
   {
    "id": "1-3_003",
@@ -1188,9 +1302,9 @@
    "text": "Ой, лиса! Бегите — да не спотыкайтесь!",
    "tts": "Ой, лиса! Бегите — да не спотыкайтесь!",
    "max": 3.4,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075254_ba94d62b-13fc-4bcc-9b85-6bc0ab798e2d.mp3",
-   "job": "ba94d62b-13fc-4bcc-9b85-6bc0ab798e2d",
-   "dur": 3.41
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.5
   },
   {
    "id": "1-3_004",
@@ -1199,7 +1313,9 @@
    "text": "Волчья чаща! Красный знак — в сторону прыг,<br>Жёлтый — щит в такт, а потом бей!",
    "tts": "Волчья чаща! Красный знак — в сторону прыг, Жёлтый — щит в такт, а потом бей!",
    "max": 4,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 6.31
   },
   {
    "id": "1-3_005",
@@ -1208,7 +1324,9 @@
    "text": "Летим! Ворон облетай, коршуна — щитом,<br>А вожака — щитом вдвоём!",
    "tts": "Летим! Ворон облетай, коршуна — щитом, А вожака — щитом вдвоём!",
    "max": 4,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.64
   },
   {
    "id": "1-3_006",
@@ -1217,9 +1335,9 @@
    "text": "Ну, ешь. В сказке лиса меня всегда съедает — таков уж сказ.",
    "tts": "Ну, ешь. В сказке лиса меня всегда съедает — таков уж сказ.",
    "max": 3.32,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075325_bbd363c4-01c7-4854-b278-1d9b311dd808.mp3",
-   "job": "bbd363c4-01c7-4854-b278-1d9b311dd808",
-   "dur": 4.33
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.72
   },
   {
    "id": "1-3_007",
@@ -1228,7 +1346,9 @@
    "text": "<i>(фыркает)</i> Не стану есть — ты из теста.<br>Ни винтика — неинтересно!",
    "tts": "[scoffs] Не стану есть — ты из теста. Ни винтика — неинтересно!",
    "max": 4.32,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.34
   },
   {
    "id": "1-3_008",
@@ -1237,9 +1357,9 @@
    "text": "А так можно было, правда?",
    "tts": "А так можно было, правда?",
    "max": 2.82,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075325_f9f67f67-f7dc-4dff-9465-d1048d478d5a.mp3",
-   "job": "f9f67f67-f7dc-4dff-9465-d1048d478d5a",
-   "dur": 1.85
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.37
   },
   {
    "id": "1-3_009",
@@ -1248,9 +1368,9 @@
    "text": "Сам катишься? Значит, пружинка внутри.<br>Ладно — волшебная будет, смотри.",
    "tts": "Сам катишься? Значит, пружинка внутри. Ладно — волшебная будет, смотри.",
    "max": 4.62,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_080359_3063950b-5877-4620-a3dc-b70418992d49.mp3",
-   "job": "3063950b-5877-4620-a3dc-b70418992d49",
-   "dur": 4.85
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.63
   },
   {
    "id": "1-3_010",
@@ -1259,9 +1379,9 @@
    "text": "Всем теперь расскажу, всем подряд:<br>Лиса добра попалась — вот так лад!",
    "tts": "Всем теперь расскажу, всем подряд: Лиса добра попалась — вот так лад!",
    "max": 6.92,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075325_2e103bc3-227e-4e11-b350-973fe2f84721.mp3",
-   "job": "2e103bc3-227e-4e11-b350-973fe2f84721",
-   "dur": 5.9
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 6.21
   },
   {
    "id": "1-3_011",
@@ -1270,8 +1390,9 @@
    "text": "Я от бабушки ушёл, я от дедушки ушёл…",
    "tts": "[sings] Я от бабушки ушёл, я от дедушки ушёл…",
    "max": 2.32,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_165012_09ccbf1c-34e1-4cd3-9330-cfb2ab07f6a3.mp3",
-   "dur": 3.6
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.91
   },
   {
    "id": "1-3_012",
@@ -1280,7 +1401,9 @@
    "text": "Колобок поёт и катится —<br>бегите под музыку, догоняйте!",
    "tts": "Колобок поёт и катится — бегите под музыку, догоняйте!",
    "max": 2.42,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.12
   },
   {
    "id": "1-4_001",
@@ -1289,9 +1412,9 @@
    "text": "<i>(бросает свою шапку обратно на пень)</i> Лес — просто деревья, и всё тут.<br>Деревья не ходят — они растут.",
    "tts": "Лес — просто деревья, и всё тут. Деревья не ходят — они растут.",
    "max": 3.32,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075325_ec0059e6-fa06-4319-96c5-7d660fdeca52.mp3",
-   "job": "ec0059e6-fa06-4319-96c5-7d660fdeca52",
-   "dur": 4.23
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.1
   },
   {
    "id": "1-4_002",
@@ -1300,9 +1423,9 @@
    "text": "Ой… Прошка?! Где ты?!",
    "tts": "Ой… Прошка?! Где ты?!",
    "max": 3.32,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075325_6da88e36-82fa-424e-862b-21cd29cd1cf7.mp3",
-   "job": "6da88e36-82fa-424e-862b-21cd29cd1cf7",
-   "dur": 2.48
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.97
   },
   {
    "id": "1-4_003",
@@ -1311,8 +1434,8 @@
    "text": "<i>(скрипучий смех)</i> А шапочку-то не надел, умелец-удалец!",
    "tts": "А шапочку-то не надел, умелец-удалец!",
    "max": 3.12,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075325_ced40958-2856-4b9f-938a-4840e869eb28.mp3",
-   "job": "ced40958-2856-4b9f-938a-4840e869eb28",
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
    "dur": 3.21
   },
   {
@@ -1322,9 +1445,9 @@
    "text": "Это всё из-за тебя, Прошка!",
    "tts": "Это всё из-за тебя, Прошка!",
    "max": 2.12,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075325_be17b484-4804-4dd9-b690-1ed73560d703.mp3",
-   "job": "be17b484-4804-4dd9-b690-1ed73560d703",
-   "dur": 2.12
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.11
   },
   {
    "id": "1-4_005",
@@ -1333,7 +1456,9 @@
    "text": "Я вас видела. Всё время.",
    "tts": "Я вас видела. Всё время.",
    "max": 3.4,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.4
   },
   {
    "id": "1-4_006",
@@ -1342,9 +1467,9 @@
    "text": "Эй! Так нечестно, так не водится!",
    "tts": "Эй! Так нечестно, так не водится!",
    "max": 2.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075353_c6d15d84-e0cc-48f2-99a0-32386bbe6e79.mp3",
-   "job": "c6d15d84-e0cc-48f2-99a0-32386bbe6e79",
-   "dur": 2.88
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.9
   },
   {
    "id": "1-4_007",
@@ -1353,9 +1478,9 @@
    "text": "Опять заблудились? Водит вас мой лес — по кругу да по кругу!",
    "max": 3,
    "tts": "Опять заблудились? Водит вас мой лес, по кругу да по кругу!",
-   "pitch": -3,
-   "url": "silero:aidar",
-   "dur": 3.12
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.87
   },
   {
    "id": "1-5_001",
@@ -1364,9 +1489,9 @@
    "text": "Пряди… пряди?.. Что за диво…",
    "tts": "Пряди… пряди?.. Что за диво…",
    "max": 3,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075353_c88a9f33-7f2c-48a8-85ee-7cfcf3110b2d.mp3",
-   "job": "c88a9f33-7f2c-48a8-85ee-7cfcf3110b2d",
-   "dur": 3.01
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.36
   },
   {
    "id": "1-5_002",
@@ -1375,9 +1500,9 @@
    "text": "<i>(замечает вас)</i> Пряди. Пряди! Прочь от прялки!",
    "tts": "Пряди. Пряди! Прочь от прялки!",
    "max": 3,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075353_f0f33c0f-e6a7-451a-8213-eba42381389d.mp3",
-   "job": "f0f33c0f-e6a7-451a-8213-eba42381389d",
-   "dur": 3
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.02
   },
   {
    "id": "1-5_003",
@@ -1386,9 +1511,9 @@
    "text": "Пряди. Пряди. День и ночь.",
    "tts": "Пряди. Пряди. День и ночь.",
    "max": 3,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075353_10654325-e736-4947-a7d9-86afc7a08bbf.mp3",
-   "job": "10654325-e736-4947-a7d9-86afc7a08bbf",
-   "dur": 2.99
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.16
   },
   {
    "id": "1-5_004",
@@ -1397,9 +1522,9 @@
    "text": "Как Илья Муромец… на батуте, ей-ей!",
    "tts": "Как Илья Муромец… на батуте, ей-ей!",
    "max": 2.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075353_bdbe2cc3-9252-46c2-90d0-d078b0a84096.mp3",
-   "job": "bdbe2cc3-9252-46c2-90d0-d078b0a84096",
-   "dur": 3
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.8
   },
   {
    "id": "1-5_005",
@@ -1408,8 +1533,9 @@
    "text": "Уи-и-и!",
    "tts": "Уи-и-и!",
    "max": 2.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_131706_994781f5-ec55-4c9a-92a7-7ac2b1fa0174.mp3",
-   "dur": 0.97
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 0.93
   },
   {
    "id": "1-5_006",
@@ -1418,8 +1544,9 @@
    "text": "Уи-и-и!",
    "tts": "Уи-и-и!",
    "max": 2.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_131754_41a42cb0-119c-4b1a-a15c-09c4c8fb25c1.mp3",
-   "dur": 1.02
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.16
   },
   {
    "id": "1-5_007",
@@ -1428,8 +1555,9 @@
    "text": "Уи-и-и!",
    "tts": "Уи-и-и!",
    "max": 2.8,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260929_131753_32001cfd-30cb-4ae9-a234-789220f58a27.mp3",
-   "dur": 0.99
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 0.98
   },
   {
    "id": "1-5_008",
@@ -1438,7 +1566,9 @@
    "text": "<i>(своим голосом)</i> Ох… Ключ этот всю ночь<br>прясть заставлял — невмочь!",
    "tts": "[annoyed] Ох… Ключ этот всю ночь прясть заставлял — невмочь!",
    "max": 5.72,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.2
   },
   {
    "id": "1-5_009",
@@ -1447,7 +1577,9 @@
    "text": "Спасибо, что освободили!<br>Кикимора добро помнит. Должна буду!",
    "tts": "Спасибо, что освободили! Кикимора добро помнит. Должна буду!",
    "max": 5.72,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.76
   },
   {
    "id": "1-5_010",
@@ -1456,9 +1588,9 @@
    "text": "<i>(сухим, деревянным голосом)</i> Пряди. Пряди. Не спи.",
    "tts": "Пряди. Пряди. Не спи.",
    "max": 3.92,
-   "url": "https://d8j0ntlcm91z4.cloudfront.net/user_3HB3UYHBuNEQAnZl3Z5fV9HxC5I/hf_20260930_075353_a0c11b95-61aa-40db-9b7d-f493ba8f0785.mp3",
-   "job": "a0c11b95-61aa-40db-9b7d-f493ba8f0785",
-   "dur": 2.91
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.14
   },
   {
    "id": "1-5_011",
@@ -1467,7 +1599,9 @@
    "text": "Две струны крест-накрест — паутинка.<br>Прыгайте — подкинет до крыши!",
    "tts": "Две струны крест-накрест — паутинка. Прыгайте — подкинет до крыши!",
    "max": 4.12,
-   "revoice": "analiz_proposals"
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.68
   },
   {
    "id": "1-5_012",
@@ -1476,9 +1610,9 @@
    "text": "<i>(во сне)</i> Пряди… Стой! Веретено, стой!",
    "tts": "Пряди... Стой! Веретено, стой!",
    "max": 3,
-   "pitch": -2,
-   "url": "silero:xenia",
-   "dur": 2.2
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3
   },
   {
    "id": "1-5_013",
@@ -1487,8 +1621,9 @@
    "text": "Веретено удрало на повить! Скорей за ним!",
    "tts": "Веретено удрало на повить! Скорей за ним!",
    "max": 3.4,
-   "url": "silero:baya",
-   "dur": 2.76
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.24
   },
   {
    "id": "1-5_014",
