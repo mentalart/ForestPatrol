@@ -1,0 +1,527 @@
+[
+{
+"id": "2-1_001",
+"who": "sadko",
+"vid": "xsFdwitIR95S95Lsd7zG",
+"prompt": "Без струны нет песни. Без песни — и Китеж молчит.",
+"max": 2.62
+},
+{
+"id": "2-1_002",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Йоша! Мёртвой водой полей — и струна срастётся!",
+"max": 2.32
+},
+{
+"id": "2-1_003",
+"who": "sadko",
+"vid": "xsFdwitIR95S95Lsd7zG",
+"prompt": "Ох, запела! Спасибо, малые, спасибо!",
+"max": 3.22
+},
+{
+"id": "2-1_004",
+"who": "sadko",
+"vid": "xsFdwitIR95S95Lsd7zG",
+"prompt": "Играйте на ходу. Вода любит, когда с нею речь ведут.",
+"max": 3.52
+},
+{
+"id": "2-1_005",
+"who": "sadko",
+"vid": "xsFdwitIR95S95Lsd7zG",
+"prompt": "Лишь в Китеже не молчите.",
+"max": 2.42
+},
+{
+"id": "2-1_006",
+"who": "sadko",
+"vid": "xsFdwitIR95S95Lsd7zG",
+"prompt": "Только в Китеже не молчите: кто молчит — того вода унесёт.",
+"max": 3.32
+},
+{
+"id": "2-1_007",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Тут нацарапано: «Не… про… меня». Кто ж так обиделся?",
+"max": 2.72
+},
+{
+"id": "2-1_008",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Зонт из лопуха — от воды, от дождя!",
+"max": 2.82
+},
+{
+"id": "2-1_009",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Она сама себя — вот так лихо!",
+"max": 3
+},
+{
+"id": "2-1_010",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Китеж! Под водою спит он. Дзинь — за мной!",
+"max": 3.6
+},
+{
+"id": "2-2_001",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Тяжёлый! Как… э-э… как положено.",
+"max": 3
+},
+{
+"id": "2-2_002",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Как говаривал Илья…",
+"max": 2.72
+},
+{
+"id": "2-2_003",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Илья… какой Илья?",
+"max": 2.62
+},
+{
+"id": "2-2_004",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Забыл. Совсем забыл, как сказка эта начинается…",
+"max": 2.72
+},
+{
+"id": "2-2_005",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Рыба-кит! Тише — спит он. Вода тут одна на всех!",
+"max": 3.8
+},
+{
+"id": "2-2_006",
+"who": "pelageya",
+"vid": "CH4syTkdz0MNPn6zayBd",
+"prompt": "[childlike voice] Погоди, я пройду… Всё, давай, твой черёд!",
+"max": 3.4
+},
+{
+"id": "2-3_001",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Срослись, срослись!",
+"max": 2.6
+},
+{
+"id": "2-3_002",
+"who": "rybka",
+"vid": "vpn4DgG9Eq3rIerCqOoa",
+"prompt": "Вытащите меня — звено вам отдам!",
+"max": 3.82
+},
+{
+"id": "2-3_003",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Видите камни со знаком клубка? Встаньте у них и бросьте клубки!",
+"max": 3.52
+},
+{
+"id": "2-3_004",
+"who": "rybka",
+"vid": "vpn4DgG9Eq3rIerCqOoa",
+"prompt": "Спасибо! Звено — ваше, берите.",
+"max": 3.02
+},
+{
+"id": "2-3_005",
+"who": "rybka",
+"vid": "vpn4DgG9Eq3rIerCqOoa",
+"prompt": "А невод из ваших ниток — крепче всех, вот правда.",
+"max": 2.92
+},
+{
+"id": "2-3_006",
+"who": "starik",
+"vid": "9AjtU6o19uipv7QL8dLL",
+"prompt": "Ну вот. И чинить не надо, старуха не заругает.",
+"max": 3.12
+},
+{
+"id": "2-3_007",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Второе дело: из невода мостик через течение сделайте!",
+"max": 3.6
+},
+{
+"id": "2-3_008",
+"who": "starik",
+"vid": "9AjtU6o19uipv7QL8dLL",
+"prompt": "Держите, ребятки, — закреплю, не сомневайтесь!",
+"max": 3.2
+},
+{
+"id": "2-3_009",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Третье — золотая рыбка! Пред ней четыре кольца: Встаньте по порядку — 1, 2, 3, 4 — все вчетвером, до конца!",
+"max": 4.4
+},
+{
+"id": "2-4_001",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Спасибо, Йоша, дружок!",
+"max": 2.8
+},
+{
+"id": "2-4_002",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Спасибо, Прошка, выручил!",
+"max": 3
+},
+{
+"id": "2-4_003",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Прошка! Позвони в колокол! Пожалуйста!",
+"max": 4.4
+},
+{
+"id": "2-4_004",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Держимся вместе, не разлучаемся!",
+"max": 2.12
+},
+{
+"id": "2-4_005",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Внутри кита — целый мир! Пусть кит чихнёт — тогда и вылетим вперёд!",
+"max": 2.12
+},
+{
+"id": "2-4_006",
+"who": "pelageya",
+"vid": "CH4syTkdz0MNPn6zayBd",
+"prompt": "[childlike voice] Ой!",
+"max": 1.52
+},
+{
+"id": "2-4_007",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Пелагея! Я иду, держись!",
+"max": 2.02
+},
+{
+"id": "2-4_008",
+"who": "pelageya",
+"vid": "CH4syTkdz0MNPn6zayBd",
+"prompt": "[childlike voice] Спасибо, Йоша.",
+"max": 3
+},
+{
+"id": "2-4_009",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Я не один справился — я о помощи попросил.",
+"max": 4.52
+},
+{
+"id": "2-5_001",
+"who": "proshka",
+"vid": "YjYZWA1JjVPJcnWmCm0r",
+"prompt": "[childlike voice] Да что ж тут трудного — крикнуть, и дело с концом?",
+"max": 2.62
+},
+{
+"id": "2-5_002",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Водяной проснулся! Берегись!",
+"max": 4.72
+},
+{
+"id": "2-5_003",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Колокола молчат. Разбудим Китеж! Дзинь-дзинь!",
+"max": 3.8
+},
+{
+"id": "2-B_001",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Буль-буль! Прилив, прилив!",
+"max": 2.8
+},
+{
+"id": "2-B_002",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Ам! Вкусные словечки, ням!",
+"max": 2.6
+},
+{
+"id": "2-B_003",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "А вот я вас — воронкой закручу!",
+"max": 3.4
+},
+{
+"id": "2-B_004",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Весь омут — на вас, держитесь!",
+"max": 3.4
+},
+{
+"id": "2-B_005",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Буль-буль-буль! Кто там звенел, кто спать мешал?",
+"max": 2.52
+},
+{
+"id": "2-B_006",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] [whispers] Тише. Пусть спит, не будите.",
+"max": 3.12
+},
+{
+"id": "2-B_007",
+"who": "vod",
+"vid": "ILW5owaWYUzP21S5Se0k",
+"prompt": "Ещё разок — весь омут на вас!",
+"max": 3
+},
+{
+"id": "2-3_010",
+"who": "rybka",
+"vid": "vpn4DgG9Eq3rIerCqOoa",
+"prompt": "Все вчетвером на кольца! Ещё 1, ещё!",
+"max": 3.6
+},
+{
+"id": "2-3_011",
+"who": "rybka",
+"vid": "vpn4DgG9Eq3rIerCqOoa",
+"prompt": "Все вчетвером на кольца! Ещё 2, ещё!",
+"max": 3.6
+},
+{
+"id": "2-3_012",
+"who": "rybka",
+"vid": "vpn4DgG9Eq3rIerCqOoa",
+"prompt": "Все вчетвером на кольца! Ещё 3, ещё!",
+"max": 3.6
+},
+{
+"id": "2-3_013",
+"who": "rybka",
+"vid": "vpn4DgG9Eq3rIerCqOoa",
+"prompt": "Все вчетвером на кольца! Ещё 4, ещё!",
+"max": 3.6
+},
+{
+"id": "2-1_011",
+"who": "sadko",
+"vid": "xsFdwitIR95S95Lsd7zG",
+"prompt": "Только в Китеже — не молчите.",
+"max": 2.42
+},
+{
+"id": "2-1_012",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] [laughs] Ха-ха-ха! Вот потеха!",
+"max": 1.72
+},
+{
+"id": "2-1_013",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Тяжёлый я — меня вода не подымет. Держу!",
+"max": 3.2
+},
+{
+"id": "2-1_014",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Якорь… как пёрышко! Ну, почти.",
+"max": 3
+},
+{
+"id": "2-1_015",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Сад Китежа! Ракушка — на дне. Глубоко — только Потапу дойти!",
+"max": 4
+},
+{
+"id": "2-1_016",
+"who": "sadko",
+"vid": "xsFdwitIR95S95Lsd7zG",
+"prompt": "А вот вам напев мой — четыре звука. Запомните: дзинь, дилинь, дон, дон.",
+"max": 3.72
+},
+{
+"id": "2-1_017",
+"who": "sadko",
+"vid": "xsFdwitIR95S95Lsd7zG",
+"prompt": "Китеж его помнит. Как будить станете — пригодится.",
+"max": 4.02
+},
+{
+"id": "2-1_018",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Улица в два канала, а вода у них одна! Отольёшь у себя — у друга прибудет.",
+"max": 4.12
+},
+{
+"id": "2-1_019",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Да заслонка на дне закрыта. Тяжёлый нужен — чтоб не всплыл и держал!",
+"max": 4.42
+},
+{
+"id": "2-1_020",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Тяжёлый? Это я. Как положено.",
+"max": 3
+},
+{
+"id": "2-1_021",
+"who": "king",
+"vid": "t3cz8dupgS466xvp2eB2",
+"prompt": "Гусли слышу! Сыграйте мне — попляшу! А не спляшу — дверей не открою!",
+"max": 4.22
+},
+{
+"id": "2-1_022",
+"who": "king",
+"vid": "t3cz8dupgS466xvp2eB2",
+"prompt": "Ох, уважили! Ох, наплясался!",
+"max": 2.62
+},
+{
+"id": "2-1_023",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Царь-батюшка, а наверху от твоей пляски корабли качаются!",
+"max": 3.32
+},
+{
+"id": "2-1_024",
+"who": "king",
+"vid": "t3cz8dupgS466xvp2eB2",
+"prompt": "И то правда… Заплясался я. Ступайте! Вот вам по жемчужинке — за гусли.",
+"max": 4.52
+},
+{
+"id": "2-2_007",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Окунь! Не та рыба.",
+"max": 3
+},
+{
+"id": "2-2_008",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Ёрш! Колючий, вредный.",
+"max": 3
+},
+{
+"id": "2-2_009",
+"who": "shchuka",
+"vid": "MnWbn1cnKDMLvWhtytCe",
+"prompt": "Отпусти меня в пруд! Слово тебе дам: скажешь «По щучьему велению, по моему хотению» — всё сделается.",
+"max": 4.62
+},
+{
+"id": "2-2_010",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] По щучьему велению, по моему хотению — ступай, печка, сама к голове кита!",
+"max": 4.22
+},
+{
+"id": "2-2_011",
+"who": "potap",
+"vid": "HO0xRRVNKM5KFlpsrNit",
+"prompt": "[childlike voice] Икает, бедный!",
+"max": 1.72
+},
+{
+"id": "2-2_012",
+"who": "yosha",
+"vid": "rSfuQoQ3FY8SVKeraMAp",
+"prompt": "[childlike voice] [high voice] Он что-то проглотил! Золотое, блестящее!",
+"max": 2.52
+},
+{
+"id": "2-2_013",
+"who": "zven",
+"vid": "SU4ks9gEc2CmZuomYn22",
+"prompt": "Вот и икает. Запомним!",
+"max": 1.92
+},
+{
+"id": "2-3_014",
+"who": "rybka",
+"vid": "vpn4DgG9Eq3rIerCqOoa",
+"prompt": "А за свободу — вторая струна вам: напев «Течение». Ракушка с рыбкой — и вода побежит, куда скажете.",
+"max": 3.92
+},
+{
+"id": "2-3_015",
+"who": "rybka",
+"vid": "vpn4DgG9Eq3rIerCqOoa",
+"prompt": "А язык колокола Китежа Рыба-кит проглотил — у него в брюхе и ищите.",
+"max": 3.52
+},
+{
+"id": "2-3_016",
+"who": "som",
+"vid": "O1uVJ0jxq6KkLPcqmXSm",
+"prompt": "Ёрш Ершович, сын Щетинников! Всех в озере обижаешь, воду мутишь!",
+"max": 4.52
+},
+{
+"id": "2-3_017",
+"who": "yorsh",
+"vid": "8CIriRHaOzqmbUpPUtOX",
+"prompt": "Не я это! Это Водяной воду крутит — я только рядом плаваю!",
+"max": 4.52
+},
+{
+"id": "2-3_018",
+"who": "leshch",
+"vid": "9LXh2vEiA65uQBHq7a8p",
+"prompt": "[annoyed] А кто у старика с невода жемчуг утащил?",
+"max": 3.92
+},
+{
+"id": "2-3_019",
+"who": "yorsh",
+"vid": "8CIriRHaOzqmbUpPUtOX",
+"prompt": "Ну… я. Нате, берите! Только в невод больше не надо!",
+"max": 3.92
+}
+]
