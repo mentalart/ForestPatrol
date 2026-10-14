@@ -749,34 +749,6 @@
    "dur": 2.66
   },
   {
-   "id": "p07_volk",
-   "lv": "p",
-   "who": null,
-   "voice": "tishka",
-   "text": "♪ …серый волк живёт… ♪",
-   "tts": "[sings softly] …серый волк живёт…",
-   "fx": "far",
-   "gain": 0.6,
-   "lul": "LUL2",
-   "max": 3.4,
-   "url": "elevenlabs:eleven_v4",
-   "el_take": 1,
-   "dur": 2.25
-  },
-  {
-   "id": "p08_akh",
-   "lv": "p",
-   "who": "tishka",
-   "text": "<i>(издалека)</i> Ой, беда!",
-   "tts": "Ой, беда!",
-   "fx": "far",
-   "gain": 0.7,
-   "max": 1.8,
-   "url": "elevenlabs:eleven_v4",
-   "el_take": 1,
-   "dur": 1.63
-  },
-  {
    "id": "p09_lesenka",
    "lv": "p",
    "who": "proshka",

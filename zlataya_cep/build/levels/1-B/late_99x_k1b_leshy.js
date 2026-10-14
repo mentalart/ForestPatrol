@@ -18,19 +18,62 @@ K1B.dyn=k1Dyn;
 const K1_SOFT=(()=>{const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');const g=x.createRadialGradient(32,32,0,32,32,32);
   g.addColorStop(0,'rgba(255,255,255,0.9)');g.addColorStop(0.45,'rgba(255,255,255,0.35)');g.addColorStop(1,'rgba(255,255,255,0)');x.fillStyle=g;x.fillRect(0,0,64,64);return new THREE.CanvasTexture(c);})();
 K1B.soft=K1_SOFT;
-/* ---------- скелет Лешего: как у makeLeshy, но без рогов и бороды (они — съёмные детали), глаза и рот крупнее ---------- */
+// матрица: поворот вокруг Y на a (ось z — наружу от ствола), наклон t вокруг X, масштаб
+function k1Rot(x,y,z,a,t,sx,sy,sz){return new THREE.Matrix4().makeRotationY(a).multiply(new THREE.Matrix4().makeRotationX(t)).scale(new V3(sx||1,sy||sx||1,sz||sx||1)).setPosition(x,y,z);}
+// матрица звена от p0 к p1 (геометрия — вдоль Y, высотой |p1−p0|)
+function k1Seg(p0,p1){const d=new V3().subVectors(p1,p0);return new THREE.Matrix4().compose(p0.clone().add(p1).multiplyScalar(0.5),new THREE.Quaternion().setFromUnitVectors(new V3(0,1,0),d.normalize()),new V3(1,1,1));}
+// пучок дубовых листьев (лопасти-ромбики) у точки p
+function k1Leaves(R,bn,p,k,sd){const C=K1C;for(let j=0;j<5;j++){const a=j*1.26+k1hr(j,sd,0,0.6);
+  R.part(bn,hIco(0.2*k),j%2?C.leafD:C.leaf,tm(p.x+Math.sin(a)*0.16*k,p.y+k1hr(j,sd+1,-0.08,0.12)*k,p.z+Math.cos(a)*0.16*k,k1hr(j,sd+2,-0.6,0.6),a,0.3,0.75,0.32,1.35),{s:0.1});}}
+// жёлудь: тельце и шляпка
+function k1Acorn(R,bn,x,y,z,k,sd){R.part(bn,hIco(0.075*k),hp(0xc9a64a),tm(x,y,z,0,0,k1hr(1,sd,-0.4,0.4),0.85,1.2,0.85),{s:0.1});R.part(bn,hSph(0.07*k,6,3),K1C.brown,tm(x,y+0.06*k,z,0,0,0,1,0.6,1),{noise:0.005,s:-0.1});}
+/* ---------- скелет Лешего: как у makeLeshy, но без рогов и бороды (они — съёмные детали), глаза и рот крупнее; тело — ствол древнего дуба ---------- */
 function k1Build(){const R=castRig(4.4,41),C=K1C,BK=PAL.bark,MS=PAL.moss;
   R.bone('hips','root',0,1.2,0);R.bone('chest','hips',0,1.5,0);R.bone('neck','chest',0,0.6,0);R.bone('head','neck',0,0.3,0);
-  R.part('hips',KP.lathe([[0,-1.2],[1.1,-1.2],[1.0,-0.95],[0.85,-0.4],[0.75,0.3],[0.7,0.6],[0,0.62]],10),BK,null,{noise:0.04});
-  for(let i=0;i<5;i++){const a=i/5*Math.PI*2+0.3;R.part('hips',KP.cone(0.28,0.7,4),BK,tm(Math.sin(a)*0.95,-1.05,Math.cos(a)*0.95,0,a,Math.PI/2-0.2,1,1,0.7),{noise:0.02});}   // корни
-  R.part('chest',KP.lathe([[0,-0.9],[0.72,-0.9],[0.7,-0.3],[0.62,0.2],[0.5,0.5],[0,0.6]],10),BK,null,{noise:0.03});
-  for(let i=0;i<7;i++){const a=i*1.7;R.part(i<4?'hips':'chest',hSph(0.22,6,4),MS,tm(Math.sin(a)*0.7,-0.2+i*0.12-(i<4?0:0.6),Math.cos(a)*0.66,0,0,0,1.3,0.6,0.7),{noise:0.02});}   // мох
-  for(let i=0;i<3;i++)R.part('chest',hSph(0.07,6,4),PAL.bark,tm(-0.3+i*0.25,-0.4+i*0.2,0.64,0,0,0,1,1.3,0.5),{s:-0.4});   // сучки-дупла
+  // ствол древнего дуба: широкий комель, борозды коры, корни-лапы, наплывы, дупло с совой, трутовики, мох; сзади — сучья с листьями и желудями
+  const P0=[[0,-1.2],[1.32,-1.2],[1.18,-1.02],[0.98,-0.72],[0.86,-0.22],[0.8,0.3],[0.74,0.6],[0,0.62]],P1=[[0,-0.9],[0.76,-0.9],[0.74,-0.3],[0.67,0.2],[0.55,0.5],[0,0.62]];
+  R.part('hips',KP.lathe(P0,12),BK,null,{noise:0.06});R.part('chest',KP.lathe(P1,12),BK,null,{noise:0.05});
+  // борозды коры: вертикальные гребни по профилю ствола, светлые и тёмные вперемежку
+  for(const[bn,n,y0,y1,r0,r1]of[['hips',15,-1.02,0.56,1.05,0.76],['chest',13,-0.86,0.42,0.76,0.6]])for(let i=0;i<n;i++){
+    const a=i/n*Math.PI*2+k1hr(i,bn.length,-0.12,0.12),cut=k1hr(i,7,0,0.25),ya=y0+(y1-y0)*cut*0.5,yb=y1-(y1-y0)*k1hr(i,8,0,0.2),L=yb-ya,rm=r0+(r1-r0)*((ya+yb)/2-y0)/(y1-y0),t=Math.atan2(r0-r1,y1-y0);
+    R.part(bn,KP.cyl(0.06,0.1,L,4),BK,k1Rot(Math.sin(a)*rm,(ya+yb)/2,Math.cos(a)*rm,a,-t,1.7,1,0.75),{noise:0.025,s:i%2?-0.3:0.12});}
+  // корни-лапы: толстое колено от комля, наплыв, тонкий корешок по земле
+  for(let i=0;i<8;i++){const a=i/8*Math.PI*2+0.2+k1hr(i,11,-0.15,0.15),r=k1hr(i,12,0.85,1.15),sa=Math.sin(a),ca=Math.cos(a);
+    R.part('hips',KP.cyl(0.12*r,0.38*r,1.25,6),BK,k1Rot(sa*1.3,-0.98,ca*1.3,a,Math.PI/2+0.32,1.3,1,0.9),{noise:0.04,s:-0.05});
+    R.part('hips',hSph(0.22*r,6,4),BK,tm(sa*1.62,-1.08,ca*1.62,0,a,0,1,0.7,1.3),{noise:0.03,s:0.1});
+    R.part('hips',KP.cyl(0.05*r,0.15*r,0.6,5),BK,k1Rot(sa*1.95,-1.15,ca*1.95,a+k1hr(i,13,-0.3,0.3),Math.PI/2+0.12,1.4,1,0.8),{noise:0.02,s:-0.15});
+    if(i%2)R.part('hips',hSph(0.18,6,4),MS,tm(sa*1.3,-0.86,ca*1.3,0,a,0,1,0.5,1.2),{noise:0.03});}
+  // наплывы коры с тёмной сердцевиной
+  for(const[bn,a,y,r,k]of[['hips',2.3,-0.45,0.95,1.1],['hips',-2.5,0.15,0.83,0.9],['chest',-1.0,-0.2,0.72,0.8],['chest',2.6,0.15,0.66,0.7]]){
+    R.part(bn,hSph(0.22*k,7,5),BK,tm(Math.sin(a)*r,y,Math.cos(a)*r,0,a,0,1,0.8,0.55),{noise:0.03,s:0.2});
+    R.part(bn,KP.tor(0.1*k,0.035*k,4,8),PAL.bark,k1Rot(Math.sin(a)*(r+0.11*k),y,Math.cos(a)*(r+0.11*k),a,0,1,1.3,1),{s:-0.35});}
+  // дупло: тёмная глубина, губа коры, внутри — совиные глаза и запас желудей
+  {const a=0.42,y=-0.1,r=0.82,sa=Math.sin(a),ca=Math.cos(a);
+    R.part('hips',hSph(0.32,8,6),PAL.night,tm(sa*(r-0.06),y,ca*(r-0.06),0,a,0,0.85,1.25,0.5),{kN:0,kJ:0,s:-0.6});
+    R.part('hips',KP.tor(0.32,0.1,5,12),BK,k1Rot(sa*r,y,ca*r,a,0,0.9,1.3,1),{noise:0.025,s:0.2});
+    R.use('e');for(const x of[-1,1])R.part('hips',hIco(0.045),cc(0xffe9a0,0xffc840,0xd08a20),tm(sa*(r-0.02)+ca*x*0.09,y+0.08,ca*(r-0.02)-sa*x*0.09));R.use('b');
+    for(let j=0;j<3;j++)k1Acorn(R,'hips',sa*(r+0.02)+ca*(j-1)*0.11,y-0.33,ca*(r+0.02)-sa*(j-1)*0.11,0.75,j);}
+  // трутовики лесенкой на боку
+  for(let j=0;j<3;j++){const a=-1.75+j*0.12,y=-0.55+j*0.24,r=0.92-j*0.04;
+    R.part('hips',KP.cyl(0.24-j*0.04,0.27-j*0.04,0.07,9),PAL.cream,tm(Math.sin(a)*r,y,Math.cos(a)*r,0,0,0,1,1,1),{s:0.15});
+    R.part('hips',KP.cyl(0.27-j*0.04,0.24-j*0.04,0.05,9),PAL.autumn,tm(Math.sin(a)*r,y-0.055,Math.cos(a)*r),{s:-0.1});}
+  // мох пятнами и на «талии», цветочки во мху
+  for(let i=0;i<9;i++){const a=i*1.7+1.6,bn=i<5?'hips':'chest',y=i<5?-0.6+i*0.24:-0.75+(i-5)*0.14,r=i<5?0.88-i*0.03:0.7;
+    R.part(bn,hSph(0.2,6,4),MS,tm(Math.sin(a)*r,y,Math.cos(a)*r,0,a,0,1.1,0.55,0.55),{noise:0.04,s:i%3?-0.1:0.1});}
+  for(let i=0;i<4;i++){const a=i*2.3+0.4;R.part('chest',hIco(0.07),i%2?PAL.pink:PAL.yellow,tm(Math.sin(a)*0.8,-0.75+i*0.12,Math.cos(a)*0.8),{s:0.1});}
   R.part('chest',KP.cyl(0.03,0.035,0.12,5),PAL.cream,tm(0.5,0.45,0.2));R.part('chest',hSph(0.1,6,3),PAL.mush,tm(0.5,0.52,0.2,0,0,0,1,0.55,1));   // грибок на плече
-  for(let i=0;i<4;i++){const a=i*2.3+0.4;R.part('chest',hIco(0.07),i%2?PAL.pink:PAL.yellow,tm(Math.sin(a)*0.62,-0.45+i*0.2,Math.cos(a)*0.6),{s:0.1});}   // цветочки во мху
+  // плечи-сучья: тяжёлые наплывы с мхом; сзади над плечами — обломанные сучья с дубовой листвой и желудями (силуэт кроны за головой)
+  for(const s of[-1,1]){R.part('chest',hSph(0.36,7,5),BK,tm(s*0.6,0.3,-0.05,0,0,s*0.3,1.2,0.8,1),{noise:0.04});R.part('chest',hSph(0.26,6,4),MS,tm(s*0.58,0.52,-0.05,0,0,0,1.3,0.45,1.1),{noise:0.02});}
+  for(const[s,x,y,z,ang,tl,L]of[[1,0.32,0.38,-0.42,0.5,-0.55,1.25],[-1,-0.38,0.3,-0.4,0.75,-0.45,1.05],[1,0.05,0.45,-0.5,0.08,-0.7,0.95]]){
+    const d=new V3(Math.sin(ang)*s,Math.cos(-tl)*1,Math.sin(tl)).normalize(),p0=new V3(x,y,z),p1=p0.clone().addScaledVector(d,L);
+    R.part('chest',KP.cyl(0.05,0.13,L,5),BK,k1Seg(p0,p1),{noise:0.02});
+    const tw=p0.clone().addScaledVector(d,L*0.55),td=new V3(d.x+s*0.6,d.y*0.4+0.5,d.z).normalize(),tp=tw.clone().addScaledVector(td,0.45);R.part('chest',KP.cyl(0.025,0.05,0.45,4),BK,k1Seg(tw,tp));
+    k1Leaves(R,'chest',p1,0.85,x*7);k1Leaves(R,'chest',tp,0.55,x*9+3);k1Acorn(R,'chest',p1.x-s*0.15,p1.y-0.2,p1.z+0.1,1,x*5);k1Acorn(R,'chest',p1.x+s*0.05,p1.y-0.24,p1.z+0.16,0.9,x*5+1);}
   // голова-пень: плоская макушка (на ней — гнездо), нос-сучок, усы-мох
   R.part('head',hSph(0.62,9,7),BK,tm(0,0,0,0,0,0,1,1.05,0.95),{noise:0.03});R.part('head',KP.cyl(0.55,0.6,0.2,9),BK,tm(0,0.55,0),{noise:0.02});
-  R.part('head',KP.cyl(0.5,0.5,0.02,9),PAL.plank,tm(0,0.66,0),{s:0.2});
+  R.part('head',KP.cyl(0.5,0.5,0.02,9),PAL.plank,tm(0,0.66,0),{s:0.2});R.part('head',KP.tor(0.57,0.055,4,12),PAL.bark,tm(0,0.64,0,Math.PI/2,0,0),{noise:0.015,s:-0.25});   // срез пня с корой по краю
+  for(let i=0;i<9;i++){const a=Math.PI*0.32+i/8*Math.PI*1.36;R.part('head',KP.cyl(0.045,0.07,0.75,4),BK,k1Rot(Math.sin(a)*0.6,0.18,Math.cos(a)*0.6,a,-0.15,1.6,1,0.7),{noise:0.02,s:i%2?-0.3:0.1});}   // борозды коры на затылке и висках
+  for(const[x,z,k]of[[0.3,-0.42,0.6],[-0.34,-0.38,0.5],[0.02,-0.5,0.45]])k1Leaves(R,'head',new V3(x,0.72,z),k,x*11+2);   // побеги на срезе
   for(const s of[-1,1]){R.part('head',KP.cone(0.13,0.55,5),MS,tm(s*0.3,-0.2,0.5,Math.PI-0.15,0,s*0.55),{noise:0.02});   // усы
     R.part('head',hSph(0.16,6,4),BK,tm(s*0.42,-0.14,0.38,0,0,0,1,0.8,0.7),{noise:0.02,s:0.15});}   // скулы
   R.part('head',KP.cone(0.1,0.3,5),BK,tm(0,-0.05,0.62,Math.PI/2+0.3,0,0),{s:0.1});   // нос-сучок
@@ -38,8 +81,12 @@ function k1Build(){const R=castRig(4.4,41),C=K1C,BK=PAL.bark,MS=PAL.moss;
     R.use('e');R.part('eye'+n,hIco(0.08),cc(0xf0ffa0,0xd8ff6a,0xa8d040),tm(0,0,0.1));R.use('b');}
   hMouth(R,0,-0.3,0.56,0.095);
   // руки-ветви (у боссов этапа 1 их закрывают настоящие руки-коряги; на этапах 2–3 — скакалка и хоровод)
-  for(const[s,n]of[[1,'L'],[-1,'R']]){R.bone('sh'+n,'chest',s*0.75,0.2,0);R.part('sh'+n,KP.cyl(0.2,0.15,2.2,6),BK,tm(0,-1.1,0.2,0.18,0,0),{noise:0.02});R.part('sh'+n,hSph(0.28,6,4),MS,tm(0,-0.1,0.05,0,0,0,1.2,0.7,1));
-    R.bone('hand'+n,'sh'+n,0,-2.2,0.35);for(let k=0;k<3;k++)R.part('hand'+n,KP.cone(0.1,0.9,5),BK,tm((k-1)*0.22,-0.3,0.1,0.4,0,(k-1)*0.2));R.part('hand'+n,hSph(0.22,6,4),BK,tm(0,0,0.05));}
+  for(const[s,n]of[[1,'L'],[-1,'R']]){R.bone('sh'+n,'chest',s*0.75,0.2,0);const e=new V3(s*0.12,-1.1,0.3),w=new V3(0,-2.15,0.35);
+    R.part('sh'+n,KP.cyl(0.17,0.22,1.12,6),BK,k1Seg(new V3(0,0,0.05),e),{noise:0.03});R.part('sh'+n,hSph(0.21,6,4),BK,tm(e.x,e.y,e.z,0,0,0,1,0.9,1),{noise:0.03,s:0.15});   // плечо и локоть-наплыв
+    R.part('sh'+n,KP.cyl(0.13,0.18,1.08,6),BK,k1Seg(e,w),{noise:0.025});R.part('sh'+n,hSph(0.28,6,4),MS,tm(0,-0.1,0.05,0,0,0,1.2,0.7,1));R.part('sh'+n,hSph(0.16,6,4),MS,tm(e.x+s*0.08,e.y+0.12,e.z,0,0,0,1.2,0.5,1));
+    const tw=new V3(s*0.42,-1.55,0.42);R.part('sh'+n,KP.cyl(0.025,0.05,0.5,4),BK,k1Seg(new V3(s*0.08,-1.45,0.32),tw));k1Leaves(R,'sh'+n,tw,0.45,s*13);   // сучок с листиками на предплечье
+    R.bone('hand'+n,'sh'+n,0,-2.2,0.35);for(let k=0;k<3;k++)R.part('hand'+n,KP.cone(0.1,0.9,5),BK,tm((k-1)*0.22,-0.3,0.1,0.4,0,(k-1)*0.2),{noise:0.015});
+    R.part('hand'+n,KP.cone(0.08,0.55,5),BK,tm(s*0.26,-0.05,0.18,0.9,0,s*0.9),{noise:0.01});R.part('hand'+n,hSph(0.22,6,4),BK,tm(0,0,0.05),{noise:0.02});}
   return R;}
 /* ---------- съёмные детали головы ---------- */
 // рог-ветвь: ствол, три отростка, листья на концах, цветы (прячутся до цветения); основание — в начале координат группы
@@ -242,5 +289,6 @@ K1B.init=function(ctx){K1B.cur=ctx;K1B.fly.length=0;K1B.tick.length=0;ctx.arms=[
 {const _ll=loadLevel;loadLevel=function(i){K1B.cur=null;K1B.crowdL=null;K1B.fly.length=0;K1B.tick.length=0;_ll(i);};}
 {const _st=step;step=function(dt){_st(dt);const c=K1B.cur;if(!c||!W||W.levelId!=='1-B')return;try{
     c.hands=W.enemies.filter(e=>e.kind==='hand');c.hands.forEach(e=>{e.side=e.side||(e.home.x<0?-1:1);});k1UpdateArms(c,dt);
-    if(W.flags.phase>1&&c.L&&!c.ownArms){c.ownArms=true;c.L.hands.forEach(h=>{h.sh.visible=true;});}   // этап 1 кончился: «резинки» убраны — у Лешего на месте собственные руки, он не остаётся безруким в ролике и на хороводеk1FlyTick(dt);k1CrowdTick(dt);
+    if(W.flags.phase>1&&c.L&&!c.ownArms){c.ownArms=true;c.L.hands.forEach(h=>{h.sh.visible=true;});}   // этап 1 кончился: «резинки» убраны — у Лешего на месте собственные руки, он не остаётся безруким в ролике и на хороводе
+    k1FlyTick(dt);k1CrowdTick(dt);
     for(let i=K1B.tick.length-1;i>=0;i--){if(K1B.tick[i](dt)===false)K1B.tick.splice(i,1);}}catch(e){console.error('k1b',e);K1B.cur=null;}};}
