@@ -14650,6 +14650,88 @@
    "dur": 3.98
   },
   {
+   "id": "1-B_k01",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Ну-ка, поглядим, как вы с моими руками сладите!",
+   "tts": "[quickly] [mischievous] Ну-ка, поглядим, как вы с моими руками сладите!",
+   "max": 2.9,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 2,
+   "dur": 3
+  },
+  {
+   "id": "1-B_k02",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Красная метёт — кувырок в сторону.</i>",
+   "tts": "[warm, storytelling] Красная метёт — кувырок в сторону.",
+   "max": 3.1,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.68
+  },
+  {
+   "id": "1-B_k03",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Жёлтая хлопнет — щит в последний миг.</i>",
+   "tts": "[warm, storytelling] Жёлтая хлопнет — щит в последний миг.",
+   "max": 3,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.04
+  },
+  {
+   "id": "1-B_k04",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Промахнулась — увязла. Бей её!</i>",
+   "tts": "[warm, storytelling] Промахнулась — увязла. Бей её!",
+   "max": 3.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.16
+  },
+  {
+   "id": "1-B_k05",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Пробитая рука ложится мостом — беги наверх!</i>",
+   "tts": "[warm, storytelling] Пробитая рука ложится мостом — беги наверх!",
+   "max": 3.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.36
+  },
+  {
+   "id": "1-B_k06",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>По макушке! Трижды — и Леший сдастся.</i>",
+   "tts": "[warm, storytelling] По макушке! Трижды — и Леший сдастся.",
+   "max": 3.5,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.38
+  },
+  {
+   "id": "1-B_k07",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Ай! Ну, это мы ещё поглядим!",
+   "tts": "[annoyed] Ай! Ну, это мы ещё поглядим!",
+   "max": 3.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.14
+  },
+  {
    "id": "4-1_031",
    "lv": "4-1",
    "who": "pelageya",
