@@ -125,8 +125,39 @@ K1S.hint=function(pi){const i=k1sIdx(pi),lap=Math.min(K1S.need,K1S.laps[i]||0);
     else if(/^Не попасть! Отбей/.test(html))html='Не попасть — сначала отбей его удар.';}
   return _tp(pi,html,dur);};}
 
+/* ---------- счёт «Раз · Два · ТРИ!» крупно: цифры над Лешим уходят из кадра — счёт дублируется кружками (как узда 4-Б): в карточке урока и на экране в бою ---------- */
+// n — сколько счётов прозвучало (0…3), hot — окно «ТРИ!» открыто: жми
+function k1cRow(n,hot){if(!k1cRow.css){k1cRow.css=1;const st=document.createElement('style');
+    st.textContent='.k1c{display:inline-block;margin:0 6px;border-radius:50%;border:4px solid;font:800 18px/1 system-ui;text-align:center;vertical-align:middle;transition:background .12s}'+
+      '.k1c-hit{animation:k1cPop .35s ease-out}.k1c-hot{animation:k1cHot .22s ease-in-out infinite alternate}'+
+      '@keyframes k1cPop{0%{transform:scale(1.4)}100%{transform:scale(1)}}@keyframes k1cHot{0%{transform:scale(1)}100%{transform:scale(1.14)}}';document.head.appendChild(st);}
+  let s='';for(let i=0;i<3;i++){const on=i<n,tr=i===2,sz=tr?62:50;
+    s+=(i?'<span style="display:inline-block;vertical-align:middle;color:#ffd76a;font:800 20px system-ui">›</span>':'')+
+      '<span class="k1c'+(on&&i===n-1?' k1c-hit':'')+(tr&&hot?' k1c-hot':'')+'" style="width:'+sz+'px;height:'+sz+'px;line-height:'+sz+'px;'+(tr?'font-size:21px;':'')+
+      'border-color:'+(on?'#fff6c0':'#ffd76a')+';background:'+(on?(tr?'radial-gradient(#fffbe0,#ff9a20)':'radial-gradient(#fff6c0,#ffb030)'):'#2a1608cc')+';color:'+(on?'#3a1606':'#ffe9a0')+
+      ';box-shadow:0 0 '+(on?(tr?30:16):6)+'px #ffb030">'+['Раз','Два','ТРИ!'][i]+'</span>';}
+  return s;}
+// в карточке урока — строка кружков между фразой и кнопками (карточка перерисовывается — строку ставим заново; «Читать вслух» её не читает: не .ft-text)
+function k1cCard(n,hot){const ft=$('finTut');if(!ft)return;let e=ft.querySelector('.k1c-row');
+  if(!e){e=document.createElement('div');e.className='k1c-row';e.style.cssText='margin-top:8px;text-align:center;white-space:nowrap';const k=ft.querySelector('.ft-keys');if(k)ft.insertBefore(e,k);else ft.appendChild(e);}
+  const h=k1cRow(n,hot);if(e._h!==h){e._h=h;e.innerHTML=h;}}
+// в бою — на экране, пока ленты натянуты (st = pull): кружки и кто уже ударил
+const K1CNT={d:null};
+function k1cHud(show){let d=K1CNT.d;if(!show){if(d)d.style.opacity='0';return;}
+  if(!d||!d.isConnected){d=K1CNT.d=document.createElement('div');d.id='k1bCount';
+    d.style.cssText='position:fixed;left:50%;top:38vh;transform:translate(-50%,0);z-index:34;pointer-events:none;font-family:system-ui;text-align:center;color:#fff6e0;opacity:0;transition:opacity .2s;text-shadow:0 2px 4px #000a';
+    document.body.appendChild(d);}
+  const t3=2.3,Wd=K1S.win,hot=K1S.pt>=t3-Wd&&K1S.pt<=t3+Wd,pis=k1sPis();
+  const who=G.solo?'жми '+K(G.soloPi,'attack')+' на «ТРИ!»':pis.map(pi=>'Игрок '+(pi+1)+' '+(K1S.press[k1sIdx(pi)]!=null?'✓':K(pi,'attack'))).join(' &nbsp;·&nbsp; ');
+  const h='<div>'+k1cRow(K1S.beat,hot)+'</div><div style="margin-top:8px;font-size:17px;font-weight:700">'+who+'</div>';
+  if(d._h!==h){d._h=h;d.innerHTML=h;}d.style.opacity='1';}
+{const _st=step;step=function(dt){_st(dt);const on=!!(K1B.cur&&W&&W.levelId==='1-B'&&K1S.on&&K1S.st==='pull'&&W.flags.phase===3&&!G.cine&&G.state==='play'&&!FIN.titleOn);
+  if(on||K1CNT.d)try{k1cHud(on);}catch(e){console.error('k1c',e);}};}
+{const _ll=loadLevel;loadLevel=function(i){k1cHud(false);_ll(i);};}
+
 /* ---------- урок «Хоровода» (общий шаблон FIN.lesson, late_79e_lesson.js): одна механика — один шаг, всё ≤ 25 с; пропуск — держать прыжок ---------- */
-// Шаг 0 «Хоровод»: герои сами бегут по стрелкам вокруг Лешего, ленты за ними мотаются на ствол (без нажатий). Шаг 1 «Скакалка»: лиана пролетает — герой прыгает (нажми прыжок; не нажал за 8 с — герои прыгают сами). Шаг 2 «Тяни-потяни»: «РАЗ… ДВА… ТРИ!» с эхом-метрономом, оба жмут удар.
+// Шаг 0 «Хоровод»: герои сами бегут по стрелкам вокруг Лешего, ленты за ними мотаются на ствол (без нажатий). Шаг 1 «Скакалка»: лиана пролетает — герой прыгает (нажми прыжок; не нажал за 8 с — герои прыгают сами).
+// Шаг 2 «Тяни-потяни»: «РАЗ… ДВА… ТРИ!» с эхом-метрономом и кружками счёта в карточке; на первое «ТРИ!» герои бьют сами (показ), потом оба жмут удар — Леший закружился.
 // «Показать ещё раз» — LK.regLevel('1-B', …) (пауза и лестница подсказок F-3). Видели один раз — в этой игре не повторяем (G.flags.k1b[3]); FIN.k1b.les.auto=false — без урока (боты).
 const LK1=FIN.lesson,K1LES=K1B.les={auto:true,runs:0};
 LK1.icons.k1run='<svg viewBox="0 0 64 64"><rect x="26" y="8" width="12" height="34" rx="5" fill="#8a5a2a"/><path d="M26 18 H38 M26 25 H38 M26 32 H38" stroke="#ff8a3a" stroke-width="4"/><ellipse cx="32" cy="46" rx="25" ry="9" fill="none" stroke="#ffd76a" stroke-width="5" stroke-dasharray="44 9" stroke-linecap="round"/><path d="M55 38 L60 49 L48 48 Z" fill="#ffd76a"/></svg>';
@@ -141,8 +172,9 @@ function k1lesInit(){const C=K1B.cur.C,pis=[0,1],again=K1S.on,sv={ropes:K1S.rope
     ang[pi]=Math.atan2(h.pos.z-C.z,h.pos.x-C.x);y0[pi]=h.pos.y;});
   rope.g.visible=false;   // скакалка — со второго шага
   const rb=pis.map(pi=>K1B.fx.coil(C,()=>{const h=active(pi);return {x:h.pos.x,y:h.pos.y,z:h.pos.z};},K1S_COL[pi],{y0:pi?1.9:1.6}));   // ленты показа: мотаются на ствол, как в игре
-  const D={C,lane,rope,rb,ang,y0,sv,th:-(ang[0]+1.8),w:1,w0:0.95,t:0,hop:[-9,-9],pv:[null,null],again,beat:-1,pt:0};K1LES.D=D;return D;}
+  const D={C,lane,rope,rb,ang,y0,sv,th:-(ang[0]+1.8),w:1,w0:Math.PI*2/8.25,t:0,tug:0,spin:-1,demo:false,hop:[-9,-9],pv:[null,null],again,beat:-1,pt:0};K1LES.D=D;return D;}
 function k1lesEnd(){const D=K1LES.D;if(!D)return;K1LES.D=null;
+  {const L=K1B.cur&&K1B.cur.L;if(L){L.g.rotation.z=0;if(D.yL!=null)L.g.rotation.y=D.yL;K1B.emo(L,D.again?'mock':'laugh',0);}}
   [0,1].forEach(pi=>{const h=active(pi);h.pos.y=D.y0[pi];});
   D.lane.show&&D.lane.show(false);D.lane.g.visible=false;W.group.remove(D.rope.g);D.rb.forEach(r=>r.remove());
   [0,1].forEach(pi=>active(pi).vel.set(0,0,0));
@@ -152,19 +184,35 @@ function k1lesHop(D,pi){if(G.time-D.hop[pi]>0.7)D.hop[pi]=G.time;}
 function k1lesRope(D,dt){D.th+=D.w*dt;D.rope.set(D.th,D.w);const rha=-D.th;
   [0,1].forEach(pi=>{const dn=k1sWrap(rha-D.ang[pi]);const pv=D.pv[pi];D.pv[pi]=dn;if(pv!=null&&dn>0&&dn<D.w*0.3&&pv>dn)k1lesHop(D,pi);
     const k=(G.time-D.hop[pi])/0.65;active(pi).pos.y=D.y0[pi]+(k>=0&&k<=1?1.1*Math.sin(Math.PI*k):0);});}
-// герои бегут по стрелкам вокруг Лешего: разгон, ход, остановка; ленты за ними мотаются на ствол
+// герои бегут по стрелкам вокруг Лешего: разгон, ход, остановка; ленты за ними мотаются на ствол. Путь за шаг — w0·8,25 рад (разгон 0,9 с, ход, остановка 0,6 с): ровно круг, кончают там же, где начали
 function k1lesRun0(D,u,dt){const k=Math.min(1,u/0.9),sp=D.w0*k*k*(3-2*k)*(u>8.4?Math.max(0,1-(u-8.4)/0.6):1);
   [0,1].forEach(pi=>{const h=active(pi),a=(D.ang[pi]+=sp*dt);h.pos.x=D.C.x+Math.cos(a)*K1S_LANE;h.pos.z=D.C.z+Math.sin(a)*K1S_LANE;h.pos.y=D.y0[pi];
     h.vel.set(-Math.sin(a)*sp*K1S_LANE,0,Math.cos(a)*sp*K1S_LANE);h.face=Math.atan2(-Math.sin(a),Math.cos(a));});}
-function k1lesSteps(){const D=k1lesInit(),cam={p:[D.C.x,10,D.C.z+16],l:[D.C.x,1.5,D.C.z]},
+// «Тяни-потяни» в уроке: скакалка стихает, ленты натянуты, эхо-метроном «РАЗ · ДВА · ТРИ · пауза» (кружки в карточке); на каждый счёт герои тянут ленты на себя,
+// на первое «ТРИ!» бьют сами (показ: «Вот так — вместе!»), дальше — по нажатию; оба ударили (или показ по таймауту) — Леший закружился, как в бою
+function k1lesPull(D,dt){const c=K1B.cur,L=c.L;D.w*=Math.max(0,1-dt*2.2);k1lesRope(D,dt);D.pt+=dt;D.tug=Math.max(0,D.tug-dt*3);
+  const n=Math.floor((D.pt-0.5)/0.7);if(n!==D.beat&&D.pt>=0.5&&D.spin<0){D.beat=n;const b=n%5;if(b<3){try{tone([440,550,880][b],0.16,'triangle',0.1);}catch(e){}D.tug=1;
+      floatText(L.g.position.clone().add(new V3(0,11.5+b*0.4,0)),['РАЗ…','ДВА…','ТРИ!'][b],b===2?'#ffd76a':'#fff3c0');
+      if(b===2&&!D.demo){D.demo=true;[0,1].forEach(pi=>k1lesStrike(D,pi));const a=(D.ang[0]+D.ang[1])/2;floatText(new V3(D.C.x+Math.cos(a)*K1S_LANE,2.6,D.C.z+Math.sin(a)*K1S_LANE),'Вот так — вместе!','#ffd76a');}}}
+  // герои у ленты: лицом к Лешему, на счёт — рывок на себя
+  [0,1].forEach(pi=>{const h=active(pi),a=D.ang[pi],r=K1S_LANE+0.45*Math.sin(Math.min(1,D.tug)*Math.PI*0.5);h.pos.x=D.C.x+Math.cos(a)*r;h.pos.z=D.C.z+Math.sin(a)*r;h.face=Math.atan2(-Math.cos(a),-Math.sin(a));});
+  if(D.spin>=0){D.spin+=dt;const k=Math.min(1,D.spin/2);L.g.rotation.y=D.yL+k*Math.PI*6*(1-k*0.5);}
+  else L.g.rotation.z=0.04*D.tug*Math.sin(D.pt*40);   // ствол вздрагивает от рывка
+  const b=D.beat<0?-1:D.beat%5;k1cCard(D.spin>=0?3:b<0?0:b<3?b+1:b===3?3:0,D.spin<0&&b===2&&D.pt-0.5-D.beat*0.7<0.4);}
+// удар героя на «ТРИ!»: замах, искры у ствола, Леший вздрагивает
+function k1lesStrike(D,pi){const h=active(pi),a=D.ang[pi];h.atkT=0.28;h.face=Math.atan2(-Math.cos(a),-Math.sin(a));D.tug=1;try{SFX.swish();}catch(e){}
+  spawnSpark(new V3(D.C.x+Math.cos(a)*2.6,2.2,D.C.z+Math.sin(a)*2.6),K1S_COL[pi]);}
+// вышло: Леший запутался в лентах и закружился (как k1sSnap в бою)
+function k1lesSpin(D){if(D.spin>=0)return;const c=K1B.cur,L=c.L;D.spin=0;L.g.rotation.z=0;K1B.emo(L,'dizzy',0);try{SFX.horn&&SFX.horn();}catch(e){}shakeAll(0.04,0.4);
+  K1B.fx.leaves(new V3(D.C.x,6,D.C.z),30,{spd:2.4,up:1.4});floatText(L.g.position.clone().add(new V3(0,9,0)),'Закружился!','#ffd76a');}
+function k1lesSteps(){const D=k1lesInit(),cam={p:[D.C.x,6.5,D.C.z+15.5],l:[D.C.x,2,D.C.z-2]},   // скакалка и «Тяни-потяни» — спереди и сверху: оба героя с лентами и скакалка под карточкой
     camRun={p:[D.C.x-7,13,D.C.z+19],l:[D.C.x,2,D.C.z-6],p2:[D.C.x+7,13,D.C.z+19],l2:[D.C.x,2,D.C.z-6]};   // сверху и издали, взгляд за пень: ствол с витками — под карточкой урока, герои у нижнего края
   const s0=Object.assign({dur:9.4,card:{tag:'Урок',title:'Хоровод',icon:'k1run',text:'Бегите по стрелкам <b>вокруг Лешего</b> — ленты <b>обматывают</b> его: запутается!'},
     update:(s,u,dt)=>k1lesRun0(D,u,dt)},camRun);
   const s1=Object.assign({dur:11.6,enter:()=>{[0,1].forEach(pi=>active(pi).vel.set(0,0,0));D.rope.g.visible=true;D.th=-(D.ang[0]+1.8);},card:{tag:'Урок',title:'Скакалка',icon:'k1jump',text:'Скакалка идёт — <b>прыгай</b>!',keys:[0,1].map(pi=>({pi,a:'jump',wait:true}))},
     wait:{who:'both',a:'jump',timeout:8},each:(s,pi)=>k1lesHop(D,pi),update:(s,u,dt)=>k1lesRope(D,dt),done:()=>{K1LES.ok=true;}},cam);
-  const s2=Object.assign({dur:11.6,enter:()=>{D.rb.forEach(r=>{r.tautTo=1;});},card:{tag:'Урок',title:'Тяни-потяни',icon:'k1pull',text:'Раз… два… ТРИ! Бейте <b>вместе</b>!',keys:[0,1].map(pi=>({pi,a:'attack',wait:true}))},
-    wait:{who:'both',a:'attack',timeout:8,sync:1.2},update:(s,u,dt)=>{k1lesRope(D,dt);D.pt+=dt;D.w*=Math.max(0,1-dt*0.4);   // эхо-метроном: раз · два · ТРИ · пауза
-      const n=Math.floor((D.pt-0.5)/0.7);if(n!==D.beat&&D.pt>=0.5){D.beat=n;const b=((n%5)+5)%5;if(b<3){try{tone([440,550,880][b],0.16,'triangle',0.1);}catch(e){}floatText(K1B.cur.L.g.position.clone().add(new V3(0,11.5+b*0.4,0)),['РАЗ…','ДВА…','ТРИ!'][b],b===2?'#ffd76a':'#fff3c0');}}}},cam);
+  const s2=Object.assign({dur:11.6,at:2.7,enter:()=>{D.rb.forEach(r=>{r.tautTo=1;});D.pt=0;D.beat=-1;D.yL=K1B.cur.L.g.rotation.y;},card:{tag:'Урок',title:'Тяни-потяни',icon:'k1pull',text:'Раз… два… ТРИ! Бейте <b>вместе</b>!',keys:[0,1].map(pi=>({pi,a:'attack',wait:true}))},
+    wait:{who:'both',a:'attack',timeout:8,sync:1.2},each:(s,pi)=>k1lesStrike(D,pi),done:(s,auto)=>{if(auto)[0,1].forEach(pi=>k1lesStrike(D,pi));k1lesSpin(D);},update:(s,u,dt)=>k1lesPull(D,dt)},cam);
   return [s0,s1,s2];}
 function k1lesRun(then){K1LES.runs++;K1LES.ok=false;const steps=k1lesSteps();
   LK1.run(steps,{fov:47,end:()=>{k1lesEnd();if(then)then();}});}
