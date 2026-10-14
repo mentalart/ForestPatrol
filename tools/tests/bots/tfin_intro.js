@@ -36,7 +36,8 @@ window.WP=o=>o.getWorldPosition(new THREE.Vector3());
   if(bad.length)throw new Error('FAIL постановка: '+bad.join(', '));'постановка 1 ok'}
 //@@ shot=intro_mermaid.png wait=200
 // русалка на ветке дуба (1-6б): модель с лицом, руками и гребнем, в кадре
-RUN(0,19.8);{const M=ZC.FIN.intro.L.mer;if(!M||!M.anim||!M.g.visible||!M.eyes||M.eyes.length!==2||!M.comb)throw new Error('FAIL русалка без модели');if(!INF(WP(M.g)))throw new Error('FAIL 1-6б: русалки нет в кадре');}
+RUN(0,19.8);{const K=ZC.FIN.intro.L.kot,B=K.rig;if(K.lids[0].rotation.x!==-0.5||B.lidL.userData.lidHold||B.lidR.userData.lidHold||B.lidL.rotation.x>0.5)throw new Error('FAIL у Кота веко осталось на глазу после подмигивания: '+B.lidL.rotation.x.toFixed(2));}
+{const M=ZC.FIN.intro.L.mer;if(!M||!M.anim||!M.g.visible||!M.eyes||M.eyes.length!==2||!M.comb)throw new Error('FAIL русалка без модели');if(!INF(WP(M.g)))throw new Error('FAIL 1-6б: русалки нет в кадре');}
 //@@
 // хвост плещет, гребень ходит, глаза моргают; 2-5 — Кот и Кузьма в кадре
 {const PRK=ZC.FIN.intro,L=PRK.L,M=L.mer,bad=[];const r0=M.seg[4].rotation.x,c0=M.aR.sh.rotation.z;let bl=false;for(let i=0;i<130;i++){ZC.tick(1);TRACK();if(M.eyes[0].scale.y<0.5)bl=true;}
@@ -53,12 +54,21 @@ RUN(2,7.0)
 RUN(4,14.2)
 //@@
 // Смородина (сцена 6): у Горыныча три головы (не одни шеи), и головы у оснований шей сходятся лбами
+// «Пять сторон»: в каждом мире — босс в своём логове, в кадре: Леший-великан, Водяной на соме, Соловей на гнезде, (Горыныч — ниже), Лихо с открытым глазом
+RUN(5,1.6);{const D=ZC.FIN.intro.Wd;if(!D.w1.lesh||D.w1.lesh.g.position.y<-1||!INF(WP(D.w1.lesh.head)))throw new Error('FAIL 6-1: Лешего нет в кадре');}
+//@@ shot=intro_w1.png wait=200
+RUN(5,3.3);{const D=ZC.FIN.intro.Wd;if(!D.w2.vod||!INF(WP(D.w2.vod.head||D.w2.som.s0)))throw new Error('FAIL 6-2: Водяного нет в кадре');}
+//@@ shot=intro_w2.png wait=200
+RUN(5,5.2);{const D=ZC.FIN.intro.Wd;if(!D.w3.sol||!INF(WP(D.w3.sol.head)))throw new Error('FAIL 6-3: Соловья нет в кадре');}
+//@@ shot=intro_w3.png wait=200
 RUN(5,6.75);{const G=ZC.FIN.intro.Wd.w4.gor,V3=THREE.Vector3;if(!G.heads||G.heads.length!==3)throw new Error('FAIL у Горыныча в «Присказке» нет голов');
   const hx=G.heads.map(h=>h.g.getWorldPosition(new V3()));G.necks.forEach((n,i)=>{const d=hx[i].distanceTo(n.getWorldPosition(new V3()));if(d>4)throw new Error('FAIL голова '+i+' оторвана от шеи: '+d.toFixed(1));});
   ZC.FIN.introGor=hx.map(v=>v.x.toFixed(1)).join('/');}
 //@@ shot=intro_gor.png wait=200
 ZC.FIN.introGor
 //@@
+RUN(5,9.0);{const D=ZC.FIN.intro.Wd,L=D.w5.lih;if(!L||!INF(WP(L.eye)))throw new Error('FAIL 6-5: Лиха нет в кадре');if(L.lid.rotation.x>0)throw new Error('FAIL 6-5: глаз Лиха не открылся');}
+//@@ shot=intro_w5.png wait=200
 RUN(9,0)
 //@@
 const PRK=ZC.FIN.intro,W=ZC.W,G=ZC.G;let n=0;while(G.cine&&n<300){ZC.tick(1);n++;}ZC.tick(30);

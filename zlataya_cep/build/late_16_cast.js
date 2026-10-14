@@ -94,7 +94,8 @@ function buildKot(){const R=castRig(2.1,31),K=P_KOT,D=P_KOTD,C=PAL.cream;
   // хвост: 7 костей от корня — сцена ставит их по дуге
   for(let i=0;i<7;i++){const a=0.4+i*0.33;R.bone('tail'+i,'root',Math.sin(a)*0.62,0.12+i*0.02,-Math.cos(a)*0.62+0.1);R.part('tail'+i,hSph(0.135-i*0.008,6,5),i%2?D:K,tm(0,0,0,0,0,0,1,0.9,1.25),{kN:0.35});}
   return R;}
-makeKot=function(){const R=buildKot(),o=castMake(R);const B=o.rig;const lids=['L','R'].map(n=>lidProxy(B['lid'+n],1.3,-0.5,-1.65,0.9));
+// веки как у прототипа: −0.5 — открыты (моргание само), 1.3 — закрыты (сон, камень); прежде было наоборот, и «открытый» Кот смотрел из-под века
+makeKot=function(){const R=buildKot(),o=castMake(R);const B=o.rig;const lids=['L','R'].map(n=>lidProxy(B['lid'+n],-0.5,1.3,-1.65,1.3));
   B.lidL.rotation.x=B.lidR.rotation.x=-1.65;const tail=[];for(let i=0;i<7;i++)tail.push(B['tail'+i]);B.armL.rotation.x=-0.12;B.armR.rotation.x=-0.12;
   return castReg(Object.assign(o,{head:B.head,lids,tail}),{hs:1.4,lid:[-1.65,1.3]});};
 

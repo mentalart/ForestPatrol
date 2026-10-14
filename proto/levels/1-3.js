@@ -119,7 +119,7 @@ function build13(){W.soloMirror=true;
   const streaks=[];for(let i=0;i<22;i++){const m=new THREE.Mesh(new THREE.BoxGeometry(0.04,0.04,2.4),MB(0xffffff,{transparent:true,opacity:0}));m.userData={x:(i%2?1:-1)*rand(2.5,8),y:rand(0.6,4.5),dz:rand(0,30)};W.group.add(m);streaks.push(m);}
   /* ---------- песня и состояние ---------- */
   const S={t:BT[-4],B:60/PARTS[0].bpm,bph:0,lastK:-5,state:'play',off:[0,0],lane:[1,1],strings:[],beasts:[],obst:[],sparks:[],items:[],picks:[],hits:[[0,0,0,0,0],[0,0,0,0,0]],tries:[[0,0,0,0,0],[0,0,0,0,0]],rep:[0,0,0,0,0],foes:[],parries:[0,0],counters:[0,0],duos:0,skipCheck:-1,
-    combo:[0,0],best:[0,0],got:[0,0],fin:null,ft:0,show:true,kolZ:-6,lit:[false,false,false,false],fly:[-1e9,-1e9],mag:[-1e9,-1e9],fox:[0,0],foxK:[0,0],foxOff:false,foxCaught:[0,0],sh:[[0,0,0,0,0],[0,0,0,0,0]],st:[[0,0,0,0,0],[0,0,0,0,0]],part:0,told:[{},{}],finale:[0,0]};S.BT=BT;W.song=S;S.tales=[];S.kolY=0;S.hop=-9;S.stars=[[],[]];
+    combo:[0,0],best:[0,0],got:[0,0],fin:null,ft:0,show:true,kolZ:-6,lit:[false,false,false,false],fly:[-1e9,-1e9],strJ:[-1e9,-1e9],mag:[-1e9,-1e9],fox:[0,0],foxK:[0,0],foxOff:false,foxCaught:[0,0],sh:[[0,0,0,0,0],[0,0,0,0,0]],st:[[0,0,0,0,0],[0,0,0,0,0]],part:0,told:[{},{}],finale:[0,0]};S.BT=BT;W.song=S;S.tales=[];S.kolY=0;S.hop=-9;S.stars=[[],[]];
   // нота струны и зверя — из мелодии песни на этой доле (игрок доигрывает «Сени»)
   const songLine=k=>{const bi=((k%16)+16)%16;return (Math.floor(k/16)%2===1?SONG_C:SONG_V)[bi];};
   const melNote=k=>{const l=songLine(k),m=l[0]||l[1]||songLine(k-1)[0]||67;return m+PARTS[partOf(Math.max(0,k))].tr+12;};
@@ -234,8 +234,12 @@ function build13(){W.soloMirror=true;
     else if(type==='storm'){f.lanes=lanes.map(l=>mir(pi,l));f.col='blue';const g=new THREE.Group();W.group.add(g);f.m={g,body:g};const xs=f.lanes.map(l=>LANES[pi][l]);
       for(const x of xs){for(let i=0;i<4;i++){const c=new THREE.Mesh(PUFF_GEO,M(0x4a4a60));c.scale.set(rand(0.6,0.9),rand(0.4,0.55),rand(0.5,0.7));c.position.set(x+rand(-0.6,0.6),4.9+rand(-0.15,0.2),z+rand(-0.4,0.4));g.add(c);}
         const bolt=new THREE.Mesh(new THREE.BoxGeometry(0.1,1.6,0.1),MB(0xbfe0ff,{transparent:true,opacity:0.9}));bolt.position.set(x,3.9,z);g.add(bolt);(f.bolts=f.bolts||[]).push(bolt);}}
-    else if(type==='duo'){f.pi=2;f.col='yellow';if(air){f.m=makeRunGoose();f.m.g.scale.setScalar(1.9);f.m.g.traverse(o=>{if(o.material&&o.material.color&&o.material.color.getHex()===0xffffff)o.material=M(0x8a8a94);});}
-      else{f.m=makeBeast('wolf');f.m.g.scale.setScalar(1.7);}}
+    else if(type==='duo'){f.pi=2;f.col='yellow';if(air){f.m=makeRunGoose();f.m.g.scale.setScalar(2.2);f.m.g.traverse(o=>{if(o.material&&o.material.color&&o.material.color.getHex()===0xffffff)o.material=M(0x3a3448,{fog:false});});}
+      else{f.m=makeBeast('wolf');f.m.g.scale.setScalar(1.7);}
+      // вожака видно издали: золотой венец над головой и жёлтое сияние вокруг — белеет в долю, когда жать щит вдвоём
+      const gold=MB(0xffd040,{fog:false}),cr=new THREE.Group();cr.position.set(0,air?0.92:1.32,air?0.86:0);f.m.g.add(cr);
+      addMesh(new THREE.TorusGeometry(0.17,0.035,5,16),gold,0,0,0,cr).rotation.x=Math.PI/2;for(let i=0;i<5;i++){const a=i/5*Math.PI*2;addMesh(new THREE.ConeGeometry(0.05,0.17,4),gold,Math.sin(a)*0.17,0.09,Math.cos(a)*0.17,cr);}
+      f.halo=new THREE.Mesh(new THREE.TorusGeometry(air?2.1:1.7,0.09,6,40),MB(COL.yellow,{transparent:true,opacity:0.85,fog:false,depthWrite:false}));f.halo.renderOrder=3;f.halo.visible=false;W.group.add(f.halo);}
     if(f.m.ring){f.m.ring.visible=false;f.m.sun.visible=false;}f.m.g.visible=false;
     if(type!=='storm'){const mk=new THREE.Mesh(new THREE.RingGeometry(0.55,0.82,26),MB(FCOL[f.col],{transparent:true,opacity:0.7,side:THREE.DoubleSide,depthWrite:false}));mk.rotation.x=-Math.PI/2;mk.renderOrder=2;mk.visible=false;W.group.add(mk);f.mk=mk;}
     if(type==='duo')f.rings=[0,1].map(q=>{const rr=new THREE.Mesh(new THREE.TorusGeometry(1,0.07,6,30),MB(COL.yellow,{transparent:true,opacity:0.9}));rr.rotation.x=Math.PI/2;rr.visible=false;W.group.add(rr);return rr;});
@@ -261,8 +265,8 @@ function build13(){W.soloMirror=true;
     sparkRow(pi,33,35,1);addObst('hole',pi,34,[0]);addObst('hole',pi,36,[2]);addObst('hole',pi,38,[1]);sparkRow(pi,37,39,0);
     addObst('barrel',pi,41,[1]);addObst('barrel',pi,43,[0]);addObst('branch',pi,45);
     addPick('goose',pi,47,1);sparkRow(pi,48,53.5,zig(pi,48),0,3.6);if(pi===0)nutItem(lx(pi,1),3.6,zK(51));
-    addString(pi,50,null,[1],{noArc:true});addObst('pit',pi,50.3);addTale(pi,56,'wolf');   // Волк: зов 52–55, ответ 56–59
-    addString(pi,61,pi===1?'link':null,[1],{noArc:true});addObst('pit',pi,61.3);addString(pi,62,null,[1],{air:true});
+    addString(pi,50,null,null,{noArc:true});addObst('pit',pi,50.3);addTale(pi,56,'wolf');   // Волк: зов 52–55, ответ 56–59
+    addString(pi,61,pi===1?'link':null,null,{noArc:true});addObst('pit',pi,61.3);addString(pi,62,null,null,{air:true});
     // часть 3 · Лисья тропа — всё быстрее, лиса сзади, Медведь поёт; в конце струны и воздушные струны — запутай лису
     sparkRow(pi,65,67,1);addObst('log',pi,66);addObst('stump',pi,68,[0]);addObst('stump',pi,68,[1]);addObst('barrel',pi,70,[2]);addObst('barrel',pi,72,[1]);
     addTale(pi,74,'bear');addPick('magnet',pi,76,1);sparkRow(pi,77,82.5,zig(pi,77));addObst('branch',pi,79);addObst('mush',pi,80,[1]);sparkRow(pi,80.2,82,1,3.4,1.2);   // Медведь: зов 70–73, ответ 74–77
@@ -349,11 +353,11 @@ function build13(){W.soloMirror=true;
     for(const o of S.obst)if(o.ph===p&&o.k>=k0){o.hit=false;o.lad=false;if(o.type==='barrel'){o.g.visible=false;o.bz=o.z-12;}if(o.type==='mush'&&o.cap)o.cap.scale.y=0.7;}
     for(const q of S.tales)if(q.ph===p&&q.k>=k0){q.res=null;q.t=0;q.hit=[0,0,0,0];q.b.body.rotation.set(0,0,0);}
     for(const q of S.picks)if(q.ph===p&&q.k>=k0){q.taken=false;q.g.visible=true;}
-    S.fly=[-1e9,-1e9];S.mag=[-1e9,-1e9];S.fox=[0,0];S.foxK=[k0,k0];S.finale=[0,0];
+    S.fly=[-1e9,-1e9];S.strJ=[-1e9,-1e9];S.mag=[-1e9,-1e9];S.fox=[0,0];S.foxK=[k0,k0];S.finale=[0,0];
     if(p===2){S.foxOff=false;foxes.forEach(f=>{f.trip=0;f.leap=0;f.d=12;f.body.rotation.x=0;f.g.visible=true;});}
     for(const h of HEROES)placeOnGround(h,h.pos.x,h.pos.z+dz,0);stitch();SFX.whoosh();banner('Ещё разок — последнюю фразу!','#ffe7a0',2,'звено осталось — прыгайте на струны, когда кружок станет точкой');snapCams();}
   // для ботов и разработки: перескочить на долю k (как rewind, только вперёд); в часть 5 — уже в полёте
-  S.jump=k=>{const t0=S.t;S.t=BT[k]-0.02;S.lastK=k-1;for(const q of S.tales)if(!q.res&&q.k<k){q.res='skip';q.t=9;}for(const q of S.picks)if(q.k<k){q.taken=true;q.g.visible=false;}   // пропущенные встречные не толкают, перья и подковы не подхватываются по путиconst dz=zAt(S.t)-zAt(t0);for(const h of HEROES)placeOnGround(h,h.pos.x,h.pos.z+dz,0);S.kolZ+=dz;
+  S.jump=k=>{const t0=S.t;S.strJ=[-1e9,-1e9];S.t=BT[k]-0.02;S.lastK=k-1;for(const q of S.tales)if(!q.res&&q.k<k){q.res='skip';q.t=9;}for(const q of S.picks)if(q.k<k){q.taken=true;q.g.visible=false;}   // пропущенные встречные не толкают, перья и подковы не подхватываются по путиconst dz=zAt(S.t)-zAt(t0);for(const h of HEROES)placeOnGround(h,h.pos.x,h.pos.z+dz,0);S.kolZ+=dz;
     if(k>=PS[4]-2)S.fly=[BT[END]+0.3,BT[END]+0.3];snapCams();};
   // лепестки: каждое спотыкание (препятствие не перепрыгнул, зверь толкнул) снимает лепесток; кончились — герой 8 долей отдыхает:
   // катится за Колобком, препятствия его не трогают, искры не собираются; потом все три лепестка снова на месте. Поражения нет.
@@ -370,14 +374,14 @@ function build13(){W.soloMirror=true;
   // струна: в такт — высоко (воздушная — со струны на струну: снова на ту же высоту через долю), «Чисто!» — в полдоли окна, искры за попадание;
   // мимо доли — обычный прыжок, не ниже простого. На Лёгком пути окно струны шире в полтора раза — прыжок «подтягивается» к доле
   const strWin=pi=>winOf(pi)*(players[pi].path==='easy'?1.5:1);
-  function hitString(pi,s,j,hh,xL){s.used=true;s.vib=1;S.tries[pi][s.ph]++;S.st[pi][s.ph]++;const top=hh.pos.clone().add(new V3(0,hh.d.height+0.7,0));
+  function hitString(pi,s,j,hh,xL){s.used=true;if(!s.air)S.strJ[pi]=S.t;s.vib=1;S.tries[pi][s.ph]++;S.st[pi][s.ph]++;const top=hh.pos.clone().add(new V3(0,hh.d.height+0.7,0));
     if(Math.abs(j.d)<=strWin(pi)){const clean=Math.abs(j.d)<=winOf(pi)*0.5;hh.vel.y=s.air?GRAV*S.B/2+0.4:14;S.hits[pi][s.ph]++;S.sh[pi][s.ph]++;s.ok=true;SFX.toss();if(s.k>=89&&s.ph===2)S.finale[pi]++;
       if(s.item&&!s.item.taken){const it=s.item,from=it.pos.clone();anim(0.5,k=>{if(it.taken)return;it.base=lerp(from.y,hh.pos.y+1,k);it.pos.x=lerp(from.x,hh.pos.x,k);it.pos.z=lerp(from.z,hh.pos.z-0.5,k);if(k>=1)takeItem(it,hh);});}   // звено само летит к тому, кто попал в такт
       gusli(melNote(s.k),0,0.22);if(clean)gusli(melNote(s.k)+7,0.07,0.1);const n=(clean?2:1)*mult(pi);S.got[pi]+=n;
       floatText(top,(clean?'Чисто!':'В такт!')+' +'+n,clean?'#ffffff':'#bff4ff');burst(new V3(xL,s.y+0.3,s.z),STRC,clean?18:12,3);combo(pi,true);
       foxPush(pi);helpFriend(pi);duoCheck(pi,s);
       if(s.air)teach(pi,'airOk','Со струны на струну — над лесом летишь!<br>Жми прыжок '+K(pi,'jump')+' на каждой, когда кружок станет точкой.');}
-    else{hh.vel.y=s.air?4:9;SFX.jump();gusli(55,0,0.12);floatText(top,j.d<0?'рано':'поздно','#dddddd');combo(pi,false);
+    else{hh.vel.y=s.air?4:14;SFX.jump();gusli(55,0,0.12);floatText(top,j.d<0?'рано':'поздно','#dddddd');combo(pi,false);
       teach(pi,'strMiss','На струну прыгай ровно тогда,<br>когда кружок на ней станет точкой.');}}
   // «в лад»: прыжок на «и» (полдоли до препятствия) — герой над корягой ровно в долю: +искра
   function ladJump(pi,hh){if(resting(pi))return;const o=S.obst.find(q=>q.pi===pi&&!q.hit&&!q.lad&&(q.type==='log'||((q.type==='barrel'||q.type==='hole'||q.type==='stump')&&q.lanes.includes(S.lane[pi])))&&BT[q.k]-S.t>0&&BT[q.k]-S.t<0.9);
@@ -427,10 +431,11 @@ function build13(){W.soloMirror=true;
       if(o.type==='log'&&Math.abs(dz)<0.5&&hh.pos.y<0.55){o.hit=true;stumble(pi,'Коряга!');teach(pi,'log','Коряга поперёк тропы — прыгни '+K(pi,'jump')+' через неё!');}
       else if(o.type==='stump'&&Math.abs(dz)<0.7&&o.lanes.includes(myLane)&&hh.pos.y<0.95){o.hit=true;stumble(pi,'Пень!');teach(pi,'stump','Пень на дорожке — на соседнюю беги '+K(pi,'left')+K(pi,'right')+'!');}
       else if(o.type==='branch'&&Math.abs(dz)<0.45&&hh.rollT<=0&&hh.pos.y<1.5){o.hit=true;stumble(pi,'Ветка!');teach(pi,'branch','Низкая ветка — кувырком '+K(pi,'roll')+' под ней проскочи!');}
-      else if(o.type==='wall'&&Math.abs(dz)<0.5&&hh.pos.y<2.0){o.hit=true;stumble(pi,o.ph?'Бурелом! Перевалился':'Плетень высок! Перевалился');hh.vel.y=9.5;hh.grounded=false;
+      else if(o.type==='wall'&&Math.abs(dz)<0.5&&hh.pos.y<2.0&&S.t-S.strJ[pi]>1.4){   // со струны (хоть и не в такт) — перелетел
+        o.hit=true;stumble(pi,o.ph?'Бурелом! Перевалился':'Плетень высок! Перевалился');hh.vel.y=9.5;hh.grounded=false;
         teach(pi,'wall','Высокий плетень — простым прыжком не взять.<br>Со струны в такт '+K(pi,'jump')+' перелетай — вот так, опять!');}
       else if(o.type==='pit'&&dz<-0.05&&dz>-o.len&&hh.grounded&&hh.pos.y<0.2){o.hit=true;stumble(pi,'Нить подтянула!',true);placeOnGround(hh,hh.pos.x,o.z-o.len-0.4,0);hh.vel.y=6;hh.grounded=false;
-        teach(pi,'pit','Мост обвалился! Лишь со струны перелетишь:<br>Средняя дорожка, прыжок '+K(pi,'jump')+' под бубенец — и взлетишь.');}
+        teach(pi,'pit','Мост обвалился! Лишь со струны перелетишь:<br>На струне прыжок '+K(pi,'jump')+' под бубенец — и взлетишь.');}
       else if(o.type==='hole'&&dz<-0.1&&dz>-2.1&&o.lanes.includes(myLane)&&hh.grounded&&hh.pos.y<0.2){o.hit=true;SFX.splash();burst(new V3(hh.pos.x,0.1,hh.pos.z),0x9ad8ff,12,3);stumble(pi,'Плюх! Доска сломалась!',true);
         teach(pi,'hole','Дыра в мосту — на другую дорожку '+K(pi,'left')+K(pi,'right')+' или прыгни '+K(pi,'jump')+' через дыру!');}
       else if(o.type==='barrel'&&o.g.visible&&Math.abs(dz)<0.65&&o.lanes.includes(myLane)&&hh.pos.y<0.75){o.hit=true;stumble(pi,'Бум! Бочка');teach(pi,'barrel','Бочка навстречу катится — вбок беги или прыгни '+K(pi,'jump')+'!');}
@@ -497,8 +502,8 @@ function build13(){W.soloMirror=true;
         m.material.color.setHex(q.hit[i]?PCOL[P]:on?(resp&&!q.res?0xffffff:0xfff0b0):0x8a8a8a);});}
     // враги частей 4–5
     for(const f of S.foes){const bl=60/PARTS[f.ph].bpm,dtB=(BT[f.k]-S.t)/bl,P=f.pi===2?null:f.pi;const g=f.m.g;
-      if(S.state!=='play'){g.visible=false;if(f.mk)f.mk.visible=false;if(f.rings)f.rings.forEach(q=>{q.visible=false;});continue;}
-      if(dtB>4.2||(f.res&&f.t>1.4)){g.visible=false;if(f.mk)f.mk.visible=false;if(f.rings)f.rings.forEach(q=>{q.visible=false;});if(f.res)f.t+=dt;continue;}
+      if(S.state!=='play'){g.visible=false;if(f.mk)f.mk.visible=false;if(f.rings)f.rings.forEach(q=>{q.visible=false;});if(f.halo)f.halo.visible=false;continue;}
+      if(dtB>4.2||(f.res&&f.t>1.4)){g.visible=false;if(f.mk)f.mk.visible=false;if(f.rings)f.rings.forEach(q=>{q.visible=false;});if(f.halo)f.halo.visible=false;if(f.res)f.t+=dt;continue;}
       if(f.res)f.t+=dt;
       const hh=P===null?null:active(P);
       if(f.type==='lunge'||f.type==='crow'||f.type==='boar'){if(!f.locked){f.lane=S.lane[P];if(dtB<(f.type==='boar'?1.6:1.2))f.locked=true;}
@@ -524,10 +529,13 @@ function build13(){W.soloMirror=true;
       else if(f.type==='storm'){g.visible=true;f.bolts.forEach(b=>{b.visible=Math.sin(G.time*23+b.position.x)>0.2;});
         if(!f.res&&Math.abs(hh.pos.z-f.z)<0.8&&f.lanes.includes(laneOf(P,hh.pos.x))){foeBad(P,f,'Гром!');teach(P,'storm','Грозовая туча — облети её сторонкой '+K(P,'left')+K(P,'right')+'!');}
         else if(!f.res&&hh.pos.z<f.z-1){foeOk(P,f,'Облетел!',1);}}
-      else if(f.type==='duo'){const zz=Math.min(active(0).pos.z,active(1).pos.z)-1.8-Math.max(0,dtB)*bl*3.4;g.visible=true;g.position.set(0,f.y0+(f.air?0.3:0),f.res==='ok'?zz-f.t*9:zz);g.rotation.y=f.air?Math.PI:0;
+      else if(f.type==='duo'){const zz=Math.min(active(0).pos.z,active(1).pos.z)-1.8-Math.max(0,dtB)*bl*3.4;g.visible=true;g.position.set(0,f.y0+(f.air?0.9:0),f.res==='ok'?zz-f.t*9:zz);g.rotation.y=0;
         if(f.air&&f.m.wings)f.m.wings.forEach((w,i)=>{w.rotation.z=(i?-1:1)*Math.sin(G.time*6)*0.6;});if(f.res==='ok'){g.position.y+=f.t*3;}
         const u=clamp(1-dtB,0,1);f.rings.forEach((q,pi)=>{const h=active(pi);q.visible=!f.res&&dtB<2.2;q.position.set(h.pos.x,h.pos.y+0.08,h.pos.z);q.scale.setScalar(lerp(2.2,0.5,clamp((2.2-dtB)/2.2,0,1)));q.material.color.setHex(Math.abs(dtB)<0.2?0xffffff:COL.yellow);});
-        f.mk.visible=false;
+        f.mk.visible=false;f.halo.visible=!f.res&&dtB<3.2;f.halo.position.set(g.position.x,g.position.y+(f.air?0.3:0.8),g.position.z+0.2);
+        {const fr=((dtB%1)+1)%1;f.halo.scale.setScalar(1+0.35*Math.max(0,1-fr*3));f.halo.material.color.setHex(Math.abs(dtB)<0.2?0xffffff:COL.yellow);}
+        // счёт до удара над вожаком: «три, два, раз — щит!» — на каждую долю, звонок на «щит»
+        {const c=Math.ceil(dtB-0.001);if(!f.res&&c>=0&&c<=3&&f.cd!==c){f.cd=c;floatText(g.position.clone().add(new V3(0,f.air?2.4:3.0,0)),c?['','Раз…','Два…','Три…'][c]:'ЩИТ — вдвоём!',c?'#fff3b0':'#ffffff');tone(c?660:1320,c?0.08:0.18,'triangle',c?0.07:0.12);}}
         if(dtB<2.4&&dtB>2.2&&!f.told){f.told=true;floatText(g.position.clone().add(new V3(0,2.6,0)),f.air?'Вожак стаи!':'Волк-вожак!','#ffe08a');for(const pi of[0,1])teach(pi,'duo','Вожак! Кружки сжимаются у обоих —<br>Жмите щит '+K(pi,'guard')+' вместе, как станут малы, — вас двое!');}
         if(!f.res&&S.t>BT[f.k]+Math.max(foeWin(0),foeWin(1))*1.2+0.05+Math.max(0,songLag())){const ok=[0,1].map(pi=>f.press[pi]!==null&&Math.abs(f.press[pi])<=foeWin(pi)*1.2);
           if(ok[0]&&ok[1]){f.res='ok';f.t=0;S.duos++;SFX.horn();banner('Богатырский щит!','#ffd76a',1.4,'вдвоём, в одну долю · каждому +5 искр');for(const pi of[0,1]){foeOk(pi,f,'Вместе!',5);burst(active(pi).pos.clone().add(new V3(0,1,0)),0xffffff,12,4);}}
@@ -641,9 +649,6 @@ function build13(){W.soloMirror=true;
     prompt(pi,'roll',()=>headOf(active(pi)),()=>play_()&&ahead(pi,o=>o.type==='branch',5),'ветка');
     prompt(pi,'right',()=>headOf(active(pi)),()=>play_()&&blocked(pi,S.lane[pi])&&S.lane[pi]<2&&!blocked(pi,S.lane[pi]+1),'в сторону');
     prompt(pi,'left',()=>headOf(active(pi)),()=>play_()&&blocked(pi,S.lane[pi])&&S.lane[pi]>0&&(S.lane[pi]===2||blocked(pi,S.lane[pi]+1))&&!blocked(pi,S.lane[pi]-1),'в сторону');
-    const pitNear=()=>ahead(pi,o=>o.type==='pit',10);
-    prompt(pi,'right',()=>headOf(active(pi)),()=>play_()&&pitNear()&&S.lane[pi]<1,'к струне');
-    prompt(pi,'left',()=>headOf(active(pi)),()=>play_()&&pitNear()&&S.lane[pi]>1,'к струне');
     const taleNext=()=>S.tales.some(q=>q.pi===pi&&!q.res&&q.T.pat.some((on,i)=>{const d=BT[q.k+i]-S.t;return on&&!q.hit[i]&&d<0.6*60/PARTS[q.ph].bpm&&d>-0.15;}));
     prompt(pi,'guard',()=>headOf(active(pi)),()=>play_()&&taleNext(),'повтори');
     const nbF=()=>{const P=FST[S.fs];return ((Math.ceil(S.ft/S.B2-0.2)%P.n)+P.n)%P.n;};
