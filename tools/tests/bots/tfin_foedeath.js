@@ -10,7 +10,7 @@ window.spawn=k=>{const h=hero(),e=ZC.FIN.dbgFoe(k,h.pos.x+1.2,h.pos.z-4,{y:h.pos
 window.die=k=>{const e=spawn(k),sh0=DX.stats.shards,r={k,bad:[]};e.harmless=true;ZC.FIN.dbgUnravel(e);const D=e._dth;
   if(!D){r.bad.push('нет _dth');return r;}r.fam=D.fam||'-';r.big=D.big;
   let sy0=9,sy1=0;for(let i=0;i<30;i++){ZC.tick(1);if(!D.popped){sy0=Math.min(sy0,e.body.scale.y);sy1=Math.max(sy1,e.body.scale.y);}}
-  r.shards=DX.stats.shards-sh0;if(!D.popped)r.bad.push('не хлопнул');if(sy0<0.9||sy1>1.35)r.bad.push('тело '+sy0.toFixed(2)+'..'+sy1.toFixed(2));
+  r.shards=DX.stats.shards-sh0;if(!D.popped)r.bad.push('не хлопнул');if(sy0<0.9||sy1>(D.balloon?1.5:1.35))r.bad.push('тело '+sy0.toFixed(2)+'..'+sy1.toFixed(2));
   const skin=['solovei','dvoynik'].includes(k);if(r.shards===0&&!skin)r.bad.push('осколков нет');if(r.shards>0&&skin)r.bad.push('кости, а рассыпался');
   ZC.tick(150);if(DX.sh.length||DX.loops.length)r.bad.push('остались '+DX.sh.length+'+'+DX.loops.length);if(ZC.W.enemies.includes(e))r.bad.push('враг не убран');
   return r.k+':'+r.fam+(r.big?'/big':'')+' sh='+r.shards+(r.bad.length?' BAD['+r.bad.join('; ')+']':'');};

@@ -5,7 +5,8 @@
 //    разлетаются, прыгают по полу и по очереди сжимаются (масштабом с лёгким перелётом — материалы общие, прозрачность не трогаем);
 //  • «семейство» по def.look: нитяные — кольца нити взлетают винтом; водные — брызги и круги; лесные — листья и щепки;
 //    огненные — угольки и зола; светлые (тень, тучка, мотылёк) — рассыпаются в искры и плывут вверх;
-//  • большой враг: стоп-кадр на хлопке, два кольца, тряска.
+//  • большой враг: стоп-кадр на хлопке, два кольца, тряска;
+//  • «лопнуть как шарик» (late_91h_punch, PUNCH.f.pop): вдох 0,16 с — раздувание до ×1,45 с миганием белым, на хлопке волна, конфетти, «Хлоп!».
 // Тело при смерти больше не копит приседание от удара (late_91b: body.scale.multiply — в dying прототип не сбрасывал body.scale,
 // и на 144 Гц враг «расплющивался»): здесь масштаб тела задаётся заново каждый кадр.
 // Хуки: unravel (обёртка — оригинал вызывается первым, onDeath уровней работают как раньше), updateFoe (после оригинала), step (осколки).
@@ -137,6 +138,7 @@ function dthFx(e,D,c,floor){
 
 function dthPop(e,D){
   const t0=performance.now();D.popped=true;DTH.stats.pops++;
+  if(FIN.punch)FIN.punch.unwhite(e);   // белый силуэт (late_91h) не должен попасть в осколки
   const spec=Object.assign({},DTH_SPEC.base,DTH_SPEC[D.fam]||{}),big=D.big,s=e.s||1,top=(e.L&&e.L.top||1.4)*s;
   e.g.updateMatrixWorld(true);
   const c=e.pos.clone().add(new V3(0,top*0.5,0)),floorY=e.pos.y,floor=new V3(c.x,floorY+0.08,c.z);
@@ -156,10 +158,13 @@ function dthPop(e,D){
   D.shards=n;DTH.stats.shards+=n;
   if(n>0)e.g.visible=false;
   try{dthFx(e,D,c,floor);}catch(err){console.error('dthFx',err);}
+  if(!big&&D.balloon&&FIN.punch){try{FIN.punch.pop(e,c,floor);}catch(err){console.error('punch pop',err);}}
   const ms=performance.now()-t0;DTH.stats.ms+=ms;DTH.stats.maxMs=Math.max(DTH.stats.maxMs,ms);}
 
 function dthStart(e){
-  e._dth={t:0,popped:false,fam:DTH_FAM[e.def.look]||'',big:!!e.big,pre:e.big?0.32:0.1,ry:e.inner.rotation.y,leak:0,shards:0};DTH.stats.deaths++;
+  const bal=!e.big&&!!FIN.punch&&FIN.punch.popOn();   // «лопнуть как шарик» (late_91h): вдох дольше — раздувание
+  e._dth={t:0,popped:false,fam:DTH_FAM[e.def.look]||'',big:!!e.big,pre:e.big?0.32:bal?0.16:0.1,balloon:bal,ry:e.inner.rotation.y,leak:0,shards:0};DTH.stats.deaths++;
+  if(bal)FIN.punch.squeak(e);
   if(e.big&&typeof jxSprite==='function'&&typeof JX!=='undefined'&&JX.on){try{jxSprite('dot',0xfff0c0,e.pos.clone().add(new V3(0,(e.L.top||1.4)*(e.s||1)*0.5,0)),e.r*3.6,0.32,{op:0.55});}catch(err){}}}
 
 function dthStep(e,D,dt){
@@ -170,6 +175,7 @@ function dthStep(e,D,dt){
     e.g.scale.setScalar(1);e.inner.rotation.y=D.ry+Math.sin(D.t*60)*0.1*u;   // вместо линейного сжатия и вращения прототипа
     if(D.big){const q=Math.sin(D.t*55)*0.025*u;b.scale.set(1+0.05*u+q,1+0.1*u-q,1+0.05*u+q);b.position.set(Math.sin(D.t*83)*0.05*u,0,Math.cos(D.t*71)*0.05*u);
       D.leak-=dt;if(D.leak<=0&&FIN.fx){D.leak=0.08;FIN.fx.sparkle(e.pos.clone().add(new V3(0,(e.L.top||1.4)*(e.s||1)*0.5,0)),3,0xffe9a0);}}
+    else if(D.balloon){const q=1+0.45*u*u+0.05*Math.sin(D.t*90)*u;b.scale.set(q,q*0.97,q);if(FIN.punch)FIN.punch.flicker(e,u>0.55&&Math.sin(D.t*120)>0);}
     else{const o=dthOut(u);b.scale.set(1-0.12*o,1+0.22*o,1-0.12*o);}
     if(D.t>=D.pre)dthPop(e,D);
     return;}
