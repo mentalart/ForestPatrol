@@ -69,6 +69,7 @@ for e in VL:
     f=os.path.join(VD,e['id']+'.mp3')
     if not (os.path.exists(f) and e.get('dur')):print('voice: нет записи',e['id']);continue
     ve={'id':e['id'],'lv':e['lv'],'who':e['who'],'text':e['text'],'dur':e['dur'],'gain':e.get('gain',1),'lul':e.get('lul')}
+    if e.get('voice')=='reader':ve['voice']='reader'   # Сказительница (ремарки роликов): ролик ждёт её голос дольше (late_91_voice.js)
     if PAGES:
         os.makedirs(os.path.join(PAGES,'voice'),exist_ok=True);import shutil;shutil.copyfile(f,os.path.join(PAGES,'voice',e['id']+'.mp3'));ve['src']='voice/'+e['id']+'.mp3'
     else:ve['b64']=base64.b64encode(open(f,'rb').read()).decode()

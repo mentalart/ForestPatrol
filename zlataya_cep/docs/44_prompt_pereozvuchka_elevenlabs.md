@@ -47,7 +47,8 @@
   подагент, скачивая `words_download_url` в файл. `tfin_readvoice` иногда падает («last=r0467» — успела зазвучать другая запись),
   повторный прогон зелёный.
   **Ремарки рассказчика в роликах** (курсив без имени) — голосом Сказительницы (`cast.reader`): запись `who: null`, `voice: reader`,
-  `tts` с `[warm, storytelling]`. Сделано: вступление 2-2 (`2-2_s01…s06`, бот `tfin_k22voice`). Список остальных стихов — `36_boss_voice_lines.md`.
+  `tts` с `[warm, storytelling]`. Сделано: миры 1 и 2 — 78 ремарок (`<уровень>_sNN`; ролики мира 2 — из модулей уровней, ролики прототипа там не играют; боты
+  `tfin_k22voice`, `tfin_narrvoice`). Длинным строкам — `[quickly]`; ролик ждёт голос Сказительницы до 4,5 с. Список остальных стихов — `36_boss_voice_lines.md`.
   **Дальше:** миры 3–5, боссы, хаб/эпилог (`luko`, `epi`, `g`), карточки боссов `lv: boss`.
 - **Как работать с подключённым MCP.** `creative_generate_speech` (`model_id: eleven_v4`, `voice_id`, `prompt` = `el_tag` + `tts`,
   `generations_count` 1, для ключевых реплик 3), до 8–9 запросов разом в одну flow, затем один `creative_get_flow_run_status` по всем
