@@ -514,7 +514,7 @@
 | `44_prompt_pereozvuchka_elevenlabs.md` | Промт: чистовая переозвучка всей игры через ElevenLabs MCP |
 | `45_kino_audit.md` | Аудит роликов «Златой цепи» и очередь ручной постановки |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 184 файлов |
+| `changes/` | 188 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
