@@ -150,6 +150,7 @@ def main():
             r = subprocess.run([FFMPEG, '-nostdin', '-hide_banner', '-i', mp3, '-f', 'null', '-'], capture_output=True, text=True)
             m = re.findall(r'time=(\d+):(\d+):([\d.]+)', r.stderr)
             e['dur'] = round(int(m[-1][0]) * 3600 + int(m[-1][1]) * 60 + float(m[-1][2]), 2) if m else 0
+            e.pop('voice', None)   # голос записи — снова голос каталога (записи ElevenLabs — read_el.py)
         if i % 50 == 0:
             print(i, '/', len(todo), flush=True)
     lines.sort(key=lambda e: e['id'])

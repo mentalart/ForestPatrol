@@ -1,0 +1,193 @@
+<title>Пилот переозвучки</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=PT+Sans:wght@400;700&family=PT+Mono&display=swap">
+<style>
+/* Layout: реплики по порядку двух сцен; у каждой — плеер, оценка и комментарий; сверху — сводка, прилипающая к верху. */
+:root {
+  --bg: #f6f4ee; --surface: #fffdf8; --ink: #1f2240; --muted: #5d6078; --line: #ddd8c8;
+  --gold: #a87b14; --gold-soft: #f3e6c2; --ok: #2f6b45; --ok-soft: #e1efe4; --bad: #9a3b1f; --bad-soft: #f6e2d9;
+  --font-display: "Prata", Georgia, "Times New Roman", serif;
+  --font-body: "PT Sans", "Segoe UI", Roboto, Arial, sans-serif;
+  --font-mono: "PT Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14152a; --surface: #1d1f38; --ink: #ecebf5; --muted: #a6a8c2; --line: #33365a;
+    --gold: #e2b852; --gold-soft: #3a3320; --ok: #7fcf98; --ok-soft: #1d3527; --bad: #f29b7c; --bad-soft: #3a2420;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14152a; --surface: #1d1f38; --ink: #ecebf5; --muted: #a6a8c2; --line: #33365a;
+  --gold: #e2b852; --gold-soft: #3a3320; --ok: #7fcf98; --ok-soft: #1d3527; --bad: #f29b7c; --bad-soft: #3a2420;
+  color-scheme: dark;
+}
+body { background: var(--bg); color: var(--ink); font: 16px/1.5 var(--font-body); }
+.wrap { max-width: 860px; margin: 0 auto; padding-inline: 16px; padding-block: 24px 64px; display: grid; gap: 24px; }
+h1, h2 { font-family: var(--font-display); font-weight: 400; text-wrap: balance; margin: 0; }
+h1 { font-size: 2rem; line-height: 1.15; }
+h2 { font-size: 1.3rem; }
+.lead { color: var(--muted); max-width: 64ch; margin: 6px 0 0; }
+.notes { font-size: .92rem; color: var(--muted); margin: 0; padding-left: 1.1em; display: grid; gap: 4px; }
+.summary { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 2; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 10px; padding: 10px 14px; display: flex; flex-wrap: wrap; gap: 6px 18px; align-items: center; }
+.summary b { font-variant-numeric: tabular-nums; }
+.status { font-size: .85rem; color: var(--muted); flex-basis: 100%; }
+.status.err { color: var(--bad); }
+section { display: grid; gap: 10px; }
+.head { border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+.line { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: grid; gap: 8px; }
+.line.ok { border-color: var(--ok); }
+.line.redo { border-color: var(--bad); }
+.top { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; justify-content: space-between; }
+.who { font-weight: 700; }
+.meta { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.meta .over { color: var(--bad); }
+.txt { margin: 0; }
+audio { width: 100%; height: 36px; }
+.verdict { display: flex; flex-wrap: wrap; gap: 8px; }
+.verdict label { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid var(--line); border-radius: 999px; cursor: pointer; font-size: .92rem; }
+.verdict input { accent-color: var(--ok); margin: 0; }
+.verdict label.on-ok { background: var(--ok-soft); border-color: var(--ok); }
+.verdict label.on-redo { background: var(--bad-soft); border-color: var(--bad); }
+.takes { display: grid; gap: 6px; padding: 8px 10px; border: 1px dashed var(--line); border-radius: 8px; }
+.takes .t { display: grid; grid-template-columns: auto auto 1fr; gap: 8px; align-items: center; }
+.takes .t input { accent-color: var(--gold); width: 18px; height: 18px; margin: 0; }
+.takes small { color: var(--muted); }
+.note { width: 100%; box-sizing: border-box; min-height: 2.2em; font: inherit; font-size: .92rem; color: var(--ink);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 6px 10px; resize: vertical; }
+.overall { background: var(--surface); border: 1px solid var(--gold); border-radius: 10px; padding: 14px; display: grid; gap: 8px; }
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1>Пилот переозвучки</h1>
+    <p class="lead">Пролог и ролик «Без имён» новыми голосами, уже с обработкой игры: срезана тишина, применены сдвиг тона и выравнивание громкости. Отметьте каждую реплику: «хорошо» или «переделать» с комментарием.</p>
+  </header>
+  <ul class="notes">
+    <li>Йоша и Тишка — один голос (Lunya). Тишка поднят на 2 полутона, Йоша на 0,5. Послушайте, различаются ли они.</li>
+    <li>Детям сдвиг тона уменьшен: был 1–3,5 полутона под старые голоса, теперь 0–2.</li>
+    <li>У Йоши в «Ха-ха-ха! Вот так дела!» смех короче («Ха-ха!»), чтобы реплика уложилась в ролик. Текст на экране тот же.</li>
+    <li>Для двух ключевых реплик сделано по три дубля, это необработанные исходники. В игре сейчас стоит первый.</li>
+  </ul>
+  <div class="summary" aria-live="polite">
+    <span>Хорошо: <b id="cOk">0</b></span><span>Переделать: <b id="cRedo">0</b></span><span>Не отмечено: <b id="cNone">0</b></span>
+    <div class="status" id="status">Подключаю сохранение…</div>
+  </div>
+  <main id="root"></main>
+  <div class="overall">
+    <h2>Общий вывод</h2>
+    <div class="verdict" id="overall"></div>
+    <textarea class="note" id="note-overall" placeholder="Что поменять до массовой озвучки (голоса, подача, тон детей)"></textarea>
+  </div>
+</div>
+
+<script>
+const NAMES = { kot:"Кот Учёный", tishka:"Тишка", proshka:"Прошка", yosha:"Йоша", potap:"Потап", pelageya:"Пелагея", zven:"Звенышко" };
+const SCENES = [
+  { title: "Пролог", ids: ["splash_001","p01_bayu","p02_zabyl","p03_malyshi","p04_samokat","p05_haha","p05a_hihi","p05b_hoho","p05c_haha","p05d_prokatilsya","p06_bezhim","p07_volk","p08_akh","p09_lesenka","p10_podnimu","p11_sam"] },
+  { title: "Ролик «Без имён»", ids: ["luko_124","luko_125","luko_126","luko_127","luko_128"] },
+];
+const L = {"splash_001":["kot","Абадзех-Лаб! Лаборатория творчества.",3.09,3.2],"p01_bayu":["tishka","Баю-баю, за рекою…",3,4.4],"p02_zabyl":["tishka","Дальше слов не помню я…",2.18,3.2],"p03_malyshi":["proshka","Колыбельные — для малых, не для нас, для удалых!",2.56,2.4],"p04_samokat":["proshka","Хочешь — дам самокат, дружок? Он получше всяких строк!",3.12,2.5],"p05_haha":["yosha","Ха-ха-ха! Вот так дела!",1.94,2.2],"p05a_hihi":["tishka","Хи-хи-хи!",2.11,2.8],"p05b_hoho":["potap","Хо-хо-хо!",2.97,2.8],"p05c_haha":["pelageya","Ха-ха-ха!",1.99,2.8],"p05d_prokatilsya":["proshka","Ха-ха! Вот это я прокатился!",3.19,3],"p06_bezhim":["zven","Дзинь-дзинь! За мной — бегом!",2.66,2.6],"p07_volk":["tishka","♪ …серый волк живёт… ♪ (издалека)",2.25,3.4],"p08_akh":["tishka","(издалека) Ой, беда!",1.63,1.8],"p09_lesenka":["proshka","Щас подкручу механизм — и лесенка вниз!",2.52,2.4],"p10_podnimu":["potap","Стой, не бойся ничего — подниму тебя легко!",2.42,2.05],"p11_sam":["yosha","Сам управлюсь — я не мал!",1.72,1.6],"luko_124":["yosha","Эй… ты… ну, тот, что мост держал…",3.45,4.12],"luko_125":["zven","Про… ще… ни… я.",3.43,3.52],"luko_126":["proshka","Кот хочет попросить прощенья. У Кощея.",3.43,3.92],"luko_127":["pelageya","Я расскажу ему сказку. Я знаю, чем она кончится.",3.81,5.92],"luko_128":["proshka","Расскажи. А я скую — не подведу.",2.95,4.92]};
+const TAKES = { luko_124: 3, luko_127: 3 };
+const ALL = SCENES.flatMap(s => s.ids);
+const state = {};
+ALL.concat(["overall"]).forEach(id => state[id] = { v: "", note: "", take: TAKES[id] ? 1 : 0 });
+let db = null;
+const statusEl = document.getElementById("status");
+const setStatus = (t, err) => { statusEl.textContent = t; statusEl.classList.toggle("err", !!err); };
+
+function verdictEl(id, opts) {
+  const box = document.createElement("div"); box.className = "verdict";
+  for (const [v, label] of opts) {
+    const lab = document.createElement("label");
+    const inp = document.createElement("input"); inp.type = "checkbox"; inp.id = `v-${id}-${v}`; inp.dataset.v = v;
+    inp.addEventListener("change", e => { state[id].v = e.target.checked ? v : ""; render(id); counts(); save(id); });
+    lab.append(inp, document.createTextNode(label)); box.appendChild(lab);
+  }
+  return box;
+}
+function noteEl(id, ph) {
+  const ta = document.createElement("textarea"); ta.className = "note"; ta.id = "note-" + id; ta.placeholder = ph;
+  let t; ta.addEventListener("input", e => { clearTimeout(t); t = setTimeout(() => { state[id].note = e.target.value; save(id); }, 700); });
+  return ta;
+}
+function build() {
+  const root = document.getElementById("root");
+  for (const s of SCENES) {
+    const sec = document.createElement("section");
+    const h = document.createElement("div"); h.className = "head"; h.innerHTML = "<h2></h2>"; h.querySelector("h2").textContent = s.title; sec.appendChild(h);
+    for (const id of s.ids) {
+      const [who, text, dur, max] = L[id];
+      const el = document.createElement("article"); el.className = "line"; el.id = "line-" + id;
+      el.innerHTML = `<div class="top"><span class="who"></span><span class="meta"></span></div><p class="txt"></p><audio controls preload="none"></audio>`;
+      el.querySelector(".who").textContent = NAMES[who] || who;
+      const over = dur > max * 1.2;
+      el.querySelector(".meta").innerHTML = `${id} · ${dur.toFixed(2)} с / в ролике ${max} с`;
+      if (over) el.querySelector(".meta").classList.add("over");
+      el.querySelector(".txt").textContent = text;
+      el.querySelector("audio").src = "pilot/final/" + id + ".mp3";
+      if (TAKES[id]) {
+        const tk = document.createElement("div"); tk.className = "takes";
+        tk.innerHTML = "<small>Дубли (сырые, без обработки). Отметьте лучший — его поставлю в игру.</small>";
+        for (let n = 1; n <= TAKES[id]; n++) {
+          const row = document.createElement("div"); row.className = "t";
+          const inp = document.createElement("input"); inp.type = "radio"; inp.name = "take-" + id; inp.id = `take-${id}-${n}`;
+          inp.addEventListener("change", () => { state[id].take = n; save(id); });
+          const lab = document.createElement("label"); lab.htmlFor = inp.id; lab.textContent = "Дубль " + n;
+          const au = document.createElement("audio"); au.controls = true; au.preload = "none"; au.src = `pilot/${id}_t${n}.mp3`;
+          row.append(inp, lab, au); tk.appendChild(row);
+        }
+        el.appendChild(tk);
+      }
+      el.appendChild(verdictEl(id, [["ok","Хорошо"],["redo","Переделать"]]));
+      el.appendChild(noteEl(id, "Что не так (необязательно)"));
+      sec.appendChild(el);
+    }
+    root.appendChild(sec);
+  }
+  document.getElementById("overall").replaceWith(Object.assign(verdictEl("overall", [["ok","Можно озвучивать всю игру"],["redo","Сначала поправить"]]), { id: "overall" }));
+  document.getElementById("note-overall").addEventListener("input", (() => { let t; return e => { clearTimeout(t); t = setTimeout(() => { state.overall.note = e.target.value; save("overall"); }, 700); }; })());
+  document.querySelectorAll("audio").forEach(a => a.addEventListener("play", () => document.querySelectorAll("audio").forEach(o => { if (o !== a) o.pause(); })));
+}
+function render(id) {
+  const s = state[id];
+  document.querySelectorAll(`[id^="v-${id}-"]`).forEach(inp => {
+    const on = inp.dataset.v === s.v; inp.checked = on;
+    inp.parentElement.classList.toggle("on-ok", on && s.v === "ok"); inp.parentElement.classList.toggle("on-redo", on && s.v === "redo");
+  });
+  const el = document.getElementById("line-" + id);
+  if (el) { el.classList.toggle("ok", s.v === "ok"); el.classList.toggle("redo", s.v === "redo"); }
+  const ta = document.getElementById("note-" + id); if (ta && document.activeElement !== ta) ta.value = s.note || "";
+  if (TAKES[id]) { const r = document.getElementById(`take-${id}-${s.take || 1}`); if (r) r.checked = true; }
+}
+function counts() {
+  const ok = ALL.filter(i => state[i].v === "ok").length, redo = ALL.filter(i => state[i].v === "redo").length;
+  document.getElementById("cOk").textContent = ok; document.getElementById("cRedo").textContent = redo;
+  document.getElementById("cNone").textContent = ALL.length - ok - redo;
+}
+let pending = Promise.resolve();
+function save(id) {
+  try { localStorage.setItem("pilot", JSON.stringify(state)); } catch (e) {}
+  if (!db) return;
+  const s = state[id], body = { v: s.v, note: s.note || "", take: s.take || 0, at: new Date().toISOString() };
+  pending = pending.then(() => db.doc("pilot/" + id).set(body)).then(() => setStatus("Сохранено. Claude увидит отметки."))
+    .catch(e => setStatus("Не удалось сохранить, повторите отметку.", true));
+}
+build();
+try { const s = JSON.parse(localStorage.getItem("pilot") || "{}"); for (const k in s) if (state[k]) state[k] = s[k]; } catch (e) {}
+Object.keys(state).forEach(render); counts();
+(async () => {
+  try { db = window.claude && await window.claude.use("db"); } catch (e) { db = null; }
+  if (!db) { setStatus("Сохранение у Claude недоступно в этом окне: отметки хранятся только в этом браузере.", true); return; }
+  setStatus("Отметки сохраняются автоматически.");
+  db.collection("pilot").onSnapshot(snap => {
+    for (const d of snap.docs) {
+      if (!state[d.id] || d.metadata.hasPendingWrites) continue;
+      const v = d.data() || {}; state[d.id] = { v: v.v || "", note: v.note || "", take: v.take || (TAKES[d.id] ? 1 : 0) }; render(d.id);
+    }
+    counts();
+  }, () => setStatus("Связь с хранилищем прервалась — обновите страницу.", true));
+})();
+</script>
