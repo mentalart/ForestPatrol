@@ -1,0 +1,107 @@
+[
+{
+"id": "3-1_034",
+"who": "sadovnik",
+"vid": "LTkx8oHrUXaND7aaxdTA",
+"prompt": "[old, raspy] Тени Кощеевы яблоки уносят. Видно, Кощей снова мальчишкой стать хочет!",
+"max": 4.9
+},
+{
+"id": "3-1_036",
+"who": "molodets",
+"vid": "sy3iWjPWyIrDlSo8mBwS",
+"prompt": "[cheerful] Вот почему сад зовётся — молодильных яблок! Ну, ворота — настежь!",
+"max": 4.4
+},
+{
+"id": "3-1_037",
+"who": "molodets",
+"vid": "sy3iWjPWyIrDlSo8mBwS",
+"prompt": "[cheerful] А тени яблоки к колодцу живой воды носят — к Ворону Кощееву.",
+"max": 4.1
+},
+{
+"id": "3-1_042",
+"who": "molodets",
+"vid": "sy3iWjPWyIrDlSo8mBwS",
+"prompt": "[cheerful] Сад ожил! Ну, теперь только поливать — живой водой из колодца!",
+"max": 4.3
+},
+{
+"id": "3-2_030",
+"who": "pushok",
+"vid": "sk83Bye6Z8drwXh0KBFz",
+"prompt": "[childlike voice] Бе-е…",
+"max": 2.9
+},
+{
+"id": "3-2_032",
+"who": "veter",
+"vid": "JKtNvDNrWu33P1xzttP2",
+"prompt": "[excited] Ух, спасибо, малые! Я стадо по всему небу гонял — да только пуще разгонял.",
+"max": 4.7
+},
+{
+"id": "3-2_033",
+"who": "veter",
+"vid": "JKtNvDNrWu33P1xzttP2",
+"prompt": "[excited] А вожак, Громовой Баран, грозою обернулся: сынка ищет — своих не узнаёт. Там он, на вершине.",
+"max": 4.5
+},
+{
+"id": "3-2_034",
+"who": "pushok",
+"vid": "sk83Bye6Z8drwXh0KBFz",
+"prompt": "[childlike voice] Бе-е!",
+"max": 2.6
+},
+{
+"id": "3-2_036",
+"who": "pushok",
+"vid": "sk83Bye6Z8drwXh0KBFz",
+"prompt": "[childlike voice] Бе…",
+"max": 2.9
+},
+{
+"id": "3-2_037",
+"who": "baran",
+"vid": "2yWzeFFP9bP0WcgRi1jx",
+"prompt": "[booming] Не дамся! Грому-у-у!",
+"max": 3.9
+},
+{
+"id": "3-2_038",
+"who": "baran",
+"vid": "2yWzeFFP9bP0WcgRi1jx",
+"prompt": "[booming] Бе-е… Где я? Кто вы?! Не подходи!",
+"max": 4.1
+},
+{
+"id": "3-2_039",
+"who": "pushok",
+"vid": "sk83Bye6Z8drwXh0KBFz",
+"prompt": "[childlike voice] Бе-е-е!",
+"max": 2.9
+},
+{
+"id": "3-2_041",
+"who": "baran",
+"vid": "2yWzeFFP9bP0WcgRi1jx",
+"prompt": "[booming] Пушок?.. Сынок! Нашёлся… Гроза во мне гремела — своих не видел.",
+"max": 4.3
+},
+{
+"id": "3-2_042",
+"who": "veter",
+"vid": "JKtNvDNrWu33P1xzttP2",
+"prompt": "[excited] Ветер, ветер, я могуч — да без друзей не разогнал бы туч!",
+"max": 4.9
+},
+{
+"id": "3-2_043",
+"who": "baran",
+"vid": "2yWzeFFP9bP0WcgRi1jx",
+"prompt": "[booming] Спасибо, малые. Держите — с радуги звено. А тучи впредь пусть поят землю, а не пугают.",
+"max": 5.1
+}
+]
