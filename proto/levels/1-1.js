@@ -153,14 +153,31 @@ function build11(){
   addMesh(new THREE.CylinderGeometry(1.1,1.4,1.4,10),hayM,0,0.7,0,stack);addMesh(new THREE.ConeGeometry(1.18,1.7,10),hayM2,0,2.25,0,stack);
   addMesh(new THREE.CylinderGeometry(0.06,0.06,3.7,6),M(0x6b4a2b),0,1.85,0,stack);   // стожар
   for(let i=0;i<9;i++){const a=i/9*Math.PI*2,s=addMesh(new THREE.CylinderGeometry(0.02,0.02,0.5,4),hayM,Math.cos(a)*1.2,0.5+(i%3)*0.35,Math.sin(a)*1.2,stack);s.rotation.set(rand(-0.6,0.6),0,rand(-0.9,0.9));}
-  const shal=new THREE.Group();hsG.add(shal);shal.visible=false;   // шалаш: два ската из сена, вход к тропе
-  for(const s of[-1,1]){const r=addMesh(new THREE.BoxGeometry(1.9,0.22,3.2),hayM,s*0.78,1.05,0,shal);r.rotation.z=s*0.95;}
-  addMesh(new THREE.CylinderGeometry(0.07,0.07,3.4,6),M(0x6b4a2b),0,1.85,0,shal).rotation.x=Math.PI/2;
+  /* шалаш из сена: двухскатный, слоями-снопами внахлёст, жерди крестом над коньком, спина закрыта, вход — к тропе (+z) */
+  function makeHayHut(par){const g=new THREE.Group();par.add(g);
+    const lay=[M(0xd8b04a),M(0xc49634),M(0xe6c46a),M(0xb88a2c)],wood=M(0x6b4a2b),dark=M(0x7a5a22,{side:THREE.DoubleSide}),th=0.95,sn=Math.sin(th),cs=Math.cos(th),HW=1.5,HD=2.8;
+    for(const s of[-1,1])for(let k=0;k<5;k++){const d=0.36+k*0.46,off=k*0.03,
+        l=addMesh(new THREE.BoxGeometry(0.74,0.15,HD-(k%2)*0.12),lay[(k+(s>0?1:0))%4],s*(HW-d*cs+sn*off),d*sn+cs*off,0,g);l.rotation.z=-s*th;   // скат: ярусы внахлёст
+      for(const e of[1,-1])for(let j=0;j<3;j++){const t=addMesh(new THREE.ConeGeometry(0.07,0.32,4),lay[(k+j)%4],s*(HW-d*cs+sn*off)-s*(j-1)*0.22*cs,d*sn+cs*off+(j-1)*0.22*sn,e*(HD/2+0.1),g);t.rotation.x=e*Math.PI/2;}}   // колосья торчат из торцов
+    addMesh(new THREE.CylinderGeometry(0.17,0.17,HD+0.1,8),lay[1],0,2.14,0,g).rotation.x=Math.PI/2;   // конёк-валик
+    for(const sg of[-1,1]){const c=addMesh(new THREE.CylinderGeometry(0.04,0.05,1.7,5),wood,0,2.3,HD/2+0.05,g);c.rotation.z=sg*0.4;}   // жерди крестом над входом
+    for(const sg of[-1,1]){const pst=addMesh(new THREE.CylinderGeometry(0.05,0.06,2.6,5),wood,sg*0.75,1.05,HD/2+0.1,g);pst.rotation.z=sg*(Math.PI/2-th);}   // стойки-подпорки у входа по скату
+    const bk=new THREE.Shape();bk.moveTo(-HW+0.08,0);bk.lineTo(HW-0.08,0);bk.lineTo(0,2.1);bk.lineTo(-HW+0.08,0);
+    addMesh(new THREE.ShapeGeometry(bk),dark,0,0.01,-HD/2+0.18,g);   // закрытая спина
+    const fl=addMesh(new THREE.CircleGeometry(1.15,12),M(0xb08a38),0,0.03,0.1,g);fl.rotation.x=-Math.PI/2;fl.scale.set(1,1.1,1);fl.castShadow=false;   // подстилка
+    for(let i=0;i<8;i++){const a=addMesh(new THREE.CylinderGeometry(0.015,0.015,0.55,4),lay[i%3],rand(-0.9,0.9),0.05,rand(-1.1,1.3),g);a.rotation.set(Math.PI/2,0,rand(0,3));a.castShadow=false;}
+    return g;}
+  const shal=makeHayHut(hsG);shal.visible=false;
   const hsCyl={x:HS.x,z:HS.z,r:1.3,miny:-1,maxy:2.8,on:true};W.cyls.push(hsCyl);
+  /* ещё шалаши вдоль тропы: стоят готовые — перед рощей, в роще и после ручья; у каждого глухая спина и бока, вход к тропе */
+  const HUTS=[{x:HS.x,z:HS.z,on:()=>!!F.hayHide}];
+  const hutWalls=(x,z)=>[colBox(x-1.5,x+1.5,0,1.9,z-1.4,z-1.15),...[-1,1].map(s=>colBox(s>0?x+1.05:x-1.5,s>0?x+1.5:x-1.05,0,0.9,z-1.4,z+1.4))];
+  const hsWalls=hutWalls(HS.x,HS.z);hsWalls.forEach(b=>b.on=false);   // у стога стенки появятся, когда сено ляжет шалашом
+  for(const[x,z]of[[-7.4,-147],[6.6,-156],[5.8,-172],[6.2,-216.5]]){const hg=new THREE.Group();hg.position.set(x,0,z);W.group.add(hg);makeHayHut(hg);hutWalls(x,z);HUTS.push({x,z,on:()=>true});}
   const hsNut=nutItem(HS.x+0.2,3.9,HS.z+0.3);
   function hayHit(){F.hayHit=true;SFX.thud();burst(new V3(HS.x,1.6,HS.z),0xd8b04a,22,3.4);hsCyl.on=false;
     anim(0.7,k=>{stack.scale.set(1+0.3*k,1-0.85*k,1+0.3*k);if(k>=1){stack.visible=false;shal.visible=true;shal.scale.setScalar(0.4);anim(0.35,q=>{shal.scale.setScalar(0.4+0.6*q);});
-      F.hayHide=true;floatText(new V3(HS.x,2.8,HS.z),'Шалаш!','#ffe8a0');}});
+      F.hayHide=true;hsWalls.forEach(b=>b.on=true);floatText(new V3(HS.x,2.8,HS.z),'Шалаш!','#ffe8a0');}});
     anim(0.7,k=>{hsNut.base=lerp(3.9,0.6,k);});
     later(0.8,()=>say('zven','Шалаш из сена! Под ним ворон не углядит.',2.4));}
   W.hittables.push({pos:new V3(HS.x,1.0,HS.z),r:1.3,alive:()=>F.stage==='crows'&&!F.hayHit,onHit:()=>hayHit()});
@@ -252,7 +269,7 @@ function build11(){
   RV.ring=new THREE.Mesh(new THREE.CircleGeometry(1.5,28),MB(0xff4a3a,{transparent:true,opacity:0,depthWrite:false}));RV.rim=new THREE.Mesh(new THREE.TorusGeometry(1.5,0.08,6,40),MB(0xff4a3a,{transparent:true,opacity:0,depthWrite:false}));
   RV.shade=new THREE.Mesh(new THREE.CircleGeometry(1.2,24),MB(0x10101a,{transparent:true,opacity:0,depthWrite:false}));
   for(const m of[RV.ring,RV.rim,RV.shade]){m.rotation.x=-Math.PI/2;m.userData.noBatch=true;m.castShadow=false;W.group.add(m);}
-  const sheltered=h=>F.hayHide&&hd(h.pos,HS)<2.4;
+  const sheltered=h=>h.pos.y<1.2&&HUTS.some(u=>u.on()&&Math.abs(h.pos.x-u.x)<1.35&&Math.abs(h.pos.z-u.z)<1.5);
   const hidden=h=>h.pos.z>GZ-1.5||(h.pos.z<-187&&h.pos.z>-208.5)||(F.dust&&h.pos.z<-159&&h.pos.z>-187)||sheltered(h);
   const nest=z=>!F.dust&&z<-159&&z>-187;
   // сколько круг стоит на месте до пике: на Лёгком пути — дольше (красный сигнал мира 1 идёт в 1,5 раза дольше)
@@ -318,7 +335,7 @@ function build11(){
             q.p.set(DC.x+Math.cos(a)*3.6,Math.abs(Math.sin((t-8.6)*6+i))*0.35,DC.z+Math.sin(a)*3.6);if(q.o.face!==undefined)q.o.face=a+Math.PI;else q.o.g.rotation.y=-a;});}
         for(const h of HEROES)h.vel.set(0,0,0);},
       end:()=>{F.done=true;for(const h of HEROES)placeOnGround(h,h.pos.x,h.pos.z,0);banner('Теремок спасён!','#ffd76a',2.6,'вороны улетели к Кощею ни с чем — у зверей новоселье!');later(1.8,finishLevel);}});}
-  W.part11={RV,HS,ST,STF,LOGS,TM,TOSS,STEPS,KON,hsNut,SW,sheltered,hidden};   // для проверки ботом и напарника
+  W.part11={RV,HS,HUTS,ST,STF,LOGS,TM,TOSS,STEPS,KON,hsNut,SW,sheltered,hidden};   // для проверки ботом и напарника
   // перескок к главе 2 «За калиткой» (сохранение внутри уровня — late_97w_w1_chapters.js — и боты): двор прибран, клубки розданы, калитка пройдена,
   // избушка повёрнута; дальше — прилёт ворон своим ходом (ролик через 0,6 с: задачи двора успевают закрыться)
   W.warp11=where=>{if(where!=='gate')throw new Error('warp11: '+where);
@@ -334,6 +351,7 @@ function build11(){
     if(STF.on)stupaFly(dt);
     for(const q of PUFF){if(q.t<0)continue;q.t+=dt;const k=q.t/2.6;q.m.position.y-=dt*0.6;q.m.scale.setScalar(0.6+k*3);q.m.material.opacity=0.55*Math.sin(Math.min(1,k)*Math.PI);if(k>=1){q.t=-1;q.m.material.opacity=0;}}
     if(F.dust){fogM.opacity=Math.min(0.32,fogM.opacity+dt*0.12);for(const f of FOG)f.m.position.x=f.x+Math.sin(G.time*0.3+f.ph)*0.8;}
+    if(F.stage==='crows'&&!F.hutTip){const hh=HEROES.find(h=>h.active&&HUTS.some((u,i)=>i&&hd(h.pos,u)<9));if(hh){F.hutTip=true;tip(hh.player,'Шалаш из сена: залезай внутрь — ворон не углядит.',3);}}
     if(F.stage==='crows'&&!F.stHi&&!F.stupa&&HEROES.some(h=>h.active&&hd(h.pos,ST)<8)){F.stHi=true;say('zven','Ступа Яги в коряге застряла! Потап, подними — она подсобит.',3.0);}
     for(const h of HEROES)if(inBank(h))h.extraY=-0.18;
     // теремок: звери, брёвна, конёк
