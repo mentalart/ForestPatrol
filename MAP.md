@@ -83,7 +83,7 @@
 | `luko` | Лукоморье | `buildLukomorye()` · `levels/luko_1_scene.js` | late_50_save, late_74_kids_start, late_95_dev | 18 | tfin_art tfin_audiolevel tfin_cast tfin_companion_luko tfin_devluko tfin_episolo tfin_kid… |
 | `1-1` | 1-1 · Избушка, повернись | `build11()` · `levels/1-1.js` | late_10b_w1_mood, late_40b_music_w1, late_73c_companion_11, late_75_kids_w1, late_76_kids_fight, late_99n_yaga11 | 38 | t11 t11long tfin_art tfin_botlevel tfin_cam tfin_ch1 tfin_companion tfin_companion_11 tfi… |
 | `1-2` | 1-2 · Кикиморино болото | `build12()` · `levels/1-2.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_76_kids_fight, late_79f_fog_hint12 | 5 | tbogauto tfin_bossfxcap tfin_ch1 tfin_companion_12 tsospot |
-| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 5 | tfin_companion_13 tfin_k13strings tfin_k13teach tfin_kids1 tfin_kids2 |
+| `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 6 | tfin_companion_13 tfin_k13cine tfin_k13strings tfin_k13teach tfin_kids1 tfin_kids2 |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99b_kidnap14, late_99zf_pea14, late_99zg_auka14 | 8 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14cine tfin_k14long tfin_kidnap14 tfi… |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99zw_k15_kino | 7 | tfin_ch1 tfin_companion_15 tfin_k15_boss tfin_k15_lift tfin_k15_rooms tfin_k15cine thub2 |
 | `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zd_k1b_help | 6 | tfin_companion_1b tfin_companion_lesson tfin_k1b3solo tfin_post tfin_skaz tsospot |
@@ -409,6 +409,7 @@
 | `levels/w2/late_99zv_kw_music.js` | 2-1, 2-2, 2-3, 2-4 | РЕЛИЗ final06 · МИР 2: СВОЯ МУЗЫКА У КАЖДОГО УРОВНЯ, НАПЕВ САДКО — ЛЕЙТМОТИВ |
 | `levels/1-5/late_99zw_k15_kino.js` | 1-5 | РЕЛИЗ final06 · 1-5 «КИКИМОРИНА ПРЯЛКА»: РОЛИКИ ВРУЧНУЮ И ПОКАЗКИ МЕХАНИК |
 | `levels/1-4/late_99zx_k14_kino.js` | — | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: РОЛИКИ В РУЧНОЙ ПОСТАНОВКЕ — ШАПКИ, «ПЕЛАГЕЮ УВЕЛИ», АУКА |
+| `levels/1-3/late_99zy_k13_kino.js` | — | РЕЛИЗ final06 · 1-3 «КОЛОБОК»: РОЛИКИ В РУЧНОЙ ПОСТАНОВКЕ — ПЕСНЯ, «НУ, ЕШЬ», ПЛЯСКА |
 
 ## Текстовые замены при сборке (`rep_*.py`, разделы `# ---- … ----` по порядку)
 
@@ -449,6 +450,7 @@
 | `levels/4-B/rep_30_gor4b.py` | 4-Б «Змей Горыныч», фаза 3 (late_37_gor_uzda.js): после оглушения всех трёх голов — 50 секунд (было 25); «раз-два-три» … |
 | `levels/1-3/rep_30_kolobok13.py` | 1-3 «Колобок»: последний ролик — пляска; Колобок отдаёт звено Прошке |
 | `levels/1-3/rep_30_kolobok13.py` | 1-3 «Колобок»: мир 1 для детей 7–11 — окно попадания в долю шире на Лёгком (±0,20 с) и Среднем (±0,12 с); Богатырский —… |
+| `levels/1-3/rep_30_kolobok13.py` | 1-3 «Колобок»: вступление и «Ну, ешь» — ручная постановка (late_99zy_k13_kino.js: FIN.k13Intro, FIN.k13Stop); Колобок и… |
 | `levels/1-4/rep_30_leshy14.py` | 1-4 «Леший водит»: ролик «Пелагею увели» — ёлки кружат Пелагею хороводом и вихрем уносят в кольцо |
 | `levels/1-4/rep_30_leshy14.py` | 1-4: ролик «Шапки из мха» — ручная постановка (late_99zx_k14_kino.js, FIN.k14Hats): шапки и пень передаются из build14 |
 | `levels/1-B/rep_30_leshy1b.py` | 1-Б «Леший-Путаник»: Леший с трофеями на голове, большие руки-коряги от плеча, двойники в нарядах, мост-рука, зрители, … |
@@ -514,11 +516,11 @@
 | `44_prompt_pereozvuchka_elevenlabs.md` | Промт: чистовая переозвучка всей игры через ElevenLabs MCP |
 | `45_kino_audit.md` | Аудит роликов «Златой цепи» и очередь ручной постановки |
 | `CHANGELOG.md` | Изменения |
-| `changes/` | 187 файлов |
+| `changes/` | 188 файлов |
 | `feedback/` | 7 файлов |
 | `rabota.md` | Работа в репозитории — подробности |
 | `screens/` | 29 файлов |
 | `script/` | 10 файлов |
 
-Ботов всего: 314 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 315 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->

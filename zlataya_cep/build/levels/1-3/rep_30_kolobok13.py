@@ -6,3 +6,8 @@ rep("play({dur:7.5,fov:48,shots:[shot(0,[kp.x+3,2.4,kp.z+4.5],[kp.x,1,kp.z+1])],
 rep("later(1.4,()=>{F.out=true;finishLevel();});}});}","later(1.4,()=>{F.out=true;finishLevel();});}},{kol,gus}));}")
 # ---- 1-3 «Колобок»: мир 1 для детей 7–11 — окно попадания в долю шире на Лёгком (±0,20 с) и Среднем (±0,12 с); Богатырский — как был ----
 rep("const LADWIN={easy:0.15,mid:0.10,hard:0.06};","const LADWIN={easy:0.20,mid:0.12,hard:0.06};")
+# ---- 1-3 «Колобок»: вступление и «Ну, ешь» — ручная постановка (late_99zy_k13_kino.js: FIN.k13Intro, FIN.k13Stop); Колобок и Прошка — из build13 ----
+rep("W.onStart=()=>{S.state='cine';play({dur:5.2,fov:50,","W.onStart=()=>{S.state='cine';play(FIN.k13Intro({dur:5.2,fov:50,")
+rep("end:()=>{S.state='play';W.camFn=runCam;snapCams();}});};","end:()=>{S.state='play';W.camFn=runCam;snapCams();}},{kol}));};")
+rep("    play({dur:22,fov:48,\n","    play(FIN.k13Stop({dur:22,fov:48,\n")
+rep("later(1.4,()=>startFinal(0));}});}","later(1.4,()=>startFinal(0));}},{kol,pr}));}")
