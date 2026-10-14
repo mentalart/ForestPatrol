@@ -5,6 +5,9 @@
 // и 2 типов движения камеры; в середине каждой реплики в кадре (не голос за кадром) говорящий в кадре и повёрнут к камере; после — комната пролога:
 // площадки убраны, уровень виден, герои на местах, свет пролога, ролик «Колыбельная» не начался. Пропуск в середине — то же состояние. Ошибок нет.
 // Кадры: Лукоморье (1-2), сосна-штаб с героями (3-3), рука над цепью (5-5), русалка на дубе (1-6), головы Горыныча на Смородине (6).
+// Постановка (правки 2026-10): Лукоморье — уровень игры (деревня, Застава); голос «Идёт направо…» — запись «Присказки», не ролика Лукоморья;
+// волшебный молоточек слетает Кузьме в лапу; яблоко из катапульты Прошки — у Потапа; цветок Йоши расцвёл; в тетради Пелагеи пишется сказка;
+// у Тишки колпак на голове; Колобок катится над землёй; Соловей — лицом к камере; 6-8 начинается без рывка камеры.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 ZC.setSolo(false);ZC.FIN.introWant=true;ZC.startFrom(0);ZC.G.manual=true;ZC.tick(2);
 const CI=ZC.FIN.cine,ACT=ZC.FIN.actors,V=THREE.Vector3,PRK=ZC.FIN.intro;window.CREP=[];window.CBAD=[];
@@ -24,6 +27,8 @@ window.SEEN=new Set();window.TRACK=()=>{const c=ZC.G.cine,cd=CI.CD();if(!c||!cd|
   SPK(cd);};
 window.RUN=(i,t)=>{let n=0;while(n<60*200){const c=ZC.G.cine;if(!PRK.on||(PRK.i>i)||(PRK.i===i&&c&&c.t>=t))break;ZC.tick(1);n++;TRACK();}return 'сцена '+(PRK.i+1)+' t='+(ZC.G.cine?ZC.G.cine.t.toFixed(1):'—');};
 if(!PRK.on)throw new Error('«Присказка» не началась при новой игре');
+{const e=ZC.FIN.vox.find('kot','Идёт направо — песнь заводит,<br>Налево — сказку говорит!');if(!e||e.id!=='intro_038')throw new Error('FAIL «Идёт направо…» — не та запись: '+(e&&e.id));}
+if(!PRK.L.env)throw new Error('FAIL Лукоморье «Присказки» — не уровень игры (prkLukoEnv не собрал)');
 const lv=document.getElementById('level');(lv.style.opacity==='1'?'FIN название уровня поверх ролика ':'')+RUN(0,5.2)
 //@@
 // постановка: точка в кадре (8 % от края — запас); русалка не торчит над Котом в 1-4 и появляется в 1-6б; хвост Кота живой (пружины);
@@ -42,12 +47,23 @@ RUN(0,19.8);{const K=ZC.FIN.intro.L.kot,B=K.rig;if(K.lids[0].rotation.x!==-0.5||
 // хвост плещет, гребень ходит, глаза моргают; 2-5 — Кот и Кузьма в кадре
 {const PRK=ZC.FIN.intro,L=PRK.L,M=L.mer,bad=[];const r0=M.seg[4].rotation.x,c0=M.aR.sh.rotation.z;let bl=false;for(let i=0;i<130;i++){ZC.tick(1);TRACK();if(M.eyes[0].scale.y<0.5)bl=true;}
   if(Math.abs(M.seg[4].rotation.x-r0)<0.005&&Math.abs(M.aR.sh.rotation.z-c0)<0.005)throw new Error('FAIL русалка не двигается');if(!bl)throw new Error('FAIL русалка не моргает');
+  RUN(1,5.5);if(L.hamGlow.material.opacity<0.2)bad.push('2-3: молоточек не светится');
+  RUN(1,6.7);if(L.kidHammer.parent!==L.kuzma.arm)bad.push('2-4: молоточек не в лапе Кузьмы');
   RUN(1,10.3);if(!INF(WP(L.kot.head)))bad.push('2-5: Кота нет в кадре');if(!INF(WP(L.kuzma.head)))bad.push('2-5: Кузьмы нет в кадре');
   if(bad.length)throw new Error('FAIL постановка: '+bad.join(', '));'постановка 2 ok'}
 //@@ shot=intro_patrol.png wait=200
 RUN(2,7.0)
 //@@
+{const P=ZC.FIN.intro.P,H=ZC.HERO,bad=[];RUN(2,10.6);if(WP(P.apple).distanceTo(H.potap.pos)>1.2)bad.push('3-4: яблоко не у Потапа');
+  RUN(2,13.6);if(P.stem.rotation.z>0.2||P.petals[0].rotation.x<-0.5)bad.push('3-5: цветок не расцвёл');
+  RUN(2,16.0);if(!P.page.k||+P.page.k.split('|')[0]<10)bad.push('3-6: в тетради не пишется: '+P.page.k);if(!P.book.visible)bad.push('3-6: тетради не видно');
+  RUN(2,18.4);const hb=P.tish.rig&&P.tish.rig.head;if(!hb||P.cap.parent!==hb)bad.push('3-7: колпак Тишки не на голове');if(!P.pillow.parent)bad.push('3-7: нет подушки');
+  if(bad.length)throw new Error('FAIL постановка 3: '+bad.join(', '));'постановка 3 ok'}
+//@@ shot=intro_pelageya.png wait=200
+RUN(2,16.0)
+//@@
 {const PRK=ZC.FIN.intro,L=PRK.L,bad=[];RUN(3,10.2);{const d=ZC.FIN.cine.CD().pose.pos.distanceTo(WP(L.ko.head));if(d>4.5||!INF(WP(L.ko.head)))bad.push('4-4б: Кощей не крупно, d='+d.toFixed(1));}
+  RUN(4,6.0);{const b=WP(L.kolo.ball);if(b.y<0.3)bad.push('5-3а: Колобок проваливается: центр y='+b.y.toFixed(2));}
   RUN(4,14.0);if(!L.hand.visible||!INF(WP(L.hand)))bad.push('5-5: руки не видно');
   if(bad.length)throw new Error('FAIL постановка: '+bad.join(', '));'постановка 4–5 ok'}
 //@@ shot=intro_hand.png wait=200
@@ -59,7 +75,9 @@ RUN(5,1.6);{const D=ZC.FIN.intro.Wd;if(!D.w1.lesh||D.w1.lesh.g.position.y<-1||!I
 //@@ shot=intro_w1.png wait=200
 RUN(5,3.3);{const D=ZC.FIN.intro.Wd;if(!D.w2.vod||!INF(WP(D.w2.vod.head||D.w2.som.s0)))throw new Error('FAIL 6-2: Водяного нет в кадре');}
 //@@ shot=intro_w2.png wait=200
-RUN(5,5.2);{const D=ZC.FIN.intro.Wd;if(!D.w3.sol||!INF(WP(D.w3.sol.head)))throw new Error('FAIL 6-3: Соловья нет в кадре');}
+RUN(5,5.2);{const D=ZC.FIN.intro.Wd;if(!D.w3.sol||!INF(WP(D.w3.sol.head)))throw new Error('FAIL 6-3: Соловья нет в кадре');
+  const q=new THREE.Quaternion();D.w3.sol.g.getWorldQuaternion(q);const f=new THREE.Vector3(0,0,1).applyQuaternion(q).setY(0).normalize(),P=ZC.FIN.cine.CD().pose,to=P.pos.clone().sub(WP(D.w3.sol.g)).setY(0).normalize();
+  if(f.dot(to)<0.3)throw new Error('FAIL 6-3: Соловей не лицом к камере: '+f.dot(to).toFixed(2));}
 //@@ shot=intro_w3.png wait=200
 RUN(5,6.75);{const G=ZC.FIN.intro.Wd.w4.gor,V3=THREE.Vector3;if(!G.heads||G.heads.length!==3)throw new Error('FAIL у Горыныча в «Присказке» нет голов');
   const hx=G.heads.map(h=>h.g.getWorldPosition(new V3()));G.necks.forEach((n,i)=>{const d=hx[i].distanceTo(n.getWorldPosition(new V3()));if(d>4)throw new Error('FAIL голова '+i+' оторвана от шеи: '+d.toFixed(1));});
@@ -69,6 +87,9 @@ ZC.FIN.introGor
 //@@
 RUN(5,9.0);{const D=ZC.FIN.intro.Wd,L=D.w5.lih;if(!L||!INF(WP(L.eye)))throw new Error('FAIL 6-5: Лиха нет в кадре');if(L.lid.rotation.x>0)throw new Error('FAIL 6-5: глаз Лиха не открылся');}
 //@@ shot=intro_w5.png wait=200
+// 6-8 «Ой… летит… к нам!» — камера с первого кадра стоит ровно (без рывка)
+RUN(5,15.95);{const C=ZC.FIN.cine.CD(),ps=[];for(let i=0;i<24;i++){ZC.tick(1);TRACK();ps.push(C.pose.pos.clone());}let mx=0;for(let i=1;i<ps.length;i++)mx=Math.max(mx,ps[i].distanceTo(ps[i-1]));
+  if(mx>0.12)throw new Error('FAIL 6-8: рывок камеры '+mx.toFixed(3));}
 RUN(9,0)
 //@@
 const PRK=ZC.FIN.intro,W=ZC.W,G=ZC.G;let n=0;while(G.cine&&n<300){ZC.tick(1);n++;}ZC.tick(30);

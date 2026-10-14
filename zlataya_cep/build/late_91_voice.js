@@ -5,9 +5,13 @@
 // музыка и мелодия колыбельной приглушаются; новая реплика обрывает прежнюю с коротким затуханием, а в ролике время на миг
 // замедляется, чтобы голос успел договорить до следующей реплики. Пропуск ролика, пауза и смена уровня — голос затихает.
 // Громкость — «Голоса» (FIN.set.vox).
-const VOX={map:new Map(),lul:{},cur:null,bus:null};
+// у одного текста бывает несколько записей (вступление «Присказки» и ролик Лукоморья: «Садитесь в круг…», «Идёт направо…») —
+// звучит запись текущего уровня, потом общая (lv 'g'), иначе — последняя в каталоге
+class VoxMap extends Map{get(k){const a=super.get(k);if(!a)return undefined;let lv=null;try{lv=W&&W.levelId;}catch(err){}
+  return a.find(e=>e.lv===lv)||a.find(e=>e.lv==='g')||a[a.length-1];}add(k,e){const a=super.get(k);if(a)a.push(e);else super.set(k,[e]);}}
+const VOX={map:new VoxMap(),lul:{},cur:null,bus:null};
 const voxKey=(who,text)=>(who||'-')+'|'+String(text).replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
-for(const e of VOX_LINES){VOX.map.set(voxKey(e.who,e.text),e);if(e.lul)VOX.lul[e.lul]=e;}
+for(const e of VOX_LINES){VOX.map.add(voxKey(e.who,e.text),e);if(e.lul)VOX.lul[e.lul]=e;}
 const voxOn=()=>!!AC&&!(FIN.set.vox<=0);
 function voxDecode(e){if(e.buf)return Promise.resolve(e.buf);if(e.pending)return e.pending;if(!AC)return Promise.resolve(null);
   // версия для Pages (build_final.py --pages): записи лежат рядом файлами (e.src) и подгружаются при загрузке уровня; иначе — внутри (e.b64)
