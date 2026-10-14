@@ -121,7 +121,7 @@ L.push('gateSeen='+!!D.F.gateSeen,'bot='+pos(bot()));L
 //@@
 // спящий Китеж: человек будит левого горожанина и деда, бот — правого горожанина и бабку (разом с дедом); колодец у звонницы — ролик, уровень пройден
 const D=ZC.W.dbg21(),S=ZC.W.dbg21k().SLP;const L=[];let last='';const watch=i=>{const m=CO.mode;if(m!==last){L.push((i/60).toFixed(0)+'s '+m+' '+pos(bot()));last=m;}};
-L.push(U.walkTo(0,S[0].sh.x,S[0].sh.z+0.5,8));U.tap('KeyR');for(let i=0;i<60*25&&!S[1].woke;i++){ZC.tick(1);watch(i);}L.push('s0='+S[0].woke,'s1(бот)='+S[1].woke);
+L.push(U.walkTo(0,0,-352,6),U.walkTo(0,-0.5,-358,6),U.walkTo(0,S[0].sh.x,S[0].sh.z+0.5,8));U.tap('KeyR');   // сквозь арку — по центруfor(let i=0;i<60*25&&!S[1].woke;i++){ZC.tick(1);watch(i);}L.push('s0='+S[0].woke,'s1(бот)='+S[1].woke);
 L.push(U.walkTo(0,S[2].sh.x,S[2].sh.z+0.5,8));for(let i=0;i<60*30&&!D.F.sleepGate;i++){if(i%150===0)U.tap('KeyR');ZC.tick(1);watch(i);}L.push('дед,бабка='+S[2].woke+','+S[3].woke);
 L.push(U.walkTo(0,0,-409.5,12));U.tap('KeyR');ZC.tick(200);for(let i=0;i<6*60&&!ZC.G.cine;i++){U.step(0,0,-416.5,0.3);ZC.tick(1);}U.rel(0);
 for(let i=0;i<60*40&&!D.F.out;i++){ZC.tick(1);watch(i);}
