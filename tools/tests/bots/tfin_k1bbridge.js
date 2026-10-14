@@ -1,6 +1,7 @@
 //@@ wait=1500
 // релиз final06: 1-Б «Леший-Путаник», этап 1 — пробитая рука ложится мостом на плечо: левая и правая, и обе сразу (раньше мост был один на двоих — второй убирал первый, рука «пропадала»).
 // Рука не отваливается: в Пробое она остаётся на плече и сама опускается мостом к ладони на земле (раньше пропадала, а на землю ложилось отдельное бревно); «резинка» в покое достаёт до кисти и при перерастяжении.
+// Пробитая ладонь сперва 0,4 с падает к тропе (late_99z_k1b_hands.js), потом ложится мост — шаги ждут по 60 кадров.
 // Строка «//@@ shot=…» относится к шагу под ней: кадр снимается после него.
 U.go();ZC.loadLevel(7);ZC.tick(60*2);ZC.skip();ZC.tick(60*2);window.W=ZC.W;window.K=ZC.FIN.k1b;
 window.hand=s=>W.enemies.find(e=>e.kind==='hand'&&e.side===s);
@@ -15,10 +16,10 @@ window.attached=(s,bridge)=>{const e=hand(s),a=K.cur.arms.find(a=>a.side===s),L=
 window.ok=[];info()
 //@@ shot=k1bb_left.png
 // левая рука в Пробое — мост левой
-brk(-1);ZC.tick(30);ok.push(br(-1)&&!br(1)&&W.ramps.length===2);info()
+brk(-1);ZC.tick(60);ok.push(br(-1)&&!br(1)&&W.ramps.length===2);info()
 //@@ shot=k1bb_both.png
 // правая тоже в Пробое, пока левая лежит мостом: обе руки — мостами (у каждой своё плечо), рук-«пустышек» нет
-brk(1);ZC.tick(30);ok.push(br(-1)&&br(1)&&W.ramps.length===4&&K.cur.arms.every(a=>a.g.visible&&a.lay>0.95));ok.push(attached(-1,true)===true,attached(1,true)===true);info()+' attached='+attached(-1,true)+'/'+attached(1,true)
+brk(1);ZC.tick(60);ok.push(br(-1)&&br(1)&&W.ramps.length===4&&K.cur.arms.every(a=>a.g.visible&&a.lay>0.95));ok.push(attached(-1,true)===true,attached(1,true)===true);info()+' attached='+attached(-1,true)+'/'+attached(1,true)
 //@@
 // по правому мосту можно взойти на плечо (площадка на плече — тоже на месте)
 const h=U.act(0),r=W.ramps.filter(q=>q.x0>0&&q.y1>4),p=r[0];ok.push(!!p);
@@ -29,7 +30,7 @@ ok.push(top>4.5);'right ramp: top y='+top.toFixed(1)+' '+info()
 h=U.act(0);h.pos.set(0,0,-8);h.vel.set(0,0,0);ZC.tick(60*12);ok.push(!br(-1)&&!br(1)&&W.ramps.length===0&&K.cur.arms.every(a=>a.g.visible&&a.lay===0));ok.push(attached(-1)===true,attached(1)===true);info()+' ok='+ok.map(x=>x?1:0).join('')
 //@@ shot=k1bb_right.png
 // только правая — мост правой
-brk(1);ZC.tick(30);ok.push(br(1)&&!br(-1)&&W.ramps.length===2);'ok='+ok.map(x=>x?1:0).join('')+' '+info()
+brk(1);ZC.tick(60);ok.push(br(1)&&!br(-1)&&W.ramps.length===2);'ok='+ok.map(x=>x?1:0).join('')+' '+info()
 //@@
 // «резинка» в покое достаёт до кисти, как бы далеко ту ни утащили (дальше длины двух звеньев, 13,95 м)
 brk(1);ZC.tick(1);for(const s of[-1,1]){const e=hand(s);e.state='idle';e.embers=e.maxEmb;}ZC.tick(60*12);

@@ -181,9 +181,12 @@ K1B.bridge=function(g,from,to,len,hand){const C=K1C,dir=to.clone().sub(from).nor
   const top=k1G(g,0,0,0);top.position.copy(mid).add(new V3(0,0.04,0));top.quaternion.setFromUnitVectors(K1_Y,dir);   // дорожка мха по верху
   fk(top,K=>{K.box(0.95,len*0.97,0.1,C.mossL,tm(0,0,0.0,0,0,0),{b:0.03,amp:0.02});for(let i=0;i<Math.ceil(len/1.2);i++){const y=-len/2+0.5+i*1.2,x=k1hr(i,1,-0.36,0.36);K.add(hIco(0.1),i%3===0?C.pink:i%3===1?C.yellow:C.white,tm(x,y,0.09),{s:0.2});}},{H:3});
   top.rotation.set(0,0,0);top.quaternion.setFromUnitVectors(K1_Y,dir);
-  // светляки вдоль дорожки до плеча
-  const fl=[];for(let i=0;i<7;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.1,6,5),new THREE.MeshBasicMaterial({color:0xfff3a0}));const k=(i+0.5)/7;m.position.copy(from).lerp(to,k).add(new V3(k1hr(i,1,-0.5,0.5),1.0+k1hr(i,2,0,0.6),0));g.add(m);fl.push({m,k,ph:i*0.9});}
-  k1Dyn(g);K1B.tick.push(dt=>{if(!g.parent)return false;const t=G.time;fl.forEach(f=>{f.m.position.y=from.y+(to.y-from.y)*f.k+1.0+Math.sin(t*2.2+f.ph)*0.25;f.m.scale.setScalar(0.8+0.4*Math.sin(t*5+f.ph));});return true;});
+  // светляки вдоль дорожки до плеча — цепочкой над самым мхом, видно издали, куда бежать
+  const fl=[];for(let i=0;i<11;i++){const m=new THREE.Mesh(new THREE.SphereGeometry(0.15,6,5),new THREE.MeshBasicMaterial({color:0xfff3a0}));const k=(i+0.5)/11;m.position.copy(from).lerp(to,k).add(new V3(k1hr(i,1,-0.3,0.3),0.8,0));g.add(m);fl.push({m,k,ph:i*0.6});}
+  // у ладони — золотое кольцо-приглашение «сюда, наверх»
+  const ring=new THREE.Mesh(new THREE.TorusGeometry(1.6,0.09,6,28),new THREE.MeshBasicMaterial({color:0xffd76a,transparent:true,opacity:0.8,depthWrite:false}));ring.rotation.x=Math.PI/2;ring.position.set(from.x,0.12,from.z);g.add(ring);
+  k1Dyn(g);K1B.tick.push(dt=>{if(!g.parent)return false;const t=G.time;fl.forEach(f=>{f.m.position.y=from.y+(to.y-from.y)*f.k+0.8+Math.sin(t*2.2+f.ph)*0.18;f.m.scale.setScalar(0.85+0.35*Math.sin(t*6-f.k*9));});
+    const p=(t*0.8)%1;ring.scale.setScalar(0.7+p*0.6);ring.material.opacity=0.85*(1-p);return true;});
   if(hand)hand.k1bridge={g,from:from.clone(),to:to.clone()};};
 /* ---------- двойники: пять нарядов ---------- */
 function k1Costume(o,idx){const B=o.rig,C=K1C,add=(bone,g)=>{bone.add(g);k1Dyn(g);return g;};
