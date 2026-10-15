@@ -9,7 +9,7 @@
 //     записи первого ролика раскодируются первыми.
 // А8. Пауза в ролике не гасит голос насовсем: после паузы реплика продолжается с места остановки.
 // Ж1. Всплывающие надписи — в роде героя: у Пелагеи «Перепрыгнула!», «Увернулась!».
-const K1X={clamp:-0.06,lift:0,waitT:0};K1B.fix=K1X;
+const K1X={clamp:-0.06,lift:0,waitT:0,cineEnd:-9};K1B.fix=K1X;
 /* ---------- А1: руки без глаз ---------- */
 {const _fh=FL.hand;FL.hand=function(){const L=_fh.apply(this,arguments);L.noFace=true;return L;};}
 {const _hd=K1B.hand;K1B.hand=function(e){_hd(e);const L=e.L,inner=e.inner;
@@ -30,9 +30,10 @@ K1X.low=e=>k1xLow(e);   // для ботов: самая низкая точка
 /* ---------- А5: ролик ждёт голос, начатый в бою ---------- */
 const k1xVoxLeft=()=>{try{if(!VOX.cur||!AC)return 0;return Math.max(0,VOX.cur.end-AC.currentTime);}catch(err){return 0;}};
 {const _pl=play;play=function(def){
-  if(W&&W.levelId==='1-B'&&!G.cine&&def&&def.says&&def.says.length&&!def.k1wait){const rem=k1xVoxLeft(),first=def.says[0][0]||0;
+  if(W&&W.levelId==='1-B'&&!G.cine&&def&&def.says&&def.says.length&&!def.k1wait&&VOX.cur&&VOX.cur.g0>K1X.cineEnd){const rem=Math.min(3,k1xVoxLeft()),first=def.says[0][0]||0;   // ждём только реплику, начатую в бою (не в прошлом ролике)
     if(rem-first>0.15){def.k1wait=true;K1X.waitT+=rem-first;later(rem-first+0.1,()=>{if(W.levelId==='1-B'&&!G.cine)play(def);else _pl(def);});return;}}
   return _pl.apply(this,arguments);};}
+CINE.on('end',()=>{K1X.cineEnd=G.time;});
 /* ---------- А7: поздняя запись звучит с нужного места; первый ролик — первым ---------- */
 function k1xStartAt(e,b,off){if(!b)return;voxStop(0.06);const s=AC.createBufferSource();s.buffer=b;const g=AC.createGain();g.gain.value=e.gain||1;s.connect(g);g.connect(voxBus());
   off=clamp(off||0,0,Math.max(0,b.duration-0.05));s.start(0,off);const c={s,g,e,end:AC.currentTime+b.duration-off,g0:G.time-off};VOX.cur=c;VOX.played=(VOX.played||0)+1;

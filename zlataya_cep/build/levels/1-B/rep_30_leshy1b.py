@@ -27,3 +27,13 @@ rep("у настоящего тень');}});});}}","у настоящего те
 rep("const lz=makeLeshy(1.3);","const lz=FIN.k1b.finale(1.3);")
 rep("    play({dur:16,fov:48,shots:[shot(0,[0,3.4,-8],[0,3,-16])","    play(FIN.k1b.cine.end({dur:16,fov:48,shots:[shot(0,[0,3.4,-8],[0,3,-16])")
 rep("later(2.2,()=>{F.out=true;finishLevel();});}});}","later(2.2,()=>{F.out=true;finishLevel();});}}));}")
+# ---- аудит 1-Б, этап 2 (late_99zdc_k1b_hide2.js): ложный двойник рвёт струну, удар по ложному — «Ха! Ищи-свищи!»; тексты под новые правила ----
+rep("else{d.state='gone';makeCones(d.pos,14);W.group.remove(d.m.g);SFX.crash();floatText(d.pos.clone().add(new V3(0,3,0)),'Запутался — шишки!','#e0c090');}break;}}","else FIN.k1b.fakeOnString(d,t);break;}}")
+rep("if(!best.real){best.state='gone';makeCones(best.pos,14);W.group.remove(best.m.g);SFX.crash();floatText(best.pos.clone().add(new V3(0,3,0)),'Шишки!','#e0c090');}","if(!best.real){FIN.k1b.fakeHit(best,h);}")
+rep("pi?()=>'Найди настоящего: Совиный взор '+K(1,'skill')+'. Клубок '+K(1,'item')+' — в колышек.':()=>'Брось клубок '+K(0,'item')+' в колышек. Упавшего бей '+K(0,'attack')+'!'","pi?()=>'Совиный взор '+K(1,'skill')+' — следы настоящего. Струну '+K(1,'item')+' — перед ним!':()=>'Струну '+K(0,'item')+' — перед настоящим. Упал — бей '+K(0,'attack')+'!'")
+rep("text:pi=>'Натяни струну между колышками '+K(pi,'item')+'.'}","text:pi=>'Струну '+K(pi,'item')+' — перед настоящим: двойник её порвёт.'}")
+rep("'струна на колышках — как на болоте · у настоящего тень');}}));","'Совиный взор — следы настоящего · струну — перед ним');}}));")
+rep("Настоящего видно по тени и мох-следам, а двойников струна запутает в кудель.","След настоящего Совиный взор покажет, а струну — перед ним: двойник её порвёт.")
+# ---- аудит 1-Б, баланс (late_99zde_k1b_balance.js): три трофея на всех путях; второй круг пряток — четыре двойника двумя хороводами ----
+rep("const HEADDMG={easy:3,mid:2,hard:1};","const HEADDMG={easy:1,mid:1,hard:1};")
+rep("spawnDoubles(5);addStakes(6);banner('Ещё круг!','#b8e070',2,'двойников и колышков больше')","spawnDoubles(genPath()==='hard'?5:4);addStakes(6);banner('Ещё круг!','#b8e070',2,'двойники — двумя хороводами навстречу')")

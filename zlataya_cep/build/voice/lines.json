@@ -14941,18 +14941,6 @@
    "dur": 3
   },
   {
-   "id": "1-B_t02",
-   "lv": "1-B",
-   "who": null,
-   "voice": "reader",
-   "text": "<i>Настоящего выдают мох-следы — у двойников их нет.</i>",
-   "tts": "[warm, storytelling] Настоящего выдают мох-следы — у двойников их нет.",
-   "max": 2.85,
-   "url": "elevenlabs:eleven_v4",
-   "el_take": 1,
-   "dur": 3.31
-  },
-  {
    "id": "1-B_t03",
    "lv": "1-B",
    "who": null,
@@ -14963,30 +14951,6 @@
    "url": "elevenlabs:eleven_v4",
    "el_take": 1,
    "dur": 3.04
-  },
-  {
-   "id": "1-B_t04",
-   "lv": "1-B",
-   "who": null,
-   "voice": "reader",
-   "text": "<i>Клубок — в колышек: струна поперёк хоровода!</i>",
-   "tts": "[warm, storytelling] Клубок — в колышек: струна поперёк хоровода!",
-   "max": 2.8,
-   "url": "elevenlabs:eleven_v4",
-   "el_take": 1,
-   "dur": 3.4
-  },
-  {
-   "id": "1-B_t05",
-   "lv": "1-B",
-   "who": null,
-   "voice": "reader",
-   "text": "<i>Двойник рассыплется шишками, настоящий упадёт — бей!</i>",
-   "tts": "[warm, storytelling] [quickly] Двойник рассыплется шишками, настоящий упадёт — бей!",
-   "max": 3.6,
-   "url": "elevenlabs:eleven_v4",
-   "el_take": 1,
-   "dur": 3.6
   },
   {
    "id": "1-B_t06",
@@ -15010,6 +14974,146 @@
    "url": "elevenlabs:eleven_v4",
    "el_take": 1,
    "dur": 2.88
+  },
+  {
+   "id": "1-B_t08",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Совиный взор покажет следы настоящего.</i>",
+   "tts": "[warm, storytelling] Совиный взор покажет следы настоящего.",
+   "max": 3.3,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.28
+  },
+  {
+   "id": "1-B_t09",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Двойник порвёт струну — пфф!</i>",
+   "tts": "[warm, storytelling] Двойник порвёт струну — пфф!",
+   "max": 3,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.32
+  },
+  {
+   "id": "1-B_t10",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Струну — перед настоящим. Упал — бей!</i>",
+   "tts": "[warm, storytelling] Струну — перед настоящим. Упал — бей!",
+   "max": 3.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.64
+  },
+  {
+   "id": "1-B_h01",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Бегите вокруг Лешего — ленты его обмотают!</i>",
+   "tts": "[warm, storytelling] Бегите вокруг Лешего — ленты его обмотают!",
+   "max": 3.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.43
+  },
+  {
+   "id": "1-B_h02",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Скакалка идёт — прыгай!</i>",
+   "tts": "[warm, storytelling] Скакалка идёт — прыгай!",
+   "max": 2.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.06
+  },
+  {
+   "id": "1-B_h03",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Ленты натянулись! На «три» — бейте вместе!</i>",
+   "tts": "[warm, storytelling] Ленты натянулись! На «три» — бейте вместе!",
+   "max": 3.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.4
+  },
+  {
+   "id": "1-B_h04",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Закружился! Бейте вдвоём!</i>",
+   "tts": "[warm, storytelling] Закружился! Бейте вдвоём!",
+   "max": 2.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.61
+  },
+  {
+   "id": "1-B_012",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Ку-ку!",
+   "tts": "[playful] Ку-ку!",
+   "max": 1.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 0.86
+  },
+  {
+   "id": "1-B_013",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Ку-ку! Не найдёте!",
+   "tts": "[playful, teasing] Ку-ку! Не найдёте!",
+   "max": 2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.61
+  },
+  {
+   "id": "1-B_014",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Ау-у! Ищи-свищи!",
+   "tts": "[playful, teasing] Ау-у! Ищи-свищи!",
+   "max": 2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.78
+  },
+  {
+   "id": "luko_k1b1",
+   "lv": "luko",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Пелагея тетрадку раскрыла. Первый Сказ —</i><br><i>Сказку сами сложите вы сейчас!</i>",
+   "tts": "[warm, storytelling] Пелагея тетрадку раскрыла. Первый Сказ — Сказку сами сложите вы сейчас!",
+   "max": 4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.08
+  },
+  {
+   "id": "luko_k1b2",
+   "lv": "luko",
+   "who": "zven",
+   "text": "Выбирайте, какой быть сказке:<br>как начнётся, кто поможет, чем кончится!",
+   "tts": "Выбирайте, какой быть сказке: как начнётся, кто поможет, чем кончится!",
+   "max": 4.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.56
   },
   {
    "id": "4-1_031",

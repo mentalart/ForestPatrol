@@ -84,6 +84,19 @@ U.soloAdapt=function(){if(U._sa)return;U._sa=true;U.soloSwaps=0;
   ZC.press=c=>{if(!busy&&ZC.G.solo){if(c==='KeyQ'||c==='KeyK'){const p=ZC.players[c==='KeyQ'?0:1];take(p.heroes[1-p.act].kind);return;}
     if(P1.has(c))want(0);else if(P2.has(c))want(1);}press(c);};
   ZC.hold=(c,on)=>{if(on&&!busy&&ZC.G.solo){if(P1.has(c))want(0);else if(P2.has(c))want(1);}hold(c,on);};};
+// 1-Б, этап 2 (аудит, late_99zdc_k1b_hide2.js): ложный двойник рвёт струну — струну ставят перед настоящим. U.k1bTrap(pi,сек): ждёт у центра,
+// по FIN.k1b.hide2.plan() выходит к колышку, на который настоящий придёт первым, бросает клубок; упавшего настоящего бьёт. Возвращает сводку круга.
+U.k1bTrap=function(pi,max){const W=ZC.W,K=ZC.FIN.k1b,C=K.cur.C,k=U.K[pi],r0=W.flags.round||0;let n=0,thrown=0,hits=0,snaps0=K.hide2.st.snaps,go=null;
+  const mv=(x,z)=>{const a=U.act(pi),dx=x-a.pos.x,dz=z-a.pos.z;ZC.hold(k.B[0],dx<-0.25);ZC.hold(k.B[1],dx>0.25);ZC.hold(k.B[2],dz<-0.25);ZC.hold(k.B[3],dz>0.25);return Math.hypot(dx,dz);};
+  while(n<60*(max||90)&&W.flags.phase===2&&(W.flags.round||0)===r0&&!ZC.G.cine){n++;const a=U.act(pi),f=W.doubles.find(d=>d.state==='fallen'&&d.real);
+    if(f){go=null;if(mv(f.pos.x,f.pos.z)<2.0){k.B.forEach(b=>ZC.hold(b,false));a.face=Math.atan2(f.pos.x-a.pos.x,f.pos.z-a.pos.z);if(n%10===0){ZC.press(k.a);hits++;}}}
+    else if(W.threads.some(t=>t.owner===pi&&!t.ret&&(t.string||t.grow))){k.B.forEach(b=>ZC.hold(b,false));}
+    else{if(!go){const p=K.hide2.plan(1.5);if(p)go=p;}
+      if(go){if(go.s.used){go=null;}else if(mv(go.x,go.z)<0.45){k.B.forEach(b=>ZC.hold(b,false));a.face=Math.atan2(go.s.x-a.pos.x,go.s.z-a.pos.z);ZC.tick(1);ZC.press(k.i);thrown++;go=null;}}
+      else if(mv(C.x+(pi?1.2:-1.2),C.z+1)<0.4)k.B.forEach(b=>ZC.hold(b,false));}
+    ZC.tick(1);}
+  k.B.forEach(b=>ZC.hold(b,false));
+  return (n/60).toFixed(1)+'s round='+(W.flags.round||0)+' thrown='+thrown+' snaps='+(K.hide2.st.snaps-snaps0)+' hits='+hits+' left='+W.doubles.filter(d=>d.state!=='gone').length;};
 // 1-Б: ролик-урок «Как одолеть Лешего» перед этапом 1 — боты его не смотрят (свой бот tfin_k1btut включает: ZC.FIN.k1b.tut.auto=true)
 try{if(ZC.FIN&&ZC.FIN.k1b&&ZC.FIN.k1b.tut)ZC.FIN.k1b.tut.auto=false;}catch(e){}
 // 1-Б: ролик-урок этапа 2 и миньоны этапов 2–3 — старым ботам не мешают (свои боты включают: tfin_k1btut2 — tut2.auto, tfin_k1bmn2/tfin_k1bmn3 — mn2.auto/mn3.auto)

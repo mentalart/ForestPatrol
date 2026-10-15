@@ -29,7 +29,8 @@ if(MN.st.dodges<1)throw new Error('кувырок не увёл от шишки 
 MN.sq.forEach(o=>{o.cd=999;});'шишки: '+JSON.stringify(MN.st)
 //@@ shot=k1bm2_gnaw.png
 // струна: Игрок 1 бросает клубок в колышек — прибегает белка-перегрызка и грызёт
-window.mkString=function(){const st=W.stakes.find(s=>!s.used);const h=U.act(0);U.walkTo(0,st.x*0.25,-14+(st.z+14)*0.25,5);h.face=Math.atan2(st.x-h.pos.x,st.z-h.pos.z);ZC.tick(1);ZC.press('KeyR');ZC.tick(40);
+window.mkString=function(){const st=W.stakes.find(s=>!s.used);st.k1vine=ZC.G.time+999;   // лоза (аудит 1-Б): ложный двойник не порвёт струну, пока её грызёт белка
+ const h=U.act(0);U.walkTo(0,st.x*0.25,-14+(st.z+14)*0.25,5);h.face=Math.atan2(st.x-h.pos.x,st.z-h.pos.z);ZC.tick(1);ZC.press('KeyR');ZC.tick(40);
   return W.threads.filter(t=>t.string&&!t.sag).length;};
 const ns=mkString();if(!ns)throw new Error('струна не натянулась');let n=0;while(!(MN.gn&&MN.gn.chew)&&n<60*14){ZC.tick(1);n++;}if(!MN.gn||!MN.gn.chew)throw new Error('белка-перегрызка не грызёт струну: gn='+!!MN.gn+' cd='+MN.gnCd.toFixed(1));
 ZC.tick(30);'грызёт через '+(n/60).toFixed(1)+'с'
