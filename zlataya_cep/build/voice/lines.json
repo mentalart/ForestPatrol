@@ -14930,6 +14930,88 @@
    "dur": 2.9
   },
   {
+   "id": "1-B_t01",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Ну, который из нас настоящий? Угадаете — ваша взяла!",
+   "tts": "[quickly] [mischievous] Ну, который из нас настоящий? Угадаете — ваша взяла!",
+   "max": 2.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3
+  },
+  {
+   "id": "1-B_t02",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Настоящего выдают мох-следы — у двойников их нет.</i>",
+   "tts": "[warm, storytelling] Настоящего выдают мох-следы — у двойников их нет.",
+   "max": 2.85,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.31
+  },
+  {
+   "id": "1-B_t03",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Совиный взор зажжёт над ним золотой обруч.</i>",
+   "tts": "[warm, storytelling] Совиный взор зажжёт над ним золотой обруч.",
+   "max": 2.95,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.04
+  },
+  {
+   "id": "1-B_t04",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Клубок — в колышек: струна поперёк хоровода!</i>",
+   "tts": "[warm, storytelling] Клубок — в колышек: струна поперёк хоровода!",
+   "max": 2.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.4
+  },
+  {
+   "id": "1-B_t05",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Двойник рассыплется шишками, настоящий упадёт — бей!</i>",
+   "tts": "[warm, storytelling] [quickly] Двойник рассыплется шишками, настоящий упадёт — бей!",
+   "max": 3.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.6
+  },
+  {
+   "id": "1-B_t06",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Белка кинет шишку — щит! Отскочит в двойника.</i>",
+   "tts": "[warm, storytelling] Белка кинет шишку — щит! Отскочит в двойника.",
+   "max": 3.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.84
+  },
+  {
+   "id": "1-B_t07",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Ай! Нашли… Ну, это вам повезло!",
+   "tts": "[quickly] [annoyed] Ай! Нашли… Ну, это вам повезло!",
+   "max": 2.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.88
+  },
+  {
    "id": "4-1_031",
    "lv": "4-1",
    "who": "pelageya",

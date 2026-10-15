@@ -86,4 +86,6 @@ U.soloAdapt=function(){if(U._sa)return;U._sa=true;U.soloSwaps=0;
   ZC.hold=(c,on)=>{if(on&&!busy&&ZC.G.solo){if(P1.has(c))want(0);else if(P2.has(c))want(1);}hold(c,on);};};
 // 1-Б: ролик-урок «Как одолеть Лешего» перед этапом 1 — боты его не смотрят (свой бот tfin_k1btut включает: ZC.FIN.k1b.tut.auto=true)
 try{if(ZC.FIN&&ZC.FIN.k1b&&ZC.FIN.k1b.tut)ZC.FIN.k1b.tut.auto=false;}catch(e){}
+// 1-Б: ролик-урок этапа 2 и миньоны этапов 2–3 — старым ботам не мешают (свои боты включают: tfin_k1btut2 — tut2.auto, tfin_k1bmn2/tfin_k1bmn3 — mn2.auto/mn3.auto)
+try{const B=ZC.FIN&&ZC.FIN.k1b;if(B){if(B.tut2)B.tut2.auto=false;if(B.mn2)B.mn2.auto=false;if(B.mn3)B.mn3.auto=false;}}catch(e){}
 'soloAdapt ok'

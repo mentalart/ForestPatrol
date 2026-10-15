@@ -26,6 +26,7 @@ CMP.route('1-B',[
     h.face=Math.atan2(0-h.pos.x,-24.2-h.pos.z);if(!(KB.t>G.time-0.45)){KB.t=G.time;cmpTap('attack');}}},
   // этап 2: струна на колышках; упавшего настоящего — бить
   {id:'hide',first:true,done:()=>W.flags.phase>=3,run:(h,hh,dt)=>{kb();if(W.flags.phase!==2||!W.doubles||players[0].downed)return 'follow';
+    if(FIN.k1b.mn2&&FIN.k1b.mn2.cmp(h))return;                                                 // шишка летит — щит (late_99zcc_k1b_mn2.js)
     const fr=W.doubles.find(d=>d.state==='fallen'&&d.real);
     if(fr){const d=hd(fr.pos,h.pos);if(d>2.0){cmpGoto(h,fr.pos.x,fr.pos.z,1.8);return;}h.face=Math.atan2(fr.pos.x-h.pos.x,fr.pos.z-h.pos.z);if(!(KB.t>G.time-0.4)){KB.t=G.time;cmpTap('attack');}return;}
     if(W.threads.some(t=>t.string&&!t.sag&&!t.ret))return;                                     // струна уже лежит (своя или друга) — ждёт, пока двойник споткнётся
@@ -35,6 +36,7 @@ CMP.route('1-B',[
     h.face=Math.atan2(st.x-h.pos.x,st.z-h.pos.z);if(!(KB.t>G.time-1)){KB.t=G.time;cmpTap('item');}}},
   // этап 3: хоровод — бег по стрелкам, прыжок перед скакалкой, «Тяни-потяни», Богатырский мах
   {id:'hoorovod',first:true,done:()=>!!W.flags.won,run:(h,hh,dt)=>{kb();const S=FIN.k1b&&FIN.k1b.s3;if(W.flags.phase!==3||!S||!S.on||players[0].downed)return 'follow';const C=FIN.k1b.cur.C;
+    if(FIN.k1b.mn3&&FIN.k1b.mn3.cmp(h))return;                                                 // корень, сорока (late_99zcd_k1b_mn3.js)
     if(!cmpWant('pelageya'))return;                                                           // Богатырский мах дотягивается только удлинённым ударом Пелагеи (3 м; у Йоши 1,9)
     if(S.st==='run'){const ha=Math.atan2(h.pos.z-C.z,h.pos.x-C.x),ta=ha+0.5,tx=C.x+Math.cos(ta)*6,tz=C.z+Math.sin(ta)*6;cmpAxes(tx-h.pos.x,tz-h.pos.z,1);
       S.ropes.forEach((rp,ri)=>{const dn=kbWrap(-rp.th-ha),p=KB.pv[ri];KB.pv[ri]=dn;
