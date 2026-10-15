@@ -86,7 +86,7 @@
 | `1-3` | 1-3 · Колобок | `build13()` · `levels/1-3.js` | late_75_kids_w1, late_99_kolobok_dance | 7 | tfin_companion_13 tfin_k13cine tfin_k13strings tfin_k13teach tfin_kids1 tfin_kids2 tfin_n… |
 | `1-4` | 1-4 · Леший водит | `build14()` · `levels/1-4.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99b_kidnap14, late_99zf_pea14, late_99zg_auka14 | 8 | tfin_auka14 tfin_auka14solo tfin_companion_14 tfin_k14cine tfin_k14long tfin_kidnap14 tfi… |
 | `1-5` | 1-5 · Кикиморина прялка | `build15()` · `levels/1-5.js` | late_10b_w1_mood, late_40b_music_w1, late_75_kids_w1, late_99zw_k15_kino | 7 | tfin_ch1 tfin_companion_15 tfin_k15_boss tfin_k15_lift tfin_k15_rooms tfin_k15cine thub2 |
-| `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zca_k1b_stage1, late_99zcb_k1b_tut, late_99zcc_k1b_mn2, late_99zcd_k1b_mn3, late_99zce_k1b_tut2, late_99zd_k1b_help | 6 | tfin_companion_1b tfin_companion_lesson tfin_k1b3solo tfin_post tfin_skaz tsospot |
+| `1-B` | 1-Б · Леший-Путаник | `build1B()` · `levels/1-B.js` | late_75_kids_w1, late_99b_kidnap14, late_99x_k1b_leshy, late_99y_k1b_fx, late_99z_k1b_hands, late_99za_k1b_hide, late_99zb_k1b_hoorovod, late_99zc_k1b_cine, late_99zca_k1b_stage1, late_99zcb_k1b_tut, late_99zcc_k1b_mn2, late_99zcd_k1b_mn3, late_99zce_k1b_tut2, late_99zd_k1b_help, late_99zdb_k1b_fix | 8 | tfin_companion_1b tfin_companion_lesson tfin_k1b3solo tfin_k1bfix tfin_k1bvox tfin_post t… |
 | `2-1` | 2-1 · Гусли Садко | `build21()` · `levels/2-1.js` | late_75_kids_w1, late_76_kids_fight, late_99c_kitezh_sea, late_99d_kitezh_water, late_99e_k21, late_99e_k21_p2_market, late_99e_k21_p3_scenes, late_99e_k21_p4_hall, late_99k_kitezh_foes, late_99l_kitezh_magic_water, late_99m_k21_hermit, late_99zg_k21_gauge, late_99zh_k21_calm, late_99zt_kw_gauges, late_99zu_kw_resume, late_99zv_kw_music | 22 | t21 t21x tfin_art tfin_companion_21 tfin_downswap tfin_fadebatch tfin_k21 tfin_k21city tf… |
 | `2-2` | 2-2 · Чудо-юдо Рыба-кит | `build22()` · `levels/2-2.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99f_k22, late_99f_k22_p2_stove, late_99f_k22_p3_lullaby, late_99f_k22_p4_tasks, late_99f_k22_q_whale, late_99l_kitezh_magic_water, late_99zi_k22_parts, late_99zt_kw_gauges, late_99zu_kw_resume, late_99zv_kw_music | 11 | t22d t22shot tfin_companion_22 tfin_k22 tfin_k22hint tfin_k22solo tfin_k22voice tfin_kids… |
 | `2-3` | 2-3 · Невод | `build23()` · `levels/2-3.js` | late_99c_kitezh_sea, late_99d_kitezh_water, late_99g_k23, late_99l_kitezh_magic_water, late_99zj_k23_lake, late_99zt_kw_gauges, late_99zv_kw_music | 4 | t23f tfin_companion_23 tfin_k23 tfin_k23solo |
@@ -401,6 +401,7 @@
 | `levels/1-B/late_99zce_k1b_tut2.js` | 1-B | РЕЛИЗ final06 · 1-Б «ЛЕШИЙ-ПУТАНИК»: РОЛИК-УРОК ПЕРЕД ЭТАПОМ 2 «ИЩИ-СВИЩИ» |
 | `levels/1-B/late_99zd_k1b_help.js` | 1-B | РЕЛИЗ final06 · 1-Б «ЛЕШИЙ-ПУТАНИК»: ЛЕСТНИЦА ПОДСКАЗОК (щит, кувырок) |
 | `levels/3-2/late_99zd_sky32_fx.js` | 3-2 | РЕЛИЗ final06 · 3-2: ГРОМОВОЙ БАРАН — ЭФФЕКТЫ, ЧЕСТНЫЕ ТЕЛЕГРАФЫ, ПОЛОСА БОССА, ЧИСТЫЙ ТЕКСТ |
+| `levels/1-B/late_99zdb_k1b_fix.js` | 1-B | РЕЛИЗ final06 · 1-Б «ЛЕШИЙ-ПУТАНИК»: ПРАВКИ ПО АУДИТУ — РУКИ БЕЗ ГЛАЗ И НА ЗЕМЛЕ, ГОЛОС НЕ ОБРЫВАЕТСЯ И НЕ ПРОПАДАЕТ |
 | `levels/3-2/late_99ze_sky32_cam.js` | 3-2 | РЕЛИЗ final06 · 3-2: ГРОМОВОЙ БАРАН — КАМЕРА БОЯ |
 | `levels/1-4/late_99zf_pea14.js` | 1-4 | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: ЧУДО-ГОРОШИНА ДЛЯ ЧУДО-ГРЯДКИ ЛУКОМОРЬЯ |
 | `levels/1-4/late_99zg_auka14.js` | 1-4 | РЕЛИЗ final06 · 1-4 «ЛЕШИЙ ВОДИТ»: АУКА-ПЕРЕКЛИЧКА — МИРНАЯ ИГРА «ПОВТОРИ ЗА МНОЙ» |
@@ -531,5 +532,5 @@
 | `screens/` | 29 файлов |
 | `script/` | 10 файлов |
 
-Ботов всего: 330 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
+Ботов всего: 332 (`tools/tests/bots/`); без уровня (меню, сохранения, общие проверки) — те, у кого нет `LV('…')`.
 <!-- map:auto:end -->
