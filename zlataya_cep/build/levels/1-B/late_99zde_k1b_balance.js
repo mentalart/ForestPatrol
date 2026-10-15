@@ -19,7 +19,7 @@ const k1blPath=()=>{try{return genPath();}catch(e){return 'mid';}};
 function k1blRamps(){for(const r of K1B.cur.ramps||[]){if(r.k1bl)continue;r.k1bl=true;if(K1N.demo)continue;r.t=({easy:13,mid:10,hard:9})[k1blPath()]||10;}}
 /* ---------- В2: «Хлоп-хлоп» ---------- */
 K1N.stuckRaw=k1nStuck;
-k1nStuck=function(e){if(e&&e.k1&&e.sig==='yellow'&&!K1N.demo&&(W.flags.head||0)>=2&&W.flags.phase===1&&!e.k1.dbl&&e.state==='recover'&&e.tgt&&e.alive){
+k1nStuck=function(e){if(e&&e.k1&&(e.sig||e.signals[0])==='yellow'&&!K1N.demo&&(W.flags.head||0)>=2&&W.flags.phase===1&&!e.k1.dbl&&e.state==='recover'&&e.tgt&&e.alive){
     e.k1.dbl=true;K1BL.st.dbl++;e.dazeT=0;e.k1.stuck=false;e.state='wind';e.t=0;e.wdur0=e.wdur0||e.wdur;e.wdur=e.wdur0*0.75;e.k1.prev='recover';
     floatText(e.pos.clone().add(new V3(0,(e.L.top||1.2)*e.s+1.0,0)),'Хлоп-хлоп!','#ffe36b');K1B.emo(K1B.cur.L,'mock',1.2);return;}
   if(e&&e.k1){e.k1.dbl=false;if(e.wdur0){e.wdur=e.wdur0;}}return K1N.stuckRaw(e);};
