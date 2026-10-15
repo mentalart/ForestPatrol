@@ -14899,12 +14899,12 @@
    "lv": "1-B",
    "who": null,
    "voice": "reader",
-   "text": "<i>По макушке! Трижды — и Леший сдастся.</i>",
-   "tts": "[warm, storytelling] По макушке! Трижды — и Леший сдастся.",
-   "max": 3.5,
+   "text": "<i>Бей по макушке — трофеи слетят!</i>",
+   "tts": "[warm, storytelling] Бей по макушке — трофеи слетят!",
+   "max": 2.6,
    "url": "elevenlabs:eleven_v4",
    "el_take": 1,
-   "dur": 3.38
+   "dur": 2.61
   },
   {
    "id": "1-B_k07",
@@ -14916,6 +14916,18 @@
    "url": "elevenlabs:eleven_v4",
    "el_take": 1,
    "dur": 3.14
+  },
+  {
+   "id": "1-B_k08",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Вторая рука смахнёт — бей её или прыгай!</i>",
+   "tts": "[warm, storytelling] Вторая рука смахнёт — бей её или прыгай!",
+   "max": 2.9,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.9
   },
   {
    "id": "4-1_031",
