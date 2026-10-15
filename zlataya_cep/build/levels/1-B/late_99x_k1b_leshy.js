@@ -182,8 +182,9 @@ K1B.lose=function(o,n){if(!o||!o.parts||o.k1.lost[n])return;const D=o.parts,s=o.
       m.position.copy(at).add(new V3(rand(-1,1),rand(-0.8,0.4),rand(-0.4,1.2)));W.group.add(m);K1B.fly.add(m,new V3(rand(-4,4),rand(3,8),rand(1,6)),{life:rand(2.2,3.4),spin:new V3(rand(-6,6),rand(-6,6),rand(-6,6)),bounce:0.2});}
     if(K1B.fx)K1B.fx.leaves(at,12);}
   o.k1.lost[n]=true;};
-// удар по макушке (из headHit прототипа): трофей слетает, Леший по-своему реагирует
-K1B.onHead=function(n){const c=K1B.cur;if(!c)return;K1B.lose(c.L,n);K1B.emo(c.L,['surprise','hurt','sheepish'][Math.min(2,n-1)],2.4);K1B.cheer('hit');};
+// удар по макушке (из headHit прототипа): слетает столько трофеев, сколько снято пунктов (по пути ударившего: Лёгкий — все три, Средний — два,
+// Богатырский — один; h0 — сколько было снято до удара), Леший по-своему реагирует
+K1B.onHead=function(n,h0){const c=K1B.cur;if(!c)return;for(let i=(h0==null?n-1:h0)+1;i<=n;i++)K1B.lose(c.L,i);K1B.emo(c.L,['surprise','hurt','sheepish'][Math.min(2,n-1)],2.4);K1B.cheer('hit');};
 /* ---------- руки-коряги: большая ладонь-враг ---------- */
 // своё облик `hand` (FL — облики мороков): ладонь на оси `arm` — логика замаха вскидывает пальцы (rotation.x), запястье — на оси группы
 FL.hand=(inner)=>{const C=K1C,arm=new THREE.Group(),Y=new V3(0,1,0),QQ=new THREE.Quaternion();arm.position.set(0,0.55,-0.5);inner.add(arm);

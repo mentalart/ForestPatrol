@@ -2,8 +2,8 @@
 // релиз final06: 1-Б «Леший-Путаник» — облик и арена (late_99x_k1b_leshy.js, late_99y_k1b_fx.js; docs/29_leshy_proposals.md, шаги 1–2).
 // Вдвоём: вступление, этап 1 (замах ладони с заливкой, мост-рука, три трофея с головы), этап 2 (двойники в нарядах), детали этапа 3 (дорожка, скакалка, ленты, фонарики), рассвет.
 // Строка «//@@ shot=…» относится к шагу под ней: кадр снимается после него. Проверки печатаются: модули живы (K1B.cur не обнулился), руки видны, трофеи слетают по одному,
-// смена света, у двойников нет теней (кроме настоящего).
-U.go();ZC.loadLevel(7);ZC.tick(60*5);const K=ZC.FIN.k1b,W=ZC.W;'cine='+!!ZC.G.cine+' lvl='+W.levelId+' k1b='+!!(K&&K.cur)+' fx='+!!(K&&K.fx&&K.fx.ctx)+' crowd='+(K.crowdL?K.crowdL.length:0)+' mood='+K.fx.name
+// смена света, у двойников нет теней (кроме настоящего). Путь — Богатырский: удар по макушке снимает один пункт, трофеи слетают по одному.
+U.go();ZC.players.forEach(p=>{p.path='hard';});ZC.loadLevel(7);ZC.tick(60*5);const K=ZC.FIN.k1b,W=ZC.W;'cine='+!!ZC.G.cine+' lvl='+W.levelId+' k1b='+!!(K&&K.cur)+' fx='+!!(K&&K.fx&&K.fx.ctx)+' crowd='+(K.crowdL?K.crowdL.length:0)+' mood='+K.fx.name
 //@@ shot=k1b_arena.png
 ZC.skip();ZC.tick(60*2);const W=ZC.W,K=ZC.FIN.k1b;'phase='+W.flags.phase+' hands='+W.enemies.filter(e=>e.kind==='hand').map(e=>e.state+':r'+e.r.toFixed(2)+':s'+e.s+':wrist='+!!(e.L&&e.L.wrist)).join(',')+' arms='+K.cur.arms.map(a=>a.g.visible).join('/')
 //@@ shot=k1b_wind.png
