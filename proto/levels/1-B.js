@@ -95,7 +95,8 @@ function build1B(){
       says:[[0.5,4.2,null,'<i>Тропа к Лешему: на пнях — шапки из мха, на ветках — ленты, указатели — все по кругу.</i>',true],[5.5,3.2,null,'<i>Леший ростом с ель, вместо рук — коряги.</i>',true],[9.2,3,'leshy','Опять заблудились? Ну-ка, где я?']],
       events:[{t:9,fn:()=>{for(let i=0;i<6;i++)tone(rand(140,220),0.14,'sawtooth',0.12,rand(80,120),i*0.1);}}],
       end:()=>{F.phase=1;F.head=0;spawnHands();snapCams();banner('Фаза 1 · руки','#b8e070',2.6,'жёлтая — щит, как от кикиморок · красная — кувырок, как от пня');}});}
-  function headHit(h){F.head++;SFX.finisher();G.hitstop=0.16;shakeAll(0.06,0.4);ringFx(headPos,COL.gold,3);floatText(headPos.clone().add(new V3(0,1,0)),'По макушке!','#ffd76a');
+  const HEADDMG={easy:3,mid:2,hard:1};   // удар по макушке снимает пунктов по пути ударившего: Лёгкий — 3 (этап 1 одним ударом), Средний — 2, Богатырский — 1
+  function headHit(h){const h0=F.head||0;F.head=Math.min(3,h0+(h?HEADDMG[players[h.player].path]||1:1));SFX.finisher();G.hitstop=0.16;shakeAll(0.06,0.4);ringFx(headPos,COL.gold,3);floatText(headPos.clone().add(new V3(0,1,0)),'По макушке!','#ffd76a');
     for(let i=0;i<6;i++)spawnSpark(headPos.clone(),[COL.gold,0x6ad0ff,0xff6a8a][i%3]);bark(L,'leshy',['Ай!','Ой-ой! Макушка моя!','Ну всё, довольно, хватит!'][Math.min(2,F.head-1)],1.8);
     for(const q of HEROES)if(q.pos.y>4.5&&hd(q.pos,headPos)<5){q.vel.set(q.pos.x<0?-5:5,6,5);q.grounded=false;q.knockT=0.5;}
     dropRamp();hands.forEach(e=>{if(e.alive){e.state='idle';e.embers=e.maxEmb;e.t=0;}});
