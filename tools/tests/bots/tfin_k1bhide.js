@@ -26,14 +26,7 @@ window.fd=W.doubles.find(d=>d.real);fd.state='fallen';fd.t=0;fd.m.body.rotation.
 let t=70;while(fd.state==='fallen'&&t<60*9){ZC.tick(1);t++;}'fallen lasted '+(t/60).toFixed(1)+'s state='+fd.state+' stars hidden='+(fd.k2.stars?fd.k2.stars.every(s=>!s.visible):'-')
 //@@
 // ловушка со струной, как в t1b: два круга; прятки её не ломают
-window.ph2=function(){const st=W.stakes.find(s=>!s.used);const h=U.act(0);U.walkTo(0,st.x*0.25,-14+(st.z+14)*0.25,5);h.face=Math.atan2(st.x-h.pos.x,st.z-h.pos.z);ZC.tick(1);ZC.press('KeyR');ZC.tick(40);
- const th=W.threads.map(t=>t.owner+':'+(t.string?'S':'')+t.len.toFixed(1)).join(' ');U.tap('KeyQ');const r0=W.flags.round||0;
- let n=0,hits=0;while(n<60*90&&W.flags.phase===2&&(W.flags.round||0)===r0){n++;const f=W.doubles.find(d=>d.state==='fallen'&&d.real);const a=U.act(0);
-   if(f){const d=Math.hypot(f.pos.x-a.pos.x,f.pos.z-a.pos.z);if(d>2.2){const B=['KeyA','KeyD','KeyW','KeyS'];const dx=f.pos.x-a.pos.x,dz=f.pos.z-a.pos.z;ZC.hold(B[0],dx<-0.3);ZC.hold(B[1],dx>0.3);ZC.hold(B[2],dz<-0.3);ZC.hold(B[3],dz>0.3);}
-     else{['KeyA','KeyD','KeyW','KeyS'].forEach(k=>ZC.hold(k,false));a.face=Math.atan2(f.pos.x-a.pos.x,f.pos.z-a.pos.z);if(n%10==0){ZC.press('KeyF');hits++;}}}
-   ZC.tick(1);}
- ['KeyA','KeyD','KeyW','KeyS'].forEach(k=>ZC.hold(k,false));U.tap('KeyQ');
- return 'th='+th+' '+(n/60).toFixed(1)+'s round='+W.flags.round+' hits='+hits+' left='+W.doubles.filter(d=>d.state!=='gone').length;};
+window.ph2=function(){return U.k1bTrap(0,90);};   // ложный двойник рвёт струну (аудит 1-Б): струна — перед настоящим (helpers.js)
 W.doubles.forEach(d=>{if(d.state==='fallen'){d.state='walk';d.m.body.rotation.x=0;d.m.g.position.y=0;}});ph2()
 //@@
 ZC.tick(60*3);const rg=W.doubles.map(d=>d.k2?d.k2.ring+':'+d.k2.r:'-').join(',');const r=ph2()+' phase='+ZC.W.flags.phase+' rings2='+rg;r

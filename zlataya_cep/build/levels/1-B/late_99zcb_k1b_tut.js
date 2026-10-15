@@ -56,15 +56,15 @@ function k1tHeroTick(){const D=K1T.D;if(!D)return;const t=D.t,E=k1tE(),H=HERO,pr
         put(pe,lerp(top[0],end.x,k),lerp(top[2],end.z,k),rp.y1+0.02,Math.atan2(hp.x-pe.pos.x,hp.z-pe.pos.z));
         if(t>=18.8&&!D.hit1){D.hit1=1;pe.atkT=0.28;SFX.swish();}if(t>=19.4&&!D.hit2){D.hit2=1;pe.atkT=0.28;SFX.swish();}}}}
   // Прошка: стоит под жёлтой → щит в последний миг → подходит и бьёт увязшую → держит упавшую ладонь («держи — беги»)
-  if(pr){const A=K1T_POS.pr,C=new V3(-5.6,0,-12.7),Hd=new V3(-3.8,0,-10.9);
+  if(pr){const A=K1T_POS.pr,C=new V3(-7.1,0,-12.3),Hd=new V3(-5.2,0,-10.2);
     pr.guard=t>=6.85&&t<7.55;
     if(t<8.7)put(pr,A.x,A.z,0,Math.PI);
     else if(t<9.0){const k=E.inOutSine(k1tR(t,8.7,9.0));put(pr,lerp(A.x,C.x,k),lerp(A.z,C.z,k),0,Math.PI);}
-    else if(t<11.2)put(pr,C.x,C.z,0,Math.PI*0.78);
+    else if(t<11.2)put(pr,C.x,C.z,0,Y?toward(pr,Y.pos):Math.PI*0.6);
     else{const k=E.inOutSine(k1tR(t,11.2,11.7));put(pr,lerp(C.x,Hd.x,k),lerp(C.z,Hd.z,k),0,Y?toward(pr,Y.pos):Math.PI);}
     for(const[q,n]of[[9.05,'a'],[9.55,'b'],[10.05,'c']])if(t>=q&&!D['pr'+n]){D['pr'+n]=1;pr.atkT=0.28;}}
   // Потап: смотрит, прибегает помочь бить ладонь; потом бежит к красной, что тянется к мосту, и бьёт её — «Отвлёк!»
-  if(pt){const A=K1T_POS.pt,C=new V3(-3.1,0,-12.8),SP=D.sp||C;
+  if(pt){const A=K1T_POS.pt,C=new V3(-2.0,0,-11.6),SP=D.sp||C;
     if(t<9.1)put(pt,A.x,A.z,0,toward(pt,t<5.9?K1T_POS.R:K1T_POS.Y));
     else if(t<9.7){const k=E.inOutSine(k1tR(t,9.1,9.7));put(pt,lerp(A.x,C.x,k),lerp(A.z,C.z,k),0,-Math.PI/2-0.6);}
     else if(t<12.2)put(pt,C.x,C.z,0,-Math.PI/2-0.6);
@@ -93,7 +93,7 @@ function k1tPlay(then){const c=K1B.cur;if(!c){if(then)then();return;}const L=c.L
     shots:[KS(0,[0,8.6,-16],[0,7.9,-24.2],{trk:KC.fcam(L,8.2,0,0.1,0.25)}),                                        // 1 Леший крупно
       KS(3.1,[10.5,3.6,-6.2],[3.6,1.2,-12.2],{move:'truck',amp:0.6}),                                                 // 2 красная отводит руку, Пелагея — сбоку
       KS(5.9,[-10.5,4.6,-6.6],[-4.2,2.6,-12.6],{move:'push',amp:0.6,tr:'whip'}),                                       // 3 жёлтая вскинута над Прошкой — с другой стороны
-      KS(8.6,[-11.8,3.4,-11.6],[-4.3,1.3,-13.4],{move:'push',amp:0.5}),                                                  // 4 бьют увязшую ладонь (ладонь — на земле, высотой с Потапа: камера сзади-сверху, не внутри неё)
+      KS(8.6,[-6.2,1.6,-15.3],[-7.0,1.0,-12.4],{move:'push',amp:0.3}),                                                  // 4 бьют увязшую ладонь (ладонь — на земле, высотой с Потапа: камера сзади-сверху, не внутри неё)
       KS(11.0,[-7.5,6.5,-4.5],[-2.4,2.6,-16.2],{p2:[-5.8,8.0,-6.2],l2:[-1.6,3.8,-17.2],dur:3.2}),                         // 5 общий: мост, Пелагея взбегает, Потап отвлекает красную
       KS(14.2,[-12.3,5.0,-16.0],[-3.0,3.6,-18.8],{move:'push',amp:0.5,tr:'whip'}),                                       // 6 сбоку: рука проносится поперёк моста — прыжок
       KS(18.3,[-7.4,11.2,-19.6],[-1.3,7.3,-23.6],{move:'push',amp:0.5,tr:'dip'}),                                        // 7 плечо и макушка

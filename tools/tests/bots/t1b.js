@@ -17,14 +17,7 @@ const out=[];let g=0;while(ZC.W.flags.phase===1&&g<8){ZC.tick(60);out.push(cycle
 //@@
 ZC.tick(60*2);ZC.skip();ZC.tick(60);const W=ZC.W;'phase='+W.flags.phase+' stakes='+W.stakes.length+' dbl='+W.group.children.length+' | '+U.obj()
 //@@
-window.ph2=function(){const W=ZC.W;const st=W.stakes.find(s=>!s.used);const h=U.act(0);U.walkTo(0,st.x*0.25,-14+(st.z+14)*0.25,5);h.face=Math.atan2(st.x-h.pos.x,st.z-h.pos.z);ZC.tick(1);ZC.press('KeyR');ZC.tick(40);
- const th=W.threads.map(t=>t.owner+':'+(t.string?'S':'')+t.len.toFixed(1)).join(' ');U.tap('KeyQ');const r0=W.flags.round||0;
- let n=0,hits=0;while(n<60*60&&W.flags.phase===2&&(W.flags.round||0)===r0){n++;const f=W.doubles.find(d=>d.state==='fallen');const a=U.act(0);
-   if(f){const d=Math.hypot(f.pos.x-a.pos.x,f.pos.z-a.pos.z);if(d>2.2){const B=['KeyA','KeyD','KeyW','KeyS'];const dx=f.pos.x-a.pos.x,dz=f.pos.z-a.pos.z;ZC.hold(B[0],dx<-0.3);ZC.hold(B[1],dx>0.3);ZC.hold(B[2],dz<-0.3);ZC.hold(B[3],dz>0.3);}
-     else{['KeyA','KeyD','KeyW','KeyS'].forEach(k=>ZC.hold(k,false));a.face=Math.atan2(f.pos.x-a.pos.x,f.pos.z-a.pos.z);if(n%10==0){ZC.press('KeyF');hits++;}}}
-   ZC.tick(1);}
- ['KeyA','KeyD','KeyW','KeyS'].forEach(k=>ZC.hold(k,false));U.tap('KeyQ');
- return 'th='+th+' '+(n/60).toFixed(1)+'s round='+W.flags.round+' hits='+hits+' left='+W.doubles.filter(d=>d.state!=='gone').length;};
+window.ph2=function(){return U.k1bTrap(0,90);};   // ложный двойник рвёт струну (аудит 1-Б): струна — перед настоящим (helpers.js)
 ph2()
 //@@
 ZC.tick(60*3);ph2()+' phase='+ZC.W.flags.phase

@@ -1,8 +1,8 @@
 /* ============================== РЕЛИЗ final06 · 1-Б «ЛЕШИЙ-ПУТАНИК»: РОЛИК-УРОК ПЕРЕД ЭТАПОМ 2 «ИЩИ-СВИЩИ» ============================== */
 // Ручная постановка (def.kino, docs/40_kino_pravila.md): 25 с, 9 планов — после ролика «Нате вам — четыре Лешего!», перед прятками. Двойники, колышки и белка — настоящие:
-//   1 четыре Лешего в ряд лицом к нам — «Ну, который из нас настоящий?…»; 2 деталь у земли: за настоящим остаются мох-следы, за двойником — нет;
-//   3 Пелагея крупно — Совиный взор, кран вверх: золотой обруч над настоящим; 4 Прошка бросает клубок в колышек — струна поперёк поляны;
-//   5 общий низкий: двойник на струне — «Пфф!» и шишки, настоящий — плашмя, звёзды; 6 Потап и Прошка бьют упавшего — «Нашли!»;
+//   1 четыре Лешего в ряд лицом к нам — «Ну, который из нас настоящий?…»; 2 Пелагея — Совиный взор, деталь у земли: под взором видны (золотые) мох-следы настоящего;
+//   3 Пелагея крупно, кран вверх: золотой обруч над настоящим; 4 Прошка бросает клубок в колышек — ложный первым доходит до струны и рвёт её («Пфф!»);
+//   5 общий: Прошка бросает снова — перед настоящим, настоящий — плашмя, звёзды (аудит 1-Б, Г1–Г2); 6 Потап и Прошка бьют упавшего — «Нашли!»;
 //   7 белка на ветке замахивается; 8 общий: шишка — Потап закрывается щитом — шишка отскакивает в двойника, тот лопается; 9 настоящий встаёт — «Ай! Нашли…».
 // Пояснения — голосом Сказительницы (ремарки). Двойников ведёт ролик (K1B.hideStep молчит), струна и клубок — только показ; «лопнувшие» двойники в конце на месте, упавший встаёт.
 // Конец и пропуск: двойники — на свои места в хороводе, герои — где стояли, надпись «Фаза 2 · двойники» — после урока.
@@ -30,38 +30,38 @@ function k1t2Dbls(dt){const D=K1T2.D;if(!D)return;const t=D.t,C=D.C;
   // звёзды над упавшим
   if(D.stars){const on=D.fell&&t<20.5;D.stars.forEach((s,i)=>{s.visible=on;if(on){const a=G.time*4+i*2.1;s.position.set(D.real.pos.x+Math.cos(a)*1.4,1.5+Math.sin(G.time*5+i)*0.15,D.real.pos.z+Math.sin(a)*1.4);s.rotation.y=a*2;}});}
   // обруч Совиного взора
-  K1M2.halo(D.real,t>6.7&&t<12?Math.min(1,(t-6.7)/0.35,(12-t)/0.4):0);}
+  K1M2.halo(D.real,t>3.3&&t<12?Math.min(1,(t-3.3)/0.35,(12-t)/0.4):0);}
 const k1tWrap=a=>{while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a;};
 // герои: по местам, Прошка бросает клубок, Потап и Прошка бьют упавшего, Потап закрывается щитом от шишки
 function k1t2Heroes(){const D=K1T2.D;if(!D)return;const t=D.t,E=CINE.E,H=HERO,P=K1T2_P,R=D.real;
   const put=(h,p,face)=>{if(!h)return;const ox=h.pos.x,oz=h.pos.z;h.pos.set(p.x,0,p.z);h.vel.set((p.x-ox)*12,0,(p.z-oz)*12);h.knockT=0;if(face!=null)h.face=face;};
   const tw=(h,q)=>Math.atan2(q.x-h.pos.x,q.z-h.pos.z),mv=(a,b,k)=>new V3(lerp(a.x,b.x,k),0,lerp(a.z,b.z,k));
   const pr=H.proshka,pt=H.potap,pe=H.pelageya,yo=H.yosha,near=R.pos.clone(),hitPt=new V3(R.pos.x+1.5,0,R.pos.z+1.3),hitPr=new V3(R.pos.x-1.2,0,R.pos.z+1.6);
-  if(pr){if(t<14.6)put(pr,P.pr,t<8.8||t>9.9?tw(pr,t<8.8?R.pos:new V3(-2,0,-9)):tw(pr,D.st[0]));
+  if(pr){if(t<14.6)put(pr,P.pr,t<8.8||(t>9.9&&t<11.4)||t>12.5?tw(pr,t<8.8?R.pos:new V3(-2,0,-9)):tw(pr,D.st[0]));
     else if(t<15.4)put(pr,mv(P.pr,hitPr,E.inOutSine(k1t2R(t,14.6,15.4))),tw(pr,near));else if(t<17.2)put(pr,hitPr,tw(pr,near));
     else put(pr,mv(hitPr,P.pr,E.inOutSine(k1t2R(t,17.2,18.2))),tw(pr,D.F2.pos));
-    if(t>=9.15&&!D.thr){D.thr=1;pr.atkT=0.3;}for(const[q,n]of[[15.55,'a'],[16.05,'b']])if(t>=q&&!D['pr'+n]){D['pr'+n]=1;pr.atkT=0.28;}}
+    if(t>=9.15&&!D.thr){D.thr=1;pr.atkT=0.3;}if(t>=11.75&&!D.thr2){D.thr2=1;pr.atkT=0.3;}for(const[q,n]of[[15.55,'a'],[16.05,'b']])if(t>=q&&!D['pr'+n]){D['pr'+n]=1;pr.atkT=0.28;}}
   if(pt){if(t<14.6)put(pt,P.pt,tw(pt,t<11?R.pos:new V3(0,0,-8)));
     else if(t<15.3)put(pt,mv(P.pt,hitPt,E.inOutSine(k1t2R(t,14.6,15.3))),tw(pt,near));else if(t<17.0)put(pt,hitPt,tw(pt,near));
     else put(pt,mv(hitPt,P.pt,E.inOutSine(k1t2R(t,17.0,17.9))),t<18.2?null:tw(pt,D.sq?new V3(D.sq.x,0,D.sq.z):near));
     pt.guard=t>=19.05&&t<19.75;for(const[q,n]of[[15.4,'a'],[15.9,'b']])if(t>=q&&!D['pt'+n]){D['pt'+n]=1;pt.atkT=0.28;}}
-  if(pe){put(pe,P.pe,tw(pe,t<6.2?R.pos:t<12?R.pos:near));if(t>=6.35&&!D.owl){D.owl=1;pe.atkT=0.2;}}
+  if(pe){put(pe,P.pe,tw(pe,t<12?R.pos:near));if(t>=3.0&&!D.owl){D.owl=1;pe.atkT=0.2;}}
   if(yo)put(yo,P.yo,tw(yo,t<14?R.pos:near));}
-// клубок: летит от Прошки к колышку, потом струна растёт к другому колышку
+// клубок: летит от Прошки к колышку, потом струна растёт к другому колышку; первую струну рвёт ложный (10,95), вторая — перед настоящим
 function k1t2String(D){const g=new THREE.Group();k1Add(g);const ball=new THREE.Mesh(new THREE.SphereGeometry(0.22,10,8),M(COL.p1,{emissive:COL.p1,emissiveIntensity:0.4}));g.add(ball);ball.visible=false;
   const line=new THREE.Mesh(new THREE.CylinderGeometry(0.05,0.05,1,6),M(0xfff0c8,{emissive:0xffe0a0,emissiveIntensity:0.7}));line.visible=false;g.add(line);
   const glow=new THREE.Mesh(new THREE.CylinderGeometry(0.16,0.16,1,8,1,true),new THREE.MeshBasicMaterial({color:0xffe9a0,transparent:true,opacity:0.25,blending:THREE.AdditiveBlending,depthWrite:false}));line.add(glow);
   k1Dyn(g);return {g,ball,line};}
 function k1t2StringTick(D){const S=D.str,t=D.t,a=D.st[0],b=D.st[1];if(!S)return;
-  const k=k1t2R(t,9.2,9.8);S.ball.visible=t>=9.2&&t<9.85;if(S.ball.visible){const p0=HERO.proshka?HERO.proshka.pos.clone().setY(1.2):a.clone();S.ball.position.lerpVectors(p0,a,k);S.ball.position.y+=1.6*Math.sin(Math.PI*k);}
-  const g=k1t2R(t,9.85,10.35);S.line.visible=t>=9.85&&t<22.6;if(S.line.visible){const e=CINE.E.outCubic(g),end=a.clone().lerp(b,e),len=Math.max(0.01,a.distanceTo(end));S.line.position.copy(a).lerp(end,0.5);S.line.scale.set(1,len,1);
+  const two=t>=11.75,b0=two?11.75:9.2,b1=two?12.4:9.85,k=k1t2R(t,b0,b1-0.05);S.ball.visible=(t>=9.2&&t<9.85)||(t>=11.75&&t<12.4);if(S.ball.visible){const p0=HERO.proshka?HERO.proshka.pos.clone().setY(1.2):a.clone();S.ball.position.lerpVectors(p0,a,k);S.ball.position.y+=1.6*Math.sin(Math.PI*k);}
+  const g=k1t2R(t,two?12.4:9.85,two?12.9:10.35);S.line.visible=(t>=9.85&&t<10.95)||(t>=12.4&&t<22.6);if(S.line.visible){const e=CINE.E.outCubic(g),end=a.clone().lerp(b,e),len=Math.max(0.01,a.distanceTo(end));S.line.position.copy(a).lerp(end,0.5);S.line.scale.set(1,len,1);
     S.line.quaternion.setFromUnitVectors(new V3(0,1,0),end.clone().sub(a).normalize());const tw=t>12.5&&t<13.6?Math.sin(t*40)*0.06*(1-k1t2R(t,12.5,13.6)):0;S.line.position.y+=tw;}}   // дрожит, когда задели
 function k1t2Play(then){const c=K1B.cur;if(!c){if(then)then();return;}const C=c.C,F=K1B.fx,ds=(W.doubles||[]).filter(d=>d.state!=='gone');const real=ds.find(d=>d.real),fk=ds.filter(d=>!d.real);
   if(!real||fk.length<3){if(then)then();return;}K1T2.runs++;K1T2.on=true;K1T.mute=true;
   const L=K1T2_P.line,[F1,F2,F3]=fk,path=new Map(),lookAt=new Map();
   // пути: ряд → следы → к струне → споткнулись; F2 — в стороне, под шишку; F3 — в глубине
   path.set(real,[[0,L[1][0],L[1][1],0.1,L[1][0],L[1][1]],[3.0,-5,-11.4,3.05,-5,-11.4],[3.05,-5,-11.4,5.8,1.2,-11.4],[8.8,1.2,-11.4,11.4,-2,-10.6],[12.4,-2,-10.6,13.4,-2,-6.9]]);
-  path.set(F1,[[0,L[0][0],L[0][1],0.1,L[0][0],L[0][1]],[3.0,-4,-13.8,3.05,-4,-13.8],[3.05,-4,-13.8,5.8,2,-13.8],[8.8,2,-13.8,11.4,2.6,-10.6],[11.6,2.6,-10.6,12.6,2.6,-6.75]]);
+  path.set(F1,[[0,L[0][0],L[0][1],0.1,L[0][0],L[0][1]],[3.0,-4,-13.8,3.05,-4,-13.8],[3.05,-4,-13.8,5.8,2,-13.8],[8.8,2,-13.8,10.9,2.4,-6.95],[11.4,2.4,-6.95,12.4,3.4,-9.6]]);   // ложный — первым к струне: рвёт её (аудит 1-Б, Г1)
   path.set(F2,[[0,L[2][0],L[2][1],0.1,L[2][0],L[2][1]],[3.0,5.5,-12,3.05,5.5,-12],[8.8,5.5,-12,11.4,4.6,-9.6]]);
   path.set(F3,[[0,L[3][0],L[3][1],0.1,L[3][0],L[3][1]],[3.0,-6,-16,3.05,-6,-16]]);
   const D=K1T2.D={t:0,C,all:ds,real,F1,F2,F3,path,lookAt,acc:0,fell:false,from:new Map(HEROES.map(h=>[h,h.pos.clone()])),face:new Map(HEROES.map(h=>[h,h.face])),st:k1t2Stakes(C),str:null,stars:k1dStars(real),hid:[],then,sq:null,tmpSq:false};
@@ -74,10 +74,10 @@ function k1t2Play(then){const c=K1B.cur;if(!c){if(then)then();return;}const C=c.
   const pt=HERO.potap,sq=D.sq;
   const def={kino:true,dur:25,fov:50,mood:['#c8f0a0',0.05],
     says:[[0.3,3.05,'leshy','Ну, который из нас настоящий? Угадаете — ваша взяла!'],   // время — уже ролика (25 с), длина — по записи
-      [3.42,3.32,null,'<i>Настоящего выдают мох-следы — у двойников их нет.</i>',true],
+      [3.42,3.32,null,'<i>Совиный взор покажет следы настоящего.</i>',true],
       [6.84,3.05,null,'<i>Совиный взор зажжёт над ним золотой обруч.</i>',true],
-      [9.92,3.4,null,'<i>Клубок — в колышек: струна поперёк хоровода!</i>',true],
-      [13.36,3.6,null,'<i>Двойник рассыплется шишками, настоящий упадёт — бей!</i>',true],
+      [9.92,3.0,null,'<i>Двойник порвёт струну — пфф!</i>',true],
+      [13.36,3.6,null,'<i>Струну — перед настоящим. Упал — бей!</i>',true],
       [18.28,3.84,null,'<i>Белка кинет шишку — щит! Отскочит в двойника.</i>',true],
       [22.12,2.88,'leshy','Ай! Нашли… Ну, это вам повезло!']],
     shots:[KS(0,[0,4.6,-5.2],[0,3.3,-15.5],{move:'push',amp:0.7}),                                                   // 1 четверо в ряд — средний
@@ -91,10 +91,10 @@ function k1t2Play(then){const c=K1B.cur;if(!c){if(then)then();return;}const C=c.
       KS(20.6,[-2.6,4.6,-1.6],[-2,3.6,-6.9],{trk:KC.fcam(real.m,5.6,0.1,0.15,0.25),tr:'whip'})],                              // 9 настоящий крупно
     cues:[[0.15,()=>{ds.forEach((d,i)=>{later(i*0.08,()=>F.puff(d.pos.x,1.4,d.pos.z,4));K1B.emo(d.m,i%2?'laugh':'mock',2.6);});KSND.poof(0);}],[0.9,()=>KSND.creak(0)],
       [3.2,()=>KSND.steps(0,8,0.32)],[3.6,KC.emo('yosha','tilt')],
-      [6.35,()=>{try{SFX.owl();}catch(e){}const p=HERO.pelageya;if(p)floatText(p.pos.clone().add(new V3(0,2.4,0)),'Совиный взор!','#e7c3ff');}],[6.5,KC.emo('pelageya','pride')],
+      [3.0,()=>{try{SFX.owl();}catch(e){}const p=HERO.pelageya;if(p)floatText(p.pos.clone().add(new V3(0,2.4,0)),'Совиный взор!','#e7c3ff');}],[3.2,KC.emo('pelageya','pride')],
       [6.8,()=>{try{tone(880,0.4,'sine',0.06,1320);}catch(e){}F.leaves(real.pos.clone().add(new V3(0,6,0)),10,{spd:1,up:0.4,cols:[0xffe9a0,0xfff6c0]});}],[7.6,KC.emo('potap','surprise')],
-      [9.15,()=>{SFX.whoosh();}],[9.85,()=>{try{SFX.thread();}catch(e){}}],[10.3,KC.emo('proshka','pride')],
-      [12.0,()=>K1B.emo(F1.m,'surprise',1)],[12.6,()=>{pop(F1);CINE.trauma(0.06);}],[12.9,KC.emo('yosha','laugh')],
+      [9.15,()=>{SFX.whoosh();}],[9.85,()=>{try{SFX.thread();}catch(e){}}],[11.75,()=>{SFX.whoosh();}],[12.45,()=>{try{SFX.thread();}catch(e){}}],[12.8,KC.emo('proshka','pride')],
+      [10.95,()=>{const a=D.st[0],b=D.st[1];F.puff(F1.pos.x,0.6,-6.6,5,0xffe6a0);try{SFX.brk();}catch(e){}floatText(F1.pos.clone().add(new V3(0,3.2,0)),'Пфф! Струна лопнула!','#ffb0a0');K1B.emo(F1.m,'laugh',1.6);CINE.trauma(0.05);}],[11.2,KC.emo('proshka','surprise')],[11.5,KC.emo('yosha','droop')],
       [13.4,()=>{SFX.brk();CINE.trauma(0.08);CINE.punch(-3);F.leaves(real.pos.clone().add(new V3(0,1,0)),14,{spd:1.6,up:0.8});K1B.emo(real.m,'dizzy',0);floatText(real.pos.clone().add(new V3(0,2.4,0)),'Запутался!','#ffd76a');}],
       [13.6,KC.all('cheer')],[15.4,()=>{SFX.ember();spawnSpark(real.pos.clone().add(new V3(0.6,1,0.4)),0x6ad0ff);}],[15.9,()=>{SFX.ember();spawnSpark(real.pos.clone().add(new V3(-0.4,1,0.5)),COL.gold);}],
       [16.1,()=>{SFX.finisher();CINE.punch(-4);CINE.trauma(0.1);ringFx(real.pos,COL.gold,3.5);for(let i=0;i<6;i++)spawnSpark(real.pos.clone().add(new V3(0,1.6,0)),[COL.gold,0x6ad0ff,0xff6a8a][i%3]);
@@ -126,7 +126,7 @@ function k1t2End(){const D=K1T2.D;if(!D)return;K1T2.D=null;K1T2.on=false;const C
   const sq=D.sq;if(sq){if(D.tmpSq&&!K1M2.auto)k1m2SqDel(sq,false);else{sq.demo=false;sq.st='idle';sq.t=0;sq.tgt=null;sq.cd=rand(3,4.5);}}
   for(const h of HEROES){const p=D.from.get(h);if(p){placeOnGround(h,p.x,p.z,0);h.face=D.face.get(h);}h.vel.set(0,0,0);h.guard=false;h.atkT=0;h.rollT=0;h.knockT=0;}
   snapCams();K1T.mute=false;
-  banner('Фаза 2 · двойники','#b8e070',2.8,'струна на колышках — как на болоте · у настоящего тень');
+  banner('Фаза 2 · двойники','#b8e070',2.8,'Совиный взор — следы настоящего · струну — перед ним');
   const th=D.then;if(th)th();}
 K1T2.play=k1t2Play;
 // пока идёт урок — двойников ведёт ролик

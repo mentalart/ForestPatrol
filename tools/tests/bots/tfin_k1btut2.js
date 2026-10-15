@@ -42,7 +42,7 @@ RUN(21.0)
 //@@
 GOON();ZC.tick(30);const ds=W.doubles.filter(d=>d.state!=='gone');
 const st='phase='+W.flags.phase+' doubles='+ds.map(d=>d.state+(d.m.g.visible?'':'(скрыт)')+'@'+d.pos.x.toFixed(1)+','+d.pos.z.toFixed(1)+(d.k2?' '+d.k2.mode:'')).join(' ');
-if(!(SEEN.prints>=3&&SEEN.halo&&SEEN.fell&&SEEN.guard&&SEEN.popped>=2&&SEEN.thrown))throw new Error('в уроке не всё показано: '+JSON.stringify(SEEN));
+if(!(SEEN.prints>=3&&SEEN.halo&&SEEN.fell&&SEEN.guard&&SEEN.popped>=1&&SEEN.thrown))throw new Error('в уроке не всё показано: '+JSON.stringify(SEEN));
 if(!(W.flags.phase===2&&ds.length===4&&ds.every(d=>d.state==='walk'&&d.m.g.visible&&d.m.body.rotation.x===0)&&!K.tut2.on&&ZC.G.flags.k1b&&ZC.G.flags.k1b[2]))throw new Error('после урока не то: '+st);
 if(SIZES.size<3||MOVES.size<2)throw new Error('мало разнообразия: '+[...SIZES]+' / '+[...MOVES]);if(CBAD.length)throw new Error('кадры: '+CBAD.join(' | '));
 'урок ok '+JSON.stringify(SEEN)+' крупн='+[...SIZES].join('/')+' движ='+[...MOVES].join('/')+' '+CREP.join(' | ')

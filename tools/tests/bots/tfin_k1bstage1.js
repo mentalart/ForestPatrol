@@ -43,15 +43,15 @@ h.pos.set(rp.x0+rp.dx*rp.len*0.45,rp.y0+(rp.y1-rp.y0)*0.45+0.05,rp.z0+rp.dz*rp.l
 for(let i=0;i<60*3;i++){const S=S1.sw[0];if(S&&!rolled&&S.t>S.dur-0.2){h.face=Math.atan2(rp.dx,rp.dz);h.rollDir.set(rp.dx,0,rp.dz);h.rollT=0.38;h.lastRoll=ZC.G.time;rolled=1;}ZC.tick(1);if(h.knockT>0.3)off=1;}
 ok.dodge=rolled&&!off;'rolled='+rolled+' knocked='+off
 //@@
-// 3: «держи — беги» — второй герой у пробитой ладони: мост держится 15 с; отошёл — мост уходит
+// 3: «держи — беги» — второй герой у пробитой ладони: мост держится (Пелагея — до 8 с, Потап — до 25 с: аудит 1-Б, tfin_k1bheroes); отошёл — мост уходит
 reset();brk(-1);ZC.tick(40);const e=hand(-1),h1=U.act(1);U.act(0).pos.set(-8,0,-4);h1.pos.set(e.pos.x+1.6,0,e.pos.z+0.6);h1.vel.set(0,0,0);
-for(let i=0;i<60*15;i++){h1.pos.set(e.pos.x+1.6,0,e.pos.z+0.6);ZC.tick(1);}const held=e.state==='broken'&&K.cur.ramps.length>0;
+for(let i=0;i<60*7;i++){h1.pos.set(e.pos.x+1.6,0,e.pos.z+0.6);ZC.tick(1);}const held=e.state==='broken'&&K.cur.ramps.length>0;
 h1.pos.set(6,0,-4);ZC.tick(60*2);const gone=e.state!=='broken'&&K.cur.ramps.length===0;ok.hold=held&&gone;
 if(!Object.values(ok).every(Boolean)||_errs.length)throw new Error('этап 1: '+JSON.stringify(ok)+' errs='+_errs.join(' | '));'held='+held+' gone='+gone+' | '+JSON.stringify(ok)+' errs='+_errs.length+(Object.values(ok).every(Boolean)&&!_errs.length?' ВСЁ OK':' ЕСТЬ ОШИБКИ')
 //@@
-// урон по макушке — по пути ударившего: Богатырский — 1 пункт (один трофей), Средний — 2, Лёгкий — 3 (этап 1 одним ударом); полоса и трофеи — согласованно
+// урон по макушке — на всех путях один трофей за удар (аудит 1-Б, В1: три удара и на Лёгком); полоса и трофеи — согласованно; третий удар — этап 2
 const hb=W.hittables.find(q=>q.r===1.6&&q.push===false),h=U.act(0),lost=()=>Object.keys(K.cur.L.k1.lost).length,R=[];
 const hit=(path,h0)=>{reset();ZC.players.forEach(p=>{p.path=path;});W.flags.head=h0;brk(-1);ZC.tick(40);h.pos.set(-1.5,5.6,-23);h.vel.set(0,0,0);hb.onHit(h);ZC.tick(2);R.push(path+':'+h0+'→'+W.flags.head+' lost='+lost());return W.flags.head;};
-const a=hit('hard',0),la=lost(),b=hit('mid',0),lb=lost(),c=hit('easy',0),lc=lost();ZC.tick(60*3);
+const a=hit('hard',0),la=lost(),b=hit('mid',1),lb=lost(),c=hit('easy',2),lc=lost();ZC.tick(60*3);
 ok.dmg=a===1&&la===1&&b===2&&lb===2&&c===3&&lc===3&&W.flags.phase>1;
 if(!ok.dmg||_errs.length)throw new Error('урон по пути: '+R.join(' ')+' phase='+W.flags.phase+' errs='+_errs.join(' | '));R.join(' ')+' phase='+W.flags.phase+' ВСЁ OK'

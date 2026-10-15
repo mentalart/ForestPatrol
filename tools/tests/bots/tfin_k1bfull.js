@@ -1,8 +1,9 @@
 //@@ wait=1500
+try{ZC.FIN.k1b.les.auto=true;}catch(e){}   // урок хоровода сам больше не включается (аудит 1-Б, Б3): этот бот проверяет урок
 // @timeout=2400
 // релиз final06: 1-Б «Леший-Путаник» от входа до победы НАСТОЯЩИМИ нажатиями вдвоём: этап 1 (руки, три трофея) → этап 2 (прятки, струна, два круга) → этап 3 «Хоровод»
 // (урок: прыжок и «Тяни-потяни» на FIN.lesson ≤ 25 с, повтор «Показать ещё раз», пропуск одним игроком; два круга со скакалкой, «Тяни-потяни», Богатырский мах) → победа.
-// Путь — Лёгкий: один удар по макушке снимает все три трофея. Ни W.bossNext(), ни onDeath: переходы между этапами делает сама игра; ролики пропускаются ZC.skip() (кроме урока — он проходится нажатиями).
+// Путь — Лёгкий: три удара по макушке, как на всех путях (аудит 1-Б, В1). Ни W.bossNext(), ни onDeath: переходы между этапами делает сама игра; ролики пропускаются ZC.skip() (кроме урока — он проходится нажатиями).
 // Из бота взято: цикл руки/трофей (tfin_k1b), ловушка со струной (tfin_k1bhide), бег и прыжки по хороводу (tfin_k1b3). FPS и нагрузка — tools/boss_audit/run_bot.sh tfin_k1bfull.
 window._errs=[];{const ce=console.error;console.error=(...a)=>{window._errs.push(String(a[0]&&a[0].stack||a[0]).slice(0,200));ce(...a);};}
 U.go();ZC.players.forEach(p=>{p.path='easy';});ZC.loadLevel(7);ZC.tick(60*2);ZC.skip();ZC.tick(60*2);window.W=ZC.W;window.K=ZC.FIN.k1b;window.S=K.s3;window.LK=ZC.FIN.lesson;window.D=K.hide;
@@ -17,7 +18,7 @@ window.cycle=function(){const W=ZC.W;let n=0;while(n<60*60&&!W.enemies.some(e=>e
   return 'head='+W.flags.head;};
 window.toHead=function(n){const W=ZC.W,K=ZC.FIN.k1b;let g=0;while((W.flags.head||0)<n&&W.flags.phase===1&&g<25){ZC.tick(60);cycle();g++;}
   const P=K.cur.L.parts;return 'head='+W.flags.head+' tries='+g+' lost='+JSON.stringify(K.cur.L.k1.lost)+' fly='+K.fly.length+' emo='+K.cur.L.k1.emo+' beard='+P.beard.visible;};
-toHead(1)+(need(W.flags.head===3,'Лёгкий путь: этап 1 одним ударом по макушке'),'')
+toHead(1)+(need(W.flags.head===1,'Лёгкий путь: первый трофей (три удара на всех путях, аудит 1-Б)'),'')
 //@@ shot=k1bfull_s1.png
 toHead(2)+(need(W.flags.head>=2,'второй трофей'),'')
 //@@
@@ -26,14 +27,7 @@ const r=toHead(3);skipCine(30);need(W.flags.head>=3,'три трофея');ZC.ti
 // этап 2: двойники, ловушка со струной — два круга (как в tfin_k1bhide)
 ZC.tick(60*3);skipCine(30);'phase='+W.flags.phase+' doubles='+W.doubles.length
 //@@
-window.ph2=function(){const st=W.stakes.find(s=>!s.used);const h=U.act(0);U.walkTo(0,st.x*0.25,-14+(st.z+14)*0.25,5);h.face=Math.atan2(st.x-h.pos.x,st.z-h.pos.z);ZC.tick(1);ZC.press('KeyR');ZC.tick(40);
- const th=W.threads.map(t=>t.owner+':'+(t.string?'S':'')+t.len.toFixed(1)).join(' ');U.tap('KeyQ');const r0=W.flags.round||0;
- let n=0,hits=0;while(n<60*90&&W.flags.phase===2&&(W.flags.round||0)===r0){n++;const f=W.doubles.find(d=>d.state==='fallen'&&d.real);const a=U.act(0);
-   if(f){const d=Math.hypot(f.pos.x-a.pos.x,f.pos.z-a.pos.z);if(d>2.2){const B=['KeyA','KeyD','KeyW','KeyS'];const dx=f.pos.x-a.pos.x,dz=f.pos.z-a.pos.z;ZC.hold(B[0],dx<-0.3);ZC.hold(B[1],dx>0.3);ZC.hold(B[2],dz<-0.3);ZC.hold(B[3],dz>0.3);}
-     else{['KeyA','KeyD','KeyW','KeyS'].forEach(k=>ZC.hold(k,false));a.face=Math.atan2(f.pos.x-a.pos.x,f.pos.z-a.pos.z);if(n%10==0){ZC.press('KeyF');hits++;}}}
-   ZC.tick(1);}
- ['KeyA','KeyD','KeyW','KeyS'].forEach(k=>ZC.hold(k,false));U.tap('KeyQ');
- return 'th='+th+' '+(n/60).toFixed(1)+'s round='+W.flags.round+' hits='+hits+' left='+W.doubles.filter(d=>d.state!=='gone').length;};
+window.ph2=function(){return U.k1bTrap(0,90);};   // ложный двойник рвёт струну (аудит 1-Б): струна — перед настоящим (helpers.js)
 let g2=0,r0='';while(W.flags.phase===2&&g2<8){r0+=ph2()+' | ';g2++;ZC.tick(60*3);skipCine(30);}need(W.flags.phase!==2,'конец этапа 2 за '+g2+' попыток');r0+' phase='+W.flags.phase+' tries='+g2
 //@@
 // этап 3: выход на хоровод — ролик пень/Леший пропускаем, дальше сам урок

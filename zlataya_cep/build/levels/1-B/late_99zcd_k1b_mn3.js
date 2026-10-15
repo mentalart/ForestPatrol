@@ -39,7 +39,7 @@ function k1m3RootTick(r,dt){r.t+=dt;const g=r.g;
   if(r.st==='tele'){r.tele.set(r.t/r.dur);g.position.y=-2.1+0.12*Math.sin(r.t*30)*(r.t/r.dur);   // земля дрожит
     if(r.t>=r.dur){r.tele.flash();r.tele=null;r.st='up';r.t=0;try{SFX.whoosh();}catch(e){}K1F.leaves(new V3(r.x,0.3,r.z),10,{spd:1.6,up:0.9,cols:[0x6a4630,0x8c6644,0x9acb48]});}}
   else if(r.st==='up'){g.position.y=-2.1+2.1*CINE.E.outBack(Math.min(1,r.t/0.22));g.rotation.z=Math.sin(G.time*7)*0.05;
-    if(r.held){const h=r.held;r.hold+=dt;if(players[h.player].downed||!h.active||r.hold>(k1m3P()==='easy'?3:4.5)){k1m3Release(r,'time');k1m3RootDown(r);}}
+    if(r.held){const h=r.held;r.hold+=dt;if(players[h.player].downed||!h.active||r.hold>(k1m3P()==='easy'?3:4.5)*(h.kind==='yosha'?1.35:1)){k1m3Release(r,'time');k1m3RootDown(r);}}
     else{for(const pi of k1sPis()){const h=active(pi);if(players[pi].downed||h.cling||h.k1root)continue;if(Math.hypot(h.pos.x-r.x,h.pos.z-r.z)>0.95)continue;
         if(h.pos.y>0.45||h.rollT>0){if(!r.jumped){r.jumped=true;K1M3.st.jumps++;spawnSpark(new V3(r.x,1.6,r.z),0xffe36b);floatText(new V3(r.x,2.2,r.z),'Перепрыгнул!','#b8e070');}continue;}
         k1m3Grab(r,h);break;}

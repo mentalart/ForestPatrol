@@ -4,8 +4,8 @@
 //   2. «Ищи-свищи»: если струна для двойников ещё не натянута — встаёт перед свободным колышком и бросает клубок; упавшего настоящего двойника находит и бьёт;
 //   3. «Хоровод»: бежит по дорожке вокруг Лешего по стрелкам, прыгает перед скакалкой, на «ТРИ!» жмёт удар «Тяни-потяни», потом — Богатырский мах вместе с человеком.
 // Положения и состояния — из proto/levels/1-B.js и late_99zb_k1b_hoorovod.js (FIN.k1b.cur.C — центр поляны, FIN.k1b.s3 — состояние хоровода).
-const KB={w:null,t:0,path:null,pathOf:null,pv:{},hit:0,pull:-1};
-const kb=()=>{if(KB.w!==W){KB.w=W;KB.t=0;KB.path=null;KB.pathOf=null;KB.pv={};KB.hit=0;KB.pull=-1;}return KB;};
+const KB={w:null,t:0,path:null,pathOf:null,pv:{},hit:0,pull:-1,go:null,goT:0};
+const kb=()=>{if(KB.w!==W){KB.w=W;KB.t=0;KB.path=null;KB.pathOf=null;KB.pv={};KB.hit=0;KB.pull=-1;KB.go=null;}return KB;};
 const kbWrap=a=>{while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a;};
 CMP.route('1-B',[
   // этап 1: пробитая рука — мост на плечо, оттуда удар по макушке (бой с руками — общий)
@@ -29,11 +29,14 @@ CMP.route('1-B',[
     if(FIN.k1b.mn2&&FIN.k1b.mn2.cmp(h))return;                                                 // шишка летит — щит (late_99zcc_k1b_mn2.js)
     const fr=W.doubles.find(d=>d.state==='fallen'&&d.real);
     if(fr){const d=hd(fr.pos,h.pos);if(d>2.0){cmpGoto(h,fr.pos.x,fr.pos.z,1.8);return;}h.face=Math.atan2(fr.pos.x-h.pos.x,fr.pos.z-h.pos.z);if(!(KB.t>G.time-0.4)){KB.t=G.time;cmpTap('attack');}return;}
-    if(W.threads.some(t=>t.string&&!t.sag&&!t.ret))return;                                     // струна уже лежит (своя или друга) — ждёт, пока двойник споткнётся
-    const C=FIN.k1b.cur.C,st=W.stakes.find(s=>!s.used&&Math.hypot(s.x-C.x,s.z-C.z)>3);if(!st)return 'follow';
-    const sx=C.x+(st.x-C.x)*0.25,sz=C.z+(st.z-C.z)*0.25;
-    if(Math.hypot(h.pos.x-sx,h.pos.z-sz)>0.6){cmpGoto(h,sx,sz,0.4);return;}
-    h.face=Math.atan2(st.x-h.pos.x,st.z-h.pos.z);if(!(KB.t>G.time-1)){KB.t=G.time;cmpTap('item');}}},
+    if(W.threads.some(t=>t.owner===1&&!t.ret&&(t.string||t.grow)))return;                     // своя струна лежит или летит — ждёт, пока настоящий споткнётся
+    // ложный двойник рвёт струну (аудит 1-Б, late_99zdc_k1b_hide2.js): сначала Совиный взор, потом струна у колышка, до которого настоящий дойдёт первым
+    const H2=FIN.k1b.hide2,C=FIN.k1b.cur.C;
+    if(h.kind==='pelageya'&&!(W.owlT>0)&&players[1].owlCd<=0&&H2.owlV()<0.3){cmpTap('skill');return;}
+    if(!KB.go||KB.go.s.used||G.time-KB.goT>4){KB.go=H2.plan(1.6);KB.goT=G.time;}
+    const go=KB.go;if(!go){cmpGoto(h,C.x+1.5,C.z+1.2,0.5);return;}
+    if(Math.hypot(h.pos.x-go.x,h.pos.z-go.z)>0.5){cmpGoto(h,go.x,go.z,0.35);return;}
+    h.face=Math.atan2(go.s.x-h.pos.x,go.s.z-h.pos.z);if(!(KB.t>G.time-1)){KB.t=G.time;cmpTap('item');KB.go=null;}}},
   // этап 3: хоровод — бег по стрелкам, прыжок перед скакалкой, «Тяни-потяни», Богатырский мах
   {id:'hoorovod',first:true,done:()=>!!W.flags.won,run:(h,hh,dt)=>{kb();const S=FIN.k1b&&FIN.k1b.s3;if(W.flags.phase!==3||!S||!S.on||players[0].downed)return 'follow';const C=FIN.k1b.cur.C;
     if(FIN.k1b.mn3&&FIN.k1b.mn3.cmp(h))return;                                                 // корень, сорока (late_99zcd_k1b_mn3.js)
