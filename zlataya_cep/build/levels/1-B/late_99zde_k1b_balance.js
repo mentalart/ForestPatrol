@@ -11,7 +11,8 @@
 // Е4. Звёзды мастерства: щит в последний миг («Одним махом!»), прыжок через смахивание, жёлудь по когтю, «Сова села», «Держу — не шелохнётся!»,
 //     корни Йоши, сорока сбита, Йоша под смахиванием, настоящий найден без единой ошибки («Зоркий глаз!») — по звезде. В конце боя — сколько звёзд
 //     и «Без царапины!», если ни один лепесток не потерян; лучший счёт — G.flags.k1bStars.
-// Ж3. Громкость тем: этап 2 (пиццикато) был на 23 дБ тише этапа 3, этап 1 — на 12 дБ: голоса тем 1 и 2 громче (×2 и ×3,2), тема 2 — с басовым гулом.
+// Ж3. Громкость тем: этап 2 (пиццикато) был на 23 дБ тише этапа 3, этап 1 — на 12 дБ. Голоса тем: 1 — ×1,5, 2 — ×2 и басовый гул, 3 — ×1,6; замер
+//     tools/boss_audit (music_w1_w4, RMS): 1 / 2 / 3 / финал — в пределах ±6 дБ (до правки разброс 23 дБ).
 const K1BL={stars:0,lost:0,best:0,downT:0,round:{fakes:0,snaps:0},st:{dbl:0,again:0,starTexts:{}}};K1B.bal=K1BL;
 const k1blPath=()=>{try{return genPath();}catch(e){return 'mid';}};
 /* ---------- В1 + Е2: мост по пути, пауза «Хлоп-хлоп» ---------- */
@@ -48,7 +49,7 @@ function k1blWin(){if(K1BL.shown)return;K1BL.shown=true;const n=K1BL.stars,clean
 /* ---------- Ж3: громкость тем этапов ---------- */
 function k1blMusic(){const TR=FIN.music&&FIN.music.TR;if(!TR||!TR.k1b1||TR.k1b1.k1bl)return;
   const boost=(t,k)=>{t.v=t.v.map(v=>Object.assign({},v,{vol:v.vol*k}));t.k1bl=true;};
-  boost(TR.k1b1,2);boost(TR.k1b2,3.2);TR.k1b2.v=TR.k1b2.v.concat([{i:'drone',drone:[0],oct:-12,vol:0.05}]);}
+  boost(TR.k1b1,1.5);boost(TR.k1b2,2);if(TR.k1b3)boost(TR.k1b3,1.6);if(TR.k1b3b)boost(TR.k1b3b,1.6);TR.k1b2.v=TR.k1b2.v.concat([{i:'drone',drone:[0],oct:-12,vol:0.05}]);}
 {const _m=K1B.music;K1B.music=function(n){try{k1nMusInit();}catch(e){}k1blMusic();return _m.apply(this,arguments);};}
 function k1nMusInit(){if(typeof k1cMus==='function')k1cMus();}
 /* ---------- подключение ---------- */
