@@ -27,6 +27,9 @@ rep("у настоящего тень');}});});}}","у настоящего те
 rep("const lz=makeLeshy(1.3);","const lz=FIN.k1b.finale(1.3);")
 rep("    play({dur:16,fov:48,shots:[shot(0,[0,3.4,-8],[0,3,-16])","    play(FIN.k1b.cine.end({dur:16,fov:48,shots:[shot(0,[0,3.4,-8],[0,3,-16])")
 rep("later(2.2,()=>{F.out=true;finishLevel();});}});}","later(2.2,()=>{F.out=true;finishLevel();});}}));}")
+rep("function spawnHands(){for(const s of[-1,1]){","function spawnHands(){if(hands.length)return;for(const s of[-1,1]){")   # вступление «Тише, Леший спит!» (late_99zdh) поднимает руки в ролике — конец его не дублирует
+rep("FIN.k1b.init({ramps,L,hands,","FIN.k1b.init({spawnHands,ramps,L,hands,")
+rep("W.sub='Босс мира 1 · Опять заблудились? Ну-ка, где я?';","W.sub='Босс мира 1 · Тише, Леший спит!';")
 # ---- аудит 1-Б, этап 2 (late_99zdc_k1b_hide2.js): ложный двойник рвёт струну, удар по ложному — «Ха! Ищи-свищи!»; тексты под новые правила ----
 rep("else{d.state='gone';makeCones(d.pos,14);W.group.remove(d.m.g);SFX.crash();floatText(d.pos.clone().add(new V3(0,3,0)),'Запутался — шишки!','#e0c090');}break;}}","else FIN.k1b.fakeOnString(d,t);break;}}")
 rep("if(!best.real){best.state='gone';makeCones(best.pos,14);W.group.remove(best.m.g);SFX.crash();floatText(best.pos.clone().add(new V3(0,3,0)),'Шишки!','#e0c090');}","if(!best.real){FIN.k1b.fakeHit(best,h);}")

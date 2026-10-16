@@ -15126,6 +15126,117 @@
    "dur": 3.98
   },
   {
+   "id": "1-B_i01",
+   "lv": "1-B",
+   "who": null,
+   "voice": "reader",
+   "text": "<i>Тише… Тут спит Леший — хозяин лесных троп.</i>",
+   "tts": "[whispers] [warm, storytelling] Тише… Тут спит Леший — хозяин лесных троп.",
+   "max": 4.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4
+  },
+  {
+   "id": "1-B_i02",
+   "lv": "1-B",
+   "who": "yosha",
+   "text": "Ой, там что-то блестит!",
+   "tts": "[excited whisper] Ой, там что-то блестит!",
+   "max": 2.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.06
+  },
+  {
+   "id": "1-B_i03",
+   "lv": "1-B",
+   "who": "pelageya",
+   "text": "Тсс! Не разбуди!",
+   "tts": "[whispers] Тсс! Не разбуди!",
+   "max": 2.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.06
+  },
+  {
+   "id": "1-B_i04",
+   "lv": "1-B",
+   "who": "yosha",
+   "text": "А… а… апчхи!",
+   "tts": "А… а… [sneezes loudly] апчхи!",
+   "max": 3.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.95
+  },
+  {
+   "id": "1-B_i05",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Ага-а! Опять заблудились?",
+   "tts": "[mischievous] [quickly] Ага-а! Опять заблудились?",
+   "max": 3.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.43
+  },
+  {
+   "id": "1-B_i06",
+   "lv": "1-B",
+   "who": "proshka",
+   "text": "Ой… это не дерево!",
+   "tts": "[nervous] Ой… это не дерево!",
+   "max": 3.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.28
+  },
+  {
+   "id": "1-B_i07",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Кто меня разбудил — тот со мной играет!",
+   "tts": "[mischievous] [quickly] Кто меня разбудил — тот со мной играет!",
+   "max": 3.4,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.83
+  },
+  {
+   "id": "1-B_i08",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Это — Сгрёб!",
+   "tts": "[playfully] Это — Сгрёб!",
+   "max": 2.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.77
+  },
+  {
+   "id": "1-B_i09",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "А это — Хлоп!",
+   "tts": "[playfully] А это — Хлоп!",
+   "max": 2.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 1.65
+  },
+  {
+   "id": "1-B_i10",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Обыграете — отдам, что блестит.<br>Раз, два, три — начинаем!",
+   "tts": "[mischievous] Обыграете — отдам, что блестит. [excited] Раз, два, три — начинаем!",
+   "max": 6.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 5.56
+  },
+  {
    "id": "luko_k1b1",
    "lv": "luko",
    "who": null,
