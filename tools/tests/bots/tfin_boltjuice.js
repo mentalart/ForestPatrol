@@ -32,11 +32,13 @@ for(let i=0;i<600&&!(ZC.W.bolts.length&&ZC.W.bolts[0].t>0.3);i++)ZC.tick(1);'bol
 // хвосты: после всех исходов эффекты убраны, мешей в W.group не прибавилось
 for(let i=0;i<400&&ZC.W.bolts.length;i++)ZC.tick(1);ZC.tick(120);
 window.cnt=()=>{let n=0;ZC.W.group.traverse(()=>n++);return n;};window.N0=cnt();
-OUT.push(shot('hit'));OUT.push(shot('parry'));ZC.tick(120);
+OUT.push(shot('hit'));OUT.push(shot('parry'));
+// морок замолкает (иначе в замер попадёт уже следующий заряд), эффекты догорают
+E.cd=1e9;for(let i=0;i<600&&(ZC.W.bolts.length||E.state!=='idle');i++)ZC.tick(1);ZC.tick(150);E.cd=0.8;
 const left=BF.pt.length+BF.fl.length+BF.dy.length+BF.af.length+BF.known.size+BF.ch.size,grow=cnt()-N0;
 OUT.push('left='+left+' grow='+grow+(left||grow>40?' BAD':''));OUT
 //@@
 // BFX.on=false — прежнее поведение: счётчики стоят, капля как раньше; ошибок нет
 BF.on=false;const s0=JSON.stringify(BF.stats);const r=shot('hit');const fired=!/нет выстрела/.test(r);const same=JSON.stringify(BF.stats)===s0;BF.on=true;
-[r.replace(/ BAD\[.*\]/,''),'off fired='+fired+' same='+same+(same&&fired?'':' BAD'),'bad='+OUT.filter(s=>/BAD/.test(s)).length,'errs='+window._errs.length+(window._errs[0]?' '+window._errs[0]:'')]
+[r.replace(/ BAD\[.*\]/,''),'off fired='+fired+' same='+same+(same&&fired?'':' BAD'),(OUT.filter(s=>/BAD/.test(s)).length||!same||!fired||window._errs.length?'FAIL':'ok')+' bad='+OUT.filter(s=>/BAD/.test(s)).length,'errs='+window._errs.length+(window._errs[0]?' '+window._errs[0]:'')]
 //@@
