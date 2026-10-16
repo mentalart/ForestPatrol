@@ -32,7 +32,7 @@ K1X.low=e=>k1xLow(e);
 /* ---------- мост шире у ладони ---------- */
 function k1xWide(){const c=K1B.cur;if(!c||!c.ramps)return;
   for(const r of c.ramps){if(r.k1w)continue;r.k1w=true;const rp=r.cols[0];if(!rp||!W.ramps)continue;rp.w=Math.max(rp.w,1.0);
-    const L1=Math.min(5.5,rp.len*0.55),wide={x0:rp.x0,z0:rp.z0,y0:rp.y0,y1:rp.y0+(rp.y1-rp.y0)*L1/rp.len,dx:rp.dx,dz:rp.dz,len:L1,w:1.6,k1wide:true};
+    const L1=Math.min(5.5,rp.len*0.55),wide={x0:rp.x0,z0:rp.z0,y0:rp.y0-0.015,y1:rp.y0+(rp.y1-rp.y0)*L1/rp.len-0.015,dx:rp.dx,dz:rp.dz,len:L1,w:1.6,k1wide:true};   // на 1,5 см ниже настила: над осью опора — сам настил (на него смотрят напарник-бот и смахивание), широкий ловит по краям
     const i=W.ramps.indexOf(rp);W.ramps.splice(i<0?W.ramps.length:i,0,wide);r.cols.push(wide);   // перед настилом: последние два в W.ramps — по-прежнему настил и площадка на плече
     if(r.g){const a=Math.atan2(rp.dx,rp.dz),sl=Math.atan2(wide.y1-wide.y0,L1),m=new THREE.Mesh(new THREE.BoxGeometry(3.2,0.08,L1/Math.cos(sl)),M(0x6aa338));
       m.position.set(rp.x0+rp.dx*L1/2,(wide.y0+wide.y1)/2+0.04,rp.z0+rp.dz*L1/2);m.rotation.set(0,a,0,'YXZ');m.rotation.x=-sl;m.raycast=()=>{};r.g.add(m);}}
