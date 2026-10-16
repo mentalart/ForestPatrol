@@ -136,7 +136,6 @@ function build1B(){
             m.position.set(h.pos.x,h.pos.y+heroHeight(h)+1.2,h.pos.z);m.rotation.x=Math.PI/2;m.scale.setScalar(lerp(2.2,0.45,k));m.material.color.setHex(k>0.9?0xffffff:COL.yellow);s.position.copy(m.position);}
           if(cring.t>=1.3){cring.on=false;cring.next=rand(6,8);ringFxM.forEach(m=>{m.visible=false;});ringSun.forEach(m=>{m.visible=false;});ringStrike();}}}
       else{ringFxM.forEach(m=>{m.visible=false;});ringSun.forEach(m=>{m.visible=false;});cring.on=false;}}});
-  W.onEat=(e)=>{if(!F.yum||G.time-F.yum>6){F.yum=G.time;bark(L,'leshy','Вкусно! Ох, объеденье!',1.4);}};
   /* ---------- рисунки кнопок и задачи ---------- */
   const T=HERO;
   for(const pi of[0,1]){const h=()=>active(pi);
