@@ -17,8 +17,13 @@ const hs=hands();if(hs.length!==2)throw new Error('рук не две: '+hs.leng
 const ey=hs.map(e=>eyes(e));if(ey.some(v=>v))throw new Error('у рук глаза: '+ey.join());
 'урок: '+JSON.stringify(low)+' верх увязшей='+topStuck.toFixed(2)+' глаз=0'
 //@@
+// мост шире у ладони (16.10): первые метры — 3,2 м, ладонь лежащего моста не отталкивает
+{const e=hands().find(q=>q.side<0);e.embers=0;e.state='broken';e.t=0;e.bdur=8;ZC.tick(70);const r=ZC.FIN.k1b.cur.ramps[0];if(!r)throw new Error('мост не лёг');
+  const wd=r.cols.find(c=>c.k1wide);if(!wd||wd.w<1.5)throw new Error('нет широкого начала моста');const rp=r.cols[0],h=U.act(0),nx=rp.dz,nz=-rp.dx;
+  h.pos.set(rp.x0+rp.dx*1.2+nx*1.35,1.5,rp.z0+rp.dz*1.2+nz*1.35);h.vel.set(0,0,0);ZC.tick(30);if(!(r.cols.includes(h.groundRef)))throw new Error('в 1,35 м от оси моста у ладони — не на мосту (y='+h.pos.y.toFixed(2)+')');
+  if(!e.ghostly)throw new Error('ладонь лежащего моста отталкивает');window.wideOk='мост у ладони: полуширина '+wd.w+' на '+wd.len.toFixed(1)+' м';e.state='idle';e.t=0;e.embers=e.maxEmb;ZC.tick(60*3);}
 let m=0;while(m<60*40){U.brawl(1/60);meas();m++;}
 const bad=Object.entries(low).filter(([k,v])=>v<-0.1);if(bad.length)throw new Error('ладонь под землёй: '+JSON.stringify(bad));
 if(topStuck<0.15)throw new Error('увязшая ладонь ушла в землю: верх '+topStuck.toFixed(2));
 if(window._errs.length)throw new Error('ошибки: '+window._errs[0]);
-'бой и урок: '+JSON.stringify(low)+' верх увязшей='+topStuck.toFixed(2)+' head='+ZC.W.flags.head+' errs=0'
+wideOk+' · бой и урок: '+JSON.stringify(low)+' верх увязшей='+topStuck.toFixed(2)+' head='+ZC.W.flags.head+' errs=0'

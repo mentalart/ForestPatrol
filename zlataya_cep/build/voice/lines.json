@@ -2329,17 +2329,6 @@
    "dur": 2.64
   },
   {
-   "id": "1-B_010",
-   "lv": "1-B",
-   "who": "leshy",
-   "text": "Вкусно! Ох, объеденье!",
-   "tts": "Вкусно! Ох, объеденье!",
-   "max": 2.4,
-   "url": "elevenlabs:eleven_v4",
-   "el_take": 1,
-   "dur": 2.9
-  },
-  {
    "id": "2-1_001",
    "lv": "2-1",
    "who": "sadko",
@@ -15091,6 +15080,50 @@
    "url": "elevenlabs:eleven_v4",
    "el_take": 1,
    "dur": 2.78
+  },
+  {
+   "id": "1-B_015",
+   "lv": "1-B",
+   "who": "proshka",
+   "text": "Дедушка Леший, а зачем ты нас путал?",
+   "tts": "[childlike voice] [curious] Дедушка Леший, а зачем ты нас путал?",
+   "max": 2.8,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 2.59
+  },
+  {
+   "id": "1-B_016",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Ворона Кощеева нашептала — вот я и путал.",
+   "tts": "[creaky, sheepish] Ворона Кощеева нашептала — вот я и путал.",
+   "max": 3.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.69
+  },
+  {
+   "id": "1-B_017",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Держите: цепочка золотая — ворона в дупло спрятала.",
+   "tts": "[warm, creaky] Держите: цепочка золотая — ворона в дупло спрятала.",
+   "max": 3.6,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 4.44
+  },
+  {
+   "id": "1-B_018",
+   "lv": "1-B",
+   "who": "leshy",
+   "text": "Светлячки дорогу укажут. Позовёте — приду!",
+   "tts": "[warm, creaky] Светлячки дорогу укажут. Позовёте — приду!",
+   "max": 3.2,
+   "url": "elevenlabs:eleven_v4",
+   "el_take": 1,
+   "dur": 3.98
   },
   {
    "id": "luko_k1b1",
