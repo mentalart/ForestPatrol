@@ -9,8 +9,8 @@
 // Е3. «Ещё разок!»: оба героя рассыпались — через 1,5 с оба снова на ногах у входа на поляну, все лепестки на месте; этап продолжается с того же места
 //     (трофеи, круги и витки сохраняются; руки и двойники на 2 с успокаиваются). Раньше — общее правило: 10 с ожидания.
 // Е4. Звёзды мастерства: щит в последний миг («Одним махом!»), прыжок через смахивание, жёлудь по когтю, «Сова села», «Держу — не шелохнётся!»,
-//     корни Йоши, сорока сбита, Йоша под смахиванием, настоящий найден без единой ошибки («Зоркий глаз!») — по звезде. В конце боя — сколько звёзд
-//     и «Без царапины!», если ни один лепесток не потерян; лучший счёт — G.flags.k1bStars.
+//     корни Йоши, сорока сбита, Йоша под смахиванием, настоящий найден без единой ошибки («Зоркий глаз!») — по звезде. После финального ролика — сколько звёзд
+//     и «без царапины!», если ни один лепесток не потерян (подпись к «Леший-Путаник распутан!»); лучший счёт — G.flags.k1bStars.
 // Ж3. Громкость тем: этап 2 (пиццикато) был на 23 дБ тише этапа 3, этап 1 — на 12 дБ. Голоса тем: 1 — ×1,5, 2 — ×2 и басовый гул, 3 — ×1,6; замер
 //     tools/boss_audit (music_w1_w4, RMS): 1 / 2 / 3 / финал — в пределах ±6 дБ (до правки разброс 23 дБ).
 const K1BL={stars:0,lost:0,best:0,downT:0,round:{fakes:0,snaps:0},st:{dbl:0,again:0,starTexts:{}}};K1B.bal=K1BL;
@@ -44,8 +44,9 @@ function k1blStar(p,label){K1BL.stars++;K1BL.st.starTexts[label]=(K1BL.st.starTe
 function k1blRound(){const H2=K1B.hide2;if(!H2)return;const F=W.flags,r=F.round||0;
   if(K1BL.lastRound!==r){if(K1BL.lastRound!=null&&r>K1BL.lastRound&&H2.st.fakeHits===K1BL.round.fakes&&H2.st.snaps===K1BL.round.snaps){const L=K1B.cur.L;floatText(new V3(K1B.cur.C.x,4,K1B.cur.C.z),'Зоркий глаз!','#ffd76a');k1blStar(new V3(K1B.cur.C.x,3,K1B.cur.C.z),'Зоркий глаз!');}
     K1BL.lastRound=r;K1BL.round.fakes=H2.st.fakeHits;K1BL.round.snaps=H2.st.snaps;}}
-function k1blWin(){if(K1BL.shown)return;K1BL.shown=true;const n=K1BL.stars,clean=K1BL.lost===0;G.flags.k1bStars=Math.max(G.flags.k1bStars||0,n);K1BL.best=G.flags.k1bStars;
-  later(0.6,()=>banner('Мастерство: ★ '+n,'#ffd76a',3.2,clean?'Без царапины — ни одного лепестка не потеряли!':'лучший счёт — ★ '+K1BL.best));}
+function k1blWin(){if(K1BL.shown)return;K1BL.shown=true;const n=K1BL.stars;G.flags.k1bStars=Math.max(G.flags.k1bStars||0,n);K1BL.best=G.flags.k1bStars;}
+// подпись к итогу боя (late_99zdg_k1b_finale.js — после финального ролика)
+K1BL.winSub=()=>'мастерство: ★ '+K1BL.stars+(K1BL.lost===0?' · без царапины!':' · лучший счёт ★ '+K1BL.best);
 /* ---------- Ж3: громкость тем этапов ---------- */
 function k1blMusic(){const TR=FIN.music&&FIN.music.TR;if(!TR||!TR.k1b1||TR.k1b1.k1bl)return;
   const boost=(t,k)=>{t.v=t.v.map(v=>Object.assign({},v,{vol:v.vol*k}));t.k1bl=true;};

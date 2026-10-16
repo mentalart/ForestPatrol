@@ -9,6 +9,9 @@
 //     записи первого ролика раскодируются первыми.
 // А8. Пауза в ролике не гасит голос насовсем: после паузы реплика продолжается с места остановки.
 // Ж1. Всплывающие надписи — в роде героя: у Пелагеи «Перепрыгнула!», «Увернулась!».
+// Мост шире у ладони (16.10): настил руки-моста был 1,5 м шириной на всю длину, а сама рука на вид — почти 2 м; на первых метрах, где разбегаются
+//     и заходят на мост сбоку, герой соскальзывал. Теперь первые 5,5 м — 3,2 м шириной (и мох-настил там шире), дальше — 2 м; пока рука лежит мостом,
+//     ладонь не отталкивает героев (раньше отталкивала, если рука уже поднялась, а мост ещё держали).
 const K1X={clamp:-0.06,lift:0,waitT:0,cineEnd:-9};K1B.fix=K1X;
 /* ---------- А1: руки без глаз ---------- */
 {const _fh=FL.hand;FL.hand=function(){const L=_fh.apply(this,arguments);L.noFace=true;return L;};}
@@ -25,8 +28,16 @@ function k1xGround(){const c=K1B.cur;if(!c||!W.enemies)return;let moved=false;
       const st=e.dazeT>0||k1.stuck||k1.dp==='stuck';e.L.arm.rotation.x=st?0.12+Math.sin(G.time*14)*0.05:Math.min(e.L.arm.rotation.x,0.08*(k1.restK||0));}
     const lo=k1xLow(e);if(lo<K1X.clamp){const d=(K1X.clamp-lo)/Math.max(0.001,e.g.scale.y);e.body.position.y+=d;moved=true;K1X.lift=Math.max(K1X.lift,d);}}
   if(moved&&typeof k1UpdateArms==='function')k1UpdateArms(c,1e-6);}   // рука от плеча — к поднятой кисти в этом же кадре
-K1X.low=e=>k1xLow(e);   // для ботов: самая низкая точка ладони
-{const _st=step;step=function(dt){_st(dt);if(!K1B.cur||!W||W.levelId!=='1-B')return;try{k1xGround();}catch(err){console.error('k1x',err);}};}
+K1X.low=e=>k1xLow(e);
+/* ---------- мост шире у ладони ---------- */
+function k1xWide(){const c=K1B.cur;if(!c||!c.ramps)return;
+  for(const r of c.ramps){if(r.k1w)continue;r.k1w=true;const rp=r.cols[0];if(!rp||!W.ramps)continue;rp.w=Math.max(rp.w,1.0);
+    const L1=Math.min(5.5,rp.len*0.55),wide={x0:rp.x0,z0:rp.z0,y0:rp.y0-0.015,y1:rp.y0+(rp.y1-rp.y0)*L1/rp.len-0.015,dx:rp.dx,dz:rp.dz,len:L1,w:1.6,k1wide:true};   // на 1,5 см ниже настила: над осью опора — сам настил (на него смотрят напарник-бот и смахивание), широкий ловит по краям
+    const i=W.ramps.indexOf(rp);W.ramps.splice(i<0?W.ramps.length:i,0,wide);r.cols.push(wide);   // перед настилом: последние два в W.ramps — по-прежнему настил и площадка на плече
+    if(r.g){const a=Math.atan2(rp.dx,rp.dz),sl=Math.atan2(wide.y1-wide.y0,L1),m=new THREE.Mesh(new THREE.BoxGeometry(3.2,0.08,L1/Math.cos(sl)),M(0x6aa338));
+      m.position.set(rp.x0+rp.dx*L1/2,(wide.y0+wide.y1)/2+0.04,rp.z0+rp.dz*L1/2);m.rotation.set(0,a,0,'YXZ');m.rotation.x=-sl;m.raycast=()=>{};r.g.add(m);}}
+  for(const e of W.enemies)if(e.kind==='hand'&&e.k1){const lay=c.ramps.some(r=>r.hand===e);if(lay!==!!e.k1ghost){e.k1ghost=lay;e.ghostly=lay;}}}   // для ботов: самая низкая точка ладони
+{const _st=step;step=function(dt){_st(dt);if(!K1B.cur||!W||W.levelId!=='1-B')return;try{k1xWide();k1xGround();}catch(err){console.error('k1x',err);}};}
 /* ---------- А5: ролик ждёт голос, начатый в бою ---------- */
 const k1xVoxLeft=()=>{try{if(!VOX.cur||!AC)return 0;return Math.max(0,VOX.cur.end-AC.currentTime);}catch(err){return 0;}};
 {const _pl=play;play=function(def){

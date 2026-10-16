@@ -24,7 +24,7 @@ W.flags.head=0;ZC.players.forEach(p=>{p.downed=true;p.downT=10;p.petals=0;});ZC.
 need(ZC.players.every(p=>!p.downed&&p.petals===3)&&B.st.again===1&&W.flags.phase===1,'оба снова на ногах');
 // Е4: звезда за жёлудь по когтю и итог
 const s0=B.stars;const Y2=hand(-1);Y2.sig='yellow';Y2.state='wind';Y2.t=0;Y2.wdur=Y2.wdur||1;Y2.k1.prev='wind';ZC.tick(1);const mh=K.heroes.marks.hand.find(m=>m.active()&&m.e===Y2);need(!!mh,'цель рогатки');mh.onHit();ZC.tick(2);
-need(B.stars===s0+1,'звезда мастерства');W.flags.won=true;ZC.tick(60);need(B.shown&&ZC.G.flags.k1bStars>=1,'итог звёзд');W.flags.won=false;
+need(B.stars===s0+1,'звезда мастерства');W.flags.won=true;ZC.tick(60);need(B.shown&&ZC.G.flags.k1bStars>=1&&B.winSub().includes('★ '+B.stars),'итог звёзд');W.flags.won=false;
 // Ж3: темы громче
 K.music('k1b2');const TR=ZC.FIN.music.TR;need(TR.k1b1.k1bl&&TR.k1b2.k1bl,'темы этапов 1–2 громче');
 if(window._errs.length)throw new Error('ошибки: '+window._errs[0]);

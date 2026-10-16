@@ -276,6 +276,7 @@ zlataya_cep/build/levels/1-B/late_99zdc_k1b_hide2.js @level:1-B tfin_k1bhide2 tf
 zlataya_cep/build/levels/1-B/late_99zdd_k1b_heroes.js @level:1-B tfin_k1bheroes tfin_k1bfull tfin_companion_1b
 zlataya_cep/build/levels/1-B/late_99zde_k1b_balance.js @level:1-B tfin_k1bbal tfin_k1bfull tfin_k1bsolo12
 zlataya_cep/build/levels/1-B/late_99zdf_k1b_kino.js @level:1-B tfin_k1bkino tfin_k1bvox tfin_k1btut tfin_k1bfull tfin_k1blespull
+zlataya_cep/build/levels/1-B/late_99zdg_k1b_finale.js @level:1-B tfin_k1bfinale tfin_k1bkino tfin_k1bvox tfin_k1bfull
 zlataya_cep/build/levels/epi/rep_30_epi.py    @level:epi tfin_epitheatre tfin_episolo
 zlataya_cep/build/levels/1-1/late_99n_yaga11.js @level:1-1 tfin_yaga11
 zlataya_cep/build/levels/1-1/rep_31_yaga11.py @level:1-1 tfin_yaga11

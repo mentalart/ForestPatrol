@@ -6,7 +6,7 @@
 // Б3. Урок «Хоровода» (35,8 с показа без голоса) больше не включается сам — хоровод сразу играется: первый виток каждого героя учебный (скакалка
 //     не отнимает лепесток — «Прыгай!»), Сказительница подсказывает голосом в нужный миг: начало, первая скакалка, первое «Тяни-потяни»,
 //     первый раз «закружился». Урок остаётся в паузе: «Показать урок ещё раз».
-// Б4. Финал: после слов Лешего «путь укажу» он поднимает руку — ёлки у края поляны расступаются, по тропе бегут светляки (кадр вдоль тропы).
+// Б4. Финал — отдельный модуль late_99zdg_k1b_finale.js.
 const K1K={hint:{},st:{trainHits:0,hints:0}};K1B.kino=K1K;
 /* ---------- Б1: вход без лишней строки, урок без повтора начала ---------- */
 {const _in=K1B.cine.intro;K1B.cine.intro=function(d){d=_in(d);d.says=(d.says||[]).filter(q=>!/ростом с ель/.test(String(q[3])));return d;};}
@@ -31,17 +31,7 @@ function k1kTick(){const S=K1B.s3;if(!S||!S.on||G.cine)return;const C=K1B.cur.C;
   if(S.st==='run'&&S.round===1)k1kHint('start',3.4);
   if(S.st==='run'&&!K1K.hint.rope)for(const rp of S.ropes)for(const pi of[0,1]){const h=active(pi),a=Math.atan2(h.pos.z-C.z,h.pos.x-C.x);let d=-rp.th-a;while(d>Math.PI)d-=2*Math.PI;while(d<-Math.PI)d+=2*Math.PI;if(d>0&&d<0.9&&K1K.hint.start){k1kHint('rope',2.6);break;}}
   if(S.st==='pull')k1kHint('pull',3.4);if(S.st==='mah')k1kHint('mah',2.6);}
-/* ---------- Б4: Леший показывает дорогу ---------- */
-{const _end=K1B.cine.end;K1B.cine.end=function(d){d=_end(d);const D0=d.dur||16,A=D0;d.dur=D0+4.2;const g=new THREE.Group();k1Add(g);const fl=[];
-  const fir=s=>{const f=new THREE.Group();f.position.set(s*1.1,0,-27.4);g.add(f);addMesh(GEO.trunk,M(0x5a3d22),0,0.6,0,f);addMesh(GEO.cone1,M(0x2f5a34),0,2.0,0,f);addMesh(GEO.cone2,M(0x2f5a34),0,3.1,0,f);f.scale.setScalar(1.4);return f;};
-  const L1=fir(-1),R1=fir(1);
-  d.shots=(d.shots||[]).concat([shot(A,[0,2.4,-11.5],[0,2.6,-27],[0,3.2,-14.5],[0,2.2,-30],4.2)]);   // вдоль тропы: ёлки расступаются
-  d.events=(d.events||[]).concat([{t:A+0.2,fn:()=>{try{tone(392,0.5,'triangle',0.06,523);}catch(e){}}},
-    {t:A+0.5,fn:()=>{anim(1.4,k=>{const q=CINE.E.outBack?CINE.E.outBack(k):k;L1.position.x=-1.1-2.9*q;R1.position.x=1.1+2.9*q;L1.rotation.z=0.25*q;R1.rotation.z=-0.25*q;});
-      if(K1B.fx)K1B.fx.leaves(new V3(0,3,-27.4),30,{spd:2,up:1.2});}},
-    {t:A+1.3,fn:()=>{for(let i=0;i<12;i++)later(i*0.12,()=>{const m=new THREE.Mesh(new THREE.SphereGeometry(0.13,6,5),new THREE.MeshBasicMaterial({color:0xfff3a0}));m.position.set(Math.sin(i*1.7)*0.6,0.7,-18-i*1.0);g.add(m);fl.push(m);});}}]);
-  const tk=d.tick;d.tick=t=>{if(tk)tk(t);fl.forEach((m,i)=>{m.position.y=0.7+Math.sin(G.time*3+i)*0.2;});};
-  const oe=d.end;d.end=()=>{k1Del(g);if(oe)oe();};return d;};}
+/* ---------- Б4: финал — late_99zdg_k1b_finale.js (переписан целиком) ---------- */
 /* ---------- «Ку-ку!» двойников — три озвученных варианта (А6) ---------- */
 const K1K_KU=['Ку-ку!','Ку-ку! Не найдёте!','Ау-у! Ищи-свищи!'];
 {const _sy=say;say=function(who,text,dur,nv){if(W&&W.levelId==='1-B'&&who==='leshy'&&text==='Ку-ку!'){K1K.ku=((K1K.ku||0)+1+Math.floor(Math.random()*2))%3;text=K1K_KU[K1K.ku];dur=Math.max(dur||0,1.6);}return _sy.call(this,who,text,dur,nv);};}
