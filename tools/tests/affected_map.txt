@@ -18,6 +18,7 @@ zlataya_cep/kniga/*                           -
 tools/tests/gpu_parity.py                     -
 tools/tests/regress_list_final07.txt          -
 tools/video/*                                 -
+tools/serial/*                                -
 tools/script/*                                -
 tools/boss_audit/*                             -
 tools/boss_audit/audio/*                       -

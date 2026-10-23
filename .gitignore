@@ -11,3 +11,5 @@ _site/
 # прототип — склейка частей proto/ (tools/proto.py; сборка build_final.py пишет его сама), исходник — proto/
 /index.html
 __pycache__/
+# мультсериал: съёмочная сборка, кадры и видео (tools/serial/README.md)
+tools/serial/out/
