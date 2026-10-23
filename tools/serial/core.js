@@ -57,8 +57,10 @@ SER.hookSound=function(){if(SER.hooked)return;SER.hooked=true;
   FIN.toneEv=a=>{if(SER.rec)SER.log.push({t:SER.vt,k:'tone',a:Array.from(a)});};
   const A=FIN.aud;for(const k of['osc','nz']){const f=A[k];A[k]=function(o){if(SER.rec)SER.log.push({t:SER.vt,k,a:[Object.assign({},o)]});return f.apply(this,arguments);};}
   const M=FIN.music,mp=M.play;M.play=function(tr){if(SER.rec)SER.log.push({t:SER.vt,k:'mus',track:tr||null});return mp.apply(this,arguments);};
+  // ноты самой музыки (секвенсор FIN.music.tick — из render) не пишутся: музыку дорожка играет сама по меткам 'mus'
+  const tk=M.tick;M.tick=function(){SER.mtick=true;try{return tk.apply(this,arguments);}finally{SER.mtick=false;}};
   const I=M.inst;for(const k of Object.keys(I)){const f=I[k];if(typeof f!=='function')continue;
-    I[k]=function(f0,t,d,v){if(SER.rec){const now=(typeof AC!=='undefined'&&AC)?AC.currentTime:0;SER.log.push({t:SER.vt,k:'inst',i:k,a:[f0,Math.max(0,(t||now)-now),d,v]});}return f.apply(this,arguments);};}};
+    I[k]=function(f0,t,d,v){if(SER.rec&&!SER.mtick){const now=(typeof AC!=='undefined'&&AC)?AC.currentTime:0;SER.log.push({t:SER.vt,k:'inst',i:k,a:[f0,Math.max(0,(t||now)-now),d,v]});}return f.apply(this,arguments);};}};
 
 /* ---------- модели героев для крупных планов ---------- */
 // В игре камера далеко, и глаза под тяжёлыми веками читаются; в вертикальном кадре крупно — сонно и хмуро. В сериале глаза крупнее
