@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Звук пробы стиля (музыка и шумы синтезом, без голосов): python3 tools/mult2d/audio_proba.py [выход.wav]
-Метки времени — те же, что в ep_proba.js. Голоса — позже из VoiceStudio (docs/47_mult2d_stil.md, «Голоса»)."""
-import sys, wave, numpy as np
+"""Звук пробы стиля: музыка и шумы синтезом + голоса VoiceStudio (voice/proba/): python3 tools/mult2d/audio_proba.py [выход.wav]
+Метки времени — те же, что в ep_proba.js (voice — там же)."""
+import os, sys, wave, numpy as np
 
-SR, DUR = 48000, 20.0
+SR, DUR = 48000, 24.8
 N = int(SR * DUR)
 L = np.zeros(N); R = np.zeros(N)
 rng = np.random.default_rng(7)
@@ -68,57 +68,67 @@ def boom():
     return s + lowpass(rng.normal(0, 1, n), 600) * np.exp(-t * 5) * .8
 
 # ---------- 1. Лукоморье: колыбельная на шкатулке, раскладушка шуршит ----------
-for t in (.1, .25, .45, .7, .78): add(t, paper(.3), .35, rng.uniform(-.5, .5))
-add(0, pad([hz('A2'), hz('E3'), hz('C4')], 4.6, 1.2, 900), .5)
-for t, n, d in [(.35, 'E5', 1.6), (.95, 'C5', 1.6), (1.55, 'D5', 1.6), (2.15, 'E5', 2), (2.9, 'A4', 1.6), (3.4, 'B4', 1.6), (3.85, 'C5', 2)]:
-    add(t, box(hz(n), d), .32, .2)
-add(1.6, bell(hz('E6'), 1.2), .06, .3)   # блик по цепи
+for t in (.1, .2, .45, .7, .78): add(t, paper(.3), .35, rng.uniform(-.5, .5))
+add(0, pad([hz('A2'), hz('E3'), hz('C4')], 6.0, 1.2, 900), .5)
+for t, n, d in [(.3, 'E5', 1.6), (1.1, 'C5', 1.6), (1.9, 'D5', 1.6), (2.7, 'E5', 2), (3.6, 'A4', 1.6), (4.3, 'B4', 1.6), (5.0, 'C5', 2)]:
+    add(t, box(hz(n), d), .3, .2)
 
 # ---------- 2–3. Кощей: холодный гул, тритон, цепь звенит, разрыв ----------
-add(4.0, whoosh(.7, False), .5)
-add(4.2, pad([hz('A1'), hz('D#2'), hz('A2')], 4.1, .6, 500), .9)
-n = int(SR * 4); t = np.arange(n) / SR
-add(4.2, np.sin(2 * np.pi * (1800 + 300 * np.sin(t * 1.7)) * t) * .5 * np.sin(np.pi * t / 4) ** 2 * (.5 + .5 * np.sin(t * 23)), .04, .4)
-add(5.05, bell(hz('D#3'), 3), .35, -.2)       # «Довольно.» — холодный удар
+add(5.6, whoosh(.7, False), .5)
+add(5.8, pad([hz('A1'), hz('D#2'), hz('A2')], 4.9, .6, 500), .9)
+n = int(SR * 4.8); t = np.arange(n) / SR
+add(5.8, np.sin(2 * np.pi * (1800 + 300 * np.sin(t * 1.7)) * t) * .5 * np.sin(np.pi * t / 4.8) ** 2 * (.5 + .5 * np.sin(t * 23)), .04, .4)
+add(6.2, bell(hz('D#3'), 3), .3, -.2)        # глаза открываются — холодный удар
 n = int(SR * 1.9); t = np.arange(n) / SR
 rise = np.sin(2 * np.pi * np.cumsum(200 + 700 * (t / 1.9) ** 2) / SR) * (t / 1.9) ** 2
-add(6.2, rise, .18); add(6.2, noise(1.9, 500, 6000, shape=lambda u: u ** 2), .45)
-tt = 7.0
-while tt < 8.08:   # цепь дребезжит всё чаще
-    add(tt, bell(rng.uniform(2200, 3600), .15), .12, rng.uniform(-.6, .6)); tt += .14 - .1 * (tt - 7.0)
-add(8.1, boom(), 1.0); add(8.1, bell(hz('A3'), 3.5), .45); add(8.1, bell(hz('E5'), 2.5), .25, .3)
-add(8.1, noise(1.2, 8000, 2000, .002, 1.0), .5)
+add(8.7, rise, .18); add(8.7, noise(1.9, 500, 6000, shape=lambda u: u ** 2), .45)
+tt = 9.5
+while tt < 10.58:   # цепь дребезжит всё чаще
+    add(tt, bell(rng.uniform(2200, 3600), .15), .12, rng.uniform(-.6, .6)); tt += .14 - .1 * (tt - 9.5)
+add(10.6, boom(), 1.0); add(10.6, bell(hz('A3'), 3.5), .45); add(10.6, bell(hz('E5'), 2.5), .25, .3)
+add(10.6, noise(1.2, 8000, 2000, .002, 1.0), .5)
 for k in range(28):
-    add(8.2 + rng.uniform(0, 1.9), bell(rng.uniform(2500, 6000), .35), .07, rng.uniform(-.9, .9))
-add(9.1, whoosh(1.2), .55, .5)
-add(8.4, pad([hz('A2'), hz('C3'), hz('E3'), hz('A3')], 2.4, .4, 1500), .45)
+    add(10.7 + rng.uniform(0, 1.9), bell(rng.uniform(2500, 6000), .35), .06, rng.uniform(-.9, .9))
+add(11.6, whoosh(1.2), .5, .5)
+add(10.9, pad([hz('A2'), hz('C3'), hz('E3'), hz('A3')], 2.4, .4, 1500), .45)
 
 # ---------- 4. Штаб: тёплые гусли, карандаш, искра, влёт, иней ----------
-add(10.25, whoosh(.55, False), .3); add(10.35, paper(.5), .7)
-add(10.6, pad([hz('F3'), hz('A3'), hz('C4')], 4.2, .8, 1000), .38)
-for i, (t, n) in enumerate([(10.7, 'F4'), (11.2, 'C5'), (11.7, 'A4'), (12.2, 'C5'), (14.0, 'F4')]): add(t, pluck(hz(n), 2.2, .4), .32, -.3 + .15 * i)
-t = 10.65
-while t < 11.6: add(t, noise(.07, 6000, 4000, .005, .05), .12, -.2); t += 1 / 12 * rng.uniform(1.5, 2.5)
-for k, t in enumerate(np.linspace(11.2, 12.7, 7)): add(t, box(hz('A5') * 2 ** (k / 12), .4), .05 + k * .015, -.6)
-add(12.7, whoosh(.7), .6, -.3); add(13.4, bell(hz('A5'), 1.8), .4); add(13.4, bell(hz('E6'), 1.5), .2, .3)
-for k in range(30): add(13.05 + rng.uniform(0, .55), noise(.02, 9000, 7000, .001, .015), .25, -.6)
-add(13.35, pad([hz('A1'), hz('D#2')], 1.1, .2, 400), .7)
+add(12.75, whoosh(.55, False), .3); add(12.85, paper(.5), .7)
+add(13.1, pad([hz('F3'), hz('A3'), hz('C4')], 5.9, .8, 1000), .38)
+for i, (t, n) in enumerate([(13.2, 'F4'), (13.9, 'C5'), (15.4, 'A4'), (16.4, 'C5'), (18.3, 'F4')]): add(t, pluck(hz(n), 2.2, .4), .3, -.3 + .15 * i)
+t = 13.15
+while t < 14.1: add(t, noise(.07, 6000, 4000, .005, .05), .12, -.2); t += 1 / 12 * rng.uniform(1.5, 2.5)
+for k, t in enumerate(np.linspace(13.7, 16.9, 9)): add(t, box(hz('A5') * 2 ** (k / 12), .4), .04 + k * .012, -.6)
+add(16.95, whoosh(.7), .6, -.3); add(17.6, bell(hz('A5'), 1.8), .4); add(17.6, bell(hz('E6'), 1.5), .2, .3)
+for k in range(30): add(17.25 + rng.uniform(0, .55), noise(.02, 9000, 7000, .001, .015), .25, -.6)
+add(17.6, pad([hz('A1'), hz('D#2')], 1.0, .2, 400), .7)
 
 # ---------- 5. Звенышко выпрыгивает ----------
 n = int(SR * .35); t = np.arange(n) / SR
-add(14.75, np.sin(2 * np.pi * np.cumsum(300 + 900 * t / .35) / SR) * np.exp(-t * 6), .35)
-add(15.0, bell(hz('A6'), .8), .3, .2); add(15.28, bell(hz('E6'), .8), .3, -.2)
-for k, n in enumerate(['C4', 'E4', 'G4', 'C5', 'E5', 'G5']): add(15.4 + k * .1, pluck(hz(n), 1.6, .7), .3, -.5 + k * .2)
-add(14.6, pad([hz('C3'), hz('G3'), hz('E4')], 2.4, .3, 1400), .32)
+add(19.05, np.sin(2 * np.pi * np.cumsum(300 + 900 * t / .35) / SR) * np.exp(-t * 6), .35)
+add(18.9, pad([hz('C3'), hz('G3'), hz('E4')], 2.8, .3, 1400), .32)
+for k, n in enumerate(['C4', 'E4', 'G4', 'C5', 'E5', 'G5']): add(20.3 + k * .12, pluck(hz(n), 1.6, .7), .26, -.5 + k * .2)
 
 # ---------- 6. Титр: золотая волна, буквы падают на струны, аккорд ----------
-add(16.55, whoosh(.45), .5)
-for i, n in enumerate(['C5', 'D5', 'E5', 'G5', 'A5', 'C6']): add(17.25 + i * .06 + .3, pluck(hz(n), 1.4, .8), .28, -.6 + i * .24)
-for i, n in enumerate(['G4', 'C5', 'E5', 'G5']): add(17.6 + i * .06 + .3, pluck(hz(n), 1.4, .8), .3, .5 - i * .3)
-for i, n in enumerate(['C3', 'G3', 'C4', 'E4', 'G4', 'C5', 'E5']): add(18.4 + i * .025, pluck(hz(n), 2.6, .6), .3, -.6 + i * .2)
-add(18.4, pad([hz('C3'), hz('E3'), hz('G3'), hz('C4')], 1.6, .2, 1800), .35)
-add(18.45, bell(hz('C6'), 2), .2)
-add(16.9, noise(.25, 2000, 6000, .01, .2), .2)
+T = 21.7 - 16.9
+add(16.55 + T, whoosh(.45), .5)
+for i, n in enumerate(['C5', 'D5', 'E5', 'G5', 'A5', 'C6']): add(17.25 + T + i * .06 + .3, pluck(hz(n), 1.4, .8), .28, -.6 + i * .24)
+for i, n in enumerate(['G4', 'C5', 'E5', 'G5']): add(17.6 + T + i * .06 + .3, pluck(hz(n), 1.4, .8), .3, .5 - i * .3)
+for i, n in enumerate(['C3', 'G3', 'C4', 'E4', 'G4', 'C5', 'E5']): add(18.4 + T + i * .025, pluck(hz(n), 2.6, .6), .3, -.6 + i * .2)
+add(18.4 + T, pad([hz('C3'), hz('E3'), hz('G3'), hz('C4')], 1.6, .2, 1800), .35)
+add(18.45 + T, bell(hz('C6'), 2), .2)
+
+# ---------- голоса (VoiceStudio) поверх, музыка под ними тише ----------
+VOICE = [('kot_01', .7), ('koschei_01', 6.45), ('kot_02', 11.0), ('pelageya_01', 14.35), ('zvenyshko_01', 19.45)]
+V = np.zeros(N)
+for vid, at in VOICE:
+    with wave.open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'voice', 'proba', vid + '.wav')) as w:
+        x = np.frombuffer(w.readframes(w.getnframes()), '<i2').astype(float) / 32768
+        if w.getframerate() != SR: x = np.interp(np.arange(0, len(x), w.getframerate() / SR), np.arange(len(x)), x)
+    i = int(at * SR); V[i:i + len(x)] += x[:N - i] * (1.6 if vid.startswith('pelageya') else 1.0)
+duck = np.convolve((np.abs(V) > .02).astype(float), np.ones(4800) / 4800, 'same')
+mus = 1 - .55 * np.clip(duck * 3, 0, 1)
+L *= mus; R *= mus; L += V * .9; R += V * .9
 
 mix = np.stack([L, R], 1)
 mix = np.tanh(mix * 1.2) / np.tanh(1.2)

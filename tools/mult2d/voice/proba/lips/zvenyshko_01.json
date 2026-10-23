@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/ForestPatrol/tools/mult2d/voice/proba/zvenyshko_01.wav",
+    "duration": 2.14
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.02, "value": "X" },
+    { "start": 0.02, "end": 0.15, "value": "B" },
+    { "start": 0.15, "end": 0.36, "value": "F" },
+    { "start": 0.36, "end": 0.64, "value": "B" },
+    { "start": 0.64, "end": 0.85, "value": "F" },
+    { "start": 0.85, "end": 0.99, "value": "C" },
+    { "start": 0.99, "end": 1.06, "value": "B" },
+    { "start": 1.06, "end": 1.20, "value": "C" },
+    { "start": 1.20, "end": 1.27, "value": "H" },
+    { "start": 1.27, "end": 1.34, "value": "C" },
+    { "start": 1.34, "end": 1.62, "value": "B" },
+    { "start": 1.62, "end": 1.72, "value": "D" },
+    { "start": 1.72, "end": 1.76, "value": "C" },
+    { "start": 1.76, "end": 1.89, "value": "A" },
+    { "start": 1.89, "end": 1.97, "value": "B" },
+    { "start": 1.97, "end": 2.14, "value": "X" }
+  ]
+}

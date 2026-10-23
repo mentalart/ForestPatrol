@@ -1,5 +1,6 @@
 <!doctype html>
-<!-- Съёмочная страница 2D-сериала: ?ep=proba. Кадр рисует MD.render(t); shoot.js снимает покадрово, без ?ep — предпросмотр в реальном времени. -->
+<!-- Съёмочная страница 2D-сериала: ?ep=proba. Кадр рисует MD.render(t); shoot.js снимает покадрово, без &shoot — предпросмотр в реальном времени.
+     Открывать через локальный сервер (спрайты и метки рта грузятся fetch): python3 -m http.server -d tools/mult2d -->
 <meta charset="utf-8">
 <title>Златая цепь 2D</title>
 <style>
@@ -12,12 +13,16 @@ canvas{display:block;height:100vh;margin:0 auto}
 <canvas id="c"></canvas>
 <script src="engine.js"></script>
 <script src="cast.js"></script>
+<script src="pup.js"></script>
 <script src="ep_proba.js"></script>
 <script>
 (async () => {
   const q = new URLSearchParams(location.search), id = q.get('ep') || 'proba';
   await Promise.all(['56px "Ruslan Display"', '500 54px Rubik', '700 54px Rubik', '54px Alegreya'].map(f => document.fonts.load(f, 'АБВ')));
-  MD.init(id); window.READY = true;
+  MD.init(id);
+  await MD.loadSprites();
+  if (MD.ep.voice) await MD.loadLips(MD.ep.voiceDir + '/lips', MD.ep.voice.map(v => v.id));
+  window.READY = true;
   if (q.has('shoot')) return;
   const t0 = performance.now(), loop = () => { MD.render(((performance.now() - t0) / 1000) % MD.ep.dur); requestAnimationFrame(loop); }; loop();
 })();

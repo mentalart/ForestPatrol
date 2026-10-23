@@ -1,0 +1,22 @@
+{
+  "metadata": {
+    "soundFile": "/home/user/ForestPatrol/tools/mult2d/voice/proba/pelageya_01.wav",
+    "duration": 3.11
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.01, "value": "X" },
+    { "start": 0.01, "end": 0.19, "value": "H" },
+    { "start": 0.19, "end": 0.26, "value": "C" },
+    { "start": 0.26, "end": 0.61, "value": "B" },
+    { "start": 0.61, "end": 1.26, "value": "X" },
+    { "start": 1.26, "end": 1.41, "value": "C" },
+    { "start": 1.41, "end": 2.04, "value": "B" },
+    { "start": 2.04, "end": 2.11, "value": "E" },
+    { "start": 2.11, "end": 2.18, "value": "B" },
+    { "start": 2.18, "end": 2.32, "value": "X" },
+    { "start": 2.32, "end": 2.52, "value": "B" },
+    { "start": 2.52, "end": 2.87, "value": "C" },
+    { "start": 2.87, "end": 2.94, "value": "B" },
+    { "start": 2.94, "end": 3.11, "value": "X" }
+  ]
+}
