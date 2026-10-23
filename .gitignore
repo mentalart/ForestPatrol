@@ -15,3 +15,4 @@ __pycache__/
 tools/serial/out/
 # 2D-мультсериал: кадры и видео пробы (tools/mult2d/README.md)
 tools/mult2d/out/
+tools/mult2d/sprites/

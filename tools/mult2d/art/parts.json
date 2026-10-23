@@ -1,0 +1,143 @@
+{
+ "pelageya/parts.png": {
+  "0": "head",
+  "3": "body",
+  "1": "wing_l",
+  "2": "wing_r",
+  "5": "wing_s_l",
+  "6": "wing_s_r",
+  "4": "tail",
+  "7": "foot_l",
+  "8": "foot_r",
+  "9": "kokoshnik",
+  "10": "eye_l",
+  "11": "eye_r",
+  "12": "eye_half_l",
+  "13": "eye_half_r",
+  "15": "eye_shut_l",
+  "16": "eye_shut_r",
+  "17": "eye_wow_l",
+  "18": "eye_wow_r",
+  "19": "eye_side_l",
+  "20": "eye_side_r",
+  "21": "mouth_A",
+  "23": "mouth_B",
+  "24": "mouth_C",
+  "25": "mouth_D",
+  "26": "mouth_E",
+  "27": "mouth_F",
+  "28": "mouth_G",
+  "29": "mouth_H"
+ },
+ "zvenyshko/parts.png": {
+  "2": "face",
+  "3": "ring",
+  "4": "ring_34",
+  "7": "halo",
+  "8": "thread",
+  "0": "spark",
+  "16": "eye_l",
+  "17": "eye_r",
+  "18": "eye_half_l",
+  "19": "eye_half_r",
+  "20": "eye_happy_l",
+  "21": "eye_happy_r",
+  "22": "eye_side_l",
+  "23": "eye_side_r",
+  "26": "mouth_A",
+  "28": "mouth_B",
+  "29": "mouth_C",
+  "30": "mouth_D",
+  "31": "mouth_E",
+  "32": "mouth_F",
+  "33": "mouth_G",
+  "34": "mouth_H",
+  "27": "mouth_X"
+ },
+ "koschei/parts.png": {
+  "2": "head",
+  "12": "robe",
+  "8": "arm_l",
+  "9": "arm_r",
+  "17": "cloak",
+  "0": "eye_l",
+  "1": "eye_r",
+  "4": "eye_half_l",
+  "5": "eye_half_r",
+  "6": "eye_shut_l",
+  "7": "eye_shut_r",
+  "10": "eye_side_l",
+  "11": "eye_side_r",
+  "18": "mouth_A",
+  "19": "mouth_B",
+  "22": "mouth_C",
+  "23": "mouth_D",
+  "25": "mouth_E",
+  "26": "mouth_F",
+  "27": "mouth_G",
+  "28": "mouth_H",
+  "20": "mouth_X"
+ },
+ "kot/parts.png": {
+  "0": "head",
+  "2": "robe",
+  "6": "sleeve_l",
+  "7": "sleeve_r",
+  "5": "tail",
+  "8": "leg",
+  "19": "eyes",
+  "20": "eyes_half",
+  "21": "eyes_shut",
+  "22": "eyes_side_l",
+  "23": "eyes_side_r",
+  "9": "brow_l",
+  "10": "brow_r",
+  "24": "mouth_A",
+  "25": "mouth_B",
+  "27": "mouth_C",
+  "28": "mouth_D",
+  "29": "mouth_E",
+  "30": "mouth_F",
+  "31": "mouth_G",
+  "32": "mouth_H"
+ },
+ "bg/sea.png": {
+  "0": "sea"
+ },
+ "bg/hills.png": {
+  "0": "hills"
+ },
+ "bg/oak.png": {
+  "0": "oak"
+ },
+ "bg/grass.png": {
+  "0": "grass"
+ },
+ "bg/moon.png": {
+  "0": "moon"
+ },
+ "bg/wall.png": {
+  "0": "wall"
+ },
+ "bg/window.png": {
+  "0": "window"
+ },
+ "bg/table.png": {
+  "0": "table"
+ },
+ "bg/lamp.png": {
+  "0": "lamp"
+ },
+ "bg/flags.png": {
+  "0": "flags"
+ },
+ "bg/notebook.png": {
+  "0": "notebook"
+ },
+ "koschei/sheet.png@1180,660,1536,1024": {
+  "0": "bust_sad"
+ },
+ "koschei/sheet.png@1180,0,1536,350": {
+  "0": "bust_smile"
+ }
+}

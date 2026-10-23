@@ -172,4 +172,37 @@ MD.TRANS = {
     if (r > 2) { const p = new Path2D(); p.arc(x, y, r, 0, Math.PI * 2); ctx.save(); ctx.strokeStyle = '#171012'; ctx.lineWidth = 16; ctx.stroke(p); ctx.strokeStyle = '#E23B2E'; ctx.lineWidth = 6; ctx.stroke(p); ctx.restore(); }
   },
 };
+
+// ---------- спрайты из листов ChatGPT (tools/mult2d/cut.py → sprites/, manifest.json) ----------
+MD.SPR = {};
+MD.loadSprites = async () => {
+  const man = await (await fetch('sprites/manifest.json')).json();
+  await Promise.all(Object.keys(man).map(k => new Promise((ok, bad) => { const im = new Image(); im.onload = ok; im.onerror = () => bad(new Error('нет спрайта ' + k)); im.src = `sprites/${k}.png`; MD.SPR[k] = im; })));
+};
+// Деталь: o.s — масштаб (или o.w — ширина), o.ax/o.ay — точка опоры 0…1, o.rot, o.alpha, o.flip,
+// o.shadow — бумажная тень (по умолчанию 1), o.rim — цвет свечения по краю вместо тени (лак), o.src — [sx,sy,sw,sh], o.op — режим смешения.
+MD.spr = (ctx, key, x, y, o = {}) => {
+  const im = MD.SPR[key]; if (!im) throw new Error('нет спрайта ' + key);
+  const src = o.src || [0, 0, im.width, im.height], s = o.w ? o.w / src[2] : (o.s ?? 1), sy = o.h ? o.h / src[3] : s;
+  ctx.save(); ctx.translate(x, y); if (o.rot) ctx.rotate(o.rot); if (o.flip) ctx.scale(-1, 1);
+  if (o.alpha != null) ctx.globalAlpha *= o.alpha; if (o.op) ctx.globalCompositeOperation = o.op;
+  if (o.rim) { ctx.shadowColor = o.rim; ctx.shadowBlur = o.rimBlur ?? 18; }
+  else if ((o.shadow ?? 1) > 0) { const k = o.shadow ?? 1; ctx.shadowColor = 'rgba(10,10,32,.45)'; ctx.shadowBlur = 14 * k; ctx.shadowOffsetX = 5 * k; ctx.shadowOffsetY = 9 * k; }
+  ctx.drawImage(im, src[0], src[1], src[2], src[3], -(o.ax ?? .5) * src[2] * s, -(o.ay ?? .5) * src[3] * sy, src[2] * s, src[3] * sy);
+  ctx.restore();
+};
+
+// ---------- голоса и движение рта (Rhubarb Lip Sync: формы A–H, X — покой) ----------
+MD.LIPS = {};
+MD.loadLips = async (dir, ids) => { for (const id of ids) MD.LIPS[id] = (await (await fetch(`${dir}/${id}.json`)).json()).mouthCues; };
+// Форма рта героя who в момент t по репликам серии ep.voice = [{id, who, at}].
+MD.mouth = (who, t) => {
+  for (const v of MD.ep.voice || []) {
+    if (v.who !== who || t < v.at) continue;
+    const c = (MD.LIPS[v.id] || []).find(c => t - v.at >= c.start && t - v.at < c.end);
+    if (c) return c.value;
+  }
+  return 'X';
+};
+MD.speaking = (who, t) => MD.mouth(who, t) !== 'X';
 if (typeof window !== 'undefined') window.MD = MD;

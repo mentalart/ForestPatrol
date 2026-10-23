@@ -4,13 +4,14 @@
 В игру не входит. Кадры и видео — в `tools/mult2d/out/`, в git не кладутся.
 
 ```sh
+python3 tools/mult2d/cut.py                                    # детали из листов ChatGPT (art/) → sprites/ (по art/parts.json; label — листы с номерами)
 node tools/mult2d/shoot.js --ep proba --at 2.5,8.3,15.4         # отдельные кадры для проверки → out/proba/at_*.jpg
 for k in 0 1 2 3; do node tools/mult2d/shoot.js --ep proba --part $k/4 & done; wait   # все кадры 1080×1920, 24 к/с → out/proba/*.jpg
 python3 tools/mult2d/audio_proba.py                             # звук пробы → out/proba_audio.wav
 tools/mult2d/encode.sh proba                                    # → out/proba.mp4 (H.264 + AAC)
 ```
-Предпросмотр в реальном времени — открыть `tools/mult2d/index.html` в браузере. Нужен `--allow-file-access-from-files`
-или любой локальный сервер.
+Предпросмотр в реальном времени: `python3 -m http.server -d tools/mult2d`, затем открыть `index.html?ep=proba`.
+Метки рта: `rhubarb -r phonetic -f json -o voice/<серия>/lips/<id>.json voice/<серия>/<id>.wav` (Rhubarb Lip Sync 1.13, GitHub).
 
 ## Как устроено
 - `engine.js` — кадр 1080×1920 как чистая функция времени `MD.render(t)`:
@@ -20,8 +21,10 @@ tools/mult2d/encode.sh proba                                    # → out/proba.
   - камера `MD.camera` (центр, масштаб, поворот, тряска), субтитры по формату ВК Клипов;
   - переходы: `page` — перелистывание, `lacquer` — лаковая капля, `gold` — золотой круг хохломы.
 - `cast.js` — куклы и декорации: Звенышко, Пелагея, тетрадка, Кощей (лицо и рука), дуб бумажный и золотой, цепь.
-  Позже здесь же — куклы из деталей ChatGPT, шарниры остаются прежними.
+  Рисованные кодом куклы — запасные, проба v2 играет куклами из `pup.js`.
+- `pup.js` — куклы из деталей ChatGPT: Пелагея, Звенышко, Кот Учёный, Кощей (бюст и рука). Рот — формы Rhubarb A–H (`MD.mouth`).
+- `art/` — листы ChatGPT и `parts.json` (номер детали → имя), `voice/` — голоса VoiceStudio и метки рта; `sprites/` — нарезка, в git не кладётся.
 - `ep_<серия>.js` — серия: `MD.eps[id] = {dur, shots:[{a,b,draw}], trans:[{at,dur,type}], subs:[…], post}`.
 - `shoot.js` — покадровая съёмка в Playwright: кадр берётся с холста в JPEG, а не скриншотом страницы.
-- `audio_<серия>.py` — звук синтезом (numpy): шкатулка, гусли, гул, шумы по меткам времени серии. Голоса позже добавляются отдельной дорожкой.
+- `audio_<серия>.py` — звук синтезом (numpy): шкатулка, гусли, гул, шумы по меткам времени серии + голоса VoiceStudio, под голосом музыка тише.
 - `fonts/` — Ruslan Display, Rubik, Alegreya (Google Fonts, лицензия OFL).
