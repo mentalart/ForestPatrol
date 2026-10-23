@@ -22,7 +22,9 @@ tools/mult2d/encode.sh proba                                    # → out/proba.
   - переходы: `page` — перелистывание, `lacquer` — лаковая капля, `gold` — золотой круг хохломы.
 - `cast.js` — куклы и декорации: Звенышко, Пелагея, тетрадка, Кощей (лицо и рука), дуб бумажный и золотой, цепь.
   Рисованные кодом куклы — запасные, проба v2 играет куклами из `pup.js`.
+- Игра кукол: `MD.anticip`, `MD.spring`, `MD.lag`, `MD.steps`, `MD.blinkAuto`, `MD.breath`, `MD.boil` — как применять, навык `perekladka` (`.claude/skills/perekladka/`).
 - `pup.js` — куклы из деталей ChatGPT: Пелагея, Звенышко, Кот Учёный, Кощей (бюст и рука). Рот — формы Rhubarb A–H (`MD.mouth`).
+- `voice/refs/` — русские образцы голосов для клонирования (из озвучки игры), `voice/proba/lines.json` — реплики с ударениями (U+0301 и «+»).
 - `art/` — листы ChatGPT и `parts.json` (номер детали → имя), `voice/` — голоса VoiceStudio и метки рта; `sprites/` — нарезка, в git не кладётся.
 - `ep_<серия>.js` — серия: `MD.eps[id] = {dur, shots:[{a,b,draw}], trans:[{at,dur,type}], subs:[…], post}`.
 - `shoot.js` — покадровая съёмка в Playwright: кадр берётся с холста в JPEG, а не скриншотом страницы.
