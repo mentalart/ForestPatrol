@@ -11,6 +11,7 @@ node tools/serial/shoot.js --ep 1 --preview                    # предпро�
 node tools/serial/shoot.js --ep 1                              # кадры 720×1280, 24 кадра/с → out/ep01/NN_id/*.jpg
 for k in 0 1 2; do node tools/serial/shoot.js --ep 1 --part $k/3 & done; wait   # то же в три процесса
 node tools/serial/shoot.js --ep 1 --only f_final,g_koschei     # переснять отдельные сегменты
+node tools/serial/shoot.js --ep 1 --sound-only                 # только метки звука по снятым кадрам (быстро, без отрисовки)
 node tools/serial/audio.js --ep 1                              # звук: out/ep01/audio.webm (в реальном времени)
 tools/serial/encode.sh tools/serial/out/ep01                   # out/ep01/ep01.mp4 — 1080×1920, H.264 + AAC
 ```
@@ -22,7 +23,8 @@ tools/serial/encode.sh tools/serial/out/ep01                   # out/ep01/ep01.m
     взгляд камеры чуть ниже цели (`SER.tilt`) — лица поднимаются в верхние две трети кадра;
   - **герои для крупных планов**: глаза крупнее (×1,22) и веки в покое подняты — лицо открытое (в игре не меняется);
   - **реплики**: `say` в съёмке не играет голос и «бормотание» — показывает субтитр и пишет метку голоса (`FIN.vox.find` по тексту);
-  - **звук**: вызовы синтеза (`tone`, `AUD.osc/nz`), инструменты песен (`FIN.music.inst`) и смена музыки пишутся в `SER.log` со временем видео;
+  - **звук**: вызовы синтеза (`tone`, `AUD.osc/nz`), инструменты песен (`FIN.music.inst`) и смена музыки пишутся в `SER.log` со временем видео
+    (ноты самой музыки — секвенсор `FIN.music.tick` в `render` — не пишутся: дорожка играет музыку сама по меткам смены трека);
   - **сегменты**: `SER.prkScene(i,o)` — сцена «Присказки» (0…6), `SER.lullaby(o)` — «Колыбельная» пролога, `SER.own(def)` — своя сцена
     на площадках «Присказки»; `o` — подмена поверх ролика игры (`SER.over`): `shots`/`reshot` (вертикальные планы `KS` по времени ролика),
     `says`/`addSays`/`dropSays`, `cues`, `tick`, `mood`;
