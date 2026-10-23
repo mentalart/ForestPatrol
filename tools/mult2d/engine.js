@@ -88,7 +88,7 @@ MD.camera = (ctx, cam, t) => {
   ctx.translate(-(cam.x ?? MD.W / 2), -(cam.y ?? MD.H / 2));
 };
 
-// ---------- субтитры (формат: 46_multserial.md — имя цветом героя, центр на 64 % высоты, не выше 2 строк) ----------
+// ---------- субтитры (формат: 46_multserial.md — имя цветом героя, не выше 2 строк; высота центра — ep.subY, по умолчанию 64 %) ----------
 MD.FONT = {display: '"Ruslan Display", Georgia, serif', ui: 'Rubik, "DejaVu Sans", sans-serif', body: 'Alegreya, Georgia, serif'};
 MD.subtitle = (ctx, who, color, text, alpha = 1) => {
   if (alpha <= 0) return;
@@ -97,7 +97,7 @@ MD.subtitle = (ctx, who, color, text, alpha = 1) => {
   const words = text.split(' '), lines = []; let cur = '';
   for (const w of words) { const s = cur ? cur + ' ' + w : w; if (ctx.measureText(s).width > 860 && cur) { lines.push(cur); cur = w; } else cur = s; }
   lines.push(cur);
-  const cy = MD.H * .64, lh = 66, h = 56 + lines.length * lh, y0 = cy - h / 2;
+  const cy = MD.H * (MD.ep?.subY ?? .64), lh = 66, h = 56 + lines.length * lh, y0 = cy - h / 2;
   const wMax = Math.max(...lines.map(l => ctx.measureText(l).width), 300) + 80;
   ctx.fillStyle = 'rgba(14,10,18,.62)'; ctx.beginPath(); ctx.roundRect(540 - wMax / 2, y0, wMax, h, 22); ctx.fill();
   ctx.font = `700 34px ${MD.FONT.ui}`; ctx.fillStyle = color; ctx.fillText(who.toUpperCase(), 540, y0 + 44);
@@ -191,6 +191,26 @@ MD.spr = (ctx, key, x, y, o = {}) => {
   ctx.drawImage(im, src[0], src[1], src[2], src[3], -(o.ax ?? .5) * src[2] * s, -(o.ay ?? .5) * src[3] * sy, src[2] * s, src[3] * sy);
   ctx.restore();
 };
+
+// ---------- игра кукол (навык perekladka): предвосхищение, захлёст, пружина, моргание, дыхание, «дрожь бумаги» ----------
+// Предвосхищение и перелёт: 0→1 с замахом назад (back) перед движением и перелётом с возвратом после.
+MD.anticip = (t, a, b, back = .18, over = .12) => {
+  const k = MD.seg(t, a, b); if (k <= 0) return 0; if (k >= 1) return 1;
+  if (k < .25) return -back * Math.sin(k / .25 * Math.PI / 2);
+  const u = (k - .25) / .75; return -back + (1 + back) * MD.ease.out(u) + over * Math.sin(u * Math.PI) * u;
+};
+// Затухающая пружина после толчка в t0: колебание ±1 → 0 (захлёст ушей, хвоста, бусин, рукавов).
+MD.spring = (t, t0, f = 3, damp = 5) => t < t0 ? 0 : Math.exp(-(t - t0) * damp) * Math.sin((t - t0) * f * 2 * Math.PI);
+// Запаздывание вторичной детали: значение fn(t) с опозданием на d секунд (2–4 кадра = .08–.17 с).
+MD.lag = (fn, t, d = .12) => fn(t - d);
+// Позы «на двойках/тройках»: n поз в секунду.
+MD.steps = (t, n = 12) => Math.floor(t * n) / n;
+// Моргание: каждые 2–5 с от зерна, 0,12 с; вернёт true в кадрах моргания.
+MD.blinkAuto = (t, seed = 1) => { const R = MD.rng(seed); let b = R() * 2; while (b < t + 1) { if (t >= b && t < b + .12) return true; b += 2 + R() * 3; } return false; };
+// Дыхание: масштаб по высоте 1 ± amp (опора — у ног).
+MD.breath = (t, amp = .012, rate = .35) => 1 + amp * Math.sin(t * rate * 2 * Math.PI);
+// «Дрожь бумаги»: сдвиг детали на 0,5–1,5 px со сменой позы (на двойках) — ручная перекладка, а не векторная гладкость.
+MD.boil = (t, seed, amp = 1.2, n = 12) => { const R = MD.rng(seed * 997 + Math.floor(t * n)); return [(R() - .5) * 2 * amp, (R() - .5) * 2 * amp]; };
 
 // ---------- голоса и движение рта (Rhubarb Lip Sync: формы A–H, X — покой) ----------
 MD.LIPS = {};
