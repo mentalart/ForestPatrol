@@ -13,3 +13,5 @@ _site/
 __pycache__/
 # мультсериал: съёмочная сборка, кадры и видео (tools/serial/README.md)
 tools/serial/out/
+# 2D-мультсериал: кадры и видео пробы (tools/mult2d/README.md)
+tools/mult2d/out/

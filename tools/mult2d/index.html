@@ -1,0 +1,24 @@
+<!doctype html>
+<!-- Съёмочная страница 2D-сериала: ?ep=proba. Кадр рисует MD.render(t); shoot.js снимает покадрово, без ?ep — предпросмотр в реальном времени. -->
+<meta charset="utf-8">
+<title>Златая цепь 2D</title>
+<style>
+@font-face{font-family:"Ruslan Display";src:url(fonts/RuslanDisplay-Regular.ttf)}
+@font-face{font-family:Rubik;src:url(fonts/Rubik.ttf);font-weight:300 900}
+@font-face{font-family:Alegreya;src:url(fonts/Alegreya.ttf);font-weight:400 900}
+html,body{margin:0;background:#111;height:100%}
+canvas{display:block;height:100vh;margin:0 auto}
+</style>
+<canvas id="c"></canvas>
+<script src="engine.js"></script>
+<script src="cast.js"></script>
+<script src="ep_proba.js"></script>
+<script>
+(async () => {
+  const q = new URLSearchParams(location.search), id = q.get('ep') || 'proba';
+  await Promise.all(['56px "Ruslan Display"', '500 54px Rubik', '700 54px Rubik', '54px Alegreya'].map(f => document.fonts.load(f, 'АБВ')));
+  MD.init(id); window.READY = true;
+  if (q.has('shoot')) return;
+  const t0 = performance.now(), loop = () => { MD.render(((performance.now() - t0) / 1000) % MD.ep.dur); requestAnimationFrame(loop); }; loop();
+})();
+</script>
