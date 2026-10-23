@@ -14,6 +14,7 @@ zlataya_cep/zlataya_cep_final0[1-5].html      -
 zlataya_cep/zlataya_cep_final06.html          -
 zlataya_cep/zlataya_cep_final07.html          -
 tools/three/*                                 -
+zlataya_cep/kniga/*                           -
 tools/tests/gpu_parity.py                     -
 tools/tests/regress_list_final07.txt          -
 tools/video/*                                 -

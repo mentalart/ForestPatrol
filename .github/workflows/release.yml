@@ -34,6 +34,7 @@ jobs:
           python3 zlataya_cep/build/build_final.py
           python3 zlataya_cep/build/build_final.py --pages _site
           cp zlataya_cep/zlataya_cep_final06.html _site/zlataya_cep_final06.html
+          mkdir -p _site/kniga && cp zlataya_cep/kniga/kniga.html _site/kniga/index.html   # книга трёх миров
           touch _site/.nojekyll
       - name: Файл для Pages
         uses: actions/upload-pages-artifact@v3
