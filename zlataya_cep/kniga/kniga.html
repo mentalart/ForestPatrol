@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<title>Книга трёх миров</title>
+<title>Книга пяти миров</title>
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -79,11 +79,11 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 <body>
 <canvas id="scene" tabindex="0" aria-label="Раскладная книга «Златая цепь»: стол, книга и объёмные развороты"></canvas>
 <div id="top">
-  <div id="brand" class="chip"><b>Златая цепь</b><span>книга трёх миров</span></div>
+  <div id="brand" class="chip"><b>Златая цепь</b><span>книга пяти миров</span></div>
   <div id="tools">
     <div id="links" class="chip" title="Золотые звенья: найдите по одному на каждом развороте">
       <svg viewBox="0 0 26 18" aria-hidden="true"><rect x="1.5" y="4" width="13" height="10" rx="5" fill="none" stroke="#e8bf6a" stroke-width="2.4"/><rect x="11.5" y="4" width="13" height="10" rx="5" fill="none" stroke="#f6dc9a" stroke-width="2.4"/></svg>
-      <span id="linkN">0 / 3</span>
+      <span id="linkN">0 / 5</span>
     </div>
     <button id="snd" class="chip icon" aria-label="Звук включён" title="Звук"></button>
   </div>
@@ -93,7 +93,7 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
   <div id="hint">Нажмите на страницу или стрелку, чтобы листать. Тяните мышью, чтобы осмотреться, колесо приближает. На каждом развороте спрятано золотое звено.</div>
   <div id="nav" class="chip">
     <button class="arrow" id="prev" aria-label="Предыдущий разворот"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-    <div id="cap" aria-live="polite"><small id="capE">Обложка</small><strong id="capT">Златая цепь</strong><em id="capS">Книга трёх миров «Лесного патруля»</em></div>
+    <div id="cap" aria-live="polite"><small id="capE">Обложка</small><strong id="capT">Златая цепь</strong><em id="capS">Книга пяти миров «Лесного патруля»</em></div>
     <button class="arrow" id="next" aria-label="Следующий разворот"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
     <button id="go">Открыть книгу</button>
   </div>
@@ -121,7 +121,7 @@ let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
 const R=(a,b)=>a+(b-a)*rnd();
 
 /* ---------- размеры книги (метры сцены) ---------- */
-const W=1.45, DZ=1.25, OVH=.035, OVZ=.04, TH=[.03,.012,.012,.03];
+const W=1.45, DZ=1.25, OVH=.035, OVZ=.04, TH=[.03,.012,.012,.012,.012,.03], NL=TH.length;
 const PXU=560;                         // пикселей холста на единицу для вырезок
 
 /* ---------- рендер, сцена ---------- */
@@ -471,6 +471,170 @@ const cloudTree=(hu)=>art(.38,hu,(x,w,h)=>{rr(x,w/2-8,h*.45,16,h*.55,6,'#8a72c8'
 const lantern=art(.16,.3,(x,w,h)=>{rr(x,w/2-3,h*.3,6,h*.7,2,'#c8902e');rr(x,w/2-22,h*.06,44,52,10,'#fff2c0');rr(x,w/2-16,h*.06+8,32,36,8,'#ffd860');sparkle(x,w/2,h*.06+26,12,'#fff');
   poly(x,[w/2-26,h*.06,w/2+26,h*.06,w/2,h*.06-18],'#f0c040')});
 
+/* ---------- разворот 4: Огненная Смородина ---------- */
+const firePage=pageCanvas((x,w,h)=>{
+  x.fillStyle=vgrad(x,0,h,['#2e2024','#43302c','#5a3e30']);x.fillRect(0,0,w,h);
+  for(let i=0;i<60;i++)ell(x,R(0,w),R(0,h),R(30,110),R(14,40),rnd()<.5?'rgba(20,10,10,.25)':'rgba(120,80,60,.16)');
+  x.save();x.shadowColor='#ff6a1a';x.shadowBlur=10;
+  for(let i=0;i<34;i++){let a=R(0,w),b=R(0,h);if(Math.abs(a-w/2)<200)continue;const p=[a,b];for(let k=0;k<5;k++){a+=R(-40,40);b+=R(-30,30);p.push(a,b)}line(x,p,R(2,4),'#ff7a2a')}
+  x.restore();
+  const P=pathPts(w,h,w/2+40,w/2-10,70);
+  x.save();x.shadowColor='#ff5a10';x.shadowBlur=30;ribbonPath(x,P,300,130,'#b8321a');x.restore();
+  ribbonPath(x,P,250,100,'#f0601e');ribbonPath(x,P,150,50,'#ff9a32');
+  for(let i=0;i<60;i++){const p=P[(rnd()*P.length)|0],ww=lerp(100,40,1-p[1]/h);ell(x,p[0]+R(-ww,ww)*.8,p[1]+R(-6,6),R(10,26),R(3,6),rnd()<.5?'#ffd36a':'#ffb347')}
+  for(let i=0;i<40;i++){const a=R(40,w-40),b=R(40,h-40);if(Math.abs(a-w/2)<230)continue;ell(x,a,b,R(14,34),R(9,20),rnd()<.5?'#5c4038':'#6e4c40');ell(x,a-4,b-4,R(5,12),R(3,7),'rgba(255,255,255,.08)')}
+  caption(x,w,h,'Огненная Смородина','Мир четвёртый','чудо-вещь — кузнечные клещи','#3a1a10','#f6e2cc');
+  pageNums(x,w,h,'7','8','rgba(255,220,190,.7)');
+});
+const fireBack=art(2.76,1.02,(x,w,h)=>{
+  scallopTopPath(x,w,h,h*.08,28,8);x.save();x.clip();
+  x.fillStyle=vgrad(x,0,h,['#2e1a46','#7a2f5c','#d8524a','#f7a04a']);x.fillRect(0,0,w,h);
+  for(let i=0;i<70;i++)ell(x,R(0,w),R(0,h*.35),R(1,2.2),R(1,2.2),'rgba(255,230,210,.7)');
+  ell(x,w*.2,h*.55,80,80,'#ffb36a');ell(x,w*.2,h*.55,62,62,'#ffd38a');
+  for(let i=0;i<6;i++)puff(x,R(.1,.9)*w,h*R(.15,.38),R(30,48),'rgba(90,60,90,.55)');
+  for(const [cx,hh,ww] of [[.12,.42,.24],[.36,.55,.3],[.64,.62,.32],[.9,.46,.24]]){const X=cx*w,top=h*(1-hh),bw=ww*w;
+    poly(x,[X-bw,h,X-bw*.12,top,X+bw*.12,top,X+bw,h],'#4a2430');poly(x,[X-bw*.12,top,X+bw*.12,top,X+bw*.2,top+30,X-bw*.2,top+30],'#ff7a2a');
+    x.save();x.shadowColor='#ff6a1a';x.shadowBlur=12;for(let k=0;k<3;k++)line(x,[X+R(-10,10),top+20,X+R(-60,60),top+h*hh*.5,X+R(-90,90),h],5,'#ff8a32');x.restore();
+    puff(x,X,top-30,30,'rgba(70,50,70,.6)')}
+  x.beginPath();x.moveTo(0,h);for(let i=0;i<=16;i++)x.lineTo(i/16*w,h*.86-Math.sin(i*1.9)*14);x.lineTo(w,h);x.fillStyle='#2e1a1e';x.fill();
+  x.restore();
+});
+const gorynych=art(2.8,.8,(x,w,h)=>{
+  const cx=w/2,G='#3f9a4f',GD='#2f7a3e',B='#ead27a';
+  for(const s of [-1,1]){x.save();x.translate(cx,0);x.scale(s,1);
+    poly(x,[60,h-210,520,h-430,650,h-300,600,h-250,540,h-235,470,h-205,400,h-185,300,h-160,80,h-150],'#3f8a4a');
+    for(const [a,b] of [[520,h-430],[650,h-300],[540,h-235],[400,h-185]])line(x,[70,h-200,a,b],7,GD);
+    x.restore()}
+  sh(x,true,8,4,.25);
+  x.beginPath();x.moveTo(cx+120,h-60);x.quadraticCurveTo(cx+330,h-10,cx+430,h-40);x.lineWidth=34;x.strokeStyle=G;x.lineCap='round';x.stroke();
+  poly(x,[cx+420,h-70,cx+480,h-40,cx+420,h-14],'#e0b040');
+  ell(x,cx,h-120,160,115,G);
+  for(let i=0;i<9;i++){const a=PI*1.1+i/8*PI*.8;poly(x,[cx+Math.cos(a)*150-14,h-120+Math.sin(a)*108,cx+Math.cos(a)*190,h-120+Math.sin(a)*140,cx+Math.cos(a)*150+14,h-120+Math.sin(a)*108],'#e0b040')}
+  ell(x,cx,h-96,96,84,B);for(let i=0;i<5;i++)line(x,[cx-80+i*4,h-150+i*28,cx,h-140+i*28,cx+80-i*4,h-150+i*28],3,'#c9ad52');
+  ell(x,cx-120,h-34,56,34,GD);ell(x,cx+120,h-34,56,34,GD);
+  for(const s of [-1,1])for(let k=0;k<3;k++)poly(x,[cx+s*(90+k*22),h-8,cx+s*(98+k*22),h+2,cx+s*(106+k*22),h-8],'#f6efe0');
+  const heads=[[-310,h-330,-1],[0,h-400,0],[310,h-330,1]];
+  heads.forEach(([dx,hy,d])=>{x.beginPath();x.moveTo(cx+dx*.15,h-200);x.bezierCurveTo(cx+dx*.3,h-300,cx+dx*.9,hy+120,cx+dx,hy+20);x.lineWidth=52;x.strokeStyle=G;x.stroke();
+    x.lineWidth=18;x.strokeStyle=B;x.stroke()});
+  heads.forEach(([dx,hy,d])=>{const X=cx+dx;
+    poly(x,[X-30,hy-26,X-46,hy-74,X-12,hy-34],'#f1e2b8');poly(x,[X+30,hy-26,X+46,hy-74,X+12,hy-34],'#f1e2b8');
+    ell(x,X,hy,54,40,G);ell(x,X+d*30,hy+18,40,26,'#4fae5c');
+    ell(x,X-18,hy-8,13,14,'#fff8e0');ell(x,X+18,hy-8,13,14,'#fff8e0');ell(x,X-18+d*4,hy-6,5,9,'#24160c');ell(x,X+18+d*4,hy-6,5,9,'#24160c');
+    ell(x,X+d*30-10,hy+16,4,3,'#1e4a24');ell(x,X+d*30+10,hy+16,4,3,'#1e4a24');
+    line(x,[X+d*30-18,hy+30,X+d*30,hy+36,X+d*30+18,hy+30],3,'#1e4a24');
+    const fx=X+d*70,fy=hy+30+(d?0:18);
+    if(d){poly(x,[fx,fy-10,fx+d*70,fy-34,fx+d*44,fy,fx+d*80,fy+20,fx,fy+12],'#ff7a2a');poly(x,[fx,fy-4,fx+d*40,fy-14,fx+d*28,fy+2,fx,fy+6],'#ffd36a')}
+    else{puff(x,X-40,hy-60,14,'rgba(120,110,120,.6)',3);puff(x,X+40,hy-70,12,'rgba(120,110,120,.5)',3)}});
+  sh(x,false);
+});
+const kalinov=art(2.8,.36,(x,w,h)=>{
+  const cx=w/2,L=380;
+  for(const s of [-1,1])for(let k=0;k<5;k++)ell(x,cx+s*(L+R(-10,90)),h-R(6,30),R(30,50),R(20,34),k%2?'#5c4038':'#4a3430');
+  for(const s of [-1,1])rr(x,cx+s*L-(s<0?60:0),40,60,h-40,6,'#6e4a3c');
+  x.beginPath();x.moveTo(cx-L-40,40);x.lineTo(cx+L+40,40);x.lineTo(cx+L+40,84);x.lineTo(cx+L-30,84);x.arc(cx,h+260,L*1.02,-PI/2+.62,-PI/2-.62,true);x.lineTo(cx-L-40,84);x.closePath();
+  const g=x.createLinearGradient(0,40,0,140);g.addColorStop(0,'#8a5040');g.addColorStop(1,'#c0451e');x.fillStyle=g;x.fill();
+  for(let i=0;i<16;i++)line(x,[cx-L+i*50,44,cx-L+i*50,80],2,'rgba(40,20,10,.45)');
+  x.save();x.shadowColor='#ff6a1a';x.shadowBlur=18;line(x,[cx-L-40,40,cx+L+40,40],8,'#ff9a3c');x.restore();
+  for(let i=0;i<=18;i++)rr(x,cx-L-30+i*(2*L+60)/18,6,8,34,2,'#3a2420');line(x,[cx-L-30,10,cx+L+30,10],6,'#3a2420');
+  for(let i=0;i<10;i++){const a=cx+R(-L,L);ell(x,a,R(46,70),6,6,'#e8343a');ell(x,a+8,R(46,70),5,5,'#ff5a4a')}
+});
+const forge=art(.52,.46,(x,w,h)=>{const s=w/110;x.save();x.scale(s,s);const H=h/s;sh(x,true,4,2,.22);
+  rr(x,70,H-104,16,40,2,'#4a3a36');puff(x,80,H-112,8,'rgba(150,140,140,.75)',3);puff(x,88,H-126,10,'rgba(150,140,140,.55)',3);
+  rr(x,10,H-70,90,70,4,'#6b5a50');for(let r=0;r<5;r++)for(let c=0;c<5;c++)rr(x,12+c*18+(r%2)*8,H-68+r*13,14,10,2,r%2?'#7a685e':'#625248');
+  poly(x,[2,H-68,55,H-100,108,H-68],'#3a2a26');poly(x,[10,H-70,55,H-94,100,H-70],'#5a3a30');
+  x.beginPath();x.moveTo(34,H);x.lineTo(34,H-34);x.arc(55,H-34,21,PI,0);x.lineTo(76,H);x.fillStyle='#2a1a14';x.fill();
+  const g=x.createRadialGradient(55,H-14,2,55,H-14,24);g.addColorStop(0,'#ffe08a');g.addColorStop(.5,'#ff7a2a');g.addColorStop(1,'rgba(255,90,20,0)');x.fillStyle=g;x.fillRect(30,H-44,50,44);
+  poly(x,[80,H-22,108,H-22,104,H-16,98,H-14,98,H-4,104,H,84,H,90,H-4,90,H-14,84,H-16],'#3c3c46');x.restore()});
+const kuzma=art(.26,.32,(x,w,h)=>{x.save();const s=Math.min(w/100,h/140);x.translate(w/2-50*s,h-140*s-4);x.scale(s,s);sh(x,true,4,2,.18);
+  rr(x,36,116,12,22,4,'#3a2a22');rr(x,54,116,12,22,4,'#3a2a22');
+  ell(x,51,96,26,28,'#d8d0c0');poly(x,[34,80,68,80,72,124,30,124],'#7a4a2a');rr(x,30,96,42,4,2,'#5a3418');
+  ell(x,24,94,8,16,'#e6b88a',.3);ell(x,78,90,8,16,'#e6b88a',-.6);
+  line(x,[80,84,92,56],5,'#6b4a2e');rr(x,82,44,22,14,3,'#5a5a66');
+  ell(x,51,52,22,20,'#f0c49a');poly(x,[31,56,71,56,64,86,51,94,38,86],'#cfcac4');poly(x,[38,62,64,62,58,76,44,76],'#e8e4de');
+  ell(x,51,36,24,10,'#7a3a2a');ell(x,43,50,3,3.4,'#24160c');ell(x,59,50,3,3.4,'#24160c');ell(x,51,58,5,4,'#e09a7a');
+  line(x,[38,44,47,43],2.4,'#8a8680');line(x,[55,43,64,44],2.4,'#8a8680');x.restore()});
+const anvil=art(.26,.16,(x,w,h)=>{poly(x,[w*.2,h*.3,w*.82,h*.3,w*.95,h*.2,w*.82,h*.48,w*.66,h*.55,w*.66,h*.82,w*.78,h-4,w*.3,h-4,w*.4,h*.82,w*.4,h*.55,w*.24,h*.48],'#3c3c46');
+  poly(x,[w*.2,h*.3,w*.82,h*.3,w*.8,h*.36,w*.24,h*.36],'#6a6a78');
+  line(x,[w*.05,h*.5,w*.42,h*.24],5,'#55555f');line(x,[w*.05,h*.42,w*.42,h*.2],5,'#6a6a78');
+  x.save();x.shadowColor='#ffb03a';x.shadowBlur=14;x.beginPath();x.ellipse(w*.48,h*.2,w*.08,h*.09,.2,0,PI*2);x.lineWidth=6;x.strokeStyle='#ffc34a';x.stroke();x.restore()});
+const flame=(hu)=>art(hu*.7,hu,(x,w,h)=>{const f=(s,c)=>{x.beginPath();x.moveTo(w/2-w*.42*s,h);x.quadraticCurveTo(w/2-w*.5*s,h-h*.5*s,w/2-w*.1*s,h-h*.62*s);x.quadraticCurveTo(w/2-w*.05*s,h-h*.8*s,w/2,h-h*.98*s);
+  x.quadraticCurveTo(w/2+w*.2*s,h-h*.6*s,w/2+w*.3*s,h-h*.72*s);x.quadraticCurveTo(w/2+w*.52*s,h-h*.4*s,w/2+w*.42*s,h);x.closePath();x.fillStyle=c;x.fill()};
+  f(1,'#e5401e');f(.75,'#ff8a2a');f(.48,'#ffd36a')},{grain:.05});
+const basalt=art(.3,.3,(x,w,h)=>{for(let i=0;i<6;i++){const cx=w*(.14+i*.14),hh=h*R(.45,.95);rr(x,cx-w*.07,h-hh,w*.14,hh,4,i%2?'#4a3430':'#5c4038');poly(x,[cx-w*.07,h-hh,cx+w*.07,h-hh,cx,h-hh-8],'#6e4c40')}
+  x.save();x.shadowColor='#ff6a1a';x.shadowBlur=10;line(x,[w*.3,h*.5,w*.34,h*.7,w*.3,h*.9],3,'#ff8a32');line(x,[w*.62,h*.4,w*.58,h*.62],3,'#ff8a32');x.restore()});
+
+/* ---------- разворот 5: Остров Буян ---------- */
+const buyanPage=pageCanvas((x,w,h)=>{
+  x.fillStyle=vgrad(x,0,h,['#1b6f86','#2a93a0','#4cb8b8']);x.fillRect(0,0,w,h);
+  for(let r=0;r<14;r++){const y=h*.04+r*h/14;for(let i=0;i<30;i++){const a=i/29*w+(r%2)*30;x.beginPath();x.arc(a,y,16,PI*1.1,PI*1.9);x.lineWidth=3;x.strokeStyle=`rgba(255,255,255,${.12+.1*(r/14)})`;x.stroke()}}
+  const cx=w/2,cy=PY(-.05,h);
+  ell(x,cx,cy,790,370,'rgba(255,255,255,.35)');ell(x,cx,cy,770,355,'#e6d29c');ell(x,cx,cy,690,300,'#6aa84f');
+  for(let i=0;i<40;i++){const a=R(0,PI*2),r=R(0,.9);ell(x,cx+Math.cos(a)*r*620,cy+Math.sin(a)*r*260,R(30,80),R(14,30),rnd()<.5?'rgba(40,90,30,.25)':'rgba(170,215,110,.22)')}
+  for(let i=0;i<500;i++){const a=R(0,PI*2),r=Math.sqrt(rnd());const px=cx+Math.cos(a)*r*660,py=cy+Math.sin(a)*r*285,l=R(6,14);line(x,[px,py,px+R(-3,3),py-l],2,rnd()<.5?'rgba(40,95,30,.5)':'rgba(180,220,120,.5)')}
+  for(let i=0;i<80;i++){const a=R(0,PI*2),r=Math.sqrt(rnd())*.9;flower(x,cx+Math.cos(a)*r*640,cy+Math.sin(a)*r*270,R(3,5),['#ffffff','#ffd36a','#9ed0ff','#f6d7ea'][(rnd()*4)|0])}
+  x.save();x.setLineDash([26,10]);x.beginPath();x.ellipse(cx,PY(-.3,h),200,70,0,0,PI*2);x.lineWidth=7;x.strokeStyle='#f2c14e';x.stroke();x.restore();
+  caption(x,w,h,'Остров Буян','Мир пятый','смерть Кощеева — на конце иглы','#123a44','#eef6f2');
+  pageNums(x,w,h,'9','10','rgba(230,250,250,.8)');
+});
+const buyanBack=art(2.76,1.02,(x,w,h)=>{
+  scallopTopPath(x,w,h,h*.07,32,8);x.save();x.clip();
+  x.fillStyle=vgrad(x,0,h,['#14203e','#2a4a72','#5f9fb0','#8cc8c4']);x.fillRect(0,0,w,h);
+  for(let i=0;i<90;i++)ell(x,R(0,w),R(0,h*.45),R(1,2.4),R(1,2.4),'rgba(255,250,230,.8)');
+  ell(x,w*.5,h*.2,58,58,'#fff3c4');ell(x,w*.5,h*.2,74,74,'rgba(255,243,196,.2)');
+  for(let i=0;i<6;i++)puff(x,R(.05,.95)*w,h*R(.12,.34),R(34,52),'rgba(40,55,90,.75)');
+  const kx=w*.84,by=h*.8;poly(x,[kx-210,h,kx-150,by-40,kx+170,by-60,kx+230,h],'#1f2a3a');
+  for(const [dx,th,tw] of [[-110,170,50],[-40,250,60],[40,200,54],[110,150,44]]){rr(x,kx+dx-tw/2,by-th,tw,th,2,'#262a40');poly(x,[kx+dx-tw/2-8,by-th,kx+dx+tw/2+8,by-th,kx+dx,by-th-tw*1.3],'#1d2034');
+    ell(x,kx+dx,by-th*.6,6,9,'#7dff9a');ell(x,kx+dx,by-th*.6,12,16,'rgba(125,255,154,.25)')}
+  const sx=w*.16,sy=h*.82;x.beginPath();x.moveTo(sx-90,sy);x.lineTo(sx+90,sy);x.lineTo(sx+64,sy+28);x.lineTo(sx-64,sy+28);x.closePath();x.fillStyle='#3a2a24';x.fill();
+  line(x,[sx,sy,sx,sy-130],5,'#3a2a24');poly(x,[sx+4,sy-124,sx+70,sy-50,sx+4,sy-30],'#f3ead8');poly(x,[sx-4,sy-110,sx-60,sy-40,sx-4,sy-30],'#e6dcc8');
+  x.fillStyle='#1d6f80';x.fillRect(0,h*.86,w,h*.14);for(let i=0;i<40;i++){const a=i/39*w;x.beginPath();x.arc(a,h*.87,18,PI*1.1,PI*1.9);x.lineWidth=4;x.strokeStyle='rgba(220,250,250,.6)';x.stroke()}
+  x.restore();
+});
+const oak=art(2.8,.86,(x,w,h)=>{
+  const cx=w/2,BR='#6b4428';
+  for(let i=0;i<5;i++)ell(x,cx+(i-2)*60,h-10,40,18,'#5a381f');
+  poly(x,[cx-120,h,cx-60,h-260,cx+60,h-260,cx+120,h],BR);for(let i=0;i<8;i++)line(x,[cx-80+i*22,h-6,cx-48+i*14,h-250],3,'rgba(40,20,8,.35)');
+  for(const [a,b,c,d] of [[-40,-230,-360,-330],[40,-230,360,-320],[-20,-250,-200,-400],[20,-250,210,-410],[0,-250,0,-420]])line(x,[cx+a,h+b,cx+c,h+d],34,BR);
+  line(x,[cx+250,h-290,cx+400,h-300],16,BR);
+  const greens=['#3f7d3a','#2f6a34','#4f9a44','#5aa84e'];
+  for(let i=0;i<70;i++){const a=R(-1,1),b=R(0,1);ell(x,cx+a*680*(1-b*.35),h-250-b*200-Math.cos(a*1.6)*40,R(60,110),R(40,70),greens[(rnd()*4)|0])}
+  for(let i=0;i<14;i++){const a=cx+R(-600,600),b=h-R(260,420);ell(x,a,b,6,8,'#b8862e');ell(x,a,b-6,7,4,'#6b4a2a')}
+  sh(x,true,4,2,.3);
+  for(const [yy,tilt] of [[h-60,10],[h-130,-12],[h-200,8]]){for(let k=0;k<9;k++){const t=k/8,X=cx-112+t*224*(1-(h-yy)/1100),Y=yy+tilt*(t-.5)*2+Math.sin(t*PI)*10;
+    x.beginPath();x.ellipse(X,Y,14,8,k%2?0:PI/2*0+.3,0,PI*2);x.lineWidth=6;x.strokeStyle='#f2c14e';x.stroke()}}
+  for(let k=0;k<6;k++){x.beginPath();x.ellipse(cx+400,h-286+k*20,6,10,0,0,PI*2);x.lineWidth=4;x.strokeStyle='#f2c14e';x.stroke()}
+  rr(x,cx+360,h-170,84,58,6,'#7a4a22');rr(x,cx+360,h-150,84,8,2,'#f2c14e');rr(x,cx+394,h-162,16,18,3,'#f2c14e');x.beginPath();x.moveTo(cx+360,h-166);x.quadraticCurveTo(cx+402,h-198,cx+444,h-166);x.fillStyle='#8a5a2c';x.fill();
+  sh(x,false);
+});
+const waves=art(2.8,.3,(x,w,h)=>{
+  const wave=(cx,by,r,c1,c2)=>{x.beginPath();x.moveTo(cx-r*1.6,by);x.quadraticCurveTo(cx-r*1.2,by-r*1.4,cx,by-r*1.5);x.arc(cx+r*.2,by-r*.85,r*.62,-PI/2-.3,PI*.55);x.quadraticCurveTo(cx+r*.4,by-r*.3,cx+r*1.4,by);x.closePath();x.fillStyle=c1;x.fill();
+    x.beginPath();x.arc(cx+r*.2,by-r*.85,r*.62,-PI*.9,-PI*.05);x.lineWidth=r*.2;x.strokeStyle=c2;x.stroke();for(let k=0;k<4;k++)ell(x,cx-r*.3+k*r*.3,by-r*1.45+Math.abs(k-1.5)*6,r*.14,r*.12,'#ffffff')};
+  for(let i=0;i<20;i++){const cx=R(0,w);if(Math.abs(cx-w/2)<320)continue;wave(cx,h,R(40,70),rnd()<.5?'#2a8aa4':'#3aa0b4','#bff0f0')}
+  for(let i=0;i<6;i++){const cx=R(0,w);if(Math.abs(cx-w/2)<380)continue;ell(x,cx,h-14,R(30,50),R(18,28),'#5a6a72');ell(x,cx-10,h-24,14,6,'rgba(255,255,255,.5)')}
+});
+const koschei=art(.34,.54,(x,w,h)=>{const s=Math.min(w/100,h/160);x.save();x.translate(w/2-50*s,h-160*s-4);x.scale(s,s);sh(x,true,4,2,.2);
+  poly(x,[20,62,80,62,96,160,4,160],'#4a2a5a');poly(x,[32,64,68,64,76,160,24,160],'#2b2b40');rr(x,34,96,32,6,2,'#d8a840');
+  line(x,[26,72,14,100,22,118],5,'#cfe0c8');line(x,[74,72,88,96,84,110],5,'#cfe0c8');
+  line(x,[86,60,84,140],4,'#b8c0c8');line(x,[78,104,92,104],5,'#d8a840');
+  ell(x,50,44,15,20,'#cfe0c8');poly(x,[36,50,64,50,58,96,50,108,42,96],'#f2f2ee');for(let i=0;i<4;i++)line(x,[44+i*4,56,46+i*3,98],1.2,'rgba(120,120,120,.4)');
+  ell(x,44,40,4,3,'#7dff9a');ell(x,56,40,4,3,'#7dff9a');line(x,[38,34,47,36],2.2,'#2b2b40');line(x,[53,36,62,34],2.2,'#2b2b40');ell(x,50,48,2.4,3,'#9fb09a');
+  poly(x,[34,28,38,8,43,22,50,4,57,22,62,8,66,28],'#f0c040');rr(x,34,24,32,6,2,'#d8a840');ell(x,50,26,3,3,'#e5466c');
+  x.restore()});
+const hare=art(.16,.18,(x,w,h)=>{const s=w/60;x.save();x.scale(s,s);const H=h/s;ell(x,30,H-20,18,18,'#a89a8a');ell(x,30,H-16,10,12,'#ece4d8');ell(x,30,H-44,13,12,'#b0a292');
+  ell(x,23,H-68,4.5,16,'#b0a292',-.15);ell(x,37,H-68,4.5,16,'#b0a292',.15);ell(x,23,H-68,2,11,'#e8b8b0',-.15);ell(x,37,H-68,2,11,'#e8b8b0',.15);
+  ell(x,25,H-46,2.4,2.8,'#24160c');ell(x,35,H-46,2.4,2.8,'#24160c');ell(x,30,H-40,2.6,2,'#d87a7a');ell(x,48,H-12,6,5,'#ece4d8');x.restore()});
+const eggNeedle=art(.16,.12,(x,w,h)=>{ell(x,w*.38,h*.56,w*.2,h*.4,'#f2c14e');ell(x,w*.32,h*.42,w*.05,h*.1,'#fff1b8');
+  line(x,[w*.62,h*.9,w*.92,h*.14],3,'#c8d0d8');ell(x,w*.9,h*.2,3,5,'#8a96a2')});
+const swan=art(.24,.22,(x,w,h)=>{const s=w/90;x.save();x.scale(s,s);const H=h/s;ell(x,45,H-10,38,6,'rgba(255,255,255,.5)');
+  ell(x,48,H-24,30,16,'#ffffff');poly(x,[30,H-28,74,H-46,66,H-20],'#f2f2f6');x.beginPath();x.moveTo(26,H-28);x.quadraticCurveTo(10,H-50,26,H-70);x.lineWidth=8;x.strokeStyle='#ffffff';x.lineCap='round';x.stroke();
+  ell(x,28,H-72,8,7,'#ffffff');poly(x,[34,H-73,44,H-70,34,H-68],'#f08a3c');ell(x,30,H-74,1.6,1.6,'#222');
+  poly(x,[21,H-78,23,H-88,26,H-82,28,H-90,31,H-82,34,H-88,35,H-78],'#f0c040');x.restore()});
+const alatyr=art(.26,.22,(x,w,h)=>{x.beginPath();x.moveTo(w*.08,h);x.quadraticCurveTo(w*.02,h*.3,w*.4,h*.12);x.quadraticCurveTo(w*.85,h*.02,w*.92,h*.5);x.quadraticCurveTo(w*.98,h*.9,w*.9,h);x.closePath();x.fillStyle='#e8e4dc';x.fill();
+  ell(x,w*.38,h*.3,w*.12,h*.06,'rgba(255,255,255,.7)');x.save();x.shadowColor='#7df0ff';x.shadowBlur=12;
+  const c=[w*.5,h*.6];line(x,[c[0]-24,c[1],c[0]+24,c[1]],4,'#3ab8d8');line(x,[c[0],c[1]-24,c[0],c[1]+24],4,'#3ab8d8');x.beginPath();x.arc(c[0],c[1],16,0,PI*2);x.lineWidth=3;x.strokeStyle='#3ab8d8';x.stroke();x.restore()});
+const duckC=art(.2,.11,(x,w,h)=>{ell(x,w*.5,h*.6,w*.26,h*.22,'#8a6a4a');ell(x,w*.22,h*.48,w*.1,h*.15,'#2f7a4a');poly(x,[w*.12,h*.48,w*.02,h*.54,w*.12,h*.56],'#f2a03a');ell(x,w*.2,h*.44,2,2,'#111');
+  poly(x,[w*.4,h*.5,w*.62,h*.04,w*.7,h*.5],'#a8885e');poly(x,[w*.74,h*.56,w*.96,h*.42,w*.92,h*.7],'#6a4a2a')},{grain:.06});
+
 /* ---------- обложка ---------- */
 const coverCanvas=(()=>{const c=cv(1024,Math.round(1024*(DZ+2*OVZ)/(W+OVH))),x=c.getContext('2d'),w=c.width,h=c.height;
   x.fillStyle='#1d3f57';x.fillRect(0,0,w,h);
@@ -494,8 +658,8 @@ const coverCanvas=(()=>{const c=cv(1024,Math.round(1024*(DZ+2*OVZ)/(W+OVH))),x=c
   x.beginPath();x.arc(cx,cy,r,0,PI*2);x.lineWidth=10;x.strokeStyle=gold;x.stroke();x.beginPath();x.arc(cx,cy,r+16,0,PI*2);x.lineWidth=2;x.stroke();
   x.shadowColor='rgba(0,0,0,.45)';x.shadowBlur=8;x.shadowOffsetY=3;
   text(x,'Златая цепь',cx,h*.17,'104px "Ruslan Display", Georgia, serif',gold);
-  text(x,'КНИГА ТРЁХ МИРОВ',cx,h*.255,'700 34px "Cormorant Garamond", Georgia, serif','#f2dfae');
-  text(x,'«Лесной патруль» · Дремучий лес · Китеж · Небесное царство',cx,h*.9,'italic 600 25px "Cormorant Garamond", Georgia, serif','#e8d4a0');
+  text(x,'КНИГА ПЯТИ МИРОВ',cx,h*.255,'700 34px "Cormorant Garamond", Georgia, serif','#f2dfae');
+  text(x,'«Лесной патруль» · пять сказочных миров',cx,h*.9,'italic 600 25px "Cormorant Garamond", Georgia, serif','#e8d4a0');
   grain(c,.1);return c})();
 
 /* ---------- материалы ---------- */
@@ -520,12 +684,12 @@ const coverTex=tex(coverCanvas);
 
 /* ---------- книга: листы ---------- */
 const bookRoot=new THREE.Group();scene.add(bookRoot);
-const pageTex=[forestPage,kitezhPage,skyPage].map(c=>{const base=tex(c);
+const pageTex=[forestPage,kitezhPage,skyPage,firePage,buyanPage].map(c=>{const base=tex(c);
   const r=base.clone();r.needsUpdate=true;r.repeat.set(.5,1);r.offset.set(.5,0);
   const l=base.clone();l.needsUpdate=true;l.repeat.set(-.5,-1);l.offset.set(.5,1);return{l,r}});
 const leaves=[];const pickable=[];
-for(let i=0;i<4;i++){
-  const cover=i===0||i===3,lw=cover?W+OVH:W,lz=cover?DZ+2*OVZ:DZ,t=TH[i];
+for(let i=0;i<NL;i++){
+  const cover=i===0||i===NL-1,lw=cover?W+OVH:W,lz=cover?DZ+2*OVZ:DZ,t=TH[i];
   const g=new THREE.Group();
   const body=new THREE.Mesh(new THREE.BoxGeometry(lw,t,lz).translate(lw/2,t/2,0),cover?clothMat:edgeMat);
   body.castShadow=body.receiveShadow=true;g.add(body);
@@ -533,11 +697,11 @@ for(let i=0;i<4;i++){
     const m=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({map,roughness:.9}));m.receiveShadow=true;g.add(m);pickable.push(m);return m};
   if(i===0)face(coverTex,lw,lz,true);
   if(i>=1)face(pageTex[i-1].r,W,DZ,true);
-  if(i<=2)face(pageTex[i].l,W,DZ,false);
+  if(i<=NL-2)face(pageTex[i].l,W,DZ,false);
   bookRoot.add(g);leaves.push({g,t,py:0});pickable.push(body);
 }
 const spine=new THREE.Mesh(new THREE.BoxGeometry(.016,1,DZ+2*OVZ).translate(-.008,.5,0),clothMat);spine.castShadow=true;bookRoot.add(spine);
-const theta=[0,0,0,0];
+const theta=TH.map(()=>0);
 
 /* ---------- объёмные развороты ---------- */
 const spreads=[];
@@ -581,14 +745,14 @@ function particles(sp,n,col,size,init,step){const pos=new Float32Array(n*3),st=[
 
 /* ---------- состав разворотов ---------- */
 const SPREADS=[
- {name:'Дремучий лес',eyebrow:'Разворот 1 из 3 · мир первый',sub:'Изба на курьих ножках, Леший-Путаник и клубок-путеводитель',
+ {name:'Дремучий лес',eyebrow:'Разворот 1 из 5 · мир первый',sub:'Изба на курьих ножках, Леший-Путаник и клубок-путеводитель',
   layers:[{c:forestBack,z:-.52},{c:forestMid,z:-.27},{c:forestFront,z:.1}],
   pieces:[{c:izba,x:-.86,z:-.14,yaw:.28},{c:leshy,x:.84,z:-.1,yaw:-.28,anim:'sway'},{c:birch,x:-1.18,z:.14,yaw:.15},{c:bigFir,x:1.2,z:.08,yaw:-.1},
     {c:art(.24,.26,hero('fox')),x:-.2,z:.28,yaw:.12,anim:'hop'},{c:art(.26,.28,hero('bear')),x:.22,z:.24,yaw:-.12,anim:'hop'},
     {c:mush,x:.74,z:.42},{c:sign,x:-.62,z:.36,yaw:.2},{c:klubok,x:.06,z:.44,anim:'roll'}],
   link:[-.42,.42,.04],
   fx(sp){particles(sp,46,'#e8ff9a',.05,()=>({x:R(-1.3,1.3),y:R(.08,.6),z:R(-.4,.5),p:R(0,9),s:R(.3,.8)}),(q,t)=>[q.x+Math.sin(t*q.s+q.p)*.06,q.y+Math.sin(t*q.s*1.3+q.p*2)*.04,q.z+Math.cos(t*q.s*.8+q.p)*.05])}},
- {name:'Подводный Китеж',eyebrow:'Разворот 2 из 3 · мир второй',sub:'Город под водой звонит в колокола, Водяной стережёт сундук',
+ {name:'Подводный Китеж',eyebrow:'Разворот 2 из 5 · мир второй',sub:'Город под водой звонит в колокола, Водяной стережёт сундук',
   layers:[{c:kitezhBack,z:-.53},{c:kitezhMid,z:-.3},{c:kitezhFront,z:.12}],
   pieces:[{c:vodyanoy,x:.86,z:-.06,yaw:-.3},{c:seaweed(.56,1),x:-1.16,z:-.12,anim:'sway'},{c:seaweed(.44,3),x:1.2,z:.1,anim:'sway'},
     {c:gusli,x:-.74,z:.3,yaw:.25},{c:chest,x:.68,z:.38,yaw:-.15},{c:coral,x:-1.05,z:.4},
@@ -598,7 +762,7 @@ const SPREADS=[
     for(let i=0;i<5;i++){const t=tex(fishC),m=new THREE.Mesh(new THREE.PlaneGeometry(fishC.wu,fishC.hu),cutMat(t));m.customDepthMaterial=depthMat(t);m.castShadow=true;sp.frame.add(m);
       const o={r:R(.35,1.1),y:R(.25,.75),z:R(-.2,.25),sp:R(.25,.45)*(i%2?1:-1),p:R(0,6)};
       sp.fx.push((t,dt,k)=>{m.visible=k>.05;const a=t*o.sp+o.p;m.position.set(Math.cos(a)*o.r,o.y+Math.sin(a*2)*.03,o.z+Math.sin(a)*.18);m.scale.set((o.sp>0?-1:1)*k,k,k)})}}},
- {name:'Небесное царство',eyebrow:'Разворот 3 из 3 · мир третий',sub:'Облачный терем, радуга и Жар-птица на золотой ветке',
+ {name:'Небесное царство',eyebrow:'Разворот 3 из 5 · мир третий',sub:'Облачный терем, радуга и Жар-птица на золотой ветке',
   layers:[{c:skyBack,z:-.53},{c:skyMid,z:-.3},{c:skyFront,z:.1}],
   pieces:[{c:firebird,x:.86,z:-.04,yaw:-.25,anim:'bob'},{c:cloudTree(.5),x:-.96,z:-.14,yaw:.2},{c:cloudTree(.34),x:1.22,z:.22,yaw:-.15},{c:lantern,x:-1.22,z:.28},
     {c:art(.2,.22,hero('fox')),x:-.46,z:.3,yaw:.15,anim:'hop'},{c:art(.23,.25,hero('bear')),x:-.2,z:.24,yaw:.08,anim:'hop'},
@@ -607,12 +771,31 @@ const SPREADS=[
   fx(sp){particles(sp,70,'#fff1c4',.05,()=>({x:R(-1.35,1.35),y:R(.05,1),z:R(-.5,.5),p:R(0,9),s:R(1,3)}),(q,t)=>{const tw=Math.sin(t*q.s+q.p);return[q.x,q.y+(tw<0?-30:0),q.z]});
     const fb=sp.pc[0];const g=new THREE.Sprite(new THREE.SpriteMaterial({map:GLOW,color:'#ff9a3c',blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0}));
     g.scale.set(.8,.8,1);g.position.set(.08,.3,-.05);fb.m.add(g);sp.fx.push((t,dt,k)=>{g.material.opacity=k*(.22+.1*Math.sin(t*3))})}},
+ {name:'Огненная Смородина',eyebrow:'Разворот 4 из 5 · мир четвёртый',sub:'Трёхглавый Змей Горыныч, Калинов мост и кузня Кузьмы',
+  layers:[{c:fireBack,z:-.53},{c:gorynych,z:-.31},{c:kalinov,z:.06}],
+  pieces:[{c:forge,x:-.88,z:-.12,yaw:.28},{c:kuzma,x:-1.02,z:.16,yaw:.25,anim:'hop'},{c:anvil,x:.7,z:.36,yaw:-.15},{c:basalt,x:1.18,z:.22,yaw:-.2},
+    {c:flame(.2),x:1.05,z:-.12,anim:'flicker'},{c:flame(.15),x:-1.2,z:.32,anim:'flicker'},{c:flame(.12),x:.5,z:-.05,anim:'flicker'},
+    {c:art(.26,.28,hero('bear')),x:-.27,z:.3,yaw:.12,anim:'hop'},{c:art(.22,.24,hero('hedgehog')),x:.28,z:.3,yaw:-.12,anim:'hop'}],
+  link:[-.5,.46,.18],
+  fx(sp){particles(sp,70,'#ffae4a',.045,()=>({x:R(-1.3,1.3),y:R(0,1),z:R(-.5,.45),s:R(.1,.25),p:R(0,9)}),(q,t,dt)=>{q.y+=q.s*dt;if(q.y>1)q.y=0;return[q.x+Math.sin(t*1.5+q.p)*.03,q.y,q.z]});
+    const lava=new THREE.PointLight('#ff7a2a',0,2.6,2);lava.position.set(0,.18,.1);sp.frame.add(lava);sp.fx.push((t,dt,k)=>{lava.intensity=k*(1.1+.25*Math.sin(t*5)*Math.sin(t*3.1))})}},
+ {name:'Остров Буян',eyebrow:'Разворот 5 из 5 · мир пятый',sub:'Дуб с сундуком на цепи, Кощей Бессмертный и Алатырь-камень',
+  layers:[{c:buyanBack,z:-.53},{c:oak,z:-.32},{c:waves,z:.12}],
+  pieces:[{c:koschei,x:.88,z:-.08,yaw:-.3,anim:'sway'},{c:alatyr,x:-.95,z:-.05,yaw:.2},{c:swan,x:-1.2,z:.3,yaw:.25,anim:'bob'},{c:hare,x:-.6,z:.2,yaw:.2,anim:'hop'},{c:eggNeedle,x:.62,z:.38,yaw:-.2},
+    {c:art(.2,.22,hero('fox')),x:-.36,z:.32,yaw:.15,anim:'hop'},{c:art(.23,.25,hero('bear')),x:-.13,z:.26,yaw:.08,anim:'hop'},
+    {c:art(.21,.23,hero('owl')),x:.14,z:.27,yaw:-.08,anim:'hop'},{c:art(.18,.19,hero('hedgehog')),x:.36,z:.33,yaw:-.15,anim:'hop'}],
+  link:[0,.64,-.1],
+  fx(sp){particles(sp,60,'#9ff6ff',.04,()=>({x:R(-1.35,1.35),y:R(.04,.5),z:R(-.5,.55),p:R(0,9),s:R(1,3)}),(q,t)=>{const tw=Math.sin(t*q.s+q.p);return[q.x,q.y+(tw<0?-30:0),q.z]});
+    const t0=tex(duckC),d=new THREE.Mesh(new THREE.PlaneGeometry(duckC.wu,duckC.hu),cutMat(t0));d.customDepthMaterial=depthMat(t0);d.castShadow=true;sp.frame.add(d);
+    sp.fx.push((t,dt,k)=>{d.visible=k>.05;const a=t*.5;d.position.set(Math.cos(a)*.75,.78+Math.sin(a*2)*.04,-.15+Math.sin(a)*.25);d.scale.set(-Math.sign(Math.sin(a)||1)*k,k,k)});
+    const ko=sp.pc[0];const g=new THREE.Sprite(new THREE.SpriteMaterial({map:GLOW,color:'#5dff8a',blending:THREE.AdditiveBlending,depthWrite:false,transparent:true,opacity:0}));
+    g.scale.set(.7,.7,1);g.position.set(0,.3,-.05);ko.m.add(g);sp.fx.push((t,dt,k)=>{g.material.opacity=k*(.16+.08*Math.sin(t*2.3))})}},
 ];
 SPREADS.forEach(makeSpread);
 
 function layout(t,dt){
   const f=theta.map(v=>v/PI);
-  for(let i=0;i<4;i++){let hR=0,hL=0;for(let j=i+1;j<4;j++)hR+=TH[j]*(1-f[j]);for(let j=0;j<i;j++)hL+=TH[j]*f[j];
+  for(let i=0;i<NL;i++){let hR=0,hL=0;for(let j=i+1;j<NL;j++)hR+=TH[j]*(1-f[j]);for(let j=0;j<i;j++)hL+=TH[j]*f[j];
     const py=lerp(hR,hL+TH[i],f[i]);leaves[i].py=py;leaves[i].g.position.set(0,py,0);leaves[i].g.rotation.z=theta[i]}
   spine.scale.y=Math.max(TH[0],leaves[0].py+TH[0]*(1-f[0]));
   bookRoot.position.x=-(W/2)*(1-smooth(f[0]));
@@ -629,10 +812,11 @@ function layout(t,dt){
       L.geo.attributes.position.needsUpdate=true;L.geo.computeVertexNormals();L.geo.computeBoundingSphere()});
     const lim=Math.tan(Math.min(psi*.9,1.45));
     sp.pc.forEach(P=>{let d=Math.min(psi,Math.asin(clamp(P.a*lim/P.h,0,1)));P.stand.rotation.x=PI/2-d;
-      const k=smooth((psi-1.25)/(PI/2-1.25));P.m.position.y=0;P.m.rotation.z=0;
+      const k=smooth((psi-1.25)/(PI/2-1.25));P.m.position.y=0;P.m.rotation.z=0;P.m.scale.set(1,1,1);
       if(!REDUCED&&k>0){if(P.anim==='sway')P.m.rotation.z=Math.sin(t*1.3+P.ph)*.05*k;
         else if(P.anim==='hop')P.m.position.y=Math.max(0,Math.sin(t*2.2+P.ph))**6*.025*k;
         else if(P.anim==='bob')P.m.position.y=Math.sin(t*1.6)*.012*k;
+        else if(P.anim==='flicker')P.m.scale.set(1+Math.sin(t*7+P.ph)*.05*k,1+Math.sin(t*9.3+P.ph)*.09*k,1);
         else if(P.anim==='roll')P.m.rotation.z=Math.sin(t*1.1)*.12*k}});
     const k=smooth((psi-1.2)/(PI/2-1.2));sp.k=k;
     sp.fx.forEach(fn=>fn(REDUCED?0:t,dt,k));
@@ -645,8 +829,8 @@ function layout(t,dt){
 /* ---------- листание ---------- */
 let cur=-1;const anims=[];let lastStart=0;
 function now(){return performance.now()/1000}
-function animLeaf(i,to,delay=0){const st=Math.max(now()+delay,lastStart+.3);lastStart=st;anims.push({i,to,st,dur:i===0||i===3?1.55:1.25,from:null,snd:false})}
-function next(){$('hint').classList.add('off');if(cur<2){cur++;animLeaf(cur,PI)}else{for(let i=2;i>=0;i--)animLeaf(i,0,(2-i)*.05);cur=-1}ui()}
+function animLeaf(i,to,delay=0){const st=Math.max(now()+delay,lastStart+.3);lastStart=st;anims.push({i,to,st,dur:i===0||i===NL-1?1.55:1.25,from:null,snd:false})}
+function next(){$('hint').classList.add('off');const last=SPREADS.length-1;if(cur<last){cur++;animLeaf(cur,PI)}else{for(let i=last;i>=0;i--)animLeaf(i,0);cur=-1}ui()}
 function prev(){if(cur>=0){animLeaf(cur,0);cur--;ui()}}
 function stepAnims(){const t=now();for(let n=anims.length-1;n>=0;n--){const a=anims[n];if(t<a.st)continue;if(a.from===null){a.from=theta[a.i];if(!a.snd){a.snd=true;sfx.whoosh(a.i===0?1.2:.9)}}
   const u=clamp((t-a.st)/a.dur,0,1);theta[a.i]=lerp(a.from,a.to,easeIO(u));if(u>=1)anims.splice(n,1)}}
@@ -654,17 +838,17 @@ function stepAnims(){const t=now();for(let n=anims.length-1;n>=0;n--){const a=an
 /* ---------- интерфейс ---------- */
 const $=id=>document.getElementById(id);
 function ui(){const d=SPREADS[cur];
-  $('capE').textContent=d?d.eyebrow:'Обложка';$('capT').textContent=d?d.name:'Златая цепь';$('capS').textContent=d?d.sub:'Книга трёх миров «Лесного патруля»';
+  $('capE').textContent=d?d.eyebrow:'Обложка';$('capT').textContent=d?d.name:'Златая цепь';$('capS').textContent=d?d.sub:'Книга пяти миров «Лесного патруля»';
   $('prev').disabled=cur<0;$('next').disabled=false;
-  $('go').textContent=cur<0?'Открыть книгу':cur<2?'Дальше':'Закрыть книгу';
-  $('next').setAttribute('aria-label',cur<2?'Следующий разворот':'Закрыть книгу')}
+  $('go').textContent=cur<0?'Открыть книгу':cur<SPREADS.length-1?'Дальше':'Закрыть книгу';
+  $('next').setAttribute('aria-label',cur<SPREADS.length-1?'Следующий разворот':'Закрыть книгу')}
 $('prev').onclick=()=>{sfx.wake();prev()};$('next').onclick=()=>{sfx.wake();next()};$('go').onclick=()=>{sfx.wake();next()};
 addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();sfx.wake();next()}else if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();sfx.wake();prev()}else if(e.key==='r'||e.key==='к')resetView()});
 let got=0;
 function toast(s){const el=$('toast');el.textContent=s;el.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>el.classList.remove('on'),2200)}
-function collect(L){const sp=L.userData.spread;if(sp.got)return;sp.got=true;got++;$('linkN').textContent=got+' / 3';
+function collect(L){const sp=L.userData.spread;if(sp.got)return;sp.got=true;got++;const N=SPREADS.length,left=N-got;$('linkN').textContent=got+' / '+N;
   const el=$('links');el.classList.remove('got');void el.offsetWidth;el.classList.add('got');sfx.chime();
-  burst(L);toast(got<3?'Звено найдено! Ещё '+(3-got)+(3-got===1?' — на другом развороте':' — на других разворотах'):'Все три звена собраны — цепь стала длиннее!')}
+  burst(L);toast(left?'Звено найдено! Ещё '+left+(left===1?' — на другом развороте':' — на других разворотах'):'Все пять звеньев собраны — цепь стала длиннее!')}
 const bursts=[];
 function burst(L){const p=new THREE.Vector3();L.getWorldPosition(p);const n=40,pos=new Float32Array(n*3),vel=[];
   for(let i=0;i<n;i++){pos.set([p.x,p.y,p.z],i*3);const a=rnd()*PI*2,b=R(-.3,1);vel.push(new THREE.Vector3(Math.cos(a)*R(.3,.9),R(.6,1.4),Math.sin(a)*R(.3,.9)))}
@@ -739,7 +923,7 @@ ui();canvas.style.cursor='grab';
 requestAnimationFrame(frame);
 setTimeout(()=>$('veil').classList.add('off'),120);
 // для проверок: KNIGA.go(n) — открыть разворот n сразу (−1 — закрыта), KNIGA.set(i,угол)
-window.KNIGA={go(n){anims.length=0;for(let i=0;i<4;i++)theta[i]=i<=n?PI:0;cur=n;ui()},set(i,a){anims.length=0;theta[i]=a},theta,spreads,collect:i=>collect(spreads[i].link)};
+window.KNIGA={go(n){anims.length=0;for(let i=0;i<NL;i++)theta[i]=i<=n?PI:0;cur=n;ui()},set(i,a){anims.length=0;theta[i]=a},theta,spreads,collect:i=>collect(spreads[i].link)};
 })();
 </script>
 </body>
