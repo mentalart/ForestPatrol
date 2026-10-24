@@ -385,5 +385,349 @@
   "instruct": "excited, proud",
   "dur": 1.23,
   "take": "ser01_045_t1.wav"
+ },
+ {
+  "id": "ser01_101",
+  "who": "proshka",
+  "text": "Тревога! Патруль — на выход!",
+  "instruct": "shouting commands into a megaphone, excited",
+  "dur": 2.5,
+  "take": "ser01_101_t.wav"
+ },
+ {
+  "id": "ser01_102",
+  "who": "proshka",
+  "text": "Хэк! Щас рекорд будет!",
+  "instruct": "cheeky and excited, in a hurry",
+  "dur": 1.83,
+  "take": "ser01_102_t.wav"
+ },
+ {
+  "id": "ser01_103",
+  "who": "potap",
+  "text": "Всех донесу! Разом!",
+  "instruct": "booming, straining with effort",
+  "dur": 1.42,
+  "take": "ser01_103_t.wav"
+ },
+ {
+  "id": "ser01_104",
+  "who": "yosha",
+  "text": "Без помощи! Смотрите!",
+  "instruct": "proud and stubborn, shouting happily",
+  "dur": 2.14,
+  "take": "ser01_104_t.wav"
+ },
+ {
+  "id": "ser01_105",
+  "who": "pelageya",
+  "text": "Я тут… уже давно.",
+  "how": "тихо",
+  "instruct": "quiet and calm, without resentment",
+  "dur": 2.79,
+  "take": "ser01_105_t.wav"
+ },
+ {
+  "id": "ser01_106",
+  "who": "proshka",
+  "text": "Две минуты сорок! Позор, патруль!",
+  "instruct": "indignant, like a strict coach",
+  "dur": 2.78,
+  "take": "ser01_106_t.wav"
+ },
+ {
+  "id": "ser01_107",
+  "who": "pelageya",
+  "text": "Журнал патруля. Запись сорок вторая. Учебная тревога.",
+  "how": "за кадром",
+  "instruct": "clear, intimate narration close to the microphone, calm",
+  "dur": 5.8,
+  "take": "ser01_107_t.wav"
+ },
+ {
+  "id": "ser01_108",
+  "who": "pelageya",
+  "text": "Кто пришёл первым — опять никто не заметил.",
+  "how": "за кадром",
+  "instruct": "clear intimate narration with a soft smile",
+  "dur": 4.77,
+  "take": "ser01_108_t.wav"
+ },
+ {
+  "id": "ser01_109",
+  "who": "proshka",
+  "text": "Пелагея — дежурная. Ты всё равно тихо сидишь.",
+  "instruct": "yawning, sleepy and careless",
+  "dur": 3.32,
+  "take": "ser01_109_t.wav"
+ },
+ {
+  "id": "ser01_110",
+  "who": "pelageya",
+  "text": "Запись сорок третья. Над морем что-то порвалось. Я это слышала.",
+  "how": "за кадром",
+  "instruct": "clear intimate narration, worried",
+  "dur": 5.25,
+  "take": "ser01_110_t.wav"
+ },
+ {
+  "id": "ser01_111",
+  "who": "pelageya",
+  "text": "Ребята… над морем вспыхнуло.",
+  "how": "тихо",
+  "instruct": "quiet and shy",
+  "dur": 3.29,
+  "take": "ser01_111_t.wav"
+ },
+ {
+  "id": "ser01_112",
+  "who": "proshka",
+  "text": "Дежурная докладывает громко и чётко!",
+  "instruct": "bossy, commanding",
+  "dur": 2.27,
+  "take": "ser01_112_t.wav"
+ },
+ {
+  "id": "ser01_113",
+  "who": "pelageya",
+  "text": "Ух!",
+  "instruct": "a sudden loud owl hoot",
+  "dur": 0.55,
+  "take": "ser01_113_t.wav"
+ },
+ {
+  "id": "ser01_114",
+  "who": "yosha",
+  "text": "Ух! Совиная тревога!",
+  "instruct": "laughing",
+  "dur": 1.65,
+  "take": "ser01_114_t.wav"
+ },
+ {
+  "id": "ser01_115",
+  "who": "pelageya",
+  "text": "Кто-то летит. Много.",
+  "how": "шёпотом",
+  "instruct": "whispering, alarmed",
+  "dur": 2.01,
+  "take": "ser01_115_t.wav"
+ },
+ {
+  "id": "ser01_116",
+  "who": "potap",
+  "text": "Это у меня в животе летит. Есть хочу.",
+  "instruct": "good-natured, mouth full of honey",
+  "dur": 2.1,
+  "take": "ser01_116_t.wav"
+ },
+ {
+  "id": "ser01_117",
+  "who": "zven",
+  "text": "Помоги-и-ите…",
+  "how": "издалека",
+  "instruct": "thin and far away, crying for help",
+  "dur": 1.42,
+  "take": "ser01_117_t.wav"
+ },
+ {
+  "id": "ser01_118",
+  "who": "pelageya",
+  "text": "Там кто-то плачет.",
+  "how": "тихо",
+  "instruct": "quiet, worried",
+  "dur": 1.11,
+  "take": "ser01_118_t.wav"
+ },
+ {
+  "id": "ser01_119",
+  "who": "yosha",
+  "text": "Это Тишка храпит.",
+  "instruct": "dismissive, careless",
+  "dur": 1.53,
+  "take": "ser01_119_t.wav"
+ },
+ {
+  "id": "ser01_120",
+  "who": "pelageya",
+  "text": "Запись сорок четвёртая. Значит, сама.",
+  "how": "за кадром",
+  "instruct": "clear intimate narration, decisive",
+  "dur": 3.06,
+  "take": "ser01_120_t.wav"
+ },
+ {
+  "id": "ser01_121",
+  "who": "zven",
+  "text": "Дзинь! Цепь… дуб… Ко… Ко…",
+  "instruct": "out of breath, panicking, broken words",
+  "dur": 2.37,
+  "take": "ser01_121_t.wav"
+ },
+ {
+  "id": "ser01_122",
+  "who": "potap",
+  "text": "Ко-ко? Курица, что ли?",
+  "instruct": "puzzled, slow",
+  "dur": 2.21,
+  "take": "ser01_122_t.wav"
+ },
+ {
+  "id": "ser01_123",
+  "who": "zven",
+  "text": "Ко-щей! Порвал! Всё по-рва-лось!",
+  "instruct": "panicking, syllable by syllable",
+  "dur": 2.56,
+  "take": "ser01_123_t.wav"
+ },
+ {
+  "id": "ser01_124",
+  "who": "proshka",
+  "text": "Говорящая гайка. Научно невозможно.",
+  "instruct": "pompous, like a scientist",
+  "dur": 2.92,
+  "take": "ser01_124_t.wav"
+ },
+ {
+  "id": "ser01_125",
+  "who": "zven",
+  "text": "Сам ты гайка!",
+  "instruct": "offended, squeaky",
+  "dur": 1.31,
+  "take": "ser01_125_t.wav"
+ },
+ {
+  "id": "ser01_126",
+  "who": "yosha",
+  "text": "Чур, я держу! Я аккуратно!",
+  "instruct": "eager",
+  "dur": 2.42,
+  "take": "ser01_126_t.wav"
+ },
+ {
+  "id": "ser01_127",
+  "who": "tishka",
+  "text": "Блестяшка… моя…",
+  "how": "сквозь сон",
+  "instruct": "mumbling in sleep",
+  "dur": 2.94,
+  "take": "ser01_127_t.wav"
+ },
+ {
+  "id": "ser01_128",
+  "who": "pelageya",
+  "text": "Не кричи. Покажи.",
+  "how": "мягко",
+  "instruct": "soft and gentle",
+  "dur": 1.8,
+  "take": "ser01_128_t.wav"
+ },
+ {
+  "id": "ser01_129",
+  "who": "zven",
+  "text": "Кот сказки сказывал — цепь звенела. Пришла тень — цепь не стерпела.",
+  "instruct": "rhythmic counting-rhyme, storytelling",
+  "dur": 5.09,
+  "take": "ser01_129_t.wav"
+ },
+ {
+  "id": "ser01_130",
+  "who": "zven",
+  "text": "Звенья — врассыпную… А Кот замолчал. Камнем стал.",
+  "how": "тихо",
+  "instruct": "quiet and sad",
+  "dur": 4.29,
+  "take": "ser01_130_t.wav"
+ },
+ {
+  "id": "ser01_131",
+  "who": "proshka",
+  "text": "Хэк! Длинный, как жердь! Кощей-жердей!",
+  "instruct": "teasing, laughing",
+  "dur": 3.3,
+  "take": "ser01_131_t.wav"
+ },
+ {
+  "id": "ser01_132",
+  "who": "proshka",
+  "text": "Тре…",
+  "instruct": "cut off abruptly",
+  "dur": 0.73,
+  "take": "ser01_132_t.wav"
+ },
+ {
+  "id": "ser01_133",
+  "who": "pelageya",
+  "text": "Тсс.",
+  "instruct": "a firm quiet shush",
+  "dur": 0.42,
+  "take": "ser01_133_t.wav"
+ },
+ {
+  "id": "ser01_134",
+  "who": "pelageya",
+  "text": "Спи, бельчонок, тише-тише… Сказку ветер не услышит.",
+  "how": "напевая шёпотом",
+  "instruct": "softly singing a whispered lullaby",
+  "dur": 5.46,
+  "take": "ser01_134_t.wav"
+ },
+ {
+  "id": "ser01_135",
+  "who": "proshka",
+  "text": "…Сорок секунд. Рекорд.",
+  "how": "шёпотом",
+  "instruct": "whispering, amazed",
+  "dur": 2.55,
+  "take": "ser01_135_t.wav"
+ },
+ {
+  "id": "ser01_136",
+  "who": "potap",
+  "text": "Пелагея… ты ведь всё слышала. С самого начала?",
+  "instruct": "gentle, slow realization",
+  "dur": 4.2,
+  "take": "ser01_136_t.wav"
+ },
+ {
+  "id": "ser01_137",
+  "who": "pelageya",
+  "text": "Запись сорок пятая. Первый настоящий вызов.",
+  "how": "вслух",
+  "instruct": "reading aloud, quiet but firm",
+  "dur": 4.0,
+  "take": "ser01_137_t.wav"
+ },
+ {
+  "id": "ser01_138",
+  "who": "pelageya",
+  "text": "Собрать цепь. Разбудить Кота.",
+  "instruct": "quiet but firm",
+  "dur": 2.39,
+  "take": "ser01_138_t.wav"
+ },
+ {
+  "id": "ser01_139",
+  "who": "proshka",
+  "text": "Камень будить? Научно…",
+  "instruct": "doubtful",
+  "dur": 2.23,
+  "take": "ser01_139_t.wav"
+ },
+ {
+  "id": "ser01_140",
+  "who": "zven",
+  "text": "Дзинь! Ещё как научно! К морю!",
+  "instruct": "bright and joyful",
+  "dur": 2.88,
+  "take": "ser01_140_t.wav"
+ },
+ {
+  "id": "ser01_141",
+  "who": "koschei",
+  "text": "И тут… смеются.",
+  "how": "тихо",
+  "instruct": "very quiet, sad, without anger",
+  "dur": 2.04,
+  "take": "ser01_141_t.wav"
  }
 ]
