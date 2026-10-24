@@ -1,0 +1,84 @@
+{
+"metadata": {
+"soundFile": "ser01_127.wav",
+"duration": 2.94,
+"generator": "lips_amp"
+},
+"mouthCues": [
+{
+"start": 0.0,
+"end": 0.5,
+"value": "C"
+},
+{
+"start": 0.5,
+"end": 0.62,
+"value": "X"
+},
+{
+"start": 0.62,
+"end": 0.75,
+"value": "C"
+},
+{
+"start": 0.75,
+"end": 0.88,
+"value": "D"
+},
+{
+"start": 0.88,
+"end": 1.12,
+"value": "C"
+},
+{
+"start": 1.12,
+"end": 1.21,
+"value": "B"
+},
+{
+"start": 1.21,
+"end": 1.42,
+"value": "C"
+},
+{
+"start": 1.42,
+"end": 1.67,
+"value": "B"
+},
+{
+"start": 1.67,
+"end": 2.12,
+"value": "X"
+},
+{
+"start": 2.12,
+"end": 2.21,
+"value": "C"
+},
+{
+"start": 2.21,
+"end": 2.46,
+"value": "D"
+},
+{
+"start": 2.46,
+"end": 2.62,
+"value": "C"
+},
+{
+"start": 2.62,
+"end": 2.79,
+"value": "D"
+},
+{
+"start": 2.79,
+"end": 2.88,
+"value": "C"
+},
+{
+"start": 2.88,
+"end": 2.92,
+"value": "B"
+}
+]
+}

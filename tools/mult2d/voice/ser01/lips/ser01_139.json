@@ -1,0 +1,39 @@
+{
+"metadata": {
+"soundFile": "ser01_139.wav",
+"duration": 2.23,
+"generator": "lips_amp"
+},
+"mouthCues": [
+{
+"start": 0.0,
+"end": 0.12,
+"value": "C"
+},
+{
+"start": 0.12,
+"end": 0.42,
+"value": "D"
+},
+{
+"start": 0.42,
+"end": 0.75,
+"value": "C"
+},
+{
+"start": 0.75,
+"end": 1.67,
+"value": "X"
+},
+{
+"start": 1.67,
+"end": 1.96,
+"value": "D"
+},
+{
+"start": 1.96,
+"end": 2.21,
+"value": "C"
+}
+]
+}

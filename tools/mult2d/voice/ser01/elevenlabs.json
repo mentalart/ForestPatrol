@@ -1,0 +1,11 @@
+{
+ "about": "Переозвучка серии 1 v4 в ElevenLabs (eleven_v4, голоса библиотеки, 1 дубль на реплику). Flow «Златая цепь · серия 1 v4 · голоса». Ссылки на mp3 — по session_id через creative_get_flow_run_status (подписанные URL живут 2 ч).",
+ "flow_id": "lE3DPaknMavnIiAKdDiw",
+ "voices": {"proshka": ["ZEchI3lWet1JsdNubYRY", "darth"], "potap": ["BXpVl3OTz6ZGDqlYtXXB", "Egor"], "yosha": ["TeHM1srC510U976rvUis", "Zlata Belova"],
+  "pelageya": ["QSaGDZOf5RWf5LPBHH15", "Lika"], "tishka": ["tnjzWy46l6XmxM2yWKnN", "lilchicha72"], "zven": ["RxivyypsDodFBfmDDOZF", "Mila Svetlova — Russian Fairy Voice"],
+  "koschei": ["9AjtU6o19uipv7QL8dLL", "Alex — Calm Russian Analyst"]},
+ "prompt_prefix": "детям — [childlike voice] + тег подачи ([excited], [softly], [whispers], [tired]…); Потапу ещё [deep voice], Йоше [high voice]",
+ "sessions": {"ser01_101": "yAxX40yXqKklVULJUhYd", "ser01_102": "cA88emeNfWJrXlrJrrrc", "ser01_103": "2wLh89ScY2A0gl67TS7z", "ser01_104": "KwIMilDrORCyTVx32SKE",
+  "ser01_105": "xVz2gf95c1FdkSVnVta4", "ser01_106": "ucKJzQHHiGldWRdDa9Hz", "ser01_107": "5nvAlVW8U5gkD1g4YMd6", "ser01_108": "tnPQ7aqTjqOpJe4xrwU1",
+  "ser01_109": "xTnZRRbZnADneUm2qV8m", "ser01_110": "bOnK8QouMSf4nwsMpmF3", "ser01_111": "Q2gJEuDIfDS5asepe3yD", "ser01_112": "tv509AxGpwkqlbdi1GmE"}
+}

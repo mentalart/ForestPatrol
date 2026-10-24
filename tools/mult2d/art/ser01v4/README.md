@@ -43,3 +43,17 @@ subtitles, no text».
 number small in the top-left corner of each panel, no other text, no speech bubbles». Панели нарезает `tools/mult2d/animatic.py`
 (ширины панелей в строке бывают разными — столбцы ищутся отдельно в каждой строке). Номера панелей — как в таблице планов
 `SHOTS` в `animatic.py`; сцены — по разделу 3 сценария.
+
+## Чистовой арт серии (тот же диалог ChatGPT, эталонный материал)
+
+| Где | Что |
+|---|---|
+| `art/bg/v4_*.png` | пустые фоны-картины 1024×1536: `razrez` (сосна в разрезе), `cherdak`, `lestnica`, `dver`, `krysha`, `gorizont`, `komnata`, `stena` (стена теневого театра), `korni`, `tropa`, `skala` |
+| `art/props4/sheet.png` | реквизит: Ревун, гамак, блок, ведро, фонарь, шлем с фонариком, секундомер, свисток, журнал, лупа, ножницы, мёд, подушка, кукла Кощея с языком, карта, кроватка |
+| `art/sil4/sheet.png` | силуэты теневого театра (Райнигер): дуб с цепью, Кот идёт / Кот замер, Кощей идёт / тянется, звенья, искры, вороны ×3 |
+| `art/koschei4/sheet.png` | Кощей в лаковой бумаге: в рост с куклой, голова, рука с куклой в инее |
+
+Промпт фона: «BACKGROUND PLATE … Same approved flat cut-paper and felt material as style frame A (flat matte paper shapes, 1–3 colors per
+object, soft shadows between paper layers, no rendered textures, no clutter). EMPTY SET: no characters at all, no text. Tall 2:3
+portrait.» + описание места и высоты линии пола. Нарезка — `cut.py` (`art/parts.json`); у кукол героев `cut.py` теперь срезает
+белую кайму-«наклейку» по краю (`defringe`).
