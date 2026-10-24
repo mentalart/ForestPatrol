@@ -139,5 +139,448 @@
  },
  "koschei/sheet.png@1180,0,1536,350": {
   "0": "bust_smile"
+ },
+ "proshka/parts.png!1": {
+  "0": "head",
+  "2": "tail",
+  "5": "body",
+  "3": "arm_up_l",
+  "4": "arm_lo_l",
+  "1": "arm_up_r",
+  "6": "arm_lo_r",
+  "7": "slingshot",
+  "20": "leg_l",
+  "21": "leg_r",
+  "14": "eye_l",
+  "15": "eye_r",
+  "16": "eye_half_l",
+  "17": "eye_half_r",
+  "18": "eye_shut_l",
+  "19": "eye_shut_r",
+  "22": "eye_side_l",
+  "24": "eye_side_r",
+  "26": "eye_side2_l",
+  "28": "eye_side2_r",
+  "8": "brow_l",
+  "9": "brow_r",
+  "30": "mouth_A",
+  "31": "mouth_B",
+  "32": "mouth_C",
+  "34": "mouth_D",
+  "35": "mouth_E",
+  "36": "mouth_F",
+  "37": "mouth_G",
+  "39": "mouth_H",
+  "33": "mouth_smile",
+  "38": "mouth_grit"
+ },
+ "potap/parts.png!1": {
+  "10": "head",
+  "31": "body",
+  "30": "arm_l",
+  "32": "arm_r",
+  "33": "leg_l",
+  "34": "leg_r",
+  "35": "tail",
+  "11": "eye_l",
+  "12": "eye_r",
+  "13": "eye_half_l",
+  "14": "eye_half_r",
+  "15": "eye_shut_l",
+  "16": "eye_shut_r",
+  "17": "eye_side_l",
+  "18": "eye_side_r",
+  "0": "brow_l",
+  "1": "brow_r",
+  "21": "mouth_A",
+  "22": "mouth_B",
+  "23": "mouth_C",
+  "24": "mouth_D",
+  "25": "mouth_E",
+  "26": "mouth_F",
+  "28": "mouth_G",
+  "29": "mouth_H",
+  "27": "mouth_X"
+ },
+ "yosha/parts.png!1": {
+  "2": "head",
+  "4": "body",
+  "0": "arm_l",
+  "1": "arm_r",
+  "5": "leg_l",
+  "6": "leg_r",
+  "3": "ladle",
+  "17": "eye_l",
+  "18": "eye_r",
+  "19": "eye_half_l",
+  "20": "eye_half_r",
+  "21": "eye_shut_l",
+  "22": "eye_shut_r",
+  "23": "eye_side_l",
+  "24": "eye_side_r",
+  "7": "brow_l",
+  "8": "brow_r",
+  "27": "mouth_A",
+  "28": "mouth_B",
+  "29": "mouth_D",
+  "30": "mouth_E",
+  "31": "mouth_F",
+  "32": "mouth_G",
+  "33": "mouth_H"
+ },
+ "tishka/parts.png!1": {
+  "1": "body",
+  "2": "tail",
+  "3": "pillow",
+  "4": "arm_up_l",
+  "8": "arm_lo_l",
+  "5": "arm_r",
+  "6": "leg_l",
+  "7": "leg_r",
+  "9": "eye_l",
+  "10": "eye_r",
+  "11": "eye_half_l",
+  "12": "eye_half_r",
+  "13": "eye_shut_l",
+  "14": "eye_shut_r",
+  "24": "mouth_A",
+  "25": "mouth_B",
+  "32": "mouth_C",
+  "27": "mouth_D",
+  "28": "mouth_E",
+  "29": "mouth_F",
+  "30": "mouth_G",
+  "31": "mouth_H",
+  "33": "mouth_yawn"
+ },
+ "tishka/parts.png@0,30,387,440!1": {
+  "0": "head"
+ },
+ "tishka/parts.png@388,40,700,340!1": {
+  "0": "cap"
+ },
+ "kolobok/parts.png!1": {
+  "1": "body",
+  "3": "cheek_l",
+  "4": "cheek_r",
+  "17": "eye_l",
+  "18": "eye_r",
+  "19": "eye_half_l",
+  "20": "eye_half_r",
+  "21": "eye_shut_l",
+  "22": "eye_shut_r",
+  "5": "brow_l",
+  "6": "brow_r",
+  "30": "mouth_A",
+  "31": "mouth_B",
+  "32": "mouth_C",
+  "33": "mouth_D",
+  "34": "mouth_E",
+  "35": "mouth_F",
+  "36": "mouth_G",
+  "29": "mouth_H",
+  "37": "flour"
+ },
+ "props/patrol.png": {
+  "2": "catapult",
+  "0": "wrench",
+  "7": "apple",
+  "4": "bud",
+  "5": "flower",
+  "6": "ladle_drops",
+  "8": "deck"
+ },
+ "props/room.png": {
+  "5": "scooter",
+  "1": "scooter_bar",
+  "8": "scooter_deck",
+  "9": "scooter_wheel",
+  "0": "nut",
+  "2": "spring",
+  "4": "bolt",
+  "10": "bed",
+  "11": "door",
+  "12": "window_frost"
+ },
+ "bg/bereg.png": {
+  "0": "bereg"
+ },
+ "bg/campfire.png": {
+  "0": "campfire"
+ },
+ "bg/kuznya.png": {
+  "0": "kuznya"
+ },
+ "bg/les_verh.png": {
+  "0": "les_verh"
+ },
+ "bg/mir_buyan.png": {
+  "0": "mir_buyan"
+ },
+ "bg/mir_kitezh.png": {
+  "0": "mir_kitezh"
+ },
+ "bg/mir_les.png": {
+  "0": "mir_les"
+ },
+ "bg/mir_nebo.png": {
+  "0": "mir_nebo"
+ },
+ "bg/mir_smorodina.png": {
+  "0": "mir_smorodina"
+ },
+ "bg/skala.png": {
+  "0": "skala"
+ },
+ "bg/sosna.png": {
+  "0": "sosna"
+ },
+ "bg/tucha.png": {
+  "0": "tucha"
+ },
+ "bg/oak_bare.png": {
+  "0": "oak_bare"
+ },
+ "bg/tetrad_risunok.png": {
+  "1": "tetrad_risunok"
+ },
+ "koschei/ruka.png": {
+  "1": "ruka_reach",
+  "2": "ruka_fist"
+ },
+ "kot/kamen.png": {
+  "4": "kamen",
+  "5": "kamen_crack"
+ },
+ "voron/sheet.png": {
+  "3": "fly",
+  "4": "perch"
+ },
+ "leshiy/sheet.png": {
+  "3": "rise"
+ },
+ "vodyanoy/sheet.png": {
+  "1": "som"
+ },
+ "solovey/sheet.png": {
+  "7": "whistle"
+ },
+ "gorynych/sheet.png": {
+  "0": "front"
+ },
+ "likho/sheet.png": {
+  "2": "sheep"
+ },
+ "koschei/sheet.png": {
+  "0": "full"
+ },
+ "proshka/poses.png": {
+  "0": "p_run0",
+  "2": "p_run1",
+  "3": "p_run2",
+  "1": "p_run3",
+  "4": "p_jump",
+  "5": "p_startle",
+  "6": "p_laugh",
+  "7": "p_reach",
+  "11": "p_sneak",
+  "12": "p_hush",
+  "14": "p_fall",
+  "13": "p_point"
+ },
+ "potap/poses.png!1": {
+  "0": "p_run0",
+  "1": "p_run1",
+  "2": "p_run2",
+  "5": "p_catch",
+  "6": "p_flop",
+  "7": "p_laugh",
+  "10": "p_sneak",
+  "11": "p_hush",
+  "12": "p_stuck",
+  "13": "p_walk"
+ },
+ "potap/poses.png@1160,0,1536,326!1": {
+  "max": "p_run3"
+ },
+ "potap/poses.png@1160,326,1536,640!1": {
+  "max": "p_startle"
+ },
+ "pelageya/poses.png": {
+  "0": "p_fly0",
+  "1": "p_fly1",
+  "3": "p_fly2",
+  "2": "p_fly3",
+  "10": "p_write",
+  "11": "p_throw",
+  "12": "p_whisper",
+  "13": "p_squeak",
+  "16": "p_hug",
+  "18": "p_startle",
+  "20": "p_window",
+  "21": "p_happy",
+  "6": "p_ball"
+ },
+ "yosha/poses.png@0,0,384,341!1": {
+  "max": "p_run0"
+ },
+ "yosha/poses.png@384,0,768,341!1": {
+  "max": "p_run1"
+ },
+ "yosha/poses.png@768,0,1152,341!1": {
+  "max": "p_run2"
+ },
+ "yosha/poses.png@1152,0,1536,341!1": {
+  "max": "p_run3"
+ },
+ "yosha/poses.png@0,341,384,682!1": {
+  "max": "p_water"
+ },
+ "yosha/poses.png@384,341,768,682!1": {
+  "max": "p_proud"
+ },
+ "yosha/poses.png@768,341,1152,682!1": {
+  "max": "p_laugh"
+ },
+ "yosha/poses.png@1152,341,1536,682!1": {
+  "max": "p_jump"
+ },
+ "yosha/poses.png@0,682,384,1023!1": {
+  "max": "p_ball"
+ },
+ "yosha/poses.png@384,682,768,1023!1": {
+  "max": "p_hush"
+ },
+ "yosha/poses.png@768,682,1152,1023!1": {
+  "max": "p_dizzy"
+ },
+ "yosha/poses.png@1152,682,1536,1023!1": {
+  "max": "p_cheer"
+ },
+ "tishka/poses.png@0,0,384,341!1": {
+  "max": "p_bedsing"
+ },
+ "tishka/poses.png@384,0,768,341!1": {
+  "max": "p_bedsad"
+ },
+ "tishka/poses.png@768,0,1152,341!1": {
+  "max": "p_yawn"
+ },
+ "tishka/poses.png@1152,0,1536,341!1": {
+  "max": "p_sleep"
+ },
+ "tishka/poses.png@0,341,384,682!1": {
+  "max": "p_startle"
+ },
+ "tishka/poses.png@384,341,768,682!1": {
+  "max": "p_giggle"
+ },
+ "tishka/poses.png@768,341,1152,682!1": {
+  "max": "p_hush"
+ },
+ "tishka/poses.png@1152,341,1536,682!1": {
+  "max": "p_run"
+ },
+ "tishka/poses.png@0,682,384,1023!1": {
+  "max": "p_wave"
+ },
+ "tishka/poses.png@384,682,768,1023!1": {
+  "max": "p_jump"
+ },
+ "tishka/poses.png@768,682,1152,1023!1": {
+  "max": "p_duck"
+ },
+ "tishka/poses.png@1152,682,1536,1023!1": {
+  "max": "p_sit"
+ },
+ "kot/poses.png@0,0,384,341!1": {
+  "max": "p_tell"
+ },
+ "kot/poses.png@384,0,768,341!1": {
+  "max": "p_villain"
+ },
+ "kot/poses.png@768,0,1152,341!1": {
+  "max": "p_sing"
+ },
+ "kot/poses.png@1152,0,1536,341!1": {
+  "max": "p_laugh"
+ },
+ "kot/poses.png@0,341,384,682!1": {
+  "max": "p_point"
+ },
+ "kot/poses.png@384,341,768,682!1": {
+  "max": "p_pull"
+ },
+ "kot/poses.png@768,341,1152,682!1": {
+  "max": "p_fallen"
+ },
+ "kot/poses.png@1152,341,1536,682!1": {
+  "max": "p_reach"
+ },
+ "kot/poses.png@0,682,384,1023!1": {
+  "max": "p_walk"
+ },
+ "kot/poses.png@384,682,768,1023!1": {
+  "max": "p_stop"
+ },
+ "kot/poses.png@768,682,1152,1023!1": {
+  "max": "p_peek"
+ },
+ "kot/poses.png@1152,682,1536,1023!1": {
+  "max": "p_bow"
+ },
+ "vorony/sheet.png@0,0,384,341!1": {
+  "max": "fly0"
+ },
+ "vorony/sheet.png@384,0,768,341!1": {
+  "max": "fly1"
+ },
+ "vorony/sheet.png@768,0,1152,341!1": {
+  "max": "fly2"
+ },
+ "vorony/sheet.png@1152,0,1536,341!1": {
+  "max": "fly3"
+ },
+ "vorony/sheet.png@0,341,384,682!1": {
+  "max": "dive"
+ },
+ "vorony/sheet.png@384,341,768,682!1": {
+  "max": "brake"
+ },
+ "vorony/sheet.png@768,341,1152,682!1": {
+  "max": "caw"
+ },
+ "vorony/sheet.png@1152,341,1536,682!1": {
+  "max": "turn"
+ },
+ "vorony/sheet.png@0,682,384,1023!1": {
+  "max": "perch"
+ },
+ "vorony/sheet.png@384,682,768,1023!1": {
+  "max": "knock"
+ },
+ "vorony/sheet.png@768,682,1152,1023!1": {
+  "max": "dizzy"
+ },
+ "vorony/sheet.png@1152,682,1536,1023!1": {
+  "max": "away"
+ },
+ "bg/komnata.png": {
+  "max": "komnata"
+ },
+ "bg/sosna_v.png": {
+  "max": "sosna_v"
+ },
+ "bg/nastil.png": {
+  "max": "nastil"
+ },
+ "bg/sosna_noch.png": {
+  "max": "sosna_noch"
+ },
+ "bg/les_pogonya.png": {
+  "max": "les_pogonya"
+ },
+ "bg/luko_v.png": {
+  "max": "luko_v"
  }
 }

@@ -1,0 +1,33 @@
+{
+  "metadata": {
+    "soundFile": "C:\\_UE_PRJs_\\ZolotayCepGame\\tools\\mult2d\\voice\\ser01\\ser01_016.wav",
+    "duration": 3.59
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.31, "value": "B" },
+    { "start": 0.31, "end": 0.38, "value": "C" },
+    { "start": 0.38, "end": 0.39, "value": "X" },
+    { "start": 0.39, "end": 0.43, "value": "A" },
+    { "start": 0.43, "end": 0.51, "value": "B" },
+    { "start": 0.51, "end": 0.59, "value": "A" },
+    { "start": 0.59, "end": 0.82, "value": "B" },
+    { "start": 0.82, "end": 1.03, "value": "C" },
+    { "start": 1.03, "end": 1.52, "value": "B" },
+    { "start": 1.52, "end": 1.92, "value": "X" },
+    { "start": 1.92, "end": 1.97, "value": "B" },
+    { "start": 1.97, "end": 2.16, "value": "C" },
+    { "start": 2.16, "end": 2.44, "value": "B" },
+    { "start": 2.44, "end": 2.54, "value": "A" },
+    { "start": 2.54, "end": 2.61, "value": "B" },
+    { "start": 2.61, "end": 2.74, "value": "E" },
+    { "start": 2.74, "end": 2.81, "value": "B" },
+    { "start": 2.81, "end": 2.95, "value": "E" },
+    { "start": 2.95, "end": 3.16, "value": "F" },
+    { "start": 3.16, "end": 3.23, "value": "B" },
+    { "start": 3.23, "end": 3.30, "value": "E" },
+    { "start": 3.30, "end": 3.37, "value": "G" },
+    { "start": 3.37, "end": 3.44, "value": "E" },
+    { "start": 3.44, "end": 3.58, "value": "B" },
+    { "start": 3.58, "end": 3.59, "value": "X" }
+  ]
+}

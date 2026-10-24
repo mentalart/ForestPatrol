@@ -5,7 +5,7 @@
 #                                           или любой текст; печатает файл:строки, а для функций прототипа — часть proto/ и диапазон тела в ней
 #   python3 tools/map.py check            — код 1, если автоматическая часть MAP.md устарела
 import os,re,sys,signal
-signal.signal(signal.SIGPIPE,signal.SIG_DFL)   # `| head` — без трассировки
+if hasattr(signal, "SIGPIPE"): signal.signal(signal.SIGPIPE, signal.SIG_DFL)   # `| head` — без трассировки
 ROOT=os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 P=lambda *a:os.path.join(ROOT,*a)
 sys.path.insert(0,P('tools'));import proto   # прототип по частям: proto/*, склейка — index.html

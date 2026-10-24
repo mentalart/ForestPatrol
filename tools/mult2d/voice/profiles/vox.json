@@ -1,0 +1,82 @@
+{
+ "kot": {
+  "name": "ЗЦ сериал · Кот Учёный",
+  "id": "d8988502",
+  "file": "vox_kot.ovsvoice",
+  "desc": "A warm velvety male baritone, about fifty years old, slightly husky, a storyteller's sing-song fairy-tale delivery with playful mischief",
+  "ref": "У Лукоморья дуб зелёный, златая цепь на дубе том…",
+  "design_take": 5
+ },
+ "proshka": {
+  "name": "ЗЦ сериал · Прошка",
+  "id": "c1fd7b9c",
+  "file": "vox_proshka.ovsvoice",
+  "desc": "A bright ringing voice of a ten-year-old boy, fast, confident and cheeky, speaking with a grin",
+  "ref": "Хэк! Сказки — сказками, а техника — вещь!",
+  "design_take": 4
+ },
+ "potap": {
+  "name": "ЗЦ сериал · Потап",
+  "id": "1fdeeb73",
+  "file": "vox_potap.ovsvoice",
+  "desc": "A low booming voice of a ten-year-old boy, slow, good-natured and warm, a little clumsy",
+  "ref": "Держу-держу. Хо-хо!",
+  "design_take": 6
+ },
+ "pelageya": {
+  "name": "ЗЦ сериал · Пелагея",
+  "id": "cb0da8ed",
+  "file": "vox_pelageya.ovsvoice",
+  "desc": "A quiet voice of a nine-year-old girl, a breathy shy whisper with little pauses",
+  "ref": "Ой… летит… к нам!",
+  "design_take": 3
+ },
+ "yosha": {
+  "name": "ЗЦ сериал · Йоша",
+  "id": "ffdaf445",
+  "file": "vox_yosha.ovsvoice",
+  "desc": "The highest ringing voice of a six-year-old boy, energetic and stubborn, full of pressure",
+  "ref": "Сам вырастил! Я сам!",
+  "design_take": 3
+ },
+ "tishka": {
+  "name": "ЗЦ сериал · Тишка",
+  "id": "b3b57506",
+  "file": "vox_tishka.ovsvoice",
+  "desc": "A sleepy voice of a tiny four-year-old child, drawling the vowels, cute and yawning",
+  "ref": "Сказку! Кто мне сказку на ночь?",
+  "design_take": 2
+ },
+ "zven": {
+  "name": "ЗЦ сериал · Звенышко",
+  "id": "4c386abf",
+  "file": "vox_zven.ovsvoice",
+  "desc": "A high ringing bell-like voice of a magical creature without age, bright, light and joyful",
+  "ref": "Дзинь-дзинь! За мной — бегом!",
+  "design_take": 3
+ },
+ "kuzma": {
+  "name": "ЗЦ сериал · Кузьма",
+  "id": "8fabf735",
+  "file": "vox_kuzma.ovsvoice",
+  "desc": "A deep thick bass of a forty-five-year-old blacksmith, kind but terse, short chopped phrases",
+  "ref": "Руки есть. Голова — посмотрим.",
+  "design_take": 5
+ },
+ "koschei": {
+  "name": "ЗЦ сериал · Кощей",
+  "id": "8d3cc645",
+  "file": "vox_koschei.ovsvoice",
+  "desc": "A dry, quiet, tired voice of an old man over sixty, cold and sad, slow, never shouting",
+  "ref": "Сказок больше не бывать.",
+  "design_take": 1
+ },
+ "kolobok": {
+  "name": "ЗЦ сериал · Колобок",
+  "id": "4933e857",
+  "file": "vox_kolobok.ovsvoice",
+  "desc": "A round cheerful bouncy voice of a little fairy-tale bun, high and sing-song, fast",
+  "ref": "Я от бабушки ушёл — а от тучи — укачусь!",
+  "design_take": 3
+ }
+}
