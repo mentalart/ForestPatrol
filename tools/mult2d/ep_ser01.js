@@ -255,6 +255,6 @@ MD.ser01 = {all: SHOTS, DUR, LINES, WHO, shot, cue, D, play, A, grain, vignette,
 };
 // Серия собирается при первом обращении — когда все файлы сцен уже добавили свои планы.
 let EP = null;
-Object.defineProperty(MD.eps, 'ser01', {configurable: true, enumerable: true, get: () => EP || (EP = {dur: T, subY: .72, shots: SHOTS, trans: TRANS,
+Object.defineProperty(MD.eps, 'ser01', {configurable: true, enumerable: true, get: () => EP || (EP = {dur: T, subBottom: .975, shots: SHOTS, trans: TRANS,
   voiceDir: 'voice/ser01', voice: VOICE, subs: SUBS, cues: CUES, post(ctx) { vignette(ctx, .32); }})});
 })();
