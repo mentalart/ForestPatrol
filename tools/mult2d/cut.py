@@ -28,6 +28,20 @@ def alpha_of(rgb):
     return al
 
 
+def defringe(rgb, a, steps=7):
+    """Срезает светлую кайму-«наклейку» по краю детали: с края внутрь снимает почти белые несочные пиксели, до steps px;
+    затем край мягкий в 1 px. Цветные и тёмные края (мех, ткань) не трогаются."""
+    c = rgb.astype(np.int16); light = (c.min(2) > 200) & (c.max(2) - c.min(2) < 40)
+    on = a > .02
+    for _ in range(steps):
+        edge = on & ~nd.binary_erosion(on)
+        cut = edge & light
+        if not cut.any(): break
+        on &= ~cut
+    soft = on & ~nd.binary_erosion(on)
+    return np.where(on, np.where(soft, np.minimum(a, .55), a), 0)
+
+
 def parts(path):
     path, _, dil = path.partition('!')    # «лист.png!1» — склейка соседних пятен на 1 px вместо 3 (детали стоят тесно)
     path, _, crop = path.partition('@')   # «лист.png@x0,y0,x1,y1» — сначала вырезать область листа
@@ -73,7 +87,9 @@ def export():
             x0, y0, x1, y1 = o['box']
             keep = (lab[y0:y1, x0:x1] == o['i'])
             keep = nd.binary_dilation(keep, iterations=2)
-            a = (al[y0:y1, x0:x1] * keep * 255).astype(np.uint8)
+            a = al[y0:y1, x0:x1] * keep
+            if folder != 'bg': a = defringe(rgb[y0:y1, x0:x1], a)   # белая «наклейка» по краю куклы — срезать (арт-дирекшен v4)
+            a = (a * 255).astype(np.uint8)
             spr = np.dstack([rgb[y0:y1, x0:x1], a])
             od = os.path.join(OUT, folder); os.makedirs(od, exist_ok=True)
             Image.fromarray(spr, 'RGBA').save(os.path.join(od, name + '.png'), optimize=True)

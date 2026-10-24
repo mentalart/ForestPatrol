@@ -1,0 +1,134 @@
+{
+"metadata": {
+"soundFile": "ser01_134.wav",
+"duration": 5.46,
+"generator": "lips_amp"
+},
+"mouthCues": [
+{
+"start": 0.0,
+"end": 0.04,
+"value": "B"
+},
+{
+"start": 0.04,
+"end": 0.12,
+"value": "C"
+},
+{
+"start": 0.12,
+"end": 0.29,
+"value": "X"
+},
+{
+"start": 0.29,
+"end": 1.08,
+"value": "C"
+},
+{
+"start": 1.08,
+"end": 1.42,
+"value": "D"
+},
+{
+"start": 1.42,
+"end": 1.71,
+"value": "B"
+},
+{
+"start": 1.71,
+"end": 1.92,
+"value": "C"
+},
+{
+"start": 1.92,
+"end": 2.0,
+"value": "B"
+},
+{
+"start": 2.0,
+"end": 2.12,
+"value": "X"
+},
+{
+"start": 2.12,
+"end": 2.62,
+"value": "C"
+},
+{
+"start": 2.62,
+"end": 2.79,
+"value": "X"
+},
+{
+"start": 2.79,
+"end": 3.17,
+"value": "B"
+},
+{
+"start": 3.17,
+"end": 3.71,
+"value": "X"
+},
+{
+"start": 3.71,
+"end": 3.79,
+"value": "D"
+},
+{
+"start": 3.79,
+"end": 3.96,
+"value": "C"
+},
+{
+"start": 3.96,
+"end": 4.04,
+"value": "B"
+},
+{
+"start": 4.04,
+"end": 4.17,
+"value": "D"
+},
+{
+"start": 4.17,
+"end": 4.29,
+"value": "C"
+},
+{
+"start": 4.29,
+"end": 4.38,
+"value": "B"
+},
+{
+"start": 4.38,
+"end": 4.62,
+"value": "C"
+},
+{
+"start": 4.62,
+"end": 4.75,
+"value": "D"
+},
+{
+"start": 4.75,
+"end": 4.88,
+"value": "C"
+},
+{
+"start": 4.88,
+"end": 5.04,
+"value": "B"
+},
+{
+"start": 5.04,
+"end": 5.25,
+"value": "C"
+},
+{
+"start": 5.25,
+"end": 5.46,
+"value": "X"
+}
+]
+}

@@ -1,0 +1,74 @@
+{
+"metadata": {
+"soundFile": "ser01_138.wav",
+"duration": 2.39,
+"generator": "lips_amp"
+},
+"mouthCues": [
+{
+"start": 0.0,
+"end": 0.04,
+"value": "B"
+},
+{
+"start": 0.04,
+"end": 0.21,
+"value": "C"
+},
+{
+"start": 0.21,
+"end": 0.38,
+"value": "D"
+},
+{
+"start": 0.38,
+"end": 0.5,
+"value": "X"
+},
+{
+"start": 0.5,
+"end": 0.67,
+"value": "C"
+},
+{
+"start": 0.67,
+"end": 1.5,
+"value": "X"
+},
+{
+"start": 1.5,
+"end": 1.58,
+"value": "D"
+},
+{
+"start": 1.58,
+"end": 1.71,
+"value": "C"
+},
+{
+"start": 1.71,
+"end": 1.88,
+"value": "D"
+},
+{
+"start": 1.88,
+"end": 1.96,
+"value": "C"
+},
+{
+"start": 1.96,
+"end": 2.25,
+"value": "X"
+},
+{
+"start": 2.25,
+"end": 2.33,
+"value": "C"
+},
+{
+"start": 2.33,
+"end": 2.38,
+"value": "B"
+}
+]
+}

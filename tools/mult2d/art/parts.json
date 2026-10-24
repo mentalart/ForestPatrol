@@ -582,5 +582,74 @@
  },
  "bg/luko_v.png": {
   "max": "luko_v"
+ },
+ "bg/v4_razrez.png": {
+  "max": "v4_razrez"
+ },
+ "bg/v4_cherdak.png": {
+  "max": "v4_cherdak"
+ },
+ "bg/v4_lestnica.png": {
+  "max": "v4_lestnica"
+ },
+ "bg/v4_dver.png": {
+  "max": "v4_dver"
+ },
+ "bg/v4_krysha.png": {
+  "max": "v4_krysha"
+ },
+ "bg/v4_gorizont.png": {
+  "max": "v4_gorizont"
+ },
+ "bg/v4_komnata.png": {
+  "max": "v4_komnata"
+ },
+ "bg/v4_stena.png": {
+  "max": "v4_stena"
+ },
+ "bg/v4_korni.png": {
+  "max": "v4_korni"
+ },
+ "bg/v4_tropa.png": {
+  "max": "v4_tropa"
+ },
+ "bg/v4_skala.png": {
+  "max": "v4_skala"
+ },
+ "props4/sheet.png": {
+  "0": "siren",
+  "1": "hammock",
+  "2": "pulley",
+  "3": "bucket",
+  "4": "lantern",
+  "5": "helmet",
+  "6": "stopwatch",
+  "7": "whistle",
+  "8": "notebook",
+  "9": "magnifier",
+  "10": "scissors",
+  "11": "honey",
+  "12": "pillow",
+  "13": "puppet",
+  "14": "map",
+  "15": "bed"
+ },
+ "sil4/sheet.png": {
+  "1": "oak",
+  "0": "cat",
+  "2": "cat_stone",
+  "4": "koschei",
+  "5": "koschei_reach",
+  "6": "chain_a",
+  "3": "chain_b",
+  "8": "spark",
+  "11": "crow0",
+  "12": "crow1",
+  "13": "crow2"
+ },
+ "koschei4/sheet.png": {
+  "1": "full",
+  "0": "head",
+  "2": "hand"
  }
 }

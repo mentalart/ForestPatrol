@@ -1,0 +1,24 @@
+{
+"metadata": {
+"soundFile": "ser01_113.wav",
+"duration": 0.55,
+"generator": "lips_amp"
+},
+"mouthCues": [
+{
+"start": 0.0,
+"end": 0.04,
+"value": "B"
+},
+{
+"start": 0.04,
+"end": 0.5,
+"value": "C"
+},
+{
+"start": 0.5,
+"end": 0.54,
+"value": "X"
+}
+]
+}
