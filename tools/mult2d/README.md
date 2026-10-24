@@ -11,6 +11,7 @@ node tools/mult2d/shoot.js --ep kukly --at 0,1                  # лист ку�
 for k in 0 1 2 3; do node tools/mult2d/shoot.js --ep ser01 --part $k/4 & done; wait   # все кадры 1080×1920, 24 к/с
 python3 tools/mult2d/audio_ser01.py                             # звук серии (по out/ser01/timeline.json от shoot.js) → out/ser01_audio.wav
 tools/mult2d/encode.sh ser01                                    # → out/ser01.mp4 (H.264 + AAC); FFMPEG=путь, если ffmpeg нет в PATH
+python3 tools/mult2d/animatic.py [--fast]                       # аниматик серии 1 v4: панели art/ser01v4/sb/ + голоса → out/ser01_animatic.mp4
 ```
 Предпросмотр в реальном времени: `python3 -m http.server -d tools/mult2d`, затем открыть `index.html?ep=ser01` (или `proba`).
 Съёмка берёт Playwright, а без него — установленный Chrome или Edge по протоколу DevTools (`CHROME=путь`).
