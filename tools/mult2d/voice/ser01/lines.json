@@ -1,0 +1,389 @@
+[
+ {
+  "id": "ser01_001",
+  "who": "kot",
+  "src": "intro_019",
+  "text": "…а Кощей, как водится, — проиграл. Тут и сказке конец!",
+  "dur": 4.71,
+  "take": "ser01_001_t1.wav"
+ },
+ {
+  "id": "ser01_002",
+  "who": "koschei",
+  "src": "intro_020",
+  "text": "Как водится… проиграл.",
+  "how": "тихо",
+  "dur": 2.56,
+  "take": "ser01_002_t1.wav",
+  "instruct": "very quiet, tired and cold, almost a sigh"
+ },
+ {
+  "id": "ser01_003",
+  "who": "kot",
+  "src": "intro_021",
+  "text": "А теперь — колыбельная…",
+  "dur": 1.82,
+  "take": "ser01_003_t2.wav"
+ },
+ {
+  "id": "ser01_004",
+  "who": "kot",
+  "src": "intro_022",
+  "text": "Баю-баю, за рекою, серый волк живёт…",
+  "how": "поёт",
+  "dur": 3.02,
+  "take": "ser01_004_t2.wav",
+  "instruct": "singing a gentle slow lullaby"
+ },
+ {
+  "id": "ser01_005",
+  "who": "koschei",
+  "src": "intro_023",
+  "text": "Довольно.",
+  "dur": 0.78,
+  "take": "ser01_005_t1.wav"
+ },
+ {
+  "id": "ser01_006",
+  "who": "kolobok",
+  "src": "intro_024",
+  "text": "Я от бабушки ушёл — а от тучи — укачусь!",
+  "how": "нараспев",
+  "dur": 2.95,
+  "take": "ser01_006_t2.wav",
+  "instruct": "singing cheerfully and fast, bouncy"
+ },
+ {
+  "id": "ser01_007",
+  "who": "kot",
+  "src": "intro_025",
+  "text": "Кто там?! Тебя сюда не звали!",
+  "dur": 2.57,
+  "take": "ser01_007_t1.wav",
+  "instruct": "alarmed and loud, bristling"
+ },
+ {
+  "id": "ser01_008",
+  "who": "kot",
+  "src": "intro_026",
+  "text": "Разлетелись звенья по свету —",
+  "dur": 1.98,
+  "take": "ser01_008_t2.wav"
+ },
+ {
+  "id": "ser01_009",
+  "who": "kot",
+  "src": "intro_027",
+  "text": "В лес дремучий…",
+  "dur": 1.26,
+  "take": "ser01_009_t2.wav"
+ },
+ {
+  "id": "ser01_010",
+  "who": "kot",
+  "src": "intro_028",
+  "text": "…в Китеж подводный…",
+  "dur": 1.21,
+  "take": "ser01_010_t2.wav"
+ },
+ {
+  "id": "ser01_011",
+  "who": "kot",
+  "src": "intro_029",
+  "text": "…за облака…",
+  "dur": 0.74,
+  "take": "ser01_011_t1.wav"
+ },
+ {
+  "id": "ser01_012",
+  "who": "kot",
+  "src": "intro_030",
+  "text": "…за огненную реку…",
+  "dur": 1.37,
+  "take": "ser01_012_t1.wav"
+ },
+ {
+  "id": "ser01_013",
+  "who": "kot",
+  "src": "intro_031",
+  "text": "…на остров Буян.",
+  "dur": 1.22,
+  "take": "ser01_013_t1.wav"
+ },
+ {
+  "id": "ser01_014",
+  "who": "kot",
+  "src": "intro_032",
+  "text": "Без цепи сказки забываются — слово за словом рассыпаются.",
+  "dur": 4.42,
+  "take": "ser01_014_t2.wav"
+ },
+ {
+  "id": "ser01_015",
+  "who": "kot",
+  "src": "intro_008",
+  "text": "А в дремучем лесу, на сосне, светит штаб огоньком в окне.",
+  "dur": 4.39,
+  "take": "ser01_015_t1.wav"
+ },
+ {
+  "id": "ser01_016",
+  "who": "kot",
+  "src": "intro_009",
+  "text": "Четверо друзей там живут — Лесным патрулём их зовут.",
+  "dur": 3.6,
+  "take": "ser01_016_t2.wav"
+ },
+ {
+  "id": "ser01_017",
+  "who": "proshka",
+  "src": "intro_010",
+  "text": "Сказки — сказками, а техника — вещь!",
+  "dur": 1.74,
+  "take": "ser01_017_t1.wav"
+ },
+ {
+  "id": "ser01_018",
+  "who": "potap",
+  "src": "intro_011",
+  "text": "Держу-держу. Хо-хо!",
+  "dur": 1.38,
+  "take": "ser01_018_t2.wav"
+ },
+ {
+  "id": "ser01_019",
+  "who": "yosha",
+  "src": "intro_012",
+  "text": "Сам вырастил! Я сам!",
+  "dur": 2.1,
+  "take": "ser01_019_t1.wav"
+ },
+ {
+  "id": "ser01_020",
+  "who": "pelageya",
+  "src": "intro_013",
+  "text": "В некотором царстве… нет, не так…",
+  "how": "шёпотом",
+  "instruct": "shy breathy whisper",
+  "dur": 5.25,
+  "take": "ser01_020_t2.wav"
+ },
+ {
+  "id": "ser01_021",
+  "who": "tishka",
+  "src": "intro_014",
+  "text": "Сказку! Кто мне сказку на ночь?",
+  "dur": 2.6,
+  "take": "ser01_021_t1.wav"
+ },
+ {
+  "id": "ser01_022",
+  "who": "proshka",
+  "src": "intro_015",
+  "text": "Чур, я!",
+  "dur": 0.74,
+  "take": "ser01_022_t2.wav"
+ },
+ {
+  "id": "ser01_023",
+  "who": "potap",
+  "src": "intro_016",
+  "text": "Я!",
+  "dur": 0.55,
+  "take": "ser01_023_t1.wav"
+ },
+ {
+  "id": "ser01_024",
+  "who": "yosha",
+  "src": "intro_017",
+  "text": "Нет, я сам!",
+  "dur": 1.0,
+  "take": "ser01_024_t2.wav"
+ },
+ {
+  "id": "ser01_025",
+  "who": "pelageya",
+  "src": "intro_018",
+  "text": "…и я.",
+  "how": "шёпотом",
+  "instruct": "shy breathy whisper",
+  "dur": 0.78,
+  "take": "ser01_025_t2.wav"
+ },
+ {
+  "id": "ser01_026",
+  "who": "pelageya",
+  "src": "intro_033",
+  "text": "Ой… летит… к нам!",
+  "how": "шёпотом",
+  "instruct": "breathy frightened whisper",
+  "dur": 3.21,
+  "take": "ser01_026_t1.wav"
+ },
+ {
+  "id": "ser01_027",
+  "who": "tishka",
+  "src": "p01_bayu",
+  "text": "Баю-баю, за рекою…",
+  "how": "поёт",
+  "instruct": "singing softly and sleepily",
+  "dur": 2.0,
+  "take": "ser01_027_t2.wav"
+ },
+ {
+  "id": "ser01_028",
+  "who": "tishka",
+  "src": "p02_zabyl",
+  "text": "Дальше слов не помню я…",
+  "instruct": "sad and sleepy",
+  "dur": 1.92,
+  "take": "ser01_028_t1.wav"
+ },
+ {
+  "id": "ser01_029",
+  "who": "proshka",
+  "src": "p03_malyshi",
+  "text": "Колыбельные — для малых, не для нас, для удалых!",
+  "dur": 2.37,
+  "take": "ser01_029_t1.wav"
+ },
+ {
+  "id": "ser01_030",
+  "who": "proshka",
+  "src": "p04_samokat",
+  "text": "Хочешь — дам самокат, дружок? Он получше всяких строк!",
+  "dur": 3.23,
+  "take": "ser01_030_t1.wav"
+ },
+ {
+  "id": "ser01_031",
+  "who": "yosha",
+  "src": "p05_haha",
+  "text": "Ха-ха-ха! Вот так дела!",
+  "instruct": "laughing merrily",
+  "dur": 1.75,
+  "take": "ser01_031_t2.wav"
+ },
+ {
+  "id": "ser01_032",
+  "who": "potap",
+  "src": "p05b_hoho",
+  "text": "Хо-хо-хо!",
+  "instruct": "laughing heartily",
+  "dur": 1.4,
+  "take": "ser01_032_t1.wav"
+ },
+ {
+  "id": "ser01_033",
+  "who": "tishka",
+  "src": "p05a_hihi",
+  "text": "Хи-хи-хи!",
+  "instruct": "giggling",
+  "dur": 0.86,
+  "take": "ser01_033_t1.wav"
+ },
+ {
+  "id": "ser01_034",
+  "who": "proshka",
+  "src": "p05d_prokatilsya",
+  "text": "Ха-ха! Вот это я прокатился!",
+  "instruct": "laughing",
+  "dur": 2.13,
+  "take": "ser01_034_t3.wav"
+ },
+ {
+  "id": "ser01_035",
+  "who": "zven",
+  "src": "p06_bezhim",
+  "text": "Дзинь-дзинь! За мной — бегом!",
+  "dur": 2.27,
+  "take": "ser01_035_t1.wav"
+ },
+ {
+  "id": "ser01_036",
+  "who": "kot",
+  "src": "intro_034",
+  "text": "Кто соберёт звено к звену?",
+  "dur": 1.85,
+  "take": "ser01_036_t1.wav"
+ },
+ {
+  "id": "ser01_037",
+  "who": "kot",
+  "src": "intro_035",
+  "text": "Кто сказку вспомнит — не одну?",
+  "dur": 1.96,
+  "take": "ser01_037_t3.wav"
+ },
+ {
+  "id": "ser01_038",
+  "who": "kot",
+  "src": "intro_036",
+  "text": "Это присказка, не сказка. Сказка — будет впереди!",
+  "dur": 4.68,
+  "take": "ser01_038_t2.wav"
+ },
+ {
+  "id": "ser01_039",
+  "who": "koschei",
+  "src": "luko_082",
+  "text": "Сказок больше не бывать.",
+  "instruct": "quiet, cold and sad",
+  "dur": 1.77,
+  "take": "ser01_039_t1.wav"
+ },
+ {
+  "id": "ser01_040",
+  "who": "kot",
+  "src": "новая",
+  "text": "Стоп-стоп-стоп! Это из середины. Начнём по порядку…",
+  "instruct": "playful, hurried, like a storyteller who got ahead of himself",
+  "dur": 3.29,
+  "take": "ser01_040_t1.wav"
+ },
+ {
+  "id": "ser01_041",
+  "who": "kot",
+  "src": "новая",
+  "text": "Не отдам!",
+  "instruct": "straining with effort, through gritted teeth",
+  "dur": 0.92,
+  "take": "ser01_041_t1.wav"
+ },
+ {
+  "id": "ser01_042",
+  "who": "pelageya",
+  "src": "новая",
+  "text": "Летит!",
+  "instruct": "trying to shout but only a thin squeak comes out",
+  "dur": 0.53,
+  "take": "ser01_042_t3.wav"
+ },
+ {
+  "id": "ser01_043",
+  "who": "zven",
+  "src": "новая",
+  "text": "Спрячьте! Спрячьте меня!",
+  "instruct": "panicked, fast, out of breath",
+  "dur": 1.8,
+  "take": "ser01_043_t2.wav"
+ },
+ {
+  "id": "ser01_044",
+  "who": "potap",
+  "src": "новая",
+  "text": "Пелагея… ты ведь первая увидела?",
+  "instruct": "slow, warm, surprised",
+  "dur": 2.16,
+  "take": "ser01_044_t2.wav"
+ },
+ {
+  "id": "ser01_045",
+  "who": "yosha",
+  "src": "новая",
+  "text": "Ведёшь — ты!",
+  "instruct": "excited, proud",
+  "dur": 1.23,
+  "take": "ser01_045_t1.wav"
+ }
+]

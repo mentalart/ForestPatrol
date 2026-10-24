@@ -88,7 +88,8 @@ MD.camera = (ctx, cam, t) => {
   ctx.translate(-(cam.x ?? MD.W / 2), -(cam.y ?? MD.H / 2));
 };
 
-// ---------- субтитры (формат: 46_multserial.md — имя цветом героя, не выше 2 строк; высота центра — ep.subY, по умолчанию 64 %) ----------
+// ---------- субтитры (формат: 46_multserial.md — имя цветом героя, не выше 2 строк). Место: ep.subBottom — низ плашки в долях
+// высоты (прижаты к низу кадра, не перекрывают изображение), иначе ep.subY — высота центра, по умолчанию 64 % ----------
 MD.FONT = {display: '"Ruslan Display", Georgia, serif', ui: 'Rubik, "DejaVu Sans", sans-serif', body: 'Alegreya, Georgia, serif'};
 MD.subtitle = (ctx, who, color, text, alpha = 1) => {
   if (alpha <= 0) return;
@@ -97,7 +98,8 @@ MD.subtitle = (ctx, who, color, text, alpha = 1) => {
   const words = text.split(' '), lines = []; let cur = '';
   for (const w of words) { const s = cur ? cur + ' ' + w : w; if (ctx.measureText(s).width > 860 && cur) { lines.push(cur); cur = w; } else cur = s; }
   lines.push(cur);
-  const cy = MD.H * (MD.ep?.subY ?? .64), lh = 66, h = 56 + lines.length * lh, y0 = cy - h / 2;
+  const lh = 66, h = 56 + lines.length * lh;
+  const y0 = MD.ep?.subBottom != null ? MD.H * MD.ep.subBottom - h : MD.H * (MD.ep?.subY ?? .64) - h / 2;
   const wMax = Math.max(...lines.map(l => ctx.measureText(l).width), 300) + 80;
   ctx.fillStyle = 'rgba(14,10,18,.62)'; ctx.beginPath(); ctx.roundRect(540 - wMax / 2, y0, wMax, h, 22); ctx.fill();
   ctx.font = `700 34px ${MD.FONT.ui}`; ctx.fillStyle = color; ctx.fillText(who.toUpperCase(), 540, y0 + 44);

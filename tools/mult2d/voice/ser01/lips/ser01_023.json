@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "soundFile": "C:\\_UE_PRJs_\\ZolotayCepGame\\tools\\mult2d\\voice\\ser01\\ser01_023.wav",
+    "duration": 0.54
+  },
+  "mouthCues": [
+    { "start": 0.00, "end": 0.06, "value": "B" },
+    { "start": 0.06, "end": 0.25, "value": "F" },
+    { "start": 0.25, "end": 0.32, "value": "G" },
+    { "start": 0.32, "end": 0.46, "value": "C" },
+    { "start": 0.46, "end": 0.53, "value": "E" },
+    { "start": 0.53, "end": 0.54, "value": "X" }
+  ]
+}
